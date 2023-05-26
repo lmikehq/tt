@@ -16,7 +16,7 @@ import Flex from "@atom/flex";
 const FooterWrapper = styled.footer`
   width: 100%;
   height: 21rem;
-  margin-top: 35rem;
+  margin-top: 21rem;
   display: flex;
   padding: 7rem 0;
   background-color: var(--primary-color);

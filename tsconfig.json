@@ -31,6 +31,7 @@
       "@image/*": ["assets/images/*"],
       "@font/*": ["assets/fonts/*"],
       "@icon/*": ["components/icons/*"],
+      "@flag/*": ["assets/flags/*"],
       "@lib/*": ["lib/*"]
     }
   },
