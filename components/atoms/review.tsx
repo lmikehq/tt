@@ -9,18 +9,17 @@ import TitleSec from "./sectionTitle";
 import RatingComponent from "./ReviewStar";
 
 const ReviewWrapper = styled.div`
-  margin: 9rem 0;
+  margin: 9rem 0 0 0;
 `;
 const Card = styled.div`
   display: block;
   //   flex-direction: row;/
   //   justify-content: flex-end;
   align-items: center;
-  padding: 24px 24px 0px;
+  padding: 0.7rem;
   //   gap: 100px;
-
-  width: 100%;
-  height: 264px;
+  width: 94%;
+  height: 273px;
 
   /* Neutrals */
 
@@ -34,23 +33,26 @@ const CardHeader = styled.div`
   width: 22.8125rem;
   height: 3.5rem;
   font-size: 1.1rem;
+  padding: 1rem ;
   line-height: 30px;
   color: var(--secondary-color);
-  margin-bottom: 1.2rem;
+  margin-bottom: 2.5rem;
 `;
 const CardDescription = styled.div`
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
   font-size: 12.3px;
+  padding: 0 .7rem;
   line-height: 12px;
   color: var(--secondary-color);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   opacity: 0.5;
 `;
 const CardFooter = styled.div`
   display: block;
+  padding:0 .7rem;
 
   & h5 {
     font-weight: 700;
