@@ -7,12 +7,12 @@ interface buttonProps {
   color?: string;
   background?: string;
   fontWeight?: string;
-  textTransform: "Capitalize" | "Uppercase" | "Lowercase" | "None";
   fontSize?: string;
   width?: string;
   height?: string;
   borderRadius?: string;
   border?: string;
+  zIndex?: string;
   margin?: string;
   onClick?: () => void;
   styles?: CSSProperties;
@@ -25,9 +25,9 @@ const ButtonWrapper = styled.button`
   color: var(--default-color);
   border: none;
   border-radius: 0.3rem;
-  text-transform: capitalize;
   font-weight: 600;
   font-size: 1rem;
+  z-index: 1;
   margin: 0 auto;
   display: block;
   cursor: pointer;
@@ -44,10 +44,10 @@ export const Button: React.FC<buttonProps> = ({
   color,
   background,
   fontWeight,
-  textTransform,
   fontSize,
   width,
   height,
+  zIndex,
   borderRadius,
   border,
   margin,
@@ -61,11 +61,11 @@ export const Button: React.FC<buttonProps> = ({
         color: color,
         background: background,
         fontWeight: fontWeight,
-        textTransform: textTransform,
         fontSize: fontSize,
         width: width,
         height: height,
         borderRadius: borderRadius,
+        zIndex: zIndex,
         border: border,
         margin: margin,
         ...styles,
