@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import { AiFillInstagram } from "react-icons/ai";
 import Image from "next/image";
-import TTLogo from '@image/brand/tt_blue_logo_with_text.png'
-import FooterLayout from "@layout/footerLayout";
+import TTLogo from "@image/brand/tt_blue_logo_with_text.png";
+import FooterLayout from "@components/layouts/sectionLayout";
 import Text from "@atom/text";
 import NewsLetter from "@organism/NewsLetter";
 import { Grid } from "@atom/grid";
@@ -15,13 +15,10 @@ import Flex from "@atom/flex";
 
 const FooterWrapper = styled.footer`
   width: 100%;
-  height: 20.6rem;
-  margin-top: 5rem;
+  height: 21rem;
+  margin-top: 35rem;
   display: flex;
-  export default function FooterLayout() {
-    // ...
-  }
-  padding-bottom: 2rem;
+  padding: 7rem 0;
   background-color: var(--primary-color);
   position: relative;
   bottom: 0;
@@ -106,11 +103,11 @@ const FooterSection = () => {
         <Grid gap="2.5rem" columns="repeat(5, 1fr)">
           <div className="footerLogo">
             <Link href="/">
-              <Image src={TTLogo} alt="logo" />
+              <Image src={TTLogo} height="50" alt="logo" />
             </Link>
             <Flex gap="1rem" margin="1.2rem auto">
               {FooterIcons.map((icon) => (
-                <Link href={icon.url}>
+                <Link href={icon.url} key="key">
                   <span key={icon.id}>{icon.icon}</span>
                 </Link>
               ))}

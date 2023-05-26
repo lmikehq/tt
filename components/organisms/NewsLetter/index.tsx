@@ -13,16 +13,17 @@ import { Grid } from "../../atoms/grid";
 
 const SubscribeWrapper = styled.div`
   position: absolute;
-  left: 10%;
-  bottom: 85%;
-  // background: var(--semi-bg-color);
-  background: red;
+  left: 7.5%;
+  bottom: 90%;
+  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  background: var(--semi-bg-color);
+  //   background: red;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  height: 16.6rem;
+  width: 85%;
+  height: 15.6rem;
   border-radius: 1.5rem;
-  padding: 3rem;
+  padding: 2.5rem;
 `;
 
 const Subcribe = styled.div`
@@ -43,13 +44,39 @@ const Subcribe = styled.div`
     padding: 1.5rem;
     height: 3.6rem;
     border: none;
+    margin-right: -0.15rem;
+    border-radius: 0.3rem;
+
+    &:focus {
+      border: none;
+    }
+
+    &::placeholder {
+      line-height: 1.3rem;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--placeholder-color);
+    }
+  }
+
+  & button {
+    background: var(--secondary-color);
+    // color: var(--default-color);
+    color: #fff;
+    padding: 0.5rem 2rem;
+    text-transform: capitalize;
+    font-weight: 600;
+
+    &:hover {
+        background: var(--secondary-color);
+    }
   }
 `;
 
 const NewsLetter = () => {
   return (
     <SubscribeWrapper>
-      <Grid columns="repeat(2, 1fr)">
+      <Grid columns="repeat(2, 55% 45%)">
         <Subcribe className="newsLetter">
           <Text
             type="h3"
@@ -65,26 +92,25 @@ const NewsLetter = () => {
           />
           <Flex direction="row" gap="1rem">
             <input type="text" placeholder="Enter your email address" />
-            <Button
-              variant="contained"
-              size="medium"
-              style={{
-                color: "#06062A",
-              }}
-            >
+            <Button variant="contained" size="medium">
               Subscribe
             </Button>
           </Flex>
         </Subcribe>
 
-        <Flex direction="row" gap="1rem">
-          <Image src={Barcode} alt="visa" width="50" height="50" />
-          <Flex direction="column" gap="0.5rem">
-            <Image src={AppLogo} alt="mastercard" width="50" height="50" />
+        <Flex gap="1rem" align="flex-end">
+          <Image src={Barcode} alt="visa" width="110" height="110" style={{marginLeft: '7rem', marginBottom: '1.2rem'}} />
+          <Flex
+            direction="column"
+            gap="0.5rem"
+            align="center"
+            padding="0rem 0rem 1.5rem"
+            width="10rem"
+          >
+            <Image src={AppLogo} alt="mastercard" height="50" />
             <Image
               src={PlayStore}
               alt="american-express"
-              width="50"
               height="50"
             />
           </Flex>

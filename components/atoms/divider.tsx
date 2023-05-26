@@ -7,3 +7,5 @@ export const Divider = styled.div<{ margin?: string }>`
   padding-bottom: 4px;
   margin: ${({ margin }) => margin || "10px 0"};
 `;
+
+
