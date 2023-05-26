@@ -19,7 +19,7 @@ const Card = styled.div`
   padding: 24px 24px 0px;
   //   gap: 100px;
 
-  width: 401px;
+  width: 100%;
   height: 264px;
 
   /* Neutrals */
