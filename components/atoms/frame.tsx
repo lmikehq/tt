@@ -12,7 +12,7 @@ import HotelImg from "@image/serviceCard/hotel.png";
 import TravelImg from "@image/serviceCard/travel.png";
 
 const FrameWrapper = styled.div`
-  margin: 9rem 0;
+  margin: 5rem 0;
 `;
 const ServiceCard = styled.div`
   display: block;

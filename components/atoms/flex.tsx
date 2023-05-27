@@ -27,6 +27,7 @@ interface flexProps {
   wrap?: "wrap" | "nowrap";
   border?: string;
   height?: string;
+  cursor?: string;
   onClick?: () => void;
 }
 
@@ -51,6 +52,7 @@ export const Flex: React.FC<flexProps> = ({
   wrap,
   border,
   alignSelf,
+  cursor,
   onClick,
 }) => {
   return (
@@ -62,6 +64,7 @@ export const Flex: React.FC<flexProps> = ({
         justifyContent: justify,
         alignItems: align,
         gap: gap,
+        cursor,
         flexDirection: direction,
         background: background,
         width: width,

@@ -1,27 +1,19 @@
 "use client";
-import styled from "styled-components";
-import { useState } from "react";
-import NavbarLayout from "@components/layouts/sectionLayout";
 import Flex from "@atom/flex";
 import Link from "@atom/link";
+import NavbarLayout from "@components/layouts/sectionLayout";
+import Logo from "@image/brand/favicon.svg";
+import Image from "next/image";
+import { useState } from "react";
+import { BiDollar } from "react-icons/bi";
+import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
-import { BsGlobe } from "react-icons/bs";
-import { BiDollar } from "react-icons/bi";
-import Image from "next/image";
-import Logo from "@image/brand/favicon.svg";
-import Divider from "@mui/material/Divider";
-import Input from "@atom/input";
+import styled from "styled-components";
 // Modal from material ui
-import * as React from "react";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import Text from "@atom/text";
+import Button from "@atom/button";
+import { Grid } from "@atom/grid";
 // Modal from material ui ends
 
 const NavbarWrapper = styled.div`
@@ -30,7 +22,7 @@ const NavbarWrapper = styled.div`
   height: 5rem;
   background: transparent;
   z-index: 100;
-  padding: 3rem 0;
+  padding: 2rem 0 0;
 
   & button {
     background: var(--secondary-color);
@@ -48,23 +40,6 @@ const NavLink = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1rem;
-  letter-spacing: 0.1rem;
-  text-transform: capitalize;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  padding-top: 1.5rem;
-
-  & a {
-    color: var(--text-color);
-
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
 `;
 const NavLogo = styled.div`
   display: flex;
@@ -75,35 +50,8 @@ const NavMenu = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 1rem;
-
-  & a {
-    color: var(--text-color);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1rem;
-    letter-spacing: 0.1rem;
-    text-transform: capitalize;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
-  & button {
-    padding: 1rem 3rem;
-    margin-left: 1rem;
-    border-radius: 0.8rem;
-
-    &.btnWithIcon {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.3rem;
-    }
-  }
+  gap: 2rem;
+  font-size: 0.9rem;
 `;
 
 // Modal
@@ -120,98 +68,68 @@ const style = {
   p: 4,
 };
 
-
-
-// const Button = styled.input`
-//   margin-top: 20px;
-//   padding: 10px;
-//   color: white;
-//   background-color: #007bff;
-//   border: none;
-//   border-radius: 5px;
-//   cursor: pointer;
-//
-//   &:hover {
-// background-color: #0056b3;
-//   }
-// `;
-// Modal
+const Divider = styled.div`
+  width: 2px;
+  height: 20px;
+  border: 1px solid #000;
+  background: red;
+`;
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <NavbarWrapper>
       <NavbarLayout>
-        <Flex justify="space-between">
+        <Grid columns="1fr 1fr 1fr">
           <NavLink>
-            <Link href="/">
-              <GiPassport /> Book Visa
-            </Link>
-            <Link href="/">
-              <IoAirplaneSharp /> Find Flight
-            </Link>
-            <Link href="/">
-              <IoBedSharp /> Find Stays
-            </Link>
+            {[
+              { name: "Book Visa", icon: <GiPassport /> },
+              { name: "Find Flight", icon: <IoAirplaneSharp /> },
+              { name: "Find Stays", icon: <IoBedSharp /> },
+            ].map((item, index) => (
+              <Flex key={index} align="center" cursor="pointer" gap=".3rem">
+                {item.icon}
+                <Link href="/visa">
+                  <Text text={item.name} type="p" whiteSpace="nowrap" />
+                </Link>
+              </Flex>
+            ))}
           </NavLink>
 
           <NavLogo>
             <Link href="/">
-              <Image src={Logo} height="71" width="71" alt="TTLogo" />
+              <Image src={Logo} height="51" width="51" alt="TTLogo" />
             </Link>
           </NavLogo>
 
           <NavMenu>
-            <Button
-              className="btnWithIcon"
+            <Flex
               onClick={handleOpen}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "var(--secondary-color)",
-              }}
+              background="transparent"
+              gap=".2rem"
+              align="center"
+              justify="space-between"
+              cursor="pointer"
             >
               <BsGlobe />
-              EN
-              <Divider orientation="vertical" flexItem />
+              <Text text="EN" type="span" />
+              <Divider />
               <BiDollar />
-              USD
-            </Button>
-            <Modal
-              aria-labelledby="transition-modal-title"
-              aria-describedby="transition-modal-description"
-              open={open}
-              onClose={handleClose}
-              closeAfterTransition
-              slots={{ backdrop: Backdrop }}
-              slotProps={{
-                backdrop: {
-                  timeout: 500,
-                },
-              }}
-            >
-              <Fade in={open}>
-                <Box sx={style}>
-                 
-                </Box>
-              </Fade>
-            </Modal>
-            <Link href="/">Login</Link>
-            <Button variant="contained" size="small">
-              Sign up
+              <Text text="EN" type="span" />
+            </Flex>
+            <Link href="/">
+              <Text text="Login" type="p" whiteSpace="nowrap" size={16} />
+            </Link>
+            <Button>
+              <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={100} />
             </Button>
           </NavMenu>
-        </Flex>
+        </Grid>
       </NavbarLayout>
     </NavbarWrapper>
   );
 };
 
 export default Navbar;
-
-
-
-
