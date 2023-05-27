@@ -33,6 +33,6 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: var(--bg-color);
+  /* background: var(--bg-color); */
 }
 
