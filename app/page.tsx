@@ -6,10 +6,10 @@ import ReviewSec from "@organism/Review";
 export default function Home() {
   return (
     <main>
-      <Navbar />
+      
       <FrameCard />
       <ReviewSec />
-      <FooterSection />
+      
     </main>
   );
 }

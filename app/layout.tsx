@@ -1,6 +1,9 @@
 import { Siteconfig } from "config/site";
 import "@style/globals.css";
 import StyledComponentsRegistry from "@lib/registry";
+import SectionLayout from "@components/layouts/sectionLayout";
+import Navbar from "@organism/Navbar";
+import FooterSection from "@organism/Footer";
 
 export const generateMetadata = () => {
   return {
@@ -23,7 +26,11 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <Navbar />
+          <SectionLayout>{children}</SectionLayout>
+          <FooterSection />
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

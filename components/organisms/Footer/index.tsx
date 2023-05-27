@@ -1,24 +1,22 @@
 "use client";
 
-import React from "react";
-import styled from "styled-components";
-import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
-import { AiFillInstagram } from "react-icons/ai";
-import Image from "next/image";
-import TTLogo from "@image/brand/tt_blue_logo_with_text.png";
-import FooterLayout from "@components/layouts/sectionLayout";
-import Text from "@atom/text";
-import NewsLetter from "@organism/NewsLetter";
+import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Link from "@atom/link";
-import Flex from "@atom/flex";
-
+import Text from "@atom/text";
+import TTLogo from "@image/brand/tt_blue_logo_with_text.png";
+import NewsLetter from "@organism/NewsLetter";
+import Image from "next/image";
+import { AiFillInstagram } from "react-icons/ai";
+import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
+import styled from "styled-components";
+import Section from "@molecule/section";
 const FooterWrapper = styled.footer`
   width: 100%;
   height: 21rem;
   margin-top: 21rem;
   display: flex;
-  padding: 7rem 0;
+  padding: 5rem 0;
   background-color: var(--primary-color);
   position: relative;
   bottom: 0;
@@ -99,7 +97,7 @@ const FooterSection = () => {
   return (
     <FooterWrapper>
       <NewsLetter />
-      <FooterLayout>
+      <Section width="85%" margin="0 auto">
         <Grid gap="2.5rem" columns="repeat(5, 1fr)">
           <div className="footerLogo">
             <Link href="/">
@@ -152,7 +150,7 @@ const FooterSection = () => {
             </Flex>
           </div>
         </Grid>
-      </FooterLayout>
+      </Section>
     </FooterWrapper>
   );
 };
