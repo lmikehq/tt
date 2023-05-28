@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react";
 import styled from "styled-components";
 import newZealand from "@image/topCountries/newZealand.png";
@@ -100,7 +101,6 @@ const CountryNameTooltip = styled.span`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-//   z-index: 999999999999999999999999999999999999999999999999999999999999999999999;
   color: #fff;
   padding: 5px;
   font-style: normal;
@@ -243,22 +243,15 @@ const TopCountriesSection: React.FC = () => {
                     activeImage === country.id || hoveredImage === country.id
                   }
                 />
-                {/* <ImageOverlay>
-                  <CountryNameTooltip>{country.name}</CountryNameTooltip>
-                </ImageOverlay> */}
-                {/* <CountryNameTooltip>{country.name}</CountryNameTooltip> */}
                 <ImageOverlay
                   style={{
                     opacity: hoveredImage === country.id ? 1 : 0,
                   }}
                 />
-                {activeImage === country || hoveredImage === country.id ? (
+                {activeImage === country.id || hoveredImage === country.id ? (
                   <CountryNameTooltip>{country.name}</CountryNameTooltip>
                 ) : null}
-                {/* {hoveredImage === country.id && (
-                    <CountryNameTooltip>{country.name}</CountryNameTooltip>
-                  )}
-                </ImageOverlay> */}
+                
               </ImageWrapper>
             ))}
           </RightSide>

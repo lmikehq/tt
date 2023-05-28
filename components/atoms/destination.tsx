@@ -161,17 +161,29 @@ const Destination = () => {
                 <Card>
                   <Flex justify="space-between" gap="1rem">
                     <Image src={destination.image} alt="" />
-                    <Flex direction="column" alignSelf="center">
-                      <Text type="h3" text={destination.title} />
-                      <Flex>
+                    {/* <Flex direction="column" alignSelf="center"> */}
+                      {/* <Text type="h3" text={destination.title} /> */}
+                      {/* <Flex>
                         <Text type="p" text={destination.description} />
                         <BsDot />
-                        <Text type="p" text="Employment" />
-                        <BsDot />
-                        <Text type="p" text="Apply" />
+                      </Flex> */}
+                      <Flex direction="column" alignSelf="center">
+                        <Text type="h3" text={destination.title} />
+                        <Flex>
+                          {destination.description
+                            .split(".")
+                            .map((desc, index) => (
+                              <React.Fragment key={index}>
+                                <Text type="p" text={desc.trim()} />
+                                {index !==
+                                  destination.description.split(".").length -
+                                    1 && <BsDot />}
+                              </React.Fragment>
+                            ))}
+                        </Flex>
                       </Flex>
                     </Flex>
-                  </Flex>
+                  {/* </Flex> */}
                 </Card>
               </Link>
             ))}
