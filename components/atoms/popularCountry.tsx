@@ -100,7 +100,7 @@ const CountryNameTooltip = styled.span`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9;
+//   z-index: 999999999999999999999999999999999999999999999999999999999999999999999;
   color: #fff;
   padding: 5px;
   font-style: normal;
@@ -142,15 +142,10 @@ const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  
+  
 `;
 
-// const ActiveImageOverlay = styled(ImageOverlay)`
-//   opacity: 1;
-// `;
-//
-// const ActiveCountryNameTooltip = styled(CountryNameTooltip)`
-//   opacity: 1;
-// `;
 
 const IntervalText = styled.p`
   margin-bottom: 5px;
@@ -240,8 +235,6 @@ const TopCountriesSection: React.FC = () => {
                   setHoveredImage(country.id);
                   setActiveImage(country.id);
                 }}
-                // onMouseLeave={() => setHoveredImage(country.id)}
-                // onClick={() => setActiveImage(country.id)}
               >
                 <StyledImage
                   src={country.image}
@@ -250,9 +243,22 @@ const TopCountriesSection: React.FC = () => {
                     activeImage === country.id || hoveredImage === country.id
                   }
                 />
-                <ImageOverlay>
+                {/* <ImageOverlay>
                   <CountryNameTooltip>{country.name}</CountryNameTooltip>
-                </ImageOverlay>
+                </ImageOverlay> */}
+                {/* <CountryNameTooltip>{country.name}</CountryNameTooltip> */}
+                <ImageOverlay
+                  style={{
+                    opacity: hoveredImage === country.id ? 1 : 0,
+                  }}
+                />
+                {activeImage === country || hoveredImage === country.id ? (
+                  <CountryNameTooltip>{country.name}</CountryNameTooltip>
+                ) : null}
+                {/* {hoveredImage === country.id && (
+                    <CountryNameTooltip>{country.name}</CountryNameTooltip>
+                  )}
+                </ImageOverlay> */}
               </ImageWrapper>
             ))}
           </RightSide>
