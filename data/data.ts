@@ -58,7 +58,7 @@ import de from '@flag/de.svg'
 import dj from '@flag/dj.svg'
 import dk from '@flag/dk.svg'
 import dm from '@flag/dm.svg'
-import do_ from '@flag/do.svg'
+import DO from '@flag/do.svg'
 import dz from '@flag/dz.svg'
 import ec from '@flag/ec.svg'
 import ee from '@flag/ee.svg'
@@ -103,11 +103,11 @@ import id from '@flag/id.svg'
 import ie from '@flag/ie.svg'
 import il from '@flag/il.svg'
 import im from '@flag/im.svg'
-import in_ from '@flag/in.svg'
+import IN from '@flag/in.svg'
 import io from '@flag/io.svg'
 import iq from '@flag/iq.svg'
 import ir from '@flag/ir.svg'
-import is_ from '@flag/is.svg'
+import IS from '@flag/is.svg'
 import it from '@flag/it.svg'
 import je from '@flag/je.svg'
 import jm from '@flag/jm.svg'
@@ -614,7 +614,7 @@ name: 'Afghanistan',
 
     {
         name: 'Dominican Republic',
-        flag: do,
+        flag: DO,
         code: 'DO',
     },
 
@@ -783,7 +783,10 @@ name: 'Afghanistan',
     {
         name: 'Greece',
         flag: gr,
-        code:{
+        code: 'GR',
+    },
+
+    {
         name: 'Spain',
         flag: es,
         code: 'ES',
@@ -1007,7 +1010,7 @@ name: 'Afghanistan',
 
     {
         name: 'India',
-        flag: in,
+        flag: IN,
         code: 'IN',
     },
 
@@ -1031,7 +1034,7 @@ name: 'Afghanistan',
 
     {
         name: 'Iceland',
-        flag: is,
+        flag: IS,
         code: 'IS',
     },
 

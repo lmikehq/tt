@@ -139,7 +139,7 @@ const Destination = () => {
             console.log("Button clicked");
           }}
         />
-        <Link href="/">
+        {/* <Link href="/"> */}
           {/* <Card>
             <Flex justify="space-between" gap="1rem">
               <Image src={Canada} alt="" />
@@ -161,12 +161,7 @@ const Destination = () => {
                 <Card>
                   <Flex justify="space-between" gap="1rem">
                     <Image src={destination.image} alt="" />
-                    {/* <Flex direction="column" alignSelf="center"> */}
-                      {/* <Text type="h3" text={destination.title} /> */}
-                      {/* <Flex>
-                        <Text type="p" text={destination.description} />
-                        <BsDot />
-                      </Flex> */}
+                    
                       <Flex direction="column" alignSelf="center">
                         <Text type="h3" text={destination.title} />
                         <Flex>
@@ -183,12 +178,11 @@ const Destination = () => {
                         </Flex>
                       </Flex>
                     </Flex>
-                  {/* </Flex> */}
                 </Card>
               </Link>
             ))}
           </Grid>
-        </Link>
+    
       </DestinationLayout>
     </DestinationWrapper>
   );
