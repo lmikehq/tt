@@ -6,6 +6,7 @@ interface linkProps {
   text?: string;
   className?: string;
   color?: string;
+  textDecoration?: string;
   decoration?: string;
   style?: React.CSSProperties;
 }

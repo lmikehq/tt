@@ -2,9 +2,7 @@
 
 import styled from "styled-components";
 import { Grid } from "@atom/grid";
-import Text from "@atom/text";
 import ReviewLayout from "@layout/sectionLayout";
-import Flex from "@atom/flex";
 import TitleSec from "./sectionTitle";
 import RatingComponent from "./ReviewStar";
 
@@ -19,7 +17,7 @@ const Card = styled.div`
   padding: 0.7rem;
   //   gap: 100px;
   width: 94%;
-  height: 273px;
+  height: 310px;
 
   /* Neutrals */
 
@@ -42,9 +40,9 @@ const CardDescription = styled.div`
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
-  font-size: 12.3px;
+  font-size: 15.3px;
   padding: 0 .7rem;
-  line-height: 12px;
+  line-height: 20px;
   color: var(--secondary-color);
   margin-bottom: 1rem;
 
@@ -160,25 +158,6 @@ const Review = () => {
             </Card>
           ))}
         </Grid>
-        {/* <Card> */}
-        {/* {reviewCard.map((item) => ( */}
-
-        {/* <Text type="h2" text="“A real sense of community, nurtured”" /> */}
-        {/* <Text */}
-        {/* //   type="p" */}
-        {/* {/* {/* // // //   text="Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed." */}
-        {/* // /> */}
-        {/* <RatingComponent rating={4.5} /> */}
-        {/* <Flex gap="1rem" margin="0 0 1rem 0"> */}
-        {/* <BsStarFill style={{ color: "#FFC107;" }} /> */}
-        {/* <BsStarFill style={{ color: "#FFC107;" }} /> */}
-        {/* <BsStarFill style={{ color: "#FFC107;" }} /> */}
-        {/* <BsStarFill style={{ color: "#FFC107;" }} /> */}
-        {/* <BsStarHalf style={{ color: "#FFC107;" }} /> */}
-        {/* </Flex> */}
-        {/* <Text type="h5" text="John F. Kennedy" /> */}
-        {/* <Text type="p" text="Employment visa - Canada" /> */}
-        {/* </Card> */}
       </ReviewLayout>
     </ReviewWrapper>
   );
