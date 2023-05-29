@@ -85,13 +85,13 @@ const Navbar = () => {
         <Grid columns="1fr 1fr 1fr">
           <NavLink>
             {[
-              { name: "Book Visa", icon: <GiPassport /> },
-              { name: "Find Flight", icon: <IoAirplaneSharp /> },
-              { name: "Find Stays", icon: <IoBedSharp /> },
+              { name: "Book Visa", url: 'visa', icon: <GiPassport /> },
+              { name: "Find Flight", url: 'flight', icon: <IoAirplaneSharp /> },
+              { name: "Find Stays", url: 'stay', icon: <IoBedSharp /> },
             ].map((item, index) => (
               <Flex key={index} align="center" cursor="pointer" gap=".3rem">
                 {item.icon}
-                <Link href="/visa">
+                <Link href={`/${item.url}`}>
                   <Text text={item.name} type="p" whiteSpace="nowrap" />
                 </Link>
               </Flex>

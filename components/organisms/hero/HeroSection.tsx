@@ -8,10 +8,10 @@ import { styled } from "styled-components";
 import bgImage from "../../../assets/images/herobg-map.png";
 const HeroWrapper = styled.div`
   width: 100vw;
-  height: 70vh;
+  // height: 70vh;
   background: var(--bg-color);
-  max-height: 750px;
-  min-height: 500px;
+  // max-height: 750px;
+  height: 800px;
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
