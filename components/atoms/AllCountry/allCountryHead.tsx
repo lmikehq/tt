@@ -30,7 +30,7 @@ const AllCountryHeader = styled.div`
 
   & h1 {
     position: absolute;
-    top: 38%;
+    top: 45%;
     text-transform: uppercase;
     left: 50%;
     transform: translate(-50%, -50%);

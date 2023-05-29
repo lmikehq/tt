@@ -14,7 +14,8 @@ const RatingComponent: React.FC<{ rating: number }> = ({ rating }) => {
       ratingIcons.push(
         <BsStarFill
           key={`full-star-${i}`}
-          style={{ color: "#FFC107", marginBottom: "1rem",marginLeft: ".7rem", marginRight: "1rem" }}
+          size={20}
+          style={{ color: "#FFC107", marginBottom: "1rem",marginLeft: ".7rem", marginRight: ".1rem" }}
         />
       );
     }
@@ -22,7 +23,8 @@ const RatingComponent: React.FC<{ rating: number }> = ({ rating }) => {
       ratingIcons.push(
         <BsStarHalf
           key="half-star"
-          style={{ color: "#FFC107", marginBottom: "1rem",marginLeft: ".7rem", marginRight: "1rem" }}
+          size={20}
+          style={{ color: "#FFC107", marginBottom: "1rem",marginLeft: ".7rem", marginRight: ".1rem" }}
         />
       );
     }
@@ -31,7 +33,8 @@ const RatingComponent: React.FC<{ rating: number }> = ({ rating }) => {
       ratingIcons.push(
         <FaRegStar
           key={`empty-star-${i}`}
-          style={{ color: "#FFC107", marginBottom: "1rem",marginLeft: ".7rem", marginRight: "1rem" }}
+          size={20}
+          style={{ color: "#FFC107", marginBottom: "1rem",marginLeft: ".7rem", marginRight: ".1rem" }}
         />
       );
     }

@@ -17,7 +17,7 @@ const Card = styled.div`
   padding: 0.7rem;
   //   gap: 100px;
   width: 94%;
-  height: 273px;
+  height: 310px;
 
   /* Neutrals */
 
@@ -40,9 +40,9 @@ const CardDescription = styled.div`
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 500;
-  font-size: 12.3px;
+  font-size: 15.3px;
   padding: 0 .7rem;
-  line-height: 12px;
+  line-height: 20px;
   color: var(--secondary-color);
   margin-bottom: 1rem;
 

@@ -69,51 +69,6 @@ const CountriesList = () => {
   const [displayedCountries, setDisplayedCountries] = useState(
     COUNTRY_FLAGS.slice(0, countriesPerPage)
   );
-// 
-//   const toggleShowAll = () => {
-//     setShowAll(!showAll);
-//     if (showAll) {
-//       setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
-//     } else {
-//       setDisplayedCountries(COUNTRY_FLAGS);
-//     }
-//   };
-
-//   const handleSeeMore = () => {
-//     const remainingCountries = COUNTRY_FLAGS.slice(
-//       displayedCountries.length,
-//       displayedCountries.length + countriesPerPage
-//     );
-//     if (remainingCountries.length > 0) {
-//       setDisplayedCountries([...displayedCountries, ...remainingCountries]);
-//     } else {
-//       toggleShowAll();
-//     }
-//   };
-
-// const handleSeeMore = (event) => {
-//   event.preventDefault();
-// 
-//   if (showAll) {
-//     setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
-//     setShowAll(false);
-//   } else {
-//     const remainingCountries = COUNTRY_FLAGS.slice(
-//       displayedCountries.length,
-//       displayedCountries.length + 25
-//     );
-// 
-//     if (remainingCountries.length > 0) {
-//       setDisplayedCountries((prevCountries) => [
-//         ...prevCountries,
-//         ...remainingCountries,
-//       ]);
-//     } else {
-//       setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
-//       setShowAll(false);
-//     }
-//   }
-// };
 
 const handleSeeMore = (event) => {
   event.preventDefault();
