@@ -1,3 +1,4 @@
+import { ButtonBase } from "@mui/material";
 import React, { CSSProperties } from "react";
 import styled from "styled-components";
 
@@ -19,22 +20,11 @@ interface buttonProps {
 }
 
 const ButtonWrapper = styled.button`
-  width: 50%;
-  padding: 1rem 2rem;
-  background: var(--secondary-color);
-  color: var(--default-color);
-  border: none;
-  border-radius: 0.3rem;
-  font-weight: 600;
-  font-size: 1rem;
-  z-index: 1;
-  margin: 0 auto;
-  display: block;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-
   &:hover {
-    background: var(--secondary-color);
+  }
+  &:active {
+    transform: scale(0.98);
+    border: 1px solid #06062a;
   }
 `;
 
@@ -55,25 +45,28 @@ export const Button: React.FC<buttonProps> = ({
   styles,
 }) => {
   return (
-    <ButtonWrapper
-      style={{
-        padding: padding,
-        color: color,
-        background: background,
-        fontWeight: fontWeight,
-        fontSize: fontSize,
-        width: width,
-        height: height,
-        borderRadius: borderRadius,
-        zIndex: zIndex,
-        border: border,
-        margin: margin,
-        ...styles,
-      }}
-      onClick={onClick}
-    >
-      {children}
-    </ButtonWrapper>
+    <ButtonBase
+    
+        style={{
+          padding: padding,
+          color: color || "#FFFFFF",
+          background: background || "#06062A",
+          fontWeight: fontWeight,
+          fontSize: fontSize,
+          width: width || "104px",
+          height: height || "48px",
+          borderRadius: borderRadius || "8px",
+          cursor: "pointer",
+          zIndex: zIndex,
+          border: border,
+          margin: margin,
+          ...styles,
+        }}
+        onClick={onClick}
+      >
+        {children}
+      {/* </ButtonWrapper> */}
+    </ButtonBase>
   );
 };
 

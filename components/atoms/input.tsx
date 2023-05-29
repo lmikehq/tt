@@ -1,4 +1,6 @@
-import { CSSProperties } from "react";
+import { Autocomplete, TextField as MUITextField } from "@mui/material";
+import { isoLangs } from "data/isoLangs";
+import { CSSProperties, useState } from "react";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -15,18 +17,19 @@ const StyledInput = styled.input`
   }
 `;
 
-interface InputProps {
+export interface InputProps {
   onChange?: () => void;
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: () => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
-  type: "text" | "number" | "file";
-  value: string;
-  name: string;
+  type?: "text" | "number" | "file";
+  value?: string;
+  name?: string;
   id?: string;
   readOnly?: boolean;
+  legend?: string;
 }
 
 const Input = ({
@@ -58,6 +61,66 @@ const Input = ({
         margin,
         padding,
       }}
+    />
+  );
+};
+
+export const TextField = ({
+  onChange,
+  onPaste,
+  placeholder,
+  value,
+  onBlur,
+  margin,
+  id,
+  name,
+  readOnly,
+  padding,
+  legend,
+}: InputProps) => {
+  return (
+    <MUITextField
+      required
+      onBlur={onBlur}
+      placeholder={placeholder}
+      onPaste={onPaste}
+      value={value}
+      onChange={onChange}
+      label={legend}
+      id={id}
+      name={name}
+      disabled={readOnly}
+      style={{
+        margin,
+        padding,
+      }}
+      // id="outlined-required"
+      // label="not requreid"
+      // defaultValue="Hello World"
+    />
+  );
+};
+
+export const AutoComplete = ({
+  onChange,
+  onPaste,
+  placeholder,
+  value,
+  onBlur,
+  margin,
+  id,
+  name,
+  readOnly,
+  padding,
+  legend,
+}: InputProps) => {
+  const [inputValue, setInputValue] = useState("");
+  return (
+    <Autocomplete
+      id="combo-box-demo"
+      options={isoLangs.map((option) => option.label)}
+      sx={{ width: 300 }}
+      renderInput={(params) => <MUITextField {...params} label="Movie" />}
     />
   );
 };

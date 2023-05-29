@@ -17,7 +17,7 @@ const SubscribeWrapper = styled.div`
   bottom: 90%;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   background: var(--semi-bg-color);
-  //   background: red;
+  z-index: -1;
   justify-content: center;
   align-items: center;
   width: 85%;
