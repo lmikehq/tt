@@ -11,8 +11,6 @@ import CountryLayout from "@layout/sectionLayout";
 import AllCountryHead from "./allCountryHead";
 import Button from "@mui/material/Button";
 
-
-
 const CountryWrapper = styled.section`
   margin: 5rem 0;
 `;
@@ -47,7 +45,6 @@ const Card = styled.div`
     font-size: 16px;
     line-height: 20px;
     opacity: 0.7;
-    margin-bottom: 0.5rem;
   }
 `;
 
@@ -64,43 +61,41 @@ const ShowMoreButton = styled.button`
 
 const CountriesList = () => {
   const [showAll, setShowAll] = useState(false);
-  
+
   const countriesPerPage = 50;
   const [displayedCountries, setDisplayedCountries] = useState(
     COUNTRY_FLAGS.slice(0, countriesPerPage)
   );
 
-const handleSeeMore = (event) => {
-  event.preventDefault();
+  const handleSeeMore = (event) => {
+    event.preventDefault();
 
-  if (showAll) {
-    setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
-    setShowAll(false);
-  } else {
-    const remainingCountries = COUNTRY_FLAGS.slice(
-      displayedCountries.length,
-      displayedCountries.length + 25
-    );
+    if (showAll) {
+      setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
+      setShowAll(false);
+    } else {
+      const remainingCountries = COUNTRY_FLAGS.slice(
+        displayedCountries.length,
+        displayedCountries.length + 25
+      );
 
-    if (remainingCountries.length > 0) {
-      setDisplayedCountries((prevCountries) => [
-        ...prevCountries,
-        ...remainingCountries,
-      ]);
-      if (
-        displayedCountries.length + remainingCountries.length ===
-        COUNTRY_FLAGS.length
-      ) {
+      if (remainingCountries.length > 0) {
+        setDisplayedCountries((prevCountries) => [
+          ...prevCountries,
+          ...remainingCountries,
+        ]);
+        if (
+          displayedCountries.length + remainingCountries.length ===
+          COUNTRY_FLAGS.length
+        ) {
+          setShowAll(true);
+        }
+      } else {
+        setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
         setShowAll(true);
       }
-    } else {
-      setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
-      setShowAll(true);
     }
-  }
-};
-
-
+  };
 
   return (
     <CountryWrapper>
