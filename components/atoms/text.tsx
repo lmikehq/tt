@@ -9,7 +9,16 @@ interface TextProps {
   weight?: CSSProperties["fontWeight"];
   className?: string;
   styles?: CSSProperties;
+  margin?: CSSProperties["margin"];
+  padding?: CSSProperties["padding"];
   hoverColor?: string;
+  transform?:
+    | "none"
+    | "full-width"
+    | "capitalize"
+    | "full-size-kana"
+    | "lowercase"
+    | "uppercase";
   whiteSpace?: CSSProperties["whiteSpace"];
 }
 
@@ -20,6 +29,9 @@ export const Text: React.FC<TextProps> = ({
   size,
   weight,
   whiteSpace,
+  transform = "none",
+  margin,
+  padding,
   styles = {},
 }) => {
   const updatedStyles: CSSProperties = {
@@ -29,6 +41,9 @@ export const Text: React.FC<TextProps> = ({
     fontWeight: weight,
     whiteSpace,
     fontFamily: "var(--font-family)",
+    textTransform: transform,
+    margin,
+    padding,
   };
 
   if (type === "p") return <p style={updatedStyles}>{text}</p>;

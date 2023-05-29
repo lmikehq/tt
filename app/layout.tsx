@@ -1,6 +1,17 @@
-import { Siteconfig } from "config/site";
-import "@style/globals.css";
+import SectionLayout from "@components/layouts/sectionLayout";
 import StyledComponentsRegistry from "@lib/registry";
+import FooterSection from "@organism/Footer";
+import HeroSection from "@organism/hero/HeroSection";
+import "@style/globals.css";
+import { Siteconfig } from "config/site";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  weight: "100",
+  style: ["normal"],
+  display: "swap",
+  subsets: ["latin-ext"],
+});
 
 export const generateMetadata = () => {
   return {
@@ -18,12 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={poppins.className}>
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <HeroSection />
+          <SectionLayout>{children}</SectionLayout>
+          <FooterSection />
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
