@@ -100,7 +100,7 @@ const Navbar = () => {
 
           <NavLogo>
             <Link href="/">
-              <Image src={Logo} height="51" width="51" alt="TTLogo" />
+              <Image src={Logo} height="45" width="45" alt="TTLogo" />
             </Link>
           </NavLogo>
 
