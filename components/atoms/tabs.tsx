@@ -1,3 +1,5 @@
+"use client";
+
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -60,34 +62,17 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
           value={value}
           onChange={handleChange}
           aria-label="select your service"
-          sx={{
-            display: "grid",
-            "& .MuiTabs-flexContainer": {
-              gap: "2rem",
-            },
-          }}
         >
-          {tabItems.map((tabItem) => (
+          {tabItems.map((tabItem, index) => (
             <Tab
+              key={index}
               label={
-                <Flex align="center" gap=".5rem">
-                  {icons[tabItem.value]}
-                  <Text
-                    type="p"
-                    text={tabItem.label}
-                    size={"1rem"}
-                    weight={600}
-                    // color="var(--secondary-color)"
-                  />
+                <Flex align="center">
+                  {icons[index]}
+                  <Text type="p" text={tabItem.label} />
                 </Flex>
               }
-              sx={{
-                "&.MuiTab-textColorPrimary.Mui-selected": {
-                  //   borderBottom: "2px solid red",
-                  color: "var(--secondary-color)",
-                },
-              }}
-              {...a11yProps(tabItem.value)}
+              {...a11yProps(index)}
             />
           ))}
         </Tabs>

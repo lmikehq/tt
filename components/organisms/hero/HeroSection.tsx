@@ -25,17 +25,12 @@ function HeroSection() {
       <Center>
         <div>
           <section style={{ textAlign: "center" }}>
-            <Text
-              type="p"
-              text="With you, we can"
-              // transform="capitalize"
-              size={"1.1rem"}
-            />
+            <Text type="p" text="With you, we can" size={"1.2rem"} />
             <Text
               type="p"
               text="revolutionize travel "
               transform="uppercase"
-              size={"3.5rem"}
+              size={"3.8rem"}
               weight={900}
               margin={"1rem 0"}
             />
@@ -43,7 +38,7 @@ function HeroSection() {
               type="p"
               text="experiences"
               transform="uppercase"
-              size={"3.5rem"}
+              size={"3.8rem"}
               weight={900}
             />
           </section>
