@@ -108,9 +108,9 @@ const Navbar = () => {
             <Flex
               onClick={handleOpen}
               background="transparent"
-              gap=".2rem"
+              gap=".4rem"
               align="center"
-              justify="space-between"
+              // justify="space-between"
               cursor="pointer"
             >
               <BsGlobe />

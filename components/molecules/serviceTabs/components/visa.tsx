@@ -33,9 +33,9 @@ function Visa() {
   return (
     <Section>
       <Grid
-        gap="2rem"
+        gap="1rem"
         justify="space-between"
-        columns="1fr 1.5fr 2fr"
+        columns="1fr 1fr 1.5fr"
         margin="4rem 0 0"
       >
         <SearchInput
@@ -51,7 +51,12 @@ function Visa() {
           setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
-            <Text type="p" text={`${home?.name} - ${home?.code}`} />
+            <Text
+              type="p"
+              text={`${home?.name} - ${home?.code}`}
+              color="#1C1B1F"
+              weight={100}
+            />
           </Flex>
         </SearchInput>
         <SearchInput
@@ -59,7 +64,7 @@ function Visa() {
             name: x.name,
             flag: x.flag,
             code: x.code,
-          }))}
+          })).filter((x) => x.code !== home.code)}
           legend="Destination"
           value={destination}
           onChange={(value: LabelType) => setDestination(value)}
@@ -70,19 +75,21 @@ function Visa() {
             <Text
               type="p"
               text={`${destination?.name} - ${destination?.code}`}
+              color="#1C1B1F"
+              weight={100}
             />
           </Flex>
         </SearchInput>
         <SearchInputAsString
-          options={['Employment', 'Study', 'Tourism', 'Business', 'Transit']}
-          legend="Home Country"
+          options={["Employment", "Study", "Tourism", "Business", "Transit"]}
+          legend="Visa Type"
           value={type}
           onChange={(value: string) => setType(value)}
           anchorEl={anchorEl}
           setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
-            <Text type="p" text={`${type}`} />
+            <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />
           </Flex>
         </SearchInputAsString>
       </Grid>

@@ -32,7 +32,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   [`& .${autocompleteClasses.listbox}`]: {
     backgroundColor: "#fff",
     padding: 0,
-    height:'320px',
+    height: "320px",
     [`& .${autocompleteClasses.option}`]: {
       minHeight: "auto",
       alignItems: "flex-start",
@@ -42,10 +42,6 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
         backgroundColor: "transparent",
       },
     },
-    // ["&.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1"]:
-    //   {
-    //     height: '100px!important',
-    //   },
   },
   [`&.${autocompleteClasses.popperDisablePortal}`]: {
     position: "relative",
@@ -127,6 +123,7 @@ SearchProps) {
           sx={{
             width: "100%",
             fontSize: 16,
+            color: "#1C1B1F",
             "& .MuiInputAdornment-root.MuiInputAdornment-positionStart.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-ittuaa-MuiInputAdornment-root":
               {
                 position: "absolute",
@@ -137,6 +134,10 @@ SearchProps) {
               },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
+            },
+            "& label": {
+              color: "#1C1B1F!important",
+              fontSize: '16px!important',
             },
           }}
           onClick={handleClick}
@@ -274,6 +275,10 @@ export function SearchInputAsString({
               },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
+            },
+            "& label": {
+              color: "#1C1B1F!important",
+              fontSize: "16px!important",
             },
           }}
           onClick={handleClick}
