@@ -1,11 +1,16 @@
 import Button from "@atom/button";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
-import SearchInput from "@atom/searchInput";
+import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useState } from "react";
+export interface CountryType {
+  name: string;
+  flag: string;
+  code: string;
+}
 export interface LabelType {
   name: string;
   flag: string;
@@ -13,11 +18,18 @@ export interface LabelType {
 }
 
 function Visa() {
-  const [value, setValue] = useState<LabelType>({
+  const [home, setHome] = useState<CountryType>({
     name: "Nigerian",
     flag: "🇳🇬",
     code: "NG",
   });
+  const [destination, setDestination] = useState<CountryType>({
+    name: "Canada",
+    flag: "🇨🇦",
+    code: "CA",
+  });
+  const [type, setType] = useState<string>('Employment');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   return (
     <Section>
       <Grid
@@ -33,11 +45,13 @@ function Visa() {
             code: x.code,
           }))}
           legend="Home Country"
-          value={value}
-          onChange={(value: LabelType) => setValue(value)}
+          value={home}
+          onChange={(x: CountryType) => setHome(x)}
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
-            <Text type="p" text={`${value?.name} - ${value?.code}`} />
+            <Text type="p" text={`${home?.name} - ${home?.code}`} />
           </Flex>
         </SearchInput>
         <SearchInput
@@ -46,31 +60,34 @@ function Visa() {
             flag: x.flag,
             code: x.code,
           }))}
-          legend="Home Country"
-          value={value}
-          onChange={(value: LabelType) => setValue(value)}
+          legend="Destination"
+          value={destination}
+          onChange={(value: LabelType) => setDestination(value)}
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
-            <Text type="p" text={`${value?.name} - ${value?.code}`} />
+            <Text
+              type="p"
+              text={`${destination?.name} - ${destination?.code}`}
+            />
           </Flex>
         </SearchInput>
-        <SearchInput
-          options={COUNTRY_FLAGS.map((x) => ({
-            name: x.name,
-            flag: x.flag,
-            code: x.code,
-          }))}
+        <SearchInputAsString
+          options={['Employment', 'Study', 'Tourism', 'Business', 'Transit']}
           legend="Home Country"
-          value={value}
-          onChange={(value: LabelType) => setValue(value)}
+          value={type}
+          onChange={(value: string) => setType(value)}
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
-            <Text type="p" text={`${value?.name} - ${value?.code}`} />
+            <Text type="p" text={`${type}`} />
           </Flex>
-        </SearchInput>
+        </SearchInputAsString>
       </Grid>
       <Flex justify="flex-end" margin="2rem 0 0">
-        <Button width="240px" borderRadius='4px'>
+        <Button width="240px" borderRadius="4px">
           <Text text="Get Started" type="p" whiteSpace="nowrap" weight={500} />
         </Button>
       </Flex>

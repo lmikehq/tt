@@ -32,6 +32,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   [`& .${autocompleteClasses.listbox}`]: {
     backgroundColor: "#fff",
     padding: 0,
+    height:'320px',
     [`& .${autocompleteClasses.option}`]: {
       minHeight: "auto",
       alignItems: "flex-start",
@@ -41,6 +42,10 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
         backgroundColor: "transparent",
       },
     },
+    // ["&.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1"]:
+    //   {
+    //     height: '100px!important',
+    //   },
   },
   [`&.${autocompleteClasses.popperDisablePortal}`]: {
     position: "relative",
@@ -77,8 +82,10 @@ interface SearchProps {
   legend?: string;
   children?: React.ReactNode;
   placeholder?: string;
-  options: LabelType[];
-  value?: LabelType;
+  options: any[];
+  value?: any;
+  anchorEl: any;
+  setAnchorEl: (x: any) => void;
   onChange: (x: any) => void;
 }
 
@@ -88,13 +95,17 @@ export default function SearchInput({
   legend,
   value,
   onChange,
-}: SearchProps) {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+}: // anchorEl,
+// setAnchorEl,
+SearchProps) {
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const ref = useRef<HTMLDivElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const getWidth = (): number => {
     if (ref.current) {
       const width = ref.current.clientWidth;
@@ -173,7 +184,11 @@ export default function SearchInput({
                 ) {
                   return;
                 }
-                if (newValue !== null) onChange(newValue);
+                if (newValue !== null) {
+                  onChange(newValue);
+                  console.log("double it and give to next function");
+                  // open next tab
+                }
                 handleClose();
               }}
               disableCloseOnSelect
@@ -184,7 +199,11 @@ export default function SearchInput({
                 <li {...props}>
                   <Flex align="center" margin=".4rem .6rem" gap=".6rem">
                     <Image src={option.flag} width={16} height={16} alt="" />
-                    <Text type="p" text={`${option.name} - ${option.code}`} />
+                    <Text
+                      type="p"
+                      text={`${option.name} - ${option.code}`}
+                      weight={100}
+                    />
                   </Flex>
                   <br />
                 </li>
@@ -193,6 +212,139 @@ export default function SearchInput({
                 x.name.toLowerCase().includes(inputValue.toLowerCase())
               )}
               getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <StyledInput
+                  ref={params.InputProps.ref}
+                  inputProps={params.inputProps}
+                  placeholder=""
+                  autoFocus
+                  onChange={(e) => setInputValue(e.target.value)}
+                />
+              )}
+            />
+          </div>
+        </ClickAwayListener>
+      </StyledPopper>
+    </>
+  );
+}
+export function SearchInputAsString({
+  children,
+  options,
+  legend,
+  value,
+  onChange,
+}: SearchProps) {
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [inputValue, setInputValue] = useState("");
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const ref = useRef<HTMLDivElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const getWidth = (): number => {
+    if (ref.current) {
+      const width = ref.current.clientWidth;
+      return width;
+    }
+    return 0;
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "select-service" : undefined;
+  useEffect(() => {}, [inputValue]);
+  return (
+    <>
+      <Box ref={ref}>
+        <TextField
+          sx={{
+            width: "100%",
+            fontSize: 16,
+            "& .MuiInputAdornment-root.MuiInputAdornment-positionStart.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-ittuaa-MuiInputAdornment-root":
+              {
+                position: "absolute",
+                top: "50%",
+                display: "flex",
+                justifyContent: "center",
+                width: "86%",
+              },
+            "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
+              display: "block!important",
+            },
+          }}
+          onClick={handleClick}
+          label={legend}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Box sx={{ width: "100%" }}>{children}</Box>
+                <IoIosArrowDown size={20} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+      <StyledPopper
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        sx={{
+          width: getWidth(),
+        }}
+      >
+        <ClickAwayListener onClickAway={handleClose}>
+          <div>
+            <Autocomplete
+              open
+              onClose={(
+                _event: React.ChangeEvent<{}>,
+                reason: AutocompleteCloseReason
+              ) => {
+                if (reason === "escape") {
+                  handleClose();
+                }
+              }}
+              value={value}
+              onChange={(event, newValue, reason) => {
+                if (reason === "clear") {
+                  return;
+                }
+                if (
+                  event.type === "keydown" &&
+                  (event as React.KeyboardEvent).key === "Backspace" &&
+                  reason === "removeOption"
+                ) {
+                  return;
+                }
+                if (newValue !== null) {
+                  onChange(newValue);
+                  console.log("double it and give to next function");
+                  // open next tab
+                }
+                handleClose();
+              }}
+              disableCloseOnSelect
+              PopperComponent={PopperComponent}
+              renderTags={() => null}
+              noOptionsText="No matches found"
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Flex align="center" margin=".4rem .6rem" gap=".6rem">
+                    {/* <Image src={option.flag} width={16} height={16} alt="" /> */}
+                    <Text type="p" text={`${option}`} weight={100} />
+                  </Flex>
+                  <br />
+                </li>
+              )}
+              options={[...options].filter((x) =>
+                x.toLowerCase().includes(inputValue.toLowerCase())
+              )}
+              getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <StyledInput
                   ref={params.InputProps.ref}
