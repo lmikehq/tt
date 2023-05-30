@@ -91,8 +91,8 @@ const Navbar = () => {
             ].map((item, index) => (
               <Flex key={index} align="center" cursor="pointer" gap=".3rem">
                 {item.icon}
-                <Link href={`/${item.url}`}>
-                  <Text text={item.name} type="p" whiteSpace="nowrap" />
+                <Link href={`/${item.url}`}> 
+                  <Text text={item.name} type="p" whiteSpace="nowrap" weight={400} />
                 </Link>
               </Flex>
             ))}
@@ -108,22 +108,22 @@ const Navbar = () => {
             <Flex
               onClick={handleOpen}
               background="transparent"
-              gap=".2rem"
+              gap=".4rem"
               align="center"
-              justify="space-between"
+              // justify="space-between"
               cursor="pointer"
             >
               <BsGlobe />
-              <Text text="EN" type="span" />
+              <Text text="EN" type="span"  weight={400} />
               <Divider />
               <BiDollar />
-              <Text text="EN" type="span" />
+              <Text text="EN" type="span"  weight={400}/>
             </Flex>
             <Link href="/">
-              <Text text="Login" type="p" whiteSpace="nowrap" size={16} />
+              <Text text="Login" type="p" whiteSpace="nowrap" size={16} weight={400} />
             </Link>
             <Button>
-              <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={100} />
+              <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={400} />
             </Button>
           </NavMenu>
         </Grid>

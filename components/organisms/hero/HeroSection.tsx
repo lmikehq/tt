@@ -30,7 +30,7 @@ function HeroSection() {
               type="p"
               text="revolutionize travel "
               transform="uppercase"
-              size={"3.8rem"}
+              size={"3.5rem"}
               weight={900}
               margin={"1rem 0"}
             />
@@ -38,7 +38,7 @@ function HeroSection() {
               type="p"
               text="experiences"
               transform="uppercase"
-              size={"3.8rem"}
+              size={"3.5rem"}
               weight={900}
             />
           </section>

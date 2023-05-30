@@ -1,5 +1,3 @@
-"use client";
-
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -27,7 +25,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box >
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -62,17 +60,34 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
           value={value}
           onChange={handleChange}
           aria-label="select your service"
+          sx={{
+            display: "grid",
+            "& .MuiTabs-flexContainer": {
+              gap: "2rem",
+            },
+          }}
         >
-          {tabItems.map((tabItem, index) => (
+          {tabItems.map((tabItem) => (
             <Tab
-              key={index}
               label={
-                <Flex align="center">
-                  {icons[index]}
-                  <Text type="p" text={tabItem.label} />
+                <Flex align="center" gap=".5rem">
+                  {icons[tabItem.value]}
+                  <Text
+                    type="p"
+                    text={tabItem.label}
+                    size={"1rem"}
+                    weight={600}
+                    // color="var(--secondary-color)"
+                  />
                 </Flex>
               }
-              {...a11yProps(index)}
+              sx={{
+                "&.MuiTab-textColorPrimary.Mui-selected": {
+                  //   borderBottom: "2px solid red",
+                  color: "var(--secondary-color)",
+                },
+              }}
+              {...a11yProps(tabItem.value)}
             />
           ))}
         </Tabs>
