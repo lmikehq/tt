@@ -124,7 +124,7 @@ const CountriesList = () => {
               </div>
             ))}
             {COUNTRY_FLAGS.length > countriesPerPage && (
-              <Button variant="outlined" onClick={handleSeeMore}>
+              <Button size="medium" variant="outlined" onClick={handleSeeMore}>
                 {showAll ? "See Less" : "See More"}
               </Button>
             )}
