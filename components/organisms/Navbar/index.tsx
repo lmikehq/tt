@@ -85,14 +85,14 @@ const Navbar = () => {
         <Grid columns="1fr 1fr 1fr">
           <NavLink>
             {[
-              { name: "Book Visa", icon: <GiPassport /> },
-              { name: "Find Flight", icon: <IoAirplaneSharp /> },
-              { name: "Find Stays", icon: <IoBedSharp /> },
+              { name: "Book Visa", url: 'visa', icon: <GiPassport /> },
+              { name: "Find Flight", url: 'flight', icon: <IoAirplaneSharp /> },
+              { name: "Find Stays", url: 'stay', icon: <IoBedSharp /> },
             ].map((item, index) => (
               <Flex key={index} align="center" cursor="pointer" gap=".3rem">
                 {item.icon}
-                <Link href="/visa">
-                  <Text text={item.name} type="p" whiteSpace="nowrap" />
+                <Link href={`/${item.url}`}> 
+                  <Text text={item.name} type="p" whiteSpace="nowrap" weight={400} />
                 </Link>
               </Flex>
             ))}
@@ -108,22 +108,22 @@ const Navbar = () => {
             <Flex
               onClick={handleOpen}
               background="transparent"
-              gap=".2rem"
+              gap=".4rem"
               align="center"
-              justify="space-between"
+              // justify="space-between"
               cursor="pointer"
             >
               <BsGlobe />
-              <Text text="EN" type="span" />
+              <Text text="EN" type="span"  weight={400} />
               <Divider />
               <BiDollar />
-              <Text text="EN" type="span" />
+              <Text text="EN" type="span"  weight={400}/>
             </Flex>
             <Link href="/">
-              <Text text="Login" type="p" whiteSpace="nowrap" size={16} />
+              <Text text="Login" type="p" whiteSpace="nowrap" size={16} weight={400} />
             </Link>
             <Button>
-              <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={100} />
+              <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={400} />
             </Button>
           </NavMenu>
         </Grid>

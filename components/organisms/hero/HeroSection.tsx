@@ -8,10 +8,10 @@ import { styled } from "styled-components";
 import bgImage from "../../../assets/images/herobg-map.png";
 const HeroWrapper = styled.div`
   width: 100vw;
-  height: 70vh;
+  // height: 70vh;
   background: var(--bg-color);
-  max-height: 750px;
-  min-height: 500px;
+  // max-height: 750px;
+  height: 800px;
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
@@ -30,7 +30,7 @@ function HeroSection() {
               type="p"
               text="revolutionize travel "
               transform="uppercase"
-              size={"3.8rem"}
+              size={"3.5rem"}
               weight={900}
               margin={"1rem 0"}
             />
@@ -38,7 +38,7 @@ function HeroSection() {
               type="p"
               text="experiences"
               transform="uppercase"
-              size={"3.8rem"}
+              size={"3.5rem"}
               weight={900}
             />
           </section>

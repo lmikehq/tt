@@ -67,8 +67,8 @@ const CountriesList = () => {
     COUNTRY_FLAGS.slice(0, countriesPerPage)
   );
 
-  const handleSeeMore = (e) => {
-    e.preventDefault();
+const handleSeeMore = (event: { preventDefault: () => void; }) => {
+  event.preventDefault();
 
     if (showAll) {
       setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
