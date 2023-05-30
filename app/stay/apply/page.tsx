@@ -4,7 +4,7 @@ interface pageProps {
 
 }
 
-export const StayApplicationPage: React.FC<pageProps> = ({}) => {
+const StayApplicationPage: React.FC<pageProps> = ({}) => {
         return (
             <div>apply to blah blah</div>
         );

@@ -4,7 +4,7 @@ interface pageProps {
 
 }
 
-export const FlightApplicationPage: React.FC<pageProps> = ({}) => {
+const FlightApplicationPage: React.FC<pageProps> = ({}) => {
         return (
             <div>apply to blah blah</div>
         );

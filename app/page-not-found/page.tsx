@@ -4,7 +4,7 @@ interface notfoundProps {
 
 }
 
-export const NotFoundPage: React.FC<notfoundProps> = ({}) => {
+const NotFoundPage: React.FC<notfoundProps> = ({}) => {
         return (
             <div>
                 page not fo9und
