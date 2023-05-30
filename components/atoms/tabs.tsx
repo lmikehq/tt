@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -25,7 +27,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box >
+        <Box>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -69,6 +71,7 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
         >
           {tabItems.map((tabItem) => (
             <Tab
+              key={tabItem.value}
               label={
                 <Flex align="center" gap=".5rem">
                   {icons[tabItem.value]}
@@ -93,7 +96,7 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (
-        <TabPanel value={value} index={tabItem.value}>
+        <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>
       ))}

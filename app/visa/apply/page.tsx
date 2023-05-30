@@ -4,7 +4,7 @@ interface pageProps {
 
 }
 
-export const VisaApplicationPage: React.FC<pageProps> = ({}) => {
+const VisaApplicationPage: React.FC<pageProps> = ({}) => {
         return (
             <div>apply to blah blah</div>
         );

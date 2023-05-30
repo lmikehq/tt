@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+
 import CustomTab from "@atom/tabs";
 import { SERVICES } from "data/services";
 import React from "react";

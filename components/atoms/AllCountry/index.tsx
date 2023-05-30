@@ -70,7 +70,7 @@ const CountriesList = () => {
     COUNTRY_FLAGS.slice(0, countriesPerPage)
   );
 
-const handleSeeMore = (event) => {
+const handleSeeMore = (event: { preventDefault: () => void; }) => {
   event.preventDefault();
 
   if (showAll) {

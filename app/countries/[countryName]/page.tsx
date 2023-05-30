@@ -4,7 +4,7 @@ interface pageProps {
 
 }
 
-export const CountryPage: React.FC<pageProps> = ({}) => {
+const CountryPage: React.FC<pageProps> = ({}) => {
         return (
             <div>country page</div>
         );
