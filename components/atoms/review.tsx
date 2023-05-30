@@ -18,6 +18,7 @@ const Card = styled.div`
   //   gap: 100px;
   width: 94%;
   height: 310px;
+  margin-bottom: 2rem;
 
   /* Neutrals */
 
@@ -142,7 +143,7 @@ const Review = () => {
             console.log("Button clicked");
           }}
         />
-        <Grid columns="repeat(3, 1fr)" gap="1rem">
+        <Grid columns="repeat(3, 1fr)" gap=".2rem">
           {reviewCard.map((review) => (
             <Card key={review.id}>
               <CardHeader>
