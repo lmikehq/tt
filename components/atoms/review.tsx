@@ -18,6 +18,7 @@ const Card = styled.div`
   //   gap: 100px;
   width: 94%;
   height: 310px;
+  margin-bottom: 2rem;
 
   /* Neutrals */
 
@@ -128,6 +129,7 @@ const Review = () => {
         "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
       rating: 4.5,
       name: "John Doe",
+      designation: "Employment visa - Canada",
     },
   ];
   return (
@@ -141,7 +143,7 @@ const Review = () => {
             console.log("Button clicked");
           }}
         />
-        <Grid columns="repeat(3, 1fr)" gap="1rem">
+        <Grid columns="repeat(3, 1fr)" gap=".2rem">
           {reviewCard.map((review) => (
             <Card key={review.id}>
               <CardHeader>

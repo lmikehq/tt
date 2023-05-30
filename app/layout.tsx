@@ -1,4 +1,4 @@
-import SectionLayout from "@components/layouts/sectionLayout";
+
 import StyledComponentsRegistry from "@lib/registry";
 import FooterSection from "@organism/Footer";
 import HeroSection from "@organism/hero/HeroSection";
@@ -36,7 +36,7 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <HeroSection />
-          <SectionLayout>{children}</SectionLayout>
+          {children}
           <FooterSection />
         </StyledComponentsRegistry>
       </body>

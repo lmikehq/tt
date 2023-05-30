@@ -259,7 +259,7 @@ export const COUNTRY_FLAGS = [
     },
 
     {
-        name: 'United Arab Emirates',
+        name: 'UAE',
         flag: ae,
         code: 'AE'
     },
@@ -271,7 +271,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Antigua and Barbuda',
+        name: 'Antigua',
         flag: ag,
         code: 'AG'
     },
@@ -349,7 +349,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Bosnia and Herzegovina',
+        name: 'Herzegovina',
         flag: ba,
         code: 'BA'
     },
@@ -415,19 +415,19 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Brunei Darussalam',
+        name: 'Brunei',
         flag: bn,
         code: 'BN',
     },
 
     {
-        name: 'Bolivia, Plurinational State of',
+        name: 'Bolivia',
         flag: bo,
         code: 'BO',
     },
 
     {
-        name: 'Bonaire, Sint Eustatius and Saba',
+        name: 'Bonaire',
         flag: bq,
         code: 'BQ',
     },
@@ -481,19 +481,19 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Cocos (Keeling) Islands',
+        name: 'Cocos Islands',
         flag: cc,
         code: 'CC',
     },
 
     {
-        name: 'Congo, the Democratic Republic of the',
+        name: 'Congo',
         flag: cd,
         code: 'CD',
     },
 
     {
-        name: 'Central African Republic',
+        name: 'Central Africa',
         flag: cf,
         code: 'CF',
     },
@@ -679,13 +679,13 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Falkland Islands (Malvinas)',
+        name: 'Falkland Islands',
         flag: fk,
         code: 'FK',
     },
 
     {
-        name: 'Micronesia, Federated States of',
+        name: 'Micronesia',
         flag: fm,
         code: 'FM',
     },
@@ -811,13 +811,13 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Falkland Islands (Malvinas)',
+        name: 'Falkland Islands',
         flag: fk,
         code: 'FK',
     },
 
     {
-        name: 'Micronesia, Federated States of',
+        name: 'Micronesia',
         flag: fm,
         code: 'FM',
     },
@@ -919,7 +919,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'South Georgia and the South Sandwich Islands',
+        name: 'South',
         flag: gs,
         code: 'GS',
     },
@@ -955,7 +955,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Heard Island and McDonald Islands',
+        name: 'Heard Island ',
         flag: hm,
         code: 'HM',
     },
@@ -1015,7 +1015,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'British Indian Ocean Territory',
+        name: 'British Indian',
         flag: io,
         code: 'IO',
     },
@@ -1027,7 +1027,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Iran, Islamic Republic of',
+        name: 'Iran',
         flag: ir,
         code: 'IR',
     },
@@ -1105,7 +1105,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Korea, Democratic People\'s Republic of',
+        name: 'Korea, Democratic',
         flag: kp,
         code: 'KP',
     },
@@ -1135,7 +1135,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Lao People\'s Democratic Republic',
+        name: 'Lao People',
         flag: la,
         code: 'LA',
     },
@@ -1213,7 +1213,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Moldova, Republic of',
+        name: 'Moldova',
         flag: md,
         code: 'MD',
     },
@@ -1225,7 +1225,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Saint Martin (French part)',
+        name: 'Saint Martin',
         flag: mf,
         code: 'MF',
     },
@@ -1273,7 +1273,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Northern Mariana Islands',
+        name: 'Northern Mariana',
         flag: mp,
         code: 'MP',
     },
@@ -1478,7 +1478,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Palestinian Territory, Occupied',
+        name: 'Palestinian Territory',
         flag: ps,
         code: 'PS',
     },
@@ -1574,7 +1574,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Saint Helena, Ascension and Tristan da Cunha',
+        name: 'Saint Helena',
         flag: sh,
         code: 'SH',
     },
@@ -1586,7 +1586,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Svalbard and Jan Mayen Islands',
+        name: 'Svalbard',
         flag: sj,
         code: 'SJ',
     },
@@ -1665,7 +1665,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'Turks and Caicos Islands',
+        name: 'Turks and Caicos ',
         flag: tc,
         code: 'TC',
     },
@@ -1677,7 +1677,7 @@ name: 'Jordan',
     },
 
     {
-        name: 'French Southern Territories',
+        name: 'French Southern ',
         flag: tf,
         code: 'TF',
     },
@@ -1749,13 +1749,13 @@ name: 'Jordan',
     },
 
     {
-        name: 'Taiwan, Province of China',
+        name: 'Taiwan',
         flag: tw,
         code: 'TW',
     },
 
     {
-        name: 'Tanzania, United Republic of',
+        name: 'Tanzania',
         flag: tz,
         code: 'TZ',
     },
@@ -1773,13 +1773,13 @@ name: 'Jordan',
     },
 
     {
-        name: 'United States Minor Outlying Islands',
+        name: 'United States Minor',
         flag: um,
         code: 'UM',
     },
 
     {
-        name: 'United States of America',
+        name: 'USA',
         flag: us,
         code: 'US',
     },
@@ -1803,25 +1803,25 @@ name: 'Jordan',
     },
 
     {
-        name: 'Saint Vincent and the Grenadines',
+        name: 'Saint Vincent',
         flag: vc,
         code: 'VC',
     },
 
     {
-        name: 'Venezuela (Bolivarian Republic of)',
+        name: 'Venezuela',
         flag: ve,
         code: 'VE',
     },
 
     {
-        name: 'Virgin Islands (British)',
+        name: 'Virgin Islands',
         flag: vg,
         code: 'VG',
     },
 
     {
-        name: 'Virgin Islands (U.S.)',
+        name: 'Virgin Islands',
         flag: vi,
         code: 'VI',
     },

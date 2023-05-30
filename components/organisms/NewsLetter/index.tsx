@@ -76,7 +76,7 @@ const Subcribe = styled.div`
 const NewsLetter = () => {
   return (
     <SubscribeWrapper>
-      <Grid columns="repeat(2, 55% 45%)">
+      <Flex justify='space-between'>
         <Subcribe className="newsLetter">
           <Text
             type="h3"
@@ -98,7 +98,7 @@ const NewsLetter = () => {
           </Flex>
         </Subcribe>
 
-        <Flex gap="1rem" align="flex-end">
+        <Flex gap="1rem" align="flex-end" width='auto'>
           <Image src={Barcode} alt="visa" width="110" height="110" style={{marginLeft: '7rem', marginBottom: '1.2rem'}} />
           <Flex
             direction="column"
@@ -115,7 +115,7 @@ const NewsLetter = () => {
             />
           </Flex>
         </Flex>
-      </Grid>
+      </Flex>
     </SubscribeWrapper>
   );
 };

@@ -11,6 +11,8 @@ import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
 import Section from "@molecule/section";
+
+
 const FooterWrapper = styled.footer`
   width: 100%;
   height: 21rem;
@@ -112,7 +114,12 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="topCountries">
-            <Text type="h3" text="Top Countries" color="#06062A" />
+            <Text
+              type="h3"
+              text="Top Countries"
+              color="#06062A"
+              padding="0 0 25px"
+            />
             <Flex direction="column" gap="1rem">
               <Link href="/" text="Canada" color="#06062A" />
               <Link href="/" text="New Zealand" color="#06062A" />
@@ -121,7 +128,12 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="partnerWithUs">
-            <Text type="h3" text="Partner With Us" color="#06062A" />
+            <Text
+              type="h3"
+              text="Partner With Us"
+              color="#06062A"
+              padding="0 0 25px"
+            />
             <Flex direction="column" gap="1rem">
               <Link href="/" text="Partnership programs" color="#06062A" />
               <Link href="/" text="Affiliate program" color="#06062A" />
@@ -131,7 +143,7 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="support">
-            <Text type="h3" text="Support" color="#06062A" />
+            <Text type="h3" text="Support" color="#06062A" padding="0 0 25px" />
             <Flex direction="column" gap="1rem">
               <Link href="/" text="Help Center" color="#06062A" />
               <Link href="/" text="Contact us" color="#06062A" />
@@ -141,7 +153,12 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="aboutUs">
-            <Text type="h3" text="About Us" color="#06062A" />
+            <Text
+              type="h3"
+              text="About Us"
+              color="#06062A"
+              padding="0 0 25px"
+            />
             <Flex direction="column" gap="1rem">
               <Link href="/" text="Company" color="#06062A" />
               <Link href="/" text="Careers" color="#06062A" />
