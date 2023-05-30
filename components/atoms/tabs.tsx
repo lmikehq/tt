@@ -27,7 +27,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box >
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -69,7 +69,7 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
               label={
                 <Flex align="center">
                   {icons[index]}
-                  <Text type="p" text={tabItem.label} />
+                  <Text type="div" text={tabItem.label} />
                 </Flex>
               }
               {...a11yProps(index)}
@@ -77,8 +77,8 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
           ))}
         </Tabs>
       </Box>
-      {tabItems.map((tabItem) => (
-        <TabPanel value={value} index={tabItem.value}>
+      {tabItems.map((tabItem, i) => (
+        <TabPanel value={value} index={i} key={i} >
           {tabItem.content}
         </TabPanel>
       ))}
