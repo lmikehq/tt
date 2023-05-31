@@ -113,8 +113,9 @@ export default function CustomTab({
                 </Flex>
               }
               sx={{
-                ...(i !== 2 &&
-                  page === "dashboard" && { borderRight: "1px solid #ccc" }),
+                ...(i !== tabItems.length - 1 && {
+                  borderRight: "1px solid #ccc",
+                }),
                 padding: "0 2rem",
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",

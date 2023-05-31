@@ -1,12 +1,13 @@
-import React from 'react'
+import AllCountryHead from "@organism/AllCountry/allCountryHead";
+import React from "react";
 
-interface pageProps {
-
-}
+interface pageProps {}
 
 const CountryPage: React.FC<pageProps> = ({}) => {
-        return (
-            <div>country page</div>
-        );
-}
-export default CountryPage
+  return (
+    <div>
+      <AllCountryHead />
+    </div>
+  );
+};
+export default CountryPage;
