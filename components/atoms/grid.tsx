@@ -9,6 +9,7 @@ interface gridProps {
   justify?: string;
   margin?: string;
   width?: string;
+  align?: string;
 }
 
 const GridWrapper = styled.div<{
@@ -18,6 +19,7 @@ const GridWrapper = styled.div<{
   justify?: string;
   margin?: string;
   width?: string;
+  align?: string;
 }>`
   display: grid;
   grid-template-columns: ${(props) => props.columns};
@@ -25,6 +27,7 @@ const GridWrapper = styled.div<{
   position: ${(props) => props.position};
   width: ${({ width }) => width || "100%"};
   margin: ${({ margin }) => margin || "0 auto"};
+  align-items: ${({ align }) => (align ? align : "unset")};
   justify-content: ${({ justify }) => (justify ? justify : "center")};
 `;
 
@@ -35,6 +38,7 @@ export const Grid: React.FC<gridProps> = ({
   position,
   justify,
   margin,
+  align,
 }) => {
   return (
     <GridWrapper
@@ -43,6 +47,7 @@ export const Grid: React.FC<gridProps> = ({
       position={position || "relative"}
       justify={justify}
       margin={margin}
+      align={align}
     >
       {children}
     </GridWrapper>

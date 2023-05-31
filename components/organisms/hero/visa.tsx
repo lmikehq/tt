@@ -21,7 +21,7 @@ const HeroWrapper = styled.div`
 function VisaHero() {
   return (
     <>
-      <Navbar />
+      <Navbar page='visa' />
       <HeroWrapper>
         <div style={{paddingTop:'14rem'}}>
           <Center>

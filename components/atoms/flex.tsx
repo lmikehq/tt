@@ -16,6 +16,7 @@ interface flexProps {
   gap?: string;
   direction?: "row" | "column";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+  borderBottom?: string;
   margin?: string;
   padding?: string;
   width?: string;
@@ -51,6 +52,7 @@ export const Flex: React.FC<flexProps> = ({
   overflow,
   wrap,
   border,
+  borderBottom,
   alignSelf,
   cursor,
   onClick,
@@ -75,6 +77,7 @@ export const Flex: React.FC<flexProps> = ({
         flexWrap: wrap,
         height: height,
         alignSelf: alignSelf,
+        borderBottom: borderBottom,
       }}
       onClick={onClick}
     >
