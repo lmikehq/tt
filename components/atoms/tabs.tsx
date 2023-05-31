@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-
+"use client";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -42,7 +42,13 @@ function a11yProps(index: number) {
   };
 }
 
-export default function CustomTab({ tabItems }: { tabItems: any[] }) {
+export default function CustomTab({
+  tabItems,
+  defaultIcons = false,
+}: {
+  tabItems: any[];
+  defaultIcons?: boolean;
+}) {
   const [value, setValue] = useState(0);
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
@@ -74,7 +80,7 @@ export default function CustomTab({ tabItems }: { tabItems: any[] }) {
               key={tabItem.value}
               label={
                 <Flex align="center" gap=".5rem">
-                  {icons[tabItem.value]}
+                  {defaultIcons && icons[tabItem.value]}
                   <Text
                     type="p"
                     text={tabItem.label}

@@ -18,7 +18,7 @@ function ServiceTabs() {
   });
   return (
     <div>
-      <CustomTab tabItems={services} />
+      <CustomTab tabItems={services} defaultIcons />
     </div>
   );
 }

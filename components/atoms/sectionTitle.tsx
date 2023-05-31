@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "@mui/material/Button";
+import Button from "./button";
+import { ttColors } from "theme/colors";
 
 const SectionTitleContainer = styled.div`
   display: flex;
@@ -46,7 +47,14 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         <Description>{description}</Description>
       </div>
       {/* <Button ></Button> */}
-      <Button onClick={onButtonClick} variant="outlined">
+      <Button
+        onClick={onButtonClick}
+        background="transparent"
+        color={ttColors.dark}
+        border={`1px solid ${ttColors.primary}`}
+        width='149px'
+        fontSize="1rem"
+      >
         {buttonText}
       </Button>
     </SectionTitleContainer>

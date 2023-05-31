@@ -1,11 +1,189 @@
-import Destination from "@atom/destination";
+"use client";
 
-const PopularDestination = () => {
-    return (
-      <div>
-        <Destination />
-      </div>
-    );
-}
+import styled from "styled-components";
+import DestinationLayout from "@layout/sectionLayout";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
+import Image from "next/image";
+import { BsDot } from "react-icons/bs";
+import Canada from "@image/popularDestination/canada.png";
+import NewZealand from "@image/popularDestination/newZealand.png";
+import Norway from "@image/popularDestination/norway.png";
+import Uk from "@image/popularDestination/uk.png";
+import Us from "@image/popularDestination/us.png";
+import Switzerland from "@image/popularDestination/switzerland.png";
+import Australia from "@image/popularDestination/australia.png";
+import Singapore from "@image/popularDestination/singapore.png";
+import Germany from "@image/popularDestination/germany.png";
+import React from "react";
+import SectionTitle from "@atom/sectionTitle";
+import { useRouter } from "next/navigation";
 
-export default PopularDestination;
+const DestinationWrapper = styled.div`
+  margin: 5rem 0;
+`;
+const Card = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+  margin-bottom: 1rem;
+
+  width: 370px;
+  height: 115px;
+  color: var(--secondary-color);
+  /* Neutrals */
+
+  background: #ffffff;
+  /* Cards Shadow */
+
+  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  border-radius: 16px;
+
+  & img {
+    width: 90px;
+    height: 90px;
+  }
+
+  & h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+  }
+
+  & p {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+  }
+`;
+
+const PopularDestinations = () => {
+  const destinationCard = [
+    {
+      id: 1,
+      image: Canada,
+      title: "Toronto, Canada",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 2,
+      image: NewZealand,
+      title: "Auckland, New Zealand",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 3,
+      image: Norway,
+      title: "Oslo, Norway",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 4,
+      image: Uk,
+      title: "London, United Kingdom",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 5,
+      image: Us,
+      title: "New York, United States",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 6,
+      image: Switzerland,
+      title: "Zurich, Switzerland",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 7,
+      image: Australia,
+      title: "Sydney, Australia",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 8,
+      image: Singapore,
+      title: "Singapore, Singapore",
+      description: "Visa . Employment . Apply",
+    },
+
+    {
+      id: 9,
+      image: Germany,
+      title: "Berlin, Germany",
+      description: "Visa . Employment . Apply",
+    },
+  ];
+  const router = useRouter();
+  return (
+    <DestinationWrapper>
+      <DestinationLayout>
+        <SectionTitle
+          title="Popular Destinations"
+          description="Explore our popular destinations to find the best option for your next adventure!"
+          buttonText="See more places"
+          onButtonClick={() => router.push("/countries")}
+        />
+        {/* <Link href="/"> */}
+        {/* <Card>
+            <Flex justify="space-between" gap="1rem">
+              <Image src={Canada} alt="" />
+              <Flex direction="column" alignSelf="center">
+                <Text type="h3" text="Toronto, Canada" />
+                <Flex>
+                  <Text type="p" text="Visa" />
+                  <BsDot />
+                  <Text type="p" text="Employment" />
+                  <BsDot />
+                  <Text type="p" text="Apply" />
+                </Flex>
+              </Flex>
+            </Flex>
+          </Card> */}
+        <Grid columns="repeat(3, 1fr)" gap="16px">
+          {destinationCard.map((destination) => (
+            <Link key={destination.id} href="/">
+              <Card>
+                <Flex justify="space-between" gap="1rem">
+                  <Image src={destination.image} alt="" />
+
+                  <Flex direction="column" alignSelf="center">
+                    <Text type="h3" text={destination.title} />
+                    <Flex>
+                      {destination.description.split(".").map((desc, index) => (
+                        <React.Fragment key={index}>
+                          <Text type="p" text={desc.trim()} />
+                          {index !==
+                            destination.description.split(".").length - 1 && (
+                            <BsDot />
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </Card>
+            </Link>
+          ))}
+        </Grid>
+      </DestinationLayout>
+    </DestinationWrapper>
+  );
+};
+
+export default PopularDestinations;
