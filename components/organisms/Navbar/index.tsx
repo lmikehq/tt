@@ -84,7 +84,6 @@ const Navbar = ({ page }: { page: string }) => {
   const handleOpen = () => setOpen(true);
   let path = usePathname();
   let pathArray = path.split("/")[1];
-  const router = useRouter()
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -122,10 +121,10 @@ const Navbar = ({ page }: { page: string }) => {
             })}
           </NavLink>
 
-          <NavLogo onClick={()=>router.push('/')}>
-            {/* <Link href="/"> */}
+          <NavLogo>
+            <Link href="/">
               <Image src={Logo} height="45" width="45" alt="TTLogo" />
-            {/* </Link> */}
+            </Link>
           </NavLogo>
 
           <NavMenu>

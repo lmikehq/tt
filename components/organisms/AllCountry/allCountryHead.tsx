@@ -1,21 +1,12 @@
-import Image from "next/image";
+"use client";
+
+import Image, { StaticImageData } from "next/image";
 import styled from "styled-components";
 import Text from "@atom/text";
-import allCountryHeadImg from "@image/allCountryHeaderImg.png";
 
 import Breadcrumb from "@atom/breadcrumb";
 
-interface BreadcrumbItem {
-  id: number;
-  label: string;
-  url?: string;
-}
 
-const items: BreadcrumbItem[] = [
-  { id: 1, label: "Home", url: "/" },
-  { id: 2, label: "Visa", url: "/" },
-  { id: 3, label: "All countries" },
-];
 
 const AllCountryHeader = styled.div`
   position: relative;
@@ -55,15 +46,21 @@ const Overlay = styled.div`
   background: #06062a94;
 `;
 
-const AllCountryHead = () => {
+const AllCountryHead = ({
+  cover,
+  title,
+}: {
+  cover: StaticImageData;
+  title: string;
+}) => {
   return (
     <>
       <AllCountryHeader>
-        <Image src={allCountryHeadImg} alt="" />
+        <Image src={cover} alt="" />
         <Overlay />
-        <Text text="All Countries" type="h2" transform="uppercase" />
+        <Text text={title} type="h2" transform="uppercase" />
       </AllCountryHeader>
-      <Breadcrumb items={items} />
+      <Breadcrumb />
     </>
   );
 };

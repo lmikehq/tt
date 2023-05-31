@@ -56,6 +56,7 @@ export const Flex: React.FC<flexProps> = ({
   alignSelf,
   cursor,
   onClick,
+  styles,
 }) => {
   return (
     <FlexWrapper
@@ -78,6 +79,7 @@ export const Flex: React.FC<flexProps> = ({
         height: height,
         alignSelf: alignSelf,
         borderBottom: borderBottom,
+        ...styles,
       }}
       onClick={onClick}
     >

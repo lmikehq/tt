@@ -99,8 +99,8 @@ function Visa() {
           onClick={async () => {
             if (loading) return;
             setLoading(true);
-            await sleep(2000);
-            router.push("/visa");
+            await sleep(200);
+            router.push("visa/apply");
           }}
         >
           {loading ? (

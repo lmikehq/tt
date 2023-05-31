@@ -20,6 +20,7 @@ interface TextProps {
     | "lowercase"
     | "uppercase";
   whiteSpace?: CSSProperties["whiteSpace"];
+  decoration?: CSSProperties["textDecoration"];
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -32,6 +33,7 @@ export const Text: React.FC<TextProps> = ({
   transform = "none",
   margin,
   padding,
+  decoration,
   styles = {},
 }) => {
   const updatedStyles: CSSProperties = {
@@ -41,6 +43,7 @@ export const Text: React.FC<TextProps> = ({
     fontWeight: weight,
     whiteSpace,
     fontFamily: "var(--font-family)",
+    textDecoration: decoration,
     textTransform: transform,
     margin,
     padding,

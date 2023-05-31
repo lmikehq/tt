@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import styled from "styled-components";
 import Button from "./button";
@@ -30,7 +32,7 @@ const Description = styled.p`
 interface SectionTitleProps {
   title: string;
   description: string;
-  buttonText: string;
+  buttonText?: string;
   showButton?: boolean;
   onButtonClick?: () => void;
 }
