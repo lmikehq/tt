@@ -1,16 +1,16 @@
-import React from "react";
-import NextImage from "next/image";
-
+import React, {CSSProperties} from "react";
+import NextImage, { StaticImageData } from "next/image";
 interface imageProps {
-  props: {
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-  };
+  src: StaticImageData;
+  alt: string;
+  width?: number ;
+  height?: number;
+  styles?: CSSProperties;
+  border?: string;
+  borderRadius?: string;
 }
 
-export const Image: React.FC<imageProps> = ({ props }) => {
+const Image: React.FC<imageProps> = (props: imageProps) => {
   return <NextImage {...props} />;
 };
 export default Image;
