@@ -3,9 +3,13 @@ import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
+import Spinner from "@components/icons/spinner";
+import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ttColors } from "theme/colors";
 export interface CountryType {
   name: string;
   flag: string;
@@ -28,8 +32,9 @@ function Visa() {
     flag: "🇨🇦",
     code: "CA",
   });
-  const [type, setType] = useState<string>('Employment');
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [type, setType] = useState<string>("Employment");
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
   return (
     <Section>
       <Grid
@@ -47,8 +52,6 @@ function Visa() {
           legend="Home Country"
           value={home}
           onChange={(x: CountryType) => setHome(x)}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -68,8 +71,6 @@ function Visa() {
           legend="Destination"
           value={destination}
           onChange={(value: LabelType) => setDestination(value)}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -85,8 +86,6 @@ function Visa() {
           legend="Visa Type"
           value={type}
           onChange={(value: string) => setType(value)}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />
@@ -94,8 +93,26 @@ function Visa() {
         </SearchInputAsString>
       </Grid>
       <Flex justify="flex-end" margin="2rem 0 0">
-        <Button width="240px" borderRadius="4px">
-          <Text text="Get Started" type="p" whiteSpace="nowrap" weight={500} />
+        <Button
+          width="240px"
+          borderRadius="4px"
+          onClick={async () => {
+            if (loading) return;
+            setLoading(true);
+            await sleep(2000);
+            router.push("/visa");
+          }}
+        >
+          {loading ? (
+            <Spinner fill={ttColors.primary} size={'45px'} />
+          ) : (
+            <Text
+              text="Get Started"
+              type="p"
+              whiteSpace="nowrap"
+              weight={500}
+            />
+          )}
         </Button>
       </Flex>
     </Section>

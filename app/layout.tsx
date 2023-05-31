@@ -1,7 +1,5 @@
 
 import StyledComponentsRegistry from "@lib/registry";
-import FooterSection from "@organism/Footer";
-import HeroSection from "@organism/hero/HeroSection";
 import "@style/globals.css";
 import { Siteconfig } from "config/site";
 import { Poppins } from "next/font/google";
@@ -35,9 +33,9 @@ export default function RootLayout({
       </head>
       <body>
         <StyledComponentsRegistry>
-          <HeroSection />
+          {/* <HeroSection /> */}
           {children}
-          <FooterSection />
+          {/* <FooterSection /> */}
         </StyledComponentsRegistry>
       </body>
     </html>
