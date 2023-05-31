@@ -1,4 +1,3 @@
-
 import StyledComponentsRegistry from "@lib/registry";
 import "@style/globals.css";
 import { Siteconfig } from "config/site";
@@ -32,11 +31,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <StyledComponentsRegistry>
-          {/* <HeroSection /> */}
-          {children}
-          {/* <FooterSection /> */}
-        </StyledComponentsRegistry>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );

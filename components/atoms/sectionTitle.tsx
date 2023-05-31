@@ -31,7 +31,8 @@ interface SectionTitleProps {
   title: string;
   description: string;
   buttonText: string;
-  onButtonClick: () => void;
+  showButton?: boolean;
+  onButtonClick?: () => void;
 }
 
 const SectionTitle: React.FC<SectionTitleProps> = ({
@@ -39,6 +40,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   description,
   buttonText,
   onButtonClick,
+  showButton,
 }) => {
   return (
     <SectionTitleContainer>
@@ -46,13 +48,13 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
-      {/* <Button ></Button> */}
+
       <Button
         onClick={onButtonClick}
         background="transparent"
         color={ttColors.dark}
         border={`1px solid ${ttColors.primary}`}
-        width='149px'
+        width='180px'
         fontSize="1rem"
       >
         {buttonText}

@@ -15,8 +15,8 @@ const HeroWrapper = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-//   margin-top: 20px;
-`;
+  margin-bottom: 180px;
+  `;
 
 function VisaHero() {
   return (

@@ -64,7 +64,11 @@ const Card = styled.div`
   }
 `;
 
-const PopularDestinations = () => {
+const PopularDestinations = ({
+  title = "Popular Destinations",
+}: {
+  title?: string;
+}) => {
   const destinationCard = [
     {
       id: 1,
@@ -134,27 +138,11 @@ const PopularDestinations = () => {
     <DestinationWrapper>
       <DestinationLayout>
         <SectionTitle
-          title="Popular Destinations"
+          title={title}
           description="Explore our popular destinations to find the best option for your next adventure!"
-          buttonText="See more places"
+          buttonText="See more countries"
           onButtonClick={() => router.push("/countries")}
         />
-        {/* <Link href="/"> */}
-        {/* <Card>
-            <Flex justify="space-between" gap="1rem">
-              <Image src={Canada} alt="" />
-              <Flex direction="column" alignSelf="center">
-                <Text type="h3" text="Toronto, Canada" />
-                <Flex>
-                  <Text type="p" text="Visa" />
-                  <BsDot />
-                  <Text type="p" text="Employment" />
-                  <BsDot />
-                  <Text type="p" text="Apply" />
-                </Flex>
-              </Flex>
-            </Flex>
-          </Card> */}
         <Grid columns="repeat(3, 1fr)" gap="16px">
           {destinationCard.map((destination) => (
             <Link key={destination.id} href="/">
