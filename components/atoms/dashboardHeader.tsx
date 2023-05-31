@@ -9,6 +9,7 @@ import { IoCloudUpload } from "react-icons/io5";
 import { HiPencil } from "react-icons/hi";
 import { ttColors } from "theme/colors";
 import CustomTab from "@atom/tabs";
+import SectionLayout from "@layout/sectionLayout";
 
 const DashboardWrapper = styled.div`
   margin: 10rem 0px;
@@ -84,6 +85,11 @@ const ProfileInfomation = styled.div`
   }
 `;
 
+const DashboardContent = styled.div`
+    margin-top: 250px;
+    width: 100%;
+`;
+
 
 
 
@@ -113,45 +119,48 @@ const DashboardHeader = () => {
     ];
   return (
     <DashboardWrapper>
-      <DashboardCoverPicture>
-        <Image
-          src={CoverPicture}
-          alt="cover-picture"
-          styles={{ width: "100%", height: "350px" }}
-        />
-        <Button styles={{ height: "65px", width: "230px" }}>
-          <IoCloudUpload size="2rem" />
-          Upload another cover
-        </Button>
-      </DashboardCoverPicture>
-      <DashboardProfilePictue>
-        <Image
-          src={ProfilePicture}
-          alt="profile-picture"
-          styles={{ width: "160px", height: "160px" }}
-        />
-        <Button
-          styles={{
-            position: "absolute",
-            background: "var(--primary-color)",
-            color: "var(--secondary-color)",
-            top: "28px",
-            right: "44.5%",
-            borderRadius: "50%",
-            height: "50px",
-            width: "50px",
-            padding: "9px",
-          }}
-        >
-          <HiPencil size="2rem" />
-        </Button>
-        <ProfileInfomation>
-          <Text type="h3" text="John Deo" />
-          <Text type="p" text="john.deo@gmail.com" />
-        </ProfileInfomation>
-      </DashboardProfilePictue>
-
-      <CustomTab tabItems={tabItems} />
+      <SectionLayout>
+        <DashboardCoverPicture>
+          <Image
+            src={CoverPicture}
+            alt="cover-picture"
+            styles={{ width: "100%", height: "350px" }}
+          />
+          <Button styles={{ height: "65px", width: "230px" }}>
+            <IoCloudUpload size="2rem" />
+            Upload another cover
+          </Button>
+        </DashboardCoverPicture>
+        <DashboardProfilePictue>
+          <Image
+            src={ProfilePicture}
+            alt="profile-picture"
+            styles={{ width: "160px", height: "160px" }}
+          />
+          <Button
+            styles={{
+              position: "absolute",
+              background: "var(--primary-color)",
+              color: "var(--secondary-color)",
+              top: "28px",
+              right: "44.5%",
+              borderRadius: "50%",
+              height: "50px",
+              width: "50px",
+              padding: "9px",
+            }}
+          >
+            <HiPencil size="2rem" />
+          </Button>
+          <ProfileInfomation>
+            <Text type="h3" text="John Deo" />
+            <Text type="p" text="john.deo@gmail.com" />
+          </ProfileInfomation>
+        </DashboardProfilePictue>
+        <DashboardContent>
+          <CustomTab tabItems={tabItems} />
+        </DashboardContent>
+      </SectionLayout>
     </DashboardWrapper>
   );
 };
