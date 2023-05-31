@@ -21,6 +21,7 @@ interface TextProps {
     | "uppercase";
   whiteSpace?: CSSProperties["whiteSpace"];
   decoration?: CSSProperties["textDecoration"];
+  cursor?: CSSProperties["cursor"];
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -34,6 +35,7 @@ export const Text: React.FC<TextProps> = ({
   margin,
   padding,
   decoration,
+  cursor,
   styles = {},
 }) => {
   const updatedStyles: CSSProperties = {
@@ -47,6 +49,7 @@ export const Text: React.FC<TextProps> = ({
     textTransform: transform,
     margin,
     padding,
+    cursor,
   };
 
   if (type === "p") return <p style={updatedStyles}>{text}</p>;
