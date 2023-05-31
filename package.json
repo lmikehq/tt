@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build+push":"yarn build && git add . && git commit -am 'built for push' && git push"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
