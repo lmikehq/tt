@@ -99,8 +99,11 @@ const CountriesList = () => {
         />
         <Grid columns="repeat(5, 1fr)" gap="1.5rem" margin="2rem 0 0">
           {displayedCountries.map((country, index) => (
-            <Link href={`/visa/countries/${urlString(country.name)}`}>
-              <div key={index}>
+            <Link
+              href={`/visa/countries/${urlString(country.name)}`}
+              key={index}
+            >
+              <div>
                 <Card>
                   <Image
                     src={country.flag}

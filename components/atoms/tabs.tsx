@@ -69,7 +69,7 @@ export default function CustomTab({
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
-  page: "home" | "dashboard";
+  page?: "home" | "dashboard";
 }) {
   const [value, setValue] = useState(0);
 
