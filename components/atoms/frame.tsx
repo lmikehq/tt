@@ -10,6 +10,7 @@ import VisaImg from "@image/serviceCard/visas.png";
 import FlightImg from "@image/serviceCard/flight.png";
 import HotelImg from "@image/serviceCard/hotel.png";
 import TravelImg from "@image/serviceCard/travel.png";
+import { useRouter } from "next/navigation";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;
@@ -119,6 +120,7 @@ const serviceCard = [
 ];
 
 const Frame: React.FC = () => {
+  const router = useRouter();
   return (
     <FrameWrapper>
       <FrameLayout>
@@ -135,6 +137,7 @@ const Frame: React.FC = () => {
                   padding="1rem 1.3rem"
                   width="27%"
                   color="var(--secondary-color)"
+                  onClick={() => router.push("/visa")}
                 >
                   {item.icon} &nbsp; {item.button}
                 </Button>

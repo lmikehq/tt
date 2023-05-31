@@ -31,7 +31,6 @@ const TabWrapper = styled.div`
   .MuiTabs-flexContainer {
     height: 100%;
     width: 100%;
-    // justify-content: space-between;
     gap: 0;
   }
 `;
@@ -66,9 +65,11 @@ function a11yProps(index: number) {
 export default function CustomTab({
   tabItems,
   defaultIcons = false,
+  page = "home",
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
+  page?: "home" | "dashboard";
 }) {
   const [value, setValue] = useState(0);
 
@@ -112,7 +113,8 @@ export default function CustomTab({
                 </Flex>
               }
               sx={{
-                ...(i !== 2 && { borderRight: "1px solid #ccc" }),
+                ...(i !== 2 &&
+                  page === "dashboard" && { borderRight: "1px solid #ccc" }),
                 padding: "0 2rem",
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",

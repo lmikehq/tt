@@ -6,11 +6,5 @@ interface layoutProps {
 }
 
 export default async function VisaLayout({ children }: layoutProps) {
-  return (
-    <main>
-      <VisaHero />
-      {children}
-      <FooterSection />
-    </main>
-  );
+  return <main>{children}</main>;
 }

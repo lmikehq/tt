@@ -4,8 +4,8 @@ import NextImage from "next/image";
 interface imageProps {
     src: string;
     alt: string;
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
 }
 
 export const Image: React.FC<imageProps> = (props) => {

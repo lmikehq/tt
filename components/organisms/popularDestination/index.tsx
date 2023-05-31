@@ -22,7 +22,7 @@ import SectionTitle from "@atom/sectionTitle";
 import { useRouter } from "next/navigation";
 
 const DestinationWrapper = styled.div`
-  margin: 5rem 0;
+  // margin: 5rem 0;
 `;
 const Card = styled.div`
   display: flex;
@@ -141,7 +141,7 @@ const PopularDestinations = ({
           title={title}
           description="Explore our popular destinations to find the best option for your next adventure!"
           buttonText="See more countries"
-          onButtonClick={() => router.push("/countries")}
+          onButtonClick={() => router.push("/visa/countries")}
         />
         <Grid columns="repeat(3, 1fr)" gap="16px">
           {destinationCard.map((destination) => (
