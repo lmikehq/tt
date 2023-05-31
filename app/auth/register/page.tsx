@@ -11,12 +11,10 @@ import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
 import Section from "@molecule/section";
-import { Divider } from "@mui/material";
-import React from "react";
+import { useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
-import google from "@image/google.svg";
-import Image from "next/image";
 function RegisterPage() {
+  const router = useRouter();
   return (
     <SectionLayout>
       <Flex margin="4rem 0" gap="3rem" align="stretch">
@@ -61,7 +59,11 @@ function RegisterPage() {
                 </CheckBox>
               </Flex>
             </Flex>
-            <Button width="100%" background={ttColors.primary}>
+            <Button
+              width="100%"
+              background={ttColors.primary}
+              onClick={() => router.push("/auth/login")}
+            >
               <Text type="p" text="Login" color={ttColors.dark} size="20px" />
             </Button>
             <p style={{ textAlign: "center", fontSize: "16px" }}>

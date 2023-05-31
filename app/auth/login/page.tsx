@@ -10,13 +10,14 @@ import Text from "@atom/text";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
+import google from "@image/google.svg";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
-import React from "react";
-import { ttColors } from "theme/colors";
-import google from "@image/google.svg";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ttColors } from "theme/colors";
 function LoginPage() {
+  const router = useRouter();
   return (
     <SectionLayout>
       <Flex margin="4rem 0">
@@ -49,15 +50,21 @@ function LoginPage() {
                   <Text type="p" text="Remember me" />
                 </CheckBox>
               </Flex>
-              <Text
-                type="p"
-                text="Forgot password?"
-                color="#FF8682"
-                whiteSpace="nowrap"
-                cursor="pointer"
-              />
+              <Link href="/auth/forgot-password">
+                <Text
+                  type="p"
+                  text="Forgot password?"
+                  color="#FF8682"
+                  whiteSpace="nowrap"
+                  cursor="pointer"
+                />
+              </Link>
             </Flex>
-            <Button width="100%" background={ttColors.primary}>
+            <Button
+              width="100%"
+              background={ttColors.primary}
+              onClick={() => router.push("/")}
+            >
               <Text type="p" text="Login" color={ttColors.dark} size="20px" />
             </Button>
             <p style={{ textAlign: "center", fontSize: "16px" }}>
