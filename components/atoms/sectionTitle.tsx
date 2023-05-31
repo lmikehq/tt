@@ -33,7 +33,7 @@ interface SectionTitleProps {
   onButtonClick: () => void;
 }
 
-const TitleSec: React.FC<SectionTitleProps> = ({
+const SectionTitle: React.FC<SectionTitleProps> = ({
   title,
   description,
   buttonText,
@@ -53,4 +53,4 @@ const TitleSec: React.FC<SectionTitleProps> = ({
   );
 };
 
-export default TitleSec;
+export default SectionTitle;

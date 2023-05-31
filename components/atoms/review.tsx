@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import { Grid } from "@atom/grid";
 import ReviewLayout from "@layout/sectionLayout";
-import TitleSec from "./sectionTitle";
+import SectionTitle from "./sectionTitle";
 import RatingComponent from "./reviewStar";
 
 const ReviewWrapper = styled.div`
@@ -32,7 +32,7 @@ const CardHeader = styled.div`
   width: 22.8125rem;
   height: 3.5rem;
   font-size: 1.1rem;
-  padding: 1rem ;
+  padding: 1rem;
   line-height: 30px;
   color: var(--secondary-color);
   margin-bottom: 2.5rem;
@@ -42,7 +42,7 @@ const CardDescription = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 15.3px;
-  padding: 0 .7rem;
+  padding: 0 0.7rem;
   line-height: 20px;
   color: var(--secondary-color);
   margin-bottom: 1rem;
@@ -51,7 +51,7 @@ const CardDescription = styled.div`
 `;
 const CardFooter = styled.div`
   display: block;
-  padding:0 .7rem;
+  padding: 0 0.7rem;
 
   & h5 {
     font-weight: 700;
@@ -135,7 +135,7 @@ const Review = () => {
   return (
     <ReviewWrapper>
       <ReviewLayout>
-        <TitleSec
+        <SectionTitle
           title="Reviews"
           description="What people says about Golobe facilities."
           buttonText="See All"
