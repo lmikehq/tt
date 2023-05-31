@@ -71,7 +71,7 @@ export const Flex: React.FC<flexProps> = ({
         flexDirection: direction,
         background: background,
         width: width,
-        overflow: overflow || "hidden",
+        overflow: overflow || "unset",
         borderRadius: borderRadius,
         border: border,
         padding: padding,

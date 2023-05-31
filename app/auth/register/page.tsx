@@ -36,38 +36,39 @@ function RegisterPage() {
             text="Let’s get you all st up so you can access your personal account."
             size="17px"
           />
-          <Flex
-            margin="3rem 0"
-            width="85%"
-            direction="column"
-            gap="2rem"
-            overflow="unset"
-          >
-            <TextField legend="Email" placeholder="mike.doe@gmail.com" />
-
-            <TextField legend="Email" placeholder="mike.doe@gmail.com" />
+          <Flex margin="3rem 0" direction="column" gap="2rem" overflow="unset">
+            <Flex gap="2rem" justify="space-between">
+              <TextField legend="First Name" placeholder="Michael" />
+              <TextField legend="Last Name" placeholder="Kenneth" />
+            </Flex>
+            <Flex gap="2rem" justify="space-between">
+              <TextField legend="Email" placeholder="mike.doe@gmail.com" />
+              <TextField
+                legend="Phone Number"
+                placeholder="+1 (530) 323 4921"
+              />
+            </Flex>
+            <TextField legend="Password" placeholder="******" />
+            <TextField legend="Confirm Password" placeholder="******" />
+            <TextField legend="Referral Code" placeholder="n/a" />
             <Flex align="center" justify="space-between">
               <Flex align="center">
                 <CheckBox>
-                  <Text type="p" text="Remember me" />
+                  <Text
+                    type="p"
+                    text="I agree to all the Terms and Privacy Policies"
+                  />
                 </CheckBox>
               </Flex>
-              <Text
-                type="p"
-                text="Forgot password?"
-                color="#FF8682"
-                whiteSpace="nowrap"
-                cursor="pointer"
-              />
             </Flex>
             <Button width="100%" background={ttColors.primary}>
               <Text type="p" text="Login" color={ttColors.dark} size="20px" />
             </Button>
             <p style={{ textAlign: "center", fontSize: "16px" }}>
-              Don't have an account?{" "}
-              <Link href="/auth/register" text="Sign up" color="#FF8682" />
+              Already have an account?{" "}
+              <Link href="/auth/login" text="Login" color="#FF8682" />
             </p>
-            <Flex
+            {/* <Flex
               justify="space-between"
               align="center"
               width="90%"
@@ -81,14 +82,14 @@ function RegisterPage() {
                 color="#112211"
               />
               <Divider sx={{ width: "33%", color: "#112211" }} />
-            </Flex>
-            <Button
+            </Flex> */}
+            {/* <Button
               background="transparent"
               border={`1px solid ${ttColors.primary}`}
               width="100%"
             >
               <Image src={google.src} alt="google" height="30" width={30} />
-            </Button>
+            </Button> */}
           </Flex>
         </Section>
       </Flex>
