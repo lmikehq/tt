@@ -31,7 +31,6 @@ const TabWrapper = styled.div`
   .MuiTabs-flexContainer {
     height: 100%;
     width: 100%;
-    // justify-content: space-between;
     gap: 0;
   }
 `;

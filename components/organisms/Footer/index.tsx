@@ -16,7 +16,7 @@ import Section from "@molecule/section";
 const FooterWrapper = styled.footer`
   width: 100%;
   height: 21rem;
-  margin-top: 21rem;
+  margin-top: 17rem;
   display: flex;
   padding: 5rem 0;
   background-color: var(--primary-color);

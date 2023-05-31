@@ -14,7 +14,7 @@ import styled from "styled-components";
 import Text from "@atom/text";
 import Button from "@atom/button";
 import { Grid } from "@atom/grid";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
 
 // Modal from material ui ends
@@ -26,7 +26,8 @@ const NavbarWrapper = styled.div<{ page?: string }>`
     page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
   // padding: ${({ page }) => (page === "home" ? "2rem 0 0" : "1rem 0")};
-  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  box-shadow: ${({ page }) =>
+    page !== "home" ? "0px 4px 16px rgba(17, 34, 17, 0.05)" : "none"};
   & button {
     background: var(--secondary-color);
     // color: var(--default-color);
@@ -83,7 +84,7 @@ const Navbar = ({ page }: { page: string }) => {
   const handleOpen = () => setOpen(true);
   let path = usePathname();
   let pathArray = path.split("/")[1];
-  console.log("router", pathArray);
+  const router = useRouter()
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -121,10 +122,10 @@ const Navbar = ({ page }: { page: string }) => {
             })}
           </NavLink>
 
-          <NavLogo>
-            <Link href="/">
+          <NavLogo onClick={()=>router.push('/')}>
+            {/* <Link href="/"> */}
               <Image src={Logo} height="45" width="45" alt="TTLogo" />
-            </Link>
+            {/* </Link> */}
           </NavLogo>
 
           <NavMenu>
