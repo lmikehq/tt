@@ -5,23 +5,23 @@ import DestinationLayout from "@layout/sectionLayout";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Flex from "@atom/flex";
-import {Grid} from "@atom/grid";
+import { Grid } from "@atom/grid";
 import Image from "next/image";
-import {BsDot} from "react-icons/bs";
-import Canada from '@image/popularDestination/canada.png';
-import NewZealand from '@image/popularDestination/newZealand.png';
-import Norway from '@image/popularDestination/norway.png';
-import Uk from '@image/popularDestination/uk.png';
-import Us from '@image/popularDestination/us.png';
-import Switzerland from '@image/popularDestination/switzerland.png';
-import Australia from '@image/popularDestination/australia.png';
-import Singapore from '@image/popularDestination/singapore.png';
-import Germany from '@image/popularDestination/germany.png';
-import TitleSec from "./sectionTitle";
+import { BsDot } from "react-icons/bs";
+import Canada from "@image/popularDestination/canada.png";
+import NewZealand from "@image/popularDestination/newZealand.png";
+import Norway from "@image/popularDestination/norway.png";
+import Uk from "@image/popularDestination/uk.png";
+import Us from "@image/popularDestination/us.png";
+import Switzerland from "@image/popularDestination/switzerland.png";
+import Australia from "@image/popularDestination/australia.png";
+import Singapore from "@image/popularDestination/singapore.png";
+import Germany from "@image/popularDestination/germany.png";
+import SectionTitle from "./sectionTitle";
 import React from "react";
 
 const DestinationWrapper = styled.div`
-margin: 5rem 0; 
+  margin: 5rem 0;
 `;
 const Card = styled.div`
   display: flex;
@@ -53,7 +53,7 @@ const Card = styled.div`
     font-size: 16px;
     line-height: 20px;
     opacity: 0.7;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
   }
 
   & p {
@@ -64,74 +64,74 @@ const Card = styled.div`
 `;
 
 const Destination = () => {
-    const destinationCard = [
-        {
-            id: 1,
-            image: Canada,
-            title: "Toronto, Canada",
-            description: "Visa . Employment . Apply"
-        },
+  const destinationCard = [
+    {
+      id: 1,
+      image: Canada,
+      title: "Toronto, Canada",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 2,
-            image: NewZealand,
-            title: "Auckland, New Zealand",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 2,
+      image: NewZealand,
+      title: "Auckland, New Zealand",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 3,
-            image: Norway,
-            title: "Oslo, Norway",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 3,
+      image: Norway,
+      title: "Oslo, Norway",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 4,
-            image: Uk,
-            title: "London, United Kingdom",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 4,
+      image: Uk,
+      title: "London, United Kingdom",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 5,
-            image: Us,
-            title: "New York, United States",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 5,
+      image: Us,
+      title: "New York, United States",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 6,
-            image: Switzerland,
-            title: "Zurich, Switzerland",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 6,
+      image: Switzerland,
+      title: "Zurich, Switzerland",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 7,
-            image: Australia,
-            title: "Sydney, Australia",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 7,
+      image: Australia,
+      title: "Sydney, Australia",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 8,
-            image: Singapore,
-            title: "Singapore, Singapore",
-            description: "Visa . Employment . Apply"
-        },
+    {
+      id: 8,
+      image: Singapore,
+      title: "Singapore, Singapore",
+      description: "Visa . Employment . Apply",
+    },
 
-        {
-            id: 9,
-            image: Germany,
-            title: "Berlin, Germany",
-            description: "Visa . Employment . Apply"
-        },
-    ]
+    {
+      id: 9,
+      image: Germany,
+      title: "Berlin, Germany",
+      description: "Visa . Employment . Apply",
+    },
+  ];
   return (
     <DestinationWrapper>
       <DestinationLayout>
-        <TitleSec
+        <SectionTitle
           title="Popular Destinations"
           description="Explore our popular destinations to find the best option for your next adventure!"
           buttonText="See More Places"
@@ -140,7 +140,7 @@ const Destination = () => {
           }}
         />
         {/* <Link href="/"> */}
-          {/* <Card>
+        {/* <Card>
             <Flex justify="space-between" gap="1rem">
               <Image src={Canada} alt="" />
               <Flex direction="column" alignSelf="center">
@@ -155,34 +155,32 @@ const Destination = () => {
               </Flex>
             </Flex>
           </Card> */}
-          <Grid columns="repeat(3, 1fr)" gap="16px">
-            {destinationCard.map((destination) => (
-              <Link key={destination.id} href="/">
-                <Card>
-                  <Flex justify="space-between" gap="1rem">
-                    <Image src={destination.image} alt="" />
-                    
-                      <Flex direction="column" alignSelf="center">
-                        <Text type="h3" text={destination.title} />
-                        <Flex>
-                          {destination.description
-                            .split(".")
-                            .map((desc, index) => (
-                              <React.Fragment key={index}>
-                                <Text type="p" text={desc.trim()} />
-                                {index !==
-                                  destination.description.split(".").length -
-                                    1 && <BsDot />}
-                              </React.Fragment>
-                            ))}
-                        </Flex>
-                      </Flex>
+        <Grid columns="repeat(3, 1fr)" gap="16px">
+          {destinationCard.map((destination) => (
+            <Link key={destination.id} href="/">
+              <Card>
+                <Flex justify="space-between" gap="1rem">
+                  <Image src={destination.image} alt="" />
+
+                  <Flex direction="column" alignSelf="center">
+                    <Text type="h3" text={destination.title} />
+                    <Flex>
+                      {destination.description.split(".").map((desc, index) => (
+                        <React.Fragment key={index}>
+                          <Text type="p" text={desc.trim()} />
+                          {index !==
+                            destination.description.split(".").length - 1 && (
+                            <BsDot />
+                          )}
+                        </React.Fragment>
+                      ))}
                     </Flex>
-                </Card>
-              </Link>
-            ))}
-          </Grid>
-    
+                  </Flex>
+                </Flex>
+              </Card>
+            </Link>
+          ))}
+        </Grid>
       </DestinationLayout>
     </DestinationWrapper>
   );
