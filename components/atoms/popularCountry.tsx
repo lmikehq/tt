@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import styled from "styled-components";
 import newZealand from "@image/topCountries/newZealand.png";
@@ -13,7 +13,8 @@ import CountryLayout from "@layout/sectionLayout";
 interface Country {
   id: number;
   name: string;
-  description: string;
+  description1: string;
+  description2: string;
   image: StaticImageData;
   interval: string;
 }
@@ -23,10 +24,12 @@ const CountryWrapper = styled.section`
   align-items: flex-start;
   gap: 20px;
   margin-top: 5rem;
+  margin-bottom: 10rem;
 `;
 
 const LeftSide = styled.div`
-  flex: 1;
+  height: 365px;
+  //   flex: 1;
 `;
 
 const RightSide = styled.div`
@@ -50,22 +53,25 @@ const CountryInfo = styled.div`
   color: var(--secondary-color);
   border-radius: 1.4rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 365px;
+  height: 415px;
 `;
 
 const CountryName = styled.h3`
   font-size: 32px;
   margin-bottom: 20px;
   width: 365px;
+  text-align: start;
+  margin-left: 1.2rem;
   //   height: 120px;
 `;
 
 const CountryDescription = styled.p`
-  margin: 20px;
+  margin: 82px auto;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  padding: 0 1.2rem;
 `;
 
 const IntervalTag = styled.div`
@@ -87,7 +93,7 @@ const Button = styled.button`
   border: none;
   font-weight: bold;
   position: relative;
-  top: 42px;
+  top: -10px;
   left: 5px;
   width: 98%;
   padding: 18px;
@@ -120,10 +126,10 @@ const ImageOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 98.17%;
-//   background: crimson;
+  //   background: crimson;
   mix-blend-mode: soft-light;
   opacity: 0;
-  background-color: rgba(0, 0, 0);
+  background: #1d2c54c4;
   transition: opacity 0.3s ease-in-out;
   display: flex;
   justify-content: center;
@@ -142,10 +148,8 @@ const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  
-  
+  cursor: pointer;
 `;
-
 
 const IntervalText = styled.p`
   margin-bottom: 5px;
@@ -173,32 +177,40 @@ const TopCountriesSection: React.FC = () => {
     {
       id: 1,
       name: "New Zealand",
-      description:
-        "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living. New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description1:
+        "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:
+        "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: newZealand,
       interval: "3 days",
     },
     {
       id: 2,
       name: "UAE",
-      description:
-        "UAE is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living. New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description1:
+        "UAE is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:
+        "UAE is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: UAE,
       interval: "3 days",
     },
     {
       id: 3,
       name: "Haiti",
-      description:
-        "Haiti is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living. New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description1:
+        "Haiti is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:
+        "Haiti is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: Haiti,
       interval: "3 days",
     },
     {
       id: 4,
       name: "Mike Villa",
-      description:
-        "MikeVilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living. Mikevilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description1:
+        "MikeVilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:
+        "Mikevilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: mikeVilla,
       interval: "3 days",
     },
@@ -221,7 +233,10 @@ const TopCountriesSection: React.FC = () => {
                   Get {countries[activeImage - 1].name} E-visa
                 </CountryName>
                 <CountryDescription>
-                  {countries[activeImage - 1].description}
+                  {countries[activeImage - 1].description1}
+                  <br />
+                  <br />
+                  {countries[activeImage - 1].description2}
                 </CountryDescription>
                 <Button>Apply to {countries[activeImage - 1].name}</Button>
               </CountryInfo>
@@ -251,7 +266,6 @@ const TopCountriesSection: React.FC = () => {
                 {activeImage === country.id || hoveredImage === country.id ? (
                   <CountryNameTooltip>{country.name}</CountryNameTooltip>
                 ) : null}
-                
               </ImageWrapper>
             ))}
           </RightSide>
