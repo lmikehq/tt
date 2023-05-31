@@ -14,16 +14,19 @@ import styled from "styled-components";
 import Text from "@atom/text";
 import Button from "@atom/button";
 import { Grid } from "@atom/grid";
+import { usePathname } from "next/navigation";
+import { ttColors } from "theme/colors";
+
 // Modal from material ui ends
 
-const NavbarWrapper = styled.div`
+const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
-  height: 5rem;
-  background: transparent;
+  background: ${({ page }) =>
+    page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
-  padding: 2rem 0 0;
-
+  // padding: ${({ page }) => (page === "home" ? "2rem 0 0" : "1rem 0")};
+  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   & button {
     background: var(--secondary-color);
     // color: var(--default-color);
@@ -75,27 +78,47 @@ const Divider = styled.div`
   background: red;
 `;
 
-const Navbar = () => {
+const Navbar = ({ page }: { page: string }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-
+  let path = usePathname();
+  let pathArray = path.split("/")[1];
+  console.log("router", pathArray);
   return (
-    <NavbarWrapper>
+    <NavbarWrapper page={page}>
       <NavbarLayout>
-        <Grid columns="1fr 1fr 1fr">
+        <Grid columns="1fr 1fr 1fr" align="center">
           <NavLink>
             {[
-              { name: "Book Visa", url: 'visa', icon: <GiPassport /> },
-              { name: "Find Flight", url: 'flight', icon: <IoAirplaneSharp /> },
-              { name: "Find Stays", url: 'stay', icon: <IoBedSharp /> },
-            ].map((item, index) => (
-              <Flex key={index} align="center" cursor="pointer" gap=".3rem">
-                {item.icon}
-                <Link href={`/${item.url}`}> 
-                  <Text text={item.name} type="p" whiteSpace="nowrap" weight={400} />
-                </Link>
-              </Flex>
-            ))}
+              { name: "Book Visa", url: "visa", icon: <GiPassport /> },
+              { name: "Find Flight", url: "flight", icon: <IoAirplaneSharp /> },
+              { name: "Find Stays", url: "stay", icon: <IoBedSharp /> },
+            ].map((item, index) => {
+              const active = pathArray === item.url;
+              console.log("active: ", active);
+              return (
+                <Flex
+                  key={index}
+                  align="center"
+                  cursor="pointer"
+                  gap=".3rem"
+                  height="70px"
+                  borderBottom={
+                    active ? `5px solid ${ttColors.primary}` : "none"
+                  }
+                >
+                  {item.icon}
+                  <Link href={`/${item.url}`}>
+                    <Text
+                      text={item.name}
+                      type="p"
+                      whiteSpace="nowrap"
+                      weight={400}
+                    />
+                  </Link>
+                </Flex>
+              );
+            })}
           </NavLink>
 
           <NavLogo>
@@ -114,13 +137,19 @@ const Navbar = () => {
               cursor="pointer"
             >
               <BsGlobe />
-              <Text text="EN" type="span"  weight={400} />
+              <Text text="EN" type="span" weight={400} />
               <Divider />
               <BiDollar />
-              <Text text="EN" type="span"  weight={400}/>
+              <Text text="EN" type="span" weight={400} />
             </Flex>
             <Link href="/">
-              <Text text="Login" type="p" whiteSpace="nowrap" size={16} weight={400} />
+              <Text
+                text="Login"
+                type="p"
+                whiteSpace="nowrap"
+                size={16}
+                weight={400}
+              />
             </Link>
             <Button>
               <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={400} />

@@ -1,7 +1,4 @@
-
 import StyledComponentsRegistry from "@lib/registry";
-import FooterSection from "@organism/Footer";
-import HeroSection from "@organism/hero/HeroSection";
 import "@style/globals.css";
 import { Siteconfig } from "config/site";
 import { Poppins } from "next/font/google";
@@ -34,11 +31,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <StyledComponentsRegistry>
-          <HeroSection />
-          {children}
-          <FooterSection />
-        </StyledComponentsRegistry>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );

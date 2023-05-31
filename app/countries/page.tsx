@@ -1,15 +1,9 @@
-import CountriesList from '@organism/AllCountry';
-import React from 'react'
+import CountriesList from "@organism/AllCountry";
+import React from "react";
 
-interface pageProps {
-
-}
+interface pageProps {}
 
 const page: React.FC<pageProps> = ({}) => {
-        return (
-          <div>
-            <CountriesList />
-          </div>
-        );
-}
-export default page
+  return <CountriesList />;
+};
+export default page;

@@ -1,18 +1,20 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import { COUNTRY_FLAGS } from "../../../data/data";
+import { COUNTRY_FLAGS, sorted } from "../../../data/data";
 import { Grid } from "@atom/grid";
 import styled from "styled-components";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import CountryLayout from "@layout/sectionLayout";
 import AllCountryHead from "./allCountryHead";
-import Button from "@mui/material/Button";
 import SectionTitle from "@atom/sectionTitle";
+import Button from "@atom/button";
+import { ttColors } from "theme/colors";
+import Flex from "@atom/flex";
 
 const CountryWrapper = styled.section`
-  margin: 5rem 0;
+  // margin: 5rem 0;
 `;
 
 const Card = styled.div`
@@ -22,15 +24,13 @@ const Card = styled.div`
   padding: 16px;
   gap: 16px;
   margin-bottom: 1rem;
-
-  width: 214px;
   height: 55px;
   color: var(--secondary-color);
   /* Neutrals */
 
   background: #ffffff;
-  /* Cards Shadow */
 
+  /* Cards Shadow */
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   border-radius: 16px;
 
@@ -62,20 +62,19 @@ const Card = styled.div`
 
 const CountriesList = () => {
   const [showAll, setShowAll] = useState(false);
-
   const countriesPerPage = 50;
+  const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
   const [displayedCountries, setDisplayedCountries] = useState(
-    COUNTRY_FLAGS.slice(0, countriesPerPage)
+    countries.slice(0, countriesPerPage)
   );
 
-  const handleSeeMore = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-
+  const handleSeeMore = (e: any) => {
+    e.preventDefault();
     if (showAll) {
-      setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
+      setDisplayedCountries(countries.slice(0, countriesPerPage));
       setShowAll(false);
     } else {
-      const remainingCountries = COUNTRY_FLAGS.slice(
+      const remainingCountries = countries.slice(
         displayedCountries.length,
         displayedCountries.length + 25
       );
@@ -87,12 +86,12 @@ const CountriesList = () => {
         ]);
         if (
           displayedCountries.length + remainingCountries.length ===
-          COUNTRY_FLAGS.length
+          countries.length
         ) {
           setShowAll(true);
         }
       } else {
-        setDisplayedCountries(COUNTRY_FLAGS.slice(0, countriesPerPage));
+        setDisplayedCountries(countries.slice(0, countriesPerPage));
         setShowAll(true);
       }
     }
@@ -106,13 +105,11 @@ const CountriesList = () => {
           title="All the countries we support!"
           description="Explore our popular destinations to find the best option for your next adventure!"
           buttonText="See More"
-          onButtonClick={() => {
-            console.log("Button clicked");
-          }}
+          showButton={false}
         />
-        <Link href="/">
-          <Grid columns="repeat(5, 1fr)" gap="1.5rem">
-            {displayedCountries.map((country, index) => (
+        <Grid columns="repeat(5, 1fr)" gap="1.5rem" margin="2rem 0 0">
+          {displayedCountries.map((country, index) => (
+            <Link href="/">
               <div key={index}>
                 <Card>
                   <Image
@@ -123,14 +120,23 @@ const CountriesList = () => {
                   <Text text={country.name} type="h3" />
                 </Card>
               </div>
-            ))}
-            {COUNTRY_FLAGS.length > countriesPerPage && (
-              <Button variant="outlined" onClick={handleSeeMore}>
-                {showAll ? "See Less" : "See More"}
-              </Button>
-            )}
-          </Grid>
-        </Link>
+            </Link>
+          ))}
+        </Grid>
+        <Flex justify="center" margin="2rem 0 0">
+          {COUNTRY_FLAGS.length > countriesPerPage && (
+            <Button
+              background="transparent"
+              onClick={handleSeeMore}
+              color={ttColors.dark}
+              border={`1px solid ${ttColors.primary}`}
+              width="240px"
+              fontSize="1rem"
+            >
+              {showAll ? "See Less" : "See More"}
+            </Button>
+          )}
+        </Flex>
       </CountryLayout>
     </CountryWrapper>
   );

@@ -9,11 +9,32 @@ import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import Text from "./text";
 import Flex from "./flex";
+import { styled } from "styled-components";
+import { ttColors } from "theme/colors";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
+
+const TabWrapper = styled.div`
+  .MuiTabs-indicator {
+    background-color: ${ttColors.primary};
+    height: 3px;
+  }
+  .MuiTabs-root {
+  }
+  .css-1gsv261 {
+    border-bottom: 1px solid transparent;
+  }
+
+  .MuiTabs-flexContainer {
+    height: 100%;
+    width: 100%;
+    // justify-content: space-between;
+    gap: 0;
+  }
+`;
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -62,7 +83,7 @@ export default function CustomTab({
   ];
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <TabWrapper>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -75,7 +96,7 @@ export default function CustomTab({
             },
           }}
         >
-          {tabItems.map((tabItem) => (
+          {tabItems.map((tabItem, i) => (
             <Tab
               key={tabItem.value}
               label={
@@ -91,8 +112,9 @@ export default function CustomTab({
                 </Flex>
               }
               sx={{
+                ...(i !== 2 && { borderRight: "1px solid #ccc" }),
+                padding: "0 2rem",
                 "&.MuiTab-textColorPrimary.Mui-selected": {
-                  //   borderBottom: "2px solid red",
                   color: "var(--secondary-color)",
                 },
               }}
@@ -106,6 +128,6 @@ export default function CustomTab({
           {tabItem.content}
         </TabPanel>
       ))}
-    </Box>
+    </TabWrapper>
   );
 }

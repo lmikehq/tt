@@ -28,25 +28,23 @@ const AllCountryHeader = styled.div`
     height: 300px;
   }
 
-  & h1 {
+  & h2 {
     position: absolute;
     top: 45%;
     text-transform: uppercase;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #fff;
-    font-size: 24px;
     text-align: center;
 
     font-style: normal;
     font-weight: 700;
-    font-size: 64px;
+    font-size: 54px;
     line-height: 96px;
 
     text-shadow: 0px 4px 79px rgba(0, 0, 0, 0.25);
   }
 `;
-
 
 const Overlay = styled.div`
   position: absolute;
@@ -57,15 +55,13 @@ const Overlay = styled.div`
   background: #06062a94;
 `;
 
-
-
 const AllCountryHead = () => {
   return (
     <>
       <AllCountryHeader>
         <Image src={allCountryHeadImg} alt="" />
         <Overlay />
-        <Text text="All Countries" type="h1" />
+        <Text text="All Countries" type="h2" transform="uppercase" />
       </AllCountryHeader>
       <Breadcrumb items={items} />
     </>
