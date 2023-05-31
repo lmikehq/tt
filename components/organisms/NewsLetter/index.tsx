@@ -5,9 +5,9 @@ import Flex from "../../atoms/flex";
 // import Link from "../../atoms/link";
 import Image from "next/image";
 import Button from "@mui/material/Button";
-import Barcode from "@image/barcode.png";
-import AppLogo from "@image/appStore.png";
-import PlayStore from "@image/playStore.png";
+import Barcode from "@image/walink.png";
+import AppLogo from "@image/app-store.svg";
+import PlayStore from "@image/google-play.svg";
 
 import { Grid } from "../../atoms/grid";
 
@@ -16,8 +16,9 @@ const SubscribeWrapper = styled.div`
   left: 7.5%;
   bottom: 90%;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  background: var(--semi-bg-color);
-  z-index: -1;
+  // background: var(--semi-bg-color);
+  background: rgba(135, 206, 235, 0.6);
+  // z-index: -1;
   justify-content: center;
   align-items: center;
   width: 85%;
@@ -68,7 +69,7 @@ const Subcribe = styled.div`
     font-weight: 600;
 
     &:hover {
-        background: var(--secondary-color);
+      background: var(--secondary-color);
     }
   }
 `;
@@ -76,7 +77,7 @@ const Subcribe = styled.div`
 const NewsLetter = () => {
   return (
     <SubscribeWrapper>
-      <Flex justify='space-between'>
+      <Flex justify="space-between">
         <Subcribe className="newsLetter">
           <Text
             type="h3"
@@ -98,8 +99,14 @@ const NewsLetter = () => {
           </Flex>
         </Subcribe>
 
-        <Flex gap="1rem" align="flex-end" width='auto'>
-          <Image src={Barcode} alt="visa" width="110" height="110" style={{marginLeft: '7rem', marginBottom: '1.2rem'}} />
+        <Flex gap="1rem" align="flex-end" width="auto">
+          <Image
+            src={Barcode}
+            alt="visa"
+            width="110"
+            height="110"
+            style={{ marginLeft: "7rem", marginBottom: "1.2rem" }}
+          />
           <Flex
             direction="column"
             gap="0.5rem"
@@ -107,12 +114,8 @@ const NewsLetter = () => {
             padding="0rem 0rem 1.5rem"
             width="10rem"
           >
-            <Image src={AppLogo} alt="mastercard" height="50" />
-            <Image
-              src={PlayStore}
-              alt="american-express"
-              height="50"
-            />
+            <Image src={AppLogo} alt="mastercard"  />
+            <Image src={PlayStore} alt="american-express"  />
           </Flex>
         </Flex>
       </Flex>

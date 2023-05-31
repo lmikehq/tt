@@ -40,7 +40,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   description,
   buttonText,
   onButtonClick,
-  showButton,
+  showButton = true,
 }) => {
   return (
     <SectionTitleContainer>
@@ -49,16 +49,18 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         <Description>{description}</Description>
       </div>
 
-      <Button
-        onClick={onButtonClick}
-        background="transparent"
-        color={ttColors.dark}
-        border={`1px solid ${ttColors.primary}`}
-        width='180px'
-        fontSize="1rem"
-      >
-        {buttonText}
-      </Button>
+      {showButton && (
+        <Button
+          onClick={onButtonClick}
+          background="transparent"
+          color={ttColors.dark}
+          border={`1px solid ${ttColors.primary}`}
+          width="180px"
+          fontSize="1rem"
+        >
+          {buttonText}
+        </Button>
+      )}
     </SectionTitleContainer>
   );
 };

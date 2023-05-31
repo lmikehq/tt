@@ -47,8 +47,6 @@ function Stays() {
           legend="Home Country"
           value={home}
           onChange={(x: CountryType) => setHome(x)}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -68,8 +66,6 @@ function Stays() {
           legend="Destination"
           value={destination}
           onChange={(value: LabelType) => setDestination(value)}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -85,8 +81,6 @@ function Stays() {
           legend="Visa Type"
           value={type}
           onChange={(value: string) => setType(value)}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />

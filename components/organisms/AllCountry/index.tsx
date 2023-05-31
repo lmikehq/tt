@@ -12,6 +12,7 @@ import SectionTitle from "@atom/sectionTitle";
 import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 import Flex from "@atom/flex";
+import { urlString } from "@lib/url";
 
 const CountryWrapper = styled.section`
   // margin: 5rem 0;
@@ -48,17 +49,6 @@ const Card = styled.div`
     margin-bottom: 0.5rem;
   }
 `;
-
-// const ShowMoreButton = styled.button`
-//   margin: 1rem auto;
-//   display: flex;
-//   justify-content: center;
-//   border-radius: 4px;
-//   padding: 1.5rem 3rem;
-//   background-color: #f5f5f5;
-//   border: none;
-//   cursor: pointer;
-// `;
 
 const CountriesList = () => {
   const [showAll, setShowAll] = useState(false);
@@ -109,8 +99,11 @@ const CountriesList = () => {
         />
         <Grid columns="repeat(5, 1fr)" gap="1.5rem" margin="2rem 0 0">
           {displayedCountries.map((country, index) => (
-            <Link href="/">
-              <div key={index}>
+            <Link
+              href={`/visa/countries/${urlString(country.name)}`}
+              key={index}
+            >
+              <div>
                 <Card>
                   <Image
                     src={country.flag}
