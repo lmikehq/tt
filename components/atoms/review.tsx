@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Grid } from "@atom/grid";
 import ReviewLayout from "@layout/sectionLayout";
 import TitleSec from "./sectionTitle";
-import RatingComponent from "./ReviewStar";
+import RatingComponent from "./reviewStar";
 
 const ReviewWrapper = styled.div`
   margin: 9rem 0 0 0;

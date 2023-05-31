@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import styled from "styled-components";
 import newZealand from "@image/topCountries/newZealand.png";
@@ -24,10 +24,12 @@ const CountryWrapper = styled.section`
   align-items: flex-start;
   gap: 20px;
   margin-top: 5rem;
+  margin-bottom: 10rem;
 `;
 
 const LeftSide = styled.div`
-  flex: 1;
+  height: 365px;
+  //   flex: 1;
 `;
 
 const RightSide = styled.div`
@@ -59,7 +61,7 @@ const CountryName = styled.h3`
   margin-bottom: 20px;
   width: 365px;
   text-align: start;
-  margin-left:1.2rem;
+  margin-left: 1.2rem;
   //   height: 120px;
 `;
 
@@ -147,10 +149,7 @@ const ImageWrapper = styled.div`
   width: 100%;
   height: 100%;
   cursor: pointer;
-  
-  
 `;
-
 
 const IntervalText = styled.p`
   margin-bottom: 5px;
@@ -209,8 +208,9 @@ const TopCountriesSection: React.FC = () => {
       id: 4,
       name: "Mike Villa",
       description1:
-        "MikeVilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",  
-        description2: "Mikevilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "MikeVilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:
+        "Mikevilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: mikeVilla,
       interval: "3 days",
     },
@@ -234,7 +234,8 @@ const TopCountriesSection: React.FC = () => {
                 </CountryName>
                 <CountryDescription>
                   {countries[activeImage - 1].description1}
-                  <br/><br/>
+                  <br />
+                  <br />
                   {countries[activeImage - 1].description2}
                 </CountryDescription>
                 <Button>Apply to {countries[activeImage - 1].name}</Button>
@@ -265,7 +266,6 @@ const TopCountriesSection: React.FC = () => {
                 {activeImage === country.id || hoveredImage === country.id ? (
                   <CountryNameTooltip>{country.name}</CountryNameTooltip>
                 ) : null}
-                
               </ImageWrapper>
             ))}
           </RightSide>
