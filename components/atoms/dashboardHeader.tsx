@@ -92,23 +92,23 @@ const DashboardHeader = () => {
       {
         label: "Applications",
         value: 0,
-        content: <p>hello world</p>,
+        content: <p>Application content here</p>,
       },
       {
         label: "payment history",
         value: 1,
-        content: <p>history bro</p>,
+        content: <p>payment history here</p>,
       },
       {
         label: "Referral",
         value: 2,
-        content: <p>yoiu can be abytibg</p>,
+        content: <p>Referrals history here</p>,
       },
 
       {
         label: "Account",
         value: 3,
-        content: <p>yoiu can be abytibg</p>,
+        content: <p>Your account details here</p>,
       },
     ];
   return (
