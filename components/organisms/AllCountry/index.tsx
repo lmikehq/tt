@@ -49,16 +49,16 @@ const Card = styled.div`
   }
 `;
 
-const ShowMoreButton = styled.button`
-  margin: 1rem auto;
-  display: flex;
-  justify-content: center;
-  border-radius: 4px;
-  padding: 1.5rem 3rem;
-  background-color: #f5f5f5;
-  border: none;
-  cursor: pointer;
-`;
+// const ShowMoreButton = styled.button`
+//   margin: 1rem auto;
+//   display: flex;
+//   justify-content: center;
+//   border-radius: 4px;
+//   padding: 1.5rem 3rem;
+//   background-color: #f5f5f5;
+//   border: none;
+//   cursor: pointer;
+// `;
 
 const CountriesList = () => {
   const [showAll, setShowAll] = useState(false);
