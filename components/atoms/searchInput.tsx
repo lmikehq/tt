@@ -80,8 +80,7 @@ interface SearchProps {
   placeholder?: string;
   options: any[];
   value?: any;
-  anchorEl: any;
-  setAnchorEl: (x: any) => void;
+
   onChange: (x: any) => void;
 }
 
@@ -94,14 +93,13 @@ export default function SearchInput({
 }: // anchorEl,
 // setAnchorEl,
 SearchProps) {
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const ref = useRef<HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+  const [searchOptions, setSearchOptions] = useState<any[]>(options);
   const getWidth = (): number => {
     if (ref.current) {
       const width = ref.current.clientWidth;
@@ -111,11 +109,20 @@ SearchProps) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setInputValue("");
+    
   };
 
   const open = Boolean(anchorEl);
   const id = open ? "select-service" : undefined;
-  useEffect(() => {}, [inputValue]);
+  useEffect(() => {
+    setSearchOptions(
+      options.filter((option) =>
+        option.name.toLowerCase().includes(inputValue.toLowerCase())
+      )
+    );
+    console.log("inputValue: ", inputValue, searchOptions);
+  }, [inputValue]);
   return (
     <>
       <Box ref={ref}>
@@ -137,7 +144,7 @@ SearchProps) {
             },
             "& label": {
               color: "#1C1B1F!important",
-              fontSize: '16px!important',
+              fontSize: "16px!important",
             },
           }}
           onClick={handleClick}
@@ -209,9 +216,7 @@ SearchProps) {
                   <br />
                 </li>
               )}
-              options={[...options].filter((x) =>
-                x.name.toLowerCase().includes(inputValue.toLowerCase())
-              )}
+              options={searchOptions}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <StyledInput

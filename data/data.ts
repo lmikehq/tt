@@ -1885,6 +1885,6 @@ name: 'Jordan',
     
     
 
-
+export const sorted = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
 
 

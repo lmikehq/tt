@@ -21,7 +21,7 @@ const HeroWrapper = styled.div`
 function HeroSection() {
   return (
     <HeroWrapper>
-      <Navbar />
+      <Navbar page="home" />
       <Center>
         <div>
           <section style={{ textAlign: "center" }}>

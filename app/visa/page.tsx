@@ -1,12 +1,13 @@
-import React from 'react'
+import PopularDestinations from "@organism/popularDestination";
+import React from "react";
 
-interface pageProps {
-
-}
+interface pageProps {}
 
 const page: React.FC<pageProps> = ({}) => {
-        return (
-            <div>visa page</div>
-        );
-}
-export default page
+  return (
+    <div>
+      <PopularDestinations title="Apply to our popular countries" />
+    </div>
+  );
+};
+export default page;

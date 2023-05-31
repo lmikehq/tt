@@ -15,7 +15,7 @@ interface buttonProps {
   border?: string;
   zIndex?: string;
   margin?: string;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   styles?: CSSProperties;
 }
 
@@ -46,25 +46,25 @@ export const Button: React.FC<buttonProps> = ({
 }) => {
   return (
     <ButtonBase
-        style={{
-          padding: padding,
-          color: color || "#FFFFFF",
-          background: background || "#06062A",
-          fontWeight: fontWeight,
-          fontSize: fontSize,
-          // fontFamily: "Poppins",
-          width: width || "104px",
-          height: height || "48px",
-          borderRadius: borderRadius || "8px",
-          cursor: "pointer",
-          zIndex: zIndex,
-          border: border,
-          margin: margin,
-          ...styles,
-        }}
-        onClick={onClick}
-      >
-        {children}
+      style={{
+        padding: padding,
+        color: color || "#FFFFFF",
+        background: background || "#06062A",
+        fontWeight: fontWeight,
+        fontSize: fontSize,
+        // fontFamily: "Poppins",
+        width: width || "104px",
+        height: height || "48px",
+        borderRadius: borderRadius || "8px",
+        cursor: "pointer",
+        zIndex: zIndex,
+        border: border,
+        margin: margin,
+        ...styles,
+      }}
+      onClick={onClick}
+    >
+      {children}
       {/* </ButtonWrapper> */}
     </ButtonBase>
   );
