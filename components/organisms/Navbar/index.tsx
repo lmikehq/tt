@@ -84,7 +84,7 @@ const Navbar = ({ page }: { page: string }) => {
   const handleOpen = () => setOpen(true);
   let path = usePathname();
   let pathArray = path.split("/")[1];
-  const router = useRouter()
+  const router = useRouter();
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -122,10 +122,10 @@ const Navbar = ({ page }: { page: string }) => {
             })}
           </NavLink>
 
-          <NavLogo onClick={()=>router.push('/')}>
-            {/* <Link href="/"> */}
+          <NavLogo>
+            <Link href="/">
               <Image src={Logo} height="45" width="45" alt="TTLogo" />
-            {/* </Link> */}
+            </Link>
           </NavLogo>
 
           <NavMenu>
@@ -143,7 +143,7 @@ const Navbar = ({ page }: { page: string }) => {
               <BiDollar />
               <Text text="EN" type="span" weight={400} />
             </Flex>
-            <Link href="/">
+            <Link href="/auth/login">
               <Text
                 text="Login"
                 type="p"
@@ -152,7 +152,7 @@ const Navbar = ({ page }: { page: string }) => {
                 weight={400}
               />
             </Link>
-            <Button>
+            <Button onClick={() => router.push("/auth/register")}>
               <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={400} />
             </Button>
           </NavMenu>

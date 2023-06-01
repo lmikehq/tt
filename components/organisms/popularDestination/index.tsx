@@ -145,7 +145,7 @@ const PopularDestinations = ({
         />
         <Grid columns="repeat(3, 1fr)" gap="16px">
           {destinationCard.map((destination) => (
-            <Link key={destination.id} href="/">
+            <Link key={destination.id} href="/visa/apply">
               <Card>
                 <Flex justify="space-between" gap="1rem">
                   <Image src={destination.image} alt="" />

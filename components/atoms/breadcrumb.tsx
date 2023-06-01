@@ -1,11 +1,16 @@
-import React from "react";
-import styled from "styled-components";
-import Link from "@atom/link";
-import BreadcrumbLayout from "@layout/sectionLayout";
+"use client";
 
+import Link from "@atom/link";
+import { capitalized } from "@lib/capitalize";
+import { usePathname } from "next/navigation";
+import { RxSlash } from "react-icons/rx";
+import styled from "styled-components";
+import Flex from "./flex";
+import Text from "./text";
+import SectionLayout from "@components/layouts/sectionLayout";
 const BreadcrumbContainer = styled.div`
   font-size: 14px;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 `;
 
 const BreadcrumbItem = styled.span`
@@ -19,35 +24,63 @@ const Separator = styled.span`
   color: #999;
 `;
 
-
-
-interface BreadcrumbProps {
-  items: { id: number; label: string; url?: string }[];
+interface BreadcrumbItem {
+  id: number;
+  label: string;
+  url?: string;
 }
 
-const Breadcrumb = ({ items }: BreadcrumbProps) => {
+const Breadcrumb = () => {
+  let path = usePathname();
+  let pathArray = path.split("/");
   return (
     <BreadcrumbContainer>
-    <BreadcrumbLayout> 
-      {items.map((item, index) => (
-        <React.Fragment key={item.id}>
-          <BreadcrumbItem>
-            {index !== 0 && <Separator>/</Separator>}
-            {item.url ? (
-              <Link
-                href={item.url}
-                color="#212529"
-                textDecoration="underline !important"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              item.label
-            )}
-          </BreadcrumbItem>
-        </React.Fragment>
-      ))}
-      </BreadcrumbLayout>
+      <SectionLayout>
+        <Flex gap=".7rem" align="center" margin="1rem 0">
+          <Link href="/">
+            <Text
+              type="p"
+              text="Home"
+              size="1rem"
+              weight={600}
+              decoration="underline"
+            />
+          </Link>
+          <RxSlash color="#6C757D" />
+          {pathArray.map((item, index) => {
+            if (item === "") {
+              return null;
+            }
+            item = item.replace(/-/g, " ");
+            if (index === pathArray.length - 1) {
+              return (
+                <Text
+                  key={index}
+                  type="p"
+                  text={item}
+                  size="1rem"
+                  weight={100}
+                  decoration="none"
+                />
+              );
+            }
+            return (
+              <Flex key={index} width="fit-content" align="center" gap="1rem">
+                <Link href={pathArray.slice(0, index + 1).join("/")}>
+                  <Text
+                    type="p"
+                    text={capitalized(item)}
+                    size="1rem"
+                    weight={600}
+                    decoration="underline"
+                  />
+                </Link>
+                <RxSlash color="#6C757D" />
+              </Flex>
+            );
+          })}
+        </Flex>
+      </SectionLayout>
     </BreadcrumbContainer>
   );
 };
