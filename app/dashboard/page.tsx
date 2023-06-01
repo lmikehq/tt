@@ -10,6 +10,9 @@ import { HiPencil } from "react-icons/hi";
 import { ttColors } from "theme/colors";
 import CustomTab from "@atom/tabs";
 import SectionLayout from "@layout/sectionLayout";
+import Application from "./dashboardComponents/application";
+import PaymentHistory from "./dashboardComponents/payment";
+import Referral from "./dashboardComponents/referral";
 
 const DashboardWrapper = styled.div`
   margin: 10rem 0px;
@@ -89,19 +92,15 @@ const DashboardContent = styled.div`
   //   width: 100%;
 
   .MuiTabs-flexContainer {
-    height: 100%;
+    height: 60px;
     width: 100%;
     justify-content: space-between;
     // gap: 10px;
     box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-    border-radius: 12px;
+    border-radius: 5px;
     background: ${ttColors.defaultColor};
-    // display: flex;
-    // flex-direction: row;
     align-items: center;
     border: 1px solid gold;
-    padding: 16px 24px;
-    gap: 24px;
   }
 
   .MuiButtonBase-root {
@@ -113,22 +112,24 @@ const DashboardContent = styled.div`
   }
 `;
 
+
+
 const DashboardHeader = () => {
   const tabItems = [
     {
       label: "Applications",
       value: 0,
-      content: <p>Application content here</p>,
+        content: <Application />,
     },
     {
       label: "payment history",
       value: 1,
-      content: <p>payment history here</p>,
+      content: <PaymentHistory />,
     },
     {
       label: "Referral",
       value: 2,
-      content: <p>Referrals history here</p>,
+      content: <Referral />,
     },
 
     {
