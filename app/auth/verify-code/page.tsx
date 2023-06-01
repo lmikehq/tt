@@ -1,5 +1,5 @@
+// @next/next/no-img-element
 "use client";
-
 import Button from "@atom/button";
 // import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";

@@ -1,3 +1,5 @@
+// @next/next/no-img-element
+
 "use client";
 
 import Button from "@atom/button";
@@ -10,7 +12,6 @@ import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
 import Section from "@molecule/section";
 import { useRouter } from "next/navigation";
-import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
 function ChangePassword() {
   const router = useRouter();

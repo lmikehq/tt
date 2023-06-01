@@ -1,3 +1,5 @@
+// @next/next/no-img-element
+
 "use client";
 
 import Button from "@atom/button";

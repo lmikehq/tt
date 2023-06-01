@@ -1,3 +1,5 @@
+// @next/next/no-img-element
+
 "use client";
 
 import Button from "@atom/button";
@@ -68,7 +70,7 @@ function LoginPage() {
               <Text type="p" text="Login" color={ttColors.dark} size="20px" />
             </Button>
             <p style={{ textAlign: "center", fontSize: "16px" }}>
-              Don't have an account?{" "}
+              Do not have an account?{" "}
               <Link href="/auth/register" text="Sign up" color="#FF8682" />
             </p>
             <Flex
