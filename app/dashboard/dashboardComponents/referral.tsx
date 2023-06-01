@@ -6,6 +6,7 @@ import { Grid } from "@atom/grid";
 import Button from "@atom/button";
 import { BsClipboard } from "react-icons/bs";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import toast from "react-hot-toast";
 
 const Section = styled.div``;
 const SectionTitle = styled.div`
@@ -71,7 +72,19 @@ const Referral = styled.div`
   }
 `;
 
+// const Referrals = ({ referralLink }) => {
 const Referrals = () => {
+  const referralLink =
+    "https://thrillerstravels.com/register?ref=john_doe.2332";
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(referralLink)
+      .then(() => {
+        toast.success("Referral link copied to clipboard");
+      });
+
+  };
   const referralRecord = [
     {
       id: 1,
@@ -109,20 +122,22 @@ const Referrals = () => {
       receipt: <MdKeyboardArrowDown size="2rem" />,
     },
   ];
+
   return (
     <div>
       <Section>
         <SectionTitle>
           <Flex justify="space-between" align="center">
-            <Text type="h2" text="Referrals" />
-            <div>
+            <Text type="h2" size="25px" text="Referrals" />
+            <Flex justify="flex-end" onClick={copyToClipboard} cursor="pointer">
               <Text
-                type="h3"
-                text="https://thrillerstravels.com/register?ref=john_doe.2332"
+                type="h5"
+                size="19px"
+                decoration="underline"
+                text={referralLink}
               />
-
               <BsClipboard size="1.2rem" />
-            </div>
+            </Flex>
           </Flex>
         </SectionTitle>
         <Referral>
@@ -134,14 +149,10 @@ const Referrals = () => {
             textAlign="left"
             padding="15px 20px"
           >
-              <Text
-                type="p"
-                text="Name/Date"
-              />
-              <Text type="p" text="Referral bonus" />
-              <Text type="p" text="bonus status" />
-              <Text type="p" text="" />
-       
+            <Text type="p" text="Name/Date" />
+            <Text type="p" text="Referral bonus" />
+            <Text type="p" text="bonus status" />
+            <Text type="p" text="" />
           </Grid>
           <Grid
             columns="50% 20% 20% 10%"
@@ -151,24 +162,11 @@ const Referrals = () => {
             textAlign="left"
             padding="15px 20px"
           >
-            {/* <div>
-              <Text type="p" text="23/04/2023" />
-              <Text
-                type="h3"
-                text="Application fee for Canada - Employment visa"
-              />
-            </div>
-            <Text type="p" text="NGN 20,000" />
-            <Text type="p" text="claimed" />
-            <Button width="166px" height="48px" styles={{ marginLeft: "55px" }}>
-              <MdKeyboardArrowDown size="2rem" />
-            </Button> */}
-
             {referralRecord.map((record) => (
               <>
                 <div key={record.id}>
                   <Text type="p" text={record.date} />
-                  <Text type="h3" text={record.name} />
+                  <Text type="h5" weight="400" size="19px" text={record.name} />
                 </div>
                 <Text type="p" text={record.bonus} />
                 <Text type="p" text={record.status} />

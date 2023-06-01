@@ -13,6 +13,7 @@ import SectionLayout from "@layout/sectionLayout";
 import Application from "./dashboardComponents/application";
 import PaymentHistory from "./dashboardComponents/payment";
 import Referral from "./dashboardComponents/referral";
+import Account from "./dashboardComponents/account";
 
 const DashboardWrapper = styled.div`
   margin: 4rem 0px;
@@ -108,8 +109,8 @@ const DashboardHeader = () => {
     {
       label: "Applications",
       value: 0,
-      // content: <Application />,
-      content: <p> All application shows here </p>,
+      content: <Application />,
+    //   content: <p> All application shows here </p>,
     },
     {
       label: "payment history",
@@ -125,7 +126,7 @@ const DashboardHeader = () => {
     {
       label: "Account",
       value: 3,
-      content: <p>Your account details here</p>,
+      content: <Account />,
     },
   ];
   return (
