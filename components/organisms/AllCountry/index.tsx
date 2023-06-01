@@ -13,6 +13,7 @@ import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 import Flex from "@atom/flex";
 import { urlString } from "@lib/url";
+import allCountryHeadImg from "@image/allCountryHeaderImg.png";
 
 const CountryWrapper = styled.section`
   // margin: 5rem 0;
@@ -89,7 +90,7 @@ const CountriesList = () => {
 
   return (
     <CountryWrapper>
-      <AllCountryHead />
+      <AllCountryHead cover={allCountryHeadImg} title="ALL COUNTRIES" />
       <CountryLayout>
         <SectionTitle
           title="All the countries we support!"

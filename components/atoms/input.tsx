@@ -1,7 +1,10 @@
+"use client";
+
 import { Autocomplete, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import { CSSProperties, useState } from "react";
 import styled from "styled-components";
+import { ttColors } from "theme/colors";
 
 const StyledInput = styled.input`
   background-color: transparent;
@@ -14,6 +17,25 @@ const StyledInput = styled.input`
   &.error {
     border: 0;
     outline: 1px solid red;
+  }
+`;
+
+const StyledMuiTextField = styled(MUITextField)`
+  background-color: transparent;
+  width: 100%;
+  // border: 1px solid #bdbdbd;
+  &.error {
+    border: 0;
+    outline: 1px solid red;
+  }
+
+  .MuiOutlinedInput-input {
+    font-size: 1rem;
+    color: #1c1b1f;
+  }
+  .MuiFormLabel-root {
+    color: #1c1b1f;
+    font-size: 1rem;
   }
 `;
 
@@ -79,24 +101,22 @@ export const TextField = ({
   legend,
 }: InputProps) => {
   return (
-    <MUITextField
+    <StyledMuiTextField
       required
-      onBlur={onBlur}
-      placeholder={placeholder}
-      onPaste={onPaste}
-      value={value}
-      onChange={onChange}
+      // onBlur={onBlur}
+      defaultValue={placeholder}
+      // onPaste={onPaste}
+      // value={value}
+      // onChange={onChange}
       label={legend}
       id={id}
-      name={name}
-      disabled={readOnly}
-      style={{
-        margin,
-        padding,
-      }}
-      // id="outlined-required"
+      // name={name}
+      // disabled={readOnly}
+      // style={{
+      //   margin,
+      //   padding,
+      // }}
       // label="not requreid"
-      // defaultValue="Hello World"
     />
   );
 };

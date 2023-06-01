@@ -110,7 +110,6 @@ SearchProps) {
   const handleClose = () => {
     setAnchorEl(null);
     setInputValue("");
-    
   };
 
   const open = Boolean(anchorEl);

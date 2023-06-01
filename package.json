@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build+push":"yarn build && git add . && git commit -am 'built for push' && git pull origin main && git push"
+    "build+push": "yarn build && git add . && git commit -am 'built for push' && git pull origin main && git push"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -24,6 +24,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.8.0",
     "styled-components": "^6.0.0-rc.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "yup": "^1.2.0"
   }
 }

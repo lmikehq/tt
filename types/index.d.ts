@@ -13,3 +13,12 @@ export type ISiteConfig = {
     instagram: string
   };
 };
+
+export type Qparams = {
+  params: {
+    search?: string;
+    countryName?: string;
+    key?: string | number;
+    other?: string;
+  };
+};
