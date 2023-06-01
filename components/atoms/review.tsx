@@ -139,9 +139,7 @@ const Review = () => {
           title="Reviews"
           description="What people says about Golobe facilities."
           buttonText="See All"
-          onButtonClick={() => {
-            console.log("Button clicked");
-          }}
+          onButtonClick={() => {}}
         />
         <Grid columns="repeat(3, 1fr)" gap=".2rem">
           {reviewCard.map((review) => (

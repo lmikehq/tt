@@ -9,6 +9,7 @@ import Image, { StaticImageData } from "next/image";
 import { Grid } from "@atom/grid";
 
 import CountryLayout from "@layout/sectionLayout";
+import SectionTitle from "@atom/sectionTitle";
 
 interface Country {
   id: number;
@@ -177,10 +178,8 @@ const TopCountriesSection: React.FC = () => {
     {
       id: 1,
       name: "New Zealand",
-      description1:
-        "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
-      description2:
-        "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description1: "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:  "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: newZealand,
       interval: "3 days",
     },
@@ -221,6 +220,14 @@ const TopCountriesSection: React.FC = () => {
   return (
     <CountryWrapper>
       <CountryLayout>
+        <SectionTitle
+          title="Our top countries"
+          description="Going somewhere to celebrate this season? Whether you’re going home or somewhere to roam, we’ve got the travel tools to get you to your destination."
+          buttonText="See All"
+          onButtonClick={() => {
+            console.log("Button clicked");
+          }}
+        />
         <Grid columns="repeat(2, 1fr)" gap="1rem">
           <LeftSide>
             {activeImage !== null && (
