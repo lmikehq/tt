@@ -66,8 +66,8 @@ const Referral = styled.div`
   }
 
   & button {
-    width: 67px !important;
-    height: 48px;
+    width: 57px !important;
+    // height: 38px;
     margin-left: 10px !important;
   }
 `;

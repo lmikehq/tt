@@ -1,23 +1,18 @@
-import styled from "styled-components";
+"use client";
+
 import Text from "@atom/text";
-import { HiPencil } from "react-icons/hi";
-
+import styled from "styled-components";
 import CustomTab from "@atom/tabs";
-import { ttColors } from "theme/colors";
+import Section from "@molecule/section";
 
-const Section = styled.div``;
-const SectionTitle = styled.div``;
 const SectionTabs = styled.div`
-  .MuiBox-root.css-1gsv261 {
-    box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-    border-radius: 12px;
-  }
+  padding: 2rem 0 0;
   .MuiButtonBase-root {
-    width: 50%;
-
-    .flex__FlexWrapper-sc-996d4228-0 {
-      justify-content: center;
-    }
+    width: 100% !important;
+    max-width: 50% !important;
+  }
+  .MuiTabs-flexContainer {
+    justify-content: space-between;
   }
 `;
 
@@ -25,26 +20,22 @@ const Application = () => {
   const tabItem = [
     {
       label: "Visa",
-      icon: <HiPencil size="2rem" />,
       value: 0,
-      // content: <Visa />,
+      content: <p>visa</p>,
     },
 
     {
       label: "Flight",
-      icon: <HiPencil size="2rem" />,
       value: 1,
-      // content: <Flight />,
+      content: <p>fliht</p>,
     },
   ];
   return (
-    <Section>
-      <SectionTitle>
-        <Text type="h3" text="All application" />
-        <Text type="p" text="Upcoming" />
-      </SectionTitle>
+    <Section margin="2rem 0">
+      <Text type="h2" text="All applications" size="25px" />
+
       <SectionTabs>
-        <CustomTab tabItems={tabItem} />
+        <CustomTab tabItems={tabItem} defaultIcons />
       </SectionTabs>
     </Section>
   );

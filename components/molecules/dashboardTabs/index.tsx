@@ -35,7 +35,7 @@ function DashboardTabs() {
           //   content: <p> All application shows here </p>,
         },
         {
-          label: "payment history",
+          label: "Payment history",
           value: 1,
           content: <PaymentHistory />,
         },
