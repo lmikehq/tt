@@ -65,7 +65,7 @@ function LoginPage() {
             <Button
               width="100%"
               background={ttColors.primary}
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/dashboard")}
             >
               <Text type="p" text="Login" color={ttColors.dark} size="20px" />
             </Button>

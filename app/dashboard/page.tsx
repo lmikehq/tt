@@ -15,7 +15,7 @@ import PaymentHistory from "./dashboardComponents/payment";
 import Referral from "./dashboardComponents/referral";
 
 const DashboardWrapper = styled.div`
-  margin: 10rem 0px;
+  margin: 4rem 0px;
 `;
 const DashboardCoverPicture = styled.div`
   position: relative;
@@ -89,20 +89,11 @@ const ProfileInfomation = styled.div`
 
 const DashboardContent = styled.div`
   margin-top: 250px;
-  //   width: 100%;
 
-  .MuiTabs-flexContainer {
-    height: 60px;
-    width: 100%;
-    justify-content: space-between;
-    // gap: 10px;
+  .MuiBox-root.css-1gsv261 {
     box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-    border-radius: 5px;
-    background: ${ttColors.defaultColor};
-    align-items: center;
-    border: 1px solid gold;
+    border-radius: 12px;
   }
-
   .MuiButtonBase-root {
     width: 25%;
 
@@ -112,14 +103,13 @@ const DashboardContent = styled.div`
   }
 `;
 
-
-
 const DashboardHeader = () => {
   const tabItems = [
     {
       label: "Applications",
       value: 0,
-        content: <Application />,
+      // content: <Application />,
+      content: <p> All application shows here </p>,
     },
     {
       label: "payment history",
@@ -178,6 +168,7 @@ const DashboardHeader = () => {
             <Text type="p" text="john.deo@gmail.com" />
           </ProfileInfomation>
         </DashboardProfilePictue>
+
         <DashboardContent>
           <CustomTab tabItems={tabItems} />
         </DashboardContent>
