@@ -12,7 +12,7 @@ import Section from "@molecule/section";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
-function VerifyCode() {
+function ChangePassword() {
   const router = useRouter();
   return (
     <SectionLayout>
@@ -20,25 +20,16 @@ function VerifyCode() {
         <Section>
           <Section width="90%">
             <img src={logo.src} alt="logo" height="60px" />
-            <Flex
-              margin="2rem 0 0 "
-              cursor="pointer"
-              align="center"
-              gap=".5rem"
-              onClick={() => router.push("/auth/login")}
-            >
-              <IoIosArrowBack />
-              <Text type="p" text="Back to login" size="17px" />
-            </Flex>
+
             <Text
               type="h1"
               margin="2rem 0 1rem"
-              text="Verify Code"
+              text="Set a password"
               size="20px"
             />
             <Text
               type="p"
-              text="An authentication code has been sent to your email."
+              text="Your previous password has been reseted. Please set a new password for your account."
               size="17px"
             />
             <Flex
@@ -47,19 +38,23 @@ function VerifyCode() {
               gap="2rem"
               overflow="unset"
             >
-              <TextField legend="Enter Code" placeholder="7789BM6X" />
-              <p style={{ fontSize: "16px" }}>
-                Did not receive a code?{" "}
-                <span style={{ color: "#FF8682" }}>Resend</span>
-              </p>
+              <TextField
+                legend="Create Password"
+                placeholder="7789BM6X@@H&$K_"
+              />
+              <TextField
+                legend="Re-enter Password"
+                placeholder="7789BM6X@@H&$K_"
+              />
+
               <Button
                 width="100%"
                 background={ttColors.primary}
-                onClick={() => router.push("/auth/change-password")}
+                onClick={() => router.push("/auth/login")}
               >
                 <Text
                   type="p"
-                  text="Verify"
+                  text="Set password"
                   color={ttColors.dark}
                   size="20px"
                 />
@@ -75,4 +70,4 @@ function VerifyCode() {
   );
 }
 
-export default VerifyCode;
+export default ChangePassword;
