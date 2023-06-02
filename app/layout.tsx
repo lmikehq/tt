@@ -2,6 +2,7 @@ import StyledComponentsRegistry from "@lib/registry";
 import "@style/globals.css";
 import { Siteconfig } from "config/site";
 import { Poppins } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: "100",
@@ -31,6 +32,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
+        <Toaster />
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

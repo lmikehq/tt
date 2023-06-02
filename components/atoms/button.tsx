@@ -17,6 +17,7 @@ interface buttonProps {
   margin?: string;
   onClick?: (e: any) => void;
   styles?: CSSProperties;
+  lineHeight?: string;
 }
 
 const ButtonWrapper = styled.button`
@@ -43,6 +44,7 @@ export const Button: React.FC<buttonProps> = ({
   margin,
   onClick,
   styles,
+  lineHeight,
 }) => {
   return (
     <ButtonBase
@@ -60,6 +62,7 @@ export const Button: React.FC<buttonProps> = ({
         zIndex: zIndex,
         border: border,
         margin: margin,
+        lineHeight: lineHeight,
         ...styles,
       }}
       onClick={onClick}

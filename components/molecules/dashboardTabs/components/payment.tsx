@@ -26,13 +26,10 @@ const History = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  //   padding: 32px 24px;
-  //   gap: 32px;
 
   width: 100%;
   height: 303px;
 
-  /* Neutrals */
 
   background: #ffffff;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
@@ -102,7 +99,7 @@ const PaymentHistory = () => {
     <div>
       <Section>
         <SectionTitle>
-          <Text type="h2" text="Payment History" />
+          <Text type="h2" size="25px" text="Payment History" />
         </SectionTitle>
         <History>
           <Grid
@@ -114,23 +111,26 @@ const PaymentHistory = () => {
             padding="15px 20px"
           >
             {paymentRecords.map((record) => (
-                <>
+              <>
                 <div key={record.id}>
-                    <Text type="p" text={record.date} />
-                    <Text
-                type="h3"
-                text={record.description}
-              />
-            </div>
-            <Text type="p" text={record.amount} />
-            <Button width="166px" height="48px" styles={{ marginLeft: "55px" }}>
-              {record.receipt}
-            </Button>
-            </>
-                
+                  <Text type="p" text={record.date} />
+                  <Text
+                    type="h5"
+                    weight="400"
+                    size="19px"
+                    text={record.description}
+                  />
+                </div>
+                <Text type="p" text={record.amount} />
+                <Button
+                  width="166px"
+                  height="48px"
+                  styles={{ marginLeft: "55px" }}
+                >
+                  {record.receipt}
+                </Button>
+              </>
             ))}
-
-
           </Grid>
         </History>
       </Section>
