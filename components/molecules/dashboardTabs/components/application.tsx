@@ -4,6 +4,7 @@ import Text from "@atom/text";
 import styled from "styled-components";
 import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
+import Visa from "./visa";
 
 const SectionTabs = styled.div`
   padding: 2rem 0 0;
@@ -21,7 +22,7 @@ const Application = () => {
     {
       label: "Visa",
       value: 0,
-      content: <p>visa</p>,
+      content: <Visa />,
     },
 
     {

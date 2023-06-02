@@ -12,6 +12,8 @@ interface TextProps {
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
   hoverColor?: string;
+  opacity?: CSSProperties["opacity"];
+  letterSpacing?: CSSProperties["letterSpacing"];
   transform?:
     | "none"
     | "full-width"
@@ -35,6 +37,8 @@ export const Text: React.FC<TextProps> = ({
   margin,
   padding,
   decoration,
+  opacity,
+  letterSpacing,
   cursor,
   styles = {},
 }) => {
@@ -49,6 +53,8 @@ export const Text: React.FC<TextProps> = ({
     textTransform: transform,
     margin,
     padding,
+    opacity,
+    letterSpacing,
     cursor,
   };
 

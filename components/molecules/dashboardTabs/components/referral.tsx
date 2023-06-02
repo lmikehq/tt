@@ -168,8 +168,8 @@ const Referrals = () => {
                   <Text type="p" text={record.date} />
                   <Text type="h5" weight="400" size="19px" text={record.name} />
                 </div>
-                <Text type="p" text={record.bonus} />
-                <Text type="p" text={record.status} />
+                <Text type="h5" weight="400" size="19px" text={record.bonus} />
+                <Text type="h5" weight="400" size="19px" text={record.status} />
                 <Button
                   width="166px"
                   height="48px"
