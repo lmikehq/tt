@@ -16,6 +16,7 @@ import Button from "@atom/button";
 import { Grid } from "@atom/grid";
 import { usePathname, useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
+import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 
 // Modal from material ui ends
 
@@ -80,8 +81,8 @@ const Divider = styled.div`
 `;
 
 const Navbar = ({ page }: { page: string }) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpen = () => setModalOpen(true);
   let path = usePathname();
   let pathArray = path.split("/")[1];
   const router = useRouter();
@@ -143,6 +144,10 @@ const Navbar = ({ page }: { page: string }) => {
               <BiDollar />
               <Text text="EN" type="span" weight={400} />
             </Flex>
+            <LanguageCurrencyModal
+              open={modalOpen}
+              handleClose={() => setModalOpen(!modalOpen)}
+            />
             <Link href="/auth/login">
               <Text
                 text="Login"

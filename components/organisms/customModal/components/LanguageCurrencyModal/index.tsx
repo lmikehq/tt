@@ -10,9 +10,23 @@ const Form = styled.form`
   width: 200px;
   margin: auto;
 `;
-function LanguageCurrencyModal() {
+
+interface modalProps {
+  children?: React.ReactNode;
+  width?: string;
+  height?: string;
+  handleClose?: () => void;
+  open: boolean;
+}
+
+function LanguageCurrencyModal({ open, handleClose }: modalProps) {
   return (
-    <CustomModal width="400px" height="400px" open={true}>
+    <CustomModal
+      width="400px"
+      height="400px"
+      open={open}
+      handleClose={() => handleClose}
+    >
       <>
         <Typography
           id="transition-modal-title"

@@ -5,7 +5,7 @@ interface modalProps {
   children: React.ReactNode;
   width?: string;
   height?: string;
-  handleClose?: () => void;
+  handleClose: () => void;
   open: boolean;
 }
 
@@ -30,8 +30,8 @@ function CustomModal({
         },
       }}
       sx={{
-        width: width || '600px',
-        height: height || '400px',
+        width: width || "600px",
+        height: height || "400px",
       }}
     >
       <Fade in={open}>
