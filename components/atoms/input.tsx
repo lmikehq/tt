@@ -41,6 +41,7 @@ const StyledMuiTextField = styled(MUITextField)`
 
 export interface InputProps {
   onChange?: () => void;
+  onKeyDown?: () => void;
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: () => void;
@@ -56,6 +57,7 @@ export interface InputProps {
 
 const Input = ({
   onChange,
+  onKeyDown,
   onPaste,
   placeholder,
   value,
@@ -75,6 +77,7 @@ const Input = ({
       onPaste={onPaste}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       id={id}
       readOnly={readOnly}
       name={name}
@@ -89,6 +92,7 @@ const Input = ({
 
 export const TextField = ({
   onChange,
+  onKeyDown,
   onPaste,
   placeholder,
   value,
@@ -123,6 +127,7 @@ export const TextField = ({
 
 export const AutoComplete = ({
   onChange,
+  onKeyDown,
   onPaste,
   placeholder,
   value,
