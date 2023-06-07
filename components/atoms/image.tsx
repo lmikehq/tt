@@ -8,6 +8,9 @@ interface imageProps {
   styles?: CSSProperties;
   border?: string;
   borderRadius?: string;
+  background?: string;
+  padding?: string;
+  margin?: string;
 }
 
 const Image: React.FC<imageProps> = (props: imageProps) => {

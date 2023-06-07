@@ -40,7 +40,8 @@ const StyledMuiTextField = styled(MUITextField)`
 `;
 
 export interface InputProps {
-  onChange?: () => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: () => void;
@@ -52,10 +53,13 @@ export interface InputProps {
   id?: string;
   readOnly?: boolean;
   legend?: string;
+  border?: string;
+  width?: string;
 }
 
 const Input = ({
   onChange,
+  onKeyDown,
   onPaste,
   placeholder,
   value,
@@ -66,6 +70,8 @@ const Input = ({
   name,
   readOnly,
   padding,
+  border,
+  width,
 }: InputProps) => {
   return (
     <StyledInput
@@ -75,6 +81,7 @@ const Input = ({
       onPaste={onPaste}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
       id={id}
       readOnly={readOnly}
       name={name}
@@ -82,6 +89,8 @@ const Input = ({
       style={{
         margin,
         padding,
+        border,
+        width,
       }}
     />
   );
@@ -89,6 +98,7 @@ const Input = ({
 
 export const TextField = ({
   onChange,
+  onKeyDown,
   onPaste,
   placeholder,
   value,
@@ -99,6 +109,8 @@ export const TextField = ({
   readOnly,
   padding,
   legend,
+  border,
+  width,
 }: InputProps) => {
   return (
     <StyledMuiTextField
@@ -123,6 +135,7 @@ export const TextField = ({
 
 export const AutoComplete = ({
   onChange,
+  onKeyDown,
   onPaste,
   placeholder,
   value,
