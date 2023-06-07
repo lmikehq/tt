@@ -2,7 +2,7 @@
 
 import { Autocomplete, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, KeyboardEventHandler, useState } from "react";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 
@@ -41,7 +41,7 @@ const StyledMuiTextField = styled(MUITextField)`
 
 export interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: () => void;
@@ -55,6 +55,7 @@ export interface InputProps {
   legend?: string;
   border?: string;
   width?: string;
+  height?: string;
 }
 
 const Input = ({
@@ -72,6 +73,7 @@ const Input = ({
   padding,
   border,
   width,
+  height,
 }: InputProps) => {
   return (
     <StyledInput
@@ -91,6 +93,7 @@ const Input = ({
         padding,
         border,
         width,
+        height,
       }}
     />
   );

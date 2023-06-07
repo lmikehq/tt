@@ -23,6 +23,7 @@ import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurr
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
+  height:70px;
   background: ${({ page }) =>
     page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
