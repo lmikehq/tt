@@ -1,13 +1,12 @@
-import ChatInterface from '@molecule/chatTabs/components/chatInterface';
-import Sidebar from '@molecule/chatTabs/components/sideBar';
+import Chat from "@molecule/chatTabs/components/chat";
+
 
 
 
 export default function Home() {
   return (
     <>
-      <Sidebar />
-      <ChatInterface />
+      <Chat />
     </>
   );
 }

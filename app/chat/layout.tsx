@@ -1,4 +1,4 @@
-import FooterSection from "@organism/Footer";
+// import FooterSection from "@organism/Footer";
 import Navbar from "@organism/Navbar";
 
 interface layoutProps {
@@ -10,7 +10,7 @@ export default function ChatLayout({ children }: layoutProps) {
     <>
       <Navbar page="dashboard" />
       {children}
-      <FooterSection />
+      {/* <FooterSection /> */}
     </>
   );
 }

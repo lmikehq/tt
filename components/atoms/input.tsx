@@ -40,8 +40,8 @@ const StyledMuiTextField = styled(MUITextField)`
 `;
 
 export interface InputProps {
-  onChange?: () => void;
-  onKeyDown?: () => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: () => void;
@@ -53,6 +53,8 @@ export interface InputProps {
   id?: string;
   readOnly?: boolean;
   legend?: string;
+  border?: string;
+  width?: string;
 }
 
 const Input = ({
@@ -68,6 +70,8 @@ const Input = ({
   name,
   readOnly,
   padding,
+  border,
+  width,
 }: InputProps) => {
   return (
     <StyledInput
@@ -85,6 +89,8 @@ const Input = ({
       style={{
         margin,
         padding,
+        border,
+        width,
       }}
     />
   );
@@ -103,6 +109,8 @@ export const TextField = ({
   readOnly,
   padding,
   legend,
+  border,
+  width,
 }: InputProps) => {
   return (
     <StyledMuiTextField
