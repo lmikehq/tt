@@ -92,9 +92,9 @@ const Navbar = ({ page }: { page: string }) => {
         <Grid columns="1fr 1fr 1fr" align="center">
           <NavLink>
             {[
-              { name: "Book Visa", url: "visa", icon: <GiPassport /> },
-              { name: "Find Flight", url: "flight", icon: <IoAirplaneSharp /> },
-              { name: "Find Stays", url: "stay", icon: <IoBedSharp /> },
+              { name: "Book visa", url: "visa", icon: <GiPassport /> },
+              { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
+              { name: "Find stays", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;
               console.log("active: ", active);
