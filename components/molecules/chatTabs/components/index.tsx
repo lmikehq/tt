@@ -198,15 +198,15 @@ const Chat = () => {
       } catch (error) {
         console.error("Error sending the message:", error);
       }
-    //   if (chatRef?.current)
-        // chatRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      if (chatRef?.current)
+        chatRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       setMessage("");
 
-      setTimeout(() => {
-        if (chatRef?.current) {
-          chatRef.current.scrollTop = chatRef.current.scrollHeight;
-        }
-      }, 0);
+      //   setTimeout(() => {
+      //     if (chatRef?.current) {
+      //       chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      //     }
+      //   }, 0);
     }
   };
 
