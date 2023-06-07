@@ -172,7 +172,7 @@ const Chat = () => {
       handleMessageSend();
     }
   };
-  const chatRef = useRef < HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
 
   const handleMessageSend = async () => {
     if (message.trim() !== "") {
@@ -260,6 +260,7 @@ const Chat = () => {
                 height="64px"
                 margin=".5rem 0rem"
                 background={active ? "rgba(6, 6, 42, 0.73)" : "transparent"}
+                key={index}
                 color={active ? "#ffffff" : ttColors.dark}
               >
                 <Flex>
