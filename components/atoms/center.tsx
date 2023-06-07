@@ -4,10 +4,12 @@ function Center({
   children,
   width,
   height,
+  margin,
 }: {
   children: React.ReactNode;
   width?: string;
   height?: string;
+  margin?: string;
 }) {
   return (
     <section
@@ -17,6 +19,7 @@ function Center({
         alignItems: "center",
         width: width || "100%",
         height: height || "100%",
+        margin: margin || "0 auto",
       }}
     >
       {children}

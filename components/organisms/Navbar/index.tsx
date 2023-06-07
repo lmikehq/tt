@@ -23,6 +23,7 @@ import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurr
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
+  height:70px;
   background: ${({ page }) =>
     page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
@@ -92,9 +93,9 @@ const Navbar = ({ page }: { page: string }) => {
         <Grid columns="1fr 1fr 1fr" align="center">
           <NavLink>
             {[
-              { name: "Book Visa", url: "visa", icon: <GiPassport /> },
-              { name: "Find Flight", url: "flight", icon: <IoAirplaneSharp /> },
-              { name: "Find Stays", url: "stay", icon: <IoBedSharp /> },
+              { name: "Book visa", url: "visa", icon: <GiPassport /> },
+              { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
+              { name: "Find stays", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;
               console.log("active: ", active);
