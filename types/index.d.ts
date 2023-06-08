@@ -22,3 +22,10 @@ export type Qparams = {
     other?: string;
   };
 };
+
+
+export interface IFee {
+  name: string;
+  amount: string;
+  type?: string;
+}

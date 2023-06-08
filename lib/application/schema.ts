@@ -1,15 +1,15 @@
 import * as yup from "yup";
 
 export const detailsSchema = yup.object({
-  home: yup.string().required(),
-  destination: yup.string().required(),
+  home: yup.object().required(),
+  destination: yup.object().required(),
   travelDate: yup.date().required(),
   travellingBy: yup.string().required(),
 });
 
 export const detailsKeys = {
-  home: "",
-  destination: "",
+  home: {},
+  destination: {},
   travelDate: "",
   travellingBy: "",
 };
@@ -88,7 +88,14 @@ export const otherInforKeys = {
   uploadedDocuments: [],
 };
 
-export const formInitialValues = {
+export const visaSchema = {
+  ...detailsSchema,
+  ...edAndEmpSchema,
+  ...personalInfoSchema,
+  ...otherInfoSchema,
+};
+
+export const visaInitVals = {
   ...detailsKeys,
   ...edAndEmpKeys,
   ...pesonalInfoKeys,

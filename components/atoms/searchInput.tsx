@@ -93,13 +93,13 @@ export default function SearchInput({
 }: // anchorEl,
 // setAnchorEl,
 SearchProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [_inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const ref = useRef<HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [searchOptions, setSearchOptions] = useState<any[]>(options);
+  // const [searchOptions, setSearchOptions] = useState<any[]>(options);
   const getWidth = (): number => {
     if (ref.current) {
       const width = ref.current.clientWidth;
@@ -114,14 +114,6 @@ SearchProps) {
 
   const open = Boolean(anchorEl);
   const id = open ? "select-service" : undefined;
-  useEffect(() => {
-    setSearchOptions(
-      options.filter((option) =>
-        option.name.toLowerCase().includes(inputValue.toLowerCase())
-      )
-    );
-    console.log("inputValue: ", inputValue, searchOptions);
-  }, [inputValue]);
   return (
     <>
       <Box ref={ref}>
@@ -136,7 +128,7 @@ SearchProps) {
                 top: "50%",
                 display: "flex",
                 justifyContent: "center",
-                width: "86%",
+                width: "92%",
               },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -192,11 +184,11 @@ SearchProps) {
                   return;
                 }
                 if (newValue !== null) {
+                  //*** refactoring */
+                  // the function should run before dropdown modal closes which is not the case currently!
+                  handleClose();
                   onChange(newValue);
-                  console.log("double it and give to next function");
-                  // open next tab
                 }
-                handleClose();
               }}
               disableCloseOnSelect
               PopperComponent={PopperComponent}
@@ -215,7 +207,7 @@ SearchProps) {
                   <br />
                 </li>
               )}
-              options={searchOptions}
+              options={options}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <StyledInput
@@ -331,11 +323,9 @@ export function SearchInputAsString({
                   return;
                 }
                 if (newValue !== null) {
+                  handleClose();
                   onChange(newValue);
-                  console.log("double it and give to next function");
-                  // open next tab
                 }
-                handleClose();
               }}
               disableCloseOnSelect
               PopperComponent={PopperComponent}
@@ -370,3 +360,5 @@ export function SearchInputAsString({
     </>
   );
 }
+
+

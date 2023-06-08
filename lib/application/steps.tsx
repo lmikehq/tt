@@ -1,25 +1,28 @@
 import TripDetails from "@organism/form/details";
+import { FormikConfig } from "formik";
 import {
-  detailsKeys,
   edAndEmpKeys,
   otherInforKeys,
   pesonalInfoKeys,
+  visaInitVals,
 } from "./schema";
 
 interface IFormStep {
   id: number;
   title: string;
   content: React.ReactNode;
-  valKeys: any;
+  valKeys?: any;
+  // formikConfig?: any
 }
 
-export const getSteps = (): IFormStep[] => {
+export const getSteps = (
+  formikConfig: any
+): IFormStep[] => {
   return [
     {
       id: 1,
       title: "Your trip details",
-      content: <TripDetails title="Your trip details" />,
-      valKeys: Object.keys(detailsKeys),
+      content: <TripDetails title="Your trip details" formik={formikConfig} />,
     },
     {
       id: 2,

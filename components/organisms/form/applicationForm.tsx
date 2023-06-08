@@ -9,6 +9,7 @@ import Spinner from "@components/icons/spinner";
 import { getSteps } from "@lib/application/steps";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
+import { FormikConfig, useFormik } from "formik";
 import { useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import {
@@ -16,12 +17,11 @@ import {
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
 import { ttColors } from "theme/colors";
+import { visaInitVals, visaSchema } from "@lib/application/schema";
+import useFormikHook from "hook/useFormik";
+import { feeItems } from "data/utilData";
+import { IFee } from "types";
 
-interface IFee {
-  name: string;
-  amount: string;
-  type?: string;
-}
 
 const ApplicationForm = () => {
   const [currentPhase, setCurrentPhase] = useState(1);
@@ -44,32 +44,13 @@ const ApplicationForm = () => {
     setShownFees(feeItems);
     setNextStepLoading(false);
   };
-
-  const feeItems: IFee[] = [
-    {
-      name: "Fees",
-      amount: "Price",
-      type: "head",
-    },
-    {
-      name: "Application Fee",
-      amount: "N20,000",
-    },
-    {
-      name: "Standard processing fee",
-      amount: "0",
-    },
-    {
-      name: "Administrative charge",
-      amount: "0",
-    },
-    {
-      name: "VAT",
-      amount: "0",
-    },
-  ];
+  
   const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
-  const step = getSteps().find((x) => x.id === currentPhase);
+
+  const formik = useFormikHook(visaInitVals, visaSchema);
+
+  
+  const step = getSteps(formik).find((x) => x.id === currentPhase);
   return (
     <>
       <Flex
@@ -82,7 +63,7 @@ const ApplicationForm = () => {
       >
         {step?.content}
         <Section width="40%">
-          <Section width="80%">
+          <Section width="90%">
             <Flex align="center" justify="space-between">
               <Text type="p" text="Nigeria" size="20px" weight="bold" />
               <HiOutlineArrowNarrowRight size={30} />
