@@ -32,7 +32,6 @@ function DashboardTabs() {
           label: "Applications",
           value: 0,
           content: <Application />,
-          //   content: <p> All application shows here </p>,
         },
         {
           label: "Payment history",

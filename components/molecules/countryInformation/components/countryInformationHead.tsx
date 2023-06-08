@@ -5,9 +5,7 @@ import styled from "styled-components";
 import Text from "@atom/text";
 import Breadcrumb from "@atom/breadcrumb";
 
-
-
-const AllCountryHeader = styled.div`
+const CountryInformationHeader = styled.div`
   position: relative;
   width: 100%;
   height: 332px;
@@ -45,7 +43,7 @@ const Overlay = styled.div`
   background: #06062a94;
 `;
 
-const AllCountryHead = ({
+const CountryInformationHead = ({
   cover,
   title,
 }: {
@@ -54,14 +52,14 @@ const AllCountryHead = ({
 }) => {
   return (
     <>
-      <AllCountryHeader>
-        <Image src={cover} alt="" />
+      <CountryInformationHeader>
+        <Image src={cover} alt="nigeriaFlag" />
         <Overlay />
         <Text text={title} type="h2" transform="uppercase" />
-      </AllCountryHeader>
+      </CountryInformationHeader>
       <Breadcrumb />
     </>
   );
 };
 
-export default AllCountryHead;
+export default CountryInformationHead;
