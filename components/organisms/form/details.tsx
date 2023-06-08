@@ -1,8 +1,10 @@
+import { DatePicker } from "@atom/datepicker";
 import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { FormikValues, useFormik } from "formik";
+import dayjs from "dayjs";
+import { FormikValues } from "formik";
 
 interface formProps {
   title: string;
@@ -57,27 +59,16 @@ function TripDetails({ title, formik }: formProps) {
 
         <Section margin="0 0 2rem">
           <Text type="p" text="When can you travel?" margin="1rem 0 " />
-          <SearchInput
-            options={COUNTRY_FLAGS.map((x) => ({
-              name: x.name,
-              flag: x.flag,
-              code: x.code,
-            }))}
+          <DatePicker
             onChange={(x) => formik.setFieldValue("travelDate", x)}
-          >
-            <Text
-              type="p"
-              text={formik?.values?.travelDate}
-              color="#1C1B1F"
-              weight={100}
-              styles={{ cursor: "pointer" }}
-            />
-          </SearchInput>
+            value={dayjs(formik?.values?.travelDate || new Date())}
+            
+          />
         </Section>
         <Section margin="0 0 2rem">
           <Text type="p" text="Traveling by" margin="1rem 0 " />
           <SearchInputAsString
-            options={['Air', 'Land', 'Sea', 'Other']}
+            options={["Air", "Land", "Sea", "Other"]}
             onChange={(x) => formik.setFieldValue("travellingBy", x)}
           >
             <Text

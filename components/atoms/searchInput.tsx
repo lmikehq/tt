@@ -267,7 +267,7 @@ export function SearchInputAsString({
                 top: "50%",
                 display: "flex",
                 justifyContent: "center",
-                width: "86%",
+                width: "92%",
               },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
