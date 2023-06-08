@@ -15,7 +15,7 @@ export default function Home() {
       <Link href="/chat">
         <Flex
           justify="center"
-          padding="1rem 0"
+          padding="1.1rem 0"
           gap="2rem"
           align="center"
           background="#132128"
