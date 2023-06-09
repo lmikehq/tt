@@ -134,6 +134,9 @@ SearchProps) {
               color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
+            "& input": {
+              height: "18px",
+            },
           }}
           onClick={handleClick}
           label={legend}
@@ -258,15 +261,18 @@ export function SearchInputAsString({
           sx={{
             width: "100%",
             fontSize: 16,
-            "& .MuiInputAdornment-root":
-              {
-                position: "absolute",
-                top: "50%",
-                left: "-4%",
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-              },
+            "& .MuiInputAdornment-root": {
+              position: "absolute",
+              top: "50%",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            },
+            "& svg": {
+              position: "absolute",
+              right: "25px",
+              bottom: "-10px",
+            },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
             },
@@ -274,9 +280,9 @@ export function SearchInputAsString({
               color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
-            '& input': {
-              height: '18px'
-            }
+            "& input": {
+              height: "18px",
+            },
           }}
           onClick={handleClick}
           label={legend}

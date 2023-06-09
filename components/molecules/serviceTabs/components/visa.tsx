@@ -39,7 +39,7 @@ function Visa() {
   return (
     <Section>
       <Grid
-        gap="1rem"
+        gap="2rem"
         justify="space-between"
         columns="1fr 1fr 1.5fr"
         margin="4rem 0 0"

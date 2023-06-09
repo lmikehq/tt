@@ -54,7 +54,7 @@ const ApplicationForm = () => {
         background="#FFFFFF"
         borderRadius="16px"
         styles={{ boxShadow: "4px 4px 26px rgba(0, 0, 0, 0.25)" }}
-        height="1000px"
+        height="auto"
         padding="2rem"
         justify="space-between"
       >

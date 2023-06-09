@@ -25,6 +25,10 @@ export const personalInfoSchema = yup.object({
   idNumber: yup.string().required(),
   residentialAddress: yup.string().required(),
   dateOfBirth: yup.date().required(),
+  maritalStatus: yup.string().required(),
+  partnersName: yup.string(),
+  facebookUsername: yup.string(),
+  linkedinOrInstagram: yup.string(),
 });
 
 export const pesonalInfoKeys = {
@@ -38,6 +42,10 @@ export const pesonalInfoKeys = {
   idNumber: "",
   residentialAddress: "",
   dateOfBirth: "",
+  maritalStatus: "",
+  partnersName: "",
+  facebookUsername: "",
+  linkedinOrInstagram: ''
 };
 
 export const edAndEmpSchema = yup.object({
