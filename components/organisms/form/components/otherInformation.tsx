@@ -15,7 +15,7 @@ interface formProps {
   index: number;
 }
 
-function PersonalInfo({ formik, steps, index }: formProps) {
+function OtherInformation({ formik, steps, index }: formProps) {
   return (
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
@@ -54,59 +54,15 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Email Address" margin="1rem 0 " />
+          <Text type="p" text="First and Middle Name" margin="1rem 0 " />
           <Input
             addon={
-              validateEmail(formik?.values?.email) ? (
+              formik?.values?.firstName?.length > 5 ? (
                 <AiOutlineCheck color="#3BB98E" />
               ) : undefined
             }
-            value={formik.values.email}
-            onChange={(x) => formik.setFieldValue("email", x.target.value)}
-          />
-        </Section>
-
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
-          <Section>
-            <Text type="p" text="Place of Origin" margin="1rem 0 " />
-            <Input
-              addon={
-                formik?.values?.placeOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.placeOfOrigin}
-              onChange={(x) =>
-                formik.setFieldValue("placeOfOrigin", x.target.value)
-              }
-            />
-          </Section>
-          <Section>
-            <Text type="p" text="State of Origin" margin="1rem 0 " />
-            <Input
-              addon={
-                formik?.values?.stateOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.stateOfOrigin}
-              onChange={(x) =>
-                formik.setFieldValue("stateOfOrigin", x.target.value)
-              }
-            />
-          </Section>
-        </Flex>
-
-        <Section>
-          <Text type="p" text="LG. of Origin" margin="1rem 0 " />
-          <Input
-            addon={
-              validateEmail(formik?.values?.email) ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik.values.email}
-            onChange={(x) => formik.setFieldValue("email", x.target.value)}
+            value={formik.values.firstName}
+            onChange={(x) => formik.setFieldValue("firstName", x.target.value)}
           />
         </Section>
       </form>
@@ -114,4 +70,4 @@ function PersonalInfo({ formik, steps, index }: formProps) {
   );
 }
 
-export default PersonalInfo;
+export default OtherInformation;

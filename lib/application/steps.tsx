@@ -2,6 +2,7 @@ import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
 import { edAndEmpKeys, otherInforKeys } from "./schema";
 import EducationAndEmploymentInfo from "@organism/form/components/edAndEmployment";
+import OtherInformation from "@organism/form/components/otherInformation";
 
 interface IFormStep {
   id: number;
@@ -54,7 +55,18 @@ export const getSteps = (formikConfig: any): IFormStep[] => {
     {
       id: 4,
       title: "Other information",
-      content: <p>other informations</p>,
+      content: (
+        <OtherInformation
+          formik={formikConfig}
+          steps={[
+            "Your trip details",
+            "Personal information",
+            "Education and employment",
+            "Other information",
+          ]}
+          index={3}
+        />
+      ),
       valKeys: Object.keys(otherInforKeys),
     },
   ];
