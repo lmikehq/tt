@@ -97,10 +97,25 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 ) : undefined
               }
               value={formik.values.stateOfOrigin}
-              onChange={(x) => formik.setFieldValue("stateOfOrigin", x.target.value)}
+              onChange={(x) =>
+                formik.setFieldValue("stateOfOrigin", x.target.value)
+              }
             />
           </Section>
         </Flex>
+
+        <Section>
+          <Text type="p" text="LG. of Origin" margin="1rem 0 " />
+          <Input
+            addon={
+              validateEmail(formik?.values?.email) ? (
+                <AiOutlineCheck color="#3BB98E" />
+              ) : undefined
+            }
+            value={formik.values.email}
+            onChange={(x) => formik.setFieldValue("email", x.target.value)}
+          />
+        </Section>
       </form>
     </Section>
   );
