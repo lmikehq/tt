@@ -1,16 +1,14 @@
 "use client";
 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker as MuiDatepicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { addDays } from "date-fns";
+import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { DateRange, Range, RangeKeyDict } from "react-date-range";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker as MuiDatepicker } from "@mui/x-date-pickers/DatePicker";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { TextField } from "@mui/material";
-import Section from "@molecule/section";
-import { Dayjs } from "dayjs";
 
 interface BlockDatePickerProps {
   value?: Range;
@@ -67,8 +65,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value }) => {
         sx={{
           width: "100%",
           cursor: "pointer",
+          "& input": {
+            color: "#1C1B1F",
+            fontWeight: 100,
+          },
         }}
-        // renderInput={(params) => <TextField {...params} />}
       />
     </LocalizationProvider>
   );

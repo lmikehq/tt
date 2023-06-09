@@ -5,17 +5,18 @@ import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import dayjs from "dayjs";
 import { FormikValues } from "formik";
+import FormStepTitle from "./formStepsTitle";
 
 interface formProps {
-  title: string;
   formik: FormikValues;
+  steps: string[];
+  index: number;
 }
 
-function TripDetails({ title, formik }: formProps) {
-  console.log("formik: ", formik.values);
+function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
   return (
     <Section width="50%">
-      <Text type="p" text={title} size="20px" />
+      <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }}>
         <Section margin="0 0 2rem">
           <Text type="p" text="Where are you from?" margin="1rem 0 " />
@@ -62,7 +63,6 @@ function TripDetails({ title, formik }: formProps) {
           <DatePicker
             onChange={(x) => formik.setFieldValue("travelDate", x)}
             value={dayjs(formik?.values?.travelDate || new Date())}
-            
           />
         </Section>
         <Section margin="0 0 2rem">
@@ -85,4 +85,4 @@ function TripDetails({ title, formik }: formProps) {
   );
 }
 
-export default TripDetails;
+export default EducationAndEmploymentInfo;

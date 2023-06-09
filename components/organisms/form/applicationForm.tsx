@@ -6,10 +6,12 @@ import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
+import { visaInitVals, visaSchema } from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
-import { FormikConfig, useFormik } from "formik";
+import { feeItems } from "data/utilData";
+import useFormikHook from "hook/useFormik";
 import { useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import {
@@ -17,14 +19,10 @@ import {
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
 import { ttColors } from "theme/colors";
-import { visaInitVals, visaSchema } from "@lib/application/schema";
-import useFormikHook from "hook/useFormik";
-import { feeItems } from "data/utilData";
 import { IFee } from "types";
 
-
 const ApplicationForm = () => {
-  const [currentPhase, setCurrentPhase] = useState(1);
+  const [currentPhase, setCurrentPhase] = useState(2);
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const nextStep = async () => {
     if (nextStepLoading || currentPhase === 4) return;
@@ -44,12 +42,11 @@ const ApplicationForm = () => {
     setShownFees(feeItems);
     setNextStepLoading(false);
   };
-  
+
   const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
 
   const formik = useFormikHook(visaInitVals, visaSchema);
 
-  
   const step = getSteps(formik).find((x) => x.id === currentPhase);
   return (
     <>
