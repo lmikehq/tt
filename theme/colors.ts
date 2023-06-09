@@ -11,11 +11,11 @@ export enum Theme {
   PlaceholderColor = "#1C1B1F",
 }
 
-
 export const ttColors = {
   dark: "#06062A",
   light: "#FAFBFC",
   primary: "#87CEEB",
   defaultColor: "#FFFFFF",
   salmon: "#FF8682",
+  slamon: "#FF8682",
 };
