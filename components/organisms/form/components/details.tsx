@@ -8,6 +8,7 @@ import { FormikValues } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import Flex from "@atom/flex";
 import { IoIosArrowDown } from "react-icons/io";
+import { AiOutlineCheck } from "react-icons/ai";
 
 interface formProps {
   formik: FormikValues;
@@ -38,6 +39,11 @@ function TripDetails({ formik, steps, index }: formProps) {
                 weight={100}
                 styles={{ cursor: "pointer" }}
               />
+              {formik?.values?.home?.name ? (
+                <AiOutlineCheck color="#3BB98E" />
+              ) : (
+                <IoIosArrowDown size={20} />
+              )}
             </Flex>
           </SearchInput>
         </Section>
@@ -60,6 +66,11 @@ function TripDetails({ formik, steps, index }: formProps) {
                 weight={100}
                 styles={{ cursor: "pointer" }}
               />
+              {formik?.values?.destination?.name ? (
+                <AiOutlineCheck color="#3BB98E" />
+              ) : (
+                <IoIosArrowDown size={20} />
+              )}
             </Flex>
           </SearchInput>
         </Section>
@@ -85,7 +96,11 @@ function TripDetails({ formik, steps, index }: formProps) {
                 weight={100}
                 styles={{ cursor: "pointer" }}
               />
-              <IoIosArrowDown size={20} />
+              {formik?.values?.travellingBy ? (
+                <AiOutlineCheck color="#3BB98E" />
+              ) : (
+                <IoIosArrowDown size={20} />
+              )}
             </Flex>
           </SearchInputAsString>
         </Section>

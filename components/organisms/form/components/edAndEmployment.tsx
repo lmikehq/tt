@@ -1,18 +1,16 @@
 import Flex from "@atom/flex";
-import SearchInput, { SearchInputAsString } from "@atom/searchInput";
+import Input from "@atom/input";
+import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import { concatArrays, get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import { FormikValues } from "formik";
+import { AiOutlineCheck } from "react-icons/ai";
 import { FaCircle } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
-import { IoIosArrowDown } from "react-icons/io";
-import { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
-import Input from "@atom/input";
 
 interface formProps {
   formik: FormikValues;
