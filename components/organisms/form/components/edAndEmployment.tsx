@@ -1,7 +1,7 @@
 import Flex from "@atom/flex";
 import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import { get100Years } from "@lib/utilFns";
+import { concatArrays, get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
@@ -25,11 +25,11 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }}>
-        <Flex align="center" gap=".5rem" margin="2rem 0">
-          <FaCircle size={".4rem"} color={ttColors.salmon} />
-          <Text type="p" text=" Include your most recent qualification" />
-        </Flex>
         <>
+          <Flex align="center" gap=".5rem" margin="2rem 0">
+            <FaCircle size={".4rem"} color={ttColors.salmon} />
+            <Text type="p" text=" Include your most recent qualification" />
+          </Flex>
           <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
             <Section>
               <Text type="p" text="Degree" margin="1rem 0 " />
@@ -56,7 +56,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             <Section>
               <Text type="p" text="Gradudated year" margin="1rem 0 " />
               <SearchInputAsString
-                options={get100Years()}
+                options={concatArrays(["Present"], get100Years())}
                 onChange={(x) => formik.setFieldValue("graudautionYear", x)}
               >
                 <Flex justify="space-between">
@@ -134,6 +134,107 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
                   formik.setFieldValue("grade", value);
                 }}
               />
+            </Section>
+          </Flex>
+        </>
+
+        <>
+          <Flex align="center" gap=".5rem" margin="2rem 0">
+            <FaCircle size={".4rem"} color={ttColors.salmon} />
+            <Text
+              type="p"
+              text=" Include your most recent employment details"
+            />
+          </Flex>
+          <Section margin="0 0 1rem">
+            <Text type="p" text="Company Name and location" margin="1rem 0 " />
+            <Input
+              addon={
+                formik?.values?.companyName?.length > 3 ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : undefined
+              }
+              value={formik.values.companyName}
+              onChange={(x) =>
+                formik.setFieldValue("companyName", x.target.value)
+              }
+            />
+          </Section>
+          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+            <Section margin="0 0 1rem">
+              <Text type="p" text="Employer’s Name" margin="1rem 0 " />
+              <Input
+                addon={
+                  formik?.values?.employerName?.length > 3 ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : undefined
+                }
+                value={formik.values.employerName}
+                onChange={(x) =>
+                  formik.setFieldValue("employerName", x.target.value)
+                }
+              />
+            </Section>
+            <Section margin="0 0 1rem">
+              <Text type="p" text="Employer’s  phone" margin="1rem 0 " />
+              <Input
+                addon={
+                  formik?.values?.employerPhone?.length > 3 ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : undefined
+                }
+                value={formik.values.employerPhone}
+                onChange={(x) =>
+                  formik.setFieldValue("employerPhone", x.target.value)
+                }
+              />
+            </Section>
+          </Flex>
+
+          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+            <Section>
+              <Text type="p" text="Started Year" margin="1rem 0 " />
+              <SearchInputAsString
+                options={get100Years()}
+                onChange={(x) => formik.setFieldValue("startedYear", x)}
+              >
+                <Flex justify="space-between">
+                  <Text
+                    type="p"
+                    text={formik?.values?.startedYear}
+                    color="#1C1B1F"
+                    weight={100}
+                    styles={{ cursor: "pointer" }}
+                  />
+                  {formik.values.startedYear ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : (
+                    <IoIosArrowDown size={20} />
+                  )}
+                </Flex>
+              </SearchInputAsString>
+            </Section>
+            <Section>
+              <Text type="p" text="Ended year" margin="1rem 0 " />
+              <SearchInputAsString
+                options={concatArrays(["Present"], get100Years())}
+                onChange={(x) => formik.setFieldValue("endedYear", x)}
+              >
+                <Flex justify="space-between">
+                  <Text
+                    type="p"
+                    text={formik?.values?.endedYear}
+                    color="#1C1B1F"
+                    weight={100}
+                    styles={{ cursor: "pointer" }}
+                  />
+                  {formik.values.endedYear ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : (
+                    <IoIosArrowDown size={20} />
+                  )}
+                </Flex>
+              </SearchInputAsString>
             </Section>
           </Flex>
         </>

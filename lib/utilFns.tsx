@@ -12,3 +12,10 @@ export const validateEmail = (email: string): boolean => {
   const regexPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   return regexPattern.test(email);
 };
+
+export function concatArrays(
+  strings: string[],
+  numbers: number[]
+): (string | number)[] {
+  return [...strings, ...numbers];
+}
