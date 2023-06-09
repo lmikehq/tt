@@ -66,7 +66,7 @@ function RegisterPage() {
               background={ttColors.primary}
               onClick={() => router.push("/auth/login")}
             >
-              <Text type="p" text="Login" color={ttColors.dark} size="20px" />
+              <Text type="p" text="Create account" color={ttColors.dark} size="20px" />
             </Button>
             <p style={{ textAlign: "center", fontSize: "16px" }}>
               Already have an account?{" "}

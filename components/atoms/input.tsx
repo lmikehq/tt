@@ -65,6 +65,8 @@ export interface InputProps {
   weight?: string;
   br?: string;
   addon?: ReactNode;
+  min?: number;
+  max?: number;
 }
 
 const Input = ({
@@ -88,6 +90,7 @@ const Input = ({
   weight,
   br,
   addon,
+  min,max
 }: InputProps) => {
   return (
     <div style={{ position: "relative" }}>
@@ -103,6 +106,8 @@ const Input = ({
         readOnly={readOnly}
         name={name}
         disabled={readOnly}
+        min={min}
+        max={max}
         style={{
           margin,
           padding: padding || "0 2rem 0 1rem",
@@ -131,42 +136,42 @@ const Input = ({
   );
 };
 
-// export const TextField = ({
-//   onChange,
-//   onKeyDown,
-//   onPaste,
-//   placeholder,
-//   value,
-//   onBlur,
-//   margin,
-//   id,
-//   name,
-//   readOnly,
-//   padding,
-//   legend,
-//   border,
-//   width,
-// }: InputProps) => {
-//   return (
-//     <StyledMuiTextField
-//       required
-//       // onBlur={onBlur}
-//       defaultValue={placeholder}
-//       // onPaste={onPaste}
-//       // value={value}
-//       // onChange={onChange}
-//       label={legend}
-//       id={id}
-//       // name={name}
-//       // disabled={readOnly}
-//       // style={{
-//       //   margin,
-//       //   padding,
-//       // }}
-//       // label="not requreid"
-//     />
-//   );
-// };
+export const TextField = ({
+  onChange,
+  onKeyDown,
+  onPaste,
+  placeholder,
+  value,
+  onBlur,
+  margin,
+  id,
+  name,
+  readOnly,
+  padding,
+  legend,
+  border,
+  width,
+}: InputProps) => {
+  return (
+    <StyledMuiTextField
+      required
+      // onBlur={onBlur}
+      defaultValue={placeholder}
+      // onPaste={onPaste}
+      // value={value}
+      // onChange={onChange}
+      label={legend}
+      id={id}
+      // name={name}
+      // disabled={readOnly}
+      // style={{
+      //   margin,
+      //   padding,
+      // }}
+      // label="not requreid"
+    />
+  );
+};
 
 export const AutoComplete = ({
   onChange,

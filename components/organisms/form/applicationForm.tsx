@@ -22,7 +22,7 @@ import { ttColors } from "theme/colors";
 import { IFee } from "types";
 
 const ApplicationForm = () => {
-  const [currentPhase, setCurrentPhase] = useState(2);
+  const [currentPhase, setCurrentPhase] = useState(3);
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const nextStep = async () => {
     if (nextStepLoading || currentPhase === 4) return;

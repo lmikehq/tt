@@ -45,15 +45,15 @@ export const pesonalInfoKeys = {
   maritalStatus: "",
   partnersName: "",
   facebookUsername: "",
-  linkedinOrInstagram: ''
+  linkedinOrInstagram: "",
 };
 
 export const edAndEmpSchema = yup.object({
-  qualification: yup.array().required(),
+  degree: yup.string().required(),
   graudautionYear: yup.string().required(),
   schoolName: yup.string().required(),
   courseOfStudy: yup.string().required(),
-  grade: yup.string().required(),
+  grade: yup.number().required().max(5).min(0),
 
   companyName: yup.string().required(),
   employerName: yup.string().required(),
@@ -63,7 +63,7 @@ export const edAndEmpSchema = yup.object({
 });
 
 export const edAndEmpKeys = {
-  qualification: [],
+  degree: "BSc",
   graudautionYear: "",
   schoolName: "",
   courseOfStudy: "",
