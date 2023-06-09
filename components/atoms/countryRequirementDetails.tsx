@@ -2,8 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-import CountryArticle from "./countryArticle";
-import Button from "@atom/button";
+import CountryRequirement from "./countryRequirement";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,29 +40,19 @@ const Wrapper = styled.div`
     background: transparent; /* make scrollbar transparent */
   }
 
-  & a {
-    color: #000000;
-    // text-decoration: none;
-  }
   & h1 {
     font-size: 24px !important;
     line-height: 36px;
     color: #06062a important;
   }
-  & img {
-    width: 100%;
-  }
 `;
 
-function CountryDetails({ details }: { details: string }) {
+function CountryRequirementDetails({ details }: { details: string }) {
   return (
     <Wrapper>
-      <CountryArticle article={{ body: details }} />
-      <Button width="289px" padding="10px 20px" margin="4rem auto" fontSize="1rem" >
-        Apply Now
-      </Button>
+      <CountryRequirement article={{ body: details }} />
     </Wrapper>
   );
 }
 
-export default CountryDetails;
+export default CountryRequirementDetails;

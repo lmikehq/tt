@@ -17,4 +17,5 @@ export const ttColors = {
     light: '#FAFBFC',
     primary: '#87CEEB',
     defaultColor: '#FFFFFF',
+    slamon: '#FF8682',
 }
