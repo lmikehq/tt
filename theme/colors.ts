@@ -13,8 +13,9 @@ export enum Theme {
 
 
 export const ttColors = {
-    dark: '#06062A',
-    light: '#FAFBFC',
-    primary: '#87CEEB',
-    defaultColor: '#FFFFFF',
-}
+  dark: "#06062A",
+  light: "#FAFBFC",
+  primary: "#87CEEB",
+  defaultColor: "#FFFFFF",
+  salmon: "#FF8682",
+};

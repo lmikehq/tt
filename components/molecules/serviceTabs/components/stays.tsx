@@ -6,6 +6,7 @@ import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
 export interface CountryType {
   name: string;
   flag: string;
@@ -55,6 +56,7 @@ function Stays() {
               color="#1C1B1F"
               weight={100}
             />
+            <IoIosArrowDown size={20} />
           </Flex>
         </SearchInput>
         <SearchInput
@@ -74,6 +76,7 @@ function Stays() {
               color="#1C1B1F"
               weight={100}
             />
+            <IoIosArrowDown size={20} />
           </Flex>
         </SearchInput>
         <SearchInputAsString
@@ -84,6 +87,7 @@ function Stays() {
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />
+            <IoIosArrowDown size={20} />
           </Flex>
         </SearchInputAsString>
       </Grid>

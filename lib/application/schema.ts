@@ -41,7 +41,7 @@ export const pesonalInfoKeys = {
 };
 
 export const edAndEmpSchema = yup.object({
-  qualification: yup.string().required(),
+  qualification: yup.array().required(),
   graudautionYear: yup.string().required(),
   schoolName: yup.string().required(),
   courseOfStudy: yup.string().required(),
@@ -55,7 +55,7 @@ export const edAndEmpSchema = yup.object({
 });
 
 export const edAndEmpKeys = {
-  qualification: "",
+  qualification: [],
   graudautionYear: "",
   schoolName: "",
   courseOfStudy: "",

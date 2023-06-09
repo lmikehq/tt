@@ -1,20 +1,17 @@
-import { LabelType } from "@molecule/serviceTabs/components/visa";
 import { InputAdornment, TextField } from "@mui/material";
 import Autocomplete, {
   AutocompleteCloseReason,
   autocompleteClasses,
 } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
-import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { MouseEvent, useEffect, useRef, useState } from "react";
-import Text from "./text";
 import Flex from "./flex";
-import { IoIosArrowDown } from "react-icons/io";
+import Text from "./text";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -32,7 +29,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   [`& .${autocompleteClasses.listbox}`]: {
     backgroundColor: "#fff",
     padding: 0,
-    height: "320px",
+    height: "300px",
     [`& .${autocompleteClasses.option}`]: {
       minHeight: "auto",
       alignItems: "flex-start",
@@ -144,7 +141,7 @@ SearchProps) {
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>
-                <IoIosArrowDown size={20} />
+                {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
           }}
@@ -261,13 +258,14 @@ export function SearchInputAsString({
           sx={{
             width: "100%",
             fontSize: 16,
-            "& .MuiInputAdornment-root.MuiInputAdornment-positionStart.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-ittuaa-MuiInputAdornment-root":
+            "& .MuiInputAdornment-root":
               {
                 position: "absolute",
                 top: "50%",
+                left: "-4%",
                 display: "flex",
                 justifyContent: "center",
-                width: "92%",
+                width: "100%",
               },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -276,6 +274,9 @@ export function SearchInputAsString({
               color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
+            '& input': {
+              height: '18px'
+            }
           }}
           onClick={handleClick}
           label={legend}
@@ -283,7 +284,7 @@ export function SearchInputAsString({
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>
-                <IoIosArrowDown size={20} />
+                {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
           }}
@@ -340,9 +341,7 @@ export function SearchInputAsString({
                   <br />
                 </li>
               )}
-              options={[...options].filter((x) =>
-                x.toLowerCase().includes(inputValue.toLowerCase())
-              )}
+              options={[...options]}
               getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <StyledInput
@@ -360,5 +359,3 @@ export function SearchInputAsString({
     </>
   );
 }
-
-

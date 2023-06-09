@@ -9,6 +9,7 @@ import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
 import { ttColors } from "theme/colors";
 export interface CountryType {
   name: string;
@@ -60,6 +61,7 @@ function Visa() {
               color="#1C1B1F"
               weight={100}
             />
+            <IoIosArrowDown size={20} />
           </Flex>
         </SearchInput>
         <SearchInput
@@ -79,6 +81,7 @@ function Visa() {
               color="#1C1B1F"
               weight={100}
             />
+            <IoIosArrowDown size={20} />
           </Flex>
         </SearchInput>
         <SearchInputAsString
@@ -89,6 +92,7 @@ function Visa() {
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />
+            <IoIosArrowDown size={20} />
           </Flex>
         </SearchInputAsString>
       </Grid>
@@ -104,7 +108,7 @@ function Visa() {
           }}
         >
           {loading ? (
-            <Spinner fill={ttColors.primary} size={'45px'} />
+            <Spinner fill={ttColors.primary} size={"45px"} />
           ) : (
             <Text
               text="Get Started"
