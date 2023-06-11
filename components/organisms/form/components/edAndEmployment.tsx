@@ -126,7 +126,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
                 min={0}
                 value={formik.values.grade}
                 onChange={(x) => {
-                  let value = parseInt(x.target.value);
+                  let value = parseFloat(x.target.value);
                   if (value > 5) value = 5;
                   if (value < 0) value = 0;
                   formik.setFieldValue("grade", value);
