@@ -45,9 +45,9 @@ const PromoInput = styled.div`
 const ApplicationForm = () => {
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
-  const action = params.get("action");
-  const type = params.get("type");
-  const status = params.get("status");
+  // const action = params.get("action"); // payment
+  const type = params.get("type"); // visa-application-fee
+  const status = params.get("status"); // success | fail
 
   const [currentPhase, setCurrentPhase] = useState(
     type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
