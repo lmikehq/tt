@@ -119,7 +119,7 @@ SearchProps) {
             width: "100%",
             fontSize: 16,
             color: "#1C1B1F",
-            "& .MuiInputAdornment-root.MuiInputAdornment-positionStart.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-ittuaa-MuiInputAdornment-root":
+            "& .MuiInputAdornment-root":
               {
                 position: "absolute",
                 top: "50%",
