@@ -43,8 +43,17 @@ const PromoInput = styled.div`
 `;
 
 const ApplicationForm = () => {
-  const [currentPhase, setCurrentPhase] = useState(5);
+  // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
+  const params = useSearchParams();
+  const action = params.get("action");
+  const type = params.get("type");
+  const status = params.get("status");
+
+  const [currentPhase, setCurrentPhase] = useState(
+    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+  );
   const [nextStepLoading, setNextStepLoading] = useState(false);
+
   const nextStep = async () => {
     if (nextStepLoading || currentPhase === 5) return;
     setNextStepLoading(true);
@@ -75,14 +84,6 @@ const ApplicationForm = () => {
     window.alert("Promo code applied");
   }
 
-  // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
-  http: const params = useSearchParams();
-  const action = params.get("action");
-  const type = params.get("type");
-  const status = params.get("status");
-
-  console.log("params: ", action, type, status);
-
   return (
     <>
       <Flex
@@ -94,114 +95,136 @@ const ApplicationForm = () => {
         justify="space-between"
       >
         {step?.content}
+
         <Section width="40%">
-          <Section width="90%">
-            <Flex align="center" justify="space-between">
-              <Text type="p" text="Nigeria" size="20px" weight="bold" />
-              <HiOutlineArrowNarrowRight size={30} />
-              <Text type="p" text="Canada" size="20px" weight="bold" />
-            </Flex>
-            <Divider />
-            <Grid columns="2fr 1fr" gap=".5rem" margin="2rem 0">
-              {shownFees.map((item) => (
-                <>
-                  <Text
-                    type="p"
-                    text={item.name}
-                    size={item.type === "head" ? "16px" : "14px"}
-                    whiteSpace="nowrap"
-                    weight={item.type === "head" ? "500" : "100"}
-                  />
-                  <Text
-                    type="p"
-                    text={`${item.amount}`}
-                    size={item.type === "head" ? "16px" : "14px"}
-                    whiteSpace="nowrap"
-                    weight={item.type === "head" ? "500" : "100"}
-                  />
-                </>
-              ))}
-            </Grid>
-            <Divider />
-
-            {shownFees.length ? (
-              <Flex justify="flex-end">
-                <Text type="p" text="N20,000" size="2.1rem" weight="bold" />
+          {currentPhase < 6 ? (
+            <Section width="90%">
+              <Flex align="center" justify="space-between">
+                <Text type="p" text="Nigeria" size="20px" weight="bold" />
+                <HiOutlineArrowNarrowRight size={30} />
+                <Text type="p" text="Canada" size="20px" weight="bold" />
               </Flex>
-            ) : (
-              ""
-            )}
-
-            {currentPhase === 4 && (
-              <Section margin="2rem 0">
-                <Text type="p" text="Promo Code" />
-                <form action="" onSubmit={handlePromoCode}>
-                  <PromoInput>
-                    <Input
-                      placeholder="Enter Promo Code"
-                      width="100%"
-                      flexGrow={1}
+              <Divider />
+              <Grid columns="2fr 1fr" gap=".5rem" margin="2rem 0">
+                {shownFees.map((item) => (
+                  <>
+                    <Text
+                      type="p"
+                      text={item.name}
+                      size={item.type === "head" ? "16px" : "14px"}
+                      whiteSpace="nowrap"
+                      weight={item.type === "head" ? "500" : "100"}
                     />
-                    <Button type="submit">
-                      <Text type="p" text="Apply" weight={600} size="1rem" />
-                    </Button>
-                  </PromoInput>
-                </form>
-              </Section>
-            )}
+                    <Text
+                      type="p"
+                      text={`${item.amount}`}
+                      size={item.type === "head" ? "16px" : "14px"}
+                      whiteSpace="nowrap"
+                      weight={item.type === "head" ? "500" : "100"}
+                    />
+                  </>
+                ))}
+              </Grid>
+              <Divider />
 
+              {shownFees.length ? (
+                <Flex justify="flex-end">
+                  <Text type="p" text="N20,000" size="2.1rem" weight="bold" />
+                </Flex>
+              ) : (
+                ""
+              )}
+
+              {currentPhase === 4 && (
+                <Section margin="2rem 0">
+                  <Text type="p" text="Promo Code" />
+                  <form action="" onSubmit={handlePromoCode}>
+                    <PromoInput>
+                      <Input
+                        placeholder="Enter Promo Code"
+                        width="100%"
+                        flexGrow={1}
+                      />
+                      <Button type="submit">
+                        <Text type="p" text="Apply" weight={600} size="1rem" />
+                      </Button>
+                    </PromoInput>
+                  </form>
+                </Section>
+              )}
+
+              <Button
+                width="100%"
+                margin="1rem 0"
+                onClick={nextStep}
+                fontSize="18px"
+              >
+                {nextStepLoading ? (
+                  <Spinner size="40px" fill={ttColors.primary} />
+                ) : currentPhase === 5 ? (
+                  `Pay NGN 20,000 Now`
+                ) : (
+                  "Continue"
+                )}
+              </Button>
+
+              <Text
+                type="p"
+                text="Save Progress & Continue later"
+                size="13px"
+                weight="bold"
+                decoration="underline"
+                cursor="pointer"
+              />
+              <Flex margin="1rem 0" gap=".5rem">
+                <BsShieldFillCheck size="25px" />
+                <div>
+                  <Text
+                    text="Your info is save with us"
+                    type="p"
+                    size="16px"
+                    weight={400}
+                  />
+                  <p style={{ fontSize: "14px" }}>
+                    For more details, see our{" "}
+                    <span
+                      style={{ color: ttColors.primary, cursor: "pointer" }}
+                    >
+                      data protection page
+                    </span>
+                  </p>
+                </div>
+              </Flex>
+
+              <Flex
+                align="center"
+                cursor="pointer"
+                gap="1rem"
+                onClick={prevStep}
+              >
+                <HiOutlineArrowNarrowLeft
+                  color={ttColors.primary}
+                  size="30px"
+                />
+                <Text
+                  text="Previous"
+                  type="p"
+                  color={ttColors.primary}
+                  size="20px"
+                  weight="400"
+                />
+              </Flex>
+            </Section>
+          ) : (
             <Button
               width="100%"
               margin="1rem 0"
               onClick={nextStep}
               fontSize="18px"
             >
-              {nextStepLoading ? (
-                <Spinner size="40px" fill={ttColors.primary} />
-              ) : currentPhase === 5 ? (
-                `Pay NGN 20,000 Now`
-              ) : (
-                "Continue"
-              )}
+              <Text type="p" text="Login to your account" />
             </Button>
-
-            <Text
-              type="p"
-              text="Save Progress & Continue later"
-              size="13px"
-              weight="bold"
-              decoration="underline"
-              cursor="pointer"
-            />
-            <Flex margin="1rem 0" gap=".5rem">
-              <BsShieldFillCheck size="25px" />
-              <div>
-                <Text
-                  text="Your info is save with us"
-                  type="p"
-                  size="16px"
-                  weight={400}
-                />
-                <p style={{ fontSize: "14px" }}>
-                  For more details, see our{" "}
-                  <span style={{ color: ttColors.primary, cursor: "pointer" }}>
-                    data protection page
-                  </span>
-                </p>
-              </div>
-            </Flex>
-
-            <Flex align="center" cursor="pointer" gap="1rem" onClick={prevStep}>
-              <HiOutlineArrowNarrowLeft color={ttColors.primary} size="30px" />
-              <Text
-                text="Previous"
-                type="p"
-                color={ttColors.primary}
-                size="20px"
-                weight="400"
-              />
-            </Flex>
-          </Section>
+          )}
         </Section>
       </Flex>
     </>
