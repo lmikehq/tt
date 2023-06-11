@@ -4,6 +4,7 @@ import Button from "@atom/button";
 import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
+import Input from "@atom/input";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import { visaInitVals, visaSchema } from "@lib/application/schema";
@@ -18,14 +19,33 @@ import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
+import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
 
+const PromoInput = styled.div`
+  display: flex;
+  margin: 1rem 0;
+
+  & input {
+    border: 1px solid #bdbdbd;
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-right: 0 !important;
+  }
+
+  & button {
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    height: 50px !important;
+  }
+`;
+
 const ApplicationForm = () => {
-  const [currentPhase, setCurrentPhase] = useState(4);
+  const [currentPhase, setCurrentPhase] = useState(5);
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const nextStep = async () => {
-    if (nextStepLoading || currentPhase === 4) return;
+    if (nextStepLoading || currentPhase === 6) return;
     setNextStepLoading(true);
     setShownFees([]);
     await sleep(300);
@@ -48,6 +68,12 @@ const ApplicationForm = () => {
   const formik = useFormikHook(visaInitVals, visaSchema);
 
   const step = getSteps(formik).find((x) => x.id === currentPhase);
+
+  function handlePromoCode(e: any) {
+    e.preventDefault();
+    window.alert("Promo code applied bro");
+  }
+
   return (
     <>
       <Flex
@@ -91,10 +117,28 @@ const ApplicationForm = () => {
 
             {shownFees.length ? (
               <Flex justify="flex-end">
-                <Text type="p" text="N20,000" size="25px" weight="bold" />
+                <Text type="p" text="N20,000" size="2.1rem" weight="bold" />
               </Flex>
             ) : (
               ""
+            )}
+
+            {currentPhase === 4 && (
+              <Section margin="2rem 0">
+                <Text type="p" text="Promo Code" />
+                <form action="" onSubmit={handlePromoCode}>
+                  <PromoInput>
+                    <Input
+                      placeholder="Enter Promo Code"
+                      width="100%"
+                      flexGrow={1}
+                    />
+                    <Button type="submit">
+                      <Text type="p" text="Apply" weight={600} size="1rem" />
+                    </Button>
+                  </PromoInput>
+                </form>
+              </Section>
             )}
 
             <Button
@@ -105,6 +149,8 @@ const ApplicationForm = () => {
             >
               {nextStepLoading ? (
                 <Spinner size="40px" fill={ttColors.primary} />
+              ) : currentPhase === 5 ? (
+                `Pay NGN 20,000 Now`
               ) : (
                 "Continue"
               )}
@@ -116,9 +162,7 @@ const ApplicationForm = () => {
               size="13px"
               weight="bold"
               decoration="underline"
-              styles={{
-                cursor: "pointer",
-              }}
+              cursor="pointer"
             />
             <Flex margin="1rem 0" gap=".5rem">
               <BsShieldFillCheck size="25px" />
@@ -131,7 +175,7 @@ const ApplicationForm = () => {
                 />
                 <p style={{ fontSize: "14px" }}>
                   For more details, see our{" "}
-                  <span style={{ color: ttColors.primary }}>
+                  <span style={{ color: ttColors.primary, cursor: "pointer" }}>
                     data protection page
                   </span>
                 </p>

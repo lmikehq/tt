@@ -23,7 +23,7 @@ import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurr
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
-  height:70px;
+  height: 70px;
   background: ${({ page }) =>
     page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
@@ -158,9 +158,17 @@ const Navbar = ({ page }: { page: string }) => {
                 weight={400}
               />
             </Link>
-            <Button onClick={() => router.push("/auth/register")}>
-              <Text text="Sign Up" type="p" whiteSpace="nowrap" weight={400} />
-            </Button>
+            <Link href="/auth/register">
+              <Button>
+                <Text
+                  text="Sign Up"
+                  type="p"
+                  whiteSpace="nowrap"
+                  weight={400}
+                  color="#fff"
+                />
+              </Button>
+            </Link>
           </NavMenu>
         </Grid>
       </NavbarLayout>

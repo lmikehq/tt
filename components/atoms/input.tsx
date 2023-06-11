@@ -67,6 +67,7 @@ export interface InputProps {
   addon?: ReactNode;
   min?: number;
   max?: number;
+  flexGrow?: number;
 }
 
 const Input = ({
@@ -90,10 +91,12 @@ const Input = ({
   weight,
   br,
   addon,
-  min,max
+  min,
+  max,
+  flexGrow,
 }: InputProps) => {
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", flexGrow }}>
       <StyledInput
         type={type || "text"}
         onBlur={onBlur}
@@ -119,6 +122,7 @@ const Input = ({
           fontWeight: weight || "100",
           fontFamily: "var(--font-family)",
           borderRadius: br || "4px",
+         
         }}
       />
       {addon && (

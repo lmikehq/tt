@@ -18,6 +18,7 @@ interface buttonProps {
   onClick?: (e: any) => void;
   styles?: CSSProperties;
   lineHeight?: string;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 const ButtonWrapper = styled.button`
@@ -45,6 +46,7 @@ export const Button: React.FC<buttonProps> = ({
   onClick,
   styles,
   lineHeight,
+  type,
 }) => {
   return (
     <ButtonBase
@@ -65,6 +67,7 @@ export const Button: React.FC<buttonProps> = ({
         lineHeight: lineHeight,
         ...styles,
       }}
+      type={type}
       onClick={onClick}
     >
       {children}
