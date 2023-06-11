@@ -19,7 +19,7 @@ export const getSteps = (formikConfig: any): IFormStep[] => {
       title: "Your trip details",
       content: (
         <TripDetails
-          steps={["Your trip details"]}
+          steps={["Your Trip Details"]}
           formik={formikConfig}
           index={0}
         />
@@ -27,25 +27,25 @@ export const getSteps = (formikConfig: any): IFormStep[] => {
     },
     {
       id: 2,
-      title: "Personal information",
+      title: "Personal Information",
       content: (
         <PersonalInfo
           formik={formikConfig}
-          steps={["Your trip details", "Personal information"]}
+          steps={["Your Trip Details", "Personal Information"]}
           index={1}
         />
       ),
     },
     {
       id: 3,
-      title: "Education and employment",
+      title: "Education and Employment",
       content: (
         <EducationAndEmploymentInfo
           formik={formikConfig}
           steps={[
-            "Your trip details",
-            "Personal information",
-            "Education and employment",
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
           ]}
           index={2}
         />
@@ -54,15 +54,15 @@ export const getSteps = (formikConfig: any): IFormStep[] => {
     },
     {
       id: 4,
-      title: "Other information",
+      title: "Other Information",
       content: (
         <OtherInformation
           formik={formikConfig}
           steps={[
-            "Your trip details",
-            "Personal information",
-            "Education and employment",
-            "Other information",
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
+            "Other Information",
           ]}
           index={3}
         />

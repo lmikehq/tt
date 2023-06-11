@@ -63,7 +63,7 @@ export const edAndEmpSchema = yup.object({
 });
 
 export const edAndEmpKeys = {
-  degree: "BSc",
+  degree: "",
   graudautionYear: "",
   schoolName: "",
   courseOfStudy: "",

@@ -22,13 +22,13 @@ import { ttColors } from "theme/colors";
 import { IFee } from "types";
 
 const ApplicationForm = () => {
-  const [currentPhase, setCurrentPhase] = useState(3);
+  const [currentPhase, setCurrentPhase] = useState(4);
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const nextStep = async () => {
     if (nextStepLoading || currentPhase === 4) return;
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(3000);
+    await sleep(300);
     setCurrentPhase(currentPhase + 1);
     setShownFees(feeItems);
     setNextStepLoading(false);
@@ -37,7 +37,7 @@ const ApplicationForm = () => {
     if (nextStepLoading || currentPhase === 1) return;
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(3000);
+    await sleep(300);
     setCurrentPhase(currentPhase - 1);
     setShownFees(feeItems);
     setNextStepLoading(false);

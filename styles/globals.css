@@ -29,6 +29,11 @@ body {
   /* background: var(--bg-color); */
 }
 
+::selection {
+  background: var(--primary-color);
+  color: var(--default-color);
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
