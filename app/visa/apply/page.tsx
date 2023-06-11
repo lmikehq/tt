@@ -1,14 +1,14 @@
-import Flex from "@atom/flex";
 import SectionTitle from "@atom/sectionTitle";
 import SectionLayout from "@components/layouts/sectionLayout";
-import AllCountryHead from "@organism/AllCountry/allCountryHead";
-import React from "react";
 import canada from "@image/canada-cover.png";
+import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import ApplicationForm from "@organism/form/applicationForm";
 
-interface pageProps {}
+// interface pageProps {
+//   params: Qparams;
+// }
 
-const VisaApplicationPage: React.FC<pageProps> = ({}) => {
+export default async function VisaApplicationPage() {
   return (
     <div>
       <AllCountryHead cover={canada} title="CANADA" />
@@ -22,5 +22,4 @@ const VisaApplicationPage: React.FC<pageProps> = ({}) => {
       </SectionLayout>
     </div>
   );
-};
-export default VisaApplicationPage;
+}

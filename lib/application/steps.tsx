@@ -87,22 +87,5 @@ export const getSteps = (formikConfig: any): IFormStep[] => {
       ),
       valKeys: Object.keys(otherInforKeys),
     },
-    {
-      id: 6,
-      title: "Other Information",
-      content: (
-        <OtherInformation
-          formik={formikConfig}
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-          ]}
-          index={4}
-        />
-      ),
-      valKeys: Object.keys(otherInforKeys),
-    },
   ];
 };

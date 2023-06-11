@@ -108,7 +108,6 @@ function Booking({ steps, index }: formProps) {
         <Flex
           justify="space-between"
           align="center"
-          width="90%"
           margin="2rem 0 1rem"
         >
           <Divider sx={{ width: "33%", color: "#112211" }} />

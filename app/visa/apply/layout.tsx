@@ -1,4 +1,3 @@
-import SectionLayout from "@components/layouts/sectionLayout";
 import FooterSection from "@organism/Footer";
 import Navbar from "@organism/Navbar";
 interface layoutProps {

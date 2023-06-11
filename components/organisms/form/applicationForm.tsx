@@ -13,6 +13,7 @@ import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { feeItems } from "data/utilData";
 import useFormikHook from "hook/useFormik";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import {
@@ -45,7 +46,7 @@ const ApplicationForm = () => {
   const [currentPhase, setCurrentPhase] = useState(5);
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const nextStep = async () => {
-    if (nextStepLoading || currentPhase === 6) return;
+    if (nextStepLoading || currentPhase === 5) return;
     setNextStepLoading(true);
     setShownFees([]);
     await sleep(300);
@@ -71,8 +72,16 @@ const ApplicationForm = () => {
 
   function handlePromoCode(e: any) {
     e.preventDefault();
-    window.alert("Promo code applied bro");
+    window.alert("Promo code applied");
   }
+
+  // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
+  http: const params = useSearchParams();
+  const action = params.get("action");
+  const type = params.get("type");
+  const status = params.get("status");
+
+  console.log("params: ", action, type, status);
 
   return (
     <>
