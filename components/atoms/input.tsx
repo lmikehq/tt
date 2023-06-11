@@ -1,15 +1,19 @@
 "use client";
 
-import { Autocomplete, TextField as MUITextField } from "@mui/material";
+import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
-import { CSSProperties, KeyboardEventHandler, useState } from "react";
+import {
+  CSSProperties,
+  KeyboardEventHandler,
+  ReactNode,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 
 const StyledInput = styled.input`
   background-color: transparent;
   border: 1px solid #bdbdbd;
-
   &:focus {
     outline: none;
   }
@@ -56,6 +60,14 @@ export interface InputProps {
   border?: string;
   width?: string;
   height?: string;
+  size?: string;
+  color?: string;
+  weight?: string;
+  br?: string;
+  addon?: ReactNode;
+  min?: number;
+  max?: number;
+  flexGrow?: number;
 }
 
 const Input = ({
@@ -74,28 +86,57 @@ const Input = ({
   border,
   width,
   height,
+  size,
+  color,
+  weight,
+  br,
+  addon,
+  min,
+  max,
+  flexGrow,
 }: InputProps) => {
   return (
-    <StyledInput
-      type={type || "text"}
-      onBlur={onBlur}
-      placeholder={placeholder}
-      onPaste={onPaste}
-      value={value}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      id={id}
-      readOnly={readOnly}
-      name={name}
-      disabled={readOnly}
-      style={{
-        margin,
-        padding,
-        border,
-        width,
-        height,
-      }}
-    />
+    <div style={{ position: "relative", flexGrow }}>
+      <StyledInput
+        type={type || "text"}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        onPaste={onPaste}
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        id={id}
+        readOnly={readOnly}
+        name={name}
+        disabled={readOnly}
+        min={min}
+        max={max}
+        style={{
+          margin,
+          padding: padding || "0 2rem 0 1rem",
+          border,
+          width: width || "100%",
+          height: height || "50px",
+          fontSize: size || "1rem",
+          color: color || "#1C1B1F",
+          fontWeight: weight || "100",
+          fontFamily: "var(--font-family)",
+          borderRadius: br || "4px",
+         
+        }}
+      />
+      {addon && (
+        <Box
+          sx={{
+            position: "absolute",
+            right: "5%",
+            top: "35%",
+          }}
+        >
+          {addon}
+        </Box>
+      )}
+    </div>
   );
 };
 

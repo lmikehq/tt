@@ -91,10 +91,10 @@ export default function CustomTab({
           onChange={handleChange}
           aria-label="select your service"
           sx={{
-            display: "grid",
-            "& .MuiTabs-flexContainer": {
-              gap: "2rem",
-            },
+            // display: "grid",
+            // "& .MuiTabs-flexContainer": {
+            //   gap: "2rem",
+            // },
           }}
         >
           {tabItems.map((tabItem, i) => (

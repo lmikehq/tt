@@ -3,6 +3,7 @@ interface sectionProps {
   width?: string;
   margin?: string;
   height?: string;
+  styles?: React.CSSProperties;
 }
 
 const Section: React.FC<sectionProps> = ({
@@ -10,6 +11,7 @@ const Section: React.FC<sectionProps> = ({
   width,
   margin,
   height,
+  styles
 }) => {
   return (
     <section
@@ -17,6 +19,7 @@ const Section: React.FC<sectionProps> = ({
         width: width ? width : "100%",
         margin: margin || "0",
         height: height || "100%",
+        ...styles
       }}
     >
       {children}

@@ -1,43 +1,130 @@
-import TripDetails from "@organism/form/details";
+import TripDetails from "@organism/form/components/details";
+import PersonalInfo from "@organism/form/components/personalInfo";
+import { edAndEmpKeys, otherInforKeys } from "./schema";
+import EducationAndEmploymentInfo from "@organism/form/components/edAndEmployment";
+import OtherInformation from "@organism/form/components/otherInformation";
+import Booking from "@organism/form/components/booking";
 import {
-  detailsKeys,
-  edAndEmpKeys,
-  otherInforKeys,
-  pesonalInfoKeys,
-} from "./schema";
+  PaymentStatusFail,
+  PaymentStatusSuccess,
+} from "@organism/form/components/paymentStatus";
 
 interface IFormStep {
   id: number;
   title: string;
   content: React.ReactNode;
-  valKeys: any;
+  valKeys?: any;
+  // formikConfig?: any
 }
 
-export const getSteps = (): IFormStep[] => {
+export const getSteps = (formikConfig: any): IFormStep[] => {
   return [
     {
       id: 1,
       title: "Your trip details",
-      content: <TripDetails title="Your trip details" />,
-      valKeys: Object.keys(detailsKeys),
+      content: (
+        <TripDetails
+          steps={["Your Trip Details"]}
+          formik={formikConfig}
+          index={0}
+        />
+      ),
     },
     {
       id: 2,
-      title: "Personal information",
-      content: <p>personal information</p>,
-      valKeys: Object.keys(pesonalInfoKeys),
+      title: "Personal Information",
+      content: (
+        <PersonalInfo
+          formik={formikConfig}
+          steps={["Your Trip Details", "Personal Information"]}
+          index={1}
+        />
+      ),
     },
     {
       id: 3,
-      title: "Education and employment",
-      content: <p>education and employ</p>,
+      title: "Education and Employment",
+      content: (
+        <EducationAndEmploymentInfo
+          formik={formikConfig}
+          steps={[
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
+          ]}
+          index={2}
+        />
+      ),
       valKeys: Object.keys(edAndEmpKeys),
     },
     {
       id: 4,
-      title: "Other information",
-      content: <p>other informations</p>,
+      title: "Other Information",
+      content: (
+        <OtherInformation
+          formik={formikConfig}
+          steps={[
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
+            "Other Information",
+          ]}
+          index={3}
+        />
+      ),
       valKeys: Object.keys(otherInforKeys),
+    },
+    {
+      id: 5,
+      title: "Booking",
+      content: (
+        <Booking
+          steps={[
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
+            "Other Information",
+            "Booking",
+          ]}
+          index={4}
+        />
+      ),
+      valKeys: Object.keys(otherInforKeys),
+    },
+    {
+      id: 6,
+      title: "Status",
+      content: (
+        <PaymentStatusSuccess
+          steps={[
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
+            "Other Information",
+            "Booking",
+            "booking",
+          ]}
+          index={5}
+        />
+      ),
+    },
+    {
+      id: 7,
+      title: "Status",
+      content: (
+        <PaymentStatusFail
+          steps={[
+            "Your Trip Details",
+            "Personal Information",
+            "Education and Employment",
+            "Other Information",
+            "Booking",
+            "booking",
+            "booking",
+          ]}
+          index={6}
+        />
+      ),
     },
   ];
 };

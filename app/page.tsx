@@ -15,8 +15,8 @@ export default function Home() {
       <Link href="/chat">
         <Flex
           justify="center"
-          padding="1rem 0"
-          gap="2rem"
+          padding="1.1rem 0"
+          gap="1rem"
           align="center"
           background="#132128"
         >
@@ -30,7 +30,7 @@ export default function Home() {
           />
           <Text
             type="p"
-            text="learn more "
+            text="Learn more "
             weight={900}
             cursor="pointer"
             size="1.2rem"

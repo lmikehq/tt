@@ -4,33 +4,61 @@ import Button from "@atom/button";
 import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
+import Input from "@atom/input";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
+import { visaInitVals, visaSchema } from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
+import { feeItems } from "data/utilData";
+import useFormikHook from "hook/useFormik";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
+import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
+import { IFee } from "types";
 
-interface IFee {
-  name: string;
-  amount: string;
-  type?: string;
-}
+const PromoInput = styled.div`
+  display: flex;
+  margin: 1rem 0;
+
+  & input {
+    border: 1px solid #bdbdbd;
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-right: 0 !important;
+  }
+
+  & button {
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    height: 50px !important;
+  }
+`;
 
 const ApplicationForm = () => {
-  const [currentPhase, setCurrentPhase] = useState(1);
+  // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
+  const params = useSearchParams();
+  // const action = params.get("action"); // payment
+  const type = params.get("type"); // visa-application-fee
+  const status = params.get("status"); // success | fail
+
+  const [currentPhase, setCurrentPhase] = useState(
+    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+  );
   const [nextStepLoading, setNextStepLoading] = useState(false);
+
   const nextStep = async () => {
-    if (nextStepLoading || currentPhase === 4) return;
+    if (nextStepLoading || currentPhase === 5) return;
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(3000);
+    await sleep(300);
     setCurrentPhase(currentPhase + 1);
     setShownFees(feeItems);
     setNextStepLoading(false);
@@ -39,138 +67,164 @@ const ApplicationForm = () => {
     if (nextStepLoading || currentPhase === 1) return;
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(3000);
+    await sleep(300);
     setCurrentPhase(currentPhase - 1);
     setShownFees(feeItems);
     setNextStepLoading(false);
   };
 
-  const feeItems: IFee[] = [
-    {
-      name: "Fees",
-      amount: "Price",
-      type: "head",
-    },
-    {
-      name: "Application Fee",
-      amount: "N20,000",
-    },
-    {
-      name: "Standard processing fee",
-      amount: "0",
-    },
-    {
-      name: "Administrative charge",
-      amount: "0",
-    },
-    {
-      name: "VAT",
-      amount: "0",
-    },
-  ];
   const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
-  const step = getSteps().find((x) => x.id === currentPhase);
+
+  const formik = useFormikHook(visaInitVals, visaSchema);
+
+  const step = getSteps(formik).find((x) => x.id === currentPhase);
+
+  function handlePromoCode(e: any) {
+    e.preventDefault();
+    window.alert("Promo code applied");
+  }
+
   return (
     <>
       <Flex
         background="#FFFFFF"
         borderRadius="16px"
         styles={{ boxShadow: "4px 4px 26px rgba(0, 0, 0, 0.25)" }}
-        height="1000px"
+        height="auto"
         padding="2rem"
         justify="space-between"
       >
         {step?.content}
+
         <Section width="40%">
-          <Section width="80%">
-            <Flex align="center" justify="space-between">
-              <Text type="p" text="Nigeria" size="20px" weight="bold" />
-              <HiOutlineArrowNarrowRight size={30} />
-              <Text type="p" text="Canada" size="20px" weight="bold" />
-            </Flex>
-            <Divider />
-            <Grid columns="2fr 1fr" gap=".5rem" margin="2rem 0">
-              {shownFees.map((item) => (
-                <>
-                  <Text
-                    type="p"
-                    text={item.name}
-                    size={item.type === "head" ? "16px" : "14px"}
-                    whiteSpace="nowrap"
-                    weight={item.type === "head" ? "500" : "100"}
-                  />
-                  <Text
-                    type="p"
-                    text={`${item.amount}`}
-                    size={item.type === "head" ? "16px" : "14px"}
-                    whiteSpace="nowrap"
-                    weight={item.type === "head" ? "500" : "100"}
-                  />
-                </>
-              ))}
-            </Grid>
-            <Divider />
-
-            {shownFees.length ? (
-              <Flex justify="flex-end">
-                <Text type="p" text="N20,000" size="25px" weight="bold" />
+          {currentPhase < 6 ? (
+            <Section width="90%">
+              <Flex align="center" justify="space-between">
+                <Text type="p" text="Nigeria" size="20px" weight="bold" />
+                <HiOutlineArrowNarrowRight size={30} />
+                <Text type="p" text="Canada" size="20px" weight="bold" />
               </Flex>
-            ) : (
-              ""
-            )}
+              <Divider />
+              <Grid columns="2fr 1fr" gap=".5rem" margin="2rem 0">
+                {shownFees.map((item) => (
+                  <>
+                    <Text
+                      type="p"
+                      text={item.name}
+                      size={item.type === "head" ? "16px" : "14px"}
+                      whiteSpace="nowrap"
+                      weight={item.type === "head" ? "500" : "100"}
+                    />
+                    <Text
+                      type="p"
+                      text={`${item.amount}`}
+                      size={item.type === "head" ? "16px" : "14px"}
+                      whiteSpace="nowrap"
+                      weight={item.type === "head" ? "500" : "100"}
+                    />
+                  </>
+                ))}
+              </Grid>
+              <Divider />
 
+              {shownFees.length ? (
+                <Flex justify="flex-end">
+                  <Text type="p" text="N20,000" size="2.1rem" weight="bold" />
+                </Flex>
+              ) : (
+                ""
+              )}
+
+              {currentPhase === 4 && (
+                <Section margin="2rem 0">
+                  <Text type="p" text="Promo Code" />
+                  <form action="" onSubmit={handlePromoCode}>
+                    <PromoInput>
+                      <Input
+                        placeholder="Enter Promo Code"
+                        width="100%"
+                        flexGrow={1}
+                      />
+                      <Button type="submit">
+                        <Text type="p" text="Apply" weight={600} size="1rem" />
+                      </Button>
+                    </PromoInput>
+                  </form>
+                </Section>
+              )}
+
+              <Button
+                width="100%"
+                margin="1rem 0"
+                onClick={nextStep}
+                fontSize="18px"
+              >
+                {nextStepLoading ? (
+                  <Spinner size="40px" fill={ttColors.primary} />
+                ) : currentPhase === 5 ? (
+                  `Pay NGN 20,000 Now`
+                ) : (
+                  "Continue"
+                )}
+              </Button>
+
+              <Text
+                type="p"
+                text="Save Progress & Continue later"
+                size="13px"
+                weight="bold"
+                decoration="underline"
+                cursor="pointer"
+              />
+              <Flex margin="1rem 0" gap=".5rem">
+                <BsShieldFillCheck size="25px" />
+                <div>
+                  <Text
+                    text="Your info is save with us"
+                    type="p"
+                    size="16px"
+                    weight={400}
+                  />
+                  <p style={{ fontSize: "14px" }}>
+                    For more details, see our{" "}
+                    <span
+                      style={{ color: ttColors.primary, cursor: "pointer" }}
+                    >
+                      data protection page
+                    </span>
+                  </p>
+                </div>
+              </Flex>
+
+              <Flex
+                align="center"
+                cursor="pointer"
+                gap="1rem"
+                onClick={prevStep}
+              >
+                <HiOutlineArrowNarrowLeft
+                  color={ttColors.primary}
+                  size="30px"
+                />
+                <Text
+                  text="Previous"
+                  type="p"
+                  color={ttColors.primary}
+                  size="20px"
+                  weight="400"
+                />
+              </Flex>
+            </Section>
+          ) : (
             <Button
               width="100%"
               margin="1rem 0"
               onClick={nextStep}
               fontSize="18px"
             >
-              {nextStepLoading ? (
-                <Spinner size="40px" fill={ttColors.primary} />
-              ) : (
-                "Continue"
-              )}
+              <Text type="p" text="Login to your account" />
             </Button>
-
-            <Text
-              type="p"
-              text="Save Progress & Continue later"
-              size="13px"
-              weight="bold"
-              decoration="underline"
-              styles={{
-                cursor: "pointer",
-              }}
-            />
-            <Flex margin="1rem 0" gap=".5rem">
-              <BsShieldFillCheck size="25px" />
-              <div>
-                <Text
-                  text="Your info is save with us"
-                  type="p"
-                  size="16px"
-                  weight={400}
-                />
-                <p style={{ fontSize: "14px" }}>
-                  For more details, see our{" "}
-                  <span style={{ color: ttColors.primary }}>
-                    data protection page
-                  </span>
-                </p>
-              </div>
-            </Flex>
-
-            <Flex align="center" cursor="pointer" gap="1rem" onClick={prevStep}>
-              <HiOutlineArrowNarrowLeft color={ttColors.primary} size="30px" />
-              <Text
-                text="Previous"
-                type="p"
-                color={ttColors.primary}
-                size="20px"
-                weight="400"
-              />
-            </Flex>
-          </Section>
+          )}
         </Section>
       </Flex>
     </>

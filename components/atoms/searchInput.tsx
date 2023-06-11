@@ -1,20 +1,17 @@
-import { LabelType } from "@molecule/serviceTabs/components/visa";
 import { InputAdornment, TextField } from "@mui/material";
 import Autocomplete, {
   AutocompleteCloseReason,
   autocompleteClasses,
 } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
-import ButtonBase from "@mui/material/ButtonBase";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { MouseEvent, useEffect, useRef, useState } from "react";
-import Text from "./text";
 import Flex from "./flex";
-import { IoIosArrowDown } from "react-icons/io";
+import Text from "./text";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -32,7 +29,7 @@ const StyledAutocompletePopper = styled("div")(({ theme }) => ({
   [`& .${autocompleteClasses.listbox}`]: {
     backgroundColor: "#fff",
     padding: 0,
-    height: "320px",
+    height: "300px",
     [`& .${autocompleteClasses.option}`]: {
       minHeight: "auto",
       alignItems: "flex-start",
@@ -93,13 +90,13 @@ export default function SearchInput({
 }: // anchorEl,
 // setAnchorEl,
 SearchProps) {
-  const [inputValue, setInputValue] = useState("");
+  const [_inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const ref = useRef<HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [searchOptions, setSearchOptions] = useState<any[]>(options);
+  // const [searchOptions, setSearchOptions] = useState<any[]>(options);
   const getWidth = (): number => {
     if (ref.current) {
       const width = ref.current.clientWidth;
@@ -114,14 +111,6 @@ SearchProps) {
 
   const open = Boolean(anchorEl);
   const id = open ? "select-service" : undefined;
-  useEffect(() => {
-    setSearchOptions(
-      options.filter((option) =>
-        option.name.toLowerCase().includes(inputValue.toLowerCase())
-      )
-    );
-    console.log("inputValue: ", inputValue, searchOptions);
-  }, [inputValue]);
   return (
     <>
       <Box ref={ref}>
@@ -130,13 +119,13 @@ SearchProps) {
             width: "100%",
             fontSize: 16,
             color: "#1C1B1F",
-            "& .MuiInputAdornment-root.MuiInputAdornment-positionStart.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-ittuaa-MuiInputAdornment-root":
+            "& .MuiInputAdornment-root":
               {
                 position: "absolute",
                 top: "50%",
                 display: "flex",
                 justifyContent: "center",
-                width: "86%",
+                width: "92%",
               },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -145,6 +134,9 @@ SearchProps) {
               color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
+            "& input": {
+              height: "18px",
+            },
           }}
           onClick={handleClick}
           label={legend}
@@ -152,7 +144,7 @@ SearchProps) {
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>
-                <IoIosArrowDown size={20} />
+                {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
           }}
@@ -192,11 +184,11 @@ SearchProps) {
                   return;
                 }
                 if (newValue !== null) {
+                  //*** refactoring */
+                  // the function should run before dropdown modal closes which is not the case currently!
+                  handleClose();
                   onChange(newValue);
-                  console.log("double it and give to next function");
-                  // open next tab
                 }
-                handleClose();
               }}
               disableCloseOnSelect
               PopperComponent={PopperComponent}
@@ -215,7 +207,7 @@ SearchProps) {
                   <br />
                 </li>
               )}
-              options={searchOptions}
+              options={options}
               getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <StyledInput
@@ -269,20 +261,27 @@ export function SearchInputAsString({
           sx={{
             width: "100%",
             fontSize: 16,
-            "& .MuiInputAdornment-root.MuiInputAdornment-positionStart.MuiInputAdornment-outlined.MuiInputAdornment-sizeMedium.css-ittuaa-MuiInputAdornment-root":
-              {
-                position: "absolute",
-                top: "50%",
-                display: "flex",
-                justifyContent: "center",
-                width: "86%",
-              },
+            "& .MuiInputAdornment-root": {
+              position: "absolute",
+              top: "50%",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            },
+            "& svg": {
+              position: "absolute",
+              right: "25px",
+              bottom: "-10px",
+            },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
             },
             "& label": {
               color: "#1C1B1F!important",
               fontSize: "16px!important",
+            },
+            "& input": {
+              height: "18px",
             },
           }}
           onClick={handleClick}
@@ -291,7 +290,7 @@ export function SearchInputAsString({
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>
-                <IoIosArrowDown size={20} />
+                {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
           }}
@@ -331,11 +330,9 @@ export function SearchInputAsString({
                   return;
                 }
                 if (newValue !== null) {
+                  handleClose();
                   onChange(newValue);
-                  console.log("double it and give to next function");
-                  // open next tab
                 }
-                handleClose();
               }}
               disableCloseOnSelect
               PopperComponent={PopperComponent}
@@ -350,9 +347,7 @@ export function SearchInputAsString({
                   <br />
                 </li>
               )}
-              options={[...options].filter((x) =>
-                x.toLowerCase().includes(inputValue.toLowerCase())
-              )}
+              options={[...options]}
               getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <StyledInput

@@ -1,15 +1,15 @@
 import * as yup from "yup";
 
 export const detailsSchema = yup.object({
-  home: yup.string().required(),
-  destination: yup.string().required(),
+  home: yup.object().required(),
+  destination: yup.object().required(),
   travelDate: yup.date().required(),
   travellingBy: yup.string().required(),
 });
 
 export const detailsKeys = {
-  home: "",
-  destination: "",
+  home: {},
+  destination: {},
   travelDate: "",
   travellingBy: "",
 };
@@ -25,6 +25,10 @@ export const personalInfoSchema = yup.object({
   idNumber: yup.string().required(),
   residentialAddress: yup.string().required(),
   dateOfBirth: yup.date().required(),
+  maritalStatus: yup.string().required(),
+  partnersName: yup.string(),
+  facebookUsername: yup.string(),
+  linkedinOrInstagram: yup.string(),
 });
 
 export const pesonalInfoKeys = {
@@ -38,14 +42,18 @@ export const pesonalInfoKeys = {
   idNumber: "",
   residentialAddress: "",
   dateOfBirth: "",
+  maritalStatus: "",
+  partnersName: "",
+  facebookUsername: "",
+  linkedinOrInstagram: "",
 };
 
 export const edAndEmpSchema = yup.object({
-  qualification: yup.string().required(),
+  degree: yup.string().required(),
   graudautionYear: yup.string().required(),
   schoolName: yup.string().required(),
   courseOfStudy: yup.string().required(),
-  grade: yup.string().required(),
+  grade: yup.number().required().max(5).min(0),
 
   companyName: yup.string().required(),
   employerName: yup.string().required(),
@@ -55,7 +63,7 @@ export const edAndEmpSchema = yup.object({
 });
 
 export const edAndEmpKeys = {
-  qualification: "",
+  degree: "",
   graudautionYear: "",
   schoolName: "",
   courseOfStudy: "",
@@ -69,6 +77,8 @@ export const edAndEmpKeys = {
 
 export const otherInfoSchema = yup.object({
   passNumber: yup.string().required(),
+  yearOfIssue: yup.string().required(),
+  gender: yup.string().required(),
   passIssueCountry: yup.string().required(),
   guarantorName: yup.string().required(),
   guarantorRelationship: yup.string().required(),
@@ -81,6 +91,8 @@ export const otherInfoSchema = yup.object({
 export const otherInforKeys = {
   passNumber: "",
   passIssueCountry: "",
+  gender: "",
+  yearOfIssue: "",
   guarantorName: "",
   guarantorAddress: "",
   guarantorPhone: "",
@@ -88,7 +100,14 @@ export const otherInforKeys = {
   uploadedDocuments: [],
 };
 
-export const formInitialValues = {
+export const visaSchema = {
+  ...detailsSchema,
+  ...edAndEmpSchema,
+  ...personalInfoSchema,
+  ...otherInfoSchema,
+};
+
+export const visaInitVals = {
   ...detailsKeys,
   ...edAndEmpKeys,
   ...pesonalInfoKeys,
