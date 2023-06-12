@@ -11,10 +11,10 @@ import { visaInitVals, visaSchema } from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
-import { feeItems } from "data/utilData";
+import currencyFormatter from "data/currencyFormatter";
 import useFormikHook from "hook/useFormik";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import {
   HiOutlineArrowNarrowLeft,
@@ -73,9 +73,49 @@ const ApplicationForm = () => {
     setNextStepLoading(false);
   };
 
-  const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
-
   const formik = useFormikHook(visaInitVals, visaSchema);
+  const [applicationFee, setApplicationFee] = useState(0);
+  const feeItems = [
+    {
+      name: "Fees",
+      amount: "Price",
+      type: "head",
+    },
+    {
+      name: "Application Fee",
+      amount: 30000,
+    },
+    {
+      name: "Standard processing fee",
+      amount: 0,
+    },
+    {
+      name: "Administrative charge",
+      amount: 0,
+    },
+    {
+      name: "VAT",
+      amount: 150,
+    },
+  ];
+
+  useEffect(() => {
+    if (formik.values.applicationFee) {
+      switch (formik.values.applicationFee) {
+        case "Single":
+          setApplicationFee(30000);
+          break;
+        case "Family":
+          setApplicationFee(50000);
+          break;
+        default:
+          setApplicationFee(0);
+          break;
+      }
+    }
+  });
+
+  const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
 
   const step = getSteps(formik).find((x) => x.id === currentPhase);
 
@@ -117,7 +157,7 @@ const ApplicationForm = () => {
                     />
                     <Text
                       type="p"
-                      text={`${item.amount}`}
+                      text={`${typeof item.amount === 'number' ? currencyFormatter(item.amount, 'NGN') : item.amount}`}
                       size={item.type === "head" ? "16px" : "14px"}
                       whiteSpace="nowrap"
                       weight={item.type === "head" ? "500" : "100"}
@@ -129,7 +169,19 @@ const ApplicationForm = () => {
 
               {shownFees.length ? (
                 <Flex justify="flex-end">
-                  <Text type="p" text="N20,000" size="2.1rem" weight="bold" />
+                  <Text
+                    type="p"
+                    text={currencyFormatter(
+                      shownFees.reduce(
+                        (a, b) =>
+                          a + (typeof b.amount === "number" ? b.amount : 0),
+                        0
+                      ),
+                      "NGN"
+                    )}
+                    size="2.1rem"
+                    weight="bold"
+                  />
                 </Flex>
               ) : (
                 ""

@@ -76,11 +76,26 @@ function TripDetails({ formik, steps, index }: formProps) {
         </Section>
 
         <Section margin="0 0 1rem">
-          <Text type="p" text="When can you travel?" margin="1rem 0 " />
-          <DatePicker
-            onChange={(x) => formik.setFieldValue("travelDate", x)}
-            value={dayjs(formik?.values?.travelDate || new Date())}
-          />
+          <Text type="p" text="Application type" margin="1rem 0 " />
+          <SearchInputAsString
+            options={["Single", "Family", ]}
+            onChange={(x) => formik.setFieldValue("applicationType", x)}
+          >
+            <Flex justify="space-between">
+              <Text
+                type="p"
+                text={formik?.values?.applicationType}
+                color="#1C1B1F"
+                weight={100}
+                styles={{ cursor: "pointer" }}
+              />
+              {formik?.values?.applicationType ? (
+                <AiOutlineCheck color="#3BB98E" />
+              ) : (
+                <IoIosArrowDown size={20} />
+              )}
+            </Flex>
+          </SearchInputAsString>
         </Section>
         <Section margin="0 0 1rem">
           <Text type="p" text="Traveling by" margin="1rem 0 " />
