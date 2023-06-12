@@ -3,14 +3,14 @@ import * as yup from "yup";
 export const detailsSchema = yup.object({
   home: yup.object().required(),
   destination: yup.object().required(),
-  travelDate: yup.date().required(),
+  applicationType: yup.date().required(),
   travellingBy: yup.string().required(),
 });
 
 export const detailsKeys = {
   home: {},
   destination: {},
-  travelDate: "",
+  applicationType: "",
   travellingBy: "",
 };
 
