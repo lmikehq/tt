@@ -26,6 +26,6 @@ export type Qparams = {
 
 export interface IFee {
   name: string;
-  amount: string;
+  amount: number | string;
   type?: string;
 }

@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const detailsSchema = yup.object({
   home: yup.object().required(),
   destination: yup.object().required(),
-  applicationType: yup.date().required(),
+  applicationType: yup.string().required(),
   travellingBy: yup.string().required(),
 });
 
