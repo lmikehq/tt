@@ -108,15 +108,20 @@ const FeedBack = styled.div`
 `;
 
 const SearchArea = styled.div`
-  display: flex;
   border: 1px solid lightgray;
   border-radius: 6px;
   padding: 10px 7px;
   margin: 30px 0px 2rem;
-
+  position: relative;
   & input {
     border: none !important;
-    width: 95%;
+    // width: 95%;
+  }
+
+  & svg {
+    position: absolute;
+    right: 10px;
+    top: 15px;
   }
 `;
 
@@ -198,8 +203,8 @@ const Chat = () => {
       } catch (error) {
         console.error("Error sending the message:", error);
       }
-    //   if (chatRef?.current)
-        // chatRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      //   if (chatRef?.current)
+      // chatRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       setMessage("");
 
       setTimeout(() => {
@@ -248,6 +253,9 @@ const Chat = () => {
               placeholder="Search"
               onChange={(e) => setSearchCriteria(e.target.value)}
               value={searchCriteria}
+              width="100%"
+              height="24px"
+              padding="0px 2rem 0px .5rem"
             />
             <BsSearch
               onClick={(_x) => filterChatItems(searchCriteria)}
@@ -360,6 +368,7 @@ ${chatItem[activeSection].name} type your questions below`}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
+            parentWidth="100%"
           />
           <ButtonBase>
             <BsSend

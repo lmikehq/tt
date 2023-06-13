@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
 
 const StyledInput = styled.input`
   background-color: transparent;
@@ -68,6 +67,7 @@ export interface InputProps {
   min?: number;
   max?: number;
   flexGrow?: number;
+  parentWidth?: string;
 }
 
 const Input = ({
@@ -94,9 +94,10 @@ const Input = ({
   min,
   max,
   flexGrow,
+  parentWidth
 }: InputProps) => {
   return (
-    <div style={{ position: "relative", flexGrow }}>
+    <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
         type={type || "text"}
         onBlur={onBlur}
