@@ -9,7 +9,6 @@ import {
   useState,
 } from "react";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
 
 const StyledInput = styled.input`
   background-color: transparent;
