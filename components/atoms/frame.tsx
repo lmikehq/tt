@@ -24,11 +24,13 @@ const ServiceCard = styled.div`
   }
 `;
 
+
+
 const FrameInfo = styled.div`
     position: absolute;
     width: 100%;
     height: 12.25rem;
-    width: 35.4rem;
+    // width: 35.4rem;
     height: 16.5rem;
     left: 0;
     top: 8.6rem;
@@ -41,13 +43,8 @@ const FrameInfo = styled.div`
       rgba(18, 18, 18, 0.75) 48.67%
     );
 
-    // background: linear-gradient(
-    //   180deg,
-    //   rgba(0, 0, 0, 0) 0%,
-    //   rgb(18 18 18 / 31%) 48.67%
-    // );
+    
     border-radius: 0px 0px 24px 24px;
-    // transform: matrix(-1, 0, 0, 1, 0, 0);
 
     & h3 {
       margin-top: 4.5rem;
@@ -124,6 +121,7 @@ const Frame: React.FC = () => {
   return (
     <FrameWrapper>
       <FrameLayout>
+
         <Grid columns="repeat(2, 1fr)" gap="2rem">
           {serviceCard.map((item) => (
             <ServiceCard key={item.id} style={{ position: "relative" }}>
@@ -138,7 +136,7 @@ const Frame: React.FC = () => {
                   width="27%"
                   color="var(--secondary-color)"
                   onClick={() => router.push("/visa")}
-                >
+                  >
                   {item.icon} &nbsp; {item.button}
                 </Button>
               </FrameInfo>
