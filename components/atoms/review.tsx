@@ -11,12 +11,9 @@ const ReviewWrapper = styled.div`
 `;
 const Card = styled.div`
   display: block;
-  //   flex-direction: row;/
-  //   justify-content: flex-end;
   align-items: center;
   padding: 0.7rem;
-  //   gap: 100px;
-  width: 94%;
+  width: 100%;
   height: 310px;
   margin-bottom: 2rem;
 
