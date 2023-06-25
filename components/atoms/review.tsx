@@ -138,7 +138,7 @@ const Review = () => {
           buttonText="See All"
           onButtonClick={() => {}}
         />
-        <Grid columns="repeat(3, 1fr)" gap=".2rem">
+        <Grid columns="repeat(3, 1fr)" gap="2rem">
           {reviewCard.map((review) => (
             <Card key={review.id}>
               <CardHeader>
