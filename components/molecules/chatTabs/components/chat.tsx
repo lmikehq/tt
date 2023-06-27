@@ -4,6 +4,7 @@ import Button from "@atom/button";
 import Flex from "@atom/flex";
 import Image from "@atom/image";
 import Input from "@atom/input";
+import Link from "@atom/link";
 import Text from "@atom/text";
 import Vector from "@image/Vector.svg";
 import { ButtonBase } from "@mui/material";
@@ -42,13 +43,7 @@ const LeftSide = styled.div`
   }
 `;
 
-// const ChatBtn = styled.button`
-//   width: 100%;
-//   height: 64px;
-//   margin: 0.5rem 0rem;
-//   background: ${(props) => (props.active ? "#06A82A" : "transparent")};
-//   color: ${(props) => (props.active ? "#ffffff" : "#000000")};
-// `;
+
 
 const ChatArea = styled.div`
   display: flex;
@@ -304,7 +299,9 @@ const Chat = () => {
               size="1rem"
               style={{ marginRight: "5px" }}
             />
-            Send feedback
+            <Link href="https://survey.alchemer.com/s3/7405739/MDN-AI-Help" target="_blank">
+              <Text text=" Send feedback" type="p" />
+            </Link>
           </Button>
         </FeedBack>
       </LeftSide>

@@ -29,20 +29,19 @@ const CountryWrapper = styled.section`
 `;
 
 const LeftSide = styled.div`
-  height: 365px;
-  //   flex: 1;
+  height: 415px;
 `;
 
 const RightSide = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
-  height: 365px;
+  height: 415px;
 `;
 
 const StyledImage = styled(Image)<{ active: boolean }>`
   width: 100%;
-  height: auto;
+  height: 100%;
   opacity: ${({ active }) => (active ? 0.7 : 1)};
   cursor: pointer;
 `;
@@ -54,7 +53,8 @@ const CountryInfo = styled.div`
   color: var(--secondary-color);
   border-radius: 1.4rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 415px;
+  height: 100%;
+  overflow; hidden;
 `;
 
 const CountryName = styled.h3`
@@ -93,10 +93,10 @@ const Button = styled.button`
   background-color: #fff;
   border: none;
   font-weight: bold;
-  position: relative;
-  top: -10px;
-  left: 5px;
-  width: 98%;
+  position: absolute;
+  bottom: 0%;
+  left: 8.5%;
+  width: 83%;
   padding: 18px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -249,6 +249,7 @@ const TopCountriesSection: React.FC = () => {
               </CountryInfo>
             )}
           </LeftSide>
+
           <RightSide>
             {countries.map((country) => (
               <ImageWrapper

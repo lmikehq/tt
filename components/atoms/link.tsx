@@ -2,6 +2,7 @@ import React from "react";
 import NextLink from "next/link";
 interface linkProps {
   href: string;
+  target?: string;
   children?: React.ReactNode;
   text?: string;
   className?: string;

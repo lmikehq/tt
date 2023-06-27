@@ -12,7 +12,6 @@ import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
 import Section from "@molecule/section";
 
-
 const FooterWrapper = styled.footer`
   width: 100%;
   height: 21rem;
@@ -96,6 +95,10 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
+
+  const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
+  const partner_with_us =["Partnership program", "Affiliate program", "Connectivity partners", "Loyalty program", "Community"];
+
   return (
     <FooterWrapper>
       <NewsLetter />
@@ -121,10 +124,21 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Canada" color="#06062A" />
+              {/* <
               <Link href="/" text="New Zealand" color="#06062A" />
               <Link href="/" text="United Kingdom" color="#06062A" />
-              <Link href="/" text="Norway" color="#06062A" />
+              <Link href="/" text="Norway" color="#06062A" /> */}
+
+              {top_countries.map((country, index) => (
+                <Link
+                  key={index}
+                  href={`/visa/countries/${country
+                    .toLowerCase()
+                    .replace(/ /g, "-")}`}
+                  text={country}
+                  color="#06062A"
+                />
+              ))}
             </Flex>
           </div>
           <div className="partnerWithUs">
@@ -135,11 +149,14 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Partnership programs" color="#06062A" />
+              {/* <Link href="/" text="Partnership programs" color="#06062A" />
               <Link href="/" text="Affiliate program" color="#06062A" />
               <Link href="/" text="Connectivity partners" color="#06062A" />
               <Link href="/" text="Loyalty program" color="#06062A" />
-              <Link href="/" text="Community" color="#06062A" />
+              <Link href="/" text="Community" color="#06062A" /> */}
+              {partner_with_us.map((partners, i) => (
+                <Link key={i} href="/" text={partners} color="#06062A" />
+              ))}
             </Flex>
           </div>
           <div className="support">

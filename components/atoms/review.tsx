@@ -11,12 +11,9 @@ const ReviewWrapper = styled.div`
 `;
 const Card = styled.div`
   display: block;
-  //   flex-direction: row;/
-  //   justify-content: flex-end;
   align-items: center;
   padding: 0.7rem;
-  //   gap: 100px;
-  width: 94%;
+  width: 100%;
   height: 310px;
   margin-bottom: 2rem;
 
@@ -141,7 +138,7 @@ const Review = () => {
           buttonText="See All"
           onButtonClick={() => {}}
         />
-        <Grid columns="repeat(3, 1fr)" gap=".2rem">
+        <Grid columns="repeat(3, 1fr)" gap="2rem">
           {reviewCard.map((review) => (
             <Card key={review.id}>
               <CardHeader>
