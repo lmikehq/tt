@@ -135,9 +135,6 @@ const Destination = () => {
           title="Popular Destinations"
           description="Explore our popular destinations to find the best option for your next adventure!"
           buttonText="See More Places"
-          onButtonClick={() => {
-            console.log("Button clicked");
-          }}
         />
         {/* <Link href="/"> */}
         {/* <Card>

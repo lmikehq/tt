@@ -27,12 +27,10 @@ const NavbarWrapper = styled.div<{ page?: string }>`
   background: ${({ page }) =>
     page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
-  // padding: ${({ page }) => (page === "home" ? "2rem 0 0" : "1rem 0")};
   box-shadow: ${({ page }) =>
     page !== "home" ? "0px 4px 16px rgba(17, 34, 17, 0.05)" : "none"};
   & button {
     background: var(--secondary-color);
-    // color: var(--default-color);
     color: #fff;
     padding: 0.5rem 2rem;
     text-transform: capitalize;
@@ -136,7 +134,6 @@ const Navbar = ({ page }: { page: string }) => {
               background="transparent"
               gap=".4rem"
               align="center"
-              // justify="space-between"
               cursor="pointer"
             >
               <BsGlobe />
