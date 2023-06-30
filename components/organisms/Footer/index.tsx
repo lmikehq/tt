@@ -11,10 +11,14 @@ import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
 import Section from "@molecule/section";
+import Barcode from "@image/walink.png";
+import AppLogo from "@image/app-store.svg";
+import PlayStore from "@image/google-play.svg";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const FooterWrapper = styled.footer`
   width: 100%;
-  height: 21rem;
+  height: fit-content;
   margin-top: 17rem;
   display: flex;
   padding: 5rem 0;
@@ -95,15 +99,22 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
+  const { isMobile, isTablet } = useScreenResolution();
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
-  const partner_with_us =["Partnership program", "Affiliate program", "Connectivity partners", "Loyalty program", "Community"];
+  const partner_with_us = [
+    "Partnership program",
+    "Affiliate program",
+    "Connectivity partners",
+    "Loyalty program",
+    "Community",
+  ];
 
   return (
-    <FooterWrapper>
+    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
       <NewsLetter />
       <Section width="85%" margin="0 auto">
-        <Grid gap="2.5rem" columns="repeat(5, 1fr)">
+        <Grid gap="2.5rem" columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
@@ -116,6 +127,7 @@ const FooterSection = () => {
               ))}
             </Flex>
           </div>
+
           <div className="topCountries">
             <Text
               type="h3"
@@ -184,6 +196,50 @@ const FooterSection = () => {
             </Flex>
           </div>
         </Grid>
+        <Flex
+          gap="1rem"
+          align={isMobile ? "center" : "flex-end"}
+          width="auto"
+          styles={{ visibility: isMobile ? "visible" : "hidden" }}
+        >
+          <Image
+            src={Barcode}
+            alt="visa"
+            style={{
+              marginLeft: isMobile ? "0rem" : "7rem",
+              marginTop: isMobile ? "20px" : "",
+              marginBottom: isMobile ? ".8rem" : "1.2rem",
+              width: isMobile ? "60px" : "110px",
+              height: isMobile ? "60px" : "110px",
+            }}
+          />
+          <Flex
+            direction="column"
+            gap={isMobile ? "0.2px" : "0.5px"}
+            align="center"
+            padding="0rem 0rem 1.5rem"
+            width={isMobile ? "4rem" : "10rem"}
+            styles={{ marginTop: isMobile ? "30px" : "" }}
+          >
+            <Image
+              src={AppLogo}
+              alt="mastercard"
+              style={{
+                width: isMobile ? "89.33px" : "134px",
+                height: isMobile ? "29.33px" : "44px",
+              }}
+            />
+            <Image
+              src={PlayStore}
+              alt="american-express"
+              style={{
+                width: isMobile ? "89.33px" : "134px",
+                height: isMobile ? "29.33px" : "44px",
+              }}
+            />
+          </Flex>
+        </Flex>
+        {/* <Text text="All Right Reserved, @ Thrillers Travel" type="p" /> */}
       </Section>
     </FooterWrapper>
   );

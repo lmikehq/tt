@@ -5,9 +5,12 @@ import { Grid } from "@atom/grid";
 import ReviewLayout from "@layout/sectionLayout";
 import SectionTitle from "./sectionTitle";
 import RatingComponent from "./reviewStar";
+import { useScreenResolution } from "hook/useScreenResolution";
+import React from "react";
+import { Divider } from "@mui/material";
 
 const ReviewWrapper = styled.div`
-  margin: 9rem 0 0 0;
+  margin: 5rem 0 0 0;
 `;
 const Card = styled.div`
   display: block;
@@ -68,6 +71,8 @@ const CardFooter = styled.div`
 `;
 
 const Review = () => {
+  const { isMobile, isTablet } = useScreenResolution();
+
   const reviewCard = [
     {
       id: 1,
@@ -129,29 +134,42 @@ const Review = () => {
       designation: "Employment visa - Canada",
     },
   ];
+   const reviewCardToShow = isMobile ? reviewCard.slice(0, 3) : reviewCard;
+
   return (
-    <ReviewWrapper>
+    <ReviewWrapper style={{ marginTop: isMobile ? "1rem" : "5rem" }}>
       <ReviewLayout>
         <SectionTitle
           title="Reviews"
           description="What people says about Golobe facilities."
-          buttonText="See All"
+          buttonText="See all"
         />
-        <Grid columns="repeat(3, 1fr)" gap="2rem">
-          {reviewCard.map((review) => (
-            <Card key={review.id}>
-              <CardHeader>
-                <h3>{review.title}</h3>
-              </CardHeader>
-              <CardDescription>
-                <p>{review.description}</p>
-              </CardDescription>
-              <RatingComponent rating={review.rating} />
-              <CardFooter>
-                <p>{review.name}</p>
-                <p>{review.designation}</p>
-              </CardFooter>
-            </Card>
+        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
+          {reviewCardToShow.map((review, index) => (
+            <React.Fragment key={review.id}>
+              <Card
+                key={review.id}
+                style={{
+                  boxShadow: isMobile
+                    ? "none"
+                    : "2px 4px 16px rgba(17, 34, 17, 0.1)",
+                  marginBottom: isMobile ? "0px" : "2rem",
+                }}
+              >
+                <CardHeader>
+                  <h3>{review.title}</h3>
+                </CardHeader>
+                <CardDescription>
+                  <p>{review.description}</p>
+                </CardDescription>
+                <RatingComponent rating={review.rating} />
+                <CardFooter>
+                  <p>{review.name}</p>
+                  <p>{review.designation}</p>
+                </CardFooter>
+              </Card>
+              {isMobile && index !== reviewCardToShow.length - 1 && <Divider />}
+            </React.Fragment>
           ))}
         </Grid>
       </ReviewLayout>

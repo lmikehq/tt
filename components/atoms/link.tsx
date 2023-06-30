@@ -9,10 +9,11 @@ interface linkProps {
   color?: string;
   textDecoration?: string;
   decoration?: string;
+  onClick?: () => void;
   style?: React.CSSProperties;
 }
 
-export const Link: React.FC<linkProps> = (props) => {
+export const Link: React.FC<linkProps & { onClick?: () => void }> = (props) => {
   const styles = props.style || {};
   styles.textDecoration = props.decoration || "none";
   styles.color = props.color || "var(--secondary-color)";

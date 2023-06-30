@@ -11,6 +11,7 @@ import FlightImg from "@image/serviceCard/flight.png";
 import HotelImg from "@image/serviceCard/hotel.png";
 import TravelImg from "@image/serviceCard/travel.png";
 import { useRouter } from "next/navigation";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;
@@ -21,6 +22,7 @@ const ServiceCard = styled.div`
   & img {
     width: 100%;
     height: 25rem;
+    border-radius: 24px;
   }
 `;
 
@@ -60,7 +62,7 @@ const FrameInfo = styled.div`
       font-size: 16px;
       line-height: 20px;
       text-align: center;
-      width: 389px;
+      // width: 389px;
       height: 40px;
       margin: 0 auto;
       margin-bottom: 1rem;
@@ -117,12 +119,13 @@ const serviceCard = [
 ];
 
 const Frame: React.FC = () => {
+  const { isMobile, isTablet } = useScreenResolution();
+
   const router = useRouter();
   return (
-    <FrameWrapper>
+    <FrameWrapper style={{marginTop: isMobile  ? "3rem" : "5rem"}}>
       <FrameLayout>
-
-        <Grid columns="repeat(2, 1fr)" gap="2rem">
+        <Grid columns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap="2rem">
           {serviceCard.map((item) => (
             <ServiceCard key={item.id} style={{ position: "relative" }}>
               <Image src={item.img} alt="card image" />
@@ -133,10 +136,10 @@ const Frame: React.FC = () => {
                   zIndex="1"
                   background="var(--primary-color)"
                   padding="1rem 1.3rem"
-                  width="27%"
+                  styles={{width: isMobile ? "50%" : "27%"}}
                   color="var(--secondary-color)"
                   onClick={() => router.push("/visa")}
-                  >
+                >
                   {item.icon} &nbsp; {item.button}
                 </Button>
               </FrameInfo>

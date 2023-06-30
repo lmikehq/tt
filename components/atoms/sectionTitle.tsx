@@ -4,6 +4,9 @@ import React from "react";
 import styled from "styled-components";
 import Button from "./button";
 import { ttColors } from "theme/colors";
+import { useScreenResolution } from "hook/useScreenResolution";
+import Link from "./link";
+import Text from "./text";
 
 const SectionTitleContainer = styled.div`
   display: flex;
@@ -31,6 +34,7 @@ const Description = styled.p`
 
 interface SectionTitleProps {
   title: string;
+  href?: string;
   description: string;
   buttonText?: string;
   showButton?: boolean;
@@ -39,29 +43,35 @@ interface SectionTitleProps {
 
 const SectionTitle: React.FC<SectionTitleProps> = ({
   title,
+  href,
   description,
   buttonText,
   onButtonClick,
   showButton = true,
 }) => {
+  const { isMobile, isTablet } = useScreenResolution();
+
   return (
-    <SectionTitleContainer>
+    <SectionTitleContainer
+      style={{
+        display: isMobile ? "block" : "flex",
+        alignItems: isMobile ? "left" : "center",
+      }}
+    >
       <div>
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
 
       {showButton && (
-        <Button
-          onClick={onButtonClick}
-          background="transparent"
+        <Link
           color={ttColors.dark}
-          border={`1px solid ${ttColors.primary}`}
-          width="180px"
-          fontSize="1rem"
+          style={{ marginTop: isMobile ? "15px" : "0px"}}
+          href=""
+          onClick={onButtonClick}
         >
           {buttonText}
-        </Button>
+        </Link>
       )}
     </SectionTitleContainer>
   );

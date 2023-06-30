@@ -1,15 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import newZealand from "@image/topCountries/newZealand.png";
-import UAE from "@image/topCountries/UAE.png";
-import Haiti from "@image/topCountries/Haiti.png";
-import mikeVilla from "@image/topCountries/mikeVilla.png";
+import newZealand from "@image/topCountries/Zealand.jpeg";
+import Uk from "@image/topCountries/uk.jpeg";
+import Canada from "@image/topCountries/Canada.jpeg";
+import Norway from "@image/topCountries/norway.jpeg";
 import Image, { StaticImageData } from "next/image";
 import { Grid } from "@atom/grid";
 
 import CountryLayout from "@layout/sectionLayout";
 import SectionTitle from "@atom/sectionTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface Country {
   id: number;
@@ -44,6 +45,7 @@ const StyledImage = styled(Image)<{ active: boolean }>`
   height: 100%;
   opacity: ${({ active }) => (active ? 0.7 : 1)};
   cursor: pointer;
+  border-radius: 1.4rem;
 `;
 
 const CountryInfo = styled.div`
@@ -57,22 +59,38 @@ const CountryInfo = styled.div`
   overflow; hidden;
 `;
 
+const LeftHeaderText = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-self: stretch;
+`;
+
 const CountryName = styled.h3`
   font-size: 32px;
-  margin-bottom: 20px;
-  width: 365px;
-  text-align: start;
-  margin-left: 1.2rem;
+  // margin-bottom: 20px;
+  // width: 365px;
+
+  display: flex;
+  width: 363px;
+  flex-direction: column;
+  // font-size: 40px;
+  font-family: Poppins;
+  font-weight: 700;
+
+  padding-right: 65px;
+  // text-align: start;
+  // margin-left: 1.2rem;
   //   height: 120px;
 `;
 
 const CountryDescription = styled.p`
-  margin: 82px auto;
+  margin: 50px auto;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  padding: 0 1.2rem;
+  padding: 2px 1.2rem;
 `;
 
 const IntervalTag = styled.div`
@@ -126,7 +144,8 @@ const ImageOverlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 98.17%;
+  height: 100%;
+  border-radius: 1.4rem;
   //   background: crimson;
   mix-blend-mode: soft-light;
   opacity: 0;
@@ -171,46 +190,49 @@ const IntervalDays = styled.h4`
 `;
 
 const TopCountriesSection: React.FC = () => {
+  const { isMobile, isTablet } = useScreenResolution();
   const [activeImage, setActiveImage] = useState(1);
   const [hoveredImage, setHoveredImage] = useState(1);
 
   const countries: Country[] = [
     {
       id: 1,
-      name: "New Zealand",
-      description1: "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
-      description2:  "New zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
-      image: newZealand,
+      name: "Canada",
+      description1:
+        "Canada is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      description2:
+        "Canada is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      image: Canada,
       interval: "3 days",
     },
     {
       id: 2,
-      name: "UAE",
+      name: "New Zwealand",
       description1:
-        "UAE is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "New Zwealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       description2:
-        "UAE is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
-      image: UAE,
+        "New Zwealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      image: newZealand,
       interval: "3 days",
     },
     {
       id: 3,
-      name: "Haiti",
+      name: "United Kingdom",
       description1:
-        "Haiti is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "United Kingdom is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       description2:
-        "Haiti is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
-      image: Haiti,
+        "United Kingdom is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      image: Uk,
       interval: "3 days",
     },
     {
       id: 4,
-      name: "Mike Villa",
+      name: "Norway",
       description1:
-        "MikeVilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Norway is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       description2:
-        "Mikevilla is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
-      image: mikeVilla,
+        "Norway is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+      image: Norway,
       interval: "3 days",
     },
   ];
@@ -218,66 +240,119 @@ const TopCountriesSection: React.FC = () => {
   console.log("blah bah", activeImage);
 
   return (
-    <CountryWrapper>
+    <CountryWrapper style={{marginBottom: isMobile ? "3rem" : "10rem"}}>
       <CountryLayout>
         <SectionTitle
           title="Our top countries"
           description="Going somewhere to celebrate this season? Whether you’re going home or somewhere to roam, we’ve got the travel tools to get you to your destination."
-          buttonText="See All"
-          onButtonClick={() => {
-            console.log("Button clicked");
-          }}
+          buttonText="See all"
         />
-        <Grid columns="repeat(2, 1fr)" gap="1rem">
-          <LeftSide>
-            {activeImage !== null && (
-              <CountryInfo>
-                <IntervalTag>
-                  <IntervalText>E-visa</IntervalText>
-                  <IntervalDays>3 days</IntervalDays>
-                </IntervalTag>
-                <CountryName>
-                  Get {countries[activeImage - 1].name} E-visa
-                </CountryName>
-                <CountryDescription>
-                  {countries[activeImage - 1].description1}
-                  <br />
-                  <br />
-                  {countries[activeImage - 1].description2}
-                </CountryDescription>
-                <Button>Apply to {countries[activeImage - 1].name}</Button>
-              </CountryInfo>
-            )}
-          </LeftSide>
-
-          <RightSide>
-            {countries.map((country) => (
-              <ImageWrapper
-                key={country.id}
-                onMouseEnter={() => {
-                  setHoveredImage(country.id);
-                  setActiveImage(country.id);
-                }}
-              >
-                <StyledImage
-                  src={country.image}
-                  alt={country.name}
-                  active={
-                    activeImage === country.id || hoveredImage === country.id
-                  }
-                />
-                <ImageOverlay
-                  style={{
-                    opacity: hoveredImage === country.id ? 1 : 0,
+        {isMobile ? (
+          <>
+            <RightSide style={{ marginBottom: "2rem" }}>
+              {countries.map((country) => (
+                <ImageWrapper
+                  key={country.id}
+                  onMouseEnter={() => {
+                    setHoveredImage(country.id);
+                    setActiveImage(country.id);
                   }}
-                />
-                {activeImage === country.id || hoveredImage === country.id ? (
-                  <CountryNameTooltip>{country.name}</CountryNameTooltip>
-                ) : null}
-              </ImageWrapper>
-            ))}
-          </RightSide>
-        </Grid>
+                >
+                  <StyledImage
+                    src={country.image}
+                    alt={country.name}
+                    active={
+                      activeImage === country.id || hoveredImage === country.id
+                    }
+                  />
+                  <ImageOverlay
+                    style={{
+                      opacity: hoveredImage === country.id ? 1 : 0,
+                    }}
+                  />
+                  {activeImage === country.id || hoveredImage === country.id ? (
+                    <CountryNameTooltip>{country.name}</CountryNameTooltip>
+                  ) : null}
+                </ImageWrapper>
+              ))}
+            </RightSide>
+            <Grid columns="1fr" gap="2rem" align="start">
+              <LeftSide>
+                {activeImage !== null && (
+                  <CountryInfo>
+                    <IntervalTag>
+                      <IntervalText>E-visa</IntervalText>
+                      <IntervalDays>3 days</IntervalDays>
+                    </IntervalTag>
+                    <CountryName>
+                      Get {countries[activeImage - 1].name} E-visa
+                    </CountryName>
+                    <CountryDescription style={{marginTop: isMobile ? "35px" : "50px"}}>
+                      {countries[activeImage - 1].description1}
+                      <br />
+                      <br />
+                      {countries[activeImage - 1].description2}
+                    </CountryDescription>
+                    <Button>Apply to {countries[activeImage - 1].name}</Button>
+                  </CountryInfo>
+                )}
+              </LeftSide>
+            </Grid>
+          </>
+        ) : (
+          <Grid columns="repeat(2, 1fr)" gap="1rem" align="center">
+            <LeftSide>
+              {activeImage !== null && (
+                <CountryInfo>
+                  <LeftHeaderText>
+                    <IntervalTag>
+                      <IntervalText>E-visa</IntervalText>
+                      <IntervalDays>3 days</IntervalDays>
+                    </IntervalTag>
+                    <CountryName>
+                      Get {countries[activeImage - 1].name} E-visa
+                    </CountryName>
+                  </LeftHeaderText>
+                  <CountryDescription>
+                    {countries[activeImage - 1].description1}
+                    <br />
+                    <br />
+                    {countries[activeImage - 1].description2}
+                  </CountryDescription>
+                  <Button>Apply to {countries[activeImage - 1].name}</Button>
+                </CountryInfo>
+              )}
+            </LeftSide>
+
+            <RightSide>
+              {countries.map((country) => (
+                <ImageWrapper
+                  key={country.id}
+                  onMouseEnter={() => {
+                    setHoveredImage(country.id);
+                    setActiveImage(country.id);
+                  }}
+                >
+                  <StyledImage
+                    src={country.image}
+                    alt={country.name}
+                    active={
+                      activeImage === country.id || hoveredImage === country.id
+                    }
+                  />
+                  <ImageOverlay
+                    style={{
+                      opacity: hoveredImage === country.id ? 1 : 0,
+                    }}
+                  />
+                  {activeImage === country.id || hoveredImage === country.id ? (
+                    <CountryNameTooltip>{country.name}</CountryNameTooltip>
+                  ) : null}
+                </ImageWrapper>
+              ))}
+            </RightSide>
+          </Grid>
+        )}
       </CountryLayout>
     </CountryWrapper>
   );
