@@ -114,7 +114,7 @@ const FooterSection = () => {
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
       <NewsLetter />
       <Section width="85%" margin="0 auto">
-        <Grid gap="2.5rem" columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
+        <Grid gap={isMobile ? "1.2rem" : "2.5rem"} columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
