@@ -137,6 +137,9 @@ const PopularDestinations = ({
   const { isMobile } = useScreenResolution();
 
   
+const filteredDestinations = isMobile
+  ? destinationCard.slice(0, 4)
+  : destinationCard;
 
 
 
@@ -150,7 +153,7 @@ const PopularDestinations = ({
           href="/visa/countries"
         />
         <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="16px">
-          {destinationCard.map((destination) => (
+          {filteredDestinations.map((destination) => (
             <Link key={destination.id} href="/visa/apply">
               <Card>
                 <Flex justify="space-between" gap="1rem">
