@@ -19,6 +19,7 @@ import Singapore from "@image/popularDestination/singapore.png";
 import Germany from "@image/popularDestination/germany.png";
 import React from "react";
 import SectionTitle from "@molecule/sectionTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const DestinationWrapper = styled.div`
   // margin: 5rem 0;
@@ -133,6 +134,8 @@ const PopularDestinations = ({
     },
   ];
 
+  const { isMobile } = useScreenResolution();
+
   
 
 
@@ -146,7 +149,7 @@ const PopularDestinations = ({
           buttonText="See more countries"
           href="/visa/countries"
         />
-        <Grid columns="repeat(3, 1fr)" gap="16px">
+        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="16px">
           {destinationCard.map((destination) => (
             <Link key={destination.id} href="/visa/apply">
               <Card>
