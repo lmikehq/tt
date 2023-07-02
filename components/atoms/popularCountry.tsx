@@ -190,7 +190,7 @@ const IntervalDays = styled.h4`
 `;
 
 const TopCountriesSection: React.FC = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   const [activeImage, setActiveImage] = useState(1);
   const [hoveredImage, setHoveredImage] = useState(1);
 
@@ -240,7 +240,7 @@ const TopCountriesSection: React.FC = () => {
   console.log("blah bah", activeImage);
 
   return (
-    <CountryWrapper style={{marginBottom: isMobile ? "3rem" : "10rem"}}>
+    <CountryWrapper style={{ marginBottom: isMobile ? "3rem" : "10rem" }}>
       <CountryLayout>
         <SectionTitle
           title="Our top countries"
@@ -287,7 +287,9 @@ const TopCountriesSection: React.FC = () => {
                     <CountryName>
                       Get {countries[activeImage - 1].name} E-visa
                     </CountryName>
-                    <CountryDescription style={{marginTop: isMobile ? "35px" : "50px"}}>
+                    <CountryDescription
+                      style={{ marginTop: isMobile ? "35px" : "50px" }}
+                    >
                       {countries[activeImage - 1].description1}
                       <br />
                       <br />

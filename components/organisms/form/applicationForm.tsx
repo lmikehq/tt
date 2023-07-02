@@ -44,7 +44,7 @@ const PromoInput = styled.div`
 `;
 
 const ApplicationForm = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();

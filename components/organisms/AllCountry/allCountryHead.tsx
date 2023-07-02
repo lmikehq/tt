@@ -6,8 +6,6 @@ import Text from "@atom/text";
 import Breadcrumb from "@atom/breadcrumb";
 import { useScreenResolution } from "hook/useScreenResolution";
 
-
-
 const AllCountryHeader = styled.div`
   position: relative;
   width: 100%;
@@ -56,9 +54,9 @@ const AllCountryHead = ({
 }: {
   cover: StaticImageData;
   title: string;
-  }) => {
-  const { isMobile, isTablet } = useScreenResolution();
-  
+}) => {
+  const { isMobile } = useScreenResolution();
+
   return (
     <>
       <AllCountryHeader style={{ height: isMobile ? "160px" : "332px" }}>

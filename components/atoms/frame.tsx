@@ -121,7 +121,7 @@ const serviceCard = [
 
 
 const Frame: React.FC = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   const router = useRouter();
 
   const applyButton = () => {

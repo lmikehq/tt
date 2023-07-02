@@ -56,8 +56,8 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   buttonText,
   showButton = true,
 }) => {
-  const { isMobile, isTablet } = useScreenResolution();
-
+  const { isMobile } = useScreenResolution();
+  showButton = isMobile ? false : showButton;
   const router = useRouter();
 
   const sectionTitleBtn = () => {

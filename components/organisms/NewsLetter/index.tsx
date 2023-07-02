@@ -76,7 +76,7 @@ const Subcribe = styled.div`
 `;
 
 const NewsLetter = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   return (
     <SubscribeWrapper
@@ -101,7 +101,9 @@ const NewsLetter = () => {
             size="1rem"
             color="#06062A"
           />
-          <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? ".5rem" : "1rem"}
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? ".5rem" : "1rem"}
           >
             <input type="text" placeholder="Enter your email address" />
             <Button variant="contained" size="medium">
@@ -110,7 +112,12 @@ const NewsLetter = () => {
           </Flex>
         </Subcribe>
 
-        <Flex gap="1rem" align="flex-end" width="auto" styles={{visibility: isMobile ? "hidden" : "visible"}}>
+        <Flex
+          gap="1rem"
+          align="flex-end"
+          width="auto"
+          styles={{ visibility: isMobile ? "hidden" : "visible" }}
+        >
           <Image
             src={Barcode}
             alt="visa"

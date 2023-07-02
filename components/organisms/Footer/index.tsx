@@ -100,7 +100,7 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
   const partner_with_us = [
