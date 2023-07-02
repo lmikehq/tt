@@ -50,6 +50,15 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   showButton = true,
 }) => {
   const { isMobile, isTablet } = useScreenResolution();
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    if (href) {
+      router.push(href);
+    } else if (onButtonClick) {
+      onButtonClick();
+    }
+  };
 
   return (
     <SectionTitleContainer
