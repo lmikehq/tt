@@ -118,12 +118,18 @@ const serviceCard = [
   },
 ];
 
+
+
 const Frame: React.FC = () => {
   const { isMobile, isTablet } = useScreenResolution();
-
   const router = useRouter();
+
+  const applyButton = () => {
+    router.push("/visa");
+  };
+  
   return (
-    <FrameWrapper style={{marginTop: isMobile  ? "3rem" : "5rem"}}>
+    <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
       <FrameLayout>
         <Grid columns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap="2rem">
           {serviceCard.map((item) => (
@@ -136,9 +142,9 @@ const Frame: React.FC = () => {
                   zIndex="1"
                   background="var(--primary-color)"
                   padding="1rem 1.3rem"
-                  styles={{width: isMobile ? "50%" : "27%"}}
+                  styles={{ width: isMobile ? "50%" : "27%" }}
                   color="var(--secondary-color)"
-                  onClick={() => router.push("/visa")}
+                  onClick={applyButton}
                 >
                   {item.icon} &nbsp; {item.button}
                 </Button>

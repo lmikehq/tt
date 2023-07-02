@@ -15,6 +15,7 @@ import Barcode from "@image/walink.png";
 import AppLogo from "@image/app-store.svg";
 import PlayStore from "@image/google-play.svg";
 import { useScreenResolution } from "hook/useScreenResolution";
+import SectionLayout from "@components/layouts/sectionLayout";
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -113,7 +114,7 @@ const FooterSection = () => {
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
       <NewsLetter />
-      <Section width="85%" margin="0 auto">
+      <SectionLayout margin="0 auto">
         <Grid gap={isMobile ? "1.2rem" : "2.5rem"} columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
           <div className="footerLogo">
             <Link href="/">
@@ -240,7 +241,7 @@ const FooterSection = () => {
           </Flex>
         </Flex>
         {/* <Text text="All Right Reserved, @ Thrillers Travel" type="p" /> */}
-      </Section>
+      </SectionLayout>
     </FooterWrapper>
   );
 };

@@ -9,8 +9,8 @@ import Image, { StaticImageData } from "next/image";
 import { Grid } from "@atom/grid";
 
 import CountryLayout from "@layout/sectionLayout";
-import SectionTitle from "@atom/sectionTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
+import SectionTitle from "@molecule/sectionTitle";
 
 interface Country {
   id: number;

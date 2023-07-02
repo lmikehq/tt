@@ -653,27 +653,9 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Spain",
-    flag: es,
-    code: "ES",
-  },
-
-  {
     name: "Ethiopia",
     flag: et,
     code: "ET",
-  },
-
-  {
-    name: "Finland",
-    flag: fi,
-    code: "FI",
-  },
-
-  {
-    name: "Fiji",
-    flag: fj,
-    code: "FJ",
   },
 
   {
@@ -695,12 +677,6 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "France",
-    flag: fr,
-    code: "FR",
-  },
-
-  {
     name: "Gabon",
     flag: ga,
     code: "GA",
@@ -713,21 +689,9 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Grenada",
-    flag: gd,
-    code: "GD",
-  },
-
-  {
     name: "Georgia",
     flag: ge,
     code: "GE",
-  },
-
-  {
-    name: "French Guiana",
-    flag: gf,
-    code: "GF",
   },
 
   {
@@ -752,30 +716,6 @@ export const COUNTRY_FLAGS = [
     name: "Greenland",
     flag: gl,
     code: "GL",
-  },
-
-  {
-    name: "Gambia",
-    flag: gm,
-    code: "GM",
-  },
-
-  {
-    name: "Guinea",
-    flag: gn,
-    code: "GN",
-  },
-
-  {
-    name: "Guadeloupe",
-    flag: gp,
-    code: "GP",
-  },
-
-  {
-    name: "Equatorial Guinea",
-    flag: gq,
-    code: "GQ",
   },
 
   {
@@ -820,12 +760,6 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Faroe Islands",
-    flag: fo,
-    code: "FO",
-  },
-
-  {
     name: "France",
     flag: fr,
     code: "FR",
@@ -838,39 +772,15 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "United Kingdom",
-    flag: gb,
-    code: "GB",
-  },
-
-  {
     name: "Grenada",
     flag: gd,
     code: "GD",
   },
 
   {
-    name: "Georgia",
-    flag: ge,
-    code: "GE",
-  },
-
-  {
     name: "French Guiana",
     flag: gf,
     code: "GF",
-  },
-
-  {
-    name: "Guernsey",
-    flag: gg,
-    code: "GG",
-  },
-
-  {
-    name: "Ghana",
-    flag: gh,
-    code: "GH",
   },
 
   {
@@ -907,12 +817,6 @@ export const COUNTRY_FLAGS = [
     name: "Equatorial Guinea",
     flag: gq,
     code: "GQ",
-  },
-
-  {
-    name: "Greece",
-    flag: gr,
-    code: "GR",
   },
 
   {

@@ -3,11 +3,11 @@
 import styled from "styled-components";
 import { Grid } from "@atom/grid";
 import ReviewLayout from "@layout/sectionLayout";
-import SectionTitle from "./sectionTitle";
 import RatingComponent from "./reviewStar";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import { Divider } from "@mui/material";
+import SectionTitle from "@molecule/sectionTitle";
 
 const ReviewWrapper = styled.div`
   margin: 5rem 0 0 0;

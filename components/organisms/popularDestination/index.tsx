@@ -18,8 +18,7 @@ import Australia from "@image/popularDestination/australia.png";
 import Singapore from "@image/popularDestination/singapore.png";
 import Germany from "@image/popularDestination/germany.png";
 import React from "react";
-import SectionTitle from "@atom/sectionTitle";
-import { useRouter } from "next/navigation";
+import SectionTitle from "@molecule/sectionTitle";
 
 const DestinationWrapper = styled.div`
   // margin: 5rem 0;
@@ -133,7 +132,11 @@ const PopularDestinations = ({
       description: "Visa . Employment . Apply",
     },
   ];
-  const router = useRouter();
+
+  
+
+
+
   return (
     <DestinationWrapper>
       <DestinationLayout>
@@ -141,8 +144,7 @@ const PopularDestinations = ({
           title={title}
           description="Explore our popular destinations to find the best option for your next adventure!"
           buttonText="See more countries"
-          onButtonClick={() => router.push("/visa/countries")}
-          // href="/visa/countries"
+          href="/visa/countries"
         />
         <Grid columns="repeat(3, 1fr)" gap="16px">
           {destinationCard.map((destination) => (

@@ -9,6 +9,7 @@ import FormStepTitle from "./formStepsTitle";
 import Flex from "@atom/flex";
 import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface formProps {
   formik: FormikValues;
@@ -17,8 +18,10 @@ interface formProps {
 }
 
 function TripDetails({ formik, steps, index }: formProps) {
+  const { isMobile, isTablet } = useScreenResolution();
+
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"} >
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }}>
         <Section margin="0 0 1rem">

@@ -4,6 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import styled from "styled-components";
 import Text from "@atom/text";
 import Breadcrumb from "@atom/breadcrumb";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 
 
@@ -33,6 +34,10 @@ const AllCountryHeader = styled.div`
     line-height: 96px;
 
     text-shadow: 0px 4px 79px rgba(0, 0, 0, 0.25);
+
+    @media screen and (max-width: 900px) {
+      font-size: 24px;
+    }
   }
 `;
 
@@ -51,12 +56,18 @@ const AllCountryHead = ({
 }: {
   cover: StaticImageData;
   title: string;
-}) => {
+  }) => {
+  const { isMobile, isTablet } = useScreenResolution();
+  
   return (
     <>
-      <AllCountryHeader>
-        <Image src={cover} alt="" />
-        <Overlay />
+      <AllCountryHeader style={{ height: isMobile ? "160px" : "332px" }}>
+        <Image
+          src={cover}
+          alt=""
+          style={{ height: isMobile ? "128px" : "300px" }}
+        />
+        <Overlay style={{ height: isMobile ? "128px" : "300px" }} />
         <Text text={title} type="h2" transform="uppercase" />
       </AllCountryHeader>
       <Breadcrumb />
