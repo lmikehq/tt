@@ -1,27 +1,26 @@
 "use client";
+import Button from "@atom/button";
 import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Link from "@atom/link";
+import Text from "@atom/text";
 import NavbarLayout from "@components/layouts/sectionLayout";
 import Logo from "@image/brand/favicon.svg";
+import MobileLogo from "@image/brand/tt_blue_logo_with_text.png";
+import { ButtonBase } from "@mui/material";
+import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
+import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { BiDollar } from "react-icons/bi";
 import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
-import styled from "styled-components";
-import MobileLogo from "@image/brand/tt_blue_logo_with_text.png";
-import Button from "@atom/button";
-import { Grid } from "@atom/grid";
-import Text from "@atom/text";
-import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
-import { usePathname, useRouter } from "next/navigation";
-import { ttColors } from "theme/colors";
-import { useScreenResolution } from "hook/useScreenResolution";
-import { ButtonBase } from "@mui/material";
 import { RxHamburgerMenu } from "react-icons/rx";
+import styled from "styled-components";
+import { ttColors } from "theme/colors";
 import MobileNavigationDrawer from "./modals/mobileNav";
-// Modal from material ui ends
 
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
@@ -63,25 +62,15 @@ const NavMenu = styled.div`
   font-size: 0.9rem;
 `;
 
-// Modal
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  overflow: "scroll" as "scroll",
-  p: 4,
-};
-
 const Divider = styled.div`
   width: 2px;
   height: 20px;
   border: 1px solid #000;
   background: red;
+`;
+
+const MobileWrapper = styled.div<{ isSticky: boolean }>`
+  position: ${({ isSticky }) => (isSticky ? "fixed" : "static")};
 `;
 
 interface navbarProps {
@@ -99,20 +88,43 @@ const Navbar = ({ page }: { page: string }) => {
 
 const MobileNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const handleOpen = () => setModalOpen(true);
   const router = useRouter();
+  const ref = useRef(null);
+  const [isSticky, setIsSticky] = useState(false);
+
+  const checkScrollTop = () => {
+    if (page === "home" && window.scrollY > 88) {
+      setIsSticky(true);
+    } else {
+      setIsSticky(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", checkScrollTop);
+    return () => {
+      window.removeEventListener("scroll", checkScrollTop);
+    };
+  }, []);
+
   return (
     <>
-      <MobileNavigationDrawer isOpen={modalOpen} setIsOpen={setModalOpen} pathArray={pathArray} />
-      <Flex padding="1rem" justify="space-between">
-        <ButtonBase onClick={() => router.push("/")}>
-          <Image src={MobileLogo} alt="thrillers travels logo" height={35} />
-        </ButtonBase>
+      <MobileNavigationDrawer
+        isOpen={modalOpen}
+        setIsOpen={setModalOpen}
+        pathArray={pathArray}
+      />
+      <MobileWrapper isSticky={isSticky}>
+        <Flex padding="1rem" justify="space-between" ref={ref}>
+          <ButtonBase onClick={() => router.push("/")}>
+            <Image src={MobileLogo} alt="thrillers travels logo" height={35} />
+          </ButtonBase>
 
-        <ButtonBase onClick={()=>setModalOpen(!modalOpen)}>
-          <RxHamburgerMenu size={30} />
-        </ButtonBase>
-      </Flex>
+          <ButtonBase onClick={() => setModalOpen(!modalOpen)}>
+            <RxHamburgerMenu size={30} />
+          </ButtonBase>
+        </Flex>
+      </MobileWrapper>
     </>
   );
 };
@@ -120,7 +132,6 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
-  let path = usePathname();
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -132,7 +143,6 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               { name: "Find stays", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;
-              console.log("active: ", active);
               return (
                 <Flex
                   key={index}

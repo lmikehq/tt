@@ -44,6 +44,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                 gap=".3rem"
                 height="46px"
                 borderBottom={active ? `5px solid ${ttColors.primary}` : "none"}
+                width="fit-content"
               >
                 {item.icon}
                 <Link href={`/${item.url}`}>
