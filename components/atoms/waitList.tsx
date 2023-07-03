@@ -308,14 +308,14 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="First name" label="First Name" />
+                      <TextField placeholder="Email" label="Email" />
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
                         options={yourReadiness}
                         sx={{ width: "100%" }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Your Readiness" />
+                          <TextField {...params} label="Availability" />
                         )}
                       />
                     </div>
@@ -519,14 +519,14 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="First name" label="First Name" />
+                      <TextField placeholder="Email" label="Email" />
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
                         options={yourReadiness}
                         sx={{ width: "100%" }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Your Readiness" />
+                          <TextField {...params} label="Availability" />
                         )}
                       />
                     </div>
