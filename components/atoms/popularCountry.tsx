@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import newZealand from "@image/topCountries/Zealand.jpeg";
+import newZealand from "@image/topCountries/zealand.jpeg";
 import Uk from "@image/topCountries/uk.jpeg";
 import Canada from "@image/topCountries/Canada.jpeg";
 import Norway from "@image/topCountries/norway.jpeg";
