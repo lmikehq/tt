@@ -10,6 +10,11 @@ const BannerWrapper = styled.div`
   border-radius: 1rem;
   margin-top: 6rem;
   box-shadow: 0px 3px 24px #00000014;
+
+  @media (max-width: 900px) {
+    width: 90vw;
+    margin-top: 4rem;
+  }
 `;
 
 function ServiceBanner({}) {
