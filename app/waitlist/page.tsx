@@ -1,9 +1,7 @@
-import React from 'react'
+import WaitList from "@atom/waitList";
+import  "./waitList.css"
+const WaitListPage = () => {
+  return <WaitList />;
+};
 
-function page() {
-  return (
-    <div>hey yooooooooo</div>
-  )
-}
-
-export default page
+export default WaitListPage;
