@@ -27,6 +27,10 @@ const CountryWrapper = styled.section`
   gap: 20px;
   margin-top: 5rem;
   margin-bottom: 10rem;
+
+  @media (max-width: 900px) {
+    margin-top: 3.5rem;
+  }
 `;
 
 const LeftSide = styled.div`

@@ -10,16 +10,17 @@ import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import styled from "styled-components";
-// Modal from material ui
-import Text from "@atom/text";
+import MobileLogo from "@image/brand/tt_blue_logo_with_text.png";
 import Button from "@atom/button";
 import { Grid } from "@atom/grid";
+import Text from "@atom/text";
+import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { usePathname, useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
-import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
-import { useScreenResolution } from "../../../hook/useScreenResolution";
-
-
+import { useScreenResolution } from "hook/useScreenResolution";
+import { ButtonBase } from "@mui/material";
+import { RxHamburgerMenu } from "react-icons/rx";
+import MobileNavigationDrawer from "./modals/mobileNav";
 // Modal from material ui ends
 
 const NavbarWrapper = styled.div<{ page?: string }>`
@@ -83,12 +84,43 @@ const Divider = styled.div`
   background: red;
 `;
 
+interface navbarProps {
+  page: string;
+  pathArray: string | string[];
+}
+
 const Navbar = ({ page }: { page: string }) => {
+  let path = usePathname();
+  let pathArray = path.split("/")[1];
+  const { isMobile } = useScreenResolution();
+  if (isMobile) return <MobileNavbar page={page} pathArray={pathArray} />;
+  return <DesktopNavbar page={page} pathArray={pathArray} />;
+};
+
+const MobileNavbar = ({ page, pathArray }: navbarProps) => {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleOpen = () => setModalOpen(true);
+  const router = useRouter();
+  return (
+    <>
+      <MobileNavigationDrawer isOpen={modalOpen} setIsOpen={setModalOpen} pathArray={pathArray} />
+      <Flex padding="1rem" justify="space-between">
+        <ButtonBase onClick={() => router.push("/")}>
+          <Image src={MobileLogo} alt="thrillers travels logo" height={35} />
+        </ButtonBase>
+
+        <ButtonBase onClick={()=>setModalOpen(!modalOpen)}>
+          <RxHamburgerMenu size={30} />
+        </ButtonBase>
+      </Flex>
+    </>
+  );
+};
+
+const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
   let path = usePathname();
-  let pathArray = path.split("/")[1];
-  const router = useRouter();
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
