@@ -70,7 +70,7 @@ const Divider = styled.div`
 `;
 
 const MobileWrapper = styled.div<{ isSticky: boolean }>`
-  position: ${({ isSticky }) => (isSticky ? "fixed" : "static")};
+  // position: ${({ isSticky }) => (isSticky ? "fixed" : "static")};
 `;
 
 interface navbarProps {
