@@ -5,13 +5,13 @@ import canada from "@image/canada-cover.png";
 import { Qparams } from "types";
 import { unUrlString } from "@lib/url";
 import SectionLayout from "@components/layouts/sectionLayout";
-import SectionTitle from "@atom/sectionTitle";
 import CountryDetails from "@atom/countryDetails";
 import { SAMPLE_COUNTRY_INFO } from "data/countryInfo";
 import { Grid } from "@atom/grid";
 import CountryRequirementDetails from "@atom/countryRequirementDetails";
 import { SAMPLE_COUNTRY_REQUIREMENT } from "data/countryRequirement";
 import HelpfulOrNot from "@atom/helpfulOrNot";
+import SectionTitle from "@molecule/sectionTitle";
 
 interface pageProps {
   params: Qparams["params"];

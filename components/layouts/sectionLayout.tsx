@@ -7,4 +7,8 @@ export default styled.section<{ margin?: string }>`
   max-width: 1600px;
   margin: ${(props) => props?.margin || "0 auto"};
   position: relative;
+
+  @media screen and (max-width: 900px) {
+    width: 90vw;
+  }
 `;

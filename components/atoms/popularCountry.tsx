@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import newZealand from "@image/topCountries/Zealand.jpeg";
+import newZealand from "@image/topCountries/zealand.jpeg";
 import Uk from "@image/topCountries/uk.jpeg";
 import Canada from "@image/topCountries/Canada.jpeg";
 import Norway from "@image/topCountries/norway.jpeg";
@@ -9,8 +9,8 @@ import Image, { StaticImageData } from "next/image";
 import { Grid } from "@atom/grid";
 
 import CountryLayout from "@layout/sectionLayout";
-import SectionTitle from "@atom/sectionTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
+import SectionTitle from "@molecule/sectionTitle";
 
 interface Country {
   id: number;
@@ -27,6 +27,10 @@ const CountryWrapper = styled.section`
   gap: 20px;
   margin-top: 5rem;
   margin-bottom: 10rem;
+
+  @media (max-width: 900px) {
+    margin-top: 3.5rem;
+  }
 `;
 
 const LeftSide = styled.div`
@@ -190,7 +194,7 @@ const IntervalDays = styled.h4`
 `;
 
 const TopCountriesSection: React.FC = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   const [activeImage, setActiveImage] = useState(1);
   const [hoveredImage, setHoveredImage] = useState(1);
 
@@ -240,7 +244,7 @@ const TopCountriesSection: React.FC = () => {
   console.log("blah bah", activeImage);
 
   return (
-    <CountryWrapper style={{marginBottom: isMobile ? "3rem" : "10rem"}}>
+    <CountryWrapper style={{ marginBottom: isMobile ? "3rem" : "10rem" }}>
       <CountryLayout>
         <SectionTitle
           title="Our top countries"
@@ -287,7 +291,9 @@ const TopCountriesSection: React.FC = () => {
                     <CountryName>
                       Get {countries[activeImage - 1].name} E-visa
                     </CountryName>
-                    <CountryDescription style={{marginTop: isMobile ? "35px" : "50px"}}>
+                    <CountryDescription
+                      style={{ marginTop: isMobile ? "35px" : "50px" }}
+                    >
                       {countries[activeImage - 1].description1}
                       <br />
                       <br />

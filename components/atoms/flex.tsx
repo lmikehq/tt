@@ -29,6 +29,7 @@ interface flexProps {
   border?: string;
   height?: string;
   cursor?: string;
+  ref?: any;
   onClick?: () => void;
 }
 
@@ -56,10 +57,12 @@ export const Flex: React.FC<flexProps> = ({
   alignSelf,
   cursor,
   onClick,
+  ref,
   styles,
 }) => {
   return (
     <FlexWrapper
+      ref={ref}
       id={id}
       style={{
         margin: margin,

@@ -1,3 +1,4 @@
+import ChatAlert from "@atom/chatAlert";
 import Flex from "@atom/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
@@ -12,32 +13,7 @@ import { ttColors } from "theme/colors";
 export default function Home() {
   return (
     <main>
-      <Link href="/chat">
-        <Flex
-          justify="center"
-          padding="1.1rem 0"
-          gap="1rem"
-          align="center"
-          background="#132128"
-        >
-          <Text
-            type="p"
-            text="Introducing Thrillers Travels AI guide "
-            size="1.2rem"
-            weight={900}
-            cursor="pointer"
-            color="white"
-          />
-          <Text
-            type="p"
-            text="Learn more "
-            weight={900}
-            cursor="pointer"
-            size="1.2rem"
-            color={ttColors.primary}
-          />
-        </Flex>
-      </Link>
+      <ChatAlert />
       <HeroSection />
       <PopularCountry />
       <PopularDestination />

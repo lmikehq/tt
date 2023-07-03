@@ -2,11 +2,10 @@
 
 import React from "react";
 import styled from "styled-components";
-import Button from "./button";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Link from "./link";
-import Text from "./text";
+import { useRouter } from "next/navigation";
+import Link from "@atom/link";
 
 const SectionTitleContainer = styled.div`
   display: flex;
@@ -22,6 +21,11 @@ const Title = styled.h2`
   color: var(--text-color);
   margin: 0;
   margin-bottom: 1rem;
+
+  @media screen and (max-width: 900px) {
+    font-size: 1.4rem;
+    // margin-top: -1rem;
+  }
 `;
 
 const Description = styled.p`
@@ -30,6 +34,11 @@ const Description = styled.p`
   color: #888888;
   font-weight: 400;
   line-height: 1.2rem;
+
+  @media screen and (max-width: 900px) {
+    font-size: 0.85rem;
+    margin-top: -5px;
+  }
 `;
 
 interface SectionTitleProps {
@@ -38,7 +47,6 @@ interface SectionTitleProps {
   description: string;
   buttonText?: string;
   showButton?: boolean;
-  onButtonClick?: () => void;
 }
 
 const SectionTitle: React.FC<SectionTitleProps> = ({
@@ -46,10 +54,17 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   href,
   description,
   buttonText,
-  onButtonClick,
   showButton = true,
 }) => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
+  showButton = isMobile ? false : showButton;
+  const router = useRouter();
+
+  const sectionTitleBtn = () => {
+    if (href) {
+      router.push(href);
+    }
+  };
 
   return (
     <SectionTitleContainer
@@ -66,9 +81,9 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
       {showButton && (
         <Link
           color={ttColors.dark}
-          style={{ marginTop: isMobile ? "15px" : "0px"}}
-          href=""
-          onClick={onButtonClick}
+          style={{ marginTop: isMobile ? "15px" : "0px" }}
+          href={href || ""}
+          onClick={sectionTitleBtn}
         >
           {buttonText}
         </Link>
