@@ -1,3 +1,4 @@
+"use client";
 import Button from "@atom/button";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
@@ -7,6 +8,7 @@ import Spinner from "@components/icons/spinner";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
@@ -36,12 +38,13 @@ function Visa() {
   const [type, setType] = useState<string>("Employment");
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const { isMobile } = useScreenResolution();
   return (
     <Section>
       <Grid
         gap="2rem"
         justify="space-between"
-        columns="1fr 1fr 1.5fr"
+        columns={isMobile ? "1fr" : "1fr 1fr 1.5fr"}
         margin="4rem 0 0"
       >
         <SearchInput
@@ -96,7 +99,7 @@ function Visa() {
           </Flex>
         </SearchInputAsString>
       </Grid>
-      <Flex justify="flex-end" margin="2rem 0 0">
+      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
           width="240px"
           borderRadius="4px"

@@ -11,13 +11,14 @@ import Text from "./text";
 import Flex from "./flex";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
+import { useScreenResolution } from "hook/useScreenResolution";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
 
-const TabWrapper = styled.div`
+const TabWrapper = styled.div<{ isMobile?: boolean }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
     height: 3px;
@@ -28,10 +29,15 @@ const TabWrapper = styled.div`
     border-bottom: 1px solid transparent;
   }
 
+  .MuiTabs-indicator .css-1aquho2-MuiTabs-indicator {
+    width: 100% !important;
+  }
   .MuiTabs-flexContainer {
     height: 100%;
     width: 100%;
     gap: 0;
+    justify-content: ${({ isMobile }) => (isMobile ? "center" : "flex-start")};
+    // border-bottom: 1px solid ${ttColors.dark};
   }
 `;
 
@@ -83,19 +89,23 @@ export default function CustomTab({
     <IoBedSharp color="var(--secondary-color)" />,
   ];
 
+  const { isMobile } = useScreenResolution();
+
   return (
-    <TabWrapper>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+    <TabWrapper isMobile={isMobile}>
+      <Box>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="select your service"
-          sx={{
-            // display: "grid",
-            // "& .MuiTabs-flexContainer": {
-            //   gap: "2rem",
-            // },
-          }}
+          sx={
+            {
+              // display: "grid",
+              // "& .MuiTabs-flexContainer": {
+              //   gap: "2rem",
+              // },
+            }
+          }
         >
           {tabItems.map((tabItem, i) => (
             <Tab
@@ -106,7 +116,7 @@ export default function CustomTab({
                   <Text
                     type="p"
                     text={tabItem.label}
-                    size={"1rem"}
+                    size={isMobile ? ".8rem" : "1rem"}
                     weight={600}
                     // color="var(--secondary-color)"
                   />
@@ -116,7 +126,8 @@ export default function CustomTab({
                 ...(i !== tabItems.length - 1 && {
                   borderRight: "1px solid #ccc",
                 }),
-                padding: "0 2rem",
+                ...(!isMobile && { padding: "0 2rem" }),
+                ...(isMobile && { borderBottom: `1px solid ${ttColors.dark}` }),
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",
                 },
