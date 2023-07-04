@@ -287,8 +287,8 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="First name" label="First Name" />
-                      <TextField placeholder="Last name" label="Last Name" />
+                      <TextField placeholder="Full name" label="Full Name" />
+                      <TextField placeholder="Email" label="Email" />
                     </div>
                   </Box>
 
@@ -308,14 +308,18 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="Email" label="Email" />
+                      <TextField
+                        placeholder="Whatsapp number"
+                        label="Whatsapp Number"
+                      />
+
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
                         options={yourReadiness}
                         sx={{ width: "100%" }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Availability" />
+                          <TextField {...params} label="Readiness" />
                         )}
                       />
                     </div>
@@ -330,8 +334,8 @@ const WaitList = () => {
                   >
                     <TextField
                       id="outlined-multiline-flexible"
-                      label="Your Remark"
-                      placeholder="Enter Your Remarks here..."
+                      label="Your Request"
+                      placeholder="Enter Your Requests here..."
                       multiline
                       rows={5}
                     />
@@ -500,8 +504,8 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="First name" label="First Name" />
-                      <TextField placeholder="Last name" label="Last Name" />
+                      <TextField placeholder="Full name" label="Full Name" />
+                      <TextField placeholder="Emaile" label="Email" />
                     </div>
                   </Box>
                   <Box
@@ -519,14 +523,14 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="Email" label="Email" />
+                      <TextField placeholder="Whatsapp number" label="Whatsapp number" />
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
                         options={yourReadiness}
                         sx={{ width: "100%" }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Availability" />
+                          <TextField {...params} label="Readiness" />
                         )}
                       />
                     </div>
@@ -541,8 +545,8 @@ const WaitList = () => {
                   >
                     <TextField
                       id="outlined-multiline-flexible"
-                      label="Your Remark"
-                      placeholder="Enter Your Remarks here..."
+                      label="Your Request"
+                      placeholder="Enter Your Requests here..."
                       multiline
                       rows={5}
                     />
