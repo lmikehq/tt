@@ -75,7 +75,13 @@ const RightWrapper = styled.div`
 
   @media screen and (max-width: 900px) {
     padding: 1rem;
+    height: 100%;
   }
+
+  @media screen and (max-width: 390px) {
+    height: fit-content;
+  }
+
 `;
 
 const NavLink = styled.div`
@@ -107,7 +113,7 @@ const NavLink = styled.div`
 `;
 
 const RightSideContent = styled.div`
-  margin-top: 5rem;
+  margin-top: 2rem;
 
   & h3 {
     font-size: 1.2rem;
