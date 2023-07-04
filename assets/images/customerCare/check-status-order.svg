@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__Check_status_Ico" width="20.923" height="27.2" data-name="Check status Ico" viewBox="0 0 20.923 27.2">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#52d03e}
+        </style>
+    </defs>
+    <g id="prefix__Grupo_883" data-name="Grupo 883" transform="translate(11.777 16.479)">
+        <g id="prefix__Grupo_882" data-name="Grupo 882">
+            <path id="prefix__Rectángulo_393" d="M0 0H5.44V0.68H0z" class="prefix__cls-1" data-name="Rectángulo 393"/>
+        </g>
+    </g>
+    <g id="prefix__Grupo_892" data-name="Grupo 892" transform="translate(11.777 17.84)">
+        <g id="prefix__Grupo_882-2" data-name="Grupo 882">
+            <path id="prefix__Rectángulo_393-2" d="M0 0H5.44V0.68H0z" class="prefix__cls-1" data-name="Rectángulo 393"/>
+        </g>
+    </g>
+    <g id="prefix__Grupo_893" data-name="Grupo 893" transform="translate(11.777 19.199)">
+        <g id="prefix__Grupo_882-3" data-name="Grupo 882">
+            <path id="prefix__Rectángulo_393-3" d="M0 0H5.44V0.68H0z" class="prefix__cls-1" data-name="Rectángulo 393"/>
+        </g>
+    </g>
+    <g id="prefix__Grupo_887" data-name="Grupo 887" transform="translate(9.535 2.825)">
+        <g id="prefix__Grupo_886" data-name="Grupo 886">
+            <circle id="prefix__Elipse_103" cx=".942" cy=".942" r=".942" class="prefix__cls-1" data-name="Elipse 103"/>
+        </g>
+    </g>
+    <g id="prefix__Grupo_889" data-name="Grupo 889">
+        <g id="prefix__Grupo_888" data-name="Grupo 888">
+            <path id="prefix__Trazado_2167" d="M68.923 6.277a2.092 2.092 0 0 0-2.092-2.092h-2.9a3.13 3.13 0 0 0-1.457-.924 1.44 1.44 0 0 1-.991-.991 3.14 3.14 0 0 0-6.033 0 1.442 1.442 0 0 1-.993.991A3.128 3.128 0 0 0 53 4.185h-2.9A2.092 2.092 0 0 0 48 6.277v18.831a2.092 2.092 0 0 0 2.092 2.092h16.739a2.092 2.092 0 0 0 2.092-2.092V6.277zM53.231 6.26a2.1 2.1 0 0 1 1.511-1.994 2.482 2.482 0 0 0 1.708-1.708 2.093 2.093 0 0 1 4.022 0 2.48 2.48 0 0 0 1.708 1.708 2.1 2.1 0 0 1 1.512 2.011v1.046H53.231zm13.6 19.894H50.092a1.047 1.047 0 0 1-1.046-1.046V6.277a1.047 1.047 0 0 1 1.046-1.046h2.272a3.13 3.13 0 0 0-.179 1.021v2.117h12.554V6.277a3.129 3.129 0 0 0-.181-1.046h2.273a1.047 1.047 0 0 1 1.046 1.046v18.831a1.047 1.047 0 0 1-1.046 1.046z" class="prefix__cls-1" data-name="Trazado 2167" transform="translate(-48)"/>
+        </g>
+    </g>
+    <g id="prefix__Grupo_891" data-name="Grupo 891" transform="translate(3.541 10.42)">
+        <g id="prefix__Grupo_890" data-name="Grupo 890">
+            <path id="prefix__Trazado_2168" d="M122.027 175.088l-5.325 5.325-1.345-1.345-.889.889 2.232 2.233 1.574-1.574v3.332h-5.021v-6.278h3.766l1.255-1.255H112v8.785h7.532v-5.84l3.384-3.384z" class="prefix__cls-1" data-name="Trazado 2168" transform="translate(-111.998 -175.088)"/>
+        </g>
+    </g>
+</svg>

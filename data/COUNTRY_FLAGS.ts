@@ -419,7 +419,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Bolivia, Plurinational State of",
+    name: "Bolivia, Plurinational State",
     flag: bo,
     code: "BO",
   },
@@ -485,7 +485,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Congo, the Democratic Republic of the",
+    name: "Congo",
     flag: cd,
     code: "CD",
   },
@@ -665,7 +665,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Micronesia, Federated States of",
+    name: "Micronesia",
     flag: fm,
     code: "FM",
   },
@@ -751,12 +751,6 @@ export const COUNTRY_FLAGS = [
     name: "Falkland Islands (Malvinas)",
     flag: fk,
     code: "FK",
-  },
-
-  {
-    name: "Micronesia, Federated States of",
-    flag: fm,
-    code: "FM",
   },
 
   {
@@ -928,7 +922,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Iran, Islamic Republic of",
+    name: "Iran ",
     flag: ir,
     code: "IR",
   },
@@ -1006,13 +1000,13 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Korea, Democratic People's Republic of",
+    name: "Korea, Democratic People's Republic",
     flag: kp,
     code: "KP",
   },
 
   {
-    name: "Korea, Republic of",
+    name: "Korea",
     flag: kr,
     code: "KR",
   },
@@ -1114,7 +1108,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Moldova, Republic of",
+    name: "Moldova",
     flag: md,
     code: "MD",
   },
@@ -1654,7 +1648,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Tanzania, United Republic of",
+    name: "Tanzania",
     flag: tz,
     code: "TZ",
   },
@@ -1708,7 +1702,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Venezuela (Bolivarian Republic of)",
+    name: "Venezuela (Bolivarian Republic)",
     flag: ve,
     code: "VE",
   },
