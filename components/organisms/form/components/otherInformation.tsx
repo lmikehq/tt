@@ -49,6 +49,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
   return (
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
+      
       <form style={{ margin: "2rem 0" }}>
         <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
           <Section>
