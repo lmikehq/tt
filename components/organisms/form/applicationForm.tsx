@@ -52,8 +52,7 @@ const ApplicationForm = () => {
   const status = params.get("status"); // success | fail
 
   const [currentPhase, setCurrentPhase] = useState(
-    // type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
-    4
+    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
   );
   const [nextStepLoading, setNextStepLoading] = useState(false);
 
