@@ -50,8 +50,8 @@ function OtherInformation({ formik, steps, index }: formProps) {
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
       
-      <form style={{ margin: "2rem 0" }}>
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+      <form style={{ margin: "1rem 0" }}>
+        <Flex justify="space-between" gap="1.5rem">
           <Section>
             <Text type="p" text="Passport Number" margin="1rem 0 " />
             <Input
@@ -90,7 +90,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex justify="space-between" gap="1.5rem">
           <Section>
             <Text type="p" text="Year of Issue" margin="1rem 0 " />
             <SearchInputAsString
@@ -141,7 +141,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           type="p"
           text="Your guarantor’s information"
           size="1.6rem"
-          margin="2rem 0 1rem"
+          margin="1rem 0 0"
         />
 
         <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
