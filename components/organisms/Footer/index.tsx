@@ -11,7 +11,9 @@ import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
 import Section from "@molecule/section";
-
+import { FaLinkedinIn, FaTelegramPlane, FaTiktok } from "react-icons/fa";
+import { ImLinkedin, ImWhatsapp } from "react-icons/im";
+import { RiWhatsappFill } from "react-icons/ri";
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -29,27 +31,49 @@ const FooterIcons = [
   {
     id: 1,
     icon: <BsFacebook size="1.5rem" color="#06062A" />,
-    url: "https://wwww.facebook.com/",
+    url: "https://www.facebook.com/thrillerstravels",
   },
 
   {
     id: 2,
     icon: <BsTwitter size="1.5rem" color="#06062A" />,
-    url: "https://wwww.twitter.com/",
+    url: "https://wwww.twitter.com/thrillerstravel",
   },
 
   {
     id: 3,
     icon: <BsYoutube size="1.5rem" color="#06062A" />,
-    url: "https://wwww.youtube.com/",
+    url: "https://wwww.youtube.com/@ThrillersTravel",
   },
 
   {
     id: 4,
     icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
-    url: "https://wwww.instagram.com/",
+    url: "https://wwww.instagram.com/thrillerstravel",
+  },
+  {
+    id: 5,
+    icon: <FaTiktok size="1.5rem" color="#06062A" />,
+    url: "https://wwww.instagram.com/thrillerstravel",
+  },
+  {
+    id: 6,
+    icon: <ImLinkedin size="1.5rem" color="#06062A" />,
+    url: "http://www.linkedin.com/in/thrillerstravels",
+  },
+  {
+    id: 7,
+    icon: <RiWhatsappFill size="1.5rem" color="#06062A" />,
+    url: "https://wa.link/37nz51",
+  },
+  {
+    id: 8,
+    icon: <FaTelegramPlane size="1.5rem" color="#06062A" />,
+    url: "https://wwww.instagram.com/thrillerstravel",
   },
 ];
+
+// tiktok, google, email, chatbots
 
 // const FooterLinks = [
 //   {
@@ -105,13 +129,18 @@ const FooterSection = () => {
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
             </Link>
-            <Flex gap="1rem" margin="1.2rem auto">
+            <Grid
+              columns="repeat(4, 1fr)"
+              gap="1rem"
+              width="70%"
+              margin="1rem 0rem 0rem 0rem"
+            >
               {FooterIcons.map((icon) => (
                 <Link href={icon.url} key="key">
-                  <span key={icon.id}>{icon.icon}</span>
+                  {icon.icon}
                 </Link>
               ))}
-            </Flex>
+            </Grid>
           </div>
           <div className="topCountries">
             <Text
@@ -121,10 +150,14 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Canada" color="#06062A" />
-              <Link href="/" text="New Zealand" color="#06062A" />
-              <Link href="/" text="United Kingdom" color="#06062A" />
-              <Link href="/" text="Norway" color="#06062A" />
+              <Link href="/visa/countries" text="Canada" color="#06062A" />
+              <Link href="/visa/countries" text="New Zealand" color="#06062A" />
+              <Link
+                href="/visa/countries"
+                text="United Kingdom"
+                color="#06062A"
+              />
+              <Link href="/visa/countries" text="Norway" color="#06062A" />
             </Flex>
           </div>
           <div className="partnerWithUs">
@@ -135,11 +168,11 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Partnership programs" color="#06062A" />
-              <Link href="/" text="Affiliate program" color="#06062A" />
-              <Link href="/" text="Connectivity partners" color="#06062A" />
-              <Link href="/" text="Loyalty program" color="#06062A" />
-              <Link href="/" text="Community" color="#06062A" />
+              <Link href="/" text="Wait list" color="#06062A" />
+              <Link href="/" text="Travel guide" color="#06062A" />
+              <Link href="/" text="FAQs" color="#06062A" />
+              <Link href="/" text="Reviews" color="#06062A" />
+              <Link href="/" text="Visa Showcase" color="#06062A" />
             </Flex>
           </div>
           <div className="support">
@@ -153,14 +186,9 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="aboutUs">
-            <Text
-              type="h3"
-              text="About Us"
-              color="#06062A"
-              padding="0 0 25px"
-            />
+            <Text type="h3" text="Company" color="#06062A" padding="0 0 25px" />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Company" color="#06062A" />
+              <Link href="/" text="About us" color="#06062A" />
               <Link href="/" text="Careers" color="#06062A" />
               <Link href="/" text="Press" color="#06062A" />
               <Link href="/" text="Blog" color="#06062A" />

@@ -46,7 +46,8 @@ export const Grid: React.FC<gridProps> = ({
   margin,
   align,
     textAlign,
-    padding,
+  padding,
+    width,
 }) => {
   return (
     <GridWrapper
@@ -57,7 +58,8 @@ export const Grid: React.FC<gridProps> = ({
       margin={margin}
       align={align}
         textAlign={textAlign}
-        padding={padding}
+      padding={padding}
+      width={width}
     >
       {children}
     </GridWrapper>
