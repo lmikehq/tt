@@ -56,7 +56,6 @@ export const edAndEmpSchema = yup.object({
   schoolName: yup.string().required(),
   courseOfStudy: yup.string().required(),
   grade: yup.number().required().max(5).min(0),
-
   companyName: yup.string().required(),
   employerName: yup.string().required(),
   employerPhone: yup.string().required(),

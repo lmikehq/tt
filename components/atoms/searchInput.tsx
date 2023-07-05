@@ -136,7 +136,7 @@ SearchProps) {
               fontSize: "16px!important",
             },
             "& input": {
-              height: "18px",
+              height: "8px",
             },
           }}
           onClick={handleClick}

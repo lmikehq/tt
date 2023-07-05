@@ -52,7 +52,8 @@ const ApplicationForm = () => {
   const status = params.get("status"); // success | fail
 
   const [currentPhase, setCurrentPhase] = useState(
-    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+    // type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+    4
   );
   const [nextStepLoading, setNextStepLoading] = useState(false);
 
@@ -74,7 +75,7 @@ const ApplicationForm = () => {
   async function reloadFee() {
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(2000);
+    await sleep(200);
     setNextStepLoading(false);
     setShownFees(calcFees(formFee));
   }
