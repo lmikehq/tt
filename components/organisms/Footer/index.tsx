@@ -136,13 +136,6 @@ const FooterSection = () => {
     "Visa Showcase",
   ];
 
-      // margin-top: 9px;
-    // font-size: 14px;
-  // line-height: 18px;
-  
-  // margin-top: 9px;
-    // font-size: 17px;
-    // line-height: 25px;
 
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
