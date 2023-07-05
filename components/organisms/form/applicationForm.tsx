@@ -58,12 +58,12 @@ const ApplicationForm = () => {
 
   const nextStep = async () => {
     if (nextStepLoading || currentPhase === 5) return;
-    reloadFee();
+    await reloadFee();
     setCurrentPhase(currentPhase + 1);
   };
   const prevStep = async () => {
     if (nextStepLoading || currentPhase === 1) return;
-    reloadFee();
+    await reloadFee();
     setCurrentPhase(currentPhase - 1);
   };
 
@@ -74,7 +74,7 @@ const ApplicationForm = () => {
   async function reloadFee() {
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(3000);
+    await sleep(2000);
     setNextStepLoading(false);
     setShownFees(calcFees(formFee));
   }

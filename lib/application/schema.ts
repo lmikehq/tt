@@ -5,6 +5,7 @@ export const detailsSchema = yup.object({
   destination: yup.object().required(),
   applicationType: yup.string().required(),
   travellingBy: yup.string().required(),
+  numberOfTravellers: yup.number().required().max(6).min(1),
 });
 
 export const detailsKeys = {
@@ -12,6 +13,7 @@ export const detailsKeys = {
   destination: {},
   applicationType: "",
   travellingBy: "",
+  numberOfTravellers: 1,
 };
 
 export const personalInfoSchema = yup.object({
