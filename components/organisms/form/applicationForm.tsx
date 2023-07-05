@@ -1,5 +1,7 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+
 import Button from "@atom/button";
 import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
@@ -24,6 +26,7 @@ import {
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
+import apiService from "hook/apiService";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -44,7 +47,7 @@ const PromoInput = styled.div`
 
 const ApplicationForm = () => {
   const { isMobile } = useScreenResolution();
-
+  const [promoCode, setPromoCode] = useState("");
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -113,9 +116,15 @@ const ApplicationForm = () => {
 
   const step = getSteps(formik, setFormFee).find((x) => x.id === currentPhase);
 
-  function handlePromoCode(e: any) {
+  async function validatePromoCode() {
+    const response = await apiService("/verify-promo-code", "POST", {
+      promoCode,
+    });
+    return response;
+  }
+  async function handlePromoCode(e: any) {
     e.preventDefault();
-    window.alert("Promo code applied");
+    const { data, isLoading } = useQuery(["promoCode"], validatePromoCode);
   }
 
   return (
@@ -205,6 +214,8 @@ const ApplicationForm = () => {
                         placeholder="Enter Promo Code"
                         width="100%"
                         flexGrow={1}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        value={promoCode}
                       />
                       <Button type="submit">
                         <Text type="p" text="Apply" weight={600} size="1rem" />
@@ -223,7 +234,14 @@ const ApplicationForm = () => {
                 {nextStepLoading ? (
                   <Spinner size="40px" fill={ttColors.primary} />
                 ) : currentPhase === 5 ? (
-                  "total"
+                  `Pay ${currencyFormatter(
+                    shownFees.reduce(
+                      (a, b) =>
+                        a + (typeof b.amount === "number" ? b.amount : 0),
+                      0
+                    ),
+                    "NGN"
+                  )}`
                 ) : (
                   "Continue"
                 )}

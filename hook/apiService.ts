@@ -8,7 +8,10 @@ const apiService = (url: string, method: string, data: any) => {
     globalAxios({
       url,
       method,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
       data,
     })
       .then((res) => resolve(res.data))
