@@ -38,5 +38,8 @@
     "use-file-picker": "^1.7.0",
     "yup": "^1.2.0",
     "zustand": "^4.3.9"
+  },
+  "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.29.9"
   }
 }
