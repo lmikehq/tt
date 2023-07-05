@@ -50,7 +50,37 @@ function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
   const [enabled, setEnabled] = useState(false);
-  const { data, isLoading } = useQuery(
+  const [visaButtonClicked, setVisaButtonClicked] = useState(false);
+  async function validatePromoCode() {
+    const response = await apiService("visa/verify-promo-code", "POST", {
+      promoCode,
+    });
+    return response;
+  }
+  async function handleVisaApplication() {
+    const response = await apiService("visa/apply", "POST", {
+      form: {
+        ...formik.values,
+        destination: formik.values.destination?.name,
+        home: formik.values.destination?.home,
+      },
+      promoCode,
+      payment: currencyFormatter(
+        shownFees.reduce(
+          (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
+          0
+        ),
+        "NGN"
+      ),
+    });
+    console.log("response: ", response, formik.values);
+    return response;
+  }
+  const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
+    enabled: visaButtonClicked,
+    retry: false,
+  });
+  const { data: promoData } = useQuery(
     ["promoCode", promoCode],
     validatePromoCode,
     {
@@ -70,7 +100,8 @@ function ApplicationForm() {
   const [nextStepLoading, setNextStepLoading] = useState(false);
 
   const nextStep = async () => {
-    if (nextStepLoading || currentPhase === 5) return;
+    if (nextStepLoading) return;
+    if (currentPhase === 5) return setVisaButtonClicked(true);
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
   };
@@ -125,13 +156,6 @@ function ApplicationForm() {
   }
 
   const step = getSteps(formik, setFormFee).find((x) => x.id === currentPhase);
-
-  async function validatePromoCode() {
-    const response = await apiService("visa/verify-promo-code", "POST", {
-      promoCode,
-    });
-    return response;
-  }
 
   async function handlePromoCode(e: any) {
     e.preventDefault();
