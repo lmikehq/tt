@@ -11,6 +11,7 @@ import { Grid } from "@atom/grid";
 import CountryLayout from "@layout/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "@molecule/sectionTitle";
+import { RiLineHeight } from "react-icons/ri";
 
 interface Country {
   id: number;
@@ -35,6 +36,9 @@ const CountryWrapper = styled.section`
 
 const LeftSide = styled.div`
   height: 415px;
+   @media (max-width: 900px) {
+    height: 460px;
+  }
 `;
 
 const RightSide = styled.div`
@@ -42,6 +46,9 @@ const RightSide = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   height: 415px;
+   @media (max-width: 900px) {
+    height: 460px;
+  }
 `;
 
 const StyledImage = styled(Image)<{ active: boolean }>`
@@ -89,12 +96,12 @@ const CountryName = styled.h3`
 `;
 
 const CountryDescription = styled.p`
-  margin: 50px auto;
+  margin: 28px auto;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  padding: 2px 1.2rem;
+  padding: 2px .2rem;
 `;
 
 const IntervalTag = styled.div`
@@ -194,7 +201,7 @@ const IntervalDays = styled.h4`
 `;
 
 const TopCountriesSection: React.FC = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
   const [activeImage, setActiveImage] = useState(1);
   const [hoveredImage, setHoveredImage] = useState(1);
 
@@ -211,11 +218,11 @@ const TopCountriesSection: React.FC = () => {
     },
     {
       id: 2,
-      name: "New Zwealand",
+      name: "New Zealand",
       description1:
-        "New Zwealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "New Zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       description2:
-        "New Zwealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "New Zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: newZealand,
       interval: "3 days",
     },
@@ -244,14 +251,16 @@ const TopCountriesSection: React.FC = () => {
   console.log("blah bah", activeImage);
 
   return (
-    <CountryWrapper style={{ marginBottom: isMobile ? "3rem" : "10rem" }}>
+    <CountryWrapper
+      style={{ marginBottom: isMobile ? "3rem" : isTablet ? "2rem" : "10rem" }}
+    >
       <CountryLayout>
         <SectionTitle
           title="Our top countries"
           description="Going somewhere to celebrate this season? Whether you’re going home or somewhere to roam, we’ve got the travel tools to get you to your destination."
           buttonText="See all"
         />
-        {isMobile ? (
+        {isMobile || isTablet ? (
           <>
             <RightSide style={{ marginBottom: "2rem" }}>
               {countries.map((country) => (
@@ -292,7 +301,7 @@ const TopCountriesSection: React.FC = () => {
                       Get {countries[activeImage - 1].name} E-visa
                     </CountryName>
                     <CountryDescription
-                      style={{ marginTop: isMobile ? "35px" : "50px" }}
+                      style={{ marginTop: isMobile ? "9px" : isTablet ? "9px" : "50px", fontSize: isMobile ? "14px" : isTablet ? "17px" : "1rem", lineHeight: isMobile ? "18px" : isTablet ? "25px" : "14px" }}
                     >
                       {countries[activeImage - 1].description1}
                       <br />

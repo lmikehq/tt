@@ -71,7 +71,7 @@ const CardFooter = styled.div`
 `;
 
 const Review = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
 
   const reviewCard = [
     {
@@ -144,7 +144,7 @@ const Review = () => {
           description="What people says about Golobe facilities."
           buttonText="See all"
         />
-        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
+        <Grid columns={isMobile ? "1fr" : isTablet ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
           {reviewCardToShow.map((review, index) => (
             <React.Fragment key={review.id}>
               <Card
