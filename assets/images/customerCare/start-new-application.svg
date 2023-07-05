@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__New_Application_ico" width="25.606" height="27.2" data-name="New Application ico" viewBox="0 0 25.606 27.2">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#52d03e}
+        </style>
+    </defs>
+    <g id="prefix__Grupo_845" data-name="Grupo 845">
+        <path id="prefix__Trazado_180" d="M488.525 304.36h11.035a.671.671 0 0 0 0-1.342h-11.035a.671.671 0 0 0 0 1.342z" class="prefix__cls-1" data-name="Trazado 180" transform="translate(-483.447 -293.21)"/>
+        <path id="prefix__Trazado_181" d="M488.525 302.787h4.414a.671.671 0 0 0 0-1.342h-4.414a.671.671 0 0 0 0 1.342z" class="prefix__cls-1" data-name="Trazado 181" transform="translate(-483.447 -295.203)"/>
+        <path id="prefix__Trazado_182" d="M488.525 305.936h11.035a.672.672 0 0 0 0-1.344h-11.035a.672.672 0 0 0 0 1.344z" class="prefix__cls-1" data-name="Trazado 182" transform="translate(-483.447 -291.216)"/>
+        <path id="prefix__Trazado_183" d="M496.03 306.166h-7.5a.671.671 0 0 0 0 1.342h7.5a.671.671 0 0 0 0-1.342z" class="prefix__cls-1" data-name="Trazado 183" transform="translate(-483.447 -289.223)"/>
+        <path id="prefix__Trazado_184" d="M494.7 307.739h-6.178a.671.671 0 0 0 0 1.342h6.178a.671.671 0 0 0 0-1.342z" class="prefix__cls-1" data-name="Trazado 184" transform="translate(-483.447 -287.23)"/>
+        <path id="prefix__Trazado_185" d="M507.086 314.064v-8.736l-6.569-6.637h-14.623v27.2h19.646a6.023 6.023 0 0 0 1.546-11.827zm-6.181-9.13v-3.951l3.912 3.951zm4.634 19.618a4.68 4.68 0 0 1 0-9.359c.13 0 .26.009.388.021s.249.027.384.05l.186.032a4.684 4.684 0 0 1-.958 9.257zm-18.317-24.519h12.354v6.242h6.18v7.58h-.218a6 6 0 0 0-5.963 6.023c0 .184.011.365.029.546l.011.127c.02.177.045.351.081.521l.013.061c.031.156.072.31.132.512l.018.066c.052.163.11.322.175.478l.038.091c.061.136.124.27.206.428l.036.068c.079.145.166.29.258.428l.065.1c.085.122.171.24.276.374l.038.048c.105.129.22.254.334.369.029.032.061.061.088.088.112.109.227.218.379.347l.034.03h-14.564z" class="prefix__cls-1" data-name="Trazado 185" transform="translate(-485.894 -298.691)"/>
+        <path id="prefix__Trazado_186" d="M499.132 309.234h-1.984v-2a.664.664 0 1 0-1.328 0v2h-1.986a.671.671 0 0 0 0 1.342h1.986v2a.664.664 0 1 0 1.328 0v-2h1.984a.671.671 0 0 0 0-1.342z" class="prefix__cls-1" data-name="Trazado 186" transform="translate(-476.839 -288.725)"/>
+    </g>
+</svg>
