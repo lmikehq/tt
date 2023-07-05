@@ -117,7 +117,7 @@ const Input = ({
           padding: padding || "0 2rem 0 1rem",
           border,
           width: width || "100%",
-          height: height || "50px",
+          height: height || "40px",
           fontSize: size || "1rem",
           color: color || "#1C1B1F",
           fontWeight: weight || "100",

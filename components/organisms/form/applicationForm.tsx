@@ -38,7 +38,7 @@ const PromoInput = styled.div`
   & button {
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
-    height: 50px !important;
+    height: 40px !important;
   }
 `;
 
