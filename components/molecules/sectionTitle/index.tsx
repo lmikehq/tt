@@ -11,6 +11,7 @@ const SectionTitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: .5rem;
   margin-bottom: 20px;
 `;
 
@@ -73,7 +74,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         alignItems: isMobile ? "left" : "center",
       }}
     >
-      <div>
+      <div style={{width: "80%"}}>
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
@@ -81,7 +82,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
       {showButton && (
         <Link
           color={ttColors.dark}
-          style={{ marginTop: isMobile ? "15px" : "0px" }}
+          style={{ marginTop: isMobile ? "15px" : "0px", fontSize: "1rem", fontWeight: "400" }}
           href={href || ""}
           onClick={sectionTitleBtn}
         >

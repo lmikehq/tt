@@ -125,22 +125,33 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
-  const partner_with_us = [
-    "Partnership program",
-    "Affiliate program",
-    "Connectivity partners",
-    "Loyalty program",
-    "Community",
+  const useful_links = [
+    "Wait list",
+    "Travel guide",
+    "FAQs",
+    "Reviews",
+    "Visa Showcase",
   ];
+
+      // margin-top: 9px;
+    // font-size: 14px;
+  // line-height: 18px;
+  
+  // margin-top: 9px;
+    // font-size: 17px;
+    // line-height: 25px;
 
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
       <NewsLetter />
       <SectionLayout margin="0 auto">
-        <Grid gap={isMobile ? "1.2rem" : "2.5rem"} columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
+        <Grid
+          gap={isMobile ? "1.2rem" : "2.5rem"}
+          columns={isMobile ? "1fr" : "repeat(5, 1fr)"}
+        >
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
@@ -148,7 +159,7 @@ const FooterSection = () => {
             <Grid
               columns="repeat(4, 1fr)"
               gap="1rem"
-              width="70%"
+              width={isMobile ? "41%" : isTablet ? "29%" : "70%"}
               margin="1rem 0rem 0rem 0rem"
             >
               {FooterIcons.map((icon) => (
@@ -167,11 +178,6 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              {/* <
-              <Link href="/" text="New Zealand" color="#06062A" />
-              <Link href="/" text="United Kingdom" color="#06062A" />
-              <Link href="/" text="Norway" color="#06062A" /> */}
-
               {top_countries.map((country, index) => (
                 <Link
                   key={index}
@@ -184,21 +190,16 @@ const FooterSection = () => {
               ))}
             </Flex>
           </div>
-          <div className="partnerWithUs">
+          <div className="usefulLinks">
             <Text
               type="h3"
-              text="Partner With Us"
+              text="Useful Link"
               color="#06062A"
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              {/* <Link href="/" text="Partnership programs" color="#06062A" />
-              <Link href="/" text="Affiliate program" color="#06062A" />
-              <Link href="/" text="Connectivity partners" color="#06062A" />
-              <Link href="/" text="Loyalty program" color="#06062A" />
-              <Link href="/" text="Community" color="#06062A" /> */}
-              {partner_with_us.map((partners, i) => (
-                <Link key={i} href="/" text={partners} color="#06062A" />
+              {useful_links.map((links, i) => (
+                <Link key={i} href="/" text={links} color="#06062A" />
               ))}
             </Flex>
           </div>
