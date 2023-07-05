@@ -1,25 +1,26 @@
-import { DatePicker } from "@atom/datepicker";
+import Flex from "@atom/flex";
 import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import dayjs from "dayjs";
 import { FormikValues } from "formik";
-import FormStepTitle from "./formStepsTitle";
-import Flex from "@atom/flex";
-import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineCheck } from "react-icons/ai";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { AiOutlineCheck } from "react-icons/ai";
+import { IoIosArrowDown } from "react-icons/io";
+import FormStepTitle from "./formStepsTitle";
+import { useVisaApplicationStore } from "store/zustand";
 
 interface formProps {
   formik: FormikValues;
   steps: string[];
   index: number;
+  setFee: (n: number) => void;
 }
 
-function TripDetails({ formik, steps, index }: formProps) {
+function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
-
+  const { setApplicationFeeToBePaid, applicationFeeToBePaid } =
+    useVisaApplicationStore((state) => state);
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
@@ -82,7 +83,10 @@ function TripDetails({ formik, steps, index }: formProps) {
           <Text type="p" text="Application type" margin="1rem 0 " />
           <SearchInputAsString
             options={["Single", "Family"]}
-            onChange={(x) => formik.setFieldValue("applicationType", x)}
+            onChange={(x) => {
+              setFee(x === "Family" ? 30000 : 20000);
+              formik.setFieldValue("applicationType", x);
+            }}
           >
             <Flex justify="space-between">
               <Text

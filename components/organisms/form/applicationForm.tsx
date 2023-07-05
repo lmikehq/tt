@@ -24,7 +24,6 @@ import {
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
-
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -59,68 +58,60 @@ const ApplicationForm = () => {
 
   const nextStep = async () => {
     if (nextStepLoading || currentPhase === 5) return;
-    setNextStepLoading(true);
-    setShownFees([]);
-    await sleep(300);
+    reloadFee();
     setCurrentPhase(currentPhase + 1);
-    setShownFees(feeItems);
-    setNextStepLoading(false);
   };
   const prevStep = async () => {
     if (nextStepLoading || currentPhase === 1) return;
-    setNextStepLoading(true);
-    setShownFees([]);
-    await sleep(300);
+    reloadFee();
     setCurrentPhase(currentPhase - 1);
-    setShownFees(feeItems);
-    setNextStepLoading(false);
   };
 
   const formik = useFormikHook(visaInitVals, visaSchema);
-  const [applicationFee, setApplicationFee] = useState(0);
-  const feeItems = [
-    {
-      name: "Fees",
-      amount: "Price",
-      type: "head",
-    },
-    {
-      name: "Application Fee",
-      amount: 30000,
-    },
-    {
-      name: "Standard processing fee",
-      amount: 0,
-    },
-    {
-      name: "Administrative charge",
-      amount: 0,
-    },
-    {
-      name: "VAT",
-      amount: 150,
-    },
-  ];
+
+  const [formFee, setFormFee] = useState(20000);
+
+  async function reloadFee() {
+    setNextStepLoading(true);
+    setShownFees([]);
+    await sleep(3000);
+    setNextStepLoading(false);
+    setShownFees(calcFees(formFee));
+  }
 
   useEffect(() => {
-    if (formik.values.applicationFee) {
-      switch (formik.values.applicationFee) {
-        case "Single":
-          setApplicationFee(30000);
-          break;
-        case "Family":
-          setApplicationFee(50000);
-          break;
-        default:
-          setApplicationFee(0);
-          break;
-      }
-    }
-  });
+    reloadFee();
+  }, [formFee]);
 
-  const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
+  const [shownFees, setShownFees] = useState<IFee[]>(calcFees(formFee));
 
-  const step = getSteps(formik).find((x) => x.id === currentPhase);
+  function calcFees(formFee: number): IFee[] {
+    return [
+      {
+        name: "Fees",
+        amount: "Price",
+        type: "head",
+      },
+      {
+        name: "Form Registration Fee",
+        amount: formFee,
+      },
+      {
+        name: "Standard processing fee",
+        amount: 0,
+      },
+      {
+        name: "Administrative charge",
+        amount: 0,
+      },
+      {
+        name: "VAT",
+        amount: 150,
+      },
+    ];
+  }
+
+  const step = getSteps(formik, setFormFee).find((x) => x.id === currentPhase);
 
   function handlePromoCode(e: any) {
     e.preventDefault();
@@ -198,6 +189,7 @@ const ApplicationForm = () => {
                     )}
                     size="2.1rem"
                     weight="bold"
+                    key={formFee}
                   />
                 </Flex>
               ) : (
@@ -231,7 +223,7 @@ const ApplicationForm = () => {
                 {nextStepLoading ? (
                   <Spinner size="40px" fill={ttColors.primary} />
                 ) : currentPhase === 5 ? (
-                  `Pay NGN 20,000 Now`
+                  "total"
                 ) : (
                   "Continue"
                 )}
