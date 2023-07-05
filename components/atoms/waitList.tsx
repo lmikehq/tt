@@ -75,7 +75,13 @@ const RightWrapper = styled.div`
 
   @media screen and (max-width: 900px) {
     padding: 1rem;
+    height: 100%;
   }
+
+  @media screen and (max-width: 390px) {
+    height: fit-content;
+  }
+
 `;
 
 const NavLink = styled.div`
@@ -107,7 +113,7 @@ const NavLink = styled.div`
 `;
 
 const RightSideContent = styled.div`
-  margin-top: 5rem;
+  margin-top: 2rem;
 
   & h3 {
     font-size: 1.2rem;
@@ -152,17 +158,17 @@ const MenuIcon = styled.svg`
 
   @media screen and (width: 768px) {
     position: absolute;
-    left: 320px !important;
-    left: 705px !important;
+    left: 691px !important;
     display: block;
+    top: 20px;
   }
 
   @media screen and (max-width: 390px) {
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 320px !important;
-    top: 19px !important;
+    left: 310px !important;
+    top: 25px !important;
     display: block;
   }
 `;
@@ -342,7 +348,7 @@ const WaitList = () => {
                   </Box>
                 </Flex>
 
-                <FormGroup sx={{ m: 3, width: "85%" }}>
+                <FormGroup sx={{ width: "100%", margin: "1.5rem 0rem" }}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label="Yes, I agreed to receive the personalised contents and update from thrillers​"
@@ -523,7 +529,10 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="Whatsapp number" label="Whatsapp number" />
+                      <TextField
+                        placeholder="Whatsapp number"
+                        label="Whatsapp number"
+                      />
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
@@ -553,7 +562,7 @@ const WaitList = () => {
                   </Box>
                 </Flex>
 
-                <FormGroup sx={{ m: 3, width: "85%" }}>
+                <FormGroup sx={{ width: "100%", marginTop: "1.5rem 0rem" }}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label="Yes, i would like to receive emails and news from Thrilers Travels."
