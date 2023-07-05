@@ -8,12 +8,14 @@ import Link from "@atom/link";
 import Text from "@atom/text";
 import CountryLayout from "@layout/sectionLayout";
 import AllCountryHead from "./allCountryHead";
-import SectionTitle from "@atom/sectionTitle";
 import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 import Flex from "@atom/flex";
 import { urlString } from "@lib/url";
 import allCountryHeadImg from "@image/allCountryHeaderImg.png";
+import SectionLayout from "@layout/sectionLayout";
+import { useScreenResolution } from "hook/useScreenResolution";
+import SectionTitle from "@molecule/sectionTitle";
 
 const CountryWrapper = styled.section`
   // margin: 5rem 0;
@@ -28,7 +30,6 @@ const Card = styled.div`
   margin-bottom: 1rem;
   height: 55px;
   color: var(--secondary-color);
-  /* Neutrals */
 
   background: #ffffff;
 
@@ -49,9 +50,27 @@ const Card = styled.div`
     opacity: 0.7;
     margin-bottom: 0.5rem;
   }
+
+  @media screen and (max-width: 900px) {
+    padding: 10px;
+    height: 48px;
+    border-radius: 5px;
+
+    & img {
+      width: 45px;
+      height: 30px;
+    }
+
+    & h3 {
+      font-size: 13px;
+      line-height: 15px;
+      margin-bottom: 0rem;
+    }
+  }
 `;
 
 const CountriesList = () => {
+  const { isMobile } = useScreenResolution();
   const [showAll, setShowAll] = useState(false);
   const countriesPerPage = 50;
   const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
@@ -91,14 +110,18 @@ const CountriesList = () => {
   return (
     <CountryWrapper>
       <AllCountryHead cover={allCountryHeadImg} title="ALL COUNTRIES" />
-      <CountryLayout>
+      <SectionLayout>
         <SectionTitle
           title="All the countries we support!"
           description="Explore our popular destinations to find the best option for your next adventure!"
           buttonText="See More"
           showButton={false}
         />
-        <Grid columns="repeat(5, 1fr)" gap="1.5rem" margin="2rem 0 0">
+        <Grid
+          columns={isMobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)"}
+          gap={isMobile ? ".8rem" : "1.5rem"}
+          margin="2rem 0 0"
+        >
           {displayedCountries.map((country, index) => (
             <Link
               href={`/visa/countries/${urlString(country.name)}`}
@@ -106,11 +129,7 @@ const CountriesList = () => {
             >
               <div>
                 <Card>
-                  <Image
-                    src={country.flag}
-                    alt={country.name}
-                    // style={{ width: "58.5px", height: "40px" }}
-                  />
+                  <Image src={country.flag} alt={country.name} />
                   <Text text={country.name} type="h3" />
                 </Card>
               </div>
@@ -131,7 +150,7 @@ const CountriesList = () => {
             </Button>
           )}
         </Flex>
-      </CountryLayout>
+      </SectionLayout>
     </CountryWrapper>
   );
 };

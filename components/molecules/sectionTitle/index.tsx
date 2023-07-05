@@ -2,8 +2,10 @@
 
 import React from "react";
 import styled from "styled-components";
-import Button from "./button";
 import { ttColors } from "theme/colors";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { useRouter } from "next/navigation";
+import Link from "@atom/link";
 
 const SectionTitleContainer = styled.div`
   display: flex;
@@ -19,6 +21,11 @@ const Title = styled.h2`
   color: var(--text-color);
   margin: 0;
   margin-bottom: 1rem;
+
+  @media screen and (max-width: 900px) {
+    font-size: 1.4rem;
+    // margin-top: -1rem;
+  }
 `;
 
 const Description = styled.p`
@@ -27,41 +34,59 @@ const Description = styled.p`
   color: #888888;
   font-weight: 400;
   line-height: 1.2rem;
+
+  @media screen and (max-width: 900px) {
+    font-size: 0.85rem;
+    margin-top: -5px;
+  }
 `;
 
 interface SectionTitleProps {
   title: string;
+  href?: string;
   description: string;
   buttonText?: string;
   showButton?: boolean;
-  onButtonClick?: () => void;
 }
 
 const SectionTitle: React.FC<SectionTitleProps> = ({
   title,
+  href,
   description,
   buttonText,
-  onButtonClick,
   showButton = true,
 }) => {
+  const { isMobile } = useScreenResolution();
+  showButton = isMobile ? false : showButton;
+  const router = useRouter();
+
+  const sectionTitleBtn = () => {
+    if (href) {
+      router.push(href);
+    }
+  };
+
   return (
-    <SectionTitleContainer>
+    <SectionTitleContainer
+      style={{
+        display: isMobile ? "block" : "flex",
+        alignItems: isMobile ? "left" : "center",
+      }}
+    >
       <div>
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
 
       {showButton && (
-        <Button
-          onClick={onButtonClick}
-          background="transparent"
+        <Link
           color={ttColors.dark}
-          border={`1px solid ${ttColors.primary}`}
-          width="180px"
-          fontSize="1rem"
+          style={{ marginTop: isMobile ? "15px" : "0px" }}
+          href={href || ""}
+          onClick={sectionTitleBtn}
         >
           {buttonText}
-        </Button>
+        </Link>
       )}
     </SectionTitleContainer>
   );

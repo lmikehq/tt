@@ -12,6 +12,7 @@ interface gridProps {
   align?: string;
   textAlign?: string;
   padding?: string;
+  style?: React.CSSProperties;
 }
 
 const GridWrapper = styled.div<{

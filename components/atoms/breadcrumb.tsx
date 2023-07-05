@@ -8,20 +8,14 @@ import styled from "styled-components";
 import Flex from "./flex";
 import Text from "./text";
 import SectionLayout from "@components/layouts/sectionLayout";
+
 const BreadcrumbContainer = styled.div`
   font-size: 14px;
   margin-bottom: 2rem;
-`;
 
-const BreadcrumbItem = styled.span`
-  display: inline-block;
-  color: #6c757d;
-  font-size: 14px;
-`;
-
-const Separator = styled.span`
-  margin: 0 0.5rem;
-  color: #999;
+  @media screen and (max-width: 900px) {
+    margin-top: -2rem;
+  }
 `;
 
 interface BreadcrumbItem {

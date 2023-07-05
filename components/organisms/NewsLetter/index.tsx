@@ -10,6 +10,7 @@ import AppLogo from "@image/app-store.svg";
 import PlayStore from "@image/google-play.svg";
 
 import { Grid } from "../../atoms/grid";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const SubscribeWrapper = styled.div`
   position: absolute;
@@ -75,14 +76,23 @@ const Subcribe = styled.div`
 `;
 
 const NewsLetter = () => {
+  const { isMobile } = useScreenResolution();
+
   return (
-    <SubscribeWrapper>
-      <Flex justify="space-between">
+    <SubscribeWrapper
+      style={{
+        width: isMobile ? "90%" : "85%",
+        left: isMobile ? "5%" : "7.5%",
+        padding: isMobile ? "1.1rem" : "2.5rem",
+        bottom: isMobile ? "95%" : "90%",
+      }}
+    >
+      <Flex justify="space-between" direction={isMobile ? "column" : "row"}>
         <Subcribe className="newsLetter">
           <Text
             type="h3"
             text="Subscribe to our newsletter"
-            size="1.5rem"
+            size={isMobile ? "1.28rem" : "1.5rem"}
             color="#06062A"
           />
           <Text
@@ -91,7 +101,10 @@ const NewsLetter = () => {
             size="1rem"
             color="#06062A"
           />
-          <Flex direction="row" gap="1rem">
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? ".5rem" : "1rem"}
+          >
             <input type="text" placeholder="Enter your email address" />
             <Button variant="contained" size="medium">
               Subscribe
@@ -99,7 +112,12 @@ const NewsLetter = () => {
           </Flex>
         </Subcribe>
 
-        <Flex gap="1rem" align="flex-end" width="auto">
+        <Flex
+          gap="1rem"
+          align="flex-end"
+          width="auto"
+          styles={{ visibility: isMobile ? "hidden" : "visible" }}
+        >
           <Image
             src={Barcode}
             alt="visa"
@@ -114,8 +132,8 @@ const NewsLetter = () => {
             padding="0rem 0rem 1.5rem"
             width="10rem"
           >
-            <Image src={AppLogo} alt="mastercard"  />
-            <Image src={PlayStore} alt="american-express"  />
+            <Image src={AppLogo} alt="mastercard" />
+            <Image src={PlayStore} alt="american-express" />
           </Flex>
         </Flex>
       </Flex>

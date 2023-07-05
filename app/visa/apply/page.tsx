@@ -1,6 +1,7 @@
-import SectionTitle from "@atom/sectionTitle";
+
 import SectionLayout from "@components/layouts/sectionLayout";
 import canada from "@image/canada-cover.png";
+import SectionTitle from "@molecule/sectionTitle";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import ApplicationForm from "@organism/form/applicationForm";
 
@@ -9,6 +10,7 @@ import ApplicationForm from "@organism/form/applicationForm";
 // }
 
 export default async function VisaApplicationPage() {
+
   return (
     <div>
       <AllCountryHead cover={canada} title="CANADA" />

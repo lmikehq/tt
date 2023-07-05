@@ -13,6 +13,7 @@ import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import currencyFormatter from "data/currencyFormatter";
 import useFormikHook from "hook/useFormik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
@@ -43,6 +44,8 @@ const PromoInput = styled.div`
 `;
 
 const ApplicationForm = () => {
+  const { isMobile } = useScreenResolution();
+
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -133,19 +136,29 @@ const ApplicationForm = () => {
         height="auto"
         padding="2rem"
         justify="space-between"
+        direction={isMobile ? "column" : "row"}
       >
         {step?.content}
 
         <Section width="40%">
           {currentPhase < 6 ? (
             <Section width="90%">
-              <Flex align="center" justify="space-between">
+              <Flex
+                align="center"
+                justify="space-between"
+                // direction={isMobile ? "column" : "row"}
+                gap={isMobile ? "1.5rem" : "0rem"}
+              >
                 <Text type="p" text="Nigeria" size="20px" weight="bold" />
                 <HiOutlineArrowNarrowRight size={30} />
                 <Text type="p" text="Canada" size="20px" weight="bold" />
               </Flex>
               <Divider />
-              <Grid columns="2fr 1fr" gap=".5rem" margin="2rem 0">
+              <Grid
+                columns={isMobile ? "1fr" : "2fr 1fr"}
+                gap=".5rem"
+                margin="2rem 0"
+              >
                 {shownFees.map((item) => (
                   <>
                     <Text
@@ -157,7 +170,11 @@ const ApplicationForm = () => {
                     />
                     <Text
                       type="p"
-                      text={`${typeof item.amount === 'number' ? currencyFormatter(item.amount, 'NGN') : item.amount}`}
+                      text={`${
+                        typeof item.amount === "number"
+                          ? currencyFormatter(item.amount, "NGN")
+                          : item.amount
+                      }`}
                       size={item.type === "head" ? "16px" : "14px"}
                       whiteSpace="nowrap"
                       weight={item.type === "head" ? "500" : "100"}

@@ -50,7 +50,7 @@ export interface InputProps {
   onBlur?: () => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
-  type?: "text" | "number" | "file";
+  type?: "text" | "number" | "file" | "textArea";
   value?: string;
   name?: string;
   id?: string;

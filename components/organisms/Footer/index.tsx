@@ -11,13 +11,18 @@ import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
 import Section from "@molecule/section";
-import { FaLinkedinIn, FaTelegramPlane, FaTiktok } from "react-icons/fa";
-import { ImLinkedin, ImWhatsapp } from "react-icons/im";
+import Barcode from "@image/walink.png";
+import AppLogo from "@image/app-store.svg";
+import PlayStore from "@image/google-play.svg";
+import { useScreenResolution } from "hook/useScreenResolution";
+import SectionLayout from "@components/layouts/sectionLayout";
+import { FaTelegramPlane, FaTiktok } from "react-icons/fa";
+import { ImLinkedin } from "react-icons/im";
 import { RiWhatsappFill } from "react-icons/ri";
 
 const FooterWrapper = styled.footer`
   width: 100%;
-  height: 21rem;
+  height: fit-content;
   margin-top: 17rem;
   display: flex;
   padding: 5rem 0;
@@ -120,11 +125,22 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
+  const { isMobile } = useScreenResolution();
+
+  const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
+  const partner_with_us = [
+    "Partnership program",
+    "Affiliate program",
+    "Connectivity partners",
+    "Loyalty program",
+    "Community",
+  ];
+
   return (
-    <FooterWrapper>
+    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
       <NewsLetter />
-      <Section width="85%" margin="0 auto">
-        <Grid gap="2.5rem" columns="repeat(5, 1fr)">
+      <SectionLayout margin="0 auto">
+        <Grid gap={isMobile ? "1.2rem" : "2.5rem"} columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
@@ -142,6 +158,7 @@ const FooterSection = () => {
               ))}
             </Grid>
           </div>
+
           <div className="topCountries">
             <Text
               type="h3"
@@ -150,14 +167,21 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              <Link href="/visa/countries" text="Canada" color="#06062A" />
-              <Link href="/visa/countries" text="New Zealand" color="#06062A" />
-              <Link
-                href="/visa/countries"
-                text="United Kingdom"
-                color="#06062A"
-              />
-              <Link href="/visa/countries" text="Norway" color="#06062A" />
+              {/* <
+              <Link href="/" text="New Zealand" color="#06062A" />
+              <Link href="/" text="United Kingdom" color="#06062A" />
+              <Link href="/" text="Norway" color="#06062A" /> */}
+
+              {top_countries.map((country, index) => (
+                <Link
+                  key={index}
+                  href={`/visa/countries/${country
+                    .toLowerCase()
+                    .replace(/ /g, "-")}`}
+                  text={country}
+                  color="#06062A"
+                />
+              ))}
             </Flex>
           </div>
           <div className="partnerWithUs">
@@ -168,11 +192,14 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Wait list" color="#06062A" />
-              <Link href="/" text="Travel guide" color="#06062A" />
-              <Link href="/" text="FAQs" color="#06062A" />
-              <Link href="/" text="Reviews" color="#06062A" />
-              <Link href="/" text="Visa Showcase" color="#06062A" />
+              {/* <Link href="/" text="Partnership programs" color="#06062A" />
+              <Link href="/" text="Affiliate program" color="#06062A" />
+              <Link href="/" text="Connectivity partners" color="#06062A" />
+              <Link href="/" text="Loyalty program" color="#06062A" />
+              <Link href="/" text="Community" color="#06062A" /> */}
+              {partner_with_us.map((partners, i) => (
+                <Link key={i} href="/" text={partners} color="#06062A" />
+              ))}
             </Flex>
           </div>
           <div className="support">
@@ -195,7 +222,51 @@ const FooterSection = () => {
             </Flex>
           </div>
         </Grid>
-      </Section>
+        <Flex
+          gap="1rem"
+          align={isMobile ? "center" : "flex-end"}
+          width="auto"
+          styles={{ visibility: isMobile ? "visible" : "hidden" }}
+        >
+          <Image
+            src={Barcode}
+            alt="visa"
+            style={{
+              marginLeft: isMobile ? "0rem" : "7rem",
+              marginTop: isMobile ? "20px" : "",
+              marginBottom: isMobile ? ".8rem" : "1.2rem",
+              width: isMobile ? "60px" : "110px",
+              height: isMobile ? "60px" : "110px",
+            }}
+          />
+          <Flex
+            direction="column"
+            gap={isMobile ? "0.2px" : "0.5px"}
+            align="center"
+            padding="0rem 0rem 1.5rem"
+            width={isMobile ? "4rem" : "10rem"}
+            styles={{ marginTop: isMobile ? "30px" : "" }}
+          >
+            <Image
+              src={AppLogo}
+              alt="mastercard"
+              style={{
+                width: isMobile ? "89.33px" : "134px",
+                height: isMobile ? "29.33px" : "44px",
+              }}
+            />
+            <Image
+              src={PlayStore}
+              alt="american-express"
+              style={{
+                width: isMobile ? "89.33px" : "134px",
+                height: isMobile ? "29.33px" : "44px",
+              }}
+            />
+          </Flex>
+        </Flex>
+        {/* <Text text="All Right Reserved, @ Thrillers Travel" type="p" /> */}
+      </SectionLayout>
     </FooterWrapper>
   );
 };
