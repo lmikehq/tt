@@ -16,6 +16,9 @@ import AppLogo from "@image/app-store.svg";
 import PlayStore from "@image/google-play.svg";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionLayout from "@components/layouts/sectionLayout";
+import { FaTelegramPlane, FaTiktok } from "react-icons/fa";
+import { ImLinkedin } from "react-icons/im";
+import { RiWhatsappFill } from "react-icons/ri";
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -33,27 +36,49 @@ const FooterIcons = [
   {
     id: 1,
     icon: <BsFacebook size="1.5rem" color="#06062A" />,
-    url: "https://wwww.facebook.com/",
+    url: "https://www.facebook.com/thrillerstravels",
   },
 
   {
     id: 2,
     icon: <BsTwitter size="1.5rem" color="#06062A" />,
-    url: "https://wwww.twitter.com/",
+    url: "https://wwww.twitter.com/thrillerstravel",
   },
 
   {
     id: 3,
     icon: <BsYoutube size="1.5rem" color="#06062A" />,
-    url: "https://wwww.youtube.com/",
+    url: "https://wwww.youtube.com/@ThrillersTravel",
   },
 
   {
     id: 4,
     icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
-    url: "https://wwww.instagram.com/",
+    url: "https://wwww.instagram.com/thrillerstravel",
+  },
+  {
+    id: 5,
+    icon: <FaTiktok size="1.5rem" color="#06062A" />,
+    url: "https://wwww.instagram.com/thrillerstravel",
+  },
+  {
+    id: 6,
+    icon: <ImLinkedin size="1.5rem" color="#06062A" />,
+    url: "http://www.linkedin.com/in/thrillerstravels",
+  },
+  {
+    id: 7,
+    icon: <RiWhatsappFill size="1.5rem" color="#06062A" />,
+    url: "https://wa.link/37nz51",
+  },
+  {
+    id: 8,
+    icon: <FaTelegramPlane size="1.5rem" color="#06062A" />,
+    url: "https://wwww.instagram.com/thrillerstravel",
   },
 ];
+
+// tiktok, google, email, chatbots
 
 // const FooterLinks = [
 //   {
@@ -100,33 +125,45 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
-  const partner_with_us = [
-    "Partnership program",
-    "Affiliate program",
-    "Connectivity partners",
-    "Loyalty program",
-    "Community",
+  const useful_links = [
+    "Wait list",
+    "Travel guide",
+    "FAQs",
+    "Reviews",
+    "Visa Showcase",
   ];
 
+
   return (
-    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "5rem" }}>
+    <FooterWrapper
+      style={{ paddingBottom: isMobile ? "1rem" : isTablet ? "1rem" : ".5rem" }}
+    >
       <NewsLetter />
       <SectionLayout margin="0 auto">
-        <Grid gap={isMobile ? "1.2rem" : "2.5rem"} columns={isMobile ? "1fr" : "repeat(5, 1fr)"}>
+        <Grid
+          gap={isMobile ? "1.2rem" : "2.5rem"}
+          columns={isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(5, 1fr)"}
+          padding={isMobile || isTablet ? "3rem 0px 0px 20px;" : "1rem"}
+        >
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
             </Link>
-            <Flex gap="1rem" margin="1.2rem auto">
+            <Grid
+              columns="repeat(4, 1fr)"
+              gap="1rem"
+              width={isMobile ? "55%" : isTablet ? "45%" : "70%"}
+              margin={"1rem 0rem 0rem 0rem"}
+            >
               {FooterIcons.map((icon) => (
                 <Link href={icon.url} key="key">
-                  <span key={icon.id}>{icon.icon}</span>
+                  {icon.icon}
                 </Link>
               ))}
-            </Flex>
+            </Grid>
           </div>
 
           <div className="topCountries">
@@ -137,11 +174,6 @@ const FooterSection = () => {
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              {/* <
-              <Link href="/" text="New Zealand" color="#06062A" />
-              <Link href="/" text="United Kingdom" color="#06062A" />
-              <Link href="/" text="Norway" color="#06062A" /> */}
-
               {top_countries.map((country, index) => (
                 <Link
                   key={index}
@@ -154,21 +186,16 @@ const FooterSection = () => {
               ))}
             </Flex>
           </div>
-          <div className="partnerWithUs">
+          <div className="usefulLinks">
             <Text
               type="h3"
-              text="Partner With Us"
+              text="Useful Link"
               color="#06062A"
               padding="0 0 25px"
             />
             <Flex direction="column" gap="1rem">
-              {/* <Link href="/" text="Partnership programs" color="#06062A" />
-              <Link href="/" text="Affiliate program" color="#06062A" />
-              <Link href="/" text="Connectivity partners" color="#06062A" />
-              <Link href="/" text="Loyalty program" color="#06062A" />
-              <Link href="/" text="Community" color="#06062A" /> */}
-              {partner_with_us.map((partners, i) => (
-                <Link key={i} href="/" text={partners} color="#06062A" />
+              {useful_links.map((links, i) => (
+                <Link key={i} href="/" text={links} color="#06062A" />
               ))}
             </Flex>
           </div>
@@ -183,14 +210,9 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="aboutUs">
-            <Text
-              type="h3"
-              text="About Us"
-              color="#06062A"
-              padding="0 0 25px"
-            />
+            <Text type="h3" text="Company" color="#06062A" padding="0 0 25px" />
             <Flex direction="column" gap="1rem">
-              <Link href="/" text="Company" color="#06062A" />
+              <Link href="/" text="About us" color="#06062A" />
               <Link href="/" text="Careers" color="#06062A" />
               <Link href="/" text="Press" color="#06062A" />
               <Link href="/" text="Blog" color="#06062A" />
@@ -198,11 +220,18 @@ const FooterSection = () => {
           </div>
         </Grid>
         <Flex
-          gap="1rem"
-          align={isMobile ? "center" : "flex-end"}
+          gap={isTablet ? "0px" : "1rem"}
+          align={isMobile || isTablet ? "center" : "flex-end"}
           width="auto"
-          styles={{ visibility: isMobile ? "visible" : "hidden" }}
+          styles={{
+            visibility: isMobile || isTablet ? "visible" : "hidden",
+            position: isMobile ? "relative" : isTablet ? "absolute" : "relative",
+            bottom: isMobile ? "0px" : isTablet ? "84px" : "0px",
+            right: isMobile ? "-16px" : isTablet ? "74px" : "0px",
+          }}
         >
+          {/* bottom: 124px; right: 74px; */}
+          {/* position: absolute; bottom: 103px; right: 50px; */}
           <Image
             src={Barcode}
             alt="visa"
@@ -210,17 +239,17 @@ const FooterSection = () => {
               marginLeft: isMobile ? "0rem" : "7rem",
               marginTop: isMobile ? "20px" : "",
               marginBottom: isMobile ? ".8rem" : "1.2rem",
-              width: isMobile ? "60px" : "110px",
-              height: isMobile ? "60px" : "110px",
+              width: isMobile ? "60px" : isTablet ? "90px" : "110px",
+              height: isMobile ? "60px" : isTablet ? "90px" : "110px",
             }}
           />
           <Flex
             direction="column"
             gap={isMobile ? "0.2px" : "0.5px"}
             align="center"
-            padding="0rem 0rem 1.5rem"
-            width={isMobile ? "4rem" : "10rem"}
-            styles={{ marginTop: isMobile ? "30px" : "" }}
+            padding={isTablet ? "0rem 0rem 0.9rem" : "0rem 0rem 1.5rem"}
+            width={isMobile ? "6rem" : "10rem"}
+            styles={{ marginTop: isMobile ? "24px" : "" }}
           >
             <Image
               src={AppLogo}

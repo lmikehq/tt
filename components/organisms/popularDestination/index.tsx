@@ -134,12 +134,14 @@ const PopularDestinations = ({
     },
   ];
 
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
 
   
-const filteredDestinations = isMobile
-  ? destinationCard.slice(0, 4)
-  : destinationCard;
+// const filteredDestinations = { isMobile, isTablet }
+//   ? destinationCard.slice(0, 4)
+//   : destinationCard;
+
+  // const filteredDestinations = isTablet ? destinationCard.slice(0, 4) : destinationCard
 
 
 
@@ -152,31 +154,37 @@ const filteredDestinations = isMobile
           buttonText="See more countries"
           href="/visa/countries"
         />
-        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="16px">
-          {filteredDestinations.map((destination) => (
-            <Link key={destination.id} href="/visa/apply">
-              <Card>
-                <Flex justify="space-between" gap="1rem">
-                  <Image src={destination.image} alt="" />
+        <Grid
+          columns={isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(3, 1fr)"}
+          gap="16px"
+        >
+          {destinationCard
+            .slice(0, isMobile || isTablet ? 4 : undefined)
+            .map((destination) => (
+              <Link key={destination.id} href="/visa/apply">
+                <Card>
+                  <Flex justify="space-between" gap="1rem">
+                    <Image src={destination.image} alt="" />
 
-                  <Flex direction="column" alignSelf="center">
-                    <Text type="h3" text={destination.title} />
-                    <Flex>
-                      {destination.description.split(".").map((desc, index) => (
-                        <React.Fragment key={index}>
-                          <Text type="p" text={desc.trim()} />
-                          {index !==
-                            destination.description.split(".").length - 1 && (
-                            <BsDot />
-                          )}
-                        </React.Fragment>
-                      ))}
+                    <Flex direction="column" alignSelf="center">
+                      <Text type="h3" text={destination.title} />
+                      <Flex>
+                        {destination.description
+                          .split(".")
+                          .map((desc, index) => (
+                            <React.Fragment key={index}>
+                              <Text type="p" text={desc.trim()} />
+                              {index !==
+                                destination.description.split(".").length -
+                                  1 && <BsDot />}
+                            </React.Fragment>
+                          ))}
+                      </Flex>
                     </Flex>
                   </Flex>
-                </Flex>
-              </Card>
-            </Link>
-          ))}
+                </Card>
+              </Link>
+            ))}
         </Grid>
       </DestinationLayout>
     </DestinationWrapper>

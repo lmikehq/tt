@@ -20,21 +20,28 @@ import { SlLocationPin } from "react-icons/sl";
 import { LuPhoneCall } from "react-icons/lu";
 import { BsEnvelope } from "react-icons/bs";
 import { ImWhatsapp } from "react-icons/im";
-import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaTiktok,
+  FaInstagram,
+  FaYoutube,
+} from "react-icons/fa";
 import { ttColors } from "theme/colors";
 import Link from "@atom/link";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useState } from "react";
 import CustomerCare from "../../../assets/images/customerservice.png";
 import { Grid } from "@atom/grid";
-import ApplicationIcon from "../../../assets/images/customerCare/start-new-application.svg";
-import OrderStatus from "../../../assets/images/customerCare/check-status-order.svg";
-import User from "../../../assets/images/customerCare/my-account.svg";
-import Support from "../../../assets/images/customerCare/headphones.svg";
+import ApplicationIcon from "../../../assets/images/customerCare/application.png";
+import OrderStatus from "../../../assets/images/customerCare/resume.png";
+import User from "../../../assets/images/customerCare/user.png";
+import Support from "../../../assets/images/customerCare/technical-support.png";
 import { Divider } from "@atom/divider";
 
 const ContactSection = styled.div`
-margin-top: 2.5rem;
+  margin-top: 2.5rem;
 `;
 
 const ContactCard = styled.div`
@@ -48,15 +55,17 @@ const ContactCard = styled.div`
 
 const LinkFrame = styled.div`
   position: relative;
-  left: 4rem;
+  left: 2rem;
+  width: 90%;
 `;
 
 const SocialDiv = styled.div`
   background: ${ttColors.primary};
   border-bottom-right-radius: 10px;
   border-top-right-radius: 10px;
-  height: 160px;
+  height: fit-content;
   width: 60px;
+  padding: 1rem 0rem;
   position: absolute;
   bottom: 60px;
   right: -85px;
@@ -137,7 +146,7 @@ const LeftSpan = styled.span`
   left: 310px;
 
   @media screen and (max-width: 900px) {
-  display: none;
+    display: none;
   }
 `;
 const RightSpan = styled.span`
@@ -172,7 +181,7 @@ const HelpPara = styled.p`
 const CustomerCareImg = styled.div`
   position: relative;
   left: 30px;
-  bottom: -4px;
+  bottom: -7px;
 
   & img {
     height: 144px;
@@ -181,8 +190,8 @@ const CustomerCareImg = styled.div`
 
   @media screen and (max-width: 768px) {
     position: relative;
-    left: -4px;
-    bottom: -8px;
+    left: 22px;
+    bottom: 0px;
 
     & img {
       display: block;
@@ -216,25 +225,27 @@ const ContactCardItems = [
     image: ApplicationIcon,
     alt: "",
     text: "Start New Application",
+    link: "/visa/apply",
   },
   {
     image: OrderStatus,
     alt: "",
-    text: "Check Order Status",
+    text: "Application Status",
+    link: "/auth/login",
   },
   {
     image: User,
     alt: "",
     text: "Log in to My Account",
+    link: "auth/login",
   },
-  {
-    image: Support,
-    alt: "",
-    text: "Support",
-  },
+  // {
+  //   image: Support,
+  //   alt: "",
+  //   text: "Support",
+  //   link: "#support",
+  // },
 ];
-
-
 
 const navigationLinks = [
   {
@@ -275,7 +286,7 @@ const ContactPage = () => {
       noValidate
       autoComplete="off"
     >
-      <TextField placeholder="Order" label="Order" />
+      <TextField placeholder="Application" label="Application" />
     </Box>
   );
 
@@ -290,7 +301,7 @@ const ContactPage = () => {
       />
       <Grid
         gap="3rem"
-        columns={isMobile ? "100%" : "25% 75%"}
+        columns={isMobile || isTablet ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
         <ContactLink>
@@ -316,7 +327,10 @@ const ContactPage = () => {
 
         <ContactDetails>
           <ChatAgent>
-            <Flex gap={isMobile ? "1rem" : "3rem"} padding={isMobile ? "0.5rem" : "0rem"}>
+            <Flex
+              gap={isMobile ? "1rem" : "3rem"}
+              padding={isMobile ? "0.5rem" : "0rem"}
+            >
               <CustomerCareImg>
                 <Image src={CustomerCare} alt="" />
               </CustomerCareImg>
@@ -348,29 +362,42 @@ const ContactPage = () => {
               />
             </HelpPara>
 
-            <Grid gap="2rem" columns={isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(4, 1fr)"} >
+            <Grid
+              gap="2rem"
+              columns={
+                isMobile
+                  ? "1fr"
+                  : isTablet
+                  ? "repeat(2, 1fr)"
+                  : "repeat(3, 1fr)"
+              }
+              width={isMobile || isTablet ? "100%" : "100%"}
+            >
               {ContactCardItems.map((item, index) => (
-                <Flex
-                  key={index}
-                  gap="1rem"
-                  justify="center"
-                  styles={{
-                    background: "#fff",
-                    padding: "15px",
-                    borderRadius: "5px",
-                    boxShadow: "0px 0px 7px 3px rgba(0,0,0,0.1)",
-                    width: `{isMobile ? "100%" : "207.13px"}`,
-                    height: "64px",
-                    
-                  }}
-                >
-                  <Image
-                    src={item.image}
-                    alt={item.alt}
-                    styles={{ color: "red" }}
-                  />
-                  <Text type="p" text={item.text} />
-                </Flex>
+                <Link key={index} href={item.link}>
+                  <Flex
+                    key={index}
+                    gap="1rem"
+                    justify="center"
+                    styles={{
+                      background: "#fff",
+                      padding: "15px",
+                      borderRadius: "5px",
+                      boxShadow: "0px 0px 7px 3px rgba(0,0,0,0.1)",
+                      width: `{isMobile ? "100%" : "207.13px"}`,
+                      height: "64px",
+                    }}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.alt}
+                      styles={{ color: "red" }}
+                      height={30}
+                      width={30}
+                    />
+                    <Text type="p" text={item.text} />
+                  </Flex>
+                </Link>
               ))}
             </Grid>
           </HelpTool>
@@ -385,8 +412,17 @@ const ContactPage = () => {
               type="p"
               text="Simply complete this form, and we'll provide you with the assistance you require at the earliest opportunity."
             />
-            <Flex justify={isMobile ? "flex-start" : "space-between"} gap="10px" width="100%">
-              <form style={{ width: `{isMobile ? "100%" : "50%"}`, display: `{isMobile ? "block" : "grid"}` }}>
+            <Flex
+              justify={isMobile ? "flex-start" : "space-between"}
+              gap="10px"
+              width="100%"
+            >
+              <form
+                style={{
+                  width: `{isMobile ? "100%" : "50%"}`,
+                  display: `{isMobile ? "block" : "grid"}`,
+                }}
+              >
                 <Flex direction="column" gap="3rem" width="100%">
                   <Box
                     component="form"
@@ -514,7 +550,10 @@ const ContactPage = () => {
                     <Link href="">
                       <SlLocationPin size="1.2rem" />
                     </Link>
-                    <Text type="p" text="Our address" />
+                    <Text
+                      type="p"
+                      text="Ikota, Lekki County Homes, IVY HOMES, THRILLERS HOUSE. Lagos Nigeria "
+                    />
                   </Flex>
 
                   <br />
@@ -522,7 +561,7 @@ const ContactPage = () => {
                     <Link href="">
                       <LuPhoneCall size="1.2rem" />
                     </Link>
-                    <Text type="p" text="0994949494949494949" />
+                    <Text type="p" text="+2349077210321" />
                   </Flex>
                   <br />
 
@@ -530,7 +569,7 @@ const ContactPage = () => {
                     <Link href="">
                       <ImWhatsapp size="1.2rem" />
                     </Link>
-                    <Text type="p" text="0994949494949494949" />
+                    <Text type="p" text="+2349077210321" />
                   </Flex>
                   <br />
 
@@ -538,7 +577,7 @@ const ContactPage = () => {
                     <Link href="">
                       <BsEnvelope size="1.2rem" />
                     </Link>
-                    <Text type="p" text="vnvjnskjnjnkg@vbdd.com" />
+                    <Text type="p" text="support@thrillers.travels" />
                   </Flex>
                 </LinkFrame>
               </ContactCard>
@@ -546,14 +585,23 @@ const ContactPage = () => {
           </ContactWrapper>
 
           <SocialDiv>
-            <Link href="">
+            <Link href="https://www.facebook.com/thrillerstravels">
               <FaFacebookF size="1.2rem" />
             </Link>
-            <Link href="">
+            <Link href="https://twitter.com/thrillerstravel">
               <FaTwitter size="1.2rem" />
             </Link>
-            <Link href="">
+            <Link href="http://www.linkedin.com/in/thrillerstravels">
               <FaLinkedinIn size="1.2rem" />
+            </Link>
+            <Link href="https://www.instagram.com/thrillerstravel/">
+              <FaInstagram size="1.2rem" />
+            </Link>
+            <Link href="https://www.tiktok.com/@thrillers_travels?lang=en">
+              <FaTiktok size="1.2rem" />
+            </Link>
+            <Link href="https://www.youtube.com/@ThrillersTravel">
+              <FaYoutube size="1.2rem" />
             </Link>
           </SocialDiv>
         </ContactDetails>
@@ -569,11 +617,11 @@ const TravellTo = Object.values(COUNTRY_FLAGS).map((country) => ({
 
 const ContactReason = [
   {
-    label: "Existing Client: I need help with my Visa/Health Certificate Order",
+    label: "Existing Client: I need help with my Visa Application",
     value: "existo",
   },
   {
-    label: "Existing Client: I need help with my Photo Order",
+    label: "Existing Client: I need help with my Photo Application",
   },
   {
     label: "New Client: I am new to the website",
@@ -590,6 +638,3 @@ const ContactReason = [
 ];
 
 export default ContactPage;
-
-
-
