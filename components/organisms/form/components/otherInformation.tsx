@@ -19,6 +19,7 @@ import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useFilePicker } from "use-file-picker";
 import FormStepTitle from "./formStepsTitle";
+import { toast } from "react-hot-toast";
 interface formProps {
   formik: FormikValues;
   steps: string[];
@@ -51,10 +52,9 @@ function OtherInformation({ formik, steps, index }: formProps) {
     accept: ["image/*", ".pdf", ".doc", ".docx"],
     multiple: false,
   });
-  const [documents, setDocuments] = useState<any[]>([]);
   const presets = {
-    public_id: formik.values.lastName || "michael",
-    folder: `${formik.values.lastName || "michael"}-files`,
+    public_id: formik.values.lastName || "unknown",
+    folder: `${formik.values.lastName || "unknown"}-files`,
   };
   const { uploadImage, loading } = useCloudinaryUpload(presets);
 
@@ -271,7 +271,13 @@ function OtherInformation({ formik, steps, index }: formProps) {
                 "loading"
               ) : (
                 <div>
-                  <p onClick={() => openFilePicker()}>
+                  <p
+                    onClick={() => {
+                      if (!formik.values.lastName) 
+                      return toast.error("Please fill all your details first");
+                      openFilePicker();
+                    }}
+                  >
                     <span
                       style={{ color: ttColors.primary, cursor: "pointer" }}
                     >
