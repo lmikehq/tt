@@ -11,8 +11,13 @@ const SectionTitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .5rem;
+  gap: 0.5rem;
   margin-bottom: 20px;
+
+  // @media screen and (max-width: 900px) {
+    
+  //   margin-bottom: 5rem;
+  // }
 `;
 
 const Title = styled.h2`
@@ -57,7 +62,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   buttonText,
   showButton = true,
 }) => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
   showButton = isMobile ? false : showButton;
   const router = useRouter();
 
@@ -74,7 +79,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         alignItems: isMobile ? "left" : "center",
       }}
     >
-      <div style={{width: "80%"}}>
+      <div style={{width: isMobile ? "100%" : isTablet ? "76%" : "80%"}}>
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
@@ -82,7 +87,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
       {showButton && (
         <Link
           color={ttColors.dark}
-          style={{ marginTop: isMobile ? "15px" : "0px", fontSize: "1rem", fontWeight: "400" }}
+          style={{ marginTop: isMobile ? "0px" : "0px", fontSize: "1rem", fontWeight: "400" }}
           href={href || ""}
           onClick={sectionTitleBtn}
         >
