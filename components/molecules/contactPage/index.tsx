@@ -34,7 +34,7 @@ import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useState } from "react";
 import CustomerCare from "../../../assets/images/customerservice.png";
 import { Grid } from "@atom/grid";
-import ApplicationIcon from "../../../assets/images/customerCare/order-delivery.png";
+import ApplicationIcon from "../../../assets/images/customerCare/application.png";
 import OrderStatus from "../../../assets/images/customerCare/resume.png";
 import User from "../../../assets/images/customerCare/user.png";
 import Support from "../../../assets/images/customerCare/technical-support.png";
@@ -190,8 +190,8 @@ const CustomerCareImg = styled.div`
 
   @media screen and (max-width: 768px) {
     position: relative;
-    left: -4px;
-    bottom: -8px;
+    left: 22px;
+    bottom: 0px;
 
     & img {
       display: block;
@@ -301,7 +301,7 @@ const ContactPage = () => {
       />
       <Grid
         gap="3rem"
-        columns={isMobile ? "100%" : "25% 75%"}
+        columns={isMobile || isTablet ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
         <ContactLink>
@@ -371,7 +371,7 @@ const ContactPage = () => {
                   ? "repeat(2, 1fr)"
                   : "repeat(3, 1fr)"
               }
-              width={isMobile ? "45% !important" : "100%"}
+              width={isMobile || isTablet ? "100%" : "100%"}
             >
               {ContactCardItems.map((item, index) => (
                 <Link key={index} href={item.link}>
