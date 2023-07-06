@@ -46,8 +46,8 @@ const RightSide = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   height: 415px;
-   @media (max-width: 900px) {
-    height: 460px;
+  @media (max-width: 900px) {
+    height: 530px;
   }
 `;
 
