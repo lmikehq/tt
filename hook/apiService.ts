@@ -3,7 +3,7 @@ const globalAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
 });
 
-const apiService = (url: string, method: string, data: any) => {
+const apiService = (url: string, method?: string, data?: any) => {
   return new Promise((resolve, reject) => {
     globalAxios({
       url,
