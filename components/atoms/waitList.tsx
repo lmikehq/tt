@@ -158,7 +158,7 @@ const MenuIcon = styled.svg`
 
   @media screen and (max-width: 900px) {
     position: absolute;
-    right: -220px !important;
+    right: -220px ;
     display: block;
     top: 20px;
   }
@@ -167,9 +167,12 @@ const MenuIcon = styled.svg`
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 370px !important;
-    top: 25px !important;
+    left: 370px ;
+    top: 25px ;
     display: block;
+  }
+  @media screen and (max-width: 375px) {
+    left: 330px;
   }
 `;
 

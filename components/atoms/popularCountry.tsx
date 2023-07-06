@@ -41,6 +41,19 @@ const LeftSide = styled.div`
   @media screen and (max-width: 900px) {
     height: 460px;
   }
+  @media screen and (max-width: 375px) {
+    width: 350px;
+
+    & h3 {
+      width: 300px !important;
+      font-size: 26px !important;
+    }
+
+    & p {
+      font-size: 13px !important;
+      line-height: 16px !important;
+    }
+  }
 `;
 
 const RightSide = styled.div`

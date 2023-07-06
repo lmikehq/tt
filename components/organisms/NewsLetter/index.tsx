@@ -79,7 +79,7 @@ const NewsLetter = () => {
   const { isMobile } = useScreenResolution();
 
   return (
-    <SubscribeWrapper
+    <SubscribeWrapper className="newsLetter"
       style={{
         width: isMobile  ? "90%" : "85%",
         left: isMobile  ? "5%" : "7.5%",

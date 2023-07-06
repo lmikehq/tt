@@ -85,5 +85,9 @@ body {
     }
 }
 
-
+@media screen and (max-width: 375px) {
+  .newsLetter{
+    bottom: 98.5% !important;
+  }
+}
 
