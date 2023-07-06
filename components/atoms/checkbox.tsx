@@ -9,7 +9,7 @@ function CheckBox({
   checked,
 }: {
   children: React.ReactNode;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
 }) {
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

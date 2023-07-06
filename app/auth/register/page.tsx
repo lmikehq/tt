@@ -14,7 +14,7 @@ import logo from "@image/brand/tt_blue_logo_with_text.png";
 import Section from "@molecule/section";
 import apiService from "hook/apiService";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
 function RegisterPage() {
@@ -29,6 +29,7 @@ function RegisterPage() {
     referralCode: "",
     consent: false,
   });
+
   const [submissionState, setSubmissionState] = useState({
     loading: false,
     error: [] as any,
@@ -79,6 +80,7 @@ function RegisterPage() {
         error: res.errors,
         loading: false,
       });
+      return;
     }
     setSubmissionState({
       ...submissionState,
