@@ -35,45 +35,45 @@ const FooterWrapper = styled.footer`
 const FooterIcons = [
   {
     id: 1,
-    icon: <BsFacebook size="1.5rem" color="#06062A" />,
+    icon: <BsFacebook size="1rem" color="#06062A" />,
     url: "https://www.facebook.com/thrillerstravels",
   },
 
   {
     id: 2,
-    icon: <BsTwitter size="1.5rem" color="#06062A" />,
+    icon: <BsTwitter size="1rem" color="#06062A" />,
     url: "https://wwww.twitter.com/thrillerstravel",
   },
 
   {
     id: 3,
-    icon: <BsYoutube size="1.5rem" color="#06062A" />,
+    icon: <BsYoutube size="1rem" color="#06062A" />,
     url: "https://wwww.youtube.com/@ThrillersTravel",
   },
 
   {
     id: 4,
-    icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
+    icon: <AiFillInstagram size="1rem" color="#06062A" />,
     url: "https://wwww.instagram.com/thrillerstravel",
   },
   {
     id: 5,
-    icon: <FaTiktok size="1.5rem" color="#06062A" />,
+    icon: <FaTiktok size="1rem" color="#06062A" />,
     url: "https://wwww.instagram.com/thrillerstravel",
   },
   {
     id: 6,
-    icon: <ImLinkedin size="1.5rem" color="#06062A" />,
+    icon: <ImLinkedin size="1rem" color="#06062A" />,
     url: "http://www.linkedin.com/in/thrillerstravels",
   },
   {
     id: 7,
-    icon: <RiWhatsappFill size="1.5rem" color="#06062A" />,
+    icon: <RiWhatsappFill size="1rem" color="#06062A" />,
     url: "https://wa.link/37nz51",
   },
   {
     id: 8,
-    icon: <FaTelegramPlane size="1.5rem" color="#06062A" />,
+    icon: <FaTelegramPlane size="1rem" color="#06062A" />,
     url: "https://wwww.instagram.com/thrillerstravel",
   },
 ];
@@ -108,7 +108,7 @@ const FooterSection = () => {
               className="footerIcons"
               columns="repeat(4, 1fr)"
               gap="1rem"
-              width={isMobile ? "45%" : "70%"}
+              width={isMobile ? "30%" : "70%"}
               margin={"1rem 0rem 0rem 0rem"}
             >
               {FooterIcons.map((icon) => (
