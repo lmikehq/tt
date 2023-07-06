@@ -52,7 +52,7 @@ body {
         z-index: 999;
         }
 }
-@media (max-width: 425px) {
+@media (max-width: 4600px) {
     .menu-icon {
         display: block;
         cursor: pointer;

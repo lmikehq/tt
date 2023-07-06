@@ -66,8 +66,8 @@ const FrameInfo = styled.div`
       margin: 0 auto;
       margin-bottom: 1rem;
 
-      @media screen and (max-width: 425px){
-        width: 90%;
+      @media screen and (max-width: 600px){
+        width: 85%;
       }
     }
 

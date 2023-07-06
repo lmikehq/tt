@@ -173,7 +173,7 @@ const HelpPara = styled.p`
   @media screen and (max-width: 900px) {
     padding: 1rem 3rem;
   }
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 600px) {
     padding: 1rem;
   }
 `;

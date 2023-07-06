@@ -78,7 +78,7 @@ const RightWrapper = styled.div`
     height: 100%;
   }
 
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 600px) {
     height: fit-content;
   }
 
@@ -163,7 +163,7 @@ const MenuIcon = styled.svg`
     top: 20px;
   }
 
-  @media screen and (max-width: 425px) {
+  @media screen and (max-width: 600px) {
     display: block;
     cursor: pointer;
     position: absolute;
