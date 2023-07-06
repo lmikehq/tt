@@ -32,7 +32,7 @@ const Card = styled.div`
   gap: 16px;
   margin-bottom: 1rem;
 
-  width: 370px;
+  width: 100%;
   height: 115px;
   color: var(--secondary-color);
   /* Neutrals */
