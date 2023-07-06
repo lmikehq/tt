@@ -12,6 +12,7 @@ import CountryLayout from "@layout/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "@molecule/sectionTitle";
 import { RiLineHeight } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 interface Country {
   id: number;
@@ -36,7 +37,7 @@ const CountryWrapper = styled.section`
 
 const LeftSide = styled.div`
   height: 415px;
-   @media (max-width: 900px) {
+  @media (max-width: 900px) {
     height: 460px;
   }
 `;
@@ -46,7 +47,7 @@ const RightSide = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   height: 415px;
-   @media (max-width: 900px) {
+  @media (max-width: 900px) {
     height: 460px;
   }
 `;
@@ -101,7 +102,7 @@ const CountryDescription = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  padding: 2px .2rem;
+  padding: 2px 0.2rem;
 `;
 
 const IntervalTag = styled.div`
@@ -248,7 +249,7 @@ const TopCountriesSection: React.FC = () => {
     },
   ];
 
-  console.log("blah bah", activeImage);
+  const router = useRouter();
 
   return (
     <CountryWrapper
@@ -301,7 +302,19 @@ const TopCountriesSection: React.FC = () => {
                       Get {countries[activeImage - 1].name} E-visa
                     </CountryName>
                     <CountryDescription
-                      style={{ marginTop: isMobile ? "9px" : isTablet ? "9px" : "50px", fontSize: isMobile ? "14px" : isTablet ? "17px" : "1rem", lineHeight: isMobile ? "18px" : isTablet ? "25px" : "14px" }}
+                      style={{
+                        marginTop: isMobile ? "9px" : isTablet ? "9px" : "50px",
+                        fontSize: isMobile
+                          ? "14px"
+                          : isTablet
+                          ? "17px"
+                          : "1rem",
+                        lineHeight: isMobile
+                          ? "18px"
+                          : isTablet
+                          ? "25px"
+                          : "14px",
+                      }}
                     >
                       {countries[activeImage - 1].description1}
                       <br />
@@ -334,7 +347,17 @@ const TopCountriesSection: React.FC = () => {
                     <br />
                     {countries[activeImage - 1].description2}
                   </CountryDescription>
-                  <Button>Apply to {countries[activeImage - 1].name}</Button>
+                  <Button
+                    onClick={() =>
+                      router.push(
+                        `/visa/apply?destination=${
+                          countries[activeImage - 1].name
+                        }`
+                      )
+                    }
+                  >
+                    Apply to {countries[activeImage - 1].name}
+                  </Button>
                 </CountryInfo>
               )}
             </LeftSide>
