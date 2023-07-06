@@ -173,7 +173,7 @@ const HelpPara = styled.p`
   @media screen and (max-width: 900px) {
     padding: 1rem 3rem;
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 425px) {
     padding: 1rem;
   }
 `;
@@ -188,16 +188,16 @@ const CustomerCareImg = styled.div`
     width: 144px;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     position: relative;
-    left: 22px;
-    bottom: 0px;
+    left: 5px;
+    bottom: -8px;
 
     & img {
       display: block;
     }
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 768px) {
     & img {
       display: none;
     }
@@ -363,9 +363,10 @@ const ContactPage = () => {
             </HelpPara>
 
             <Grid
+              className="contactCard"
               gap="2rem"
               columns={
-                isMobile ? "1fr" :  "repeat(3, 1fr)"
+                isMobile ? "1fr 1fr" :  "repeat(3, 1fr)"
               }
               width={isMobile ? "100%" : "100%"}
             >

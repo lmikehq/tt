@@ -78,7 +78,6 @@ const FooterIcons = [
   },
 ];
 
-
 const FooterSection = () => {
   const { isMobile } = useScreenResolution();
 
@@ -91,23 +90,22 @@ const FooterSection = () => {
     "Visa Showcase",
   ];
 
-
   return (
-    <FooterWrapper
-      style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}
-    >
+    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}>
       <NewsLetter />
       <SectionLayout margin="0 auto">
-        <Grid className="footerLayout"
+        <Grid
+          className="footerLayout"
           gap={isMobile ? "1.2rem" : "2.5rem"}
-          columns={isMobile ? "1fr 1fr" :  "repeat(5, 1fr)"}
+          columns={isMobile ? "1fr 1fr" : "repeat(5, 1fr)"}
           padding={isMobile ? "0px 0px 20px;" : "1rem"}
         >
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
             </Link>
-            <Grid className="footerIcons"
+            <Grid
+              className="footerIcons"
               columns="repeat(4, 1fr)"
               gap="1rem"
               width={isMobile ? "45%" : "70%"}
@@ -175,13 +173,18 @@ const FooterSection = () => {
           </div>
         </Grid>
         <Flex
+          className="footerBarcode"
           gap="1rem"
           align={isMobile ? "center" : "flex-end"}
           width="auto"
           styles={{
             visibility: isMobile ? "visible" : "hidden",
+            position: isMobile ? "absolute" : "relative",
+            bottom: isMobile ? "124px" : "0px",
+            right: isMobile ? "252px" : "0px",
           }}
         >
+          {/* position: absolute; bottom: 124px; right: 252px; */}
           <Image
             src={Barcode}
             alt="visa"

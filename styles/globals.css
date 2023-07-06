@@ -54,6 +54,14 @@ body {
 /* Media Queries Here */
 
 
+@media screen and (max-width: 768px) {
+  .footerBarcode {
+      position: absolute !important;
+      bottom: 124px !important;
+      right: 200px !important;
+    }
+}
+
 @media screen and (max-width: 425px) {
   .destinationCard {
       display: grid;
@@ -69,12 +77,18 @@ body {
       width: 40% !important;
       margin-bottom: 1rem !important;
     }
+
+    .contactCard{
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .footerBarcode{
+      position: relative !important;
+      bottom: 25px !important;
+      right: 0px !important;
+    }
 }
 
-@media screen and (max-width: 390px) {
-  .destinationCard {
-    display: grid;
-    grid-template-columns: 1fr !important;
-  }
-}
+
 
