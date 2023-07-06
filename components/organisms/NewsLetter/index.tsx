@@ -76,18 +76,18 @@ const Subcribe = styled.div`
 `;
 
 const NewsLetter = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   return (
     <SubscribeWrapper
       style={{
-        width: isMobile || isTablet ? "90%" : "85%",
-        left: isMobile || isTablet ? "5%" : "7.5%",
+        width: isMobile  ? "90%" : "85%",
+        left: isMobile  ? "5%" : "7.5%",
         padding: isMobile ? "1.1rem" : "2.5rem",
-        bottom: isMobile ? "91.5%" : isTablet ? "88%" : "90%",
+        bottom: isMobile ? "91.5%" :  "90%",
       }}
     >
-      <Flex justify="space-between" direction={isMobile || isTablet ? "column" : "row"}>
+      <Flex justify="space-between" direction={isMobile ? "column" : "row"}>
         <Subcribe className="newsLetter">
           <Text
             type="h3"
@@ -116,7 +116,7 @@ const NewsLetter = () => {
           gap="1rem"
           align="flex-end"
           width="auto"
-          styles={{ visibility: isMobile || isTablet ? "hidden" : "visible" }}
+          styles={{ visibility: isMobile ? "hidden" : "visible" }}
         >
           <Image
             src={Barcode}

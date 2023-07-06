@@ -271,7 +271,7 @@ const navigationLinks = [
 ];
 
 const ContactPage = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile} = useScreenResolution();
 
   const [selectedOption, setSelectedOption] = useState<{
     label: string;
@@ -301,7 +301,7 @@ const ContactPage = () => {
       />
       <Grid
         gap="3rem"
-        columns={isMobile || isTablet ? "100%" : "25% 75%"}
+        columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
         <ContactLink>
@@ -365,13 +365,9 @@ const ContactPage = () => {
             <Grid
               gap="2rem"
               columns={
-                isMobile
-                  ? "1fr"
-                  : isTablet
-                  ? "repeat(2, 1fr)"
-                  : "repeat(3, 1fr)"
+                isMobile ? "1fr" :  "repeat(3, 1fr)"
               }
-              width={isMobile || isTablet ? "100%" : "100%"}
+              width={isMobile ? "100%" : "100%"}
             >
               {ContactCardItems.map((item, index) => (
                 <Link key={index} href={item.link}>

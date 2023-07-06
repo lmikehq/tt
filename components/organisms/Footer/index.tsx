@@ -125,7 +125,7 @@ const FooterIcons = [
 // ]
 
 const FooterSection = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
   const useful_links = [
@@ -139,14 +139,14 @@ const FooterSection = () => {
 
   return (
     <FooterWrapper
-      style={{ paddingBottom: isMobile ? "1rem" : isTablet ? "1rem" : ".5rem" }}
+      style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}
     >
       <NewsLetter />
       <SectionLayout margin="0 auto">
         <Grid
           gap={isMobile ? "1.2rem" : "2.5rem"}
-          columns={isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(5, 1fr)"}
-          padding={isMobile || isTablet ? "3rem 0px 0px 20px;" : "1rem"}
+          columns={isMobile ? "1fr" :  "repeat(5, 1fr)"}
+          padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
         >
           <div className="footerLogo">
             <Link href="/">
@@ -155,7 +155,7 @@ const FooterSection = () => {
             <Grid
               columns="repeat(4, 1fr)"
               gap="1rem"
-              width={isMobile ? "55%" : isTablet ? "45%" : "70%"}
+              width={isMobile ? "55%" : "70%"}
               margin={"1rem 0rem 0rem 0rem"}
             >
               {FooterIcons.map((icon) => (
@@ -220,14 +220,11 @@ const FooterSection = () => {
           </div>
         </Grid>
         <Flex
-          gap={isTablet ? "0px" : "1rem"}
-          align={isMobile || isTablet ? "center" : "flex-end"}
+          gap="1rem"
+          align={isMobile ? "center" : "flex-end"}
           width="auto"
           styles={{
-            visibility: isMobile || isTablet ? "visible" : "hidden",
-            position: isMobile ? "relative" : isTablet ? "absolute" : "relative",
-            bottom: isMobile ? "0px" : isTablet ? "84px" : "0px",
-            right: isMobile ? "-16px" : isTablet ? "74px" : "0px",
+            visibility: isMobile ? "visible" : "hidden",
           }}
         >
           {/* bottom: 124px; right: 74px; */}
@@ -239,15 +236,15 @@ const FooterSection = () => {
               marginLeft: isMobile ? "0rem" : "7rem",
               marginTop: isMobile ? "20px" : "",
               marginBottom: isMobile ? ".8rem" : "1.2rem",
-              width: isMobile ? "60px" : isTablet ? "90px" : "110px",
-              height: isMobile ? "60px" : isTablet ? "90px" : "110px",
+              width: isMobile ? "60px" : "110px",
+              height: isMobile ? "60px" : "110px",
             }}
           />
           <Flex
             direction="column"
             gap={isMobile ? "0.2px" : "0.5px"}
             align="center"
-            padding={isTablet ? "0rem 0rem 0.9rem" : "0rem 0rem 1.5rem"}
+            padding="0rem 0rem 1.5rem"
             width={isMobile ? "6rem" : "10rem"}
             styles={{ marginTop: isMobile ? "24px" : "" }}
           >

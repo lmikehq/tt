@@ -13,8 +13,8 @@ export const useScreenResolution = () => {
 
   const setResolution = (screenWidth: number) => {
     setWidth(screenWidth);
-    setIsMobile(Boolean(screenWidth <= 600));
-    setIsTablet(Boolean(screenWidth <= 1000));
+    setIsMobile(Boolean(screenWidth <= 900));
+    setIsTablet(Boolean(screenWidth <= 1024));
   };
 
   useEffect(() => {
@@ -29,5 +29,5 @@ export const useScreenResolution = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { isMobile, isTablet, width };
+  return { isMobile, width };
 };
