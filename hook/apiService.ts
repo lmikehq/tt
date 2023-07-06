@@ -4,7 +4,7 @@ const globalAxios = axios.create({
 });
 
 const apiService = (url: string, method?: string, data?: any) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     globalAxios({
       url,
       method,
@@ -15,7 +15,7 @@ const apiService = (url: string, method?: string, data?: any) => {
       data,
     })
       .then((res) => resolve(res.data))
-      .catch((err) => reject(new Error(err)));
+      .catch((err) => resolve(err.response.data));
   });
 };
 

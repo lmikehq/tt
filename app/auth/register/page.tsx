@@ -4,9 +4,10 @@
 import Button from "@atom/button";
 import CheckBox from "@atom/checkbox";
 import Flex from "@atom/flex";
-import { TextField } from "@atom/input";
+import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
@@ -14,11 +15,10 @@ import Section from "@molecule/section";
 import apiService from "hook/apiService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
-import { useQuery } from "@tanstack/react-query";
 function RegisterPage() {
   const router = useRouter();
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [registerData, setRegisterData] = useState({
     firstName: "",
     lastName: "",
@@ -29,18 +29,74 @@ function RegisterPage() {
     referralCode: "",
     consent: false,
   });
-  async function handleRegister() {
-    const response = await apiService("/user", "POST" , registerData);
-    console.log("ressy", response);
-  }
-  const { data, isLoading } = useQuery(["register"], handleRegister, {
-    enabled: buttonClicked,
-    retry: false,
+  const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    error: [] as any,
+    success: false,
   });
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleRegister(): Promise<any> {
+    const response = await apiService("/user", "POST", registerData);
+    return response;
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("registerData", registerData);
-    setButtonClicked(true);
+    if (submissionState.loading) return;
+    setSubmissionState({
+      ...submissionState,
+      loading: true,
+    });
+    if (!registerData.consent) {
+      setSubmissionState({
+        ...submissionState,
+        loading: false,
+      });
+      return alert("Please agree to the terms and conditions");
+    }
+
+    if (registerData.password !== registerData.confirmPassword) {
+      setSubmissionState({
+        ...submissionState,
+        error: [
+          {
+            constraints: "Password and confirm password do not match",
+            property: "confirmPassword",
+          },
+          {
+            constraints: "Password and confirm password do not match",
+            property: "password",
+          },
+        ],
+        loading: false,
+      });
+      return;
+    }
+
+    const res = await handleRegister();
+    if (res.statusCode !== 201) {
+      setSubmissionState({
+        ...submissionState,
+        error: res.errors,
+        loading: false,
+      });
+    }
+    setSubmissionState({
+      ...submissionState,
+      loading: true,
+    });
+    toast.success("Your account has been created successfully!");
+    toast.loading("Redirecting to login page...", {
+      duration: 3000,
+    });
+    setTimeout(() => {
+      router.push("/auth/login");
+    }, 3000);
+  }
+  function checkIfFieldHasError(field: string) {
+    const error: { constraints: string } = submissionState?.error?.find(
+      (err: any) => err.property.includes(field)
+    );
+    if (error) return error.constraints;
   }
   return (
     <SectionLayout>
@@ -62,90 +118,178 @@ function RegisterPage() {
               text="Let’s get you all st up so you can access your personal account."
               size="17px"
             />
+
             <Flex
-              margin="3rem 0"
+              margin="1rem 0"
               direction="column"
               gap="2rem"
               overflow="unset"
             >
               <Flex gap="2rem" justify="space-between">
-                <TextField
-                  legend="First Name"
-
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      firstName: e.target.value,
-                    })
-                  }
-                  value={registerData.firstName}
-                />
-                <TextField
-                  legend="Last Name"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      lastName: e.target.value,
-                    })
-                  }
-                  value={registerData.lastName}
-                />
+                <Section>
+                  <Input
+                    placeholder="First Name"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        firstName: e.target.value,
+                      })
+                    }
+                    value={registerData.firstName}
+                    border={
+                      checkIfFieldHasError("firstName")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                  />
+                  {checkIfFieldHasError("firstName") && (
+                    <Text
+                      type="p"
+                      text={checkIfFieldHasError("firstName") || ""}
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
+                <Section>
+                  <Input
+                    placeholder="Last Name"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        lastName: e.target.value,
+                      })
+                    }
+                    value={registerData.lastName}
+                    border={
+                      checkIfFieldHasError("lastName")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                  />
+                  {checkIfFieldHasError("firstName") && (
+                    <Text
+                      type="p"
+                      text={checkIfFieldHasError("firstName") || ""}
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
               </Flex>
               <Flex gap="2rem" justify="space-between">
-                <TextField
-                  legend="Email"
-                  type="email"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      email: e.target.value,
-                    })
-                  }
-                  value={registerData.email}
-                />
-                <TextField
-                  legend="Phone Number"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      email: e.target.value,
-                    })
-                  }
-                  value={registerData.email}
-                />
+                <Section>
+                  <Input
+                    placeholder="Email"
+                    type="email"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        email: e.target.value,
+                      })
+                    }
+                    value={registerData.email}
+                    border={
+                      checkIfFieldHasError("email") ? "1px solid #FF8682" : ""
+                    }
+                    height="3rem"
+                  />
+                  {checkIfFieldHasError("email") && (
+                    <Text
+                      type="p"
+                      text={checkIfFieldHasError("email") || ""}
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
+                <Section>
+                  <Input
+                    placeholder="Phone Number"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        phoneNumber: e.target.value,
+                      })
+                    }
+                    border={
+                      checkIfFieldHasError("phoneNumber")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                    value={registerData.phoneNumber}
+                  />
+                  {checkIfFieldHasError("phoneNumber") && (
+                    <Text
+                      type="p"
+                      text={checkIfFieldHasError("phoneNumber") || ""}
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
               </Flex>
-              <TextField
-                legend="Password"
-                type="password"
-                onChange={(e) =>
-                  setRegisterData({
-                    ...registerData,
-                    password: e.target.value,
-                  })
-                }
-                value={registerData.password}
-              />
-              <TextField
-                type="password"
-                legend="Confirm Password"
-                onChange={(e) =>
-                  setRegisterData({
-                    ...registerData,
-                    confirmPassword: e.target.value,
-                  })
-                }
-                value={registerData.confirmPassword}
-              />
-              <TextField
-                legend="Referral Code"
+              <Section>
+                <Input
+                  placeholder="Password"
+                  type="password"
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      password: e.target.value,
+                    })
+                  }
+                  border={
+                    checkIfFieldHasError("password") ? "1px solid #FF8682" : ""
+                  }
+                  height="3rem"
+                  value={registerData.password}
+                />
+                {checkIfFieldHasError("password") && (
+                  <Text
+                    type="p"
+                    text={checkIfFieldHasError("password") || ""}
+                    color="#FF8682"
+                  />
+                )}
+              </Section>
+              <Section>
+                <Input
+                  type="password"
+                  placeholder="Confirm Password"
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  border={
+                    checkIfFieldHasError("confirmPassword")
+                      ? "1px solid #FF8682"
+                      : ""
+                  }
+                  height="3rem"
+                  value={registerData.confirmPassword}
+                />
+                {checkIfFieldHasError("confirmPassword") && (
+                  <Text
+                    type="p"
+                    text={checkIfFieldHasError("confirmPassword") || ""}
+                    color="#FF8682"
+                  />
+                )}
+              </Section>
+              <Input
+                placeholder="Referral Code"
                 onChange={(e) =>
                   setRegisterData({
                     ...registerData,
                     referralCode: e.target.value,
                   })
                 }
+                height="3rem"
                 value={registerData.referralCode}
               />
+
               <Flex align="center" justify="space-between">
                 <Flex align="center">
                   <CheckBox
@@ -155,6 +299,7 @@ function RegisterPage() {
                         consent: x.target.checked,
                       })
                     }
+                    checked={registerData.consent}
                   >
                     <Text
                       type="p"
@@ -163,17 +308,30 @@ function RegisterPage() {
                   </CheckBox>
                 </Flex>
               </Flex>
+
+              {/* <div style={{ margin: "-1rem 0" }}>
+                {submissionState.error.length > 0 &&
+                  submissionState.error.map((err, i) => (
+                    <Text type="p" text={err} color="#FF8682" size="17px" key={i} />
+                  ))}
+              </div> */}
               <Button
                 width="100%"
-                background={ttColors.primary}
+                background={
+                  submissionState.loading ? "#87ceeb36" : ttColors.primary
+                }
                 onClick={handleSubmit}
               >
-                <Text
-                  type="p"
-                  text="Create account"
-                  color={ttColors.dark}
-                  size="20px"
-                />
+                {submissionState.loading ? (
+                  <Spinner size="40px" fill={ttColors.primary} />
+                ) : (
+                  <Text
+                    type="p"
+                    text="Create account"
+                    color={ttColors.dark}
+                    size="20px"
+                  />
+                )}
               </Button>
               <p style={{ textAlign: "center", fontSize: "16px" }}>
                 Already have an account?{" "}
