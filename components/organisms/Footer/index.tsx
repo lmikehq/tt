@@ -143,19 +143,19 @@ const FooterSection = () => {
     >
       <NewsLetter />
       <SectionLayout margin="0 auto">
-        <Grid
+        <Grid className="footerLayout"
           gap={isMobile ? "1.2rem" : "2.5rem"}
-          columns={isMobile ? "1fr" :  "repeat(5, 1fr)"}
-          padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
+          columns={isMobile ? "1fr 1fr" :  "repeat(5, 1fr)"}
+          padding={isMobile ? "0px 0px 20px;" : "1rem"}
         >
           <div className="footerLogo">
             <Link href="/">
               <Image src={TTLogo} height="50" alt="logo" />
             </Link>
-            <Grid
+            <Grid className="footerIcons"
               columns="repeat(4, 1fr)"
               gap="1rem"
-              width={isMobile ? "55%" : "70%"}
+              width={isMobile ? "45%" : "70%"}
               margin={"1rem 0rem 0rem 0rem"}
             >
               {FooterIcons.map((icon) => (
@@ -245,8 +245,8 @@ const FooterSection = () => {
             gap={isMobile ? "0.2px" : "0.5px"}
             align="center"
             padding="0rem 0rem 1.5rem"
-            width={isMobile ? "6rem" : "10rem"}
-            styles={{ marginTop: isMobile ? "24px" : "" }}
+            width={isMobile ? "4rem" : "10rem"}
+            styles={{ marginTop: isMobile ? "30px" : "" }}
           >
             <Image
               src={AppLogo}

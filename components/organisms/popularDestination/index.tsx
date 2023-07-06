@@ -145,7 +145,7 @@ const PopularDestinations = ({
           buttonText="See more countries"
           href="/visa/countries"
         />
-        <Grid
+        <Grid className="destinationCard"
           columns={isMobile ? "1fr 1fr" :  "repeat(3, 1fr)"}
           gap="16px"
         >

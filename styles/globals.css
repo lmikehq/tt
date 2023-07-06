@@ -50,3 +50,31 @@ body {
   animation: spin 1s linear infinite;
   /* animation-duration: 2ms; */
 }
+
+/* Media Queries Here */
+
+
+@media screen and (max-width: 425px) {
+  .destinationCard {
+      display: grid;
+      grid-template-columns: 1fr !important;
+    }
+
+    .footerLayout {
+      display: grid;
+      grid-template-columns: 1fr !important;
+    }
+
+    .footerIcons {
+      width: 40% !important;
+      margin-bottom: 1rem !important;
+    }
+}
+
+@media screen and (max-width: 390px) {
+  .destinationCard {
+    display: grid;
+    grid-template-columns: 1fr !important;
+  }
+}
+
