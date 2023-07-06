@@ -108,7 +108,7 @@ const FooterSection = () => {
               className="footerIcons"
               columns="repeat(4, 1fr)"
               gap="1rem"
-              width={isMobile ? "30%" : "70%"}
+              width="fit-content"
               margin={"1rem 0rem 0rem 0rem"}
             >
               {FooterIcons.map((icon) => (

@@ -73,11 +73,6 @@ body {
       grid-template-columns: 1fr !important;
     }
 
-    .footerIcons {
-      width: 20% !important;
-      margin-bottom: 1rem !important;
-    }
-
     .contactCard{
       display: grid !important;
       grid-template-columns: 1fr !important;
