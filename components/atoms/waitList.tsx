@@ -78,7 +78,7 @@ const RightWrapper = styled.div`
     height: 100%;
   }
 
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 425px) {
     height: fit-content;
   }
 
@@ -156,18 +156,18 @@ const MenuIcon = styled.svg`
   display: none;
   cursor: pointer;
 
-  @media screen and (width: 768px) {
+  @media screen and (max-width: 900px) {
     position: absolute;
-    left: 691px !important;
+    right: -220px !important;
     display: block;
     top: 20px;
   }
 
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 425px) {
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 310px !important;
+    left: 370px !important;
     top: 25px !important;
     display: block;
   }
@@ -200,10 +200,10 @@ const WaitList = () => {
                   columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
                   gap={isMobile ? "3rem" : "0px"}
                   align="center"
-                  justify="flex-start"
-                  width="0px"
+                  justify="right"
+                  width="100%"
                   textAlign="center"
-                  style={{ placeContent: "center" }}
+                  style={{ placeContent: "center"}}
                 >
                   <Link
                     href=""
@@ -416,10 +416,13 @@ const WaitList = () => {
                 columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
                 gap={isMobile ? "3rem" : "0px"}
                 align="center"
-                justify="flex-start"
-                width="0px"
+                justify="right"
+                width="100%"
                 textAlign="center"
-                style={{ placeContent: "center" }}
+                style={{
+                  placeContent: "center",
+                  
+                }}
               >
                 <Link
                   href=""

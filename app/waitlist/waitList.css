@@ -45,14 +45,14 @@ body {
 
 
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .nav-elements.active {
             width: 270px;
         background-color: #ffffff;
         z-index: 999;
         }
 }
-@media (max-width: 600px) {
+@media (max-width: 425px) {
     .menu-icon {
         display: block;
         cursor: pointer;

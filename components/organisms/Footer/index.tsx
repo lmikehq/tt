@@ -78,58 +78,13 @@ const FooterIcons = [
   },
 ];
 
-// tiktok, google, email, chatbots
-
-// const FooterLinks = [
-//   {
-//     id: 1,
-//     title: "Top Countries",
-//     links: [
-//       {
-//         id: 1,
-//         text: "Canada",
-//         url: 'https://wwww.canada.com/'
-//       },
-
-//       {
-//         id: 2,
-//         text: "New Zealand",
-//         url: 'https://wwww.newzealand.com/'
-//       },
-
-//       {
-//         id: 3,
-//         text: "United Kingdom",
-//         url: 'https://wwww.unitedkingdom.com/'
-//       },
-
-//       {
-//         id: 4,
-//         text: "Norway",
-//         url: 'https://wwww.norway.com/'
-//       }
-//     ]
-//   },
-
-//   {
-//     id: 2,
-//     title: "Partner With Us",
-//     links: [
-//       {
-//         id: 1,
-//         text: "Partnership Programs",
-//         url: 'https://wwww.partnership.com/'
-//       },
-//     ]
-//   }
-// ]
 
 const FooterSection = () => {
   const { isMobile } = useScreenResolution();
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
   const useful_links = [
-    "Wait list",
+    "Waitlist",
     "Travel guide",
     "FAQs",
     "Reviews",
@@ -227,8 +182,6 @@ const FooterSection = () => {
             visibility: isMobile ? "visible" : "hidden",
           }}
         >
-          {/* bottom: 124px; right: 74px; */}
-          {/* position: absolute; bottom: 103px; right: 50px; */}
           <Image
             src={Barcode}
             alt="visa"
@@ -266,7 +219,6 @@ const FooterSection = () => {
             />
           </Flex>
         </Flex>
-        {/* <Text text="All Right Reserved, @ Thrillers Travel" type="p" /> */}
       </SectionLayout>
     </FooterWrapper>
   );
