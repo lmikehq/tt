@@ -50,7 +50,7 @@ export interface InputProps {
   onBlur?: () => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
-  type?: "text" | "number" | "file" | "textArea";
+  type?: "text" | "number" | "file" | "textArea" | "password" | "email";
   value?: string;
   name?: string;
   id?: string;
@@ -156,10 +156,12 @@ export const TextField = ({
   legend,
   border,
   width,
+  type
 }: InputProps) => {
   return (
     <StyledMuiTextField
       required
+      type={type || "text"}
       // onBlur={onBlur}
       defaultValue={placeholder}
       // onPaste={onPaste}

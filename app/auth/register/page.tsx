@@ -94,6 +94,7 @@ function RegisterPage() {
               <Flex gap="2rem" justify="space-between">
                 <TextField
                   legend="Email"
+                  type="email"
                   onChange={(e) =>
                     setRegisterData({
                       ...registerData,
@@ -115,6 +116,7 @@ function RegisterPage() {
               </Flex>
               <TextField
                 legend="Password"
+                type="password"
                 onChange={(e) =>
                   setRegisterData({
                     ...registerData,
@@ -124,6 +126,7 @@ function RegisterPage() {
                 value={registerData.password}
               />
               <TextField
+                type="password"
                 legend="Confirm Password"
                 onChange={(e) =>
                   setRegisterData({
