@@ -30,7 +30,7 @@ interface flexProps {
   height?: string;
   cursor?: string;
   ref?: any;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
 }
 
 const FlexWrapper = styled.div`
@@ -56,9 +56,9 @@ export const Flex: React.FC<flexProps> = ({
   borderBottom,
   alignSelf,
   cursor,
-  onClick,
   ref,
   styles,
+  onClick,
 }) => {
   return (
     <FlexWrapper

@@ -29,3 +29,8 @@ export interface IFee {
   amount: number | string;
   type?: string;
 }
+
+export interface User {
+  id: number;
+  [key: string]: any;
+}
