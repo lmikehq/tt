@@ -4,11 +4,14 @@ import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import RTQueryClient from "@components/layouts/rtqWrapper";
 import NavbarLayout from "@components/layouts/sectionLayout";
 import Logo from "@image/brand/favicon.svg";
 import MobileLogo from "@image/brand/tt_blue_logo_with_text.png";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -20,10 +23,8 @@ import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
+import UserPopover from "./UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
-import apiService from "hook/apiService";
-import { useQuery } from "@tanstack/react-query";
-import RTQueryClient from "@components/layouts/rtqWrapper";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -87,12 +88,12 @@ const Navbar = ({ page }: { page: string }) => {
   if (isMobile)
     return (
       <RTQueryClient>
-        <MobileNavbar page={page} pathArray={pathArray} />;
+        <MobileNavbar page={page} pathArray={pathArray} />
       </RTQueryClient>
-    );
+    )
   return (
     <RTQueryClient>
-      <DesktopNavbar page={page} pathArray={pathArray} />;
+      <DesktopNavbar page={page} pathArray={pathArray} />
     </RTQueryClient>
   );
 };
@@ -146,9 +147,20 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   async function getUser() {
     return apiService("/user", "GET");
   }
-  const { data, error } = useQuery(["getUser"], getUser);
+  const { data: user, error } = useQuery(["getUser"], getUser);
 
-  console.log("user", data, error);
+  // const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  // const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+
+  // const handleClosePop = () => {
+  //   setAnchorEl(null);
+  // };
+  // const open = Boolean(anchorEl);
+  // const id = open ? "simple-popover" : undefined;
+  console.log("user", user, error);
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -209,26 +221,36 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               open={modalOpen}
               handleClose={() => setModalOpen(!modalOpen)}
             />
-            <Link href="/auth/login">
-              <Text
-                text="Login"
-                type="p"
-                whiteSpace="nowrap"
-                size={16}
-                weight={400}
-              />
-            </Link>
-            <Link href="/auth/register">
-              <Button>
-                <Text
-                  text="Sign Up"
-                  type="p"
-                  whiteSpace="nowrap"
-                  weight={400}
-                  color="#fff"
-                />
-              </Button>
-            </Link>
+            {user ? (
+              <>
+                <UserPopover />
+
+              </>
+            ) : (
+              <>
+                {" "}
+                <Link href="/auth/login">
+                  <Text
+                    text="Login"
+                    type="p"
+                    whiteSpace="nowrap"
+                    size={16}
+                    weight={400}
+                  />
+                </Link>
+                <Link href="/auth/register">
+                  <Button>
+                    <Text
+                      text="Sign Up"
+                      type="p"
+                      whiteSpace="nowrap"
+                      weight={400}
+                      color="#fff"
+                    />
+                  </Button>
+                </Link>
+              </>
+            )}
           </NavMenu>
         </Grid>
       </NavbarLayout>
