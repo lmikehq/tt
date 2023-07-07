@@ -21,7 +21,9 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import MobileNavigationDrawer from "./modals/mobileNav";
-
+import apiService from "hook/apiService";
+import { useQuery } from "@tanstack/react-query";
+import RTQueryClient from "@components/layouts/rtqWrapper";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -82,8 +84,17 @@ const Navbar = ({ page }: { page: string }) => {
   let path = usePathname();
   let pathArray = path.split("/")[1];
   const { isMobile } = useScreenResolution();
-  if (isMobile) return <MobileNavbar page={page} pathArray={pathArray} />;
-  return <DesktopNavbar page={page} pathArray={pathArray} />;
+  if (isMobile)
+    return (
+      <RTQueryClient>
+        <MobileNavbar page={page} pathArray={pathArray} />;
+      </RTQueryClient>
+    );
+  return (
+    <RTQueryClient>
+      <DesktopNavbar page={page} pathArray={pathArray} />;
+    </RTQueryClient>
+  );
 };
 
 const MobileNavbar = ({ page, pathArray }: navbarProps) => {
@@ -132,6 +143,12 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
+  async function getUser() {
+    return apiService("/user", "GET");
+  }
+  const { data, error } = useQuery(["getUser"], getUser);
+
+  console.log("user", data, error);
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>

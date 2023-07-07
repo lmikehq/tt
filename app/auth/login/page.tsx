@@ -140,8 +140,15 @@ function LoginPage() {
                   setLoginData({ ...loginData, password: e.target.value })
                 }
               />
+              {checkIfFieldHasError("email") && (
+                <Text
+                  type="p"
+                  text={"Invalid email or password"}
+                  color="#FF8682"
+                  margin={"0.5rem 0 0"}
+                />
+              )}
             </Section>
-
             <Flex align="center" justify="space-between">
               <Flex align="center">
                 <CheckBox
@@ -180,7 +187,7 @@ function LoginPage() {
               )}
             </Button>
             <p style={{ textAlign: "center", fontSize: "16px" }}>
-              Do not have an account?
+              Do not have an account? &nbsp;
               <Link href="/auth/register" text="Sign up" color="#FF8682" />
             </p>
             <Flex

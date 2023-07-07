@@ -80,7 +80,6 @@ function RegisterPage() {
         error: res.errors,
         loading: false,
       });
-      return;
     }
     setSubmissionState({
       ...submissionState,
@@ -219,6 +218,7 @@ function RegisterPage() {
                         : ""
                     }
                     height="3rem"
+                    type="tel"
                     value={registerData.phoneNumber}
                   />
                   {checkIfFieldHasError("phoneNumber") && (
