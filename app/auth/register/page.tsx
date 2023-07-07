@@ -11,6 +11,7 @@ import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
+import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import apiService from "hook/apiService";
 import { useRouter } from "next/navigation";
@@ -86,12 +87,12 @@ function RegisterPage() {
       loading: true,
     });
     toast.success("Your account has been created successfully!");
+    await sleep(3000);
     toast.loading("Redirecting to login page...", {
       duration: 3000,
     });
-    setTimeout(() => {
-      router.push("/auth/login");
-    }, 3000);
+    await sleep(500);
+    router.push("/auth/login");
   }
   function checkIfFieldHasError(field: string) {
     const error: { constraints: string } = submissionState?.error?.find(

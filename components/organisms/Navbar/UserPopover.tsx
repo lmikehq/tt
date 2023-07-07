@@ -69,11 +69,13 @@
 import Flex from "@atom/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import sleep from "@lib/sleep";
 import { urlString } from "@lib/url";
 import apiService from "hook/apiService";
 import { useDetectOutsideClick } from "hook/useDetectOutsideClick";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { IoIosArrowDown } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
 
@@ -82,10 +84,16 @@ const CustomPopover = () => {
   const router = useRouter();
   async function handleLogout() {
     const res = await apiService("/auth/logout", "POST");
+    toast.success("You have been logged out!");
+    await sleep(3000);
+    toast.loading("Redirecting to login page...", {
+        duration: 3000,
+    });
+    await sleep(500);
     router.push("/auth/login");
   }
   const ref = useRef(null);
-  useDetectOutsideClick(ref, ()=>setIsVisible(false))
+  useDetectOutsideClick(ref, () => setIsVisible(false));
   return (
     <>
       <Flex align="center" gap="1rem">

@@ -14,6 +14,7 @@ import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
 import google from "@image/google.svg";
+import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
 import apiService from "hook/apiService";
@@ -85,19 +86,25 @@ function LoginPage() {
       loading: true,
     });
     toast.success("You have successfully logged in!");
+    await sleep(3000);
     toast.loading("Redirecting to your dashboard...", {
       duration: 3000,
     });
-    setTimeout(() => {
-      router.push("dashboard");
-    }, 3000);
+    await sleep(2000);
+    router.push("dashboard");
   }
 
   return (
     <SectionLayout>
       <Flex margin="4rem 0">
         <Section>
-          <img src={logo.src} alt="logo" height="60px" />
+          <img
+            src={logo.src}
+            alt="logo"
+            height="60px"
+            onClick={() => router.push("/")}
+            style={{ cursor: "pointer" }}
+          />
           <Text
             type="h1"
             margin="2rem 0 1rem"

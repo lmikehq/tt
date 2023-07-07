@@ -25,6 +25,7 @@ import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import UserPopover from "./UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
+import { User } from "types";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -144,23 +145,11 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
-  async function getUser() {
-    return apiService("/user", "GET");
+  async function getUser(): Promise<User |  any> {
+    const res =  apiService("/user", "GET");
+    return res;
   }
   const { data: user, error } = useQuery(["getUser"], getUser);
-
-  // const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  // const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleClosePop = () => {
-  //   setAnchorEl(null);
-  // };
-  // const open = Boolean(anchorEl);
-  // const id = open ? "simple-popover" : undefined;
-  console.log("user", user, error);
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -221,10 +210,9 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               open={modalOpen}
               handleClose={() => setModalOpen(!modalOpen)}
             />
-            {user ? (
+            {user?.firstName ? (
               <>
                 <UserPopover />
-
               </>
             ) : (
               <>
