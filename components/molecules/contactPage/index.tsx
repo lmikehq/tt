@@ -135,32 +135,7 @@ const HelpTool = styled.div`
 const HelpHeader = styled.div`
   text-align: center;
   position: relative;
-`;
-
-const LeftSpan = styled.span`
-  height: 2px;
-  width: 3%;
-  background: #19013b;
-  position: absolute;
-  top: 13px;
-  left: 310px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
-const RightSpan = styled.span`
-  height: 2px;
-  width: 3%;
-  background: #19013b;
-  position: absolute;
-  top: 13px;
-  right: 310px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
+`; 
 
 const HelpPara = styled.p`
   text-align: center;
@@ -347,13 +322,11 @@ const ContactPage = () => {
 
           <HelpTool>
             <HelpHeader>
-              <LeftSpan></LeftSpan>
               <Text
                 type="h2"
                 text="use self help tools"
                 transform="capitalize"
               />
-              <RightSpan></RightSpan>
             </HelpHeader>
             <HelpPara>
               <Text
