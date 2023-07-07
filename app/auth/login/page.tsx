@@ -15,11 +15,14 @@ import logo from "@image/brand/tt_blue_logo_with_text.png";
 import google from "@image/google.svg";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
+import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
 function LoginPage() {
   const router = useRouter();
+  const { isMobile } = useScreenResolution();
+
   return (
     <SectionLayout>
       <Flex margin="4rem 0">
@@ -38,7 +41,7 @@ function LoginPage() {
           />
           <Flex
             margin="3rem 0"
-            width="85%"
+            width={isMobile ? "100%" : "85%"}
             direction="column"
             gap="2rem"
             overflow="unset"
@@ -76,7 +79,7 @@ function LoginPage() {
             <Flex
               justify="space-between"
               align="center"
-              width="90%"
+              width={isMobile ? "100%" : "90%"}
               margin="2rem 0 1rem"
             >
               <Divider sx={{ width: "33%", color: "#112211" }} />
@@ -97,7 +100,7 @@ function LoginPage() {
             </Button>
           </Flex>
         </Section>
-        <Section>
+        <Section styles={{ display: isMobile ? "none" : "block" }}>
           <img src={bgImage.src} alt="background image" width="100%" />
         </Section>
       </Flex>
