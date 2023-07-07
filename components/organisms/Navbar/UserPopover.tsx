@@ -141,10 +141,9 @@ const CustomPopover = () => {
                 "Logout",
               ].map((item, i) =>
                 item === "Logout" ? (
-                  <div onClick={handleLogout}>
+                  <div onClick={handleLogout} key={i}>
                     <Text
                       text={item}
-                      key={i}
                       type="p"
                       whiteSpace="nowrap"
                       size={16}
@@ -154,10 +153,9 @@ const CustomPopover = () => {
                     />
                   </div>
                 ) : (
-                  <Link href={urlString(item)}>
+                  <Link href={urlString(item)} key={i}>
                     <Text
                       text={item}
-                      key={i}
                       type="p"
                       whiteSpace="nowrap"
                       size={16}
