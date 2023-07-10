@@ -12,7 +12,6 @@ import CountryLayout from "@layout/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "@molecule/sectionTitle";
 import { RiLineHeight } from "react-icons/ri";
-import Link from "./link";
 import { useRouter } from "next/navigation";
 
 interface Country {
@@ -31,28 +30,15 @@ const CountryWrapper = styled.section`
   margin-top: 5rem;
   margin-bottom: 10rem;
 
-  @media screen and (max-width: 900px) {
+  @media (max-width: 900px) {
     margin-top: 3.5rem;
   }
 `;
 
 const LeftSide = styled.div`
   height: 415px;
-  @media screen and (max-width: 900px) {
+  @media (max-width: 900px) {
     height: 460px;
-  }
-  @media screen and (max-width: 375px) {
-    width: 350px;
-
-    & h3 {
-      width: 300px !important;
-      font-size: 26px !important;
-    }
-
-    & p {
-      font-size: 13px !important;
-      line-height: 16px !important;
-    }
   }
 `;
 
@@ -61,20 +47,9 @@ const RightSide = styled.div`
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
   height: 415px;
-
-  @media screen and (max-width: 900px) {
-    height: 525px;
+  @media (max-width: 900px) {
+    height: 460px;
   }
-
-  @media screen and (max-width: 768px){
-    height: 445px;
-  }
-
-  @media screen and (max-width: 425px){
-    height: 320px;
-  }
-
-  
 `;
 
 const StyledImage = styled(Image)<{ active: boolean }>`
@@ -83,10 +58,6 @@ const StyledImage = styled(Image)<{ active: boolean }>`
   opacity: ${({ active }) => (active ? 0.7 : 1)};
   cursor: pointer;
   border-radius: 1.4rem;
-
-  @media screen and (max-width: 900) {
-    border-radius: 1rem;
-  }
 `;
 
 const CountryInfo = styled.div`
@@ -137,12 +108,12 @@ const CountryDescription = styled.p`
 const IntervalTag = styled.div`
   position: absolute;
   top: 10px;
-  right: 0px;
+  right: 10px;
   background-color: #fff;
   padding: 5px 10px;
   font-weight: bold;
   height: 65px;
-  width: fit-content;
+  width: 81px;
   margin: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -244,7 +215,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "Canada is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: Canada,
-      interval: "150 days",
+      interval: "3 days",
     },
     {
       id: 2,
@@ -254,7 +225,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "New Zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: newZealand,
-      interval: "100 days",
+      interval: "3 days",
     },
     {
       id: 3,
@@ -264,7 +235,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "United Kingdom is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: Uk,
-      interval: "120 days",
+      interval: "3 days",
     },
     {
       id: 4,
@@ -274,19 +245,21 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "Norway is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
       image: Norway,
-      interval: "190 days",
+      interval: "3 days",
     },
   ];
 
   const router = useRouter();
 
   return (
-    <CountryWrapper style={{ marginBottom: isMobile ? "3rem" : "10rem" }}>
+    <CountryWrapper
+      style={{ marginBottom: isMobile ? "3rem" : "10rem" }}
+    >
       <CountryLayout>
         <SectionTitle
           title="Our top countries"
           description="Going somewhere to celebrate this season? Whether you’re going home or somewhere to roam, we’ve got the travel tools to get you to your destination."
-          buttonText={isMobile ? "" : "See all"}
+          buttonText="See all"
         />
         {isMobile ? (
           <>
@@ -323,7 +296,7 @@ const TopCountriesSection: React.FC = () => {
                   <CountryInfo>
                     <IntervalTag>
                       <IntervalText>E-visa</IntervalText>
-                      <IntervalDays>{countries[activeImage - 1].interval}</IntervalDays>
+                      <IntervalDays>3 days</IntervalDays>
                     </IntervalTag>
                     <CountryName>
                       Get {countries[activeImage - 1].name} E-visa
@@ -331,8 +304,12 @@ const TopCountriesSection: React.FC = () => {
                     <CountryDescription
                       style={{
                         marginTop: isMobile ? "9px" : "50px",
-                        fontSize: isMobile ? "14px" : "1rem",
-                        lineHeight: isMobile ? "18px" : "14px",
+                        fontSize: isMobile
+                          ? "14px"
+                          : "1rem",
+                        lineHeight: isMobile
+                          ? "18px"
+                          : "14px",
                       }}
                     >
                       {countries[activeImage - 1].description1}
@@ -340,18 +317,7 @@ const TopCountriesSection: React.FC = () => {
                       <br />
                       {countries[activeImage - 1].description2}
                     </CountryDescription>
-
-                    <Button
-                      onClick={() =>
-                        router.push(
-                          `/visa/apply?destination=${
-                            countries[activeImage - 1].name
-                          }`
-                        )
-                      }
-                    >
-                      Apply to {countries[activeImage - 1].name}
-                    </Button>
+                    <Button>Apply to {countries[activeImage - 1].name}</Button>
                   </CountryInfo>
                 )}
               </LeftSide>

@@ -3,19 +3,25 @@
 import { FormControlLabel, Checkbox as MUIChecky } from "@mui/material";
 import React from "react";
 
-function CheckBox({ children }: { children: React.ReactNode }) {
-  const [checked, setChecked] = React.useState(true);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
+function CheckBox({
+  children,
+  onChange,
+  checked,
+}: {
+  children: React.ReactNode;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  checked: boolean;
+}) {
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setChecked(event.target.checked);
+  // };
   return (
     <div>
       <FormControlLabel
         control={
           <MUIChecky
             checked={checked}
-            onChange={handleChange}
+            onChange={onChange}
             inputProps={{ "aria-label": "controlled" }}
           />
         }

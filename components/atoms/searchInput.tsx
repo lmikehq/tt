@@ -76,6 +76,7 @@ interface SearchProps {
   legend?: string;
   children?: React.ReactNode;
   placeholder?: string;
+  height?: string;
   options: any[];
   value?: any;
 
@@ -87,6 +88,7 @@ export default function SearchInput({
   options,
   legend,
   value,
+  height,
   onChange,
 }: // anchorEl,
 // setAnchorEl,
@@ -136,7 +138,7 @@ SearchProps) {
               fontSize: "16px!important",
             },
             "& input": {
-              height: "18px",
+              height: height || "8px",
             },
           }}
           onClick={handleClick}
@@ -232,6 +234,7 @@ export function SearchInputAsString({
   legend,
   value,
   onChange,
+  height,
 }: SearchProps) {
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -282,7 +285,7 @@ export function SearchInputAsString({
               fontSize: "16px!important",
             },
             "& input": {
-              height: "18px",
+              height: height || "8px",
             },
           }}
           onClick={handleClick}

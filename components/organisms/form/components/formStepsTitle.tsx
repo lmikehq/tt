@@ -11,11 +11,12 @@ function FormStepTitle({ steps, index }: { steps: string[]; index: number }) {
         text={steps[0]}
         size="18px"
         color={index > 0 ? "#3BB98E" : "#000000"}
+        weight={500}
       />
       {steps.length > 1 && (
         <>
           {index === 1 ? <HiOutlineArrowNarrowRight /> : "..."}
-          <Text type="p" text={steps[index]} size="18px" />
+          <Text type="p" text={steps[index]} size="18px" weight={500} />
         </>
       )}
     </Flex>

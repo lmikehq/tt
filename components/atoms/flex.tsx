@@ -57,7 +57,6 @@ export const Flex: React.FC<flexProps> = ({
   borderBottom,
   alignSelf,
   cursor,
-  onClick,
   ref,
   styles,
   className,

@@ -1,23 +1,22 @@
-import { DatePicker } from "@atom/datepicker";
+import Flex from "@atom/flex";
 import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import dayjs from "dayjs";
 import { FormikValues } from "formik";
-import FormStepTitle from "./formStepsTitle";
-import Flex from "@atom/flex";
-import { IoIosArrowDown } from "react-icons/io";
-import { AiOutlineCheck } from "react-icons/ai";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { AiOutlineCheck } from "react-icons/ai";
+import { IoIosArrowDown } from "react-icons/io";
+import FormStepTitle from "./formStepsTitle";
 
 interface formProps {
   formik: FormikValues;
   steps: string[];
   index: number;
+  setFee: (n: number) => void;
 }
 
-function TripDetails({ formik, steps, index }: formProps) {
+function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
 
   return (
@@ -50,7 +49,6 @@ function TripDetails({ formik, steps, index }: formProps) {
             </Flex>
           </SearchInput>
         </Section>
-
         <Section margin="0 0 1rem">
           <Text type="p" text="Where to?" margin="1rem 0 " />
           <SearchInput
@@ -77,7 +75,6 @@ function TripDetails({ formik, steps, index }: formProps) {
             </Flex>
           </SearchInput>
         </Section>
-
         <Section margin="0 0 1rem">
           <Text type="p" text="Application type" margin="1rem 0 " />
           <SearchInputAsString
@@ -100,6 +97,33 @@ function TripDetails({ formik, steps, index }: formProps) {
             </Flex>
           </SearchInputAsString>
         </Section>
+        {formik?.values?.applicationType === "Family" && (
+          <Section margin="0 0 1rem">
+            <Text type="p" text="Number of Travellers" margin="1rem 0 " />
+            <SearchInputAsString
+              options={Array.from({ length: 6 }, (_, i) => 1 + i)}
+              onChange={(x) => {
+                setFee(x  > 1 ? 30000 : 20000);
+                formik.setFieldValue("numberOfTravellers", x);
+              }}
+            >
+              <Flex justify="space-between">
+                <Text
+                  type="p"
+                  text={formik?.values?.numberOfTravellers}
+                  color="#1C1B1F"
+                  weight={100}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.numberOfTravellers ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
+            </SearchInputAsString>
+          </Section>
+        )}
         <Section margin="0 0 1rem">
           <Text type="p" text="Traveling by" margin="1rem 0 " />
           <SearchInputAsString

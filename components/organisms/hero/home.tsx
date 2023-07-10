@@ -39,7 +39,6 @@ function HeroSection() {
               transform="uppercase"
               size={isMobile ? "2.3rem" : "3.5rem"}
               weight={900}
-              margin={"1rem 0"}
             />
             <Text
               type="p"

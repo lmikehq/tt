@@ -56,6 +56,7 @@ function Visa() {
           legend="Home Country"
           value={home}
           onChange={(x: CountryType) => setHome(x)}
+          height="14px"
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -76,6 +77,7 @@ function Visa() {
           legend="Destination"
           value={destination}
           onChange={(value: LabelType) => setDestination(value)}
+          height="14px"
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -92,6 +94,7 @@ function Visa() {
           legend="Visa Type"
           value={type}
           onChange={(value: string) => setType(value)}
+          height="14px"
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />

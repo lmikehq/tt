@@ -4,11 +4,14 @@ import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import RTQueryClient from "@components/layouts/rtqWrapper";
 import NavbarLayout from "@components/layouts/sectionLayout";
 import Logo from "@image/brand/favicon.svg";
 import MobileLogo from "@image/brand/tt_blue_logo_with_text.png";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -20,8 +23,9 @@ import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
+import UserPopover from "./UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
-
+import { User } from "types";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -82,8 +86,17 @@ const Navbar = ({ page }: { page: string }) => {
   let path = usePathname();
   let pathArray = path.split("/")[1];
   const { isMobile } = useScreenResolution();
-  if (isMobile) return <MobileNavbar page={page} pathArray={pathArray} />;
-  return <DesktopNavbar page={page} pathArray={pathArray} />;
+  if (isMobile)
+    return (
+      <RTQueryClient>
+        <MobileNavbar page={page} pathArray={pathArray} />
+      </RTQueryClient>
+    )
+  return (
+    <RTQueryClient>
+      <DesktopNavbar page={page} pathArray={pathArray} />
+    </RTQueryClient>
+  );
 };
 
 const MobileNavbar = ({ page, pathArray }: navbarProps) => {
@@ -132,6 +145,11 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleOpen = () => setModalOpen(true);
+  async function getUser(): Promise<User |  any> {
+    const res =  apiService("/user", "GET");
+    return res;
+  }
+  const { data: user, error } = useQuery(["getUser"], getUser);
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -192,26 +210,35 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               open={modalOpen}
               handleClose={() => setModalOpen(!modalOpen)}
             />
-            <Link href="/auth/login">
-              <Text
-                text="Login"
-                type="p"
-                whiteSpace="nowrap"
-                size={16}
-                weight={400}
-              />
-            </Link>
-            <Link href="/auth/register">
-              <Button>
-                <Text
-                  text="Sign Up"
-                  type="p"
-                  whiteSpace="nowrap"
-                  weight={400}
-                  color="#fff"
-                />
-              </Button>
-            </Link>
+            {user?.firstName ? (
+              <>
+                <UserPopover />
+              </>
+            ) : (
+              <>
+                {" "}
+                <Link href="/auth/login">
+                  <Text
+                    text="Login"
+                    type="p"
+                    whiteSpace="nowrap"
+                    size={16}
+                    weight={400}
+                  />
+                </Link>
+                <Link href="/auth/register">
+                  <Button>
+                    <Text
+                      text="Sign Up"
+                      type="p"
+                      whiteSpace="nowrap"
+                      weight={400}
+                      color="#fff"
+                    />
+                  </Button>
+                </Link>
+              </>
+            )}
           </NavMenu>
         </Grid>
       </NavbarLayout>

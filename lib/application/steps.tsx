@@ -17,7 +17,10 @@ interface IFormStep {
   // formikConfig?: any
 }
 
-export const getSteps = (formikConfig: any): IFormStep[] => {
+export const getSteps = (
+  formikConfig: any,
+  setFormFee: (n: number) => void
+): IFormStep[] => {
   return [
     {
       id: 1,
@@ -27,6 +30,7 @@ export const getSteps = (formikConfig: any): IFormStep[] => {
           steps={["Your Trip Details"]}
           formik={formikConfig}
           index={0}
+          setFee={setFormFee}
         />
       ),
     },
