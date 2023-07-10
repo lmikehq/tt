@@ -13,8 +13,8 @@ export const useScreenResolution = () => {
 
   const setResolution = (screenWidth: number) => {
     setWidth(screenWidth);
-    setIsMobile(Boolean(screenWidth <= 600));
-    setIsTablet(Boolean(screenWidth <= 1000));
+    setIsMobile(Boolean(screenWidth <= 900));
+    setIsTablet(Boolean(screenWidth <= 1024));
   };
 
   useEffect(() => {
