@@ -14,11 +14,14 @@ import logo from "@image/brand/tt_blue_logo_with_text.png";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import apiService from "hook/apiService";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
 function RegisterPage() {
+  const { isMobile } = useScreenResolution();
+
   const router = useRouter();
   const [registerData, setRegisterData] = useState({
     firstName: "",
@@ -104,7 +107,7 @@ function RegisterPage() {
     <SectionLayout>
       <form onSubmit={handleSubmit}>
         <Flex margin="4rem 0" gap="3rem" align="stretch">
-          <Section>
+          <Section styles={{ display: isMobile ? "none" : "block" }}>
             <img src={bgImage.src} alt="background image" width="100%" />
           </Section>
           <Section>
@@ -127,7 +130,11 @@ function RegisterPage() {
               gap="2rem"
               overflow="unset"
             >
-              <Flex gap="2rem" justify="space-between">
+              <Flex
+                gap="2rem"
+                justify="space-between"
+                direction={isMobile ? "column" : "row"}
+              >
                 <Section>
                   <Input
                     placeholder="First Name"
@@ -153,6 +160,7 @@ function RegisterPage() {
                     />
                   )}
                 </Section>
+
                 <Section>
                   <Input
                     placeholder="Last Name"
@@ -179,7 +187,11 @@ function RegisterPage() {
                   )}
                 </Section>
               </Flex>
-              <Flex gap="2rem" justify="space-between">
+              <Flex
+                gap="2rem"
+                justify="space-between"
+                direction={isMobile ? "column" : "row"}
+              >
                 <Section>
                   <Input
                     placeholder="Email"

@@ -30,8 +30,7 @@ interface flexProps {
   height?: string;
   cursor?: string;
   ref?: any;
-  onClick?: () => void;
-  className?: string;
+  onClick?: (e: any) => void;
 }
 
 const FlexWrapper = styled.div`
@@ -59,13 +58,12 @@ export const Flex: React.FC<flexProps> = ({
   cursor,
   ref,
   styles,
-  className,
+  onClick,
 }) => {
   return (
     <FlexWrapper
       ref={ref}
       id={id}
-      className={className}
       style={{
         margin: margin,
         display: "flex",
