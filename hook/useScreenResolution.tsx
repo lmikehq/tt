@@ -29,5 +29,5 @@ export const useScreenResolution = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { isMobile, isTablet, width };
+  return { isMobile, width };
 };

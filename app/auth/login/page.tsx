@@ -102,10 +102,10 @@ function LoginPage() {
     <SectionLayout>
       <Flex margin="4rem 0">
         <Section>
-          <img
+          <Image
             src={logo.src}
             alt="logo"
-            height="60px"
+            height={60}
             onClick={() => router.push("/")}
             style={{ cursor: "pointer" }}
           />
@@ -226,7 +226,7 @@ function LoginPage() {
           </Flex>
         </Section>
         <Section styles={{ display: isMobile ? "none" : "block" }}>
-          <img src={bgImage.src} alt="background image" width="100%" />
+          <Image src={bgImage.src} alt="background image" width="100%" />
         </Section>
       </Flex>
     </SectionLayout>
