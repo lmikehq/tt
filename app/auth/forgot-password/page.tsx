@@ -72,14 +72,14 @@ function LoginPage() {
               </Button>
 
               <Flex justify="space-between" align="center" width="90%">
-                <Divider sx={{ width: "33%", color: "#112211" }} />
+                <Divider sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }} />
                 <Text
                   type="p"
                   text="Or login with"
                   margin="0 1rem"
                   color="#112211"
                 />
-                <Divider sx={{ width: "33%", color: "#112211" }} />
+                <Divider sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }} />
               </Flex>
               <Button
                 background="transparent"
