@@ -3,7 +3,6 @@ import "@style/globals.css";
 import { Siteconfig } from "config/site";
 import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-
 const poppins = Poppins({
   weight: "100",
   style: ["normal"],
@@ -26,14 +25,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en" suppressHydrationWarning className={poppins.className}>
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <Toaster />
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <Toaster position="bottom-right" />
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );

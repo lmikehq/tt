@@ -75,7 +75,13 @@ const RightWrapper = styled.div`
 
   @media screen and (max-width: 900px) {
     padding: 1rem;
+    height: 100%;
   }
+
+  @media screen and (max-width: 600px) {
+    height: fit-content;
+  }
+
 `;
 
 const NavLink = styled.div`
@@ -107,7 +113,7 @@ const NavLink = styled.div`
 `;
 
 const RightSideContent = styled.div`
-  margin-top: 5rem;
+  margin-top: 2rem;
 
   & h3 {
     font-size: 1.2rem;
@@ -150,20 +156,23 @@ const MenuIcon = styled.svg`
   display: none;
   cursor: pointer;
 
-  @media screen and (width: 768px) {
+  @media screen and (max-width: 900px) {
     position: absolute;
-    left: 320px !important;
-    left: 705px !important;
+    right: -220px ;
     display: block;
+    top: 20px;
   }
 
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 600px) {
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 320px !important;
-    top: 19px !important;
+    left: 370px ;
+    top: 25px ;
     display: block;
+  }
+  @media screen and (max-width: 375px) {
+    left: 330px;
   }
 `;
 
@@ -194,10 +203,10 @@ const WaitList = () => {
                   columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
                   gap={isMobile ? "3rem" : "0px"}
                   align="center"
-                  justify="flex-start"
-                  width="0px"
+                  justify="right"
+                  width="100%"
                   textAlign="center"
-                  style={{ placeContent: "center" }}
+                  style={{ placeContent: "center"}}
                 >
                   <Link
                     href=""
@@ -342,7 +351,7 @@ const WaitList = () => {
                   </Box>
                 </Flex>
 
-                <FormGroup sx={{ m: 3, width: "85%" }}>
+                <FormGroup sx={{ width: "100%", margin: "1.5rem 0rem" }}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label="Yes, I agreed to receive the personalised contents and update from thrillers​"
@@ -410,10 +419,13 @@ const WaitList = () => {
                 columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
                 gap={isMobile ? "3rem" : "0px"}
                 align="center"
-                justify="flex-start"
-                width="0px"
+                justify="right"
+                width="100%"
                 textAlign="center"
-                style={{ placeContent: "center" }}
+                style={{
+                  placeContent: "center",
+                  
+                }}
               >
                 <Link
                   href=""
@@ -523,7 +535,10 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="Whatsapp number" label="Whatsapp number" />
+                      <TextField
+                        placeholder="Whatsapp number"
+                        label="Whatsapp number"
+                      />
                       <Autocomplete
                         disablePortal
                         id="combo-box-demo"
@@ -553,7 +568,7 @@ const WaitList = () => {
                   </Box>
                 </Flex>
 
-                <FormGroup sx={{ m: 3, width: "85%" }}>
+                <FormGroup sx={{ width: "100%", marginTop: "1.5rem 0rem" }}>
                   <FormControlLabel
                     control={<Checkbox />}
                     label="Yes, i would like to receive emails and news from Thrilers Travels."

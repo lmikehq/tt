@@ -35,9 +35,10 @@ import { useState } from "react";
 import CustomerCare from "../../../assets/images/customerservice.png";
 import { Grid } from "@atom/grid";
 import ApplicationIcon from "../../../assets/images/customerCare/order-delivery.png";
+// import ApplicationIcon from "../../../assets/images/customerCare/application.png";
 import OrderStatus from "../../../assets/images/customerCare/resume.png";
 import User from "../../../assets/images/customerCare/user.png";
-import Support from "../../../assets/images/customerCare/technical-support.png";
+// import Support from "../../../assets/images/customerCare/technical-support.png";
 import { Divider } from "@atom/divider";
 
 const ContactSection = styled.div`
@@ -173,7 +174,7 @@ const HelpPara = styled.p`
   @media screen and (max-width: 900px) {
     padding: 1rem 3rem;
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 600px) {
     padding: 1rem;
   }
 `;
@@ -188,16 +189,16 @@ const CustomerCareImg = styled.div`
     width: 144px;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     position: relative;
-    left: -4px;
+    left: 5px;
     bottom: -8px;
 
     & img {
       display: block;
     }
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 768px) {
     & img {
       display: none;
     }
@@ -271,7 +272,7 @@ const navigationLinks = [
 ];
 
 const ContactPage = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile} = useScreenResolution();
 
   const [selectedOption, setSelectedOption] = useState<{
     label: string;
@@ -347,13 +348,11 @@ const ContactPage = () => {
 
           <HelpTool>
             <HelpHeader>
-              <LeftSpan></LeftSpan>
               <Text
                 type="h2"
                 text="use self help tools"
                 transform="capitalize"
               />
-              <RightSpan></RightSpan>
             </HelpHeader>
             <HelpPara>
               <Text
@@ -363,15 +362,12 @@ const ContactPage = () => {
             </HelpPara>
 
             <Grid
+              className="contactCard"
               gap="2rem"
               columns={
-                isMobile
-                  ? "1fr"
-                  : isTablet
-                  ? "repeat(2, 1fr)"
-                  : "repeat(3, 1fr)"
+                isMobile ? "1fr 1fr" :  "repeat(3, 1fr)"
               }
-              width={isMobile ? "45% !important" : "100%"}
+              width={isMobile ? "100%" : "100%"}
             >
               {ContactCardItems.map((item, index) => (
                 <Link key={index} href={item.link}>

@@ -79,12 +79,12 @@ const NewsLetter = () => {
   const { isMobile } = useScreenResolution();
 
   return (
-    <SubscribeWrapper
+    <SubscribeWrapper className="newsLetter"
       style={{
-        width: isMobile ? "90%" : "85%",
-        left: isMobile ? "5%" : "7.5%",
+        width: isMobile  ? "90%" : "85%",
+        left: isMobile  ? "5%" : "7.5%",
         padding: isMobile ? "1.1rem" : "2.5rem",
-        bottom: isMobile ? "95%" : "90%",
+        bottom: isMobile ? "95%" :  "90%",
       }}
     >
       <Flex justify="space-between" direction={isMobile ? "column" : "row"}>
