@@ -102,13 +102,14 @@ function LoginPage() {
     <SectionLayout>
       <Flex margin="4rem 0">
         <Section>
-          <Image
+          <img
             src={logo.src}
             alt="logo"
             height={60}
             onClick={() => router.push("/")}
             style={{ cursor: "pointer" }}
           />
+          
           <Text
             type="h1"
             margin="2rem 0 1rem"
@@ -221,12 +222,12 @@ function LoginPage() {
               border={`1px solid ${ttColors.primary}`}
               width="100%"
             >
-              <Image src={google.src} alt="google" height="30" width={30} />
+              <img src={google.src} alt="google" height="30" width={30} />
             </Button>
           </Flex>
         </Section>
         <Section styles={{ display: isMobile ? "none" : "block" }}>
-          <Image src={bgImage.src} alt="background image" width="100%" />
+          <img src={bgImage.src} alt="background image" width="100%" />
         </Section>
       </Flex>
     </SectionLayout>

@@ -50,3 +50,44 @@ body {
   animation: spin 1s linear infinite;
   /* animation-duration: 2ms; */
 }
+
+/* Media Queries Here */
+
+
+@media screen and (max-width: 768px) {
+  .footerBarcode {
+      position: absolute !important;
+      bottom: 124px !important;
+      right: 200px !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+  .destinationCard {
+      display: grid;
+      grid-template-columns: 1fr !important;
+    }
+
+    .footerLayout {
+      display: grid;
+      grid-template-columns: 1fr !important;
+    }
+
+    .contactCard{
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+    }
+
+    .footerBarcode{
+      position: relative !important;
+      bottom: 25px !important;
+      right: 0px !important;
+    }
+}
+
+@media screen and (max-width: 375px) {
+  .newsLetter{
+    bottom: 98.5% !important;
+  }
+}
+

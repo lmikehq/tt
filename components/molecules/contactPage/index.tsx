@@ -135,32 +135,7 @@ const HelpTool = styled.div`
 const HelpHeader = styled.div`
   text-align: center;
   position: relative;
-`;
-
-const LeftSpan = styled.span`
-  height: 2px;
-  width: 3%;
-  background: #19013b;
-  position: absolute;
-  top: 13px;
-  left: 310px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
-const RightSpan = styled.span`
-  height: 2px;
-  width: 3%;
-  background: #19013b;
-  position: absolute;
-  top: 13px;
-  right: 310px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
+`; 
 
 const HelpPara = styled.p`
   text-align: center;
@@ -173,7 +148,7 @@ const HelpPara = styled.p`
   @media screen and (max-width: 900px) {
     padding: 1rem 3rem;
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 600px) {
     padding: 1rem;
   }
 `;
@@ -188,16 +163,16 @@ const CustomerCareImg = styled.div`
     width: 144px;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     position: relative;
-    left: 22px;
-    bottom: 0px;
+    left: 5px;
+    bottom: -8px;
 
     & img {
       display: block;
     }
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 768px) {
     & img {
       display: none;
     }
@@ -347,13 +322,11 @@ const ContactPage = () => {
 
           <HelpTool>
             <HelpHeader>
-              <LeftSpan></LeftSpan>
               <Text
                 type="h2"
                 text="use self help tools"
                 transform="capitalize"
               />
-              <RightSpan></RightSpan>
             </HelpHeader>
             <HelpPara>
               <Text
@@ -363,9 +336,16 @@ const ContactPage = () => {
             </HelpPara>
 
             <Grid
+              className="contactCard"
               gap="2rem"
-              columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
-              width={isMobile ? "100%" : "100%"}
+              columns={
+                isMobile
+                  ? "1fr"
+                 
+                 
+                  : "repeat(3, 1fr)"
+              }
+              width="100%"
             >
               {ContactCardItems.map((item, index) => (
                 <Link key={index} href={item.link}>
