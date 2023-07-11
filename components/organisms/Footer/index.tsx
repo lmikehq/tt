@@ -105,8 +105,6 @@ const FooterSection = () => {
     { href: "/", text: "Blog", color: "#06062A" },
   ];
 
-  
-
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}>
       <NewsLetter />
