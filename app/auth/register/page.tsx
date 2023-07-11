@@ -127,11 +127,11 @@ function RegisterPage() {
             <Flex
               margin="1rem 0"
               direction="column"
-              gap="2rem"
+              gap={isMobile ? "1rem" : "2rem"}
               overflow="unset"
             >
               <Flex
-                gap="2rem"
+                gap={isMobile ? "1rem" : "2rem"}
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -187,7 +187,7 @@ function RegisterPage() {
                 </Section>
               </Flex>
               <Flex
-                gap="2rem"
+                gap={isMobile ? "1rem" : "2rem"}
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -318,6 +318,8 @@ function RegisterPage() {
                     <Text
                       type="p"
                       text="I agree to all the Terms and Privacy Policies"
+                      color="#1C1B1F"
+                      size={isMobile ? "15px" : "16px"}
                     />
                   </CheckBox>
                 </Flex>

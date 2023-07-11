@@ -109,7 +109,7 @@ function LoginPage() {
             onClick={() => router.push("/")}
             style={{ cursor: "pointer" }}
           />
-          
+
           <Text
             type="h1"
             margin="2rem 0 1rem"
@@ -125,7 +125,7 @@ function LoginPage() {
             margin="3rem 0"
             width={isMobile ? "100%" : "85%"}
             direction="column"
-            gap="2rem"
+            gap={isMobile ? "1rem" : "2rem"}
             overflow="unset"
           >
             <Section>
@@ -208,14 +208,18 @@ function LoginPage() {
               width={isMobile ? "100%" : "90%"}
               margin="2rem 0 1rem"
             >
-              <Divider sx={{ width: "33%", color: "#112211" }} />
+              <Divider
+                sx={{ width: isMobile ? "30%" : "33%", color: "#112211" }}
+              />
               <Text
                 type="p"
                 text="Or login with"
                 margin="0 1rem"
                 color="#112211"
               />
-              <Divider sx={{ width: "33%", color: "#112211" }} />
+              <Divider
+                sx={{ width: isMobile ? "30%" : "33%", color: "#112211" }}
+              />
             </Flex>
             <Button
               background="transparent"
