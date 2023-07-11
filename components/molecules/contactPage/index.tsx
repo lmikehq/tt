@@ -256,7 +256,7 @@ const ContactPage = () => {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { width: "50%", marginTop: "3rem" },
+        "& .MuiTextField-root": { width: "50%", marginTop: isMobile ? "1rem" : "3rem" },
       }}
       noValidate
       autoComplete="off"
@@ -275,7 +275,7 @@ const ContactPage = () => {
         styles={{ fontFamily: "Poppins" }}
       />
       <Grid
-        gap="3rem"
+        gap={isMobile ? "1rem" : "3rem"}
         columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
@@ -338,13 +338,7 @@ const ContactPage = () => {
             <Grid
               className="contactCard"
               gap="2rem"
-              columns={
-                isMobile
-                  ? "1fr"
-                 
-                 
-                  : "repeat(3, 1fr)"
-              }
+              columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
               width="100%"
             >
               {ContactCardItems.map((item, index) => (
@@ -397,7 +391,11 @@ const ContactPage = () => {
                   display: `{isMobile ? "block" : "grid"}`,
                 }}
               >
-                <Flex direction="column" gap="3rem" width="100%">
+                <Flex
+                  direction="column"
+                  gap={isMobile ? "1rem" : "2rem"}
+                  width="100%"
+                >
                   <Box
                     component="form"
                     sx={{
@@ -420,7 +418,7 @@ const ContactPage = () => {
                       "& > div": {
                         display: isMobile ? "grid" : "flex",
 
-                        gap: isMobile ? "3rem" : "1rem",
+                        gap: "1rem",
                       },
                     }}
                     noValidate
