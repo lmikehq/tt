@@ -20,6 +20,7 @@ import Germany from "@image/popularDestination/germany.png";
 import React from "react";
 import SectionTitle from "@molecule/sectionTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { useRouter } from "next/navigation";
 
 const DestinationWrapper = styled.div`
   // margin: 5rem 0;
@@ -32,7 +33,7 @@ const Card = styled.div`
   gap: 16px;
   margin-bottom: 1rem;
 
-  width: 370px;
+  width: 100%;
   height: 115px;
   color: var(--secondary-color);
   /* Neutrals */
@@ -68,13 +69,15 @@ const PopularDestinations = ({
   title = "Popular Destinations",
 }: {
   title?: string;
-}) => {
+  }) => {
+  
   const destinationCard = [
     {
       id: 1,
       image: Canada,
       title: "Toronto, Canada",
       description: "Visa . Employment . Apply",
+      name: "Canada",
     },
 
     {
@@ -82,6 +85,7 @@ const PopularDestinations = ({
       image: NewZealand,
       title: "Auckland, New Zealand",
       description: "Visa . Employment . Apply",
+      name: "New Zealand",
     },
 
     {
@@ -89,6 +93,7 @@ const PopularDestinations = ({
       image: Norway,
       title: "Oslo, Norway",
       description: "Visa . Employment . Apply",
+      name: "Norway",
     },
 
     {
@@ -96,6 +101,7 @@ const PopularDestinations = ({
       image: Uk,
       title: "London, United Kingdom",
       description: "Visa . Employment . Apply",
+      name: "United Kingdom",
     },
 
     {
@@ -103,6 +109,7 @@ const PopularDestinations = ({
       image: Us,
       title: "New York, United States",
       description: "Visa . Employment . Apply",
+      name: "United States",
     },
 
     {
@@ -110,6 +117,7 @@ const PopularDestinations = ({
       image: Switzerland,
       title: "Zurich, Switzerland",
       description: "Visa . Employment . Apply",
+      name: "Switzerland",
     },
 
     {
@@ -117,6 +125,7 @@ const PopularDestinations = ({
       image: Australia,
       title: "Sydney, Australia",
       description: "Visa . Employment . Apply",
+      name: "Australia",
     },
 
     {
@@ -124,6 +133,7 @@ const PopularDestinations = ({
       image: Singapore,
       title: "Singapore, Singapore",
       description: "Visa . Employment . Apply",
+      name: "Singapore",
     },
 
     {
@@ -131,19 +141,13 @@ const PopularDestinations = ({
       image: Germany,
       title: "Berlin, Germany",
       description: "Visa . Employment . Apply",
+      name: "Germany",
     },
   ];
 
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
-  
-// const filteredDestinations = { isMobile, isTablet }
-//   ? destinationCard.slice(0, 4)
-//   : destinationCard;
-
-  // const filteredDestinations = isTablet ? destinationCard.slice(0, 4) : destinationCard
-
-
+  const router = useRouter();
 
   return (
     <DestinationWrapper>
@@ -151,17 +155,21 @@ const PopularDestinations = ({
         <SectionTitle
           title={title}
           description="Explore our popular destinations to find the best option for your next adventure!"
-          buttonText="See more countries"
+          buttonText={isMobile ? "" : "See more countries"}
           href="/visa/countries"
         />
         <Grid
-          columns={isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(3, 1fr)"}
+          className="destinationCard"
+          columns={isMobile ? "1fr 1fr" : "repeat(3, 1fr)"}
           gap="16px"
         >
           {destinationCard
-            .slice(0, isMobile || isTablet ? 4 : undefined)
+            .slice(0, isMobile ? 4 : undefined)
             .map((destination) => (
-              <Link key={destination.id} href="/visa/apply">
+              <Link
+                key={destination.id}
+                href={`/visa/apply?destination=${destination.name}`}
+              >
                 <Card>
                   <Flex justify="space-between" gap="1rem">
                     <Image src={destination.image} alt="" />
@@ -186,6 +194,12 @@ const PopularDestinations = ({
               </Link>
             ))}
         </Grid>
+        <SectionTitle
+          title=""
+          description=""
+          buttonText={isMobile ? "See more countries" : ""}
+          href="/visa/countries"
+        />
       </DestinationLayout>
     </DestinationWrapper>
   );

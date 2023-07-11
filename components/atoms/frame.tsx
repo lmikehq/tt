@@ -62,10 +62,13 @@ const FrameInfo = styled.div`
       font-size: 16px;
       line-height: 20px;
       text-align: center;
-      // width: 389px;
       height: 40px;
       margin: 0 auto;
       margin-bottom: 1rem;
+
+      @media screen and (max-width: 600px){
+        width: 85%;
+      }
     }
 
     & button {
@@ -121,7 +124,7 @@ const serviceCard = [
 
 
 const Frame: React.FC = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   const router = useRouter();
 
   const applyButton = () => {
@@ -142,7 +145,7 @@ const Frame: React.FC = () => {
                   zIndex="1"
                   background="var(--primary-color)"
                   padding="1rem 1.3rem"
-                  styles={{ width: isMobile ? "50%" : isTablet ? "46%" : "27%" }}
+                  styles={{ width: "fit-content" }}
                   color="var(--secondary-color)"
                   onClick={applyButton}
                 >

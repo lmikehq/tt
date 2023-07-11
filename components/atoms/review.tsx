@@ -20,11 +20,13 @@ const Card = styled.div`
   height: 310px;
   margin-bottom: 2rem;
 
-  /* Neutrals */
-
   background: var(--default-color);
   box-shadow: 2px 4px 16px rgba(17, 34, 17, 0.1);
   border-radius: 20px;
+
+  @media screen and (max-width: 900px) {
+    padding: 0px;
+  }
 `;
 const CardHeader = styled.div`
   font-style: normal;
@@ -71,7 +73,7 @@ const CardFooter = styled.div`
 `;
 
 const Review = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile} = useScreenResolution();
 
   const reviewCard = [
     {
@@ -142,9 +144,10 @@ const Review = () => {
         <SectionTitle
           title="Reviews"
           description="What people says about Golobe facilities."
-          buttonText="See all"
+          buttonText={isMobile ? "" : "See all"}
+          href=""
         />
-        <Grid columns={isMobile ? "1fr" : isTablet ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
+        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
           {reviewCardToShow.map((review, index) => (
             <React.Fragment key={review.id}>
               <Card
@@ -172,6 +175,12 @@ const Review = () => {
             </React.Fragment>
           ))}
         </Grid>
+        <SectionTitle
+          title=""
+          description=""
+          buttonText={isMobile ? "See all review" : ""}
+          href=""
+        />
       </ReviewLayout>
     </ReviewWrapper>
   );

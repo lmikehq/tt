@@ -18,12 +18,16 @@ import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
 import apiService from "hook/apiService";
-import Image from "next/image";
+import { useScreenResolution } from "hook/useScreenResolution";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
+
 function LoginPage() {
+  const { isMobile } = useScreenResolution();
+
   const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -101,7 +105,7 @@ function LoginPage() {
           <img
             src={logo.src}
             alt="logo"
-            height="60px"
+            height={60}
             onClick={() => router.push("/")}
             style={{ cursor: "pointer" }}
           />
@@ -118,7 +122,7 @@ function LoginPage() {
           />
           <Flex
             margin="3rem 0"
-            width="85%"
+            width={isMobile ? "100%" : "85%"}
             direction="column"
             gap="2rem"
             overflow="unset"
@@ -200,7 +204,7 @@ function LoginPage() {
             <Flex
               justify="space-between"
               align="center"
-              width="90%"
+              width={isMobile ? "100%" : "90%"}
               margin="2rem 0 1rem"
             >
               <Divider sx={{ width: "33%", color: "#112211" }} />
@@ -217,11 +221,11 @@ function LoginPage() {
               border={`1px solid ${ttColors.primary}`}
               width="100%"
             >
-              <Image src={google.src} alt="google" height="30" width={30} />
+              <img src={google.src} alt="google" height="30" width={30} />
             </Button>
           </Flex>
         </Section>
-        <Section>
+        <Section styles={{ display: isMobile ? "none" : "block" }}>
           <img src={bgImage.src} alt="background image" width="100%" />
         </Section>
       </Flex>
