@@ -306,9 +306,13 @@ const TopCountriesSection: React.FC = () => {
                         marginTop: isMobile ? "9px" : "50px",
                         fontSize: isMobile
                           ? "14px"
+                          
+                          
                           : "1rem",
                         lineHeight: isMobile
                           ? "18px"
+                          
+                          
                           : "14px",
                       }}
                     >

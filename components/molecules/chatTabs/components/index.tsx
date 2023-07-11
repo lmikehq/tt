@@ -116,7 +116,7 @@ const SearchArea = styled.div`
 
   & input {
     border: none !important;
-    width: 95%;
+    width: 95% !important;
   }
 `;
 
@@ -248,6 +248,8 @@ const Chat = () => {
               placeholder="Search"
               onChange={(e) => setSearchCriteria(e.target.value)}
               value={searchCriteria}
+              width="95%"
+              height="20px"
             />
             <BsSearch
               onClick={(_x) => filterChatItems(searchCriteria)}

@@ -39,7 +39,7 @@ function ChangePassword() {
             <Flex
               margin="3rem 0"
               direction="column"
-              gap="2rem"
+              gap={isMobile ? "1rem" : "2rem"}
               overflow="unset"
             >
               <TextField

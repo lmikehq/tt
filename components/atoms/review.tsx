@@ -73,7 +73,7 @@ const CardFooter = styled.div`
 `;
 
 const Review = () => {
-  const { isMobile} = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   const reviewCard = [
     {

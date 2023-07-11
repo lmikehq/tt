@@ -145,7 +145,7 @@ const Frame: React.FC = () => {
                   zIndex="1"
                   background="var(--primary-color)"
                   padding="1rem 1.3rem"
-                  styles={{ width: "fit-content" }}
+                  styles={{ width: isMobile ? "50%" : "27%" }}
                   color="var(--secondary-color)"
                   onClick={applyButton}
                 >

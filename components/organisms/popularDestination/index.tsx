@@ -147,6 +147,9 @@ const PopularDestinations = ({
 
   const { isMobile } = useScreenResolution();
 
+  
+
+
   const router = useRouter();
 
   return (
@@ -159,8 +162,7 @@ const PopularDestinations = ({
           href="/visa/countries"
         />
         <Grid
-          className="destinationCard"
-          columns={isMobile ? "1fr 1fr" : "repeat(3, 1fr)"}
+          columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
           gap="16px"
         >
           {destinationCard
