@@ -15,88 +15,16 @@ import bgImage from "@image/auth-bg.png";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
 import google from "@image/google.svg";
 import sleep from "@lib/sleep";
-import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
 import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
-
 function LoginPage() {
-  const { isMobile } = useScreenResolution();
-
   const router = useRouter();
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
-  });
-
-  useEffect(() => {
-    console.log("loginData: ", loginData);
-    if (submissionState.error.length > 0) {
-      setSubmissionState({
-        ...submissionState,
-        error: [],
-      });
-    }
-  }, [loginData, loginData]);
-
-  const [submissionState, setSubmissionState] = useState({
-    loading: false,
-    error: [] as any,
-    success: false,
-  });
-
-  function checkIfFieldHasError(field: string) {
-    const error: { constraints: string } = submissionState?.error?.find(
-      (err: any) => err.property.includes(field)
-    );
-    if (error) return error.constraints;
-  }
-
-  async function handleLogin(): Promise<any> {
-    return await apiService("/auth/login", "POST", loginData);
-  }
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (submissionState.loading) return;
-    setSubmissionState({ ...submissionState, loading: true });
-    const res = await handleLogin();
-    if (res.statusCode === 401) {
-      console.log("entered: ", res);
-      setSubmissionState({
-        ...submissionState,
-        error: [
-          {
-            constraints: "Invalid email or password",
-            property: "email",
-          },
-          {
-            constraints: "Invalid email or password",
-            property: "password",
-          },
-        ],
-        loading: false,
-      });
-      return;
-    }
-    setSubmissionState({
-      ...submissionState,
-      loading: true,
-    });
-    toast.success("You have successfully logged in!");
-    await sleep(3000);
-    toast.loading("Redirecting to your dashboard...", {
-      duration: 3000,
-    });
-    await sleep(2000);
-    router.push("dashboard");
-  }
-
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -190,7 +118,7 @@ function LoginPage() {
           />
           <Flex
             margin="3rem 0"
-            width={isMobile ? "100%" : "85%"}
+            width="85%"
             direction="column"
             gap="2rem"
             overflow="unset"
@@ -272,7 +200,7 @@ function LoginPage() {
             <Flex
               justify="space-between"
               align="center"
-              width={isMobile ? "100%" : "90%"}
+              width="90%"
               margin="2rem 0 1rem"
             >
               <Divider sx={{ width: "33%", color: "#112211" }} />
@@ -293,7 +221,7 @@ function LoginPage() {
             </Button>
           </Flex>
         </Section>
-        <Section styles={{ display: isMobile ? "none" : "block" }}>
+        <Section>
           <img src={bgImage.src} alt="background image" width="100%" />
         </Section>
       </Flex>
