@@ -106,25 +106,16 @@ const FooterSection = () => {
   ];
 
   return (
-<<<<<<< HEAD
     <FooterWrapper
       style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}
     >
-=======
-    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}>
->>>>>>> cf01467dd9a4a9922f15264b5d3b5b30b52eef03
       <NewsLetter />
       <SectionLayout margin="0 auto">
         <Grid
           className="footerLayout"
           gap={isMobile ? "1.2rem" : "2.5rem"}
-<<<<<<< HEAD
           columns={isMobile ? "1fr" : "repeat(5, 1fr)"}
           padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
-=======
-          columns={isMobile ? "1fr 1fr" : "repeat(5, 1fr)"}
-          padding={isMobile ? "0px 0px 20px;" : "1rem"}
->>>>>>> cf01467dd9a4a9922f15264b5d3b5b30b52eef03
         >
           <div className="footerLogo">
             <Link href="/">
@@ -134,11 +125,7 @@ const FooterSection = () => {
               className="footerIcons"
               columns="repeat(4, 1fr)"
               gap="1rem"
-<<<<<<< HEAD
               width={isMobile ? "55%" : "70%"}
-=======
-              width="fit-content"
->>>>>>> cf01467dd9a4a9922f15264b5d3b5b30b52eef03
               margin={"1rem 0rem 0rem 0rem"}
             >
               {FooterIcons.map((icon) => (
@@ -215,7 +202,6 @@ const FooterSection = () => {
           </div>
         </Grid>
         <Flex
-<<<<<<< HEAD
           gap="1rem"          align={isMobile ? "center" : "flex-end"}
           width="auto"
           styles={{
@@ -223,17 +209,6 @@ const FooterSection = () => {
             position: "relative",
             bottom: "0px",
             right: isMobile ? "-16px" : "0px",
-=======
-          className="footerBarcode"
-          gap="1rem"
-          align={isMobile ? "center" : "flex-end"}
-          width="auto"
-          styles={{
-            visibility: isMobile ? "visible" : "hidden",
-            position: isMobile ? "absolute" : "relative",
-            bottom: isMobile ? "124px" : "0px",
-            right: isMobile ? "252px" : "0px",
->>>>>>> cf01467dd9a4a9922f15264b5d3b5b30b52eef03
           }}
         >
           {/* position: absolute; bottom: 124px; right: 252px; */}
@@ -253,13 +228,8 @@ const FooterSection = () => {
             gap={isMobile ? "0.2px" : "0.5px"}
             align="center"
             padding="0rem 0rem 1.5rem"
-<<<<<<< HEAD
             width={isMobile ? "6rem" : "10rem"}
             styles={{ marginTop: isMobile ? "24px" : "" }}
-=======
-            width={isMobile ? "4rem" : "10rem"}
-            styles={{ marginTop: isMobile ? "30px" : "" }}
->>>>>>> cf01467dd9a4a9922f15264b5d3b5b30b52eef03
           >
             <Image
               src={AppLogo}
