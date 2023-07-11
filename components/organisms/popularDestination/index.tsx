@@ -134,14 +134,9 @@ const PopularDestinations = ({
     },
   ];
 
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
   
-// const filteredDestinations = { isMobile, isTablet }
-//   ? destinationCard.slice(0, 4)
-//   : destinationCard;
-
-  // const filteredDestinations = isTablet ? destinationCard.slice(0, 4) : destinationCard
 
 
 
@@ -155,11 +150,11 @@ const PopularDestinations = ({
           href="/visa/countries"
         />
         <Grid
-          columns={isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(3, 1fr)"}
+          columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
           gap="16px"
         >
           {destinationCard
-            .slice(0, isMobile || isTablet ? 4 : undefined)
+            .slice(0, isMobile ? 4 : undefined)
             .map((destination) => (
               <Link key={destination.id} href="/visa/apply">
                 <Card>

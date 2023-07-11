@@ -202,7 +202,7 @@ const IntervalDays = styled.h4`
 `;
 
 const TopCountriesSection: React.FC = () => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   const [activeImage, setActiveImage] = useState(1);
   const [hoveredImage, setHoveredImage] = useState(1);
 
@@ -253,7 +253,7 @@ const TopCountriesSection: React.FC = () => {
 
   return (
     <CountryWrapper
-      style={{ marginBottom: isMobile ? "3rem" : isTablet ? "2rem" : "10rem" }}
+      style={{ marginBottom: isMobile ? "3rem" : "10rem" }}
     >
       <CountryLayout>
         <SectionTitle
@@ -261,7 +261,7 @@ const TopCountriesSection: React.FC = () => {
           description="Going somewhere to celebrate this season? Whether you’re going home or somewhere to roam, we’ve got the travel tools to get you to your destination."
           buttonText="See all"
         />
-        {isMobile || isTablet ? (
+        {isMobile ? (
           <>
             <RightSide style={{ marginBottom: "2rem" }}>
               {countries.map((country) => (
@@ -303,16 +303,16 @@ const TopCountriesSection: React.FC = () => {
                     </CountryName>
                     <CountryDescription
                       style={{
-                        marginTop: isMobile ? "9px" : isTablet ? "9px" : "50px",
+                        marginTop: isMobile ? "9px" : "50px",
                         fontSize: isMobile
                           ? "14px"
-                          : isTablet
-                          ? "17px"
+                         
+                         
                           : "1rem",
                         lineHeight: isMobile
                           ? "18px"
-                          : isTablet
-                          ? "25px"
+                          
+                          
                           : "14px",
                       }}
                     >

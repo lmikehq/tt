@@ -62,7 +62,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
   buttonText,
   showButton = true,
 }) => {
-  const { isMobile, isTablet } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   showButton = isMobile ? false : showButton;
   const router = useRouter();
 
@@ -79,7 +79,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         alignItems: isMobile ? "left" : "center",
       }}
     >
-      <div style={{width: isMobile ? "100%" : isTablet ? "76%" : "80%"}}>
+      <div style={{width: isMobile ? "100%" : "80%"}}>
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
