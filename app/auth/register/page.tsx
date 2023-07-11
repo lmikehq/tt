@@ -160,7 +160,6 @@ function RegisterPage() {
                     />
                   )}
                 </Section>
-
                 <Section>
                   <Input
                     placeholder="Last Name"
