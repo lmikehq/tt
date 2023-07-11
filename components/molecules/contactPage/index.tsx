@@ -301,7 +301,7 @@ const ContactPage = () => {
         styles={{ fontFamily: "Poppins" }}
       />
       <Grid
-        gap="3rem"
+        gap={isMobile ? "1rem" : "3rem"}
         columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
@@ -419,7 +419,7 @@ const ContactPage = () => {
                   display: `{isMobile ? "block" : "grid"}`,
                 }}
               >
-                <Flex direction="column" gap="3rem" width="100%">
+                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"} width="100%">
                   <Box
                     component="form"
                     sx={{
@@ -442,7 +442,7 @@ const ContactPage = () => {
                       "& > div": {
                         display: isMobile ? "grid" : "flex",
 
-                        gap: isMobile ? "3rem" : "1rem",
+                        gap: "1rem",
                       },
                     }}
                     noValidate
