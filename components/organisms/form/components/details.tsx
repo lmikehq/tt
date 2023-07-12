@@ -18,7 +18,6 @@ interface formProps {
 
 function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
-  console.log("formike: ", formik.values);
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
