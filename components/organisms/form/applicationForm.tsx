@@ -32,6 +32,7 @@ import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
 import { useUserStore } from "store/useStore";
+import { usePaystack } from "hook/usePaystack";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -55,7 +56,7 @@ function ApplicationForm() {
   const [promoCode, setPromoCode] = useState("");
   const [_enabled, setEnabled] = useState(false);
   // const [visaButtonClicked, setVisaButtonClicked] = useState(false);
-
+  const { initializePayment, loading, error, response } = usePaystack();
   async function handleVisaApplication() {
     const response = await apiService("visa/new-application", "POST", {
       ...formik.values,
@@ -82,7 +83,20 @@ function ApplicationForm() {
       //   "NGN"
       // ),
     });
-    console.log("response: ", response, formik.values);
+    console.log("response: ", response);
+    if (response?.status === 201) {
+      console.log("got here bro");
+      initializePayment({
+        amount: shownFees.reduce(
+          (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
+          0
+        ),
+        email: formik.values.email,
+        metadata: {
+          name: formik.values.lastName,
+        },
+      });
+    }
     return response;
   }
   // const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
@@ -139,7 +153,7 @@ function ApplicationForm() {
   async function reloadFee() {
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(200);
+    await sleep(2000);
     setNextStepLoading(false);
     setShownFees(calcFees(formFee));
   }
@@ -186,7 +200,10 @@ function ApplicationForm() {
 
   return (
     <>
-      <AllCountryHead cover={canada} title={formik.values?.destination?.name || ''} />
+      <AllCountryHead
+        cover={canada}
+        title={formik.values?.destination?.name || ""}
+      />
       <SectionLayout>
         <SectionTitle
           title={`Apply Now for ${
