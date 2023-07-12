@@ -86,9 +86,14 @@ body {
     }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 390px) {
   .newsLetter{
     bottom: 98.5% !important;
+  }
+
+  .ttApp{
+    width: 4rem !important;
+    margin-top: 32px !important;
   }
 }
 
