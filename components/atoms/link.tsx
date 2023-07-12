@@ -10,7 +10,7 @@ interface linkProps {
   textDecoration?: string;
   decoration?: string;
   onClick?: () => void;
-  styles?: React.CSSProperties;
+  style?: React.CSSProperties;
 }
 
 export const Link: React.FC<linkProps & { onClick?: () => void }> = (props) => {
