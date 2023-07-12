@@ -34,10 +34,11 @@ import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useState } from "react";
 import CustomerCare from "../../../assets/images/customerservice.png";
 import { Grid } from "@atom/grid";
-import ApplicationIcon from "../../../assets/images/customerCare/application.png";
+import ApplicationIcon from "../../../assets/images/customerCare/order-delivery.png";
+// import ApplicationIcon from "../../../assets/images/customerCare/application.png";
 import OrderStatus from "../../../assets/images/customerCare/resume.png";
 import User from "../../../assets/images/customerCare/user.png";
-import Support from "../../../assets/images/customerCare/technical-support.png";
+// import Support from "../../../assets/images/customerCare/technical-support.png";
 import { Divider } from "@atom/divider";
 
 const ContactSection = styled.div`
@@ -135,7 +136,32 @@ const HelpTool = styled.div`
 const HelpHeader = styled.div`
   text-align: center;
   position: relative;
-`; 
+`;
+
+const LeftSpan = styled.span`
+  height: 2px;
+  width: 3%;
+  background: #19013b;
+  position: absolute;
+  top: 13px;
+  left: 310px;
+
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+`;
+const RightSpan = styled.span`
+  height: 2px;
+  width: 3%;
+  background: #19013b;
+  position: absolute;
+  top: 13px;
+  right: 310px;
+
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+`;
 
 const HelpPara = styled.p`
   text-align: center;
