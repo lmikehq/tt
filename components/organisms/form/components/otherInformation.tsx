@@ -268,7 +268,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           <UploadArea>
             <Center>
               {loading ? (
-                "loading"
+                "Uploading file..."
               ) : (
                 <div>
                   <p

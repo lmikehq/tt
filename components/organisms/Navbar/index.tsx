@@ -26,6 +26,7 @@ import { ttColors } from "theme/colors";
 import UserPopover from "./UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
 import { User } from "types";
+import { useUserStore } from "store/useStore";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -91,7 +92,7 @@ const Navbar = ({ page }: { page: string }) => {
       <RTQueryClient>
         <MobileNavbar page={page} pathArray={pathArray} />
       </RTQueryClient>
-    )
+    );
   return (
     <RTQueryClient>
       <DesktopNavbar page={page} pathArray={pathArray} />
@@ -144,12 +145,14 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { setUser } = useUserStore((state) => state);
   const handleOpen = () => setModalOpen(true);
-  async function getUser(): Promise<User |  any> {
-    const res =  apiService("/user", "GET");
+  async function getUser(): Promise<User | any> {
+    const res = await apiService("/user", "GET");
+    setUser(res);
     return res;
   }
-  const { data: user, error } = useQuery(["getUser"], getUser);
+  const { data: user } = useQuery(["getUser"], getUser);
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>

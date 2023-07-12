@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
+import { useUserStore } from "store/useStore";
+import { FormikValues } from "formik";
 
 interface formProps {
   steps: string[];
@@ -27,6 +29,8 @@ function Booking({ steps, index }: formProps) {
     //   description: "Make payment later from your dashboard",
     // },
   ]);
+  const { user } = useUserStore((state) => state);
+
   return (
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
@@ -73,55 +77,59 @@ function Booking({ steps, index }: formProps) {
           </Flex>
         ))}
       </Section>
-
-      <Section
-        styles={{
-          background: "#FFFFFF",
-          boxShadow: "0px 4px 16px rgba(17, 34, 17, 0.05)",
-          borderRadius: "12px",
-          margin: "2rem 0",
-          padding: "1rem",
-        }}
-      >
-        <Text
-          type="p"
-          text="Do you want to Login or Sign up"
-          weight={800}
-          size="1.2rem"
-        />
-        <Input placeholder="Email address" margin="1rem 0" />
-        <Text
-          type="p"
-          text="An email will be sent to you with a link to login or sign up"
-          weight={100}
-        />
-        <Button width="100%" margin="2rem 0 0">
+      {!user?.firstName ? (
+        <Section
+          styles={{
+            background: "#FFFFFF",
+            boxShadow: "0px 4px 16px rgba(17, 34, 17, 0.05)",
+            borderRadius: "12px",
+            margin: "2rem 0",
+            padding: "1rem",
+          }}
+        >
           <Text
             type="p"
-            text="Continue"
-            color="#fff"
-            weight={500}
+            text="Do you want to Login or Sign up"
+            weight={800}
             size="1.2rem"
           />
-        </Button>
+          <Input placeholder="Email address" margin="1rem 0" />
+          <Text
+            type="p"
+            text="An email will be sent to you with a link to login or sign up"
+            weight={100}
+          />
+          <Button width="100%" margin="2rem 0 0">
+            <Text
+              type="p"
+              text="Continue"
+              color="#fff"
+              weight={500}
+              size="1.2rem"
+            />
+          </Button>
 
-        <Flex
-          justify="space-between"
-          align="center"
-          margin="2rem 0 1rem"
-        >
-          <Divider sx={{ width: "33%", color: "#112211" }} />
-          <Text type="p" text="Or login with" margin="0 1rem" color="#112211" />
-          <Divider sx={{ width: "33%", color: "#112211" }} />
-        </Flex>
-        <Button
-          background="transparent"
-          border={`1px solid ${ttColors.primary}`}
-          width="100%"
-        >
-          <Image src={google.src} alt="google" height="30" width={30} />
-        </Button>
-      </Section>
+          <Flex justify="space-between" align="center" margin="2rem 0 1rem">
+            <Divider sx={{ width: "33%", color: "#112211" }} />
+            <Text
+              type="p"
+              text="Or login with"
+              margin="0 1rem"
+              color="#112211"
+            />
+            <Divider sx={{ width: "33%", color: "#112211" }} />
+          </Flex>
+          <Button
+            background="transparent"
+            border={`1px solid ${ttColors.primary}`}
+            width="100%"
+          >
+            <Image src={google.src} alt="google" height="30" width={30} />
+          </Button>
+        </Section>
+      ) : (
+        ""
+      )}
     </Section>
   );
 }
