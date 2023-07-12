@@ -18,7 +18,7 @@ interface formProps {
 
 function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
-
+  console.log("formike: ", formik.values);
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
@@ -76,6 +76,37 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
           </SearchInput>
         </Section>
         <Section margin="0 0 1rem">
+          <Text type="p" text="Visa type" margin="1rem 0 " />
+          <SearchInputAsString
+            options={[
+              "Tourist Visa",
+              "Business Visa",
+              "Transit Visa",
+              "Work Visa",
+              "Student Visa",
+              "Medical Visa",
+              "Visa on Arrival",
+              "Other",
+            ]}
+            onChange={(x) => formik.setFieldValue("visaType", x)}
+          >
+            <Flex justify="space-between">
+              <Text
+                type="p"
+                text={formik?.values?.visaType}
+                color="#1C1B1F"
+                weight={100}
+                styles={{ cursor: "pointer" }}
+              />
+              {formik?.values?.visaType ? (
+                <AiOutlineCheck color="#3BB98E" />
+              ) : (
+                <IoIosArrowDown size={20} />
+              )}
+            </Flex>
+          </SearchInputAsString>
+        </Section>
+        <Section margin="0 0 1rem">
           <Text type="p" text="Application type" margin="1rem 0 " />
           <SearchInputAsString
             options={["Single", "Family"]}
@@ -103,7 +134,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             <SearchInputAsString
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
               onChange={(x) => {
-                setFee(x  > 1 ? 30000 : 20000);
+                setFee(x > 1 ? 30000 : 20000);
                 formik.setFieldValue("numberOfTravellers", x);
               }}
             >

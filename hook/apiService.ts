@@ -20,4 +20,20 @@ const apiService = (url: string, method?: string, data?: any) => {
   });
 };
 
+export const extApiService = (url: string, method?: string, data?: any) => {
+  return new Promise((resolve) => {
+    axios({
+      url,
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      data,
+    })
+      .then((res) => resolve(res.data))
+      .catch((err) => resolve(err.response.data));
+  });
+};
+
 export default apiService;

@@ -2,10 +2,9 @@
 
 import CustomTab from "@atom/tabs";
 import { SERVICES } from "data/services";
-import React from "react";
-import Visa from "./components/visa";
 import Flights from "./components/flight";
 import Stays from "./components/stays";
+import Visa from "./components/visa";
 
 function ServiceTabs() {
   const components = [<Visa />, <Flights />, <Stays />];

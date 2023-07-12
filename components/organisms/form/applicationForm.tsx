@@ -26,8 +26,10 @@ import {
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
-import apiService from "hook/apiService";
+import apiService, { extApiService } from "hook/apiService";
 import { toast } from "react-hot-toast";
+import { getIpDetails } from "./visaApis";
+import SectionTitle from "@molecule/sectionTitle";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -49,14 +51,9 @@ const PromoInput = styled.div`
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
-  const [enabled, setEnabled] = useState(false);
+  const [_enabled, setEnabled] = useState(false);
   const [visaButtonClicked, setVisaButtonClicked] = useState(false);
-  async function validatePromoCode() {
-    const response = await apiService("visa/verify-promo-code", "POST", {
-      promoCode,
-    });
-    return response;
-  }
+
   async function handleVisaApplication() {
     const response = await apiService("visa/apply", "POST", {
       form: {
@@ -76,18 +73,18 @@ function ApplicationForm() {
     console.log("response: ", response, formik.values);
     return response;
   }
-  const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
-    enabled: visaButtonClicked,
-    retry: false,
-  });
-  const { data: promoData } = useQuery(
-    ["promoCode", promoCode],
-    validatePromoCode,
-    {
-      enabled,
-      retry: false,
-    }
-  );
+  // const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
+  //   enabled: visaButtonClicked,
+  //   retry: false,
+  // });
+  // const { data: promoData } = useQuery(
+  //   ["promoCode", promoCode],
+  //   validatePromoCode,
+  //   {
+  //     enabled,
+  //     retry: false,
+  //   }
+  // );
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -111,7 +108,14 @@ function ApplicationForm() {
     setCurrentPhase(currentPhase - 1);
   };
 
-  const formik = useFormikHook(visaInitVals, visaSchema);
+  const initialValues = {
+    ...visaInitVals,
+    home: { name: params.get("home") || "" },
+    destination: { name: params.get("destination") || "" },
+    visaType: params.get("visaType") || "",
+  };
+
+  const formik = useFormikHook(initialValues, visaSchema);
 
   const [formFee, setFormFee] = useState(20000);
 
@@ -165,6 +169,13 @@ function ApplicationForm() {
 
   return (
     <>
+      <SectionTitle
+        title={`Apply Now for ${
+          initialValues?.destination?.name || ""
+        } Employment Visa`}
+        description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
+        showButton={false}
+      />
       <Flex
         background="#FFFFFF"
         borderRadius="16px"
@@ -178,158 +189,180 @@ function ApplicationForm() {
 
         <Section width="40%">
           {currentPhase < 6 ? (
-            <Section width="90%">
-              <Flex
-                align="center"
-                justify="space-between"
-                // direction={isMobile ? "column" : "row"}
-                gap={isMobile ? "1.5rem" : "0rem"}
-              >
-                <Text type="p" text="Nigeria" size="20px" weight="bold" />
-                <HiOutlineArrowNarrowRight size={30} />
-                <Text type="p" text="Canada" size="20px" weight="bold" />
-              </Flex>
-              <Divider />
-              <Grid
-                columns={isMobile ? "1fr" : "2fr 1fr"}
-                gap=".5rem"
-                margin="2rem 0"
-              >
-                {shownFees.map((item) => (
-                  <>
-                    <Text
-                      type="p"
-                      text={item.name}
-                      size={item.type === "head" ? "16px" : "14px"}
-                      whiteSpace="nowrap"
-                      weight={item.type === "head" ? "500" : "100"}
-                    />
-                    <Text
-                      type="p"
-                      text={`${
-                        typeof item.amount === "number"
-                          ? currencyFormatter(item.amount, "NGN")
-                          : item.amount
-                      }`}
-                      size={item.type === "head" ? "16px" : "14px"}
-                      whiteSpace="nowrap"
-                      weight={item.type === "head" ? "500" : "100"}
-                    />
-                  </>
-                ))}
-              </Grid>
-              <Divider />
-
-              {shownFees.length ? (
-                <Flex justify="flex-end">
+            formik.values.home && formik.values.destination ? (
+              <Section width="90%">
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  // direction={isMobile ? "column" : "row"}
+                  gap={isMobile ? "1.5rem" : "0rem"}
+                >
                   <Text
                     type="p"
-                    text={currencyFormatter(
+                    text={formik.values?.home?.name}
+                    size="20px"
+                    weight="bold"
+                  />
+                  <HiOutlineArrowNarrowRight size={30} />
+                  <Text
+                    type="p"
+                    text={formik.values?.destination?.name}
+                    size="20px"
+                    weight="bold"
+                  />
+                </Flex>
+                <Divider />
+                <Grid
+                  columns={isMobile ? "1fr" : "2fr 1fr"}
+                  gap=".5rem"
+                  margin="2rem 0"
+                >
+                  {shownFees.map((item) => (
+                    <>
+                      <Text
+                        type="p"
+                        text={item.name}
+                        size={item.type === "head" ? "16px" : "14px"}
+                        whiteSpace="nowrap"
+                        weight={item.type === "head" ? "500" : "100"}
+                      />
+                      <Text
+                        type="p"
+                        text={`${
+                          typeof item.amount === "number"
+                            ? currencyFormatter(item.amount, "NGN")
+                            : item.amount
+                        }`}
+                        size={item.type === "head" ? "16px" : "14px"}
+                        whiteSpace="nowrap"
+                        weight={item.type === "head" ? "500" : "100"}
+                      />
+                    </>
+                  ))}
+                </Grid>
+                <Divider />
+
+                {shownFees.length ? (
+                  <Flex justify="flex-end">
+                    <Text
+                      type="p"
+                      text={currencyFormatter(
+                        shownFees.reduce(
+                          (a, b) =>
+                            a + (typeof b.amount === "number" ? b.amount : 0),
+                          0
+                        ),
+                        "NGN"
+                      )}
+                      size="2.1rem"
+                      weight="bold"
+                      key={formFee}
+                    />
+                  </Flex>
+                ) : (
+                  ""
+                )}
+
+                {currentPhase === 4 && (
+                  <Section margin="2rem 0">
+                    <Text type="p" text="Promo Code" />
+                    <form action="" onSubmit={handlePromoCode}>
+                      <PromoInput>
+                        <Input
+                          placeholder="Enter Promo Code"
+                          width="100%"
+                          flexGrow={1}
+                          onChange={(e) => setPromoCode(e.target.value)}
+                          value={promoCode}
+                        />
+                        <Button type="submit">
+                          <Text
+                            type="p"
+                            text="Apply"
+                            weight={600}
+                            size="1rem"
+                          />
+                        </Button>
+                      </PromoInput>
+                    </form>
+                  </Section>
+                )}
+
+                <Button
+                  width="100%"
+                  margin="1rem 0"
+                  onClick={nextStep}
+                  fontSize="18px"
+                >
+                  {nextStepLoading ? (
+                    <Spinner size="40px" fill={ttColors.primary} />
+                  ) : currentPhase === 5 ? (
+                    `Pay ${currencyFormatter(
                       shownFees.reduce(
                         (a, b) =>
                           a + (typeof b.amount === "number" ? b.amount : 0),
                         0
                       ),
                       "NGN"
-                    )}
-                    size="2.1rem"
-                    weight="bold"
-                    key={formFee}
+                    )}`
+                  ) : (
+                    "Continue"
+                  )}
+                </Button>
+
+                <Text
+                  type="p"
+                  text="Save Progress & Continue later"
+                  size="13px"
+                  weight="bold"
+                  decoration="underline"
+                  cursor="pointer"
+                />
+                <Flex margin="1rem 0" gap=".5rem">
+                  <BsShieldFillCheck size="25px" />
+                  <div>
+                    <Text
+                      text="Your info is save with us"
+                      type="p"
+                      size="16px"
+                      weight={400}
+                    />
+                    <p style={{ fontSize: "14px" }}>
+                      For more details, see our{" "}
+                      <span
+                        style={{ color: ttColors.primary, cursor: "pointer" }}
+                      >
+                        data protection page
+                      </span>
+                    </p>
+                  </div>
+                </Flex>
+
+                <Flex
+                  align="center"
+                  cursor="pointer"
+                  gap="1rem"
+                  onClick={prevStep}
+                >
+                  <HiOutlineArrowNarrowLeft
+                    color={ttColors.primary}
+                    size="30px"
+                  />
+                  <Text
+                    text="Previous"
+                    type="p"
+                    color={ttColors.primary}
+                    size="20px"
+                    weight="400"
                   />
                 </Flex>
-              ) : (
-                ""
-              )}
-
-              {currentPhase === 4 && (
-                <Section margin="2rem 0">
-                  <Text type="p" text="Promo Code" />
-                  <form action="" onSubmit={handlePromoCode}>
-                    <PromoInput>
-                      <Input
-                        placeholder="Enter Promo Code"
-                        width="100%"
-                        flexGrow={1}
-                        onChange={(e) => setPromoCode(e.target.value)}
-                        value={promoCode}
-                      />
-                      <Button type="submit">
-                        <Text type="p" text="Apply" weight={600} size="1rem" />
-                      </Button>
-                    </PromoInput>
-                  </form>
-                </Section>
-              )}
-
-              <Button
-                width="100%"
-                margin="1rem 0"
-                onClick={nextStep}
-                fontSize="18px"
-              >
-                {nextStepLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : currentPhase === 5 ? (
-                  `Pay ${currencyFormatter(
-                    shownFees.reduce(
-                      (a, b) =>
-                        a + (typeof b.amount === "number" ? b.amount : 0),
-                      0
-                    ),
-                    "NGN"
-                  )}`
-                ) : (
-                  "Continue"
-                )}
-              </Button>
-
+              </Section>
+            ) : (
               <Text
                 type="p"
-                text="Save Progress & Continue later"
-                size="13px"
-                weight="bold"
-                decoration="underline"
-                cursor="pointer"
+                text="Please select a destination and home country"
               />
-              <Flex margin="1rem 0" gap=".5rem">
-                <BsShieldFillCheck size="25px" />
-                <div>
-                  <Text
-                    text="Your info is save with us"
-                    type="p"
-                    size="16px"
-                    weight={400}
-                  />
-                  <p style={{ fontSize: "14px" }}>
-                    For more details, see our{" "}
-                    <span
-                      style={{ color: ttColors.primary, cursor: "pointer" }}
-                    >
-                      data protection page
-                    </span>
-                  </p>
-                </div>
-              </Flex>
-
-              <Flex
-                align="center"
-                cursor="pointer"
-                gap="1rem"
-                onClick={prevStep}
-              >
-                <HiOutlineArrowNarrowLeft
-                  color={ttColors.primary}
-                  size="30px"
-                />
-                <Text
-                  text="Previous"
-                  type="p"
-                  color={ttColors.primary}
-                  size="20px"
-                  weight="400"
-                />
-              </Flex>
-            </Section>
+            )
           ) : (
             <Button
               width="100%"

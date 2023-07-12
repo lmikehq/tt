@@ -6,12 +6,14 @@ export const detailsSchema = yup.object({
   applicationType: yup.string().required(),
   travellingBy: yup.string().required(),
   numberOfTravellers: yup.number().required().max(6).min(1),
+  visaType: yup.string().required(),
 });
 
 export const detailsKeys = {
   home: {},
   destination: {},
   applicationType: "",
+  visaType: '', // 
   travellingBy: "",
   numberOfTravellers: 1,
 };
