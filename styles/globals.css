@@ -54,6 +54,11 @@ body {
 /* Media Queries Here */
 
 
+@media screen and (max-width: 900px) {
+    .dashboardWrapper{
+        margin: 1rem 0px !important;
+    }
+}
 @media screen and (max-width: 768px) {
   .footerBarcode {
       position: absolute !important;

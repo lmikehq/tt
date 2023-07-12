@@ -1,7 +1,7 @@
-'use client'
+"use client";
 import { IoCloudUpload } from "react-icons/io5";
-import React from 'react'
-import { styled } from 'styled-components';
+import React from "react";
+import { styled } from "styled-components";
 import Image from "@atom/image";
 import CoverPicture from "@image/dashboard/coverPicture.png";
 import profileImage from "@image/dashboard/profilePicture.png";
@@ -9,6 +9,8 @@ import Button from "@atom/button";
 import Text from "@atom/text";
 import { HiPencil } from "react-icons/hi";
 import { ttColors } from "theme/colors";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { BsFillCameraFill } from "react-icons/bs";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
@@ -29,7 +31,21 @@ const DashboardCoverPicture = styled.div`
     gap: 10px;
     font-size: 16px;
     line-height: 17px;
-    // width: 200px;
+
+    @media screen and (max-width: 390px) {
+      justify-content: center;
+      font-size: 12px;
+      line-height: 0px !important;
+      padding: 0px !important;
+      position: absolute !important;
+      top: 5px !important;
+      right: 5px !important;
+    }
+  }
+  @media screen and (max-width: 390px) {
+    & img {
+      width: 100%;
+    }
   }
 `;
 
@@ -46,6 +62,10 @@ const ProfileInfomation = styled.div`
     line-height: 29px;
     text-align: center;
     color: ${ttColors.dark};
+    @media screen and (max-width: 390px) {
+      font-size: 16px;
+      line-height: 20px;
+    }
   }
 
   & p {
@@ -54,9 +74,15 @@ const ProfileInfomation = styled.div`
     line-height: 20px;
     color: ${ttColors.dark};
     opacity: 0.7;
-    /* identical to box height */
-
     text-align: center;
+    @media screen and (max-width: 390px) {
+      font-size: 12px;
+      line-height: 10px;
+      opacity: 1;
+    }
+  }
+  @media screen and (max-width: 390px) {
+    top: 150px !important;
   }
 `;
 
@@ -69,37 +95,77 @@ const DashboardProfilePictue = styled.div`
 
   & img {
     position: absolute;
-    // border-radius: 50%;
-    // border: 5px solid var(--primary-color) ;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    @media screen and (max-width: 390px) {
+      top: 8% !important;
+      left: 40% !important;
+      transform: translate(0%, 0%) !important;
+    }
   }
 
   & button {
+    @media screen and (max-width: 390px) {
+      padding: 9px;
+      color: var(--secondary-color);
+      background: var(--primary-color);
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50%;
+      cursor: pointer;
+      position: absolute;
+      top: 117px !important;
+      right: 39.5% !important;
+    }
+  }
+  @media screen and (max-width: 390px) {
+    position: static;
+    display: flex;
   }
 `;
 
-
 function UserPicture() {
+  const { isMobile } = useScreenResolution();
+
   return (
     <div>
       <DashboardCoverPicture>
         <Image
           src={CoverPicture}
           alt="cover-picture"
-          styles={{ width: "100%", height: "350px" }}
+          height={isMobile ? 120 : 350}
+          styles={{ width: "100%" }}
         />
-        <Button styles={{ height: "65px", width: "230px" }}>
-          <IoCloudUpload size="2rem" />
-          Upload another cover
+        <Button
+          styles={{
+            height: isMobile ? "25px" : "65px",
+            width: isMobile ? "25px" : "230px",
+          }}
+        >
+          <IoCloudUpload
+            size={isMobile ? "1rem" : "2rem"}
+            style={{ display: isMobile ? "none" : "block" }}
+          />
+          <BsFillCameraFill
+            size={isMobile ? ".8rem" : "2rem"}
+            style={{ display: isMobile ? "block" : "none" }}
+          />
+          <Text
+            type="p"
+            text="Upload another cover"
+            styles={{ display: isMobile ? "none" : "block" }}
+          />
         </Button>
       </DashboardCoverPicture>
+
       <DashboardProfilePictue>
         <Image
           src={profileImage}
           alt="profile-picture"
-          styles={{ width: "160px", height: "160px" }}
+          height={isMobile ? 70 : 160}
+          styles={{ width: "160px" }}
         />
         <Button
           styles={{

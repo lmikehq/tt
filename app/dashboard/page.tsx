@@ -1,18 +1,11 @@
+import DashboardHeader from "@molecule/dashboardTabs/dashboard";
 
-import SectionLayout from "@layout/sectionLayout";
-import DashboardTabs from "@molecule/dashboardTabs";
-import UserPicture from "@molecule/dashboardTabs/components/picture";
-import Section from "@molecule/section";
-
-const DashboardHeader = () => {
+const DashboardHeaderComponent = () => {
   return (
-    <Section margin="4rem 0px">
-      <SectionLayout>
-        <UserPicture />
-        <DashboardTabs />
-      </SectionLayout>
-    </Section>
+    <>
+    <DashboardHeader />
+    </>
   );
 };
 
-export default DashboardHeader;
+export default DashboardHeaderComponent;
