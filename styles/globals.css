@@ -100,5 +100,9 @@ body {
     width: 4rem !important;
     margin-top: 32px !important;
   }
+
+  .footerIcons{
+    width: 34% !important;
+  }
 }
 

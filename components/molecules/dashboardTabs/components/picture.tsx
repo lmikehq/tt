@@ -47,6 +47,9 @@ const DashboardCoverPicture = styled.div`
       width: 100%;
     }
   }
+  @media screen and (max-width: 390px) {
+    height: 0px !important;
+  }
 `;
 
 const ProfileInfomation = styled.div`
@@ -100,7 +103,7 @@ const DashboardProfilePictue = styled.div`
     transform: translate(-50%, -50%);
 
     @media screen and (max-width: 390px) {
-      top: 8% !important;
+      top: 13% !important;
       left: 40% !important;
       transform: translate(0%, 0%) !important;
     }
