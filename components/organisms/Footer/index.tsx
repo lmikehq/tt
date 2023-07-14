@@ -106,9 +106,7 @@ const FooterSection = () => {
   ];
 
   return (
-    <FooterWrapper
-      style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}
-    >
+    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}>
       <NewsLetter />
       <SectionLayout margin="0 auto">
         <Grid
@@ -125,7 +123,7 @@ const FooterSection = () => {
               className="footerIcons"
               columns="repeat(4, 1fr)"
               gap="1rem"
-              width={isMobile ? "55%" : "70%"}
+              width={isMobile ? "20%" : "70%"}
               margin={"1rem 0rem 0rem 0rem"}
             >
               {FooterIcons.map((icon) => (
@@ -143,7 +141,7 @@ const FooterSection = () => {
               color="#06062A"
               padding="0 0 25px"
             />
-            <Flex direction="column" gap="1rem">
+            <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {top_countries.map((country, index) => (
                 <Link
                   key={index}
@@ -163,7 +161,7 @@ const FooterSection = () => {
               color="#06062A"
               padding="0 0 25px"
             />
-            <Flex direction="column" gap="1rem">
+            <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {useful_links.map((link, index) => (
                 <Link
                   key={index}
@@ -176,7 +174,7 @@ const FooterSection = () => {
           </div>
           <div className="support">
             <Text type="h3" text="Support" color="#06062A" padding="0 0 25px" />
-            <Flex direction="column" gap="1rem">
+            <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {supports.map((support, s) => (
                 <Link
                   key={s}
@@ -189,7 +187,7 @@ const FooterSection = () => {
           </div>
           <div className="aboutUs">
             <Text type="h3" text="Company" color="#06062A" padding="0 0 25px" />
-            <Flex direction="column" gap="1rem">
+            <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {aboutUs.map((about, a) => (
                 <Link
                   key={a}
@@ -202,7 +200,8 @@ const FooterSection = () => {
           </div>
         </Grid>
         <Flex
-          gap="1rem"          align={isMobile ? "center" : "flex-end"}
+          gap="1rem"
+          align={isMobile ? "center" : "flex-end"}
           width="auto"
           styles={{
             visibility: isMobile ? "visible" : "hidden",
@@ -224,12 +223,13 @@ const FooterSection = () => {
             }}
           />
           <Flex
+            className="ttApp"
             direction="column"
             gap={isMobile ? "0.2px" : "0.5px"}
             align="center"
             padding="0rem 0rem 1.5rem"
-            width={isMobile ? "6rem" : "10rem"}
-            styles={{ marginTop: isMobile ? "24px" : "" }}
+            width={isMobile ? "4rem" : "10rem"}
+            styles={{ marginTop: isMobile ? "32px" : "" }}
           >
             <Image
               src={AppLogo}
