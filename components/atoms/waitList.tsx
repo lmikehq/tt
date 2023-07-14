@@ -16,6 +16,7 @@ import Image from "./image";
 import Input from "./input";
 import { SearchInputAsString } from "./searchInput";
 import sleep from "@lib/sleep";
+import apiService from "hook/apiService";
 
 const WaitListWrapper = styled.div`
   overflow: hidden;
@@ -196,16 +197,18 @@ const WaitList = () => {
     if (submissionState.loading) return;
     setSubmissionState({ loading: true, error: [] });
     try {
-      const returned = await waitlistSchema.validate(waitlistData, {abortEarly: false});
-      console.log("returned: ", returned);
+      await waitlistSchema.validate(waitlistData, { abortEarly: false });
+      console.log("response222: ", waitlistData);
+      const response = await apiService("/waitlist", "POST", waitlistData);
     } catch (error: any) {
       setSubmissionState({
         ...submissionState,
-        error: error.errors.map((x:any) => x.message),
+        error: error.errors.map((x: any) => x.message),
         loading: false,
       });
       return;
     }
+    console.log('response: ', waitlistData)
     setSubmissionState({ ...submissionState, loading: false });
   }
 
