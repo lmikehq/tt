@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
+import { Autocomplete, Box, TextField as MUITextField, TextareaAutosize } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import {
   CSSProperties,
@@ -63,7 +63,9 @@ export interface InputProps {
     | "password"
     | "email"
     | "tel"
-    | "address";
+    | "address"
+    | "checkbox"
+
   value?: string;
   name?: string;
   id?: string;
@@ -81,6 +83,7 @@ export interface InputProps {
   max?: number;
   flexGrow?: number;
   parentWidth?: string;
+  styles?: CSSProperties;
 }
 
 const Input = ({
@@ -108,10 +111,32 @@ const Input = ({
   max,
   flexGrow,
   parentWidth,
+  styles,
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
     type === "password" ? "password" : ""
   );
+  if (type === "textArea") {
+    return (
+      <textarea
+        aria-label="Your message"
+        rows={5}
+        placeholder={placeholder}
+        style={{
+          margin,
+          padding: padding || "0 2rem 0 1rem",
+          border,
+          width: width || "100%",
+          fontSize: size || "1rem",
+          color: color || "#1C1B1F",
+          fontWeight: weight || "100",
+          fontFamily: "var(--font-family)",
+          borderRadius: br || "4px",
+          ...styles,
+        }}
+      ></textarea>
+    );
+  }
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
@@ -139,6 +164,7 @@ const Input = ({
           fontWeight: weight || "100",
           fontFamily: "var(--font-family)",
           borderRadius: br || "4px",
+          ...styles,
         }}
       />
       {type === "password" && value && (

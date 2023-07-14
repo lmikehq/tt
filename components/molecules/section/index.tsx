@@ -5,6 +5,7 @@ interface sectionProps {
   height?: string;
   padding?: React.CSSProperties["padding"];
   styles?: React.CSSProperties;
+  className?: string;
 }
 
 const Section: React.FC<sectionProps> = ({
@@ -13,7 +14,8 @@ const Section: React.FC<sectionProps> = ({
   margin,
   height,
   padding,
-  styles
+  styles,
+    className,
 }) => {
   return (
     <section

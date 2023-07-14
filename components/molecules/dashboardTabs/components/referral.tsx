@@ -7,6 +7,8 @@ import Button from "@atom/button";
 import { BsClipboard } from "react-icons/bs";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import toast from "react-hot-toast";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { FaFileDownload } from "react-icons/fa";
 
 const Section = styled.div``;
 const SectionTitle = styled.div`
@@ -38,16 +40,15 @@ const Referral = styled.div`
   height: 460px;
 
   background: #ffffff;
-  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  //   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
 
   & div {
     margin-left: 15px;
-
-    // & .title {
-    //     margin-left: 15px !important;
-    //     display: flex;
-    // }
+    @media screen and (max-width: 390px) {
+      margin-left: 0px;
+    }
   }
 
   & p {
@@ -69,21 +70,27 @@ const Referral = styled.div`
     width: 57px !important;
     // height: 38px;
     margin-left: 10px !important;
+
+    @media screen and (max-width: 390px) {
+      margin-left: -14px !important;
+      width: 48px !important;
+    }
+  }
+  @media screen and (max-width: 390px) {
+    border-radius: 8px;
   }
 `;
 
-// const Referrals = ({ referralLink }) => {
 const Referrals = () => {
+  const { isMobile } = useScreenResolution();
+
   const referralLink =
     "https://thrillerstravels.com/register?ref=john_doe.2332";
 
   const copyToClipboard = () => {
-    navigator.clipboard
-      .writeText(referralLink)
-      .then(() => {
-        toast.success("Referral link copied to clipboard");
-      });
-
+    navigator.clipboard.writeText(referralLink).then(() => {
+      toast.success("Referral link copied to clipboard");
+    });
   };
   const referralRecord = [
     {
@@ -128,54 +135,98 @@ const Referrals = () => {
       <Section>
         <SectionTitle>
           <Flex justify="space-between" align="center">
-            <Text type="h2" size="25px" text="Referrals" />
+            <Text
+              type="h2"
+              size={isMobile ? "16px" : "25px"}
+              text="Referrals"
+            />
             <Flex justify="flex-end" onClick={copyToClipboard} cursor="pointer">
               <Text
                 type="h5"
-                size="19px"
+                size={isMobile ? "9px" : "19px"}
                 decoration="underline"
                 text={referralLink}
               />
-              <BsClipboard size="1.2rem" />
+              <BsClipboard size={isMobile ? ".8rem" : "1.2rem"} />
             </Flex>
           </Flex>
         </SectionTitle>
         <Referral>
           <Grid
-            columns="50% 20% 20% 10%"
+            columns={isMobile ? "30% 25% 20% 5%" : "50% 20% 20% 10%"}
             width="100%"
-            gap="20px"
+            gap={isMobile ? "15px" : "20px"}
             align="center"
             textAlign="left"
-            padding="15px 20px"
+            padding={isMobile ? "10px 0px" : "15px 20px"}
           >
-            <Text type="p" text="Name/Date" />
-            <Text type="p" text="Referral bonus" />
-            <Text type="p" text="bonus status" />
-            <Text type="p" text="" />
+            <Text type="p" size={isMobile ? "12px" : "16px"} text="Name/Date" />
+            <Text
+              type="p"
+              size={isMobile ? "12px" : "16px"}
+              text="Referral bonus"
+            />
+            <Text
+              type="p"
+              size={isMobile ? "12px" : "16px"}
+              text="bonus status"
+            />
+            <Text type="p" size={isMobile ? "12px" : "16px"} text="" />
           </Grid>
           <Grid
-            columns="50% 20% 20% 10%"
+            columns={isMobile ? "30% 25% 20% 5%" : "50% 20% 20% 10%"}
             width="100%"
-            gap="20px"
+            gap={isMobile ? "15px" : "20px"}
             align="center"
             textAlign="left"
-            padding="15px 20px"
+            padding={isMobile ? "10px 0px" : "15px 20px"}
           >
             {referralRecord.map((record) => (
               <>
                 <div key={record.id}>
-                  <Text type="p" text={record.date} />
-                  <Text type="h5" weight="400" size="19px" text={record.name} />
+                  <Text
+                    type="p"
+                    size={isMobile ? "12px" : "16px"}
+                    text={record.date}
+                  />
+                  <Text
+                    type="h5"
+                    weight="400"
+                    size={isMobile ? "13px" : "19px"}
+                    text={record.name}
+                  />
                 </div>
-                <Text type="h5" weight="400" size="19px" text={record.bonus} />
-                <Text type="h5" weight="400" size="19px" text={record.status} />
+                <Text
+                  type="h5"
+                  weight="400"
+                  size={isMobile ? "13px" : "19px"}
+                  text={record.bonus}
+                />
+                <Text
+                  type="h5"
+                  weight="400"
+                  size={isMobile ? "13px" : "19px"}
+                  text={record.status}
+                />
                 <Button
                   width="166px"
                   height="48px"
-                  styles={{ marginLeft: "55px" }}
+                  styles={{
+                    marginLeft: isMobile ? "0px" : "55px",
+                    display: isMobile ? "none" : "block",
+                  }}
                 >
                   {record.receipt}
+                </Button>
+                <Button
+                  width="40px"
+                  height="40px"
+                  styles={{
+                    display: isMobile ? "block" : "none",
+                    marginLeft: isMobile ? "0px" : "55px",
+                  }}
+                >
+                  <FaFileDownload size="1rem" />
                 </Button>
               </>
             ))}

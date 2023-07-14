@@ -71,7 +71,6 @@ export const Button: React.FC<buttonProps> = ({
       onClick={onClick}
     >
       {children}
-      {/* </ButtonWrapper> */}
     </ButtonBase>
   );
 };

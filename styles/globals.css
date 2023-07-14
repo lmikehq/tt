@@ -54,6 +54,11 @@ body {
 /* Media Queries Here */
 
 
+@media screen and (max-width: 900px) {
+    .dashboardWrapper{
+        margin: 1rem 0px !important;
+    }
+}
 @media screen and (max-width: 768px) {
   .footerBarcode {
       position: absolute !important;
@@ -86,9 +91,18 @@ body {
     }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 390px) {
   .newsLetter{
     bottom: 98.5% !important;
+  }
+
+  .ttApp{
+    width: 4rem !important;
+    margin-top: 32px !important;
+  }
+
+  .footerIcons{
+    width: 34% !important;
   }
 }
 
