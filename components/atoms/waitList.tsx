@@ -77,11 +77,6 @@ const RightWrapper = styled.div`
     padding: 1rem;
     height: 100%;
   }
-
-  @media screen and (max-width: 600px) {
-    height: fit-content;
-  }
-
 `;
 
 const NavLink = styled.div`
@@ -158,7 +153,7 @@ const MenuIcon = styled.svg`
 
   @media screen and (max-width: 900px) {
     position: absolute;
-    right: -220px ;
+    right: -220px;
     display: block;
     top: 20px;
   }
@@ -167,8 +162,8 @@ const MenuIcon = styled.svg`
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 370px ;
-    top: 25px ;
+    left: 337px;
+    top: 25px;
     display: block;
   }
   @media screen and (max-width: 375px) {
@@ -201,12 +196,12 @@ const WaitList = () => {
               <NavLink className={`nav-elements  ${showNavbar && "active"}`}>
                 <Grid
                   columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
-                  gap={isMobile ? "3rem" : "0px"}
+                  gap={isMobile ? "2rem" : "0px"}
                   align="center"
                   justify="right"
                   width="100%"
                   textAlign="center"
-                  style={{ placeContent: "center"}}
+                  style={{ placeContent: "center" }}
                 >
                   <Link
                     href=""
@@ -215,7 +210,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Text text="Events" type="p" />
@@ -228,7 +223,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Text text="FAQ" type="p" />
@@ -241,7 +236,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Text text="Inquire" type="p" />
@@ -252,7 +247,7 @@ const WaitList = () => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Button
@@ -279,7 +274,7 @@ const WaitList = () => {
             <RightSideContent>
               <h3>What home you need? </h3>
               <form style={{ width: "100%" }}>
-                <Flex direction="column" gap="3rem">
+                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                   <Box
                     component="form"
                     sx={{
@@ -289,7 +284,7 @@ const WaitList = () => {
                       "& > div": {
                         display: isMobile ? "grid" : "flex",
 
-                        gap: isMobile ? "3rem" : "1rem",
+                        gap: "1rem",
                       },
                     }}
                     noValidate
@@ -310,7 +305,7 @@ const WaitList = () => {
                       "& > div": {
                         display: isMobile ? "grid" : "flex",
 
-                        gap: isMobile ? "3rem" : "1rem",
+                        gap: "1rem",
                       },
                     }}
                     noValidate
@@ -346,15 +341,19 @@ const WaitList = () => {
                       label="Your Request"
                       placeholder="Enter Your Requests here..."
                       multiline
-                      rows={5}
+                      rows={3}
                     />
                   </Box>
                 </Flex>
 
                 <FormGroup sx={{ width: "100%", margin: "1.5rem 0rem" }}>
                   <FormControlLabel
-                    control={<Checkbox />}
-                    label="Yes, I agreed to receive the personalised contents and update from thrillers​"
+                    control={<Checkbox defaultChecked />}
+                    label={
+                      <span style={{ fontSize: "15px" }}>
+                        I consented to personalized thriller updates.
+                      </span>
+                    }
                   />
                 </FormGroup>
 
@@ -424,7 +423,6 @@ const WaitList = () => {
                 textAlign="center"
                 style={{
                   placeContent: "center",
-                  
                 }}
               >
                 <Link
@@ -516,8 +514,16 @@ const WaitList = () => {
                     autoComplete="off"
                   >
                     <div>
-                      <TextField placeholder="Full name" label="Full Name" />
-                      <TextField placeholder="Emaile" label="Email" />
+                      <TextField
+                        placeholder="Full name"
+                        label="Full Name"
+                        
+                      />
+                      <TextField
+                        placeholder="Emaile"
+                        label="Email"
+                        
+                      />
                     </div>
                   </Box>
                   <Box
@@ -538,6 +544,7 @@ const WaitList = () => {
                       <TextField
                         placeholder="Whatsapp number"
                         label="Whatsapp number"
+                        
                       />
                       <Autocomplete
                         disablePortal
@@ -545,7 +552,11 @@ const WaitList = () => {
                         options={yourReadiness}
                         sx={{ width: "100%" }}
                         renderInput={(params) => (
-                          <TextField {...params} label="Readiness" />
+                          <TextField
+                            {...params}
+                            label="Readiness"
+                            
+                          />
                         )}
                       />
                     </div>
@@ -610,5 +621,3 @@ const yourReadiness = [
 ];
 
 export default WaitList;
-
-

@@ -37,7 +37,7 @@ body {
     }
 
     .nav-elements.active {
-        width: 270px;
+        width: 218px;
     }
 }
 
@@ -47,7 +47,7 @@ body {
 
 @media (max-width: 900px) {
     .nav-elements.active {
-            width: 270px;
+            width: 218px;
         background-color: #ffffff;
         z-index: 999;
         }
@@ -72,7 +72,7 @@ body {
     }
 
     .nav-elements.active {
-        width: 270px;
+        width: 218px;
         background-color: #ffffff;
             z-index: 999;
     }
