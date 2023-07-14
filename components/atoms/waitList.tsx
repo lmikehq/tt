@@ -7,23 +7,16 @@ import Flex from "@atom/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Button from "@atom/button";
-import {
-  Autocomplete,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-} from "@mui/material";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Image from "./image";
 import waitListImg from "../../assets/images/waitlist/waitlist-icon.svg";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Logo from "../../assets/images/brand/tt_blue_logo_with_text.png";
 import { RiBarChartHorizontalLine } from "react-icons/ri";
+import Input from "./input";
+import { SearchInputAsString } from "./searchInput";
 
 const WaitListWrapper = styled.div`
-  // display: flex;
-  // flex-wrap: wrap;
+  overflow: hidden;
   height: 100%;
 `;
 
@@ -77,11 +70,6 @@ const RightWrapper = styled.div`
     padding: 1rem;
     height: 100%;
   }
-
-  @media screen and (max-width: 600px) {
-    height: fit-content;
-  }
-
 `;
 
 const NavLink = styled.div`
@@ -125,13 +113,14 @@ const RightSideContent = styled.div`
 const NavbarSection = styled.div`
   height: 80px;
   padding: 15px;
-  // background-color: #fef7e5;
   position: relative;
-  // margin-bottom: 1rem;
   width: 100%;
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   background: #ffffff;
-  // border: 1px solid;
+
+  @media screen and (max-width: 390px){
+    height: 65px;
+  }
 `;
 
 const Container = styled.div`
@@ -144,10 +133,14 @@ const Container = styled.div`
 
 const TtBrand = styled.div`
   // margin-left: -70px;
+  & img {
+    height: 35px;
+    width: 111px;
+  }
   @media screen and (max-width: 900px) {
     & img {
-      height: 50px;
-      width: 165px;
+      height: 35px;
+      width: 111px;
     }
   }
 `;
@@ -158,27 +151,34 @@ const MenuIcon = styled.svg`
 
   @media screen and (max-width: 900px) {
     position: absolute;
-    right: -220px ;
+    right: -220px;
     display: block;
-    top: 20px;
+    top: 18px;
   }
 
   @media screen and (max-width: 600px) {
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 370px ;
-    top: 25px ;
+    left: 345px;
+    top: 18px;
     display: block;
   }
   @media screen and (max-width: 375px) {
-    left: 330px;
+    left: 280px;
   }
 `;
 
 const WaitList = () => {
   const { isMobile } = useScreenResolution();
   const [showNavbar, setShowNavbar] = useState(false);
+  const [waitlistData, setWaitlistData] = useState({
+    email: "",
+    fullName: "",
+    whatsapp: "",
+    message: "",
+    readiness: "",
+  });
 
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
@@ -191,22 +191,25 @@ const WaitList = () => {
           <NavbarSection>
             <Container>
               <TtBrand>
-                <Image src={Logo} alt="" height={180} />
+                <Link href="/">
+                  <Image src={Logo} alt="" height={35} />
+                </Link>
               </TtBrand>
 
               <MenuIcon onClick={handleShowNavbar}>
-                <RiBarChartHorizontalLine size="2rem" />
+                <RiBarChartHorizontalLine size="1.5rem" />
               </MenuIcon>
 
               <NavLink className={`nav-elements  ${showNavbar && "active"}`}>
                 <Grid
                   columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
-                  gap={isMobile ? "3rem" : "0px"}
+                  gap={isMobile ? "2rem" : "0px"}
                   align="center"
                   justify="right"
                   width="100%"
                   textAlign="center"
-                  style={{ placeContent: "center"}}
+                  style={{ placeContent: "center" }}
+                  margin={isMobile ? "16px auto" : "0px auto"}
                 >
                   <Link
                     href=""
@@ -215,7 +218,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Text text="Events" type="p" />
@@ -228,7 +231,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Text text="FAQ" type="p" />
@@ -241,7 +244,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
                     <Text text="Inquire" type="p" />
@@ -252,19 +255,13 @@ const WaitList = () => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      marginLeft: "30px",
+                      marginLeft: isMobile ? "0px " : "30px",
                     }}
                   >
-                    <Button
-                      height="50px"
-                      width="187px"
-                      styles={{
-                        fontSize: "1.3rem",
-                      }}
-                    >
+                    <Button>
                       <Text
                         text="Join now"
-                        type="h4"
+                        type="p"
                         whiteSpace="nowrap"
                         weight={400}
                         color="#fff"
@@ -275,102 +272,69 @@ const WaitList = () => {
               </NavLink>
             </Container>
           </NavbarSection>
+
           <RightWrapper>
             <RightSideContent>
               <h3>What home you need? </h3>
               <form style={{ width: "100%" }}>
-                <Flex direction="column" gap="3rem">
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: isMobile ? "100%" : "50%",
-                      },
-                      "& > div": {
-                        display: isMobile ? "grid" : "flex",
+                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                    <Input placeholder="Full name" />
+                    <Input placeholder="Email" />
+                  </Flex>
 
-                        gap: isMobile ? "3rem" : "1rem",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <div>
-                      <TextField placeholder="Full name" label="Full Name" />
-                      <TextField placeholder="Email" label="Email" />
-                    </div>
-                  </Box>
-
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                      "& > div": {
-                        display: isMobile ? "grid" : "flex",
-
-                        gap: isMobile ? "3rem" : "1rem",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <div>
-                      <TextField
-                        placeholder="Whatsapp number"
-                        label="Whatsapp Number"
+                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                    <Input type="number" placeholder="Whatsapp number" />
+                    <SearchInputAsString
+                      options={[
+                        "Ready to Go",
+                        "Weighing My Options",
+                        "Securing My Finances",
+                        "Planning for the Future",
+                      ]}
+                      value={waitlistData.readiness}
+                      onChange={(e) =>
+                        setWaitlistData({
+                          ...waitlistData,
+                          readiness: e,
+                        })
+                      }
+                    >
+                      <Text
+                        type="p"
+                        text={waitlistData.readiness || "Readiness"}
+                        color="#1C1B1F"
+                        weight={100}
+                        styles={{ cursor: "pointer" }}
                       />
+                    </SearchInputAsString>
+                  </Flex>
 
-                      <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={yourReadiness}
-                        sx={{ width: "100%" }}
-                        renderInput={(params) => (
-                          <TextField {...params} label="Readiness" />
-                        )}
-                      />
-                    </div>
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": { width: "100%" },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Your Request"
-                      placeholder="Enter Your Requests here..."
-                      multiline
-                      rows={5}
-                    />
-                  </Box>
+                  <Input type="textArea" placeholder="Your Request" />
                 </Flex>
-
-                <FormGroup sx={{ width: "100%", margin: "1.5rem 0rem" }}>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Yes, I agreed to receive the personalised contents and update from thrillers​"
+                <Flex justify="flex-start" align="center" gap="1rem">
+                  <div style={{ marginTop: "7px" }}>
+                    <Input type="checkbox" />
+                  </div>
+                  <Text
+                    type="p"
+                    text="I consented to personalized thriller updates."
+                    size={15}
                   />
-                </FormGroup>
+                </Flex>
 
                 <Button
                   height="50px"
-                  width="240px"
+                  width="150px"
                   styles={{
-                    marginTop: "2rem",
+                    marginTop: "3rem",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    fontSize: "1.3rem",
                   }}
                 >
                   <Text
                     text="Add me to waitlist"
-                    type="h4"
+                    type="p"
                     whiteSpace="nowrap"
                     weight={400}
                     color="#fff"
@@ -408,7 +372,9 @@ const WaitList = () => {
           <NavbarSection>
             <Container>
               <TtBrand>
-                <Image src={Logo} alt="" height={50} />
+                <Link href="/">
+                  <Image src={Logo} alt="" height={35} />
+                </Link>
               </TtBrand>
 
               <MenuIcon onClick={handleShowNavbar}>
@@ -424,7 +390,6 @@ const WaitList = () => {
                 textAlign="center"
                 style={{
                   placeContent: "center",
-                  
                 }}
               >
                 <Link
@@ -474,22 +439,13 @@ const WaitList = () => {
                     marginLeft: "30px",
                   }}
                 >
-                  <Button
-                    height="50px"
-                    width="187px"
-                    styles={{
-                      fontSize: "1.3rem",
-                    }}
-                  >
+                  <Button>
                     <Text
                       text="Join now"
-                      type="h4"
+                      type="p"
                       whiteSpace="nowrap"
                       weight={400}
                       color="#fff"
-                      styles={{
-                        fontSize: "1.3rem",
-                      }}
                     />
                   </Button>
                 </Link>
@@ -500,94 +456,65 @@ const WaitList = () => {
             <RightSideContent>
               <h3>What home you need? </h3>
               <form style={{ width: "100%" }}>
-                <Flex direction="column" gap="3rem">
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "50%",
-                      },
-                      "& > div": {
-                        display: "flex",
-                        gap: "1rem",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <div>
-                      <TextField placeholder="Full name" label="Full Name" />
-                      <TextField placeholder="Emaile" label="Email" />
-                    </div>
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                      "& > div": {
-                        display: "flex",
-                        gap: "1rem",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <div>
-                      <TextField
-                        placeholder="Whatsapp number"
-                        label="Whatsapp number"
+                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                    <Input placeholder="full name" />
+                    <Input placeholder="Email" />
+                  </Flex>
+
+                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                    <Input type="number" placeholder="Whatsapp number" />
+                    <SearchInputAsString
+                      options={[
+                        "Ready to Go",
+                        "Weighing My Options",
+                        "Securing My Finances",
+                        "Planning for the Future",
+                      ]}
+                      value={waitlistData.readiness}
+                      onChange={(e) =>
+                        setWaitlistData({
+                          ...waitlistData,
+                          readiness: e,
+                        })
+                      }
+                    >
+                      <Text
+                        type="p"
+                        text={waitlistData.readiness || "Readiness"}
+                        color="#1C1B1F"
+                        weight={100}
+                        styles={{ cursor: "pointer" }}
                       />
-                      <Autocomplete
-                        disablePortal
-                        id="combo-box-demo"
-                        options={yourReadiness}
-                        sx={{ width: "100%" }}
-                        renderInput={(params) => (
-                          <TextField {...params} label="Readiness" />
-                        )}
-                      />
-                    </div>
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": { width: "100%" },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Your Request"
-                      placeholder="Enter Your Requests here..."
-                      multiline
-                      rows={5}
-                    />
-                  </Box>
+                    </SearchInputAsString>
+                  </Flex>
+
+                  <Input type="textArea" placeholder="Your Request"  />
                 </Flex>
 
-                <FormGroup sx={{ width: "100%", marginTop: "1.5rem 0rem" }}>
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Yes, i would like to receive emails and news from Thrilers Travels."
+                <Flex justify="flex-start" align="center" gap="1rem">
+                  <div style={{ marginTop: "7px" }}>
+                    <Input type="checkbox" />
+                  </div>
+                  <Text
+                    type="p"
+                    text="I consented to personalized thriller updates."
+                    size={15}
                   />
-                </FormGroup>
+                </Flex>
 
                 <Button
                   height="50px"
-                  width="240px"
+                  width="150px"
                   styles={{
-                    marginTop: "2rem",
+                    marginTop: "3rem",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    fontSize: "1.3rem",
                   }}
                 >
                   <Text
                     text="Add me to waitlist"
-                    type="h4"
+                    type="p"
                     whiteSpace="nowrap"
                     weight={400}
                     color="#fff"
@@ -602,13 +529,4 @@ const WaitList = () => {
   );
 };
 
-const yourReadiness = [
-  { label: "Ready to Go" },
-  { label: "Weighing My Options" },
-  { label: "Securing My Finances" },
-  { label: "Planning for the Future" },
-];
-
 export default WaitList;
-
-

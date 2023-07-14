@@ -1,4 +1,5 @@
-import { SetStateAction, useEffect, useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 
 export const useScreenResolution = () => {
   const [isMobile, setIsMobile] = useState(false);
