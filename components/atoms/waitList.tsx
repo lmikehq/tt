@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Grid } from "@atom/grid";
+import Button from "@atom/button";
 import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import Button from "@atom/button";
-import Image from "./image";
-import waitListImg from "../../assets/images/waitlist/waitlist-icon.svg";
+import { waitlistSchema } from "@lib/application/schema";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Logo from "../../assets/images/brand/tt_blue_logo_with_text.png";
+import { useState } from "react";
 import { RiBarChartHorizontalLine } from "react-icons/ri";
+import styled from "styled-components";
+import Logo from "../../assets/images/brand/tt_blue_logo_with_text.png";
+import waitListImg from "../../assets/images/waitlist/waitlist-icon.svg";
+import Image from "./image";
 import Input from "./input";
 import { SearchInputAsString } from "./searchInput";
+import sleep from "@lib/sleep";
 
 const WaitListWrapper = styled.div`
   overflow: hidden;
@@ -118,7 +120,7 @@ const NavbarSection = styled.div`
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   background: #ffffff;
 
-  @media screen and (max-width: 390px){
+  @media screen and (max-width: 390px) {
     height: 65px;
   }
 `;
@@ -180,9 +182,32 @@ const WaitList = () => {
     readiness: "",
   });
 
+  const [submissionState, setSubmissionState] = useState({
+    error: [] as string[],
+    loading: false,
+  });
+
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
+
+  async function handleWaitlist(e: any) {
+    e.preventDefault();
+    if (submissionState.loading) return;
+    setSubmissionState({ loading: true, error: [] });
+    try {
+      const returned = await waitlistSchema.validate(waitlistData, {abortEarly: false});
+      console.log("returned: ", returned);
+    } catch (error: any) {
+      setSubmissionState({
+        ...submissionState,
+        error: error.errors.map((x:any) => x.message),
+        loading: false,
+      });
+      return;
+    }
+    setSubmissionState({ ...submissionState, loading: false });
+  }
 
   if (isMobile) {
     return (
@@ -279,12 +304,54 @@ const WaitList = () => {
               <form style={{ width: "100%" }}>
                 <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                    <Input placeholder="Full name" />
-                    <Input placeholder="Email" />
+                    <Input
+                      placeholder="Full name"
+                      onChange={(e) =>
+                        setWaitlistData({
+                          ...waitlistData,
+                          fullName: e.target.value,
+                        })
+                      }
+                      border={
+                        submissionState.error.includes("Full name is required")
+                          ? "1px solid red"
+                          : ""
+                      }
+                    />
+                    <Input
+                      placeholder="Email"
+                      onChange={(e) =>
+                        setWaitlistData({
+                          ...waitlistData,
+                          email: e.target.value,
+                        })
+                      }
+                      border={
+                        submissionState.error.includes("Email is required")
+                          ? "1px solid red"
+                          : ""
+                      }
+                    />
                   </Flex>
 
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                    <Input type="number" placeholder="Whatsapp number" />
+                    <Input
+                      type="number"
+                      placeholder="Whatsapp number"
+                      onChange={(e) =>
+                        setWaitlistData({
+                          ...waitlistData,
+                          whatsapp: e.target.value,
+                        })
+                      }
+                      border={
+                        submissionState.error.includes(
+                          "Whatsapp number is required"
+                        )
+                          ? "1px solid red"
+                          : ""
+                      }
+                    />
                     <SearchInputAsString
                       options={[
                         "Ready to Go",
@@ -310,8 +377,23 @@ const WaitList = () => {
                     </SearchInputAsString>
                   </Flex>
 
-                  <Input type="textArea" placeholder="Your Request" />
+                  <Input
+                    type="textArea"
+                    placeholder="Remark..."
+                    onChange={(e) =>
+                      setWaitlistData({
+                        ...waitlistData,
+                        message: e.target.value,
+                      })
+                    }
+                  />
                 </Flex>
+
+                {submissionState.error.length > 0 &&
+                  submissionState.error.map((err, index) => (
+                    <Text text={err} key={index} color="red" type="p" />
+                  ))}
+
                 <Flex justify="flex-start" align="center" gap="1rem">
                   <div style={{ marginTop: "7px" }}>
                     <Input type="checkbox" />
@@ -331,9 +413,10 @@ const WaitList = () => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                   }}
+                  onClick={handleWaitlist}
                 >
                   <Text
-                    text="Add me to waitlist"
+                    text={submissionState.loading ? "Loading..." : "Join now"}
                     type="p"
                     whiteSpace="nowrap"
                     weight={400}
@@ -489,7 +572,7 @@ const WaitList = () => {
                     </SearchInputAsString>
                   </Flex>
 
-                  <Input type="textArea" placeholder="Your Request"  />
+                  <Input type="textArea" placeholder="Your Request" />
                 </Flex>
 
                 <Flex justify="flex-start" align="center" gap="1rem">

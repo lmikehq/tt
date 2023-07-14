@@ -48,7 +48,7 @@ const StyledMuiTextField = styled(MUITextField)`
 `;
 
 export interface InputProps {
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: any) => void;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   onPaste?: () => void;
   placeholder?: string;
@@ -134,6 +134,7 @@ const Input = ({
           borderRadius: br || "4px",
           ...styles,
         }}
+        onChange={onChange}
       ></textarea>
     );
   }

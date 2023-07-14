@@ -116,3 +116,12 @@ export const visaInitVals = {
   ...pesonalInfoKeys,
   ...otherInforKeys,
 };
+
+
+
+export const waitlistSchema =yup.object().shape({
+  fullName: yup.string().required({ message: "Full name is required"}),
+  email: yup.string().email().required({ message: "Email is required"}),
+  whatsapp: yup.string().required( {message: "Whatsapp number is required"}),
+  readiness: yup.string().required({ message: "Please select readiness option"}),
+});
