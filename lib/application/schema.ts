@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const detailsSchema = yup.object({
+export const detailsSchema =yup.object().shape({
   home: yup.object().required(),
   destination: yup.object().required(),
   applicationType: yup.string().required(),
@@ -18,7 +18,7 @@ export const detailsKeys = {
   numberOfTravellers: 1,
 };
 
-export const personalInfoSchema = yup.object({
+export const personalInfoSchema =yup.object().shape({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().email().required(),
@@ -52,7 +52,7 @@ export const pesonalInfoKeys = {
   linkedinOrInstagram: "",
 };
 
-export const edAndEmpSchema = yup.object({
+export const edAndEmpSchema =yup.object().shape({
   degree: yup.string().required(),
   graudautionYear: yup.string().required(),
   schoolName: yup.string().required(),
@@ -78,7 +78,7 @@ export const edAndEmpKeys = {
   endedYear: "",
 };
 
-export const otherInfoSchema = yup.object({
+export const otherInfoSchema =yup.object().shape({
   passNumber: yup.string().required(),
   yearOfIssue: yup.string().required(),
   gender: yup.string().required(),

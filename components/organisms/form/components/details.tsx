@@ -109,7 +109,11 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
           <Text type="p" text="Application type" margin="1rem 0 " />
           <SearchInputAsString
             options={["Single", "Family"]}
-            onChange={(x) => formik.setFieldValue("applicationType", x)}
+            onChange={(x) => {
+              formik?.setFieldValue("applicationType", x)
+              formik?.setFieldValue("numberOfTravellers", 1);
+              setFee(formik?.values?.numberOfTravellers === 1 ? 20000 : 30000);
+            }}
           >
             <Flex justify="space-between">
               <Text

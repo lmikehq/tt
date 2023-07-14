@@ -83,7 +83,6 @@ function ApplicationForm() {
       //   "NGN"
       // ),
     });
-    console.log("response: ", response);
     if (response?.status === 201) {
       console.log("got here bro");
       initializePayment({
@@ -148,7 +147,7 @@ function ApplicationForm() {
   const formik = useFormikHook(initialValues, visaSchema);
   console.log("user: ", initialValues?.email, user?.email);
 
-  const [formFee, setFormFee] = useState(20000);
+  const [formFee, setFormFee] = useState(0);
 
   async function reloadFee() {
     setNextStepLoading(true);
