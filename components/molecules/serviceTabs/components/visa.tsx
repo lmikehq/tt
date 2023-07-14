@@ -1,3 +1,4 @@
+"use client";
 import Button from "@atom/button";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
@@ -7,6 +8,7 @@ import Spinner from "@components/icons/spinner";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
@@ -36,12 +38,13 @@ function Visa() {
   const [type, setType] = useState<string>("Employment");
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const { isMobile } = useScreenResolution();
   return (
     <Section>
       <Grid
         gap="2rem"
         justify="space-between"
-        columns="1fr 1fr 1.5fr"
+        columns={isMobile ? "1fr" : "1fr 1fr 1.5fr"}
         margin="4rem 0 0"
       >
         <SearchInput
@@ -53,6 +56,7 @@ function Visa() {
           legend="Home Country"
           value={home}
           onChange={(x: CountryType) => setHome(x)}
+          height="14px"
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -73,6 +77,7 @@ function Visa() {
           legend="Destination"
           value={destination}
           onChange={(value: LabelType) => setDestination(value)}
+          height="14px"
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text
@@ -89,6 +94,7 @@ function Visa() {
           legend="Visa Type"
           value={type}
           onChange={(value: string) => setType(value)}
+          height="14px"
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
             <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />
@@ -96,7 +102,7 @@ function Visa() {
           </Flex>
         </SearchInputAsString>
       </Grid>
-      <Flex justify="flex-end" margin="2rem 0 0">
+      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
           width="240px"
           borderRadius="4px"

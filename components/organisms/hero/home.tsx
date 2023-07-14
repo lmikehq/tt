@@ -7,12 +7,13 @@ import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
 import bgImage from "../../../assets/images/herobg-map.png";
 import SectionLayout from "@components/layouts/sectionLayout";
-const HeroWrapper = styled.div`
+import { useScreenResolution } from "hook/useScreenResolution";
+const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
   // height: 70vh;
   background: var(--bg-color);
   // max-height: 750px;
-  height: 800px;
+  height: ${({isMobile}) => (isMobile ? "730px" : "800px")};
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
@@ -20,8 +21,10 @@ const HeroWrapper = styled.div`
 `;
 
 function HeroSection() {
+  const { isMobile } = useScreenResolution();
+  const jumboText = "revolutionize travel experiences";
   return (
-    <HeroWrapper>
+    <HeroWrapper isMobile={isMobile}>
       <Navbar page="home" />
       <Center>
         <div>
@@ -29,17 +32,22 @@ function HeroSection() {
             <Text type="p" text="With you, we can" size={"1.2rem"} />
             <Text
               type="p"
-              text="revolutionize travel "
+              text={jumboText
+                .split(" ")
+                .slice(0, isMobile ? 1 : 2)
+                .join(" ")}
               transform="uppercase"
-              size={"3.5rem"}
+              size={isMobile ? "2.3rem" : "3.5rem"}
               weight={900}
-              margin={"1rem 0"}
             />
             <Text
               type="p"
-              text="experiences"
+              text={jumboText
+                .split(" ")
+                .slice(isMobile ? 1 : 2)
+                .join(" ")}
               transform="uppercase"
-              size={"3.5rem"}
+              size={isMobile ? "1.2rem" : "3.5rem"}
               weight={900}
             />
           </SectionLayout>

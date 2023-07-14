@@ -24,7 +24,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }}>
         <>
-          <Flex align="center" gap=".5rem" margin="2rem 0">
+          <Flex align="center" gap=".5rem" margin="0rem 0">
             <FaCircle size={".4rem"} color={ttColors.salmon} />
             <Text type="p" text=" Include your most recent qualification" />
           </Flex>
@@ -137,14 +137,14 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
         </>
 
         <>
-          <Flex align="center" gap=".5rem" margin="2rem 0">
+          <Flex align="center" gap=".5rem" margin="1rem 0">
             <FaCircle size={".4rem"} color={ttColors.salmon} />
             <Text
               type="p"
               text=" Include your most recent employment details"
             />
           </Flex>
-          <Section margin="0 0 1rem">
+          <Section>
             <Text type="p" text="Company Name and location" margin="1rem 0 " />
             <Input
               addon={

@@ -8,6 +8,7 @@ import {
   ReactNode,
   useState,
 } from "react";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styled from "styled-components";
 
 const StyledInput = styled.input`
@@ -26,11 +27,6 @@ const StyledInput = styled.input`
 const StyledMuiTextField = styled(MUITextField)`
   background-color: transparent;
   width: 100%;
-  // border: 1px solid #bdbdbd;
-  &.error {
-    border: 0;
-    outline: 1px solid red;
-  }
 
   .MuiOutlinedInput-input {
     font-size: 1rem;
@@ -39,6 +35,15 @@ const StyledMuiTextField = styled(MUITextField)`
   .MuiFormLabel-root {
     color: #1c1b1f;
     font-size: 1rem;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border: transparent;
+  }
+
+  &:hover {
+    border: transparent;
   }
 `;
 
@@ -50,7 +55,7 @@ export interface InputProps {
   onBlur?: () => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
-  type?: "text" | "number" | "file";
+  type?: "text" | "number" | "file" | "textArea" | "password" | "email" | "tel";
   value?: string;
   name?: string;
   id?: string;
@@ -78,7 +83,7 @@ const Input = ({
   value,
   onBlur,
   margin,
-  type,
+  type = "text",
   id,
   name,
   readOnly,
@@ -94,12 +99,13 @@ const Input = ({
   min,
   max,
   flexGrow,
-  parentWidth
+  parentWidth,
 }: InputProps) => {
+  const [miniType, setMiniType] = useState(type === "password" ? "password" : "");
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
-        type={type || "text"}
+        type={miniType || type}
         onBlur={onBlur}
         placeholder={placeholder}
         onPaste={onPaste}
@@ -117,15 +123,31 @@ const Input = ({
           padding: padding || "0 2rem 0 1rem",
           border,
           width: width || "100%",
-          height: height || "50px",
+          height: height || "40px",
           fontSize: size || "1rem",
           color: color || "#1C1B1F",
           fontWeight: weight || "100",
           fontFamily: "var(--font-family)",
           borderRadius: br || "4px",
-         
         }}
       />
+      {type === "password" && value && (
+        <Box sx={{ position: "absolute", right: "15px", top: "13px" }}>
+          {miniType === "password" ? (
+            <AiOutlineEye
+              size={20}
+              cursor="pointer"
+              onClick={() => setMiniType("text")}
+            />
+          ) : (
+            <AiOutlineEyeInvisible
+              size={20}
+              cursor="pointer"
+              onClick={() => setMiniType("password")}
+            />
+          )}
+        </Box>
+      )}
       {addon && (
         <Box
           sx={{
@@ -156,25 +178,34 @@ export const TextField = ({
   legend,
   border,
   width,
+  type,
 }: InputProps) => {
   return (
-    <StyledMuiTextField
-      required
-      // onBlur={onBlur}
-      defaultValue={placeholder}
-      // onPaste={onPaste}
-      // value={value}
-      // onChange={onChange}
-      label={legend}
-      id={id}
-      // name={name}
-      // disabled={readOnly}
-      // style={{
-      //   margin,
-      //   padding,
-      // }}
-      // label="not requreid"
-    />
+    <>
+      <StyledMuiTextField
+        required
+        type={type || "text"}
+        // onBlur={onBlur}
+        placeholder={placeholder}
+        // onPaste={onPaste}
+        // value={value}
+        onChange={onChange}
+        label={legend}
+        id={id}
+        // name={name}
+        // disabled={readOnly}
+        style={{
+          margin,
+          border: border,
+          borderRadius: "4px",
+        }}
+        sx={{
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            border: "none",
+          },
+        }}
+      />
+    </>
   );
 };
 

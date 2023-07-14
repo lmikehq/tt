@@ -30,7 +30,7 @@ const Breadcrumb = () => {
   return (
     <BreadcrumbContainer>
       <SectionLayout>
-        <Flex gap=".7rem" align="center" margin="1rem 0">
+        <Flex gap=".7rem" align="center">
           <Link href="/">
             <Text
               type="p"

@@ -9,15 +9,17 @@ import { get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/data";
 import { FormikValues } from "formik";
+import useCloudinaryUpload from "hook/useCloudinary";
+import { useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
+import { BiTrash } from "react-icons/bi";
 import { FaCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
+import { useFilePicker } from "use-file-picker";
 import FormStepTitle from "./formStepsTitle";
-import { BiTrash } from "react-icons/bi";
-import { useState } from "react";
-
+import { toast } from "react-hot-toast";
 interface formProps {
   formik: FormikValues;
   steps: string[];
@@ -38,19 +40,42 @@ const UploadedDoc = styled.div<{ bg: any }>`
   background: #ffffff;
   background-image: url(${({ bg }) => bg});
   height: 6rem;
-  width: 8rem;
+  width: 10rem;
   background-size: cover;
   background-position: center;
 `;
 
 function OtherInformation({ formik, steps, index }: formProps) {
   const [hovered, setHovered] = useState<number>(-1);
+  const [openFilePicker, { filesContent }] = useFilePicker({
+    readAs: "DataURL",
+    accept: ["image/*", ".pdf", ".doc", ".docx"],
+    multiple: false,
+  });
+  const presets = {
+    public_id: formik.values.lastName || "unknown",
+    folder: `${formik.values.lastName || "unknown"}-files`,
+  };
+  const { uploadImage, loading } = useCloudinaryUpload(presets);
+
+  useEffect(() => {
+    if (filesContent.length > 0) {
+      uploadImage(filesContent[0].content).then((image) => {
+        if (typeof image === "string")
+          formik.setFieldValue("uploadedDocuments", [
+            ...formik.values.uploadedDocuments,
+            image,
+          ]);
+      });
+    }
+  }, [filesContent]);
 
   return (
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
-      <form style={{ margin: "2rem 0" }}>
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+
+      <form style={{ margin: "1rem 0" }}>
+        <Flex justify="space-between" gap="1.5rem">
           <Section>
             <Text type="p" text="Passport Number" margin="1rem 0 " />
             <Input
@@ -89,7 +114,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex justify="space-between" gap="1.5rem">
           <Section>
             <Text type="p" text="Year of Issue" margin="1rem 0 " />
             <SearchInputAsString
@@ -140,7 +165,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           type="p"
           text="Your guarantor’s information"
           size="1.6rem"
-          margin="2rem 0 1rem"
+          margin="1rem 0 0"
         />
 
         <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
@@ -242,28 +267,40 @@ function OtherInformation({ formik, steps, index }: formProps) {
 
           <UploadArea>
             <Center>
-              <div>
-                <p>
-                  <span style={{ color: ttColors.primary, cursor: "pointer" }}>
-                    Upload a file
-                  </span>{" "}
-                  or drag and drop
-                </p>
-                <Text
-                  type="p"
-                  text="PNG, JPG, PDF, GIF up to 10MB"
-                  weight={100}
-                  size={".9rem"}
-                  margin="1rem 0"
-                />
-              </div>
+              {loading ? (
+                "loading"
+              ) : (
+                <div>
+                  <p
+                    onClick={() => {
+                      if (!formik.values.lastName) 
+                      return toast.error("Please fill all your details first");
+                      openFilePicker();
+                    }}
+                  >
+                    <span
+                      style={{ color: ttColors.primary, cursor: "pointer" }}
+                    >
+                      Upload a file
+                    </span>{" "}
+                    or drag and drop
+                  </p>
+                  <Text
+                    type="p"
+                    text="PNG, JPG, PDF, GIF up to 10MB"
+                    weight={100}
+                    size={".9rem"}
+                    margin="1rem 0"
+                  />
+                </div>
+              )}
             </Center>
           </UploadArea>
 
           <Flex margin="2rem 0 0" gap="1rem" wrap="wrap">
-            {[1, 2, 3, 4, 5, 6].map((_item, i) => (
+            {formik.values.uploadedDocuments.map((_item: any, i: number) => (
               <UploadedDoc
-                bg={ID.src}
+                bg={_item}
                 key={i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(-1)}
@@ -282,6 +319,18 @@ function OtherInformation({ formik, steps, index }: formProps) {
                       size={30}
                       style={{
                         cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        const confirmed = window.confirm(
+                          "Are you sure you want to delete this document?"
+                        );
+                        if (!confirmed) return;
+                        formik.setFieldValue(
+                          "uploadedDocuments",
+                          formik.values.uploadedDocuments.filter(
+                            (_: any, index: number) => index !== i
+                          )
+                        );
                       }}
                     />
                   </Flex>

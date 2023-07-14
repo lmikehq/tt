@@ -13,17 +13,21 @@ import logo from "@image/brand/tt_blue_logo_with_text.png";
 import google from "@image/google.svg";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
+import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
+
 function LoginPage() {
+  const { isMobile } = useScreenResolution();
+
   const router = useRouter();
   return (
     <SectionLayout>
       <Flex margin="4rem 0">
         <Section>
-          <Section width="90%">
+          <Section width={isMobile ? "100%" : "90%"}>
             <img src={logo.src} alt="logo" height="60px" />
             <Flex
               margin="2rem 0 0 "
@@ -68,14 +72,14 @@ function LoginPage() {
               </Button>
 
               <Flex justify="space-between" align="center" width="90%">
-                <Divider sx={{ width: "33%", color: "#112211" }} />
+                <Divider sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }} />
                 <Text
                   type="p"
                   text="Or login with"
                   margin="0 1rem"
                   color="#112211"
                 />
-                <Divider sx={{ width: "33%", color: "#112211" }} />
+                <Divider sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }} />
               </Flex>
               <Button
                 background="transparent"
@@ -87,7 +91,7 @@ function LoginPage() {
             </Flex>
           </Section>
         </Section>
-        <Section>
+        <Section styles={{ display: isMobile ? "none" : "block" }}>
           <img src={bgImage.src} alt="background image" width="100%" />
         </Section>
       </Flex>

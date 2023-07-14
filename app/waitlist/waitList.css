@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
+
+body {
+    background: #f2f2f2;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+}
+
+
+@media screen and (max-width: 900px) {
+    body {
+        margin: 0rem;
+        display: block;
+    }
+}
+
+
+
+
+@media screen and (max-width: 900px) {
+    .menu-icon {
+        display: block;
+        cursor: pointer;
+    }
+
+    .nav-elements {
+        position: absolute;
+        right: 0;
+        top: 80px;
+        background-color: #ffffff;
+        width: 0px;
+        height: calc(100vh - 60px);
+        transition: all 0.3s ease-in;
+        overflow: hidden;
+        box-shadow: -16px 0px 14px -9px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-elements.active {
+        width: 270px;
+    }
+}
+
+
+
+
+
+@media (max-width: 900px) {
+    .nav-elements.active {
+            width: 270px;
+        background-color: #ffffff;
+        z-index: 999;
+        }
+}
+@media (max-width: 4600px) {
+    .menu-icon {
+        display: block;
+        cursor: pointer;
+    }
+
+    .nav-elements {
+        position: absolute;
+        right: 0;
+        top: 80px;
+        background-color: #ffffff;
+        width: 0px;
+        height: calc(100vh - 60px);
+        transition: all 0.3s ease-in;
+        overflow: hidden;
+        z-index: 999;
+        box-shadow: -16px 0px 14px -9px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-elements.active {
+        width: 270px;
+        background-color: #ffffff;
+            z-index: 999;
+    }
+
+}

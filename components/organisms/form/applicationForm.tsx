@@ -1,5 +1,7 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+
 import Button from "@atom/button";
 import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
@@ -24,7 +26,8 @@ import {
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
-
+import apiService from "hook/apiService";
+import { toast } from "react-hot-toast";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -39,13 +42,52 @@ const PromoInput = styled.div`
   & button {
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
-    height: 50px !important;
+    height: 40px !important;
   }
 `;
 
-const ApplicationForm = () => {
+function ApplicationForm() {
   const { isMobile } = useScreenResolution();
-
+  const [promoCode, setPromoCode] = useState("");
+  const [enabled, setEnabled] = useState(false);
+  const [visaButtonClicked, setVisaButtonClicked] = useState(false);
+  async function validatePromoCode() {
+    const response = await apiService("visa/verify-promo-code", "POST", {
+      promoCode,
+    });
+    return response;
+  }
+  async function handleVisaApplication() {
+    const response = await apiService("visa/apply", "POST", {
+      form: {
+        ...formik.values,
+        destination: formik.values.destination?.name,
+        home: formik.values.destination?.home,
+      },
+      promoCode,
+      payment: currencyFormatter(
+        shownFees.reduce(
+          (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
+          0
+        ),
+        "NGN"
+      ),
+    });
+    console.log("response: ", response, formik.values);
+    return response;
+  }
+  const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
+    enabled: visaButtonClicked,
+    retry: false,
+  });
+  const { data: promoData } = useQuery(
+    ["promoCode", promoCode],
+    validatePromoCode,
+    {
+      enabled,
+      retry: false,
+    }
+  );
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -58,73 +100,67 @@ const ApplicationForm = () => {
   const [nextStepLoading, setNextStepLoading] = useState(false);
 
   const nextStep = async () => {
-    if (nextStepLoading || currentPhase === 5) return;
-    setNextStepLoading(true);
-    setShownFees([]);
-    await sleep(300);
+    if (nextStepLoading) return;
+    if (currentPhase === 5) return setVisaButtonClicked(true);
+    await reloadFee();
     setCurrentPhase(currentPhase + 1);
-    setShownFees(feeItems);
-    setNextStepLoading(false);
   };
   const prevStep = async () => {
     if (nextStepLoading || currentPhase === 1) return;
-    setNextStepLoading(true);
-    setShownFees([]);
-    await sleep(300);
+    await reloadFee();
     setCurrentPhase(currentPhase - 1);
-    setShownFees(feeItems);
-    setNextStepLoading(false);
   };
 
   const formik = useFormikHook(visaInitVals, visaSchema);
-  const [applicationFee, setApplicationFee] = useState(0);
-  const feeItems = [
-    {
-      name: "Fees",
-      amount: "Price",
-      type: "head",
-    },
-    {
-      name: "Application Fee",
-      amount: 30000,
-    },
-    {
-      name: "Standard processing fee",
-      amount: 0,
-    },
-    {
-      name: "Administrative charge",
-      amount: 0,
-    },
-    {
-      name: "VAT",
-      amount: 150,
-    },
-  ];
+
+  const [formFee, setFormFee] = useState(20000);
+
+  async function reloadFee() {
+    setNextStepLoading(true);
+    setShownFees([]);
+    await sleep(200);
+    setNextStepLoading(false);
+    setShownFees(calcFees(formFee));
+  }
 
   useEffect(() => {
-    if (formik.values.applicationFee) {
-      switch (formik.values.applicationFee) {
-        case "Single":
-          setApplicationFee(30000);
-          break;
-        case "Family":
-          setApplicationFee(50000);
-          break;
-        default:
-          setApplicationFee(0);
-          break;
-      }
-    }
-  });
+    reloadFee();
+  }, [formFee]);
 
-  const [shownFees, setShownFees] = useState<IFee[]>(feeItems);
+  const [shownFees, setShownFees] = useState<IFee[]>(calcFees(formFee));
 
-  const step = getSteps(formik).find((x) => x.id === currentPhase);
+  function calcFees(formFee: number): IFee[] {
+    return [
+      {
+        name: "Fees",
+        amount: "Price",
+        type: "head",
+      },
+      {
+        name: "Form Registration Fee",
+        amount: formFee,
+      },
+      {
+        name: "Standard processing fee",
+        amount: 0,
+      },
+      {
+        name: "Administrative charge",
+        amount: 0,
+      },
+      {
+        name: "VAT",
+        amount: 150,
+      },
+    ];
+  }
 
-  function handlePromoCode(e: any) {
+  const step = getSteps(formik, setFormFee).find((x) => x.id === currentPhase);
+
+  async function handlePromoCode(e: any) {
     e.preventDefault();
-    window.alert("Promo code applied");
+    if (!promoCode) return toast.error("Please enter a promo code");
+    setEnabled(true);
   }
 
   return (
@@ -198,6 +234,7 @@ const ApplicationForm = () => {
                     )}
                     size="2.1rem"
                     weight="bold"
+                    key={formFee}
                   />
                 </Flex>
               ) : (
@@ -213,6 +250,8 @@ const ApplicationForm = () => {
                         placeholder="Enter Promo Code"
                         width="100%"
                         flexGrow={1}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        value={promoCode}
                       />
                       <Button type="submit">
                         <Text type="p" text="Apply" weight={600} size="1rem" />
@@ -231,7 +270,14 @@ const ApplicationForm = () => {
                 {nextStepLoading ? (
                   <Spinner size="40px" fill={ttColors.primary} />
                 ) : currentPhase === 5 ? (
-                  `Pay NGN 20,000 Now`
+                  `Pay ${currencyFormatter(
+                    shownFees.reduce(
+                      (a, b) =>
+                        a + (typeof b.amount === "number" ? b.amount : 0),
+                      0
+                    ),
+                    "NGN"
+                  )}`
                 ) : (
                   "Continue"
                 )}
@@ -298,6 +344,6 @@ const ApplicationForm = () => {
       </Flex>
     </>
   );
-};
+}
 
 export default ApplicationForm;

@@ -62,10 +62,13 @@ const FrameInfo = styled.div`
       font-size: 16px;
       line-height: 20px;
       text-align: center;
-      // width: 389px;
       height: 40px;
       margin: 0 auto;
       margin-bottom: 1rem;
+
+      @media screen and (max-width: 600px){
+        width: 85%;
+      }
     }
 
     & button {
