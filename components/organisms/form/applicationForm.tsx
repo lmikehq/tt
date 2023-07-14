@@ -21,7 +21,7 @@ import apiService from "hook/apiService";
 import useFormikHook from "hook/useFormik";
 import { usePaystack } from "hook/usePaystack";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsShieldFillCheck } from "react-icons/bs";
@@ -33,6 +33,7 @@ import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
+import { Box } from "@mui/material";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -55,7 +56,7 @@ function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
   const [promocodeLoading, setPromocodeLoading] = useState(false);
-  // const [visaButtonClicked, setVisaButtonClicked] = useState(false);
+  const [applicationResponse, setApplicationResponse] = useState<any>({});
   const { initializePayment, loading, error, response } = usePaystack();
   async function handleVisaApplication() {
     const response = await apiService("visa/new-application", "POST", {
@@ -71,45 +72,13 @@ function ApplicationForm() {
       yearEnded: formik.values.endedYear,
       passportNumber: formik.values.passNumber,
       passportIssuedCountry: formik.values.passIssueCountry,
-      passportIssueYear: formik.values.yearOfIssue,
+      passportExpiryYear: formik.values.expiryYear,
       relationshipToGuarantor: formik.values.guarantorRelationship,
       documents: formik.values.uploadedDocuments,
-      // promoCode,
-      // payment: currencyFormatter(
-      //   shownFees.reduce(
-      //     (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
-      //     0
-      //   ),
-      //   "NGN"
-      // ),
     });
-    if (response?.status === 201) {
-      console.log("got here bro");
-      initializePayment({
-        amount: shownFees.reduce(
-          (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
-          0
-        ),
-        email: formik.values.email,
-        metadata: {
-          name: formik.values.lastName,
-        },
-      });
-    }
-    return response;
+
+    return setApplicationResponse(response);
   }
-  // const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
-  //   enabled: visaButtonClicked,
-  //   retry: false,
-  // });
-  // const { data: promoData } = useQuery(
-  //   ["promoCode", promoCode],
-  //   validatePromoCode,
-  //   {
-  //     enabled,
-  //     retry: false,
-  //   }
-  // );
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -120,11 +89,25 @@ function ApplicationForm() {
     type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
   );
   const [nextStepLoading, setNextStepLoading] = useState(false);
-
+  const router = useRouter();
   const nextStep = async () => {
     if (nextStepLoading) return;
-    if (currentPhase === 5) return await handleVisaApplication();
-
+    if (currentPhase === 4) {
+      setNextStepLoading(true);
+      await handleVisaApplication();
+      return setNextStepLoading(false);
+    }
+    if (currentPhase === 5)
+      return initializePayment({
+        amount: shownFees.reduce(
+          (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
+          0
+        ),
+        email: formik.values.email,
+        metadata: {
+          name: formik.values.lastName,
+        },
+      });
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
   };
@@ -145,14 +128,13 @@ function ApplicationForm() {
   };
 
   const formik = useFormikHook(initialValues, visaSchema);
-  console.log("user: ", initialValues?.email, user?.email);
 
   const [formFee, setFormFee] = useState(0);
 
   async function reloadFee() {
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(2000);
+    await sleep(1000);
     setNextStepLoading(false);
     setShownFees(calcFees(formFee));
   }
@@ -330,6 +312,20 @@ function ApplicationForm() {
                     </Section>
                   )}
 
+                  {applicationResponse?.statusCode === 400 &&
+                    applicationResponse?.errors?.message?.map(
+                      (x: any, i: number) => (
+                        <Text
+                          type="p"
+                          key={i}
+                          text={x.constraints}
+                          color="rgb(255, 134, 130)"
+                          size="1rem"
+                          margin='0 0 .6rem 0'
+                        />
+                      )
+                    )}
+
                   <Button
                     width="100%"
                     margin="1rem 0"
@@ -352,14 +348,16 @@ function ApplicationForm() {
                     )}
                   </Button>
 
-                  <Text
-                    type="p"
-                    text="Save Progress & Continue later"
-                    size="13px"
-                    weight="bold"
-                    decoration="underline"
-                    cursor="pointer"
-                  />
+                  <Box onClick={() => router.push("/auth/login")}>
+                    <Text
+                      type="p"
+                      text="Save Progress & Continue later"
+                      size="13px"
+                      weight="bold"
+                      decoration="underline"
+                      cursor="pointer"
+                    />
+                  </Box>
                   <Flex margin="1rem 0" gap=".5rem">
                     <BsShieldFillCheck size="25px" />
                     <div>

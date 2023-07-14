@@ -22,7 +22,7 @@ export function usePaystack() {
       paystack.newTransaction({
         key: process.env.NEXT_PUBLIC_PAYSTACK_KEY,
         email: data.email,
-        amount: data.amount,
+        amount: data.amount * 100,
         currency: data.currency || "NGN",
         metadata: data.metadata,
         onSuccess: (transaction: any) => {

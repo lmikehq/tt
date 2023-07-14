@@ -118,17 +118,17 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text type="p" text="Year of Expiry" margin="1rem 0 " />
             <SearchInputAsString
               options={get100Years(true)}
-              onChange={(x) => formik.setFieldValue("yearOfIssue", x)}
+              onChange={(x) => formik.setFieldValue("expiryYear", x)}
             >
               <Flex justify="space-between">
                 <Text
                   type="p"
-                  text={formik?.values?.yearOfIssue}
+                  text={formik?.values?.expiryYear}
                   color="#1C1B1F"
                   weight={100}
                   styles={{ cursor: "pointer" }}
                 />
-                {formik.values.yearOfIssue ? (
+                {formik.values.expiryYear ? (
                   <AiOutlineCheck color="#3BB98E" />
                 ) : (
                   <IoIosArrowDown size={20} />
@@ -272,8 +272,10 @@ function OtherInformation({ formik, steps, index }: formProps) {
                 <div>
                   <p
                     onClick={() => {
-                      if (!formik.values.lastName) 
-                      return toast.error("Please fill all your details first");
+                      if (!formik.values.lastName)
+                        return toast.error(
+                          "Please fill all your details first"
+                        );
                       openFilePicker();
                     }}
                   >

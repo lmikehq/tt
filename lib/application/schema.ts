@@ -80,7 +80,7 @@ export const edAndEmpKeys = {
 
 export const otherInfoSchema =yup.object().shape({
   passNumber: yup.string().required(),
-  yearOfIssue: yup.string().required(),
+  expiryYear: yup.string().required(),
   gender: yup.string().required(),
   passIssueCountry: yup.string().required(),
   guarantorName: yup.string().required(),
@@ -95,7 +95,7 @@ export const otherInforKeys = {
   passNumber: "",
   passIssueCountry: "",
   gender: "",
-  yearOfIssue: "",
+  expiryYear: "",
   guarantorName: "",
   guarantorAddress: "",
   guarantorPhone: "",
