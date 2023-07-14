@@ -32,7 +32,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-          <Toaster position="bottom-right" />
+          <Toaster position="top-center" />
           <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

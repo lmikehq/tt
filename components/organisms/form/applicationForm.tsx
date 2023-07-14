@@ -19,6 +19,7 @@ import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import currencyFormatter from "data/currencyFormatter";
 import apiService from "hook/apiService";
 import useFormikHook from "hook/useFormik";
+import { usePaystack } from "hook/usePaystack";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -28,11 +29,10 @@ import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
+import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
-import { useUserStore } from "store/useStore";
-import { usePaystack } from "hook/usePaystack";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -54,7 +54,7 @@ const PromoInput = styled.div`
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
-  const [_enabled, setEnabled] = useState(false);
+  const [promocodeLoading, setPromocodeLoading] = useState(false);
   // const [visaButtonClicked, setVisaButtonClicked] = useState(false);
   const { initializePayment, loading, error, response } = usePaystack();
   async function handleVisaApplication() {
@@ -193,8 +193,15 @@ function ApplicationForm() {
 
   async function handlePromoCode(e: any) {
     e.preventDefault();
-    if (!promoCode) return toast.error("Please enter a promo code");
-    setEnabled(true);
+    if (promocodeLoading) return;
+    setPromocodeLoading(true);
+    if (!promoCode) {
+      toast.error("Please enter a promo code");
+      return setPromocodeLoading(false);
+    }
+    await sleep(2000);
+    setPromocodeLoading(false);
+    toast.error("Promo code not applied");
   }
 
   return (
@@ -313,7 +320,7 @@ function ApplicationForm() {
                           <Button type="submit">
                             <Text
                               type="p"
-                              text="Apply"
+                              text={promocodeLoading ? "Loading..." : "Apply"}
                               weight={600}
                               size="1rem"
                             />

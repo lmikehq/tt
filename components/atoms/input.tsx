@@ -55,7 +55,15 @@ export interface InputProps {
   onBlur?: () => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
-  type?: "text" | "number" | "file" | "textArea" | "password" | "email" | "tel";
+  type?:
+    | "text"
+    | "number"
+    | "file"
+    | "textArea"
+    | "password"
+    | "email"
+    | "tel"
+    | "address";
   value?: string;
   name?: string;
   id?: string;
@@ -101,7 +109,9 @@ const Input = ({
   flexGrow,
   parentWidth,
 }: InputProps) => {
-  const [miniType, setMiniType] = useState(type === "password" ? "password" : "");
+  const [miniType, setMiniType] = useState(
+    type === "password" ? "password" : ""
+  );
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput

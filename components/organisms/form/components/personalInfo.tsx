@@ -168,6 +168,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 <AiOutlineCheck color="#3BB98E" />
               ) : undefined
             }
+            type="address"
             value={formik.values.residentialAddress}
             onChange={(x) =>
               formik.setFieldValue("residentialAddress", x.target.value)

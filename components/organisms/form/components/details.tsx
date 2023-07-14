@@ -21,7 +21,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
-      <form style={{ margin: "2rem 0" }}>
+      <form style={{ margin: "2rem 0" }} autoComplete="off">
         <Section margin="0 0 1rem">
           <Text type="p" text="Where are you from?" margin="1rem 0 " />
           <SearchInput

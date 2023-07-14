@@ -1,8 +1,12 @@
-export function get100Years() {
+export function get100Years(before: boolean = false) {
   const currentYear = new Date().getFullYear();
   const years = [];
 
   for (let i = 0; i < 100; i++) {
+    if (before) {
+      years.push(currentYear + i);
+      continue;
+    }
     years.push(currentYear - i);
   }
 
