@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-export const detailsSchema =yup.object().shape({
+export const detailsSchema = yup.object().shape({
   home: yup.object().required(),
   destination: yup.object().required(),
   applicationType: yup.string().required(),
@@ -13,12 +13,12 @@ export const detailsKeys = {
   home: {},
   destination: {},
   applicationType: "",
-  visaType: '', // 
+  visaType: "", //
   travellingBy: "",
   numberOfTravellers: 1,
 };
 
-export const personalInfoSchema =yup.object().shape({
+export const personalInfoSchema = yup.object().shape({
   firstName: yup.string().required(),
   lastName: yup.string().required(),
   email: yup.string().email().required(),
@@ -52,7 +52,7 @@ export const pesonalInfoKeys = {
   linkedinOrInstagram: "",
 };
 
-export const edAndEmpSchema =yup.object().shape({
+export const edAndEmpSchema = yup.object().shape({
   degree: yup.string().required(),
   graudautionYear: yup.string().required(),
   schoolName: yup.string().required(),
@@ -78,7 +78,7 @@ export const edAndEmpKeys = {
   endedYear: "",
 };
 
-export const otherInfoSchema =yup.object().shape({
+export const otherInfoSchema = yup.object().shape({
   passNumber: yup.string().required(),
   expiryYear: yup.string().required(),
   gender: yup.string().required(),
@@ -117,11 +117,14 @@ export const visaInitVals = {
   ...otherInforKeys,
 };
 
-
-
-export const waitlistSchema =yup.object().shape({
-  fullName: yup.string().required({ message: "Full name is required"}),
-  email: yup.string().email().required({ message: "Email is required"}),
-  whatsapp: yup.string().required( {message: "Whatsapp number is required"}),
-  readiness: yup.string().required({ message: "Please select readiness option"}),
+export const waitlistSchema = yup.object().shape({
+  fullName: yup.string().required({ message: "Full name is required" }),
+  email: yup
+    .string()
+    .email({ message: "Please put a valid email" })
+    .required({ message: "Email is required" }),
+  whatsapp: yup.string().required({ message: "Whatsapp number is required" }),
+  readiness: yup
+    .string()
+    .required({ message: "Please select readiness option" }),
 });

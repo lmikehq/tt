@@ -22,6 +22,7 @@ const StyledInput = styled.input`
     border: 0;
     outline: 1px solid red;
   }
+
 `;
 
 const StyledMuiTextField = styled(MUITextField)`

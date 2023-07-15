@@ -79,6 +79,7 @@ interface SearchProps {
   height?: string;
   options: any[];
   value?: any;
+  border?: string;
 
   onChange: (x: any) => void;
 }
@@ -122,14 +123,13 @@ SearchProps) {
             width: "100%",
             fontSize: 16,
             color: "#1C1B1F",
-            "& .MuiInputAdornment-root":
-              {
-                position: "absolute",
-                top: "50%",
-                display: "flex",
-                justifyContent: "center",
-                width: "92%",
-              },
+            "& .MuiInputAdornment-root": {
+              position: "absolute",
+              top: "50%",
+              display: "flex",
+              justifyContent: "center",
+              width: "92%",
+            },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
             },
@@ -235,6 +235,7 @@ export function SearchInputAsString({
   value,
   onChange,
   height,
+  border,
 }: SearchProps) {
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [inputValue, setInputValue] = useState("");
@@ -287,6 +288,7 @@ export function SearchInputAsString({
             "& input": {
               height: height || "8px",
             },
+            border: border,
           }}
           onClick={handleClick}
           label={legend}

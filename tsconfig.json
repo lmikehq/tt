@@ -29,6 +29,7 @@
       "@layout/*": ["components/layouts/*"],
       "@style/*": ["styles/*"],
       "@image/*": ["assets/images/*"],
+      "@lottie/*": ["assets/lotties/*"],
       "@font/*": ["assets/fonts/*"],
       "@icon/*": ["components/icons/*"],
       "@flag/*": ["assets/flags/*"],

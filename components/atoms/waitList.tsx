@@ -17,6 +17,8 @@ import Input from "./input";
 import { SearchInputAsString } from "./searchInput";
 import sleep from "@lib/sleep";
 import apiService from "hook/apiService";
+import WaitlistModal from "@organism/modal/components/waitlistModal";
+import { useRouter } from "next/navigation";
 
 const WaitListWrapper = styled.div`
   overflow: hidden;
@@ -86,7 +88,7 @@ const NavLink = styled.div`
       right: 0;
       top: 60px;
       background-color: #f3f2f1;
-      width: 0px;
+      // width: 19000px;
       /* height: calc(100vh - 60px); */
       height: 50%;
       transition: all 0.3s ease-in;
@@ -173,6 +175,7 @@ const MenuIcon = styled.svg`
 `;
 
 const WaitList = () => {
+  const router = useRouter();
   const { isMobile } = useScreenResolution();
   const [showNavbar, setShowNavbar] = useState(false);
   const [waitlistData, setWaitlistData] = useState({
@@ -188,6 +191,11 @@ const WaitList = () => {
     loading: false,
   });
 
+  const [modalStatus, setModalStatus] = useState({
+    show: false,
+    number: "",
+  });
+
   const handleShowNavbar = () => {
     setShowNavbar(!showNavbar);
   };
@@ -198,8 +206,6 @@ const WaitList = () => {
     setSubmissionState({ loading: true, error: [] });
     try {
       await waitlistSchema.validate(waitlistData, { abortEarly: false });
-      console.log("response222: ", waitlistData);
-      const response = await apiService("/waitlist", "POST", waitlistData);
     } catch (error: any) {
       setSubmissionState({
         ...submissionState,
@@ -208,13 +214,132 @@ const WaitList = () => {
       });
       return;
     }
-    console.log('response: ', waitlistData)
-    setSubmissionState({ ...submissionState, loading: false });
+    await sleep(1000);
+    const response = (await apiService("/waitlist", "POST", {
+      ...waitlistData,
+      whatsappNumber: waitlistData.whatsapp,
+      remarks: waitlistData.message,
+      subscribedToNewSletter: true,
+    })) as any;
+    if (response.statusCode === 201) {
+      setModalStatus({
+        ...modalStatus,
+        show: true,
+        number: response.data.number,
+      });
+    } else if (response.statusCode === 422) {
+      setModalStatus({ ...modalStatus, show: true, number: "" });
+    } else {
+      setSubmissionState({
+        ...submissionState,
+        error: ["Something went wrong, please try again"],
+        loading: false,
+      });
+    }
+    setSubmissionState({ ...submissionState, loading: false, error: [] });
   }
 
-  if (isMobile) {
-    return (
-      <WaitListWrapper>
+  return (
+    <WaitListWrapper>
+      <WaitlistModal
+        open={modalStatus.show}
+        handleClose={() => {
+          setModalStatus({ ...modalStatus, show: false });
+          router.push("/");
+        }}
+        number={modalStatus.number}
+      />
+      <NavLink className={`nav-elements  ${showNavbar && "active"}`}>
+        <Grid
+          columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
+          gap={isMobile ? "2rem" : "0px"}
+          align="center"
+          justify="right"
+          width="100%"
+          textAlign="center"
+          style={{ placeContent: "center" }}
+          margin={isMobile ? "16px auto" : "0px auto"}
+        >
+          <Link
+            href=""
+            style={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#2f234f",
+              textDecoration: "none",
+              marginLeft: isMobile ? "0px " : "30px",
+            }}
+          >
+            <Text text="Events" type="p" />
+          </Link>
+
+          <Link
+            href=""
+            style={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#2f234f",
+              textDecoration: "none",
+              marginLeft: isMobile ? "0px " : "30px",
+            }}
+          >
+            <Text text="FAQ" type="p" />
+          </Link>
+
+          <Link
+            href=""
+            style={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#2f234f",
+              textDecoration: "none",
+              marginLeft: isMobile ? "0px " : "30px",
+            }}
+          >
+            <Text text="Inquire" type="p" />
+          </Link>
+
+          <Link
+            href=""
+            style={{
+              fontSize: "16px",
+              fontWeight: "400",
+              marginLeft: isMobile ? "0px " : "30px",
+            }}
+          >
+            <Button>
+              <Text
+                text="Join now"
+                type="p"
+                whiteSpace="nowrap"
+                weight={400}
+                color="#fff"
+              />
+            </Button>
+          </Link>
+        </Grid>
+      </NavLink>
+      <Flex gap="0rem" width="100%" height="100%">
+        {!isMobile && (
+          <LeftSide>
+            <LeftSideText>
+              <Text type="h1" text="Thrillers Travels​" />
+              <Text
+                type="h2"
+                text="
+              Never wait for anyone"
+              />
+              <Text
+                type="p"
+                text=" Our waitlist keeps you informed of the next step, ensuring you
+              can secure your spot ahead. We value your patience and anticipate
+              a future journey together."
+              />
+            </LeftSideText>
+            <Image src={waitListImg} alt="" />
+          </LeftSide>
+        )}
+
         <RightSide>
           <NavbarSection>
             <Container>
@@ -225,19 +350,20 @@ const WaitList = () => {
               </TtBrand>
 
               <MenuIcon onClick={handleShowNavbar}>
-                <RiBarChartHorizontalLine size="1.5rem" />
+                <RiBarChartHorizontalLine size="2rem" />
               </MenuIcon>
 
-              <NavLink className={`nav-elements  ${showNavbar && "active"}`}>
+              {!isMobile && (
                 <Grid
                   columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
-                  gap={isMobile ? "2rem" : "0px"}
+                  gap={isMobile ? "3rem" : "0px"}
                   align="center"
                   justify="right"
                   width="100%"
                   textAlign="center"
-                  style={{ placeContent: "center" }}
-                  margin={isMobile ? "16px auto" : "0px auto"}
+                  style={{
+                    placeContent: "center",
+                  }}
                 >
                   <Link
                     href=""
@@ -246,7 +372,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: isMobile ? "0px " : "30px",
+                      marginLeft: "30px",
                     }}
                   >
                     <Text text="Events" type="p" />
@@ -259,7 +385,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: isMobile ? "0px " : "30px",
+                      marginLeft: "30px",
                     }}
                   >
                     <Text text="FAQ" type="p" />
@@ -272,7 +398,7 @@ const WaitList = () => {
                       fontWeight: "400",
                       color: "#2f234f",
                       textDecoration: "none",
-                      marginLeft: isMobile ? "0px " : "30px",
+                      marginLeft: "30px",
                     }}
                   >
                     <Text text="Inquire" type="p" />
@@ -283,7 +409,7 @@ const WaitList = () => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      marginLeft: isMobile ? "0px " : "30px",
+                      marginLeft: "30px",
                     }}
                   >
                     <Button>
@@ -297,10 +423,9 @@ const WaitList = () => {
                     </Button>
                   </Link>
                 </Grid>
-              </NavLink>
+              )}
             </Container>
           </NavbarSection>
-
           <RightWrapper>
             <RightSideContent>
               <h3>What home you need? </h3>
@@ -308,17 +433,17 @@ const WaitList = () => {
                 <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                     <Input
-                      placeholder="Full name"
+                      placeholder="full name"
+                      border={
+                        submissionState.error.includes("Full name is required")
+                          ? "1px solid red"
+                          : ""
+                      }
                       onChange={(e) =>
                         setWaitlistData({
                           ...waitlistData,
                           fullName: e.target.value,
                         })
-                      }
-                      border={
-                        submissionState.error.includes("Full name is required")
-                          ? "1px solid red"
-                          : ""
                       }
                     />
                     <Input
@@ -330,7 +455,10 @@ const WaitList = () => {
                         })
                       }
                       border={
-                        submissionState.error.includes("Email is required")
+                        submissionState.error.includes("Email is required") ||
+                        submissionState.error.includes(
+                          "Please put a valid email"
+                        )
                           ? "1px solid red"
                           : ""
                       }
@@ -369,6 +497,13 @@ const WaitList = () => {
                           readiness: e,
                         })
                       }
+                      border={
+                        submissionState.error.includes(
+                          "Please select readiness option"
+                        )
+                          ? "1px solid red"
+                          : ""
+                      }
                     >
                       <Text
                         type="p"
@@ -382,7 +517,7 @@ const WaitList = () => {
 
                   <Input
                     type="textArea"
-                    placeholder="Remark..."
+                    placeholder="Comment..."
                     onChange={(e) =>
                       setWaitlistData({
                         ...waitlistData,
@@ -391,11 +526,6 @@ const WaitList = () => {
                     }
                   />
                 </Flex>
-
-                {submissionState.error.length > 0 &&
-                  submissionState.error.map((err, index) => (
-                    <Text text={err} key={index} color="red" type="p" />
-                  ))}
 
                 <Flex justify="flex-start" align="center" gap="1rem">
                   <div style={{ marginTop: "7px" }}>
@@ -407,6 +537,11 @@ const WaitList = () => {
                     size={15}
                   />
                 </Flex>
+
+                {submissionState.error.length > 0 &&
+                  submissionState.error.map((err, index) => (
+                    <Text text={err} key={index} color="red" type="p" />
+                  ))}
 
                 <Button
                   height="50px"
@@ -419,187 +554,7 @@ const WaitList = () => {
                   onClick={handleWaitlist}
                 >
                   <Text
-                    text={submissionState.loading ? "Loading..." : "Join now"}
-                    type="p"
-                    whiteSpace="nowrap"
-                    weight={400}
-                    color="#fff"
-                  />
-                </Button>
-              </form>
-            </RightSideContent>
-          </RightWrapper>
-        </RightSide>
-      </WaitListWrapper>
-    );
-  }
-  return (
-    <WaitListWrapper>
-      <Flex gap="0rem" width="100%" height="100%">
-        <LeftSide>
-          <LeftSideText>
-            <Text type="h1" text="Thrillers Travels​" />
-            <Text
-              type="h2"
-              text="
-              Never wait for anyone"
-            />
-            <Text
-              type="p"
-              text=" Our waitlist keeps you informed of the next step, ensuring you
-              can secure your spot ahead. We value your patience and anticipate
-              a future journey together."
-            />
-          </LeftSideText>
-          <Image src={waitListImg} alt="" />
-        </LeftSide>
-
-        <RightSide>
-          <NavbarSection>
-            <Container>
-              <TtBrand>
-                <Link href="/">
-                  <Image src={Logo} alt="" height={35} />
-                </Link>
-              </TtBrand>
-
-              <MenuIcon onClick={handleShowNavbar}>
-                <RiBarChartHorizontalLine size="2rem" />
-              </MenuIcon>
-
-              <Grid
-                columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
-                gap={isMobile ? "3rem" : "0px"}
-                align="center"
-                justify="right"
-                width="100%"
-                textAlign="center"
-                style={{
-                  placeContent: "center",
-                }}
-              >
-                <Link
-                  href=""
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "400",
-                    color: "#2f234f",
-                    textDecoration: "none",
-                    marginLeft: "30px",
-                  }}
-                >
-                  <Text text="Events" type="p" />
-                </Link>
-
-                <Link
-                  href=""
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "400",
-                    color: "#2f234f",
-                    textDecoration: "none",
-                    marginLeft: "30px",
-                  }}
-                >
-                  <Text text="FAQ" type="p" />
-                </Link>
-
-                <Link
-                  href=""
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "400",
-                    color: "#2f234f",
-                    textDecoration: "none",
-                    marginLeft: "30px",
-                  }}
-                >
-                  <Text text="Inquire" type="p" />
-                </Link>
-
-                <Link
-                  href=""
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "400",
-                    marginLeft: "30px",
-                  }}
-                >
-                  <Button>
-                    <Text
-                      text="Join now"
-                      type="p"
-                      whiteSpace="nowrap"
-                      weight={400}
-                      color="#fff"
-                    />
-                  </Button>
-                </Link>
-              </Grid>
-            </Container>
-          </NavbarSection>
-          <RightWrapper>
-            <RightSideContent>
-              <h3>What home you need? </h3>
-              <form style={{ width: "100%" }}>
-                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                    <Input placeholder="full name" />
-                    <Input placeholder="Email" />
-                  </Flex>
-
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                    <Input type="number" placeholder="Whatsapp number" />
-                    <SearchInputAsString
-                      options={[
-                        "Ready to Go",
-                        "Weighing My Options",
-                        "Securing My Finances",
-                        "Planning for the Future",
-                      ]}
-                      value={waitlistData.readiness}
-                      onChange={(e) =>
-                        setWaitlistData({
-                          ...waitlistData,
-                          readiness: e,
-                        })
-                      }
-                    >
-                      <Text
-                        type="p"
-                        text={waitlistData.readiness || "Readiness"}
-                        color="#1C1B1F"
-                        weight={100}
-                        styles={{ cursor: "pointer" }}
-                      />
-                    </SearchInputAsString>
-                  </Flex>
-
-                  <Input type="textArea" placeholder="Your Request" />
-                </Flex>
-
-                <Flex justify="flex-start" align="center" gap="1rem">
-                  <div style={{ marginTop: "7px" }}>
-                    <Input type="checkbox" />
-                  </div>
-                  <Text
-                    type="p"
-                    text="I consented to personalized thriller updates."
-                    size={15}
-                  />
-                </Flex>
-
-                <Button
-                  height="50px"
-                  width="150px"
-                  styles={{
-                    marginTop: "3rem",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  <Text
-                    text="Add me to waitlist"
+                    text={submissionState.loading ? "Loading..." : "Submit"}
                     type="p"
                     whiteSpace="nowrap"
                     weight={400}
