@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.2",
     "@mui/x-date-pickers": "^6.6.0",
+    "@paystack/inline-js": "^2.13.0",
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-query": "^4.29.19",
     "@types/node": "20.2.3",
@@ -26,6 +27,7 @@
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "formik": "^2.4.1",
+    "lottie-react": "^2.4.0",
     "next": "13.4.3",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
@@ -33,6 +35,8 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.8.0",
+    "react-lottie": "^1.2.3",
+    "react-paystack": "^4.0.3",
     "styled-components": "^6.0.0-rc.1",
     "tailwindcss": "^3.3.2",
     "typescript": "5.0.4",
@@ -41,6 +45,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.29.9"
+    "@tanstack/eslint-plugin-query": "^4.29.9",
+    "@types/react-lottie": "^1.2.6"
   }
 }

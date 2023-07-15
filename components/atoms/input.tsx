@@ -22,6 +22,7 @@ const StyledInput = styled.input`
     border: 0;
     outline: 1px solid red;
   }
+
 `;
 
 const StyledMuiTextField = styled(MUITextField)`
@@ -48,7 +49,7 @@ const StyledMuiTextField = styled(MUITextField)`
 `;
 
 export interface InputProps {
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: any) => void;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   onPaste?: () => void;
   placeholder?: string;
@@ -63,7 +64,9 @@ export interface InputProps {
     | "password"
     | "email"
     | "tel"
-    | "checkbox";
+    | "address"
+    | "checkbox"
+
   value?: string;
   name?: string;
   id?: string;
@@ -132,6 +135,7 @@ const Input = ({
           borderRadius: br || "4px",
           ...styles,
         }}
+        onChange={onChange}
       ></textarea>
     );
   }

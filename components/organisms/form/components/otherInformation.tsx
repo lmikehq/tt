@@ -4,13 +4,13 @@ import Flex from "@atom/flex";
 import Input from "@atom/input";
 import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import ID from "@image/uploadedID.png";
 import { get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/data";
 import { FormikValues } from "formik";
 import useCloudinaryUpload from "hook/useCloudinary";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { AiOutlineCheck } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
 import { FaCircle } from "react-icons/fa";
@@ -19,7 +19,6 @@ import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useFilePicker } from "use-file-picker";
 import FormStepTitle from "./formStepsTitle";
-import { toast } from "react-hot-toast";
 interface formProps {
   formik: FormikValues;
   steps: string[];
@@ -116,20 +115,20 @@ function OtherInformation({ formik, steps, index }: formProps) {
 
         <Flex justify="space-between" gap="1.5rem">
           <Section>
-            <Text type="p" text="Year of Issue" margin="1rem 0 " />
+            <Text type="p" text="Year of Expiry" margin="1rem 0 " />
             <SearchInputAsString
-              options={get100Years()}
-              onChange={(x) => formik.setFieldValue("yearOfIssue", x)}
+              options={get100Years(true)}
+              onChange={(x) => formik.setFieldValue("expiryYear", x)}
             >
               <Flex justify="space-between">
                 <Text
                   type="p"
-                  text={formik?.values?.yearOfIssue}
+                  text={formik?.values?.expiryYear}
                   color="#1C1B1F"
                   weight={100}
                   styles={{ cursor: "pointer" }}
                 />
-                {formik.values.yearOfIssue ? (
+                {formik.values.expiryYear ? (
                   <AiOutlineCheck color="#3BB98E" />
                 ) : (
                   <IoIosArrowDown size={20} />
@@ -268,13 +267,15 @@ function OtherInformation({ formik, steps, index }: formProps) {
           <UploadArea>
             <Center>
               {loading ? (
-                "loading"
+                "Uploading file..."
               ) : (
                 <div>
                   <p
                     onClick={() => {
-                      if (!formik.values.lastName) 
-                      return toast.error("Please fill all your details first");
+                      if (!formik.values.lastName)
+                        return toast.error(
+                          "Please fill all your details first"
+                        );
                       openFilePicker();
                     }}
                   >

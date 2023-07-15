@@ -7,10 +7,11 @@ import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
+import { getIpDetails } from "@organism/form/visaApis";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { ttColors } from "theme/colors";
 export interface CountryType {
@@ -30,6 +31,15 @@ function Visa() {
     flag: "🇳🇬",
     code: "NG",
   });
+  useEffect(() => {
+    getIpDetails().then((x: any) =>
+      setHome({
+        name: x.country || "Nigerian",
+        flag: COUNTRY_FLAGS.find((y) => y.code === x.countryCode)?.flag,
+        code: x.country_code || "NG",
+      })
+    );
+  }, []);
   const [destination, setDestination] = useState<CountryType>({
     name: "Canada",
     flag: "🇨🇦",
@@ -90,7 +100,16 @@ function Visa() {
           </Flex>
         </SearchInput>
         <SearchInputAsString
-          options={["Employment", "Study", "Tourism", "Business", "Transit"]}
+          options={[
+            "Tourist Visa",
+            "Business Visa",
+            "Transit Visa",
+            "Work Visa",
+            "Student Visa",
+            "Medical Visa",
+            "Visa on Arrival",
+            "Other",
+          ]}
           legend="Visa Type"
           value={type}
           onChange={(value: string) => setType(value)}
@@ -110,7 +129,9 @@ function Visa() {
             if (loading) return;
             setLoading(true);
             await sleep(200);
-            router.push("visa/apply");
+            router.push(
+              `visa/apply?home=${home.name}&destination=${destination.name}&visaType=${type}`
+            );
           }}
         >
           {loading ? (

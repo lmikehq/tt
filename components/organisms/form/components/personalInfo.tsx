@@ -22,7 +22,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
     <Section width="50%">
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "1rem 0" }}>
-        <Flex align="center" gap=".5rem" margin="2rem 0">
+        <Flex align="center" gap=".5rem" margin="1rem 0 0">
           <FaCircle size={".4rem"} color={ttColors.salmon} />
           <Text type="p" text=" Your name as it appears on your passport" />
         </Flex>
@@ -168,6 +168,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 <AiOutlineCheck color="#3BB98E" />
               ) : undefined
             }
+            type="address"
             value={formik.values.residentialAddress}
             onChange={(x) =>
               formik.setFieldValue("residentialAddress", x.target.value)
