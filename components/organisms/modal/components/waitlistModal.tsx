@@ -3,7 +3,6 @@ import Text from "@atom/text";
 import lottie from "@lottie/check-mark.json";
 import Lottie from "lottie-react";
 import { IoCloseSharp } from "react-icons/io5";
-
 import Button from "@atom/button";
 import Flex from "@atom/flex";
 import Link from "@atom/link";
@@ -12,7 +11,6 @@ import { BsInstagram } from "react-icons/bs";
 import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { styled } from "styled-components";
 import Modal from "..";
-import { useRouter } from "next/navigation";
 
 const Wrapper = styled.div`
   background: white;
@@ -32,9 +30,9 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 
-    @media (max-width: 768px) {
+  @media (max-width: 768px) {
     width: 80vw;
-    }
+  }
 `;
 
 function WaitlistModal({
@@ -46,7 +44,6 @@ function WaitlistModal({
   handleClose: () => void;
   number: string;
 }) {
-  const router = useRouter();
   return (
     <Modal open={open} handleClose={handleClose}>
       <Wrapper>
@@ -109,7 +106,10 @@ function WaitlistModal({
           ))}
         </Flex>
         <Text type="p" text="Share with your friends" size={13} weight={500} />
-        <Link href="https://wa.me/2349077210321?text=Hello%20Thrillers%20Travels%2C%20I%20came%20from%20your%20waitlist%20page%20and%20would%20like%20to%20learn%20about%20how%20you%20operate.">
+        <Link
+          href="https://wa.me/2349077210321?text=Hello%20Thrillers%20Travels%2C%20I%20came%20from%20your%20waitlist%20page%20and%20would%20like%20to%20learn%20about%20how%20you%20operate."
+          target="_blank"
+        >
           <Flex
             align="center"
             gap=".3rem"
