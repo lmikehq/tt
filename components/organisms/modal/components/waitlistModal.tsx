@@ -96,9 +96,8 @@ function WaitlistModal({
               url: "https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fthrillers.travel%2Fwaitlist&title=Thrillers%20Travels%20Waitlist&summary=From%20seamless%20travel%20bookings%20to%20personalized%20trip%20planning%2C%20visa%20assistance%2C%20and%20educational%20opportunities%20abroad%2C%20we%27ve%20got%20you%20covered.%20Be%20the%20first%20to%20access%20exclusive%20offers%20and%20insider%20travel%20tips.%20Don%27t%20miss%20out%20on%20the%20journey%20of%20a%20lifetime%20%E2%80%93%20sign%20up%20now%20and%20let%20the%20adventures%20begin%21%20%E2%9C%88%EF%B8%8F%F0%9F%8C%8D",
             },
           ].map((item, index) => (
-            <Link target="_blank" href={item.url}>
+            <Link target="_blank" href={item.url} key={index}>
               <Button
-                key={index}
                 background={item.color}
                 height="30px"
                 width="40px"
