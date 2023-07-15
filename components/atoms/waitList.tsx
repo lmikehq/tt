@@ -280,7 +280,7 @@ const WaitList = () => {
                 <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                     <Input placeholder="Full name" />
-                    <Input placeholder="Email" />
+                    <Input type="email" placeholder="Email" />
                   </Flex>
 
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
@@ -459,7 +459,7 @@ const WaitList = () => {
                 <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
                     <Input placeholder="full name" />
-                    <Input placeholder="Email" />
+                    <Input type="email" placeholder="Email" />
                   </Flex>
 
                   <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
