@@ -20,11 +20,11 @@ export function usePaystack() {
       setLoading(true);
       setError("");
       setResponse(null);
-      const onSuccess = (transaction: any) => {
+      const onSuccess = () => {
         console.log("transaction successfull");
         setLoading(false);
         setError("");
-        setResponse(transaction);
+        // setResponse(transaction);
       };
       const onCancel = () => {
         console.log("transaction cancelled");
@@ -40,7 +40,7 @@ export function usePaystack() {
         metadata: data.metadata,
         reference: data.ref || new Date().getTime().toString(),
       });
-      initPayment((x: any) => onSuccess(x), onCancel);
+      initPayment(onSuccess, onCancel);
     },
     [setLoading, setError, setResponse]
   );
