@@ -28,14 +28,15 @@ const LeftSide = styled.div`
   place-content: flex-start;
   overflow: hidden;
   margin: 1rem 0rem 0rem 1rem;
+  padding: 6rem;
 
   & img {
-    width: 650px;
+    width: 500px;
     height: 664px;
   }
 `;
 const LeftSideText = styled.div`
-  margin-left: 20px;
+  // margin-left: 20px;
 
   & h2 {
     font-size: 2rem;
@@ -44,7 +45,7 @@ const LeftSideText = styled.div`
   }
   & p {
     margin-top: 1rem;
-    width: 80%;
+    width: 100%;
     line-height: 1.5;
     font-weight: 600;
   }
@@ -118,7 +119,7 @@ const NavbarSection = styled.div`
   box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   background: #ffffff;
 
-  @media screen and (max-width: 390px){
+  @media screen and (max-width: 390px) {
     height: 65px;
   }
 `;
@@ -275,43 +276,44 @@ const WaitList = () => {
 
           <RightWrapper>
             <RightSideContent>
-              <h3>What home you need? </h3>
+              <h3>Kindly provide your details below and proceed </h3>
               <form style={{ width: "100%" }}>
-                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                    <Input placeholder="Full name" />
-                    <Input type="email" placeholder="Email" />
-                  </Flex>
+                <Flex direction="column" gap={isMobile ? "1rem" : "1.5rem"}>
+                  {/* <Flex direction="column" gap={isMobile ? "1rem" : "1.5rem"}> */}
+                  <Input type="text" placeholder="Full name" />
+                  <Input type="email" placeholder="Email" />
+                  {/* </Flex> */}
 
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                    <Input type="number" placeholder="Whatsapp number" />
-                    <SearchInputAsString
-                      options={[
-                        "Ready to Go",
-                        "Weighing My Options",
-                        "Securing My Finances",
-                        "Planning for the Future",
-                      ]}
-                      value={waitlistData.readiness}
-                      onChange={(e) =>
-                        setWaitlistData({
-                          ...waitlistData,
-                          readiness: e,
-                        })
-                      }
-                    >
-                      <Text
-                        type="p"
-                        text={waitlistData.readiness || "Readiness"}
-                        color="#1C1B1F"
-                        weight={100}
-                        styles={{ cursor: "pointer" }}
-                      />
-                    </SearchInputAsString>
-                  </Flex>
+                  {/* <Flex direction="column" gap={isMobile ? "1rem" : "1.5rem"}> */}
+                  <Input type="number" placeholder="Whatsapp number" />
+                  <SearchInputAsString
+                    options={[
+                      "Ready to Go",
+                      "Weighing My Options",
+                      "Securing My Finances",
+                      "Planning for the Future",
+                    ]}
+                    value={waitlistData.readiness}
+                    onChange={(e) =>
+                      setWaitlistData({
+                        ...waitlistData,
+                        readiness: e,
+                      })
+                    }
+                  >
+                    <Text
+                      type="p"
+                      text={waitlistData.readiness || "Readiness"}
+                      color="#1C1B1F"
+                      weight={100}
+                      styles={{ cursor: "pointer" }}
+                    />
+                  </SearchInputAsString>
+                  {/* </Flex> */}
 
-                  <Input type="textArea" placeholder="Your Request" />
+                  <Input type="textArea" placeholder="Remark..." />
                 </Flex>
+
                 <Flex justify="flex-start" align="center" gap="1rem">
                   <div style={{ marginTop: "7px" }}>
                     <Input type="checkbox" />
@@ -319,13 +321,13 @@ const WaitList = () => {
                   <Text
                     type="p"
                     text="I consented to personalized thriller updates."
-                    size={15}
+                    size={isMobile ? 15 : 20}
                   />
                 </Flex>
 
                 <Button
                   height="50px"
-                  width="150px"
+                  width="175px"
                   styles={{
                     marginTop: "3rem",
                     left: "50%",
@@ -338,6 +340,7 @@ const WaitList = () => {
                     whiteSpace="nowrap"
                     weight={400}
                     color="#fff"
+                    transform="uppercase"
                   />
                 </Button>
               </form>
@@ -360,9 +363,7 @@ const WaitList = () => {
             />
             <Text
               type="p"
-              text=" Our waitlist keeps you informed of the next step, ensuring you
-              can secure your spot ahead. We value your patience and anticipate
-              a future journey together."
+              text=" Our waitlist provides information about the next move and will have the opportunity to secure your spot before anyone else. We appreciate your patience and look forward to traveling with you soon!"
             />
           </LeftSideText>
           <Image src={waitListImg} alt="" />
@@ -454,15 +455,15 @@ const WaitList = () => {
           </NavbarSection>
           <RightWrapper>
             <RightSideContent>
-              <h3>What home you need? </h3>
+              <h3>Kindly provide your details below and proceed </h3>
               <form style={{ width: "100%" }}>
-                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                <Flex direction="column" gap={isMobile ? "1rem" : "1.5rem"}>
+                  {/* <Flex direction="column" gap={isMobile ? "1rem" : "1.5rem"}> */}
                     <Input placeholder="full name" />
                     <Input type="email" placeholder="Email" />
-                  </Flex>
+                  {/* </Flex> */}
 
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                  {/* <Flex direction="column" gap={isMobile ? "1rem" : "1.5rem"}> */}
                     <Input type="number" placeholder="Whatsapp number" />
                     <SearchInputAsString
                       options={[
@@ -487,9 +488,9 @@ const WaitList = () => {
                         styles={{ cursor: "pointer" }}
                       />
                     </SearchInputAsString>
-                  </Flex>
+                  {/* </Flex> */}
 
-                  <Input type="textArea" placeholder="Your Request"  />
+                  <Input type="textArea" placeholder="Remark..." />
                 </Flex>
 
                 <Flex justify="flex-start" align="center" gap="1rem">
@@ -499,13 +500,13 @@ const WaitList = () => {
                   <Text
                     type="p"
                     text="I consented to personalized thriller updates."
-                    size={15}
+                    size={isMobile ? 15 : 20}
                   />
                 </Flex>
 
                 <Button
                   height="50px"
-                  width="150px"
+                  width="175px"
                   styles={{
                     marginTop: "3rem",
                     left: "50%",
@@ -518,6 +519,7 @@ const WaitList = () => {
                     whiteSpace="nowrap"
                     weight={400}
                     color="#fff"
+                    transform="uppercase"
                   />
                 </Button>
               </form>
