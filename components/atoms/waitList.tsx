@@ -19,9 +19,10 @@ import sleep from "@lib/sleep";
 import apiService from "hook/apiService";
 import WaitlistModal from "@organism/modal/components/waitlistModal";
 import { useRouter } from "next/navigation";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 const WaitListWrapper = styled.div`
-  overflow: hidden;
+  overflow-x: hidden;
   height: 100%;
 `;
 
@@ -36,8 +37,8 @@ const LeftSide = styled.div`
   padding: 6rem;
 
   & img {
-    width: 500px;
-    height: 664px;
+    width: 425px;
+    height: auto;
   }
 `;
 const LeftSideText = styled.div`
@@ -176,6 +177,16 @@ const MenuIcon = styled.svg`
 `;
 
 const WaitList = () => {
+  const WaitListLabel = () => {
+    return (
+      <Text
+        type="p"
+        text="I consented to personalized thriller updates."
+        size={isMobile ? 15 : 18}
+      />
+    );
+  }; 
+
   const router = useRouter();
   const { isMobile } = useScreenResolution();
   const [showNavbar, setShowNavbar] = useState(false);
@@ -431,8 +442,8 @@ const WaitList = () => {
             <RightSideContent>
               <h3>Kindly provide your details below and proceed </h3>
               <form style={{ width: "100%" }}>
-                <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                <Flex direction="column" gap="0rem">
+                  <Flex direction="column" gap="0rem">
                     <Input
                       placeholder="full name"
                       border={
@@ -447,6 +458,7 @@ const WaitList = () => {
                         })
                       }
                     />
+                    <br />
                     <Input
                       placeholder="Email"
                       onChange={(e) =>
@@ -464,9 +476,9 @@ const WaitList = () => {
                           : ""
                       }
                     />
-                  </Flex>
-
-                  <Flex direction="column" gap={isMobile ? "1rem" : "3rem"}>
+                  </Flex>{" "}
+                  <br />
+                  <Flex direction="column" gap="0rem">
                     <Input
                       type="number"
                       placeholder="Whatsapp number"
@@ -484,6 +496,7 @@ const WaitList = () => {
                           : ""
                       }
                     />
+                    <br />
                     <SearchInputAsString
                       options={[
                         "Ready to Go",
@@ -514,56 +527,52 @@ const WaitList = () => {
                         styles={{ cursor: "pointer" }}
                       />
                     </SearchInputAsString>
-                  {/* </Flex> */}
+                    <br />
 
-                  <Input
-                    type="textArea"
-                    placeholder="Comment..."
-                    onChange={(e) =>
-                      setWaitlistData({
-                        ...waitlistData,
-                        message: e.target.value,
-                      })
-                    }
-                  />
-                </Flex>
-
-                <Flex justify="flex-start" align="center" gap="1rem">
-                  <div style={{ marginTop: "7px" }}>
-                    <Input type="checkbox" />
-                  </div>
-                  <Text
-                    type="p"
-                    text="I consented to personalized thriller updates."
-                    size={isMobile ? 15 : 20}
-                  />
-                </Flex>
-
-                {submissionState.error.length > 0 &&
-                  submissionState.error.map((err, index) => (
-                    <Text text={err} key={index} color="red" type="p" />
-                  ))}
-
-                <Button
-                  height="50px"
-                  width="175px"
-                  styles={{
-                    marginTop: "3rem",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                  onClick={handleWaitlist}
-                >
-                  <Text
-                    text={submissionState.loading ? "Loading..." : "Submit"}
-                    type="p"
-                    whiteSpace="nowrap"
-                    weight={400}
-                    color="#fff"
-                    transform="uppercase"
-                  />
-                  </Button>
+                    <Input
+                      type="textArea"
+                      placeholder="Comment..."
+                      onChange={(e) =>
+                        setWaitlistData({
+                          ...waitlistData,
+                          message: e.target.value,
+                        })
+                      }
+                    />
                   </Flex>
+                  <Flex justify="flex-start" align="center" gap="1rem">
+                    <div style={{ marginTop: "7px" }}>
+                      <FormControlLabel
+                        control={<Checkbox defaultChecked />}
+                        label={<WaitListLabel />}
+                        
+                      />
+                    </div>
+                  </Flex>
+                  {submissionState.error.length > 0 &&
+                    submissionState.error.map((err, index) => (
+                      <Text text={err} key={index} color="red" type="p" />
+                    ))}
+                  <Button
+                    height="50px"
+                    width="175px"
+                    styles={{
+                      marginTop: "3rem",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                    onClick={handleWaitlist}
+                  >
+                    <Text
+                      text={submissionState.loading ? "Loading..." : "Submit"}
+                      type="p"
+                      whiteSpace="nowrap"
+                      weight={400}
+                      color="#fff"
+                      transform="uppercase"
+                    />
+                  </Button>
+                </Flex>
               </form>
             </RightSideContent>
           </RightWrapper>
@@ -572,5 +581,7 @@ const WaitList = () => {
     </WaitListWrapper>
   );
 };
+
+
 
 export default WaitList;
