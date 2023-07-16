@@ -194,6 +194,7 @@ function ApplicationForm() {
                 columns={isMobile ? "1fr" : "2fr 1fr"}
                 gap=".5rem"
                 margin="2rem 0"
+                justify={isMobile ? "flex-start" : "center"}
               >
                 {shownFees.map((item) => (
                   <>
@@ -221,7 +222,7 @@ function ApplicationForm() {
               <Divider />
 
               {shownFees.length ? (
-                <Flex justify="flex-end">
+                <Flex justify={isMobile ? "flex-start" :"flex-end"}>
                   <Text
                     type="p"
                     text={currencyFormatter(
