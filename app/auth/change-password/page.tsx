@@ -14,10 +14,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
 
-export const metadata = {
-  title: "Change your password",
-  description: "You can change your password here",
-};
+
 
 function ChangePassword() {
   const { isMobile } = useScreenResolution();

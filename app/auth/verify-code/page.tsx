@@ -13,10 +13,6 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
 
-export const metadata = {
-  title: "Verify your password reset code",
-  description: "Verify your password reset code",
-};
 
 function VerifyCode() {
   const { isMobile } = useScreenResolution();

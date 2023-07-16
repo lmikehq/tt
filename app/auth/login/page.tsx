@@ -24,11 +24,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
 
-export const metadata = {
-  title: "Login to your travels account",
-  description: "Login to your Thrillers Travels account",
-};
-
 function LoginPage() {
   const { isMobile } = useScreenResolution();
   const router = useRouter();

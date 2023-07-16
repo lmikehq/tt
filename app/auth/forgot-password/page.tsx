@@ -16,11 +16,7 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
 
-export const metadata = {
-  title: "You forgot your password?",
-  description:
-    "Don’t worry, happens to all of us. Enter your email below to recover your password",
-};
+
 
 function LoginPage() {
   const { isMobile } = useScreenResolution();
