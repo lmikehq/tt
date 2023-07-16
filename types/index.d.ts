@@ -34,3 +34,5 @@ export interface User {
   id: number;
   [key: string]: any;
 }
+
+declare module '@paystack/inline-js'

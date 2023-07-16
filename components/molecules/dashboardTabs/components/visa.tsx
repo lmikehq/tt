@@ -4,15 +4,13 @@ import Text from "@atom/text";
 import styled from "styled-components";
 // import CountryLogo from "@asset/flags/ng.svg";
 import Button from "@atom/button";
+import Section from "@molecule/section";
 import { Divider } from "@mui/material";
-import { BsArrowDown } from "react-icons/bs";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { ttColors } from "theme/colors";
 import CountryLogo from "../../../../assets/flags/ng.svg";
-import Center from "@atom/center";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import Section from "@molecule/section";
 
 const VisaWrapper = styled.div`
   height: 144px;
@@ -28,9 +26,7 @@ const VisaWrapper = styled.div`
     width: 154px !important;
   }
 `;
-const CountrySide = styled.div`
-  width: 50%;
-`;
+
 const Logo = styled.div`
   height: 64px;
   width: 80px;
@@ -38,10 +34,7 @@ const Logo = styled.div`
   padding: 10px;
   border-radius: 8px;
 `;
-const CountrySelected = styled.div``;
-// const AwaitingApproval = styled.div`
-//   width: 50% !important;
-// `;
+
 const DateSelected = styled.div`
   margin-left: 14px;
   align-items: start;
@@ -128,7 +121,6 @@ const Visa = () => {
                 background="${ttColors.primary}"
                 color="${ttColors.dark}"
                 border={`1px solid ${ttColors.primary}`}
-                // width="10%"
               >
                 <MdKeyboardArrowDown size="1.5rem" />
               </Button>
