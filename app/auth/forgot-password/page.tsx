@@ -1,9 +1,6 @@
 // @next/next/no-img-element
-
 "use client";
-
 import Button from "@atom/button";
-// import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import { TextField } from "@atom/input";
 import Text from "@atom/text";
@@ -19,9 +16,10 @@ import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
 
+
+
 function LoginPage() {
   const { isMobile } = useScreenResolution();
-
   const router = useRouter();
   return (
     <SectionLayout>
@@ -72,14 +70,18 @@ function LoginPage() {
               </Button>
 
               <Flex justify="space-between" align="center" width="90%">
-                <Divider sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }} />
+                <Divider
+                  sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }}
+                />
                 <Text
                   type="p"
                   text="Or login with"
                   margin="0 1rem"
                   color="#112211"
                 />
-                <Divider sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }} />
+                <Divider
+                  sx={{ width: isMobile ? "29%" : "33%", color: "#112211" }}
+                />
               </Flex>
               <Button
                 background="transparent"
