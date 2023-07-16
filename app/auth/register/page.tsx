@@ -103,10 +103,15 @@ function RegisterPage() {
     );
     if (error) return error.constraints;
   }
+  console.log('isMobile: ', isMobile)
   return (
     <SectionLayout>
       <form onSubmit={handleSubmit}>
-        <Flex margin="4rem 0" gap="3rem" align="stretch">
+        <Flex
+          margin={isMobile ? "1rem 0" : "4rem 0"}
+          gap="3rem"
+          align="stretch"
+        >
           <Section styles={{ display: isMobile ? "none" : "block" }}>
             <img src={bgImage.src} alt="background image" width="100%" />
           </Section>
