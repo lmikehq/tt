@@ -6,7 +6,7 @@ import Button from "@atom/button";
 import CheckBox from "@atom/checkbox";
 // import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
-import Input, { TextField } from "@atom/input";
+import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
@@ -19,24 +19,25 @@ import Section from "@molecule/section";
 import { Divider } from "@mui/material";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
 
+export const metadata = {
+  title: "Login to your travels account",
+  description: "Login to your Thrillers Travels account",
+};
+
 function LoginPage() {
   const { isMobile } = useScreenResolution();
-
   const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
     rememberMe: false,
   });
-
   useEffect(() => {
-    console.log("loginData: ", loginData);
     if (submissionState.error.length > 0) {
       setSubmissionState({
         ...submissionState,

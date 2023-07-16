@@ -1,7 +1,6 @@
 // @next/next/no-img-element
 "use client";
 import Button from "@atom/button";
-// import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import { TextField } from "@atom/input";
 import Text from "@atom/text";
@@ -13,9 +12,14 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
+
+export const metadata = {
+  title: "Verify your password reset code",
+  description: "Verify your password reset code",
+};
+
 function VerifyCode() {
   const { isMobile } = useScreenResolution();
-
   const router = useRouter();
   return (
     <SectionLayout>
