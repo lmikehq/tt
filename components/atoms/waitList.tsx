@@ -336,16 +336,10 @@ const WaitList = () => {
           <LeftSide>
             <LeftSideText>
               <Text type="h1" text="Thrillers Travels​" />
-              <Text
-                type="h2"
-                text="
-              Never wait for anyone"
-              />
+              
               <Text
                 type="p"
-                text=" Our waitlist keeps you informed of the next step, ensuring you
-              can secure your spot ahead. We value your patience and anticipate
-              a future journey together."
+                text=" Adventure is calling, and the world is waiting for you. Join us as we unlock the door to extraordinary travel experiences. Sign up to be the first to know when our platform launches and prepare to embark on the journey of a lifetime."
               />
             </LeftSideText>
             <Image src={waitListImg} alt="" />

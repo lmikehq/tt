@@ -11,6 +11,7 @@ import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
 import { useUserStore } from "store/useStore";
 import { FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface formProps {
   steps: string[];
@@ -18,6 +19,8 @@ interface formProps {
 }
 
 function Booking({ steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   //   const [payPlan, setPayPlan] = useState("payInFull");
   const [payPlanOptions] = useState([
     {
@@ -32,15 +35,15 @@ function Booking({ steps, index }: formProps) {
   const { user } = useUserStore((state) => state);
 
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" :"50%"}>
       <FormStepTitle steps={steps} index={index} />
       <Section
         styles={{
           background: "#FFFFFF",
           boxShadow: "0px 4px 16px rgba(17, 34, 17, 0.05)",
           borderRadius: "12px",
-          margin: "2rem 0",
-          padding: ".1rem 1rem",
+          margin: isMobile ? "0px" : "2rem 0",
+          padding: isMobile ? "0px" : ".1rem 1rem",
         }}
       >
         {payPlanOptions.map((x, i) => (
@@ -91,7 +94,7 @@ function Booking({ steps, index }: formProps) {
             type="p"
             text="Do you want to Login or Sign up"
             weight={800}
-            size="1.2rem"
+            size={isMobile ? "1.1rem" : "1.2rem"}
           />
           <Input placeholder="Email address" margin="1rem 0" />
           <Text
@@ -110,14 +113,14 @@ function Booking({ steps, index }: formProps) {
           </Button>
 
           <Flex justify="space-between" align="center" margin="2rem 0 1rem">
-            <Divider sx={{ width: "33%", color: "#112211" }} />
+            <Divider sx={{ width: isMobile ? "27%" : "33%", color: "#112211" }} />
             <Text
               type="p"
               text="Or login with"
               margin="0 1rem"
               color="#112211"
             />
-            <Divider sx={{ width: "33%", color: "#112211" }} />
+            <Divider sx={{ width: isMobile ? "27%" : "33%", color: "#112211" }} />
           </Flex>
           <Button
             background="transparent"

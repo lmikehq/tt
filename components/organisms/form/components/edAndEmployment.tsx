@@ -11,6 +11,7 @@ import { FaCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface formProps {
   formik: FormikValues;
@@ -19,16 +20,23 @@ interface formProps {
 }
 
 function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }}>
         <>
           <Flex align="center" gap=".5rem" margin="0rem 0">
             <FaCircle size={".4rem"} color={ttColors.salmon} />
-            <Text type="p" text=" Include your most recent qualification" />
+            <Text type="p" text=" Include your most recent qualification" size={14}/>
           </Flex>
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+          <Flex
+            margin="0 0 1rem"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Section>
               <Text type="p" text="Degree" margin="1rem 0 " />
               <SearchInputAsString
@@ -90,7 +98,12 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             />
           </Section>
 
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Section>
               <Text type="p" text="Course of Study" margin="1rem 0 " />
               <SearchInputAsString
@@ -142,6 +155,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text=" Include your most recent employment details"
+              size={13.5}
             />
           </Flex>
           <Section>
@@ -158,8 +172,13 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
               }
             />
           </Section>
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
-            <Section margin="0 0 1rem">
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section margin={isMobile ? "0px" : "0 0 1rem"}>
               <Text type="p" text="Employer’s Name" margin="1rem 0 " />
               <Input
                 addon={
@@ -173,7 +192,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
                 }
               />
             </Section>
-            <Section margin="0 0 1rem">
+            <Section margin={isMobile ? "0px" : "0 0 1rem"}>
               <Text type="p" text="Employer’s  phone" margin="1rem 0 " />
               <Input
                 addon={
@@ -189,7 +208,12 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             </Section>
           </Flex>
 
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Section>
               <Text type="p" text="Started Year" margin="1rem 0 " />
               <SearchInputAsString

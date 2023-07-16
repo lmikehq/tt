@@ -10,6 +10,7 @@ import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
 import { SearchInputAsString } from "@atom/searchInput";
 import { IoIosArrowDown } from "react-icons/io";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface formProps {
   formik: FormikValues;
@@ -18,15 +19,24 @@ interface formProps {
 }
 
 function PersonalInfo({ formik, steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+  
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "1rem 0" }}>
         <Flex align="center" gap=".5rem" margin="1rem 0 0">
           <FaCircle size={".4rem"} color={ttColors.salmon} />
-          <Text type="p" text=" Your name as it appears on your passport" />
+          <Text type="p" text=" Your name as it appears on your passport"
+            size={isMobile ? "15px" : "16px"}
+          />
         </Flex>
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
             <Text type="p" text="First and Middle Name" margin="1rem 0 " />
             <Input
@@ -68,7 +78,12 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
             <Text type="p" text="Place of Origin" margin="1rem 0 " />
             <Input
@@ -112,7 +127,12 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
             <Text type="p" text="Means of ID" margin="1rem 0 " />
             <SearchInputAsString
@@ -190,7 +210,12 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section> */}
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
             <Text type="p" text="Marital Status" margin="1rem 0 " />
             <SearchInputAsString
@@ -246,7 +271,12 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
             <Text type="p" text="Facebook username" margin="1rem 0 " />
             <Input

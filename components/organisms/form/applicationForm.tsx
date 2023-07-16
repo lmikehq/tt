@@ -167,8 +167,12 @@ function ApplicationForm() {
     <>
       <Flex
         background="#FFFFFF"
-        borderRadius="16px"
-        styles={{ boxShadow: "4px 4px 26px rgba(0, 0, 0, 0.25)" }}
+        borderRadius={isMobile ? "0px" : "16px"}
+        styles={{
+          boxShadow: isMobile ? "none" : "4px 4px 26px rgba(0, 0, 0, 0.25)",
+          marginBottom: isMobile ? "3rem" : "0px",
+          position: "relative",
+        }}
         height="auto"
         padding="2rem"
         justify="space-between"
@@ -176,7 +180,27 @@ function ApplicationForm() {
       >
         {step?.content}
 
-        <Section width="40%">
+        <Flex
+          align="center"
+          cursor="pointer"
+          gap="1rem"
+          onClick={prevStep}
+          styles={{
+            display: isMobile ? "flex" : "none",
+            margin: isMobile ? "0px 0px 2rem" : "0px",
+          }}
+        >
+          <HiOutlineArrowNarrowLeft color={ttColors.primary} size="30px" />
+          <Text
+            text="Previous"
+            type="p"
+            color={ttColors.primary}
+            size="20px"
+            weight="400"
+          />
+        </Flex>
+
+        <Section width="40%" styles={{ display: isMobile ? "none" : "block" }}>
           {currentPhase < 6 ? (
             <Section width="90%">
               <Flex
@@ -189,12 +213,14 @@ function ApplicationForm() {
                 <HiOutlineArrowNarrowRight size={30} />
                 <Text type="p" text="Canada" size="20px" weight="bold" />
               </Flex>
+
               <Divider />
               <Grid
                 columns={isMobile ? "1fr" : "2fr 1fr"}
                 gap=".5rem"
                 margin="2rem 0"
                 justify={isMobile ? "flex-start" : "center"}
+                className="hideOnMobile"
               >
                 {shownFees.map((item) => (
                   <>
@@ -222,7 +248,7 @@ function ApplicationForm() {
               <Divider />
 
               {shownFees.length ? (
-                <Flex justify={isMobile ? "flex-start" :"flex-end"}>
+                <Flex justify={isMobile ? "flex-start" : "flex-end"}>
                   <Text
                     type="p"
                     text={currencyFormatter(
@@ -342,6 +368,63 @@ function ApplicationForm() {
             </Button>
           )}
         </Section>
+      </Flex>
+
+      <Flex
+        justify="space-between"
+        gap="1rem"
+        styles={{
+          zIndex: "1200",
+          // boxShadow: "rgba(17, 18, 17, 0.18) 0px 0px 16px 0px",
+          boxShadow: "0px -8px 6px -2px rgba(113,150,173,0.33)",
+          padding: "1rem",
+          position: "fixed",
+          bottom: "0px",
+          alignContent: "center",
+          display: isMobile ? "flex" : "none",
+         background: "#fff",
+        }}
+      >
+        {shownFees.length ? (
+          <Flex
+            justify={isMobile ? "flex-start" : "flex-end"}
+            styles={{
+              alignItems: "center",
+            }}
+          >
+            <Text
+              type="p"
+              text={currencyFormatter(
+                shownFees.reduce(
+                  (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
+                  0
+                ),
+                "NGN"
+              )}
+              size="1.1rem"
+              weight="bold"
+              key={formFee}
+            />
+          </Flex>
+        ) : (
+          ""
+        )}
+
+        <Button width="100%" margin="0px" onClick={nextStep} fontSize="18px">
+          {nextStepLoading ? (
+            <Spinner size="40px" fill={ttColors.primary} />
+          ) : currentPhase === 5 ? (
+            `Pay ${currencyFormatter(
+              shownFees.reduce(
+                (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
+                0
+              ),
+              "NGN"
+            )}`
+          ) : (
+            "Continue"
+          )}
+        </Button>
       </Flex>
     </>
   );

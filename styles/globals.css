@@ -58,6 +58,9 @@ body {
     .dashboardWrapper{
         margin: 1rem 0px !important;
     }
+        .hideOnMobile {
+          display: none !important;
+        }
 }
 @media screen and (max-width: 768px) {
   .footerBarcode {

@@ -7,14 +7,17 @@ import Section from "@molecule/section";
 import Image from "next/image";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
 interface formProps {
   steps: string[];
   index: number;
 }
 
 export function PaymentStatusSuccess({ steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <Section styles={{ textAlign: "center", margin: "6rem 0" }}>
         <Image src={covetti} alt="success" width={300} height={200} />
@@ -35,8 +38,10 @@ export function PaymentStatusSuccess({ steps, index }: formProps) {
   );
 }
 export function PaymentStatusFail({ steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <Section styles={{ textAlign: "center", margin: "6rem 0" }}>
         <Image src={sadFace} alt="success" width={300} height={200} />
