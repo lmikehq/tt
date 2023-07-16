@@ -10,6 +10,7 @@ import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
 import { SearchInputAsString } from "@atom/searchInput";
 import { IoIosArrowDown } from "react-icons/io";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface formProps {
   formik: FormikValues;
@@ -18,17 +19,26 @@ interface formProps {
 }
 
 function PersonalInfo({ formik, steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+  
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "1rem 0" }}>
         <Flex align="center" gap=".5rem" margin="1rem 0 0">
           <FaCircle size={".4rem"} color={ttColors.salmon} />
-          <Text type="p" text=" Your name as it appears on your passport" />
+          <Text type="p" text=" Your name as it appears on your passport"
+            size={isMobile ? "15px" : "16px"}
+          />
         </Flex>
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="First and Middle Name" margin="1rem 0 " />
+            <Text type="p" text="First and Middle Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.firstName?.length > 5 ? (
@@ -42,7 +52,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Last Name" margin="1rem 0 " />
+            <Text type="p" text="Last Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.lastName?.length > 5 ? (
@@ -56,7 +66,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Email Address" margin="1rem 0 " />
+          <Text type="p" text="Email Address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Input
             addon={
               validateEmail(formik?.values?.email) ? (
@@ -68,9 +78,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Place of Origin" margin="1rem 0 " />
+            <Text type="p" text="Place of Origin" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.placeOfOrigin?.length > 2 ? (
@@ -84,7 +99,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="State of Origin" margin="1rem 0 " />
+            <Text type="p" text="State of Origin" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.stateOfOrigin?.length > 2 ? (
@@ -100,7 +115,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="LG. of Origin" margin="1rem 0 " />
+          <Text type="p" text="LG. of Origin" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Input
             addon={
               formik?.values?.lgOfOrigin?.length > 2 ? (
@@ -112,9 +127,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Means of ID" margin="1rem 0 " />
+            <Text type="p" text="Means of ID" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={[
                 "Passport",
@@ -147,7 +167,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             </SearchInputAsString>
           </Section>
           <Section>
-            <Text type="p" text="ID Number" margin="1rem 0 " />
+            <Text type="p" text="ID Number" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.idNumber?.length > 2 ? (
@@ -161,7 +181,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Residential Address" margin="1rem 0 " />
+          <Text type="p" text="Residential Address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Input
             addon={
               formik?.values?.residentialAddress?.length > 2 ? (
@@ -176,7 +196,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section>
         {/* <Section>
-          <Text type="p" text="How can we  locate you?" margin="1rem 0 " />
+          <Text type="p" text="How can we  locate you?" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Input
             addon={
               formik?.values?.howCanWeLocateYou?.length > 2 ? (
@@ -190,9 +210,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           />
         </Section> */}
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Marital Status" margin="1rem 0 " />
+            <Text type="p" text="Marital Status" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={[
                 "Single",
@@ -230,7 +255,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Partner’s Name (if applicable)"
-              margin="1rem 0 "
+              margin={ isMobile ? ".2rem 0" : "1rem 0"}
             />
             <Input
               addon={
@@ -246,9 +271,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Facebook username" margin="1rem 0 " />
+            <Text type="p" text="Facebook username" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.facebookUsername?.length > 2 ? (
@@ -265,7 +295,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Linkedin/Instagram username"
-              margin="1rem 0 "
+              margin={ isMobile ? ".2rem 0" : "1rem 0"}
             />
             <Input
               addon={
