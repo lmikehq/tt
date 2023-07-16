@@ -1,5 +1,5 @@
 import WaitList from "@atom/waitList";
-import  "./waitList.css"
+import "@style/waitList.css";
 const WaitListPage = () => {
   return <WaitList />;
 };
