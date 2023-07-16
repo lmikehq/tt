@@ -3,7 +3,6 @@
 "use client";
 
 import Button from "@atom/button";
-// import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import { TextField } from "@atom/input";
 import Text from "@atom/text";
@@ -14,9 +13,11 @@ import Section from "@molecule/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { ttColors } from "theme/colors";
+
+
+
 function ChangePassword() {
   const { isMobile } = useScreenResolution();
-
   const router = useRouter();
   return (
     <SectionLayout>

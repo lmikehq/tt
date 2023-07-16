@@ -11,7 +11,7 @@ import Image from "next/image";
 import { Grid } from "@atom/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 
-const Navbar: React.FC = () => {
+const WaitlistNavbar: React.FC = () => {
   const { isMobile } = useScreenResolution();
   const [showNavbar, setShowNavbar] = useState(false);
   const handleShowNavbar = () => {
@@ -101,4 +101,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default WaitlistNavbar;

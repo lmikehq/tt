@@ -11,9 +11,17 @@ const poppins = Poppins({
 });
 
 export const generateMetadata = () => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const currentDate = new Date();
   return {
     title: { default: Siteconfig.name, template: `%s - ${Siteconfig.name}` },
-    description: Siteconfig.description,
+    description: `${currentDate.toLocaleDateString("en-US", options)} - ${
+      Siteconfig.description
+    }`,
     keywords: Siteconfig.keywords,
     themeColor: [{ media: "(prefers-color-scheme: light)", color: "white" }],
     viewport: "width=device-width, initial-scale=1",
@@ -25,15 +33,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en" suppressHydrationWarning className={poppins.className}>
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-          <Toaster position="top-center" />
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <Toaster position="top-center" />
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );
