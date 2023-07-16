@@ -52,7 +52,7 @@ function Booking({ steps, index }: formProps) {
             padding=".5rem"
             borderRadius="12px"
             key={i}
-            margin="1rem 0"
+            margin={ isMobile ? ".2rem 0" : "1rem 0"}
           >
             <Section margin=".5rem 0">
               <Text type="p" text={x.name} weight={800} />
@@ -96,7 +96,7 @@ function Booking({ steps, index }: formProps) {
             weight={800}
             size={isMobile ? "1.1rem" : "1.2rem"}
           />
-          <Input placeholder="Email address" margin="1rem 0" />
+          <Input placeholder="Email address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Text
             type="p"
             text="An email will be sent to you with a link to login or sign up"

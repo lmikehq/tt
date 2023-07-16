@@ -83,7 +83,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Passport Number" margin="1rem 0 " />
+            <Text type="p" text="Passport Number" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.passNumber?.length > 8 ? (
@@ -97,7 +97,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Passport issued country" margin="1rem 0 " />
+            <Text type="p" text="Passport issued country" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={COUNTRY_FLAGS.map((x) => x.name)}
               onChange={(x) => formik.setFieldValue("passIssueCountry", x)}
@@ -126,7 +126,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Year of Expiry" margin="1rem 0 " />
+            <Text type="p" text="Year of Expiry" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={get100Years(true)}
               onChange={(x) => formik.setFieldValue("expiryYear", x)}
@@ -148,7 +148,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             </SearchInputAsString>
           </Section>
           <Section>
-            <Text type="p" text="Gender" margin="1rem 0 " />
+            <Text type="p" text="Gender" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={["Male", "Female", "Other"]}
               onChange={(x) => formik.setFieldValue("gender", x)}
@@ -185,7 +185,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Guarantor’s Name" margin="1rem 0 " />
+            <Text type="p" text="Guarantor’s Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorName?.length > 3 ? (
@@ -199,7 +199,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Relationship to you" margin="1rem 0 " />
+            <Text type="p" text="Relationship to you" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorRelationship?.length > 2 ? (
@@ -215,7 +215,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Guarantor’s Address" margin="1rem 0 " />
+          <Text type="p" text="Guarantor’s Address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Input
             addon={
               formik?.values?.guarantorAddress?.length > 4 ? (
@@ -236,7 +236,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Guarantor’s  Phone" margin="1rem 0 " />
+            <Text type="p" text="Guarantor’s  Phone" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorPhone?.length > 3 ? (
@@ -250,7 +250,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Guarantor’s Worth" margin="1rem 0 " />
+            <Text type="p" text="Guarantor’s Worth" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorWorth?.length > 2 ? (
@@ -305,7 +305,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
                       style={{ color: ttColors.primary, cursor: "pointer" }}
                     >
                       Upload a file
-                    </span>{" "}
+                    </span>
                     or drag and drop
                   </p>
                   <Text

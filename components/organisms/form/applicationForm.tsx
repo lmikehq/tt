@@ -16,7 +16,7 @@ import Section from "@molecule/section";
 import currencyFormatter from "data/currencyFormatter";
 import useFormikHook from "hook/useFormik";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsShieldFillCheck } from "react-icons/bs";
 import {
@@ -48,6 +48,10 @@ const PromoInput = styled.div`
 
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
+  // const path = usePathname();
+  // const isApply = path.includes("visa/apply");
+
+
   const [promoCode, setPromoCode] = useState("");
   const [enabled, setEnabled] = useState(false);
   const [visaButtonClicked, setVisaButtonClicked] = useState(false);
@@ -162,7 +166,7 @@ function ApplicationForm() {
     if (!promoCode) return toast.error("Please enter a promo code");
     setEnabled(true);
   }
-
+//  if (isApply && isMobile) return null;
   return (
     <>
       <Flex
@@ -385,7 +389,7 @@ function ApplicationForm() {
          background: "#fff",
         }}
       >
-        {shownFees.length ? (
+        {shownFees.length && currentPhase !== 5 && isMobile  ? (
           <Flex
             justify={isMobile ? "flex-start" : "flex-end"}
             styles={{
