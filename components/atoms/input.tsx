@@ -125,7 +125,7 @@ const Input = ({
         placeholder={placeholder}
         style={{
           margin,
-          padding: padding || "0 2rem 0 1rem",
+          padding: padding || ".5rem 2rem 0 1rem",
           border,
           width: width || "100%",
           fontSize: size || "1rem",

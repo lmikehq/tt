@@ -8,16 +8,18 @@ import Link from "@atom/link";
 import Text from "@atom/text";
 import Vector from "@image/Vector.svg";
 import { ButtonBase } from "@mui/material";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useRef, useState } from "react";
 import { BsCheckCircle, BsSearch, BsSend } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 
-const ChatContainer = styled.div`
+const ChatContainer = styled.div<{ direction: string }>`
   display: flex;
   height: calc(100vh - 70px);
   width: 100vw;
+  flex-direction: ${(props) => props.direction};
 `;
 
 const LeftSide = styled.div`
@@ -29,6 +31,12 @@ const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 120px;
+  }
+
   & h3 {
     font-weight: 600;
     font-size: 22px;
@@ -43,8 +51,6 @@ const LeftSide = styled.div`
   }
 `;
 
-
-
 const ChatArea = styled.div`
   display: flex;
   flex-direction: column;
@@ -52,6 +58,11 @@ const ChatArea = styled.div`
   background-color: #fafbfc;
   padding: 20px;
   width: 70%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: calc(100vh - 70px);
+  }
 
   & section {
     display: flex;
@@ -108,9 +119,13 @@ const SearchArea = styled.div`
   padding: 10px 7px;
   margin: 30px 0px 2rem;
   position: relative;
+
+  @media (max-width: 768px) {
+    margin: 0px 0px 0.4rem;
+  }
+
   & input {
     border: none !important;
-    // width: 95%;
   }
 
   & svg {
@@ -156,6 +171,12 @@ const AbsoluteDefaultText = styled.div`
   top: 40%;
   left: 40%;
   width: 50%;
+
+  @media (max-width: 768px) {
+    top: 44%;
+    left: 10%;
+    width: 80%;
+  }
 `;
 
 const Chat = () => {
@@ -163,16 +184,13 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState<string[]>([]);
 
-  // const handleButtonClick = (section: string) => {
-  //   setActiveSection(section);
-  // };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleMessageSend();
     }
   };
   const chatRef = useRef<HTMLDivElement>(null);
+  const { isMobile } = useScreenResolution();
 
   const handleMessageSend = async () => {
     if (message.trim() !== "") {
@@ -222,88 +240,121 @@ const Chat = () => {
       name: "Thrillers Travel AI",
       description: "Your advanced AI consultant bot",
       icon: <Image src={Vector} alt="message icon" />,
+      width: "145px",
     },
     {
       name: "Human Reprensentative",
       description: "Chat with Thrillers Travels rep",
       icon: <FaRegUser color={`${ttColors.dark}`} size="1.5rem" />,
+      width: "195px",
     },
     {
       name: "Myself",
       description: "Talk to yourself, this is your personal draft",
       icon: <FaRegUser color={`${ttColors.dark}`} size="1.5rem" />,
+      width: "125px",
     },
   ];
 
   const [chatItems, setChatItems] = useState(chatItem);
+
+  function FeedbackComponent() {
+    return (
+      <FeedBack>
+        <Button
+          background="transparent"
+          width="100%"
+          color={`${ttColors.dark}`}
+        >
+          <BsCheckCircle
+            color={`${ttColors.dark}`}
+            size="1rem"
+            style={{ marginRight: "5px" }}
+          />
+          <Link
+            href="https://survey.alchemer.com/s3/7405739/MDN-AI-Help"
+            target="_blank"
+          >
+            <Text text=" Send feedback" type="p" />
+          </Link>
+        </Button>
+      </FeedBack>
+    );
+  }
+
   return (
-    <ChatContainer>
+    <ChatContainer direction={isMobile ? "column" : "row"}>
       <LeftSide>
         <main>
-          <Text type="h3" text="Thrillers Travels AI Travel Guide" />
-          <Text type="p" text="First AI powered travel consultant" />
-          <SearchArea>
-            <Input
-              type="text"
-              placeholder="Search"
-              onChange={(e) => setSearchCriteria(e.target.value)}
-              value={searchCriteria}
-              width="100%"
-              height="24px"
-              padding="0px 2rem 0px .5rem"
-            />
-            <BsSearch
-              onClick={(_x) => filterChatItems(searchCriteria)}
-              size="1rem"
-              color="#A3A3A3"
-              style={{ cursor: "pointer" }}
-            />
-          </SearchArea>
-
-          {chatItems.map((item, index) => {
-            const active = activeSection === index;
-            return (
-              <Button
-                onClick={() => setActiveSection(index)}
-                width="100%"
-                height="64px"
-                margin=".5rem 0rem"
-                background={active ? "rgba(6, 6, 42, 0.73)" : "transparent"}
-                key={index}
-                color={active ? "#ffffff" : ttColors.dark}
-              >
-                <Flex>
-                  <ImageBox>{item.icon}</ImageBox>
-                  <BtnContent>
-                    <Text
-                      type="h3"
-                      text={item.name}
-                      padding="0 0 .1rem"
-                      color={active ? "#ffffff" : ttColors.dark}
-                    />
-                    <Text type="p" text={item.description} />
-                  </BtnContent>
-                </Flex>
-              </Button>
-            );
-          })}
-        </main>
-        <FeedBack>
-          <Button
-            background="transparent"
-            width="100%"
-            color={`${ttColors.dark}`}
+          {!isMobile && (
+            <>
+              <Text type="h3" text="Thrillers Travels AI Travel Guide" />
+              <Text type="p" text="First AI powered travel consultant" />
+              <SearchArea>
+                <Input
+                  type="text"
+                  placeholder="Search"
+                  onChange={(e) => setSearchCriteria(e.target.value)}
+                  value={searchCriteria}
+                  width="100%"
+                  height="24px"
+                  padding="0px 2rem 0px .5rem"
+                />
+                <BsSearch
+                  onClick={(_x) => filterChatItems(searchCriteria)}
+                  size="1rem"
+                  color="#A3A3A3"
+                  style={{ cursor: "pointer" }}
+                />
+              </SearchArea>
+            </>
+          )}
+          <Flex
+            direction={isMobile ? "row" : "column"}
+            overflowY="hidden"
+            overflowX="scroll"
+            gap="1rem"
+            styles={{
+              ...(isMobile && {
+                borderBottom: `1px solid ${ttColors.primary}`,
+              }),
+            }}
           >
-            <BsCheckCircle
-              color={`${ttColors.dark}`}
-              size="1rem"
-              style={{ marginRight: "5px" }}
-            />
-            <Link href="https://survey.alchemer.com/s3/7405739/MDN-AI-Help" target="_blank">
-              <Text text=" Send feedback" type="p" />
-            </Link>
-          </Button>
-        </FeedBack>
+            {chatItems.map((item, index) => {
+              const active = activeSection === index;
+              return (
+                <Button
+                  onClick={() => setActiveSection(index)}
+                  width="100%"
+                  height="64px"
+                  margin=".5rem 0rem"
+                  background={active ? "rgba(6, 6, 42, 0.73)" : "transparent"}
+                  key={index}
+                  color={active ? "#ffffff" : ttColors.dark}
+                  styles={{
+                    ...(isMobile && {
+                      minWidth: item.width,
+                    }),
+                  }}
+                >
+                  <Flex align="center">
+                    <ImageBox>{item.icon}</ImageBox>
+                    <BtnContent>
+                      <Text
+                        type="h3"
+                        text={item.name}
+                        padding="0 0 .1rem"
+                        color={active ? "#ffffff" : ttColors.dark}
+                      />
+                      {!isMobile && <Text type="p" text={item.description} />}
+                    </BtnContent>
+                  </Flex>
+                </Button>
+              );
+            })}
+          </Flex>
+        </main>
+        {!isMobile && <FeedbackComponent />}
       </LeftSide>
       <ChatArea>
         <section ref={chatRef}>
@@ -349,9 +400,12 @@ const Chat = () => {
                 type="p"
                 text={`This is the begining of your chat with 
 ${chatItem[activeSection].name} type your questions below`}
-                size="1.8rem"
+                size={isMobile ? "1rem" : "1.8rem"}
                 color="#79747E"
-                styles={{ textAlign: "center", lineHeight: "48px" }}
+                styles={{
+                  textAlign: "center",
+                  lineHeight: isMobile ? "1.5rem" : "2.5rem",
+                }}
               />
             </AbsoluteDefaultText>
           )}
