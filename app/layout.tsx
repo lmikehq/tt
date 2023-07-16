@@ -25,15 +25,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <html lang="en" suppressHydrationWarning className={poppins.className}>
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-          <Toaster position="top-center" />
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <Toaster position="top-center" />
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );
