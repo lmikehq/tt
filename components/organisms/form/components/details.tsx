@@ -22,8 +22,8 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }} autoComplete="off">
-        <Section margin="0 0 1rem">
-          <Text type="p" text="Where are you from?" margin="1rem 0 " />
+        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+          <Text type="p" text="Where are you from?" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <SearchInput
             options={COUNTRY_FLAGS.map((x) => ({
               name: x.name,
@@ -48,8 +48,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </Flex>
           </SearchInput>
         </Section>
-        <Section margin="0 0 1rem">
-          <Text type="p" text="Where to?" margin="1rem 0 " />
+
+        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+          <Text type="p" text="Where to?" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <SearchInput
             options={COUNTRY_FLAGS.map((x) => ({
               name: x.name,
@@ -74,8 +75,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </Flex>
           </SearchInput>
         </Section>
-        <Section margin="0 0 1rem">
-          <Text type="p" text="Visa type" margin="1rem 0 " />
+
+        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+          <Text type="p" text="Visa type" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <SearchInputAsString
             options={[
               "Tourist Visa",
@@ -105,8 +107,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </Flex>
           </SearchInputAsString>
         </Section>
-        <Section margin="0 0 1rem">
-          <Text type="p" text="Application type" margin="1rem 0 " />
+
+        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+          <Text type="p" text="Application type" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <SearchInputAsString
             options={["Single", "Family"]}
             onChange={(x) => {
@@ -131,9 +134,10 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </Flex>
           </SearchInputAsString>
         </Section>
+
         {formik?.values?.applicationType === "Family" && (
-          <Section margin="0 0 1rem">
-            <Text type="p" text="Number of Travellers" margin="1rem 0 " />
+          <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+            <Text type="p" text="Number of Travellers" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
               onChange={(x) => {
@@ -158,8 +162,8 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </SearchInputAsString>
           </Section>
         )}
-        <Section margin="0 0 1rem">
-          <Text type="p" text="Traveling by" margin="1rem 0 " />
+        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+          <Text type="p" text="Traveling by" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <SearchInputAsString
             options={["Air", "Land", "Sea", "Other"]}
             onChange={(x) => formik.setFieldValue("travellingBy", x)}

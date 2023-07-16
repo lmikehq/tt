@@ -19,6 +19,7 @@ import SectionLayout from "@components/layouts/sectionLayout";
 import { FaTelegramPlane, FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
 import { RiWhatsappFill } from "react-icons/ri";
+import { usePathname } from "next/navigation";
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -80,6 +81,9 @@ const FooterIcons = [
 
 const FooterSection = () => {
   const { isMobile } = useScreenResolution();
+  const path = usePathname();
+  const isApply = path.includes("visa/apply");
+  // console.log("apply: ", isApply && isMobile);
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
   const useful_links = [
@@ -104,6 +108,8 @@ const FooterSection = () => {
     { href: "/", text: "Press", color: "#06062A" },
     { href: "/", text: "Blog", color: "#06062A" },
   ];
+
+   if (isApply && isMobile) return null;
 
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}>

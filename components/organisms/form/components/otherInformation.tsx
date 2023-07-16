@@ -19,6 +19,7 @@ import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useFilePicker } from "use-file-picker";
 import FormStepTitle from "./formStepsTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
 interface formProps {
   formik: FormikValues;
   steps: string[];
@@ -45,6 +46,8 @@ const UploadedDoc = styled.div<{ bg: any }>`
 `;
 
 function OtherInformation({ formik, steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   const [hovered, setHovered] = useState<number>(-1);
   const [openFilePicker, { filesContent }] = useFilePicker({
     readAs: "DataURL",
@@ -70,13 +73,17 @@ function OtherInformation({ formik, steps, index }: formProps) {
   }, [filesContent]);
 
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
 
       <form style={{ margin: "1rem 0" }}>
-        <Flex justify="space-between" gap="1.5rem">
+        <Flex
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Passport Number" margin="1rem 0 " />
+            <Text type="p" text="Passport Number" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.passNumber?.length > 8 ? (
@@ -90,7 +97,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Passport issued country" margin="1rem 0 " />
+            <Text type="p" text="Passport issued country" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={COUNTRY_FLAGS.map((x) => x.name)}
               onChange={(x) => formik.setFieldValue("passIssueCountry", x)}
@@ -113,9 +120,13 @@ function OtherInformation({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-        <Flex justify="space-between" gap="1.5rem">
+        <Flex
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Year of Expiry" margin="1rem 0 " />
+            <Text type="p" text="Year of Expiry" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={get100Years(true)}
               onChange={(x) => formik.setFieldValue("expiryYear", x)}
@@ -137,7 +148,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             </SearchInputAsString>
           </Section>
           <Section>
-            <Text type="p" text="Gender" margin="1rem 0 " />
+            <Text type="p" text="Gender" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <SearchInputAsString
               options={["Male", "Female", "Other"]}
               onChange={(x) => formik.setFieldValue("gender", x)}
@@ -163,13 +174,18 @@ function OtherInformation({ formik, steps, index }: formProps) {
         <Text
           type="p"
           text="Your guarantor’s information"
-          size="1.6rem"
+          size={isMobile ? "1.4rem" : "1.6rem"}
           margin="1rem 0 0"
         />
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Guarantor’s Name" margin="1rem 0 " />
+            <Text type="p" text="Guarantor’s Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorName?.length > 3 ? (
@@ -183,7 +199,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Relationship to you" margin="1rem 0 " />
+            <Text type="p" text="Relationship to you" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorRelationship?.length > 2 ? (
@@ -199,7 +215,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Guarantor’s Address" margin="1rem 0 " />
+          <Text type="p" text="Guarantor’s Address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
           <Input
             addon={
               formik?.values?.guarantorAddress?.length > 4 ? (
@@ -213,9 +229,14 @@ function OtherInformation({ formik, steps, index }: formProps) {
           />
         </Section>
 
-        <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
-            <Text type="p" text="Guarantor’s  Phone" margin="1rem 0 " />
+            <Text type="p" text="Guarantor’s  Phone" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorPhone?.length > 3 ? (
@@ -229,7 +250,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Guarantor’s Worth" margin="1rem 0 " />
+            <Text type="p" text="Guarantor’s Worth" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.guarantorWorth?.length > 2 ? (
@@ -243,12 +264,13 @@ function OtherInformation({ formik, steps, index }: formProps) {
             />
           </Section>
         </Flex>
+        
 
         <Section>
           <Text
             type="p"
             text="Upload all your credentials"
-            size="1.6rem"
+            size={isMobile ? "1.4rem" : "1.6rem"}
             margin="2rem 0 1rem"
           />
           {[
@@ -283,7 +305,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
                       style={{ color: ttColors.primary, cursor: "pointer" }}
                     >
                       Upload a file
-                    </span>{" "}
+                    </span>
                     or drag and drop
                   </p>
                   <Text

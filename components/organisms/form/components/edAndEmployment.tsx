@@ -11,6 +11,7 @@ import { FaCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface formProps {
   formik: FormikValues;
@@ -19,18 +20,25 @@ interface formProps {
 }
 
 function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   return (
-    <Section width="50%">
+    <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <form style={{ margin: "2rem 0" }}>
         <>
           <Flex align="center" gap=".5rem" margin="0rem 0">
             <FaCircle size={".4rem"} color={ttColors.salmon} />
-            <Text type="p" text=" Include your most recent qualification" />
+            <Text type="p" text=" Include your most recent qualification" size={14}/>
           </Flex>
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+          <Flex
+            margin="0 0 1rem"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Section>
-              <Text type="p" text="Degree" margin="1rem 0 " />
+              <Text type="p" text="Degree" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <SearchInputAsString
                 options={DEGREES}
                 onChange={(x) => formik.setFieldValue("degree", x)}
@@ -52,7 +60,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
               </SearchInputAsString>
             </Section>
             <Section>
-              <Text type="p" text="Gradudated year" margin="1rem 0 " />
+              <Text type="p" text="Gradudated year" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <SearchInputAsString
                 options={concatArrays(["Present"], get100Years())}
                 onChange={(x) => formik.setFieldValue("graudautionYear", x)}
@@ -76,7 +84,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
           </Flex>
 
           <Section margin="0 0 1rem">
-            <Text type="p" text="School Name" margin="1rem 0 " />
+            <Text type="p" text="School Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.schoolName?.length > 3 ? (
@@ -90,9 +98,14 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             />
           </Section>
 
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Section>
-              <Text type="p" text="Course of Study" margin="1rem 0 " />
+              <Text type="p" text="Course of Study" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <SearchInputAsString
                 options={COMMON_MAJORS}
                 onChange={(x) => formik.setFieldValue("courseOfStudy", x)}
@@ -114,7 +127,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
               </SearchInputAsString>
             </Section>
             <Section>
-              <Text type="p" text="Grade" margin="1rem 0 " />
+              <Text type="p" text="Grade" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <Input
                 addon={
                   formik?.values?.grade > 0 ? (
@@ -142,10 +155,11 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text=" Include your most recent employment details"
+              size={13.5}
             />
           </Flex>
           <Section>
-            <Text type="p" text="Company Name and location" margin="1rem 0 " />
+            <Text type="p" text="Company Name and location" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
             <Input
               addon={
                 formik?.values?.companyName?.length > 3 ? (
@@ -158,9 +172,14 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
               }
             />
           </Section>
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
-            <Section margin="0 0 1rem">
-              <Text type="p" text="Employer’s Name" margin="1rem 0 " />
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section margin={isMobile ? "0px" : "0 0 1rem"}>
+              <Text type="p" text="Employer’s Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <Input
                 addon={
                   formik?.values?.employerName?.length > 3 ? (
@@ -173,8 +192,8 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
                 }
               />
             </Section>
-            <Section margin="0 0 1rem">
-              <Text type="p" text="Employer’s  phone" margin="1rem 0 " />
+            <Section margin={isMobile ? "0px" : "0 0 1rem"}>
+              <Text type="p" text="Employer’s  phone" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <Input
                 addon={
                   formik?.values?.employerPhone?.length > 3 ? (
@@ -189,9 +208,14 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
             </Section>
           </Flex>
 
-          <Flex margin="0 0 1rem" justify="space-between" gap="1.5rem">
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Section>
-              <Text type="p" text="Started Year" margin="1rem 0 " />
+              <Text type="p" text="Started Year" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <SearchInputAsString
                 options={get100Years()}
                 onChange={(x) => formik.setFieldValue("startedYear", x)}
@@ -213,7 +237,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
               </SearchInputAsString>
             </Section>
             <Section>
-              <Text type="p" text="Ended year" margin="1rem 0 " />
+              <Text type="p" text="Ended year" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
               <SearchInputAsString
                 options={concatArrays(["Present"], get100Years())}
                 onChange={(x) => formik.setFieldValue("endedYear", x)}
