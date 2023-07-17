@@ -37,19 +37,20 @@ const Referral = styled.div`
   align-items: flex-start;
 
   width: 100%;
-  height: 460px;
+  height: fit-content;
+  padding: 1rem 0.3rem;
 
   background: #ffffff;
   //   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
 
-  & div {
-    margin-left: 15px;
-    @media screen and (max-width: 390px) {
-      margin-left: 0px;
-    }
-  }
+  // & div {
+  //   margin-left: 0px;
+  //   @media screen and (max-width: 390px) {
+  //     margin-left: 0px;
+  //   }
+  // }
 
   & p {
     font-weight: 400;
@@ -153,12 +154,12 @@ const Referrals = () => {
         </SectionTitle>
         <Referral>
           <Grid
-            columns={isMobile ? "30% 25% 20% 5%" : "50% 20% 20% 10%"}
+            columns={isMobile ? "35% 25% 25%" : "50% 25% 25%"}
             width="100%"
             gap={isMobile ? "15px" : "20px"}
             align="center"
             textAlign="left"
-            padding={isMobile ? "10px 0px" : "15px 20px"}
+            padding={isMobile ? "0px" : "5px 40px"}
           >
             <Text type="p" size={isMobile ? "12px" : "16px"} text="Name/Date" />
             <Text
@@ -174,12 +175,12 @@ const Referrals = () => {
             <Text type="p" size={isMobile ? "12px" : "16px"} text="" />
           </Grid>
           <Grid
-            columns={isMobile ? "30% 25% 20% 5%" : "50% 20% 20% 10%"}
+            columns={isMobile ? "35% 25% 25%" : "50% 25% 25%"}
             width="100%"
             gap={isMobile ? "15px" : "20px"}
             align="center"
             textAlign="left"
-            padding={isMobile ? "10px 0px" : "15px 20px"}
+            padding={isMobile ? "0px" : "5px 40px"}
           >
             {referralRecord.map((record) => (
               <>
@@ -208,7 +209,7 @@ const Referrals = () => {
                   size={isMobile ? "13px" : "19px"}
                   text={record.status}
                 />
-                <Button
+                {/* <Button
                   width="166px"
                   height="48px"
                   styles={{
@@ -227,7 +228,7 @@ const Referrals = () => {
                   }}
                 >
                   <FaFileDownload size="1rem" />
-                </Button>
+                </Button> */}
               </>
             ))}
           </Grid>

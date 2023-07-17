@@ -5,12 +5,12 @@ import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { RiEditBoxFill } from "react-icons/ri";
+import { useScreenResolution } from "hook/useScreenResolution";
 
-const AccountWrapper = styled.div``;
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const SectionTitle = styled.div`
@@ -23,7 +23,6 @@ const SectionTitle = styled.div`
     font-size: 32px;
     margin: 20px 0px 15px;
     line-height: 48px;
-    /* identical to box height */
 
     color: ${ttColors.dark};
   }
@@ -33,22 +32,24 @@ const AccountDetails = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   border-radius: 16px;
-  padding: 32px 24px;
+  padding: 24px;
 `;
 
 const Account = () => {
+  const { isMobile } = useScreenResolution();
+
   const AccountInformation = [
     {
       title: "Name",
       description: "John Deo",
-      icon: <RiEditBoxFill size="1rem" style={{ borderRadius: "4px" }} />,
+      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
       editable: true,
     },
 
     {
       title: "Email",
       description: "john.deo@gmail.com",
-      icon: <AiFillPlusCircle size="1rem" />,
+      icon: <AiFillPlusCircle size={isMobile ? ".8rem" : "1rem"} />,
       edit: "Add another email",
       editable: false,
     },
@@ -56,36 +57,36 @@ const Account = () => {
     {
       title: "Password",
       description: "********",
-      icon: <RiEditBoxFill size="1rem" style={{ borderRadius: "4px" }} />,
+      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
       editable: true,
     },
 
     {
       title: "Phone Number",
       description: "+1 000-000-0000",
-      icon: <RiEditBoxFill size="1rem" style={{ borderRadius: "4px" }} />,
+      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
       editable: true,
     },
 
     {
       title: "Address",
       description: "St 32, main downtown, Los Angeles, California, USA",
-      icon: <RiEditBoxFill size="1rem" style={{ borderRadius: "4px" }} />,
+      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
       editable: true,
     },
 
     {
       title: "Date of Birth",
       description: "01/01/1992",
-      icon: <RiEditBoxFill size="1rem" style={{ borderRadius: "4px" }} />,
+      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
 
       editable: false,
     },
   ];
   return (
-    <AccountWrapper>
+    <>
       <SectionTitle>
-        <Text type="h2" size="25px" text="Account" />
+        <Text type="h2" size={isMobile ? "16px" : "25px"} text="Account" />
       </SectionTitle>
       <AccountDetails>
         {AccountInformation.map((detail) => (
@@ -93,28 +94,36 @@ const Account = () => {
             justify="space-between"
             key={detail.title}
             gap="10px"
-            margin="35px 0"
+            margin={isMobile ? "0px" : "35px 0 0"}
           >
             <AccountLeft>
-              <Text type="p" text={detail.title} />
+              <Text
+                type="p"
+                text={detail.title}
+                size={isMobile ? "13px" : "25px"}
+              />
               <Text
                 type="h5"
                 text={detail.description}
                 weight="400"
-                size="19px"
+                size={isMobile ? "14px" : "25px"}
               />
             </AccountLeft>
+
             <AccountRight>
               {detail.edit && (
                 <Button
                   background="transparent"
                   border="1px solid var(--primary-color)"
                   color="var(--secondary-color)"
-                  height="48px"
-                  width="175px"
-                  fontSize="14px"
+                  height={isMobile ? "40px" : "48px"}
+                  width={isMobile ? "143px" : "175px"}
+                  fontSize={isMobile ? "12px" : "14px"}
                   lineHeight="14px"
-                  styles={{ gap: "10px" }}
+                  styles={{
+                    gap: "10px",
+                    marginBottom: isMobile ? "1.4rem" : "",
+                  }}
                 >
                   {detail.icon}
                   <Text type="p" text={"Add another email"} />
@@ -125,11 +134,14 @@ const Account = () => {
                   background="transparent"
                   border="1px solid var(--primary-color)"
                   color="var(--secondary-color)"
-                  height="48px"
-                  width="114px"
-                  fontSize="14px"
+                  height={isMobile ? "40px" : "48px"}
+                  width={isMobile ? "100px" : "175px"}
+                  fontSize={isMobile ? "12px" : "14px"}
                   lineHeight="14px"
-                  styles={{ gap: "10px" }}
+                  styles={{
+                    gap: "10px",
+                    marginBottom: isMobile ? "1.4rem" : "",
+                  }}
                 >
                   {detail.icon}
                   <Text type="p" text={"Change"} />
@@ -174,7 +186,7 @@ const Account = () => {
           </AccountRight>
         </Flex> */}
       </AccountDetails>
-    </AccountWrapper>
+    </>
   );
 };
 

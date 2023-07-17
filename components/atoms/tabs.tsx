@@ -12,6 +12,7 @@ import Flex from "./flex";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { Grid } from "./grid";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -111,16 +112,19 @@ export default function CustomTab({
             <Tab
               key={tabItem.value}
               label={
-                <Flex align="center" gap=".5rem">
+                <Grid columns="1fr"
+                  align="center"
+                  gap=".5rem"
+                >
                   {defaultIcons && icons[tabItem.value]}
                   <Text
                     type="p"
                     text={tabItem.label}
-                    size={isMobile ? ".8rem" : "1rem"}
+                    size={isMobile ? ".7rem" : "1rem"}
                     weight={600}
                     // color="var(--secondary-color)"
                   />
-                </Flex>
+                </Grid>
               }
               sx={{
                 ...(i !== tabItems.length - 1 && {

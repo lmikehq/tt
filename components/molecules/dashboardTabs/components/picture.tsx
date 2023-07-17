@@ -65,6 +65,7 @@ const ProfileInfomation = styled.div`
     line-height: 29px;
     text-align: center;
     color: ${ttColors.dark};
+
     @media screen and (max-width: 390px) {
       font-size: 16px;
       line-height: 20px;
@@ -103,9 +104,8 @@ const DashboardProfilePictue = styled.div`
     transform: translate(-50%, -50%);
 
     @media screen and (max-width: 390px) {
-      top: 13% !important;
-      left: 40% !important;
-      transform: translate(0%, 0%) !important;
+      transform: translate(-50%, 100%) !important;
+      position: sticky;
     }
   }
 
@@ -114,13 +114,13 @@ const DashboardProfilePictue = styled.div`
       padding: 9px;
       color: var(--secondary-color);
       background: var(--primary-color);
-      width: 30px !important;
-      height: 30px !important;
+      width: 28px !important;
+      height: 28px !important;
       border-radius: 50%;
       cursor: pointer;
-      position: absolute;
-      top: 117px !important;
-      right: 39.5% !important;
+      position: fixed;
+      top: 110px !important;
+      right: 41.5% !important;
     }
   }
   @media screen and (max-width: 390px) {

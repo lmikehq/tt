@@ -12,6 +12,10 @@ import Account from './components/account';
 const Wrapper = styled.div`
   margin-top: 250px;
 
+  @media screen and (max-width: 900px) {
+    margin-top: 155px;
+  }
+
   .MuiBox-root.css-1gsv261 {
     box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
     border-radius: 12px;
@@ -34,7 +38,7 @@ function DashboardTabs() {
           content: <Application />,
         },
         {
-          label: "Payment history",
+          label: "history",
           value: 1,
           content: <PaymentHistory />,
         },

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
 import Visa from "./visa";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const SectionTabs = styled.div`
   padding: 2rem 0 0;
@@ -18,7 +19,10 @@ const SectionTabs = styled.div`
 `;
 
 const Application = () => {
+  const { isMobile } = useScreenResolution();
+
   const tabItem = [
+  
     {
       label: "Visa",
       value: 0,
@@ -33,7 +37,7 @@ const Application = () => {
   ];
   return (
     <Section margin="2rem 0">
-      <Text type="h2" text="All applications" size="25px" />
+      <Text type="h2" text="All applications" size={isMobile ? "16px" : "25px"} />
 
       <SectionTabs>
         <CustomTab tabItems={tabItem} defaultIcons />
