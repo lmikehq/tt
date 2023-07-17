@@ -21,7 +21,7 @@ const AllCountryHeader = styled.div`
     position: absolute;
     top: 45%;
     text-transform: uppercase;
-    left: 50%;
+    left: 80%;
     transform: translate(-50%, -50%);
     color: #fff;
     text-align: center;
@@ -35,6 +35,7 @@ const AllCountryHeader = styled.div`
 
     @media screen and (max-width: 900px) {
       font-size: 24px;
+      left: 50% !important;
     }
   }
 `;
@@ -45,7 +46,15 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 300px;
-  background: #06062a94;
+  // background: #06062a94;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.28757440476190477) 45%,
+    rgba(0, 0, 0, 0.43043154761904767) 55%
+  );
+  @media screen and (max-width: 900px) {
+    background: #06062a94;
+  }
 `;
 
 const AllCountryHead = ({
@@ -66,7 +75,7 @@ const AllCountryHead = ({
           style={{ height: isMobile ? "128px" : "300px" }}
         />
         <Overlay style={{ height: isMobile ? "128px" : "300px" }} />
-        <Text text={title} type="h2" transform="uppercase" />
+        <Text text={title} type="h2" transform="uppercase"/>
       </AllCountryHeader>
       <Breadcrumb />
     </>

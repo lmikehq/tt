@@ -1,6 +1,7 @@
 "use client";
 
-import canada from "@image/canada-cover.png";
+import CoverImg from "@image/visaPageCover.jpg";
+import CoverDesktopImg from "@image/visaDesktopCover.jpg";
 
 import Button from "@atom/button";
 import { Divider } from "@atom/divider";
@@ -186,10 +187,11 @@ function ApplicationForm() {
     setEnabled(true);
   }
 
+  const coverImage = isMobile ? CoverImg : CoverDesktopImg;
   return (
     <>
       <AllCountryHead
-        cover={canada}
+        cover={coverImage}
         title={formik.values?.destination?.name || ""}
       />
       <SectionLayout>
@@ -444,8 +446,10 @@ function ApplicationForm() {
               </Button>
             )}
           </Section>
+
         </Flex>
       </SectionLayout>
+
       <Flex
         justify="space-between"
         gap="1rem"
