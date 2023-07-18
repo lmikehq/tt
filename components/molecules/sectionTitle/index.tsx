@@ -24,7 +24,7 @@ const Title = styled.h2`
   margin-bottom: 1rem;
 
   @media screen and (max-width: 900px) {
-    font-size: 1.4rem;
+    font-size: 1rem;
   }
 `;
 
@@ -36,7 +36,7 @@ const Description = styled.p`
   line-height: 1.2rem;
 
   @media screen and (max-width: 900px) {
-    font-size: 0.85rem;
+    font-size: 0.755rem;
     margin-top: -5px;
   }
 `;

@@ -25,7 +25,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
-      <form style={{ margin: "2rem 0" }}>
+      <form style={{ margin: isMobile ? "2rem 0 1rem" : "2rem 0" }}>
         <>
           <Flex align="center" gap=".5rem" margin="0rem 0">
             <FaCircle size={".4rem"} color={ttColors.salmon} />
@@ -49,7 +49,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <SearchInputAsString
-                height={isMobile ? "0px" : "8px"}
+               height="8px"
                 options={DEGREES}
                 onChange={(x) => formik.setFieldValue("degree", x)}
               >
@@ -77,7 +77,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <SearchInputAsString
-                height={isMobile ? "0px" : "8px"}
+               height="8px"
                 options={concatArrays(["Present"], get100Years())}
                 onChange={(x) => formik.setFieldValue("graudautionYear", x)}
               >
@@ -107,7 +107,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.schoolName?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -134,7 +134,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <SearchInputAsString
-                height={isMobile ? "0px" : "8px"}
+               height="8px"
                 options={COMMON_MAJORS}
                 onChange={(x) => formik.setFieldValue("courseOfStudy", x)}
               >
@@ -162,7 +162,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <Input
-                height={isMobile ? "33px" : "40px"}
+               height="40px"
                 addon={
                   formik?.values?.grade > 0 ? (
                     <AiOutlineCheck color="#3BB98E" />
@@ -200,7 +200,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.companyName?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -226,7 +226,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <Input
-                height={isMobile ? "33px" : "40px"}
+               height="40px"
                 addon={
                   formik?.values?.employerName?.length > 3 ? (
                     <AiOutlineCheck color="#3BB98E" />
@@ -246,7 +246,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <Input
-                height={isMobile ? "33px" : "40px"}
+               height="40px"
                 addon={
                   formik?.values?.employerPhone?.length > 3 ? (
                     <AiOutlineCheck color="#3BB98E" />
@@ -274,7 +274,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <SearchInputAsString
-                height={isMobile ? "0px" : "8px"}
+               height="8px"
                 options={get100Years()}
                 onChange={(x) => formik.setFieldValue("startedYear", x)}
               >
@@ -302,7 +302,7 @@ function EducationAndEmploymentInfo({ formik, steps, index }: formProps) {
 
               />
               <SearchInputAsString
-                height={isMobile ? "0px" : "8px"}
+               height="8px"
                 options={concatArrays(["Present"], get100Years())}
                 onChange={(x) => formik.setFieldValue("endedYear", x)}
               >

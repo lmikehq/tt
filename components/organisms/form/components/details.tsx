@@ -35,7 +35,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               flag: x.flag,
               code: x.code,
             }))}
-            height={isMobile ? "0px" : "8px"}
+           height="8px"
             onChange={(x) => formik.setFieldValue("home", x)}
           >
             <Flex justify="space-between">
@@ -69,7 +69,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               flag: x.flag,
               code: x.code,
             }))}
-            height={isMobile ? "0px" : "8px"}
+           height="8px"
             onChange={(x) => formik.setFieldValue("destination", x)}
           >
             <Flex justify="space-between">
@@ -98,7 +98,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <SearchInputAsString
-            height={isMobile ? "0px" : "8px"}
+           height="8px"
             options={[
               "Tourist Visa",
               "Business Visa",
@@ -137,7 +137,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <SearchInputAsString
-            height={isMobile ? "0px" : "8px"}
+           height="8px"
             options={["Single", "Family"]}
             onChange={(x) => {
               formik?.setFieldValue("applicationType", x);
@@ -172,7 +172,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height={isMobile ? "0px" : "8px"}
+             height="8px"
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
               onChange={(x) => {
                 setFee(x > 1 ? 30000 : 20000);
@@ -205,7 +205,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <SearchInputAsString
-            height={isMobile ? "0px" : "8px"}
+           height="8px"
             options={["Air", "Land", "Sea", "Other"]}
             onChange={(x) => formik.setFieldValue("travellingBy", x)}
           >

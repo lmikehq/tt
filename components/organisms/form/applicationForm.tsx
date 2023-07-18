@@ -1,6 +1,7 @@
 "use client";
 
-import canada from "@image/canada-cover.png";
+import CoverImg from "@image/visaPageCover.jpg";
+import CoverDesktopImg from "@image/visaDesktopCover.jpg";
 
 import Button from "@atom/button";
 import { Divider } from "@atom/divider";
@@ -233,10 +234,11 @@ function ApplicationForm() {
     toast.error("Promo code not applied");
   }
 
+  const coverImage = isMobile ? CoverImg : CoverDesktopImg;
   return (
     <>
       <AllCountryHead
-        cover={canada}
+        cover={coverImage}
         title={formik.values?.destination?.name || ""}
       />
       <SectionLayout>
@@ -506,8 +508,10 @@ function ApplicationForm() {
               </>
             )}
           </Section>
+
         </Flex>
       </SectionLayout>
+
       <Flex
         justify="space-between"
         gap="1rem"

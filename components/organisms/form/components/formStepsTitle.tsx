@@ -12,14 +12,14 @@ function FormStepTitle({ steps, index }: { steps: string[]; index: number }) {
       <Text
         type="p"
         text={steps[0]}
-        size={isMobile ? "12px" : "18px"}
+        size={isMobile ? "13px" : "18px"}
         color={index > 0 ? "#3BB98E" : "#000000"}
         weight={500}
       />
       {steps.length > 1 && (
         <>
           {index === 1 ? <HiOutlineArrowNarrowRight /> : "..."}
-          <Text type="p" text={steps[index]} size={isMobile ? "13px" : "18px"} weight={500} />
+          <Text type="p" text={steps[index]} size={isMobile ? "14px" : "18px"} weight={500} />
         </>
       )}
     </Flex>
