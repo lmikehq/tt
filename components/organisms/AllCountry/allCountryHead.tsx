@@ -24,14 +24,15 @@ const AllCountryHeader = styled.div`
     left: 80%;
     transform: translate(-50%, -50%);
     color: #fff;
+    background: #0e0d0d2b;
     text-align: center;
-
     font-style: normal;
     font-weight: 700;
     font-size: 54px;
+    padding: 0px 1rem;
     line-height: 96px;
-
     text-shadow: 0px 4px 79px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
 
     @media screen and (max-width: 900px) {
       font-size: 24px;
@@ -49,8 +50,8 @@ const Overlay = styled.div`
   // background: #06062a94;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.28757440476190477) 45%,
-    rgba(0, 0, 0, 0.43043154761904767) 55%
+    rgb(0 0 0 / 10%) 45%,
+    rgb(0 0 0 / 22%) 55%
   );
   @media screen and (max-width: 900px) {
     background: #06062a94;
