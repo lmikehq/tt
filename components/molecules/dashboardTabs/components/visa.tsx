@@ -81,7 +81,7 @@ const Visa = () => {
         direction={isMobile ? "column" : "row"}
       >
         <Flex
-          justify="space-between"
+          justify="center"
           width={isMobile ? "100%" : "50%"}
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "7px" : "0rem"}
@@ -132,7 +132,7 @@ const Visa = () => {
         <Flex
           align="center"
           width={isMobile ? "100%" : "50%"}
-          justify="space-between"
+          justify={isMobile ? "space-between" : "center"}
         >
           <Text
             type="h5"
