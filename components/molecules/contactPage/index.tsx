@@ -1,45 +1,39 @@
 "use client";
 
 import Breadcrumb from "@atom/breadcrumb";
-import Flex from "@atom/flex";
-import TextField from "@mui/material/TextField";
-import {
-  Autocomplete,
-  Box,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
-} from "@mui/material";
-import { useScreenResolution } from "hook/useScreenResolution";
-import styled from "styled-components";
-import Text from "@atom/text";
 import Button from "@atom/button";
+import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Image from "@atom/image";
-import ContactImg from "../../../assets/images/contact.svg";
-import { SlLocationPin } from "react-icons/sl";
-import { LuPhoneCall } from "react-icons/lu";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import { Autocomplete, Box } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { useState } from "react";
 import { BsEnvelope } from "react-icons/bs";
-import { ImWhatsapp } from "react-icons/im";
 import {
   FaFacebookF,
-  FaTwitter,
+  FaInstagram,
   FaLinkedinIn,
   FaTiktok,
-  FaInstagram,
+  FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
+import { ImWhatsapp } from "react-icons/im";
+import { LuPhoneCall } from "react-icons/lu";
+import { SlLocationPin } from "react-icons/sl";
+import styled from "styled-components";
 import { ttColors } from "theme/colors";
-import Link from "@atom/link";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { useState } from "react";
-import CustomerCare from "../../../assets/images/customerservice.png";
-import { Grid } from "@atom/grid";
+import ContactImg from "../../../assets/images/contact.svg";
 import ApplicationIcon from "../../../assets/images/customerCare/order-delivery.png";
-// import ApplicationIcon from "../../../assets/images/customerCare/application.png";
+import CustomerCare from "../../../assets/images/customerservice.png";
+
+import { Divider } from "@atom/divider";
 import OrderStatus from "../../../assets/images/customerCare/resume.png";
 import User from "../../../assets/images/customerCare/user.png";
-// import Support from "../../../assets/images/customerCare/technical-support.png";
-import { Divider } from "@atom/divider";
+import UsefulLinks from "./components/usefulLink";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;
@@ -94,23 +88,6 @@ const ContactWrapper = styled.div`
       width: 100% !important;
     }
   }
-`;
-
-const ContactLink = styled.div`
-  height: 300px;
-  width: 100%;
-  background: #f8fafc;
-  border-radius: 8px;
-  padding: 1rem;
-
-  @media screen and (max-width: 900px) {
-    height: 200px;
-  }
-`;
-
-const NavigateWrapper = styled.div`
-  display: block;
-  margin-top: 1rem;
 `;
 
 const ContactDetails = styled.div`
@@ -282,7 +259,10 @@ const ContactPage = () => {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { width: "50%", marginTop: isMobile ? "1rem" : "3rem" },
+        "& .MuiTextField-root": {
+          width: "50%",
+          marginTop: isMobile ? "1rem" : "3rem",
+        },
       }}
       noValidate
       autoComplete="off"
@@ -305,26 +285,7 @@ const ContactPage = () => {
         columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
-        <ContactLink>
-          <Text type="h4" text="Navigate to:" size="1rem" />
-          <NavigateWrapper>
-            {navigationLinks.map((link) => (
-              <Grid columns="2% 98%" gap="1rem" key={link.number}>
-                <Text type="h6" text={link.number} color="#343a40" />
-                <Link href={link.href}>
-                  <Text
-                    type="p"
-                    decoration="underline"
-                    color="#87CEEB"
-                    weight="500"
-                    letterSpacing={1}
-                    text={link.text}
-                  />
-                </Link>
-              </Grid>
-            ))}
-          </NavigateWrapper>
-        </ContactLink>
+        <UsefulLinks />
 
         <ContactDetails>
           <ChatAgent>

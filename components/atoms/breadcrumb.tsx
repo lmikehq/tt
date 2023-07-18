@@ -14,7 +14,8 @@ const BreadcrumbContainer = styled.div`
   margin-bottom: 2rem;
 
   @media screen and (max-width: 900px) {
-    margin-top: -2rem;
+    margin-top: -1.5rem;
+    margin-bottom: 1rem;
   }
 `;
 

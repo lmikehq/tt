@@ -21,20 +21,22 @@ const AllCountryHeader = styled.div`
     position: absolute;
     top: 45%;
     text-transform: uppercase;
-    left: 50%;
+    left: 80%;
     transform: translate(-50%, -50%);
     color: #fff;
+    background: #0e0d0d2b;
     text-align: center;
-
     font-style: normal;
     font-weight: 700;
     font-size: 54px;
+    padding: 0px 1rem;
     line-height: 96px;
-
     text-shadow: 0px 4px 79px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
 
     @media screen and (max-width: 900px) {
       font-size: 24px;
+      left: 50% !important;
     }
   }
 `;
@@ -45,7 +47,15 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 300px;
-  background: #06062a94;
+  // background: #06062a94;
+  background: linear-gradient(
+    90deg,
+    rgb(0 0 0 / 10%) 45%,
+    rgb(0 0 0 / 22%) 55%
+  );
+  @media screen and (max-width: 900px) {
+    background: #06062a94;
+  }
 `;
 
 const AllCountryHead = ({
@@ -59,14 +69,14 @@ const AllCountryHead = ({
 
   return (
     <>
-      <AllCountryHeader style={{ height: isMobile ? "160px" : "332px" }}>
+      <AllCountryHeader style={{ height: isMobile ? "160px" : "250px" }}>
         <Image
           src={cover}
           alt=""
-          style={{ height: isMobile ? "128px" : "300px" }}
+          style={{ height: isMobile ? "128px" : "230px" }}
         />
-        <Overlay style={{ height: isMobile ? "128px" : "300px" }} />
-        <Text text={title} type="h2" transform="uppercase" />
+        <Overlay style={{ height: isMobile ? "128px" : "230px" }} />
+        <Text text={title} type="h2" transform="uppercase"/>
       </AllCountryHeader>
       <Breadcrumb />
     </>

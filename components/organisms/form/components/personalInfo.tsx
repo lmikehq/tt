@@ -27,7 +27,9 @@ function PersonalInfo({ formik, steps, index }: formProps) {
       <form style={{ margin: "1rem 0" }}>
         <Flex align="center" gap=".5rem" margin="1rem 0 0">
           <FaCircle size={".4rem"} color={ttColors.salmon} />
-          <Text type="p" text=" Your name as it appears on your passport"
+          <Text
+            type="p"
+            text=" Your name as it appears on your passport"
             size={isMobile ? "15px" : "16px"}
           />
         </Flex>
@@ -38,8 +40,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="First and Middle Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="First and Middle Name"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <Input
+             height="40px"
               addon={
                 formik?.values?.firstName?.length > 5 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -52,8 +59,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="Last Name" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="Last Name"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <Input
+             height="40px"
               addon={
                 formik?.values?.lastName?.length > 5 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -66,8 +78,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Email Address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            type="p"
+            text="Email Address"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <Input
+           height="40px"
             addon={
               validateEmail(formik?.values?.email) ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -85,8 +102,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Place of Origin" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="Place of Origin"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <Input
+             height="40px"
               addon={
                 formik?.values?.placeOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -99,8 +121,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             />
           </Section>
           <Section>
-            <Text type="p" text="State of Origin" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="State of Origin"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <Input
+             height="40px"
               addon={
                 formik?.values?.stateOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -115,8 +142,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="LG. of Origin" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            type="p"
+            text="LG. of Origin"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <Input
+           height="40px"
             addon={
               formik?.values?.lgOfOrigin?.length > 2 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -134,7 +166,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Means of ID" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="Means of ID"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <SearchInputAsString
               options={[
                 "Passport",
@@ -147,6 +183,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Resident Permit/Visa",
                 "Health Insurance Card",
               ]}
+             height="8px"
               onChange={(x) => formik.setFieldValue("meansOfId", x)}
             >
               <Flex justify="space-between">
@@ -167,8 +204,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             </SearchInputAsString>
           </Section>
           <Section>
-            <Text type="p" text="ID Number" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="ID Number"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <Input
+             height="40px"
               addon={
                 formik?.values?.idNumber?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -181,8 +223,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         </Flex>
 
         <Section>
-          <Text type="p" text="Residential Address" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            type="p"
+            text="Residential Address"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <Input
+           height="40px"
             addon={
               formik?.values?.residentialAddress?.length > 2 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -217,7 +264,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Marital Status" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="Marital Status"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <SearchInputAsString
               options={[
                 "Single",
@@ -232,6 +283,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Cohabiting",
                 "Remarried",
               ]}
+             height="8px"
               onChange={(x) => formik.setFieldValue("maritalStatus", x)}
             >
               <Flex justify="space-between">
@@ -255,9 +307,10 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Partner’s Name (if applicable)"
-              margin={ isMobile ? ".2rem 0" : "1rem 0"}
+              margin={isMobile ? ".5rem 0" : "1rem 0"}
             />
             <Input
+             height="40px"
               addon={
                 formik?.values?.partnersName?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -278,8 +331,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text type="p" text="Facebook username" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              type="p"
+              text="Facebook username"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <Input
+             height="40px"
               addon={
                 formik?.values?.facebookUsername?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -295,9 +353,10 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Linkedin/Instagram username"
-              margin={ isMobile ? ".2rem 0" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
+             height="40px"
               addon={
                 formik?.values?.linkedinOrInstagram?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />

@@ -161,7 +161,7 @@ function UserPicture() {
           <BsFillCameraFill
             size={isMobile ? ".8rem" : "2rem"}
             style={{ display: isMobile ? "block" : "none" }}
-          />
+          /> 
           <Text
             type="p"
             text="Upload another cover"

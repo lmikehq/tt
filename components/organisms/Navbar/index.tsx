@@ -159,9 +159,9 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
         <Grid columns="1fr 1fr 1fr" align="center">
           <NavLink>
             {[
-              { name: "Book visa", url: "visa", icon: <GiPassport /> },
+              { name: "Visa Apply", url: "visa", icon: <GiPassport /> },
               { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
-              { name: "Find stays", url: "stay", icon: <IoBedSharp /> },
+              { name: "Rent Stays", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;
               return (

@@ -11,6 +11,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 interface formProps {
   steps: string[];
   index: number;
+  setPhase?: (n: number) => void;
 }
 
 export function PaymentStatusSuccess({ steps, index }: formProps) {
@@ -37,7 +38,7 @@ export function PaymentStatusSuccess({ steps, index }: formProps) {
     </Section>
   );
 }
-export function PaymentStatusFail({ steps, index }: formProps) {
+export function PaymentStatusFail({ steps, index, setPhase }: formProps) {
   const { isMobile } = useScreenResolution();
 
   return (
@@ -52,11 +53,13 @@ export function PaymentStatusFail({ steps, index }: formProps) {
           weight={800}
           margin="2rem 0 1rem"
         />
-        <Link href="/dashboard">
-          <Button border={`1px solid ${ttColors.primary}`} width="100%">
-            <Text type="p" text="Try again" size="1.1rem" />
-          </Button>
-        </Link>
+        <Button
+          border={`1px solid ${ttColors.primary}`}
+          width="100%"
+          onClick={() => setPhase && setPhase(5)}
+        >
+          <Text type="p" text="Try again" size="1.1rem" />
+        </Button>
       </Section>
     </Section>
   );

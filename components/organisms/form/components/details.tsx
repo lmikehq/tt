@@ -21,15 +21,21 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
-      <form style={{ margin: "2rem 0" }} autoComplete="off">
+      <form style={{ margin: "2rem 0 1.5rem" }} autoComplete="off">
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-          <Text type="p" text="Where are you from?" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            type="p"
+            text="Where are you from?"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            size={isMobile ? 14 : 16}
+          />
           <SearchInput
             options={COUNTRY_FLAGS.map((x) => ({
               name: x.name,
               flag: x.flag,
               code: x.code,
             }))}
+           height="8px"
             onChange={(x) => formik.setFieldValue("home", x)}
           >
             <Flex justify="space-between">
@@ -38,6 +44,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 text={formik?.values?.home?.name}
                 color="#1C1B1F"
                 weight={100}
+                size={isMobile ? 14 : 16}
                 styles={{ cursor: "pointer" }}
               />
               {formik?.values?.home?.name ? (
@@ -50,17 +57,24 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
         </Section>
 
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-          <Text type="p" text="Where to?" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            size={isMobile ? 14 : 16}
+            type="p"
+            text="Where to?"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <SearchInput
             options={COUNTRY_FLAGS.map((x) => ({
               name: x.name,
               flag: x.flag,
               code: x.code,
             }))}
+           height="8px"
             onChange={(x) => formik.setFieldValue("destination", x)}
           >
             <Flex justify="space-between">
               <Text
+                size={isMobile ? 14 : 16}
                 type="p"
                 text={formik?.values?.destination?.name}
                 color="#1C1B1F"
@@ -77,8 +91,14 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
         </Section>
 
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-          <Text type="p" text="Visa type" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            size={isMobile ? 14 : 16}
+            type="p"
+            text="Visa type"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <SearchInputAsString
+           height="8px"
             options={[
               "Tourist Visa",
               "Business Visa",
@@ -93,6 +113,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
           >
             <Flex justify="space-between">
               <Text
+                size={isMobile ? 14 : 16}
                 type="p"
                 text={formik?.values?.visaType}
                 color="#1C1B1F"
@@ -109,17 +130,24 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
         </Section>
 
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-          <Text type="p" text="Application type" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            size={isMobile ? 14 : 16}
+            type="p"
+            text="Application type"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <SearchInputAsString
+           height="8px"
             options={["Single", "Family"]}
             onChange={(x) => {
-              formik?.setFieldValue("applicationType", x)
+              formik?.setFieldValue("applicationType", x);
               formik?.setFieldValue("numberOfTravellers", 1);
               setFee(formik?.values?.numberOfTravellers === 1 ? 20000 : 30000);
             }}
           >
             <Flex justify="space-between">
               <Text
+                size={isMobile ? 14 : 16}
                 type="p"
                 text={formik?.values?.applicationType}
                 color="#1C1B1F"
@@ -137,8 +165,14 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
 
         {formik?.values?.applicationType === "Family" && (
           <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-            <Text type="p" text="Number of Travellers" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+            <Text
+              size={isMobile ? 14 : 16}
+              type="p"
+              text="Number of Travellers"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
             <SearchInputAsString
+             height="8px"
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
               onChange={(x) => {
                 setFee(x > 1 ? 30000 : 20000);
@@ -147,6 +181,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             >
               <Flex justify="space-between">
                 <Text
+                  size={isMobile ? 14 : 16}
                   type="p"
                   text={formik?.values?.numberOfTravellers}
                   color="#1C1B1F"
@@ -163,13 +198,20 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
           </Section>
         )}
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-          <Text type="p" text="Traveling by" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
+          <Text
+            size={isMobile ? 14 : 16}
+            type="p"
+            text="Traveling by"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          />
           <SearchInputAsString
+           height="8px"
             options={["Air", "Land", "Sea", "Other"]}
             onChange={(x) => formik.setFieldValue("travellingBy", x)}
           >
             <Flex justify="space-between">
               <Text
+                size={isMobile ? 14 : 16}
                 type="p"
                 text={formik?.values?.travellingBy}
                 color="#1C1B1F"
@@ -190,3 +232,4 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
 }
 
 export default TripDetails;
+

@@ -19,7 +19,8 @@ interface IFormStep {
 
 export const getSteps = (
   formikConfig: any,
-  setFormFee: (n: number) => void
+  setFormFee: (n: number) => void,
+  setCurrentPhase: (n: number) => void
 ): IFormStep[] => {
   return [
     {
@@ -126,6 +127,7 @@ export const getSteps = (
             "booking",
             "booking",
           ]}
+          setPhase={setCurrentPhase}
           index={6}
         />
       ),

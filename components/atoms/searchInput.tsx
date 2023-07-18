@@ -309,6 +309,7 @@ export function SearchInputAsString({
         placement="bottom-start"
         sx={{
           width: getWidth(),
+          zIndex: "989",
         }}
       >
         <ClickAwayListener onClickAway={handleClose}>
