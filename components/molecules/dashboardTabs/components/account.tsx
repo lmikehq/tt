@@ -30,7 +30,8 @@ const SectionTitle = styled.div`
 
 const AccountDetails = styled.div`
   background: #ffffff;
-  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  // box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   padding: 24px;
 `;

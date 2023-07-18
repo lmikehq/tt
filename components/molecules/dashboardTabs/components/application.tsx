@@ -32,7 +32,7 @@ const Application = () => {
     {
       label: "Flight",
       value: 1,
-      content: <p>fliht</p>,
+      content: <p>flight</p>,
     },
   ];
   return (

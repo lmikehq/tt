@@ -99,23 +99,18 @@ export default function CustomTab({
           value={value}
           onChange={handleChange}
           aria-label="select your service"
-          sx={
-            {
-              // display: "grid",
-              // "& .MuiTabs-flexContainer": {
-              //   gap: "2rem",
-              // },
-            }
-          }
+          sx={{
+            // display: "grid",
+            // "& .MuiTabs-flexContainer": {
+            //   gap: "2rem",
+            // },
+          }}
         >
           {tabItems.map((tabItem, i) => (
             <Tab
               key={tabItem.value}
               label={
-                <Grid columns="1fr"
-                  align="center"
-                  gap=".5rem"
-                >
+                <Flex align="center" gap=".5rem">
                   {defaultIcons && icons[tabItem.value]}
                   <Text
                     type="p"
@@ -124,7 +119,7 @@ export default function CustomTab({
                     weight={600}
                     // color="var(--secondary-color)"
                   />
-                </Grid>
+                </Flex>
               }
               sx={{
                 ...(i !== tabItems.length - 1 && {
