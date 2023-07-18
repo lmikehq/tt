@@ -34,6 +34,10 @@ const UploadArea = styled.div`
   border: 2px dashed rgba(0, 0, 0, 0.28);
   border-radius: 16px;
   margin-top: 2rem;
+
+  @media (max-width: 768px) {
+    height: 10rem;
+  }
 `;
 
 const UploadedDoc = styled.div<{ bg: any }>`

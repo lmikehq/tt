@@ -1,4 +1,3 @@
-import { on } from "events";
 import { useCallback, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
 import { PaystackProps } from "react-paystack/dist/types";
@@ -20,7 +19,7 @@ export function usePaystack() {
     reference: "",
   };
   const [data, setData] = useState(config);
-
+  console.log('data', data)
   const initializePayment = usePaystackPayment(data);
 
   const startPayment = 

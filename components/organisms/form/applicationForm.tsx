@@ -33,6 +33,7 @@ import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
+import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -56,6 +57,7 @@ function ApplicationForm() {
   const [promoCode, setPromoCode] = useState("");
   const [promocodeLoading, setPromocodeLoading] = useState(false);
   const [applicationResponse, setApplicationResponse] = useState<any>({});
+  const { user } = useUserStore((state) => state);
   const { startPayment, loading, error, response, setData, data } =
     usePaystack();
   async function handleVisaApplication() {
@@ -77,10 +79,19 @@ function ApplicationForm() {
       passportExpiryYear: formik.values.expiryYear,
       relationshipToGuarantor: formik.values.guarantorRelationship,
       documents: formik.values.uploadedDocuments,
+      userId: user?._id,
     });
 
     setApplicationResponse(response);
-    if (response.statusCode === 201) return setCurrentPhase(currentPhase + 1);
+    if (response.statusCode === 201) {
+      setData({
+        ...data,
+        amount: response.fee.total * 100,
+        currency: "NGN",
+        email: response.fee.mail || formik.values.email,
+      });
+      return setCurrentPhase(currentPhase + 1);
+    }
   }
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
@@ -102,16 +113,32 @@ function ApplicationForm() {
     });
     await apiService("/payment/paystack-success-callback", "POST", {
       visaId: applicationResponse.id,
+      user: user?._id || applicationResponse.userId,
+      method: "CARD",
+      gateway: "Paystack",
+      status: "SUCCESS",
+      currency: "NGN",
+      totalAmount: applicationResponse.fee.total,
+      service: "VISA",
+      description: 'Payment Successful'
     });
     setCurrentPhase(currentPhase + 1);
   }
-  function onCancel() {
+  async function onCancel() {
+    await apiService("/payment/paystack-success-callback", "POST", {
+      visaId: applicationResponse.id,
+      user: user?._id || applicationResponse.userId,
+      method: "CARD",
+      gateway: "Paystack",
+      status: "FAILED",
+      currency: "NGN",
+      totalAmount: applicationResponse.fee.total,
+      service: "VISA",
+      description: 'Payment Cancelled'
+    });
     toast.error("Payment Cancelled");
     setCurrentPhase(currentPhase + 2);
   }
-
-  console.log("current", currentPhase);
-
   const nextStep = async () => {
     if (nextStepLoading) return;
     if (currentPhase === 4) {
@@ -121,12 +148,7 @@ function ApplicationForm() {
     }
     if (currentPhase === 5) {
       console.log("formik: ", applicationResponse.fee);
-      setData({
-        ...data,
-        amount: applicationResponse.fee.total * 100,
-        currency: "NGN",
-        email: applicationResponse.fee.mail || formik.values.email,
-      });
+
       return await startPayment({ onSuccess, onCancel });
     }
     if (currentPhase === 7) {
@@ -140,8 +162,6 @@ function ApplicationForm() {
     await reloadFee();
     setCurrentPhase(currentPhase - 1);
   };
-
-  const { user } = useUserStore((state) => state);
 
   const initialValues = {
     ...visaInitVals,
@@ -380,6 +400,15 @@ function ApplicationForm() {
                         />
                       )
                     )}
+                  {applicationResponse?.statusCode === 422 && (
+                    <Text
+                      type="p"
+                      text={"Please login to your account to continue"}
+                      color="rgb(255, 134, 130)"
+                      size="1rem"
+                      margin="0 0 .6rem 0"
+                    />
+                  )}
 
                   <Button
                     width="100%"
@@ -423,7 +452,7 @@ function ApplicationForm() {
                         weight={400}
                       />
                       <p style={{ fontSize: "14px" }}>
-                        For more details, see our
+                        For more details, see our &nbsp;
                         <span
                           style={{ color: ttColors.primary, cursor: "pointer" }}
                         >
@@ -461,14 +490,20 @@ function ApplicationForm() {
                 />
               )
             ) : (
-              <Button
-                width="100%"
-                margin="1rem 0"
-                onClick={nextStep}
-                fontSize="18px"
-              >
-                <Text type="p" text="Login to your account" />
-              </Button>
+              <>
+                <UsefulLinks/>
+                <Button
+                  width="100%"
+                  margin="1rem 0"
+                  onClick={() => router.push("/company/about-us")}
+                  fontSize="18px"
+                  background="transparent"
+                  color="#000"
+                  border="1px solid #000"
+                >
+                  <Text type="p" text="Learn how we work" />
+                </Button>
+              </>
             )}
           </Section>
         </Flex>
