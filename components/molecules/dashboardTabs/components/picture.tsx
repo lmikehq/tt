@@ -112,7 +112,7 @@ const DashboardProfilePictue = styled.div`
   & button {
     top: 16px !important;
     right: 44.5% !important;
-    psoition: absolute !important;
+    position: absolute;
 
     @media screen and (max-width: 900px) {
       padding: 9px;
