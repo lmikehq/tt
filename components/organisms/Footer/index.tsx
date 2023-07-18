@@ -31,6 +31,10 @@ const FooterWrapper = styled.footer`
   position: relative;
   bottom: 0;
   left: 0;
+
+  @media (max-width: 900px) {
+    padding: 1rem 0;
+  }
 `;
 
 const FooterIcons = [
@@ -117,7 +121,7 @@ const FooterSection = () => {
       <SectionLayout margin="0 auto">
         <Grid
           className="footerLayout"
-          gap={isMobile ? "1.2rem" : "2.5rem"}
+          gap={isMobile ? "2rem" : "2.5rem"}
           columns={isMobile ? "1fr" : "repeat(5, 1fr)"}
           padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
         >
@@ -145,7 +149,7 @@ const FooterSection = () => {
               type="h3"
               text="Top Countries"
               color="#06062A"
-              padding="0 0 25px"
+              padding={isMobile ? "0 0 5px" : "0 0 25px"}
             />
             <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {top_countries.map((country, index) => (
@@ -165,7 +169,7 @@ const FooterSection = () => {
               type="h3"
               text="Useful Link"
               color="#06062A"
-              padding="0 0 25px"
+              padding={isMobile ? "0 0 5px" : "0 0 25px"}
             />
             <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {useful_links.map((link, index) => (
@@ -179,7 +183,7 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="support">
-            <Text type="h3" text="Support" color="#06062A" padding="0 0 25px" />
+            <Text type="h3" text="Support" color="#06062A" padding={isMobile ? "0 0 5px" : "0 0 25px"} />
             <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {supports.map((support, s) => (
                 <Link
@@ -192,7 +196,7 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="aboutUs">
-            <Text type="h3" text="Company" color="#06062A" padding="0 0 25px" />
+            <Text type="h3" text="Company" color="#06062A" padding={isMobile ? "0 0 5px" : "0 0 25px"} />
             <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {aboutUs.map((about, a) => (
                 <Link
