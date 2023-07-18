@@ -210,7 +210,7 @@ function ApplicationForm() {
         amount: 0,
       },
       {
-        name: "VAT",
+        name: "Value Added Tax",
         amount: 150,
       },
     ];
