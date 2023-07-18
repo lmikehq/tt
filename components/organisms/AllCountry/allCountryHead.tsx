@@ -68,13 +68,13 @@ const AllCountryHead = ({
 
   return (
     <>
-      <AllCountryHeader style={{ height: isMobile ? "160px" : "332px" }}>
+      <AllCountryHeader style={{ height: isMobile ? "160px" : "250px" }}>
         <Image
           src={cover}
           alt=""
-          style={{ height: isMobile ? "128px" : "300px" }}
+          style={{ height: isMobile ? "128px" : "230px" }}
         />
-        <Overlay style={{ height: isMobile ? "128px" : "300px" }} />
+        <Overlay style={{ height: isMobile ? "128px" : "230px" }} />
         <Text text={title} type="h2" transform="uppercase"/>
       </AllCountryHeader>
       <Breadcrumb />

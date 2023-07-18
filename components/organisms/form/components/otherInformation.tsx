@@ -76,7 +76,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
 
-      <form style={{ margin: "1rem 0" }}>
+      <form style={{ margin: isMobile ? "1rem 0 0" : "1rem 0" }}>
         <Flex
           justify="space-between"
           direction={isMobile ? "column" : "row"}
@@ -89,7 +89,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+              height="40px"
               addon={
                 formik?.values?.passNumber?.length > 8 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -108,7 +108,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height={isMobile ? "0px" : "8px"}
+              height="8px"
               options={COUNTRY_FLAGS.map((x) => x.name)}
               onChange={(x) => formik.setFieldValue("passIssueCountry", x)}
             >
@@ -142,7 +142,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height={isMobile ? "0px" : "8px"}
+              height="8px"
               options={get100Years(true)}
               onChange={(x) => formik.setFieldValue("expiryYear", x)}
             >
@@ -169,7 +169,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height={isMobile ? "0px" : "8px"}
+              height="8px"
               options={["Male", "Female", "Other"]}
               onChange={(x) => formik.setFieldValue("gender", x)}
             >
@@ -211,7 +211,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+              height="40px"
               addon={
                 formik?.values?.guarantorName?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -230,7 +230,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+              height="40px"
               addon={
                 formik?.values?.guarantorRelationship?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -251,7 +251,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <Input
-            height={isMobile ? "33px" : "40px"}
+            height="40px"
             addon={
               formik?.values?.guarantorAddress?.length > 4 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -277,7 +277,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+              height="40px"
               addon={
                 formik?.values?.guarantorPhone?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -296,7 +296,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+              height="40px"
               addon={
                 formik?.values?.guarantorWorth?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -364,7 +364,15 @@ function OtherInformation({ formik, steps, index }: formProps) {
             </Center>
           </UploadArea>
 
-          <Flex margin="2rem 0 0" gap="1rem" wrap="wrap">
+          <Flex
+            margin={
+              formik.values.uploadedDocuments.length === 0
+                ? "1rem 0 0"
+                : "2rem 0 0"
+            }
+            gap="1rem"
+            wrap="wrap"
+          >
             {formik.values.uploadedDocuments.map((_item: any, i: number) => (
               <UploadedDoc
                 bg={_item}

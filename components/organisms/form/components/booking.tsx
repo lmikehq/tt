@@ -86,7 +86,7 @@ function Booking({ steps, index }: formProps) {
             background: "#FFFFFF",
             boxShadow: "0px 4px 16px rgba(17, 34, 17, 0.05)",
             borderRadius: "12px",
-            margin: "2rem 0",
+            margin: isMobile  ? "1rem 0" : "2rem 0",
             padding: "1rem",
           }}
         >
@@ -97,7 +97,7 @@ function Booking({ steps, index }: formProps) {
             size={isMobile ? "1.1rem" : "1.2rem"}
           />
           <Input
-            height={isMobile ? "33px" : "40px"}
+            height="40px"
             placeholder="Email address"
             margin={isMobile ? ".7rem  0 1rem" : "1rem 0"}
           />

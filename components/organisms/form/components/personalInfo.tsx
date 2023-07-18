@@ -46,7 +46,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.firstName?.length > 5 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -65,7 +65,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.lastName?.length > 5 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -84,7 +84,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <Input
-            height={isMobile ? "33px" : "40px"}
+           height="40px"
             addon={
               validateEmail(formik?.values?.email) ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -108,7 +108,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.placeOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -127,7 +127,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.stateOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -148,7 +148,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <Input
-            height={isMobile ? "33px" : "40px"}
+           height="40px"
             addon={
               formik?.values?.lgOfOrigin?.length > 2 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -183,7 +183,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Resident Permit/Visa",
                 "Health Insurance Card",
               ]}
-              height={isMobile ? "0px" : "8px"}
+             height="8px"
               onChange={(x) => formik.setFieldValue("meansOfId", x)}
             >
               <Flex justify="space-between">
@@ -210,7 +210,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.idNumber?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -229,7 +229,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <Input
-            height={isMobile ? "33px" : "40px"}
+           height="40px"
             addon={
               formik?.values?.residentialAddress?.length > 2 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -283,7 +283,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Cohabiting",
                 "Remarried",
               ]}
-              height={isMobile ? "0px" : "8px"}
+             height="8px"
               onChange={(x) => formik.setFieldValue("maritalStatus", x)}
             >
               <Flex justify="space-between">
@@ -310,7 +310,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".5rem 0" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.partnersName?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -337,7 +337,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.facebookUsername?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -356,7 +356,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height={isMobile ? "33px" : "40px"}
+             height="40px"
               addon={
                 formik?.values?.linkedinOrInstagram?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
