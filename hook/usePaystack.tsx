@@ -1,48 +1,51 @@
-"use client";
-import { usePaystackPayment } from "react-paystack";
-
+import { on } from "events";
 import { useCallback, useState } from "react";
+import { usePaystackPayment } from "react-paystack";
+import { PaystackProps } from "react-paystack/dist/types";
 export type Currency = "NGN" | "GHS" | "USD" | "ZAR" | "KES" | "XOF";
+
 export function usePaystack() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [response, setResponse] = useState(null);
+  const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_KEY as string;
+  const config: PaystackProps = {
+    publicKey,
+    email: "", // Temporarily empty
+    amount: 0, // Temporarily 0
+    currency: "NGN", // Temporarily NGN
+    metadata: {
+      ...{ custom_fields: [] },
+    },
+    reference: "",
+  };
+  const [data, setData] = useState(config);
 
-  const initializePayment = useCallback(
-    (data: {
-      email: string;
-      amount: number;
-      currency?: Currency;
-      metadata?: any;
-      ref?: string;
-    }) => {
-      const publicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string;
+  const initializePayment = usePaystackPayment(data);
+
+  const startPayment = 
+    useCallback((paymentCallback: { onSuccess: any; onCancel: any }) => {
       setLoading(true);
       setError("");
       setResponse(null);
-      const onSuccess = () => {
-        console.log("transaction successfull");
+
+      function onSuccess() {
         setLoading(false);
         setError("");
-        // setResponse(transaction);
-      };
-      const onCancel = () => {
-        console.log("transaction cancelled");
+        paymentCallback.onSuccess();
+      }
+
+      function onCancel() {
         setLoading(false);
-        setError("Payment cancelled");
+        setError("");
         setResponse(null);
-      };
-      const initPayment = usePaystackPayment({
-        publicKey,
-        email: data.email,
-        amount: data.amount * 100,
-        currency: data.currency || "NGN",
-        metadata: data.metadata,
-        reference: data.ref || new Date().getTime().toString(),
-      });
-      initPayment(onSuccess, onCancel);
+        paymentCallback.onCancel();
+      }
+
+      const res = initializePayment(onSuccess, onCancel);
     },
-    [setLoading, setError, setResponse]
+    [setLoading, setError, setResponse, data, initializePayment]
   );
-  return { initializePayment, loading, error, response };
+
+  return { startPayment, loading, error, response, setData, data };
 }

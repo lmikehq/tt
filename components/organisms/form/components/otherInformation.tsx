@@ -344,11 +344,12 @@ function OtherInformation({ formik, steps, index }: formProps) {
                         );
                       openFilePicker();
                     }}
+                    style={{ cursor: "pointer" }}
                   >
                     <span
-                      style={{ color: ttColors.primary, cursor: "pointer" }}
+                      style={{ color: ttColors.primary }}
                     >
-                      Upload a file
+                      Upload a file {' '}
                     </span>
                     or drag and drop
                   </p>

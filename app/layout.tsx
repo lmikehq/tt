@@ -11,15 +11,9 @@ const poppins = Poppins({
 });
 
 export const generateMetadata = () => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  const currentDate = new Date();
   return {
     title: { default: Siteconfig.name, template: `%s - ${Siteconfig.name}` },
-    description: `${currentDate.toLocaleDateString("en-US", options)} - ${
+    description: `Today - ${
       Siteconfig.description
     }`,
     keywords: Siteconfig.keywords,

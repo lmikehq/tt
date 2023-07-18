@@ -33,8 +33,6 @@ import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { IFee } from "types";
-import { Box } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
 const PromoInput = styled.div`
   display: flex;
   margin: 1rem 0;
@@ -56,48 +54,34 @@ const PromoInput = styled.div`
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
-  const [enabled, setEnabled] = useState(false);
   const [promocodeLoading, setPromocodeLoading] = useState(false);
-  const [visaButtonClicked, setVisaButtonClicked] = useState(false);
   const [applicationResponse, setApplicationResponse] = useState<any>({});
-  const { initializePayment, loading, error, response } = usePaystack();
-  async function validatePromoCode() {
-    const response = await apiService("visa/verify-promo-code", "POST", {
-      promoCode,
-    });
-    return response;
-  }
+  const { startPayment, loading, error, response, setData, data } =
+    usePaystack();
   async function handleVisaApplication() {
-    const response = await apiService("visa/apply", "POST", {
-      form: {
-        ...formik.values,
-        destination: formik.values.destination?.name,
-        home: formik.values.destination?.home,
-      },
-      promoCode,
-      payment: currencyFormatter(
-        shownFees.reduce(
-          (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
-          0
-        ),
-        "NGN"
-      ),
+    if (applicationResponse.statusCode === 201)
+      return setCurrentPhase(currentPhase + 1);
+    const response: any = await apiService("visa/new-application", "POST", {
+      ...formik.values,
+      destination: formik.values.destination?.name,
+      homeCountry: formik.values.destination?.name,
+      firstAndMiddleName: formik.values.firstName,
+      address: formik.values.residentialAddress,
+      school: formik.values.schoolName,
+      yearOfGraduation: formik.values.graudautionYear,
+      company: formik.values.companyName,
+      yearStarted: formik.values.startedYear,
+      yearEnded: formik.values.endedYear,
+      passportNumber: formik.values.passNumber,
+      passportIssuedCountry: formik.values.passIssueCountry,
+      passportExpiryYear: formik.values.expiryYear,
+      relationshipToGuarantor: formik.values.guarantorRelationship,
+      documents: formik.values.uploadedDocuments,
     });
-    console.log("response: ", response, formik.values);
-    return response;
+
+    setApplicationResponse(response);
+    if (response.statusCode === 201) return setCurrentPhase(currentPhase + 1);
   }
-  const { data, isLoading } = useQuery(["handleVisa"], handleVisaApplication, {
-    enabled: visaButtonClicked,
-    retry: false,
-  });
-  const { data: promoData } = useQuery(
-    ["promoCode", promoCode],
-    validatePromoCode,
-    {
-      enabled,
-      retry: false,
-    }
-  );
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -107,17 +91,50 @@ function ApplicationForm() {
   const [currentPhase, setCurrentPhase] = useState(
     type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
   );
+  // const [currentPhase, setCurrentPhase] = useState(5);
   const [nextStepLoading, setNextStepLoading] = useState(false);
-
   const router = useRouter();
+
+  async function onSuccess() {
+    // toast.success("Payment Successful, please check your email for receipt");
+    toast.loading("Payment Successful, please wait...", {
+      duration: 5000,
+    });
+    await apiService("/payment/paystack-success-callback", "POST", {
+      visaId: applicationResponse.id,
+    });
+    setCurrentPhase(currentPhase + 1);
+  }
+  function onCancel() {
+    toast.error("Payment Cancelled");
+    setCurrentPhase(currentPhase + 2);
+  }
+
+  console.log("current", currentPhase);
 
   const nextStep = async () => {
     if (nextStepLoading) return;
-    if (currentPhase === 5) return setVisaButtonClicked(true);
+    if (currentPhase === 4) {
+      setNextStepLoading(true);
+      await handleVisaApplication();
+      return setNextStepLoading(false);
+    }
+    if (currentPhase === 5) {
+      console.log("formik: ", applicationResponse.fee);
+      setData({
+        ...data,
+        amount: applicationResponse.fee.total * 100,
+        currency: "NGN",
+        email: applicationResponse.fee.mail || formik.values.email,
+      });
+      return await startPayment({ onSuccess, onCancel });
+    }
+    if (currentPhase === 7) {
+      return router.push("/auth/login");
+    }
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
   };
-
   const prevStep = async () => {
     if (nextStepLoading || currentPhase === 1) return;
     await reloadFee();
@@ -129,7 +146,7 @@ function ApplicationForm() {
   const initialValues = {
     ...visaInitVals,
     home: { name: params.get("home") || "" },
-    destination: { name: params.get("destination") || "Canada" },
+    destination: { name: params.get("destination") || "" },
     visaType: params.get("visaType") || "",
     email: user?.email || "",
   };
@@ -141,7 +158,7 @@ function ApplicationForm() {
   async function reloadFee() {
     setNextStepLoading(true);
     setShownFees([]);
-    await sleep(200);
+    await sleep(1000);
     setNextStepLoading(false);
     setShownFees(calcFees(formFee));
   }
@@ -178,12 +195,22 @@ function ApplicationForm() {
     ];
   }
 
-  const step = getSteps(formik, setFormFee).find((x) => x.id === currentPhase);
+  const step = getSteps(formik, setFormFee, setCurrentPhase).find(
+    (x) => x.id === currentPhase
+  );
 
   async function handlePromoCode(e: any) {
     e.preventDefault();
-    if (!promoCode) return toast.error("Please enter a promo code");
-    setEnabled(true);
+    if (promocodeLoading) return;
+    setPromocodeLoading(true);
+    if (!promoCode) {
+      toast.error("Please enter a promo code");
+      return setPromocodeLoading(false);
+    }
+    await sleep(2000);
+    setPromocodeLoading(false);
+    setPromoCode("");
+    toast.error("Promo code not applied");
   }
 
   return (
