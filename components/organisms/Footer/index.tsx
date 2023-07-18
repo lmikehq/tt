@@ -113,7 +113,7 @@ const FooterSection = () => {
     { href: "/", text: "Blog", color: "#06062A" },
   ];
 
-   if (isApply && isMobile) return null;
+  if (isApply && isMobile) return null;
 
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : ".5rem" }}>
@@ -183,7 +183,12 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="support">
-            <Text type="h3" text="Support" color="#06062A" padding={isMobile ? "0 0 5px" : "0 0 25px"} />
+            <Text
+              type="h3"
+              text="Support"
+              color="#06062A"
+              padding={isMobile ? "0 0 5px" : "0 0 25px"}
+            />
             <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {supports.map((support, s) => (
                 <Link
@@ -196,7 +201,12 @@ const FooterSection = () => {
             </Flex>
           </div>
           <div className="aboutUs">
-            <Text type="h3" text="Company" color="#06062A" padding={isMobile ? "0 0 5px" : "0 0 25px"} />
+            <Text
+              type="h3"
+              text="Company"
+              color="#06062A"
+              padding={isMobile ? "0 0 5px" : "0 0 25px"}
+            />
             <Flex direction="column" gap="1rem" styles={{ fontWeight: "400" }}>
               {aboutUs.map((about, a) => (
                 <Link
@@ -214,7 +224,7 @@ const FooterSection = () => {
           align={isMobile ? "center" : "flex-end"}
           width="auto"
           styles={{
-            visibility: isMobile ? "visible" : "hidden",
+            display: isMobile ? "flex" : "none",
             position: "relative",
             bottom: "0px",
             right: isMobile ? "-16px" : "0px",
