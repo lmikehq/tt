@@ -25,6 +25,24 @@ interface flexProps {
   borderRadius?: string;
   id?: string;
   overflow?: string;
+  overflowY?:
+    | "auto"
+    | "clip"
+    | "hidden"
+    | "scroll"
+    | "visible"
+    | "inherit"
+    | "initial"
+    | "unset";
+  overflowX?:
+    | "auto"
+    | "clip"
+    | "hidden"
+    | "scroll"
+    | "visible"
+    | "inherit"
+    | "initial"
+    | "unset";
   wrap?: "wrap" | "nowrap";
   border?: string;
   height?: string;
@@ -52,6 +70,8 @@ export const Flex: React.FC<flexProps> = ({
   borderRadius,
   id,
   overflow,
+  overflowY,
+  overflowX,
   wrap,
   border,
   borderBottom,
@@ -77,6 +97,8 @@ export const Flex: React.FC<flexProps> = ({
         background: background,
         width: width,
         overflow: overflow || "unset",
+        overflowY: overflowY,
+        overflowX: overflowX,
         borderRadius: borderRadius,
         border: border,
         padding: padding,

@@ -10,8 +10,8 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useState } from "react";
 import { RiBarChartHorizontalLine } from "react-icons/ri";
 import styled from "styled-components";
-import Logo from "../../assets/images/brand/tt_blue_logo_with_text.png";
-import waitListImg from "../../assets/images/waitlist/waitlist-icon.svg";
+import Logo from "@image/brand/tt_blue_logo_with_text.png";
+import waitListImg from "@image/waitlist/waitlist-icon.svg";
 import Image from "./image";
 import Input from "./input";
 import { SearchInputAsString } from "./searchInput";
@@ -183,9 +183,10 @@ const WaitList = () => {
         type="p"
         text="I consented to personalized thriller updates."
         size={isMobile ? 15 : 18}
+        weight={100}
       />
     );
-  }; 
+  };
 
   const router = useRouter();
   const { isMobile } = useScreenResolution();
@@ -335,11 +336,10 @@ const WaitList = () => {
         {!isMobile && (
           <LeftSide>
             <LeftSideText>
-              <Text type="h1" text="Thrillers Travels​" />
-              
+              <Text type="h1" text="Why wait?​" />
               <Text
                 type="p"
-                text=" Adventure is calling, and the world is waiting for you. Join us as we unlock the door to extraordinary travel experiences. Sign up to be the first to know when our platform launches and prepare to embark on the journey of a lifetime."
+                text="Joining our waitlist is the first step on your journey to the Western world. It's more than just a list – it's your ticket to joining thousands of other people  we have helped to settle in Canada, USA, UK, Australia, New Zealand and other countries"
               />
             </LeftSideText>
             <Image src={waitListImg} alt="" />
@@ -434,12 +434,12 @@ const WaitList = () => {
           </NavbarSection>
           <RightWrapper>
             <RightSideContent>
-              <h3>Kindly provide your details below and proceed </h3>
+              <h3>Get on the Waitlist – Your Passport to the World!</h3>
               <form style={{ width: "100%" }}>
                 <Flex direction="column" gap="0rem">
                   <Flex direction="column" gap="0rem">
                     <Input
-                      placeholder="full name"
+                      placeholder="Full name"
                       border={
                         submissionState.error.includes("Full name is required")
                           ? "1px solid red"
@@ -451,6 +451,7 @@ const WaitList = () => {
                           fullName: e.target.value,
                         })
                       }
+                      height="45px"
                     />
                     <br />
                     <Input
@@ -469,6 +470,7 @@ const WaitList = () => {
                           ? "1px solid red"
                           : ""
                       }
+                      height="45px"
                     />
                   </Flex>{" "}
                   <br />
@@ -489,6 +491,7 @@ const WaitList = () => {
                           ? "1px solid red"
                           : ""
                       }
+                      height="45px"
                     />
                     <br />
                     <SearchInputAsString
@@ -512,11 +515,12 @@ const WaitList = () => {
                           ? "1px solid red"
                           : ""
                       }
+                      height="12px"
                     >
                       <Text
                         type="p"
                         text={waitlistData.readiness || "Readiness"}
-                        color="#1C1B1F"
+                        color="#1C1B1F100"
                         weight={100}
                         styles={{ cursor: "pointer" }}
                       />
@@ -539,7 +543,6 @@ const WaitList = () => {
                       <FormControlLabel
                         control={<Checkbox defaultChecked />}
                         label={<WaitListLabel />}
-                        
                       />
                     </div>
                   </Flex>
@@ -575,7 +578,5 @@ const WaitList = () => {
     </WaitListWrapper>
   );
 };
-
-
 
 export default WaitList;
