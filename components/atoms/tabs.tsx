@@ -12,6 +12,7 @@ import Flex from "./flex";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { Grid } from "./grid";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -98,14 +99,12 @@ export default function CustomTab({
           value={value}
           onChange={handleChange}
           aria-label="select your service"
-          sx={
-            {
-              // display: "grid",
-              // "& .MuiTabs-flexContainer": {
-              //   gap: "2rem",
-              // },
-            }
-          }
+          sx={{
+            // display: "grid",
+            // "& .MuiTabs-flexContainer": {
+            //   gap: "2rem",
+            // },
+          }}
         >
           {tabItems.map((tabItem, i) => (
             <Tab
@@ -116,7 +115,7 @@ export default function CustomTab({
                   <Text
                     type="p"
                     text={tabItem.label}
-                    size={isMobile ? ".8rem" : "1rem"}
+                    size={isMobile ? ".7rem" : "1rem"}
                     weight={600}
                     // color="var(--secondary-color)"
                   />

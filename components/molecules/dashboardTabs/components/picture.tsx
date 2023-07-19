@@ -32,7 +32,7 @@ const DashboardCoverPicture = styled.div`
     font-size: 16px;
     line-height: 17px;
 
-    @media screen and (max-width: 390px) {
+    @media screen and (max-width: 900px) {
       justify-content: center;
       font-size: 12px;
       line-height: 0px !important;
@@ -42,12 +42,12 @@ const DashboardCoverPicture = styled.div`
       right: 5px !important;
     }
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 900px) {
     & img {
       width: 100%;
     }
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 900px) {
     height: 0px !important;
   }
 `;
@@ -65,7 +65,8 @@ const ProfileInfomation = styled.div`
     line-height: 29px;
     text-align: center;
     color: ${ttColors.dark};
-    @media screen and (max-width: 390px) {
+
+    @media screen and (max-width: 900px) {
       font-size: 16px;
       line-height: 20px;
     }
@@ -78,13 +79,13 @@ const ProfileInfomation = styled.div`
     color: ${ttColors.dark};
     opacity: 0.7;
     text-align: center;
-    @media screen and (max-width: 390px) {
+    @media screen and (max-width: 900px) {
       font-size: 12px;
       line-height: 10px;
       opacity: 1;
     }
   }
-  @media screen and (max-width: 390px) {
+  @media screen and (max-width: 900px) {
     top: 150px !important;
   }
 `;
@@ -102,28 +103,34 @@ const DashboardProfilePictue = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
 
-    @media screen and (max-width: 390px) {
-      top: 13% !important;
-      left: 40% !important;
-      transform: translate(0%, 0%) !important;
+    @media screen and (max-width: 900px) {
+      transform: translate(-50%, 100%) !important;
+      position: sticky;
     }
   }
 
   & button {
-    @media screen and (max-width: 390px) {
+    top: 16px !important;
+    right: 44.5% !important;
+    position: absolute;
+
+    @media screen and (max-width: 900px) {
       padding: 9px;
       color: var(--secondary-color);
       background: var(--primary-color);
-      width: 30px !important;
-      height: 30px !important;
+      width: 28px !important;
+      height: 28px !important;
       border-radius: 50%;
       cursor: pointer;
-      position: absolute;
-      top: 117px !important;
-      right: 39.5% !important;
+      position: fixed;
+      top: 110px !important;
+      right: 41.5% !important;
     }
-  }
-  @media screen and (max-width: 390px) {
+
+    @media screen and (max-width: 768px) {
+      right: 44.5% !important;
+   }
+  @media screen and (max-width: 900px) {
     position: static;
     display: flex;
   }
@@ -175,8 +182,8 @@ function UserPicture() {
             position: "absolute",
             background: "var(--primary-color)",
             color: "var(--secondary-color)",
-            top: "28px",
-            right: "44.5%",
+            top: "10px",
+            right: " 45.5%",
             borderRadius: "50%",
             height: "50px",
             width: "50px",
