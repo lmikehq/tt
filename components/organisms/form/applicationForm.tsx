@@ -235,6 +235,58 @@ function ApplicationForm() {
   }
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
+   const customNavigationLinks = [
+     {
+       number: "01",
+       text: "Chat with our AI",
+       href: "",
+     },
+     {
+       number: "02",
+       text: "Chat with an Agent",
+       href: "",
+     },
+     {
+       number: "03",
+       text: "Chat with our travel guide",
+       href: "",
+     },
+     {
+       number: "04",
+       text: "Testimony",
+       href: "",
+     },
+     {
+       number: "05",
+       text: "Testimony",
+       href: "",
+     },
+     {
+       number: "06",
+       text: "Testimony",
+       href: "",
+     },
+     {
+       number: "07",
+       text: "Testimony",
+       href: "",
+     },
+     {
+       number: "08",
+       text: "Testimony",
+       href: "",
+     },
+     {
+       number: "09",
+       text: "Testimony",
+       href: "",
+     },
+     {
+       number: "10",
+       text: "Testimony",
+       href: "",
+     },
+   ];
   return (
     <>
       <AllCountryHead
@@ -493,7 +545,7 @@ function ApplicationForm() {
               )
             ) : (
               <>
-                <UsefulLinks/>
+                <UsefulLinks navigationLinks={customNavigationLinks} />
                 <Button
                   width="100%"
                   margin="1rem 0"
@@ -508,7 +560,6 @@ function ApplicationForm() {
               </>
             )}
           </Section>
-
         </Flex>
       </SectionLayout>
 

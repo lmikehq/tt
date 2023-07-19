@@ -28,6 +28,7 @@ const AllCountryHeader = styled.div`
     text-align: center;
     font-style: normal;
     font-weight: 700;
+    width: 25%;
     font-size: 54px;
     padding: 0px 1rem;
     line-height: 96px;
@@ -37,6 +38,8 @@ const AllCountryHeader = styled.div`
     @media screen and (max-width: 900px) {
       font-size: 24px;
       left: 50% !important;
+      width: 100%;
+      background: transparent;
     }
   }
 `;
