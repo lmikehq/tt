@@ -85,6 +85,9 @@ function ApplicationForm() {
 
     setApplicationResponse(response);
     if (response.statusCode === 201) {
+      toast.success(
+        "Your application has been submitted successfully, please proceed to make payment"
+      );
       setData({
         ...data,
         amount: response.fee.total * 100,
@@ -121,7 +124,7 @@ function ApplicationForm() {
       currency: "NGN",
       totalAmount: applicationResponse.fee.total,
       service: "VISA",
-      description: 'Payment Successful'
+      description: "Payment Successful",
     });
     setCurrentPhase(currentPhase + 1);
   }
@@ -135,7 +138,7 @@ function ApplicationForm() {
       currency: "NGN",
       totalAmount: applicationResponse.fee.total,
       service: "VISA",
-      description: 'Payment Cancelled'
+      description: "Payment Cancelled",
     });
     toast.error("Payment Cancelled");
     setCurrentPhase(currentPhase + 2);
@@ -493,7 +496,7 @@ function ApplicationForm() {
               )
             ) : (
               <>
-                <UsefulLinks/>
+                <UsefulLinks />
                 <Button
                   width="100%"
                   margin="1rem 0"
@@ -508,7 +511,6 @@ function ApplicationForm() {
               </>
             )}
           </Section>
-
         </Flex>
       </SectionLayout>
 
