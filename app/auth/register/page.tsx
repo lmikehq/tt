@@ -78,13 +78,19 @@ function RegisterPage() {
     }
 
     const res = await handleRegister();
-    if (res.statusCode !== 201) {
-      setSubmissionState({
+    if (res.statusCode === 400) {
+      return setSubmissionState({
         ...submissionState,
-        error: res.errors,
+        error: res.errors.message,
         loading: false,
       });
+    } else if (res.statusCode === 422) {
+      return setSubmissionState({
+        ...submissionState,
+        error: [{ property: "email", constraints: res.errors.message }],
+      });
     }
+
     setSubmissionState({
       ...submissionState,
       loading: true,
@@ -103,7 +109,7 @@ function RegisterPage() {
     );
     if (error) return error.constraints;
   }
-  console.log('isMobile: ', isMobile)
+  console.log("isMobile: ", isMobile);
   return (
     <SectionLayout>
       <form onSubmit={handleSubmit}>
@@ -330,12 +336,18 @@ function RegisterPage() {
                 </Flex>
               </Flex>
 
-              {/* <div style={{ margin: "-1rem 0" }}>
+              <div style={{ margin: "-1rem 0" }}>
                 {submissionState.error.length > 0 &&
-                  submissionState.error.map((err, i) => (
-                    <Text type="p" text={err} color="#FF8682" size="17px" key={i} />
+                  submissionState.error.map((err: any, i: number) => (
+                    <Text
+                      type="p"
+                      text={err.constraints}
+                      color="#FF8682"
+                      size="17px"
+                      key={i}
+                    />
                   ))}
-              </div> */}
+              </div>
               <Button
                 width="100%"
                 background={
