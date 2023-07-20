@@ -99,7 +99,11 @@ function UsefulLinks({
   return (
     <ContactLink>
       <Text type="h4" text="Navigate to:" size="1rem" />
-      <Section margin="1rem 0 0">
+      <Section margin="1rem 0 0" styles={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+      }}>
         {navigationLinks.map((link) => (
           <Grid columns="2% 98%" gap="1rem" key={link.number} align="center">
             <Text type="h6" text={link.number} color="#343a40" />

@@ -7,13 +7,13 @@ interface layoutProps {
 
 export const metadata = {
   title: "Privacy Policy",
-  description: "Welcome to your privacy policy page",
+  description: "Welcome to Thrillers Travels privacy policy page",
 };
 
 export default function PrivacyPolicyLayout({ children }: layoutProps) {
   return (
     <>
-      <Navbar page="dashboard" />
+      <Navbar page="privacy" />
       {children}
       <FooterSection />
     </>
