@@ -109,7 +109,6 @@ function RegisterPage() {
     );
     if (error) return error.constraints;
   }
-  console.log("isMobile: ", isMobile);
   return (
     <SectionLayout>
       <form onSubmit={handleSubmit}>
