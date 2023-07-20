@@ -91,7 +91,7 @@ function LoginPage() {
       duration: 3000,
     });
     await sleep(2000);
-    router.back();
+    router.push('/dashboard');
   }
 
   return (
