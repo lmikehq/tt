@@ -83,7 +83,7 @@ function VerifyCode() {
             <Flex
               margin="3rem 0"
               direction="column"
-              gap="2rem"
+              gap="1rem"
               overflow="unset"
             >
               <Input
