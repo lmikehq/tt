@@ -100,8 +100,8 @@ function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
-              {submissionState?.error?.map((err: any) => (
-                <Text type="p" text={err} color="red" />
+              {submissionState?.error?.map((err: any, i: number) => (
+                <Text type="p" text={err} color="red" key={i} />
               ))}
 
               <Button

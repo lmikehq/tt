@@ -111,8 +111,8 @@ function VerifyCode() {
                 </Link>
               </p>
 
-              {resetDetails?.error?.map((err: any) => (
-                <Text type="p" text={err} color="red" />
+              {resetDetails?.error?.map((err: any, i: number) => (
+                <Text type="p" text={err} color="red" key={i} />
               ))}
 
               <Button
