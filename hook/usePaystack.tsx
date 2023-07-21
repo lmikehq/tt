@@ -19,7 +19,6 @@ export function usePaystack() {
     reference: "",
   };
   const [data, setData] = useState(config);
-  console.log('data', data)
   const initializePayment = usePaystackPayment(data);
 
   const startPayment = 

@@ -194,7 +194,6 @@ const Chat = () => {
 
   const handleMessageSend = async () => {
     if (message.trim() !== "") {
-      console.log(`Sending message: ${message}`);
       setChatHistory((prevHistory) => [...prevHistory, message]);
 
       try {

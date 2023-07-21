@@ -73,6 +73,7 @@ import sleep from "@lib/sleep";
 import { urlString } from "@lib/url";
 import apiService from "hook/apiService";
 import { useDetectOutsideClick } from "hook/useDetectOutsideClick";
+import { handleLogout } from "hook/useLogout";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -82,16 +83,6 @@ import { RxAvatar } from "react-icons/rx";
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
-  async function handleLogout() {
-    const res = await apiService("/auth/logout", "POST");
-    toast.success("You have been logged out!");
-    await sleep(3000);
-    toast.loading("Redirecting to login page...", {
-        duration: 3000,
-    });
-    await sleep(500);
-    router.push("/auth/login");
-  }
   const ref = useRef(null);
   useDetectOutsideClick(ref, () => setIsVisible(false));
   return (
@@ -141,7 +132,13 @@ const CustomPopover = () => {
                 "Logout",
               ].map((item, i) =>
                 item === "Logout" ? (
-                  <div onClick={handleLogout} key={i}>
+                  <div
+                    onClick={() => {
+                      handleLogout();
+                      router.push("/auth/login");
+                    }}
+                    key={i}
+                  >
                     <Text
                       text={item}
                       type="p"
