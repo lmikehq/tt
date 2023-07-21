@@ -3,7 +3,7 @@ import { IoCloudUpload } from "react-icons/io5";
 import React from "react";
 import { styled } from "styled-components";
 import Image from "@atom/image";
-import CoverPicture from "@image/dashboard/coverPicture.png";
+import cover from "@image/dashboard/cover.jpg";
 import profileImage from "@image/dashboard/profilePicture.png";
 import Button from "@atom/button";
 import Text from "@atom/text";
@@ -11,10 +11,12 @@ import { HiPencil } from "react-icons/hi";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { BsFillCameraFill } from "react-icons/bs";
+import { useUserStore } from "store/useStore";
+import avatar from "@image/avatar.jpg";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
-  height: 350px;
+  height: 250px;
   display: block;
 
   & img {
@@ -96,9 +98,10 @@ const DashboardProfilePictue = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-
+  
   & img {
     position: absolute;
+    border-radius: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -138,14 +141,14 @@ const DashboardProfilePictue = styled.div`
 
 function UserPicture() {
   const { isMobile } = useScreenResolution();
-
+  const { user } = useUserStore((state) => state);
   return (
     <div>
       <DashboardCoverPicture>
         <Image
-          src={CoverPicture}
+          src={user?.coverPicture || cover}
           alt="cover-picture"
-          height={isMobile ? 120 : 350}
+          height={isMobile ? 120 : 250}
           styles={{ width: "100%" }}
         />
         <Button
@@ -161,7 +164,7 @@ function UserPicture() {
           <BsFillCameraFill
             size={isMobile ? ".8rem" : "2rem"}
             style={{ display: isMobile ? "block" : "none" }}
-          /> 
+          />
           <Text
             type="p"
             text="Upload another cover"
@@ -172,7 +175,7 @@ function UserPicture() {
 
       <DashboardProfilePictue>
         <Image
-          src={profileImage}
+          src={user?.profilePicture || avatar}
           alt="profile-picture"
           height={isMobile ? 70 : 160}
           styles={{ width: "160px" }}
@@ -193,8 +196,8 @@ function UserPicture() {
           <HiPencil size="2rem" />
         </Button>
         <ProfileInfomation>
-          <Text type="h3" text="John Deo" />
-          <Text type="p" text="john.deo@gmail.com" />
+          <Text type="h3" text={user?.firstName + " " + user?.lastName} />
+          <Text type="p" text={user?.email} />
         </ProfileInfomation>
       </DashboardProfilePictue>
     </div>

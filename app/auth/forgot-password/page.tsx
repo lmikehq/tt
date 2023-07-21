@@ -45,35 +45,22 @@ function LoginPage() {
     switch (res?.statusCode) {
       case 200:
         toast.success("Password reset link sent to your email");
-        return router.push("/auth/verify-code");
+        return router.push("/auth/reset-password");
       case 400:
         return setSubmissionState({
           ...submissionState,
           error: [res?.errors?.message[0].constraints],
         });
       case 404:
-        return router.push("/auth/verify-code");
+        return router.push("/auth/reset-password");
       default:
         return setSubmissionState({
           ...submissionState,
           error: ["Something went wrong. Please try again"],
         });
     }
-    // if (res?.statusCode === 400) {
-    //   return setSubmissionState({
-    //     ...submissionState,
-    //     error: [res?.errors?.message[0].constraints],
-    //   });
-    // } else if (res?.statusCode === 404) {
-    // return setSubmissionState({
-    //   ...submissionState,
-    //   error: ["Something went wrong. Please try again"],
-    // });
-    // }
-    setSubmissionState({ ...submissionState, loading: false });
-    // router.push("/auth/verify-code");
+
   }
-  console.log("submissionState: ", submissionState);
   return (
     <SectionLayout>
       <Flex margin="4rem 0">

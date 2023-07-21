@@ -6,6 +6,8 @@ import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
 import Visa from "./visa";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Center from "@atom/center";
+import RTQueryClient from "@components/layouts/rtqWrapper";
 
 const SectionTabs = styled.div`
   padding: 2rem 0 0;
@@ -22,7 +24,6 @@ const Application = () => {
   const { isMobile } = useScreenResolution();
 
   const tabItem = [
-  
     {
       label: "Visa",
       value: 0,
@@ -32,15 +33,21 @@ const Application = () => {
     {
       label: "Flight",
       value: 1,
-      content: <p>flight</p>,
+      content: <Center margin="2rem 0">Coming soon</Center>,
     },
   ];
   return (
     <Section margin="2rem 0">
-      <Text type="h2" text="All applications" size={isMobile ? "16px" : "25px"} />
+      <Text
+        type="h2"
+        text="All applications"
+        size={isMobile ? "16px" : "25px"}
+      />
 
       <SectionTabs>
-        <CustomTab tabItems={tabItem} defaultIcons />
+        <RTQueryClient>
+          <CustomTab tabItems={tabItem} defaultIcons />
+        </RTQueryClient>
       </SectionTabs>
     </Section>
   );

@@ -1,8 +1,8 @@
 import React from "react";
 
 export const metadata = {
-  title: "Verify your password reset code",
-  description: "Verify your password reset code",
+  title: "Reset your password",
+  description: "Reset your password",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

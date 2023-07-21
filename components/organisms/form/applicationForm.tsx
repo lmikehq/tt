@@ -151,8 +151,6 @@ function ApplicationForm() {
       return setNextStepLoading(false);
     }
     if (currentPhase === 5) {
-      console.log("formik: ", applicationResponse.fee);
-
       return await startPayment({ onSuccess, onCancel });
     }
     if (currentPhase === 7) {
