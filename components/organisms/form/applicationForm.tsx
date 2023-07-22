@@ -147,8 +147,6 @@ function ApplicationForm() {
     if (nextStepLoading) return;
     if (currentPhase === 4) {
       setNextStepLoading(true);
-      console.log("formik: ", formik.values);
-
       await handleVisaApplication();
       return setNextStepLoading(false);
     }
