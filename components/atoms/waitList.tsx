@@ -135,7 +135,8 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-content: space-between;
-  height: 5%;
+  // height: 5%;
+  align-items: center;
 `;
 
 const TtBrand = styled.div`
@@ -167,7 +168,7 @@ const MenuIcon = styled.svg`
     display: block;
     cursor: pointer;
     position: absolute;
-    left: 345px;
+    // left: 345px;
     top: 18px;
     display: block;
   }
@@ -356,7 +357,7 @@ const WaitList = () => {
               </TtBrand>
 
               <MenuIcon onClick={handleShowNavbar}>
-                <RiBarChartHorizontalLine size="2rem" />
+                <RiBarChartHorizontalLine size={30} />
               </MenuIcon>
 
               {!isMobile && (
