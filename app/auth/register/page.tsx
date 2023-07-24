@@ -40,7 +40,10 @@ function RegisterPage() {
     success: false,
   });
   async function handleRegister(): Promise<any> {
-    const response = await apiService("/user", "POST", registerData);
+    const response = await apiService("/user", "POST", {
+      ...registerData,
+      email: registerData?.email?.toLowerCase(),
+    });
     return response;
   }
 
