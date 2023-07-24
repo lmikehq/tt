@@ -40,7 +40,7 @@ function LoginPage() {
       return;
     }
     const res = (await apiService("/auth/forgot-password", "POST", {
-      email,
+      email: email?.toLocaleLowerCase(),
     })) as any;
     switch (res?.statusCode) {
       case 200:
@@ -59,7 +59,6 @@ function LoginPage() {
           error: ["Something went wrong. Please try again"],
         });
     }
-
   }
   return (
     <SectionLayout>

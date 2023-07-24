@@ -57,7 +57,10 @@ function LoginPage() {
   }
 
   async function handleLogin(): Promise<any> {
-    return await apiService("/auth/login", "POST", loginData);
+    return await apiService("/auth/login", "POST", {
+      ...loginData,
+      email: loginData.email.toLowerCase(),
+    });
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
