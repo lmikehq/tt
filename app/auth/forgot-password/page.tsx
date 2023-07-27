@@ -10,17 +10,56 @@ import logo from "@image/brand/tt_blue_logo_with_text.png";
 import google from "@image/google.svg";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
+import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { FaSpinner } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
-
-
 
 function LoginPage() {
   const { isMobile } = useScreenResolution();
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    error: [] as any,
+  });
+  async function handleForgotPassword() {
+    if (submissionState.loading) return;
+    setSubmissionState({ ...submissionState, loading: true });
+    if (!email) {
+      setSubmissionState({
+        ...submissionState,
+        loading: false,
+        error: ["Email is required"],
+      });
+      return;
+    }
+    const res = (await apiService("/auth/forgot-password", "POST", {
+      email: email?.toLocaleLowerCase(),
+    })) as any;
+    switch (res?.statusCode) {
+      case 200:
+        toast.success("Password reset link sent to your email");
+        return router.push("/auth/reset-password");
+      case 400:
+        return setSubmissionState({
+          ...submissionState,
+          error: [res?.errors?.message[0].constraints],
+        });
+      case 404:
+        return router.push("/auth/reset-password");
+      default:
+        return setSubmissionState({
+          ...submissionState,
+          error: ["Something went wrong. Please try again"],
+        });
+    }
+  }
   return (
     <SectionLayout>
       <Flex margin="4rem 0">
@@ -51,22 +90,34 @@ function LoginPage() {
             <Flex
               margin="3rem 0"
               direction="column"
-              gap="2rem"
+              gap="1rem"
               overflow="unset"
             >
-              <TextField legend="Email" placeholder="mike.doe@gmail.com" />
+              <TextField
+                legend="Email"
+                placeholder="mike.doe@gmail.com"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              {submissionState?.error?.map((err: any, i: number) => (
+                <Text type="p" text={err} color="red" key={i} />
+              ))}
 
               <Button
                 width="100%"
                 background={ttColors.primary}
-                onClick={() => router.push("/auth/verify-code")}
+                onClick={handleForgotPassword}
               >
-                <Text
-                  type="p"
-                  text="submit"
-                  color={ttColors.dark}
-                  size="20px"
-                />
+                {submissionState.loading ? (
+                  <FaSpinner className="spinner" size={20} />
+                ) : (
+                  <Text
+                    type="p"
+                    text="submit"
+                    color={ttColors.dark}
+                    size="20px"
+                  />
+                )}
               </Button>
 
               <Flex justify="space-between" align="center" width="90%">

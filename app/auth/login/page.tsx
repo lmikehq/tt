@@ -22,10 +22,12 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
 
 function LoginPage() {
   const { isMobile } = useScreenResolution();
+  const { setUser } = useUserStore((state) => state);
   const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -55,7 +57,10 @@ function LoginPage() {
   }
 
   async function handleLogin(): Promise<any> {
-    return await apiService("/auth/login", "POST", loginData);
+    return await apiService("/auth/login", "POST", {
+      ...loginData,
+      email: loginData.email.toLowerCase(),
+    });
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -64,7 +69,6 @@ function LoginPage() {
     setSubmissionState({ ...submissionState, loading: true });
     const res = await handleLogin();
     if (res.statusCode === 401) {
-      console.log("entered: ", res);
       setSubmissionState({
         ...submissionState,
         error: [
@@ -85,13 +89,14 @@ function LoginPage() {
       ...submissionState,
       loading: true,
     });
+    setUser(res?.user);
     toast.success("You have successfully logged in!");
     await sleep(3000);
     toast.loading("Redirecting to your dashboard...", {
       duration: 3000,
     });
     await sleep(2000);
-    router.back();
+    router.push("/dashboard");
   }
 
   return (
@@ -134,6 +139,7 @@ function LoginPage() {
                 onChange={(e) =>
                   setLoginData({ ...loginData, email: e.target.value })
                 }
+                value={loginData.email}
               />
             </Section>
             <Section>
@@ -147,6 +153,7 @@ function LoginPage() {
                 onChange={(e) =>
                   setLoginData({ ...loginData, password: e.target.value })
                 }
+                value={loginData.password}
               />
               {checkIfFieldHasError("email") && (
                 <Text
