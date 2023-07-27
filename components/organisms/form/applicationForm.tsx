@@ -67,7 +67,7 @@ function ApplicationForm() {
     const response: any = await apiService("visa/new-application", "POST", {
       ...formik.values,
       destination: formik.values.destination?.name,
-      homeCountry: formik.values.destination?.name,
+      homeCountry: formik.values.home?.name,
       firstAndMiddleName: formik.values.firstName,
       address: formik.values.residentialAddress,
       school: formik.values.schoolName,
@@ -80,11 +80,14 @@ function ApplicationForm() {
       passportExpiryYear: formik.values.expiryYear,
       relationshipToGuarantor: formik.values.guarantorRelationship,
       documents: formik.values.uploadedDocuments,
-      userId: user?._id,
+      userId: user?._id || '',
     });
 
     setApplicationResponse(response);
     if (response.statusCode === 201) {
+      toast.success(
+        "Your application has been submitted successfully, please proceed to make payment"
+      );
       setData({
         ...data,
         amount: response.fee.total * 100,
@@ -121,7 +124,7 @@ function ApplicationForm() {
       currency: "NGN",
       totalAmount: applicationResponse.fee.total,
       service: "VISA",
-      description: 'Payment Successful'
+      description: "Payment Successful",
     });
     setCurrentPhase(currentPhase + 1);
   }
@@ -135,7 +138,7 @@ function ApplicationForm() {
       currency: "NGN",
       totalAmount: applicationResponse.fee.total,
       service: "VISA",
-      description: 'Payment Cancelled'
+      description: "Payment Cancelled",
     });
     toast.error("Payment Cancelled");
     setCurrentPhase(currentPhase + 2);
@@ -148,8 +151,6 @@ function ApplicationForm() {
       return setNextStepLoading(false);
     }
     if (currentPhase === 5) {
-      console.log("formik: ", applicationResponse.fee);
-
       return await startPayment({ onSuccess, onCancel });
     }
     if (currentPhase === 7) {
@@ -166,6 +167,8 @@ function ApplicationForm() {
 
   const initialValues = {
     ...visaInitVals,
+    firstAndMiddleName: user?.firstName || "",
+    lastName: user?.lastName || "",
     home: { name: params.get("home") || "" },
     destination: { name: params.get("destination") || "" },
     visaType: params.get("visaType") || "",
@@ -493,7 +496,7 @@ function ApplicationForm() {
               )
             ) : (
               <>
-                <UsefulLinks/>
+                <UsefulLinks />
                 <Button
                   width="100%"
                   margin="1rem 0"
@@ -508,7 +511,6 @@ function ApplicationForm() {
               </>
             )}
           </Section>
-
         </Flex>
       </SectionLayout>
 

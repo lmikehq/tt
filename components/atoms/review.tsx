@@ -17,7 +17,7 @@ const Card = styled.div`
   align-items: center;
   padding: 0.7rem;
   width: 100%;
-  height: 310px;
+  // height: 310px;
   margin-bottom: 2rem;
 
   background: var(--default-color);
@@ -37,7 +37,7 @@ const CardHeader = styled.div`
   padding: 1rem;
   line-height: 30px;
   color: var(--secondary-color);
-  margin-bottom: 2.5rem;
+  // margin-bottom: 2.5rem;
 `;
 const CardDescription = styled.div`
   font-family: "Montserrat";
@@ -78,62 +78,62 @@ const Review = () => {
   const reviewCard = [
     {
       id: 1,
-      title: "“A real sense of community, nurtured”",
+      title: "“Dream Come True!”",
       description:
-        "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
-      rating: 4.5,
-      name: "John Doe",
-      designation: "Employment visa - Canada",
+        "Always wanted to move to the UK. Thrillers made it happen. Now I'm living my dream life in London!",
+      rating: 4.8,
+      name: "James K.",
+      designation: "Employment visa - UK",
     },
 
     {
       id: 2,
-      title: "“A real sense of community, nurtured”",
+      title: "“Smooth Sailing!”",
       description:
-        "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
-      rating: 4.5,
-      name: "John Doe",
+        "Moving to Canada felt like a breeze with Thrillers. Their support was priceless during my transition.",
+      rating: 4.6,
+      name: "Nuga Temitope",
       designation: "Employment visa - Canada",
     },
 
     {
       id: 3,
-      title: "“A real sense of community, nurtured”",
+      title: "“Professionalism at its Best!”",
       description:
-        "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
+        "Thrillers handled all the complex UK relocation paperwork with ease. Their team is a game-changer",
       rating: 4.5,
-      name: "John Doe",
+      name: "Rapheal Oyeniran",
       designation: "Employment visa - Canada",
     },
 
     {
       id: 4,
-      title: "“A real sense of community, nurtured”",
+      title: "“Supported All The Way!”",
       description:
-        "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
+        "Relocating was a huge step, but Thrillers had my back. Now I'm happy and settled in Canada..",
       rating: 4.5,
-      name: "John Doe",
+      name: "Bolarinwa Taiwo",
       designation: "Employment visa - Canada",
     },
 
     {
       id: 5,
-      title: "“A real sense of community, nurtured”",
+      title: "“Guiding Light!”",
       description:
-        "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
+        "From start to finish, Thrillers was there for my UK move. They genuinely care about their clients",
       rating: 5,
-      name: "John Doe",
-      designation: "Employment visa - Canada",
+      name: "Isu Ekpo",
+      designation: "Employment visa - UK",
     },
 
     {
       id: 6,
-      title: "“A real sense of community, nurtured”",
+      title: "“Impossible Made Possible!”",
       description:
-        "Really appreciate the help and support from the staff during these tough times. Shoutout to Katie for helping me always, even when I was out of the country. And always available when needed.",
+        "Moving to the UK seemed impossible. Thrillers made it happen. Now I'm starting a new life in London!",
       rating: 4.5,
-      name: "John Doe",
-      designation: "Employment visa - Canada",
+      name: "Aileriomo Mary",
+      designation: "Employment visa - UK",
     },
   ];
    const reviewCardToShow = isMobile ? reviewCard.slice(0, 3) : reviewCard;
@@ -149,7 +149,7 @@ const Review = () => {
         />
         <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
           {reviewCardToShow.map((review, index) => (
-            <React.Fragment key={review.id}>
+            <div key={review.id}>
               <Card
                 key={review.id}
                 style={{
@@ -172,7 +172,7 @@ const Review = () => {
                 </CardFooter>
               </Card>
               {isMobile && index !== reviewCardToShow.length - 1 && <Divider />}
-            </React.Fragment>
+            </div>
           ))}
         </Grid>
         <SectionTitle
