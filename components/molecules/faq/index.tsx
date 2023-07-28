@@ -71,7 +71,7 @@ function FaqSection() {
   return (
     <FaqsSection>
       <Breadcrumb />
-      <Flex direction="column" justify="center" align="center" margin="0px 0px 6.5rem 0px">
+      <Flex direction="column" justify="center" align="center" margin={isMobile ? "0px" : "0px 0px 6.5rem 0px"}>
         <Text type="h1" text="Frequently Asked Questions" size={isMobile ? "1rem" : "2rem"} />
         <Text
           margin={isMobile ? "1rem 0px" : "2rem 0px"}
@@ -94,28 +94,28 @@ function FaqSection() {
         <UsefulLinks navigationLinks={customNavigationLinks} />
         <Flex direction="column">
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="How it works" size="1.5rem" />
+            <Text type="h2" text="How it works" size={isMobile ? "1.2rem" : "1.5rem"} />
             <CustomizedAccordions items={howWeWork} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="How it we make things happeing" size="1.5rem" />
+            <Text type="h2" text="How it we make things happeing" size={isMobile ? "1.2rem" : "1.5rem"} />
             <CustomizedAccordions items={makeItHappening} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="Booking your visa" size="1.5rem" />
+            <Text type="h2" text="Booking your visa" size={isMobile ? "1.2rem" : "1.5rem"} />
             <CustomizedAccordions items={bookingYourVisa} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="Payment and Budget" size="1.5rem" />
+            <Text type="h2" text="Payment and Budget" size={isMobile ? "1.2rem" : "1.5rem"} />
 
             <CustomizedAccordions items={paymentAndBudget} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="How it we make things happeing" size="1.5rem" />
+            <Text type="h2" text="How it we make things happeing" size={isMobile ? "1.2rem" : "1.5rem"} />
 
             <CustomizedAccordions items={makeItHappening} />
           </Flex>
