@@ -496,7 +496,7 @@ function ApplicationForm() {
               )
             ) : (
               <>
-                <UsefulLinks />
+                <UsefulLinks navigationLinks={customNavigationLinks} />
                 <Button
                   width="100%"
                   margin="1rem 0"
@@ -572,5 +572,28 @@ function ApplicationForm() {
     </>
   );
 }
+
+const customNavigationLinks = [
+  {
+    number: "01",
+    text: "Chat with our AI",
+    href: "",
+  },
+  {
+    number: "02",
+    text: "Chat with an Agent",
+    href: "",
+  },
+  {
+    number: "03",
+    text: "Chat with our travel guide",
+    href: "",
+  },
+  {
+    number: "04",
+    text: "Testimony",
+    href: "",
+  },
+];
 
 export default ApplicationForm;
