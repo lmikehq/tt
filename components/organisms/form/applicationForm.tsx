@@ -67,7 +67,7 @@ function ApplicationForm() {
     const response: any = await apiService("visa/new-application", "POST", {
       ...formik.values,
       destination: formik.values.destination?.name,
-      homeCountry: formik.values.destination?.name,
+      homeCountry: formik.values.home?.name,
       firstAndMiddleName: formik.values.firstName,
       address: formik.values.residentialAddress,
       school: formik.values.schoolName,
@@ -80,7 +80,7 @@ function ApplicationForm() {
       passportExpiryYear: formik.values.expiryYear,
       relationshipToGuarantor: formik.values.guarantorRelationship,
       documents: formik.values.uploadedDocuments,
-      userId: user?._id,
+      userId: user?._id || '',
     });
 
     setApplicationResponse(response);
@@ -151,8 +151,6 @@ function ApplicationForm() {
       return setNextStepLoading(false);
     }
     if (currentPhase === 5) {
-      console.log("formik: ", applicationResponse.fee);
-
       return await startPayment({ onSuccess, onCancel });
     }
     if (currentPhase === 7) {
@@ -169,6 +167,8 @@ function ApplicationForm() {
 
   const initialValues = {
     ...visaInitVals,
+    firstAndMiddleName: user?.firstName || "",
+    lastName: user?.lastName || "",
     home: { name: params.get("home") || "" },
     destination: { name: params.get("destination") || "" },
     visaType: params.get("visaType") || "",

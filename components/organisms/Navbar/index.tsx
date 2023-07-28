@@ -145,8 +145,8 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { setUser } = useUserStore((state) => state);
   const handleOpen = () => setModalOpen(true);
+  const { setUser } = useUserStore((state) => state);
   async function getUser(): Promise<User | any> {
     const res = await apiService("/user", "GET");
     setUser(res);

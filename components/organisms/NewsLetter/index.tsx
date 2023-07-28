@@ -77,7 +77,6 @@ const Subcribe = styled.div`
 
 const NewsLetter = () => {
   const { isMobile } = useScreenResolution();
-
   return (
     <SubscribeWrapper className="newsLetter"
       style={{
