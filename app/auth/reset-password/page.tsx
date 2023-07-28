@@ -2,7 +2,7 @@
 "use client";
 import Button from "@atom/button";
 import Flex from "@atom/flex";
-import Input, { TextField } from "@atom/input";
+import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import SectionLayout from "@components/layouts/sectionLayout";
