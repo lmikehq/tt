@@ -1,47 +1,3 @@
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-// import styled from "styled-components";
-
-// import React from "react";
-// import Slider from "react-slick";
-
-// const StyledCard = styled.div`
-//   border-left: 2px solid #19013b;
-//   box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.07),
-//               0 5px 15px 0 hsla(0, 0%, 0%, 0.1);
-//   padding: 16px;
-//   margin: 16px 0;
-//   background: white;
-// `;
-
-// const CardTitle = styled.h3`
-//   margin-bottom: 1rem;
-// `;
-
-// const CardDescription = styled.p`
-//   margin-bottom: 1rem;
-// `;
-
-// interface CarouselCardProps {
-//   title?: string;
-//   description?: string;
-//   children: ReactNode;
-//   settings: Settings;
-// }
-
-// const Carousel: React.FC<CarouselCardProps> = ({ children }) => {
-//     return (
-//       <StyledCard>
-//         <CardTitle>{title}</CardTitle>
-//         <CardDescription>{description}</CardDescription>
-//         <Carousel {...settings}>{children}</Carousel>
-//       </StyledCard>
-//     );
-// };
-
-// export default Carousel;
-
-// below
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -50,6 +6,7 @@ import styled from "styled-components";
 import { Grid } from "@atom/grid";
 import Text from "@atom/text";
 import { ttColors } from "theme/colors";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 
 
@@ -60,7 +17,6 @@ const CarouselWrapper = styled.div`
   }
 
   & h1 {
-    font-size: 2.5rem;
     margin-bottom: 1rem;
     font-weight: 600;
     color: ${ttColors.primary};
@@ -69,7 +25,7 @@ const CarouselWrapper = styled.div`
 const CarouselCard = styled.div`
   padding: 20px;
   background: #fff;
-  height: 300px;
+  height: fit-content;
   border-radius: 10px;
   margin: 1rem auto;
   border: 1px solid #ddd;
@@ -101,15 +57,14 @@ const StyledSlider = styled(Slider)`
 const Carousel: React.FC<{
   items: { id: number; title: string; description: string }[];
 }> = ({ items }) => {
-  
 
- 
+  const { isMobile } = useScreenResolution();
 
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: isMobile ? 1 : 3,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -117,7 +72,7 @@ const Carousel: React.FC<{
 
   return (
     <CarouselWrapper>
-      <Text type="h1" text="Our Core Values" />
+      <Text type="h1" text="Our Core Values" size={isMobile ? "2rem" : "2.5rem"}/>
       <StyledSlider {...settings}>
         {items.map((item) => (
           <Grid columns="1fr" gap="1rem" key={item.id}>

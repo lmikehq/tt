@@ -11,7 +11,6 @@ import Carousel from "@molecule/carouselComponent";
 
 const AboutUsWrapper = styled.div`
   & h1 {
-    font-size: 2.5rem;
     margin-bottom: 1rem;
     font-weight: 600;
     color: ${ttColors.primary};
@@ -157,33 +156,47 @@ const AboutUsPage = () => {
           direction={isMobile ? "column" : "row"}
         >
           <Fleft>
-            <h1>Our Story </h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil,
+            <Text
+              text="Our Story"
+              type="h1"
+              size={isMobile ? "1.9rem" : "2.5rem"}
+              
+            />
+            <Text
+              size={isMobile ? "1.2rem" : "1.5rem"}
+              type="p"
+              text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil,
               cumque vitae? Eos distinctio velit molestiae, nobis at perferendis
               non earum aperiam quo corrupti perspiciatis quaerat in pariatur
               eveniet placeat ad minus ex doloribus quas nam! Praesentium eius,
               repudiandae cupiditate voluptas vitae distinctio odio, porro omnis
-              eaque modi totam laborum dolorem reprehenderit illum saepe
-            </p>
+              eaque modi totam laborum dolorem reprehenderit illum saepe"
+            />
+
             <br />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
+
+            <Text
+              size={isMobile ? "1.2rem" : "1.5rem"}
+              type="p"
+              text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
               sapiente autem qui harum provident magni numquam molestias animi
               dicta? Tenetur magni necessitatibus laboriosam inventore at nam,
               illo officiis voluptas eius provident nobis ducimus, ipsam dolorem
               accusamus voluptatem cum, quam ratione quasi? Eveniet incidunt
-              dolores numquam assumenda, beatae eum minima dicta.
-            </p>
+              dolores numquam assumenda, beatae eum minima dicta."
+            />
             <br />
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
+
+            <Text
+              size={isMobile ? "1.2rem" : "1.5rem"}
+              type="p"
+              text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum
               sapiente autem qui harum provident magni numquam molestias animi
               dicta? Tenetur magni necessitatibus laboriosam inventore at nam,
               illo officiis voluptas eius provident nobis ducimus, ipsam dolorem
               accusamus voluptatem cum, quam ratione quasi? Eveniet incidunt
-              dolores numquam assumenda, beatae eum minima dicta.
-            </p>
+              dolores numquam assumenda, beatae eum minima dicta."
+            />
           </Fleft>
           <Fright>
             <Image src={team} alt="teamImage" />
@@ -198,7 +211,10 @@ const AboutUsPage = () => {
         >
           <Flex direction="column" width={isMobile ? "100%" : "40%"}>
             <Text
-              styles={{ width: "100%" }}
+              styles={{
+                width: "100%",
+                fontSize: isMobile ? "1.9rem" : "2.5rem",
+              }}
               type="h1"
               text="How will get here"
             />
@@ -295,7 +311,13 @@ const AboutUsPage = () => {
 
         <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="1rem">
           <VCard>
-            <Text type="h3" text="Our Vision" />
+            <Text
+              type="h3"
+              text="Our Vision"
+              styles={{
+                fontSize: isMobile ? "1.9rem" : "2.5rem",
+              }}
+            />
             <Text
               type="p"
               text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
