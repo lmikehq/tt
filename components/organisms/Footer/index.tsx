@@ -15,10 +15,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
+import styled from "styled-components";
+import Section from "@molecule/section";
+import Thread from "@image/thread.png";
 import { FaTelegramPlane, FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
-import { RiWhatsappFill } from "react-icons/ri";
-import styled from "styled-components";
+import { RiWhatsappFill } from "react-icons/ri"
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -46,24 +48,24 @@ const FooterIcons = [
   {
     id: 2,
     icon: <BsTwitter size="1rem" color="#06062A" />,
-    url: "https://wwww.twitter.com/thrillerstravel",
+    url: "https://www.twitter.com/thrillerstravel",
   },
 
   {
     id: 3,
     icon: <BsYoutube size="1rem" color="#06062A" />,
-    url: "https://wwww.youtube.com/@ThrillersTravel",
+    url: "https://www.youtube.com/@ThrillersTravel",
   },
 
   {
     id: 4,
     icon: <AiFillInstagram size="1rem" color="#06062A" />,
-    url: "https://wwww.instagram.com/thrillerstravel",
+    url: "https://www.instagram.com/thrillerstravel",
   },
   {
     id: 5,
     icon: <FaTiktok size="1rem" color="#06062A" />,
-    url: "https://wwww.instagram.com/thrillerstravel",
+    url: "https://www.tiktok.com/@thrillers_travels",
   },
   {
     id: 6,
@@ -73,12 +75,12 @@ const FooterIcons = [
   {
     id: 7,
     icon: <RiWhatsappFill size="1rem" color="#06062A" />,
-    url: "https://wa.link/37nz51",
+    url: "https://chat.whatsapp.com/IpZEWEAdZngD5jGJKGZvy7",
   },
   {
     id: 8,
-    icon: <FaTelegramPlane size="1rem" color="#06062A" />,
-    url: "https://wwww.instagram.com/thrillerstravel",
+    icon: <Image src={Thread} alt="" height={16} style={{borderRadius: "2px"}}/>,
+    url: "https://www.threads.net/@thrillerstravel",
   },
 ];
 
