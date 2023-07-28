@@ -1,10 +1,11 @@
 import DashboardHeader from "@molecule/dashboardTabs/dashboard";
+import UserStoreProvider from "hook/useUserStore";
 
 const DashboardHeaderComponent = () => {
   return (
-    <>
-    <DashboardHeader />
-    </>
+    <UserStoreProvider>
+      <DashboardHeader />
+    </UserStoreProvider>
   );
 };
 

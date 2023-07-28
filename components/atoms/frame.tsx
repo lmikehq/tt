@@ -12,6 +12,7 @@ import HotelImg from "@image/serviceCard/hotel.png";
 import TravelImg from "@image/serviceCard/travel.png";
 import { useRouter } from "next/navigation";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Flex from "./flex";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;
@@ -25,8 +26,6 @@ const ServiceCard = styled.div`
     border-radius: 24px;
   }
 `;
-
-
 
 const FrameInfo = styled.div`
     position: absolute;
@@ -121,8 +120,6 @@ const serviceCard = [
   },
 ];
 
-
-
 const Frame: React.FC = () => {
   const { isMobile } = useScreenResolution();
   const router = useRouter();
@@ -130,7 +127,7 @@ const Frame: React.FC = () => {
   const applyButton = () => {
     router.push("/visa");
   };
-  
+
   return (
     <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
       <FrameLayout>
@@ -149,7 +146,10 @@ const Frame: React.FC = () => {
                   color="var(--secondary-color)"
                   onClick={applyButton}
                 >
-                  {item.icon} &nbsp; {item.button}
+                  <Flex gap=".5rem">
+                    {item.icon}
+                    <Text type="span" text={item.button} whiteSpace="nowrap" />
+                  </Flex>
                 </Button>
               </FrameInfo>
             </ServiceCard>

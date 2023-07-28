@@ -4,9 +4,15 @@ import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import SectionLayout from "@components/layouts/sectionLayout";
+import AppLogo from "@image/app-store.svg";
 import TTLogo from "@image/brand/tt_blue_logo_with_text.png";
+import PlayStore from "@image/google-play.svg";
+import Barcode from "@image/walink.png";
 import NewsLetter from "@organism/NewsLetter";
+import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
@@ -20,7 +26,7 @@ import SectionLayout from "@components/layouts/sectionLayout";
 import { FaTelegramPlane, FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
 import { RiWhatsappFill } from "react-icons/ri";
-import { usePathname } from "next/navigation";
+import styled from "styled-components";
 
 const FooterWrapper = styled.footer`
   width: 100%;
