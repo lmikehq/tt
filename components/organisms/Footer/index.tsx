@@ -17,16 +17,10 @@ import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
 import styled from "styled-components";
 import Section from "@molecule/section";
-import Barcode from "@image/walink.png";
 import Thread from "@image/thread.png";
-import AppLogo from "@image/app-store.svg";
-import PlayStore from "@image/google-play.svg";
-import { useScreenResolution } from "hook/useScreenResolution";
-import SectionLayout from "@components/layouts/sectionLayout";
 import { FaTelegramPlane, FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
-import { RiWhatsappFill } from "react-icons/ri";
-import styled from "styled-components";
+import { RiWhatsappFill } from "react-icons/ri"
 
 const FooterWrapper = styled.footer`
   width: 100%;
