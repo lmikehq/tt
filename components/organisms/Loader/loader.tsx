@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import Logo from "@image/airplaneIcon.gif";
+import FlyingPlane from "@image/airplaneIcon.gif";
 import Image from "../../atoms/image";
 import { ttColors } from "theme/colors";
 import Text from "@atom/text";
@@ -38,10 +38,9 @@ const Loader: React.FC<LoaderProps> = ({ logo }) => {
   return (
     <LoaderWrapper>
       <>
-      <Image src={Logo} alt="logo" width={150} height={150} />
+        <Image src={FlyingPlane} alt="logo" width={150} height={150} />
         <Text type="h3" text="THRILLERS TRAVELS" color={ttColors.primary} />
       </>
-      
     </LoaderWrapper>
   );
 };
