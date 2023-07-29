@@ -1,4 +1,5 @@
 import StyledComponentsRegistry from "@lib/registry";
+import LoaderLayout from "@organism/Loader/layout";
 import "@style/globals.css";
 import { Siteconfig } from "config/site";
 import { Poppins } from "next/font/google";
@@ -48,7 +49,11 @@ export default function RootLayout({
       </head>
       <body>
         <Toaster position="top-center" />
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <LoaderLayout>
+            {children}
+          </LoaderLayout>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
