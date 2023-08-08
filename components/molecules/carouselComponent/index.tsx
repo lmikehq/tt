@@ -25,19 +25,24 @@ const CarouselWrapper = styled.div`
 const CarouselCard = styled.div`
   padding: 20px;
   background: #fff;
-  height: fit-content;
+  height: 320px;
   border-radius: 10px;
   margin: 1rem auto;
   border: 1px solid #ddd;
 
   &:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border: 2px solid ${ttColors.primary};
+  }
+
+  @media screen and (max-width: 900px) {
+    height: 250px;
   }
 `;
 
 const CardTitle = styled.h2`
   margin: 0;
-  color: #19013b;
+  color: ${ttColors.dark};
   font-size: 1.5rem;
   margin-bottom: 1rem;
 `;
