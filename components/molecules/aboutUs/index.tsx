@@ -293,6 +293,7 @@ const AboutUsPage = () => {
             aliquam aperiam, libero sequi aut temporibus distinctio praesentium
             laborum! Quos, vero!"
               />
+              
             </Card>
             <Card>
               <Text type="h3" text="2022" />
