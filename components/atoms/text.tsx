@@ -60,6 +60,7 @@ export const Text: React.FC<TextProps> = ({
 
   if (type === "p") return <p style={updatedStyles}>{text}</p>;
   if (type === "span") return <span style={updatedStyles}>{text}</span>;
+  if (type === "label") return <label style={updatedStyles}>{text}</label>;
   if (type === "h1") return <h1 style={updatedStyles}>{text}</h1>;
   if (type === "h2") return <h2 style={updatedStyles}>{text}</h2>;
   if (type === "h3") return <h3 style={updatedStyles}>{text}</h3>;
