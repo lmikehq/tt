@@ -5,7 +5,7 @@ interface imageProps {
   alt: string;
   width?: number ;
   height?: number;
-  styles?: CSSProperties;
+  style?: CSSProperties;
   border?: string;
   borderRadius?: string;
   background?: string;

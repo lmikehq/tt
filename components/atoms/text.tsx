@@ -43,7 +43,6 @@ export const Text: React.FC<TextProps> = ({
   styles = {},
 }) => {
   const updatedStyles: CSSProperties = {
-    ...styles,
     color,
     fontSize: size,
     fontWeight: weight,
@@ -56,6 +55,7 @@ export const Text: React.FC<TextProps> = ({
     opacity,
     letterSpacing,
     cursor,
+    ...styles,
   };
 
   if (type === "p") return <p style={updatedStyles}>{text}</p>;
