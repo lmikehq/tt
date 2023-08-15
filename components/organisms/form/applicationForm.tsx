@@ -437,7 +437,7 @@ function ApplicationForm() {
                       // padding="0.5rem 0"
                       weight="bold"
                     />
-                    <List >
+                    <List>
                       <ListItem>
                           <Text
                           type="p"
