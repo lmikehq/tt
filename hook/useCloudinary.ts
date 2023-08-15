@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 const useCloudinaryUpload = (preset: any) => {
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const uploadImage = async (image: any) => {
     const formData = new FormData();
@@ -15,14 +16,25 @@ const useCloudinaryUpload = (preset: any) => {
 
     const response = await axios.post(
       "https://api.cloudinary.com/v1_1/thrillers-travels/image/upload",
-      formData
+      formData,
+      {
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          console.log(loaded);
+
+          if (!total) return;
+          const percentCompleted = Math.round((loaded * 100) / total);
+          console.log(percentCompleted);
+          setProgress(percentCompleted);
+        },
+      }
     );
 
     setLoading(false);
     return response?.data.secure_url;
   };
 
-  return { loading, uploadImage };
+  return { loading, uploadImage, progress };
 };
 
 export default useCloudinaryUpload;
