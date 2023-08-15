@@ -73,6 +73,7 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
 }));
 
 interface SearchProps {
+  defaultValue?: string
   legend?: string;
   children?: React.ReactNode;
   placeholder?: string;
@@ -85,6 +86,7 @@ interface SearchProps {
 }
 
 export default function SearchInput({
+  defaultValue,
   children,
   options,
   legend,
@@ -143,6 +145,7 @@ SearchProps) {
           }}
           onClick={handleClick}
           label={legend}
+          placeholder={defaultValue}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -229,6 +232,7 @@ SearchProps) {
   );
 }
 export function SearchInputAsString({
+  defaultValue,
   children,
   options,
   legend,
@@ -300,6 +304,7 @@ export function SearchInputAsString({
               </InputAdornment>
             ),
           }}
+          placeholder={defaultValue}
         />
       </Box>
       <StyledPopper

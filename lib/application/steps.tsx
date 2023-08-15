@@ -25,10 +25,10 @@ export const getSteps = (
   return [
     {
       id: 1,
-      title: "Your trip details",
+      title: "Enter your Trip details",
       content: (
         <TripDetails
-          steps={["Your Trip Details"]}
+          steps={["Enter your Trip Details"]}
           formik={formikConfig}
           index={0}
           setFee={setFormFee}

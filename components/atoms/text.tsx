@@ -24,6 +24,7 @@ interface TextProps {
   whiteSpace?: CSSProperties["whiteSpace"];
   decoration?: CSSProperties["textDecoration"];
   cursor?: CSSProperties["cursor"];
+  textAlign?: CSSProperties["textAlign"]
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -40,13 +41,14 @@ export const Text: React.FC<TextProps> = ({
   opacity,
   letterSpacing,
   cursor,
+  textAlign,
   styles = {},
 }) => {
   const updatedStyles: CSSProperties = {
     ...styles,
     color,
     fontSize: size,
-    fontWeight: weight,
+    fontWeight: weight || "normal",
     whiteSpace,
     fontFamily: "var(--font-family)",
     textDecoration: decoration,
@@ -56,6 +58,7 @@ export const Text: React.FC<TextProps> = ({
     opacity,
     letterSpacing,
     cursor,
+    textAlign
   };
 
   if (type === "p") return <p style={updatedStyles}>{text}</p>;
