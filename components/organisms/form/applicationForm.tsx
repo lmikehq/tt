@@ -36,7 +36,8 @@ import { ttColors } from "theme/colors";
 import { IFee } from "types";
 import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 import VisaProgress from "@molecule/visaProgress";
-import { List, ListItem } from "@mui/material";
+import { ListItem } from "@mui/material";
+import BulletList from "@atom/list";
 
 const PromoInput = styled.div`
   display: flex;
@@ -429,15 +430,13 @@ function ApplicationForm() {
                       />
                     </Flex>
                   </Flex>
-
                   <Section padding="1rem 0">
                     <Text
                       type="h3"
                       text="Required Documents"
-                      // padding="0.5rem 0"
                       weight="bold"
                     />
-                    <List>
+                    <BulletList>
                       <ListItem>
                           <Text
                           type="p"
@@ -468,8 +467,32 @@ function ApplicationForm() {
                           text="Marriage certificate (if applicable)"
                         />
                       </ListItem>
-                    </List>
+                    </BulletList>
                   </Section>
+                  <Flex margin="1rem 0" gap=".5rem">
+                    <BsShieldFillCheck size="25px" />
+                    <div>
+                      <Text
+                        text="Your info is save with us"
+                        type="p"
+                        size="16px"
+                        weight={400}
+                      />
+                      <p style={{ fontSize: "14px" }}>
+                        For more details, see our &nbsp;
+                        <span
+                          style={{
+                            color: ttColors.primary,
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          data protection page
+                        </span>
+                      </p>
+                    </div>
+                  </Flex>
                   <Divider />
 
                   {/* {shownFees.length ? (
@@ -572,31 +595,6 @@ function ApplicationForm() {
                         cursor="pointer"
                       />
                     </Button>
-                  </Flex>
-
-                  <Flex margin="1rem 0" gap=".5rem">
-                    <BsShieldFillCheck size="25px" />
-                    <div>
-                      <Text
-                        text="Your info is save with us"
-                        type="p"
-                        size="16px"
-                        weight={400}
-                      />
-                      <p style={{ fontSize: "14px" }}>
-                        For more details, see our &nbsp;
-                        <span
-                          style={{
-                            color: ttColors.primary,
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          data protection page
-                        </span>
-                      </p>
-                    </div>
                   </Flex>
                 </Section>
               ) : (
