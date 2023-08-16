@@ -23,9 +23,12 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import Button from "@atom/button";
 import Image from "@atom/image";
 import DocPlus from "@image/form/docUpload/docPlus.svg";
+import DeleteIcon from "@image/visaIcons/delete.png";
 import CircularProgressBar from "@molecule/progressBars/CircularProgressBar";
 import UploadedDocTile from "@molecule/docUpload/UploadedDocTile";
-import CustomConfirmationModal from "@organism/visaApplicationModal";
+import CustomConfirmationModal, {
+  CustomConfirmationModalProps,
+} from "@organism/visaApplicationModal";
 
 interface formProps {
   formik: FormikValues;
@@ -76,27 +79,14 @@ function OtherInformation({ formik, steps, index }: formProps) {
   const handleModalClose = () => {
     setModalOpen(false);
   };
-  const [modalContent, setModalContent] = useState({
-    icon: <BiTrash size={6} />,
-    title: "Cancel Something Else?",
-    description:
-      "Are you sure you want to cancel your application? All progress will be lost if it has not been saved.",
-    subTitle: "University of Lagos",
-    buttons: (
-      <>
-        <Button
-          background="transparent"
-          color={ttColors.dark}
-          border="1px solid #19013b"
-          onClick={handleModalClose}
-        >
-          No Thanks
-        </Button>
-        <Button background="red" color="#fff" onClick={handleModalClose}>
-          Delete
-        </Button>
-      </>
-    ),
+  const [modalContent, setModalContent] = useState<
+    Omit<CustomConfirmationModalProps, "open" | "handleClose">
+  >({
+    icon: <></>,
+    title: "",
+    description: "",
+    subTitle: "",
+    buttons: <></>,
   });
 
   const [hovered, setHovered] = useState<number>(-1);
@@ -470,31 +460,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
                   </Button>
                 </DocUploadCenteredChild>
               ) : (
-                // <div>
-                //   <p
-                //     onClick={() => {
-                //       if (!formik.values.lastName)
-                //         return toast.error(
-                //           "Please fill all your details first"
-                //         );
-                //       openFilePicker();
-                //     }}
-                //     style={{ cursor: "pointer" }}
-                //   >
-                //     <span style={{ color: ttColors.primary }}>
-                //       Upload a file{" "}
-                //     </span>
-                //     or drag and drop
-                //   </p>
-                //   <Text
-                //     type="p"
-                //     text="PNG, JPG, PDF, GIF up to 10MB"
-                //     weight={100}
-                //     size={".9rem"}
-                //     margin="1rem 0"
-                //   />
-                // </div>
-
                 <DocUploadCenteredChild>
                   <Image
                     style={{ marginBottom: "21px" }}
@@ -525,10 +490,10 @@ function OtherInformation({ formik, steps, index }: formProps) {
                     width="auto"
                     borderRadius="4px"
                     onClick={() => {
-                      // if (!formik.values.lastName)
-                      //   return toast.error(
-                      //     "Please fill all your details first"
-                      //   );
+                      if (!documentToUpload)
+                        return toast.error(
+                          "Please select a document to upload"
+                        );
                       openFilePicker();
                     }}
                     styles={{ cursor: "pointer" }}
@@ -548,7 +513,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
           {uploadedDocuments?.length == 0 || !uploadedDocuments ? null : (
             <UploadedDocumentsWrapper>
               <Text
-                styles={{ margin: "16px 0 38px 0" }}
                 type={"h5"}
                 text="Uploaded Documents"
                 weight={500}
@@ -557,7 +521,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
                 margin={"0 0 12px 0"}
               />
               <Text
-                styles={{ margin: "16px 0 38px 0" }}
                 type={"p"}
                 text={`${uploadedDocuments?.length} document${
                   uploadedDocuments?.length == 1 ? "" : "s"
@@ -580,7 +543,14 @@ function OtherInformation({ formik, steps, index }: formProps) {
                       }
                       removeDocument={() => {
                         setModalContent({
-                          icon: <BiTrash size={6} />,
+                          icon: (
+                            <Image
+                              src={DeleteIcon}
+                              alt="delete-icon"
+                              width={95.5}
+                              height={95.5}
+                            />
+                          ),
                           title: "Delete File?",
                           description:
                             "Are you sure you want to delete the selected file? Deleting the file is a permanent action and cannot be retrieved.",
@@ -604,6 +574,12 @@ function OtherInformation({ formik, steps, index }: formProps) {
                                       (_: any, index: number) => index !== i
                                     ),
                                   ]);
+                                  formik.setFieldValue(
+                                    "uploadedDocuments",
+                                    formik.values.uploadedDocuments.filter(
+                                      (_: any, index: number) => index !== i
+                                    )
+                                  );
                                   handleModalClose();
                                 }}
                               >
@@ -613,16 +589,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
                           ),
                         });
                         handleModalOpen();
-                        // const confirmed = window.confirm(
-                        //   "Are you sure you want to delete this document?"
-                        // );
-                        // if (!confirmed) return;
-                        // formik.setFieldValue(
-                        //   "uploadedDocuments",
-                        //   formik.values.uploadedDocuments.filter(
-                        //     (_: any, index: number) => index !== i
-                        //   )
-                        // );
                       }}
                     />
                   );
@@ -630,55 +596,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               )}
             </UploadedDocumentsWrapper>
           )}
-          {/* <Flex
-            margin={
-              formik.values.uploadedDocuments.length === 0
-                ? "1rem 0 0"
-                : "2rem 0 0"
-            }
-            gap="1rem"
-            wrap="wrap"
-          >
-            {formik.values.uploadedDocuments.map((_item: any, i: number) => (
-              <UploadedDoc
-                bg={_item}
-                key={i}
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(-1)}
-              >
-                {hovered === i && (
-                  <Flex
-                    justify="center"
-                    align="center"
-                    height="100%"
-                    background="#d6cfcf"
-                    styles={{
-                      opacity: 0.8,
-                    }}
-                  >
-                    <BiTrash
-                      size={30}
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        const confirmed = window.confirm(
-                          "Are you sure you want to delete this document?"
-                        );
-                        if (!confirmed) return;
-                        formik.setFieldValue(
-                          "uploadedDocuments",
-                          formik.values.uploadedDocuments.filter(
-                            (_: any, index: number) => index !== i
-                          )
-                        );
-                      }}
-                    />
-                  </Flex>
-                )}
-              </UploadedDoc>
-            ))}
-          </Flex> */}
+
           <div>
             <CustomConfirmationModal
               open={modalOpen}
