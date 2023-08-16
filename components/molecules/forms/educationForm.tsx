@@ -182,11 +182,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker label="Select your start date" 
-              renderInput={( => (
-                <Input
-                  sx={{ width: "100%" }} // Add this line to increase the width
-                />
-              )}
+      
               />
             </LocalizationProvider>
           </Section>
