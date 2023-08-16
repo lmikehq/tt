@@ -13,7 +13,7 @@ import { Grid } from "../../atoms/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const SubscribeWrapper = styled.div`
-  position: absolute;
+  // position: absolute;
   left: 7.5%;
   bottom: 90%;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
@@ -23,9 +23,11 @@ const SubscribeWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 85%;
-  height: 15.6rem;
+  margin: auto;
+  // height: 15.6rem;
   border-radius: 1.5rem;
-  padding: 2.5rem;
+  padding: 8rem 2.5rem;
+  margin-bottom: 5rem;
 `;
 
 const Subcribe = styled.div`
@@ -78,12 +80,13 @@ const Subcribe = styled.div`
 const NewsLetter = () => {
   const { isMobile } = useScreenResolution();
   return (
-    <SubscribeWrapper className="newsLetter"
+    <SubscribeWrapper
+      className="newsLetter"
       style={{
         width: isMobile ? "90%" : "85%",
         left: isMobile ? "5%" : "7.5%",
-        padding: isMobile ? "1.1rem" : "2.5rem",
-        bottom: isMobile ? "91.5%"  : "90%",
+        padding: isMobile ? "1.1rem" : "8rem 2.5rem",
+        bottom: isMobile ? "91.5%" : "90%",
       }}
     >
       <Flex justify="space-between" direction={isMobile ? "column" : "row"}>
