@@ -70,7 +70,7 @@ const UploadedDocTile = ({
             />
             <Flex align="center">
               <Text
-                text={"JPG" ?? fileType.toUpperCase()}
+                text={fileType}
                 type={"p"}
                 size={14}
                 weight={500}
@@ -84,7 +84,7 @@ const UploadedDocTile = ({
                 style={{ margin: "0 8px" }}
               />
               <Text
-                text={"3.5 MB" ?? fileSize}
+                text={fileSize}
                 type={"p"}
                 size={14}
                 weight={500}

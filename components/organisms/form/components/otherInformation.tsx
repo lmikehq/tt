@@ -95,12 +95,12 @@ function OtherInformation({ formik, steps, index }: formProps) {
     {
       name: string;
       type: string;
-      size: number;
+      size: string;
       title: string;
     }[]
   >();
 
-  const [openFilePicker, { filesContent }] = useFilePicker({
+  const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
     accept: ["image/*", ".pdf", ".doc", ".docx"],
     multiple: false,
@@ -119,11 +119,11 @@ function OtherInformation({ formik, steps, index }: formProps) {
             title: documentToUpload,
             url: image,
           };
-          const { name, type, size } = filesContent[0];
+          const { name, size, type } = plainFiles[0];
           const findIndex = (uploadedDocuments ?? []).findIndex(
             (el) => el.title == documentToUpload
           );
-          console.log(findIndex);
+          console.log(plainFiles[0]);
           if (findIndex == -1) {
             formik.setFieldValue("uploadedDocuments", [
               ...formik.values.uploadedDocuments,
@@ -132,7 +132,12 @@ function OtherInformation({ formik, steps, index }: formProps) {
 
             setUploadedDocuments([
               ...(uploadedDocuments ?? []),
-              { name, size, type, title: docObj.title },
+              {
+                name,
+                size: `${size / 1000000} MB`,
+                type: type.split("/")[1].toUpperCase(),
+                title: docObj.title,
+              },
             ]);
           } else {
             let formikUploadedDocuments = [...formik.values.uploadedDocuments];
@@ -140,8 +145,8 @@ function OtherInformation({ formik, steps, index }: formProps) {
             formikUploadedDocuments.splice(findIndex, 1, docObj);
             uploadedDocs.splice(findIndex, 1, {
               name,
-              size,
-              type,
+              size: `${size / 1000000} MB`,
+              type: type.split("/")[1].toUpperCase(),
               title: docObj.title,
             });
             formik.setFieldValue("uploadedDocuments", formikUploadedDocuments);
@@ -559,8 +564,8 @@ function OtherInformation({ formik, steps, index }: formProps) {
                     <UploadedDocTile
                       key={i}
                       fileName={name}
-                      fileSize={type}
-                      fileType={`${size}`}
+                      fileType={type}
+                      fileSize={`${size}`}
                       marginBottom={
                         i == uploadedDocuments?.length ?? 0 - 1 ? "0px" : "12px"
                       }
