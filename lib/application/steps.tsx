@@ -1,13 +1,15 @@
 import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
-import { edAndEmpKeys, otherInforKeys } from "./schema";
-import EducationAndEmploymentInfo from "@organism/form/components/edAndEmployment";
+import { edAndEmpKeys, familyInforKeys, otherInforKeys } from "./schema";
 import OtherInformation from "@organism/form/components/otherInformation";
 import Booking from "@organism/form/components/booking";
 import {
   PaymentStatusFail,
   PaymentStatusSuccess,
 } from "@organism/form/components/paymentStatus";
+import EducationInfo from "@organism/form/components/educationInfo";
+import EmploymentInfo from "@organism/form/components/employmentInfo";
+import FamilyInfo from "@organism/form/components/familyInfo";
 
 interface IFormStep {
   id: number;
@@ -50,7 +52,7 @@ export const getSteps = (
       id: 3,
       title: "Education Details",
       content: (
-        <EducationAndEmploymentInfo
+        <EducationInfo
           formik={formikConfig}
           steps={["Education Details"]}
           index={2}
@@ -62,24 +64,25 @@ export const getSteps = (
       id: 4,
       title: "Employment Details",
       content: (
-        <OtherInformation
+        <FamilyInfo
           formik={formikConfig}
           steps={["Employment Details"]}
           index={3}
         />
       ),
-      valKeys: Object.keys(otherInforKeys),
+      valKeys: Object.keys(edAndEmpKeys),
     },
     {
       id: 5,
-      title: "Booking",
+      title: "Family Members' Information",
       content: (
-        <Booking
+        <FamilyInfo
+          formik={formikConfig}
           steps={["Family Members' Information"]}
           index={4}
         />
       ),
-      valKeys: Object.keys(otherInforKeys),
+      valKeys: Object.keys(familyInforKeys),
     },
     {
       id: 6,

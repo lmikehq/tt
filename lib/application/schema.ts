@@ -103,6 +103,26 @@ export const otherInforKeys = {
   uploadedDocuments: [],
 };
 
+export const familyInfoSchema = yup.object().shape({
+  membersName: yup.string().required(),
+  memberRelationship: yup.string().required(),
+  memberAddress: yup.string().required(),
+  memberEmail: yup.string().required(),
+  memberOccupation: yup.string().required(),
+  memberPhoneNumber: yup.string().required(),
+  memberWorth: yup.string().required()
+})
+
+export const familyInforKeys = {
+  membersName: "",
+  memberRelationship: "",
+  memberAddress: "",
+  memberOccupation: "",
+  memberEmail: "",
+  memberPhoneNumber: "",
+  memberWorth: ""
+}
+
 export const visaSchema = {
   ...detailsSchema,
   ...edAndEmpSchema,

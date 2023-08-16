@@ -160,7 +160,7 @@ function ApplicationForm() {
       await handleVisaApplication();
       return setNextStepLoading(false);
     }
-    if (currentPhase === 5) {
+    if (currentPhase === 6) {
       return await startPayment({ onSuccess, onCancel });
     }
     if (currentPhase === 7) {
@@ -313,20 +313,7 @@ function ApplicationForm() {
                 fontSize="20px"
                 padding="2rem"
               >
-                {nextStepLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : currentPhase === 5 ? (
-                  `Pay ${currencyFormatter(
-                    shownFees.reduce(
-                      (a, b) =>
-                        a + (typeof b.amount === "number" ? b.amount : 0),
-                      0
-                    ),
-                    "NGN"
-                  )}`
-                ) : (
-                  "Save & continue"
-                )}
+                Save & Continue
               </Button>
             )}
           </Flex>

@@ -45,7 +45,7 @@ function TravelArrow() {
           <IoAirplane color={ttColors.primary} size={30} />
         </Icon>
       </HorizontalLine>
-      <Circle>2</Circle>
+      <Circle/>
     </CircleLineWrapper>
   );
 }
