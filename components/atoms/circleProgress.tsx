@@ -39,8 +39,7 @@ const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
   width: 1.5rem;
   height: 1.5rem;
   background: ${props => (props.isPassed ? "#6092A7" : "none")};
-
-  border: 2px solid ${props => (props.active ? "#6092A7" : "gray")};
+  border: 2px solid ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
   padding: 1.25rem;
   align-items: center;
   justify-content: center;

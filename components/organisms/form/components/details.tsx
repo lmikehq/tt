@@ -8,6 +8,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import FormStepTitle from "./formStepsTitle";
+import Required from "@atom/required";
 
 interface formProps {
   formik: FormikValues;
@@ -18,21 +19,26 @@ interface formProps {
 
 function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
+
+  // console.log(formik)
   return (
-    <Section width={isMobile ? "100%" : "50%"}>
+    <Section width={isMobile ? "100%" : "75%"} height="unset">
       <FormStepTitle steps={steps} index={index} />
-      <form style={{ margin: "2rem 0 1.5rem" }} autoComplete="off">
+      <form autoComplete="off">
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
           <Flex gap="1rem">
             <Flex direction="column">
-              <Text
-                type="p"
-                text="Where are you from?"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-                size={isMobile ? 14 : 16}
-              />
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Where are you from?"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                  size={isMobile ? 14 : 16}
+                />
+                <Required/>
+              </Flex>
               <SearchInput
-                // defaultValue="Select where you are"
+                value={formik.values.home}
                 placeholder="Select where you are"
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
@@ -60,12 +66,15 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               </SearchInput>
             </Flex>
             <Flex direction="column">
-              <Text
-                size={isMobile ? 14 : 16}
-                type="p"
-                text="Where to?"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-              />
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  size={isMobile ? 14 : 16}
+                  type="p"
+                  text="Where to?"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                />
+                <Required/>
+              </Flex>
               <SearchInput
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
@@ -73,7 +82,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   code: x.code,
                 }))}
                 height="8px"
-                defaultValue="Select Final Destination"
+                placeholder="Select Final Destination"
                 onChange={(x) => formik.setFieldValue("destination", x)}
               >
                 <Flex justify="space-between">
@@ -95,16 +104,18 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </Flex>
           </Flex>
         </Section>
-
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
-          <Flex>
+          <Flex gap="1rem" align="center">
           <Flex direction="column">
-              <Text
-                size={isMobile ? 14 : 18}
-                type="p"
-                text="Visa type"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-              />
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  size={isMobile ? 14 : 18}
+                  type="p"
+                  text="Visa type"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                />
+                <Required/>
+              </Flex>
               <SearchInputAsString
                 height="8px"
                 options={[
@@ -117,7 +128,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   "Visa on Arrival",
                   "Other",
                 ]}
-                defaultValue="Select your Visa Type"
+                placeholder={!formik.values.visaType ? "Select your Visa Type" : ""}
                 onChange={(x) => formik.setFieldValue("visaType", x)}
               >
                 <Flex justify="space-between">
@@ -138,12 +149,15 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               </SearchInputAsString>
             </Flex>
             <Flex direction="column">
-              <Text
-                size={isMobile ? 14 : 16}
-                type="p"
-                text="Application type"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-              />
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  size={isMobile ? 14 : 16}
+                  type="p"
+                  text="Application type"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                />
+                <Required/>
+              </Flex>
               <SearchInputAsString
                 height="8px"
                 options={["Single", "Family"]}
@@ -154,7 +168,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                     formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
                   );
                 }}
-                defaultValue="Select your Application Type "
+                placeholder="Select your Application Type "
               >
                 <Flex justify="space-between">
                   <Text

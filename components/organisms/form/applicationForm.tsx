@@ -38,6 +38,7 @@ import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 import VisaProgress from "@molecule/visaProgress";
 import { ListItem } from "@mui/material";
 import BulletList from "@atom/list";
+import TravelArrow from "@atom/travelArrow";
 
 const PromoInput = styled.div`
   display: flex;
@@ -283,7 +284,7 @@ function ApplicationForm() {
           justify="space-between"
           direction={isMobile ? "column" : "row"}
         >
-          <Flex direction="column">
+          <Flex direction="column" gap="1rem">
             <Flex
               align="center"
               cursor="pointer"
@@ -307,9 +308,10 @@ function ApplicationForm() {
             {isValid && (
               <Button
                 width="75%"
-                margin="0px"
+                margin="10px 0"
                 onClick={nextStep}
                 fontSize="20px"
+                padding="2rem"
               >
                 {nextStepLoading ? (
                   <Spinner size="40px" fill={ttColors.primary} />
@@ -354,7 +356,7 @@ function ApplicationForm() {
           >
             {currentPhase < 6 ? (
               isValid ? (
-                <Section width="90%">
+                <Section width="100%">
                   <Flex
                     align="center"
                     justify="space-between"
@@ -364,14 +366,14 @@ function ApplicationForm() {
                     <Text
                       type="p"
                       text={formik.values?.home?.name}
-                      size="20px"
+                      size="18px"
                       weight="bold"
                     />
-                    <HiOutlineArrowNarrowRight size={30} />
+                    <TravelArrow/>
                     <Text
                       type="p"
                       text={formik.values?.destination?.name}
-                      size="20px"
+                      size="18px"
                       weight="bold"
                     />
                   </Flex>
@@ -406,7 +408,7 @@ function ApplicationForm() {
                       </>
                     ))}
                   </Grid> */}
-                  <Flex gap="1rem">
+                  <Flex gap="2rem">
                     <Flex direction="column">
                       <Text
                         text="Application Fees"
@@ -470,7 +472,7 @@ function ApplicationForm() {
                     </BulletList>
                   </Section>
                   <Flex margin="1rem 0" gap=".5rem">
-                    <BsShieldFillCheck size="25px" />
+                    <BsShieldFillCheck size="25px" color={ttColors.primary} />
                     <div>
                       <Text
                         text="Your info is save with us"
@@ -493,8 +495,6 @@ function ApplicationForm() {
                       </p>
                     </div>
                   </Flex>
-                  <Divider />
-
                   {/* {shownFees.length ? (
                     <Flex justify={isMobile ? "flex-start" : "flex-end"}>
                       <Text
@@ -564,33 +564,35 @@ function ApplicationForm() {
                     />
                   )}
 
-                  <Flex direction="column" gap="1rem">
+                  <Flex direction="column" gap="0.5rem">
                     <Button
-                      border="4px solid #06062A"
+                      border="2px solid #06062A"
                       width="100%"
                       background="none"
                       borderRadius="4px"
+                      padding="1.5rem"
                     >
                       <Text
                         type="p"
                         text="Save Progress & Continue Later"
-                        size="18px"
+                        size="16px"
                         color="#06062A"
                         cursor="pointer"
                         weight="bold"
                       />
                     </Button>
                     <Button
-                      border="4px solid #06062A"
+                      border="2px solid #06062A"
                       width="100%"
                       background="none"
                       borderRadius="4px"
+                      padding="1.5rem"
                     >
                       <Text
                         type="p"
                         text="Exit Application"
                         weight="bold"
-                        size="18px"
+                        size="16px"
                         color="#06062A"
                         cursor="pointer"
                       />

@@ -41,22 +41,18 @@ export const getSteps = (
       content: (
         <PersonalInfo
           formik={formikConfig}
-          steps={["Your Trip Details", "Personal Information"]}
+          steps={["Personal Information"]}
           index={1}
         />
       ),
     },
     {
       id: 3,
-      title: "Education and Employment",
+      title: "Education Details",
       content: (
         <EducationAndEmploymentInfo
           formik={formikConfig}
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-          ]}
+          steps={["Education Details"]}
           index={2}
         />
       ),
@@ -64,16 +60,11 @@ export const getSteps = (
     },
     {
       id: 4,
-      title: "Other Information",
+      title: "Employment Details",
       content: (
         <OtherInformation
           formik={formikConfig}
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-          ]}
+          steps={["Employment Details"]}
           index={3}
         />
       ),
@@ -84,13 +75,7 @@ export const getSteps = (
       title: "Booking",
       content: (
         <Booking
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-            "Booking",
-          ]}
+          steps={["Family Members' Information"]}
           index={4}
         />
       ),
@@ -98,17 +83,10 @@ export const getSteps = (
     },
     {
       id: 6,
-      title: "Status",
+      title: "Upload Document",
       content: (
         <PaymentStatusSuccess
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-            "Booking",
-            "booking",
-          ]}
+          steps={["Upload All Required Documents"]}
           index={5}
         />
       ),

@@ -13,7 +13,6 @@ function FormStepTitle({ steps, index }: { steps: string[]; index: number }) {
         type="p"
         text={steps[0]}
         size={isMobile ? "13px" : "18px"}
-        color={index > 0 ? "#3BB98E" : "#000000"}
         weight={500}
       />
       {steps.length > 1 && (
