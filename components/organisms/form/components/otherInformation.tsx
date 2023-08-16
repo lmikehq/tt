@@ -25,6 +25,7 @@ import Image from "@atom/image";
 import DocPlus from "@image/form/docUpload/docPlus.svg";
 import CircularProgressBar from "@molecule/progressBars/CircularProgressBar";
 import UploadedDocTile from "@molecule/docUpload/UploadedDocTile";
+import CustomConfirmationModal from "@organism/visaApplicationModal";
 
 interface formProps {
   formik: FormikValues;
@@ -67,6 +68,36 @@ const UploadedDocumentsWrapper = styled.div`
 
 function OtherInformation({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+  const [modalContent, setModalContent] = useState({
+    icon: <BiTrash size={6} />,
+    title: "Cancel Something Else?",
+    description:
+      "Are you sure you want to cancel your application? All progress will be lost if it has not been saved.",
+    subTitle: "University of Lagos",
+    buttons: (
+      <>
+        <Button
+          background="transparent"
+          color={ttColors.dark}
+          border="1px solid #19013b"
+          onClick={handleModalClose}
+        >
+          No Thanks
+        </Button>
+        <Button background="red" color="#fff" onClick={handleModalClose}>
+          Delete
+        </Button>
+      </>
+    ),
+  });
 
   const [hovered, setHovered] = useState<number>(-1);
   const [documentToUpload, setDocumentToUpload] = useState<string>("");
@@ -77,6 +108,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
       size: number;
     }[]
   >();
+
   const [openFilePicker, { filesContent }] = useFilePicker({
     readAs: "DataURL",
     accept: ["image/*", ".pdf", ".doc", ".docx"],
@@ -547,16 +579,50 @@ function OtherInformation({ formik, steps, index }: formProps) {
                         i == uploadedDocuments?.length ?? 0 - 1 ? "0px" : "12px"
                       }
                       removeDocument={() => {
-                        const confirmed = window.confirm(
-                          "Are you sure you want to delete this document?"
-                        );
-                        if (!confirmed) return;
-                        formik.setFieldValue(
-                          "uploadedDocuments",
-                          formik.values.uploadedDocuments.filter(
-                            (_: any, index: number) => index !== i
-                          )
-                        );
+                        setModalContent({
+                          icon: <BiTrash size={6} />,
+                          title: "Delete File?",
+                          description:
+                            "Are you sure you want to delete the selected file? Deleting the file is a permanent action and cannot be retrieved.",
+                          subTitle: name,
+                          buttons: (
+                            <>
+                              <Button
+                                background="transparent"
+                                color={ttColors.dark}
+                                border="1px solid #19013b"
+                                onClick={handleModalClose}
+                              >
+                                No Thanks
+                              </Button>
+                              <Button
+                                background="red"
+                                color="#fff"
+                                onClick={() => {
+                                  setUploadedDocuments([
+                                    ...uploadedDocuments.filter(
+                                      (_: any, index: number) => index !== i
+                                    ),
+                                  ]);
+                                  handleModalClose();
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </>
+                          ),
+                        });
+                        handleModalOpen();
+                        // const confirmed = window.confirm(
+                        //   "Are you sure you want to delete this document?"
+                        // );
+                        // if (!confirmed) return;
+                        // formik.setFieldValue(
+                        //   "uploadedDocuments",
+                        //   formik.values.uploadedDocuments.filter(
+                        //     (_: any, index: number) => index !== i
+                        //   )
+                        // );
                       }}
                     />
                   );
@@ -613,6 +679,13 @@ function OtherInformation({ formik, steps, index }: formProps) {
               </UploadedDoc>
             ))}
           </Flex> */}
+          <div>
+            <CustomConfirmationModal
+              open={modalOpen}
+              handleClose={handleModalClose}
+              {...modalContent}
+            />
+          </div>
         </Section>
       </form>
     </Section>
