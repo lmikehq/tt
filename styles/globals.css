@@ -109,6 +109,30 @@ body {
   }
 }
 
+.react-tel-input .form-control {
+  width: 100% !important;
+  height: 40px !important;
+  /* padding-left: 70px !important; */
+}
+
+/* .react-tel-input .selected-flag .flag{ */
+  /* width: 24px !important; */
+  /* height: 17.33px !important; */
+  /* position: absolute !important; */
+  /* top: 40% !important; */
+/* } */
+
+/* .react-tel-input .selected-flag .arrow {
+  position: relative !important;
+  top: 50% !important;
+  margin-top: -2px !important;
+  left: 35px !important;
+} */
+
+/* .react-tel-input .selected-flag {
+  width: 60px !important;
+} */
+
 
 
 
@@ -120,4 +144,5 @@ body {
 
   input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }
