@@ -102,8 +102,9 @@ function OtherInformation({ formik, steps, index }: formProps) {
 
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
-    accept: ["image/*", ".pdf", ".doc", ".docx"],
+    accept: [".png", ".pdf", ".jpeg"],
     multiple: false,
+    maxFileSize: 10,
   });
   const presets = {
     public_id: formik.values.lastName || "unknown",
