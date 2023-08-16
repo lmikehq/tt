@@ -1,3 +1,4 @@
+import { ttColors } from "theme/colors";
 import Text from "./text";
 import { styled } from "styled-components";
 
@@ -59,7 +60,7 @@ function CircleProgress(props: circleProps) {
     <CircleWrapper active={props.active} isPassed={props.isPassed}>
       <Container active={props.active} isPassed={props.isPassed}>
         <Circle active={props.active} isPassed={props.isPassed}>
-          <Text type="p" weight="bold" text={props.index} color={props.isPassed ? "white" : "gray"} />
+          <Text type="p" weight="bold" text={props.index} color={props.isPassed ? "white" : (props.active ? "#6092A7" : ttColors.gray)} />
         </Circle>
         <CircleText>
           <Text type="h5" weight={props.active ? "bold" : "normal"} text={props.title} textAlign="center" />

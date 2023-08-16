@@ -64,7 +64,7 @@ export const getSteps = (
       id: 4,
       title: "Employment Details",
       content: (
-        <FamilyInfo
+        <EmploymentInfo
           formik={formikConfig}
           steps={["Employment Details"]}
           index={3}

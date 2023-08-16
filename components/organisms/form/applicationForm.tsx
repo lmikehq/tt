@@ -155,17 +155,17 @@ function ApplicationForm() {
 
   const nextStep = async () => {
     if (nextStepLoading) return;
-    if (currentPhase === 4) {
-      setNextStepLoading(true);
-      await handleVisaApplication();
-      return setNextStepLoading(false);
-    }
-    if (currentPhase === 6) {
-      return await startPayment({ onSuccess, onCancel });
-    }
-    if (currentPhase === 7) {
-      return router.push("/auth/login");
-    }
+    // if (currentPhase === 4) {
+    //   setNextStepLoading(true);
+    //   await handleVisaApplication();
+    //   return setNextStepLoading(false);
+    // }
+    // if (currentPhase === 6) {
+    //   return await startPayment({ onSuccess, onCancel });
+    // }
+    // if (currentPhase === 7) {
+    //   return router.push("/auth/login");
+    // }
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
   };

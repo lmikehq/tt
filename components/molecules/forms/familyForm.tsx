@@ -205,18 +205,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
             />
           </Section>
         </Flex>
-        <Flex
-          align="center"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "0.25rem"}
-        >
-          <CheckBox
-            checked={isCurrentlyInSchool}
-            onChange={handleCheckboxChange}
-          >
-            <Text type="p" text="I am currently in school" />
-          </CheckBox>
-        </Flex>
       </form>
     </Section>
   );

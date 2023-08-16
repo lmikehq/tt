@@ -1,4 +1,5 @@
 import CheckBox from "@atom/checkbox";
+import EnlargedDate from "@atom/enlargedDate";
 import Flex from "@atom/flex";
 import Input from "@atom/input";
 import Required from "@atom/required";
@@ -181,9 +182,9 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="Select your start date" 
-      
-              />
+              <EnlargedDate>
+                <DatePicker label="Select your start date"/>
+              </EnlargedDate>
             </LocalizationProvider>
           </Section>
           <Section>
@@ -193,15 +194,17 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label={
-                  isCurrentlyInSchool ? "Present" : "Select your date here"
-                }
-                value={formik?.values.endDate}
-                onChange={(e) => formik?.setFieldValue("endDate", e)}
-                disabled={isCurrentlyInSchool}
-                disableOpenPicker={isCurrentlyInSchool}
-              />
+              <EnlargedDate>
+                <DatePicker
+                  label={
+                    isCurrentlyInSchool ? "Present" : "Select your date here"
+                  }
+                  value={formik?.values.endDate}
+                  onChange={(e) => formik?.setFieldValue("endDate", e)}
+                  disabled={isCurrentlyInSchool}
+                  disableOpenPicker={isCurrentlyInSchool}
+                />
+              </EnlargedDate>
             </LocalizationProvider>
           </Section>
         </Flex>
