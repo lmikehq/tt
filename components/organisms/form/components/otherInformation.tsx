@@ -96,6 +96,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
       name: string;
       type: string;
       size: number;
+      title: string;
     }[]
   >();
 
@@ -114,16 +115,38 @@ function OtherInformation({ formik, steps, index }: formProps) {
     if (filesContent.length > 0) {
       uploadImage(filesContent[0].content).then((image) => {
         if (typeof image === "string") {
-          formik.setFieldValue("uploadedDocuments", [
-            ...formik.values.uploadedDocuments,
-            image,
-          ]);
-          console.log(filesContent[0]);
+          const docObj = {
+            title: documentToUpload,
+            url: image,
+          };
           const { name, type, size } = filesContent[0];
-          setUploadedDocuments([
-            ...(uploadedDocuments ?? []),
-            { name, size, type },
-          ]);
+          const findIndex = (uploadedDocuments ?? []).findIndex(
+            (el) => el.title == documentToUpload
+          );
+          console.log(findIndex);
+          if (findIndex == -1) {
+            formik.setFieldValue("uploadedDocuments", [
+              ...formik.values.uploadedDocuments,
+              docObj,
+            ]);
+
+            setUploadedDocuments([
+              ...(uploadedDocuments ?? []),
+              { name, size, type, title: docObj.title },
+            ]);
+          } else {
+            let formikUploadedDocuments = [...formik.values.uploadedDocuments];
+            let uploadedDocs = [...(uploadedDocuments ?? [])];
+            formikUploadedDocuments.splice(findIndex, 1, docObj);
+            uploadedDocs.splice(findIndex, 1, {
+              name,
+              size,
+              type,
+              title: docObj.title,
+            });
+            formik.setFieldValue("uploadedDocuments", formikUploadedDocuments);
+            setUploadedDocuments(uploadedDocs);
+          }
         }
       });
     }
