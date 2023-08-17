@@ -12,7 +12,7 @@ import { SearchInputAsString } from "@atom/searchInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
-import { InputAdornment, TextField } from "@mui/material";
+import { FormControlLabel, InputAdornment, Radio, RadioGroup, TextField } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
@@ -20,6 +20,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import EnlargedDate from "@atom/enlargedDate";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextArea from "@atom/textArea";
+import { CustomRadioGroup } from "@atom/radio";
 
 interface formProps {
   formik: FormikValues;
@@ -30,6 +31,18 @@ interface formProps {
 function PersonalInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
   const [value, setValue] = useState("");
+  const [radio, setRadio] = useState("");
+  
+
+  //  const handleSelectionChange = (selectedValue) => {
+  //    // Do something with the selected value
+  //    console.log("Selected value:", selectedValue);
+  //  };
+
+   const options = [
+     { value: "Yes", label: "Yes" },
+     { value: "No", label: "No" },
+   ];
 
   return (
     <Section width={isMobile ? "100%" : "75%"}>
@@ -651,8 +664,241 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             text="Main Purpose of your Trip"
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
-
           <TextArea />
+        </Section>
+
+        <Section>
+          <Text
+            type="h2"
+            text="Background Information"
+            weight={600}
+            size={24}
+            margin="4rem 0 .5rem"
+            styles={{
+              lineHeight: "29.26px",
+            }}
+          />
+        </Section>
+        <Section>
+          <ol>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in Canada?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <Section>
+              <Text
+                type="p"
+                text="If you answered “yes”, please provide details"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              />
+              <TextArea />
+            </Section>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in Canada?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Have you ever been refused a visa or permit, denied entry or ordered to leave Canada or any other Country?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Have you previously applied to enter or remain in Canada?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <Section>
+              <Text
+                type="p"
+                text="If you answered “yes”, please provide details"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              />
+              <TextArea />
+            </Section>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <Section>
+              <Text
+                type="p"
+                text="If you answered “yes”, please provide details"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              />
+              <TextArea />
+            </Section>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
+                  type="p"
+                  text="Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <Section>
+              <Text
+                type="p"
+                text="If you answered “yes”, please provide details"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              />
+              <TextArea />
+            </Section>
+          </ol>
         </Section>
       </form>
     </Section>
@@ -660,3 +906,5 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 }
 
 export default PersonalInfo;
+
+
