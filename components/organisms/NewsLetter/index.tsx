@@ -4,29 +4,35 @@ import Text from "../../atoms/text";
 import Flex from "../../atoms/flex";
 // import Link from "../../atoms/link";
 import Image from "next/image";
-import Button from "@mui/material/Button";
+import Button from "@atom/button";
 import Barcode from "@image/walink.png";
 import AppLogo from "@image/app-store.svg";
 import PlayStore from "@image/google-play.svg";
+import newsLetterBg from "@image/newsLetterbg.png";
 
 import { Grid } from "../../atoms/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Input from "@atom/input";
 
 const SubscribeWrapper = styled.div`
   // position: absolute;
-  left: 7.5%;
-  bottom: 90%;
+  // left: 7.5%;
+  // bottom: 90%;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   // background: var(--semi-bg-color);
-  background: rgba(135, 206, 235, 0.6);
+  // background: rgba(135, 206, 235, 0.6);
+  background-image: url(${newsLetterBg.src});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: -8rem 0;
   // z-index: -1;
   justify-content: center;
   align-items: center;
   width: 85%;
   margin: auto;
-  // height: 15.6rem;
+  height: 29.5rem;
   border-radius: 1.5rem;
-  padding: 8rem 2.5rem;
+  padding: 0rem 2.5rem;
   margin-bottom: 5rem;
 `;
 
@@ -94,12 +100,12 @@ const NewsLetter = () => {
           <Text
             type="h3"
             text="Subscribe to our newsletter"
-            size={isMobile ? "1.28rem" : "1.5rem"}
+            size={isMobile ? "1.28rem" : "2.5rem"}
             color="#06062A"
           />
           <Text
             type="p"
-            text="Get inspired! Receive travel discounts, visa tips and behind the scenes stories."
+            text="Discover a world of inspiration! Unlock exclusive travel discounts, gain invaluable visa tips, and immerse yourself in captivating behind-the-scenes stories"
             size="1rem"
             color="#06062A"
           />
@@ -107,16 +113,35 @@ const NewsLetter = () => {
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? ".5rem" : "1rem"}
           >
-            <input type="text" placeholder="Enter your email address" />
-            <Button variant="contained" size="medium">
-              Subscribe
+            <Input
+              type="text"
+              height="52px"
+              width="100%"
+              parentWidth="100%"
+              styles={{ backgroundColor: "#FFFFFF" }}
+              placeholder="Enter your email address"
+            />
+            <Button
+              height="52px"
+              padding="0 1.5rem"
+              width="fit-content"
+              borderRadius="4px"
+              styles={{ justifyContent: "center", alignItems: "center" }}
+            >
+              <Text
+                color="#FFFFFF"
+                text="Subscribe"
+                type={"span"}
+                weight={600}
+                size={16}
+              />
             </Button>
           </Flex>
         </Subcribe>
 
         <Flex
           gap="1rem"
-          align="flex-end"
+          align="center"
           width="auto"
           styles={{ visibility: isMobile ? "hidden" : "visible" }}
         >
