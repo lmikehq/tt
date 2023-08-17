@@ -149,7 +149,8 @@ function ApplicationForm() {
     setCurrentPhase(currentPhase + 2);
   }
 
-  const setPhase = async ({ number }: { number: number}) => {
+  const setPhase = async (number: number) => {
+    console.log("setPhase", number);
     setCurrentPhase(number)
   }
 

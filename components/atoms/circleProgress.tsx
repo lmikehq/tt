@@ -25,6 +25,8 @@ const CircleWrapper = styled.div<{ active: boolean, isPassed: boolean }>`
  &:last-child::after {
   display: none;
  }
+ cursor: pointer;
+
 `;
 
 const Container = styled.div<{ active: boolean, isPassed: boolean }>`
@@ -33,6 +35,7 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   margin: 0 25px;
   color: ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
   opacity: ${props => (props.active || props.isPassed ? "1" : "0.7")};
+  
 `;
 
 const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
@@ -48,6 +51,9 @@ const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
   border-radius: 100%;
   z-index: 9;
   position: relative;
+  &:hover {
+    border: 2px solid #6092A7;
+   }
 `;
 
 const CircleText = styled.span`
@@ -57,8 +63,8 @@ const CircleText = styled.span`
 
 function CircleProgress(props: circleProps) {
   return (
-    <CircleWrapper active={props.active} isPassed={props.isPassed}>
-      <Container active={props.active} isPassed={props.isPassed}>
+    <CircleWrapper active={props.active} isPassed={props.isPassed} onClick={props.onClick}>
+      <Container active={props.active} isPassed={props.isPassed} onClick={props.onClick}>
         <Circle active={props.active} isPassed={props.isPassed}>
           <Text type="p" weight="bold" text={props.index} color={props.isPassed ? "white" : (props.active ? "#6092A7" : ttColors.gray)} />
         </Circle>
