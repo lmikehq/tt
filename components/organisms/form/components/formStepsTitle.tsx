@@ -10,10 +10,11 @@ function FormStepTitle({ steps, index }: { steps: string[]; index: number }) {
   return (
     <Flex align="center" gap="1rem">
       <Text
-        type="p"
+        type="h1"
         text={steps[0]}
-        size={isMobile ? "13px" : "18px"}
+        size={isMobile ? "13px" : "22px"}
         weight={500}
+        className="title-font"
       />
       {steps.length > 1 && (
         <>

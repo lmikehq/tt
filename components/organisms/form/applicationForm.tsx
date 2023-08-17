@@ -25,7 +25,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
-import { BsShieldFillCheck } from "react-icons/bs";
+import { BsArrowLeft, BsShieldFillCheck } from "react-icons/bs";
 import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
@@ -284,14 +284,14 @@ function ApplicationForm() {
           justify="space-between"
           direction={isMobile ? "column" : "row"}
         >
-          <Flex direction="column" gap="1rem">
+          <Flex direction="column" gap="2.25rem">
             <Flex
               align="center"
               cursor="pointer"
-              gap="0.25rem"
+              gap="0.3rem"
               onClick={prevStep}
             >
-              <HiOutlineArrowNarrowLeft
+              <BsArrowLeft
                 color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
                 size="25px"
               />
@@ -300,7 +300,7 @@ function ApplicationForm() {
                 type="p"
                 color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
                 size="16px"
-                weight="400"
+                weight="bold"
               />
             </Flex>
             {currentPhase > 1 && <VisaProgress phase={currentPhase - 1} setPhase={setPhase}/>}

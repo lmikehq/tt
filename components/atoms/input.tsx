@@ -163,7 +163,7 @@ const Input = ({
           height: height || "40px",
           fontSize: size || "1rem",
           color: color || "#1C1B1F",
-          fontWeight: weight || "100",
+          fontWeight: weight || "400",
           fontFamily: "var(--font-family)",
           borderRadius: br || "4px",
           ...styles,
