@@ -16,6 +16,10 @@ import { InputAdornment, TextField } from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import EnlargedDate from "@atom/enlargedDate";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import TextArea from "@atom/textArea";
 
 interface formProps {
   formik: FormikValues;
@@ -25,7 +29,7 @@ interface formProps {
 
 function PersonalInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
 
   return (
     <Section width={isMobile ? "100%" : "75%"}>
@@ -230,26 +234,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             </Flex>
 
             <PhoneInput
-              style={{ height: "40px" }}
               country={"ng"}
               value={value}
               autoFormat={true}
-              onChange={setValue}
+              onChange={(e) => setValue(e)}
               inputClass="w"
               placeholder="Enter phone number"
             />
-            {/* <Input
-             height="40px"
-              addon={
-                validateEmail(formik?.values?.email) ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              max={11}
-              value={formik.values.phoneNumber}
-              placeholder="Enter your phone Number"
-              onChange={(x) => formik.setFieldValue("phoneNumber", x.target.value)}
-            /> */}
           </Section>
         </Flex>
 
@@ -323,7 +314,41 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-        
+        <Flex
+          margin={isMobile ? "0px" : "0 0 1rem"}
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section width="100%">
+            <Text
+              type="p"
+              text="Issue Date"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <EnlargedDate>
+                <DatePicker label="Select your issue date" />
+              </EnlargedDate>
+            </LocalizationProvider>
+          </Section>
+          <Section>
+            <Text
+              type="p"
+              text="Expiry Date"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <EnlargedDate>
+                <DatePicker
+                  label="Select your expire date "
+                  value={formik?.values.endDate}
+                  onChange={(e) => formik?.setFieldValue("endDate", e)}
+                />
+              </EnlargedDate>
+            </LocalizationProvider>
+          </Section>
+        </Flex>
 
         <Flex
           margin="0 0 1rem"
@@ -584,7 +609,41 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           </Section>
         </Flex>
 
-       
+        <Flex
+          margin={isMobile ? "0px" : "0 0 1rem"}
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section width="100%">
+            <Text
+              type="p"
+              text="Issue Date"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <EnlargedDate>
+                <DatePicker label="Select your issue date" />
+              </EnlargedDate>
+            </LocalizationProvider>
+          </Section>
+          <Section>
+            <Text
+              type="p"
+              text="Expiry Date"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <EnlargedDate>
+                <DatePicker
+                  label="Select your expire date "
+                  value={formik?.values.endDate}
+                  onChange={(e) => formik?.setFieldValue("endDate", e)}
+                />
+              </EnlargedDate>
+            </LocalizationProvider>
+          </Section>
+        </Flex>
 
         <Section>
           <Text
@@ -592,20 +651,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             text="Main Purpose of your Trip"
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
-          <TextField
-            inputProps={{
-              maxLength: 250,
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  Max 250 characters
-                </InputAdornment>
-              ),
-            }}
-            rows={8}
-            fullWidth
-          />
+
+          <TextArea />
         </Section>
       </form>
     </Section>
