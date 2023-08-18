@@ -92,7 +92,12 @@ const UploadedDocTile = ({
               />
             </Flex>
           </TextColumn>
-          <Button onClick={removeDocument} background="transparent" padding="0">
+          <Button
+            onClick={removeDocument}
+            background="transparent"
+            padding="0"
+            width="fit-content"
+          >
             <BiTrash size={24} color="#4A7181" />
           </Button>
         </InnerRow>

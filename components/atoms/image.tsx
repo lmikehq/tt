@@ -14,6 +14,6 @@ interface imageProps {
 }
 
 const Image: React.FC<imageProps> = (props: imageProps) => {
-  return <NextImage {...props} />;
+  return <NextImage {...props} style={{ ...props.styles }} />;
 };
 export default Image;
