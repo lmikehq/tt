@@ -57,7 +57,7 @@ const UploadedDocTile = ({
           alt={"document_icon"}
           width={40}
           height={40}
-          style={{ marginRight: "16px" }}
+          styles={{ marginRight: "16px" }}
         />
         <InnerRow>
           <TextColumn>
@@ -81,7 +81,7 @@ const UploadedDocTile = ({
                 alt={"dot"}
                 width={6}
                 height={6}
-                style={{ margin: "0 8px" }}
+                styles={{ margin: "0 8px" }}
               />
               <Text
                 text={fileSize}
