@@ -28,16 +28,14 @@ interface formProps {
   index: number;
 }
 
+
 function PersonalInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
   const [value, setValue] = useState("");
   const [radio, setRadio] = useState("");
   
 
-  //  const handleSelectionChange = (selectedValue) => {
-  //    // Do something with the selected value
-  //    console.log("Selected value:", selectedValue);
-  //  };
+ 
 
    const options = [
      { value: "Yes", label: "Yes" },
