@@ -12,7 +12,13 @@ import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
-import { FormControlLabel, InputAdornment, Radio, RadioGroup, TextField } from "@mui/material";
+import {
+  FormControlLabel,
+  InputAdornment,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
@@ -33,17 +39,16 @@ function PersonalInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
   const [value, setValue] = useState("");
   const [radio, setRadio] = useState("");
-  
 
   //  const handleSelectionChange = (selectedValue) => {
   //    // Do something with the selected value
   //    console.log("Selected value:", selectedValue);
   //  };
 
-   const options = [
-     { value: "Yes", label: "Yes" },
-     { value: "No", label: "No" },
-   ];
+  const options = [
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
+  ];
 
   return (
     <Section width={isMobile ? "100%" : "75%"}>
@@ -379,31 +384,31 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <SearchInput
-                value={formik.values.homeCountry}
-                placeholder="Select your country of citizenship"
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                height="8px"
-                onChange={(x) => formik.setFieldValue("homeCountry", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    type="p"
-                    text={formik?.values?.homeCountry?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    size={isMobile ? 14 : 16}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.homeCountry?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
+              value={formik.values.homeCountry}
+              placeholder="Select your country of citizenship"
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              height="8px"
+              onChange={(x) => formik.setFieldValue("homeCountry", x)}
+            >
+              <Flex justify="space-between">
+                <Text
+                  type="p"
+                  text={formik?.values?.homeCountry?.name}
+                  color="#1C1B1F"
+                  weight={100}
+                  size={isMobile ? 14 : 16}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.homeCountry?.name ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
             </SearchInput>
           </Section>
           <Section>
@@ -416,31 +421,31 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <SearchInput
-                value={formik.values.placeOfOrigin}
-                placeholder="Select your country of birth"
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                height="8px"
-                onChange={(x) => formik.setFieldValue("placeOfOrigin", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    type="p"
-                    text={formik?.values?.placeOfOrigin?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    size={isMobile ? 14 : 16}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.placeOfOrigin?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
+              value={formik.values.placeOfOrigin}
+              placeholder="Select your country of birth"
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              height="8px"
+              onChange={(x) => formik.setFieldValue("placeOfOrigin", x)}
+            >
+              <Flex justify="space-between">
+                <Text
+                  type="p"
+                  text={formik?.values?.placeOfOrigin?.name}
+                  color="#1C1B1F"
+                  weight={100}
+                  size={isMobile ? 14 : 16}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.placeOfOrigin?.name ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
             </SearchInput>
           </Section>
         </Flex>
@@ -579,31 +584,32 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <SearchInput
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                height="8px"
-                placeholder="Select the country"
-                onChange={(x) => formik.setFieldValue("issuingCountry", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    size={isMobile ? 14 : 16}
-                    type="p"
-                    text={formik?.values?.issuingCountry?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.issuingCountry?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
-              </SearchInput>
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              height="8px"
+              value={formik.values.issuingCountry}
+              placeholder="Select the country"
+              onChange={(x) => formik.setFieldValue("issuingCountry", x)}
+            >
+              <Flex justify="space-between">
+                <Text
+                  size={isMobile ? 14 : 16}
+                  type="p"
+                  text={formik?.values?.issuingCountry?.name}
+                  color="#1C1B1F"
+                  weight={100}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.issuingCountry?.name ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
+            </SearchInput>
           </Section>
         </Flex>
 
@@ -891,5 +897,3 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 }
 
 export default PersonalInfo;
-
-
