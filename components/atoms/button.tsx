@@ -19,6 +19,7 @@ interface buttonProps {
   styles?: CSSProperties;
   lineHeight?: string;
   type?: "button" | "submit" | "reset" | undefined;
+  underlined?: boolean
 }
 
 const ButtonWrapper = styled.button`
