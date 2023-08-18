@@ -491,7 +491,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
               ) : (
                 <DocUploadCenteredChild>
                   <Image
-                    style={{ marginBottom: "21px" }}
+                    styles={{ marginBottom: "21px" }}
                     src={DocPlus}
                     alt="add_doc_icon"
                     height={56}

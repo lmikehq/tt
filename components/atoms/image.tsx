@@ -1,11 +1,11 @@
-import React, {CSSProperties} from "react";
+import React, { CSSProperties } from "react";
 import NextImage, { StaticImageData } from "next/image";
 interface imageProps {
   src: StaticImageData;
   alt: string;
-  width?: number ;
+  width?: number;
   height?: number;
-  style?: CSSProperties;
+  styles?: CSSProperties;
   border?: string;
   borderRadius?: string;
   background?: string;
