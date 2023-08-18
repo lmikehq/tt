@@ -24,6 +24,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
   return (
     <Section width={isMobile ? "100%" : "75%"} height="unset">
       <FormStepTitle steps={steps} index={index} />
+      
       <form autoComplete="off">
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
           <Flex gap="1rem">
@@ -45,8 +46,8 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                height="8px"
                 onChange={(x) => formik.setFieldValue("home", x)}
+                
               >
                 <Flex justify="space-between">
                   <Text
@@ -81,7 +82,6 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                height="8px"
                 placeholder="Select Final Destination"
                 onChange={(x) => formik.setFieldValue("destination", x)}
               >
@@ -117,7 +117,6 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 <Required/>
               </Flex>
               <SearchInputAsString
-                height="8px"
                 options={[
                   "Tourist Visa",
                   "Business Visa",
@@ -159,7 +158,6 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 <Required/>
               </Flex>
               <SearchInputAsString
-                height="8px"
                 options={["Single", "Family"]}
                 onChange={(x) => {
                   formik?.setFieldValue("applicationType", x);
@@ -200,7 +198,6 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height="8px"
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
               onChange={(x) => {
                 setFee(x > 1 ? 30000 : 20000);

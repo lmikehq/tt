@@ -42,7 +42,6 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
             <Required />
           </Flex>
           <Input
-            height="40px"
             addon={
               formik?.values?.companyName?.length > 3 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -71,7 +70,6 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.jobTitle?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -94,7 +92,6 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <SearchInputAsString
-              height="8px"
               options={COMMON_MAJORS}
               onChange={(x) => formik?.setFieldValue("employmentType", x)}
             >
@@ -131,7 +128,6 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.companyLocation?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -151,7 +147,6 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height="8px"
               options={["On-site", "Remote", "Hybrid"]}
               onChange={(x) => formik?.setFieldValue("locationType", x)}
             >

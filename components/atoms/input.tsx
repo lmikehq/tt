@@ -10,6 +10,8 @@ import {
 } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styled from "styled-components";
+import Text from "./text";
+import { useField } from "formik";
 
 const StyledInput = styled.input`
   background-color: transparent;
@@ -56,6 +58,7 @@ export interface InputProps {
   onBlur?: () => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
+  touchedError?: boolean;
   type?:
     | "text"
     | "number"
@@ -65,7 +68,7 @@ export interface InputProps {
     | "email"
     | "tel"
     | "address"
-    | "checkbox"
+    | "checkbox";
 
   value?: string;
   name?: string;
@@ -118,6 +121,7 @@ const Input = ({
     type === "password" ? "password" : ""
   );
   if (type === "textArea") {
+
     return (
       <textarea
         aria-label="Your message"
@@ -157,10 +161,10 @@ const Input = ({
         max={max}
         style={{
           margin,
-          padding: padding || "0 2rem 0 1rem",
+          padding: padding || "0 1rem",
           border,
           width: width || "100%",
-          height: height || "40px",
+          height: height || "45px",
           fontSize: size || "1rem",
           color: color || "#1C1B1F",
           fontWeight: weight || "400",

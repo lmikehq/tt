@@ -42,7 +42,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Required />
           </Flex>
           <Input
-            height="40px"
             addon={
               formik?.values?.schoolName?.length > 3 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -70,7 +69,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <SearchInputAsString
-              height="8px"
               options={DEGREES}
               onChange={(x) => formik?.setFieldValue("degree", x)}
             >
@@ -100,7 +98,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <SearchInputAsString
-              height="8px"
               options={COMMON_MAJORS}
               onChange={(x) => formik?.setFieldValue("courseOfStudy", x)}
             >
@@ -134,7 +131,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height="8px"
               options={COMMON_MAJORS}
               onChange={(x) => formik?.setFieldValue("courseOfStudy", x)}
             >
@@ -161,7 +157,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height="40px"
               type="text"
               value={formik?.values.schoolLocation}
               placeholder="Enter Location"

@@ -37,7 +37,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.membersName?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -60,7 +59,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.memberRelationship?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -81,7 +79,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <Input
-            height="40px"
             addon={
               formik?.values?.memberAddress?.length > 3 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -110,7 +107,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.memberOccupation?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -133,7 +129,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.memberEmail?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -182,7 +177,6 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               type="text"
               value={formik?.values.memberWorth}
               placeholder="Enter Member Worth"

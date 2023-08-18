@@ -77,6 +77,7 @@ interface SearchProps {
   children?: React.ReactNode;
   placeholder?: string;
   height?: string;
+  padding?: string;
   options: any[];
   value?: any;
   border?: string;
@@ -91,6 +92,7 @@ export default function SearchInput({
   legend,
   value,
   height,
+  padding,
   onChange,
 }: // anchorEl,
 // setAnchorEl,
@@ -139,7 +141,8 @@ SearchProps) {
               fontSize: "16px!important",
             },
             "& input": {
-              height: height || "8px",
+              height: height || "45px",
+              padding: padding || "0px",
             },
           }}
           onClick={handleClick}
@@ -230,6 +233,8 @@ SearchProps) {
     </>
   );
 }
+
+
 export function SearchInputAsString({
   placeholder,
   children,
@@ -238,6 +243,7 @@ export function SearchInputAsString({
   value,
   onChange,
   height,
+  padding,
   border,
 }: SearchProps) {
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -289,7 +295,8 @@ export function SearchInputAsString({
               fontSize: "16px!important",
             },
             "& input": {
-              height: height || "8px",
+              height: height || "45px",
+              padding: padding || "0px",
             },
             border: border,
           }}
@@ -302,7 +309,10 @@ export function SearchInputAsString({
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
-            placeholder: React.Children.count(children) === 0 ? "Your Default Placeholder" : "",
+            placeholder:
+              React.Children.count(children) === 0
+                ? "Your Default Placeholder"
+                : "",
           }}
           placeholder={placeholder}
         />
