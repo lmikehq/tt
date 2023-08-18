@@ -1,6 +1,6 @@
 import Flex from "@atom/flex";
 import Image from "@atom/image";
-import { SearchInputAsString } from "@atom/searchInput";
+import SearchInput, { RoundFlag, SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { MenuItem, Select } from "@mui/material";
@@ -9,18 +9,23 @@ import { BiSolidInfoCircle } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
 import nigerianFlag from "@flag/ng.svg";
 import { styled } from "styled-components";
-import SelectInput from "@molecule/select/SelectInput";
+import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 
-const RoundFlag = styled.div`
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-image: url(${nigerianFlag.src});
-`;
+import { useState } from "react";
+
+export interface CurrencyType {
+  currency: string;
+  flag: string;
+  currencyCode: string;
+}
 
 const SelectPaymentMethod = () => {
   const { isMobile } = useScreenResolution();
-
+  const [currency, setCurrency] = useState<CurrencyType>({
+    currency: "Nigerian Naira",
+    flag: COUNTRY_FLAGS.find((el) => el.code == "NG")?.flag.src,
+    currencyCode: "NGN",
+  });
   return (
     <Section width={isMobile ? "100%" : "50%"}>
       <Section margin="0 0 3.375rem 0">
@@ -50,18 +55,39 @@ const SelectPaymentMethod = () => {
         />
 
         <Section margin="0 0 1.5rem 0">
-          <SelectInput
-            style={{ height: "3.5rem", width: "100%", borderRadius: "6px" }}
-            iconComponent={IoIosArrowDown}
-            defaultValue={10}
+          <SearchInput
+            options={COUNTRY_FLAGS.filter((x) => x.code == "NG").map((el) => ({
+              flag: el.flag,
+              code: el.currencyCode,
+              name: el.currency,
+            }))}
+            onChange={(x) => {
+              console.log(x);
+              setCurrency({
+                currency: x.name,
+                currencyCode: x.code,
+                flag: x.flag.src,
+              });
+            }}
           >
-            <MenuItem value={10}>
-              <Flex gap="1.5rem" alignSelf="center" align="center">
-                <RoundFlag />
-                <Text type="p" text="NGN - Nigerian Naira" />{" "}
+            <Flex gap="1.5rem" margin="0 .6rem" align="center">
+              <RoundFlag flag={currency?.flag ?? ""} />
+              <Flex
+                gap=".6rem"
+                justify="space-between"
+                align="center"
+                cursor="pointer"
+              >
+                <Text
+                  type="p"
+                  text={`${currency?.currencyCode} - ${currency?.currency}`}
+                  color="#1C1B1F"
+                  weight={100}
+                />
+                <IoIosArrowDown size={20} />
               </Flex>
-            </MenuItem>
-          </SelectInput>
+            </Flex>
+          </SearchInput>
         </Section>
         <Section styles={{ display: "flex" }}>
           <BiSolidInfoCircle

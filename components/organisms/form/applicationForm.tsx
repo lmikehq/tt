@@ -80,7 +80,7 @@ function ApplicationForm() {
       passportExpiryYear: formik.values.expiryYear,
       relationshipToGuarantor: formik.values.guarantorRelationship,
       documents: formik.values.uploadedDocuments,
-      userId: user?._id || '',
+      userId: user?._id || "",
     });
 
     setApplicationResponse(response);
@@ -146,9 +146,9 @@ function ApplicationForm() {
   const nextStep = async () => {
     if (nextStepLoading) return;
     if (currentPhase === 4) {
-      setNextStepLoading(true);
-      await handleVisaApplication();
-      return setNextStepLoading(false);
+      // setNextStepLoading(true);
+      // await handleVisaApplication();
+      // return setNextStepLoading(false);
     }
     if (currentPhase === 5) {
       return await startPayment({ onSuccess, onCancel });

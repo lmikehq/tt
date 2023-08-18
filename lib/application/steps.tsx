@@ -8,6 +8,7 @@ import {
   PaymentStatusFail,
   PaymentStatusSuccess,
 } from "@organism/form/components/paymentStatus";
+import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
 
 interface IFormStep {
   id: number;
@@ -83,16 +84,17 @@ export const getSteps = (
       id: 5,
       title: "Booking",
       content: (
-        <Booking
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-            "Booking",
-          ]}
-          index={4}
-        />
+        // <Booking
+        //   steps={[
+        //     "Your Trip Details",
+        //     "Personal Information",
+        //     "Education and Employment",
+        //     "Other Information",
+        //     "Booking",
+        //   ]}
+        //   index={4}
+        // />
+        <SelectPaymentMethod />
       ),
       valKeys: Object.keys(otherInforKeys),
     },
