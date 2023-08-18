@@ -1,8 +1,8 @@
 import Flex from "@atom/flex";
 import Image from "@atom/image";
 import Text from "@atom/text";
-import UploadedDocIcon from "@image/form/docUpload/uploadedDoc.svg";
-import DotIcon from "@image/form/docUpload/dotIcon.svg";
+import UploadedDocIcon from "@image/form/docUpload/uploadedDoc.png";
+import DotIcon from "@image/form/docUpload/dotIcon.png";
 
 import { BiTrash } from "react-icons/bi";
 import { styled } from "styled-components";

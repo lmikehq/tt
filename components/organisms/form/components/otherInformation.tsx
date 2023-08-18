@@ -22,7 +22,7 @@ import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Button from "@atom/button";
 import Image from "@atom/image";
-import DocPlus from "@image/form/docUpload/docPlus.svg";
+import DocPlus from "@image/form/docUpload/docPlus.png";
 import DeleteIcon from "@image/visaIcons/delete.png";
 import CircularProgressBar from "@molecule/progressBars/CircularProgressBar";
 import UploadedDocTile from "@molecule/docUpload/UploadedDocTile";
