@@ -151,12 +151,11 @@ function ApplicationForm() {
 
   const setPhase = async (number: number) => {
     console.log("setPhase", number);
-    setCurrentPhase(number)
-  }
+    setCurrentPhase(number);
+  };
 
   const nextStep = async () => {
     if (nextStepLoading) return;
-
 
     // if (currentPhase === 4) {
     //   setNextStepLoading(true);
@@ -306,17 +305,26 @@ function ApplicationForm() {
                 weight="bold"
               />
             </Flex>
-            {currentPhase > 1 && <VisaProgress phase={currentPhase - 1} setPhase={setPhase}/>}
+            {currentPhase > 1 && (
+              <VisaProgress phase={currentPhase - 1} setPhase={setPhase} />
+            )}
             {step?.content}
             {isValid && (
               <Button
                 width="75%"
+                height="3.5rem"
                 margin="10px 0"
                 onClick={nextStep}
                 fontSize="20px"
-                padding="2rem"
               >
-                Save & Continue
+                <Flex
+                  align="center"
+                  width="100%"
+                  height="100%"
+                  justify="center"
+                >
+                  Save & Continue
+                </Flex>
               </Button>
             )}
           </Flex>
@@ -359,7 +367,7 @@ function ApplicationForm() {
                       size="18px"
                       weight="bold"
                     />
-                    <TravelArrow/>
+                    <TravelArrow />
                     <Text
                       type="p"
                       text={formik.values?.destination?.name}
@@ -400,61 +408,31 @@ function ApplicationForm() {
                   </Grid> */}
                   <Flex gap="2rem">
                     <Flex direction="column">
-                      <Text
-                        text="Application Fees"
-                        type="h3"
-                        weight="bold"
-                      />
-                      <Text
-                        type="p"
-                        text="Non-Refundable"
-                      />
+                      <Text text="Application Fees" type="h3" weight="bold" />
+                      <Text type="p" text="Non-Refundable" />
                     </Flex>
                     <Flex direction="column">
-                      <Text
-                        text="Validity"
-                        type="h3"
-                        weight="bold"
-                      />
-                      <Text
-                        type="p"
-                        text="Passport dependent"
-                      />
+                      <Text text="Validity" type="h3" weight="bold" />
+                      <Text type="p" text="Passport dependent" />
                     </Flex>
                   </Flex>
                   <Section padding="1rem 0">
-                    <Text
-                      type="h3"
-                      text="Required Documents"
-                      weight="bold"
-                    />
+                    <Text type="h3" text="Required Documents" weight="bold" />
                     <BulletList>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="Passport sized photograph"
-                        />
+                        <Text type="p" text="Passport sized photograph" />
                       </ListItem>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="Valid international passport"
-                        />
+                        <Text type="p" text="Valid international passport" />
                       </ListItem>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="All academic certificates"
-                        />
+                        <Text type="p" text="All academic certificates" />
                       </ListItem>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="Proof of address (utility bill)"
-                        />
+                        <Text type="p" text="Proof of address (utility bill)" />
                       </ListItem>
                       <ListItem>
-                          <Text
+                        <Text
                           type="p"
                           text="Marriage certificate (if applicable)"
                         />
