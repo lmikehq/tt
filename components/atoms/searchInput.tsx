@@ -150,10 +150,10 @@ SearchProps) {
           }}
           onClick={handleClick}
           label={legend}
-          placeholder={placeholder}
+          placeholder={value ? "" : placeholder}
           InputProps={{
             startAdornment: (
-              <InputAdornment position="end">
+              <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
@@ -308,7 +308,10 @@ export function SearchInputAsString({
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
-            placeholder: React.Children.count(children) === 0 ? "Your Default Placeholder" : "",
+            placeholder:
+              React.Children.count(children) === 0
+                ? "Your Default Placeholder"
+                : "",
           }}
           placeholder={placeholder}
         />
