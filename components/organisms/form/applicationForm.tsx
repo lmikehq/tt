@@ -156,6 +156,8 @@ function ApplicationForm() {
 
   const nextStep = async () => {
     if (nextStepLoading) return;
+
+
     // if (currentPhase === 4) {
     //   setNextStepLoading(true);
     //   await handleVisaApplication();

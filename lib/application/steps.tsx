@@ -7,6 +7,7 @@ import {
   PaymentStatusFail,
   PaymentStatusSuccess,
 } from "@organism/form/components/paymentStatus";
+
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
