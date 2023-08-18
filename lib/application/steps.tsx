@@ -27,7 +27,7 @@ export const getSteps = (
   return [
     {
       id: 1,
-      title: "Enter your Trip details",
+      title: "Enter your Trp details",
       content: (
         <TripDetails
           steps={["Enter your Trip Details"]}

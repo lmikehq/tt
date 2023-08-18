@@ -8,7 +8,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { FaCircle } from "react-icons/fa";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
-import { SearchInputAsString } from "@atom/searchInput";
+import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
@@ -21,6 +21,7 @@ import EnlargedDate from "@atom/enlargedDate";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
+import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 
 interface formProps {
   formik: FormikValues;
@@ -243,7 +244,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-
             <PhoneInput
               country={"ng"}
               value={value}
@@ -352,7 +352,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <EnlargedDate>
                 <DatePicker
-                  label="Select your expire date "
+                  label="Select the Expiry Date"
                   value={formik?.values.endDate}
                   onChange={(e) => formik?.setFieldValue("endDate", e)}
                 />
@@ -376,78 +376,70 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
-              options={[
-                "Passport",
-                "National ID Card",
-                "Driver's License",
-                "Social Security Card",
-                "Birth Certificate",
-                "Voter ID Card",
-                "Military ID Card",
-                "Resident Permit/Visa",
-                "Health Insurance Card",
-              ]}
-              height="8px"
-              placeholder="Select your means of ID"
-              onChange={(x) => formik.setFieldValue("meansOfId", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.meansOfId}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.meansOfId ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+            <SearchInput
+                value={formik.values.homeCountry}
+                placeholder="Select your country of citizenship"
+                options={COUNTRY_FLAGS.map((x) => ({
+                  name: x.name,
+                  flag: x.flag,
+                  code: x.code,
+                }))}
+                height="8px"
+                onChange={(x) => formik.setFieldValue("homeCountry", x)}
+              >
+                <Flex justify="space-between">
+                  <Text
+                    type="p"
+                    text={formik?.values?.homeCountry?.name}
+                    color="#1C1B1F"
+                    weight={100}
+                    size={isMobile ? 14 : 16}
+                    styles={{ cursor: "pointer" }}
+                  />
+                  {formik?.values?.homeCountry?.name ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : (
+                    <IoIosArrowDown size={20} />
+                  )}
+                </Flex>
+            </SearchInput>
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
-                text="Place of Birth ( Country & State)"
+                text="Place of Birth (Country & State)"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
               <Required />
             </Flex>
-            <SearchInputAsString
-              options={[
-                "Passport",
-                "National ID Card",
-                "Driver's License",
-                "Social Security Card",
-                "Birth Certificate",
-                "Voter ID Card",
-                "Military ID Card",
-                "Resident Permit/Visa",
-                "Health Insurance Card",
-              ]}
-              height="8px"
-              placeholder="Select your means of ID"
-              onChange={(x) => formik.setFieldValue("meansOfId", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.meansOfId}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.meansOfId ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+            <SearchInput
+                value={formik.values.placeOfOrigin}
+                placeholder="Select your country of birth"
+                options={COUNTRY_FLAGS.map((x) => ({
+                  name: x.name,
+                  flag: x.flag,
+                  code: x.code,
+                }))}
+                height="8px"
+                onChange={(x) => formik.setFieldValue("placeOfOrigin", x)}
+              >
+                <Flex justify="space-between">
+                  <Text
+                    type="p"
+                    text={formik?.values?.placeOfOrigin?.name}
+                    color="#1C1B1F"
+                    weight={100}
+                    size={isMobile ? 14 : 16}
+                    styles={{ cursor: "pointer" }}
+                  />
+                  {formik?.values?.placeOfOrigin?.name ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : (
+                    <IoIosArrowDown size={20} />
+                  )}
+                </Flex>
+            </SearchInput>
           </Section>
         </Flex>
 
@@ -584,39 +576,32 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
-              options={[
-                "Nigeria",
-                // "Married",
-                // "Divorced",
-                // "Widowed",
-                // "Separated",
-                // "Annulled",
-                // "Domestic Partnership/Civil Union",
-                // "Common-Law Marriage",
-                // "Registered Partnership",
-                // "Cohabiting",
-                // "Remarried",
-              ]}
-              height="8px"
-              placeholder="Select the country"
-              onChange={(x) => formik.setFieldValue("maritalStatus", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.maritalStatus}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.maritalStatus ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+            <SearchInput
+                options={COUNTRY_FLAGS.map((x) => ({
+                  name: x.name,
+                  flag: x.flag,
+                  code: x.code,
+                }))}
+                height="8px"
+                placeholder="Select the country"
+                onChange={(x) => formik.setFieldValue("issuingCountry", x)}
+              >
+                <Flex justify="space-between">
+                  <Text
+                    size={isMobile ? 14 : 16}
+                    type="p"
+                    text={formik?.values?.issuingCountry?.name}
+                    color="#1C1B1F"
+                    weight={100}
+                    styles={{ cursor: "pointer" }}
+                  />
+                  {formik?.values?.issuingCountry?.name ? (
+                    <AiOutlineCheck color="#3BB98E" />
+                  ) : (
+                    <IoIosArrowDown size={20} />
+                  )}
+                </Flex>
+              </SearchInput>
           </Section>
         </Flex>
 

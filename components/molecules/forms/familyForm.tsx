@@ -1,18 +1,13 @@
-import CheckBox from "@atom/checkbox";
 import Flex from "@atom/flex";
 import Input from "@atom/input";
 import Required from "@atom/required";
-import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import { concatArrays, get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { COMMON_MAJORS, DEGREES } from "data/utilData";
+import { Switch } from "@mui/material";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
-import { IoIosArrowDown } from "react-icons/io";
+import PhoneInput from "react-phone-input-2";
 
 interface formProps {
   formik?: FormikValues;
@@ -22,11 +17,7 @@ interface formProps {
 }
 
 export default function FamilyForm({ formik, isMobile, count }: formProps) {
-  const [isCurrentlyInSchool, setIsCurrentlyInSchool] = useState(false);
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    setIsCurrentlyInSchool(checked);
-  };
+  const [value, setValue] = useState("");
 
   return (
     <Section height="unset">
@@ -172,19 +163,13 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              height="40px"
-              addon={
-                formik?.values?.memberPhoneNumber?.length > 3 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik?.values.memberPhoneNumber}
-              onChange={(x) =>
-                formik?.setFieldValue("memberPhoneNumber", x.target.value)
-              }
-              max={11}
-              placeholder="Enter Member's Phone Number"
+            <PhoneInput
+              country={"ng"}
+              value={value}
+              autoFormat={true}
+              onChange={(e) => setValue(e)}
+              inputClass="w"
+              placeholder="Enter phone number"
             />
           </Section>
           <Section>
@@ -204,6 +189,10 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
               onChange={(e) => formik?.setFieldValue("memberWorth", e)}
             />
           </Section>
+        </Flex>
+        <Flex justify="space-between">
+            <Text type="p" text="Will you be traveling with this Family Member?"/>
+            <Switch/>
         </Flex>
       </form>
     </Section>

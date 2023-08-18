@@ -1,10 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import Text from "./text";
 
-
-
+const MaxCharCount = 250;
 
 const CustomTextareaWrapper = styled.div`
   position: relative;
@@ -34,16 +33,38 @@ const Placeholder = styled.span`
   position: absolute;
   bottom: 10px;
   right: 10px;
-  color: #929292;
   pointer-events: none;
+  color: ${ttColors.gray}
 `;
 
-const TextArea: React.FC = () => {
+const TextArea = () => {
+  const [text, setText] = useState("");
+  const remainingChars = MaxCharCount - text.length;
+
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = event.target.value;
+    if (newText.length <= MaxCharCount) {
+      setText(newText);
+    }
+    console.log(remainingChars)
+  };
+
   return (
     <CustomTextareaWrapper>
-      <CustomTextarea aria-label="minimum height" rows={8} placeholder="" />
+      <CustomTextarea
+        aria-label="minimum height"
+        rows={8}
+        placeholder=""
+        value={text}
+        onChange={handleTextChange}
+      />
       <Placeholder>
-        <Text type="p" text="Max 250 characters" />
+        <Text
+          type="p"
+          text={remainingChars < 250  ? `${remainingChars} characters left` : 'Max 250 characters'}
+          color={remainingChars >= 0 ? ttColors.gray : ttColors.red}
+        />
       </Placeholder>
     </CustomTextareaWrapper>
   );
