@@ -11,6 +11,7 @@ import {
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
+import UploadDocuments from "@organism/form/components/uploadDocuments";
 
 interface IFormStep {
   id: number;
@@ -89,7 +90,8 @@ export const getSteps = (
       id: 6,
       title: "Upload Document",
       content: (
-        <PaymentStatusSuccess
+        <UploadDocuments
+          formik={formikConfig}
           steps={["Upload All Required Documents"]}
           index={5}
         />
