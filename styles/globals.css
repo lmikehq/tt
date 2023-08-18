@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=Montserrat:wght@600&display=swap');
 
 :root {
   --max-width: 1100px;
@@ -9,9 +9,9 @@
   --semi-bg-color: #87cfeb74;
   --bg-color: #fafbfc;
   --text-color: #000000;
-  --poppins-font: 'Poppins',
-    sans-serif;
+  --poppins-font: 'Poppins', sans-serif;
   --placeholder-color: ##1c1b1f;
+  --title-font: 'Montserrat', sans-serif;
 }
 
 * {
@@ -109,7 +109,37 @@ body {
   }
 }
 
+.react-tel-input .form-control {
+  width: 100% !important;
+  height: 40px !important;
+  /* padding-left: 70px !important; */
+}
 
+/* .react-tel-input .selected-flag .flag{ */
+  /* width: 24px !important; */
+  /* height: 17.33px !important; */
+  /* position: absolute !important; */
+  /* top: 40% !important; */
+/* } */
+
+/* .react-tel-input .selected-flag .arrow {
+  position: relative !important;
+  top: 50% !important;
+  margin-top: -2px !important;
+  left: 35px !important;
+} */
+
+/* .react-tel-input .selected-flag {
+  width: 60px !important;
+} */
+
+:-ms-input-placeholder {
+  font-weight: 500;
+}
+
+.title-font {
+  font-family: var(--title-font) !important;
+}
 
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -120,4 +150,5 @@ body {
 
   input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }

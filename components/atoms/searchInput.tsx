@@ -9,7 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "./flex";
 import Text from "./text";
 
@@ -85,6 +85,7 @@ interface SearchProps {
 }
 
 export default function SearchInput({
+  placeholder,
   children,
   options,
   legend,
@@ -143,9 +144,10 @@ SearchProps) {
           }}
           onClick={handleClick}
           label={legend}
+          placeholder={placeholder}
           InputProps={{
             startAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="end">
                 <Box sx={{ width: "100%" }}>{children}</Box>
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
@@ -216,7 +218,7 @@ SearchProps) {
                 <StyledInput
                   ref={params.InputProps.ref}
                   inputProps={params.inputProps}
-                  placeholder=""
+                  placeholder="Hello"
                   autoFocus
                   onChange={(e) => setInputValue(e.target.value)}
                 />
@@ -229,6 +231,7 @@ SearchProps) {
   );
 }
 export function SearchInputAsString({
+  placeholder,
   children,
   options,
   legend,
@@ -299,7 +302,9 @@ export function SearchInputAsString({
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
+            placeholder: React.Children.count(children) === 0 ? "Your Default Placeholder" : "",
           }}
+          placeholder={placeholder}
         />
       </Box>
       <StyledPopper
