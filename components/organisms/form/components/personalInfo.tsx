@@ -83,7 +83,9 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               padding="1.5rem"
               onBlur={isValid.handleBlur("lastName")}
             />
-            {isValid.touched.lastName && <Text type="p" text="Required" />}
+             {isValid.touched.lastName && (
+              <Text type="p" text="Required" />
+             )}
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -103,7 +105,9 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               }
               value={formik.values.firstName}
               placeholder="Enter First Name"
-              onChange={(x) => updateFieldValue("firstName", x.target.value)}
+              onChange={(x) =>
+                updateFieldValue("firstName", x.target.value)
+              }
               padding="1.5rem"
             />
           </Section>
