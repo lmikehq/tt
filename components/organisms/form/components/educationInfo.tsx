@@ -19,16 +19,19 @@ interface formProps {
 
 function EducationInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [count, setCount] = useState(2)
+  const [count, setCount] = useState(1)
   const [components, setComponents] = useState<JSX.Element[]>([<EducationForm formik={formik} key={1} count={1}/>])
 
   const handleAddComponents = () => {
-    setCount((prev) => prev + 1)
-    setComponents((prev) => [...prev, <EducationForm formik={formik} key={count} count={count}/>])
+    if(count < 3) {
+      setCount((prev) => prev + 1)
+    setComponents((prev) => [...prev, <EducationForm formik={formik} key={count+1} count={count+1}/>])
+    }
   }
 
   const handleRemoveComponent = (indexToRemove: number) => {
     setComponents((prev) => prev.filter((_, index) => index !== indexToRemove));
+    setCount((prev) => prev - 1)
   };
 
   return (
@@ -40,10 +43,10 @@ function EducationInfo({ formik, steps, index }: formProps) {
       {components.map((component, idx) => (
         <div key={idx}>
           {component}
-          <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
+          {components.length > 1 && <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
             <RiDeleteBin6Line color={ttColors.red} size={30} />
             <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
-          </Flex>
+          </Flex>}
         </div>
       ))}
     </Section>

@@ -22,8 +22,10 @@ function FamilyInfo({ formik, steps, index }: formProps) {
   const [components, setComponents] = useState<JSX.Element[]>([<FamilyForm formik={formik} key={1} count={1}/>])
 
   const handleAddComponents = () => {
-    setCount((prev) => prev + 1)
-    setComponents((prev) => [...prev, <FamilyForm formik={formik} key={count} count={count}/>])
+    if (count < 3) {
+      setCount((prev) => prev + 1)
+      setComponents((prev) => [...prev, <FamilyForm formik={formik} key={count} count={count}/>])
+    }
   }
 
   const handleRemoveComponent = (indexToRemove: number) => {
@@ -39,10 +41,10 @@ function FamilyInfo({ formik, steps, index }: formProps) {
       {components.map((component, idx) => (
         <div key={idx}>
           {component}
-          <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
+          {components.length > 1 && <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
             <RiDeleteBin6Line color={ttColors.red} size={30} />
             <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
-          </Flex>
+          </Flex>}
         </div>
       ))}
     </Section>

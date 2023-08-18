@@ -19,37 +19,53 @@ export const detailsKeys = {
 };
 
 export const personalInfoSchema = yup.object().shape({
-  firstName: yup.string().required(),
+  firstName: yup.string().required("Required"),
   lastName: yup.string().required(),
+  middleName: yup.string().required(),
   email: yup.string().email().required(),
   placeOfOrigin: yup.string().required(),
   stateOfOrigin: yup.string().required(),
-  LgOfOrigin: yup.string().required(),
+  lgOfOrigin: yup.string().required(),
+  nativeLanguage: yup.string().required(),
   meansOfId: yup.string().required(),
   idNumber: yup.string().required(),
+  issueDate: yup.date(),
+  expiryDate: yup.date(),
+  homeCountry: yup.string().required(),
   residentialAddress: yup.string().required(),
   dateOfBirth: yup.date().required(),
   maritalStatus: yup.string().required(),
   partnersName: yup.string(),
-  facebookUsername: yup.string(),
-  linkedinOrInstagram: yup.string(),
+  passportNumber: yup.string().required(),
+  issuingCountry: yup.string().required(),
+  passportIssueDate: yup.date(),
+  passportExpiryDate: yup.date(),
+  purposeOfTrip: yup.string(),
 });
 
-export const pesonalInfoKeys = {
+export const personalInfoKeys = {
   firstName: "",
   lastName: "",
+  middleName: "",
   email: "",
   placeOfOrigin: "",
   stateOfOrigin: "",
   lgOfOrigin: "",
+  nativeLanguage: "",
   meansOfId: "",
   idNumber: "",
+  issueDate: "",
+  expiryDate: "",
+  homeCountry: "",
   residentialAddress: "",
   dateOfBirth: "",
   maritalStatus: "",
   partnersName: "",
-  facebookUsername: "",
-  linkedinOrInstagram: "",
+  passportNumber: "",
+  issuingCountry: "",
+  passportIssueDate: "",
+  passportExpiryDate: "",
+  purposeOfTrip: ""
 };
 
 export const edAndEmpSchema = yup.object().shape({
@@ -133,7 +149,7 @@ export const visaSchema = {
 export const visaInitVals = {
   ...detailsKeys,
   ...edAndEmpKeys,
-  ...pesonalInfoKeys,
+  ...personalInfoKeys,
   ...otherInforKeys,
 };
 
