@@ -2,7 +2,6 @@ import Flex from "@atom/flex";
 import Image from "@atom/image";
 import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import Div from "@molecule/div";
 import Section from "@molecule/section";
 import { MenuItem, Select } from "@mui/material";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -50,7 +49,7 @@ const SelectPaymentMethod = () => {
           margin={"0 0 1.125rem 0"}
         />
 
-        <Div margin="0 0 1.5rem 0">
+        <Section margin="0 0 1.5rem 0">
           <SelectInput
             style={{ height: "3.5rem", width: "100%", borderRadius: "6px" }}
             iconComponent={IoIosArrowDown}
@@ -63,20 +62,20 @@ const SelectPaymentMethod = () => {
               </Flex>
             </MenuItem>
           </SelectInput>
-        </Div>
-        <Div styles={{ display: "flex" }}>
+        </Section>
+        <Section styles={{ display: "flex" }}>
           <BiSolidInfoCircle
             size={32}
             color={"#6092A7"}
             style={{ marginRight: "1.125rem" }}
           />
-          <Div>
+          <Section>
             <Text
               text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
               type="p"
             />
-          </Div>
-        </Div>
+          </Section>
+        </Section>
       </Section>
     </Section>
   );

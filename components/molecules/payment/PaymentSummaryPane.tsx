@@ -1,6 +1,5 @@
 import Flex from "@atom/flex";
 import Text from "@atom/text";
-import Div from "@molecule/div";
 import Section from "@molecule/section";
 import { BiSolidUser } from "react-icons/bi";
 import { styled } from "styled-components";

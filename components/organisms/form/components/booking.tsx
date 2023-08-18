@@ -12,7 +12,6 @@ import FormStepTitle from "./formStepsTitle";
 import { useUserStore } from "store/useStore";
 import { FormikValues } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Div from "@molecule/div";
 import VisaApplicationTypeTile from "@molecule/payment/VisaApplicationTypeTile";
 import { IoIosArrowDown } from "react-icons/io";
 import { SearchInputAsString } from "@atom/searchInput";

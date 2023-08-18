@@ -1,5 +1,5 @@
 import Text from "@atom/text";
-import Div from "@molecule/div";
+import Div from "@molecule/section";
 import { styled } from "styled-components";
 
 interface VisaApplicationTypeTileProps {

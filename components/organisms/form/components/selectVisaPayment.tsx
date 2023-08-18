@@ -1,6 +1,4 @@
 import Text from "@atom/text";
-import Div from "@molecule/div";
-import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 import VisaApplicationTypeTile from "@molecule/payment/VisaApplicationTypeTile";
 import Section from "@molecule/section";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -10,7 +8,7 @@ const SelectVisaPayment = () => {
 
   return (
     <Section width={isMobile ? "100%" : "50%"}>
-      <Div margin="0 0 3.5rem 0">
+      <Section margin="0 0 3.5rem 0">
         <Text
           text={"Select Visa Payment"}
           type={"h3"}
@@ -18,14 +16,14 @@ const SelectVisaPayment = () => {
           size={24}
           margin={""}
         />
-      </Div>
-      <Div className="">
+      </Section>
+      <Section className="">
         <VisaApplicationTypeTile
           title={"Family Visa"}
           subTitle={"Maximum of 5 persons"}
           fee="# 500"
         />
-      </Div>
+      </Section>
     </Section>
   );
 };
