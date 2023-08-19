@@ -32,7 +32,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
   return (
     <Section height="unset">
       <form>
-        <Section margin="0 0 1rem" styles={{margin: "2.5rem 0 1rem"}}>
+        <Section margin="0 0 1rem" styles={{ margin: "2.5rem 0 1rem" }}>
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
@@ -92,30 +92,31 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
-                text="Field of Study"
+                text="CGPA"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
               <Required />
             </Flex>
-            <SearchInputAsString
-              options={COMMON_MAJORS}
-              onChange={(x) => formik?.setFieldValue("courseOfStudy", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.courseOfStudy}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values.courseOfStudy ? (
+            <Input
+              height="40px"
+              addon={
+                formik?.values?.grade > 0 ? (
                   <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+                ) : undefined
+              }
+              type="number"
+              max={5}
+              min={0}
+              value={formik?.values?.grade}
+              // value={formik.values.grade}
+              onChange={(x) => {
+                let value = parseFloat(x.target.value);
+                if (value > 5) value = 5;
+                if (value < 0) value = 0;
+                formik?.setFieldValue("grade", value);
+                // formik.setFieldValue("grade", value);
+              }}
+            />
           </Section>
         </Flex>
         <Flex

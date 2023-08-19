@@ -24,7 +24,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
   return (
     <Section width={isMobile ? "100%" : "75%"} height="unset">
       <FormStepTitle steps={steps} index={index} />
-      
+
       <form autoComplete="off">
         <Section margin={isMobile ? "0rem" : "2.5rem 0 1rem"}>
           <Flex gap="1rem">
@@ -36,18 +36,17 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
                   size={isMobile ? 14 : 16}
                 />
-                <Required/>
+                <Required />
               </Flex>
               <SearchInput
                 value={formik.values.home}
-                placeholder="Select where you are"
+                placeholder={formik.values.home.name ? "" : "Select where you are"}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
                 onChange={(x) => formik.setFieldValue("home", x)}
-                
               >
                 <Flex justify="space-between">
                   <Text
@@ -74,7 +73,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   text="Where to?"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
                 />
-                <Required/>
+                <Required />
               </Flex>
               <SearchInput
                 options={COUNTRY_FLAGS.map((x) => ({
@@ -82,7 +81,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                placeholder="Select Final Destination"
+                placeholder={
+                  formik.values.home.name ? "" : "Select Final Destination"
+                }
                 onChange={(x) => formik.setFieldValue("destination", x)}
               >
                 <Flex justify="space-between">
@@ -106,7 +107,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
         </Section>
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
           <Flex gap="1rem" align="center">
-          <Flex direction="column">
+            <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
                   size={isMobile ? 14 : 16}
@@ -114,7 +115,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   text="Visa type"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
                 />
-                <Required/>
+                <Required />
               </Flex>
               <SearchInputAsString
                 options={[
@@ -127,7 +128,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   "Visa on Arrival",
                   "Other",
                 ]}
-                placeholder={!formik.values.visaType ? "Select your Visa Type" : ""}
+                placeholder={
+                  !formik.values.visaType ? "Select your Visa Type" : ""
+                }
                 onChange={(x) => formik.setFieldValue("visaType", x)}
               >
                 <Flex justify="space-between">
@@ -155,7 +158,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   text="Application type"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
                 />
-                <Required/>
+                <Required />
               </Flex>
               <SearchInputAsString
                 options={["Single", "Family"]}
@@ -186,7 +189,6 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               </SearchInputAsString>
             </Flex>
           </Flex>
-          
         </Section>
 
         {formik?.values?.applicationType === "Family" && (
@@ -222,7 +224,6 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
             </SearchInputAsString>
           </Section>
         )}
-
       </form>
     </Section>
   );

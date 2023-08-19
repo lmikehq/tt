@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import Text from "./text";
 
-const MaxCharCount = 250;
+const MaxCharCount = 1000;
 
 const CustomTextareaWrapper = styled.div`
   position: relative;
@@ -62,7 +62,7 @@ const TextArea = () => {
       <Placeholder>
         <Text
           type="p"
-          text={remainingChars < 250  ? `${remainingChars} characters left` : 'Max 250 characters'}
+          text={remainingChars < 1000  ? `${remainingChars} characters left` : 'Max 1000 characters'}
           color={remainingChars >= 0 ? ttColors.gray : ttColors.red}
         />
       </Placeholder>
