@@ -19,9 +19,8 @@ export const detailsKeys = {
 };
 
 export const personalInfoSchema = yup.object().shape({
-  firstName: yup.string().max(15, "Must be 15 characters or less")
-  .required("Required"),
-  lastName: yup.string().required(),
+  firstName: yup.string().max(15, "Must be 15 characters or less").min(2, "Testing").required("Required"),
+  lastName: yup.string().max(15, "Must be 15 characters or less").required("Required"),
   middleName: yup.string().required(),
   email: yup.string().email().required(),
   placeOfOrigin: yup.string().required(),
