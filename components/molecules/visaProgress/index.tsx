@@ -10,7 +10,7 @@ function VisaProgress({ phase, setPhase }: ComponentProps) {
     <div>
       <CircleProgress
         index="1"
-        title="Personal Information"
+        title="Personal Details"
         active={phase === 1}
         isPassed={phase > 1}
         onClick={() => setPhase(2)}
@@ -31,7 +31,7 @@ function VisaProgress({ phase, setPhase }: ComponentProps) {
       />
       <CircleProgress
         index="4"
-        title="Family Information"
+        title="Family Details"
         active={phase === 4}
         isPassed={phase > 4}
         onClick={() => setPhase(5)}

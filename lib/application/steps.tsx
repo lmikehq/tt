@@ -39,11 +39,11 @@ export const getSteps = (
     },
     {
       id: 2,
-      title: "Personal Information",
+      title: "Personal Details",
       content: (
         <PersonalInfo
           formik={formikConfig}
-          steps={["Personal Information"]}
+          steps={["Personal Details"]}
           index={1}
         />
       ),
@@ -74,11 +74,11 @@ export const getSteps = (
     },
     {
       id: 5,
-      title: "Family Members' Information",
+      title: "Family Members' Details",
       content: (
         <FamilyInfo
           formik={formikConfig}
-          steps={["Family Members' Information"]}
+          steps={["Family Members' Details"]}
           index={4}
         />
       ),
@@ -101,7 +101,7 @@ export const getSteps = (
         <PaymentStatusFail
           steps={[
             "Your Trip Details",
-            "Personal Information",
+            "Personal details",
             "Education and Employment",
             "Other Information",
             "Booking",
