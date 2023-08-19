@@ -26,7 +26,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
       <FormStepTitle steps={steps} index={index} />
       
       <form autoComplete="off">
-        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+        <Section margin={isMobile ? "0rem" : "2.5rem 0 1rem"}>
           <Flex gap="1rem">
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -109,7 +109,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
           <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 18}
+                  size={isMobile ? 14 : 16}
                   type="p"
                   text="Visa type"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}

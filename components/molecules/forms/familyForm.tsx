@@ -21,7 +21,9 @@ export default function FamilyForm({ formik, isMobile, count }: formProps) {
 
   return (
     <Section height="unset">
-      <form>
+      <form style={{
+        margin: isMobile ? "0px" : "2.5rem 0 1rem"
+      }}>
         <Flex
           justify="space-between"
           direction={isMobile ? "column" : "row"}

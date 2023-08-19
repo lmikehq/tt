@@ -93,7 +93,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height="40px"
               addon={
                 formik?.values?.passNumber?.length > 8 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -112,7 +111,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height="8px"
               options={COUNTRY_FLAGS.map((x) => x.name)}
               onChange={(x) => formik.setFieldValue("passIssueCountry", x)}
             >
@@ -146,7 +144,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height="8px"
               options={get100Years(true)}
               onChange={(x) => formik.setFieldValue("expiryYear", x)}
             >
@@ -173,7 +170,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <SearchInputAsString
-              height="8px"
               options={["Male", "Female", "Other"]}
               onChange={(x) => formik.setFieldValue("gender", x)}
             >
@@ -215,7 +211,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height="40px"
               addon={
                 formik?.values?.guarantorName?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -234,7 +229,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height="40px"
               addon={
                 formik?.values?.guarantorRelationship?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -255,7 +249,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
           <Input
-            height="40px"
             addon={
               formik?.values?.guarantorAddress?.length > 4 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -281,7 +274,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height="40px"
               addon={
                 formik?.values?.guarantorPhone?.length > 3 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -300,7 +292,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Input
-              height="40px"
               addon={
                 formik?.values?.guarantorWorth?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />

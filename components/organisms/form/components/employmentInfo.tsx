@@ -31,7 +31,7 @@ function EmploymentInfo({ formik, steps, index }: formProps) {
   };
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
+    <Section width={isMobile ? "100%" : "75%"} margin={isMobile ? "0px" : "2.5rem 0 1rem"}>
       <Flex justify="space-between">
         <FormStepTitle steps={steps} index={index} />
         <AddButton onClick={() => handleAddComponents()}/>

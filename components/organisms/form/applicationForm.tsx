@@ -276,7 +276,9 @@ function ApplicationForm() {
           background="#FFFFFF"
           borderRadius={isMobile ? "0px" : "16px"}
           styles={{
-            boxShadow: isMobile ? "none" : "4px 4px 26px rgba(0, 0, 0, 0.25)",
+            // boxShadow: isMobile ? "none" : "4px 4px 26px rgba(0, 0, 0, 0.25)",
+            boxShadow:isMobile ? "none" : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
+
             marginBottom: isMobile ? "3rem" : "0px",
             position: "relative",
           }}
@@ -304,7 +306,9 @@ function ApplicationForm() {
                 weight="bold"
               />
             </Flex>
-            {currentPhase > 1 && <VisaProgress phase={currentPhase - 1} setPhase={setPhase}/>}
+            {currentPhase > 1 && (
+              <VisaProgress phase={currentPhase - 1} setPhase={setPhase} />
+            )}
             {step?.content}
             {isValid && (
               <Button
@@ -313,8 +317,9 @@ function ApplicationForm() {
                 onClick={nextStep}
                 fontSize="20px"
                 padding="2rem"
+                height="52px"
               >
-                Save & Continue
+                <Text type="p" text="Save & Continue" size={16} color="#fff" weight={600} />
               </Button>
             )}
           </Flex>
@@ -357,7 +362,7 @@ function ApplicationForm() {
                       size="18px"
                       weight="bold"
                     />
-                    <TravelArrow/>
+                    <TravelArrow />
                     <Text
                       type="p"
                       text={formik.values?.destination?.name}
@@ -398,61 +403,31 @@ function ApplicationForm() {
                   </Grid> */}
                   <Flex gap="2rem">
                     <Flex direction="column">
-                      <Text
-                        text="Application Fees"
-                        type="h3"
-                        weight="bold"
-                      />
-                      <Text
-                        type="p"
-                        text="Non-Refundable"
-                      />
+                      <Text text="Application Fees" type="h3" weight="bold" />
+                      <Text type="p" text="Non-Refundable" />
                     </Flex>
                     <Flex direction="column">
-                      <Text
-                        text="Validity"
-                        type="h3"
-                        weight="bold"
-                      />
-                      <Text
-                        type="p"
-                        text="Passport dependent"
-                      />
+                      <Text text="Validity" type="h3" weight="bold" />
+                      <Text type="p" text="Passport dependent" />
                     </Flex>
                   </Flex>
                   <Section padding="1rem 0">
-                    <Text
-                      type="h3"
-                      text="Required Documents"
-                      weight="bold"
-                    />
+                    <Text type="h3" text="Required Documents" weight="bold" />
                     <BulletList>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="Passport sized photograph"
-                        />
+                        <Text type="p" text="Passport sized photograph" />
                       </ListItem>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="Valid international passport"
-                        />
+                        <Text type="p" text="Valid international passport" />
                       </ListItem>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="All academic certificates"
-                        />
+                        <Text type="p" text="All academic certificates" />
                       </ListItem>
                       <ListItem>
-                          <Text
-                          type="p"
-                          text="Proof of address (utility bill)"
-                        />
+                        <Text type="p" text="Proof of address (utility bill)" />
                       </ListItem>
                       <ListItem>
-                          <Text
+                        <Text
                           type="p"
                           text="Marriage certificate (if applicable)"
                         />
@@ -554,7 +529,7 @@ function ApplicationForm() {
 
                   <Flex direction="column" gap="0.5rem">
                     <Button
-                      border="2px solid #06062A"
+                      border="1px solid #06062A"
                       width="100%"
                       background="none"
                       borderRadius="4px"
@@ -570,7 +545,7 @@ function ApplicationForm() {
                       />
                     </Button>
                     <Button
-                      border="2px solid #06062A"
+                      border="1px solid #06062A"
                       width="100%"
                       background="none"
                       borderRadius="4px"

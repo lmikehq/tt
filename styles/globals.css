@@ -24,6 +24,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background: #FAFBFC;
 }
 
 body {
@@ -129,7 +130,7 @@ body {
 } */
 
 .react-tel-input .selected-flag {
-  width: 80px !important;
+  width: 46px !important;
 }
 
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{

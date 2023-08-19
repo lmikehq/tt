@@ -32,7 +32,7 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
   return (
     <Section height="unset">
       <form>
-        <Section margin="0 0 1rem">
+        <Section styles={{ margin: "2.5rem 0 1rem" }}>
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"

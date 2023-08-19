@@ -146,7 +146,7 @@ const Frame: React.FC = () => {
                   color="var(--secondary-color)"
                   onClick={applyButton}
                 >
-                  <Flex gap=".5rem">
+                  <Flex gap=".5rem" justify="center">
                     {item.icon}
                     <Text type="span" text={item.button} whiteSpace="nowrap" />
                   </Flex>

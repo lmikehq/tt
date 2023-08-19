@@ -33,16 +33,27 @@ function EducationInfo({ formik, steps, index }: formProps) {
 
   return (
     <Section width={isMobile ? "100%" : "75%"}>
-      <Flex justify="space-between">
+      <Flex justify="space-between" margin={isMobile ? "0px" : "2.5rem 0 1rem"}>
         <FormStepTitle steps={steps} index={index} />
-        <AddButton onClick={() => handleAddComponents()}/>
+        <AddButton onClick={() => handleAddComponents()} />
       </Flex>
       {components.map((component, idx) => (
         <div key={idx}>
           {component}
-          <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
+          <Flex
+            justify="flex-end"
+            gap="0.25rem"
+            align="center"
+            onClick={() => handleRemoveComponent(idx)}
+            cursor="pointer"
+          >
             <RiDeleteBin6Line color={ttColors.red} size={30} />
-            <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
+            <Text
+              type="p"
+              text="Delete Experience"
+              color={ttColors.red}
+              weight="500"
+            />
           </Flex>
         </div>
       ))}

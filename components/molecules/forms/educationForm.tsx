@@ -32,7 +32,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
   return (
     <Section height="unset">
       <form>
-        <Section margin="0 0 1rem">
+        <Section margin="0 0 1rem" styles={{margin: "2.5rem 0 1rem"}}>
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
@@ -178,7 +178,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <EnlargedDate>
-                <DatePicker label="Select your start date"/>
+                <DatePicker label="Select your start date" />
               </EnlargedDate>
             </LocalizationProvider>
           </Section>

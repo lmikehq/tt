@@ -46,8 +46,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
   return (
     <Section width={isMobile ? "100%" : "75%"}>
       <FormStepTitle steps={steps} index={index} />
-      <form>
-        <Flex align="center" gap=".5rem" margin="1rem 0 0">
+      <form style={{margin: isMobile ? "0px" : "2.5rem 0 1rem"}}>
+        <Flex align="center" gap=".5rem">
           <FaCircle size={".4rem"} color={ttColors.salmon} />
           <Text
             type="p"
