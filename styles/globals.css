@@ -55,6 +55,17 @@ body {
 /* Media Queries Here */
 
 
+@media screen and (max-width: 1024px) {
+  .reviewCard {
+    display: grid;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .destinationCard {
+    display: grid;
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
 @media screen and (max-width: 900px) {
     .dashboardWrapper{
         margin: 1rem 0px !important;
