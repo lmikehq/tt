@@ -129,7 +129,6 @@ SearchProps) {
           sx={{
             width: "100%",
             fontSize: 16,
-            color: "#1C1B1F",
             "& .MuiInputAdornment-root": {
               position: "absolute",
               top: "50%",
@@ -141,7 +140,6 @@ SearchProps) {
               display: "block!important",
             },
             "& label": {
-              color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
             "& input": {
@@ -281,6 +279,7 @@ export function SearchInputAsString({
               display: "flex",
               justifyContent: "center",
               width: "100%",
+              // color: "inherit !important",
             },
             "& svg": {
               position: "absolute",
@@ -289,13 +288,16 @@ export function SearchInputAsString({
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
+              position: "relative",
+              // color: "inherit !important",
             },
             "& label": {
-              color: "#1C1B1F!important",
               fontSize: "16px!important",
+              // color: "inherit !important",
             },
             "& input": {
               height: height || "8px",
+              // color: "inherit !important",
             },
             border: border,
           }}

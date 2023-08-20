@@ -3,9 +3,9 @@ import EnlargedDate from "@atom/enlargedDate";
 import Flex from "@atom/flex";
 import Input from "@atom/input";
 import Required from "@atom/required";
-import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import { concatArrays, get100Years } from "@lib/utilFns";
+import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import Section from "@molecule/section";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -93,26 +93,11 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
-              height="8px"
+            <SearchStringInput
               options={COMMON_MAJORS}
               onChange={(x) => formik?.setFieldValue("employmentType", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.employmentType}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values.employmentType ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+              placeholder="Select employment"
+            />
           </Section>
         </Flex>
         <Flex
@@ -150,27 +135,11 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               text="Location Type"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <SearchInputAsString
-              height="8px"
+            <SearchStringInput
               options={["On-site", "Remote", "Hybrid"]}
               onChange={(x) => formik?.setFieldValue("locationType", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  size={isMobile ? 14 : 16}
-                  type="p"
-                  text={formik?.values?.locationType}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values?.locationType ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+              placeholder="Select location"
+            />
           </Section>
         </Flex>
         <Flex
