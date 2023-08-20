@@ -104,7 +104,6 @@ function Booking({ steps, index }: formProps) {
             size={isMobile ? "1.1rem" : "1.2rem"}
           />
           <Input
-            height="40px"
             placeholder="Email address"
             margin={isMobile ? ".7rem  0 1rem" : "1rem 0"}
           />

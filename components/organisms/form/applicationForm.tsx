@@ -276,6 +276,7 @@ function ApplicationForm() {
         <Flex
           background="#FFFFFF"
           borderRadius={isMobile ? "0px" : "16px"}
+          margin="3rem 0px 5rem 0px"
           styles={{
             // boxShadow: isMobile ? "none" : "4px 4px 26px rgba(0, 0, 0, 0.25)",
             boxShadow:isMobile ? "none" : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",

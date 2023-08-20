@@ -148,14 +148,14 @@ function UploadDocuments({ formik, steps, index }: formProps) {
 
       <form style={{ margin: isMobile ? "1rem 0 0" : "1rem 0" }}>
         <Section>
-          <Text
+          {/* <Text
             type="p"
             text="Upload all your credentials"
             size={isMobile ? "1.4rem" : "1.5rem"}
             weight={600}
             color="#000000"
             margin=" 3.5rem 0 3.5rem 0"
-          />
+          /> */}
 
           <Section>
             <Text
@@ -164,10 +164,9 @@ function UploadDocuments({ formik, steps, index }: formProps) {
               size={"1.125rem"}
               weight={400}
               color="#000000"
-              margin={"0 0 1.125rem 0 "}
+              margin="3rem 0 .9rem"
             />
             <SearchInputAsString
-              height="8px"
               options={[
                 "Passport sized photograph",
                 "Valid international passport",

@@ -98,7 +98,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.grade > 0 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -108,13 +107,11 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               max={5}
               min={0}
               value={formik?.values?.grade}
-              // value={formik.values.grade}
               onChange={(x) => {
                 let value = parseFloat(x.target.value);
                 if (value > 5) value = 5;
                 if (value < 0) value = 0;
                 formik?.setFieldValue("grade", value);
-                // formik.setFieldValue("grade", value);
               }}
             />
           </Section>

@@ -26,7 +26,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
       <FormStepTitle steps={steps} index={index} />
 
       <form autoComplete="off">
-        <Section margin={isMobile ? "0rem" : "2.5rem 0 1rem"}>
+        <Section margin={isMobile ? "0rem" : "2rem 0 1rem"}>
           <Flex gap="1rem">
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -81,8 +81,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                height="8px"
-                placeholder="Select Final Destination"
+                placeholder={formik.values.home.name ? "" : "Select Final Destination"}
                 onChange={(x) => formik.setFieldValue("destination", x)}
               >
                 <Flex justify="space-between">

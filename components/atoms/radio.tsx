@@ -42,6 +42,8 @@ export function CustomRadioGroup({
         onChange={handleChange}
         style={{
           justifyContent: justifyContent,
+          fontSize: "16px",
+          fontWeight: "200",
         }}
       >
         <Flex align="center" gap=".5rem">

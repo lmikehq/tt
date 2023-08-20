@@ -21,6 +21,9 @@ import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
 import useFormikLocalStorage from "hook/useFormikLocalStorage";
 import { FieldInput } from "@atom/fieldInput";
 import SearchInput, { SearchInputAsString } from "@atom/searchInput";
+import { FaCircle } from "react-icons/fa";
+import { ttColors } from "theme/colors";
+import Input from "@atom/input";
 
 interface formProps {
   formik: FormikValues;
@@ -50,9 +53,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
    ];
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
+    <Section width={isMobile ? "100%" : "75%"} >
       <FormStepTitle steps={steps} index={index} />
-      <form>
+      <form style={{
+         margin: isMobile ? "0rem" : "2rem 0 1rem",
+      }}>
         <Flex align="center" gap=".5rem" margin="1rem 0 0">
           <FaCircle size={".4rem"} color={ttColors.salmon} />
           <Text
@@ -77,7 +82,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.lastName?.length > 5 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -98,7 +102,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.firstName?.length > 5 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -129,7 +132,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.placeOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -152,7 +154,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.stateOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -182,7 +183,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.lgOfOrigin?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -205,7 +205,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               value={formik.values.nativeLanguage}
               placeholder="Enter your native language"
               onChange={(x) =>
@@ -230,7 +229,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 validateEmail(formik?.values?.email) ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -288,7 +286,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Resident Permit/Visa",
                 "Health Insurance Card",
               ]}
-              height="8px"
               placeholder="Select your means of ID"
               onChange={(x) => formik.setFieldValue("meansOfId", x)}
             >
@@ -318,7 +315,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.idNumber?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -383,31 +379,30 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <SearchInput
-                value={formik.values.homeCountry}
-                placeholder="Select your country of citizenship"
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                height="8px"
-                onChange={(x) => formik.setFieldValue("homeCountry", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    type="p"
-                    text={formik?.values?.homeCountry?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    size={isMobile ? 14 : 16}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.homeCountry?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
+              value={formik.values.homeCountry}
+              placeholder="Select your country of citizenship"
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              onChange={(x) => formik.setFieldValue("homeCountry", x)}
+            >
+              <Flex justify="space-between">
+                <Text
+                  type="p"
+                  text={formik?.values?.homeCountry?.name}
+                  color="#1C1B1F"
+                  weight={100}
+                  size={isMobile ? 14 : 16}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.homeCountry?.name ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
             </SearchInput>
           </Section>
           <Section>
@@ -420,31 +415,30 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <SearchInput
-                value={formik.values.placeOfOrigin}
-                placeholder="Select your country of birth"
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                height="8px"
-                onChange={(x) => formik.setFieldValue("placeOfOrigin", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    type="p"
-                    text={formik?.values?.placeOfOrigin?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    size={isMobile ? 14 : 16}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.placeOfOrigin?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
+              value={formik.values.placeOfOrigin}
+              placeholder="Select your country of birth"
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              onChange={(x) => formik.setFieldValue("placeOfOrigin", x)}
+            >
+              <Flex justify="space-between">
+                <Text
+                  type="p"
+                  text={formik?.values?.placeOfOrigin?.name}
+                  color="#1C1B1F"
+                  weight={100}
+                  size={isMobile ? 14 : 16}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.placeOfOrigin?.name ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
             </SearchInput>
           </Section>
         </Flex>
@@ -459,7 +453,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             <Required />
           </Flex>
           <Input
-            height="40px"
             addon={
               formik?.values?.residentialAddress?.length > 2 ? (
                 <AiOutlineCheck color="#3BB98E" />
@@ -503,7 +496,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Cohabiting",
                 "Remarried",
               ]}
-              height="8px"
               placeholder="Select your marital status"
               onChange={(x) => formik.setFieldValue("maritalStatus", x)}
             >
@@ -533,7 +525,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               addon={
                 formik?.values?.partnersName?.length > 2 ? (
                   <AiOutlineCheck color="#3BB98E" />
@@ -564,7 +555,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <Input
-              height="40px"
               value={formik.values.passportNumber}
               onChange={(x) =>
                 formik.setFieldValue("passportNumber", x.target.value)
@@ -583,31 +573,30 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               <Required />
             </Flex>
             <SearchInput
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                height="8px"
-                placeholder="Select the country"
-                onChange={(x) => formik.setFieldValue("issuingCountry", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    size={isMobile ? 14 : 16}
-                    type="p"
-                    text={formik?.values?.issuingCountry?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.issuingCountry?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
-              </SearchInput>
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              placeholder="Select the country"
+              onChange={(x) => formik.setFieldValue("issuingCountry", x)}
+            >
+              <Flex justify="space-between">
+                <Text
+                  size={isMobile ? 14 : 16}
+                  type="p"
+                  text={formik?.values?.issuingCountry?.name}
+                  color="#1C1B1F"
+                  weight={100}
+                  styles={{ cursor: "pointer" }}
+                />
+                {formik?.values?.issuingCountry?.name ? (
+                  <AiOutlineCheck color="#3BB98E" />
+                ) : (
+                  <IoIosArrowDown size={20} />
+                )}
+              </Flex>
+            </SearchInput>
           </Section>
         </Flex>
 
@@ -651,7 +640,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           <Text
             type="p"
             text="Main Purpose of your Trip"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            margin={isMobile ? ".7rem  0 .2rem" : "2.5rem 0 .2rem"}
           />
           <TextArea />
         </Section>
@@ -677,7 +666,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -699,24 +689,27 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
 
-                  <CustomRadioGroup
-                    defaultValue=""
-                    options={options}
-                    onChange={(e) => setRadio(e)}
-                    justifyContent="flex-end"
-                  />
-                </Flex>
-              </li>
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
 
             <Section>
               <Text
+                size={16}
+                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
@@ -730,21 +723,22 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
 
-                  <CustomRadioGroup
-                    defaultValue=""
-                    options={options}
-                    onChange={(e) => setRadio(e)}
-                    justifyContent="flex-end"
-                  />
-                </Flex>
-              </li>
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
 
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -753,7 +747,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever been refused a visa or permit, denied entry or ordered to leave Canada or any other Country?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -776,7 +771,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you previously applied to enter or remain in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -794,6 +790,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 
             <Section>
               <Text
+                size={16}
+                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
@@ -808,7 +806,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -826,6 +825,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 
             <Section>
               <Text
+                size={16}
+                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
@@ -840,21 +841,22 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
 
-                  <CustomRadioGroup
-                    defaultValue=""
-                    options={options}
-                    onChange={(e) => setRadio(e)}
-                    justifyContent="flex-end"
-                  />
-                </Flex>
-              </li>
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
 
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -863,7 +865,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -881,6 +884,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 
             <Section>
               <Text
+                size={16}
+                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}

@@ -418,7 +418,6 @@ function OtherInformation({ formik, steps, index }: formProps) {
               margin={"0 0 1.125rem 0 "}
             />
             <SearchInputAsString
-              height="8px"
               options={[
                 "Passport sized photograph",
                 "Valid international passport",
