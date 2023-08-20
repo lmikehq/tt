@@ -71,6 +71,12 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
     fontSize: 16,
   },
 }));
+export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
+  width: " 28px",
+  height: "28px",
+  borderRadius: "50%",
+  backgroundImage: `url(${flag})`,
+}));
 
 interface SearchProps {
   legend?: string;
@@ -147,10 +153,10 @@ SearchProps) {
           }}
           onClick={handleClick}
           label={legend}
-          placeholder={placeholder}
+          placeholder={value ? "" : placeholder}
           InputProps={{
             startAdornment: (
-              <InputAdornment position="end">
+              <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
@@ -204,11 +210,11 @@ SearchProps) {
               noOptionsText="No matches found"
               renderOption={(props, option, { selected }) => (
                 <li {...props}>
-                  <Flex align="center" margin=".4rem .6rem" gap=".6rem">
-                    <Image src={option.flag} width={16} height={16} alt="" />
+                  <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
+                    <RoundFlag flag={option.flag.src} />
                     <Text
                       type="p"
-                      text={`${option.name} - ${option.code}`}
+                      text={`${option.code} - ${option.name}`}
                       weight={100}
                     />
                   </Flex>

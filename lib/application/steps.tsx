@@ -1,22 +1,24 @@
 import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
-import { edAndEmpKeys, familyInforKeys, otherInforKeys } from "./schema";
+import { edAndEmpKeys, familyInforKeys, otherInforKeys, personalInfoKeys } from "./schema";
 import OtherInformation from "@organism/form/components/otherInformation";
 import Booking from "@organism/form/components/booking";
 import {
   PaymentStatusFail,
   PaymentStatusSuccess,
 } from "@organism/form/components/paymentStatus";
+
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
+import UploadDocuments from "@organism/form/components/uploadDocuments";
 
 interface IFormStep {
   id: number;
   title: string;
   content: React.ReactNode;
   valKeys?: any;
-  // formikConfig?: any
+  formikConfig?: any
 }
 
 export const getSteps = (
@@ -27,7 +29,7 @@ export const getSteps = (
   return [
     {
       id: 1,
-      title: "Enter your Trp details",
+      title: "Enter your Trip details",
       content: (
         <TripDetails
           steps={["Enter your Trip Details"]}
@@ -47,6 +49,7 @@ export const getSteps = (
           index={1}
         />
       ),
+      // valKeys: Object.keys(personalInfoKeys)
     },
     {
       id: 3,
@@ -88,7 +91,8 @@ export const getSteps = (
       id: 6,
       title: "Upload Document",
       content: (
-        <PaymentStatusSuccess
+        <UploadDocuments
+          formik={formikConfig}
           steps={["Upload All Required Documents"]}
           index={5}
         />

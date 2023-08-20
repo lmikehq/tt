@@ -55,7 +55,7 @@ export interface InputProps {
   onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   onPaste?: () => void;
   placeholder?: string;
-  onBlur?: () => void;
+  onBlur?: (e: any) => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
   touchedError?: boolean;

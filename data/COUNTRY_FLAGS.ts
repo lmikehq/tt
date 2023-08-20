@@ -1261,6 +1261,8 @@ export const COUNTRY_FLAGS = [
     name: "Nigeria",
     flag: ng,
     code: "NG",
+    currency: "Nigerian Naira",
+    currencyCode: "NGN",
   },
 
   {

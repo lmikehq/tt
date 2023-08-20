@@ -1,23 +1,15 @@
 "use client";
 import Center from "@atom/center";
 import Flex from "@atom/flex";
-import Input from "@atom/input";
 import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import { get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
-import { COUNTRY_FLAGS } from "data/data";
 import { FormikValues } from "formik";
 import useCloudinaryUpload from "hook/useCloudinary";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { AiOutlineCheck } from "react-icons/ai";
-import { BiTrash } from "react-icons/bi";
-import { FaCircle } from "react-icons/fa";
+
 import { IoIosArrowDown } from "react-icons/io";
-import { styled } from "styled-components";
-import { ttColors } from "theme/colors";
-import { useFilePicker } from "use-file-picker";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Button from "@atom/button";
@@ -29,6 +21,9 @@ import UploadedDocTile from "@molecule/docUpload/UploadedDocTile";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
 } from "@organism/visaApplicationModal";
+import { styled } from "styled-components";
+import { useFilePicker } from "use-file-picker";
+import { ttColors } from "theme/colors";
 
 interface formProps {
   formik: FormikValues;
@@ -47,18 +42,7 @@ const UploadArea = styled.div`
 
   border: 1.2px dashed var(--foundation-blue-blue-600, #7bbbd6);
 `;
-// @media (max-width: 768px) {
-//   height: 10rem;
-// }
 
-const UploadedDoc = styled.div<{ bg: any }>`
-  background: #ffffff;
-  background-image: url(${({ bg }) => bg});
-  height: 6rem;
-  width: 10rem;
-  background-size: cover;
-  background-position: center;
-`;
 const DocUploadCenteredChild = styled.div`
   width: fit-content;
   display: flex;
@@ -69,7 +53,7 @@ const UploadedDocumentsWrapper = styled.div`
   padding-top: 52px;
 `;
 
-function OtherInformation({ formik, steps, index }: formProps) {
+function UploadDocuments({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -159,234 +143,10 @@ function OtherInformation({ formik, steps, index }: formProps) {
   }, [filesContent]);
 
   return (
-    <Section width={isMobile ? "100%" : "50%"}>
+    <Section width={isMobile ? "100%" : "75%"}>
       <FormStepTitle steps={steps} index={index} />
 
       <form style={{ margin: isMobile ? "1rem 0 0" : "1rem 0" }}>
-        <Flex
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section>
-            <Text
-              type="p"
-              text="Passport Number"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-              addon={
-                formik?.values?.passNumber?.length > 8 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.passNumber}
-              onChange={(x) =>
-                formik.setFieldValue("passNumber", x.target.value)
-              }
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Passport issued country"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <SearchInputAsString
-              options={COUNTRY_FLAGS.map((x) => x.name)}
-              onChange={(x) => formik.setFieldValue("passIssueCountry", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.passIssueCountry}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.passIssueCountry ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
-          </Section>
-        </Flex>
-
-        <Flex
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section>
-            <Text
-              type="p"
-              text="Year of Expiry"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <SearchInputAsString
-              options={get100Years(true)}
-              onChange={(x) => formik.setFieldValue("expiryYear", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.expiryYear}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.expiryYear ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Gender"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <SearchInputAsString
-              options={["Male", "Female", "Other"]}
-              onChange={(x) => formik.setFieldValue("gender", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.gender}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.gender ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
-          </Section>
-        </Flex>
-
-        <Text
-          type="p"
-          text="Your guarantor’s information"
-          size={isMobile ? "1.4rem" : "1.6rem"}
-          margin="1rem 0 0"
-        />
-
-        <Flex
-          margin="0 0 1rem"
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section>
-            <Text
-              type="p"
-              text="Guarantor’s Name"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-              addon={
-                formik?.values?.guarantorName?.length > 3 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.guarantorName}
-              onChange={(x) =>
-                formik.setFieldValue("guarantorName", x.target.value)
-              }
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Relationship to you"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-              addon={
-                formik?.values?.guarantorRelationship?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.guarantorRelationship}
-              onChange={(x) =>
-                formik.setFieldValue("guarantorRelationship", x.target.value)
-              }
-            />
-          </Section>
-        </Flex>
-
-        <Section>
-          <Text
-            type="p"
-            text="Guarantor’s Address"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-          />
-          <Input
-            addon={
-              formik?.values?.guarantorAddress?.length > 4 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik.values.guarantorAddress}
-            onChange={(x) =>
-              formik.setFieldValue("guarantorAddress", x.target.value)
-            }
-          />
-        </Section>
-
-        <Flex
-          margin="0 0 1rem"
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section>
-            <Text
-              type="p"
-              text="Guarantor’s  Phone"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-              addon={
-                formik?.values?.guarantorPhone?.length > 3 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.guarantorPhone}
-              onChange={(x) =>
-                formik.setFieldValue("guarantorPhone", x.target.value)
-              }
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Guarantor’s Worth"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-              addon={
-                formik?.values?.guarantorWorth?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.guarantorWorth}
-              onChange={(x) =>
-                formik.setFieldValue("guarantorWorth", x.target.value)
-              }
-            />
-          </Section>
-        </Flex>
-
         <Section>
           <Text
             type="p"
@@ -396,18 +156,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             color="#000000"
             margin=" 3.5rem 0 3.5rem 0"
           />
-          {/* {[
-            "passport sized photograph (must be on white background)",
-            "valid international passport",
-            "all academic certificates",
-            "proof of address (utility bill)",
-            "marriage certificate (if applicable)",
-          ].map((item, i) => (
-            <Flex align="center" gap=".5rem" margin="1rem 0" key={i}>
-              <FaCircle size={".4rem"} color={ttColors.salmon} />
-              <Text type="p" text={item} />
-            </Flex>
-          ))} */}
+
           <Section>
             <Text
               type="p"
@@ -630,4 +379,4 @@ function OtherInformation({ formik, steps, index }: formProps) {
   );
 }
 
-export default OtherInformation;
+export default UploadDocuments;

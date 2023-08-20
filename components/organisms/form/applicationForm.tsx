@@ -151,11 +151,12 @@ function ApplicationForm() {
 
   const setPhase = async (number: number) => {
     console.log("setPhase", number);
-    setCurrentPhase(number)
-  }
+    setCurrentPhase(number);
+  };
 
   const nextStep = async () => {
     if (nextStepLoading) return;
+
     // if (currentPhase === 4) {
     //   setNextStepLoading(true);
     //   await handleVisaApplication();
@@ -313,13 +314,13 @@ function ApplicationForm() {
             {isValid && (
               <Button
                 width="75%"
+                height="3.5rem"
                 margin="10px 0"
                 onClick={nextStep}
                 fontSize="20px"
                 padding="2rem"
-                height="52px"
               >
-                <Text type="p" text="Save & Continue" size={16} color="#fff" weight={600} />
+                Save & Continue
               </Button>
             )}
           </Flex>

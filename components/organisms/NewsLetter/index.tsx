@@ -24,7 +24,7 @@ const SubscribeWrapper = styled.div`
   background-image: url(${newsLetterBg.src});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: -8rem 0;
+  // background-position: -8rem 0;
   // z-index: -1;
   justify-content: center;
   align-items: center;
@@ -34,6 +34,9 @@ const SubscribeWrapper = styled.div`
   border-radius: 1.5rem;
   padding: 0rem 2.5rem;
   margin-bottom: 5rem;
+  @media (max-width: 1300px) {
+    background-position: -8rem 0;
+  }
 `;
 
 const Subcribe = styled.div`
@@ -119,7 +122,7 @@ const NewsLetter = () => {
               width="100%"
               parentWidth="100%"
               styles={{ backgroundColor: "#FFFFFF" }}
-              placeholder="Enter your email address"
+              placeholder="Your email address"
             />
             <Button
               height="52px"

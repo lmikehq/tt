@@ -48,7 +48,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 }))}
                 onChange={(x) => formik.setFieldValue("home", x)}
               >
-                <Flex justify="space-between">
+                <Flex justify="space-between" width="100%">
                   <Text
                     type="p"
                     text={formik?.values?.home?.name}
@@ -81,9 +81,8 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                placeholder={
-                  formik.values.home.name ? "" : "Select Final Destination"
-                }
+                height="8px"
+                placeholder="Select Final Destination"
                 onChange={(x) => formik.setFieldValue("destination", x)}
               >
                 <Flex justify="space-between">
