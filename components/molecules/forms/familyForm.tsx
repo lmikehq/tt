@@ -1,13 +1,14 @@
-import EnlargedDate from "@atom/enlargedDate";
-import { ArrayInput, FieldAsString, FieldInput, FieldString } from "@atom/fieldInput";
+import {
+  ArrayInput,
+  FieldAsDate,
+  FieldInput,
+  FieldString,
+} from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Required from "@atom/required";
-import SearchInput from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { Switch } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "data/utilData";
 import { FormikValues } from "formik";
@@ -23,7 +24,12 @@ interface formProps {
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function FamilyForm({ formik, isMobile, count, family }: formProps) {
+export default function FamilyForm({
+  formik,
+  isMobile,
+  count,
+  family,
+}: formProps) {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -38,7 +44,7 @@ export default function FamilyForm({ formik, isMobile, count, family }: formProp
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
-                text={`Family Member's Name ${count+1}`}
+                text={`Family Member's Name ${count + 1}`}
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
               <Required />
@@ -58,7 +64,7 @@ export default function FamilyForm({ formik, isMobile, count, family }: formProp
               />
               <Required />
             </Flex>
-            <FieldAsString
+            <FieldString
               formik={formik}
               options={RELATIONSHIPS}
               name={`family.${count}.membersRelationship`}
@@ -138,7 +144,7 @@ export default function FamilyForm({ formik, isMobile, count, family }: formProp
                   <Text type="p" text="Gender" />
                   <Required />
                 </Flex>
-                <FieldAsString
+                <FieldString
                   formik={formik}
                   name={`family.${count}.gender`}
                   placeholder="Select your Gender"
@@ -150,11 +156,11 @@ export default function FamilyForm({ formik, isMobile, count, family }: formProp
                   <Text type="p" text="Date of Birth" />
                   <Required />
                 </Flex>
-                <EnlargedDate>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker />
-                  </LocalizationProvider>
-                </EnlargedDate>
+                <FieldAsDate
+                  name={`family.${count}.membersDOB`}
+                  placeholder="Select your DOB"
+                  formik={formik}
+                />
               </Section>
             </Flex>
             <Flex
@@ -183,7 +189,7 @@ export default function FamilyForm({ formik, isMobile, count, family }: formProp
                   options={COUNTRY_FLAGS.map((x) => ({
                     name: x.name,
                     flag: x.flag,
-                        code: x.code,       
+                    code: x.code,
                   }))}
                   name={`family.${count}.passIssueCountry`}
                   formik={formik}
@@ -199,19 +205,19 @@ export default function FamilyForm({ formik, isMobile, count, family }: formProp
             >
               <Section margin="0 0 1rem">
                 <Text type="p" text="Issue Date" />
-                <EnlargedDate>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker />
-                  </LocalizationProvider>
-                </EnlargedDate>
+                <FieldAsDate
+                  name={`family.${count}.membersIssueDate`}
+                  placeholder="Select Issue Date"
+                  formik={formik}
+                />
               </Section>
               <Section margin="0 0 1rem">
-                  <Text type="p" text="Expiry Date" />
-                <EnlargedDate>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker />
-                  </LocalizationProvider>
-                </EnlargedDate>
+                <Text type="p" text="Expiry Date" />
+                <FieldAsDate
+                  name={`family.${count}.membersExpiryDate`}
+                  placeholder="Select Expiry Date"
+                  formik={formik}
+                />
               </Section>
             </Flex>
           </div>

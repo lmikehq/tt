@@ -1,14 +1,9 @@
 import CheckBox from "@atom/checkbox";
-import EnlargedDate from "@atom/enlargedDate";
-import { FieldAsDate, FieldAsString, FieldInput } from "@atom/fieldInput";
+import { FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";
-import { concatArrays, get100Years } from "@lib/utilFns";
-import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import Section from "@molecule/section";
-import { DatePicker } from "@atom/datepicker";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
@@ -61,7 +56,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <FieldAsString
+            <FieldString
               options={DEGREES}
               name={`education.${count}.degree`}
               formik={formik}
@@ -74,7 +69,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               text="Field of Study"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <FieldAsString
+            <FieldString
               options={COMMON_MAJORS}
               formik={formik}
               placeholder="Select your Field of Study"

@@ -19,11 +19,12 @@ const SearchStringInput = ({
   options,
   size,
 }: SearchStringInputProps) => {
+  console.log(placeholder)
   return (
     <SearchInputAsString
       value={value}
       options={options}
-      height="18px"
+      height="20px"
       onChange={onChange}
     >
       <Flex justify="space-between">

@@ -1,15 +1,9 @@
 import CheckBox from "@atom/checkbox";
-import EnlargedDate from "@atom/enlargedDate";
-import { ArrayInput, FieldAsDate, FieldAsString } from "@atom/fieldInput";
+import { ArrayInput, FieldAsDate, FieldString } from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";
-import { concatArrays, get100Years } from "@lib/utilFns";
-import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import Section from "@molecule/section";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 
@@ -81,7 +75,7 @@ export default function EmploymentForm({
               />
               <Required />
             </Flex>
-            <FieldAsString
+            <FieldString
               placeholder="Select Employment Type"
               name={`education.${count}.employmentType`}
               options={["Full-Time", "Part-Time", "Self Employed", "Freelance", "Contract", "Internship"]}
@@ -116,7 +110,7 @@ export default function EmploymentForm({
               text="Location Type"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <FieldAsString
+            <FieldString
               placeholder="Select Location Type"
               name={`education.${count}.locationType`}
               options={["On-site", "Hybrid", "Remote"]}

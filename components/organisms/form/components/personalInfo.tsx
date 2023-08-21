@@ -1,25 +1,19 @@
 import Flex from "@atom/flex";
 import Text from "@atom/text";
-import { validateEmail } from "@lib/utilFns";
 import Section from "@molecule/section";
 import { Formik, FormikValues } from "formik";
-import { AiOutlineCheck } from "react-icons/ai";
 import FormStepTitle from "./formStepsTitle";
-import { IoIosArrowDown } from "react-icons/io";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import EnlargedDate from "@atom/enlargedDate";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
 import useFormikLocalStorage from "hook/useFormikLocalStorage";
-import { FieldInput } from "@atom/fieldInput";
+import { FieldAsDate, FieldInput } from "@atom/fieldInput";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
 
@@ -266,15 +260,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 text="Issue Date"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <EnlargedDate>
-                  <DatePicker
-                    label="Select your issue date"
-                    value={formik?.values.issueDate}
-                    onChange={(e) => updateFieldValue("issueDate", e)}
-                  />
-                </EnlargedDate>
-              </LocalizationProvider>
+              <FieldAsDate 
+                name="issueDate"
+                placeholder="Select your Issue Date"
+                formik={formik}
+              />
             </Section>
             <Section>
               <Text
@@ -282,15 +272,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 text="Expiry Date"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <EnlargedDate>
-                  <DatePicker
-                    // placeholder="Select the Expiry Date"
-                    value={formik?.values.expiryDate}
-                    onChange={(e) => formik?.setFieldValue("expiryDate", e)}
-                  />
-                </EnlargedDate>
-              </LocalizationProvider>
+                <FieldAsDate
+                  name="expiryDate"
+                  placeholder="Select the Expiry Date"
+                  formik={formik}
+                />
             </Section>
           </Flex>
           <Flex
@@ -461,15 +447,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 text="Issued Date"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <EnlargedDate>
-                  <DatePicker
-                    label="Select your Issued Date"
-                    value={formik?.values.passportIssueDate}
-                    onChange={(e) => updateFieldValue("passportIssueDate", e)}
-                  />
-                </EnlargedDate>
-              </LocalizationProvider>
+              <FieldAsDate
+                name="passportIssueDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+              />
             </Section>
             <Section>
               <Text
@@ -477,17 +459,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 text="Expiry Date"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <EnlargedDate>
-                  <DatePicker
-                    label="Select your Expiry Date"
-                    value={formik?.values.passportExpiryDate}
-                    onChange={(e) =>
-                      formik?.setFieldValue("passportExpiryDate", e)
-                    }
-                  />
-                </EnlargedDate>
-              </LocalizationProvider>
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+              />
             </Section>
           </Flex>
           <Section>

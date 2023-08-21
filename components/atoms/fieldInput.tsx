@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import Input from "./input";
 import Text from "./text";
 import { ttColors } from "theme/colors";
-import SearchInput, { SearchInputAsString } from "./searchInput";
+import { SearchInputAsString } from "./searchInput";
 import { ReactNode } from "react";
 import { DatePicker } from "@atom/datepicker";
-import EnlargedDate from "./enlargedDate";
 import dayjs from "dayjs";
+import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 
 interface FieldProps {
   name: string;
@@ -21,7 +21,7 @@ interface FieldProps {
     | "tel"
     | "address"
     | "checkbox";
-  placeholder?: string;
+  placeholder: string;
   formik: FormikValues;
   options?: any[];
   addon?: ReactNode;
@@ -122,48 +122,6 @@ export const ArrayInput = (props: FieldProps) => {
   );
 };
 
-export const FieldAsString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder } = props;
-  const [field, meta] = useField(name);
-
-  const { onChange } = field;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(name, e);
-    onChange({ target: { name: field.name, value: e } });
-    sessionStorage.setItem(name, field.value);
-  };
-
-  const nestedPropertyPath = name.split(".");
-  const value = nestedPropertyPath.reduce((value, property) => {
-    return value && value[property];
-  }, formik.values);
-
-  useEffect(() => {
-    const storedValue = sessionStorage.getItem(name);
-    if (storedValue) {
-      formik.setFieldValue(name, storedValue);
-    }
-  }, []);
-
-  return (
-    <SearchInputAsString
-      height="20px"
-      options={options}
-      onChange={handleChange}
-      placeholder={placeholder}
-    >
-      <Text
-        type="p"
-        text={value}
-        color="#1C1B1F"
-        weight={100}
-        styles={{ cursor: "pointer" }}
-      />
-    </SearchInputAsString>
-  );
-};
-
 export const FieldString = (props: FieldProps) => {
   const { name, options = [], formik, placeholder } = props;
   const [field, meta] = useField(name);
@@ -185,22 +143,15 @@ export const FieldString = (props: FieldProps) => {
     }
   }, []);
 
+  console.log(placeholder)
+
   return (
-    <SearchInput
-      height="20px"
+    <SearchStringInput
       options={options}
       onChange={handleChange}
       placeholder={placeholder}
       value={value?.name}
-    >
-      <Text
-        type="p"
-        text={value?.name}
-        color="#1C1B1F"
-        weight={100}
-        styles={{ cursor: "pointer" }}
-      />
-    </SearchInput>
+    />
   );
 };
 

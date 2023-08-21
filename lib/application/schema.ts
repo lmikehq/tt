@@ -121,6 +121,8 @@ export const familyInfoSchema = yup.object().shape({
   membersAddress: yup.string().required(),
   membersPhone: yup.string().required(),
   membersEmail: yup.string().required(),
+  membersIssueDate: yup.date().required(),
+  membersExpiryDate: yup.date().required()
 });
 
 export const familyInforKeys = {
@@ -134,6 +136,8 @@ export const familyInforKeys = {
   membersAddress: "",
   membersPhone: "",
   membersEmail: "",
+  membersIssueDate: "",
+  membersExpiryDate: ""
 };
 
 export const visaSchema = {
