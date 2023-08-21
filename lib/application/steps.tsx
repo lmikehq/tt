@@ -1,9 +1,9 @@
 import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
 import {
-  edAndEmpKeys,
+  educationKeys,
+  employmentKeys,
   familyInforKeys,
-  otherInforKeys,
   personalInfoKeys,
 } from "./schema";
 import OtherInformation from "@organism/form/components/otherInformation";
@@ -54,7 +54,7 @@ export const getSteps = (
           index={1}
         />
       ),
-      // valKeys: Object.keys(personalInfoKeys)
+      valKeys: Object.keys(personalInfoKeys)
     },
     {
       id: 3,
@@ -66,7 +66,7 @@ export const getSteps = (
           index={2}
         />
       ),
-      valKeys: Object.keys(edAndEmpKeys),
+      valKeys: Object.keys(educationKeys),
     },
     {
       id: 4,
@@ -78,7 +78,7 @@ export const getSteps = (
           index={3}
         />
       ),
-      valKeys: Object.keys(edAndEmpKeys),
+      valKeys: Object.keys(employmentKeys),
     },
     {
       id: 5,

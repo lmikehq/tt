@@ -1,5 +1,5 @@
 import Section from "@molecule/section";
-import { FormikValues } from "formik";
+import { FieldArray, Formik, FormikValues } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
@@ -10,6 +10,7 @@ import FamilyForm from "@molecule/forms/familyForm";
 import { RiDeleteBack2Line, RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
+import { familyInforKeys } from "@lib/application/schema";
 
 interface formProps {
   formik: FormikValues;
@@ -19,49 +20,67 @@ interface formProps {
 
 function FamilyInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [familyInfo, setFamilyInfo] = useState<any[]>([{}, {}, {}]);
-
-  const addNewForm = () => {
-    setFamilyInfo([...familyInfo, {}]);
-  };
-  const removeForm = (indexToRemove: number) => {
-    setFamilyInfo((prev) => prev.filter((_, index) => index !== indexToRemove));
-  };
 
   return (
-    <Section>
-      <Flex justify="space-between" align="flex-start">
-        <FormStepTitle steps={steps} index={index} />
-        <AddButton
-          onClick={() => addNewForm()}
-          disabled={familyInfo.length >= 5}
-        />
-      </Flex>
-      {familyInfo.map((form, index) => (
-        <Section key={`family-${index}`} height="unset">
-          <FamilyForm formik={formik} count={index + 1} />
-
-          {familyInfo.length > 1 && (
-            <Flex
-              justify="flex-end"
-              gap="0.5rem"
-              align="center"
-              onClick={() => removeForm(index)}
-              cursor="pointer"
-            >
-              <RiDeleteBin6Line color={ttColors.red} size={24} />
-              <Text
-                type="p"
-                text="Delete Family"
-                color={ttColors.red}
-                size={16}
-                weight="500"
-              />
-            </Flex>
-          )}
+    <Formik
+      initialValues={{
+        family: [{ ...familyInforKeys }],
+      }}
+      onSubmit={(values) => {
+        console.log(values);
+      }}
+    >
+      {({ values }) => (
+        <Section width={isMobile ? "100%" : "75%"}>
+          <form>
+            <FieldArray
+              name="family"
+              render={(arrayHelpers) => (
+                <div>
+                  <Flex justify="space-between">
+                    <FormStepTitle steps={steps} index={index} />
+                    <AddButton
+                      disabled={values.family.length === 3}
+                      onClick={() => {
+                        if (values.family.length < 3) {
+                          arrayHelpers.insert(index + 1, familyInforKeys);
+                        }
+                      }}
+                    />
+                  </Flex>
+                  {values.family.map((family, index) => (
+                    <div key={index}>
+                      <FamilyForm
+                        formik={formik}
+                        family={family}
+                        count={index}
+                      />
+                      {values.family.length > 1 && (
+                        <Flex
+                          justify="flex-end"
+                          gap="0.25rem"
+                          align="center"
+                          onClick={() => arrayHelpers.remove(index)}
+                          cursor="pointer"
+                        >
+                          <RiDeleteBin6Line color={ttColors.red} size={25} />
+                          <Text
+                            type="p"
+                            text="Delete Experience"
+                            color={ttColors.red}
+                            weight="500"
+                          />
+                        </Flex>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            />
+          </form>
         </Section>
-      ))}
-    </Section>
+      )}
+    </Formik>
   );
 }
 
