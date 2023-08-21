@@ -19,7 +19,6 @@ const SearchStringInput = ({
   options,
   size,
 }: SearchStringInputProps) => {
-  console.log(placeholder)
   return (
     <SearchInputAsString
       value={value}

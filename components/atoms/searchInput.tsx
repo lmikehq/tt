@@ -157,11 +157,7 @@ SearchProps) {
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
-            placeholder: React.Children.count(children) === 0
-              ? "Your Default Placeholder"
-              : "",
           }}
-          placeholder={placeholder}
         />
       </Box>
       {disabled ? null : (
