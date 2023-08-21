@@ -10,7 +10,11 @@ interface buttonProps {
 
 export default function AddButton({ onClick, disabled }: buttonProps) {
   return (
-    <Button onClick={onClick} disabled={disabled}>
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      style={{ padding: 0, width: "fit-content", minWidth: "auto" }}
+    >
       <AiFillPlusCircle
         size={30}
         color={!disabled ? ttColors.primary : ttColors.gray}
