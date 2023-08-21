@@ -3,12 +3,13 @@ import { FormikValues } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
+import { AiFillPlusCircle } from "react-icons/ai";
 import { ttColors } from "theme/colors";
 import { useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import FamilyForm from "@molecule/forms/familyForm";
+import { RiDeleteBack2Line, RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
-import FamilyForm from "@molecule/forms/familyForm";
 
 interface formProps {
   formik: FormikValues;
@@ -18,34 +19,47 @@ interface formProps {
 
 function FamilyInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [count, setCount] = useState(2)
-  const [components, setComponents] = useState<JSX.Element[]>([<FamilyForm formik={formik} key={1} count={1}/>])
+  const [familyInfo, setFamilyInfo] = useState<any[]>([{}, {}, {}]);
 
-  const handleAddComponents = () => {
-    if (count < 3) {
-      setCount((prev) => prev + 1)
-      setComponents((prev) => [...prev, <FamilyForm formik={formik} key={count} count={count}/>])
-    }
-  }
-
-  const handleRemoveComponent = (indexToRemove: number) => {
-    setComponents((prev) => prev.filter((_, index) => index !== indexToRemove));
+  const addNewForm = () => {
+    setFamilyInfo([...familyInfo, {}]);
+  };
+  const removeForm = (indexToRemove: number) => {
+    setFamilyInfo((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
-      <Flex justify="space-between">
+    <Section>
+      <Flex justify="space-between" align="flex-start">
         <FormStepTitle steps={steps} index={index} />
-        <AddButton onClick={() => handleAddComponents()}/>
+        <AddButton
+          onClick={() => addNewForm()}
+          disabled={familyInfo.length >= 5}
+        />
       </Flex>
-      {components.map((component, idx) => (
-        <div key={idx}>
-          {component}
-          {components.length > 1 && <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
-            <RiDeleteBin6Line color={ttColors.red} size={30} />
-            <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
-          </Flex>}
-        </div>
+      {familyInfo.map((form, index) => (
+        <Section key={`family-${index}`} height="unset">
+          <FamilyForm formik={formik} count={index + 1} />
+
+          {familyInfo.length > 1 && (
+            <Flex
+              justify="flex-end"
+              gap="0.5rem"
+              align="center"
+              onClick={() => removeForm(index)}
+              cursor="pointer"
+            >
+              <RiDeleteBin6Line color={ttColors.red} size={24} />
+              <Text
+                type="p"
+                text="Delete Family"
+                color={ttColors.red}
+                size={16}
+                weight="500"
+              />
+            </Flex>
+          )}
+        </Section>
       ))}
     </Section>
   );
