@@ -447,19 +447,44 @@ function ApplicationForm() {
                     </Flex>
                   </Flex>
                   <Section padding="2.5rem 0">
-                    <Text type="h3" text="Required Documents" weight="bold" />
+                    <Text
+                      type="h3"
+                      text="Required Documents"
+                      weight={600}
+                      size={20}
+                    />
                     <BulletList>
                       <ListItem>
-                        <Text type="p" text="Passport sized photograph" />
+                        <Text
+                          type="p"
+                          size={18}
+                          weight={400}
+                          text="Passport sized photograph"
+                        />
                       </ListItem>
                       <ListItem>
-                        <Text type="p" text="Valid international passport" />
+                        <Text
+                          type="p"
+                          size={18}
+                          weight={400}
+                          text="Valid international passport"
+                        />
                       </ListItem>
                       <ListItem>
-                        <Text type="p" text="All academic certificates" />
+                        <Text
+                          type="p"
+                          size={18}
+                          weight={400}
+                          text="All academic certificates"
+                        />
                       </ListItem>
                       <ListItem>
-                        <Text type="p" text="Proof of address (utility bill)" />
+                        <Text
+                          type="p"
+                          size={18}
+                          weight={400}
+                          text="Proof of address (utility bill)"
+                        />
                       </ListItem>
                       <ListItem>
                         <Text
