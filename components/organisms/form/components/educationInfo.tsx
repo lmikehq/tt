@@ -32,7 +32,7 @@ function EducationInfo({ formik, steps, index }: formProps) {
 
   return (
     <Section>
-      <Flex justify="space-between">
+      <Flex justify="space-between" align="flex-start">
         <FormStepTitle steps={steps} index={index} />
         <AddButton
           onClick={() => addNewForm()}
