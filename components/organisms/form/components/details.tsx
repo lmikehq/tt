@@ -22,7 +22,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
 
   return (
-    <Section width={isMobile ? "100%" : "75%"} height="unset">
+    <Section height="unset">
       <FormStepTitle steps={steps} index={index} />
       <form autoComplete="off">
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>

@@ -31,7 +31,7 @@ function EducationInfo({ formik, steps, index }: formProps) {
   };
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
+    <Section>
       <Flex justify="space-between">
         <FormStepTitle steps={steps} index={index} />
         <AddButton

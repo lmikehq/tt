@@ -144,7 +144,7 @@ function UploadDocuments({ formik, steps, index }: formProps) {
   }, [filesContent]);
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
+    <Section>
       <FormStepTitle steps={steps} index={index} />
 
       <form style={{ margin: isMobile ? "1rem 0 0" : "1rem 0" }}>

@@ -308,7 +308,7 @@ function ApplicationForm() {
             {currentPhase > 1 && (
               <VisaProgress phase={currentPhase - 1} setPhase={setPhase} />
             )}
-            {step?.content}
+            <Section width={isMobile ? "100%" : "90%"}>{step?.content}</Section>
             {isValid && (
               <Button
                 width="75%"

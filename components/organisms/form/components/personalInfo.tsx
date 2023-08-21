@@ -44,7 +44,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
   ];
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
+    <Section>
       <FormStepTitle steps={steps} index={index} />
       <Formik
         initialValues={initialValues}
