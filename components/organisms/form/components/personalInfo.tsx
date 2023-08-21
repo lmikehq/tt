@@ -12,8 +12,7 @@ import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
-import useFormikLocalStorage from "hook/useFormikLocalStorage";
-import { FieldAsDate, FieldInput } from "@atom/fieldInput";
+import { FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
 
@@ -25,9 +24,6 @@ interface formProps {
 
 function PersonalInfo({ formik, steps, index }: formProps) {
   const initialValues = { ...personalInfoKeys };
-
-  const { updateFieldValue } = useFormikLocalStorage(formik, initialValues);
-
   const { isMobile } = useScreenResolution();
   const [value, setValue] = useState("");
   const [radio, setRadio] = useState("");
@@ -215,7 +211,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchStringInput
+              <FieldString
                 options={[
                   "Passport",
                   "National ID Card",
@@ -228,8 +224,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                   "Health Insurance Card",
                 ]}
                 placeholder="Select your means of ID"
-                onChange={(x) => updateFieldValue("meansOfId", x)}
-                value={formik?.values?.meansOfId}
+                name="meansOfId"
+                formik={formik}
               />
             </Section>
             <Section>
@@ -294,16 +290,15 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchFlagInput
-                value={formik?.values.homeCountry.name}
+              <FieldString
+                formik={formik}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                size={isMobile ? 14 : 16}
-                onChange={(x) => updateFieldValue("homeCountry", x)}
-                placeholder={"Select your country of citizenship"}
+                name="homeCountry"
+                placeholder="Select your country of citizenship"
               />
             </Section>
             <Section>
@@ -315,14 +310,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchFlagInput
-                value={formik.values.placeOfOrigin.name}
+              <FieldString
+                formik={formik}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                onChange={(x) => updateFieldValue("placeOfOrigin", x)}
+                name="placeOfOrigin"
                 placeholder="Select your country  of birth"
               />
             </Section>
@@ -358,7 +353,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchStringInput
+              <FieldString
                 options={[
                   "Single",
                   "Married",
@@ -373,8 +368,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                   "Remarried",
                 ]}
                 placeholder="Select your marital status"
-                onChange={(x) => updateFieldValue("maritalStatus", x)}
-                value={formik?.values?.maritalStatus}
+                name="maritalStatus"
+                formik={formik}
               />
             </Section>
             <Section>
@@ -423,14 +418,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchFlagInput
+              <FieldString
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                value={formik.values?.issuingCountry}
-                onChange={(x) => updateFieldValue("issuingCountry", x)}
+                formik={formik}
+                name="issuingCountry"
                 placeholder="Select the country"
               />
             </Section>
