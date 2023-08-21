@@ -161,6 +161,7 @@ function ApplicationForm() {
 
   const nextStep = async () => {
     if (nextStepLoading) return;
+    setNextStepLoading(true);
 
     // if (currentPhase === 4) {
     //   setNextStepLoading(true);
@@ -175,6 +176,7 @@ function ApplicationForm() {
     // }
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
+    setNextStepLoading(false);
   };
 
   const prevStep = async () => {
@@ -287,11 +289,11 @@ function ApplicationForm() {
             position: "relative",
           }}
           height="auto"
-          padding={isMobile ? "0px" : "2rem"}
-          justify="space-between"
+          padding={isMobile ? "0px" : "2.5rem"}
+          gap="2.5rem"
           direction={isMobile ? "column" : "row"}
         >
-          <Flex direction="column" gap="2.25rem">
+          <Flex direction="column" styles={{ flexGrow: 1 }} gap="2.25rem">
             <Flex
               align="center"
               cursor="pointer"
@@ -313,25 +315,33 @@ function ApplicationForm() {
             {currentPhase > 1 && (
               <VisaProgress phase={currentPhase - 1} setPhase={setPhase} />
             )}
-            <Section width={isMobile ? "100%" : "90%"}>{step?.content}</Section>
-            {isValid && (
-              <Button
-                width="75%"
-                height="3.5rem"
-                margin="10px 0"
-                onClick={nextStep}
-                fontSize="20px"
-              >
-                <Flex
-                  align="center"
-                  width="100%"
-                  height="100%"
-                  justify="center"
-                >
-                  Save & Continue
-                </Flex>
-              </Button>
-            )}
+            <Section width={isMobile ? "100%" : "100%"}>
+              {step?.content}
+            </Section>
+            <Section height="unset" margin="4.5rem 0 0 0">
+              {isValid && (
+                <Button width="100%" height={"3.5rem"} onClick={nextStep}>
+                  <Flex
+                    align="center"
+                    width="100%"
+                    height="100%"
+                    justify="center"
+                  >
+                    {nextStepLoading ? (
+                      <Spinner size="40px" fill={ttColors.primary} />
+                    ) : (
+                      <Text
+                        type="span"
+                        text={"Save & Continue"}
+                        weight={600}
+                        size={20}
+                        color={ttColors.light}
+                      />
+                    )}
+                  </Flex>
+                </Button>
+              )}
+            </Section>
           </Flex>
           <Flex
             align="center"
