@@ -44,7 +44,10 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                onChange={(x) => formik.setFieldValue("home", x)}
+                onChange={(x) => {
+                  console.log(formik.values.home.name);
+                  formik.setFieldValue("home", x);
+                }}
                 placeholder="Select where you are"
                 size={isMobile ? 14 : 16}
               />
@@ -60,7 +63,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 <Required />
               </Flex>
               <SearchFlagInput
-                options={COUNTRY_FLAGS.map((x) => ({
+                options={COUNTRY_FLAGS.filter(
+                  (el) => el.name != formik.values.home.name
+                ).map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
@@ -69,6 +74,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 value={formik.values.destination.name}
                 onChange={(x) => formik.setFieldValue("destination", x)}
                 placeholder="Select Final destination"
+                disabled={!formik.values.home.name}
               />
             </Flex>
           </Flex>

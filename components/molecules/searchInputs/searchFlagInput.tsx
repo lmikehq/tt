@@ -12,6 +12,7 @@ interface SearchFlagInputProps {
   options: any[];
   onChange: (x: any) => void;
   size?: CSSProperties["fontSize"];
+  disabled?: boolean;
 }
 
 const SearchFlagInput = ({
@@ -20,6 +21,7 @@ const SearchFlagInput = ({
   onChange,
   options,
   size,
+  disabled,
 }: SearchFlagInputProps) => {
   const { isMobile } = useScreenResolution();
 
@@ -29,6 +31,7 @@ const SearchFlagInput = ({
       options={options}
       height="18px"
       onChange={onChange}
+      disabled={disabled}
     >
       <Flex justify="space-between">
         <Text
