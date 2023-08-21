@@ -35,7 +35,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 
   return (
     <Section>
-      <FormStepTitle steps={steps} index={index} />
+      <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
       <Formik
         initialValues={initialValues}
         validationSchema={personalInfoSchema}

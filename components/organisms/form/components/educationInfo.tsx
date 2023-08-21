@@ -35,7 +35,7 @@ function EducationInfo({ formik, steps, index }: formProps) {
               name="education"
               render={(arrayHelpers) => (
                 <div>
-                  <Flex justify="space-between">
+                  <Flex justify="space-between" padding="0 0 2rem 0">
                     <FormStepTitle steps={steps} index={index} />
                     <AddButton
                       disabled={values.education.length === 3}

@@ -293,7 +293,7 @@ function ApplicationForm() {
           gap="2.5rem"
           direction={isMobile ? "column" : "row"}
         >
-          <Flex direction="column" styles={{ flexGrow: 1 }} gap="2.25rem">
+          <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
             <Flex
               align="center"
               cursor="pointer"
@@ -302,7 +302,7 @@ function ApplicationForm() {
             >
               <BsArrowLeft
                 color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
-                size="25px"
+                size="22px"
               />
               <Text
                 text="Previous"
@@ -315,7 +315,7 @@ function ApplicationForm() {
             {currentPhase > 1 && (
               <VisaProgress phase={currentPhase - 1} setPhase={setPhase} />
             )}
-            <Section width={isMobile ? "100%" : "100%"}>
+            <Section width={isMobile ? "100%" : "100%"} padding="2rem 0">
               {step?.content}
             </Section>
             <Section height="unset" margin="4.5rem 0 0 0">
