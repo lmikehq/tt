@@ -12,9 +12,7 @@ import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
-import { FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
-import SearchStringInput from "@molecule/searchInputs/searchStringInput";
-import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
+import { FieldAsDate, FieldAsString, FieldInput, FieldString } from "@atom/fieldInput";
 
 interface formProps {
   formik: FormikValues;
@@ -290,7 +288,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <FieldString
+              <FieldAsString
                 formik={formik}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
@@ -310,7 +308,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <FieldString
+              <FieldAsString
                 formik={formik}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
@@ -418,7 +416,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
                 <Required />
               </Flex>
-              <FieldString
+              <FieldAsString
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,

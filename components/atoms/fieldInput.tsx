@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import { DatePicker } from "@atom/datepicker";
 import dayjs from "dayjs";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
+import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
 
 interface FieldProps {
   name: string;
@@ -122,6 +123,37 @@ export const ArrayInput = (props: FieldProps) => {
   );
 };
 
+export const FieldAsString = (props: FieldProps) => {
+  const { name, options = [], formik, placeholder } = props;
+  const [field, meta] = useField(name);
+
+  const { onChange } = field;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(name, e);
+    onChange({ target: { name: field.name, value: e } });
+    sessionStorage.setItem(name, field.value);
+  };
+
+  const value = getNestedValue(formik.values, field.name);
+
+  useEffect(() => {
+    const storedValue = sessionStorage.getItem(name);
+    if (storedValue) {
+      formik.setFieldValue(name, storedValue);
+    }
+  }, []);
+
+  return (
+    <SearchFlagInput
+      value={value?.name}
+      options={options}
+      onChange={handleChange}
+      placeholder={placeholder}
+    />
+  );
+};
+
 export const FieldString = (props: FieldProps) => {
   const { name, options = [], formik, placeholder } = props;
   const [field, meta] = useField(name);
@@ -150,7 +182,7 @@ export const FieldString = (props: FieldProps) => {
       options={options}
       onChange={handleChange}
       placeholder={placeholder}
-      value={value?.name}
+      value={value}
     />
   );
 };

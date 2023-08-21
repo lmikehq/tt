@@ -1,6 +1,7 @@
 import {
   ArrayInput,
   FieldAsDate,
+  FieldAsString,
   FieldInput,
   FieldString,
 } from "@atom/fieldInput";
@@ -185,7 +186,7 @@ export default function FamilyForm({
                   <Text type="p" text="Issued Country" />
                   <Required />
                 </Flex>
-                <FieldString
+                <FieldAsString
                   options={COUNTRY_FLAGS.map((x) => ({
                     name: x.name,
                     flag: x.flag,
