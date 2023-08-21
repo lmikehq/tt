@@ -25,7 +25,12 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
-import { BsArrowLeft, BsShieldFillCheck } from "react-icons/bs";
+import {
+  BsArrowLeft,
+  BsFillShieldLockFill,
+  BsLock,
+  BsShieldFillCheck,
+} from "react-icons/bs";
 import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
@@ -364,18 +369,18 @@ function ApplicationForm() {
                     <Text
                       type="p"
                       text={formik.values?.home?.name}
-                      size="18px"
-                      weight="bold"
+                      size={24}
+                      weight="600"
                     />
                     <TravelArrow />
                     <Text
                       type="p"
                       text={formik.values?.destination?.name}
-                      size="18px"
-                      weight="bold"
+                      size={24}
+                      weight={600}
                     />
                   </Flex>
-                  <Divider />
+                  <Divider margin={"1.5rem 0"} />
                   {/* <Grid
                     columns={isMobile ? "1fr" : "2fr 1fr"}
                     gap=".5rem"
@@ -408,15 +413,30 @@ function ApplicationForm() {
                   </Grid> */}
                   <Flex gap="2rem">
                     <Flex direction="column">
-                      <Text text="Application Fees" type="h3" weight="bold" />
-                      <Text type="p" text="Non-Refundable" />
+                      <Text
+                        text="Application Fee"
+                        type="h3"
+                        size={20}
+                        weight={600}
+                      />
+                      <Text
+                        type="p"
+                        size={18}
+                        weight={400}
+                        text="Non-Refundable"
+                      />
                     </Flex>
                     <Flex direction="column">
-                      <Text text="Validity" type="h3" weight="bold" />
-                      <Text type="p" text="Passport dependent" />
+                      <Text text="Validity" type="h3" size={20} weight={600} />
+                      <Text
+                        type="p"
+                        size={18}
+                        weight={400}
+                        text="Passport dependent"
+                      />
                     </Flex>
                   </Flex>
-                  <Section padding="1rem 0">
+                  <Section padding="2.5rem 0">
                     <Text type="h3" text="Required Documents" weight="bold" />
                     <BulletList>
                       <ListItem>
@@ -439,16 +459,20 @@ function ApplicationForm() {
                       </ListItem>
                     </BulletList>
                   </Section>
-                  <Flex margin="1rem 0" gap=".5rem">
-                    <BsShieldFillCheck size="25px" color={ttColors.primary} />
+                  <Flex gap=".5rem">
+                    <BsFillShieldLockFill
+                      size="24px"
+                      color={ttColors.primary}
+                    />
                     <div>
                       <Text
-                        text="Your info is save with us"
+                        text="Your info is safe with us"
                         type="p"
-                        size="16px"
-                        weight={400}
+                        size={18}
+                        weight={500}
+                        styles={{ lineHeight: "27px" }}
                       />
-                      <p style={{ fontSize: "14px" }}>
+                      <p style={{ fontSize: "14px", color: "#929292" }}>
                         For more details, see our &nbsp;
                         <span
                           style={{
@@ -532,9 +556,9 @@ function ApplicationForm() {
                     />
                   )}
 
-                  <Flex direction="column" gap="0.5rem">
+                  <Flex margin="3rem 0 0 0" direction="column" gap="0.5rem">
                     <Button
-                      border="2px solid #06062A"
+                      border="1px solid #06062A"
                       width="100%"
                       background="none"
                       borderRadius="4px"
@@ -543,14 +567,14 @@ function ApplicationForm() {
                       <Text
                         type="p"
                         text="Save Progress & Continue Later"
-                        size="16px"
+                        size={16}
                         color="#06062A"
                         cursor="pointer"
-                        weight="bold"
+                        weight={600}
                       />
                     </Button>
                     <Button
-                      border="2px solid #06062A"
+                      border="1px solid #06062A"
                       width="100%"
                       background="none"
                       borderRadius="4px"
@@ -559,8 +583,8 @@ function ApplicationForm() {
                       <Text
                         type="p"
                         text="Exit Application"
-                        weight="bold"
-                        size="16px"
+                        weight={600}
+                        size={16}
                         color="#06062A"
                         cursor="pointer"
                       />
