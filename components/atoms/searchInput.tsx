@@ -86,6 +86,7 @@ interface SearchProps {
   options: any[];
   value?: any;
   border?: string;
+  disabled?: boolean;
 
   onChange: (x: any) => void;
 }
@@ -98,6 +99,7 @@ export default function SearchInput({
   value,
   height,
   onChange,
+  disabled = false,
 }: // anchorEl,
 // setAnchorEl,
 SearchProps) {
@@ -129,7 +131,6 @@ SearchProps) {
           sx={{
             width: "100%",
             fontSize: 16,
-            color: "#1C1B1F",
             "& .MuiInputAdornment-root": {
               position: "absolute",
               top: "50%",
@@ -141,7 +142,6 @@ SearchProps) {
               display: "block!important",
             },
             "& label": {
-              color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
             "& input": {
@@ -161,78 +161,80 @@ SearchProps) {
           }}
         />
       </Box>
-      <StyledPopper
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        placement="bottom-start"
-        sx={{
-          width: getWidth(),
-        }}
-      >
-        <ClickAwayListener onClickAway={handleClose}>
-          <div>
-            <Autocomplete
-              open
-              onClose={(
-                _event: React.ChangeEvent<{}>,
-                reason: AutocompleteCloseReason
-              ) => {
-                if (reason === "escape") {
-                  handleClose();
-                }
-              }}
-              value={value}
-              onChange={(event, newValue, reason) => {
-                if (reason === "clear") {
-                  return;
-                }
-                if (
-                  event.type === "keydown" &&
-                  (event as React.KeyboardEvent).key === "Backspace" &&
-                  reason === "removeOption"
-                ) {
-                  return;
-                }
-                if (newValue !== null) {
-                  //*** refactoring */
-                  // the function should run before dropdown modal closes which is not the case currently!
-                  handleClose();
-                  onChange(newValue);
-                }
-              }}
-              disableCloseOnSelect
-              PopperComponent={PopperComponent}
-              renderTags={() => null}
-              noOptionsText="No matches found"
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
-                    <RoundFlag flag={option.flag.src} />
-                    <Text
-                      type="p"
-                      text={`${option.code} - ${option.name}`}
-                      weight={100}
-                    />
-                  </Flex>
-                  <br />
-                </li>
-              )}
-              options={options}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <StyledInput
-                  ref={params.InputProps.ref}
-                  inputProps={params.inputProps}
-                  placeholder="Hello"
-                  autoFocus
-                  onChange={(e) => setInputValue(e.target.value)}
-                />
-              )}
-            />
-          </div>
-        </ClickAwayListener>
-      </StyledPopper>
+      {disabled ? null : (
+        <StyledPopper
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          placement="bottom-start"
+          sx={{
+            width: getWidth(),
+          }}
+        >
+          <ClickAwayListener onClickAway={handleClose}>
+            <div>
+              <Autocomplete
+                open
+                onClose={(
+                  _event: React.ChangeEvent<{}>,
+                  reason: AutocompleteCloseReason
+                ) => {
+                  if (reason === "escape") {
+                    handleClose();
+                  }
+                }}
+                value={value}
+                onChange={(event, newValue, reason) => {
+                  if (reason === "clear") {
+                    return;
+                  }
+                  if (
+                    event.type === "keydown" &&
+                    (event as React.KeyboardEvent).key === "Backspace" &&
+                    reason === "removeOption"
+                  ) {
+                    return;
+                  }
+                  if (newValue !== null) {
+                    //*** refactoring */
+                    // the function should run before dropdown modal closes which is not the case currently!
+                    handleClose();
+                    onChange(newValue);
+                  }
+                }}
+                disableCloseOnSelect
+                PopperComponent={PopperComponent}
+                renderTags={() => null}
+                noOptionsText="No matches found"
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
+                      <RoundFlag flag={option.flag.src} />
+                      <Text
+                        type="p"
+                        text={`${option.code} - ${option.name}`}
+                        weight={100}
+                      />
+                    </Flex>
+                    <br />
+                  </li>
+                )}
+                options={options}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <StyledInput
+                    ref={params.InputProps.ref}
+                    inputProps={params.inputProps}
+                    placeholder="Hello"
+                    autoFocus
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                )}
+              />
+            </div>
+          </ClickAwayListener>
+        </StyledPopper>
+      )}
     </>
   );
 }
@@ -281,6 +283,7 @@ export function SearchInputAsString({
               display: "flex",
               justifyContent: "center",
               width: "100%",
+              // color: "inherit !important",
             },
             "& svg": {
               position: "absolute",
@@ -289,13 +292,16 @@ export function SearchInputAsString({
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
+              position: "relative",
+              // color: "inherit !important",
             },
             "& label": {
-              color: "#1C1B1F!important",
               fontSize: "16px!important",
+              // color: "inherit !important",
             },
             "& input": {
               height: height || "8px",
+              // color: "inherit !important",
             },
             border: border,
           }}

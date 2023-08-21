@@ -18,8 +18,8 @@ const BlueBulletList = styled(List)`
       content: "\\2022";
       position: absolute;
       left: 0;
-      font-size: 45px;
-      color: ${ttColors.primary}
+      font-size: 30px;
+      color: ${ttColors.primary};
     }
   }
 `;

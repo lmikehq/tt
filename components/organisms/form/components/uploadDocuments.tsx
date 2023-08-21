@@ -1,7 +1,6 @@
 "use client";
 import Center from "@atom/center";
 import Flex from "@atom/flex";
-import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { FormikValues } from "formik";
@@ -24,6 +23,8 @@ import CustomConfirmationModal, {
 import { styled } from "styled-components";
 import { useFilePicker } from "use-file-picker";
 import { ttColors } from "theme/colors";
+import { AiOutlineCheck } from "react-icons/ai";
+import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 
 interface formProps {
   formik: FormikValues;
@@ -143,20 +144,11 @@ function UploadDocuments({ formik, steps, index }: formProps) {
   }, [filesContent]);
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
+    <Section>
       <FormStepTitle steps={steps} index={index} />
 
       <form style={{ margin: isMobile ? "1rem 0 0" : "1rem 0" }}>
         <Section>
-          <Text
-            type="p"
-            text="Upload all your credentials"
-            size={isMobile ? "1.4rem" : "1.5rem"}
-            weight={600}
-            color="#000000"
-            margin=" 3.5rem 0 3.5rem 0"
-          />
-
           <Section>
             <Text
               type="p"
@@ -166,8 +158,7 @@ function UploadDocuments({ formik, steps, index }: formProps) {
               color="#000000"
               margin={"0 0 1.125rem 0 "}
             />
-            <SearchInputAsString
-              height="8px"
+            <SearchStringInput
               options={[
                 "Passport sized photograph",
                 "Valid international passport",
@@ -175,26 +166,13 @@ function UploadDocuments({ formik, steps, index }: formProps) {
                 "Proof of address (utility bill)",
                 "Marriage certificate (if applicable)",
               ]}
-              onChange={(e) => {
+              onChange={(e: string) => {
                 console.log(e);
                 setDocumentToUpload(e);
               }}
-            >
-              {/* onChange={(x) => formik.setFieldValue("documentUpload.", x)} */}
-              <Flex justify="space-between" gap=".6rem" cursor="pointer">
-                <Text
-                  type="p"
-                  text={
-                    documentToUpload || "Select each required document & Upload"
-                  }
-                  size={"1rem"}
-                  color={documentToUpload ? "#1C1B1F" : "#929292"}
-                  weight={400}
-                  styles={{ cursor: "pointer" }}
-                />
-                <IoIosArrowDown size={20} />
-              </Flex>
-            </SearchInputAsString>
+              value={documentToUpload}
+              placeholder="Select each required document & Upload"
+            />
           </Section>
 
           <UploadArea>

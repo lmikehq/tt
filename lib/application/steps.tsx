@@ -1,6 +1,11 @@
 import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
-import { edAndEmpKeys, familyInforKeys, otherInforKeys, personalInfoKeys } from "./schema";
+import {
+  edAndEmpKeys,
+  familyInforKeys,
+  otherInforKeys,
+  personalInfoKeys,
+} from "./schema";
 import OtherInformation from "@organism/form/components/otherInformation";
 import Booking from "@organism/form/components/booking";
 import {
@@ -18,7 +23,7 @@ interface IFormStep {
   title: string;
   content: React.ReactNode;
   valKeys?: any;
-  formikConfig?: any
+  formikConfig?: any;
 }
 
 export const getSteps = (

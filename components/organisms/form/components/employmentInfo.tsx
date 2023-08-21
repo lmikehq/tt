@@ -18,34 +18,79 @@ interface formProps {
 
 function EmploymentInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [count, setCount] = useState(2)
-  const [components, setComponents] = useState<JSX.Element[]>([<EmploymentForm formik={formik} key={1} count={1}/>])
+  const [employmentInfo, setEmploymentInfo] = useState<any[]>([{}, {}, {}]);
 
-  const handleAddComponents = () => {
-    setCount((prev) => prev + 1)
-    setComponents((prev) => [...prev, <EmploymentForm formik={formik} key={count} count={count}/>])
-  }
-
-  const handleRemoveComponent = (indexToRemove: number) => {
-    setComponents((prev) => prev.filter((_, index) => index !== indexToRemove));
+  const addNewForm = () => {
+    setEmploymentInfo([...employmentInfo, {}]);
+  };
+  const removeForm = (indexToRemove: number) => {
+    setEmploymentInfo((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
-      <Flex justify="space-between">
+    <Section>
+      <Flex justify="space-between" align="flex-start">
         <FormStepTitle steps={steps} index={index} />
-        <AddButton onClick={() => handleAddComponents()}/>
+        <AddButton
+          onClick={() => addNewForm()}
+          disabled={employmentInfo.length >= 5}
+        />
       </Flex>
-      {components.map((component, idx) => (
-        <div key={idx}>
-          {component}
-          {components.length > 1 && <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
-            <RiDeleteBin6Line color={ttColors.red} size={30} />
-            <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
-          </Flex>}
-        </div>
+      {employmentInfo.map((form, index) => (
+        <Section key={`employment-${index}`} height="unset">
+          <EmploymentForm formik={formik} count={index + 1} />
+
+          {employmentInfo.length > 1 && (
+            <Flex
+              justify="flex-end"
+              gap="0.5rem"
+              align="center"
+              onClick={() => removeForm(index)}
+              cursor="pointer"
+            >
+              <RiDeleteBin6Line color={ttColors.red} size={24} />
+              <Text
+                type="p"
+                text="Delete Experience"
+                color={ttColors.red}
+                size={16}
+                weight="500"
+              />
+            </Flex>
+          )}
+        </Section>
       ))}
     </Section>
+    // <Section>
+    //   <Flex justify="space-between">
+    //     <FormStepTitle steps={steps} index={index} />
+    //     <AddButton onClick={() => handleAddComponents()} />
+    //   </Flex>
+    //   {components.map((component, idx) => (
+    //     <div key={idx}>
+    //       {component}
+    //       {components.length > 1 && (
+    //         <Flex
+    //           justify="flex-end"
+    //           gap="0.25rem"
+    //           align="center"
+    //           onClick={() => handleRemoveComponent(idx)}
+    //           cursor="pointer"
+    //         >
+    //           <RiDeleteBin6Line color={ttColors.red} size={30} />
+    //           <Text
+    //             type="p"
+    //             text="Delete Experience"
+    //             color={ttColors.red}
+    //             weight="500"
+    //           />
+    //         </Flex>
+    //       )}
+    //     </div>
+    //   ))}
+    // </Section>
   );
 }
 

@@ -1,5 +1,4 @@
 import Flex from "@atom/flex";
-import SearchInput, { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
@@ -9,6 +8,8 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
+import SearchStringInput from "@molecule/searchInputs/searchStringInput";
+import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
 
 interface formProps {
   formik: FormikValues;
@@ -20,9 +21,8 @@ interface formProps {
 function TripDetails({ formik, steps, index, setFee }: formProps) {
   const { isMobile } = useScreenResolution();
 
-  // console.log(formik)
   return (
-    <Section width={isMobile ? "100%" : "75%"} height="unset">
+    <Section height="unset">
       <FormStepTitle steps={steps} index={index} />
       <form autoComplete="off">
         <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
@@ -37,33 +37,20 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchInput
-                value={formik.values.home}
-                placeholder="Select where you are"
+              <SearchFlagInput
+                value={formik.values.home.name}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                height="8px"
-                onChange={(x) => formik.setFieldValue("home", x)}
-              >
-                <Flex justify="space-between" width="100%">
-                  <Text
-                    type="p"
-                    text={formik?.values?.home?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    size={isMobile ? 14 : 16}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.home?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
-              </SearchInput>
+                onChange={(x) => {
+                  console.log(formik.values.home.name);
+                  formik.setFieldValue("home", x);
+                }}
+                placeholder="Select where you are"
+                size={isMobile ? 14 : 16}
+              />
             </Flex>
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -75,33 +62,20 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchInput
-                options={COUNTRY_FLAGS.map((x) => ({
+              <SearchFlagInput
+                options={COUNTRY_FLAGS.filter(
+                  (el) => el.name != formik.values.home.name
+                ).map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                height="8px"
-                value={formik.values.destination}
-                placeholder="Select Final Destination"
+                size={isMobile ? 14 : 16}
+                value={formik.values.destination.name}
                 onChange={(x) => formik.setFieldValue("destination", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    size={isMobile ? 14 : 16}
-                    type="p"
-                    text={formik?.values?.destination?.name}
-                    color="#1C1B1F"
-                    weight={100}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.destination?.name ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
-              </SearchInput>
+                placeholder="Select Final destination"
+                disabled={!formik.values.home.name}
+              />
             </Flex>
           </Flex>
         </Section>
@@ -117,8 +91,11 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchInputAsString
-                height="8px"
+              <SearchStringInput
+                value={formik.values.visaType}
+                placeholder={"Select your Visa Type"}
+                onChange={(x) => formik.setFieldValue("visaType", x)}
+                size={isMobile ? 14 : 16}
                 options={[
                   "Tourist Visa",
                   "Business Visa",
@@ -129,27 +106,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   "Visa on Arrival",
                   "Other",
                 ]}
-                placeholder={
-                  !formik.values.visaType ? "Select your Visa Type" : ""
-                }
-                onChange={(x) => formik.setFieldValue("visaType", x)}
-              >
-                <Flex justify="space-between">
-                  <Text
-                    size={isMobile ? 14 : 16}
-                    type="p"
-                    text={formik?.values?.visaType}
-                    color="#1C1B1F"
-                    weight={100}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.visaType ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
-              </SearchInputAsString>
+              />
             </Flex>
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -161,8 +118,8 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchInputAsString
-                height="8px"
+              <SearchStringInput
+                size={isMobile ? 14 : 16}
                 options={["Single", "Family"]}
                 onChange={(x) => {
                   formik?.setFieldValue("applicationType", x);
@@ -172,23 +129,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   );
                 }}
                 placeholder="Select your Application Type "
-              >
-                <Flex justify="space-between">
-                  <Text
-                    size={isMobile ? 14 : 16}
-                    type="p"
-                    text={formik?.values?.applicationType}
-                    color="#1C1B1F"
-                    weight={100}
-                    styles={{ cursor: "pointer" }}
-                  />
-                  {formik?.values?.applicationType ? (
-                    <AiOutlineCheck color="#3BB98E" />
-                  ) : (
-                    <IoIosArrowDown size={20} />
-                  )}
-                </Flex>
-              </SearchInputAsString>
+              />
             </Flex>
           </Flex>
         </Section>
@@ -201,30 +142,16 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               text="Number of Travellers"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <SearchInputAsString
-              height="8px"
+            <SearchStringInput
+              size={isMobile ? 14 : 16}
+              value={formik?.values?.numberOfTravellers}
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
               onChange={(x) => {
                 setFee(x > 1 ? 30000 : 20000);
                 formik.setFieldValue("numberOfTravellers", x);
               }}
-            >
-              <Flex justify="space-between">
-                <Text
-                  size={isMobile ? 14 : 16}
-                  type="p"
-                  text={formik?.values?.numberOfTravellers}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values?.numberOfTravellers ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+              placeholder="Number of Travellers"
+            />
           </Section>
         )}
       </form>
