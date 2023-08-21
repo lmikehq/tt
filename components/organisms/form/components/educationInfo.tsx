@@ -19,35 +19,49 @@ interface formProps {
 
 function EducationInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [count, setCount] = useState(1)
-  const [components, setComponents] = useState<JSX.Element[]>([<EducationForm formik={formik} key={1} count={1}/>])
+  const [educationInfo, setEducationInfo] = useState<any[]>([{}, {}, {}]);
 
-  const handleAddComponents = () => {
-    if(count < 3) {
-      setCount((prev) => prev + 1)
-    setComponents((prev) => [...prev, <EducationForm formik={formik} key={count+1} count={count+1}/>])
-    }
-  }
-
-  const handleRemoveComponent = (indexToRemove: number) => {
-    setComponents((prev) => prev.filter((_, index) => index !== indexToRemove));
-    setCount((prev) => prev - 1)
+  const addNewForm = () => {
+    setEducationInfo([...educationInfo, {}]);
+  };
+  const removeForm = (indexToRemove: number) => {
+    setEducationInfo((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   return (
     <Section width={isMobile ? "100%" : "75%"}>
       <Flex justify="space-between">
         <FormStepTitle steps={steps} index={index} />
-        <AddButton onClick={() => handleAddComponents()}/>
+        <AddButton
+          onClick={() => addNewForm()}
+          disabled={educationInfo.length >= 5}
+        />
       </Flex>
-      {components.map((component, idx) => (
-        <div key={idx}>
-          {component}
-          {components.length > 1 && <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
-            <RiDeleteBin6Line color={ttColors.red} size={30} />
-            <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
-          </Flex>}
-        </div>
+      {educationInfo.map((form, index) => (
+        <Section key={`education-${index}`} height="unset">
+          <EducationForm formik={formik} count={index + 1} />
+
+          {educationInfo.length > 1 && (
+            <Flex
+              justify="flex-end"
+              gap="0.5rem"
+              align="center"
+              onClick={() => removeForm(index)}
+              cursor="pointer"
+            >
+              <RiDeleteBin6Line color={ttColors.red} size={24} />
+              <Text
+                type="p"
+                text="Delete Experience"
+                color={ttColors.red}
+                size={16}
+                weight="500"
+              />
+            </Flex>
+          )}
+        </Section>
       ))}
     </Section>
   );
