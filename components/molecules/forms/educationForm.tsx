@@ -1,24 +1,20 @@
 import CheckBox from "@atom/checkbox";
-import EnlargedDate from "@atom/enlargedDate";
+import { FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Input from "@atom/input";
 import Required from "@atom/required";
-import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import { concatArrays, get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
-import { IoIosArrowDown } from "react-icons/io";
 
 interface formProps {
-  formik?: FormikValues;
+  formik: FormikValues;
+  education?: any;
   isMobile?: boolean;
-  count?: number;
+  count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -36,21 +32,15 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text={`School Name ${count}`}
+              text={`School Name ${count+1}`}
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Required />
           </Flex>
-          <Input
-            addon={
-              formik?.values?.schoolName?.length > 3 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik?.values.schoolName}
-            onChange={(x) =>
-              formik?.setFieldValue("schoolName", x.target.value)
-            }
+          <FieldInput
+            formik={formik}
+            name={`education.${count}.schoolName`}
+            placeholder="Enter School Name"
           />
         </Section>
         <Flex
@@ -68,25 +58,12 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
+            <FieldString
               options={DEGREES}
-              onChange={(x) => formik?.setFieldValue("degree", x)}
-            >
-              <Flex>
-                <Text
-                  type="p"
-                  text={formik?.values?.degree}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values.degree ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+              name={`education.${count}.degree`}
+              formik={formik}
+              placeholder="Select your Degree"
+            />
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -114,6 +91,17 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
                 formik?.setFieldValue("grade", value);
               }}
             />
+            <Text type="p"
+              text="Field of Study"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            />
+            <Required />
+            <FieldString
+              options={COMMON_MAJORS}
+              formik={formik}
+              placeholder="Select your Field of Study"
+              name={`education.${count}.courseOfStudy`}
+            />
           </Section>
         </Flex>
         <Flex
@@ -122,31 +110,21 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
         >
-          <Section>
-            <Text
-              type="p"
-              text="Course of Study"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Grade"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              formik={formik}
+              type="number"
+              name={`education.${count}.grade`}
+              placeholder="Enter your Grade"
             />
-            <SearchInputAsString
-              options={COMMON_MAJORS}
-              onChange={(x) => formik?.setFieldValue("courseOfStudy", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.courseOfStudy}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values.courseOfStudy ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
           </Section>
           <Section>
             <Text
@@ -154,11 +132,10 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               text="School's Location"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <Input
-              type="text"
-              value={formik?.values.schoolLocation}
+            <FieldInput
+              name={`education.${count}.schoolLocation`}
+              formik={formik}
               placeholder="Enter Location"
-              onChange={(e) => formik?.setFieldValue("schoolLocation", e)}
             />
           </Section>
         </Flex>
@@ -174,11 +151,12 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               text="Start Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker label="Select your start date" />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              placeholder="Select your Start Year"
+              views={['year']}
+              name={`education.${count}.startedYear`}
+              formik={formik}
+            />
           </Section>
           <Section>
             <Text
@@ -186,19 +164,13 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               text="End Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker
-                  label={
-                    isCurrentlyInSchool ? "Present" : "Select your date here"
-                  }
-                  value={formik?.values.endDate}
-                  onChange={(e) => formik?.setFieldValue("endDate", e)}
-                  disabled={isCurrentlyInSchool}
-                  disableOpenPicker={isCurrentlyInSchool}
-                />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              placeholder="Select your End Year"
+              disabled={isCurrentlyInSchool}
+              views={['year']}
+              name={`education.${count}.endDate`}
+              formik={formik}
+            />
           </Section>
         </Flex>
         <Flex

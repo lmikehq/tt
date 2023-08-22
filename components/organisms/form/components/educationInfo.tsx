@@ -1,15 +1,14 @@
 import Section from "@molecule/section";
-import { FormikValues } from "formik";
+import { FieldArray, Formik, FormikValues } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
-import { AiFillPlusCircle } from "react-icons/ai";
 import { ttColors } from "theme/colors";
-import { useState } from "react";
 import EducationForm from "@molecule/forms/educationForm";
-import { RiDeleteBack2Line, RiDeleteBin6Line } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
+import { educationArraySchema, educationKeys } from "@lib/application/schema";
 
 interface formProps {
   formik: FormikValues;
@@ -19,37 +18,67 @@ interface formProps {
 
 function EducationInfo({ formik, steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [count, setCount] = useState(1)
-  const [components, setComponents] = useState<JSX.Element[]>([<EducationForm formik={formik} key={1} count={1}/>])
-
-  const handleAddComponents = () => {
-    if(count < 3) {
-      setCount((prev) => prev + 1)
-    setComponents((prev) => [...prev, <EducationForm formik={formik} key={count+1} count={count+1}/>])
-    }
-  }
-
-  const handleRemoveComponent = (indexToRemove: number) => {
-    setComponents((prev) => prev.filter((_, index) => index !== indexToRemove));
-    setCount((prev) => prev - 1)
-  };
-
   return (
-    <Section width={isMobile ? "100%" : "75%"}>
-      <Flex justify="space-between" margin={isMobile ? "0px" : "2.5rem 0 1rem"}>
-        <FormStepTitle steps={steps} index={index} />
-        <AddButton onClick={() => handleAddComponents()} />
-      </Flex>
-      {components.map((component, idx) => (
-        <div key={idx}>
-          {component}
-          <Flex justify="flex-end" gap="0.25rem" align="center" onClick={() => handleRemoveComponent(idx)} cursor="pointer">
-            <RiDeleteBin6Line color={ttColors.red} size={30} />
-            <Text type="p" text="Delete Experience" color={ttColors.red} weight="500"/>
-          </Flex>
-        </div>
-      ))}
-    </Section>
+    <Formik
+      initialValues={{
+        education: [{ ...educationKeys }],
+      }}
+      validationSchema={educationArraySchema}
+      onSubmit={(values) => {
+        console.log(values);
+      }}
+    >
+      {({ values }) => (
+        <Section width={isMobile ? "100%" : "75%"}>
+          <form>
+            <FieldArray
+              name="education"
+              render={(arrayHelpers) => (
+                <div>
+                  <Flex justify="space-between" padding="0 0 2rem 0">
+                    <FormStepTitle steps={steps} index={index} />
+                    <AddButton
+                      disabled={values.education.length === 3}
+                      onClick={() => {
+                        if (values.education.length < 3) {
+                          arrayHelpers.insert(index + 1, educationKeys);
+                        }
+                      }}
+                    />
+                  </Flex>
+                  {values.education.map((education, index) => (
+                    <div key={index}>
+                      <EducationForm
+                        formik={formik}
+                        education={education}
+                        count={index}
+                      />
+                      {values.education.length > 1 && (
+                        <Flex
+                          justify="flex-end"
+                          gap="0.25rem"
+                          align="center"
+                          onClick={() => arrayHelpers.remove(index)}
+                          cursor="pointer"
+                        >
+                          <RiDeleteBin6Line color={ttColors.red} size={25} />
+                          <Text
+                            type="p"
+                            text="Delete Experience"
+                            color={ttColors.red}
+                            weight="500"
+                          />
+                        </Flex>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            />
+          </form>
+        </Section>
+      )}
+    </Formik>
   );
 }
 

@@ -1,28 +1,26 @@
 import CheckBox from "@atom/checkbox";
-import EnlargedDate from "@atom/enlargedDate";
+import { ArrayInput, FieldAsDate, FieldString } from "@atom/fieldInput";
 import Flex from "@atom/flex";
-import Input from "@atom/input";
 import Required from "@atom/required";
-import { SearchInputAsString } from "@atom/searchInput";
 import Text from "@atom/text";
-import { concatArrays, get100Years } from "@lib/utilFns";
 import Section from "@molecule/section";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
-import { IoIosArrowDown } from "react-icons/io";
 
 interface formProps {
-  formik?: FormikValues;
+  formik: FormikValues;
+  employment?: any;
   isMobile?: boolean;
-  count?: number;
+  count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function EmploymentForm({ formik, isMobile, count }: formProps) {
+export default function EmploymentForm({
+  formik,
+  isMobile,
+  count,
+  employment,
+}: formProps) {
   const [isCurrentlyIncompany, setIsCurrentlyIncompany] = useState(false);
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
@@ -36,22 +34,15 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text={`Company Name ${count}`}
+              text={`Company Name ${count + 1}`}
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
             <Required />
           </Flex>
-          <Input
-            addon={
-              formik?.values?.companyName?.length > 3 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik?.values.companyName}
-            onChange={(x) =>
-              formik?.setFieldValue("companyName", x.target.value)
-            }
-            placeholder="Enter your company's name"
+          <ArrayInput
+            formik={formik}
+            name={`employment.${count}.companyName`}
+            placeholder="Enter your Company's name"
           />
         </Section>
         <Flex
@@ -69,16 +60,9 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.jobTitle?.length > 3 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik?.values.jobTitle}
-              onChange={(x) =>
-                formik?.setFieldValue("jobTitle", x.target.value)
-              }
+            <ArrayInput
+              formik={formik}
+              name={`employment.${count}.jobTitle`}
               placeholder="Enter your Job Position"
             />
           </Section>
@@ -91,25 +75,12 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
-              options={COMMON_MAJORS}
-              onChange={(x) => formik?.setFieldValue("employmentType", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.employmentType}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values.employmentType ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+            <FieldString
+              placeholder="Select Employment Type"
+              name={`education.${count}.employmentType`}
+              options={["Full-Time", "Part-Time", "Self Employed", "Freelance", "Contract", "Internship"]}
+              formik={formik}
+            />
           </Section>
         </Flex>
         <Flex
@@ -127,16 +98,9 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.companyLocation?.length > 3 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik?.values.companyLocation}
-              onChange={(x) =>
-                formik?.setFieldValue("companyLocation", x.target.value)
-              }
+            <ArrayInput
+              formik={formik}
+              name={`employment.${count}.companyLocation`}
               placeholder="Enter Location"
             />
           </Section>
@@ -146,26 +110,12 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               text="Location Type"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <SearchInputAsString
-              options={["On-site", "Remote", "Hybrid"]}
-              onChange={(x) => formik?.setFieldValue("locationType", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  size={isMobile ? 14 : 16}
-                  type="p"
-                  text={formik?.values?.locationType}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values?.locationType ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+            <FieldString
+              placeholder="Select Location Type"
+              name={`education.${count}.locationType`}
+              options={["On-site", "Hybrid", "Remote"]}
+              formik={formik}
+            />
           </Section>
         </Flex>
         <Flex
@@ -180,11 +130,12 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               text="Start Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker label="Select your start date" />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              placeholder="Select your Start Year"
+              views={['year']}
+              name={`education.${count}.startedYear`}
+              formik={formik}
+            />
           </Section>
           <Section>
             <Text
@@ -192,19 +143,13 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
               text="End Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker
-                  label={
-                    isCurrentlyIncompany ? "Present" : "Select your date here"
-                  }
-                  value={formik?.values.endDate}
-                  onChange={(e) => formik?.setFieldValue("endDate", e)}
-                  disabled={isCurrentlyIncompany}
-                  disableOpenPicker={isCurrentlyIncompany}
-                />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              placeholder="Select your End Year"
+              disabled={isCurrentlyIncompany}
+              views={['year']}
+              name={`employment.${count}.endedYear`}
+              formik={formik}
+            />
           </Section>
         </Flex>
         <Flex

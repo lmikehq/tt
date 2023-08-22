@@ -68,89 +68,92 @@ export const personalInfoKeys = {
   purposeOfTrip: ""
 };
 
-export const edAndEmpSchema = yup.object().shape({
-  degree: yup.string().required(),
-  graudautionYear: yup.string().required(),
-  schoolName: yup.string().required(),
-  courseOfStudy: yup.string().required(),
-  grade: yup.number().required().max(5).min(0),
+export const educationKeys = {
+  schoolName: "",
+  degree: "",
+  grade: "",
+  courseOfStudy: "",
+  startYear: "",
+  endYear: "",
+}
+
+export const educationSchema = yup.object().shape({
+  schoolName: yup.string().required("Required"),
+  degree: yup.string().required("Required"),
+  courseOfStudy: yup.string().required("Required"),
+  grade: yup.number().max(5.0, "Your Grade cannot be more than 5.0").min(1.0, "Your Grade cannot be less than 1.0").required("Required"),
+  startDate: yup.date().required("Required"),
+  endYear: yup.date().required("Required")
+})
+
+export const educationArraySchema = yup.array()
+  .of(educationSchema).min(1, "You need to provide at least one education")
+  .max(3, "You can provide at most three education")
+
+export const employmentSchema = yup.object().shape({
+  employmentType: yup.string().required(),
+  locationType: yup.string().required(),
   companyName: yup.string().required(),
   employerName: yup.string().required(),
-  employerPhone: yup.string().required(),
+  companyLocation: yup.string().required(),
   startedYear: yup.string().required(),
   endedYear: yup.string().required(),
 });
-
-export const edAndEmpKeys = {
-  degree: "",
-  graudautionYear: "",
-  schoolName: "",
-  courseOfStudy: "",
-  grade: "",
+  
+export const employmentKeys = {
   companyName: "",
   employerName: "",
-  employerPhone: "",
+  employmentType: "",
+  locationType: "",
+  companyLocation: "",
   startedYear: "",
   endedYear: "",
 };
-
-export const otherInfoSchema = yup.object().shape({
+  
+export const familyInfoSchema = yup.object().shape({
   passNumber: yup.string().required(),
   expiryYear: yup.string().required(),
   gender: yup.string().required(),
+  membersDOB: yup.date().required(),
   passIssueCountry: yup.string().required(),
-  guarantorName: yup.string().required(),
-  guarantorRelationship: yup.string().required(),
-  guarantorAddress: yup.string().required(),
-  guarantorPhone: yup.string().required(),
-  guarantorWorth: yup.string().required(),
-  uploadedDocuments: yup.array().required(),
+  membersName: yup.string().required(),
+  membersRelationship: yup.string().required(),
+  membersAddress: yup.string().required(),
+  membersPhone: yup.string().required(),
+  membersEmail: yup.string().required(),
+  membersIssueDate: yup.date().required(),
+  membersExpiryDate: yup.date().required()
 });
 
-export const otherInforKeys = {
-  passNumber: "",
-  passIssueCountry: "",
-  gender: "",
-  expiryYear: "",
-  guarantorName: "",
-  guarantorAddress: "",
-  guarantorPhone: "",
-  guarantorWorth: "",
-  uploadedDocuments: [],
-};
-
-export const familyInfoSchema = yup.object().shape({
-  membersName: yup.string().required(),
-  memberRelationship: yup.string().required(),
-  memberAddress: yup.string().required(),
-  memberEmail: yup.string().required(),
-  memberOccupation: yup.string().required(),
-  memberPhoneNumber: yup.string().required(),
-  memberWorth: yup.string().required()
-})
-
 export const familyInforKeys = {
+  passNumber: "",
+  expiryYear: "",
+  gender: "",
+  membersDOB: "",
+  passIssueCountry: "",
   membersName: "",
-  memberRelationship: "",
-  memberAddress: "",
-  memberOccupation: "",
-  memberEmail: "",
-  memberPhoneNumber: "",
-  memberWorth: ""
-}
+  membersRelationship: "",
+  membersAddress: "",
+  membersPhone: "",
+  membersEmail: "",
+  membersIssueDate: "",
+  membersExpiryDate: ""
+};
 
 export const visaSchema = {
   ...detailsSchema,
-  ...edAndEmpSchema,
+  ...educationSchema,
+  ...employmentSchema,
   ...personalInfoSchema,
-  ...otherInfoSchema,
+  ...familyInfoSchema,
 };
 
 export const visaInitVals = {
   ...detailsKeys,
-  ...edAndEmpKeys,
+  ...employmentKeys,
+  ...educationKeys,
   ...personalInfoKeys,
-  ...otherInforKeys,
+  ...familyInforKeys,
 };
 
 export const waitlistSchema = yup.object().shape({

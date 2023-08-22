@@ -1,6 +1,11 @@
 "use client";
 
-import { Autocomplete, Box, TextField as MUITextField, TextareaAutosize } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  TextField as MUITextField,
+  TextareaAutosize,
+} from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import {
   CSSProperties,
@@ -24,7 +29,10 @@ const StyledInput = styled.input`
     border: 0;
     outline: 1px solid red;
   }
-
+  &::placeholder {
+    color: #929292 !important;
+    font-weight: 400 !important;
+  }
 `;
 
 const StyledMuiTextField = styled(MUITextField)`
@@ -146,6 +154,7 @@ const Input = ({
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
+        className="custom-form-input"
         type={miniType || type}
         onBlur={onBlur}
         placeholder={placeholder}
@@ -161,7 +170,7 @@ const Input = ({
         max={max}
         style={{
           margin,
-          padding: padding || "0 1rem",
+          padding: padding || "0 1rem 0 1rem",
           border,
           width: width || "100%",
           height: height || "45px",

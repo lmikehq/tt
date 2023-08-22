@@ -32,7 +32,7 @@ const SubscribeWrapper = styled.div`
   margin: auto;
   height: 29.5rem;
   border-radius: 1.5rem;
-  padding: 0rem 2.5rem;
+  padding: 0rem 3.5rem;
   margin-bottom: 5rem;
   @media (max-width: 1300px) {
     background-position: -8rem 0;
@@ -68,7 +68,7 @@ const Subcribe = styled.div`
       line-height: 1.3rem;
       font-size: 1rem;
       font-weight: 400;
-      color: var(--placeholder-color);
+      color: #1c1b1f;
     }
   }
 
@@ -93,16 +93,22 @@ const NewsLetter = () => {
       className="newsLetter"
       style={{
         width: isMobile ? "90%" : "85%",
-        left: isMobile ? "5%" : "7.5%",
-        padding: isMobile ? "1.1rem" : "8rem 2.5rem",
-        bottom: isMobile ? "91.5%" : "90%",
+        padding: isMobile ? "1.1rem" : "0rem 3.5rem",
+        display: isMobile ? "block" : "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Flex justify="space-between" direction={isMobile ? "column" : "row"}>
+      <Flex
+        justify="space-between"
+        gap="7.1875rem"
+        direction={isMobile ? "column" : "row"}
+      >
         <Subcribe className="newsLetter">
           <Text
             type="h3"
             text="Subscribe to our newsletter"
+            weight={700}
             size={isMobile ? "1.28rem" : "2.5rem"}
             color="#06062A"
           />
@@ -148,22 +154,15 @@ const NewsLetter = () => {
           width="auto"
           styles={{ visibility: isMobile ? "hidden" : "visible" }}
         >
-          <Image
-            src={Barcode}
-            alt="visa"
-            width="110"
-            height="110"
-            style={{ marginLeft: "7rem", marginBottom: "1.2rem" }}
-          />
+          <Image src={Barcode} alt="visa" width="160" height="160" />
           <Flex
             direction="column"
             gap="0.5rem"
             align="center"
-            padding="0rem 0rem 1.5rem"
-            width="10rem"
+            padding="1.5rem 0 1.5rem 1.85rem"
           >
-            <Image src={AppLogo} alt="mastercard" />
-            <Image src={PlayStore} alt="american-express" />
+            <Image width={215} src={AppLogo} alt="app-store" />
+            <Image width={215} src={PlayStore} alt="play-store" />
           </Flex>
         </Flex>
       </Flex>

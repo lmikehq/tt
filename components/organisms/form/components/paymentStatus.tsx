@@ -18,7 +18,7 @@ export function PaymentStatusSuccess({ steps, index }: formProps) {
   const { isMobile } = useScreenResolution();
 
   return (
-    <Section width={isMobile ? "100%" : "50%"}>
+    <Section>
       <FormStepTitle steps={steps} index={index} />
       <Section styles={{ textAlign: "center", margin: "6rem 0" }}>
         <Image src={covetti} alt="success" width={300} height={200} />

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=Montserrat:wght@600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=Montserrat:wght@600&display=swap");
 
 :root {
   --max-width: 1100px;
@@ -9,9 +9,9 @@
   --semi-bg-color: #87cfeb74;
   --bg-color: #fafbfc;
   --text-color: #000000;
-  --poppins-font: 'Poppins', sans-serif;
+  --poppins-font: "Poppins", sans-serif;
   --placeholder-color: ##1c1b1f;
-  --title-font: 'Montserrat', sans-serif;
+  --title-font: "Montserrat", sans-serif;
 }
 
 * {
@@ -54,6 +54,12 @@ body {
 
 /* Media Queries Here */
 
+.css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+  font-weight: 400 !important;
+  font-size: 1rem !important;
+  line-height: 1.4375em;
+  font-family: var(--poppins-font) !important;
+}
 
 @media screen and (max-width: 1024px) {
   .reviewCard {
@@ -67,56 +73,55 @@ body {
 }
 
 @media screen and (max-width: 900px) {
-    .dashboardWrapper{
-        margin: 1rem 0px !important;
-    }
-        .hideOnMobile {
-          display: none !important;
-        }
+  .dashboardWrapper {
+    margin: 1rem 0px !important;
+  }
+  .hideOnMobile {
+    display: none !important;
+  }
 }
 @media screen and (max-width: 768px) {
   .footerBarcode {
-      position: absolute !important;
-      bottom: 124px !important;
-      right: 200px !important;
-    }
-
+    position: absolute !important;
+    bottom: 124px !important;
+    right: 200px !important;
+  }
 }
 
 @media screen and (max-width: 600px) {
   .destinationCard {
-      display: grid;
-      grid-template-columns: 1fr !important;
-    }
+    display: grid;
+    grid-template-columns: 1fr !important;
+  }
 
-    .footerLayout {
-      display: grid;
-      grid-template-columns: 1fr !important;
-    }
+  .footerLayout {
+    display: grid;
+    grid-template-columns: 1fr !important;
+  }
 
-    .contactCard{
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-    }
+  .contactCard {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
 
-    .footerBarcode{
-      position: relative !important;
-      bottom: 25px !important;
-      right: 0px !important;
-    }
+  .footerBarcode {
+    position: relative !important;
+    bottom: 25px !important;
+    right: 0px !important;
+  }
 }
 
 @media screen and (max-width: 390px) {
-  .newsLetter{
+  .newsLetter {
     bottom: 98.5% !important;
   }
 
-  .ttApp{
+  .ttApp {
     width: 4rem !important;
     margin-top: 32px !important;
   }
 
-  .footerIcons{
+  .footerIcons {
     width: 34% !important;
   }
 }
@@ -127,10 +132,10 @@ body {
 }
 
 /* .react-tel-input .selected-flag .flag{ */
-  /* width: 24px !important; */
-  /* height: 17.33px !important; */
-  /* position: absolute !important; */
-  /* top: 40% !important; */
+/* width: 24px !important; */
+/* height: 17.33px !important; */
+/* position: absolute !important; */
+/* top: 40% !important; */
 /* } */
 
 /* .react-tel-input .selected-flag .arrow {
@@ -163,14 +168,13 @@ body {
   font-family: var(--title-font) !important;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

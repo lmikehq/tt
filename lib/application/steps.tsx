@@ -1,6 +1,11 @@
 import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
-import { edAndEmpKeys, familyInforKeys, otherInforKeys, personalInfoKeys } from "./schema";
+import {
+  educationKeys,
+  employmentKeys,
+  familyInforKeys,
+  personalInfoKeys,
+} from "./schema";
 import OtherInformation from "@organism/form/components/otherInformation";
 import Booking from "@organism/form/components/booking";
 import {
@@ -18,7 +23,7 @@ interface IFormStep {
   title: string;
   content: React.ReactNode;
   valKeys?: any;
-  formikConfig?: any
+  formikConfig?: any;
 }
 
 export const getSteps = (
@@ -49,7 +54,7 @@ export const getSteps = (
           index={1}
         />
       ),
-      // valKeys: Object.keys(personalInfoKeys)
+      valKeys: Object.keys(personalInfoKeys)
     },
     {
       id: 3,
@@ -61,7 +66,7 @@ export const getSteps = (
           index={2}
         />
       ),
-      valKeys: Object.keys(edAndEmpKeys),
+      valKeys: Object.keys(educationKeys),
     },
     {
       id: 4,
@@ -73,7 +78,7 @@ export const getSteps = (
           index={3}
         />
       ),
-      valKeys: Object.keys(edAndEmpKeys),
+      valKeys: Object.keys(employmentKeys),
     },
     {
       id: 5,
