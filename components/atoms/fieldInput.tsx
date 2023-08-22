@@ -22,7 +22,7 @@ interface FieldProps {
     | "address"
     | "checkbox";
   placeholder: string;
-  formik: any;
+  formik: FormikValues;
   options?: any[];
   addon?: ReactNode;
   views?: ("year" | "month" | "day")[];
@@ -81,6 +81,7 @@ export const FieldInput = (props: FieldProps) => {
         padding="1.5rem"
         onChange={onChange ? onChange : handleChange}
         value={formik.values[name]}
+        onBlur={() => formik.setTouched({ ...formik.touched, [name]: true })}
       />
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
@@ -115,6 +116,7 @@ export const ArrayInput = (props: FieldProps) => {
         padding="1.5rem"
         onChange={handleChange}
         value={value}
+        onBlur={formik.handleBlur}
       />
       {/* {meta.touched && meta.error ? (
         <Text type="p" color={ttColors.red} text={meta.error} />
@@ -133,6 +135,7 @@ export const FieldAsString = (props: FieldProps) => {
 
   const handleChange = (e: any) => {
     formik.setFieldValue(name, e.name);
+    formik.setTouched({ ...formik.touched, [name]: true });
     // onChange({ target: { name: field.name, value: e } });
     sessionStorage.setItem(name, e.name);
   };
@@ -189,17 +192,15 @@ export const FieldString = (props: FieldProps) => {
   console.log(formik);
 
   return (
-    <FormikProvider value={formik}>
-      <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
-        <SearchStringInput
-          options={options}
-          onChange={onChange ? onChange : handleChange}
-          placeholder={placeholder}
-          value={value}
-        />{" "}
-        {touched && error ? <ErrorText text={error} /> : null}
-      </Section>
-    </FormikProvider>
+    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+      <SearchStringInput
+        options={options}
+        onChange={onChange ? onChange : handleChange}
+        placeholder={placeholder}
+        value={value}
+      />{" "}
+      {touched && error ? <ErrorText text={error} /> : null}
+    </Section>
   );
 };
 
