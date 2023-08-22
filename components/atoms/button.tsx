@@ -57,7 +57,7 @@ export const Button: React.FC<buttonProps> = ({
         background: background || "#06062A",
         fontWeight: fontWeight,
         fontSize: fontSize,
-        // fontFamily: "Poppins",
+        fontFamily: "Poppins",
         width: width || "104px",
         height: height || "48px",
         borderRadius: borderRadius || "8px",

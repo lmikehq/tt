@@ -1,12 +1,10 @@
-import { FormikProvider, useField } from "formik";
-import { useEffect, useState } from "react";
+import { FormikProvider, FormikValues, useField } from "formik";
+import { useEffect } from "react";
 import Input from "./input";
 import Text from "./text";
 import { ttColors } from "theme/colors";
-import { SearchInputAsString } from "./searchInput";
 import { ReactNode } from "react";
 import { DatePicker } from "@atom/datepicker";
-import dayjs from "dayjs";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
 import Section from "@molecule/section";
