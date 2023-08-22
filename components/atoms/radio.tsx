@@ -35,15 +35,21 @@ export function CustomRadioGroup({
   };
 
   return (
-    <FormControl>
+    <FormControl
+      sx={{
+        
+    }}>
       <RadioGroup
+        sx={{
+          
+          padding: "0px",
+          fontSize: "16px",
+        }}
         name="custom-radio-buttons-group"
         value={value}
         onChange={handleChange}
         style={{
           justifyContent: justifyContent,
-          fontSize: "16px",
-          fontWeight: "200",
         }}
       >
         <Flex align="center" gap=".5rem">

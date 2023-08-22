@@ -131,19 +131,6 @@ body {
   height: 45px !important;
 }
 
-/* .react-tel-input .selected-flag .flag{ */
-/* width: 24px !important; */
-/* height: 17.33px !important; */
-/* position: absolute !important; */
-/* top: 40% !important; */
-/* } */
-
-/* .react-tel-input .selected-flag .arrow {
-  position: relative !important;
-  top: 50% !important;
-  margin-top: -2px !important;
-  left: 35px !important;
-} */
 
 .react-tel-input .selected-flag {
   width: 46px !important;
@@ -154,6 +141,25 @@ body {
   padding: 0px !important;
 }
 
+.react-tel-input .form-control {
+  padding-left: 50px !important;
+}
+.css-vqmohf-MuiButtonBase-root-MuiRadio-root{
+  padding: 3px !important;
+}
+
+.css-ahj2mt-MuiTypography-root {
+  font-size: 16px !important;
+  font-weight: 200 !important;
+
+}
+
+
+
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  height: 45px !important;
+  padding: 0px 14px !important;
+}
 
 
 

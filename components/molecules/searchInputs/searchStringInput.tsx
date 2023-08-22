@@ -23,7 +23,7 @@ const SearchStringInput = ({
     <SearchInputAsString
       value={value}
       options={options}
-      height="20px"
+      height="45px"
       onChange={onChange}
     >
       <Flex justify="space-between">

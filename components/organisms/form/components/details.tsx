@@ -33,7 +33,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 <Text
                   type="p"
                   text="Where are you from?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                   size={isMobile ? 14 : 16}
                 />
                 <Required />
@@ -59,7 +59,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Where to?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
                 <Required />
               </Flex>
@@ -88,7 +88,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Visa type"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
                 <Required />
               </Flex>
@@ -115,7 +115,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Application type"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
                 <Required />
               </Flex>
@@ -141,7 +141,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               size={isMobile ? 14 : 16}
               type="p"
               text="Number of Travellers"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <SearchStringInput
               size={isMobile ? 14 : 16}

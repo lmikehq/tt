@@ -40,12 +40,12 @@ export default function FamilyForm({
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "1.5rem"}
       >
-        <Section margin="0 0 1rem">
+        <Section margin="0">
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
               text={`Family Member's Name ${count + 1}`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Required />
           </Flex>
@@ -55,12 +55,12 @@ export default function FamilyForm({
             placeholder="Enter the member's name"
           />
         </Section>
-        <Section margin="0 0 1rem">
+        <Section margin="0">
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
               text={`Relationship to you`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Required />
           </Flex>
@@ -72,11 +72,11 @@ export default function FamilyForm({
           />
         </Section>
       </Flex>
-      <Section margin="0 0 1rem">
+      <Section margin="0">
         <Text
           type="p"
           text={`Member's Address`}
-          margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+          margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
         />
         <FieldInput
           formik={formik}
@@ -89,12 +89,12 @@ export default function FamilyForm({
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "1.5rem"}
       >
-        <Section margin="0 0 1rem">
+        <Section margin="0">
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
               text={`Member's Phone Number`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Required />
           </Flex>
@@ -104,12 +104,12 @@ export default function FamilyForm({
             placeholder="Enter Member's Phone Number"
           />
         </Section>
-        <Section margin="0 0 1rem">
+        <Section margin="0">
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
               text={`Member's email`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Required />
           </Flex>
@@ -131,12 +131,12 @@ export default function FamilyForm({
       {checked && (
         <div>
           <Flex
-            margin="0 0 1rem"
+            margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
-            <Section margin="0 0 1rem">
+            <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Gender" />
                 <Required />
@@ -148,7 +148,7 @@ export default function FamilyForm({
                 options={["Male", "Female"]}
               />
             </Section>
-            <Section margin="0 0 1rem">
+            <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Date of Birth" />
                 <Required />
@@ -161,12 +161,12 @@ export default function FamilyForm({
             </Section>
           </Flex>
           <Flex
-            margin="0 0 1rem"
+            margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
-            <Section margin="0 0 1rem">
+            <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Passport Number" />
                 <Required />
@@ -177,7 +177,7 @@ export default function FamilyForm({
                 name={`familyInfo.${count}.passNumber`}
               />
             </Section>
-            <Section margin="0 0 1rem">
+            <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Issued Country" />
                 <Required />
@@ -195,12 +195,12 @@ export default function FamilyForm({
             </Section>
           </Flex>
           <Flex
-            margin="0 0 1rem"
+            margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
-            <Section margin="0 0 1rem">
+            <Section margin="0">
               <Text type="p" text="Issue Date" />
               <FieldAsDate
                 name={`familyInfo.${count}.membersIssueDate`}
@@ -208,7 +208,7 @@ export default function FamilyForm({
                 formik={formik}
               />
             </Section>
-            <Section margin="0 0 1rem">
+            <Section margin="0">
               <Text type="p" text="Expiry Date" />
               <FieldAsDate
                 name={`familyInfo.${count}.membersExpiryDate`}

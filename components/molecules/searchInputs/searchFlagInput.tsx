@@ -29,7 +29,7 @@ const SearchFlagInput = ({
     <SearchInput
       // value={value}
       options={options}
-      height="18px"
+      height="45px"
       onChange={onChange}
       disabled={disabled}
     >

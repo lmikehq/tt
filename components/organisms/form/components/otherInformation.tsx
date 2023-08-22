@@ -172,7 +172,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Passport Number"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Input
               addon={
@@ -190,7 +190,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Passport issued country"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <SearchInputAsString
               options={COUNTRY_FLAGS.map((x) => x.name)}
@@ -223,7 +223,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Year of Expiry"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <SearchInputAsString
               options={get100Years(true)}
@@ -249,7 +249,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Gender"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <SearchInputAsString
               options={["Male", "Female", "Other"]}
@@ -281,7 +281,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
         />
 
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -290,7 +290,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Guarantor’s Name"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Input
               addon={
@@ -308,7 +308,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Relationship to you"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Input
               addon={
@@ -328,7 +328,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
           <Text
             type="p"
             text="Guarantor’s Address"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
           />
           <Input
             addon={
@@ -344,7 +344,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
         </Section>
 
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -353,7 +353,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Guarantor’s  Phone"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Input
               addon={
@@ -371,7 +371,7 @@ function OtherInformation({ formik, steps, index }: formProps) {
             <Text
               type="p"
               text="Guarantor’s Worth"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Input
               addon={

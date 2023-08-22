@@ -23,9 +23,6 @@ import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 import { SingleFormType } from "../applicationForm";
 import { PersonalInfoInterface } from "types";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@atom/datepicker";
 
 interface formProps {
   steps: string[];
@@ -47,10 +44,10 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
     },
   });
 
-   const options = [
-     { value: "Yes", label: "Yes" },
-     { value: "No", label: "No" },
-   ];
+  const options = [
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
+  ];
 
   return (
     <Section>
@@ -66,7 +63,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
       > */}
       <form onSubmit={formik.handleSubmit}>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -76,7 +73,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Last Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -91,7 +88,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="First Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -103,7 +100,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           </Section>
         </Flex>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -113,7 +110,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Middle Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -128,7 +125,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="State of Origin"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -140,7 +137,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           </Section>
         </Flex>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -150,7 +147,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="LG. of Origin"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -165,7 +162,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Native Language"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -177,7 +174,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           </Section>
         </Flex>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -187,7 +184,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Email Address"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -202,7 +199,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Phone Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -217,7 +214,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           </Section>
         </Flex>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -227,7 +224,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Means of ID"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -253,7 +250,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="ID Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -274,7 +271,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Issue Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <FieldAsDate
               name="issueDate"
@@ -286,7 +283,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Expiry Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <FieldAsDate
               name="expiryDate"
@@ -296,7 +293,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           </Section>
         </Flex>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -306,7 +303,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Country of Citizenship"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -326,7 +323,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Place of Birth (Country & State)"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -347,7 +344,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Residential Address"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <Required />
           </Flex>
@@ -359,7 +356,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           />
         </Section>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -369,7 +366,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Marital Status"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -409,7 +406,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           </Section>
         </Flex>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
@@ -419,7 +416,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Passport Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -428,18 +425,13 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               formik={formik}
               placeholder="Enter your Passport Number"
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              {/* <EnlargedDate> */}
-                <DatePicker label="Select your issue date" />
-              {/* </EnlargedDate> */}
-            </LocalizationProvider>
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
                 text="Issued Country"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <Required />
             </Flex>
@@ -465,7 +457,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Issued Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <FieldAsDate
               name="passportIssueDate"
@@ -477,7 +469,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Expiry Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
             />
             <FieldAsDate
               name="passportExpiryDate"
@@ -490,7 +482,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           <Text
             type="p"
             text="Main Purpose of your Trip"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
           />
           <TextArea
             onChange={(e: any) => {
@@ -519,7 +511,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -541,7 +534,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -559,9 +553,11 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
 
             <Section>
               <Text
+                size={16}
+                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <TextArea />
             </Section>
@@ -572,7 +568,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -595,7 +592,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever been refused a visa or permit, denied entry or ordered to leave Canada or any other Country?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -617,7 +615,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you previously applied to enter or remain in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -638,7 +637,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <TextArea />
             </Section>
@@ -649,7 +648,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -669,7 +669,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <TextArea />
             </Section>
@@ -680,7 +680,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -703,7 +704,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={18}
+                  size={16}
+                  weight={200}
                   type="p"
                   text="Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -720,9 +722,11 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
             <Section>
               <Text
+                size={16}
+                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <TextArea />
             </Section>
@@ -748,6 +752,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
       </form>
     </Section>
   );
-};
+}
 
 export default PersonalInfo;

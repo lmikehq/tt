@@ -74,11 +74,11 @@ export const FieldInput = (props: FieldProps) => {
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <Input
-        height="40px"
+        height="45px"
         addon={addon}
         type={type}
         placeholder={placeholder}
-        padding="1.5rem"
+        padding="0 0 0 14px"
         onChange={onChange ? onChange : handleChange}
         value={formik.values[name]}
       />
@@ -108,11 +108,11 @@ export const ArrayInput = (props: FieldProps) => {
   return (
     <div>
       <Input
-        height="40px"
+        height="45px"
         addon={addon}
         type={type}
         placeholder={placeholder}
-        padding="1.5rem"
+        padding="0 0 0 14px"
         onChange={handleChange}
         value={value}
       />

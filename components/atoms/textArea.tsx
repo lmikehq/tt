@@ -11,6 +11,7 @@ const CustomTextareaWrapper = styled.div`
 
 const CustomTextarea = styled.textarea`
   width: 100%;
+  resize: none;
   height: 144px;
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
@@ -19,10 +20,6 @@ const CustomTextarea = styled.textarea`
   padding: 12px;
   border-radius: 6px;
   border: 1px solid #e7e7e7;
-
-  &:hover {
-    // border-color: ;
-  }
 
   &:focus-visible {
     outline: 0;
@@ -58,7 +55,7 @@ const TextArea = ({ onChange }: TextAreaProps) => {
         rows={8}
         placeholder=""
         value={text}
-        onChange={(e) => {
+        onChange={(e: any) => {
           if (onChange) {
             console.log(e);
             onChange(e);
