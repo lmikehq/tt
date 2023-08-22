@@ -1,7 +1,7 @@
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { Formik, FormikValues } from "formik";
+import { Form, Formik, FormikValues, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
@@ -12,35 +12,40 @@ import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
-import useFormikLocalStorage from "hook/useFormikLocalStorage";
-import { FieldInput } from "@atom/fieldInput";
-import SearchInput, { SearchInputAsString } from "@atom/searchInput";
-import Input from "@atom/input";
-import { AiOutlineCheck } from "react-icons/ai";
-import { validateEmail } from "@lib/utilFns";
-import { IoIosArrowDown } from "react-icons/io";
+import {
+  FieldAsDate,
+  FieldAsString,
+  FieldInput,
+  FieldString,
+} from "@atom/fieldInput";
+import Spinner from "@components/icons/spinner";
+import Button from "@atom/button";
+import { ttColors } from "theme/colors";
+import { SingleFormType } from "../applicationForm";
+import { PersonalInfoInterface } from "types";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@atom/datepicker";
 
 interface formProps {
-  formik: FormikValues;
   steps: string[];
   index: number;
+  nextStep: ({ form }: { form: SingleFormType }) => void;
+  isLoading: boolean;
 }
 
-
-function PersonalInfo({ formik, steps, index }: formProps) {
+function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   const initialValues = { ...personalInfoKeys };
   const { isMobile } = useScreenResolution();
   const [value, setValue] = useState("");
   const [radio, setRadio] = useState("");
-  
-
-  //  const handleSelectionChange = (selectedValue) => {
-  //    // Do something with the selected value
-  //    console.log("Selected value:", selectedValue);
-  //  };
+  const formik = useFormik({
+    initialValues: personalInfoKeys,
+    validationSchema: personalInfoSchema,
+    onSubmit: (values: PersonalInfoInterface) => {
+      nextStep({ form: values });
+    },
+  });
 
    const options = [
      { value: "Yes", label: "Yes" },
@@ -50,45 +55,35 @@ function PersonalInfo({ formik, steps, index }: formProps) {
   return (
     <Section>
       <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
-      <Formik
+      {/* <Formik
         initialValues={initialValues}
         validationSchema={personalInfoSchema}
         onSubmit={async (values, { setSubmitting }) => {
+          console.log(values);
           await new Promise((r) => setTimeout(r, 500));
           setSubmitting(false);
         }}
-      >
-        <form>
-          <Flex
-            margin="0 0 1rem"
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
-          >
-            <Section>
-              <Flex align="center" gap="0.25rem">
-              
-              <FieldInput
-                name="lastName"
-                placeholder="Enter Last Name"
-                formik={formik}
+      > */}
+      <form onSubmit={formik.handleSubmit}>
+        <Flex
+          margin="0 0 1rem"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Last Name"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
               <Required />
-          </Flex>
-            </Section>
             </Flex>
-
-          <Flex>
-          <Section>
-            <Input
-              addon={
-                formik?.values?.lastName?.length > 5 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
+            <FieldInput
+              name="lastName"
               placeholder="Enter Last Name"
-              value={formik.values.lastName}
-              onChange={(x) => formik.setFieldValue("lastName", x.target.value)}
+              formik={formik}
             />
           </Section>
           <Section>
@@ -100,21 +95,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.firstName?.length > 5 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.firstName}
+            <FieldInput
+              name="firstName"
               placeholder="Enter First Name"
-              onChange={(x) =>
-                formik.setFieldValue("firstName", x.target.value)
-              }
+              formik={formik}
             />
           </Section>
         </Flex>
-
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -130,17 +117,10 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.placeOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
+            <FieldInput
+              name="middleName"
               placeholder="Enter Middle Name"
-              value={formik.values.MiddleName}
-              onChange={(x) =>
-                formik.setFieldValue("placeOfOrigin", x.target.value)
-              }
+              formik={formik}
             />
           </Section>
           <Section>
@@ -152,21 +132,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.stateOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
+            <FieldInput
+              name="stateOfOrigin"
               placeholder="Select your State of Origin"
-              value={formik.values.stateOfOrigin}
-              onChange={(x) =>
-                formik.setFieldValue("stateOfOrigin", x.target.value)
-              }
+              formik={formik}
             />
           </Section>
-          </Flex>
-          
+        </Flex>
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -182,17 +154,10 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.lgOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
+            <FieldInput
+              name="lgOfOrigin"
               placeholder="Select your LG of origin"
-              value={formik.values.lgOfOrigin}
-              onChange={(x) =>
-                formik.setFieldValue("lgOfOrigin", x.target.value)
-              }
+              formik={formik}
             />
           </Section>
           <Section>
@@ -204,12 +169,10 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              value={formik.values.nativeLanguage}
+            <FieldInput
+              name="nativeLanguage"
+              formik={formik}
               placeholder="Enter your native language"
-              onChange={(x) =>
-                formik.setFieldValue("nativeLanguage", x.target.value)
-              }
             />
           </Section>
         </Flex>
@@ -228,15 +191,10 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                validateEmail(formik?.values?.email) ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.email}
+            <FieldInput
+              name="email"
+              formik={formik}
               placeholder="Enter your e-mail address"
-              onChange={(x) => formik.setFieldValue("email", x.target.value)}
             />
           </Section>
           <Section>
@@ -258,7 +216,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             />
           </Section>
         </Flex>
-
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -274,7 +231,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
+            <FieldString
               options={[
                 "Passport",
                 "National ID Card",
@@ -287,23 +244,9 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Health Insurance Card",
               ]}
               placeholder="Select your means of ID"
-              onChange={(x) => formik.setFieldValue("meansOfId", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.meansOfId}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.meansOfId ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+              name="meansOfId"
+              formik={formik}
+            />
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -314,19 +257,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.idNumber?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
+            <FieldInput
+              name="idNumber"
               placeholder="Enter your ID number"
-              value={formik.values.idNumber}
-              onChange={(x) => formik.setFieldValue("idNumber", x.target.value)}
+              formik={formik}
             />
           </Section>
         </Flex>
-
         <Flex
           margin={isMobile ? "0px" : "0 0 1rem"}
           justify="space-between"
@@ -339,11 +276,11 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               text="Issue Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker label="Select your issue date" />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              name="issueDate"
+              placeholder="Select your Issue Date"
+              formik={formik}
+            />
           </Section>
           <Section>
             <Text
@@ -351,18 +288,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               text="Expiry Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker
-                  label="Select the Expiry Date"
-                  value={formik?.values.endDate}
-                  onChange={(e) => formik?.setFieldValue("endDate", e)}
-                />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              name="expiryDate"
+              placeholder="Select the Expiry Date"
+              formik={formik}
+            />
           </Section>
         </Flex>
-
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -378,32 +310,16 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInput
-              value={formik.values.homeCountry}
-              placeholder="Select your country of citizenship"
+            <FieldAsString
+              formik={formik}
               options={COUNTRY_FLAGS.map((x) => ({
                 name: x.name,
                 flag: x.flag,
                 code: x.code,
               }))}
-              onChange={(x) => formik.setFieldValue("homeCountry", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.homeCountry?.name}
-                  color="#1C1B1F"
-                  weight={100}
-                  size={isMobile ? 14 : 16}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values?.homeCountry?.name ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInput>
+              name="homeCountry"
+              placeholder="Select your country of citizenship"
+            />
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -414,35 +330,18 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInput
-              value={formik.values.placeOfOrigin}
-              placeholder="Select your country of birth"
+            <FieldAsString
+              formik={formik}
               options={COUNTRY_FLAGS.map((x) => ({
                 name: x.name,
                 flag: x.flag,
                 code: x.code,
               }))}
-              onChange={(x) => formik.setFieldValue("placeOfOrigin", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.placeOfOrigin?.name}
-                  color="#1C1B1F"
-                  weight={100}
-                  size={isMobile ? 14 : 16}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values?.placeOfOrigin?.name ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInput>
+              name="placeOfOrigin"
+              placeholder="Select your country  of birth"
+            />
           </Section>
         </Flex>
-
         <Section>
           <Flex align="center" gap="0.25rem">
             <Text
@@ -452,21 +351,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             />
             <Required />
           </Flex>
-          <Input
-            addon={
-              formik?.values?.residentialAddress?.length > 2 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
+          <FieldInput
+            name="residentialAddress"
             type="address"
-            value={formik.values.residentialAddress}
+            formik={formik}
             placeholder="Enter your residential address"
-            onChange={(x) =>
-              formik.setFieldValue("residentialAddress", x.target.value)
-            }
           />
         </Section>
-
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -482,7 +373,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInputAsString
+            <FieldString
               options={[
                 "Single",
                 "Married",
@@ -497,42 +388,9 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Remarried",
               ]}
               placeholder="Select your marital status"
-              onChange={(x) => formik.setFieldValue("maritalStatus", x)}
-            >
-              <Flex justify="space-between">
-              <FieldString
-                options={[
-                  "Passport",
-                  "National ID Card",
-                  "Driver's License",
-                  "Social Security Card",
-                  "Birth Certificate",
-                  "Voter ID Card",
-                  "Military ID Card",
-                  "Resident Permit/Visa",
-                  "Health Insurance Card",
-                ]}
-                placeholder="Select your means of ID"
-                name="meansOfId"
-                formik={formik}
-              />
-            </Section>
-            <Section>
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  type="p"
-                  text={formik?.values?.maritalStatus}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.maritalStatus ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInputAsString>
+              name="maritalStatus"
+              formik={formik}
+            />
           </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -543,21 +401,13 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              addon={
-                formik?.values?.partnersName?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.partnersName}
-              onChange={(x) =>
-                formik.setFieldValue("partnersName", x.target.value)
-              }
+            <FieldInput
+              name="partnersName"
+              formik={formik}
               placeholder="Enter your partner's name"
             />
           </Section>
         </Flex>
-
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -566,16 +416,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
         >
           <Section>
             <Flex align="center" gap="0.25rem">
-              <FieldAsDate 
-                name="issueDate"
-                placeholder="Select your Issue Date"
-                formik={formik}
-                />
-                <Required />
-              </Flex>
-            </Section>
-            <Section>
-              <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
                 text="Passport Number"
@@ -583,70 +423,17 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <Input
-              value={formik.values.passportNumber}
-              onChange={(x) =>
-                formik.setFieldValue("passportNumber", x.target.value)
-              }
+            <FieldInput
+              name="passportNumber"
+              formik={formik}
               placeholder="Enter your Passport Number"
             />
-            </Section>
-            <Section>
-
-                <FieldAsDate
-                  name="expiryDate"
-                  placeholder="Select the Expiry Date"
-                  formik={formik}
-                />
-            </Section>
-          </Flex>
-          <Flex
-            margin="0 0 1rem"
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
-          >
-            <Section>
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  type="p"
-                  text="Country of Citizenship"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-                />
-                <Required />
-              </Flex>
-              <FieldAsString
-                formik={formik}
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                name="homeCountry"
-                placeholder="Select your country of citizenship"
-              />
-            </Section>
-            <Section>
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  type="p"
-                  text="Place of Birth (Country & State)"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-                />
-                <Required />
-              </Flex>
-              <FieldAsString
-                formik={formik}
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                name="placeOfOrigin"
-                placeholder="Select your country  of birth"
-              />
-            </Section>
-          </Flex>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              {/* <EnlargedDate> */}
+                <DatePicker label="Select your issue date" />
+              {/* </EnlargedDate> */}
+            </LocalizationProvider>
+          </Section>
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
@@ -656,33 +443,18 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               />
               <Required />
             </Flex>
-            <SearchInput
+            <FieldAsString
               options={COUNTRY_FLAGS.map((x) => ({
                 name: x.name,
                 flag: x.flag,
                 code: x.code,
               }))}
+              formik={formik}
+              name="issuingCountry"
               placeholder="Select the country"
-              onChange={(x) => formik.setFieldValue("issuingCountry", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  size={isMobile ? 14 : 16}
-                  type="p"
-                  text={formik?.values?.issuingCountry?.name}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik?.values?.issuingCountry?.name ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-              </Flex>
-            </SearchInput>
+            />
           </Section>
-
+        </Flex>
         <Flex
           margin={isMobile ? "0px" : "0 0 1rem"}
           justify="space-between"
@@ -692,14 +464,14 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           <Section width="100%">
             <Text
               type="p"
-              text="Issue Date"
+              text="Issued Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker label="Select your issue date" />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              name="passportIssueDate"
+              placeholder="Select your Issued Date"
+              formik={formik}
+            />
           </Section>
           <Section>
             <Text
@@ -707,27 +479,25 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               text="Expiry Date"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <EnlargedDate>
-                <DatePicker
-                  label="Select your expire date "
-                  value={formik?.values.endDate}
-                  onChange={(e) => formik?.setFieldValue("endDate", e)}
-                />
-              </EnlargedDate>
-            </LocalizationProvider>
+            <FieldAsDate
+              name="passportExpiryDate"
+              placeholder="Select your Expiry Date"
+              formik={formik}
+            />
           </Section>
         </Flex>
-
         <Section>
           <Text
             type="p"
             text="Main Purpose of your Trip"
-            margin={isMobile ? ".7rem  0 .2rem" : "2.5rem 0 .2rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
           />
-          <TextArea />
+          <TextArea
+            onChange={(e: any) => {
+              formik.setFieldValue("purposeOfTrip", e.target.value);
+            }}
+          />
         </Section>
-
         <Section>
           <Text
             type="h2"
@@ -749,8 +519,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
                   type="p"
                   text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -767,34 +536,12 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             </li>
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
-              <FieldString
-                options={[
-                  "Single",
-                  "Married",
-                  "Divorced",
-                  "Widowed",
-                  "Separated",
-                  "Annulled",
-                  "Domestic Partnership/Civil Union",
-                  "Common-Law Marriage",
-                  "Registered Partnership",
-                  "Cohabiting",
-                  "Remarried",
-                ]}
-                placeholder="Select your marital status"
-                name="maritalStatus"
-                formik={formik}
-              />
-            </Section>
-            <Section>
-              <Flex align="center" gap="0.25rem">
                 <Text
                   styles={{
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
                   type="p"
                   text="Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -812,8 +559,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
 
             <Section>
               <Text
-                size={16}
-                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
@@ -827,8 +572,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
                   type="p"
                   text="Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -851,8 +595,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
                   type="p"
                   text="Have you ever been refused a visa or permit, denied entry or ordered to leave Canada or any other Country?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -866,39 +609,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                   justifyContent="flex-end"
                 />
               </Flex>
-              <FieldAsString
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                formik={formik}
-                name="issuingCountry"
-                placeholder="Select the country"
-              />
-            </Section>
-          </Flex>
-          <Flex
-            margin={isMobile ? "0px" : "0 0 1rem"}
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
-          >
-            <Section width="100%">
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-              />
-              <FieldAsDate
-                name="passportIssueDate"
-                placeholder="Select your Issued Date"
-                formik={formik}
-              />
-            </Section>
-
+            </li>
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -906,14 +617,12 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
                   type="p"
-                  text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
+                  text="Have you previously applied to enter or remain in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
-
                 <CustomRadioGroup
                   defaultValue=""
                   options={options}
@@ -931,13 +640,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
               />
-              <FieldAsDate
-                name="passportExpiryDate"
-                placeholder="Select your Expiry Date"
-                formik={formik}
-              />
+              <TextArea />
             </Section>
-
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -945,8 +649,38 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
+                  type="p"
+                  text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            <Section>
+              <Text
+                size={16}
+                weight={300}
+                type="p"
+                text="If you answered “yes”, please provide details"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              />
+              <TextArea />
+            </Section>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={18}
                   type="p"
                   text="Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -969,8 +703,7 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                     width: "65%",
                     justifyContent: "flex-start",
                   }}
-                  size={16}
-                  weight={200}
+                  size={18}
                   type="p"
                   text="Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -985,11 +718,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 />
               </Flex>
             </li>
-
             <Section>
               <Text
-                size={16}
-                weight={300}
                 type="p"
                 text="If you answered “yes”, please provide details"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
@@ -998,8 +728,24 @@ function PersonalInfo({ formik, steps, index }: formProps) {
             </Section>
           </ol>
         </Section>
+        <Section height="unset" margin="4.5rem 0 0 0">
+          <Button width="100%" height={"3.5rem"} type="submit">
+            <Flex align="center" width="100%" height="100%" justify="center">
+              {isLoading ? (
+                <Spinner size="40px" fill={ttColors.primary} />
+              ) : (
+                <Text
+                  type="span"
+                  text={"Save & Continue"}
+                  weight={600}
+                  size={20}
+                  color={ttColors.light}
+                />
+              )}
+            </Flex>
+          </Button>
+        </Section>
       </form>
-      </Formik>
     </Section>
   );
 };

@@ -1,3 +1,4 @@
+import { VisaApplicationFormInterface } from "types";
 import * as yup from "yup";
 
 export const detailsSchema = yup.object().shape({
@@ -10,8 +11,8 @@ export const detailsSchema = yup.object().shape({
 });
 
 export const detailsKeys = {
-  home: {},
-  destination: {},
+  home: { name: "" },
+  destination: { name: "" },
   applicationType: "",
   visaType: "", //
   travellingBy: "",
@@ -19,8 +20,15 @@ export const detailsKeys = {
 };
 
 export const personalInfoSchema = yup.object().shape({
-  firstName: yup.string().max(15, "Must be 15 characters or less").min(2, "Testing").required("Required"),
-  lastName: yup.string().max(15, "Must be 15 characters or less").required("Required"),
+  firstName: yup
+    .string()
+    .max(15, "Must be 15 characters or less")
+    .min(2, "Testing")
+    .required("Required"),
+  lastName: yup
+    .string()
+    .max(15, "Must be 15 characters or less")
+    .required("Required"),
   middleName: yup.string().required(),
   email: yup.string().email().required(),
   placeOfOrigin: yup.string().required(),
@@ -33,7 +41,7 @@ export const personalInfoSchema = yup.object().shape({
   expiryDate: yup.date(),
   homeCountry: yup.string().required(),
   residentialAddress: yup.string().required(),
-  dateOfBirth: yup.date().required(),
+  // dateOfBirth: yup.date().required(),
   maritalStatus: yup.string().required(),
   partnersName: yup.string(),
   passportNumber: yup.string().required(),
@@ -65,7 +73,7 @@ export const personalInfoKeys = {
   issuingCountry: "",
   passportIssueDate: "",
   passportExpiryDate: "",
-  purposeOfTrip: ""
+  purposeOfTrip: "",
 };
 
 export const educationKeys = {
@@ -75,55 +83,61 @@ export const educationKeys = {
   courseOfStudy: "",
   startYear: "",
   endYear: "",
-}
+};
 
 export const educationSchema = yup.object().shape({
   schoolName: yup.string().required("Required"),
   degree: yup.string().required("Required"),
   courseOfStudy: yup.string().required("Required"),
-  grade: yup.number().max(5.0, "Your Grade cannot be more than 5.0").min(1.0, "Your Grade cannot be less than 1.0").required("Required"),
-  startDate: yup.date().required("Required"),
-  endYear: yup.date().required("Required")
-})
-
-export const educationArraySchema = yup.array()
-  .of(educationSchema).min(1, "You need to provide at least one education")
-  .max(3, "You can provide at most three education")
+  grade: yup
+    .number()
+    .max(5.0, "Your Grade cannot be more than 5.0")
+    .min(1.0, "Your Grade cannot be less than 1.0")
+    .required("Required"),
+  startYear: yup.string().required("Required"),
+  endYear: yup.string().required("Required"),
+});
 
 export const employmentSchema = yup.object().shape({
   employmentType: yup.string().required(),
   locationType: yup.string().required(),
   companyName: yup.string().required(),
-  employerName: yup.string().required(),
+  jobTitle: yup.string().required(),
   companyLocation: yup.string().required(),
   startedYear: yup.string().required(),
   endedYear: yup.string().required(),
 });
-  
+export const singleFamilyInfoSchema = yup.object().shape({
+  passNumber: yup.string(),
+  expiryYear: yup.string(),
+  gender: yup.string(),
+  membersDOB: yup.string(),
+  passIssueCountry: yup.string(),
+  membersName: yup.string().required(),
+  membersRelationship: yup.string().required(),
+  membersAddress: yup.string().required(),
+  membersPhone: yup.string().required(),
+  membersEmail: yup.string().email().required(),
+  membersIssueDate: yup.string(),
+  membersExpiryDate: yup.string(),
+});
+export const educationArraySchema = yup
+  .array()
+  .of(educationSchema)
+  .min(1, "You need to provide at least one education")
+  .max(3, "You can provide at most three education");
+export const employmentArraySchema = yup.array().of(employmentSchema);
+export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
+
 export const employmentKeys = {
   companyName: "",
-  employerName: "",
+  jobTitle: "",
   employmentType: "",
   locationType: "",
   companyLocation: "",
   startedYear: "",
   endedYear: "",
 };
-  
-export const familyInfoSchema = yup.object().shape({
-  passNumber: yup.string().required(),
-  expiryYear: yup.string().required(),
-  gender: yup.string().required(),
-  membersDOB: yup.date().required(),
-  passIssueCountry: yup.string().required(),
-  membersName: yup.string().required(),
-  membersRelationship: yup.string().required(),
-  membersAddress: yup.string().required(),
-  membersPhone: yup.string().required(),
-  membersEmail: yup.string().required(),
-  membersIssueDate: yup.date().required(),
-  membersExpiryDate: yup.date().required()
-});
 
 export const familyInforKeys = {
   passNumber: "",
@@ -137,23 +151,52 @@ export const familyInforKeys = {
   membersPhone: "",
   membersEmail: "",
   membersIssueDate: "",
-  membersExpiryDate: ""
+  membersExpiryDate: "",
 };
+export const educationsSchema = yup
+  .object()
+  .shape({ educations: educationArraySchema });
+export const employmentsSchema = yup
+  .object()
+  .shape({ employments: employmentArraySchema });
+export const familyInfoSchema = yup
+  .object()
+  .shape({ familyInfo: familyInfoArraySchema });
 
 export const visaSchema = {
   ...detailsSchema,
-  ...educationSchema,
-  ...employmentSchema,
+  ...educationsSchema,
+  ...employmentsSchema,
   ...personalInfoSchema,
   ...familyInfoSchema,
 };
-
-export const visaInitVals = {
+export const employmentsArr = {
+  employments: [
+    { ...employmentKeys },
+    { ...employmentKeys },
+    { ...employmentKeys },
+  ],
+};
+export const educationsArr = {
+  educations: [
+    { ...educationKeys },
+    { ...educationKeys },
+    { ...educationKeys },
+  ],
+};
+export const familyInfoArr = {
+  familyInfo: [
+    { ...familyInforKeys },
+    { ...familyInforKeys },
+    { ...familyInforKeys },
+  ],
+};
+export const visaInitVals: VisaApplicationFormInterface = {
   ...detailsKeys,
-  ...employmentKeys,
-  ...educationKeys,
+  ...educationsArr,
+  ...employmentsArr,
+  ...familyInfoArr,
   ...personalInfoKeys,
-  ...familyInforKeys,
 };
 
 export const waitlistSchema = yup.object().shape({

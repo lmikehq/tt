@@ -17,6 +17,7 @@ import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
 import UploadDocuments from "@organism/form/components/uploadDocuments";
+import { SingleFormType } from "@organism/form/applicationForm";
 
 interface IFormStep {
   id: number;
@@ -29,7 +30,9 @@ interface IFormStep {
 export const getSteps = (
   formikConfig: any,
   setFormFee: (n: number) => void,
-  setCurrentPhase: (n: number) => void
+  setCurrentPhase: (n: number) => void,
+  nextStep: ({ form }: { form: SingleFormType }) => void,
+  isLoading: boolean
 ): IFormStep[] => {
   return [
     {
@@ -49,21 +52,23 @@ export const getSteps = (
       title: "Personal Details",
       content: (
         <PersonalInfo
-          formik={formikConfig}
-          steps={["Personal Details"]}
+          steps={["Personal Information"]}
           index={1}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
-      valKeys: Object.keys(personalInfoKeys)
+      valKeys: Object.keys(personalInfoKeys),
     },
     {
       id: 3,
       title: "Education Details",
       content: (
         <EducationInfo
-          formik={formikConfig}
           steps={["Education Details"]}
           index={2}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
       valKeys: Object.keys(educationKeys),
@@ -76,6 +81,8 @@ export const getSteps = (
           formik={formikConfig}
           steps={["Employment Details"]}
           index={3}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
       valKeys: Object.keys(employmentKeys),
@@ -88,6 +95,8 @@ export const getSteps = (
           formik={formikConfig}
           steps={["Family Members' Details"]}
           index={4}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
       valKeys: Object.keys(familyInforKeys),

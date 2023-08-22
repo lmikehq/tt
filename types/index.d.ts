@@ -42,7 +42,7 @@ interface Destination {
   name: string;
 }
 
-interface DetailsKeys {
+export interface DetailsKeys {
   home: Home;
   destination: Destination;
   applicationType: string;
@@ -50,21 +50,37 @@ interface DetailsKeys {
   travellingBy: string;
   numberOfTravellers: number;
 }
-
-interface EdAndEmpKeys {
-  degree: string;
-  graudautionYear: string;
+export interface EducationDetailsInterface {
   schoolName: string;
-  courseOfStudy: string;
+  degree: string;
   grade: string;
+  courseOfStudy: string;
+  startYear: string;
+  endYear: string;
+}
+export interface EmploymentDetailsInterface {
   companyName: string;
-  employerName: string;
-  employerPhone: string;
+  jobTitle: string;
+  employmentType: string;
+  locationType: string;
+  companyLocation: string;
   startedYear: string;
   endedYear: string;
 }
+// export interface EdAndEmpKeys {
+//   degree: string;
+//   graudautionYear: string;
+//   schoolName: string;
+//   courseOfStudy: string;
+//   grade: string;
+//   companyName: string;
+//   employerName: string;
+//   employerPhone: string;
+//   startedYear: string;
+//   endedYear: string;
+// }
 
-interface PersonalInfoKeys {
+export interface PersonalInfoInterface {
   firstName: string;
   lastName: string;
   middleName: string;
@@ -88,7 +104,20 @@ interface PersonalInfoKeys {
   passportExpiryDate: string;
   purposeOfTrip: string;
 }
-
+export interface FamilyInfoInterface {
+  passNumber: string;
+  expiryYear: string;
+  gender: string;
+  membersDOB: string;
+  passIssueCountry: string;
+  membersName: string;
+  membersRelationship: string;
+  membersAddress: string;
+  membersPhone: string;
+  membersEmail: string;
+  membersIssueDate: string;
+  membersExpiryDate: string;
+}
 interface OtherInfoKeys {
   passNumber: string;
   passIssueCountry: string;
@@ -103,10 +132,11 @@ interface OtherInfoKeys {
 
 export interface VisaApplicationFormInterface
   extends DetailsKeys,
-    EdAndEmpKeys,
-    PersonalInfoKeys,
-    OtherInfoKeys {
+    PersonalInfoKeys {
   firstAndMiddleName?: string;
+  educations: EducationDetailsInterface[];
+  employments: EmploymentDetailsInterface[];
+  familyInfo: FamilyInfoInterface[];
 }
 
 declare module "@paystack/inline-js";

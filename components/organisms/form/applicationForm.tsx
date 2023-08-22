@@ -38,7 +38,14 @@ import {
 import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
-import { IFee } from "types";
+import {
+  EducationDetailsInterface,
+  EmploymentDetailsInterface,
+  FamilyInfoInterface,
+  IFee,
+  PersonalInfoInterface,
+  VisaApplicationFormInterface,
+} from "types";
 import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 import VisaProgress from "@molecule/visaProgress";
 import { ListItem } from "@mui/material";
@@ -62,12 +69,20 @@ const PromoInput = styled.div`
     height: 40px !important;
   }
 `;
+export type SingleFormType =
+  | PersonalInfoInterface
+  | EducationDetailsInterface[]
+  | EmploymentDetailsInterface[]
+  | FamilyInfoInterface[];
 
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
   const [promocodeLoading, setPromocodeLoading] = useState(false);
-  const [applicationResponse, setApplicationResponse] = useState<any>({});
+  const [applicationResponse, setApplicationResponse] =
+    useState<any>(visaInitVals);
+  const [formData, setFormData] =
+    useState<VisaApplicationFormInterface>(visaInitVals);
   const { user } = useUserStore((state) => state);
   const { startPayment, loading, error, response, setData, data } =
     usePaystack();
@@ -117,6 +132,7 @@ function ApplicationForm() {
     type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
   );
   // const [currentPhase, setCurrentPhase] = useState(5);
+  const [highestPhase, setHighestPhase] = useState(1);
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const router = useRouter();
 
@@ -157,11 +173,13 @@ function ApplicationForm() {
   const setPhase = async (number: number) => {
     console.log("setPhase", number);
     setCurrentPhase(number);
+    if (number > highestPhase) setHighestPhase(number);
   };
 
-  const nextStep = async () => {
+  const nextStep = async ({ form }: { form: SingleFormType }) => {
     if (nextStepLoading) return;
     setNextStepLoading(true);
+    setFormData({ ...formData, ...form });
 
     // if (currentPhase === 4) {
     //   setNextStepLoading(true);
@@ -176,6 +194,7 @@ function ApplicationForm() {
     // }
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
+    if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
     setNextStepLoading(false);
   };
 
@@ -239,9 +258,13 @@ function ApplicationForm() {
     ];
   }
 
-  const step = getSteps(formik, setFormFee, setCurrentPhase).find(
-    (x) => x.id === currentPhase
-  );
+  const step = getSteps(
+    formik,
+    setFormFee,
+    setCurrentPhase,
+    nextStep,
+    nextStepLoading
+  ).find((x) => x.id === currentPhase);
 
   async function handlePromoCode(e: any) {
     e.preventDefault();
@@ -293,7 +316,7 @@ function ApplicationForm() {
           }}
           height="auto"
           padding={isMobile ? "0px" : "2.5rem"}
-          gap="2.5rem"
+          gap="2.25rem"
           direction={isMobile ? "column" : "row"}
         >
           <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
@@ -316,13 +339,17 @@ function ApplicationForm() {
               />
             </Flex>
             {currentPhase > 1 && (
-              <VisaProgress phase={currentPhase - 1} setPhase={setPhase} />
+              <VisaProgress
+                phase={currentPhase - 1}
+                setPhase={setPhase}
+                highestPhase={highestPhase}
+              />
             )}
             <Section width={isMobile ? "100%" : "100%"} padding="2rem 0">
               {step?.content}
             </Section>
             <Section height="unset" margin="4.5rem 0 0 0">
-              {isValid && (
+              {(currentPhase == 1 || currentPhase == 6) && (
                 <Button width="100%" height={"3.5rem"} onClick={nextStep}>
                   <Flex
                     align="center"
@@ -339,6 +366,7 @@ function ApplicationForm() {
                         weight={600}
                         size={20}
                         color={ttColors.light}
+                        padding="2rem 0"
                       />
                     )}
                   </Flex>
@@ -365,7 +393,6 @@ function ApplicationForm() {
               weight="400"
             />
           </Flex>
-
           <Section
             width="40%"
             styles={{ display: isMobile ? "none" : "block" }}
@@ -431,21 +458,30 @@ function ApplicationForm() {
                         type="h3"
                         size={20}
                         weight={600}
+                        whiteSpace="nowrap"
                       />
                       <Text
                         type="p"
                         size={18}
                         weight={400}
                         text="Non-Refundable"
+                        whiteSpace="nowrap"
                       />
                     </Flex>
                     <Flex direction="column">
-                      <Text text="Validity" type="h3" size={20} weight={600} />
+                      <Text
+                        text="Validity"
+                        type="h3"
+                        size={20}
+                        weight={600}
+                        whiteSpace="nowrap"
+                      />
                       <Text
                         type="p"
                         size={18}
                         weight={400}
                         text="Passport dependent"
+                        whiteSpace="nowrap"
                       />
                     </Flex>
                   </Flex>

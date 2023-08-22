@@ -1,14 +1,13 @@
-import { FormikValues, useField } from "formik";
-import { useEffect, useState } from "react";
+import { FormikProvider, FormikValues, useField } from "formik";
+import { useEffect } from "react";
 import Input from "./input";
 import Text from "./text";
 import { ttColors } from "theme/colors";
-import { SearchInputAsString } from "./searchInput";
 import { ReactNode } from "react";
 import { DatePicker } from "@atom/datepicker";
-import dayjs from "dayjs";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
+import Section from "@molecule/section";
 
 interface FieldProps {
   name: string;
@@ -23,11 +22,12 @@ interface FieldProps {
     | "address"
     | "checkbox";
   placeholder: string;
-  formik: FormikValues;
+  formik: any;
   options?: any[];
   addon?: ReactNode;
-  views?: ('year' | 'month' | 'day' )[];
+  views?: ("year" | "month" | "day")[];
   disabled?: boolean;
+  onChange?: (x: any) => void;
 }
 
 function getNestedValue(obj: any, propertyPath: string) {
@@ -43,18 +43,26 @@ function getNestedValue(obj: any, propertyPath: string) {
   return value;
 }
 
-export const FieldInput = (props: FieldProps) => {
-  const { name, type, placeholder, formik, addon } = props;
-  const [field, meta] = useField(name);
+const ErrorText = ({ text }: { text: string }) => {
+  return (
+    <Section height="fit-content" styles={{ position: "absolute", bottom: 0 }}>
+      <Text type="p" size={14} weight={200} color={ttColors.red} text={text} />
+    </Section>
+  );
+};
 
-  const { onChange } = field;
+export const FieldInput = (props: FieldProps) => {
+  const { name, type, placeholder, formik, addon, onChange } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     formik.setFieldValue(name, value);
     sessionStorage.setItem(name, value);
-    onChange(e);
+    console.log("here");
+    console.log(formik);
   };
+  const touched = getNestedValue(formik.touched, name);
+  const error = getNestedValue(formik.errors, name);
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -64,35 +72,28 @@ export const FieldInput = (props: FieldProps) => {
   }, []);
 
   return (
-    <div>
+    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <Input
         height="40px"
         addon={addon}
         type={type}
         placeholder={placeholder}
         padding="1.5rem"
-        {...field}
-        onChange={handleChange}
+        onChange={onChange ? onChange : handleChange}
         value={formik.values[name]}
       />
-      {meta.touched && meta.error ? (
-        <Text type="p" color={ttColors.red} text={meta.error} />
-      ) : null}
-    </div>
+      {touched && error ? <ErrorText text={error} /> : null}
+    </Section>
   );
 };
 
 export const ArrayInput = (props: FieldProps) => {
   const { name, type, placeholder, formik, addon } = props;
-  const [field, meta] = useField(name);
-
-  const { onChange } = field;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     formik.setFieldValue(name, value);
     sessionStorage.setItem(name, value);
-    onChange(e);
   };
 
   useEffect(() => {
@@ -112,30 +113,31 @@ export const ArrayInput = (props: FieldProps) => {
         type={type}
         placeholder={placeholder}
         padding="1.5rem"
-        {...field}
         onChange={handleChange}
         value={value}
       />
-      {meta.touched && meta.error ? (
+      {/* {meta.touched && meta.error ? (
         <Text type="p" color={ttColors.red} text={meta.error} />
-      ) : null}
+      ) : null} */}
     </div>
   );
 };
 
 export const FieldAsString = (props: FieldProps) => {
   const { name, options = [], formik, placeholder } = props;
-  const [field, meta] = useField(name);
+  const touched = getNestedValue(formik.touched, name);
+  const error = getNestedValue(formik.errors, name);
+  // const [field, meta] = useField(name);
 
-  const { onChange } = field;
+  // const { onChange } = field;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(name, e);
-    onChange({ target: { name: field.name, value: e } });
-    sessionStorage.setItem(name, field.value);
+  const handleChange = (e: any) => {
+    formik.setFieldValue(name, e.name);
+    // onChange({ target: { name: field.name, value: e } });
+    sessionStorage.setItem(name, e.name);
   };
 
-  const value = getNestedValue(formik.values, field.name);
+  const value = getNestedValue(formik.values, name);
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -145,28 +147,35 @@ export const FieldAsString = (props: FieldProps) => {
   }, []);
 
   return (
-    <SearchFlagInput
-      value={value?.name}
-      options={options}
-      onChange={handleChange}
-      placeholder={placeholder}
-    />
+    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+      <SearchFlagInput
+        value={value}
+        options={options}
+        onChange={handleChange}
+        placeholder={placeholder}
+      />{" "}
+      {touched && error ? <ErrorText text={error} /> : null}
+    </Section>
   );
 };
 
 export const FieldString = (props: FieldProps) => {
   const { name, options = [], formik, placeholder } = props;
-  const [field, meta] = useField(name);
+  const touched = getNestedValue(formik.touched, name);
+  const error = getNestedValue(formik.errors, name);
+  // const [field, meta] = useField(name);
 
-  const { onChange } = field;
+  // const { onChange } = field;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     formik.setFieldValue(name, e);
-    onChange({ target: { name: field.name, value: e } });
-    sessionStorage.setItem(name, field.value);
+    // onChange({ target: { name: field.name, value: e } });
+    console.log("ELL");
+    console.log(formik.values);
+    // sessionStorage.setItem(name, field.value);
   };
 
-  const value = getNestedValue(formik.values, field.name);
+  const value = getNestedValue(formik.values, name);
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -175,31 +184,39 @@ export const FieldString = (props: FieldProps) => {
     }
   }, []);
 
-  console.log(placeholder)
+  console.log(placeholder);
+
+  console.log(formik);
 
   return (
-    <SearchStringInput
-      options={options}
-      onChange={handleChange}
-      placeholder={placeholder}
-      value={value}
-    />
+    <FormikProvider value={formik}>
+      <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+        <SearchStringInput
+          options={options}
+          onChange={handleChange}
+          placeholder={placeholder}
+          value={value}
+        />{" "}
+        {touched && error ? <ErrorText text={error} /> : null}
+      </Section>
+    </FormikProvider>
   );
 };
 
 export const FieldAsDate = (props: FieldProps) => {
-  const { name, disabled, formik, views } = props;
-  const [field, meta] = useField(name);
+  const { name, disabled, formik, views, onChange } = props;
+  // const [field, meta] = useField(name);
+  const touched = getNestedValue(formik.touched, name);
+  const error = getNestedValue(formik.errors, name);
+  // const { onChange } = field;
 
-  const { onChange } = field;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    formik.setFieldValue(name, e);
-    onChange({ target: { name: field.name, value: e } });
-    sessionStorage.setItem(name, field.value);
+  const handleChange = (e: any) => {
+    formik.setFieldValue(name, `${e.$d}`);
+    // onChange({ target: { name: field.name, value: e } });
+    // sessionStorage.setItem(name, field.value);
   };
 
-  const value = getNestedValue(formik.values, field.name);
+  // const value = getNestedValue(formik.values, field.name);
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -209,12 +226,15 @@ export const FieldAsDate = (props: FieldProps) => {
   }, []);
 
   return (
-    <DatePicker
-      label={disabled ? 'Present': ''}
-      disabled={disabled}
-      views={views}
-      value={value}
-      onChange={handleChange}
-    />
+    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+      <DatePicker
+        label={disabled ? "Present" : ""}
+        disabled={disabled}
+        views={views}
+        // value={value}
+        onChange={onChange ? onChange : handleChange}
+      />{" "}
+      {touched && error ? <ErrorText text={error} /> : null}
+    </Section>
   );
 };

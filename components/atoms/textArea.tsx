@@ -34,20 +34,21 @@ const Placeholder = styled.span`
   bottom: 10px;
   right: 10px;
   pointer-events: none;
-  color: ${ttColors.gray}
+  color: ${ttColors.gray};
 `;
-
-const TextArea = () => {
+interface TextAreaProps {
+  onChange?: (e: any) => void;
+}
+const TextArea = ({ onChange }: TextAreaProps) => {
   const [text, setText] = useState("");
   const remainingChars = MaxCharCount - text.length;
-
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = event.target.value;
     if (newText.length <= MaxCharCount) {
       setText(newText);
     }
-    console.log(remainingChars)
+    console.log(remainingChars);
   };
 
   return (
@@ -57,12 +58,22 @@ const TextArea = () => {
         rows={8}
         placeholder=""
         value={text}
-        onChange={handleTextChange}
+        onChange={(e) => {
+          if (onChange) {
+            console.log(e);
+            onChange(e);
+          }
+          handleTextChange(e);
+        }}
       />
       <Placeholder>
         <Text
           type="p"
-          text={remainingChars < 1000  ? `${remainingChars} characters left` : 'Max 1000 characters'}
+          text={
+            remainingChars < 1000
+              ? `${remainingChars} characters left`
+              : "Max 1000 characters"
+          }
           color={remainingChars >= 0 ? ttColors.gray : ttColors.red}
         />
       </Placeholder>
