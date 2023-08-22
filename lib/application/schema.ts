@@ -2,17 +2,17 @@ import { VisaApplicationFormInterface } from "types";
 import * as yup from "yup";
 
 export const detailsSchema = yup.object().shape({
-  home: yup.object().required(),
-  destination: yup.object().required(),
+  home: yup.string().required(),
+  destination: yup.string().required(),
   applicationType: yup.string().required(),
-  travellingBy: yup.string().required(),
+  travellingBy: yup.string(),
   numberOfTravellers: yup.number().required().max(6).min(1),
   visaType: yup.string().required(),
 });
 
 export const detailsKeys = {
-  home: { name: "" },
-  destination: { name: "" },
+  home: "",
+  destination: "",
   applicationType: "",
   visaType: "", //
   travellingBy: "",

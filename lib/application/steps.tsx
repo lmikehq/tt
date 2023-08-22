@@ -41,9 +41,10 @@ export const getSteps = (
       content: (
         <TripDetails
           steps={["Enter your Trip Details"]}
-          formik={formikConfig}
           index={0}
           setFee={setFormFee}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
     },

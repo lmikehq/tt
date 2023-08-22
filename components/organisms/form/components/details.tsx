@@ -2,7 +2,7 @@ import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { FormikValues } from "formik";
+import { FormikValues, useFormik } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
@@ -10,22 +10,37 @@ import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
+import { detailsKeys, detailsSchema } from "@lib/application/schema";
+import { DetailsKeys } from "types";
+import { FieldAsString, FieldString } from "@atom/fieldInput";
+import { SingleFormType } from "../applicationForm";
+import Button from "@atom/button";
+import Spinner from "@components/icons/spinner";
+import { ttColors } from "theme/colors";
 
 interface formProps {
-  formik: FormikValues;
   steps: string[];
   index: number;
   setFee: (n: number) => void;
+  nextStep: ({ form }: { form: SingleFormType }) => void;
+  isLoading: boolean;
 }
 
-function TripDetails({ formik, steps, index, setFee }: formProps) {
+function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
   const { isMobile } = useScreenResolution();
+  const formik = useFormik({
+    initialValues: detailsKeys,
+    validationSchema: detailsSchema,
+    onSubmit: (values: DetailsKeys) => {
+      nextStep({ form: values });
+    },
+  });
 
   return (
     <Section height="unset">
       <FormStepTitle steps={steps} index={index} />
-      <form autoComplete="off">
-        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+      <form onSubmit={formik.handleSubmit}>
+        <Section>
           <Flex gap="1rem">
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -37,19 +52,15 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchFlagInput
-                value={formik.values.home.name}
+              <FieldAsString
+                formik={formik}
                 options={COUNTRY_FLAGS.map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                onChange={(x) => {
-                  console.log(formik.values.home.name);
-                  formik.setFieldValue("home", x);
-                }}
+                name="home"
                 placeholder="Select where you are"
-                size={isMobile ? 14 : 16}
               />
             </Flex>
             <Flex direction="column">
@@ -62,24 +73,23 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchFlagInput
+              <FieldAsString
+                formik={formik}
                 options={COUNTRY_FLAGS.filter(
-                  (el) => el.name != formik.values.home.name
+                  (el) => el.name != formik.values.home
                 ).map((x) => ({
                   name: x.name,
                   flag: x.flag,
                   code: x.code,
                 }))}
-                size={isMobile ? 14 : 16}
-                value={formik.values.destination.name}
-                onChange={(x) => formik.setFieldValue("destination", x)}
-                placeholder="Select Final destination"
-                disabled={!formik.values.home.name}
+                name="destination"
+                placeholder="Select where you are"
+                disabled={!formik.values.home}
               />
             </Flex>
           </Flex>
         </Section>
-        <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
+        <Section>
           <Flex gap="1rem" align="center">
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -91,11 +101,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchStringInput
-                value={formik.values.visaType}
-                placeholder={"Select your Visa Type"}
-                onChange={(x) => formik.setFieldValue("visaType", x)}
-                size={isMobile ? 14 : 16}
+              <FieldString
                 options={[
                   "Tourist Visa",
                   "Business Visa",
@@ -106,6 +112,9 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   "Visa on Arrival",
                   "Other",
                 ]}
+                placeholder="Select your Visa Type"
+                name="visaType"
+                formik={formik}
               />
             </Flex>
             <Flex direction="column">
@@ -118,10 +127,11 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                 />
                 <Required />
               </Flex>
-              <SearchStringInput
-                size={isMobile ? 14 : 16}
+
+              <FieldString
                 options={["Single", "Family"]}
-                onChange={(x) => {
+                formik={formik}
+                onChange={(x: any) => {
                   formik?.setFieldValue("applicationType", x);
                   formik?.setFieldValue("numberOfTravellers", 1);
                   setFee(
@@ -129,6 +139,7 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
                   );
                 }}
                 placeholder="Select your Application Type "
+                name="applicationType"
               />
             </Flex>
           </Flex>
@@ -142,18 +153,36 @@ function TripDetails({ formik, steps, index, setFee }: formProps) {
               text="Number of Travellers"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
             />
-            <SearchStringInput
-              size={isMobile ? 14 : 16}
-              value={formik?.values?.numberOfTravellers}
+            <FieldString
+              formik={formik}
               options={Array.from({ length: 6 }, (_, i) => 1 + i)}
-              onChange={(x) => {
-                setFee(x > 1 ? 30000 : 20000);
-                formik.setFieldValue("numberOfTravellers", x);
-              }}
+              name="numberOfTravellers"
+              // onChange={(x) => {
+              //   setFee(x > 1 ? 30000 : 20000);
+              //   formik.setFieldValue("numberOfTravellers", x);
+              // }}
               placeholder="Number of Travellers"
             />
           </Section>
         )}
+
+        <Section height="unset" margin="4.5rem 0 0 0">
+          <Button width="100%" height={"3.5rem"} type="submit">
+            <Flex align="center" width="100%" height="100%" justify="center">
+              {isLoading ? (
+                <Spinner size="40px" fill={ttColors.primary} />
+              ) : (
+                <Text
+                  type="span"
+                  text={"Save & Continue"}
+                  weight={600}
+                  size={20}
+                  color={ttColors.light}
+                />
+              )}
+            </Flex>
+          </Button>
+        </Section>
       </form>
     </Section>
   );

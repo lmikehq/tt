@@ -34,22 +34,16 @@ export interface User {
   [key: string]: any;
 }
 
-interface Home {
-  name: string;
-}
-
-interface Destination {
-  name: string;
-}
-
 export interface DetailsKeys {
-  home: Home;
-  destination: Destination;
+  home: string;
+  destination: string;
   applicationType: string;
   visaType: string;
   travellingBy: string;
   numberOfTravellers: number;
+  [key: string]: any;
 }
+
 export interface EducationDetailsInterface {
   schoolName: string;
   degree: string;
@@ -57,7 +51,9 @@ export interface EducationDetailsInterface {
   courseOfStudy: string;
   startYear: string;
   endYear: string;
+  [key: string]: any;
 }
+
 export interface EmploymentDetailsInterface {
   companyName: string;
   jobTitle: string;
@@ -66,19 +62,8 @@ export interface EmploymentDetailsInterface {
   companyLocation: string;
   startedYear: string;
   endedYear: string;
+  [key: string]: any;
 }
-// export interface EdAndEmpKeys {
-//   degree: string;
-//   graudautionYear: string;
-//   schoolName: string;
-//   courseOfStudy: string;
-//   grade: string;
-//   companyName: string;
-//   employerName: string;
-//   employerPhone: string;
-//   startedYear: string;
-//   endedYear: string;
-// }
 
 export interface PersonalInfoInterface {
   firstName: string;
@@ -103,7 +88,9 @@ export interface PersonalInfoInterface {
   passportIssueDate: string;
   passportExpiryDate: string;
   purposeOfTrip: string;
+  [key: string]: any;
 }
+
 export interface FamilyInfoInterface {
   passNumber: string;
   expiryYear: string;
@@ -117,7 +104,9 @@ export interface FamilyInfoInterface {
   membersEmail: string;
   membersIssueDate: string;
   membersExpiryDate: string;
+  [key: string]: any;
 }
+
 interface OtherInfoKeys {
   passNumber: string;
   passIssueCountry: string;
@@ -127,7 +116,8 @@ interface OtherInfoKeys {
   guarantorAddress: string;
   guarantorPhone: string;
   guarantorWorth: string;
-  uploadedDocuments: string[]; // You can adjust the type as needed
+  uploadedDocuments: string[];
+  [key: string]: any;
 }
 
 export interface VisaApplicationFormInterface
@@ -137,6 +127,7 @@ export interface VisaApplicationFormInterface
   educations: EducationDetailsInterface[];
   employments: EmploymentDetailsInterface[];
   familyInfo: FamilyInfoInterface[];
+  [key: string]: any;
 }
 
 declare module "@paystack/inline-js";

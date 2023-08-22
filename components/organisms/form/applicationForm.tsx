@@ -39,6 +39,7 @@ import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import {
+  DetailsKeys,
   EducationDetailsInterface,
   EmploymentDetailsInterface,
   FamilyInfoInterface,
@@ -70,6 +71,7 @@ const PromoInput = styled.div`
   }
 `;
 export type SingleFormType =
+  | DetailsKeys
   | PersonalInfoInterface
   | EducationDetailsInterface[]
   | EmploymentDetailsInterface[]
@@ -346,7 +348,7 @@ function ApplicationForm() {
               {step?.content}
             </Section>
             <Section height="unset" margin="4.5rem 0 0 0">
-              {(currentPhase == 1 || currentPhase == 6) && (
+              {currentPhase == 6 && (
                 <Button width="100%" height={"3.5rem"} onClick={nextStep}>
                   <Flex
                     align="center"

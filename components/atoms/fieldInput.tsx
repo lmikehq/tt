@@ -160,7 +160,7 @@ export const FieldAsString = (props: FieldProps) => {
 };
 
 export const FieldString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder } = props;
+  const { name, options = [], formik, placeholder, onChange } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
   // const [field, meta] = useField(name);
@@ -193,7 +193,7 @@ export const FieldString = (props: FieldProps) => {
       <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
         <SearchStringInput
           options={options}
-          onChange={handleChange}
+          onChange={onChange ? onChange : handleChange}
           placeholder={placeholder}
           value={value}
         />{" "}
