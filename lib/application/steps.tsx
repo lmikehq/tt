@@ -1,7 +1,11 @@
 import TripDetails from "@organism/form/components/details";
 import PersonalInfo from "@organism/form/components/personalInfo";
-import { edAndEmpKeys, otherInforKeys } from "./schema";
-import EducationAndEmploymentInfo from "@organism/form/components/edAndEmployment";
+import {
+  educationKeys,
+  employmentKeys,
+  familyInforKeys,
+  personalInfoKeys,
+} from "./schema";
 import OtherInformation from "@organism/form/components/otherInformation";
 import Booking from "@organism/form/components/booking";
 import {
@@ -9,26 +13,34 @@ import {
   PaymentStatusSuccess,
 } from "@organism/form/components/paymentStatus";
 
+import EducationInfo from "@organism/form/components/educationInfo";
+import EmploymentInfo from "@organism/form/components/employmentInfo";
+import FamilyInfo from "@organism/form/components/familyInfo";
+import UploadDocuments from "@organism/form/components/uploadDocuments";
+import { SingleFormType } from "@organism/form/applicationForm";
+
 interface IFormStep {
   id: number;
   title: string;
   content: React.ReactNode;
   valKeys?: any;
-  // formikConfig?: any
+  formikConfig?: any;
 }
 
 export const getSteps = (
   formikConfig: any,
   setFormFee: (n: number) => void,
-  setCurrentPhase: (n: number) => void
+  setCurrentPhase: (n: number) => void,
+  nextStep: ({ form }: { form: SingleFormType }) => void,
+  isLoading: boolean
 ): IFormStep[] => {
   return [
     {
       id: 1,
-      title: "Your trip details",
+      title: "Enter your Trip details",
       content: (
         <TripDetails
-          steps={["Your Trip Details"]}
+          steps={["Enter your Trip Details"]}
           formik={formikConfig}
           index={0}
           setFee={setFormFee}
@@ -37,78 +49,65 @@ export const getSteps = (
     },
     {
       id: 2,
-      title: "Personal Information",
+      title: "Personal Details",
       content: (
         <PersonalInfo
-          formik={formikConfig}
-          steps={["Your Trip Details", "Personal Information"]}
+          steps={["Personal Information"]}
           index={1}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
+      valKeys: Object.keys(personalInfoKeys),
     },
     {
       id: 3,
-      title: "Education and Employment",
+      title: "Education Details",
       content: (
-        <EducationAndEmploymentInfo
-          formik={formikConfig}
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-          ]}
+        <EducationInfo
+          steps={["Education Details"]}
           index={2}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
-      valKeys: Object.keys(edAndEmpKeys),
+      valKeys: Object.keys(educationKeys),
     },
     {
       id: 4,
-      title: "Other Information",
+      title: "Employment Details",
       content: (
-        <OtherInformation
+        <EmploymentInfo
           formik={formikConfig}
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-          ]}
+          steps={["Employment Details"]}
           index={3}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
-      valKeys: Object.keys(otherInforKeys),
+      valKeys: Object.keys(employmentKeys),
     },
     {
       id: 5,
-      title: "Booking",
+      title: "Family Members' Details",
       content: (
-        <Booking
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-            "Booking",
-          ]}
+        <FamilyInfo
+          formik={formikConfig}
+          steps={["Family Members' Details"]}
           index={4}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
-      valKeys: Object.keys(otherInforKeys),
+      valKeys: Object.keys(familyInforKeys),
     },
     {
       id: 6,
-      title: "Status",
+      title: "Upload Document",
       content: (
-        <PaymentStatusSuccess
-          steps={[
-            "Your Trip Details",
-            "Personal Information",
-            "Education and Employment",
-            "Other Information",
-            "Booking",
-            "booking",
-          ]}
+        <UploadDocuments
+          formik={formikConfig}
+          steps={["Upload All Required Documents"]}
           index={5}
         />
       ),
@@ -120,7 +119,7 @@ export const getSteps = (
         <PaymentStatusFail
           steps={[
             "Your Trip Details",
-            "Personal Information",
+            "Personal details",
             "Education and Employment",
             "Other Information",
             "Booking",

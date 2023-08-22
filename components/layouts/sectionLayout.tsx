@@ -3,7 +3,7 @@
 import styled from "styled-components";
 
 export default styled.section<{ margin?: string }>`
-  width: 85vw;
+  padding: 0 6.5rem;
   max-width: 1600px;
   margin: ${(props) => props?.margin || "0 auto"};
   position: relative;

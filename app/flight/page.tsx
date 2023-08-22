@@ -1,12 +1,8 @@
-import React from 'react'
+import React from "react";
 
-interface pageProps {
-
-}
+interface pageProps {}
 
 const page: React.FC<pageProps> = ({}) => {
-        return (
-            <div>flights page</div>
-        );
-}
-export default page
+  return <div>flights page</div>;
+};
+export default page;

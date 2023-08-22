@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Text from "@atom/text";
 import { ttColors } from "theme/colors";
 
-
 const StyledModal = styled(Modal)`
   display: flex;
   align-items: center;
@@ -28,30 +27,28 @@ const ModalContainer = styled.div`
   }
 `;
 
-
- const ModalHeader = styled.h2`
+const ModalHeader = styled.h2`
   font-size: 1.5rem;
   margin-top: 1rem;
   color: ${ttColors.dark};
   margin-bottom: 1rem;
-
 `;
 
- const ModalDescription = styled.p`
+const ModalDescription = styled.p`
   font-size: 1rem;
   margin-top: 1rem;
   color: #666;
   padding: 1rem 5rem;
 `;
 
- const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
 `;
 
-interface CustomConfirmationModalProps {
+export interface CustomConfirmationModalProps {
   open: boolean;
   handleClose: () => void;
   icon: React.ReactNode;
