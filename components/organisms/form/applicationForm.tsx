@@ -290,7 +290,7 @@ function ApplicationForm() {
           }}
           height="auto"
           padding={isMobile ? "0px" : "2.5rem"}
-          gap="2.5rem"
+          gap="2.25rem"
           direction={isMobile ? "column" : "row"}
         >
           <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
@@ -320,7 +320,7 @@ function ApplicationForm() {
             </Section>
             <Section height="unset" margin="4.5rem 0 0 0">
               {isValid && (
-                <Button width="100%" height={"3.5rem"} onClick={nextStep}>
+                <Button width="100%" height="3.5rem" onClick={nextStep}>
                   <Flex
                     align="center"
                     width="100%"
@@ -336,6 +336,7 @@ function ApplicationForm() {
                         weight={600}
                         size={20}
                         color={ttColors.light}
+                        padding="2rem 0"
                       />
                     )}
                   </Flex>
@@ -362,7 +363,6 @@ function ApplicationForm() {
               weight="400"
             />
           </Flex>
-
           <Section
             width="40%"
             styles={{ display: isMobile ? "none" : "block" }}
@@ -428,21 +428,26 @@ function ApplicationForm() {
                         type="h3"
                         size={20}
                         weight={600}
+                        whiteSpace="nowrap"
                       />
                       <Text
                         type="p"
                         size={18}
                         weight={400}
                         text="Non-Refundable"
+                        whiteSpace="nowrap"
                       />
                     </Flex>
                     <Flex direction="column">
-                      <Text text="Validity" type="h3" size={20} weight={600} />
+                      <Text text="Validity" type="h3" size={20} weight={600}  
+                        whiteSpace="nowrap"
+                      />
                       <Text
                         type="p"
                         size={18}
                         weight={400}
                         text="Passport dependent"
+                        whiteSpace="nowrap"
                       />
                     </Flex>
                   </Flex>
