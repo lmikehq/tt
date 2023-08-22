@@ -51,22 +51,27 @@ export const BlockDatePicker: React.FC<BlockDatePickerProps> = ({
 };
 
 interface DatePickerProps {
-  value?: Dayjs;
+  value?: Dayjs | null;
   onChange: (value: any) => void;
   views?: ('year' | 'month' | 'day' )[];
   disabled?: boolean;
   label?: string;
+  minDate?: Dayjs | null;
+  maxDate?: Dayjs;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
         label={label}
+        placeholder={placeholder}
         value={value}
         onChange={onChange}
         views={views}
         disabled={disabled}
+        minDate={minDate}
+        maxDate={maxDate}
         sx={{
           width: "100%",
           cursor: "pointer",

@@ -12,6 +12,7 @@ interface buttonProps {
   width?: string;
   height?: string;
   borderRadius?: string;
+  cursor?: string;
   border?: string;
   zIndex?: string;
   margin?: string;
@@ -22,15 +23,6 @@ interface buttonProps {
   underlined?: boolean;
 }
 
-const ButtonWrapper = styled.button`
-  &:hover {
-  }
-  &:active {
-    transform: scale(0.98);
-    border: 1px solid #06062a;
-  }
-`;
-
 export const Button: React.FC<buttonProps> = ({
   children,
   padding,
@@ -40,6 +32,7 @@ export const Button: React.FC<buttonProps> = ({
   fontSize,
   width,
   height,
+  cursor,
   zIndex,
   borderRadius,
   border,
@@ -61,7 +54,7 @@ export const Button: React.FC<buttonProps> = ({
         width: width || "104px",
         height: height || "48px",
         borderRadius: borderRadius || "8px",
-        cursor: "pointer",
+        cursor: cursor || "pointer",
         zIndex: zIndex,
         border: border,
         margin: margin,

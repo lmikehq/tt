@@ -9,12 +9,12 @@ import Flex from "@atom/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "@molecule/section";
+import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 
 interface formProps {
   formik: FormikValues;
-  employment?: any;
   isMobile?: boolean;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -24,8 +24,8 @@ export default function EmploymentForm({
   formik,
   isMobile,
   count,
-  employment,
 }: formProps) {
+  const [maxYear, setMaxYear] = useState<Dayjs | null>(null)
   const [isCurrentlyIncompany, setIsCurrentlyIncompany] = useState(false);
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
@@ -151,7 +151,9 @@ export default function EmploymentForm({
                 `employments.${count}.startedYear`,
                 `${e.$y}`
               );
+              setMaxYear(dayjs(e))
             }}
+            maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -169,6 +171,8 @@ export default function EmploymentForm({
             onChange={(e: any) => {
               formik.setFieldValue(`employments.${count}.endedYear`, `${e.$y}`);
             }}
+            minDate={maxYear}
+            maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

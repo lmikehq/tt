@@ -8,8 +8,10 @@ import { DatePicker } from "@atom/datepicker";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import SearchFlagInput from "@molecule/searchInputs/searchFlagInput";
 import Section from "@molecule/section";
+import dayjs, { Dayjs } from "dayjs";
 
 interface FieldProps {
+  value?: string;
   name: string;
   type?:
     | "text"
@@ -28,7 +30,13 @@ interface FieldProps {
   views?: ("year" | "month" | "day")[];
   disabled?: boolean;
   onChange?: (x: any) => void;
+  minDate?: Dayjs | null;
+  maxDate?: Dayjs;
 }
+
+window.onbeforeunload = () => {
+  sessionStorage.clear();
+};
 
 function getNestedValue(obj: any, propertyPath: string) {
   const properties = propertyPath.split(".");
@@ -58,8 +66,6 @@ export const FieldInput = (props: FieldProps) => {
     const { value } = e.target;
     formik.setFieldValue(name, value);
     sessionStorage.setItem(name, value);
-    console.log("here");
-    console.log(formik);
   };
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
@@ -118,29 +124,14 @@ export const ArrayInput = (props: FieldProps) => {
         value={value}
         onBlur={formik.handleBlur}
       />
-      {/* {meta.touched && meta.error ? (
-        <Text type="p" color={ttColors.red} text={meta.error} />
-      ) : null} */}
     </div>
   );
 };
 
 export const FieldAsString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder } = props;
+  const { name, options = [], formik, placeholder, value } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
-  // const [field, meta] = useField(name);
-
-  // const { onChange } = field;
-
-  const handleChange = (e: any) => {
-    formik.setFieldValue(name, e.name);
-    formik.setTouched({ ...formik.touched, [name]: true });
-    // onChange({ target: { name: field.name, value: e } });
-    sessionStorage.setItem(name, e.name);
-  };
-
-  const value = getNestedValue(formik.values, name);
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -149,10 +140,19 @@ export const FieldAsString = (props: FieldProps) => {
     }
   }, []);
 
+  const handleChange = (e: any) => {
+    formik.setFieldValue(name, e.name);
+    formik.setTouched({ ...formik.touched, [name]: true });
+    sessionStorage.setItem(name, e.name);
+  };
+
+  const formikvalue = getNestedValue(formik.values, name);
+  console.log(value, name);
+
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <SearchFlagInput
-        value={value}
+        value={value ? value : formikvalue}
         options={options}
         onChange={handleChange}
         placeholder={placeholder}
@@ -163,22 +163,17 @@ export const FieldAsString = (props: FieldProps) => {
 };
 
 export const FieldString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder, onChange } = props;
+  const { name, options = [], formik, placeholder, onChange, value } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
-  // const [field, meta] = useField(name);
 
-  // const { onChange } = field;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     formik.setFieldValue(name, e);
-    // onChange({ target: { name: field.name, value: e } });
-    console.log("ELL");
-    console.log(formik.values);
-    // sessionStorage.setItem(name, field.value);
+    sessionStorage.setItem(name, e);
   };
 
-  const value = getNestedValue(formik.values, name);
+  const formikvalue = getNestedValue(formik.values, name);
+  console.log(value, formikvalue)
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -187,37 +182,30 @@ export const FieldString = (props: FieldProps) => {
     }
   }, []);
 
-  console.log(placeholder);
-
-  console.log(formik);
-
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <SearchStringInput
         options={options}
         onChange={onChange ? onChange : handleChange}
         placeholder={placeholder}
-        value={value}
-      />{" "}
+        value={value ? value : formikvalue}
+      />
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );
 };
 
 export const FieldAsDate = (props: FieldProps) => {
-  const { name, disabled, formik, views, onChange } = props;
-  // const [field, meta] = useField(name);
+  const { name, disabled, formik, views, onChange, minDate, maxDate } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
-  // const { onChange } = field;
 
   const handleChange = (e: any) => {
     formik.setFieldValue(name, `${e.$d}`);
-    // onChange({ target: { name: field.name, value: e } });
-    // sessionStorage.setItem(name, field.value);
+    sessionStorage.setItem(name, e);
   };
 
-  // const value = getNestedValue(formik.values, field.name);
+  const value = getNestedValue(formik.values, name);
 
   useEffect(() => {
     const storedValue = sessionStorage.getItem(name);
@@ -232,7 +220,9 @@ export const FieldAsDate = (props: FieldProps) => {
         label={disabled ? "Present" : ""}
         disabled={disabled}
         views={views}
-        // value={value}
+        maxDate={maxDate}
+        minDate={minDate}
+        value={dayjs(value)}
         onChange={onChange ? onChange : handleChange}
       />{" "}
       {touched && error ? <ErrorText text={error} /> : null}

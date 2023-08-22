@@ -15,15 +15,13 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
 import {
-  educationArraySchema,
   educationKeys,
   educationsArr,
   educationsSchema,
-  visaInitVals,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import Button from "@atom/button";
-import Spinner from "@components/icons/spinner";
+import { useState } from "react";
+import ContinueButton from "@atom/continueButton";
 
 interface formProps {
   steps: string[];
@@ -33,12 +31,13 @@ interface formProps {
 }
 
 function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const { isMobile } = useScreenResolution();
+  const [disabled, setDisabled] = useState(true)
   const formik = useFormik({
     initialValues: educationsArr,
     validationSchema: educationsSchema,
     onSubmit: (values) => {
       nextStep({ form: values.educations });
+      setDisabled(false)
     },
   });
   return (
@@ -89,23 +88,7 @@ function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <Section height="unset" margin="4.5rem 0 0 0">
-            <Button width="100%" height={"3.5rem"} type="submit">
-              <Flex align="center" width="100%" height="100%" justify="center">
-                {isLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : (
-                  <Text
-                    type="span"
-                    text={"Save & Continue"}
-                    weight={600}
-                    size={20}
-                    color={ttColors.light}
-                  />
-                )}
-              </Flex>
-            </Button>
-          </Section>
+          <ContinueButton isLoading={isLoading} disabled={disabled}/>
         </form>
       </Section>
     </FormikProvider>

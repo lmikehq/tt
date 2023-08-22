@@ -1,10 +1,12 @@
 import CheckBox from "@atom/checkbox";
-import { FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
+import { BlockDatePicker } from "@atom/datepicker";
+import { ArrayInput, FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
+import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 
@@ -18,6 +20,8 @@ interface formProps {
 
 export default function EducationForm({ formik, isMobile, count }: formProps) {
   const [isCurrentlyInSchool, setIsCurrentlyInSchool] = useState(false);
+  const [maxYear, setMaxYear] = useState<Dayjs | null>(null)
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
     setIsCurrentlyInSchool(checked);
@@ -34,7 +38,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           />
           <Required />
         </Flex>
-        <FieldInput
+        <ArrayInput
           formik={formik}
           name={`educations.${count}.schoolName`}
           placeholder="Enter School Name"
@@ -91,17 +95,11 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             />
             <Required />
           </Flex>
-          <FieldInput
+          <ArrayInput
             formik={formik}
             type="number"
             name={`educations.${count}.grade`}
             placeholder="Enter your Grade"
-            onChange={(e: any) => {
-              formik.setFieldValue(
-                `educations.${count}.grade`,
-                parseInt(e.target.value)
-              );
-            }}
           />
         </Section>
         <Section>
@@ -136,7 +134,9 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             formik={formik}
             onChange={(e: any) => {
               formik.setFieldValue(`educations.${count}.startYear`, `${e.$y}`);
+              setMaxYear(dayjs(e))
             }}
+            maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -151,9 +151,11 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             views={["year"]}
             name={`educations.${count}.endYear`}
             formik={formik}
-            onChange={(e: any) => {
-              formik.setFieldValue(`educations.${count}.endYear`, `${e.$y}`);
+            onChange={(e: Dayjs) => {
+              formik.setFieldValue(`educations.${count}.endYear`, `${e}`);
             }}
+            minDate={maxYear}
+            maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

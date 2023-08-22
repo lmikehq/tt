@@ -1,7 +1,7 @@
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { Form, Formik, FormikValues, useFormik } from "formik";
+import { useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
@@ -18,11 +18,11 @@ import {
   FieldInput,
   FieldString,
 } from "@atom/fieldInput";
-import Spinner from "@components/icons/spinner";
-import Button from "@atom/button";
-import { ttColors } from "theme/colors";
 import { SingleFormType } from "../applicationForm";
 import { PersonalInfoInterface } from "types";
+import ContinueButton from "@atom/continueButton";
+import dayjs, { Dayjs } from "dayjs";
+import useFormikLocalStorage from "hook/useFormikLocalStorage";
 
 interface formProps {
   steps: string[];
@@ -32,8 +32,11 @@ interface formProps {
 }
 
 function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const initialValues = { ...personalInfoKeys };
   const { isMobile } = useScreenResolution();
+  const [disabled, setDisabled] = useState(true)
+  const [endDate, setEndDate] = useState<Dayjs | null>(null)
+  const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null)
+
   const [value, setValue] = useState("");
   const [radio, setRadio] = useState("");
   const formik = useFormik({
@@ -41,6 +44,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
     validationSchema: personalInfoSchema,
     onSubmit: (values: PersonalInfoInterface) => {
       nextStep({ form: values });
+      setDisabled(false)
     },
   });
 
@@ -49,18 +53,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
     { value: "No", label: "No" },
   ];
 
+  const { updateFieldValue } = useFormikLocalStorage(formik, personalInfoKeys)
+  console.log(endDate !== null)
+
   return (
     <Section>
       <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
-      {/* <Formik
-        initialValues={initialValues}
-        validationSchema={personalInfoSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          console.log(values);
-          await new Promise((r) => setTimeout(r, 500));
-          setSubmitting(false);
-        }}
-      > */}
       <form onSubmit={formik.handleSubmit}>
         <Flex
           margin="0 0 1rem"
@@ -277,6 +275,10 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="issueDate"
               placeholder="Select your Issue Date"
               formik={formik}
+              onChange={(e: any) => {
+                updateFieldValue(`issueDate`, `${e}`);
+                setEndDate(dayjs(e))
+              }}
             />
           </Section>
           <Section>
@@ -289,6 +291,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="expiryDate"
               placeholder="Select the Expiry Date"
               formik={formik}
+              minDate={endDate}
+              disabled={endDate === null}
             />
           </Section>
         </Flex>
@@ -463,6 +467,10 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="passportIssueDate"
               placeholder="Select your Issued Date"
               formik={formik}
+              onChange={(e: any) => {
+                updateFieldValue("passportIssueDate", e)
+                setPassEndDate(dayjs(e))
+              }}
             />
           </Section>
           <Section>
@@ -475,6 +483,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="passportExpiryDate"
               placeholder="Select your Expiry Date"
               formik={formik}
+              disabled={passEndDate === null}
+              minDate={passEndDate}
             />
           </Section>
         </Flex>
@@ -716,23 +726,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </Section>
           </ol>
         </Section>
-        <Section height="unset" margin="4.5rem 0 0 0">
-          <Button width="100%" height={"3.5rem"} type="submit">
-            <Flex align="center" width="100%" height="100%" justify="center">
-              {isLoading ? (
-                <Spinner size="40px" fill={ttColors.primary} />
-              ) : (
-                <Text
-                  type="span"
-                  text={"Save & Continue"}
-                  weight={600}
-                  size={20}
-                  color={ttColors.light}
-                />
-              )}
-            </Flex>
-          </Button>
-        </Section>
+       <ContinueButton isLoading={isLoading} disabled={disabled}/>
       </form>
     </Section>
   );

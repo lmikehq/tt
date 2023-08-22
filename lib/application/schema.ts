@@ -172,23 +172,17 @@ export const visaSchema = {
 };
 export const employmentsArr = {
   employments: [
-    { ...employmentKeys },
-    { ...employmentKeys },
-    { ...employmentKeys },
+    { ...employmentKeys }
   ],
 };
 export const educationsArr = {
   educations: [
-    { ...educationKeys },
-    { ...educationKeys },
-    { ...educationKeys },
+    { ...educationKeys }
   ],
 };
 export const familyInfoArr = {
   familyInfo: [
-    { ...familyInforKeys },
-    { ...familyInforKeys },
-    { ...familyInforKeys },
+    { ...familyInforKeys }
   ],
 };
 export const visaInitVals: VisaApplicationFormInterface = {
