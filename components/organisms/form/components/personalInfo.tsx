@@ -67,21 +67,17 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           >
             <Section>
               <Flex align="center" gap="0.25rem">
-                <Text
-                  type="p"
-                  text="Last Name"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-                />
-                <Required />
-              </Flex>
+              
               <FieldInput
                 name="lastName"
                 placeholder="Enter Last Name"
                 formik={formik}
               />
               <Required />
-            </Section>
           </Flex>
+            </Section>
+            </Flex>
+
           <Flex>
           <Section>
             <Input
@@ -169,7 +165,8 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               }
             />
           </Section>
-        </Flex>
+          </Flex>
+          
         <Flex
           margin="0 0 1rem"
           justify="space-between"
@@ -685,7 +682,6 @@ function PersonalInfo({ formik, steps, index }: formProps) {
               </Flex>
             </SearchInput>
           </Section>
-        </Flex>
 
         <Flex
           margin={isMobile ? "0px" : "0 0 1rem"}
@@ -1003,8 +999,9 @@ function PersonalInfo({ formik, steps, index }: formProps) {
           </ol>
         </Section>
       </form>
+      </Formik>
     </Section>
   );
-}
+};
 
 export default PersonalInfo;
