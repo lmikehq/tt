@@ -217,7 +217,6 @@ export const FieldAsDate = (props: FieldProps) => {
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <DatePicker
-        label={disabled ? "Present" : ""}
         disabled={disabled}
         views={views}
         maxDate={maxDate}

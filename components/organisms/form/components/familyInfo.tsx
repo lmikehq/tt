@@ -24,6 +24,7 @@ import { SingleFormType } from "../applicationForm";
 import Spinner from "@components/icons/spinner";
 import Button from "@atom/button";
 import FamilyForm from "@molecule/forms/familyForm";
+import ContinueButton from "@atom/continueButton";
 
 interface formProps {
   formik: FormikValues;
@@ -34,13 +35,13 @@ interface formProps {
 }
 
 function FamilyInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const { isMobile } = useScreenResolution();
   const formik = useFormik({
     initialValues: familyInfoArr,
     validationSchema: familyInfoSchema,
     onSubmit: (values) => {
       nextStep({ form: values.familyInfo });
     },
+    validateOnChange: false
   });
   return (
     <FormikProvider value={formik}>
@@ -86,23 +87,7 @@ function FamilyInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <Section height="unset" margin="4.5rem 0 0 0">
-            <Button width="100%" height={"3.5rem"} type="submit">
-              <Flex align="center" width="100%" height="100%" justify="center">
-                {isLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : (
-                  <Text
-                    type="span"
-                    text={"Save & Continue"}
-                    weight={600}
-                    size={20}
-                    color={ttColors.light}
-                  />
-                )}
-              </Flex>
-            </Button>
-          </Section>
+        <ContinueButton isLoading={isLoading} disabled={!formik.isValid}/>
         </form>
       </Section>
     </FormikProvider>

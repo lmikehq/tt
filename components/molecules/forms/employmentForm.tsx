@@ -164,7 +164,7 @@ export default function EmploymentForm({
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={isCurrentlyIncompany}
+            disabled={isCurrentlyIncompany || maxYear === null}
             views={["year"]}
             name={`employments.${count}.endedYear`}
             formik={formik}

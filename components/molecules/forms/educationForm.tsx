@@ -147,7 +147,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={isCurrentlyInSchool}
+            disabled={isCurrentlyInSchool || maxYear === null}
             views={["year"]}
             name={`educations.${count}.endYear`}
             formik={formik}

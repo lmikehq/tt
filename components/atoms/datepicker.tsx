@@ -65,7 +65,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
         label={label}
-        placeholder={placeholder}
         value={value}
         onChange={onChange}
         views={views}

@@ -7,7 +7,6 @@ import {
   useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
 import { ttColors } from "theme/colors";
 import EducationForm from "@molecule/forms/educationForm";
@@ -31,14 +30,13 @@ interface formProps {
 }
 
 function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const [disabled, setDisabled] = useState(true)
   const formik = useFormik({
     initialValues: educationsArr,
     validationSchema: educationsSchema,
     onSubmit: (values) => {
       nextStep({ form: values.educations });
-      setDisabled(false)
     },
+    validateOnChange: false
   });
   return (
     <FormikProvider value={formik}>
@@ -88,7 +86,7 @@ function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <ContinueButton isLoading={isLoading} disabled={disabled}/>
+          <ContinueButton isLoading={isLoading} disabled={!formik.isValid}/>
         </form>
       </Section>
     </FormikProvider>
