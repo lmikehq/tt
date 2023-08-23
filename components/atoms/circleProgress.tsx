@@ -31,25 +31,13 @@ const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
     width
   }
 
-  @media (max-width: 900px) {
-    /* Adjust styles for 900px screens */
-    font-size: 12px;
-  }
+ @media (max-width:1280px) {
+    &::after {
+      left: 70%;
+      width: 58%;
+    }
+ }
 
-  @media (max-width: 768px) {
-    /* Adjust styles for 768px screens */
-    font-size: 10px;
-  }
-
-  @media (max-width: 477px) {
-    /* Adjust styles for 477px screens */
-    font-size: 8px;
-  }
-
-  @media (max-width: 330px) {
-    /* Adjust styles for 330px screens */
-    font-size: 6px;
-  }
 `;
 
 const Container = styled.div<{ active: boolean, isPassed: boolean }>`
@@ -59,7 +47,15 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   color: ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
   opacity: ${props => (props.active || props.isPassed ? "1" : "0.7")};
   
-  
+  @media (max-width: 1440px) {
+    @media (min-width: 1280px) {
+      margin: 0 7.5px
+    }
+  }
+
+  @media (max-width: 1280px) {
+    margin: 0;
+  }
 `;
 
 const Circle = styled.span<{ active: boolean, isPassed: boolean }>`

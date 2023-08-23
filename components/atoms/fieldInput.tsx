@@ -32,6 +32,8 @@ interface FieldProps {
   onChange?: (x: any) => void;
   minDate?: Dayjs | null;
   maxDate?: Dayjs;
+  max?: number;
+  min?: number;
 }
 
 window.onbeforeunload = () => {
@@ -101,15 +103,24 @@ export const FieldInput = (props: FieldProps) => {
 };
 
 export const ArrayInput = (props: FieldProps) => {
-  const { name, type, placeholder, formik, addon } = props;
+  const { name, type, placeholder, formik, addon, max, min } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    let { value } = e.target;
+    if(type === 'number') {
+      parseFloat(value) > 5 ? value = "5" : value
+    }
     formik.setFieldValue(name, value);
     sessionStorage.setItem(name, value);
   };
 
   const value = getNestedValue(formik.values, name);
+  useEffect(() => {
+    const storedValue = sessionStorage.getItem(name);
+    if (storedValue) {
+      formik.setFieldValue(name, storedValue);
+    }
+  }, []);
 
   return (
     <div>
@@ -117,6 +128,8 @@ export const ArrayInput = (props: FieldProps) => {
         height="45px"
         addon={addon}
         type={type}
+        max={max}
+        min={min}
         placeholder={placeholder}
         padding="0 0 0 14px"
         onChange={handleChange}
@@ -138,6 +151,13 @@ export const FieldAsString = (props: FieldProps) => {
   };
 
   const formikvalue = getNestedValue(formik.values, name);
+
+  useEffect(() => {
+    const storedValue = sessionStorage.getItem(name);
+    if (storedValue) {
+      formik.setFieldValue(name, storedValue);
+    }
+  }, []);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
@@ -164,6 +184,13 @@ export const FieldString = (props: FieldProps) => {
 
   const formikvalue = getNestedValue(formik.values, name);
 
+  useEffect(() => {
+    const storedValue = sessionStorage.getItem(name);
+    if (storedValue) {
+      formik.setFieldValue(name, storedValue);
+    }
+  }, []);
+
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <SearchStringInput
@@ -188,6 +215,13 @@ export const FieldAsDate = (props: FieldProps) => {
   };
 
   const value = getNestedValue(formik.values, name);
+
+  useEffect(() => {
+    const storedValue = sessionStorage.getItem(name);
+    if (storedValue) {
+      formik.setFieldValue(name, storedValue);
+    }
+  }, []);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">

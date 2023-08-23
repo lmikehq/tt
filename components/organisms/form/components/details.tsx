@@ -33,6 +33,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
       ...detailsKeys,
       home: params.get("home") || "",
       destination: params.get("destination") || "",
+      visaType: params.get("visaType") || ""
     },
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {

@@ -14,13 +14,15 @@ interface Option {
 }
 
 interface CustomRadioGroupProps {
-  defaultValue: string;
+  name?: string;
+  defaultValue?: string;
   options: Option[];
   onChange: (selectedValue: string) => void;
   justifyContent: string;
 }
 
 export function CustomRadioGroup({
+  name,
   defaultValue,
   options,
   onChange,
@@ -45,7 +47,7 @@ export function CustomRadioGroup({
           padding: "0px",
           fontSize: "16px",
         }}
-        name="custom-radio-buttons-group"
+        name={name || "custom-radio-buttons-group"}
         value={value}
         onChange={handleChange}
         style={{
