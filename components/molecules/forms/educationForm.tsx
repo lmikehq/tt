@@ -98,6 +98,8 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Required />
           </Flex>
           <ArrayInput
+            max={5.0}
+            min={1}
             formik={formik}
             type="number"
             name={`educations.${count}.grade`}
