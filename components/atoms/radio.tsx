@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 import {
   Radio,
   RadioGroup,
@@ -9,47 +9,35 @@ import {
 import Flex from "@atom/flex";
 
 interface Option {
-  value: string;
+  value: boolean;
   label: string;
 }
 
 interface CustomRadioGroupProps {
-  name?: string;
-  defaultValue?: string;
   options: Option[];
-  onChange: (selectedValue: string) => void;
+  name: string;
+  onChange: (selectedValue: ChangeEvent<any>) => void;
+  onBlur?: (e: FocusEvent<any, Element>) => void;
   justifyContent: string;
 }
 
 export function CustomRadioGroup({
-  name,
-  defaultValue,
   options,
   onChange,
+  onBlur,
+  name,
   justifyContent,
 }: CustomRadioGroupProps) {
-  const [value, setValue] = React.useState(defaultValue);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedValue = event.target.value;
-    setValue(selectedValue);
-    onChange(selectedValue);
-  };
-
   return (
-    <FormControl
-      sx={{
-        
-    }}>
+    <FormControl sx={{}}>
       <RadioGroup
         sx={{
-          
           padding: "0px",
           fontSize: "16px",
         }}
-        name={name || "custom-radio-buttons-group"}
-        value={value}
-        onChange={handleChange}
+        name={name}
+        onChange={onChange}
+        onBlur={onBlur}
         style={{
           justifyContent: justifyContent,
         }}
@@ -57,7 +45,7 @@ export function CustomRadioGroup({
         <Flex align="center" gap=".5rem">
           {options.map((option) => (
             <FormControlLabel
-              key={option.value}
+              key={option.label}
               value={option.value}
               control={<Radio />}
               label={option.label}

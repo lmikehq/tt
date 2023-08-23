@@ -53,7 +53,7 @@ function getNestedValue(obj: any, propertyPath: string) {
   return value;
 }
 
-const ErrorText = ({ text }: { text: string }) => {
+export const ErrorText = ({ text }: { text: string }) => {
   return (
     <Section styles={{ position: "relative" }}>
       <Section
@@ -205,7 +205,16 @@ export const FieldString = (props: FieldProps) => {
 };
 
 export const FieldAsDate = (props: FieldProps) => {
-  const { name, disabled, formik, views, onChange, minDate, maxDate, placeholder } = props;
+  const {
+    name,
+    disabled,
+    formik,
+    views,
+    onChange,
+    minDate,
+    maxDate,
+    placeholder,
+  } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
 
@@ -234,7 +243,7 @@ export const FieldAsDate = (props: FieldProps) => {
         value={value === "" ? null : dayjs(value)}
         onChange={onChange ? onChange : handleChange}
       />
-      
+
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );

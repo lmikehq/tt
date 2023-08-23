@@ -1,4 +1,8 @@
-import { DocumentInterface, VisaApplicationFormInterface } from "types";
+import {
+  DocumentInterface,
+  PersonalInfoInterface,
+  VisaApplicationFormInterface,
+} from "types";
 import * as yup from "yup";
 
 export const detailsSchema = yup.object().shape({
@@ -49,13 +53,37 @@ export const personalInfoSchema = yup.object().shape({
   passportIssueDate: yup.date(),
   passportExpiryDate: yup.date(),
   purposeOfTrip: yup.string(),
+  tuberculosis: yup.boolean().required(),
+  mentalDisorder: yup.boolean().required(),
+  mentalDisorderDetails: yup.string().when("mentalDisorder", {
+    is: true,
+    then: (schema) => schema.required("Mental disorder details are required"),
+  }),
+  remainbeyondValidity: yup.boolean().required(),
+  refusedBefore: yup.boolean().required(),
+  refusedBeforeDetails: yup.string().when("refusedBefore", {
+    is: true,
+    then: (schema) => schema.required("Refusal details are required"),
+  }),
+  arrestedBefore: yup.boolean().required(),
+  arrestedBeforeDetails: yup.string().when("arrestedBefore", {
+    is: true,
+    then: (schema) => schema.required("Arrest details are required"),
+  }),
+  servedInMilitary: yup.boolean().required(),
+  servedInMilitaryDetails: yup.string().when("servedInMilitary", {
+    is: true,
+    then: (schema) => schema.required("Service details are required"),
+  }),
+  memberOfViolentGroup: yup.boolean().required(),
+  participatedInViolentActivities: yup.boolean().required(),
 });
 
 export const document = {
   title: "",
   url: "",
 };
-export const personalInfoKeys = {
+export const personalInfoKeys: PersonalInfoInterface = {
   firstName: "",
   lastName: "",
   middleName: "",
@@ -78,6 +106,18 @@ export const personalInfoKeys = {
   passportIssueDate: "",
   passportExpiryDate: "",
   purposeOfTrip: "",
+  tuberculosis: null,
+  mentalDisorder: null,
+  mentalDisorderDetails: "",
+  remainbeyondValidity: null,
+  refusedBefore: null,
+  refusedBeforeDetails: "",
+  arrestedBefore: null,
+  arrestedBeforeDetails: "",
+  servedInMilitary: null,
+  servedInMilitaryDetails: "",
+  memberOfViolentGroup: null,
+  participatedInViolentActivities: null,
 };
 
 export const educationKeys = {
