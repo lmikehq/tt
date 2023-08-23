@@ -13,6 +13,7 @@ import { CustomRadioGroup } from "@atom/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
 import {
+  ErrorText,
   FieldAsDate,
   FieldAsString,
   FieldInput,
@@ -49,8 +50,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   });
 
   const options = [
-    { value: "Yes", label: "Yes" },
-    { value: "No", label: "No" },
+    { value: true, label: "Yes" },
+    { value: false, label: "No" },
   ];
 
   const { updateFieldValue } = useFormikLocalStorage(formik, personalInfoKeys);
@@ -495,10 +496,14 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
           />
           <TextArea
-            onChange={(e: any) => {
-              formik.setFieldValue("purposeOfTrip", e.target.value);
-            }}
+            name="purposeOfTrip"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           />
+          {formik.touched["purposeOfTrip"] &&
+            formik.errors["purposeOfTrip"] && (
+              <ErrorText text={formik.errors["purposeOfTrip"]} />
+            )}
         </Section>
         <Section>
           <Text
@@ -528,13 +533,20 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="tuberculosis"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                />
+                  {formik.touched["tuberculosis"] &&
+                    formik.errors["tuberculosis"] && (
+                      <ErrorText text={formik.errors["tuberculosis"]} />
+                    )}
+                </Section>
               </Flex>
             </li>
             <li>
@@ -551,26 +563,52 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="mentalDisorder"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
+                  {formik.touched["mentalDisorder"] &&
+                    formik.errors["mentalDisorder"] && (
+                      <ErrorText text={formik.errors["mentalDisorder"]} />
+                    )}
+                </Section>
+
+                {/* 
                 <CustomRadioGroup
-                  defaultValue=""
+                  
                   options={options}
                   onChange={(e) => setRadio(e)}
                   justifyContent="flex-end"
-                />
+                /> */}
               </Flex>
             </li>
 
-            <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
+            {`${formik.values.mentalDisorder}` == "true" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                />
+                {/* <TextArea /> */}
+                <TextArea
+                  name="mentalDisorderDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched["mentalDisorderDetails"] &&
+                  formik.errors["mentalDisorderDetails"] && (
+                    <ErrorText text={formik.errors["mentalDisorderDetails"]} />
+                  )}
+              </Section>
+            )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -585,13 +623,20 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="remainbeyondValidity"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                />
+                  {formik.touched["remainbeyondValidity"] &&
+                    formik.errors["remainbeyondValidity"] && (
+                      <ErrorText text={formik.errors["remainbeyondValidity"]} />
+                    )}
+                </Section>
               </Flex>
             </li>
 
@@ -609,48 +654,51 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="refusedBefore"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
-                <CustomRadioGroup
-                  defaultValue=""
+                  {formik.touched["refusedBefore"] &&
+                    formik.errors["refusedBefore"] && (
+                      <ErrorText text={formik.errors["refusedBefore"]} />
+                    )}
+                </Section>
+
+                {/* <CustomRadioGroup
+                  
                   options={options}
                   onChange={(e) => setRadio(e)}
                   justifyContent="flex-end"
-                />
+                /> */}
               </Flex>
             </li>
-            <li>
-              <Flex align="center" gap="2rem" justify="space-between">
+            {`${formik.values.refusedBefore}` == "true" && (
+              <Section>
                 <Text
-                  styles={{
-                    width: "65%",
-                    justifyContent: "flex-start",
-                  }}
                   size={16}
-                  weight={200}
+                  weight={300}
                   type="p"
-                  text="Have you previously applied to enter or remain in Canada?"
-                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
-                  padding="0 0 0 1rem"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
+                {/* <TextArea /> */}
+                <TextArea
+                  name="refusedBeforeDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
-              </Flex>
-            </li>
+                {formik.touched["refusedBeforeDetails"] &&
+                  formik.errors["refusedBeforeDetails"] && (
+                    <ErrorText text={formik.errors["refusedBeforeDetails"]} />
+                  )}
+              </Section>
+            )}
 
-            <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -665,24 +713,98 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="arrestedBefore"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
+
+                  {formik.touched["arrestedBefore"] &&
+                    formik.errors["arrestedBefore"] && (
+                      <ErrorText text={formik.errors["arrestedBefore"]} />
+                    )}
+                </Section>
               </Flex>
             </li>
-            <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
+            {`${formik.values.arrestedBefore}` == "true" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                />
+
+                {/* <TextArea /> */}
+                <TextArea
+                  name="arrestedBeforeDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched["arrestedBeforeDetails"] &&
+                  formik.errors["arrestedBeforeDetails"] && (
+                    <ErrorText text={formik.errors["arrestedBeforeDetails"]} />
+                  )}
+              </Section>
+            )}
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={200}
+                  type="p"
+                  text="Did you serve in any military, militia, or defense unit or serve in a security organization or police force (including non-obligatory national service, reserve or volunteer units)?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="servedInMilitary"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
+
+                  {formik.touched["servedInMilitary"] &&
+                    formik.errors["servedInMilitary"] && (
+                      <ErrorText text={formik.errors["servedInMilitary"]} />
+                    )}
+                </Section>
+              </Flex>
+            </li>
+            {`${formik.values.servedInMilitary}` == "true" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                />
+
+                {/* <TextArea /> */}
+                <TextArea
+                  name="servedInMilitaryDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched["servedInMilitaryDetails"] &&
+                  formik.errors["servedInMilitaryDetails"] && (
+                    <ErrorText
+                      text={formik.errors["servedInMilitaryDetails"]}
+                    />
+                  )}
+              </Section>
+            )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -697,13 +819,20 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="memberOfViolentGroup"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                />
+                  {formik.touched["memberOfViolentGroup"] &&
+                    formik.errors["memberOfViolentGroup"] && (
+                      <ErrorText text={formik.errors["memberOfViolentGroup"]} />
+                    )}
+                </Section>
               </Flex>
             </li>
 
@@ -721,25 +850,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="participatedInViolentActivities"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                />
+                  {formik.touched["participatedInViolentActivities"] &&
+                    formik.errors["participatedInViolentActivities"] && (
+                      <ErrorText
+                        text={formik.errors["participatedInViolentActivities"]}
+                      />
+                    )}
+                </Section>
               </Flex>
             </li>
-            <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
           </ol>
         </Section>
         <ContinueButton isLoading={isLoading} disabled={disabled} />

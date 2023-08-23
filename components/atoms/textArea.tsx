@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FocusEvent, useState } from "react";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import Text from "./text";
@@ -35,8 +35,10 @@ const Placeholder = styled.span`
 `;
 interface TextAreaProps {
   onChange?: (e: any) => void;
+  onBlur: (e: FocusEvent<any, Element>) => void;
+  name: string;
 }
-const TextArea = ({ onChange }: TextAreaProps) => {
+const TextArea = ({ onChange, name, onBlur }: TextAreaProps) => {
   const [text, setText] = useState("");
   const remainingChars = MaxCharCount - text.length;
 
@@ -55,6 +57,8 @@ const TextArea = ({ onChange }: TextAreaProps) => {
         rows={8}
         placeholder=""
         value={text}
+        name={name}
+        onBlur={onBlur}
         onChange={(e: any) => {
           if (onChange) {
             console.log(e);

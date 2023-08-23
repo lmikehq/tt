@@ -114,7 +114,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   refusedBeforeDetails: "",
   arrestedBefore: null,
   arrestedBeforeDetails: "",
-  servedInMilitary: true,
+  servedInMilitary: null,
   servedInMilitaryDetails: "",
   memberOfViolentGroup: null,
   participatedInViolentActivities: null,
