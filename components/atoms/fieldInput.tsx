@@ -53,8 +53,20 @@ function getNestedValue(obj: any, propertyPath: string) {
 
 const ErrorText = ({ text }: { text: string }) => {
   return (
-    <Section height="fit-content" styles={{ position: "absolute", bottom: 0 }}>
-      <Text type="p" size={14} weight={200} color={ttColors.red} text={text} />
+    <Section styles={{ position: "relative" }}>
+      <Section
+        height="fit-content"
+        styles={{ position: "absolute", top: "0.25rem" }}
+      >
+        <Text
+          type="p"
+          size={14}
+          weight={200}
+          color={ttColors.red}
+          styles={{ wordBreak: "break-all" }}
+          text={text}
+        />
+      </Section>
     </Section>
   );
 };
@@ -78,7 +90,7 @@ export const FieldInput = (props: FieldProps) => {
   // }, []);
 
   return (
-    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+    <Section padding="0 0 1.2rem 0">
       <Input
         height="40px"
         addon={addon}
@@ -89,6 +101,7 @@ export const FieldInput = (props: FieldProps) => {
         value={formik.values[name]}
         onBlur={() => formik.setTouched({ ...formik.touched, [name]: true })}
       />
+
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );
@@ -142,7 +155,7 @@ export const FieldAsString = (props: FieldProps) => {
 
   const handleChange = (e: any) => {
     formik.setFieldValue(name, e.name);
-    formik.setTouched({ ...formik.touched, [name]: true });
+    // formik.setTouched({ ...formik.touched, [name]: true });
     sessionStorage.setItem(name, e.name);
   };
 

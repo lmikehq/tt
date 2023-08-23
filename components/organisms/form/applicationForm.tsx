@@ -398,7 +398,7 @@ function ApplicationForm() {
               {(() => {
                 if (currentPhase <= 6) {
                   return !isValid ? (
-                    <Section styles={{ flexGrow: 1 }}>
+                    <Section margin="0 0 2rem 0">
                       <Text
                         type="p"
                         text={`Please select a 
