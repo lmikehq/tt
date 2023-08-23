@@ -24,6 +24,7 @@ import {
 import { SingleFormType } from "../applicationForm";
 import Spinner from "@components/icons/spinner";
 import Button from "@atom/button";
+import ContinueButton from "@atom/continueButton";
 
 interface formProps {
   steps: string[];
@@ -33,13 +34,13 @@ interface formProps {
 }
 
 function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const { isMobile } = useScreenResolution();
   const formik = useFormik({
     initialValues: employmentsArr,
     validationSchema: employmentsSchema,
     onSubmit: (values) => {
       nextStep({ form: values.employments });
     },
+    validateOnChange: false,
   });
 
   return (
@@ -61,13 +62,9 @@ function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
                     }}
                   />
                 </Flex>
-                {formik.values.employments.map((employment, index) => (
+                {formik.values.employments.map((_, index) => (
                   <div key={index}>
-                    <EmploymentForm
-                      formik={formik}
-                      employment={employment}
-                      count={index}
-                    />
+                    <EmploymentForm formik={formik} count={index} />
                     {formik.values.employments.length > 1 && (
                       <Flex
                         justify="flex-end"
@@ -90,27 +87,7 @@ function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <Section
-            height="unset"
-            styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-          >
-            {" "}
-            <Button width="100%" height={"3.5rem"} type="submit">
-              <Flex align="center" width="100%" height="100%" justify="center">
-                {isLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : (
-                  <Text
-                    type="span"
-                    text={"Save & Continue"}
-                    weight={600}
-                    size={20}
-                    color={ttColors.light}
-                  />
-                )}
-              </Flex>
-            </Button>
-          </Section>
+          <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
         </form>
       </Section>
     </FormikProvider>

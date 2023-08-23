@@ -4,8 +4,6 @@ import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { FormikValues, useFormik } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { AiOutlineCheck } from "react-icons/ai";
-import { IoIosArrowDown } from "react-icons/io";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
@@ -114,6 +112,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                 ]}
                 placeholder="Select your Visa Type"
                 name="visaType"
+                value={formik.values.visaType}
                 formik={formik}
               />
             </Flex>
