@@ -15,6 +15,7 @@ import { SingleFormType } from "../applicationForm";
 import Button from "@atom/button";
 import Spinner from "@components/icons/spinner";
 import { ttColors } from "theme/colors";
+import { useSearchParams } from "next/navigation";
 
 interface formProps {
   steps: string[];
@@ -26,8 +27,13 @@ interface formProps {
 
 function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
   const { isMobile } = useScreenResolution();
+  const params = useSearchParams();
   const formik = useFormik({
-    initialValues: detailsKeys,
+    initialValues: {
+      ...detailsKeys,
+      home: params.get("home") || "",
+      destination: params.get("destination") || "",
+    },
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
       nextStep({ form: values });
