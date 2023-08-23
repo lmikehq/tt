@@ -84,7 +84,7 @@ const CountryName = styled.h3`
   font-size: 40px;
   display: flex;
   font-family: Poppins;
-  font-weight: 700;
+  font-weight: 600;
   padding-right: 65px;
   line-height: 1.25em;
 `;

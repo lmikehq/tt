@@ -25,7 +25,8 @@ const SaveProgressAndContinueLater = () => {
                 color: ttColors.primary,
                 cursor: "pointer",
                 textDecoration: "underline",
-                fontWeight: "bold",
+                fontWeight: "500",
+                fontSize: "14px",
               }}
             >
               data protection page

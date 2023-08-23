@@ -301,7 +301,9 @@ function ApplicationForm() {
           margin="3rem 0px 5rem 0px"
           styles={{
             // boxShadow: isMobile ? "none" : "4px 4px 26px rgba(0, 0, 0, 0.25)",
-            boxShadow:isMobile ? "none" : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
+            boxShadow: isMobile
+              ? "none"
+              : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
 
             marginBottom: isMobile ? "3rem" : "0px",
             position: "relative",
@@ -346,7 +348,7 @@ function ApplicationForm() {
               <Section
                 width={isMobile ? "100%" : "100%"}
                 height="unset"
-                padding="2rem 0 0 0 "
+                padding="0px 0px 2rem 0px"
               >
                 {step?.content}
               </Section>

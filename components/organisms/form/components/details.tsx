@@ -44,14 +44,14 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
     <Section height="unset">
       <FormStepTitle steps={steps} index={index} />
       <form onSubmit={formik.handleSubmit}>
-        <Section>
+        <Section margin="1.5rem 0px 0px">
           <Flex gap="1rem">
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
                   type="p"
                   text="Where are you from?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                   size={isMobile ? 14 : 16}
                 />
                 <Required />
@@ -73,7 +73,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Where to?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -101,7 +101,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Visa type"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -128,7 +128,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Application type"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -156,7 +156,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
               size={isMobile ? 14 : 16}
               type="p"
               text="Number of Travellers"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <FieldString
               formik={formik}

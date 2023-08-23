@@ -23,9 +23,9 @@ const VisApplicationFormDetails = ({
         // direction={isMobile ? "column" : "row"}
         gap={isMobile ? "1.5rem" : "0rem"}
       >
-        <Text type="p" text={formData.home} size={24} weight="600" />
+        <Text type="p" text={formData.home} size={24} weight={500} />
         <TravelArrow />
-        <Text type="p" text={formData.destination} size={24} weight={600} />
+        <Text type="p" text={formData.destination} size={24} weight={500} />
       </Flex>
       <Divider margin={"1.5rem 0"} />
 
@@ -35,13 +35,14 @@ const VisApplicationFormDetails = ({
             text="Application Fee"
             type="h3"
             size={20}
-            weight={600}
+            weight={500}
             whiteSpace="nowrap"
+            margin="0 0 .7rem 0"
           />
           <Text
             type="p"
             size={18}
-            weight={400}
+            weight={300}
             text="Non-Refundable"
             whiteSpace="nowrap"
           />
@@ -51,26 +52,27 @@ const VisApplicationFormDetails = ({
             text="Validity"
             type="h3"
             size={20}
-            weight={600}
+            weight={500}
             whiteSpace="nowrap"
+            margin="0 0 .7rem 0"
           />
           <Text
             type="p"
             size={18}
-            weight={400}
+            weight={300}
             text="Passport dependent"
             whiteSpace="nowrap"
           />
         </Flex>
       </Flex>
       <Section padding="2.5rem 0">
-        <Text type="h3" text="Required Documents" weight={600} size={20} />
+        <Text type="h3" text="Required Documents" weight={500} size={20} />
         <BulletList>
           <ListItem>
             <Text
               type="p"
               size={18}
-              weight={400}
+              weight={300}
               text="Passport sized photograph"
             />
           </ListItem>
@@ -78,7 +80,7 @@ const VisApplicationFormDetails = ({
             <Text
               type="p"
               size={18}
-              weight={400}
+              weight={300}
               text="Valid international passport"
             />
           </ListItem>
@@ -86,7 +88,7 @@ const VisApplicationFormDetails = ({
             <Text
               type="p"
               size={18}
-              weight={400}
+              weight={300}
               text="All academic certificates"
             />
           </ListItem>
@@ -94,12 +96,17 @@ const VisApplicationFormDetails = ({
             <Text
               type="p"
               size={18}
-              weight={400}
+              weight={300}
               text="Proof of address (utility bill)"
             />
           </ListItem>
           <ListItem>
-            <Text type="p" text="Marriage certificate (if applicable)" />
+            <Text
+              type="p"
+              text="Marriage certificate (if applicable)"
+              size={18}
+              weight={300}
+            />
           </ListItem>
         </BulletList>
       </Section>

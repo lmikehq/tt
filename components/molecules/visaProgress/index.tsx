@@ -38,7 +38,7 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
       />
       <CircleProgress
         index="4"
-        title="Family Details"
+        title="Family Information"
         active={phase === 4}
         isPassed={phase > 4}
         onClick={() => {

@@ -10,26 +10,18 @@ import AppLogo from "@image/app-store.svg";
 import PlayStore from "@image/google-play.svg";
 import newsLetterBg from "@image/newsLetterbg.png";
 
-import { Grid } from "../../atoms/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Input from "@atom/input";
 
 const SubscribeWrapper = styled.div`
-  // position: absolute;
-  // left: 7.5%;
-  // bottom: 90%;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  // background: var(--semi-bg-color);
-  // background: rgba(135, 206, 235, 0.6);
   background-image: url(${newsLetterBg.src});
   background-size: cover;
   background-repeat: no-repeat;
-  // background-position: -8rem 0;
-  // z-index: -1;
   justify-content: center;
   align-items: center;
   width: 85%;
-  margin: auto;
+  margin: 5rem auto;
   height: 29.5rem;
   border-radius: 1.5rem;
   padding: 0rem 3.5rem;
@@ -111,12 +103,15 @@ const NewsLetter = () => {
             weight={700}
             size={isMobile ? "1.28rem" : "2.5rem"}
             color="#06062A"
+            opacity="80%"
           />
           <Text
             type="p"
             text="Discover a world of inspiration! Unlock exclusive travel discounts, gain invaluable visa tips, and immerse yourself in captivating behind-the-scenes stories"
             size="1rem"
             color="#06062A"
+            margin={isMobile ? "0" : "-1.1rem 0 .7rem 0"}
+            opacity="70%"
           />
           <Flex
             direction={isMobile ? "column" : "row"}

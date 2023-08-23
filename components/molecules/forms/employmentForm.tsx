@@ -39,7 +39,7 @@ export default function EmploymentForm({
           <Text
             type="p"
             text={`Company Name ${count + 1}`}
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
         </Flex>
@@ -60,7 +60,7 @@ export default function EmploymentForm({
             <Text
               type="p"
               text="Job Title"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -75,7 +75,7 @@ export default function EmploymentForm({
             <Text
               type="p"
               text="Employment Type"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -105,7 +105,7 @@ export default function EmploymentForm({
             <Text
               type="p"
               text="Company's Location"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -119,7 +119,7 @@ export default function EmploymentForm({
           <Text
             type="p"
             text="Location Type"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldString
             placeholder="Select Location Type"
@@ -139,7 +139,7 @@ export default function EmploymentForm({
           <Text
             type="p"
             text="Start Date"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your Start Year"
@@ -160,7 +160,7 @@ export default function EmploymentForm({
           <Text
             type="p"
             text="End Date"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your End Year"

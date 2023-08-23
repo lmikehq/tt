@@ -138,7 +138,6 @@ const Visa = () => {
                     <Text
                       type="h5"
                       text={format(new Date(visa?.date), "dd MMM, yyyy")}
-                      //  `${format(new Date(row.createdAt), "dd MMM, yyyy")}`,
                     />
                   </Section>
                 </Flex>

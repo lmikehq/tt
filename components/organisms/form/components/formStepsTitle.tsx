@@ -20,9 +20,10 @@ function FormStepTitle({
       <Text
         type="h1"
         text={steps[0]}
-        size={isMobile ? "13px" : "1.125rem"}
+        size={isMobile ? "13px" : "24px"}
         weight={600}
         className="title-font"
+        margin="2rem 0px 0px"
       />
       {steps.length > 1 && (
         <>

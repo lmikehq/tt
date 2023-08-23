@@ -10,23 +10,46 @@ interface circleProps {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const CircleWrapper = styled.div<{ active: boolean, isPassed: boolean }>`
+const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
   position: relative;
   display: inline-block;
- &::after {
-  content: "";
-  position: absolute;
-  width: 70%;
-  top: 25%;
-  left: 64%;
-  opacity: ${props => (props.active ? "1" : "0.7")};
-  border: 1px solid ${props => (props.isPassed ? "#6092A7" : "gray")};
- }
- &:last-child::after {
-  display: none;
- }
- cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    top: 25%;
+    left: 64%;
+    opacity: ${(props) => (props.active ? "1" : "0.7")};
+    border: 1px solid ${(props) => (props.isPassed ? "#6092A7" : "gray")};
+  }
+  &:last-child::after {
+    display: none;
+  }
+  cursor: pointer;
+  /* Responsive Styles */
+  @media (max-width: 1024px) {
+    width
+  }
 
+  @media (max-width: 900px) {
+    /* Adjust styles for 900px screens */
+    font-size: 12px;
+  }
+
+  @media (max-width: 768px) {
+    /* Adjust styles for 768px screens */
+    font-size: 10px;
+  }
+
+  @media (max-width: 477px) {
+    /* Adjust styles for 477px screens */
+    font-size: 8px;
+  }
+
+  @media (max-width: 330px) {
+    /* Adjust styles for 330px screens */
+    font-size: 6px;
+  }
 `;
 
 const Container = styled.div<{ active: boolean, isPassed: boolean }>`
@@ -35,6 +58,7 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   margin: 0 25px;
   color: ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
   opacity: ${props => (props.active || props.isPassed ? "1" : "0.7")};
+  
   
 `;
 
@@ -63,13 +87,46 @@ const CircleText = styled.span`
 
 function CircleProgress(props: circleProps) {
   return (
-    <CircleWrapper active={props.active} isPassed={props.isPassed} onClick={props.onClick}>
-      <Container active={props.active} isPassed={props.isPassed} onClick={props.onClick}>
+    <CircleWrapper
+      active={props.active}
+      isPassed={props.isPassed}
+      onClick={props.onClick}
+    >
+      <Container
+        active={props.active}
+        isPassed={props.isPassed}
+        onClick={props.onClick}
+      >
         <Circle active={props.active} isPassed={props.isPassed}>
-          <Text type="p" weight="bold" text={props.index} color={props.isPassed ? "white" : (props.active ? "#6092A7" : ttColors.gray)} />
+          <Text
+            type="p"
+            weight="bold"
+            text={props.index}
+            color={
+              props.isPassed
+                ? "white"
+                : props.active
+                ? "#6092A7"
+                : ttColors.gray
+            }
+          />
         </Circle>
         <CircleText>
-          <Text type="h5" weight={props.active ? "bold" : "normal"} text={props.title} textAlign="center" />
+          <Text
+            type="h5"
+            weight={props.active ? "500" : "normal"}
+            text={props.title}
+            textAlign="center"
+            margin=".5rem 0px 0px"
+            size={16}
+            // color={
+            //   props.isPassed
+            //     ? ttColors.gray
+            //     : props.active
+            //     ? ttColors.primary
+            //     : "#929292"
+            // }
+          />
         </CircleText>
       </Container>
     </CircleWrapper>
