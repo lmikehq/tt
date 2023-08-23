@@ -7,7 +7,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
@@ -37,9 +37,25 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   const [disabled, setDisabled] = useState(true);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
+  const [showDate, setShowDate] = useState(false);
+  const [showPassDate, setShowPassDate] = useState(false);
+
+  const MeansId = [
+    "National ID Card",
+    "Social Security Card",
+    "Birth Certificate",
+    "Voter ID Card",
+    "International Passport",
+  ];
 
   const [value, setValue] = useState("");
   const [radio, setRadio] = useState("");
+  const [formData, setFormData] = useState({
+    disability: "",
+    entry: "",
+    criminal: "",
+    looting: "",
+  });
   const formik = useFormik({
     initialValues: personalInfoKeys,
     validationSchema: personalInfoSchema,
@@ -55,7 +71,11 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   ];
 
   const { updateFieldValue } = useFormikLocalStorage(formik, personalInfoKeys);
-  console.log(endDate !== null);
+
+  useEffect(() => {
+    setShowDate(MeansId.some((item) => item === formik.values.meansOfId));
+    setShowPassDate(formik.values.meansOfId === MeansId[4]);
+  }, [formik.values.meansOfId]);
 
   return (
     <Section>
@@ -229,7 +249,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </Flex>
             <FieldString
               options={[
-                "Passport",
+                "National Passport",
+                "International Passport",
                 "National ID Card",
                 "Driver's License",
                 "Social Security Card",
@@ -260,43 +281,45 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             />
           </Section>
         </Flex>
-        <Flex
-          margin={isMobile ? "0px" : "0 0 1rem"}
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section width="100%">
-            <Text
-              type="p"
-              text="Issue Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="issueDate"
-              placeholder="Select your Issue Date"
-              formik={formik}
-              onChange={(e: any) => {
-                updateFieldValue(`issueDate`, `${e}`);
-                setEndDate(dayjs(e));
-              }}
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Expiry Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="expiryDate"
-              placeholder="Select the Expiry Date"
-              formik={formik}
-              minDate={endDate}
-              disabled={endDate === null}
-            />
-          </Section>
-        </Flex>
+        {!showDate && (
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issue Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="issueDate"
+                placeholder="Select your Issue Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue(`issueDate`, `${e}`);
+                  setEndDate(dayjs(e));
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="expiryDate"
+                placeholder="Select the Expiry Date"
+                formik={formik}
+                minDate={endDate}
+                disabled={endDate === null}
+              />
+            </Section>
+          </Flex>
+        )}
         <Flex
           margin="0"
           justify="space-between"
@@ -452,43 +475,45 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             />
           </Section>
         </Flex>
-        <Flex
-          margin={isMobile ? "0px" : "0 0 1rem"}
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section width="100%">
-            <Text
-              type="p"
-              text="Issued Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="passportIssueDate"
-              placeholder="Select your Issued Date"
-              formik={formik}
-              onChange={(e: any) => {
-                updateFieldValue("passportIssueDate", e);
-                // setPassEndDate(e);
-              }}
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Expiry Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="passportExpiryDate"
-              placeholder="Select your Expiry Date"
-              formik={formik}
-              disabled={passEndDate === null}
-              minDate={passEndDate}
-            />
-          </Section>
-        </Flex>
+        {showPassDate && (
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issued Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="passportIssueDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue("passportIssueDate", e);
+                  setPassEndDate(e);
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+                disabled={passEndDate === null}
+                minDate={passEndDate}
+              />
+            </Section>
+          </Flex>
+        )}
         <Section>
           <Text
             type="p"
@@ -527,7 +552,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -557,7 +582,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -582,7 +607,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 <CustomRadioGroup
                   
                   options={options}
-                  onChange={(e) => setRadio(e)}
+                  onChange={(e) => setFormData((prev) => ({...prev, disability: e}))}
                   justifyContent="flex-end"
                 /> */}
               </Flex>
@@ -617,7 +642,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in Canada?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -648,7 +673,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Have you ever been refused a visa or permit, denied entry or ordered to leave Canada or any other Country?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -707,7 +732,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -759,7 +784,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Did you serve in any military, militia, or defense unit or serve in a security organization or police force (including non-obligatory national service, reserve or volunteer units)?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -813,7 +838,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
@@ -844,7 +869,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     justifyContent: "flex-start",
                   }}
                   size={16}
-                  weight={200}
+                  weight={400}
                   type="p"
                   text="Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?"
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}

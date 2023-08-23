@@ -133,9 +133,7 @@ export const educationSchema = yup.object().shape({
   schoolName: yup.string().required("Required"),
   degree: yup.string().required("Required"),
   courseOfStudy: yup.string().required("Required"),
-  grade: yup
-    .number()
-    .max(5.0, "Your Grade cannot be more than 5.0")
+  grade: yup.number().max(5.0, "Your Grade cannot be more than 5.0")
     .min(1.0, "Your Grade cannot be less than 1.0")
     .required("Required"),
   startYear: yup.string().required("Required"),

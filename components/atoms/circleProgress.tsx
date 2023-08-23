@@ -27,6 +27,13 @@ const CircleWrapper = styled.div<{ active: boolean, isPassed: boolean }>`
  }
  cursor: pointer;
 
+ @media (max-width:1280px) {
+    &::after {
+      left: 70%;
+      width: 58%;
+    }
+ }
+
 `;
 
 const Container = styled.div<{ active: boolean, isPassed: boolean }>`
@@ -36,6 +43,15 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   color: ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
   opacity: ${props => (props.active || props.isPassed ? "1" : "0.7")};
   
+  @media (max-width: 1440px) {
+    @media (min-width: 1280px) {
+      margin: 0 7.5px
+    }
+  }
+
+  @media (max-width: 1280px) {
+    margin: 0;
+  }
 `;
 
 const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
