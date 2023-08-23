@@ -82,13 +82,6 @@ export const FieldInput = (props: FieldProps) => {
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
 
-  // useEffect(() => {
-  //   const storedValue = sessionStorage.getItem(name);
-  //   if (storedValue) {
-  //     formik.setFieldValue(name, storedValue);
-  //   }
-  // }, []);
-
   return (
     <Section padding="0 0 1.2rem 0">
       <Input
@@ -116,13 +109,6 @@ export const ArrayInput = (props: FieldProps) => {
     sessionStorage.setItem(name, value);
   };
 
-  // useEffect(() => {
-  //   const storedValue = sessionStorage.getItem(name);
-  //   if (storedValue) {
-  //     formik.setFieldValue(name, storedValue);
-  //   }
-  // }, []);
-
   const value = getNestedValue(formik.values, name);
 
   return (
@@ -146,21 +132,12 @@ export const FieldAsString = (props: FieldProps) => {
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
 
-  useEffect(() => {
-    const storedValue = sessionStorage.getItem(name);
-    if (storedValue) {
-      formik.setFieldValue(name, storedValue);
-    }
-  }, []);
-
   const handleChange = (e: any) => {
     formik.setFieldValue(name, e.name);
-    // formik.setTouched({ ...formik.touched, [name]: true });
     sessionStorage.setItem(name, e.name);
   };
 
   const formikvalue = getNestedValue(formik.values, name);
-  console.log(value, name);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
@@ -186,14 +163,6 @@ export const FieldString = (props: FieldProps) => {
   };
 
   const formikvalue = getNestedValue(formik.values, name);
-  console.log(value, formikvalue);
-
-  // useEffect(() => {
-  //   const storedValue = sessionStorage.getItem(name);
-  //   if (storedValue) {
-  //     formik.setFieldValue(name, storedValue);
-  //   }
-  // }, []);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
@@ -209,7 +178,7 @@ export const FieldString = (props: FieldProps) => {
 };
 
 export const FieldAsDate = (props: FieldProps) => {
-  const { name, disabled, formik, views, onChange, minDate, maxDate } = props;
+  const { name, disabled, formik, views, onChange, minDate, maxDate, placeholder } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
 
@@ -220,23 +189,18 @@ export const FieldAsDate = (props: FieldProps) => {
 
   const value = getNestedValue(formik.values, name);
 
-  // useEffect(() => {
-  //   const storedValue = sessionStorage.getItem(name);
-  //   if (storedValue) {
-  //     formik.setFieldValue(name, storedValue);
-  //   }
-  // }, []);
-
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
       <DatePicker
         disabled={disabled}
         views={views}
-        // maxDate={maxDate}
-        // minDate={minDate}
-        value={dayjs(value)}
+        placeholder={placeholder}
+        maxDate={maxDate}
+        minDate={minDate}
+        value={value === "" ? null : dayjs(value)}
         onChange={onChange ? onChange : handleChange}
-      />{" "}
+      />
+      
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );

@@ -31,6 +31,7 @@ const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
   height: 70px;
+  font-family: Montserrat;
   background: ${({ page }) =>
     page === "home" ? "transparent" : "var(--bg-color)"};
   z-index: 100;
@@ -53,6 +54,7 @@ const NavLink = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 2rem;
+  font-weight: 600;
 `;
 const NavLogo = styled.div`
   display: flex;
@@ -181,7 +183,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                       text={item.name}
                       type="p"
                       whiteSpace="nowrap"
-                      weight={400}
+                      weight={600}
                     />
                   </Link>
                 </Flex>
@@ -218,29 +220,34 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 <UserPopover />
               </>
             ) : (
-              <>
-                {" "}
+              <Flex gap="1rem">
                 <Link href="/auth/login">
-                  <Text
-                    text="Login"
-                    type="p"
-                    whiteSpace="nowrap"
-                    size={16}
-                    weight={400}
-                  />
+                  <Button 
+                    border="1px solid #06062A"
+                    background="transparent"
+                  >
+                    <Text
+                      text="Sign in"
+                      color="#06062A"
+                      type="p"
+                      whiteSpace="nowrap"
+                      size={14}
+                      weight={600}
+                    />
+                  </Button>
                 </Link>
                 <Link href="/auth/register">
                   <Button>
                     <Text
-                      text="Sign Up"
+                      text="Sign up"
                       type="p"
                       whiteSpace="nowrap"
-                      weight={400}
+                      weight={600}
                       color="#fff"
                     />
                   </Button>
                 </Link>
-              </>
+              </Flex>
             )}
           </NavMenu>
         </Grid>

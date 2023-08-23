@@ -469,7 +469,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               formik={formik}
               onChange={(e: any) => {
                 updateFieldValue("passportIssueDate", e);
-                setPassEndDate(dayjs(e));
+                // setPassEndDate(e);
               }}
             />
           </Section>
