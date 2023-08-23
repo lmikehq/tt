@@ -6,24 +6,45 @@ import Button from "@atom/button";
 import CheckBox from "@atom/checkbox";
 // import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
+import bgImage1 from "@image/auth-bg1.png";
+import bgImage2 from "@image/auth-bg2.png";
+import bgImage3 from "@image/auth-bg3.jpeg";
+import bgImage4 from "@image/auth-bg4.jpeg";
+import bgImage5 from "@image/auth-bg5.jpeg";
+import bgImage6 from "@image/auth-bg6.jpeg";
+import bgImage7 from "@image/auth-bg7.jpeg";
+import bgImage8 from "@image/auth-bg8.jpeg";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
 import google from "@image/google.svg";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
+import { Form } from "formik";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
+
+const settings = {
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+};
 
 function LoginPage() {
   const { isMobile } = useScreenResolution();
@@ -101,7 +122,190 @@ function LoginPage() {
 
   return (
     <SectionLayout>
-      <Flex margin="4rem 0">
+      {/* <Form onSubmit={handleSubmit}>
+        <Grid
+          columns="repeat(auto-fit, minmax(300px, 1fr))"
+          margin={isMobile ? "1rem 0" : "4rem 0"}
+          gap="5rem"
+        > */}
+      {/* <Section styles={{ display: isMobile ? "none" : "block" }}>
+            <Slider {...settings}>
+              <div>
+                <img
+                  src={bgImage.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage1.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage2.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage3.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage4.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage5.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage6.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage7.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage8.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px" }}
+                />
+              </div>
+            </Slider>
+          </Section> */}
+      <Grid
+        columns="repeat(auto-fit, minmax(300px, 1fr))"
+        margin={isMobile ? "1rem 0" : "4rem 0"}
+        gap="5rem"
+      >
+        {/* <Section styles={{ display: isMobile ? "none" : "block" }}>
+          <img src={bgImage.src} alt="background image" width="100%" />
+        </Section> */}
+        <Section styles={{ display: isMobile ? "none" : "block" }}>
+          <Slider {...settings}>
+            <div>
+              <img
+                src={bgImage.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage1.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage2.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage3.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage4.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage5.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage6.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage7.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage8.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px" }}
+              />
+            </div>
+          </Slider>
+        </Section>
         <Section>
           <img
             src={logo.src}
@@ -233,10 +437,9 @@ function LoginPage() {
             </Button>
           </Flex>
         </Section>
-        <Section styles={{ display: isMobile ? "none" : "block" }}>
-          <img src={bgImage.src} alt="background image" width="100%" />
-        </Section>
-      </Flex>
+      </Grid>
+      {/* </Grid>
+      </Form> */}
     </SectionLayout>
   );
 }
