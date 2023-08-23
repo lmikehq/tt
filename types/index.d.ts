@@ -119,7 +119,10 @@ interface OtherInfoKeys {
   uploadedDocuments: string[];
   [key: string]: any;
 }
-
+interface DocumentInterface {
+  title: string;
+  url: string;
+}
 export interface VisaApplicationFormInterface
   extends DetailsKeys,
     PersonalInfoKeys {
@@ -127,6 +130,7 @@ export interface VisaApplicationFormInterface
   educations: EducationDetailsInterface[];
   employments: EmploymentDetailsInterface[];
   familyInfo: FamilyInfoInterface[];
+  documents: DocumentInterface[];
   [key: string]: any;
 }
 

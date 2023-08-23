@@ -716,7 +716,11 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </Section>
           </ol>
         </Section>
-        <Section height="unset" margin="4.5rem 0 0 0">
+        <Section
+          height="unset"
+          styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+        >
+          {" "}
           <Button width="100%" height={"3.5rem"} type="submit">
             <Flex align="center" width="100%" height="100%" justify="center">
               {isLoading ? (

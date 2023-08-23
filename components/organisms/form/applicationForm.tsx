@@ -40,6 +40,7 @@ import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import {
   DetailsKeys,
+  DocumentInterface,
   EducationDetailsInterface,
   EmploymentDetailsInterface,
   FamilyInfoInterface,
@@ -52,6 +53,9 @@ import VisaProgress from "@molecule/visaProgress";
 import { ListItem } from "@mui/material";
 import BulletList from "@atom/list";
 import TravelArrow from "@atom/travelArrow";
+import VisaApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
+import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndContinueLater";
+import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 
 const PromoInput = styled.div`
   display: flex;
@@ -75,7 +79,8 @@ export type SingleFormType =
   | PersonalInfoInterface
   | EducationDetailsInterface[]
   | EmploymentDetailsInterface[]
-  | FamilyInfoInterface[];
+  | FamilyInfoInterface[]
+  | DocumentInterface[];
 
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
@@ -92,21 +97,21 @@ function ApplicationForm() {
     if (applicationResponse.statusCode === 201)
       return setCurrentPhase(currentPhase + 1);
     const response: any = await apiService("visa/new-application", "POST", {
-      ...formik.values,
-      destination: formik.values.destination?.name,
-      homeCountry: formik.values.home?.name,
-      firstAndMiddleName: formik.values.firstName,
-      address: formik.values.residentialAddress,
-      school: formik.values.schoolName,
-      yearOfGraduation: formik.values.graudautionYear,
-      company: formik.values.companyName,
-      yearStarted: formik.values.startedYear,
-      yearEnded: formik.values.endedYear,
-      passportNumber: formik.values.passNumber,
-      passportIssuedCountry: formik.values.passIssueCountry,
-      passportExpiryYear: formik.values.expiryYear,
-      relationshipToGuarantor: formik.values.guarantorRelationship,
-      documents: formik.values.uploadedDocuments,
+      ...formData,
+      // destination: formik.values.destination?.name,
+      // homeCountry: formik.values.home?.name,
+      // firstAndMiddleName: formik.values.firstName,
+      // address: formik.values.residentialAddress,
+      // school: formik.values.schoolName,
+      // yearOfGraduation: formik.values.graudautionYear,
+      // company: formik.values.companyName,
+      // yearStarted: formik.values.startedYear,
+      // yearEnded: formik.values.endedYear,
+      // passportNumber: formik.values.passNumber,
+      // passportIssuedCountry: formik.values.passIssueCountry,
+      // passportExpiryYear: formik.values.expiryYear,
+      // relationshipToGuarantor: formik.values.guarantorRelationship,
+      // documents: formik.values.uploadedDocuments,
       userId: user?._id || "",
     });
 
@@ -119,7 +124,7 @@ function ApplicationForm() {
         ...data,
         amount: response.fee.total * 100,
         currency: "NGN",
-        email: response.fee.mail || formik.values.email,
+        email: response.fee.mail || formData.email,
       });
       return setCurrentPhase(currentPhase + 1);
     }
@@ -178,10 +183,13 @@ function ApplicationForm() {
     if (number > highestPhase) setHighestPhase(number);
   };
 
-  const nextStep = async ({ form }: { form: SingleFormType }) => {
+  const nextStep = async ({ form }: { form?: SingleFormType }) => {
     if (nextStepLoading) return;
     setNextStepLoading(true);
-    setFormData({ ...formData, ...form });
+    if (currentPhase <= 6) {
+      setFormData({ ...formData, ...form });
+      if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
+    }
 
     // if (currentPhase === 4) {
     //   setNextStepLoading(true);
@@ -196,7 +204,6 @@ function ApplicationForm() {
     // }
     await reloadFee();
     setCurrentPhase(currentPhase + 1);
-    if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
     setNextStepLoading(false);
   };
 
@@ -205,18 +212,6 @@ function ApplicationForm() {
     await reloadFee();
     setCurrentPhase(currentPhase - 1);
   };
-
-  const initialValues = {
-    ...visaInitVals,
-    firstAndMiddleName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    home: { name: params.get("home") || "" },
-    destination: { name: params.get("destination") || "" },
-    visaType: params.get("visaType") || "",
-    email: user?.email || "",
-  };
-
-  const formik = useFormikHook(initialValues, visaSchema);
 
   const [formFee, setFormFee] = useState(0);
 
@@ -261,7 +256,6 @@ function ApplicationForm() {
   }
 
   const step = getSteps(
-    formik,
     setFormFee,
     setCurrentPhase,
     nextStep,
@@ -283,24 +277,16 @@ function ApplicationForm() {
   }
 
   const isValid: boolean = useMemo(() => {
-    return (
-      formik.values?.home?.name !== "" &&
-      formik.values?.destination?.name !== ""
-    );
-  }, [formik.values?.home?.name, formik.values?.destination?.name]);
+    return formData.home !== "" && formData.destination !== "";
+  }, [formData.home, formData.destination]);
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
   return (
     <>
-      <AllCountryHead
-        cover={coverImage}
-        title={formik.values?.destination?.name || ""}
-      />
+      <AllCountryHead cover={coverImage} title={formData.destination || ""} />
       <SectionLayout>
         <SectionTitle
-          title={`Apply Now for ${
-            initialValues?.destination?.name || ""
-          } Employment Visa`}
+          title={`Apply Now for ${formData.destination || ""} Employment Visa`}
           description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
           showButton={false}
         />
@@ -318,36 +304,46 @@ function ApplicationForm() {
           gap="2.25rem"
           direction={isMobile ? "column" : "row"}
         >
-          <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
-            <Flex
-              align="center"
-              cursor="pointer"
-              gap="0.3rem"
-              onClick={prevStep}
-            >
-              <BsArrowLeft
-                color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
-                size="22px"
-              />
-              <Text
-                text="Previous"
-                type="p"
-                color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
-                size="16px"
-                weight="bold"
-              />
-            </Flex>
-            {currentPhase > 1 && (
-              <VisaProgress
-                phase={currentPhase - 1}
-                setPhase={setPhase}
-                highestPhase={highestPhase}
-              />
-            )}
-            <Section width={isMobile ? "100%" : "100%"} padding="2rem 0">
-              {step?.content}
-            </Section>
-            <Section height="unset" margin="4.5rem 0 0 0">
+          <Section
+            height="unset"
+            width="62%"
+            padding={"0 0 8rem 0"}
+            styles={{ position: "relative" }}
+          >
+            <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
+              <Flex
+                align="center"
+                cursor="pointer"
+                gap="0.3rem"
+                onClick={prevStep}
+              >
+                <BsArrowLeft
+                  color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
+                  size="22px"
+                />
+                <Text
+                  text="Previous"
+                  type="p"
+                  color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
+                  size="16px"
+                  weight="bold"
+                />
+              </Flex>
+              {currentPhase > 1 && currentPhase < 7 && (
+                <VisaProgress
+                  phase={currentPhase - 1}
+                  setPhase={setPhase}
+                  highestPhase={highestPhase}
+                />
+              )}
+              <Section
+                width={isMobile ? "100%" : "100%"}
+                height="unset"
+                padding="2rem 0 0 0 "
+              >
+                {step?.content}
+              </Section>
+              {/* <Section height="unset" margin="4.5rem 0 0 0">
               {currentPhase == 6 && (
                 <Button width="100%" height={"3.5rem"} onClick={nextStep}>
                   <Flex
@@ -371,9 +367,10 @@ function ApplicationForm() {
                   </Flex>
                 </Button>
               )}
-            </Section>
-          </Flex>
-          <Flex
+            </Section> */}
+            </Flex>
+          </Section>
+          {/* <Flex
             align="center"
             cursor="pointer"
             gap="1rem"
@@ -391,303 +388,40 @@ function ApplicationForm() {
               size="20px"
               weight="400"
             />
-          </Flex>
+          </Flex> */}
           <Section
-            width="40%"
+            width="38%"
+            height="unset"
             styles={{ display: isMobile ? "none" : "block" }}
           >
-            {currentPhase < 6 ? (
-              isValid ? (
-                <Section width="100%">
-                  <Flex
-                    align="center"
-                    justify="space-between"
-                    // direction={isMobile ? "column" : "row"}
-                    gap={isMobile ? "1.5rem" : "0rem"}
-                  >
-                    <Text
-                      type="p"
-                      text={formik.values?.home?.name}
-                      size={24}
-                      weight="600"
-                    />
-                    <TravelArrow />
-                    <Text
-                      type="p"
-                      text={formik.values?.destination?.name}
-                      size={24}
-                      weight={600}
-                    />
-                  </Flex>
-                  <Divider margin={"1.5rem 0"} />
-                  {/* <Grid
-                    columns={isMobile ? "1fr" : "2fr 1fr"}
-                    gap=".5rem"
-                    margin="2rem 0"
-                    justify={isMobile ? "flex-start" : "center"}
-                    className="hideOnMobile"
-                  >
-                    {shownFees.map((item) => (
-                      <>
-                        <Text
-                          type="p"
-                          text={item.name}
-                          size={item.type === "head" ? "16px" : "14px"}
-                          whiteSpace="nowrap"
-                          weight={item.type === "head" ? "500" : "100"}
-                        />
-                        <Text
-                          type="p"
-                          text={`${
-                            typeof item.amount === "number"
-                              ? currencyFormatter(item.amount, "NGN")
-                              : item.amount
-                          }`}
-                          size={item.type === "head" ? "16px" : "14px"}
-                          whiteSpace="nowrap"
-                          weight={item.type === "head" ? "500" : "100"}
-                        />
-                      </>
-                    ))}
-                  </Grid> */}
-                  <Flex gap="2rem">
-                    <Flex direction="column">
-                      <Text
-                        text="Application Fee"
-                        type="h3"
-                        size={20}
-                        weight={600}
-                        whiteSpace="nowrap"
-                      />
+            <Flex direction="column" height="100%">
+              {(() => {
+                if (currentPhase <= 6) {
+                  return !isValid ? (
+                    <Section styles={{ flexGrow: 1 }}>
                       <Text
                         type="p"
-                        size={18}
-                        weight={400}
-                        text="Non-Refundable"
-                        whiteSpace="nowrap"
+                        text={`Please select a 
+                ${!formData.destination ? "destination and" : ""} 
+                ${!formData.home ? "home country" : ""}`}
                       />
-                    </Flex>
-                    <Flex direction="column">
-                      <Text
-                        text="Validity"
-                        type="h3"
-                        size={20}
-                        weight={600}
-                        whiteSpace="nowrap"
-                      />
-                      <Text
-                        type="p"
-                        size={18}
-                        weight={400}
-                        text="Passport dependent"
-                        whiteSpace="nowrap"
-                      />
-                    </Flex>
-                  </Flex>
-                  <Section padding="2.5rem 0">
-                    <Text
-                      type="h3"
-                      text="Required Documents"
-                      weight={600}
-                      size={20}
-                    />
-                    <BulletList>
-                      <ListItem>
-                        <Text
-                          type="p"
-                          size={18}
-                          weight={400}
-                          text="Passport sized photograph"
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <Text
-                          type="p"
-                          size={18}
-                          weight={400}
-                          text="Valid international passport"
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <Text
-                          type="p"
-                          size={18}
-                          weight={400}
-                          text="All academic certificates"
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <Text
-                          type="p"
-                          size={18}
-                          weight={400}
-                          text="Proof of address (utility bill)"
-                        />
-                      </ListItem>
-                      <ListItem>
-                        <Text
-                          type="p"
-                          text="Marriage certificate (if applicable)"
-                        />
-                      </ListItem>
-                    </BulletList>
-                  </Section>
-                  <Flex gap=".5rem">
-                    <BsFillShieldLockFill
-                      size="24px"
-                      color={ttColors.primary}
-                    />
-                    <div>
-                      <Text
-                        text="Your info is safe with us"
-                        type="p"
-                        size={18}
-                        weight={500}
-                        styles={{ lineHeight: "27px" }}
-                      />
-                      <p style={{ fontSize: "14px", color: "#929292" }}>
-                        For more details, see our &nbsp;
-                        <span
-                          style={{
-                            color: ttColors.primary,
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          data protection page
-                        </span>
-                      </p>
-                    </div>
-                  </Flex>
-                  {/* {shownFees.length ? (
-                    <Flex justify={isMobile ? "flex-start" : "flex-end"}>
-                      <Text
-                        type="p"
-                        text={currencyFormatter(
-                          shownFees.reduce(
-                            (a, b) =>
-                              a + (typeof b.amount === "number" ? b.amount : 0),
-                            0
-                          ),
-                          "NGN"
-                        )}
-                        size="2.1rem"
-                        weight="bold"
-                        key={formFee}
-                      />
-                    </Flex>
-                  ) : (
-                    ""
-                  )} */}
-
-                  {currentPhase === 4 && (
-                    <Section margin="2rem 0">
-                      <Text type="p" text="Promo Code" />
-                      <form action="" onSubmit={handlePromoCode}>
-                        <PromoInput>
-                          <Input
-                            placeholder="Enter Promo Code"
-                            width="100%"
-                            flexGrow={1}
-                            onChange={(e) => setPromoCode(e.target.value)}
-                            value={promoCode}
-                          />
-                          <Button type="submit">
-                            <Text
-                              type="p"
-                              text={promocodeLoading ? "Loading..." : "Apply"}
-                              weight={600}
-                              size="1rem"
-                            />
-                          </Button>
-                        </PromoInput>
-                      </form>
                     </Section>
-                  )}
-
-                  {applicationResponse?.statusCode === 400 &&
-                    applicationResponse?.errors?.message?.map(
-                      (x: any, i: number) => (
-                        <Text
-                          type="p"
-                          key={i}
-                          text={x.constraints}
-                          color="rgb(255, 134, 130)"
-                          size="1rem"
-                          margin="0 0 .6rem 0"
-                        />
-                      )
-                    )}
-                  {applicationResponse?.statusCode === 422 && (
-                    <Text
-                      type="p"
-                      text={"Please login to your account to continue"}
-                      color="rgb(255, 134, 130)"
-                      size="1rem"
-                      margin="0 0 .6rem 0"
+                  ) : (
+                    <VisaApplicationFormDetails formData={formData} />
+                  );
+                } else if (currentPhase > 6) {
+                  return (
+                    <PaymentSummaryPane
+                      numberOfPersons={1}
+                      visaApplicationType="Individual"
+                      fee={"10000"}
+                      totalFee={"10000"}
                     />
-                  )}
-
-                  <Flex margin="3rem 0 0 0" direction="column" gap="0.5rem">
-                    <Button
-                      border="1px solid #06062A"
-                      width="100%"
-                      background="none"
-                      borderRadius="4px"
-                      padding="1.5rem"
-                    >
-                      <Text
-                        type="p"
-                        text="Save Progress & Continue Later"
-                        size={16}
-                        color="#06062A"
-                        cursor="pointer"
-                        weight={600}
-                      />
-                    </Button>
-                    <Button
-                      border="1px solid #06062A"
-                      width="100%"
-                      background="none"
-                      borderRadius="4px"
-                      padding="1.5rem"
-                    >
-                      <Text
-                        type="p"
-                        text="Exit Application"
-                        weight={600}
-                        size={16}
-                        color="#06062A"
-                        cursor="pointer"
-                      />
-                    </Button>
-                  </Flex>
-                </Section>
-              ) : (
-                <Text
-                  type="p"
-                  text={`Please select a 
-                  ${!formik.values?.destination?.name ? "destination and" : ""} 
-                  ${!formik.values?.home?.name ? "home country" : ""}`}
-                />
-              )
-            ) : (
-              <>
-                <UsefulLinks />
-                <Button
-                  width="100%"
-                  margin="1rem 0"
-                  onClick={() => router.push("/company/about-us")}
-                  fontSize="18px"
-                  background="transparent"
-                  color="#000"
-                  border="1px solid #000"
-                >
-                  <Text type="p" text="Learn how we work" />
-                </Button>
-              </>
-            )}
+                  );
+                }
+              })()}
+              <SaveProgressAndContinueLater />
+            </Flex>
           </Section>
         </Flex>
       </SectionLayout>

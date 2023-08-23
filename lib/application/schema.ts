@@ -1,4 +1,4 @@
-import { VisaApplicationFormInterface } from "types";
+import { DocumentInterface, VisaApplicationFormInterface } from "types";
 import * as yup from "yup";
 
 export const detailsSchema = yup.object().shape({
@@ -51,6 +51,10 @@ export const personalInfoSchema = yup.object().shape({
   purposeOfTrip: yup.string(),
 });
 
+export const document = {
+  title: "",
+  url: "",
+};
 export const personalInfoKeys = {
   firstName: "",
   lastName: "",
@@ -97,7 +101,10 @@ export const educationSchema = yup.object().shape({
   startYear: yup.string().required("Required"),
   endYear: yup.string().required("Required"),
 });
-
+export const documentShema = yup.object().shape({
+  title: yup.string().required(),
+  url: yup.string().required(),
+});
 export const employmentSchema = yup.object().shape({
   employmentType: yup.string().required(),
   locationType: yup.string().required(),
@@ -128,6 +135,11 @@ export const educationArraySchema = yup
   .max(3, "You can provide at most three education");
 export const employmentArraySchema = yup.array().of(employmentSchema);
 export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
+export const documentArraySchema = yup
+  .array()
+  .of(documentShema)
+  .min(2, "You need to add 4 documents")
+  .max(5, "You can provide at most 3 documents");
 
 export const employmentKeys = {
   companyName: "",
@@ -162,6 +174,9 @@ export const employmentsSchema = yup
 export const familyInfoSchema = yup
   .object()
   .shape({ familyInfo: familyInfoArraySchema });
+export const documentsSchema = yup
+  .object()
+  .shape({ documents: documentArraySchema });
 
 export const visaSchema = {
   ...detailsSchema,
@@ -169,6 +184,7 @@ export const visaSchema = {
   ...employmentsSchema,
   ...personalInfoSchema,
   ...familyInfoSchema,
+  ...documentsSchema,
 };
 export const employmentsArr = {
   employments: [{ ...employmentKeys }],
@@ -179,12 +195,16 @@ export const educationsArr = {
 export const familyInfoArr = {
   familyInfo: [{ ...familyInforKeys }],
 };
+export const documentsArr: { documents: DocumentInterface[] } = {
+  documents: [],
+};
 export const visaInitVals: VisaApplicationFormInterface = {
   ...detailsKeys,
   ...educationsArr,
   ...employmentsArr,
   ...familyInfoArr,
   ...personalInfoKeys,
+  ...documentsArr,
 };
 
 export const waitlistSchema = yup.object().shape({

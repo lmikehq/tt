@@ -12,6 +12,10 @@ import { styled } from "styled-components";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 
 import { useState } from "react";
+import { SingleFormType } from "../applicationForm";
+import Button from "@atom/button";
+import { ttColors } from "theme/colors";
+import Spinner from "@components/icons/spinner";
 
 export interface CurrencyType {
   currency: string;
@@ -19,7 +23,14 @@ export interface CurrencyType {
   currencyCode: string;
 }
 
-const SelectPaymentMethod = () => {
+interface SelectPaymentMethodProps {
+  nextStep: ({ form }: { form: SingleFormType }) => void;
+  isLoading: boolean;
+}
+const SelectPaymentMethod = ({
+  nextStep,
+  isLoading,
+}: SelectPaymentMethodProps) => {
   const { isMobile } = useScreenResolution();
   const [currency, setCurrency] = useState<CurrencyType>({
     currency: "Nigerian Naira",
@@ -27,7 +38,7 @@ const SelectPaymentMethod = () => {
     currencyCode: "NGN",
   });
   return (
-    <Section width={isMobile ? "100%" : "50%"}>
+    <Section>
       <Section margin="0 0 3.375rem 0">
         <Text
           text={"Select Visa Payment"}
@@ -102,6 +113,26 @@ const SelectPaymentMethod = () => {
             />
           </Section>
         </Section>
+      </Section>
+      <Section
+        height="unset"
+        styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+      >
+        <Button width="100%" height={"3.5rem"} type="submit" onClick={nextStep}>
+          <Flex align="center" width="100%" height="100%" justify="center">
+            {isLoading ? (
+              <Spinner size="40px" fill={ttColors.primary} />
+            ) : (
+              <Text
+                type="span"
+                text={"Save & Continue"}
+                weight={600}
+                size={20}
+                color={ttColors.light}
+              />
+            )}
+          </Flex>
+        </Button>
       </Section>
     </Section>
   );
