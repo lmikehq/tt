@@ -10,20 +10,16 @@ import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
 import { ttColors } from "theme/colors";
-import { useState } from "react";
 import EmploymentForm from "@molecule/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
 import {
-  educationKeys,
   employmentKeys,
   employmentsArr,
   employmentsSchema,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import Spinner from "@components/icons/spinner";
-import Button from "@atom/button";
 import ContinueButton from "@atom/continueButton";
 
 interface formProps {
