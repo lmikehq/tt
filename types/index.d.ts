@@ -88,7 +88,18 @@ export interface PersonalInfoInterface {
   passportIssueDate: string;
   passportExpiryDate: string;
   purposeOfTrip: string;
-  [key: string]: any;
+  tuberculosis: boolean | null;
+  mentalDisorder: boolean | null;
+  mentalDisorderDetails: string;
+  remainbeyondValidity: boolean | null;
+  refusedBefore: boolean | null;
+  refusedBeforeDetails: string;
+  arrestedBefore: boolean | null;
+  arrestedBeforeDetails: string;
+  servedInMilitary: boolean | null;
+  servedInMilitaryDetails: string;
+  memberOfViolentGroup: boolean | null;
+  participatedInViolentActivities: boolean | null;
 }
 
 export interface FamilyInfoInterface {
@@ -104,7 +115,6 @@ export interface FamilyInfoInterface {
   membersEmail: string;
   membersIssueDate: string;
   membersExpiryDate: string;
-  [key: string]: any;
 }
 
 interface OtherInfoKeys {
@@ -117,7 +127,6 @@ interface OtherInfoKeys {
   guarantorPhone: string;
   guarantorWorth: string;
   uploadedDocuments: string[];
-  [key: string]: any;
 }
 interface DocumentInterface {
   title: string;
@@ -131,7 +140,6 @@ export interface VisaApplicationFormInterface
   employments: EmploymentDetailsInterface[];
   familyInfo: FamilyInfoInterface[];
   documents: DocumentInterface[];
-  [key: string]: any;
 }
 
 declare module "@paystack/inline-js";
