@@ -69,6 +69,8 @@ const CountryInfo = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 110%;
   overflow; hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 const LeftHeaderText = styled.div`
@@ -88,10 +90,11 @@ const CountryName = styled.h3`
 `;
 
 const CountryDescription = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 15px;
+  font-weight: normal;
+  font-family: Montserrat;
+  max-height: 10.5rem;
+  line-height: 1.25em;
   // padding: 2px 0.2rem;
 `;
 
@@ -113,15 +116,19 @@ const Button = styled.button`
   background-color: #fff;
   border: none;
   font-weight: bold;
-  position: absolute;
-  bottom: 0%;
-  left: 8.5%;
-  width: 83%;
+  font-family: Montserrat;
+  width: 85%;
   padding: 18px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-radius: 8px;
   cursor: pointer;
 `;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 5rem;
+`
 
 const CountryNameTooltip = styled.span`
   position: absolute;
@@ -308,11 +315,11 @@ const TopCountriesSection: React.FC = () => {
                       }}
                     >
                       {countries[activeImage - 1].description1}
-                      <br />
-                      <br />
                       {countries[activeImage - 1].description2}
                     </CountryDescription>
-                    <Button>Apply to {countries[activeImage - 1].name}</Button>
+                    
+                    
+                      <Button>Apply to {countries[activeImage - 1].name}</Button>
                   </CountryInfo>
                 )}
               </LeftSide>
@@ -338,17 +345,19 @@ const TopCountriesSection: React.FC = () => {
                     <br />
                     {countries[activeImage - 1].description2}
                   </CountryDescription>
-                  <Button
-                    onClick={() =>
-                      router.push(
-                        `/visa/apply?destination=${
-                          countries[activeImage - 1].name
-                        }`
-                      )
-                    }
-                  >
-                    Apply to {countries[activeImage - 1].name}
-                  </Button>
+                  <ButtonWrapper>
+                    <Button
+                      onClick={() =>
+                        router.push(
+                          `/visa/apply?destination=${
+                            countries[activeImage - 1].name
+                          }`
+                        )
+                      }
+                    >
+                      Apply to {countries[activeImage - 1].name}
+                    </Button>
+                  </ButtonWrapper>
                 </CountryInfo>
               )}
             </LeftSide>

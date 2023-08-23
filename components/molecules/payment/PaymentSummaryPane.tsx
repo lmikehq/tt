@@ -25,38 +25,42 @@ const PaymentSummaryPane = ({
     <Section>
       <Container>
         <Flex
-          height="4.875rem"
+          styles={{ minHeight: "4.875rem" }}
           align="center"
           justify="space-between"
-          padding="0 1rem"
+          padding="1.5rem 1rem"
           background="#F5F5F5"
         >
-          <Text text="Visa Application Type" type="p" weight={600} size={20} />
-          <Flex width="fit-content" gap="0.5rem">
-            <BiSolidUser size={24} color="#06062A" />{" "}
+          <Text text="Visa Application Type" type="p" weight={600} size={18} />
+          <Flex width="fit-content" align="center" gap="0.25rem">
+            <BiSolidUser size={18} color="#06062A" />{" "}
             <Text
               text={`${numberOfPersons} person${
                 numberOfPersons == 1 ? "" : "s"
               }`}
               type="p"
               weight={400}
-              size={18}
+              size={16}
               color="#06062A"
             />
           </Flex>
         </Flex>
         <Flex
-          height="4.875rem"
+          styles={{ minHeight: "4.875rem" }}
           align="center"
           justify="space-between"
           padding="0 1rem"
         >
-          <Text text={visaApplicationType} type="p" weight={600} size={20} />
+          <Text text={visaApplicationType} type="p" weight={600} size={18} />
 
-          <Text text={fee} type="p" weight={400} size={18} />
+          <Text text={fee} type="p" weight={400} size={16} />
         </Flex>
       </Container>
-      <Flex height="4.875rem" align="center" justify="space-between">
+      <Flex
+        styles={{ minHeight: "4.875rem" }}
+        align="center"
+        justify="space-between"
+      >
         <Text text="Total" type="p" weight={400} size={22} />
 
         <Text text={totalFee} type="p" weight={600} size={36} />

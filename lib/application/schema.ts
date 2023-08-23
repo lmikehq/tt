@@ -1,18 +1,18 @@
-import { VisaApplicationFormInterface } from "types";
+import { DocumentInterface, VisaApplicationFormInterface } from "types";
 import * as yup from "yup";
 
 export const detailsSchema = yup.object().shape({
-  home: yup.object().required(),
-  destination: yup.object().required(),
-  applicationType: yup.string().required(),
-  travellingBy: yup.string().required(),
-  numberOfTravellers: yup.number().required().max(6).min(1),
-  visaType: yup.string().required(),
+  home: yup.string().required("Required"),
+  destination: yup.string().required("Required"),
+  applicationType: yup.string().required("Required"),
+  travellingBy: yup.string(),
+  numberOfTravellers: yup.number().required("Required").max(6).min(1),
+  visaType: yup.string().required("Required"),
 });
 
 export const detailsKeys = {
-  home: { name: "" },
-  destination: { name: "" },
+  home: "",
+  destination: "",
   applicationType: "",
   visaType: "", //
   travellingBy: "",
@@ -29,28 +29,32 @@ export const personalInfoSchema = yup.object().shape({
     .string()
     .max(15, "Must be 15 characters or less")
     .required("Required"),
-  middleName: yup.string().required(),
-  email: yup.string().email().required(),
-  placeOfOrigin: yup.string().required(),
-  stateOfOrigin: yup.string().required(),
-  lgOfOrigin: yup.string().required(),
-  nativeLanguage: yup.string().required(),
-  meansOfId: yup.string().required(),
-  idNumber: yup.string().required(),
+  middleName: yup.string().required("Required"),
+  email: yup.string().email().required("Required"),
+  placeOfOrigin: yup.string().required("Required"),
+  stateOfOrigin: yup.string().required("Required"),
+  lgOfOrigin: yup.string().required("Required"),
+  nativeLanguage: yup.string().required("Required"),
+  meansOfId: yup.string().required("Required"),
+  idNumber: yup.string().required("Required"),
   issueDate: yup.date(),
   expiryDate: yup.date(),
-  homeCountry: yup.string().required(),
-  residentialAddress: yup.string().required(),
-  // dateOfBirth: yup.date().required(),
-  maritalStatus: yup.string().required(),
+  homeCountry: yup.string().required("Required"),
+  residentialAddress: yup.string().required("Required"),
+  // dateOfBirth: yup.date().required("Required"),
+  maritalStatus: yup.string().required("Required"),
   partnersName: yup.string(),
-  passportNumber: yup.string().required(),
-  issuingCountry: yup.string().required(),
+  passportNumber: yup.string().required("Required"),
+  issuingCountry: yup.string().required("Required"),
   passportIssueDate: yup.date(),
   passportExpiryDate: yup.date(),
   purposeOfTrip: yup.string(),
 });
 
+export const document = {
+  title: "",
+  url: "",
+};
 export const personalInfoKeys = {
   firstName: "",
   lastName: "",
@@ -97,27 +101,31 @@ export const educationSchema = yup.object().shape({
   startYear: yup.string().required("Required"),
   endYear: yup.string().required("Required"),
 });
-
-export const employmentSchema = yup.object().shape({
-  employmentType: yup.string().required(),
-  locationType: yup.string().required(),
-  companyName: yup.string().required(),
-  jobTitle: yup.string().required(),
-  companyLocation: yup.string().required(),
-  startedYear: yup.string().required(),
-  endedYear: yup.string().required(),
+export const documentShema = yup.object().shape({
+  title: yup.string().required(),
+  url: yup.string().required(),
 });
+export const employmentSchema = yup.object().shape({
+  employmentType: yup.string().required("Required"),
+  locationType: yup.string().required("Required"),
+  companyName: yup.string().required("Required"),
+  jobTitle: yup.string().required("Required"),
+  companyLocation: yup.string().required("Required"),
+  startedYear: yup.string().required("Required"),
+  endedYear: yup.string().required("Required"),
+});
+
 export const singleFamilyInfoSchema = yup.object().shape({
   passNumber: yup.string(),
   expiryYear: yup.string(),
   gender: yup.string(),
   membersDOB: yup.string(),
   passIssueCountry: yup.string(),
-  membersName: yup.string().required(),
-  membersRelationship: yup.string().required(),
-  membersAddress: yup.string().required(),
-  membersPhone: yup.string().required(),
-  membersEmail: yup.string().email().required(),
+  membersName: yup.string().required("Required"),
+  membersRelationship: yup.string().required("Required"),
+  membersAddress: yup.string().required("Required"),
+  membersPhone: yup.string().required("Required"),
+  membersEmail: yup.string().email().required("Required"),
   membersIssueDate: yup.string(),
   membersExpiryDate: yup.string(),
 });
@@ -128,6 +136,11 @@ export const educationArraySchema = yup
   .max(3, "You can provide at most three education");
 export const employmentArraySchema = yup.array().of(employmentSchema);
 export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
+export const documentArraySchema = yup
+  .array()
+  .of(documentShema)
+  .min(2, "You need to add 4 documents")
+  .max(5, "You can provide at most 3 documents");
 
 export const employmentKeys = {
   companyName: "",
@@ -162,6 +175,9 @@ export const employmentsSchema = yup
 export const familyInfoSchema = yup
   .object()
   .shape({ familyInfo: familyInfoArraySchema });
+export const documentsSchema = yup
+  .object()
+  .shape({ documents: documentArraySchema });
 
 export const visaSchema = {
   ...detailsSchema,
@@ -169,27 +185,19 @@ export const visaSchema = {
   ...employmentsSchema,
   ...personalInfoSchema,
   ...familyInfoSchema,
+  ...documentsSchema,
 };
 export const employmentsArr = {
-  employments: [
-    { ...employmentKeys },
-    { ...employmentKeys },
-    { ...employmentKeys },
-  ],
+  employments: [{ ...employmentKeys }],
 };
 export const educationsArr = {
-  educations: [
-    { ...educationKeys },
-    { ...educationKeys },
-    { ...educationKeys },
-  ],
+  educations: [{ ...educationKeys }],
 };
 export const familyInfoArr = {
-  familyInfo: [
-    { ...familyInforKeys },
-    { ...familyInforKeys },
-    { ...familyInforKeys },
-  ],
+  familyInfo: [{ ...familyInforKeys }],
+};
+export const documentsArr: { documents: DocumentInterface[] } = {
+  documents: [],
 };
 export const visaInitVals: VisaApplicationFormInterface = {
   ...detailsKeys,
@@ -197,6 +205,7 @@ export const visaInitVals: VisaApplicationFormInterface = {
   ...employmentsArr,
   ...familyInfoArr,
   ...personalInfoKeys,
+  ...documentsArr,
 };
 
 export const waitlistSchema = yup.object().shape({

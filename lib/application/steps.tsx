@@ -18,6 +18,8 @@ import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
 import UploadDocuments from "@organism/form/components/uploadDocuments";
 import { SingleFormType } from "@organism/form/applicationForm";
+import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
+import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
 
 interface IFormStep {
   id: number;
@@ -28,7 +30,6 @@ interface IFormStep {
 }
 
 export const getSteps = (
-  formikConfig: any,
   setFormFee: (n: number) => void,
   setCurrentPhase: (n: number) => void,
   nextStep: ({ form }: { form: SingleFormType }) => void,
@@ -41,9 +42,10 @@ export const getSteps = (
       content: (
         <TripDetails
           steps={["Enter your Trip Details"]}
-          formik={formikConfig}
           index={0}
           setFee={setFormFee}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
     },
@@ -78,7 +80,6 @@ export const getSteps = (
       title: "Employment Details",
       content: (
         <EmploymentInfo
-          formik={formikConfig}
           steps={["Employment Details"]}
           index={3}
           nextStep={nextStep}
@@ -92,8 +93,7 @@ export const getSteps = (
       title: "Family Members' Details",
       content: (
         <FamilyInfo
-          formik={formikConfig}
-          steps={["Family Members' Details"]}
+          steps={["Family Members' Information"]}
           index={4}
           nextStep={nextStep}
           isLoading={isLoading}
@@ -106,29 +106,23 @@ export const getSteps = (
       title: "Upload Document",
       content: (
         <UploadDocuments
-          formik={formikConfig}
           steps={["Upload All Required Documents"]}
           index={5}
+          nextStep={nextStep}
+          isLoading={isLoading}
         />
       ),
     },
     {
       id: 7,
-      title: "Status",
+      title: "Select Visa Payment",
+      content: <SelectVisaPayment nextStep={nextStep} isLoading={isLoading} />,
+    },
+    {
+      id: 8,
+      title: "Select Payment Method",
       content: (
-        <PaymentStatusFail
-          steps={[
-            "Your Trip Details",
-            "Personal details",
-            "Education and Employment",
-            "Other Information",
-            "Booking",
-            "booking",
-            "booking",
-          ]}
-          setPhase={setCurrentPhase}
-          index={6}
-        />
+        <SelectPaymentMethod nextStep={nextStep} isLoading={isLoading} />
       ),
     },
   ];

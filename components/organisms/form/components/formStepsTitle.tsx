@@ -4,7 +4,15 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 
-function FormStepTitle({ steps, index, padding }: { steps: string[]; index: number, padding?: string}) {
+function FormStepTitle({
+  steps,
+  index,
+  padding,
+}: {
+  steps: string[];
+  index: number;
+  padding?: string;
+}) {
   const { isMobile } = useScreenResolution();
 
   return (
@@ -12,7 +20,7 @@ function FormStepTitle({ steps, index, padding }: { steps: string[]; index: numb
       <Text
         type="h1"
         text={steps[0]}
-        size={isMobile ? "13px" : "24px"}
+        size={isMobile ? "13px" : "1.125rem"}
         weight={600}
         className="title-font"
       />

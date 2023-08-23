@@ -52,6 +52,7 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 5}
         onClick={() => {
           if (highestPhase >= 6) setPhase(6);
+          // setPhase(6);
         }}
       />
     </div>

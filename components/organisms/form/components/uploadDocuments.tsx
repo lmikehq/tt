@@ -3,7 +3,7 @@ import Center from "@atom/center";
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { FormikValues } from "formik";
+import { FormikValues, useFormik } from "formik";
 import useCloudinaryUpload from "hook/useCloudinary";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -25,11 +25,15 @@ import { useFilePicker } from "use-file-picker";
 import { ttColors } from "theme/colors";
 import { AiOutlineCheck } from "react-icons/ai";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
+import { documentsArr, documentsSchema } from "@lib/application/schema";
+import { SingleFormType } from "../applicationForm";
+import Spinner from "@components/icons/spinner";
 
 interface formProps {
-  formik: FormikValues;
   steps: string[];
   index: number;
+  nextStep: ({ form }: { form: SingleFormType }) => void;
+  isLoading: boolean;
 }
 
 const UploadArea = styled.div`
@@ -54,7 +58,7 @@ const UploadedDocumentsWrapper = styled.div`
   padding-top: 52px;
 `;
 
-function UploadDocuments({ formik, steps, index }: formProps) {
+function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
   const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -85,6 +89,18 @@ function UploadDocuments({ formik, steps, index }: formProps) {
     }[]
   >();
 
+  const formik = useFormik({
+    initialValues: documentsArr,
+    validationSchema: documentsSchema,
+    onSubmit: (values) => {
+      nextStep({ form: values.documents });
+    },
+  });
+  const handleFailedValidation = () => {
+    if (!formik.errors.documents) return;
+    return toast.error(formik.errors.documents as string);
+  };
+
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
     accept: [".png", ".pdf", ".jpeg"],
@@ -92,8 +108,8 @@ function UploadDocuments({ formik, steps, index }: formProps) {
     maxFileSize: 10,
   });
   const presets = {
-    public_id: formik.values.lastName || "unknown",
-    folder: `${formik.values.lastName || "unknown"}-files`,
+    public_id: "lastName" || "unknown",
+    folder: `${"lastName" || "unknown"}-files`,
   };
   const { uploadImage, loading, progress } = useCloudinaryUpload(presets);
 
@@ -109,10 +125,10 @@ function UploadDocuments({ formik, steps, index }: formProps) {
           const findIndex = (uploadedDocuments ?? []).findIndex(
             (el) => el.title == documentToUpload
           );
-          console.log(plainFiles[0]);
+          console.log(formik);
           if (findIndex == -1) {
-            formik.setFieldValue("uploadedDocuments", [
-              ...formik.values.uploadedDocuments,
+            formik.setFieldValue("documents", [
+              ...formik.values.documents,
               docObj,
             ]);
 
@@ -126,7 +142,7 @@ function UploadDocuments({ formik, steps, index }: formProps) {
               },
             ]);
           } else {
-            let formikUploadedDocuments = [...formik.values.uploadedDocuments];
+            let formikUploadedDocuments = [...formik.values.documents];
             let uploadedDocs = [...(uploadedDocuments ?? [])];
             formikUploadedDocuments.splice(findIndex, 1, docObj);
             uploadedDocs.splice(findIndex, 1, {
@@ -135,7 +151,7 @@ function UploadDocuments({ formik, steps, index }: formProps) {
               type: type.split("/")[1].toUpperCase(),
               title: docObj.title,
             });
-            formik.setFieldValue("uploadedDocuments", formikUploadedDocuments);
+            formik.setFieldValue("documents", formikUploadedDocuments);
             setUploadedDocuments(uploadedDocs);
           }
         }
@@ -147,7 +163,7 @@ function UploadDocuments({ formik, steps, index }: formProps) {
     <Section>
       <FormStepTitle steps={steps} index={index} />
 
-      <form style={{ margin: isMobile ? "1rem 0 0" : "1rem 0" }}>
+      <form onSubmit={formik.handleSubmit}>
         <Section>
           <Section>
             <Text
@@ -168,6 +184,8 @@ function UploadDocuments({ formik, steps, index }: formProps) {
               ]}
               onChange={(e: string) => {
                 console.log(e);
+                console.log(formik);
+
                 setDocumentToUpload(e);
               }}
               value={documentToUpload}
@@ -322,8 +340,8 @@ function UploadDocuments({ formik, steps, index }: formProps) {
                                     ),
                                   ]);
                                   formik.setFieldValue(
-                                    "uploadedDocuments",
-                                    formik.values.uploadedDocuments.filter(
+                                    "documents",
+                                    formik.values.documents.filter(
                                       (_: any, index: number) => index !== i
                                     )
                                   );
@@ -351,6 +369,32 @@ function UploadDocuments({ formik, steps, index }: formProps) {
               {...modalContent}
             />
           </div>
+        </Section>
+        <Section
+          height="unset"
+          styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
+        >
+          {" "}
+          <Button
+            width="100%"
+            height={"3.5rem"}
+            type="submit"
+            onClick={handleFailedValidation}
+          >
+            <Flex align="center" width="100%" height="100%" justify="center">
+              {isLoading ? (
+                <Spinner size="40px" fill={ttColors.primary} />
+              ) : (
+                <Text
+                  type="span"
+                  text={"Save & Continue"}
+                  weight={600}
+                  size={20}
+                  color={ttColors.light}
+                />
+              )}
+            </Flex>
+          </Button>
         </Section>
       </form>
     </Section>

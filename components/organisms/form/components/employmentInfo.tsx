@@ -10,23 +10,19 @@ import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
 import { ttColors } from "theme/colors";
-import { useState } from "react";
 import EmploymentForm from "@molecule/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
 import {
-  educationKeys,
   employmentKeys,
   employmentsArr,
   employmentsSchema,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import Spinner from "@components/icons/spinner";
-import Button from "@atom/button";
+import ContinueButton from "@atom/continueButton";
 
 interface formProps {
-  formik: FormikValues;
   steps: string[];
   index: number;
   nextStep: ({ form }: { form: SingleFormType }) => void;
@@ -34,13 +30,13 @@ interface formProps {
 }
 
 function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const { isMobile } = useScreenResolution();
   const formik = useFormik({
     initialValues: employmentsArr,
     validationSchema: employmentsSchema,
     onSubmit: (values) => {
       nextStep({ form: values.employments });
     },
+    validateOnChange: false,
   });
 
   return (
@@ -62,13 +58,9 @@ function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
                     }}
                   />
                 </Flex>
-                {formik.values.employments.map((employment, index) => (
+                {formik.values.employments.map((_, index) => (
                   <div key={index}>
-                    <EmploymentForm
-                      formik={formik}
-                      employment={employment}
-                      count={index}
-                    />
+                    <EmploymentForm formik={formik} count={index} />
                     {formik.values.employments.length > 1 && (
                       <Flex
                         justify="flex-end"
@@ -91,23 +83,7 @@ function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <Section height="unset" margin="4.5rem 0 0 0">
-            <Button width="100%" height={"3.5rem"} type="submit">
-              <Flex align="center" width="100%" height="100%" justify="center">
-                {isLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : (
-                  <Text
-                    type="span"
-                    text={"Save & Continue"}
-                    weight={600}
-                    size={20}
-                    color={ttColors.light}
-                  />
-                )}
-              </Flex>
-            </Button>
-          </Section>
+          <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
         </form>
       </Section>
     </FormikProvider>
