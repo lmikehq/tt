@@ -56,6 +56,7 @@ import TravelArrow from "@atom/travelArrow";
 import VisaApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
 import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndContinueLater";
 import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
+import CustomToaster from "@molecule/customToaster";
 
 const PromoInput = styled.div`
   display: flex;
