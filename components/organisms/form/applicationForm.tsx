@@ -89,8 +89,7 @@ function ApplicationForm() {
   const [promocodeLoading, setPromocodeLoading] = useState(false);
   const [applicationResponse, setApplicationResponse] =
     useState<any>(visaInitVals);
-  const [formData, setFormData] =
-    useState<VisaApplicationFormInterface>(visaInitVals);
+
   const { user } = useUserStore((state) => state);
   const { startPayment, loading, error, response, setData, data } =
     usePaystack();
@@ -135,7 +134,11 @@ function ApplicationForm() {
   // const action = params.get("action"); // payment
   const type = params.get("type"); // visa-application-fee
   const status = params.get("status"); // success | fail
-
+  const [formData, setFormData] = useState<VisaApplicationFormInterface>({
+    ...visaInitVals,
+    home: params.get("home") || "",
+    destination: params.get("destination") || "",
+  });
   const [currentPhase, setCurrentPhase] = useState(
     type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
   );
