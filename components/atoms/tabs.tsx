@@ -130,6 +130,7 @@ export default function CustomTab({
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",
                 },
+                fontFamily: "Montserrat"
               }}
               {...a11yProps(tabItem.value)}
             />
