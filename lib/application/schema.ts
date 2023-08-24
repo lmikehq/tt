@@ -1,111 +1,113 @@
 import {
+  ApplicationFormRequestInput,
+  DetailsKeys,
   DocumentInterface,
+  EducationDetailsInterface,
+  EmploymentDetailsInterface,
+  FamilyInfoInterface,
   PersonalInfoInterface,
   VisaApplicationFormInterface,
 } from "types";
 import * as yup from "yup";
 
-export const detailsSchema = yup.object().shape({
-  home: yup.string().required("Required"),
+//TRIP DETAILS
+
+export const detailsSchema: yup.ObjectSchema<DetailsKeys> = yup.object().shape({
+  homeCountry: yup.string().required("Required"),
   destination: yup.string().required("Required"),
   applicationType: yup.string().required("Required"),
-  travellingBy: yup.string(),
-  numberOfTravellers: yup.number().required("Required").max(6).min(1),
+  travellingBy: yup.string().required("Required"),
   visaType: yup.string().required("Required"),
 });
 
-export const detailsKeys = {
-  home: "",
+export const detailsKeys: DetailsKeys = {
+  homeCountry: "",
   destination: "",
   applicationType: "",
   visaType: "", //
   travellingBy: "",
-  numberOfTravellers: 1,
 };
 
-export const personalInfoSchema = yup.object().shape({
-  firstName: yup
-    .string()
-    .max(15, "Must be 15 characters or less")
-    .min(2, "Testing")
-    .required("Required"),
-  lastName: yup
-    .string()
-    .max(15, "Must be 15 characters or less")
-    .required("Required"),
-  middleName: yup.string().required("Required"),
-  email: yup.string().email().required("Required"),
-  placeOfOrigin: yup.string().required("Required"),
-  stateOfOrigin: yup.string().required("Required"),
-  lgOfOrigin: yup.string().required("Required"),
-  nativeLanguage: yup.string().required("Required"),
-  meansOfId: yup.string().required("Required"),
-  idNumber: yup.string().required("Required"),
-  issueDate: yup.date(),
-  expiryDate: yup.date(),
-  homeCountry: yup.string().required("Required"),
-  residentialAddress: yup.string().required("Required"),
-  // dateOfBirth: yup.date().required("Required"),
-  maritalStatus: yup.string().required("Required"),
-  partnersName: yup.string(),
-  passportNumber: yup.string().required("Required"),
-  issuingCountry: yup.string().required("Required"),
-  passportIssueDate: yup.date(),
-  passportExpiryDate: yup.date(),
-  purposeOfTrip: yup.string(),
-  tuberculosis: yup.boolean().required(),
-  mentalDisorder: yup.boolean().required(),
-  mentalDisorderDetails: yup.string().when("mentalDisorder", {
-    is: true,
-    then: (schema) => schema.required("Mental disorder details are required"),
-  }),
-  remainbeyondValidity: yup.boolean().required(),
-  refusedBefore: yup.boolean().required(),
-  refusedBeforeDetails: yup.string().when("refusedBefore", {
-    is: true,
-    then: (schema) => schema.required("Refusal details are required"),
-  }),
-  arrestedBefore: yup.boolean().required(),
-  arrestedBeforeDetails: yup.string().when("arrestedBefore", {
-    is: true,
-    then: (schema) => schema.required("Arrest details are required"),
-  }),
-  servedInMilitary: yup.boolean().required(),
-  servedInMilitaryDetails: yup.string().when("servedInMilitary", {
-    is: true,
-    then: (schema) => schema.required("Service details are required"),
-  }),
-  memberOfViolentGroup: yup.boolean().required(),
-  participatedInViolentActivities: yup.boolean().required(),
-});
+// PERSONAL INFO
 
-export const document = {
-  title: "",
-  url: "",
-};
+export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
+  .object()
+  .shape({
+    firstName: yup.string().required("Required"),
+    lastName: yup.string().required("Required"),
+    middleName: yup.string().required("Required"),
+    email: yup.string().required("Required").email("Invalid email address"),
+    placeOfBirth: yup.string().required("Required"),
+    phoneNumber: yup.string().required("Required"),
+    stateOfOrigin: yup.string().required("Required"),
+    lgaOfOrigin: yup.string().required("Required"),
+    nativeLanguage: yup.string().required("Required"),
+    meansOfId: yup.string().required("Required"),
+    idNumber: yup.string().required("Required"),
+    issueDate: yup.string().required("Required"),
+    expiryDate: yup.string().required("Required"),
+    address: yup.string().required("Required"),
+    countryOfCitizen: yup.string().required("Required"),
+    dateOfBirth: yup.string().required("Required"),
+    gender: yup.string().required("Required"),
+    maritalStatus: yup.string().required("Required"),
+    partnersName: yup.string().required("Required"),
+    passportNumber: yup.string().required("Required"),
+    passportIssuedCountry: yup.string().required("Required"),
+    passportExpiryYear: yup
+      .number()
+      .required("Required")
+      .positive("Expiry year must be a positive number"),
+    tripPurpose: yup.string().required("Required"),
+    tuberculosis: yup.boolean().required("Required"),
+    mentalDisorder: yup.boolean().required("Required"),
+    mentalDisorderDetails: yup.string().when("mentalDisorder", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    remainbeyondValidity: yup.boolean().required(),
+    refusedBefore: yup.boolean().required("Required"),
+    refusedBeforeDetails: yup.string().when("refusedBefore", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    arrestedBefore: yup.boolean().required("Required"),
+    arrestedBeforeDetails: yup.string().when("arrestedBefore", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    servedInMilitary: yup.boolean().required("Required"),
+    servedInMilitaryDetails: yup.string().when("servedInMilitary", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    memberOfViolentGroup: yup.boolean().required("Required"),
+    participatedInViolentActivities: yup.boolean().required("Required"),
+  });
+
 export const personalInfoKeys: PersonalInfoInterface = {
   firstName: "",
   lastName: "",
   middleName: "",
   email: "",
-  placeOfOrigin: "",
+  // placeOfOrigin: "",
   stateOfOrigin: "",
-  lgOfOrigin: "",
+  lgaOfOrigin: "",
   nativeLanguage: "",
   meansOfId: "",
   idNumber: "",
   issueDate: "",
   expiryDate: "",
-  homeCountry: "",
-  residentialAddress: "",
+  // homeCountry: "",
+  address: "",
   dateOfBirth: "",
   maritalStatus: "",
   partnersName: "",
   passportNumber: "",
-  issuingCountry: "",
-  passportIssueDate: "",
-  passportExpiryDate: "",
-  purposeOfTrip: "",
+  passportIssuedCountry: "",
+  // passportIssueDate: "",
+  passportExpiryYear: 2000,
+  tripPurpose: "",
   tuberculosis: null,
   mentalDisorder: null,
   mentalDisorderDetails: "",
@@ -118,98 +120,132 @@ export const personalInfoKeys: PersonalInfoInterface = {
   servedInMilitaryDetails: "",
   memberOfViolentGroup: null,
   participatedInViolentActivities: null,
+  placeOfBirth: "",
+  phoneNumber: "",
+  countryOfCitizen: "",
+  gender: "",
 };
 
-export const educationKeys = {
-  schoolName: "",
+//DOCUMENT
+export const documentShema: yup.ObjectSchema<DocumentInterface> = yup
+  .object()
+  .shape({
+    name: yup.string().required(),
+    url: yup.string().required(),
+  });
+export const document: DocumentInterface = {
+  name: "",
+  url: "",
+};
+
+export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> =
+  yup.object().shape({
+    school: yup.string().required("Required"),
+    degree: yup.string().required("Required"),
+    cgpa: yup
+      .number()
+      .max(5.0, "Your Grade cannot be more than 5.0")
+      .min(1.0, "Your Grade cannot be less than 1.0")
+      .required("Required"),
+    location: yup.string().required("Required"),
+    fieldOfStudy: yup.string().required("Required"),
+
+    startYear: yup.number().required("Required"),
+    endYear: yup.number().when("st", {
+      is: false,
+      then: (schema) => schema.required("Required"),
+    }),
+    stillAtSchool: yup.boolean().required(),
+  });
+
+export const educationKeys: EducationDetailsInterface = {
+  school: "",
   degree: "",
-  grade: "",
-  courseOfStudy: "",
-  startYear: "",
-  endYear: "",
+  cgpa: 0,
+  location: "",
+  fieldOfStudy: "",
+  startYear: 0,
+  endYear: 0,
+  stillAtSchool: false,
 };
 
-export const educationSchema = yup.object().shape({
-  schoolName: yup.string().required("Required"),
-  degree: yup.string().required("Required"),
-  courseOfStudy: yup.string().required("Required"),
-  grade: yup.number().max(5.0, "Your Grade cannot be more than 5.0")
-    .min(1.0, "Your Grade cannot be less than 1.0")
-    .required("Required"),
-  startYear: yup.string().required("Required"),
-  endYear: yup.string().required("Required"),
-});
-export const documentShema = yup.object().shape({
-  title: yup.string().required(),
-  url: yup.string().required(),
-});
-export const employmentSchema = yup.object().shape({
-  employmentType: yup.string().required("Required"),
-  locationType: yup.string().required("Required"),
-  companyName: yup.string().required("Required"),
-  jobTitle: yup.string().required("Required"),
-  companyLocation: yup.string().required("Required"),
-  startedYear: yup.string().required("Required"),
-  endedYear: yup.string().required("Required"),
-});
+//EMPLOYMENT
 
-export const singleFamilyInfoSchema = yup.object().shape({
-  passNumber: yup.string(),
-  expiryYear: yup.string(),
-  gender: yup.string(),
-  membersDOB: yup.string(),
-  passIssueCountry: yup.string(),
-  membersName: yup.string().required("Required"),
-  membersRelationship: yup.string().required("Required"),
-  membersAddress: yup.string().required("Required"),
-  membersPhone: yup.string().required("Required"),
-  membersEmail: yup.string().email().required("Required"),
-  membersIssueDate: yup.string(),
-  membersExpiryDate: yup.string(),
-});
+export const singleEmploymentSchema: yup.ObjectSchema<EmploymentDetailsInterface> =
+  yup.object().shape({
+    companyName: yup.string().required("Required"),
+    jobTitle: yup.string().required("Required"),
+    employmentType: yup.string().required("Required"),
+    companyLocation: yup.string().required("Required"),
+    startYear: yup.number().required("Required"),
+    endYear: yup.number().when("stillWorking", {
+      is: false,
+      then: (schema) => schema.required("Required"),
+    }),
+    stillWorking: yup.boolean(),
+  });
+export const employmentKeys: EmploymentDetailsInterface = {
+  companyName: "",
+  jobTitle: "",
+  employmentType: "",
+  companyLocation: "",
+  startYear: 0,
+};
+
+//FAMILY MEMBER
+
+export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
+  .object()
+  .shape({
+    passportNumber: yup.string().required("Required"),
+    expiryYear: yup.number().required("Required"),
+    gender: yup.string().required("Required"),
+    dateOfBirth: yup.string().required("Required"),
+    membersName: yup.string().required("Required"),
+    relationshipToPrimary: yup.string().required("Required"),
+    address: yup.string().required("Required"),
+    membersPhoneNumber: yup.string().required("Required"),
+    membersEmail: yup
+      .string()
+      .required("Required")
+      .email("Invalid email address"),
+    issueYear: yup.number().required("Required"),
+    accompanying: yup.boolean().required("Required"),
+  });
+
+export const familyInforKeys: FamilyInfoInterface = {
+  passportNumber: "",
+  expiryYear: 0,
+  gender: "",
+  dateOfBirth: "",
+  membersName: "",
+  relationshipToPrimary: "",
+  address: "",
+  membersPhoneNumber: "",
+  membersEmail: "",
+  issueYear: 0,
+  accompanying: true,
+};
+
 export const educationArraySchema = yup
   .array()
-  .of(educationSchema)
+  .of(singleEducationSchema)
   .min(1, "You need to provide at least one education")
   .max(3, "You can provide at most three education");
-export const employmentArraySchema = yup.array().of(employmentSchema);
+export const employmentArraySchema = yup.array().of(singleEmploymentSchema);
 export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(2, "You need to add 4 documents")
-  .max(5, "You can provide at most 3 documents");
+  .min(4, "You need to add 4 documents")
+  .max(5, "You can provide at most 5 documents");
 
-export const employmentKeys = {
-  companyName: "",
-  jobTitle: "",
-  employmentType: "",
-  locationType: "",
-  companyLocation: "",
-  startedYear: "",
-  endedYear: "",
-};
-
-export const familyInforKeys = {
-  passNumber: "",
-  expiryYear: "",
-  gender: "",
-  membersDOB: "",
-  passIssueCountry: "",
-  membersName: "",
-  membersRelationship: "",
-  membersAddress: "",
-  membersPhone: "",
-  membersEmail: "",
-  membersIssueDate: "",
-  membersExpiryDate: "",
-};
-export const educationsSchema = yup
+export const manyEducationSchema = yup
   .object()
-  .shape({ educations: educationArraySchema });
-export const employmentsSchema = yup
+  .shape({ education: educationArraySchema });
+export const manyEmploymentSchema = yup
   .object()
-  .shape({ employments: employmentArraySchema });
+  .shape({ employment: employmentArraySchema });
 export const familyInfoSchema = yup
   .object()
   .shape({ familyInfo: familyInfoArraySchema });
@@ -219,20 +255,20 @@ export const documentsSchema = yup
 
 export const visaSchema = {
   ...detailsSchema,
-  ...educationsSchema,
-  ...employmentsSchema,
+  ...manyEducationSchema,
+  ...manyEmploymentSchema,
   ...personalInfoSchema,
   ...familyInfoSchema,
   ...documentsSchema,
 };
 export const employmentsArr = {
-  employments: [{ ...employmentKeys }],
+  employment: [{ ...employmentKeys }],
 };
 export const educationsArr = {
-  educations: [{ ...educationKeys }],
+  education: [{ ...educationKeys }],
 };
 export const familyInfoArr = {
-  familyInfo: [{ ...familyInforKeys }],
+  familyMembers: [{ ...familyInforKeys }],
 };
 export const documentsArr: { documents: DocumentInterface[] } = {
   documents: [],
@@ -257,3 +293,110 @@ export const waitlistSchema = yup.object().shape({
     .string()
     .required({ message: "Please select readiness option" }),
 });
+
+const test: ApplicationFormRequestInput = {
+  primaryTraveller: {
+    homeCountry: "Country1",
+    destination: "Country2",
+    travellingBy: "Airplane",
+    firstName: "John",
+    middleName: "M",
+    lastName: "Doe",
+    dateOfBirth: "1990-01-01",
+    email: "tmike@yopmail.com",
+    placeOfBirth: "City1",
+    stateOfOrigin: "State1",
+    phoneNumber: "1234567890",
+    lgaOfOrigin: "LGA1",
+    nativeLanguage: "English",
+    meansOfId: "Passport",
+    idNumber: "ABC123",
+    issueDate: "2020-01-01",
+    expiryDate: "2030-01-01",
+    countryOfCitizen: "Country3",
+    address: "123 Main St",
+    maritalStatus: "Single",
+    partnersName: "",
+    employment: [
+      {
+        companyName: "Company1",
+        jobTitle: "Developer",
+        employmentType: "Full-time",
+        companyLocation: "City2",
+        startYear: 2018,
+        stillWorking: true,
+      },
+    ],
+    education: [
+      {
+        school: "University1",
+        degree: "Bachelor's",
+        fieldOfStudy: "Computer Science",
+        cgpa: 3.8,
+        location: "City3",
+        startYear: 2014,
+        stillAtSchool: false,
+        endYear: 2018,
+      },
+    ],
+    passportNumber: "P123456",
+    passportIssuedCountry: "Country4",
+    passportExpiryYear: 2025,
+    gender: "Male",
+    // guarantorName: "Jane Smith",
+    // relationshipToGuarantor: "Friend",
+    // guarantorAddress: "456 Elm St",
+    // guarantorPhone: "9876543210",
+    // guarantorWorth: "$50000",
+    tripPurpose: "Vacation",
+    tuberculosis: false,
+    mentalDisorder: true,
+    mentalDisorderDetails: "Anxiety",
+    remainbeyondValidity: false,
+    refusedBefore: true,
+    refusedBeforeDetails: "Visa application rejected",
+    arrestedBefore: false,
+    arrestedBeforeDetails: "",
+    servedInMilitary: true,
+    servedInMilitaryDetails: "2 years of service",
+    memberOfViolentGroup: false,
+    participatedInViolentActivities: true,
+  },
+  familyMembers: [
+    {
+      membersName: "Alice Smith",
+      relationshipToPrimary: "Spouse",
+      address: "789 Elm St",
+      membersEmail: "alice@example.com",
+      membersPhoneNumber: "9876543210",
+      accompanying: true,
+      dateOfBirth: "1992-05-15",
+      gender: "Female",
+      passportNumber: "P987654",
+      expiryYear: 2025,
+      issueYear: 2020,
+    },
+    {
+      membersName: "Alice Smith",
+      relationshipToPrimary: "Spouse",
+      address: "789 Elm St",
+      membersEmail: "alice@example.com",
+      membersPhoneNumber: "9876543210",
+      accompanying: true,
+      dateOfBirth: "1992-05-15",
+      gender: "Female",
+      passportNumber: "P987654",
+      expiryYear: 2025,
+      issueYear: 2020,
+    },
+  ],
+  documents: [
+    {
+      name: "Passport",
+      url: "https://example.com/passport.pdf",
+    },
+  ],
+  user: "64e12d838e1929dbf8450b60",
+  visaType: "Business",
+  applicationType: "Family",
+};

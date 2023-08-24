@@ -525,10 +525,9 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {formik.touched["purposeOfTrip"] &&
-            formik.errors["purposeOfTrip"] && (
-              <ErrorText text={formik.errors["purposeOfTrip"]} />
-            )}
+          {formik.touched["tripPurpose"] && formik.errors["tripPurpose"] && (
+            <ErrorText text={formik.errors["tripPurpose"]} />
+          )}
         </Section>
         <Section>
           <Text

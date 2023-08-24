@@ -1,3 +1,4 @@
+import { document } from "./../lib/application/schema";
 export type ISiteConfig = {
   name: string;
   description: string;
@@ -31,38 +32,37 @@ export interface IFee {
 
 export interface User {
   id: number;
-  [key: string]: any;
 }
 
 export interface DetailsKeys {
-  home: string;
+  homeCountry: string;
   destination: string;
   applicationType: string;
   visaType: string;
   travellingBy: string;
-  numberOfTravellers: number;
-  [key: string]: any;
+  // numberOfTravellers: number;
 }
 
 export interface EducationDetailsInterface {
-  schoolName: string;
+  school: string;
   degree: string;
-  grade: string;
-  courseOfStudy: string;
-  startYear: string;
-  endYear: string;
-  [key: string]: any;
+  cgpa: number;
+  location: string;
+  fieldOfStudy: string;
+  startYear: number;
+  endYear?: number;
+  stillAtSchool: boolean;
 }
 
 export interface EmploymentDetailsInterface {
   companyName: string;
   jobTitle: string;
   employmentType: string;
-  locationType: string;
+  // locationType: string;
   companyLocation: string;
-  startedYear: string;
-  endedYear: string;
-  [key: string]: any;
+  startYear: number;
+  endYear?: number;
+  stillWorking?: boolean;
 }
 
 export interface PersonalInfoInterface {
@@ -70,76 +70,79 @@ export interface PersonalInfoInterface {
   lastName: string;
   middleName: string;
   email: string;
-  placeOfOrigin: string;
+  placeOfBirth: string;
+  phoneNumber: string;
   stateOfOrigin: string;
-  lgOfOrigin: string;
+  lgaOfOrigin: string;
   nativeLanguage: string;
   meansOfId: string;
   idNumber: string;
   issueDate: string;
   expiryDate: string;
-  homeCountry: string;
-  residentialAddress: string;
+  address: string;
+  countryOfCitizen: string;
   dateOfBirth: string;
+  gender: string;
   maritalStatus: string;
   partnersName: string;
   passportNumber: string;
-  issuingCountry: string;
-  passportIssueDate: string;
-  passportExpiryDate: string;
-  purposeOfTrip: string;
+  passportIssuedCountry: string;
+  passportExpiryYear: number;
+  tripPurpose: string;
   tuberculosis: boolean | null;
   mentalDisorder: boolean | null;
-  mentalDisorderDetails: string;
+  mentalDisorderDetails?: string;
   remainbeyondValidity: boolean | null;
   refusedBefore: boolean | null;
-  refusedBeforeDetails: string;
+  refusedBeforeDetails?: string;
   arrestedBefore: boolean | null;
-  arrestedBeforeDetails: string;
+  arrestedBeforeDetails?: string;
   servedInMilitary: boolean | null;
-  servedInMilitaryDetails: string;
+  servedInMilitaryDetails?: string;
   memberOfViolentGroup: boolean | null;
   participatedInViolentActivities: boolean | null;
 }
 
 export interface FamilyInfoInterface {
-  passNumber: string;
-  expiryYear: string;
+  passportNumber: string;
+  expiryYear: number;
   gender: string;
-  membersDOB: string;
-  passIssueCountry: string;
+  dateOfBirth: string;
   membersName: string;
-  membersRelationship: string;
-  membersAddress: string;
-  membersPhone: string;
+  relationshipToPrimary: string;
+  address: string;
+  membersPhoneNumber: string;
   membersEmail: string;
-  membersIssueDate: string;
-  membersExpiryDate: string;
+  issueYear: number;
+  accompanying: boolean;
 }
 
-interface OtherInfoKeys {
-  passNumber: string;
-  passIssueCountry: string;
-  gender: string;
-  expiryYear: string;
-  guarantorName: string;
-  guarantorAddress: string;
-  guarantorPhone: string;
-  guarantorWorth: string;
-  uploadedDocuments: string[];
-}
 interface DocumentInterface {
-  title: string;
+  name: string;
   url: string;
 }
 export interface VisaApplicationFormInterface
   extends DetailsKeys,
-    PersonalInfoKeys {
+    PersonalInfoInterface {
   firstAndMiddleName?: string;
-  educations: EducationDetailsInterface[];
-  employments: EmploymentDetailsInterface[];
-  familyInfo: FamilyInfoInterface[];
+  education: EducationDetailsInterface[];
+  employment: EmploymentDetailsInterface[];
+  familyMembers: FamilyInfoInterface[];
   documents: DocumentInterface[];
 }
 
+export interface PrimaryTravellerInterface
+  extends PersonalInfoInterface,
+    Omit<DetailsKeys, "applicationType" | "visaType"> {
+  education: EducationDetailsInterface[];
+  employment: EmploymentDetailsInterface[];
+}
+
+export interface ApplicationFormRequestInput
+  extends Pick<DetailsKeys, "applicationType" | "visaType"> {
+  primaryTraveller: PrimaryTravellerInterface;
+  familyMembers: FamilyInfoInterface[];
+  documents: DocumentInterface[];
+  user: string;
+}
 declare module "@paystack/inline-js";

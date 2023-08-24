@@ -31,9 +31,9 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
   const formik = useFormik({
     initialValues: {
       ...detailsKeys,
-      home: params.get("home") || "",
+      homeCountry: params.get("home") || "",
       destination: params.get("destination") || "",
-      visaType: params.get("visaType") || ""
+      visaType: params.get("visaType") || "",
     },
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
@@ -81,7 +81,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
               <FieldAsString
                 formik={formik}
                 options={COUNTRY_FLAGS.filter(
-                  (el) => el.name != formik.values.home
+                  (el) => el.name != formik.values.homeCountry
                 ).map((x) => ({
                   name: x.name,
                   flag: x.flag,
@@ -89,7 +89,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                 }))}
                 name="destination"
                 placeholder="Select where you are"
-                disabled={!formik.values.home}
+                disabled={!formik.values.homeCountry}
               />
             </Flex>
           </Flex>
@@ -139,10 +139,10 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                 formik={formik}
                 onChange={(x: any) => {
                   formik?.setFieldValue("applicationType", x);
-                  formik?.setFieldValue("numberOfTravellers", 1);
-                  setFee(
-                    formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
-                  );
+                  // formik?.setFieldValue("numberOfTravellers", 1);
+                  // setFee(
+                  //   formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
+                  // );
                 }}
                 placeholder="Select your Application Type "
                 name="applicationType"
