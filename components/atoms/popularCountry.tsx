@@ -67,53 +67,46 @@ const CountryInfo = styled.div`
   color: var(--secondary-color);
   border-radius: 1.4rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100%;
+  height: 110%;
   overflow; hidden;
+  display: flex;
+  flex-direction: column;
 `;
 
 const LeftHeaderText = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  align-self: stretch;
+  padding: 1.15em 0;
 `;
 
 const CountryName = styled.h3`
-  font-size: 32px;
-  // margin-bottom: 20px;
-  // width: 365px;
-
+  font-size: 40px;
   display: flex;
-  width: 363px;
-  flex-direction: column;
-  // font-size: 40px;
   font-family: Poppins;
-  font-weight: 700;
-
+  font-weight: 600;
   padding-right: 65px;
-  // text-align: start;
-  // margin-left: 1.2rem;
-  //   height: 120px;
+  line-height: 1.25em;
 `;
 
 const CountryDescription = styled.p`
-  margin: 28px auto;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  padding: 2px 0.2rem;
+  font-size: 15px;
+  font-weight: normal;
+  font-family: Montserrat;
+  max-height: 10.5rem;
+  line-height: 1.25em;
+  // padding: 2px 0.2rem;
 `;
 
 const IntervalTag = styled.div`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  right: 0;
+  top: 0;
   background-color: #fff;
   padding: 5px 10px;
   font-weight: bold;
   height: 65px;
-  width: 81px;
+  width: 80px;
   margin: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -123,15 +116,19 @@ const Button = styled.button`
   background-color: #fff;
   border: none;
   font-weight: bold;
-  position: absolute;
-  bottom: 0%;
-  left: 8.5%;
-  width: 83%;
+  font-family: Montserrat;
+  width: 85%;
   padding: 18px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-radius: 8px;
   cursor: pointer;
 `;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 5rem;
+`
 
 const CountryNameTooltip = styled.span`
   position: absolute;
@@ -294,13 +291,14 @@ const TopCountriesSection: React.FC = () => {
               <LeftSide>
                 {activeImage !== null && (
                   <CountryInfo>
+                    <CountryName>
+                      Get {countries[activeImage - 1].name} E-visa
+                    </CountryName>
                     <IntervalTag>
                       <IntervalText>E-visa</IntervalText>
                       <IntervalDays>3 days</IntervalDays>
                     </IntervalTag>
-                    <CountryName>
-                      Get {countries[activeImage - 1].name} E-visa
-                    </CountryName>
+                    
                     <CountryDescription
                       style={{
                         marginTop: isMobile ? "9px" : "50px",
@@ -317,11 +315,11 @@ const TopCountriesSection: React.FC = () => {
                       }}
                     >
                       {countries[activeImage - 1].description1}
-                      <br />
-                      <br />
                       {countries[activeImage - 1].description2}
                     </CountryDescription>
-                    <Button>Apply to {countries[activeImage - 1].name}</Button>
+                    
+                    
+                      <Button>Apply to {countries[activeImage - 1].name}</Button>
                   </CountryInfo>
                 )}
               </LeftSide>
@@ -347,17 +345,19 @@ const TopCountriesSection: React.FC = () => {
                     <br />
                     {countries[activeImage - 1].description2}
                   </CountryDescription>
-                  <Button
-                    onClick={() =>
-                      router.push(
-                        `/visa/apply?destination=${
-                          countries[activeImage - 1].name
-                        }`
-                      )
-                    }
-                  >
-                    Apply to {countries[activeImage - 1].name}
-                  </Button>
+                  <ButtonWrapper>
+                    <Button
+                      onClick={() =>
+                        router.push(
+                          `/visa/apply?destination=${
+                            countries[activeImage - 1].name
+                          }`
+                        )
+                      }
+                    >
+                      Apply to {countries[activeImage - 1].name}
+                    </Button>
+                  </ButtonWrapper>
                 </CountryInfo>
               )}
             </LeftSide>

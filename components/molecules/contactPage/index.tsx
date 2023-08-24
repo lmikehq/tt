@@ -37,7 +37,6 @@ import UsefulLinks from "./components/usefulLink";
 import DoorExit from "@image/visaIcons/door-exit.png";
 import CustomConfirmationModal from "@organism/visaApplicationModal";
 
-
 const ContactSection = styled.div`
   margin-top: 2.5rem;
 `;
@@ -254,12 +253,6 @@ const navigationLinks = [
 const ContactPage = () => {
   const { isMobile } = useScreenResolution();
 
-  
-
-  
-
-  
-
   const [selectedOption, setSelectedOption] = useState<{
     label: string;
   } | null>(null);
@@ -330,8 +323,6 @@ const ContactPage = () => {
                 text="If you have any concerns about your order or need assistance with the application process, take advantage of our convenient tools designed to simplify the experience and help you save time."
               />
             </HelpPara>
-
-            
 
             <Grid
               className="contactCard"

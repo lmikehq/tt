@@ -516,7 +516,7 @@ const WaitList = () => {
                           ? "1px solid red"
                           : ""
                       }
-                      height="12px"
+                      height="45px"
                     >
                       <Text
                         type="p"

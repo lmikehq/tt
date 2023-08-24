@@ -10,6 +10,14 @@ import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
+import bgImage1 from "@image/auth-bg1.png";
+import bgImage2 from "@image/auth-bg2.png";
+import bgImage3 from "@image/auth-bg3.jpeg";
+import bgImage4 from "@image/auth-bg4.jpeg";
+import bgImage5 from "@image/auth-bg5.jpeg";
+// import bgImage6 from "@image/auth-bg6.jpeg";
+import bgImage7 from "@image/auth-bg7.jpeg";
+import bgImage8 from "@image/auth-bg8.jpeg";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
@@ -19,6 +27,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { ttColors } from "theme/colors";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Grid } from "@atom/grid";
+
+const settings = {
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+};
+
 function RegisterPage() {
   const { isMobile } = useScreenResolution();
 
@@ -115,26 +136,107 @@ function RegisterPage() {
   return (
     <SectionLayout>
       <form onSubmit={handleSubmit}>
-        <Flex
+        <Grid
+          columns="repeat(auto-fit, minmax(300px, 1fr))"
           margin={isMobile ? "1rem 0" : "4rem 0"}
-          gap="3rem"
-          align="stretch"
+          gap="5rem"
         >
           <Section styles={{ display: isMobile ? "none" : "block" }}>
-            <img src={bgImage.src} alt="background image" width="100%" />
+            <Slider {...settings}>
+              <div>
+                <img
+                  src={bgImage.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage1.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage2.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage3.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage4.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage5.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage7.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+              <div>
+                <img
+                  src={bgImage8.src}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+            </Slider>
           </Section>
           <Section>
-            <img src={logo.src} alt="logo" height="60px" />
+            <img
+              src={logo.src}
+              alt="logo"
+              height={60}
+              onClick={() => router.push("/")}
+              style={{ cursor: "pointer" }}
+            />
             <Text
               type="h1"
               margin="2rem 0 1rem"
               text="Create your account!"
-              size="20px"
+              size="40px"
+              weight={700}
             />
             <Text
               type="p"
               text="Let’s get you all st up so you can access your personal account."
               size="17px"
+              weight={400}
             />
 
             <Flex
@@ -328,12 +430,28 @@ function RegisterPage() {
                     }
                     checked={registerData.consent}
                   >
-                    <Text
-                      type="p"
-                      text="I agree to all the Terms and Privacy Policies"
-                      color="#1C1B1F"
-                      size={isMobile ? "15px" : "16px"}
-                    />
+                    <p
+                      style={{
+                        fontSize: isMobile ? "15px" : "16px",
+                        color: "#1C1B1F",
+                      }}
+                    >
+                      I agree to all the&nbsp;<span style={{ color: "#a0001d", fontWeight: "400" }}>
+                        <Link
+                          href="/auth/login"
+                          text="Terms"
+                          color="#a0001d"
+                          style={{ fontWeight: "400" }}
+                        />
+                      </span>&nbsp;and&nbsp;<span style={{ color: "#a0001d", fontWeight: "400" }}>
+                        <Link
+                          href="/auth/login"
+                          text=" Privacy Policies"
+                          color="#a0001d"
+                          style={{ fontWeight: "400" }}
+                        />
+                      </span>
+                    </p>
                   </CheckBox>
                 </Flex>
               </Flex>
@@ -370,11 +488,18 @@ function RegisterPage() {
               </Button>
               <p style={{ textAlign: "center", fontSize: "16px" }}>
                 Already have an account?{" "}
-                <Link href="/auth/login" text="Login" color="#FF8682" />
+                <Link
+                  href="/auth/login"
+                  text="Login"
+                  color="#a0001d"
+                  style={{
+                    fontWeight: "400",
+                  }}
+                />
               </p>
             </Flex>
           </Section>
-        </Flex>
+        </Grid>
       </form>
     </SectionLayout>
   );
