@@ -11,6 +11,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { TextField } from "./input";
 import { TextFieldProps } from "@mui/material";
+import { IoCalendarOutline } from "react-icons/io5";
 
 interface BlockDatePickerProps {
   value?: Range;
@@ -77,14 +78,18 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
           cursor: "pointer",
           "& input": {
             color: "#1C1B1F",
-            fontWeight: 100,
+            fontWeight: 400,
+            fontFamily: "'Poppins', sans-serif"
           },
         }}
         slotProps={{
           textField: {
             placeholder: placeholder,
-            error: false
-          }
+            error: false,
+          },
+        }}
+        slots={{
+          openPickerIcon: IoCalendarOutline
         }}
       />
     </LocalizationProvider>
