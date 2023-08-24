@@ -283,42 +283,42 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
         </Flex>
         {!showDate && (
           <Flex
-          margin={isMobile ? "0px" : "0 0 1rem"}
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section width="100%">
-            <Text
-              type="p"
-              text="Issue Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="issueDate"
-              placeholder="Select your Issue Date"
-              formik={formik}
-              onChange={(e: any) => {
-                updateFieldValue(`issueDate`, `${e}`);
-                setEndDate(dayjs(e));
-              }}
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Expiry Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="expiryDate"
-              placeholder="Select the Expiry Date"
-              formik={formik}
-              minDate={endDate}
-              disabled={endDate === null}
-            />
-          </Section>
-        </Flex>
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issue Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="issueDate"
+                placeholder="Select your Issue Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue(`issueDate`, `${e}`);
+                  setEndDate(dayjs(e));
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="expiryDate"
+                placeholder="Select the Expiry Date"
+                formik={formik}
+                minDate={endDate}
+                disabled={endDate === null}
+              />
+            </Section>
+          </Flex>
         )}
         <Flex
           margin="0"
@@ -477,42 +477,42 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
         </Flex>
         {showPassDate && (
           <Flex
-          margin={isMobile ? "0px" : "0 0 1rem"}
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section width="100%">
-            <Text
-              type="p"
-              text="Issued Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="passportIssueDate"
-              placeholder="Select your Issued Date"
-              formik={formik}
-              onChange={(e: any) => {
-                updateFieldValue("passportIssueDate", e);
-                setPassEndDate(e);
-              }}
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Expiry Date"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-            />
-            <FieldAsDate
-              name="passportExpiryDate"
-              placeholder="Select your Expiry Date"
-              formik={formik}
-              disabled={passEndDate === null}
-              minDate={passEndDate}
-            />
-          </Section>
-        </Flex>
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issued Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="passportIssueDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue("passportIssueDate", e);
+                  setPassEndDate(e);
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+                disabled={passEndDate === null}
+                minDate={passEndDate}
+              />
+            </Section>
+          </Flex>
         )}
         <Section>
           <Text
@@ -615,15 +615,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
 
             {`${formik.values.mentalDisorder}` == "true" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                />
+                {/* <TextArea /> */}
+                <TextArea
+                  name="mentalDisorderDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched["mentalDisorderDetails"] &&
+                  formik.errors["mentalDisorderDetails"] && (
+                    <ErrorText text={formik.errors["mentalDisorderDetails"]} />
+                  )}
+              </Section>
             )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -747,15 +756,25 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
             {`${formik.values.arrestedBefore}` == "true" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                />
+
+                {/* <TextArea /> */}
+                <TextArea
+                  name="arrestedBeforeDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched["arrestedBeforeDetails"] &&
+                  formik.errors["arrestedBeforeDetails"] && (
+                    <ErrorText text={formik.errors["arrestedBeforeDetails"]} />
+                  )}
+              </Section>
             )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -789,15 +808,27 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
             {`${formik.values.servedInMilitary}` == "true" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                />
+
+                {/* <TextArea /> */}
+                <TextArea
+                  name="servedInMilitaryDetails"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched["servedInMilitaryDetails"] &&
+                  formik.errors["servedInMilitaryDetails"] && (
+                    <ErrorText
+                      text={formik.errors["servedInMilitaryDetails"]}
+                    />
+                  )}
+              </Section>
             )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -844,27 +875,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
+                <Section height="auto" width="fit-content">
+                  <CustomRadioGroup
+                    options={options}
+                    name="participatedInViolentActivities"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    justifyContent="flex-end"
+                  />
 
-                <CustomRadioGroup
-                  defaultValue=""
-                  options={options}
-                  onChange={(e) => setFormData((prev) => ({...prev, looting: e}))}
-                  justifyContent="flex-end"
-                />
+                  {formik.touched["participatedInViolentActivities"] &&
+                    formik.errors["participatedInViolentActivities"] && (
+                      <ErrorText
+                        text={formik.errors["participatedInViolentActivities"]}
+                      />
+                    )}
+                </Section>
               </Flex>
             </li>
-            {formData.looting === "Yes" && (
-              <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <TextArea />
-            </Section>
-            )}
           </ol>
         </Section>
         <ContinueButton isLoading={isLoading} disabled={disabled} />
