@@ -34,7 +34,6 @@ interface formProps {
 
 function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [disabled, setDisabled] = useState(true);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
   const [showDate, setShowDate] = useState(false);
@@ -49,19 +48,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   ];
 
   const [value, setValue] = useState("");
-  const [radio, setRadio] = useState("");
-  const [formData, setFormData] = useState({
-    disability: "",
-    entry: "",
-    criminal: "",
-    looting: "",
-  });
   const formik = useFormik({
     initialValues: personalInfoKeys,
     validationSchema: personalInfoSchema,
+    validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       nextStep({ form: values });
-      setDisabled(false);
     },
   });
 
@@ -694,12 +686,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     )}
                 </Section>
 
-                {/* <CustomRadioGroup
-                  
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                /> */}
               </Flex>
             </li>
             {`${formik.values.refusedBefore}` == "true" && (
@@ -711,7 +697,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   text="If you answered “yes”, please provide details"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-                {/* <TextArea /> */}
+              
                 <TextArea
                   name="refusedBeforeDetails"
                   onChange={formik.handleChange}
@@ -815,8 +801,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   text="If you answered “yes”, please provide details"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-
-                {/* <TextArea /> */}
                 <TextArea
                   name="servedInMilitaryDetails"
                   onChange={formik.handleChange}
@@ -895,7 +879,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
           </ol>
         </Section>
-        <ContinueButton isLoading={isLoading} disabled={disabled} />
+        <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
       </form>
     </Section>
   );
