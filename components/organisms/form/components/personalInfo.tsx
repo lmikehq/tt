@@ -270,6 +270,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="idNumber"
               placeholder="Enter your ID number"
               formik={formik}
+              disabled={showPassDate}
             />
           </Section>
         </Flex>
@@ -416,7 +417,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 text="Partner’s Name (if applicable)"
                 margin={isMobile ? ".5rem 0" : "1rem 0"}
               />
-              <Required />
             </Flex>
             <FieldInput
               name="partnersName"

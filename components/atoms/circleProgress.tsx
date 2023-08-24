@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 interface circleProps {
   index: string;
   title: string;
+  disabled: boolean;
   active: boolean;
   isPassed: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -17,7 +18,7 @@ const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
     content: "";
     position: absolute;
     width: 70%;
-    top: 25%;
+    top: 20%;
     left: 64%;
     opacity: ${(props) => (props.active ? "1" : "0.7")};
     border: 1px solid ${(props) => (props.isPassed ? "#6092A7" : "gray")};
@@ -58,7 +59,7 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   }
 `;
 
-const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
+const Circle = styled.span<{ active: boolean, isPassed: boolean, disabled: boolean }>`
   display: flex;
   width: 1.5rem;
   height: 1.5rem;
@@ -72,7 +73,7 @@ const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
   z-index: 9;
   position: relative;
   &:hover {
-    border: 2px solid #6092A7;
+    border: 2px solid ${props => (!props.disabled ? "#6092A7" : "none")};
    }
 `;
 
@@ -93,7 +94,7 @@ function CircleProgress(props: circleProps) {
         isPassed={props.isPassed}
         onClick={props.onClick}
       >
-        <Circle active={props.active} isPassed={props.isPassed}>
+        <Circle active={props.active} isPassed={props.isPassed} disabled={props.disabled}>
           <Text
             type="p"
             weight="bold"
