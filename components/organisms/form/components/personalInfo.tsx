@@ -34,7 +34,6 @@ interface formProps {
 
 function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   const { isMobile } = useScreenResolution();
-  const [disabled, setDisabled] = useState(true);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
   const [showDate, setShowDate] = useState(false);
@@ -49,19 +48,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   ];
 
   const [value, setValue] = useState("");
-  const [radio, setRadio] = useState("");
-  const [formData, setFormData] = useState({
-    disability: "",
-    entry: "",
-    criminal: "",
-    looting: "",
-  });
   const formik = useFormik({
     initialValues: personalInfoKeys,
     validationSchema: personalInfoSchema,
+    validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       nextStep({ form: values });
-      setDisabled(false);
     },
   });
 
@@ -92,7 +84,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Last Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -107,7 +99,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="First Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -129,7 +121,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Middle Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -144,7 +136,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="State of Origin"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -166,7 +158,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="LG. of Origin"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -181,7 +173,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Native Language"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -203,7 +195,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Email Address"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -218,7 +210,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Phone Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -243,7 +235,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Means of ID"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -270,7 +262,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="ID Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -278,6 +270,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="idNumber"
               placeholder="Enter your ID number"
               formik={formik}
+              disabled={showPassDate}
             />
           </Section>
         </Flex>
@@ -331,7 +324,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Country of Citizenship"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -351,7 +344,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Place of Birth (Country & State)"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -372,7 +365,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Residential Address"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -394,7 +387,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Marital Status"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -424,7 +417,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 text="Partner’s Name (if applicable)"
                 margin={isMobile ? ".5rem 0" : "1rem 0"}
               />
-              <Required />
             </Flex>
             <FieldInput
               name="partnersName"
@@ -444,7 +436,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Passport Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -459,7 +451,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Issued Country"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -518,7 +510,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
           <Text
             type="p"
             text="Main Purpose of your Trip"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <TextArea
             name="purposeOfTrip"
@@ -693,12 +685,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     )}
                 </Section>
 
-                {/* <CustomRadioGroup
-                  
-                  options={options}
-                  onChange={(e) => setRadio(e)}
-                  justifyContent="flex-end"
-                /> */}
               </Flex>
             </li>
             {`${formik.values.refusedBefore}` == "true" && (
@@ -710,7 +696,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   text="If you answered “yes”, please provide details"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-                {/* <TextArea /> */}
+              
                 <TextArea
                   name="refusedBeforeDetails"
                   onChange={formik.handleChange}
@@ -814,8 +800,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   text="If you answered “yes”, please provide details"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-
-                {/* <TextArea /> */}
                 <TextArea
                   name="servedInMilitaryDetails"
                   onChange={formik.handleChange}
@@ -894,7 +878,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
           </ol>
         </Section>
-        <ContinueButton isLoading={isLoading} disabled={disabled} />
+        <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
       </form>
     </Section>
   );

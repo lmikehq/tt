@@ -74,7 +74,7 @@ export const ErrorText = ({ text }: { text: string }) => {
 };
 
 export const FieldInput = (props: FieldProps) => {
-  const { name, type, placeholder, formik, addon, onChange } = props;
+  const { name, type, placeholder, formik, addon, onChange, disabled } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -89,6 +89,7 @@ export const FieldInput = (props: FieldProps) => {
       <Input
         height="45px"
         addon={addon}
+        readOnly={disabled}
         type={type}
         placeholder={placeholder}
         padding="0 0 0 14px"
@@ -248,3 +249,5 @@ export const FieldAsDate = (props: FieldProps) => {
     </Section>
   );
 };
+
+

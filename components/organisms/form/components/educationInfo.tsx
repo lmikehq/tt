@@ -1,9 +1,7 @@
 import Section from "@molecule/section";
 import {
   FieldArray,
-  Formik,
   FormikProvider,
-  FormikValues,
   useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
@@ -19,7 +17,6 @@ import {
   educationsSchema,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import { useState } from "react";
 import ContinueButton from "@atom/continueButton";
 
 interface formProps {
@@ -36,7 +33,7 @@ function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
     onSubmit: (values) => {
       nextStep({ form: values.educations });
     },
-    validateOnChange: false,
+    validateOnChange: true,
   });
   return (
     <FormikProvider value={formik}>

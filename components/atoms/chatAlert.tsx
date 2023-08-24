@@ -22,14 +22,14 @@ function ChatAlert() {
           type="p"
           text="Introducing Thrillers Travels AI guide "
           size="1.2rem"
-          weight={900}
+          weight={600}
           cursor="pointer"
           color="white"
         />
         <Text
           type="p"
           text="Learn more "
-          weight={900}
+          weight={600}
           cursor="pointer"
           size="1.2rem"
           color={ttColors.primary}

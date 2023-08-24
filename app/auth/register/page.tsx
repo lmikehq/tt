@@ -15,7 +15,7 @@ import bgImage2 from "@image/auth-bg2.png";
 import bgImage3 from "@image/auth-bg3.jpeg";
 import bgImage4 from "@image/auth-bg4.jpeg";
 import bgImage5 from "@image/auth-bg5.jpeg";
-import bgImage6 from "@image/auth-bg6.jpeg";
+// import bgImage6 from "@image/auth-bg6.jpeg";
 import bgImage7 from "@image/auth-bg7.jpeg";
 import bgImage8 from "@image/auth-bg8.jpeg";
 import logo from "@image/brand/tt_blue_logo_with_text.png";
@@ -140,8 +140,6 @@ function RegisterPage() {
           columns="repeat(auto-fit, minmax(300px, 1fr))"
           margin={isMobile ? "1rem 0" : "4rem 0"}
           gap="5rem"
-          // align="stretch"
-          // justify="space-between"
         >
           <Section styles={{ display: isMobile ? "none" : "block" }}>
             <Slider {...settings}>
@@ -151,7 +149,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -160,7 +158,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -169,7 +167,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -178,7 +176,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -187,7 +185,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -196,16 +194,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
-                />
-              </div>
-              <div>
-                <img
-                  src={bgImage6.src}
-                  alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -214,7 +203,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
@@ -223,7 +212,7 @@ function RegisterPage() {
                   alt="background image"
                   width="100%"
                   height="798px"
-                  style={{ borderRadius: "30px" }}
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
             </Slider>
@@ -447,17 +436,14 @@ function RegisterPage() {
                         color: "#1C1B1F",
                       }}
                     >
-                      I agree to all the
-                      <span style={{ color: "#a0001d", fontWeight: "400" }}>
+                      I agree to all the&nbsp;<span style={{ color: "#a0001d", fontWeight: "400" }}>
                         <Link
                           href="/auth/login"
                           text="Terms"
                           color="#a0001d"
                           style={{ fontWeight: "400" }}
                         />
-                      </span>
-                      and
-                      <span style={{ color: "#a0001d", fontWeight: "400" }}>
+                      </span>&nbsp;and&nbsp;<span style={{ color: "#a0001d", fontWeight: "400" }}>
                         <Link
                           href="/auth/login"
                           text=" Privacy Policies"

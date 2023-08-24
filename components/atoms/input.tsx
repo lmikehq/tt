@@ -21,8 +21,8 @@ import { useField } from "formik";
 const StyledInput = styled.input`
   background-color: transparent;
   border: 1px solid #bdbdbd;
-  &:focus {
-    outline: none;
+  &:hover {
+    border: 1px solid black;
   }
 
   &.error {

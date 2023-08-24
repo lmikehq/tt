@@ -1,18 +1,13 @@
 import Section from "@molecule/section";
 import {
   FieldArray,
-  Formik,
   FormikProvider,
-  FormikValues,
   useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@atom/flex";
-import { AiFillPlusCircle } from "react-icons/ai";
 import { ttColors } from "theme/colors";
-import { useState } from "react";
-import { RiDeleteBack2Line, RiDeleteBin6Line } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@atom/addButton";
 import {
@@ -21,8 +16,6 @@ import {
   familyInforKeys,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import Spinner from "@components/icons/spinner";
-import Button from "@atom/button";
 import FamilyForm from "@molecule/forms/familyForm";
 import ContinueButton from "@atom/continueButton";
 
@@ -40,7 +33,7 @@ function FamilyInfo({ steps, index, nextStep, isLoading }: formProps) {
     onSubmit: (values) => {
       nextStep({ form: values.familyInfo });
     },
-    validateOnChange: false,
+    validateOnChange: true,
   });
   return (
     <FormikProvider value={formik}>

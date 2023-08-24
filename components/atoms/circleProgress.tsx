@@ -5,27 +5,32 @@ import { styled } from "styled-components";
 interface circleProps {
   index: string;
   title: string;
+  disabled: boolean;
   active: boolean;
   isPassed: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-const CircleWrapper = styled.div<{ active: boolean, isPassed: boolean }>`
+const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
   position: relative;
   display: inline-block;
- &::after {
-  content: "";
-  position: absolute;
-  width: 70%;
-  top: 25%;
-  left: 64%;
-  opacity: ${props => (props.active ? "1" : "0.7")};
-  border: 1px solid ${props => (props.isPassed ? "#6092A7" : "gray")};
- }
- &:last-child::after {
-  display: none;
- }
- cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    top: 20%;
+    left: 64%;
+    opacity: ${(props) => (props.active ? "1" : "0.7")};
+    border: 1px solid ${(props) => (props.isPassed ? "#6092A7" : "gray")};
+  }
+  &:last-child::after {
+    display: none;
+  }
+  cursor: pointer;
+  /* Responsive Styles */
+  @media (max-width: 1024px) {
+    width
+  }
 
  @media (max-width:1280px) {
     &::after {
@@ -54,7 +59,7 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   }
 `;
 
-const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
+const Circle = styled.span<{ active: boolean, isPassed: boolean, disabled: boolean }>`
   display: flex;
   width: 1.5rem;
   height: 1.5rem;
@@ -68,7 +73,7 @@ const Circle = styled.span<{ active: boolean, isPassed: boolean }>`
   z-index: 9;
   position: relative;
   &:hover {
-    border: 2px solid #6092A7;
+    border: 2px solid ${props => (!props.disabled ? "#6092A7" : "none")};
    }
 `;
 
@@ -79,13 +84,46 @@ const CircleText = styled.span`
 
 function CircleProgress(props: circleProps) {
   return (
-    <CircleWrapper active={props.active} isPassed={props.isPassed} onClick={props.onClick}>
-      <Container active={props.active} isPassed={props.isPassed} onClick={props.onClick}>
-        <Circle active={props.active} isPassed={props.isPassed}>
-          <Text type="p" weight="bold" text={props.index} color={props.isPassed ? "white" : (props.active ? "#6092A7" : ttColors.gray)} />
+    <CircleWrapper
+      active={props.active}
+      isPassed={props.isPassed}
+      onClick={props.onClick}
+    >
+      <Container
+        active={props.active}
+        isPassed={props.isPassed}
+        onClick={props.onClick}
+      >
+        <Circle active={props.active} isPassed={props.isPassed} disabled={props.disabled}>
+          <Text
+            type="p"
+            weight="bold"
+            text={props.index}
+            color={
+              props.isPassed
+                ? "white"
+                : props.active
+                ? "#6092A7"
+                : ttColors.gray
+            }
+          />
         </Circle>
         <CircleText>
-          <Text type="h5" weight={props.active ? "bold" : "normal"} text={props.title} textAlign="center" />
+          <Text
+            type="h5"
+            weight={props.active ? "500" : "normal"}
+            text={props.title}
+            textAlign="center"
+            margin=".5rem 0px 0px"
+            size={16}
+            // color={
+            //   props.isPassed
+            //     ? ttColors.gray
+            //     : props.active
+            //     ? ttColors.primary
+            //     : "#929292"
+            // }
+          />
         </CircleText>
       </Container>
     </CircleWrapper>

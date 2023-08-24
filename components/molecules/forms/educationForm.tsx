@@ -36,7 +36,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text={`School Name ${count + 1}`}
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
         </Flex>
@@ -57,7 +57,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Text
               type="p"
               text="Degree"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -72,7 +72,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text="Field of Study"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldString
             options={COMMON_MAJORS}
@@ -93,7 +93,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Text
               type="p"
               text="Grade"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -110,7 +110,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text="School's Location"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldInput
             name={`educations.${count}.schoolLocation`}
@@ -129,7 +129,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text="Start Date"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your Start Year"
@@ -147,7 +147,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text="End Date"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your End Year"

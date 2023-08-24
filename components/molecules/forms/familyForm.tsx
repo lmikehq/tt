@@ -45,7 +45,7 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Family Member's Name ${count + 1}`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -60,7 +60,7 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Relationship to you`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -76,7 +76,7 @@ export default function FamilyForm({
         <Text
           type="p"
           text={`Member's Address`}
-          margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+           margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
         />
         <FieldInput
           formik={formik}
@@ -94,7 +94,7 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Member's Phone Number`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -109,7 +109,7 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Member's email`}
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>

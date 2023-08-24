@@ -348,7 +348,7 @@ function ApplicationForm() {
               <Section
                 width={isMobile ? "100%" : "100%"}
                 height="unset"
-                padding="2rem 0 0 0 "
+                padding="0px 0px 2rem 0px"
               >
                 {step?.content}
               </Section>

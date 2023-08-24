@@ -184,3 +184,7 @@ input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+textarea:hover {
+  border: 1px solid #000000;
+}
