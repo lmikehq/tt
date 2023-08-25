@@ -14,7 +14,7 @@ function CheckBox({
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
   value?: boolean;
-  name: string;
+  name?: string;
 }) {
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setChecked(event.target.checked);
