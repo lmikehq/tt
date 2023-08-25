@@ -3,14 +3,12 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker as MuiDatepicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { addDays } from "date-fns";
+import { addDays, startOfDay } from "date-fns";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { TextField } from "./input";
-import { TextFieldProps } from "@mui/material";
 import { IoCalendarOutline } from "react-icons/io5";
 
 interface BlockDatePickerProps {
@@ -60,9 +58,10 @@ interface DatePickerProps {
   minDate?: Dayjs | null;
   maxDate?: Dayjs;
   placeholder?: string;
+  position?: "start";
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
@@ -79,8 +78,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
           "& input": {
             color: "#1C1B1F",
             fontWeight: 400,
-            fontFamily: "'Poppins', sans-serif"
+            fontFamily: "'Poppins', sans-serif",
           },
+          '& .MuiInputBase-root': {
+            flexDirection: position === 'start' ? 'row-reverse': 'row',
+          }
         }}
         slotProps={{
           textField: {
@@ -89,7 +91,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
           },
         }}
         slots={{
-          openPickerIcon: IoCalendarOutline
+          openPickerIcon: IoCalendarOutline,        
         }}
       />
     </LocalizationProvider>

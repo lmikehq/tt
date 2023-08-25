@@ -23,7 +23,7 @@ const VisApplicationFormDetails = ({
         // direction={isMobile ? "column" : "row"}
         gap={isMobile ? "1.5rem" : "0rem"}
       >
-        <Text type="p" text={formData.home} size={24} weight={500} />
+        <Text type="p" text={formData.homeCountry} size={24} weight={500} />
         <TravelArrow />
         <Text type="p" text={formData.destination} size={24} weight={500} />
       </Flex>

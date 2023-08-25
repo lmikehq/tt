@@ -100,10 +100,7 @@ export default function CustomTab({
           onChange={handleChange}
           aria-label="select your service"
           sx={{
-            // display: "grid",
-            // "& .MuiTabs-flexContainer": {
-            //   gap: "2rem",
-            // },
+            fontFamily: "Montserrat"
           }}
         >
           {tabItems.map((tabItem, i) => (
@@ -113,6 +110,7 @@ export default function CustomTab({
                 <Flex align="center" gap=".5rem">
                   {defaultIcons && icons[tabItem.value]}
                   <Text
+                    font="Montserrat"
                     type="p"
                     text={tabItem.label}
                     size={isMobile ? ".7rem" : "1rem"}
@@ -130,7 +128,6 @@ export default function CustomTab({
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",
                 },
-                fontFamily: "Montserrat"
               }}
               {...a11yProps(tabItem.value)}
             />

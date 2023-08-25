@@ -10,6 +10,7 @@ interface SearchStringInputProps {
   onChange: (x: any) => void;
   options: any[];
   size?: CSSProperties["fontSize"];
+  border?: string;
 }
 
 const SearchStringInput = ({
@@ -18,6 +19,7 @@ const SearchStringInput = ({
   onChange,
   options,
   size,
+  border
 }: SearchStringInputProps) => {
   return (
     <SearchInputAsString
@@ -25,6 +27,7 @@ const SearchStringInput = ({
       options={options}
       height="45px"
       onChange={onChange}
+      border={border}
     >
       <Flex justify="space-between">
         <Text

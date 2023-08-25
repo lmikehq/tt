@@ -65,6 +65,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   code: x.code,
                 }))}
                 name="home"
+                value={formik.values.homeCountry}
                 placeholder="Select where you are"
               />
             </Flex>

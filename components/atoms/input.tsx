@@ -60,6 +60,7 @@ const StyledMuiTextField = styled(MUITextField)`
 
 export interface InputProps {
   onChange?: (e: any) => void;
+  onClick?: (e: any) => void;
   onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   onPaste?: () => void;
   placeholder?: string;
@@ -99,6 +100,7 @@ export interface InputProps {
 }
 
 const Input = ({
+  onClick,
   onChange,
   onKeyDown,
   onPaste,
@@ -154,6 +156,7 @@ const Input = ({
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
+        onClick={onClick}
         className="custom-form-input"
         type={miniType || type}
         onBlur={onBlur}

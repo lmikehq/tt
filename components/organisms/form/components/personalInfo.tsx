@@ -557,7 +557,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
                   />
-
                   {formik.touched["tuberculosis"] &&
                     formik.errors["tuberculosis"] && (
                       <ErrorText text={formik.errors["tuberculosis"]} />

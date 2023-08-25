@@ -6,6 +6,7 @@ interface TextProps {
   type: string;
   color?: string;
   size?: CSSProperties["fontSize"];
+  font?: CSSProperties["fontFamily"];
   weight?: CSSProperties["fontWeight"];
   className?: string;
   styles?: CSSProperties;
@@ -31,7 +32,7 @@ export const Text: React.FC<TextProps> = ({
   text,
   type,
   color,
-  className,
+  font,
   size,
   weight,
   whiteSpace,
@@ -50,7 +51,7 @@ export const Text: React.FC<TextProps> = ({
     fontSize: size,
     fontWeight: weight || "normal",
     whiteSpace,
-    fontFamily: "var(--font-family)",
+    fontFamily: font ||  "Poppins",
     textDecoration: decoration,
     textTransform: transform,
     margin,

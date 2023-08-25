@@ -3,7 +3,8 @@ interface layoutProps {
 }
 
 export const metadata = {
-  title: "flights",
+  title: "Book your flights",
+  description: "Book your flights here"
 };
 
 export default async function FlightLayout({ children }: layoutProps) {

@@ -241,7 +241,6 @@ SearchProps) {
   );
 }
 
-
 export function SearchInputAsString({
   placeholder,
   children,
@@ -253,7 +252,6 @@ export function SearchInputAsString({
   padding,
   border,
 }: SearchProps) {
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -277,7 +275,11 @@ export function SearchInputAsString({
   useEffect(() => {}, [inputValue]);
   return (
     <>
-      <Box ref={ref}>
+      <Box ref={ref}
+        sx={{
+          border: 0
+        }}
+      >
         <TextField
           sx={{
             width: "100%",
@@ -290,6 +292,9 @@ export function SearchInputAsString({
               width: "100%",
               // color: "inherit !important",
             },
+            '& fieldset': {
+              border: border === "bottom" ? "none" : border,
+            },
             "& svg": {
               position: "absolute",
               right: "25px",
@@ -299,6 +304,8 @@ export function SearchInputAsString({
               display: "block!important",
               position: "relative",
               // color: "inherit !important",
+              borderBottom: border === "bottom" ? "1px solid #E7E7E7" : "",
+              borderRadius: border === "bottom" ? "0" : "4px" 
             },
             "& label": {
               fontSize: "16px!important",
@@ -308,7 +315,7 @@ export function SearchInputAsString({
               height: height || "45px",
               padding: padding || "0px",
             },
-            border: border,
+            
           }}
           onClick={handleClick}
           label={legend}
@@ -318,11 +325,7 @@ export function SearchInputAsString({
                 <Box sx={{ width: "100%" }}>{children}</Box>
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
-            ),
-            placeholder:
-              React.Children.count(children) === 0
-                ? "Your Default Placeholder"
-                : "",
+            )
           }}
           placeholder={placeholder}
         />
