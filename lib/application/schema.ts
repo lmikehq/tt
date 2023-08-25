@@ -89,7 +89,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   firstName: "Abdulazeez",
   lastName: "Olalere",
   middleName: "Gbolahan",
-  email: "olalereazeez11@gmiwo.col",
+  email: "htmolaike@yopmail.com",
   // placeOfOrigin: "",
   stateOfOrigin: "Oyp",
   lgaOfOrigin: "Lagelu",

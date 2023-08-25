@@ -106,6 +106,10 @@ function ApplicationForm() {
   const [promoCode, setPromoCode] = useState("");
   const [promocodeLoading, setPromocodeLoading] = useState(false);
   const [applicationResponse, setApplicationResponse] = useState<any>();
+  const [createVisaApplicationData, setCreateVisaApplicationData] = useState<{
+    user: string;
+    visa: string;
+  }>();
 
   const { user } = useUserStore((state) => state);
   const { startPayment, loading, error, response, setData, data } =
@@ -114,30 +118,46 @@ function ApplicationForm() {
     payload,
   }: {
     payload: ApplicationFormRequestInput;
-  }) {
-    // if (applicationResponse.statusCode === 201)
-    //   return setCurrentPhase(currentPhase + 1);
+  }): Promise<{ user: string; visa: string }> {
     const response: any = await apiService(
       "/visa/new-application",
       "POST",
       payload
-    );
-
-    setApplicationResponse(response);
-    if (response.statusCode === 201) {
-      toast.success(
-        "Your application has been submitted successfully, please proceed to make payment"
-      );
-      // setData({
-      //   ...data,
-      //   amount: response.fee.total * 100,
-      //   currency: "NGN",
-      //   email: response.fee.mail || formData.email,
-      // });
-      // return setCurrentPhase(currentPhase + 1);
-    } else {
-      toast.error("Unable to complete request");
-    }
+    )
+      .then((data) => {
+        toast.success(
+          "Your application has been submitted successfully, please proceed to make payment"
+        );
+        return data;
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    return response;
+  }
+  async function handlePayment({
+    payload,
+  }: {
+    payload: { user: string; visa: string };
+  }): Promise<void> {
+    const response: any = await apiService(
+      "/payment/create-form-fee-charge",
+      "POST",
+      {
+        currency: "NGN",
+        gateway: "Kora",
+        service: "VISA",
+        user: payload.user,
+        serviceID: payload.visa,
+      }
+    )
+      .then((data) => {
+        toast.success("Success");
+        return data;
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   }
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
@@ -259,8 +279,16 @@ function ApplicationForm() {
         // user: 'your_user_id_here', // Set the user ID appropriately
       };
 
-      handleVisaApplication({
+      await handleVisaApplication({
         payload: applicationFormRequest,
+      }).then((data) => setCreateVisaApplicationData(data));
+    }
+    if (currentPhase == 7) {
+      await handlePayment({
+        payload: {
+          user: createVisaApplicationData?.user ?? "",
+          visa: createVisaApplicationData?.visa ?? "",
+        },
       });
     }
 
@@ -360,6 +388,13 @@ function ApplicationForm() {
       const completedForm = { ...formData, ...values };
       setFormData(completedForm);
       nextStep({ form: completedForm });
+    },
+  });
+  const paymentFormik = useFormik({
+    initialValues: {},
+    // validationSchema: documentsSchema,
+    onSubmit: (values) => {
+      nextStep({});
     },
   });
 

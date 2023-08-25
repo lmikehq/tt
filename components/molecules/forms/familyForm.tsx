@@ -177,7 +177,7 @@ export default function FamilyForm({
                 name={`familyMembers.${count}.passportNumber`}
               />
             </Section>
-            <Section margin="0">
+            {/* <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Issued Country" />
                 <Required />
@@ -192,9 +192,9 @@ export default function FamilyForm({
                 formik={formik}
                 placeholder="Select the Issued Country"
               />
-            </Section>
+            </Section> */}
           </Flex>
-          <Flex
+          {/* <Flex
             margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
@@ -216,7 +216,7 @@ export default function FamilyForm({
                 formik={formik}
               />
             </Section>
-          </Flex>
+          </Flex> */}
         </div>
       )}
     </Section>
