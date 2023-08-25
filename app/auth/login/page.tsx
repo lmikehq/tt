@@ -9,6 +9,7 @@ import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Input from "@atom/input";
 import Link from "@atom/link";
+import SideBtn from "@atom/sideBtn";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
@@ -25,18 +26,16 @@ import google from "@image/google.svg";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import { Divider } from "@mui/material";
-import { Form } from "formik";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
-import SideBtn from "@atom/sideBtn";
 
 const settings = {
   infinite: true,

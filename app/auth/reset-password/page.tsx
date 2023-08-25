@@ -2,8 +2,10 @@
 "use client";
 import Button from "@atom/button";
 import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Input from "@atom/input";
 import Link from "@atom/link";
+import SideBtn from "@atom/sideBtn";
 import Text from "@atom/text";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
@@ -22,13 +24,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
-import { IoIosArrowBack } from "react-icons/io";
-import { ttColors } from "theme/colors";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Grid } from "@atom/grid";
-import SideBtn from "@atom/sideBtn";
+import "slick-carousel/slick/slick.css";
+import { ttColors } from "theme/colors";
 
 const settings = {
   infinite: true,
