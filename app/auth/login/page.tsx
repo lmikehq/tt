@@ -20,7 +20,7 @@ import bgImage4 from "@image/auth-bg4.jpeg";
 import bgImage5 from "@image/auth-bg5.jpeg";
 import bgImage7 from "@image/auth-bg7.jpeg";
 import bgImage8 from "@image/auth-bg8.jpeg";
-import logo from "@image/brand/tt_blue_logo_with_text.png";
+import logo from "@image/brand/tt_blue_logo_with_text1.png";
 import google from "@image/google.svg";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
@@ -36,6 +36,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
+import SideBtn from "@atom/sideBtn";
 
 const settings = {
   infinite: true,
@@ -121,13 +122,11 @@ function LoginPage() {
 
   return (
     <SectionLayout>
-
       <Grid
         columns="repeat(auto-fit, minmax(300px, 1fr))"
         margin={isMobile ? "1rem 0" : "4rem 0"}
         gap="5rem"
       >
-       
         <Section styles={{ display: isMobile ? "none" : "block" }}>
           <Slider {...settings}>
             <div>
@@ -184,7 +183,7 @@ function LoginPage() {
                 style={{ borderRadius: "30px", objectFit: "cover" }}
               />
             </div>
-           
+
             <div>
               <img
                 src={bgImage7.src}
@@ -206,19 +205,28 @@ function LoginPage() {
           </Slider>
         </Section>
         <Section>
-          <img
-            src={logo.src}
-            alt="logo"
-            height={60}
-            onClick={() => router.push("/")}
-            style={{ cursor: "pointer" }}
-          />
+          <Flex justify="space-between">
+            <img
+              src={logo.src}
+              alt="logo"
+              height={60}
+              onClick={() => router.push("/")}
+              style={{ cursor: "pointer" }}
+            />
+            <SideBtn
+              title="Do not have an account? "
+              // buttonText="Sign Up"
+              linkText="Sign Up"
+              linkUrl="/auth/register"
+            />
+          </Flex>
 
           <Text
             type="h1"
             margin="2rem 0 1rem"
-            text="Welcome back,"
-            size="20px"
+            text="Welcome back"
+            size="40px"
+            weight={700}
           />
           <Text
             type="p"
@@ -233,6 +241,11 @@ function LoginPage() {
             overflow="unset"
           >
             <Section>
+              <Text
+                type="p"
+                text="Email"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
               <Input
                 placeholder="Enter your email"
                 height="3rem"
@@ -246,6 +259,11 @@ function LoginPage() {
               />
             </Section>
             <Section>
+              <Text
+                type="p"
+                text="Password"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
               <Input
                 placeholder="******"
                 height="3rem"
@@ -285,7 +303,7 @@ function LoginPage() {
                 <Text
                   type="p"
                   text="Forgot password?"
-                  color="#FF8682"
+                  color="#a0001d"
                   whiteSpace="nowrap"
                   cursor="pointer"
                 />
@@ -304,25 +322,26 @@ function LoginPage() {
                 <Text type="p" text="Login" color={ttColors.dark} size="20px" />
               )}
             </Button>
-            <p style={{ textAlign: "center", fontSize: "16px" }}>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "16px",
+                display: isMobile ? "block" : "none",
+              }}
+            >
               Do not have an account? &nbsp;
               <Link href="/auth/register" text="Sign up" color="#FF8682" />
             </p>
             <Flex
-              justify="space-between"
+              justify="center"
               align="center"
-              width={isMobile ? "100%" : "90%"}
+              width="100%"
               margin="2rem 0 1rem"
             >
               <Divider
                 sx={{ width: isMobile ? "30%" : "33%", color: "#112211" }}
               />
-              <Text
-                type="p"
-                text="Or login with"
-                margin="0 1rem"
-                color="#112211"
-              />
+              <Text type="p" text="Or" margin="0 1rem" color="#112211" />
               <Divider
                 sx={{ width: isMobile ? "30%" : "33%", color: "#112211" }}
               />
@@ -333,6 +352,14 @@ function LoginPage() {
               width="100%"
             >
               <img src={google.src} alt="google" height="30" width={30} />
+              <Text
+                type="p"
+                size={14}
+                weight={600}
+                text="Login With Google"
+                color="#19013b"
+                margin="0px 0px 0px .5rem"
+              />
             </Button>
           </Flex>
         </Section>

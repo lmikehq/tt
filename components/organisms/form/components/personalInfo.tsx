@@ -89,7 +89,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Last Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -104,7 +104,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="First Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -126,7 +126,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Middle Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -141,7 +141,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="State of Origin"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -163,7 +163,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="LG. of Origin"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -178,7 +178,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Native Language"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -200,7 +200,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Email Address"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -215,7 +215,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Phone Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -240,7 +240,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Means of ID"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -267,7 +267,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="ID Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -280,42 +280,42 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
         </Flex>
         {!showDate && (
           <Flex
-          margin={isMobile ? "0px" : "0 0 1rem"}
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section width="100%">
-            <Text
-              type="p"
-              text="Issue Date"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-            />
-            <FieldAsDate
-              name="issueDate"
-              placeholder="Select your Issue Date"
-              formik={formik}
-              onChange={(e: any) => {
-                updateFieldValue(`issueDate`, `${e}`);
-                setEndDate(dayjs(e));
-              }}
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Expiry Date"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-            />
-            <FieldAsDate
-              name="expiryDate"
-              placeholder="Select the Expiry Date"
-              formik={formik}
-              minDate={endDate}
-              disabled={endDate === null}
-            />
-          </Section>
-        </Flex>
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issue Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="issueDate"
+                placeholder="Select your Issue Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue(`issueDate`, `${e}`);
+                  setEndDate(dayjs(e));
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="expiryDate"
+                placeholder="Select the Expiry Date"
+                formik={formik}
+                minDate={endDate}
+                disabled={endDate === null}
+              />
+            </Section>
+          </Flex>
         )}
         <Flex
           margin="0"
@@ -328,7 +328,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Country of Citizenship"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -348,7 +348,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Place of Birth (Country & State)"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -369,7 +369,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Residential Address"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
@@ -391,7 +391,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Marital Status"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -419,7 +419,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Partner’s Name (if applicable)"
-                margin={isMobile ? ".5rem 0" : "1rem 0"}
+                margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
               />
               <Required />
             </Flex>
@@ -441,7 +441,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Passport Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -456,7 +456,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Issued Country"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -474,48 +474,48 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
         </Flex>
         {showPassDate && (
           <Flex
-          margin={isMobile ? "0px" : "0 0 1rem"}
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section width="100%">
-            <Text
-              type="p"
-              text="Issued Date"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-            />
-            <FieldAsDate
-              name="passportIssueDate"
-              placeholder="Select your Issued Date"
-              formik={formik}
-              onChange={(e: any) => {
-                updateFieldValue("passportIssueDate", e);
-                setPassEndDate(e);
-              }}
-            />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Expiry Date"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-            />
-            <FieldAsDate
-              name="passportExpiryDate"
-              placeholder="Select your Expiry Date"
-              formik={formik}
-              disabled={passEndDate === null}
-              minDate={passEndDate}
-            />
-          </Section>
-        </Flex>
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issued Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="passportIssueDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue("passportIssueDate", e);
+                  setPassEndDate(e);
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+                disabled={passEndDate === null}
+                minDate={passEndDate}
+              />
+            </Section>
+          </Flex>
         )}
         <Section>
           <Text
             type="p"
             text="Main Purpose of your Trip"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <TextArea
             onChange={(e: any) => {
@@ -576,22 +576,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 <CustomRadioGroup
                   name="disability"
                   options={options}
-                  onChange={(e) => setFormData((prev) => ({...prev, disability: e}))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, disability: e }))
+                  }
                   justifyContent="flex-end"
                 />
               </Flex>
             </li>
             {formData.disability === "Yes" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
             )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -657,22 +659,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 <CustomRadioGroup
                   defaultValue=""
                   options={options}
-                  onChange={(e) => setFormData((prev) => ({...prev, entry: e}))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, entry: e }))
+                  }
                   justifyContent="flex-end"
                 />
               </Flex>
             </li>
             {formData.entry === "Yes" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
             )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -691,22 +695,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 <CustomRadioGroup
                   defaultValue=""
                   options={options}
-                  onChange={(e) => setFormData((prev) => ({...prev, criminal: e}))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, criminal: e }))
+                  }
                   justifyContent="flex-end"
                 />
               </Flex>
             </li>
             {formData.criminal === "Yes" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
             )}
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
@@ -750,22 +756,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 <CustomRadioGroup
                   defaultValue=""
                   options={options}
-                  onChange={(e) => setFormData((prev) => ({...prev, looting: e}))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, looting: e }))
+                  }
                   justifyContent="flex-end"
                 />
               </Flex>
             </li>
             {formData.looting === "Yes" && (
               <Section>
-              <Text
-                size={16}
-                weight={300}
-                type="p"
-                text="If you answered “yes”, please provide details"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              />
-              <TextArea />
-            </Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
             )}
           </ol>
         </Section>

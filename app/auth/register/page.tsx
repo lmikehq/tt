@@ -18,7 +18,7 @@ import bgImage5 from "@image/auth-bg5.jpeg";
 // import bgImage6 from "@image/auth-bg6.jpeg";
 import bgImage7 from "@image/auth-bg7.jpeg";
 import bgImage8 from "@image/auth-bg8.jpeg";
-import logo from "@image/brand/tt_blue_logo_with_text.png";
+import logo from "@image/brand/tt_blue_logo_with_text1.png";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
 import apiService from "hook/apiService";
@@ -31,6 +31,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Grid } from "@atom/grid";
+import styled from "styled-components";
+import SideBtn from "@atom/sideBtn";
+
+
 
 const settings = {
   infinite: true,
@@ -217,14 +221,22 @@ function RegisterPage() {
               </div>
             </Slider>
           </Section>
+
           <Section>
-            <img
-              src={logo.src}
-              alt="logo"
-              height={60}
-              onClick={() => router.push("/")}
-              style={{ cursor: "pointer" }}
-            />
+            <Flex justify="space-between">
+              <img
+                src={logo.src}
+                alt="logo"
+                height={60}
+                onClick={() => router.push("/")}
+                style={{ cursor: "pointer" }}
+              />
+              <SideBtn
+                title="Already have an account?"
+                linkUrl="/auth/login"
+                linkText="Login"
+              />
+            </Flex>
             <Text
               type="h1"
               margin="2rem 0 1rem"
@@ -251,8 +263,13 @@ function RegisterPage() {
                 direction={isMobile ? "column" : "row"}
               >
                 <Section>
+                  <Text
+                    type="p"
+                    text="First Name"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
                   <Input
-                    placeholder="First Name"
+                    placeholder="Enter your first name"
                     onChange={(e) =>
                       setRegisterData({
                         ...registerData,
@@ -276,8 +293,13 @@ function RegisterPage() {
                   )}
                 </Section>
                 <Section>
+                  <Text
+                    type="p"
+                    text="Last Name"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
                   <Input
-                    placeholder="Last Name"
+                    placeholder="Enter your last name"
                     onChange={(e) =>
                       setRegisterData({
                         ...registerData,
@@ -307,8 +329,13 @@ function RegisterPage() {
                 direction={isMobile ? "column" : "row"}
               >
                 <Section>
+                  <Text
+                    type="p"
+                    text="Email"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
                   <Input
-                    placeholder="Email"
+                    placeholder="Enter you email"
                     type="email"
                     onChange={(e) =>
                       setRegisterData({
@@ -331,8 +358,13 @@ function RegisterPage() {
                   )}
                 </Section>
                 <Section>
+                  <Text
+                    type="p"
+                    text="Phone Number"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
                   <Input
-                    placeholder="Phone Number"
+                    placeholder="Enter your phone number"
                     onChange={(e) =>
                       setRegisterData({
                         ...registerData,
@@ -358,8 +390,13 @@ function RegisterPage() {
                 </Section>
               </Flex>
               <Section>
+                <Text
+                  type="p"
+                  text="Password"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
                 <Input
-                  placeholder="Password"
+                  placeholder="Enter your password"
                   type="password"
                   onChange={(e) =>
                     setRegisterData({
@@ -382,6 +419,11 @@ function RegisterPage() {
                 )}
               </Section>
               <Section>
+                <Text
+                  type="p"
+                  text="Confirm Password"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
                 <Input
                   type="password"
                   placeholder="Confirm Password"
@@ -407,17 +449,24 @@ function RegisterPage() {
                   />
                 )}
               </Section>
-              <Input
-                placeholder="Referral Code"
-                onChange={(e) =>
-                  setRegisterData({
-                    ...registerData,
-                    referralCode: e.target.value,
-                  })
-                }
-                height="3rem"
-                value={registerData.referralCode}
-              />
+              <section>
+                <Text
+                  type="p"
+                  text="Referral Code"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <Input
+                  placeholder="Enter your referral code"
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      referralCode: e.target.value,
+                    })
+                  }
+                  height="3rem"
+                  value={registerData.referralCode}
+                />
+              </section>
 
               <Flex align="center" justify="space-between">
                 <Flex align="center">
@@ -436,16 +485,19 @@ function RegisterPage() {
                         color: "#1C1B1F",
                       }}
                     >
-                      I agree to all the&nbsp;<span style={{ color: "#a0001d", fontWeight: "400" }}>
+                      I agree to all the&nbsp;
+                      <span style={{ color: "#a0001d", fontWeight: "400" }}>
                         <Link
-                          href="/auth/login"
+                          href="/privacy"
                           text="Terms"
                           color="#a0001d"
                           style={{ fontWeight: "400" }}
                         />
-                      </span>&nbsp;and&nbsp;<span style={{ color: "#a0001d", fontWeight: "400" }}>
+                      </span>
+                      &nbsp;and&nbsp;
+                      <span style={{ color: "#a0001d", fontWeight: "400" }}>
                         <Link
-                          href="/auth/login"
+                          href="/privacy"
                           text=" Privacy Policies"
                           color="#a0001d"
                           style={{ fontWeight: "400" }}
@@ -486,7 +538,13 @@ function RegisterPage() {
                   />
                 )}
               </Button>
-              <p style={{ textAlign: "center", fontSize: "16px" }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  fontSize: "16px",
+                  display: isMobile ? "block" : "none",
+                }}
+              >
                 Already have an account?{" "}
                 <Link
                   href="/auth/login"
