@@ -2,6 +2,7 @@ import Section from "@molecule/section";
 import {
   FieldArray,
   Formik,
+  FormikProps,
   FormikProvider,
   FormikValues,
   useFormik,
@@ -21,24 +22,16 @@ import {
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@atom/continueButton";
+import { EmploymentDetailsInterface } from "types";
 
 interface formProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
 }
 
-function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const formik = useFormik({
-    initialValues: employmentsArr,
-    validationSchema: manyEmploymentSchema,
-    onSubmit: (values) => {
-      nextStep({ form: values });
-    },
-    validateOnChange: false,
-  });
-
+function EmploymentInfo({ steps, index, isLoading, formik }: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>

@@ -19,6 +19,7 @@ interface CustomRadioGroupProps {
   onChange: (selectedValue: ChangeEvent<any>) => void;
   onBlur?: (e: FocusEvent<any, Element>) => void;
   justifyContent: string;
+  value: boolean | null;
 }
 
 export function CustomRadioGroup({
@@ -27,6 +28,7 @@ export function CustomRadioGroup({
   onBlur,
   name,
   justifyContent,
+  value,
 }: CustomRadioGroupProps) {
   return (
     <FormControl sx={{}}>
@@ -36,6 +38,7 @@ export function CustomRadioGroup({
           fontSize: "16px",
         }}
         name={name}
+        value={value}
         onChange={onChange}
         onBlur={onBlur}
         style={{

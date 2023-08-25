@@ -20,7 +20,15 @@ import UploadDocuments from "@organism/form/components/uploadDocuments";
 import { SingleFormType } from "@organism/form/applicationForm";
 import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
 import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
-import { PersonalInfoInterface, VisaApplicationFormInterface } from "types";
+import {
+  DetailsKeys,
+  DocumentInterface,
+  EducationDetailsInterface,
+  EmploymentDetailsInterface,
+  FamilyInfoInterface,
+  PersonalInfoInterface,
+  VisaApplicationFormInterface,
+} from "types";
 import { FormikProps } from "formik";
 
 interface IFormStep {
@@ -28,21 +36,26 @@ interface IFormStep {
   title: string;
   content: React.ReactNode;
   valKeys?: any;
-  formikConfig?: any;
 }
 
 export const getSteps = ({
-  setFormFee,
-  setCurrentPhase,
-  nextStep,
   isLoading,
+  detailsFormik,
   personalInfoFormik,
+  educationFormik,
+  employmentFormik,
+  familyMembersFormik,
+  documentsFormik,
 }: {
   setFormFee: (n: number) => void;
   setCurrentPhase: (n: number) => void;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
   personalInfoFormik: FormikProps<PersonalInfoInterface>;
+  detailsFormik: FormikProps<DetailsKeys>;
+  familyMembersFormik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
+  employmentFormik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
+  educationFormik: FormikProps<{ education: EducationDetailsInterface[] }>;
+  documentsFormik: FormikProps<{ documents: DocumentInterface[] }>;
 }): IFormStep[] => {
   return [
     {
@@ -52,9 +65,8 @@ export const getSteps = ({
         <TripDetails
           steps={["Enter your Trip Details"]}
           index={0}
-          setFee={setFormFee}
-          nextStep={nextStep}
           isLoading={isLoading}
+          formik={detailsFormik}
         />
       ),
     },
@@ -65,7 +77,6 @@ export const getSteps = ({
         <PersonalInfo
           steps={["Personal Information"]}
           index={1}
-          nextStep={nextStep}
           isLoading={isLoading}
           formik={personalInfoFormik}
         />
@@ -79,7 +90,7 @@ export const getSteps = ({
         <EducationInfo
           steps={["Education Details"]}
           index={2}
-          nextStep={nextStep}
+          formik={educationFormik}
           isLoading={isLoading}
         />
       ),
@@ -92,7 +103,7 @@ export const getSteps = ({
         <EmploymentInfo
           steps={["Employment Details"]}
           index={3}
-          nextStep={nextStep}
+          formik={employmentFormik}
           isLoading={isLoading}
         />
       ),
@@ -105,7 +116,7 @@ export const getSteps = ({
         <FamilyInfo
           steps={["Family Members' Information"]}
           index={4}
-          nextStep={nextStep}
+          formik={familyMembersFormik}
           isLoading={isLoading}
         />
       ),
@@ -118,22 +129,16 @@ export const getSteps = ({
         <UploadDocuments
           steps={["Upload All Required Documents"]}
           index={5}
-          nextStep={nextStep}
+          formik={documentsFormik}
           isLoading={isLoading}
         />
       ),
     },
+
     {
       id: 7,
-      title: "Select Visa Payment",
-      content: <SelectVisaPayment nextStep={nextStep} isLoading={isLoading} />,
-    },
-    {
-      id: 8,
       title: "Select Payment Method",
-      content: (
-        <SelectPaymentMethod nextStep={nextStep} isLoading={isLoading} />
-      ),
+      content: <SelectPaymentMethod isLoading={isLoading} />,
     },
   ];
 };

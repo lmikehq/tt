@@ -23,17 +23,15 @@ import { SingleFormType } from "../applicationForm";
 import { PersonalInfoInterface } from "types";
 import ContinueButton from "@atom/continueButton";
 import dayjs, { Dayjs } from "dayjs";
-import useFormikLocalStorage from "hook/useFormikLocalStorage";
 
 interface FormProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
   formik: FormikProps<PersonalInfoInterface>;
 }
 
-function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
+function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
   const { isMobile } = useScreenResolution();
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
@@ -49,21 +47,19 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
   ];
 
   const [value, setValue] = useState("");
-  const formik = useFormik({
-    initialValues: personalInfoKeys,
-    validationSchema: personalInfoSchema,
-    validateOnChange: true,
-    onSubmit: (values: PersonalInfoInterface) => {
-      nextStep({ form: values });
-    },
-  });
+  // const formik = useFormik({
+  //   initialValues: personalInfoKeys,
+  //   validationSchema: personalInfoSchema,
+  //   validateOnChange: true,
+  //   onSubmit: (values: PersonalInfoInterface) => {
+  //     nextStep({ form: values });
+  //   },
+  // });
 
   const options = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
   ];
-
-  const { updateFieldValue } = useFormikLocalStorage(formik, personalInfoKeys);
 
   useEffect(() => {
     setShowDate(MeansId.some((item) => item === formik.values.meansOfId));
@@ -218,7 +214,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
               placeholder="Select your Issue Date"
               formik={formik}
               onChange={(e: any) => {
-                updateFieldValue(`dateOfBirth`, `${e}`);
                 setEndDate(dayjs(e));
               }}
             />
@@ -315,11 +310,11 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
               name="idNumber"
               placeholder="Enter your ID number"
               formik={formik}
-              disabled={showPassDate}
+              disabled={formik.values.meansOfId == "International Passport"}
             />
           </Section>
         </Flex>
-        {!showDate && (
+        {formik.values.meansOfId && (
           <Flex
             margin={isMobile ? "0px" : "0 0 1rem"}
             justify="space-between"
@@ -337,7 +332,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 placeholder="Select your Issue Date"
                 formik={formik}
                 onChange={(e: any) => {
-                  updateFieldValue(`issueDate`, `${e}`);
                   setEndDate(dayjs(e));
                 }}
               />
@@ -352,8 +346,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 name="expiryDate"
                 placeholder="Select the Expiry Date"
                 formik={formik}
-                minDate={endDate}
-                disabled={endDate === null}
+                minDate={dayjs(formik.values.issueDate)}
+                disabled={!formik.values.issueDate}
               />
             </Section>
           </Flex>
@@ -512,14 +506,14 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
             />
           </Section>
         </Flex>
-        {showPassDate && (
+        {formik.values.meansOfId == "International Passport" && (
           <Flex
             margin={isMobile ? "0px" : "0 0 1rem"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
-            <Section width="100%">
+            {/* <Section width="100%">
               <Text
                 type="p"
                 text="Issued Date"
@@ -530,11 +524,10 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 placeholder="Select your Issued Date"
                 formik={formik}
                 onChange={(e: any) => {
-                  updateFieldValue("passportIssueDate", e);
                   setPassEndDate(e);
                 }}
               />
-            </Section>
+            </Section> */}
             <Section>
               <Text
                 type="p"
@@ -545,8 +538,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 name="passportExpiryDate"
                 placeholder="Select your Expiry Date"
                 formik={formik}
-                disabled={passEndDate === null}
-                minDate={passEndDate}
+                // disabled={formik.values === null}
+                // minDate={passEndDate}
               />
             </Section>
           </Flex>
@@ -562,6 +555,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
             name="tripPurpose"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            value={formik.values.tripPurpose}
           />
           {formik.touched["tripPurpose"] && formik.errors["tripPurpose"] && (
             <ErrorText text={formik.errors["tripPurpose"]} />
@@ -599,6 +593,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="tuberculosis"
+                    value={formik.values.tuberculosis}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -629,6 +624,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="mentalDisorder"
+                    value={formik.values.mentalDisorder}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -662,6 +658,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 {/* <TextArea /> */}
                 <TextArea
                   name="mentalDisorderDetails"
+                  value={formik.values.mentalDisorderDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -689,6 +686,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="remainbeyondValidity"
+                    value={formik.values.remainbeyondValidity}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -720,6 +718,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="refusedBefore"
+                    value={formik.values.refusedBefore}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -744,6 +743,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
 
                 <TextArea
                   name="refusedBeforeDetails"
+                  value={formik.values.refusedBeforeDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -772,6 +772,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="arrestedBefore"
+                    value={formik.values.arrestedBefore}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -797,6 +798,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 {/* <TextArea /> */}
                 <TextArea
                   name="arrestedBeforeDetails"
+                  value={formik.values.arrestedBeforeDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -824,6 +826,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="servedInMilitary"
+                    value={formik.values.servedInMilitary}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -847,6 +850,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                 />
                 <TextArea
                   name="servedInMilitaryDetails"
+                  value={formik.values.servedInMilitaryDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -876,6 +880,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="memberOfViolentGroup"
+                    value={formik.values.memberOfViolentGroup}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -907,6 +912,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
                   <CustomRadioGroup
                     options={options}
                     name="participatedInViolentActivities"
+                    value={formik.values.participatedInViolentActivities}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"

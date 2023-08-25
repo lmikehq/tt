@@ -1,5 +1,5 @@
 import Section from "@molecule/section";
-import { FieldArray, FormikProvider, useFormik } from "formik";
+import { FieldArray, FormikProps, FormikProvider, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import Flex from "@atom/flex";
 import { ttColors } from "theme/colors";
@@ -14,23 +14,16 @@ import {
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@atom/continueButton";
+import { EducationDetailsInterface } from "types";
 
 interface formProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<{ education: EducationDetailsInterface[] }>;
 }
 
-function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const formik = useFormik({
-    initialValues: educationsArr,
-    validationSchema: manyEducationSchema,
-    onSubmit: (values) => {
-      nextStep({ form: values });
-    },
-    validateOnChange: true,
-  });
+function EducationInfo({ steps, index, isLoading, formik }: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>

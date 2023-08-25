@@ -12,6 +12,16 @@ import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
 import {
+  detailsKeys,
+  detailsSchema,
+  documentsArr,
+  documentsSchema,
+  educationsArr,
+  employmentsArr,
+  familyInfoArr,
+  familyInfoSchema,
+  manyEducationSchema,
+  manyEmploymentSchema,
   personalInfoKeys,
   personalInfoSchema,
   visaInitVals,
@@ -293,12 +303,64 @@ function ApplicationForm() {
       nextStep({ form: values });
     },
   });
+
+  const detailsFormik = useFormik({
+    initialValues: {
+      ...detailsKeys,
+      homeCountry: params.get("home") || "",
+      destination: params.get("destination") || "",
+      visaType: params.get("visaType") || "",
+    },
+    validationSchema: detailsSchema,
+    onSubmit: (values: DetailsKeys) => {
+      console.log(values);
+      nextStep({ form: values });
+    },
+  });
+
+  const educationFormik = useFormik({
+    initialValues: educationsArr,
+    validationSchema: manyEducationSchema,
+    onSubmit: (values) => {
+      nextStep({ form: values });
+    },
+    validateOnChange: true,
+  });
+
+  const employmentFormik = useFormik({
+    initialValues: employmentsArr,
+    validationSchema: manyEmploymentSchema,
+    onSubmit: (values) => {
+      nextStep({ form: values });
+    },
+    validateOnChange: false,
+  });
+  const familyMembersFormik = useFormik({
+    initialValues: familyInfoArr,
+    validationSchema: familyInfoSchema,
+    onSubmit: (values) => {
+      nextStep({ form: values });
+    },
+    validateOnChange: true,
+  });
+  const documentsFormik = useFormik({
+    initialValues: documentsArr,
+    validationSchema: documentsSchema,
+    onSubmit: (values) => {
+      nextStep({ form: values });
+    },
+  });
+
   const step = getSteps({
     setFormFee,
     setCurrentPhase,
-    nextStep,
-    isLoading: nextStepLoading,
+    detailsFormik,
     personalInfoFormik,
+    educationFormik,
+    employmentFormik,
+    familyMembersFormik,
+    documentsFormik,
+    isLoading: nextStepLoading,
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {

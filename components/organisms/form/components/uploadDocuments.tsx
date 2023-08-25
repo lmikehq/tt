@@ -3,7 +3,7 @@ import Center from "@atom/center";
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { FormikValues, useFormik } from "formik";
+import { FormikProps, FormikValues, useFormik } from "formik";
 import useCloudinaryUpload from "hook/useCloudinary";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -33,8 +33,8 @@ import { DocumentInterface } from "types";
 interface formProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<{ documents: DocumentInterface[] }>;
 }
 
 const UploadArea = styled.div`
@@ -59,7 +59,7 @@ const UploadedDocumentsWrapper = styled.div`
   padding-top: 52px;
 `;
 
-function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
+function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
   const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -90,13 +90,6 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
     }[]
   >();
 
-  const formik = useFormik({
-    initialValues: documentsArr,
-    validationSchema: documentsSchema,
-    onSubmit: (values) => {
-      nextStep({ form: values });
-    },
-  });
   const handleFailedValidation = () => {
     if (!formik.errors.documents) return;
     return toast.error(formik.errors.documents as string);
