@@ -11,7 +11,22 @@ import Input from "@atom/input";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
-import { visaInitVals, visaSchema } from "@lib/application/schema";
+import {
+  detailsKeys,
+  detailsSchema,
+  documentsArr,
+  documentsSchema,
+  educationsArr,
+  employmentsArr,
+  familyInfoArr,
+  familyInfoSchema,
+  manyEducationSchema,
+  manyEmploymentSchema,
+  personalInfoKeys,
+  personalInfoSchema,
+  visaInitVals,
+  visaSchema,
+} from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
@@ -39,6 +54,7 @@ import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import {
+  ApplicationFormRequestInput,
   DetailsKeys,
   DocumentInterface,
   EducationDetailsInterface,
@@ -57,6 +73,8 @@ import VisaApplicationFormDetails from "./components/sideMenu/visaApplicationFor
 import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndContinueLater";
 import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 import CustomToaster from "@molecule/customToaster";
+import { setTimeout } from "timers";
+import { FormikProps, FormikValues, useFormik } from "formik";
 
 const PromoInput = styled.div`
   display: flex;
@@ -78,56 +96,68 @@ const PromoInput = styled.div`
 export type SingleFormType =
   | DetailsKeys
   | PersonalInfoInterface
-  | EducationDetailsInterface[]
-  | EmploymentDetailsInterface[]
-  | FamilyInfoInterface[]
-  | DocumentInterface[];
+  | { education: EducationDetailsInterface[] }
+  | { employment: EmploymentDetailsInterface[] }
+  | { familyMembers: FamilyInfoInterface[] }
+  | { documents: DocumentInterface[] };
 
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
   const [promocodeLoading, setPromocodeLoading] = useState(false);
-  const [applicationResponse, setApplicationResponse] =
-    useState<any>(visaInitVals);
+  const [applicationResponse, setApplicationResponse] = useState<any>();
+  const [createVisaApplicationData, setCreateVisaApplicationData] = useState<{
+    user: string;
+    visa: string;
+  }>();
 
   const { user } = useUserStore((state) => state);
   const { startPayment, loading, error, response, setData, data } =
     usePaystack();
-  async function handleVisaApplication() {
-    if (applicationResponse.statusCode === 201)
-      return setCurrentPhase(currentPhase + 1);
-    const response: any = await apiService("visa/new-application", "POST", {
-      ...formData,
-      // destination: formik.values.destination?.name,
-      // homeCountry: formik.values.home?.name,
-      // firstAndMiddleName: formik.values.firstName,
-      // address: formik.values.residentialAddress,
-      // school: formik.values.schoolName,
-      // yearOfGraduation: formik.values.graudautionYear,
-      // company: formik.values.companyName,
-      // yearStarted: formik.values.startedYear,
-      // yearEnded: formik.values.endedYear,
-      // passportNumber: formik.values.passNumber,
-      // passportIssuedCountry: formik.values.passIssueCountry,
-      // passportExpiryYear: formik.values.expiryYear,
-      // relationshipToGuarantor: formik.values.guarantorRelationship,
-      // documents: formik.values.uploadedDocuments,
-      userId: user?._id || "",
-    });
-
-    setApplicationResponse(response);
-    if (response.statusCode === 201) {
-      toast.success(
-        "Your application has been submitted successfully, please proceed to make payment"
-      );
-      setData({
-        ...data,
-        amount: response.fee.total * 100,
-        currency: "NGN",
-        email: response.fee.mail || formData.email,
+  async function handleVisaApplication({
+    payload,
+  }: {
+    payload: ApplicationFormRequestInput;
+  }): Promise<{ user: string; visa: string }> {
+    const response: any = await apiService(
+      "/visa/new-application",
+      "POST",
+      payload
+    )
+      .then((data) => {
+        toast.success(
+          "Your application has been submitted successfully, please proceed to make payment"
+        );
+        return data;
+      })
+      .catch((err) => {
+        toast.error(err);
       });
-      return setCurrentPhase(currentPhase + 1);
-    }
+    return response;
+  }
+  async function handlePayment({
+    payload,
+  }: {
+    payload: { user: string; visa: string };
+  }): Promise<void> {
+    const response: any = await apiService(
+      "/payment/create-form-fee-charge",
+      "POST",
+      {
+        currency: "NGN",
+        gateway: "Kora",
+        service: "VISA",
+        user: payload.user,
+        serviceID: payload.visa,
+      }
+    )
+      .then((data) => {
+        toast.success("Success");
+        return data;
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   }
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
@@ -147,39 +177,39 @@ function ApplicationForm() {
   const [nextStepLoading, setNextStepLoading] = useState(false);
   const router = useRouter();
 
-  async function onSuccess() {
-    // toast.success("Payment Successful, please check your email for receipt");
-    toast.loading("Payment Successful, please wait...", {
-      duration: 5000,
-    });
-    await apiService("/payment/paystack-success-callback", "POST", {
-      visaId: applicationResponse.id,
-      user: user?._id || applicationResponse.userId,
-      method: "CARD",
-      gateway: "Paystack",
-      status: "SUCCESS",
-      currency: "NGN",
-      totalAmount: applicationResponse.fee.total,
-      service: "VISA",
-      description: "Payment Successful",
-    });
-    setCurrentPhase(currentPhase + 1);
-  }
-  async function onCancel() {
-    await apiService("/payment/paystack-success-callback", "POST", {
-      visaId: applicationResponse.id,
-      user: user?._id || applicationResponse.userId,
-      method: "CARD",
-      gateway: "Paystack",
-      status: "FAILED",
-      currency: "NGN",
-      totalAmount: applicationResponse.fee.total,
-      service: "VISA",
-      description: "Payment Cancelled",
-    });
-    toast.error("Payment Cancelled");
-    setCurrentPhase(currentPhase + 2);
-  }
+  // async function onSuccess() {
+  //   // toast.success("Payment Successful, please check your email for receipt");
+  //   toast.loading("Payment Successful, please wait...", {
+  //     duration: 5000,
+  //   });
+  //   await apiService("/payment/paystack-success-callback", "POST", {
+  //     visaId: applicationResponse.id,
+  //     user: user?._id || applicationResponse.userId,
+  //     method: "CARD",
+  //     gateway: "Paystack",
+  //     status: "SUCCESS",
+  //     currency: "NGN",
+  //     totalAmount: applicationResponse.fee.total,
+  //     service: "VISA",
+  //     description: "Payment Successful",
+  //   });
+  //   setCurrentPhase(currentPhase + 1);
+  // }
+  // async function onCancel() {
+  //   await apiService("/payment/paystack-success-callback", "POST", {
+  //     visaId: applicationResponse.id,
+  //     user: user?._id || applicationResponse.userId,
+  //     method: "CARD",
+  //     gateway: "Paystack",
+  //     status: "FAILED",
+  //     currency: "NGN",
+  //     totalAmount: applicationResponse.fee.total,
+  //     service: "VISA",
+  //     description: "Payment Cancelled",
+  //   });
+  //   toast.error("Payment Cancelled");
+  //   setCurrentPhase(currentPhase + 2);
+  // }
 
   const setPhase = async (number: number) => {
     console.log("setPhase", number);
@@ -187,12 +217,79 @@ function ApplicationForm() {
     if (number > highestPhase) setHighestPhase(number);
   };
 
-  const nextStep = async ({ form }: { form?: SingleFormType }) => {
+  const nextStep = async ({
+    form,
+  }: {
+    form?: VisaApplicationFormInterface;
+  }) => {
     if (nextStepLoading) return;
     setNextStepLoading(true);
     if (currentPhase <= 6) {
-      setFormData({ ...formData, ...form });
       if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
+    }
+
+    if (currentPhase == 6 && form) {
+      const applicationFormRequest: ApplicationFormRequestInput = {
+        applicationType: form.applicationType,
+        visaType: form.visaType,
+        primaryTraveller: {
+          firstName: form.firstName,
+          lastName: form.lastName,
+          travellingBy: "Airplane",
+          middleName: form.middleName,
+          email: form.email,
+          homeCountry: form.homeCountry,
+          destination: form.destination,
+          placeOfBirth: form.placeOfBirth,
+          phoneNumber: form.phoneNumber,
+          stateOfOrigin: form.stateOfOrigin,
+          lgaOfOrigin: form.lgaOfOrigin,
+          nativeLanguage: form.nativeLanguage,
+          meansOfId: form.meansOfId,
+          idNumber: form.idNumber,
+          issueDate: form.issueDate,
+          expiryDate: form.expiryDate,
+          address: form.address,
+          countryOfCitizen: form.countryOfCitizen,
+          dateOfBirth: form.dateOfBirth,
+          gender: form.gender,
+          maritalStatus: form.maritalStatus,
+          partnersName: form.partnersName,
+          passportNumber: form.passportNumber,
+          passportIssuedCountry: form.passportIssuedCountry,
+          passportExpiryYear: form.passportExpiryYear,
+          tripPurpose: form.tripPurpose,
+          tuberculosis: form.tuberculosis,
+          mentalDisorder: form.mentalDisorder,
+          mentalDisorderDetails: form.mentalDisorderDetails,
+          remainbeyondValidity: form.remainbeyondValidity,
+          refusedBefore: form.refusedBefore,
+          refusedBeforeDetails: form.refusedBeforeDetails,
+          arrestedBefore: form.arrestedBefore,
+          arrestedBeforeDetails: form.arrestedBeforeDetails,
+          servedInMilitary: form.servedInMilitary,
+          servedInMilitaryDetails: form.servedInMilitaryDetails,
+          memberOfViolentGroup: form.memberOfViolentGroup,
+          participatedInViolentActivities: form.participatedInViolentActivities,
+          education: form.education,
+          employment: form.employment,
+        },
+        familyMembers: form.familyMembers,
+        documents: form.documents,
+        // user: 'your_user_id_here', // Set the user ID appropriately
+      };
+
+      await handleVisaApplication({
+        payload: applicationFormRequest,
+      }).then((data) => setCreateVisaApplicationData(data));
+    }
+    if (currentPhase == 7) {
+      await handlePayment({
+        payload: {
+          user: createVisaApplicationData?.user ?? "",
+          visa: createVisaApplicationData?.visa ?? "",
+        },
+      });
     }
 
     // if (currentPhase === 4) {
@@ -206,79 +303,112 @@ function ApplicationForm() {
     // if (currentPhase === 7) {
     //   return router.push("/auth/login");
     // }
-    await reloadFee();
+    // await reloadFee();
     setCurrentPhase(currentPhase + 1);
     setNextStepLoading(false);
   };
 
   const prevStep = async () => {
     if (nextStepLoading || currentPhase === 1) return;
-    await reloadFee();
+    // await reloadFee();
     setCurrentPhase(currentPhase - 1);
   };
 
   const [formFee, setFormFee] = useState(0);
 
-  async function reloadFee() {
-    setNextStepLoading(true);
-    setShownFees([]);
-    await sleep(1000);
-    setNextStepLoading(false);
-    // setShownFees(calcFees(formFee));
-  }
+  // async function reloadFee() {
+  //   setNextStepLoading(true);
+  //   setShownFees([]);
+  //   await sleep(1000);
+  //   setNextStepLoading(false);
+  //   // setShownFees(calcFees(formFee));
+  // }
+  const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
+    initialValues: personalInfoKeys,
+    validationSchema: personalInfoSchema,
+    validateOnChange: true,
+    onSubmit: (values: PersonalInfoInterface) => {
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
+    },
+  });
 
-  useEffect(() => {
-    reloadFee();
-  }, [formFee]);
+  const detailsFormik = useFormik({
+    initialValues: {
+      ...detailsKeys,
+      homeCountry: params.get("home") || "",
+      destination: params.get("destination") || "",
+      visaType: params.get("visaType") || "",
+    },
+    validationSchema: detailsSchema,
+    onSubmit: (values: DetailsKeys) => {
+      const form = { ...formData, ...values };
+      setFormData(form);
+      console.log(values);
+      nextStep({});
+    },
+  });
 
-  const [shownFees, setShownFees] = useState<IFee[]>(calcFees(formFee));
+  const educationFormik = useFormik({
+    initialValues: educationsArr,
+    validationSchema: manyEducationSchema,
+    onSubmit: (values) => {
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
+    },
+    validateOnChange: true,
+  });
 
-  function calcFees(formFee: number): IFee[] {
-    return [
-      {
-        name: "Fees",
-        amount: "Price",
-        type: "head",
-      },
-      {
-        name: "Form Registration Fee",
-        amount: formFee,
-      },
-      {
-        name: "Standard processing fee",
-        amount: 0,
-      },
-      {
-        name: "Administrative charge",
-        amount: 0,
-      },
-      {
-        name: "Value Added Tax",
-        amount: 150,
-      },
-    ];
-  }
+  const employmentFormik = useFormik({
+    initialValues: employmentsArr,
+    validationSchema: manyEmploymentSchema,
+    onSubmit: (values) => {
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
+    },
+    validateOnChange: false,
+  });
+  const familyMembersFormik = useFormik({
+    initialValues: familyInfoArr,
+    validationSchema: familyInfoSchema,
+    onSubmit: (values) => {
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
+    },
+    validateOnChange: true,
+  });
+  const documentsFormik = useFormik({
+    initialValues: documentsArr,
+    validationSchema: documentsSchema,
+    onSubmit: (values) => {
+      const completedForm = { ...formData, ...values };
+      setFormData(completedForm);
+      nextStep({ form: completedForm });
+    },
+  });
+  const paymentFormik = useFormik({
+    initialValues: {},
+    // validationSchema: documentsSchema,
+    onSubmit: (values) => {
+      nextStep({});
+    },
+  });
 
-  const step = getSteps(
+  const step = getSteps({
     setFormFee,
     setCurrentPhase,
-    nextStep,
-    nextStepLoading
-  ).find((x) => x.id === currentPhase);
-
-  async function handlePromoCode(e: any) {
-    e.preventDefault();
-    if (promocodeLoading) return;
-    setPromocodeLoading(true);
-    if (!promoCode) {
-      toast.error("Please enter a promo code");
-      return setPromocodeLoading(false);
-    }
-    await sleep(2000);
-    setPromocodeLoading(false);
-    setPromoCode("");
-    toast.error("Promo code not applied");
-  }
+    detailsFormik,
+    personalInfoFormik,
+    educationFormik,
+    employmentFormik,
+    familyMembersFormik,
+    documentsFormik,
+    isLoading: nextStepLoading,
+  }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {
     return formData.homeCountry !== "" && formData.destination !== "";
@@ -300,7 +430,6 @@ function ApplicationForm() {
           borderRadius={isMobile ? "0px" : "16px"}
           margin="3rem 0px 5rem 0px"
           styles={{
-            // boxShadow: isMobile ? "none" : "4px 4px 26px rgba(0, 0, 0, 0.25)",
             boxShadow: isMobile
               ? "none"
               : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
@@ -352,52 +481,9 @@ function ApplicationForm() {
               >
                 {step?.content}
               </Section>
-              {/* <Section height="unset" margin="4.5rem 0 0 0">
-              {currentPhase == 6 && (
-                <Button width="100%" height={"3.5rem"} onClick={nextStep}>
-                  <Flex
-                    align="center"
-                    width="100%"
-                    height="100%"
-                    justify="center"
-                  >
-                    {nextStepLoading ? (
-                      <Spinner size="40px" fill={ttColors.primary} />
-                    ) : (
-                      <Text
-                        type="span"
-                        text={"Save & Continue"}
-                        weight={600}
-                        size={20}
-                        color={ttColors.light}
-                        padding="2rem 0"
-                      />
-                    )}
-                  </Flex>
-                </Button>
-              )}
-            </Section> */}
             </Flex>
           </Section>
-          {/* <Flex
-            align="center"
-            cursor="pointer"
-            gap="1rem"
-            onClick={prevStep}
-            styles={{
-              display: isMobile ? "flex" : "none",
-              margin: isMobile ? "0px 0px 5rem" : "0px",
-            }}
-          >
-            <HiOutlineArrowNarrowLeft color={ttColors.primary} size="30px" />
-            <Text
-              text="Previous"
-              type="p"
-              color={ttColors.primary}
-              size="20px"
-              weight="400"
-            />
-          </Flex> */}
+
           <Section
             width="38%"
             height="unset"
@@ -434,46 +520,6 @@ function ApplicationForm() {
           </Section>
         </Flex>
       </SectionLayout>
-
-      <Flex
-        justify="space-between"
-        gap="1rem"
-        styles={{
-          zIndex: "1200",
-          boxShadow: "0px -8px 6px -2px rgba(113,150,173,0.10)",
-          padding: "1rem",
-          position: "fixed",
-          bottom: "0px",
-          alignContent: "center",
-          display: isMobile ? "flex" : "none",
-          background: "#fff",
-        }}
-      >
-        {shownFees.length && currentPhase !== 5 && isMobile ? (
-          <Flex
-            justify={isMobile ? "flex-start" : "flex-end"}
-            styles={{
-              alignItems: "center",
-            }}
-          >
-            <Text
-              type="p"
-              text={currencyFormatter(
-                shownFees.reduce(
-                  (a, b) => a + (typeof b.amount === "number" ? b.amount : 0),
-                  0
-                ),
-                "NGN"
-              )}
-              size="1.1rem"
-              weight="bold"
-              key={formFee}
-            />
-          </Flex>
-        ) : (
-          ""
-        )}
-      </Flex>
     </>
   );
 }

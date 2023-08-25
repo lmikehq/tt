@@ -24,13 +24,9 @@ export interface CurrencyType {
 }
 
 interface SelectPaymentMethodProps {
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
 }
-const SelectPaymentMethod = ({
-  nextStep,
-  isLoading,
-}: SelectPaymentMethodProps) => {
+const SelectPaymentMethod = ({ isLoading }: SelectPaymentMethodProps) => {
   const { isMobile } = useScreenResolution();
   const [currency, setCurrency] = useState<CurrencyType>({
     currency: "Nigerian Naira",
@@ -118,7 +114,7 @@ const SelectPaymentMethod = ({
         height="unset"
         styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
       >
-        <Button width="100%" height={"3.5rem"} type="submit" onClick={nextStep}>
+        <Button width="100%" height={"3.5rem"} type="submit" onClick={() => {}}>
           <Flex align="center" width="100%" height="100%" justify="center">
             {isLoading ? (
               <Spinner size="40px" fill={ttColors.primary} />

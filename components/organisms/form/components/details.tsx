@@ -2,7 +2,7 @@ import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { FormikValues, useFormik } from "formik";
+import { FormikProps, FormikValues, useFormik } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
@@ -20,26 +20,12 @@ import { useSearchParams } from "next/navigation";
 interface formProps {
   steps: string[];
   index: number;
-  setFee: (n: number) => void;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<DetailsKeys>;
 }
 
-function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
+function TripDetails({ steps, index, isLoading, formik }: formProps) {
   const { isMobile } = useScreenResolution();
-  const params = useSearchParams();
-  const formik = useFormik({
-    initialValues: {
-      ...detailsKeys,
-      homeCountry: params.get("home") || "",
-      destination: params.get("destination") || "",
-      visaType: params.get("visaType") || "",
-    },
-    validationSchema: detailsSchema,
-    onSubmit: (values: DetailsKeys) => {
-      nextStep({ form: values });
-    },
-  });
 
   return (
     <Section height="unset">
@@ -64,7 +50,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                name="home"
+                name="homeCountry"
                 placeholder="Select where you are"
               />
             </Flex>
@@ -74,7 +60,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Where to?"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -102,7 +88,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Visa type"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -129,7 +115,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Application type"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -151,7 +137,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
           </Flex>
         </Section>
 
-        {formik?.values?.applicationType === "Family" && (
+        {/* {formik?.values?.applicationType === "Family" && (
           <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
             <Text
               size={isMobile ? 14 : 16}
@@ -170,7 +156,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
               placeholder="Number of Travellers"
             />
           </Section>
-        )}
+        )} */}
 
         <Section
           height="unset"

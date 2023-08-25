@@ -3,7 +3,7 @@ import Center from "@atom/center";
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { FormikValues, useFormik } from "formik";
+import { FormikProps, FormikValues, useFormik } from "formik";
 import useCloudinaryUpload from "hook/useCloudinary";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -28,12 +28,13 @@ import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import { documentsArr, documentsSchema } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
 import Spinner from "@components/icons/spinner";
+import { DocumentInterface } from "types";
 
 interface formProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<{ documents: DocumentInterface[] }>;
 }
 
 const UploadArea = styled.div`
@@ -58,7 +59,7 @@ const UploadedDocumentsWrapper = styled.div`
   padding-top: 52px;
 `;
 
-function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
+function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
   const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -89,13 +90,6 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
     }[]
   >();
 
-  const formik = useFormik({
-    initialValues: documentsArr,
-    validationSchema: documentsSchema,
-    onSubmit: (values) => {
-      nextStep({ form: values.documents });
-    },
-  });
   const handleFailedValidation = () => {
     if (!formik.errors.documents) return;
     return toast.error(formik.errors.documents as string);
@@ -117,8 +111,8 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
     if (filesContent.length > 0) {
       uploadImage(filesContent[0].content).then((image) => {
         if (typeof image === "string") {
-          const docObj = {
-            title: documentToUpload,
+          const docObj: DocumentInterface = {
+            name: documentToUpload,
             url: image,
           };
           const { name, size, type } = plainFiles[0];
@@ -138,7 +132,7 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
                 name,
                 size: `${size / 1000000} MB`,
                 type: type.split("/")[1].toUpperCase(),
-                title: docObj.title,
+                title: docObj.name,
               },
             ]);
           } else {
@@ -149,7 +143,7 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
               name,
               size: `${size / 1000000} MB`,
               type: type.split("/")[1].toUpperCase(),
-              title: docObj.title,
+              title: docObj.name,
             });
             formik.setFieldValue("documents", formikUploadedDocuments);
             setUploadedDocuments(uploadedDocs);

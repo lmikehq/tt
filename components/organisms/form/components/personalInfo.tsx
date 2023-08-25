@@ -1,7 +1,7 @@
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
@@ -23,51 +23,20 @@ import { SingleFormType } from "../applicationForm";
 import { PersonalInfoInterface } from "types";
 import ContinueButton from "@atom/continueButton";
 import dayjs, { Dayjs } from "dayjs";
-import useFormikLocalStorage from "hook/useFormikLocalStorage";
 
-interface formProps {
+interface FormProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<PersonalInfoInterface>;
 }
 
-function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
+function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
   const { isMobile } = useScreenResolution();
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
-  const [showDate, setShowDate] = useState(false);
-  const [showPassDate, setShowPassDate] = useState(false);
-
-  const MeansId = [
-    "National ID Card",
-    "Social Security Card",
-    "Birth Certificate",
-    "Voter ID Card",
-    "International Passport",
-  ];
-
-  const [value, setValue] = useState("");
-  const formik = useFormik({
-    initialValues: personalInfoKeys,
-    validationSchema: personalInfoSchema,
-    validateOnChange: true,
-    onSubmit: (values: PersonalInfoInterface) => {
-      nextStep({ form: values });
-    },
-  });
-
   const options = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
   ];
-
-  const { updateFieldValue } = useFormikLocalStorage(formik, personalInfoKeys);
-
-  useEffect(() => {
-    setShowDate(MeansId.some((item) => item === formik.values.meansOfId));
-    setShowPassDate(formik.values.meansOfId === MeansId[4]);
-  }, [formik.values.meansOfId]);
 
   return (
     <Section>
@@ -84,7 +53,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Last Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -99,7 +68,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="First Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -121,7 +90,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Middle Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -136,7 +105,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="State of Origin"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -158,12 +127,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="LG. of Origin"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
             <FieldInput
-              name="lgOfOrigin"
+              name="lgaOfOrigin"
               placeholder="Select your LG of origin"
               formik={formik}
             />
@@ -173,7 +142,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Native Language"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -194,8 +163,46 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
+                text="Gender"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldString
+              formik={formik}
+              name={"gender"}
+              placeholder="Select your Gender"
+              options={["Male", "Female"]}
+            />
+          </Section>
+          <Section width="100%">
+            <Text
+              type="p"
+              text="Date Of Birth"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <FieldAsDate
+              name="dateOfBirth"
+              placeholder="Select your Issue Date"
+              formik={formik}
+              // onChange={(e: any) => {
+              //   setEndDate(dayjs(e));
+              // }}
+            />
+          </Section>
+        </Flex>
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
                 text="Email Address"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -210,15 +217,20 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Phone Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
             <PhoneInput
               country={"ng"}
-              value={value}
               autoFormat={true}
-              onChange={(e) => setValue(e)}
+              inputProps={{
+                name: "phoneNumber",
+              }}
+              onChange={(e) => {
+                console.log(e);
+                formik.setFieldValue("phoneNumber", e);
+              }}
               inputClass="w"
               placeholder="Enter phone number"
             />
@@ -235,7 +247,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Means of ID"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -262,7 +274,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="ID Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -270,11 +282,11 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               name="idNumber"
               placeholder="Enter your ID number"
               formik={formik}
-              disabled={showPassDate}
+              disabled={formik.values.meansOfId == "International Passport"}
             />
           </Section>
         </Flex>
-        {!showDate && (
+        {formik.values.meansOfId && (
           <Flex
             margin={isMobile ? "0px" : "0 0 1rem"}
             justify="space-between"
@@ -291,10 +303,9 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 name="issueDate"
                 placeholder="Select your Issue Date"
                 formik={formik}
-                onChange={(e: any) => {
-                  updateFieldValue(`issueDate`, `${e}`);
-                  setEndDate(dayjs(e));
-                }}
+                // onChange={(e: any) => {
+                //   setEndDate(dayjs(e));
+                // }}
               />
             </Section>
             <Section>
@@ -307,8 +318,8 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 name="expiryDate"
                 placeholder="Select the Expiry Date"
                 formik={formik}
-                minDate={endDate}
-                disabled={endDate === null}
+                minDate={dayjs(formik.values.issueDate)}
+                disabled={!formik.values.issueDate}
               />
             </Section>
           </Flex>
@@ -324,7 +335,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Country of Citizenship"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -335,7 +346,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 flag: x.flag,
                 code: x.code,
               }))}
-              name="homeCountry"
+              name="countryOfCitizen"
               placeholder="Select your country of citizenship"
             />
           </Section>
@@ -344,7 +355,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Place of Birth (Country & State)"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -355,7 +366,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 flag: x.flag,
                 code: x.code,
               }))}
-              name="placeOfOrigin"
+              name="placeOfBirth"
               placeholder="Select your country  of birth"
             />
           </Section>
@@ -365,12 +376,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Residential Address"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
-            name="residentialAddress"
+            name="address"
             type="address"
             formik={formik}
             placeholder="Enter your residential address"
@@ -387,7 +398,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Marital Status"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -436,7 +447,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Passport Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -451,7 +462,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Issued Country"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -462,19 +473,19 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 code: x.code,
               }))}
               formik={formik}
-              name="issuingCountry"
+              name="passportIssuedCountry"
               placeholder="Select the country"
             />
           </Section>
         </Flex>
-        {showPassDate && (
+        {formik.values.meansOfId == "International Passport" && (
           <Flex
             margin={isMobile ? "0px" : "0 0 1rem"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
-            <Section width="100%">
+            {/* <Section width="100%">
               <Text
                 type="p"
                 text="Issued Date"
@@ -485,11 +496,10 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 placeholder="Select your Issued Date"
                 formik={formik}
                 onChange={(e: any) => {
-                  updateFieldValue("passportIssueDate", e);
                   setPassEndDate(e);
                 }}
               />
-            </Section>
+            </Section> */}
             <Section>
               <Text
                 type="p"
@@ -500,22 +510,24 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 name="passportExpiryDate"
                 placeholder="Select your Expiry Date"
                 formik={formik}
-                disabled={passEndDate === null}
-                minDate={passEndDate}
+                // disabled={formik.values === null}
+                // minDate={passEndDate}
               />
             </Section>
           </Flex>
         )}
+
         <Section>
           <Text
             type="p"
             text="Main Purpose of your Trip"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <TextArea
-            name="purposeOfTrip"
+            name="tripPurpose"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            value={formik.values.tripPurpose}
           />
           {formik.touched["tripPurpose"] && formik.errors["tripPurpose"] && (
             <ErrorText text={formik.errors["tripPurpose"]} />
@@ -553,6 +565,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="tuberculosis"
+                    value={formik.values.tuberculosis}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -583,6 +596,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="mentalDisorder"
+                    value={formik.values.mentalDisorder}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -616,6 +630,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 {/* <TextArea /> */}
                 <TextArea
                   name="mentalDisorderDetails"
+                  value={formik.values.mentalDisorderDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -643,6 +658,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="remainbeyondValidity"
+                    value={formik.values.remainbeyondValidity}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -674,6 +690,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="refusedBefore"
+                    value={formik.values.refusedBefore}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -684,7 +701,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                       <ErrorText text={formik.errors["refusedBefore"]} />
                     )}
                 </Section>
-
               </Flex>
             </li>
             {`${formik.values.refusedBefore}` == "true" && (
@@ -696,9 +712,10 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   text="If you answered “yes”, please provide details"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-              
+
                 <TextArea
                   name="refusedBeforeDetails"
+                  value={formik.values.refusedBeforeDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -727,6 +744,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="arrestedBefore"
+                    value={formik.values.arrestedBefore}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -752,6 +770,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 {/* <TextArea /> */}
                 <TextArea
                   name="arrestedBeforeDetails"
+                  value={formik.values.arrestedBeforeDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -779,6 +798,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="servedInMilitary"
+                    value={formik.values.servedInMilitary}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -802,6 +822,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 />
                 <TextArea
                   name="servedInMilitaryDetails"
+                  value={formik.values.servedInMilitaryDetails}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
@@ -831,6 +852,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="memberOfViolentGroup"
+                    value={formik.values.memberOfViolentGroup}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -862,6 +884,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   <CustomRadioGroup
                     options={options}
                     name="participatedInViolentActivities"
+                    value={formik.values.participatedInViolentActivities}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
@@ -878,7 +901,13 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
           </ol>
         </Section>
-        <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
+        <ContinueButton
+          isLoading={isLoading}
+          onClick={() => {
+            console.log(formik);
+          }}
+          disabled={!formik.isValid}
+        />
       </form>
     </Section>
   );

@@ -45,13 +45,13 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Family Member's Name ${count + 1}`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             formik={formik}
-            name={`familyInfo.${count}.membersName`}
+            name={`familyMembers.${count}.membersName`}
             placeholder="Enter the member's name"
           />
         </Section>
@@ -60,14 +60,14 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Relationship to you`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldString
             formik={formik}
             options={RELATIONSHIPS}
-            name={`familyInfo.${count}.membersRelationship`}
+            name={`familyMembers.${count}.relationshipToPrimary`}
             placeholder="Enter the relationship"
           />
         </Section>
@@ -76,11 +76,11 @@ export default function FamilyForm({
         <Text
           type="p"
           text={`Member's Address`}
-           margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+          margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
         />
         <FieldInput
           formik={formik}
-          name={`familyInfo.${count}.membersAddress`}
+          name={`familyMembers.${count}.address`}
           placeholder="Enter Member's Residential Address"
         />
       </Section>
@@ -94,13 +94,13 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Member's Phone Number`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             formik={formik}
-            name={`familyInfo.${count}.membersPhone`}
+            name={`familyMembers.${count}.membersPhoneNumber`}
             placeholder="Enter Member's Phone Number"
           />
         </Section>
@@ -109,14 +109,14 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Member's email`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             type="text"
             formik={formik}
-            name={`familyInfo.${count}.membersEmail`}
+            name={`familyMembers.${count}.membersEmail`}
             placeholder="Enter Member's Email Address"
           />
         </Section>
@@ -143,7 +143,7 @@ export default function FamilyForm({
               </Flex>
               <FieldString
                 formik={formik}
-                name={`familyInfo.${count}.gender`}
+                name={`familyMembers.${count}.gender`}
                 placeholder="Select your Gender"
                 options={["Male", "Female"]}
               />
@@ -154,7 +154,7 @@ export default function FamilyForm({
                 <Required />
               </Flex>
               <FieldAsDate
-                name={`familyInfo.${count}.membersDOB`}
+                name={`familyMembers.${count}.dateOfBirth`}
                 placeholder="Select your DOB"
                 formik={formik}
               />
@@ -174,10 +174,10 @@ export default function FamilyForm({
               <ArrayInput
                 formik={formik}
                 placeholder="Enter your Passport Number"
-                name={`familyInfo.${count}.passNumber`}
+                name={`familyMembers.${count}.passportNumber`}
               />
             </Section>
-            <Section margin="0">
+            {/* <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Issued Country" />
                 <Required />
@@ -188,13 +188,13 @@ export default function FamilyForm({
                   flag: x.flag,
                   code: x.code,
                 }))}
-                name={`familyInfo.${count}.passIssueCountry`}
+                name={`familyMembers.${count}.passIssueCountry`}
                 formik={formik}
                 placeholder="Select the Issued Country"
               />
-            </Section>
+            </Section> */}
           </Flex>
-          <Flex
+          {/* <Flex
             margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
@@ -203,7 +203,7 @@ export default function FamilyForm({
             <Section margin="0">
               <Text type="p" text="Issue Date" />
               <FieldAsDate
-                name={`familyInfo.${count}.membersIssueDate`}
+                name={`familyMembers.${count}.membersIssueDate`}
                 placeholder="Select Issue Date"
                 formik={formik}
               />
@@ -211,12 +211,12 @@ export default function FamilyForm({
             <Section margin="0">
               <Text type="p" text="Expiry Date" />
               <FieldAsDate
-                name={`familyInfo.${count}.membersExpiryDate`}
+                name={`familyMembers.${count}.membersExpiryDate`}
                 placeholder="Select Expiry Date"
                 formik={formik}
               />
             </Section>
-          </Flex>
+          </Flex> */}
         </div>
       )}
     </Section>

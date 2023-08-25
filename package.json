@@ -38,6 +38,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.8.0",
     "react-lottie": "^1.2.3",
+    "react-next-keep-alive": "^1.0.15",
     "react-paystack": "^4.0.3",
     "react-phone-input-2": "^2.15.1",
     "react-slick": "^0.29.0",
