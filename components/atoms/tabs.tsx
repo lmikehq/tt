@@ -12,7 +12,6 @@ import Flex from "./flex";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { Grid } from "./grid";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -25,6 +24,10 @@ const TabWrapper = styled.div<{ isMobile?: boolean }>`
     height: 3px;
   }
   .MuiTabs-root {
+    padding: 0px;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    height: 80px;
   }
   .css-1gsv261 {
     border-bottom: 1px solid transparent;

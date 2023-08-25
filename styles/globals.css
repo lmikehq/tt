@@ -29,7 +29,7 @@ body {
 body {
   font-family: var(--poppins-font);
   color: rgb(var(--foreground-rgb));
-  /* background: var(--bg-color); */
+  background: #fafbfc;
 }
 
 ::selection {
@@ -120,4 +120,5 @@ body {
 
   input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }

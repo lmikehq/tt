@@ -11,6 +11,7 @@ import Account from './components/account';
 
 const Wrapper = styled.div`
   margin-top: 250px;
+ 
 
   @media screen and (max-width: 900px) {
     margin-top: 155px;
@@ -21,9 +22,13 @@ const Wrapper = styled.div`
     border-radius: 12px;
   }
   .MuiButtonBase-root {
-    width: 25%;
+    width: 16.6666%;
 
     .flex__FlexWrapper-sc-996d4228-0 {
+      justify-content: center;
+    }
+
+    .flex__FlexWrapper-sc-54bd3624-0 {
       justify-content: center;
     }
   }
@@ -33,24 +38,35 @@ const Wrapper = styled.div`
 function DashboardTabs() {
       const tabItems = [
         {
-          label: "Applications",
+          label: "All Applications",
           value: 0,
           content: <Application />,
         },
         {
-          label: "history",
+          label: "Payment History",
           value: 1,
           content: <PaymentHistory />,
         },
         {
-          label: "Referral",
+          label: "Favourites",
           value: 2,
           content: <Referrals />,
         },
 
         {
-          label: "Account",
+          label: "Notifications",
           value: 3,
+          content: <Referrals />,
+        },
+        {
+          label: "Referral",
+          value: 4,
+          content: <Referrals />,
+        },
+
+        {
+          label: "Account",
+          value: 5,
           content: <Account />,
         },
       ];
