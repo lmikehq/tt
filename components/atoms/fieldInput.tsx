@@ -88,7 +88,7 @@ export const FieldInput = (props: FieldProps) => {
         placeholder={placeholder}
         padding="0 0 0 14px"
         onChange={onChange ? onChange : handleChange}
-        value={formik.values[name]}
+        value={getNestedValue(formik.values, name)}
         onBlur={() => formik.setTouched({ ...formik.touched, [name]: true })}
       />
 
@@ -207,7 +207,7 @@ export const FieldAsDate = (props: FieldProps) => {
         maxDate={maxDate}
         minDate={minDate}
         value={value === "" ? null : dayjs(value)}
-        onChange={handleChange}
+        onChange={onChange ? onChange : handleChange}
       />
 
       {touched && error ? <ErrorText text={error} /> : null}

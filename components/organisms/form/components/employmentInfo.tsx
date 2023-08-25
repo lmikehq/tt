@@ -51,9 +51,13 @@ function EmploymentInfo({ steps, index, isLoading, formik }: formProps) {
                     }}
                   />
                 </Flex>
-                {formik.values.employment.map((_, index) => (
+                {formik.values.employment.map((employment, index) => (
                   <div key={index}>
-                    <EmploymentForm formik={formik} count={index} />
+                    <EmploymentForm
+                      formik={formik}
+                      values={employment}
+                      count={index}
+                    />
                     {formik.values.employment.length > 1 && (
                       <Flex
                         justify="flex-end"

@@ -33,38 +33,10 @@ interface FormProps {
 
 function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
   const { isMobile } = useScreenResolution();
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
-  const [showDate, setShowDate] = useState(false);
-  const [showPassDate, setShowPassDate] = useState(false);
-
-  const MeansId = [
-    "National ID Card",
-    "Social Security Card",
-    "Birth Certificate",
-    "Voter ID Card",
-    "International Passport",
-  ];
-
-  const [value, setValue] = useState("");
-  // const formik = useFormik({
-  //   initialValues: personalInfoKeys,
-  //   validationSchema: personalInfoSchema,
-  //   validateOnChange: true,
-  //   onSubmit: (values: PersonalInfoInterface) => {
-  //     nextStep({ form: values });
-  //   },
-  // });
-
   const options = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
   ];
-
-  useEffect(() => {
-    setShowDate(MeansId.some((item) => item === formik.values.meansOfId));
-    setShowPassDate(formik.values.meansOfId === MeansId[4]);
-  }, [formik.values.meansOfId]);
 
   return (
     <Section>
@@ -213,9 +185,9 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
               name="dateOfBirth"
               placeholder="Select your Issue Date"
               formik={formik}
-              onChange={(e: any) => {
-                setEndDate(dayjs(e));
-              }}
+              // onChange={(e: any) => {
+              //   setEndDate(dayjs(e));
+              // }}
             />
           </Section>
         </Flex>
@@ -331,9 +303,9 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
                 name="issueDate"
                 placeholder="Select your Issue Date"
                 formik={formik}
-                onChange={(e: any) => {
-                  setEndDate(dayjs(e));
-                }}
+                // onChange={(e: any) => {
+                //   setEndDate(dayjs(e));
+                // }}
               />
             </Section>
             <Section>

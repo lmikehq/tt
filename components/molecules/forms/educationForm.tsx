@@ -16,24 +16,22 @@ import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
+import { EducationDetailsInterface } from "types";
 
 interface formProps {
   formik: any;
-  education?: any;
+  values: EducationDetailsInterface;
   isMobile?: boolean;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function EducationForm({ formik, isMobile, count }: formProps) {
-  const [isCurrentlyInSchool, setIsCurrentlyInSchool] = useState(false);
-  const [maxYear, setMaxYear] = useState<Dayjs | null>(null);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    setIsCurrentlyInSchool(checked);
-  };
-
+export default function EducationForm({
+  formik,
+  isMobile,
+  count,
+  values,
+}: formProps) {
   return (
     <Section height="unset">
       <Section margin="0">
@@ -143,7 +141,6 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             formik={formik}
             onChange={(e: any) => {
               formik.setFieldValue(`education.${count}.startYear`, e.$y);
-              setMaxYear(dayjs(e));
             }}
             maxDate={dayjs(new Date())}
           />
@@ -156,7 +153,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={isCurrentlyInSchool || maxYear === null}
+            disabled={values.stillAtSchool || !values.startYear}
             views={["year"]}
             name={`education.${count}.endYear`}
             formik={formik}
@@ -164,7 +161,7 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
               console.log(e);
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
-            minDate={maxYear}
+            minDate={dayjs(values.startYear)}
             maxDate={dayjs(new Date())}
           />
         </Section>
@@ -174,7 +171,11 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "0.25rem"}
       >
-        <CheckBox checked={isCurrentlyInSchool} onChange={handleCheckboxChange}>
+        <CheckBox
+          name={`education.${count}.stillAtSchool`}
+          onChange={formik.handleChange}
+          checked={values.stillAtSchool}
+        >
           <Text type="p" text="I am currently in school" />
         </CheckBox>
       </Flex>

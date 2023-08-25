@@ -197,65 +197,65 @@ function ApplicationForm() {
     if (number > highestPhase) setHighestPhase(number);
   };
 
-  const nextStep = async ({ form }: { form?: SingleFormType }) => {
-    const input = { ...formData, ...form };
+  const nextStep = async ({
+    form,
+  }: {
+    form?: VisaApplicationFormInterface;
+  }) => {
     if (nextStepLoading) return;
     setNextStepLoading(true);
     if (currentPhase <= 6) {
-      setFormData(input);
-
       if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
     }
 
-    if (currentPhase == 6) {
+    if (currentPhase == 6 && form) {
       const applicationFormRequest: ApplicationFormRequestInput = {
-        applicationType: input.applicationType,
-        visaType: input.visaType,
+        applicationType: form.applicationType,
+        visaType: form.visaType,
         primaryTraveller: {
-          firstName: input.firstName,
-          lastName: input.lastName,
+          firstName: form.firstName,
+          lastName: form.lastName,
           travellingBy: "Airplane",
-          middleName: input.middleName,
-          email: input.email,
-          homeCountry: input.homeCountry,
-          destination: input.destination,
-          placeOfBirth: input.placeOfBirth,
-          phoneNumber: input.phoneNumber,
-          stateOfOrigin: input.stateOfOrigin,
-          lgaOfOrigin: input.lgaOfOrigin,
-          nativeLanguage: input.nativeLanguage,
-          meansOfId: input.meansOfId,
-          idNumber: input.idNumber,
-          issueDate: input.issueDate,
-          expiryDate: input.expiryDate,
-          address: input.address,
-          countryOfCitizen: input.countryOfCitizen,
-          dateOfBirth: input.dateOfBirth,
-          gender: input.gender,
-          maritalStatus: input.maritalStatus,
-          partnersName: input.partnersName,
-          passportNumber: input.passportNumber,
-          passportIssuedCountry: input.passportIssuedCountry,
-          passportExpiryYear: input.passportExpiryYear,
-          tripPurpose: input.tripPurpose,
-          tuberculosis: input.tuberculosis,
-          mentalDisorder: input.mentalDisorder,
-          mentalDisorderDetails: input.mentalDisorderDetails,
-          remainbeyondValidity: input.remainbeyondValidity,
-          refusedBefore: input.refusedBefore,
-          refusedBeforeDetails: input.refusedBeforeDetails,
-          arrestedBefore: input.arrestedBefore,
-          arrestedBeforeDetails: input.arrestedBeforeDetails,
-          servedInMilitary: input.servedInMilitary,
-          servedInMilitaryDetails: input.servedInMilitaryDetails,
-          memberOfViolentGroup: input.memberOfViolentGroup,
-          participatedInViolentActivities:
-            input.participatedInViolentActivities,
-          education: input.education,
-          employment: input.employment,
+          middleName: form.middleName,
+          email: form.email,
+          homeCountry: form.homeCountry,
+          destination: form.destination,
+          placeOfBirth: form.placeOfBirth,
+          phoneNumber: form.phoneNumber,
+          stateOfOrigin: form.stateOfOrigin,
+          lgaOfOrigin: form.lgaOfOrigin,
+          nativeLanguage: form.nativeLanguage,
+          meansOfId: form.meansOfId,
+          idNumber: form.idNumber,
+          issueDate: form.issueDate,
+          expiryDate: form.expiryDate,
+          address: form.address,
+          countryOfCitizen: form.countryOfCitizen,
+          dateOfBirth: form.dateOfBirth,
+          gender: form.gender,
+          maritalStatus: form.maritalStatus,
+          partnersName: form.partnersName,
+          passportNumber: form.passportNumber,
+          passportIssuedCountry: form.passportIssuedCountry,
+          passportExpiryYear: form.passportExpiryYear,
+          tripPurpose: form.tripPurpose,
+          tuberculosis: form.tuberculosis,
+          mentalDisorder: form.mentalDisorder,
+          mentalDisorderDetails: form.mentalDisorderDetails,
+          remainbeyondValidity: form.remainbeyondValidity,
+          refusedBefore: form.refusedBefore,
+          refusedBeforeDetails: form.refusedBeforeDetails,
+          arrestedBefore: form.arrestedBefore,
+          arrestedBeforeDetails: form.arrestedBeforeDetails,
+          servedInMilitary: form.servedInMilitary,
+          servedInMilitaryDetails: form.servedInMilitaryDetails,
+          memberOfViolentGroup: form.memberOfViolentGroup,
+          participatedInViolentActivities: form.participatedInViolentActivities,
+          education: form.education,
+          employment: form.employment,
         },
-        familyMembers: input.familyMembers,
-        documents: input.documents,
+        familyMembers: form.familyMembers,
+        documents: form.documents,
         // user: 'your_user_id_here', // Set the user ID appropriately
       };
 
@@ -300,7 +300,9 @@ function ApplicationForm() {
     validationSchema: personalInfoSchema,
     validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
-      nextStep({ form: values });
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
     },
   });
 
@@ -313,8 +315,10 @@ function ApplicationForm() {
     },
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
+      const form = { ...formData, ...values };
+      setFormData(form);
       console.log(values);
-      nextStep({ form: values });
+      nextStep({});
     },
   });
 
@@ -322,7 +326,9 @@ function ApplicationForm() {
     initialValues: educationsArr,
     validationSchema: manyEducationSchema,
     onSubmit: (values) => {
-      nextStep({ form: values });
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
     },
     validateOnChange: true,
   });
@@ -331,7 +337,9 @@ function ApplicationForm() {
     initialValues: employmentsArr,
     validationSchema: manyEmploymentSchema,
     onSubmit: (values) => {
-      nextStep({ form: values });
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
     },
     validateOnChange: false,
   });
@@ -339,7 +347,9 @@ function ApplicationForm() {
     initialValues: familyInfoArr,
     validationSchema: familyInfoSchema,
     onSubmit: (values) => {
-      nextStep({ form: values });
+      const form = { ...formData, ...values };
+      setFormData(form);
+      nextStep({});
     },
     validateOnChange: true,
   });
@@ -347,7 +357,9 @@ function ApplicationForm() {
     initialValues: documentsArr,
     validationSchema: documentsSchema,
     onSubmit: (values) => {
-      nextStep({ form: values });
+      const completedForm = { ...formData, ...values };
+      setFormData(completedForm);
+      nextStep({ form: completedForm });
     },
   });
 

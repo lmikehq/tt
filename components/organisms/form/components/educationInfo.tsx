@@ -47,7 +47,7 @@ function EducationInfo({ steps, index, isLoading, formik }: formProps) {
                   <div key={index}>
                     <EducationForm
                       formik={formik}
-                      education={education}
+                      values={education}
                       count={index}
                     />
                     {formik.values.education.length > 1 && (

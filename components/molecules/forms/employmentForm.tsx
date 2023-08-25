@@ -12,22 +12,22 @@ import Section from "@molecule/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
 import React, { useState } from "react";
+import { EmploymentDetailsInterface } from "types";
 
 interface formProps {
   formik: FormikValues;
   isMobile?: boolean;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  values: EmploymentDetailsInterface;
 }
 
-export default function EmploymentForm({ formik, isMobile, count }: formProps) {
-  const [maxYear, setMaxYear] = useState<Dayjs | null>(null);
-  const [isCurrentlyIncompany, setIsCurrentlyIncompany] = useState(false);
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    setIsCurrentlyIncompany(checked);
-  };
-
+export default function EmploymentForm({
+  formik,
+  isMobile,
+  count,
+  values,
+}: formProps) {
   return (
     <Section height="unset">
       <Section margin="0">
@@ -144,7 +144,6 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
             formik={formik}
             onChange={(e: any) => {
               formik.setFieldValue(`employment.${count}.startYear`, `${e.$y}`);
-              setMaxYear(dayjs(e));
             }}
             maxDate={dayjs(new Date())}
           />
@@ -157,14 +156,14 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={isCurrentlyIncompany || maxYear === null}
+            disabled={values.stillWorking || !values.startYear}
             views={["year"]}
             name={`employment.${count}.endYear`}
             formik={formik}
             onChange={(e: any) => {
               formik.setFieldValue(`employment.${count}.endYear`, `${e.$y}`);
             }}
-            minDate={maxYear}
+            minDate={dayjs(values.startYear)}
             maxDate={dayjs(new Date())}
           />
         </Section>
@@ -175,8 +174,9 @@ export default function EmploymentForm({ formik, isMobile, count }: formProps) {
         gap={isMobile ? "0px" : "0.25rem"}
       >
         <CheckBox
-          checked={isCurrentlyIncompany}
-          onChange={handleCheckboxChange}
+          name={`employment.${count}.stillWorking`}
+          onChange={formik.handleChange}
+          checked={values.stillWorking}
         >
           <Text type="p" text="I am currently working in this role" />
         </CheckBox>
