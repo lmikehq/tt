@@ -26,7 +26,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 2}
         disabled={highestPhase < 3}
         onClick={() => {
-          if (highestPhase >= 3) setPhase(3);
+          // if (highestPhase >= 3) setPhase(3);
+          setPhase(3);
         }}
       />
       <CircleProgress
@@ -36,7 +37,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 3}
         disabled={highestPhase < 4}
         onClick={() => {
-          if (highestPhase >= 4) setPhase(4);
+          // if (highestPhase >= 4) setPhase(4);
+          setPhase(4);
         }}
       />
       <CircleProgress
@@ -46,7 +48,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 4}
         disabled={highestPhase < 5}
         onClick={() => {
-          if (highestPhase >= 5) setPhase(5);
+          // if (highestPhase >= 5) setPhase(5);
+          setPhase(5);
         }}
       />
       <CircleProgress
@@ -56,7 +59,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 5}
         disabled={highestPhase < 6}
         onClick={() => {
-          if (highestPhase >= 6) setPhase(6);
+          // if (highestPhase >= 6) setPhase(6);
+          setPhase(6);
         }}
       />
     </div>

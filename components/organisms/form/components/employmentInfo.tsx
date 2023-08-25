@@ -17,7 +17,7 @@ import AddButton from "@atom/addButton";
 import {
   employmentKeys,
   employmentsArr,
-  employmentsSchema,
+  manyEmploymentSchema,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@atom/continueButton";
@@ -32,9 +32,9 @@ interface formProps {
 function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
   const formik = useFormik({
     initialValues: employmentsArr,
-    validationSchema: employmentsSchema,
+    validationSchema: manyEmploymentSchema,
     onSubmit: (values) => {
-      nextStep({ form: values.employments });
+      nextStep({ form: values });
     },
     validateOnChange: false,
   });
@@ -44,24 +44,24 @@ function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
       <Section>
         <form onSubmit={formik.handleSubmit}>
           <FieldArray
-            name="employments"
+            name="employment"
             render={(arrayHelpers) => (
               <div>
                 <Flex justify="space-between" padding="0 0 2rem 0">
                   <FormStepTitle steps={steps} index={index} />
                   <AddButton
-                    disabled={formik.values.employments.length === 3}
+                    disabled={formik.values.employment.length === 3}
                     onClick={() => {
-                      if (formik.values.employments.length < 3) {
+                      if (formik.values.employment.length < 3) {
                         arrayHelpers.insert(index + 1, employmentKeys);
                       }
                     }}
                   />
                 </Flex>
-                {formik.values.employments.map((_, index) => (
+                {formik.values.employment.map((_, index) => (
                   <div key={index}>
                     <EmploymentForm formik={formik} count={index} />
-                    {formik.values.employments.length > 1 && (
+                    {formik.values.employment.length > 1 && (
                       <Flex
                         justify="flex-end"
                         gap="0.25rem"
@@ -83,7 +83,13 @@ function EmploymentInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
+          <ContinueButton
+            isLoading={isLoading}
+            onClick={() => {
+              console.log(formik);
+            }}
+            disabled={!formik.isValid}
+          />
         </form>
       </Section>
     </FormikProvider>

@@ -39,7 +39,7 @@ export interface DetailsKeys {
   destination: string;
   applicationType: string;
   visaType: string;
-  travellingBy: string;
+  travellingBy?: string;
   // numberOfTravellers: number;
 }
 
@@ -62,7 +62,7 @@ export interface EmploymentDetailsInterface {
   companyLocation: string;
   startYear: number;
   endYear?: number;
-  stillWorking?: boolean;
+  stillWorking: boolean;
 }
 
 export interface PersonalInfoInterface {
@@ -124,7 +124,6 @@ interface DocumentInterface {
 export interface VisaApplicationFormInterface
   extends DetailsKeys,
     PersonalInfoInterface {
-  firstAndMiddleName?: string;
   education: EducationDetailsInterface[];
   employment: EmploymentDetailsInterface[];
   familyMembers: FamilyInfoInterface[];
@@ -143,6 +142,6 @@ export interface ApplicationFormRequestInput
   primaryTraveller: PrimaryTravellerInterface;
   familyMembers: FamilyInfoInterface[];
   documents: DocumentInterface[];
-  user: string;
+  user?: string;
 }
 declare module "@paystack/inline-js";

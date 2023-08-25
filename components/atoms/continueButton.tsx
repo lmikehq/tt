@@ -9,9 +9,14 @@ import { ttColors } from "theme/colors";
 interface ButtonProps {
   isLoading: boolean;
   disabled: boolean;
+  onClick?: () => void;
 }
 
-export default function ContinueButton({ isLoading, disabled }: ButtonProps) {
+export default function ContinueButton({
+  isLoading,
+  disabled,
+  onClick,
+}: ButtonProps) {
   return (
     <Section
       height="unset"
@@ -24,6 +29,7 @@ export default function ContinueButton({ isLoading, disabled }: ButtonProps) {
         type="submit"
         background={disabled ? "#585870" : "#06062A"}
         cursor={disabled ? "not-allowed" : "pointer"}
+        onClick={onClick}
       >
         <Flex align="center" width="100%" height="100%" justify="center">
           {isLoading ? (

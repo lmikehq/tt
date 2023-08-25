@@ -37,6 +37,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
     },
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
+      console.log(values);
       nextStep({ form: values });
     },
   });
@@ -64,7 +65,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                name="home"
+                name="homeCountry"
                 placeholder="Select where you are"
               />
             </Flex>
@@ -74,7 +75,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Where to?"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -102,7 +103,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Visa type"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -129,7 +130,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   size={isMobile ? 14 : 16}
                   type="p"
                   text="Application type"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -151,7 +152,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
           </Flex>
         </Section>
 
-        {formik?.values?.applicationType === "Family" && (
+        {/* {formik?.values?.applicationType === "Family" && (
           <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
             <Text
               size={isMobile ? 14 : 16}
@@ -170,7 +171,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
               placeholder="Number of Travellers"
             />
           </Section>
-        )}
+        )} */}
 
         <Section
           height="unset"

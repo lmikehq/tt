@@ -28,6 +28,7 @@ import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import { documentsArr, documentsSchema } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
 import Spinner from "@components/icons/spinner";
+import { DocumentInterface } from "types";
 
 interface formProps {
   steps: string[];
@@ -93,7 +94,7 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
     initialValues: documentsArr,
     validationSchema: documentsSchema,
     onSubmit: (values) => {
-      nextStep({ form: values.documents });
+      nextStep({ form: values });
     },
   });
   const handleFailedValidation = () => {
@@ -117,8 +118,8 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
     if (filesContent.length > 0) {
       uploadImage(filesContent[0].content).then((image) => {
         if (typeof image === "string") {
-          const docObj = {
-            title: documentToUpload,
+          const docObj: DocumentInterface = {
+            name: documentToUpload,
             url: image,
           };
           const { name, size, type } = plainFiles[0];
@@ -138,7 +139,7 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
                 name,
                 size: `${size / 1000000} MB`,
                 type: type.split("/")[1].toUpperCase(),
-                title: docObj.title,
+                title: docObj.name,
               },
             ]);
           } else {
@@ -149,7 +150,7 @@ function UploadDocuments({ steps, index, nextStep, isLoading }: formProps) {
               name,
               size: `${size / 1000000} MB`,
               type: type.split("/")[1].toUpperCase(),
-              title: docObj.title,
+              title: docObj.name,
             });
             formik.setFieldValue("documents", formikUploadedDocuments);
             setUploadedDocuments(uploadedDocs);

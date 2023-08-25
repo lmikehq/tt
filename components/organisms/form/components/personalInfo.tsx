@@ -1,7 +1,7 @@
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
@@ -25,14 +25,15 @@ import ContinueButton from "@atom/continueButton";
 import dayjs, { Dayjs } from "dayjs";
 import useFormikLocalStorage from "hook/useFormikLocalStorage";
 
-interface formProps {
+interface FormProps {
   steps: string[];
   index: number;
   nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<PersonalInfoInterface>;
 }
 
-function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
+function PersonalInfo({ steps, index, nextStep, isLoading }: FormProps) {
   const { isMobile } = useScreenResolution();
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
@@ -84,7 +85,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Last Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -99,7 +100,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="First Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -121,7 +122,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Middle Name"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -136,7 +137,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="State of Origin"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -158,12 +159,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="LG. of Origin"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
             <FieldInput
-              name="lgOfOrigin"
+              name="lgaOfOrigin"
               placeholder="Select your LG of origin"
               formik={formik}
             />
@@ -173,7 +174,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Native Language"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -194,8 +195,47 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
+                text="Gender"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldString
+              formik={formik}
+              name={"gender"}
+              placeholder="Select your Gender"
+              options={["Male", "Female"]}
+            />
+          </Section>
+          <Section width="100%">
+            <Text
+              type="p"
+              text="Date Of Birth"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <FieldAsDate
+              name="dateOfBirth"
+              placeholder="Select your Issue Date"
+              formik={formik}
+              onChange={(e: any) => {
+                updateFieldValue(`dateOfBirth`, `${e}`);
+                setEndDate(dayjs(e));
+              }}
+            />
+          </Section>
+        </Flex>
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
                 text="Email Address"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -210,15 +250,20 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Phone Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
             <PhoneInput
               country={"ng"}
-              value={value}
               autoFormat={true}
-              onChange={(e) => setValue(e)}
+              inputProps={{
+                name: "phoneNumber",
+              }}
+              onChange={(e) => {
+                console.log(e);
+                formik.setFieldValue("phoneNumber", e);
+              }}
               inputClass="w"
               placeholder="Enter phone number"
             />
@@ -235,7 +280,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Means of ID"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -262,7 +307,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="ID Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -324,7 +369,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Country of Citizenship"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -335,7 +380,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 flag: x.flag,
                 code: x.code,
               }))}
-              name="homeCountry"
+              name="countryOfCitizen"
               placeholder="Select your country of citizenship"
             />
           </Section>
@@ -344,7 +389,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Place of Birth (Country & State)"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -355,7 +400,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 flag: x.flag,
                 code: x.code,
               }))}
-              name="placeOfOrigin"
+              name="placeOfBirth"
               placeholder="Select your country  of birth"
             />
           </Section>
@@ -365,12 +410,12 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             <Text
               type="p"
               text="Residential Address"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
-            name="residentialAddress"
+            name="address"
             type="address"
             formik={formik}
             placeholder="Enter your residential address"
@@ -387,7 +432,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Marital Status"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -436,7 +481,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Passport Number"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -451,7 +496,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
               <Text
                 type="p"
                 text="Issued Country"
-                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />
             </Flex>
@@ -462,7 +507,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                 code: x.code,
               }))}
               formik={formik}
-              name="issuingCountry"
+              name="passportIssuedCountry"
               placeholder="Select the country"
             />
           </Section>
@@ -506,14 +551,15 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </Section>
           </Flex>
         )}
+
         <Section>
           <Text
             type="p"
             text="Main Purpose of your Trip"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <TextArea
-            name="purposeOfTrip"
+            name="tripPurpose"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
@@ -684,7 +730,6 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                       <ErrorText text={formik.errors["refusedBefore"]} />
                     )}
                 </Section>
-
               </Flex>
             </li>
             {`${formik.values.refusedBefore}` == "true" && (
@@ -696,7 +741,7 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
                   text="If you answered “yes”, please provide details"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
-              
+
                 <TextArea
                   name="refusedBeforeDetails"
                   onChange={formik.handleChange}
@@ -878,7 +923,13 @@ function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
             </li>
           </ol>
         </Section>
-        <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
+        <ContinueButton
+          isLoading={isLoading}
+          onClick={() => {
+            console.log(formik);
+          }}
+          disabled={!formik.isValid}
+        />
       </form>
     </Section>
   );

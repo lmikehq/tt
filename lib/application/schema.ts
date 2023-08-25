@@ -16,7 +16,7 @@ export const detailsSchema: yup.ObjectSchema<DetailsKeys> = yup.object().shape({
   homeCountry: yup.string().required("Required"),
   destination: yup.string().required("Required"),
   applicationType: yup.string().required("Required"),
-  travellingBy: yup.string().required("Required"),
+  travellingBy: yup.string(),
   visaType: yup.string().required("Required"),
 });
 
@@ -65,7 +65,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    remainbeyondValidity: yup.boolean().required(),
+    remainbeyondValidity: yup.boolean().required("Required"),
     refusedBefore: yup.boolean().required("Required"),
     refusedBeforeDetails: yup.string().when("refusedBefore", {
       is: true,
@@ -151,7 +151,7 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
     fieldOfStudy: yup.string().required("Required"),
 
     startYear: yup.number().required("Required"),
-    endYear: yup.number().when("st", {
+    endYear: yup.number().when("stillAtSchool", {
       is: false,
       then: (schema) => schema.required("Required"),
     }),
@@ -182,7 +182,7 @@ export const singleEmploymentSchema: yup.ObjectSchema<EmploymentDetailsInterface
       is: false,
       then: (schema) => schema.required("Required"),
     }),
-    stillWorking: yup.boolean(),
+    stillWorking: yup.boolean().required(),
   });
 export const employmentKeys: EmploymentDetailsInterface = {
   companyName: "",
@@ -190,6 +190,7 @@ export const employmentKeys: EmploymentDetailsInterface = {
   employmentType: "",
   companyLocation: "",
   startYear: 0,
+  stillWorking: false,
 };
 
 //FAMILY MEMBER
@@ -237,7 +238,7 @@ export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(4, "You need to add 4 documents")
+  .min(1, "You need to add 4 documents")
   .max(5, "You can provide at most 5 documents");
 
 export const manyEducationSchema = yup
@@ -248,7 +249,7 @@ export const manyEmploymentSchema = yup
   .shape({ employment: employmentArraySchema });
 export const familyInfoSchema = yup
   .object()
-  .shape({ familyInfo: familyInfoArraySchema });
+  .shape({ familyMembers: familyInfoArraySchema });
 export const documentsSchema = yup
   .object()
   .shape({ documents: documentArraySchema });

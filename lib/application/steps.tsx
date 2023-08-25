@@ -20,6 +20,8 @@ import UploadDocuments from "@organism/form/components/uploadDocuments";
 import { SingleFormType } from "@organism/form/applicationForm";
 import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
 import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
+import { PersonalInfoInterface, VisaApplicationFormInterface } from "types";
+import { FormikProps } from "formik";
 
 interface IFormStep {
   id: number;
@@ -29,12 +31,19 @@ interface IFormStep {
   formikConfig?: any;
 }
 
-export const getSteps = (
-  setFormFee: (n: number) => void,
-  setCurrentPhase: (n: number) => void,
-  nextStep: ({ form }: { form: SingleFormType }) => void,
-  isLoading: boolean
-): IFormStep[] => {
+export const getSteps = ({
+  setFormFee,
+  setCurrentPhase,
+  nextStep,
+  isLoading,
+  personalInfoFormik,
+}: {
+  setFormFee: (n: number) => void;
+  setCurrentPhase: (n: number) => void;
+  nextStep: ({ form }: { form: SingleFormType }) => void;
+  isLoading: boolean;
+  personalInfoFormik: FormikProps<PersonalInfoInterface>;
+}): IFormStep[] => {
   return [
     {
       id: 1,
@@ -58,6 +67,7 @@ export const getSteps = (
           index={1}
           nextStep={nextStep}
           isLoading={isLoading}
+          formik={personalInfoFormik}
         />
       ),
       valKeys: Object.keys(personalInfoKeys),
