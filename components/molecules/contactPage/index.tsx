@@ -34,6 +34,8 @@ import { Divider } from "@atom/divider";
 import OrderStatus from "../../../assets/images/customerCare/resume.png";
 import User from "../../../assets/images/customerCare/user.png";
 import UsefulLinks from "./components/usefulLink";
+import DoorExit from "@image/visaIcons/door-exit.png";
+import CustomConfirmationModal from "@organism/visaApplicationModal";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;

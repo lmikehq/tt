@@ -132,3 +132,9 @@ export const COMMON_MAJORS = [
   "Biotechnology",
   "Others",
 ];
+
+export const RELATIONSHIPS = [
+  "Spouse", "Child",
+  "Parent", "Sibling",
+  "In-Law"
+]
