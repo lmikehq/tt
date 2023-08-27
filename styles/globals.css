@@ -157,10 +157,6 @@ body {
   padding: 0px 14px !important;
 }
 
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
 
 :-ms-input-placeholder {
   font-weight: 500;
