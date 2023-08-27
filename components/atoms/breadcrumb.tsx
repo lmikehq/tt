@@ -20,12 +20,6 @@ const BreadcrumbContainer = styled.div`
   }
 `;
 
-interface BreadcrumbItem {
-  id: number;
-  label: string;
-  url?: string;
-}
-
 const Breadcrumb = () => {
   const { isMobile } = useScreenResolution();
 
@@ -33,7 +27,7 @@ const Breadcrumb = () => {
   let pathArray = path.split("/");
   return (
     <BreadcrumbContainer>
-      <SectionLayout>
+      <SectionLayout {...(isMobile && { padding: "0" })}>
         <Flex gap={isMobile ? "0px" : ".7rem"} align="center">
           <Link href="/">
             <Text
@@ -63,7 +57,12 @@ const Breadcrumb = () => {
               );
             }
             return (
-              <Flex key={index} width="fit-content" align="center" gap={isMobile ? "0px" : "1rem"}>
+              <Flex
+                key={index}
+                width="fit-content"
+                align="center"
+                gap={isMobile ? "0px" : "1rem"}
+              >
                 <Link href={pathArray.slice(0, index + 1).join("/")}>
                   <Text
                     type="p"

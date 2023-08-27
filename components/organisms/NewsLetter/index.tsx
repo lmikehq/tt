@@ -13,7 +13,7 @@ import newsLetterBg from "@image/newsLetterbg.png";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Input from "@atom/input";
 
-const SubscribeWrapper = styled.div`
+const SubscribeWrapper = styled.div<{ isMobile?: boolean }>`
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
   background-image: url(${newsLetterBg.src});
   background-size: cover;
@@ -22,7 +22,6 @@ const SubscribeWrapper = styled.div`
   align-items: center;
   width: 85%;
   margin: 5rem auto;
-  height: 29.5rem;
   border-radius: 1.5rem;
   padding: 0rem 3.5rem;
   margin-bottom: 5rem;
@@ -89,11 +88,12 @@ const NewsLetter = () => {
         display: isMobile ? "block" : "flex",
         alignItems: "center",
         justifyContent: "center",
+        height: isMobile ? "100%" : "29.5rem",
       }}
     >
       <Flex
         justify="space-between"
-        gap="7.1875rem"
+        gap={isMobile ? "1rem" : "7.1875rem"}
         direction={isMobile ? "column" : "row"}
       >
         <Subcribe className="newsLetter">
@@ -147,17 +147,27 @@ const NewsLetter = () => {
           gap="1rem"
           align="center"
           width="auto"
-          styles={{ visibility: isMobile ? "hidden" : "visible" }}
+          // direction={isMobile ? "column" : "row"}
+          styles={{ display: isMobile ? "none" : "block" }}
         >
-          <Image src={Barcode} alt="visa" width="160" height="160" />
+          <Image
+            src={Barcode}
+            alt="visa"
+            width={isMobile ? "80" : "160"}
+            height={isMobile ? "80" : "160"}
+          />
           <Flex
             direction="column"
             gap="0.5rem"
-            align="center"
-            padding="1.5rem 0 1.5rem 1.85rem"
+            align={isMobile ? "flex-start" : "center"}
+            // padding={isMobile ? '0' : "1.5rem 0 1.5rem 1.85rem"}
           >
-            <Image width={215} src={AppLogo} alt="app-store" />
-            <Image width={215} src={PlayStore} alt="play-store" />
+            <Image width={isMobile ? 120 : 215} src={AppLogo} alt="app-store" />
+            <Image
+              width={isMobile ? 120 : 215}
+              src={PlayStore}
+              alt="play-store"
+            />
           </Flex>
         </Flex>
       </Flex>

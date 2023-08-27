@@ -36,9 +36,9 @@ const FooterWrapper = styled.footer`
     padding: 1rem 0;
   }
 `;
-const FooterGrid = styled.div`
+const FooterGrid = styled.div<{ isMobile?: boolean }>`
   background-color: var(--primary-color);
-  padding: 5.3125rem;
+  padding: ${(props) => (props.isMobile ? "0rem" : "5.3125rem")};
 `;
 
 const FooterIcons = [
@@ -124,8 +124,8 @@ const FooterSection = () => {
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "" }}>
       <NewsLetter />
-      <FooterGrid>
-        <SectionLayout margin="0 auto">
+      <FooterGrid isMobile={isMobile}>
+        <SectionLayout margin="0 auto" {...(isMobile && { padding: '0' })}>
           <Grid
             className="footerLayout"
             gap={isMobile ? "2rem" : "2.5rem"}
@@ -140,7 +140,8 @@ const FooterSection = () => {
                 className="footerIcons"
                 columns="repeat(4, 1fr)"
                 gap="1rem"
-                width={isMobile ? "20%" : "70%"}
+                justify="center"
+                width="fit-content"
                 margin={"1rem 0rem 0rem 0rem"}
               >
                 {FooterIcons.map((icon) => (

@@ -1,5 +1,5 @@
 import Breadcrumb from "@atom/breadcrumb";
-import SectionLayout from "@components/layouts/sectionLayout";
+import PrivacyPoliicyPage from "@molecule/privacyPolicyPage";
 import PravacyPoliicyPage from "@molecule/privacyPolicyPage";
 import Section from "@molecule/section";
 
@@ -11,9 +11,7 @@ const PrivacyPolicyComponent = () => {
       }}
     >
       <Breadcrumb />
-      <SectionLayout>
-        <PravacyPoliicyPage />
-      </SectionLayout>
+      <PrivacyPoliicyPage />
     </Section>
   );
 };
