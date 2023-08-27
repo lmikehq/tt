@@ -6,6 +6,7 @@ import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";
 import CustomizedAccordions from "./components/customizedAccordion";
+import { customNavigationLinks } from "data/customNavigationLinks";
 
 const FaqsSection = styled.section`
   margin-top: 1rem;
@@ -13,60 +14,6 @@ const FaqsSection = styled.section`
 
 function FaqSection() {
   const { isMobile } = useScreenResolution();
-  const customNavigationLinks = [
-    {
-      number: "01",
-      text: "Chat with our AI",
-      href: "",
-    },
-    {
-      number: "02",
-      text: "Message us on whatsapp",
-      href: "",
-    },
-    {
-      number: "03",
-      text: "Join our community",
-      href: "",
-    },
-
-    {
-      number: "04",
-      text: "Read about us",
-      href: "",
-    },
-    {
-      number: "05",
-      text: "Appy for visa",
-      href: "",
-    },
-    // {
-    //   number: "06",
-    //   text: "Testimony",
-    //   href: "",
-    // },
-    // {
-    //   number: "07",
-    //   text: "Testimony",
-    //   href: "",
-    // },
-    // {
-    //   number: "08",
-    //   text: "Testimony",
-    //   href: "",
-    // },
-    // {
-    //   number: "09",
-    //   text: "Testimony",
-    //   href: "",
-    // },
-    // {
-    //   number: "10",
-    //   text: "Testimony",
-    //   href: "",
-    // },
-  ];
-
   return (
     <FaqsSection>
       <Flex direction="column" justify="center" align="center" margin={"0px"}>
