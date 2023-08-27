@@ -8,6 +8,10 @@ const Wrapper = styled.div`
   width: 100%;
   padding-right: 5rem;
 
+  @media screen and (max-width: 900px) {
+    padding-right: 0 !important;
+  }
+
   & .prose {
     max-width: unset;
   }
@@ -31,8 +35,11 @@ const Wrapper = styled.div`
     font-size: 1rem;
     color: #000000;
     line-height: 24px;
+
+    @media screen and (max-width: 900px) {
+      font-size: 0.85rem !important;
+    }
   }
-  //   overflow: hidden;
   max-width: 100%;
 
   ::-webkit-scrollbar {
@@ -44,6 +51,12 @@ const Wrapper = styled.div`
     font-size: 24px !important;
     line-height: 36px;
     color: #06062a important;
+
+    @media screen and (max-width: 900px) {
+      font-size: 18px !important;
+    }
+
+    
   }
 `;
 

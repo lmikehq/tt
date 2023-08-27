@@ -227,31 +227,30 @@ const ContactCardItems = [
   // },
 ];
 
-const navigationLinks = [
-  {
-    number: "01",
-    text: "Chat with our AI",
-    href: "",
-  },
-  {
-    number: "02",
-    text: "Chat with an Agent",
-    href: "",
-  },
-  {
-    number: "03",
-    text: "Chat with our travel guide",
-    href: "",
-  },
-  {
-    number: "04",
-    text: "Testimony",
-    href: "",
-  },
-];
-
 const ContactPage = () => {
   const { isMobile } = useScreenResolution();
+  const customNavigationLinks = [
+    {
+      number: "01",
+      text: "Chat with our AI",
+      href: "",
+    },
+    {
+      number: "02",
+      text: "Chat with an Agent",
+      href: "",
+    },
+    {
+      number: "03",
+      text: "Chat with our travel guide",
+      href: "",
+    },
+    {
+      number: "04",
+      text: "Testimony",
+      href: "",
+    },
+  ];
 
   const [selectedOption, setSelectedOption] = useState<{
     label: string;
@@ -287,7 +286,7 @@ const ContactPage = () => {
         columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
-        <UsefulLinks />
+        <UsefulLinks navigationLinks={customNavigationLinks} />
 
         <ContactDetails>
           <ChatAgent>
