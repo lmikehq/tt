@@ -120,7 +120,7 @@ function LoginPage() {
   }
 
   return (
-    <SectionLayout>
+    <SectionLayout {...(isMobile && { padding: "0" })}>
       <Grid
         columns="repeat(auto-fit, minmax(300px, 1fr))"
         margin={isMobile ? "1rem 0" : "4rem 0"}
@@ -222,9 +222,9 @@ function LoginPage() {
 
           <Text
             type="h1"
-            margin="2rem 0 1rem"
+            margin="2rem 0 .3rem"
             text="Welcome back"
-            size="40px"
+            size={isMobile ? "30px" : "40px"}
             weight={700}
           />
           <Text
@@ -233,7 +233,7 @@ function LoginPage() {
             size="17px"
           />
           <Flex
-            margin="3rem 0"
+            margin={isMobile ? "1rem 0 0" : "2rem 0"}
             width={isMobile ? "100%" : "85%"}
             direction="column"
             gap={isMobile ? "1rem" : "2rem"}
@@ -329,7 +329,9 @@ function LoginPage() {
               }}
             >
               Do not have an account? &nbsp;
-              <Link href="/auth/register" text="Sign up" color="#FF8682" />
+              <Link href="/auth/register">
+                <Text type='span' text="Sign up" color="#a0001d" cursor="pointer" />
+              </Link>
             </p>
             <Flex
               justify="center"

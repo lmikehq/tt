@@ -16,6 +16,8 @@ import bgImage3 from "@image/auth-bg3.jpeg";
 import bgImage4 from "@image/auth-bg4.jpeg";
 import bgImage5 from "@image/auth-bg5.jpeg";
 // import bgImage6 from "@image/auth-bg6.jpeg";
+import { Grid } from "@atom/grid";
+import SideBtn from "@atom/sideBtn";
 import bgImage7 from "@image/auth-bg7.jpeg";
 import bgImage8 from "@image/auth-bg8.jpeg";
 import logo from "@image/brand/tt_blue_logo_with_text1.png";
@@ -24,17 +26,12 @@ import Section from "@molecule/section";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { ttColors } from "theme/colors";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Grid } from "@atom/grid";
-import styled from "styled-components";
-import SideBtn from "@atom/sideBtn";
-
-
+import "slick-carousel/slick/slick.css";
+import { ttColors } from "theme/colors";
 
 const settings = {
   infinite: true,
@@ -138,10 +135,10 @@ function RegisterPage() {
     if (error) return error.constraints;
   }
   return (
-    <SectionLayout>
+    <SectionLayout {...(isMobile && { padding: "0" })}>
       <form onSubmit={handleSubmit}>
         <Grid
-          columns="repeat(auto-fit, minmax(300px, 1fr))"
+          columns={isMobile ? "1fr" : `repeat(auto-fit, minmax(300px, 1fr))`}
           margin={isMobile ? "1rem 0" : "4rem 0"}
           gap="5rem"
         >
@@ -241,7 +238,7 @@ function RegisterPage() {
               type="h1"
               margin="2rem 0 1rem"
               text="Create your account!"
-              size="40px"
+              size={isMobile?'30px':'40px'}
               weight={700}
             />
             <Text
