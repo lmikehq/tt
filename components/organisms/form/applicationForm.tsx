@@ -124,11 +124,11 @@ function ApplicationForm() {
       "POST",
       payload
     )
-      .then((data) => {
+      .then((response) => {
         toast.success(
           "Your application has been submitted successfully, please proceed to make payment"
         );
-        return data;
+        return response.data;
       })
       .catch((err) => {
         toast.error(err);
@@ -156,6 +156,7 @@ function ApplicationForm() {
         return data;
       })
       .catch((err) => {
+        console.log(err);
         toast.error(err);
       });
   }
@@ -281,7 +282,10 @@ function ApplicationForm() {
 
       await handleVisaApplication({
         payload: applicationFormRequest,
-      }).then((data) => setCreateVisaApplicationData(data));
+      }).then((data) => {
+        console.log(data);
+        setCreateVisaApplicationData(data);
+      });
     }
     if (currentPhase == 7) {
       await handlePayment({
@@ -394,6 +398,7 @@ function ApplicationForm() {
     initialValues: {},
     // validationSchema: documentsSchema,
     onSubmit: (values) => {
+      console.log("here");
       nextStep({});
     },
   });
@@ -407,6 +412,7 @@ function ApplicationForm() {
     employmentFormik,
     familyMembersFormik,
     documentsFormik,
+    paymentFormik,
     isLoading: nextStepLoading,
   }).find((x) => x.id === currentPhase);
 

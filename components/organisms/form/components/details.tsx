@@ -163,7 +163,14 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
           styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
           {" "}
-          <Button width="100%" height={"3.5rem"} type="submit">
+          <Button
+            width="100%"
+            height={"3.5rem"}
+            type="submit"
+            onClick={() => {
+              console.log(formik);
+            }}
+          >
             <Flex align="center" width="100%" height="100%" justify="center">
               {isLoading ? (
                 <Spinner size="40px" fill={ttColors.primary} />

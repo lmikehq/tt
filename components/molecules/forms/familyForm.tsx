@@ -12,16 +12,17 @@ import Section from "@molecule/section";
 import { Switch } from "@mui/material";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "data/utilData";
-import { FormikValues } from "formik";
+import { FormikProps, FormikValues } from "formik";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import PhoneInput from "react-phone-input-2";
+import { FamilyInfoInterface } from "types";
 
 interface formProps {
   formik: FormikValues;
   isMobile?: boolean;
   count: number;
-  family?: any;
+  values?: FamilyInfoInterface;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -29,10 +30,8 @@ export default function FamilyForm({
   formik,
   isMobile,
   count,
-  family,
+  values,
 }: formProps) {
-  const [checked, setChecked] = useState(false);
-
   return (
     <Section height="unset">
       <Flex
@@ -124,11 +123,12 @@ export default function FamilyForm({
       <Flex justify="space-between">
         <Text type="p" text="Will you be traveling with this Family Member?" />
         <Switch
-          checked={checked}
-          onChange={() => setChecked((prev) => !prev)}
+          checked={values?.accompanying}
+          value={values?.accompanying}
+          onChange={formik.handleChange}
         />
       </Flex>
-      {checked && (
+      {values?.accompanying && (
         <div>
           <Flex
             margin="0"
@@ -194,7 +194,7 @@ export default function FamilyForm({
               />
             </Section> */}
           </Flex>
-          {/* <Flex
+          <Flex
             margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
@@ -203,7 +203,7 @@ export default function FamilyForm({
             <Section margin="0">
               <Text type="p" text="Issue Date" />
               <FieldAsDate
-                name={`familyMembers.${count}.membersIssueDate`}
+                name={`familyMembers.${count}.issueDate`}
                 placeholder="Select Issue Date"
                 formik={formik}
               />
@@ -211,12 +211,12 @@ export default function FamilyForm({
             <Section margin="0">
               <Text type="p" text="Expiry Date" />
               <FieldAsDate
-                name={`familyMembers.${count}.membersExpiryDate`}
+                name={`familyMembers.${count}.expiryDate`}
                 placeholder="Select Expiry Date"
                 formik={formik}
               />
             </Section>
-          </Flex> */}
+          </Flex>
         </div>
       )}
     </Section>

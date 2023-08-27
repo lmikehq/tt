@@ -104,17 +104,17 @@ export interface PersonalInfoInterface {
 }
 
 export interface FamilyInfoInterface {
-  passportNumber: string;
-  expiryYear: number;
-  gender: string;
-  dateOfBirth: string;
   membersName: string;
   relationshipToPrimary: string;
   address: string;
   membersPhoneNumber: string;
   membersEmail: string;
-  issueYear: number;
   accompanying: boolean;
+  issueYear?: number;
+  passportNumber?: string;
+  expiryYear?: number;
+  gender?: string;
+  dateOfBirth?: string;
 }
 
 interface DocumentInterface {

@@ -8,7 +8,7 @@ import { ttColors } from "theme/colors";
 
 interface ButtonProps {
   isLoading: boolean;
-  disabled: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 }
 

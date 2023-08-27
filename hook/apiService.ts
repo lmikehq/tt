@@ -20,7 +20,10 @@ const apiService = (
       data,
     })
       .then((res) => resolve(res.data))
-      .catch((err) => resolve(err.response.data));
+      .catch((err) => {
+        throw err;
+        // resolve(err.response.data)
+      });
   });
 };
 

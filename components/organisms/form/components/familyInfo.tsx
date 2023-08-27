@@ -45,7 +45,7 @@ function FamilyInfo({ steps, index, isLoading, formik }: formProps) {
                 </Flex>
                 {formik.values.familyMembers.map((family, index) => (
                   <div key={index}>
-                    <FamilyForm formik={formik} family={family} count={index} />
+                    <FamilyForm formik={formik} values={family} count={index} />
                     {formik.values.familyMembers.length > 1 && (
                       <Flex
                         justify="flex-end"

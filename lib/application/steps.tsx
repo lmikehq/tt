@@ -29,7 +29,7 @@ import {
   PersonalInfoInterface,
   VisaApplicationFormInterface,
 } from "types";
-import { FormikProps } from "formik";
+import { FormikProps, FormikValues } from "formik";
 
 interface IFormStep {
   id: number;
@@ -46,6 +46,7 @@ export const getSteps = ({
   employmentFormik,
   familyMembersFormik,
   documentsFormik,
+  paymentFormik,
 }: {
   setFormFee: (n: number) => void;
   setCurrentPhase: (n: number) => void;
@@ -56,6 +57,7 @@ export const getSteps = ({
   employmentFormik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
   educationFormik: FormikProps<{ education: EducationDetailsInterface[] }>;
   documentsFormik: FormikProps<{ documents: DocumentInterface[] }>;
+  paymentFormik: FormikValues;
 }): IFormStep[] => {
   return [
     {
@@ -138,7 +140,9 @@ export const getSteps = ({
     {
       id: 7,
       title: "Select Payment Method",
-      content: <SelectPaymentMethod isLoading={isLoading} />,
+      content: (
+        <SelectPaymentMethod isLoading={isLoading} formik={paymentFormik} />
+      ),
     },
   ];
 };

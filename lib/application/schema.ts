@@ -16,7 +16,7 @@ export const detailsSchema: yup.ObjectSchema<DetailsKeys> = yup.object().shape({
   homeCountry: yup.string().required("Required"),
   destination: yup.string().required("Required"),
   applicationType: yup.string().required("Required"),
-  travellingBy: yup.string(),
+  travellingBy: yup.string().required("Required"),
   visaType: yup.string().required("Required"),
 });
 
@@ -25,7 +25,7 @@ export const detailsKeys: DetailsKeys = {
   destination: "",
   applicationType: "",
   visaType: "", //
-  travellingBy: "",
+  travellingBy: "AirPlane",
 };
 
 // PERSONAL INFO
@@ -65,7 +65,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    remainbeyondValidity: yup.boolean().required("Required"),
+    remainbeyondValidity: yup.boolean().required(),
     refusedBefore: yup.boolean().required("Required"),
     refusedBeforeDetails: yup.string().when("refusedBefore", {
       is: true,
@@ -86,28 +86,28 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
   });
 
 export const personalInfoKeys: PersonalInfoInterface = {
-  firstName: "Abdulazeez",
-  lastName: "Olalere",
-  middleName: "Gbolahan",
-  email: "htmolaike@yopmail.com",
+  firstName: "",
+  lastName: "",
+  middleName: "",
+  email: "",
   // placeOfOrigin: "",
-  stateOfOrigin: "Oyp",
-  lgaOfOrigin: "Lagelu",
-  nativeLanguage: "Yoruba",
+  stateOfOrigin: "",
+  lgaOfOrigin: "",
+  nativeLanguage: "",
   meansOfId: "",
-  idNumber: "111",
+  idNumber: "",
   issueDate: "",
   expiryDate: "",
   // homeCountry: "",
-  address: "111",
+  address: "",
   dateOfBirth: "",
   maritalStatus: "",
-  partnersName: "11",
-  passportNumber: "11",
+  partnersName: "",
+  passportNumber: "",
   passportIssuedCountry: "",
   // passportIssueDate: "",
   passportExpiryYear: 2000,
-  tripPurpose: "111",
+  tripPurpose: "",
   tuberculosis: null,
   mentalDisorder: null,
   mentalDisorderDetails: "",
@@ -121,11 +121,51 @@ export const personalInfoKeys: PersonalInfoInterface = {
   memberOfViolentGroup: null,
   participatedInViolentActivities: null,
   placeOfBirth: "",
-  phoneNumber: "1111",
+  phoneNumber: "",
   countryOfCitizen: "",
   gender: "",
 };
 
+// export const personalInfoKeys: PersonalInfoInterface = {
+//   firstName: "Abdulazeez",
+//   lastName: "Olalere",
+//   middleName: "Gbolahan",
+//   email: "htmolaike@yopmail.com",
+//   // placeOfOrigin: "",
+//   stateOfOrigin: "Oyp",
+//   lgaOfOrigin: "Lagelu",
+//   nativeLanguage: "Yoruba",
+//   meansOfId: "",
+//   idNumber: "111",
+//   issueDate: "",
+//   expiryDate: "",
+//   // homeCountry: "",
+//   address: "111",
+//   dateOfBirth: "",
+//   maritalStatus: "",
+//   partnersName: "11",
+//   passportNumber: "11",
+//   passportIssuedCountry: "",
+//   // passportIssueDate: "",
+//   passportExpiryYear: 2000,
+//   tripPurpose: "111",
+//   tuberculosis: null,
+//   mentalDisorder: null,
+//   mentalDisorderDetails: "",
+//   remainbeyondValidity: null,
+//   refusedBefore: null,
+//   refusedBeforeDetails: "",
+//   arrestedBefore: null,
+//   arrestedBeforeDetails: "",
+//   servedInMilitary: null,
+//   servedInMilitaryDetails: "",
+//   memberOfViolentGroup: null,
+//   participatedInViolentActivities: null,
+//   placeOfBirth: "",
+//   phoneNumber: "1111",
+//   countryOfCitizen: "",
+//   gender: "",
+// };
 //DOCUMENT
 export const documentShema: yup.ObjectSchema<DocumentInterface> = yup
   .object()
@@ -151,7 +191,7 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
     fieldOfStudy: yup.string().required("Required"),
 
     startYear: yup.number().required("Required"),
-    endYear: yup.number().when("stillAtSchool", {
+    endYear: yup.number().when("st", {
       is: false,
       then: (schema) => schema.required("Required"),
     }),
@@ -198,10 +238,6 @@ export const employmentKeys: EmploymentDetailsInterface = {
 export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
   .object()
   .shape({
-    passportNumber: yup.string().required("Required"),
-    expiryYear: yup.number().required("Required"),
-    gender: yup.string().required("Required"),
-    dateOfBirth: yup.string().required("Required"),
     membersName: yup.string().required("Required"),
     relationshipToPrimary: yup.string().required("Required"),
     address: yup.string().required("Required"),
@@ -210,8 +246,27 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
       .string()
       .required("Required")
       .email("Invalid email address"),
-    issueYear: yup.number().required("Required"),
     accompanying: yup.boolean().required("Required"),
+    passportNumber: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required(),
+    }),
+    expiryYear: yup.number().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required(),
+    }),
+    dateOfBirth: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required(),
+    }),
+    gender: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required(),
+    }),
+    issueYear: yup.number().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required(),
+    }),
   });
 
 export const familyInforKeys: FamilyInfoInterface = {
@@ -225,7 +280,7 @@ export const familyInforKeys: FamilyInfoInterface = {
   membersPhoneNumber: "",
   membersEmail: "",
   issueYear: 0,
-  accompanying: true,
+  accompanying: false,
 };
 
 export const educationArraySchema = yup
@@ -238,7 +293,7 @@ export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(1, "You need to add 4 documents")
+  .min(4, "You need to add 4 documents")
   .max(5, "You can provide at most 5 documents");
 
 export const manyEducationSchema = yup
@@ -249,7 +304,7 @@ export const manyEmploymentSchema = yup
   .shape({ employment: employmentArraySchema });
 export const familyInfoSchema = yup
   .object()
-  .shape({ familyMembers: familyInfoArraySchema });
+  .shape({ familyInfo: familyInfoArraySchema });
 export const documentsSchema = yup
   .object()
   .shape({ documents: documentArraySchema });
