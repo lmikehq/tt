@@ -274,7 +274,6 @@ const ContactPage = () => {
 
   return (
     <ContactSection>
-      <Breadcrumb />
       <Text
         type="h1"
         text="Contact Us"

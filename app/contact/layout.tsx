@@ -7,7 +7,7 @@ interface layoutProps {
 }
 
 export const metadata = {
-  title: "Reach out to us",
+  title: "Contact us",
   description:
     "Have questions, need advice, or ready to plan your journey? Connect with Thrillers Travels. We're here to guide you every step of the way on your journey to the Western world. Let's soar on the wings of the eagle together!",
 };
