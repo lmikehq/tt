@@ -7,7 +7,7 @@ interface layoutProps {
 
 export const metadata = {
   title: "Thrllers Travel FAQs",
-  description: "Welcome to Thrllers Travel FAQs page",
+  description: "Frequently asked questions about Thrillers Travels",
 };
 
 export default function PrivacyPolicyLayout({ children }: layoutProps) {

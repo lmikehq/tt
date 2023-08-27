@@ -1,13 +1,11 @@
 "use client";
-import React from "react";
-import CustomizedAccordions from "./components/customizedAccordion";
-import styled from "styled-components";
-import Breadcrumb from "@atom/breadcrumb";
-import { Grid } from "@atom/grid";
-import { useScreenResolution } from "hook/useScreenResolution";
-import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Text from "@atom/text";
+import UsefulLinks from "@molecule/contactPage/components/usefulLink";
+import { useScreenResolution } from "hook/useScreenResolution";
+import styled from "styled-components";
+import CustomizedAccordions from "./components/customizedAccordion";
 
 const FaqsSection = styled.section`
   margin-top: 1rem;
@@ -23,67 +21,69 @@ function FaqSection() {
     },
     {
       number: "02",
-      text: "Chat with an Agent",
+      text: "Message us on whatsapp",
       href: "",
     },
     {
       number: "03",
-      text: "Chat with our travel guide",
+      text: "Join our community",
       href: "",
     },
+
     {
       number: "04",
-      text: "Testimony",
+      text: "Read about us",
       href: "",
     },
     {
       number: "05",
-      text: "Testimony",
+      text: "Appy for visa",
       href: "",
     },
-    {
-      number: "06",
-      text: "Testimony",
-      href: "",
-    },
-    {
-      number: "07",
-      text: "Testimony",
-      href: "",
-    },
-    {
-      number: "08",
-      text: "Testimony",
-      href: "",
-    },
-    {
-      number: "09",
-      text: "Testimony",
-      href: "",
-    },
-    {
-      number: "10",
-      text: "Testimony",
-      href: "",
-    },
+    // {
+    //   number: "06",
+    //   text: "Testimony",
+    //   href: "",
+    // },
+    // {
+    //   number: "07",
+    //   text: "Testimony",
+    //   href: "",
+    // },
+    // {
+    //   number: "08",
+    //   text: "Testimony",
+    //   href: "",
+    // },
+    // {
+    //   number: "09",
+    //   text: "Testimony",
+    //   href: "",
+    // },
+    // {
+    //   number: "10",
+    //   text: "Testimony",
+    //   href: "",
+    // },
   ];
 
   return (
     <FaqsSection>
-      <Breadcrumb />
-      <Flex direction="column" justify="center" align="center" margin={isMobile ? "0px" : "0px 0px 6.5rem 0px"}>
-        <Text type="h1" text="Frequently Asked Questions" size={isMobile ? "1rem" : "2rem"} />
+      <Flex direction="column" justify="center" align="center" margin={"0px"}>
         <Text
-          margin={isMobile ? "1rem 0px" : "2rem 0px"}
+          type="h1"
+          text="Frequently Asked Questions"
+          size={isMobile ? "1rem" : "2rem"}
+        />
+        <Text
+          margin={isMobile ? "1rem 0px" : "1rem 0px"}
           size={isMobile ? "0.8rem" : "1rem"}
           styles={{
             width: `${isMobile ? "100%" : "50%"}`,
             textAlign: "center",
           }}
           type="p"
-          text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim quis
-          ullam debitis quod illum recusandae aliquid praesentium excepturi
-          soluta rerum."
+          text="If your question isn't covered here, don't hesitate to contact our knowledgeable team for personalized assistance"
         />
       </Flex>
       <Grid
@@ -94,30 +94,60 @@ function FaqSection() {
         <UsefulLinks navigationLinks={customNavigationLinks} />
         <Flex direction="column">
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="How it works" size={isMobile ? "1.2rem" : "1.5rem"} />
+            <Text
+              type="h2"
+              text="Thrillers Travels"
+              size={isMobile ? "1.2rem" : "1.5rem"}
+            />
             <CustomizedAccordions items={howWeWork} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="How it we make things happeing" size={isMobile ? "1.2rem" : "1.5rem"} />
+            <Text
+              type="h2"
+              text=" Migration Process"
+              size={isMobile ? "1.2rem" : "1.5rem"}
+            />
             <CustomizedAccordions items={makeItHappening} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="Booking your visa" size={isMobile ? "1.2rem" : "1.5rem"} />
+            <Text
+              type="h2"
+              text=" Eligibility and Requirements"
+              size={isMobile ? "1.2rem" : "1.5rem"}
+            />
             <CustomizedAccordions items={bookingYourVisa} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="Payment and Budget" size={isMobile ? "1.2rem" : "1.5rem"} />
+            <Text
+              type="h2"
+              text="Financial Matters"
+              size={isMobile ? "1.2rem" : "1.5rem"}
+            />
 
             <CustomizedAccordions items={paymentAndBudget} />
           </Flex>
 
           <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
-            <Text type="h2" text="How it we make things happeing" size={isMobile ? "1.2rem" : "1.5rem"} />
+            <Text
+              type="h2"
+              text=" Success Stories"
+              size={isMobile ? "1.2rem" : "1.5rem"}
+            />
 
             <CustomizedAccordions items={makeItHappening} />
+          </Flex>
+
+          <Flex direction="column" gap=".7rem" margin="0px auto 3rem">
+            <Text
+              type="h2"
+              text=" Support and Assistance"
+              size={isMobile ? "1.2rem" : "1.5rem"}
+            />
+
+            <CustomizedAccordions items={support} />
           </Flex>
         </Flex>
       </Grid>
@@ -129,84 +159,65 @@ export default FaqSection;
 
 const howWeWork = [
   {
-    header: "Collapsible Group Item #1",
+    header: "What is Thrillers Travels?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
+      "Thrillers Travels is a migration empowerment company, specializing in helping Nigerians migrate to Western countries for better opportunities. We offer comprehensive support to make the migration and life improvement accessible and inclusive.",
   },
   {
-    header: "Collapsible Group Item #2",
+    header: "How long has Thrillers Travels been operating?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-  },
-  {
-    header: "Collapsible Group Item #3",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    header: "Collapsible Group Item #4",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    header: "Collapsible Group Item #5",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "The dream started in 2012, and we started Thrillers Human Development Foundation in 2018, and since then, we have been assisting individuals in realizing their dreams of migrating to Western countries.  but Thrillers Travels was founded in 2023, to increase the capacity and make this a big deal.",
   },
 ];
 
 const makeItHappening = [
   {
-    header: "Collapsible Group Item #1",
+    header: "What countries do you assist with migration to?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
+      "We primarily focus on assisting migrants in moving to various Western countries, including but not limited to the United States, Canada, the United Kingdom, Australia, and European nations.",
   },
   {
-    header: "Collapsible Group Item #2",
+    header: "What services do you offer to Nigerians",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
+      "Our services include migration consultation, application guidance, documentation support, interview preparation, and post-migration assistance. Users across the world can also book flights, hotels and reservations. We aim to provide a holistic approach to every stage of migration/relocation process.",
+  },
+];
+
+const support = [
+  {
+    header: "What kind of support do you offer after migration?",
+    description:
+      "We provide post-migration support to help you settle into your new life. This includes guidance on job search, housing, cultural adaptation, and addressing any challenges you may face.",
+  },
+  {
+    header: " Can I contact you for help during the migration process?",
+    description:
+      "Absolutely! Our consultants are available to address your questions and concerns throughout the migration journey. Feel free to reach out via email, phone, or in-person appointments.",
   },
 ];
 
 const bookingYourVisa = [
   {
-    header: "Collapsible Group Item #1",
+    header: "Who is eligible to apply for migration through Thrillers Travels?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
+      "We work with young Nigerian individuals who aspire to migrate for better opportunities. Eligibility criteria often depend on the specific requirements of the destination country.",
   },
   {
-    header: "Collapsible Group Item #2",
+    header: "What are the general requirements for migration?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-  },
-  {
-    header: "Collapsible Group Item #3",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    header: "Collapsible Group Item #4",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "General requirements usually involve educational qualifications, work experience, language proficiency (like IELTS or TOEFL), and sometimes proof of funds. Requirements may vary based on the chosen destination.",
   },
 ];
 
 const paymentAndBudget = [
   {
-    header: "Collapsible Group Item #1",
+    header: "How much does your service cost?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
+      "Our service fees vary based on the destination country and the complexity of the case. We believe in transparency, and our consultants will provide a detailed breakdown of costs during your consultation.",
   },
   {
-    header: "Collapsible Group Item #2",
+    header: "Do you offer financial assistance for migration costs?",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.",
-  },
-  {
-    header: "Collapsible Group Item #3",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    header: "Collapsible Group Item #4",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    header: "Collapsible Group Item #5",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "While we don't provide direct financial assistance, our team helps applicants explore options for financing their migration journey through scholarships, loans, and other resources.",
   },
 ];
