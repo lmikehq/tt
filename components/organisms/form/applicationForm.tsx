@@ -1,40 +1,29 @@
 "use client";
 
-import CoverImg from "@image/visaPageCover.jpg";
 import CoverDesktopImg from "@image/visaDesktopCover.jpg";
+import CoverImg from "@image/visaPageCover.jpg";
 
-import Button from "@atom/button";
-import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
-import { Grid } from "@atom/grid";
-import Input from "@atom/input";
 import Text from "@atom/text";
-import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
-import { visaInitVals, visaSchema } from "@lib/application/schema";
+import { visaInitVals } from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
 import sleep from "@lib/sleep";
+import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 import Section from "@molecule/section";
 import SectionTitle from "@molecule/sectionTitle";
+import VisaProgress from "@molecule/visaProgress";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import currencyFormatter from "data/currencyFormatter";
 import apiService from "hook/apiService";
-import useFormikHook from "hook/useFormik";
 import { usePaystack } from "hook/usePaystack";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
-  BsArrowLeft,
-  BsFillShieldLockFill,
-  BsLock,
-  BsShieldFillCheck,
+  BsArrowLeft
 } from "react-icons/bs";
-import {
-  HiOutlineArrowNarrowLeft,
-  HiOutlineArrowNarrowRight,
-} from "react-icons/hi";
 import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
@@ -48,15 +37,8 @@ import {
   PersonalInfoInterface,
   VisaApplicationFormInterface,
 } from "types";
-import UsefulLinks from "@molecule/contactPage/components/usefulLink";
-import VisaProgress from "@molecule/visaProgress";
-import { ListItem } from "@mui/material";
-import BulletList from "@atom/list";
-import TravelArrow from "@atom/travelArrow";
-import VisaApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
 import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndContinueLater";
-import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
-import CustomToaster from "@molecule/customToaster";
+import VisaApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
 
 const PromoInput = styled.div`
   display: flex;

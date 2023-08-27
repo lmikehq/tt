@@ -7,9 +7,8 @@ interface layoutProps {
 }
 
 export const metadata = {
-  title: "Contact us",
-  description:
-    "Have questions, need advice, or ready to plan your journey? Connect with Thrillers Travels. We're here to guide you every step of the way on your journey to the Western world. Let's soar on the wings of the eagle together!",
+  title: "Get more information about us",
+  description:"For more information about us, you can contact us through our social media handles or through our contact page.",
 };
 
 export default function ChatLayout({ children }: layoutProps) {

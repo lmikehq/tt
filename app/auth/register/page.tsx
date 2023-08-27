@@ -251,11 +251,11 @@ function RegisterPage() {
             <Flex
               margin="1rem 0"
               direction="column"
-              gap={isMobile ? "1rem" : "2rem"}
+              gap={".5rem"}
               overflow="unset"
             >
               <Flex
-                gap={isMobile ? "1rem" : "2rem"}
+                gap={".5rem"}
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -321,7 +321,7 @@ function RegisterPage() {
                 </Section>
               </Flex>
               <Flex
-                gap={isMobile ? "1rem" : "2rem"}
+                gap={".5rem"}
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -519,6 +519,7 @@ function RegisterPage() {
               </div>
               <Button
                 width="100%"
+                margin="2rem 0 0"
                 background={
                   submissionState.loading ? "#87ceeb36" : ttColors.primary
                 }

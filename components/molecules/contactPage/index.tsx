@@ -1,6 +1,5 @@
 "use client";
 
-import Breadcrumb from "@atom/breadcrumb";
 import Button from "@atom/button";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
@@ -34,8 +33,7 @@ import { Divider } from "@atom/divider";
 import OrderStatus from "../../../assets/images/customerCare/resume.png";
 import User from "../../../assets/images/customerCare/user.png";
 import UsefulLinks from "./components/usefulLink";
-import DoorExit from "@image/visaIcons/door-exit.png";
-import CustomConfirmationModal from "@organism/visaApplicationModal";
+import { customNavigationLinks } from "data/customNavigationLinks";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;
@@ -43,8 +41,8 @@ const ContactSection = styled.div`
 
 const ContactCard = styled.div`
   display: grid;
-  justify-content: center;
-  width: 50%;
+  justify-content: start;
+  width: 40%;
   @media screen and (max-width: 900px) {
     display: none;
   }
@@ -115,31 +113,6 @@ const HelpTool = styled.div`
 const HelpHeader = styled.div`
   text-align: center;
   position: relative;
-`;
-
-const LeftSpan = styled.span`
-  height: 2px;
-  width: 3%;
-  background: #19013b;
-  position: absolute;
-  top: 13px;
-  left: 310px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
-const RightSpan = styled.span`
-  height: 2px;
-  width: 3%;
-  background: #19013b;
-  position: absolute;
-  top: 13px;
-  right: 310px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
 `;
 
 const HelpPara = styled.p`
@@ -227,31 +200,30 @@ const ContactCardItems = [
   // },
 ];
 
-const navigationLinks = [
-  {
-    number: "01",
-    text: "Chat with our AI",
-    href: "",
-  },
-  {
-    number: "02",
-    text: "Chat with an Agent",
-    href: "",
-  },
-  {
-    number: "03",
-    text: "Chat with our travel guide",
-    href: "",
-  },
-  {
-    number: "04",
-    text: "Testimony",
-    href: "",
-  },
-];
-
 const ContactPage = () => {
   const { isMobile } = useScreenResolution();
+  const customNavigationLinks = [
+    {
+      number: "01",
+      text: "Chat with our AI",
+      href: "",
+    },
+    {
+      number: "02",
+      text: "Chat with an Agent",
+      href: "",
+    },
+    {
+      number: "03",
+      text: "Chat with our travel guide",
+      href: "",
+    },
+    {
+      number: "04",
+      text: "Testimony",
+      href: "",
+    },
+  ];
 
   const [selectedOption, setSelectedOption] = useState<{
     label: string;
@@ -275,7 +247,6 @@ const ContactPage = () => {
 
   return (
     <ContactSection>
-      <Breadcrumb />
       <Text
         type="h1"
         text="Contact Us"
@@ -287,7 +258,7 @@ const ContactPage = () => {
         columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
-        <UsefulLinks />
+        <UsefulLinks navigationLinks={customNavigationLinks} />
 
         <ContactDetails>
           <ChatAgent>
@@ -369,15 +340,16 @@ const ContactPage = () => {
               type="p"
               text="Simply complete this form, and we'll provide you with the assistance you require at the earliest opportunity."
             />
-            <Flex
+            <Grid
+              columns={isMobile ? "100%" : "60% 40%"}
               justify={isMobile ? "flex-start" : "space-between"}
               gap="10px"
               width="100%"
             >
               <form
                 style={{
-                  width: `{isMobile ? "100%" : "50%"}`,
-                  display: `{isMobile ? "block" : "grid"}`,
+                  width: `100%`,
+                  display: `${isMobile ? "block" : "grid"}`,
                 }}
               >
                 <Flex
@@ -395,7 +367,7 @@ const ContactPage = () => {
                     noValidate
                     autoComplete="off"
                   >
-                    <TextField placeholder="Fullname" label="Fullname" />
+                    <TextField placeholder="full name" label="Full Name" />
                   </Box>
 
                   <Box
@@ -463,7 +435,7 @@ const ContactPage = () => {
                       )}
                     />
 
-                    {selectedOption?.label?.includes("Existing Client") &&
+                    {selectedOption?.label?.includes("Existing applicant") &&
                       renderTextField()}
                   </Box>
 
@@ -505,16 +477,18 @@ const ContactPage = () => {
                 </Button>
               </form>
               <ContactCard>
-                <Image src={ContactImg} alt="" />
+                {/* <Image src={ContactImg} alt="" styles={{height:'100%'}} /> */}
                 <LinkFrame>
-                  <Flex gap="20px">
+                  <Flex gap="20px" align="flex-start">
                     <Link href="">
                       <SlLocationPin size="1.2rem" />
                     </Link>
-                    <Text
-                      type="p"
-                      text="Ikota, Lekki County Homes, IVY HOMES, THRILLERS HOUSE. Lagos Nigeria "
-                    />
+                    <Link href="https://www.google.com/maps/dir/6.4487012,3.5509084/thrillers+travels/@6.4430573,3.5487716,16z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x103bf71f39b935b1:0xef53f715e7e75726!2m2!1d3.5578637!2d6.437351?entry=ttu">
+                      <Text
+                        type="p"
+                        text="Ikota, Lekki County Homes, IVY HOMES, THRILLERS HOUSE. Lagos Nigeria "
+                      />
+                    </Link>
                   </Flex>
 
                   <br />
@@ -522,7 +496,9 @@ const ContactPage = () => {
                     <Link href="">
                       <LuPhoneCall size="1.2rem" />
                     </Link>
-                    <Text type="p" text="+2349077210321" />
+                    <Link href="tel:+2349077210321">
+                      <Text type="p" text="+2349077210321" />
+                    </Link>
                   </Flex>
                   <br />
 
@@ -530,7 +506,9 @@ const ContactPage = () => {
                     <Link href="">
                       <ImWhatsapp size="1.2rem" />
                     </Link>
-                    <Text type="p" text="+2349077210321" />
+                    <Link href="https://wa.link/ob8vpa">
+                      <Text type="p" text="+2349077210321" />
+                    </Link>
                   </Flex>
                   <br />
 
@@ -538,11 +516,13 @@ const ContactPage = () => {
                     <Link href="">
                       <BsEnvelope size="1.2rem" />
                     </Link>
-                    <Text type="p" text="support@thrillers.travels" />
+                    <Link href="mailto:support@thrillers.travel">
+                      <Text type="p" text="support@thrillers.travel" />
+                    </Link>
                   </Flex>
                 </LinkFrame>
               </ContactCard>
-            </Flex>
+            </Grid>
           </ContactWrapper>
 
           <SocialDiv>
@@ -578,17 +558,14 @@ const TravellTo = Object.values(COUNTRY_FLAGS).map((country) => ({
 
 const ContactReason = [
   {
-    label: "Existing Client: I need help with my Visa Application",
+    label: "Existing applicant: I need help with my Visa Application",
     value: "existo",
   },
   {
-    label: "Existing Client: I need help with my Photo Application",
+    label: "Existing applicant: I need help with my Photo Application",
   },
   {
-    label: "New Client: I am new to the website",
-  },
-  {
-    label: "PR only: I would like to contact your media team",
+    label: "New applicant: I am new to the website",
   },
   {
     label: "New Business Partner Only: I am an iVisa Partner",

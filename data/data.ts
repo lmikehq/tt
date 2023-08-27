@@ -337,7 +337,7 @@ name: 'Afghanistan',
     },
 
     {
-        name: 'Åland Islands',
+        name: 'Aland Islands',
         flag: ax,
         code: 'AX'
     },
