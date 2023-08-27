@@ -82,7 +82,7 @@ function LoginPage() {
     }
   }
   return (
-    <SectionLayout>
+    <SectionLayout {...(isMobile && { padding: "0" })}>
       <Grid
         columns="repeat(auto-fit, minmax(300px, 1fr))"
         margin={isMobile ? "1rem 0" : "4rem 0"}
@@ -194,7 +194,7 @@ function LoginPage() {
             type="h1"
             margin="2rem 0 1rem"
             text="Forgot your password?"
-            size="40px"
+            size={isMobile ? "30px" : "40px"}
             weight={700}
           />
           <Text
@@ -217,6 +217,7 @@ function LoginPage() {
               <Input
                 placeholder="mike.doe@gmail.com"
                 onChange={(e) => setEmail(e.target.value)}
+                border={submissionState.error.length ? "1px solid red" : ""}
               />
             </Section>
 

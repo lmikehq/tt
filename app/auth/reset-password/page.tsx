@@ -74,7 +74,7 @@ function VerifyCode() {
   }
 
   return (
-    <SectionLayout>
+    <SectionLayout {...(isMobile && { padding: "0" })}>
       <Grid
         columns="repeat(auto-fit, minmax(300px, 1fr))"
         margin={isMobile ? "1rem 0" : "4rem 0"}
@@ -185,16 +185,21 @@ function VerifyCode() {
           <Text
             type="h1"
             margin="2rem 0 1rem"
-            text="Set a password"
-            size="40px"
+            text="Set new password"
+            size={isMobile ? "30px" : "40px"}
             weight={700}
           />
           <Text
             type="p"
-            text="Your previous password has been reseted, enter the authentication code that was sent to your email to set a new password for your account.."
+            text="Enter a new password with the authentication code that was sent to your email."
             size="17px"
           />
-          <Flex margin="3rem 0" direction="column" gap="1rem" overflow="unset">
+          <Flex
+            margin={isMobile ? "1rem 0 " : "3rem 0"}
+            direction="column"
+            gap="1rem"
+            overflow="unset"
+          >
             <Section>
               <Text
                 type="p"
@@ -227,7 +232,7 @@ function VerifyCode() {
                 }
               />
             </Section>
-            
+
             <p style={{ fontSize: "16px" }}>
               Did not receive a code?&nbsp;
               <Link href="/auth/forgot-password" color={ttColors.primary}>
@@ -251,7 +256,7 @@ function VerifyCode() {
               ) : (
                 <Text
                   type="p"
-                  text="change password"
+                  text="Change password"
                   color={ttColors.dark}
                   size="20px"
                 />
