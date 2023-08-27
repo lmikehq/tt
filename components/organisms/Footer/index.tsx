@@ -105,15 +105,15 @@ const FooterSection = () => {
   ];
 
   const supports = [
-    { href: "/help_enter", text: "Help Center", color: "#06062A" },
+    { href: "/help-center", text: "Help Center", color: "#06062A" },
     { href: "/contact", text: "Contact us", color: "#06062A" },
-    { href: "/privacy", text: "Privacy policy", color: "#06062A" },
+    { href: "/privacy-policy", text: "Privacy policy", color: "#06062A" },
     { href: "/terms", text: "Terms of service", color: "#06062A" },
-    { href: "/trust_safety", text: "Trust and safety", color: "#06062A" },
+    { href: "/trust-and-safety", text: "Trust and safety", color: "#06062A" },
   ];
 
   const aboutUs = [
-    { href: "/", text: "About us", color: "#06062A" },
+    { href: "/about-us", text: "About us", color: "#06062A" },
     { href: "/", text: "Careers", color: "#06062A" },
     { href: "/", text: "Press", color: "#06062A" },
     { href: "/", text: "Blog", color: "#06062A" },
