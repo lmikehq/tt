@@ -56,7 +56,8 @@ const Fleft = styled.div`
 
 const StoryContent = styled.div`
   width: 100%;
-
+  line-height: 2.2rem;
+  font-weight: 100;
   @media screen and (max-width: 1024px) {
     height: 350px;
     overflow: scroll;
@@ -203,16 +204,18 @@ const AboutUsPage = () => {
             />
             <StoryContent>
               <Text
-                size={isMobile ? "1rem" : "1.3rem"}
+                size={isMobile ? "1rem" : "1.2rem"}
                 type="p"
+                weight={300}
                 text="Thrillers Travels is an innovative and comprehensive travel and education consultancy platform targeting the modern, digitally-oriented traveler, professionals seeking to relocate from one location to another to work or just explore the modern world, and also the student seeking to explore the world with ease and efficiency. We understand the complexities of travel planning and international work and education pursuit, and we're here to simplify that process through our expertise and our associate across the globes."
               />
 
               <br />
 
               <Text
-                size={isMobile ? "1rem" : "1.3rem"}
+                size={isMobile ? "1rem" : "1.2rem"}
                 type="p"
+                weight={300}
                 text="Our fervor lies in delivering extraordinary travel encounters that imprint enduring memories. With a wealth of industry experience under our belt, we have positioned ourselves as a reliable ally for discerning globe-trotters such as yourself. Our venture, Thrillers Travels, embodies an enticing opportunity for investors to participate in a transformative concept of travel and learning. We go beyond being a typical booking platform; we are an all-encompassing solution catering to the wider needs of international adventurers and scholars. We extend an invitation to you to accompany us on this exhilarating journey as we reshape the travel and education sectors, making it more attainable, streamlined, and enjoyable for all."
               />
             </StoryContent>
@@ -232,19 +235,21 @@ const AboutUsPage = () => {
             <Text
               size={isMobile ? "1.9rem" : "2.5rem"}
               type="h1"
-              text="How will get here"
+              text="How we got here"
             />
 
             <Text
-              size={isMobile ? "1rem" : "1.3rem"}
+              size={isMobile ? "1rem" : "1.2rem"}
               type="p"
-              text="voluptates praesentium ratione provident iusto suscipit sequi nesciunt! Dolor sequi fugit, quasi iusto cum aperiam perspiciatis modi veniam commodi porro voluptas blanditiis? Nemo ipsa fuga, veniam cupiditate porro saepe consequatur, accusantium, hic facilis unde asperiores laboriosam aperiam quaerat iusto? "
+              weight={300}
+              text="Thrillers Travels start with a dream to help the next generation of Nigerians migrate to the Western countries. The company was founded in 2012 when we realized that there was no way for a young Nigerian to migrate because of limited financial resources and lack of job opportunities in Nigeria. We are here today in 2023, with over 1200 successful applicants and thousands more on their way to making their dreams come true. "
             />
             <br />
             <Text
-              size={isMobile ? "1rem" : "1.3rem"}
+              size={isMobile ? "1rem" : "1.2rem"}
               type="p"
-              text="voluptates praesentium ratione provident iusto suscipit sequi nesciunt! Dolor sequi fugit, quasi iusto cum aperiam perspiciatis modi veniam commodi porro voluptas blanditiis? Nemo ipsa fuga, veniam cupiditate porro saepe consequatur, accusantium, hic facilis unde asperiores laboriosam aperiam quaerat iusto? "
+              weight={300}
+              text="Watch the video below where Dr. Moses Adebisi of Thrillers Travels discusses the importance of migration and the benefits it can bring. He explains that when God wants to bless someone, He often instructs them to leave their home country and go to a strange land where they can experience growth and development. "
             />
           </Flex>
 
@@ -258,71 +263,53 @@ const AboutUsPage = () => {
               <Text type="h3" text="2018" />
               <Text
                 type="p"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            necessitatibus nisi magni at nobis vitae dolorum dolor, nam, sint
-            aliquam aperiam, libero sequi aut temporibus distinctio praesentium
-            laborum! Quos, vero!"
+                text=" Thrillers Travels made strides in 2018, aiding 100+ aspiring migrants. Our focus on financial accessibility and professional growth persisted, empowering individuals to overcome limitations."
               />
             </Card>
             <Card>
               <Text type="h3" text="2019" />
               <Text
                 type="p"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            necessitatibus nisi magni at nobis vitae dolorum dolor, nam, sint
-            aliquam aperiam, libero sequi aut temporibus distinctio praesentium
-            laborum! Quos, vero!"
+                text=" In 2019, we propelled over 150 applicants towards migration. As a beacon of hope, we continued to offer pathways to a better life and solidified our reputation as dream enablers."
               />
             </Card>
             <Card>
               <Text type="h3" text="2020" />
               <Text
                 type="p"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            necessitatibus nisi magni at nobis vitae dolorum dolor, nam, sint
-            aliquam aperiam, libero sequi aut temporibus distinctio praesentium
-            laborum! Quos, vero!"
+                text=" Despite global uncertainties in 2020, we assisted 125 individuals on their migration journeys. Adaptability became key, reinforcing our commitment to helping Nigerians find better opportunities abroad."
               />
             </Card>
             <Card>
               <Text type="h3" text="2021" />
               <Text
                 type="p"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            necessitatibus nisi magni at nobis vitae dolorum dolor, nam, sint
-            aliquam aperiam, libero sequi aut temporibus distinctio praesentium
-            laborum! Quos, vero!"
+                text=" In 2021, Thrillers Travels supported 200+ applicants, guiding them towards personal and professional growth in foreign lands. Our mission to empower the next generation remained steadfast."
               />
             </Card>
             <Card>
               <Text type="h3" text="2022" />
               <Text
                 type="p"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            necessitatibus nisi magni at nobis vitae dolorum dolor, nam, sint
-            aliquam aperiam, libero sequi aut temporibus distinctio praesentium
-            laborum! Quos, vero!"
+                text="Thrillers Travels soared in 2022, celebrating the success of 300+ applicants. Our belief in the transformative power of migration and commitment to accessibility remained strong."
               />
             </Card>
             <Card>
               <Text type="h3" text="2023" />
               <Text
                 type="p"
-                text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
-            necessitatibus nisi magni at nobis vitae dolorum dolor, nam, sint
-            aliquam aperiam, libero sequi aut temporibus distinctio praesentium
-            laborum! Quos, vero!"
+                text="As 2023 unfolds, Thrillers Travels' impact grows, with 600+ success stories and more to come. Our dedication to empowering Nigerians and facilitating dreams burns brighter than ever."
               />
             </Card>
           </Grid>
         </Flex>
 
-        <Flex gap="1.5rem" justify="center">
+        <Flex gap="1.5rem" justify="center" styles={{ borderRadius: "20px" }}>
           <iframe
             width="100%"
             height="415"
-            src="https://www.youtube.com/watch?v=BjFHQ6ssUFI"
-            title="YouTube video player"
+            src="https://www.youtube.com/embed/6c1DxO7G-v0?si=K8iigdQ56hDvxx5l"
+            title="Dr Moses Adebisi: You MUST Get Out Of Nigeria To Change Nigeria"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
@@ -344,7 +331,7 @@ play key roles in the next
 phase of industrial
 revolution through
 exposition by migration
-and resettlement"
+and resettlement."
               styles={{ textAlign: "center" }}
             />
           </VCard>
@@ -362,7 +349,7 @@ for National Development."
             <Text type="h3" text="Why Always Us" />
             <Text
               type="p"
-              text="Our platform is a one-stop shop for all your travel needs. It provides a streamlined, user-friendly interface for booking flights, hotels, and cars. We partner with a  wide range of service providers across the globe, ensuring our users have a broad array of options to choose from, tailored to their budgets and preferences. e work with a network of immigration attorneys who handle the complexities of visa processing, alleviating the stress and uncertainty typically associated with this process.  Between the years 2021-2023, we are privileged to relocate many Nigerians and outside the countries like UAE, Singaporeans, and from other parts of the world to Canada, New Zealand. Australia & UK."
+              text="Credibility, Integrity, and Results. Our journey began from a desire to empower the next generation of Nigerians. We offer more than a route to a new country; we provide a pathway to a better future"
             />
           </VCard>
         </Grid>

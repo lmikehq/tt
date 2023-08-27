@@ -236,7 +236,7 @@ function LoginPage() {
             margin={isMobile ? "1rem 0 0" : "2rem 0"}
             width={isMobile ? "100%" : "85%"}
             direction="column"
-            gap={isMobile ? "1rem" : "2rem"}
+            gap={".2rem"}
             overflow="unset"
           >
             <Section>
@@ -310,6 +310,7 @@ function LoginPage() {
             </Flex>
             <Button
               width="100%"
+              margin="2rem 0"
               background={
                 submissionState.loading ? "#87ceeb36" : ttColors.primary
               }

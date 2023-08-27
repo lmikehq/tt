@@ -3,8 +3,7 @@
 import {
   Autocomplete,
   Box,
-  TextField as MUITextField,
-  TextareaAutosize,
+  TextField as MUITextField
 } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import {
@@ -15,8 +14,6 @@ import {
 } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styled from "styled-components";
-import Text from "./text";
-import { useField } from "formik";
 
 const StyledInput = styled.input`
   background-color: transparent;
