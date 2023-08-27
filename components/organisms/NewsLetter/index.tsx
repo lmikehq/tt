@@ -10,30 +10,25 @@ import AppLogo from "@image/app-store.svg";
 import PlayStore from "@image/google-play.svg";
 import newsLetterBg from "@image/newsLetterbg.png";
 
-import { Grid } from "../../atoms/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Input from "@atom/input";
 
 const SubscribeWrapper = styled.div`
-  // position: absolute;
-  // left: 7.5%;
-  // bottom: 90%;
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  // background: var(--semi-bg-color);
-  // background: rgba(135, 206, 235, 0.6);
   background-image: url(${newsLetterBg.src});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: -8rem 0;
-  // z-index: -1;
   justify-content: center;
   align-items: center;
   width: 85%;
-  margin: auto;
+  margin: 5rem auto;
   height: 29.5rem;
   border-radius: 1.5rem;
-  padding: 0rem 2.5rem;
+  padding: 0rem 3.5rem;
   margin-bottom: 5rem;
+  @media (max-width: 1300px) {
+    background-position: -8rem 0;
+  }
 `;
 
 const Subcribe = styled.div`
@@ -65,7 +60,7 @@ const Subcribe = styled.div`
       line-height: 1.3rem;
       font-size: 1rem;
       font-weight: 400;
-      color: var(--placeholder-color);
+      color: #1c1b1f;
     }
   }
 
@@ -90,24 +85,33 @@ const NewsLetter = () => {
       className="newsLetter"
       style={{
         width: isMobile ? "90%" : "85%",
-        left: isMobile ? "5%" : "7.5%",
-        padding: isMobile ? "1.1rem" : "8rem 2.5rem",
-        bottom: isMobile ? "91.5%" : "90%",
+        padding: isMobile ? "1.1rem" : "0rem 3.5rem",
+        display: isMobile ? "block" : "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Flex justify="space-between" direction={isMobile ? "column" : "row"}>
+      <Flex
+        justify="space-between"
+        gap="7.1875rem"
+        direction={isMobile ? "column" : "row"}
+      >
         <Subcribe className="newsLetter">
           <Text
             type="h3"
             text="Subscribe to our newsletter"
+            weight={700}
             size={isMobile ? "1.28rem" : "2.5rem"}
             color="#06062A"
+            opacity="80%"
           />
           <Text
             type="p"
             text="Discover a world of inspiration! Unlock exclusive travel discounts, gain invaluable visa tips, and immerse yourself in captivating behind-the-scenes stories"
             size="1rem"
             color="#06062A"
+            margin={isMobile ? "0" : "-1.1rem 0 .7rem 0"}
+            opacity="70%"
           />
           <Flex
             direction={isMobile ? "column" : "row"}
@@ -119,7 +123,7 @@ const NewsLetter = () => {
               width="100%"
               parentWidth="100%"
               styles={{ backgroundColor: "#FFFFFF" }}
-              placeholder="Enter your email address"
+              placeholder="Your email address"
             />
             <Button
               height="52px"
@@ -145,22 +149,15 @@ const NewsLetter = () => {
           width="auto"
           styles={{ visibility: isMobile ? "hidden" : "visible" }}
         >
-          <Image
-            src={Barcode}
-            alt="visa"
-            width="110"
-            height="110"
-            style={{ marginLeft: "7rem", marginBottom: "1.2rem" }}
-          />
+          <Image src={Barcode} alt="visa" width="160" height="160" />
           <Flex
             direction="column"
             gap="0.5rem"
             align="center"
-            padding="0rem 0rem 1.5rem"
-            width="10rem"
+            padding="1.5rem 0 1.5rem 1.85rem"
           >
-            <Image src={AppLogo} alt="mastercard" />
-            <Image src={PlayStore} alt="american-express" />
+            <Image width={215} src={AppLogo} alt="app-store" />
+            <Image width={215} src={PlayStore} alt="play-store" />
           </Flex>
         </Flex>
       </Flex>

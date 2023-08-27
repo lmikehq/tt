@@ -1,9 +1,9 @@
-import React, {CSSProperties} from "react";
+import React, { CSSProperties } from "react";
 import NextImage, { StaticImageData } from "next/image";
 interface imageProps {
   src: StaticImageData;
   alt: string;
-  width?: number ;
+  width?: number;
   height?: number;
   styles?: CSSProperties;
   border?: string;
@@ -14,6 +14,6 @@ interface imageProps {
 }
 
 const Image: React.FC<imageProps> = (props: imageProps) => {
-  return <NextImage {...props} />;
+  return <NextImage {...props} style={{ ...props.styles }} />;
 };
 export default Image;

@@ -6,13 +6,22 @@ import Button from "@atom/button";
 import CheckBox from "@atom/checkbox";
 // import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
+import { Grid } from "@atom/grid";
 import Input from "@atom/input";
 import Link from "@atom/link";
+import SideBtn from "@atom/sideBtn";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
 import SectionLayout from "@components/layouts/sectionLayout";
 import bgImage from "@image/auth-bg.png";
-import logo from "@image/brand/tt_blue_logo_with_text.png";
+import bgImage1 from "@image/auth-bg1.png";
+import bgImage2 from "@image/auth-bg2.png";
+import bgImage3 from "@image/auth-bg3.jpeg";
+import bgImage4 from "@image/auth-bg4.jpeg";
+import bgImage5 from "@image/auth-bg5.jpeg";
+import bgImage7 from "@image/auth-bg7.jpeg";
+import bgImage8 from "@image/auth-bg8.jpeg";
+import logo from "@image/brand/tt_blue_logo_with_text1.png";
 import google from "@image/google.svg";
 import sleep from "@lib/sleep";
 import Section from "@molecule/section";
@@ -22,8 +31,19 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
+
+const settings = {
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+};
 
 function LoginPage() {
   const { isMobile } = useScreenResolution();
@@ -100,22 +120,112 @@ function LoginPage() {
   }
 
   return (
-    <SectionLayout>
-      <Flex margin="4rem 0">
+    <SectionLayout {...(isMobile && { padding: "0" })}>
+      <Grid
+        columns="repeat(auto-fit, minmax(300px, 1fr))"
+        margin={isMobile ? "1rem 0" : "4rem 0"}
+        gap="5rem"
+      >
+        <Section styles={{ display: isMobile ? "none" : "block" }}>
+          <Slider {...settings}>
+            <div>
+              <img
+                src={bgImage.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage1.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage2.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage3.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage4.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage5.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+
+            <div>
+              <img
+                src={bgImage7.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+            <div>
+              <img
+                src={bgImage8.src}
+                alt="background image"
+                width="100%"
+                height="798px"
+                style={{ borderRadius: "30px", objectFit: "cover" }}
+              />
+            </div>
+          </Slider>
+        </Section>
         <Section>
-          <img
-            src={logo.src}
-            alt="logo"
-            height={60}
-            onClick={() => router.push("/")}
-            style={{ cursor: "pointer" }}
-          />
+          <Flex justify="space-between">
+            <img
+              src={logo.src}
+              alt="logo"
+              height={60}
+              onClick={() => router.push("/")}
+              style={{ cursor: "pointer" }}
+            />
+            <SideBtn
+              title="Do not have an account? "
+              // buttonText="Sign Up"
+              linkText="Sign Up"
+              linkUrl="/auth/register"
+            />
+          </Flex>
 
           <Text
             type="h1"
-            margin="2rem 0 1rem"
-            text="Welcome back,"
-            size="20px"
+            margin="2rem 0 .3rem"
+            text="Welcome back"
+            size={isMobile ? "30px" : "40px"}
+            weight={700}
           />
           <Text
             type="p"
@@ -123,13 +233,18 @@ function LoginPage() {
             size="17px"
           />
           <Flex
-            margin="3rem 0"
+            margin={isMobile ? "1rem 0 0" : "2rem 0"}
             width={isMobile ? "100%" : "85%"}
             direction="column"
             gap={isMobile ? "1rem" : "2rem"}
             overflow="unset"
           >
             <Section>
+              <Text
+                type="p"
+                text="Email"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
               <Input
                 placeholder="Enter your email"
                 height="3rem"
@@ -143,6 +258,11 @@ function LoginPage() {
               />
             </Section>
             <Section>
+              <Text
+                type="p"
+                text="Password"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
               <Input
                 placeholder="******"
                 height="3rem"
@@ -182,7 +302,7 @@ function LoginPage() {
                 <Text
                   type="p"
                   text="Forgot password?"
-                  color="#FF8682"
+                  color="#a0001d"
                   whiteSpace="nowrap"
                   cursor="pointer"
                 />
@@ -201,25 +321,28 @@ function LoginPage() {
                 <Text type="p" text="Login" color={ttColors.dark} size="20px" />
               )}
             </Button>
-            <p style={{ textAlign: "center", fontSize: "16px" }}>
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "16px",
+                display: isMobile ? "block" : "none",
+              }}
+            >
               Do not have an account? &nbsp;
-              <Link href="/auth/register" text="Sign up" color="#FF8682" />
+              <Link href="/auth/register">
+                <Text type='span' text="Sign up" color="#a0001d" cursor="pointer" />
+              </Link>
             </p>
             <Flex
-              justify="space-between"
+              justify="center"
               align="center"
-              width={isMobile ? "100%" : "90%"}
+              width="100%"
               margin="2rem 0 1rem"
             >
               <Divider
                 sx={{ width: isMobile ? "30%" : "33%", color: "#112211" }}
               />
-              <Text
-                type="p"
-                text="Or login with"
-                margin="0 1rem"
-                color="#112211"
-              />
+              <Text type="p" text="Or" margin="0 1rem" color="#112211" />
               <Divider
                 sx={{ width: isMobile ? "30%" : "33%", color: "#112211" }}
               />
@@ -230,13 +353,18 @@ function LoginPage() {
               width="100%"
             >
               <img src={google.src} alt="google" height="30" width={30} />
+              <Text
+                type="p"
+                size={14}
+                weight={600}
+                text="Login With Google"
+                color="#19013b"
+                margin="0px 0px 0px .5rem"
+              />
             </Button>
           </Flex>
         </Section>
-        <Section styles={{ display: isMobile ? "none" : "block" }}>
-          <img src={bgImage.src} alt="background image" width="100%" />
-        </Section>
-      </Flex>
+      </Grid>
     </SectionLayout>
   );
 }

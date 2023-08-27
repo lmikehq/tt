@@ -12,6 +12,10 @@ import FormStepTitle from "./formStepsTitle";
 import { useUserStore } from "store/useStore";
 import { FormikValues } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
+import VisaApplicationTypeTile from "@molecule/payment/VisaApplicationTypeTile";
+import { IoIosArrowDown } from "react-icons/io";
+import { SearchInputAsString } from "@atom/searchInput";
+import { BiInfoCircle, BiInfoSquare, BiSolidInfoCircle } from "react-icons/bi";
 
 interface formProps {
   steps: string[];
@@ -54,7 +58,10 @@ function Booking({ steps, index }: formProps) {
             key={i}
             margin={isMobile ? ".2rem 0" : "1rem 0"}
           >
-            <Section margin=".5rem 0" padding={isMobile ? "0.2rem 1rem" : "0px"}>
+            <Section
+              margin=".5rem 0"
+              padding={isMobile ? "0.2rem 1rem" : "0px"}
+            >
               <Text type="p" text={x.name} weight={800} />
               <Text
                 type="p"
@@ -86,7 +93,7 @@ function Booking({ steps, index }: formProps) {
             background: "#FFFFFF",
             boxShadow: "0px 4px 16px rgba(17, 34, 17, 0.05)",
             borderRadius: "12px",
-            margin: isMobile  ? "1rem 0" : "2rem 0",
+            margin: isMobile ? "1rem 0" : "2rem 0",
             padding: "1rem",
           }}
         >
@@ -97,7 +104,6 @@ function Booking({ steps, index }: formProps) {
             size={isMobile ? "1.1rem" : "1.2rem"}
           />
           <Input
-            height="40px"
             placeholder="Email address"
             margin={isMobile ? ".7rem  0 1rem" : "1rem 0"}
           />

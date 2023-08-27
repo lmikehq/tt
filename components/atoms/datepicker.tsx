@@ -9,6 +9,8 @@ import { useState } from "react";
 import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { TextField } from "./input";
+import { TextFieldProps } from "@mui/material";
 
 interface BlockDatePickerProps {
   value?: Range;
@@ -42,26 +44,34 @@ export const BlockDatePicker: React.FC<BlockDatePickerProps> = ({
       onChange={onChange}
       direction="vertical"
       showDateDisplay={false}
-      minDate={new Date()}
+      // minDate={new Date()}
       disabledDates={disabledDates}
     />
   );
 };
 
 interface DatePickerProps {
-  value?: Dayjs;
-  onChange: (value: any) => void;
+  value?: Dayjs | null;
+  onChange?: (value: any) => void;
+  views?: ('year' | 'month' | 'day' )[];
+  disabled?: boolean;
+  label?: string;
+  minDate?: Dayjs | null;
+  maxDate?: Dayjs;
+  placeholder?: string;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value }) => {
-  const currentDate = new Date();
-
+export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
+        label={label}
         value={value}
         onChange={onChange}
-        disablePast
+        views={views}
+        disabled={disabled}
+        minDate={minDate}
+        maxDate={maxDate}
         sx={{
           width: "100%",
           cursor: "pointer",
@@ -69,6 +79,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value }) => {
             color: "#1C1B1F",
             fontWeight: 100,
           },
+        }}
+        slotProps={{
+          textField: {
+            placeholder: placeholder,
+            error: false
+          }
         }}
       />
     </LocalizationProvider>

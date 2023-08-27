@@ -2,12 +2,12 @@
 
 import styled from "styled-components";
 import { Grid } from "@atom/grid";
-import ReviewLayout from "@layout/sectionLayout";
 import RatingComponent from "./reviewStar";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import { Divider } from "@mui/material";
 import SectionTitle from "@molecule/sectionTitle";
+import SectionLayout from "@layout/sectionLayout";
 
 const ReviewWrapper = styled.div`
   margin: 5rem 0 0 0;
@@ -17,7 +17,7 @@ const Card = styled.div`
   align-items: center;
   padding: 0.7rem;
   width: 100%;
-  // height: 310px;
+  height: 100%;
   margin-bottom: 2rem;
 
   background: var(--default-color);
@@ -140,14 +140,14 @@ const Review = () => {
 
   return (
     <ReviewWrapper style={{ marginTop: isMobile ? "1rem" : "5rem" }}>
-      <ReviewLayout>
+      <SectionLayout>
         <SectionTitle
           title="Reviews"
           description="What people says about Golobe facilities."
           buttonText={isMobile ? "" : "See all"}
           href=""
         />
-        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap="2rem">
+        <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} gap={isMobile ? "1rem" : "2rem"} className="reviewCard">
           {reviewCardToShow.map((review, index) => (
             <div key={review.id}>
               <Card
@@ -181,7 +181,7 @@ const Review = () => {
           buttonText={isMobile ? "See all review" : ""}
           href=""
         />
-      </ReviewLayout>
+      </SectionLayout>
     </ReviewWrapper>
   );
 };

@@ -157,6 +157,7 @@ const FooterSection = () => {
                 text="Top Countries"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"
@@ -181,6 +182,7 @@ const FooterSection = () => {
                 text="Useful Link"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"
@@ -203,6 +205,7 @@ const FooterSection = () => {
                 text="Support"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"
@@ -225,6 +228,7 @@ const FooterSection = () => {
                 text="Company"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"

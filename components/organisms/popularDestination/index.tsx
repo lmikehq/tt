@@ -164,6 +164,7 @@ const PopularDestinations = ({
         <Grid
           columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
           gap="16px"
+          className="destinationCard"
         >
           {destinationCard
             .slice(0, isMobile ? 4 : undefined)

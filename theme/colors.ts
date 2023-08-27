@@ -18,4 +18,6 @@ export const ttColors = {
   defaultColor: "#FFFFFF",
   salmon: "#FF8682",
   slamon: "#FF8682",
+  gray: "#B6B6B6",
+  red: "#A0001D"
 };

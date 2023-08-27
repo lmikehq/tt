@@ -1,179 +1,253 @@
 import Flex from "@atom/flex";
-import Input from "@atom/input";
 import Text from "@atom/text";
-import { validateEmail } from "@lib/utilFns";
 import Section from "@molecule/section";
-import { FormikValues } from "formik";
-import { AiOutlineCheck } from "react-icons/ai";
-import { FaCircle } from "react-icons/fa";
-import { ttColors } from "theme/colors";
+import { useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { SearchInputAsString } from "@atom/searchInput";
-import { IoIosArrowDown } from "react-icons/io";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Required from "@atom/required";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { useState, useEffect } from "react";
+import TextArea from "@atom/textArea";
+import { CustomRadioGroup } from "@atom/radio";
+import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
+import {
+  FieldAsDate,
+  FieldAsString,
+  FieldInput,
+  FieldString,
+} from "@atom/fieldInput";
+import { SingleFormType } from "../applicationForm";
+import { PersonalInfoInterface } from "types";
+import ContinueButton from "@atom/continueButton";
+import dayjs, { Dayjs } from "dayjs";
+import useFormikLocalStorage from "hook/useFormikLocalStorage";
 
 interface formProps {
-  formik: FormikValues;
   steps: string[];
   index: number;
+  nextStep: ({ form }: { form: SingleFormType }) => void;
+  isLoading: boolean;
 }
 
-function PersonalInfo({ formik, steps, index }: formProps) {
+function PersonalInfo({ steps, index, nextStep, isLoading }: formProps) {
   const { isMobile } = useScreenResolution();
-  
+  const [disabled, setDisabled] = useState(true);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [passEndDate, setPassEndDate] = useState<Dayjs | null>(null);
+  const [showDate, setShowDate] = useState(false);
+  const [showPassDate, setShowPassDate] = useState(false)
+
+  const MeansId = [
+    "National ID Card",
+    "Social Security Card",
+    "Birth Certificate",
+    "Voter ID Card",
+    "International Passport"
+  ]
+
+  const [value, setValue] = useState("");
+  const [radio, setRadio] = useState("");
+  const [formData, setFormData] = useState({
+    disability: '', entry: '', criminal: '',
+    looting: ''
+  })
+  const formik = useFormik({
+    initialValues: personalInfoKeys,
+    validationSchema: personalInfoSchema,
+    onSubmit: (values: PersonalInfoInterface) => {
+      nextStep({ form: values });
+      setDisabled(false);
+    },
+  });
+
+  const options = [
+    { value: "Yes", label: "Yes" },
+    { value: "No", label: "No" },
+  ];
+
+  const { updateFieldValue } = useFormikLocalStorage(formik, personalInfoKeys);
+
+  useEffect(() => {
+    setShowDate(MeansId.some((item) => item === formik.values.meansOfId)) 
+    setShowPassDate(formik.values.meansOfId === MeansId[4])
+  }, [formik.values.meansOfId])
+
   return (
-    <Section width={isMobile ? "100%" : "50%"}>
-      <FormStepTitle steps={steps} index={index} />
-      <form style={{ margin: "1rem 0" }}>
-        <Flex align="center" gap=".5rem" margin="1rem 0 0">
-          <FaCircle size={".4rem"} color={ttColors.salmon} />
-          <Text
-            type="p"
-            text=" Your name as it appears on your passport"
-            size={isMobile ? "15px" : "16px"}
-          />
-        </Flex>
+    <Section>
+      <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
+      <form onSubmit={formik.handleSubmit}>
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text
-              type="p"
-              text="First and Middle Name"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.firstName?.length > 5 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.firstName}
-              onChange={(x) =>
-                formik.setFieldValue("firstName", x.target.value)
-              }
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Last Name"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="lastName"
+              placeholder="Enter Last Name"
+              formik={formik}
             />
           </Section>
           <Section>
-            <Text
-              type="p"
-              text="Last Name"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.lastName?.length > 5 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.lastName}
-              onChange={(x) => formik.setFieldValue("lastName", x.target.value)}
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="First Name"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="firstName"
+              placeholder="Enter First Name"
+              formik={formik}
             />
           </Section>
         </Flex>
-
-        <Section>
-          <Text
-            type="p"
-            text="Email Address"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-          />
-          <Input
-           height="40px"
-            addon={
-              validateEmail(formik?.values?.email) ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik.values.email}
-            onChange={(x) => formik.setFieldValue("email", x.target.value)}
-          />
-        </Section>
-
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text
-              type="p"
-              text="Place of Origin"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.placeOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.placeOfOrigin}
-              onChange={(x) =>
-                formik.setFieldValue("placeOfOrigin", x.target.value)
-              }
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Middle Name"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="middleName"
+              placeholder="Enter Middle Name"
+              formik={formik}
             />
           </Section>
           <Section>
-            <Text
-              type="p"
-              text="State of Origin"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.stateOfOrigin?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.stateOfOrigin}
-              onChange={(x) =>
-                formik.setFieldValue("stateOfOrigin", x.target.value)
-              }
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="State of Origin"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="stateOfOrigin"
+              placeholder="Select your State of Origin"
+              formik={formik}
             />
           </Section>
         </Flex>
-
-        <Section>
-          <Text
-            type="p"
-            text="LG. of Origin"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-          />
-          <Input
-           height="40px"
-            addon={
-              formik?.values?.lgOfOrigin?.length > 2 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik.values.lgOfOrigin}
-            onChange={(x) => formik.setFieldValue("lgOfOrigin", x.target.value)}
-          />
-        </Section>
-
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text
-              type="p"
-              text="Means of ID"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="LG. of Origin"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="lgOfOrigin"
+              placeholder="Select your LG of origin"
+              formik={formik}
             />
-            <SearchInputAsString
+          </Section>
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Native Language"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="nativeLanguage"
+              formik={formik}
+              placeholder="Enter your native language"
+            />
+          </Section>
+        </Flex>
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Email Address"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="email"
+              formik={formik}
+              placeholder="Enter your e-mail address"
+            />
+          </Section>
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Phone Number"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <PhoneInput
+              country={"ng"}
+              value={value}
+              autoFormat={true}
+              onChange={(e) => setValue(e)}
+              inputClass="w"
+              placeholder="Enter phone number"
+            />
+          </Section>
+        </Flex>
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Means of ID"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldString
               options={[
-                "Passport",
+                "National Passport",
+                "International Passport",
                 "National ID Card",
                 "Driver's License",
                 "Social Security Card",
@@ -183,93 +257,145 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Resident Permit/Visa",
                 "Health Insurance Card",
               ]}
-             height="8px"
-              onChange={(x) => formik.setFieldValue("meansOfId", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.meansOfId}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.meansOfId ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-                {/* sdfsdf */}
-              </Flex>
-            </SearchInputAsString>
+              placeholder="Select your means of ID"
+              name="meansOfId"
+              formik={formik}
+            />
           </Section>
           <Section>
-            <Text
-              type="p"
-              text="ID Number"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.idNumber?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.idNumber}
-              onChange={(x) => formik.setFieldValue("idNumber", x.target.value)}
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="ID Number"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="idNumber"
+              placeholder="Enter your ID number"
+              formik={formik}
             />
           </Section>
         </Flex>
-
-        <Section>
-          <Text
-            type="p"
-            text="Residential Address"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-          />
-          <Input
-           height="40px"
-            addon={
-              formik?.values?.residentialAddress?.length > 2 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            type="address"
-            value={formik.values.residentialAddress}
-            onChange={(x) =>
-              formik.setFieldValue("residentialAddress", x.target.value)
-            }
-          />
-        </Section>
-        {/* <Section>
-          <Text type="p" text="How can we  locate you?" margin={ isMobile ? ".2rem 0" : "1rem 0"} />
-          <Input
-            addon={
-              formik?.values?.howCanWeLocateYou?.length > 2 ? (
-                <AiOutlineCheck color="#3BB98E" />
-              ) : undefined
-            }
-            value={formik.values.howCanWeLocateYou}
-            onChange={(x) =>
-              formik.setFieldValue("howCanWeLocateYou", x.target.value)
-            }
-          />
-        </Section> */}
-
+        {!showDate && (
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issue Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="issueDate"
+                placeholder="Select your Issue Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue(`issueDate`, `${e}`);
+                  setEndDate(dayjs(e));
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="expiryDate"
+                placeholder="Select the Expiry Date"
+                formik={formik}
+                minDate={endDate}
+                disabled={endDate === null}
+              />
+            </Section>
+          </Flex>
+        )}
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Country of Citizenship"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldAsString
+              formik={formik}
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              name="homeCountry"
+              placeholder="Select your country of citizenship"
+            />
+          </Section>
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Place of Birth (Country & State)"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldAsString
+              formik={formik}
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              name="placeOfOrigin"
+              placeholder="Select your country  of birth"
+            />
+          </Section>
+        </Flex>
+        <Section>
+          <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Marital Status"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+              text="Residential Address"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
-            <SearchInputAsString
+            <Required />
+          </Flex>
+          <FieldInput
+            name="residentialAddress"
+            type="address"
+            formik={formik}
+            placeholder="Enter your residential address"
+          />
+        </Section>
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Marital Status"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldString
               options={[
                 "Single",
                 "Married",
@@ -283,92 +409,375 @@ function PersonalInfo({ formik, steps, index }: formProps) {
                 "Cohabiting",
                 "Remarried",
               ]}
-             height="8px"
-              onChange={(x) => formik.setFieldValue("maritalStatus", x)}
-            >
-              <Flex justify="space-between">
-                <Text
-                  type="p"
-                  text={formik?.values?.maritalStatus}
-                  color="#1C1B1F"
-                  weight={100}
-                  styles={{ cursor: "pointer" }}
-                />
-                {formik.values.maritalStatus ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : (
-                  <IoIosArrowDown size={20} />
-                )}
-                {/* sdfsdf */}
-              </Flex>
-            </SearchInputAsString>
+              placeholder="Select your marital status"
+              name="maritalStatus"
+              formik={formik}
+            />
           </Section>
           <Section>
-            <Text
-              type="p"
-              text="Partner’s Name (if applicable)"
-              margin={isMobile ? ".5rem 0" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.partnersName?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.partnersName}
-              onChange={(x) =>
-                formik.setFieldValue("partnersName", x.target.value)
-              }
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Partner’s Name (if applicable)"
+                margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="partnersName"
+              formik={formik}
+              placeholder="Enter your partner's name"
             />
           </Section>
         </Flex>
-
         <Flex
-          margin="0 0 1rem"
+          margin="0"
           justify="space-between"
           direction={isMobile ? "column" : "row"}
           gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
-            <Text
-              type="p"
-              text="Facebook username"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Passport Number"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="passportNumber"
+              formik={formik}
+              placeholder="Enter your Passport Number"
             />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.facebookUsername?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.facebookUsername}
-              onChange={(x) =>
-                formik.setFieldValue("facebookUsername", x.target.value)
-              }
-            />
-          </Section>{" "}
+          </Section>
           <Section>
-            <Text
-              type="p"
-              text="Linkedin/Instagram username"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0"}
-            />
-            <Input
-             height="40px"
-              addon={
-                formik?.values?.linkedinOrInstagram?.length > 2 ? (
-                  <AiOutlineCheck color="#3BB98E" />
-                ) : undefined
-              }
-              value={formik.values.linkedinOrInstagram}
-              onChange={(x) =>
-                formik.setFieldValue("linkedinOrInstagram", x.target.value)
-              }
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Issued Country"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldAsString
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              formik={formik}
+              name="issuingCountry"
+              placeholder="Select the country"
             />
           </Section>
         </Flex>
+        {showPassDate && (
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section width="100%">
+              <Text
+                type="p"
+                text="Issued Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="passportIssueDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  updateFieldValue("passportIssueDate", e);
+                  setPassEndDate(e);
+                }}
+              />
+            </Section>
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+                disabled={passEndDate === null}
+                minDate={passEndDate}
+              />
+            </Section>
+          </Flex>
+        )}
+        <Section>
+          <Text
+            type="p"
+            text="Main Purpose of your Trip"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+          />
+          <TextArea
+            onChange={(e: any) => {
+              formik.setFieldValue("purposeOfTrip", e.target.value);
+            }}
+          />
+        </Section>
+        <Section>
+          <Text
+            type="h2"
+            text="Background Information"
+            weight={600}
+            size={24}
+            margin="4rem 0 .5rem"
+            styles={{
+              lineHeight: "29.26px",
+            }}
+          />
+        </Section>
+        <Section>
+          <ol>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in Canada?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+                <CustomRadioGroup
+                  name="disability"
+                  options={options}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, disability: e }))
+                  }
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            {formData.disability === "Yes" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
+            )}
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in Canada?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Have you ever been refused a visa or permit, denied entry or ordered to leave Canada or any other Country?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Have you previously applied to enter or remain in Canada?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, entry: e }))
+                  }
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            {formData.entry === "Yes" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
+            )}
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, criminal: e }))
+                  }
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            {formData.criminal === "Yes" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
+            )}
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) => setRadio(e)}
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+
+            <li>
+              <Flex align="center" gap="2rem" justify="space-between">
+                <Text
+                  styles={{
+                    width: "65%",
+                    justifyContent: "flex-start",
+                  }}
+                  size={16}
+                  weight={400}
+                  type="p"
+                  text="Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?"
+                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  padding="0 0 0 1rem"
+                />
+
+                <CustomRadioGroup
+                  defaultValue=""
+                  options={options}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, looting: e }))
+                  }
+                  justifyContent="flex-end"
+                />
+              </Flex>
+            </li>
+            {formData.looting === "Yes" && (
+              <Section>
+                <Text
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                />
+                <TextArea />
+              </Section>
+            )}
+          </ol>
+        </Section>
+        <ContinueButton isLoading={isLoading} disabled={disabled} />
       </form>
     </Section>
   );
