@@ -10,12 +10,16 @@ import Text from "@atom/text";
 import { customNavigationLinks } from "data/customNavigationLinks";
 import { PRIVACY_POLICY } from "data/privacyPolicy";
 import PrivacyPolicyDetails from "./prvacyPolicyDetails";
+import Section from "@molecule/section";
 
 const PrivacyPolicySection = styled.section`
   margin-top: 2.5rem;
 `;
 
-const PrivacyPolicy = styled.div``;
+const PrivacyPolicy = styled.div`
+  margin-bottom: 2rem;
+
+`;
 
 const PrivacyPolicyCard = styled.div`
   height: fit-content;
@@ -30,27 +34,27 @@ const PravacyPoliicyPage = () => {
   const { isMobile } = useScreenResolution();
   return (
     <PrivacyPolicySection>
-      <Breadcrumb />
       <Grid
         gap={isMobile ? "1rem" : "3rem"}
         columns={isMobile ? "100%" : "25% 75%"}
         margin="2rem auto"
       >
         <UsefulLinks navigationLinks={customNavigationLinks} />
-        <PrivacyPolicy>
-          <h1>Privacy Policy Section</h1>
-        </PrivacyPolicy>
-        <UsefulLinks navigationLinks={customNavigationLinks} />
-        <PrivacyPolicyCard>
-          <Text
-            type="h3"
-            text="Last Updated: July 27th, 2023"
-            size={isMobile ? ".8rem" : "1rem"}
-            margin="0 0 2rem"
-            color="#475569"
-          />
-          <PrivacyPolicyDetails details={PRIVACY_POLICY} />
-        </PrivacyPolicyCard>
+        <Section>
+          <PrivacyPolicy>
+            <h1>Privacy Policy Section</h1>
+          </PrivacyPolicy>
+          <PrivacyPolicyCard>
+            <Text
+              type="h3"
+              text={`Last Updated: ${new Date().toLocaleDateString()}`}
+              size={isMobile ? ".8rem" : "1rem"}
+              margin="0 0 2rem"
+              color="#475569"
+            />
+            <PrivacyPolicyDetails details={PRIVACY_POLICY} />
+          </PrivacyPolicyCard>
+        </Section>
       </Grid>
     </PrivacyPolicySection>
   );
