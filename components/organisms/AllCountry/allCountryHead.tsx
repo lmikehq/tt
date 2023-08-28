@@ -21,22 +21,28 @@ const AllCountryHeader = styled.div`
     position: absolute;
     top: 45%;
     text-transform: uppercase;
-    left: 80%;
+    left: 75%;
     transform: translate(-50%, -50%);
     color: #fff;
-    background: #0e0d0d2b;
+    width: max-content;
+    background: #06062A80;
     text-align: center;
+    font-weight: 700 !important;
+    font-size: 48px;
     font-style: normal;
     font-weight: 700;
+    width: 25%;
     font-size: 54px;
     padding: 0px 1rem;
-    line-height: 96px;
+    line-height: 1.5em;
     text-shadow: 0px 4px 79px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
 
     @media screen and (max-width: 900px) {
       font-size: 24px;
       left: 50% !important;
+      width: 100%;
+      background: transparent;
     }
   }
 `;

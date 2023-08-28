@@ -335,7 +335,7 @@ export const COUNTRY_FLAGS = [
   },
 
   {
-    name: "Åland Islands",
+    name: "Aland Islands",
     flag: ax,
     code: "AX",
   },
@@ -1261,6 +1261,8 @@ export const COUNTRY_FLAGS = [
     name: "Nigeria",
     flag: ng,
     code: "NG",
+    currency: "Nigerian Naira",
+    currencyCode: "NGN",
   },
 
   {

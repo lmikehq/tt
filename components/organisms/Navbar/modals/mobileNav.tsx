@@ -80,7 +80,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
               <Button
                 width="100%"
                 background="transparent"
-                border={`1px solid ${ttColors.primary}`}
+                border={`1px solid #06062A`}
                 margin="2rem 0 1.4rem"
               >
                 <Text

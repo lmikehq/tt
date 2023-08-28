@@ -5,7 +5,6 @@ import { Grid } from "@atom/grid";
 import Image from "next/image";
 import { FaPaperPlane } from "react-icons/fa";
 import Button from "@atom/button";
-import FrameLayout from "@layout/sectionLayout";
 import VisaImg from "@image/serviceCard/visas.png";
 import FlightImg from "@image/serviceCard/flight.png";
 import HotelImg from "@image/serviceCard/hotel.png";
@@ -13,6 +12,7 @@ import TravelImg from "@image/serviceCard/travel.png";
 import { useRouter } from "next/navigation";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "./flex";
+import SectionLayout from "@layout/sectionLayout";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;
@@ -86,7 +86,7 @@ const serviceCard = [
     description:
       "Search Flights & Places Hire to our most popular destinations",
     button: "Book visa",
-    icon: <FaPaperPlane />,
+    icon: <FaPaperPlane size={14} />,
   },
 
   {
@@ -96,7 +96,7 @@ const serviceCard = [
     description:
       "Search Flights & Places Hire to our most popular destinations",
     button: "Search flights",
-    icon: <FaPaperPlane />,
+    icon: <FaPaperPlane size={14} />,
   },
 
   {
@@ -106,7 +106,7 @@ const serviceCard = [
     description:
       "Search Flights & Places Hire to our most popular destinations",
     button: "Explore guide",
-    icon: <FaPaperPlane />,
+    icon: <FaPaperPlane size={14} />,
   },
 
   {
@@ -116,7 +116,7 @@ const serviceCard = [
     description:
       "Search Flights & Places Hire to our most popular destinations",
     button: "Show hotels",
-    icon: <FaPaperPlane />,
+    icon: <FaPaperPlane size={14} />,
   },
 ];
 
@@ -130,7 +130,7 @@ const Frame: React.FC = () => {
 
   return (
     <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
-      <FrameLayout>
+      <SectionLayout>
         <Grid columns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap="2rem">
           {serviceCard.map((item) => (
             <ServiceCard key={item.id} style={{ position: "relative" }}>
@@ -142,11 +142,11 @@ const Frame: React.FC = () => {
                   zIndex="1"
                   background="var(--primary-color)"
                   padding="1rem 1.3rem"
-                  styles={{ width: isMobile ? "50%" : "27%" }}
+                  styles={{ width: isMobile ? "50%" : "40%" }}
                   color="var(--secondary-color)"
                   onClick={applyButton}
                 >
-                  <Flex gap=".5rem">
+                  <Flex gap=".5rem" justify="center" align="center">
                     {item.icon}
                     <Text type="span" text={item.button} whiteSpace="nowrap" />
                   </Flex>
@@ -155,7 +155,7 @@ const Frame: React.FC = () => {
             </ServiceCard>
           ))}
         </Grid>
-      </FrameLayout>
+      </SectionLayout>
     </FrameWrapper>
   );
 };

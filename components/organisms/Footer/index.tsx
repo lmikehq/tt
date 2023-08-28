@@ -36,9 +36,9 @@ const FooterWrapper = styled.footer`
     padding: 1rem 0;
   }
 `;
-const FooterGrid = styled.div`
+const FooterGrid = styled.div<{ isMobile?: boolean }>`
   background-color: var(--primary-color);
-  padding: 5.3125rem;
+  padding: ${(props) => (props.isMobile ? "0rem" : "5.3125rem")};
 `;
 
 const FooterIcons = [
@@ -105,15 +105,15 @@ const FooterSection = () => {
   ];
 
   const supports = [
-    { href: "/help_enter", text: "Help Center", color: "#06062A" },
+    { href: "/help-center", text: "Help Center", color: "#06062A" },
     { href: "/contact", text: "Contact us", color: "#06062A" },
-    { href: "/privacy", text: "Privacy policy", color: "#06062A" },
+    { href: "/privacy-policy", text: "Privacy policy", color: "#06062A" },
     { href: "/terms", text: "Terms of service", color: "#06062A" },
-    { href: "/trust_safety", text: "Trust and safety", color: "#06062A" },
+    { href: "/trust-and-safety", text: "Trust and safety", color: "#06062A" },
   ];
 
   const aboutUs = [
-    { href: "/", text: "About us", color: "#06062A" },
+    { href: "/about-us", text: "About us", color: "#06062A" },
     { href: "/", text: "Careers", color: "#06062A" },
     { href: "/", text: "Press", color: "#06062A" },
     { href: "/", text: "Blog", color: "#06062A" },
@@ -124,8 +124,8 @@ const FooterSection = () => {
   return (
     <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "" }}>
       <NewsLetter />
-      <FooterGrid>
-        <SectionLayout margin="0 auto">
+      <FooterGrid isMobile={isMobile}>
+        <SectionLayout margin="0 auto" {...(isMobile && { padding: '0' })}>
           <Grid
             className="footerLayout"
             gap={isMobile ? "2rem" : "2.5rem"}
@@ -140,7 +140,8 @@ const FooterSection = () => {
                 className="footerIcons"
                 columns="repeat(4, 1fr)"
                 gap="1rem"
-                width={isMobile ? "20%" : "70%"}
+                justify="center"
+                width="fit-content"
                 margin={"1rem 0rem 0rem 0rem"}
               >
                 {FooterIcons.map((icon) => (
@@ -157,6 +158,7 @@ const FooterSection = () => {
                 text="Top Countries"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"
@@ -181,6 +183,7 @@ const FooterSection = () => {
                 text="Useful Link"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"
@@ -203,6 +206,7 @@ const FooterSection = () => {
                 text="Support"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"
@@ -225,6 +229,7 @@ const FooterSection = () => {
                 text="Company"
                 color="#06062A"
                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
+                weight={700}
               />
               <Flex
                 direction="column"

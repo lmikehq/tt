@@ -9,7 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "./flex";
 import Text from "./text";
 
@@ -71,26 +71,37 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
     fontSize: 16,
   },
 }));
+export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
+  width: " 28px",
+  height: "28px",
+  borderRadius: "50%",
+  backgroundImage: `url(${flag})`,
+}));
 
 interface SearchProps {
   legend?: string;
   children?: React.ReactNode;
   placeholder?: string;
   height?: string;
+  padding?: string;
   options: any[];
   value?: any;
   border?: string;
+  disabled?: boolean;
 
   onChange: (x: any) => void;
 }
 
 export default function SearchInput({
+  placeholder,
   children,
   options,
   legend,
   value,
   height,
+  padding,
   onChange,
+  disabled = false,
 }: // anchorEl,
 // setAnchorEl,
 SearchProps) {
@@ -122,7 +133,6 @@ SearchProps) {
           sx={{
             width: "100%",
             fontSize: 16,
-            color: "#1C1B1F",
             "& .MuiInputAdornment-root": {
               position: "absolute",
               top: "50%",
@@ -134,11 +144,11 @@ SearchProps) {
               display: "block!important",
             },
             "& label": {
-              color: "#1C1B1F!important",
               fontSize: "16px!important",
             },
             "& input": {
-              height: height || "8px",
+              height: height || "45px",
+              padding: padding || "0px",
             },
           }}
           onClick={handleClick}
@@ -153,88 +163,94 @@ SearchProps) {
           }}
         />
       </Box>
-      <StyledPopper
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        placement="bottom-start"
-        sx={{
-          width: getWidth(),
-        }}
-      >
-        <ClickAwayListener onClickAway={handleClose}>
-          <div>
-            <Autocomplete
-              open
-              onClose={(
-                _event: React.ChangeEvent<{}>,
-                reason: AutocompleteCloseReason
-              ) => {
-                if (reason === "escape") {
-                  handleClose();
-                }
-              }}
-              value={value}
-              onChange={(event, newValue, reason) => {
-                if (reason === "clear") {
-                  return;
-                }
-                if (
-                  event.type === "keydown" &&
-                  (event as React.KeyboardEvent).key === "Backspace" &&
-                  reason === "removeOption"
-                ) {
-                  return;
-                }
-                if (newValue !== null) {
-                  //*** refactoring */
-                  // the function should run before dropdown modal closes which is not the case currently!
-                  handleClose();
-                  onChange(newValue);
-                }
-              }}
-              disableCloseOnSelect
-              PopperComponent={PopperComponent}
-              renderTags={() => null}
-              noOptionsText="No matches found"
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Flex align="center" margin=".4rem .6rem" gap=".6rem">
-                    <Image src={option.flag} width={16} height={16} alt="" />
-                    <Text
-                      type="p"
-                      text={`${option.name} - ${option.code}`}
-                      weight={100}
-                    />
-                  </Flex>
-                  <br />
-                </li>
-              )}
-              options={options}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <StyledInput
-                  ref={params.InputProps.ref}
-                  inputProps={params.inputProps}
-                  placeholder=""
-                  autoFocus
-                  onChange={(e) => setInputValue(e.target.value)}
-                />
-              )}
-            />
-          </div>
-        </ClickAwayListener>
-      </StyledPopper>
+      {disabled ? null : (
+        <StyledPopper
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          placement="bottom-start"
+          sx={{
+            width: getWidth(),
+          }}
+        >
+          <ClickAwayListener onClickAway={handleClose}>
+            <div>
+              <Autocomplete
+                open
+                onClose={(
+                  _event: React.ChangeEvent<{}>,
+                  reason: AutocompleteCloseReason
+                ) => {
+                  if (reason === "escape") {
+                    handleClose();
+                  }
+                }}
+                value={value}
+                onChange={(event, newValue, reason) => {
+                  if (reason === "clear") {
+                    return;
+                  }
+                  if (
+                    event.type === "keydown" &&
+                    (event as React.KeyboardEvent).key === "Backspace" &&
+                    reason === "removeOption"
+                  ) {
+                    return;
+                  }
+                  if (newValue !== null) {
+                    //*** refactoring */
+                    // the function should run before dropdown modal closes which is not the case currently!
+                    handleClose();
+                    onChange(newValue);
+                  }
+                }}
+                disableCloseOnSelect
+                PopperComponent={PopperComponent}
+                renderTags={() => null}
+                noOptionsText="No matches found"
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
+                      <RoundFlag flag={option.flag.src} />
+                      <Text
+                        type="p"
+                        text={`${option.code} - ${option.name}`}
+                        weight={100}
+                      />
+                    </Flex>
+                    <br />
+                  </li>
+                )}
+                options={options}
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
+                  <StyledInput
+                    ref={params.InputProps.ref}
+                    inputProps={params.inputProps}
+                    placeholder="Hello"
+                    autoFocus
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                )}
+              />
+            </div>
+          </ClickAwayListener>
+        </StyledPopper>
+      )}
     </>
   );
 }
+
+
 export function SearchInputAsString({
+  placeholder,
   children,
   options,
   legend,
   value,
   onChange,
   height,
+  padding,
   border,
 }: SearchProps) {
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -272,6 +288,7 @@ export function SearchInputAsString({
               display: "flex",
               justifyContent: "center",
               width: "100%",
+              // color: "inherit !important",
             },
             "& svg": {
               position: "absolute",
@@ -280,13 +297,16 @@ export function SearchInputAsString({
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
+              position: "relative",
+              // color: "inherit !important",
             },
             "& label": {
-              color: "#1C1B1F!important",
               fontSize: "16px!important",
+              // color: "inherit !important",
             },
             "& input": {
-              height: height || "8px",
+              height: height || "45px",
+              padding: padding || "0px",
             },
             border: border,
           }}
@@ -299,7 +319,12 @@ export function SearchInputAsString({
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
             ),
+            placeholder:
+              React.Children.count(children) === 0
+                ? "Your Default Placeholder"
+                : "",
           }}
+          placeholder={placeholder}
         />
       </Box>
       <StyledPopper
