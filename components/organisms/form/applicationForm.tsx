@@ -37,7 +37,7 @@ import apiService from "hook/apiService";
 import useFormikHook from "hook/useFormik";
 import { usePaystack } from "hook/usePaystack";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -50,7 +50,7 @@ import {
   HiOutlineArrowNarrowLeft,
   HiOutlineArrowNarrowRight,
 } from "react-icons/hi";
-import { useUserStore } from "store/useStore";
+// import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import {
@@ -111,7 +111,7 @@ function ApplicationForm() {
     visa: string;
   }>();
 
-  const { user } = useUserStore((state) => state);
+  // const { user } = useUserStore((state) => state);
   const { startPayment, loading, error, response, setData, data } =
     usePaystack();
   async function handleVisaApplication({
@@ -123,16 +123,20 @@ function ApplicationForm() {
       "/visa/new-application",
       "POST",
       payload
-    )
-      .then((response) => {
+    ).then((response) => {
+      if (response.statuCode == 200 || response.statusCode == 201) {
         toast.success(
           "Your application has been submitted successfully, please proceed to make payment"
         );
         return response.data;
-      })
-      .catch((err) => {
-        toast.error(err);
-      });
+      } else {
+        console.log("heress");
+        toast.error(response.message);
+
+        throw response;
+        // toast.error(response);
+      }
+    });
     return response;
   }
   async function handlePayment({
@@ -149,16 +153,17 @@ function ApplicationForm() {
         service: "VISA",
         user: payload.user,
         serviceID: payload.visa,
+        paymentIntent: "FORM FEE",
       }
-    )
-      .then((data) => {
-        toast.success("Success");
-        return data;
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err);
-      });
+    ).then((response) => {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        window.open(response.data.data.checkout_url);
+        return response.data;
+      } else {
+        toast.error(response.errorMessage);
+        throw response;
+      }
+    });
   }
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
@@ -282,10 +287,16 @@ function ApplicationForm() {
 
       await handleVisaApplication({
         payload: applicationFormRequest,
-      }).then((data) => {
-        console.log(data);
-        setCreateVisaApplicationData(data);
-      });
+      })
+        .then((data) => {
+          // console.log(data);
+          setCreateVisaApplicationData(data);
+          setCurrentPhase(currentPhase + 1);
+        })
+        .catch((err) => {
+          setNextStepLoading(false);
+        });
+      return;
     }
     if (currentPhase == 7) {
       await handlePayment({
@@ -293,21 +304,17 @@ function ApplicationForm() {
           user: createVisaApplicationData?.user ?? "",
           visa: createVisaApplicationData?.visa ?? "",
         },
-      });
+      })
+        .then((data) => {
+          setNextStepLoading(false);
+        })
+        .catch((error) => {
+          setNextStepLoading(false);
+        });
+
+      return;
     }
 
-    // if (currentPhase === 4) {
-    //   setNextStepLoading(true);
-    //   await handleVisaApplication();
-    //   return setNextStepLoading(false);
-    // }
-    // if (currentPhase === 6) {
-    //   return await startPayment({ onSuccess, onCancel });
-    // }
-    // if (currentPhase === 7) {
-    //   return router.push("/auth/login");
-    // }
-    // await reloadFee();
     setCurrentPhase(currentPhase + 1);
     setNextStepLoading(false);
   };

@@ -124,48 +124,44 @@ export const personalInfoKeys: PersonalInfoInterface = {
   phoneNumber: "",
   countryOfCitizen: "",
   gender: "",
+
+  // firstName: "John",
+  // middleName: "M",
+  // lastName: "Doe",
+  // dateOfBirth: "1990-01-01",
+  // email: "tmike@yopmail.com",
+  // placeOfBirth: "City1",
+  // stateOfOrigin: "State1",
+  // phoneNumber: "1234567890",
+  // lgaOfOrigin: "LGA1",
+  // nativeLanguage: "English",
+  // meansOfId: "Passport",
+  // idNumber: "ABC123",
+  // issueDate: "2020-01-01",
+  // expiryDate: "2030-01-01",
+  // countryOfCitizen: "Country3",
+  // address: "123 Main St",
+  // maritalStatus: "Single",
+  // partnersName: "",
+  // passportNumber: "P123456",
+  // passportIssuedCountry: "Country4",
+  // passportExpiryYear: 2025,
+  // gender: "Male",
+  // tripPurpose: "Vacation",
+  // tuberculosis: false,
+  // mentalDisorder: true,
+  // mentalDisorderDetails: "Anxiety",
+  // remainbeyondValidity: false,
+  // refusedBefore: true,
+  // refusedBeforeDetails: "Visa application rejected",
+  // arrestedBefore: false,
+  // arrestedBeforeDetails: "",
+  // servedInMilitary: true,
+  // servedInMilitaryDetails: "2 years of service",
+  // memberOfViolentGroup: false,
+  // participatedInViolentActivities: true,
 };
 
-// export const personalInfoKeys: PersonalInfoInterface = {
-//   firstName: "Abdulazeez",
-//   lastName: "Olalere",
-//   middleName: "Gbolahan",
-//   email: "htmolaike@yopmail.com",
-//   // placeOfOrigin: "",
-//   stateOfOrigin: "Oyp",
-//   lgaOfOrigin: "Lagelu",
-//   nativeLanguage: "Yoruba",
-//   meansOfId: "",
-//   idNumber: "111",
-//   issueDate: "",
-//   expiryDate: "",
-//   // homeCountry: "",
-//   address: "111",
-//   dateOfBirth: "",
-//   maritalStatus: "",
-//   partnersName: "11",
-//   passportNumber: "11",
-//   passportIssuedCountry: "",
-//   // passportIssueDate: "",
-//   passportExpiryYear: 2000,
-//   tripPurpose: "111",
-//   tuberculosis: null,
-//   mentalDisorder: null,
-//   mentalDisorderDetails: "",
-//   remainbeyondValidity: null,
-//   refusedBefore: null,
-//   refusedBeforeDetails: "",
-//   arrestedBefore: null,
-//   arrestedBeforeDetails: "",
-//   servedInMilitary: null,
-//   servedInMilitaryDetails: "",
-//   memberOfViolentGroup: null,
-//   participatedInViolentActivities: null,
-//   placeOfBirth: "",
-//   phoneNumber: "1111",
-//   countryOfCitizen: "",
-//   gender: "",
-// };
 //DOCUMENT
 export const documentShema: yup.ObjectSchema<DocumentInterface> = yup
   .object()
@@ -207,6 +203,14 @@ export const educationKeys: EducationDetailsInterface = {
   startYear: 0,
   endYear: 0,
   stillAtSchool: false,
+  // school: "University1",
+  // degree: "Bachelor's",
+  // fieldOfStudy: "Computer Science",
+  // cgpa: 3.8,
+  // location: "City3",
+  // startYear: 2014,
+  // stillAtSchool: false,
+  // endYear: 2018,
 };
 
 //EMPLOYMENT
@@ -230,7 +234,14 @@ export const employmentKeys: EmploymentDetailsInterface = {
   employmentType: "",
   companyLocation: "",
   startYear: 0,
+  endYear: 0,
   stillWorking: false,
+  // companyName: "Company1",
+  // jobTitle: "Developer",
+  // employmentType: "Full-time",
+  // companyLocation: "City2",
+  // startYear: 2018,
+  // stillWorking: true,
 };
 
 //FAMILY MEMBER
@@ -249,23 +260,23 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
     accompanying: yup.boolean().required("Required"),
     passportNumber: yup.string().when("accompanying", {
       is: true,
-      then: (schema) => schema.required(),
+      then: (schema) => schema.required("Required"),
     }),
     expiryYear: yup.number().when("accompanying", {
       is: true,
-      then: (schema) => schema.required(),
+      then: (schema) => schema.required("Required"),
     }),
     dateOfBirth: yup.string().when("accompanying", {
       is: true,
-      then: (schema) => schema.required(),
+      then: (schema) => schema.required("Required"),
     }),
     gender: yup.string().when("accompanying", {
       is: true,
-      then: (schema) => schema.required(),
+      then: (schema) => schema.required("Required"),
     }),
     issueYear: yup.number().when("accompanying", {
       is: true,
-      then: (schema) => schema.required(),
+      then: (schema) => schema.required("Required"),
     }),
   });
 
@@ -281,6 +292,17 @@ export const familyInforKeys: FamilyInfoInterface = {
   membersEmail: "",
   issueYear: 0,
   accompanying: false,
+  // membersName: "Alice Smith",
+  // relationshipToPrimary: "Spouse",
+  // address: "789 Elm St",
+  // membersEmail: "alice@example.com",
+  // membersPhoneNumber: "9876543210",
+  // accompanying: true,
+  // dateOfBirth: "1992-05-15",
+  // gender: "Female",
+  // passportNumber: "P987654",
+  // expiryYear: 2025,
+  // issueYear: 2020,
 };
 
 export const educationArraySchema = yup
@@ -304,7 +326,7 @@ export const manyEmploymentSchema = yup
   .shape({ employment: employmentArraySchema });
 export const familyInfoSchema = yup
   .object()
-  .shape({ familyInfo: familyInfoArraySchema });
+  .shape({ familyMembers: familyInfoArraySchema });
 export const documentsSchema = yup
   .object()
   .shape({ documents: documentArraySchema });
@@ -373,6 +395,23 @@ const test: ApplicationFormRequestInput = {
     address: "123 Main St",
     maritalStatus: "Single",
     partnersName: "",
+    passportNumber: "P123456",
+    passportIssuedCountry: "Country4",
+    passportExpiryYear: 2025,
+    gender: "Male",
+    tripPurpose: "Vacation",
+    tuberculosis: false,
+    mentalDisorder: true,
+    mentalDisorderDetails: "Anxiety",
+    remainbeyondValidity: false,
+    refusedBefore: true,
+    refusedBeforeDetails: "Visa application rejected",
+    arrestedBefore: false,
+    arrestedBeforeDetails: "",
+    servedInMilitary: true,
+    servedInMilitaryDetails: "2 years of service",
+    memberOfViolentGroup: false,
+    participatedInViolentActivities: true,
     employment: [
       {
         companyName: "Company1",
@@ -395,28 +434,6 @@ const test: ApplicationFormRequestInput = {
         endYear: 2018,
       },
     ],
-    passportNumber: "P123456",
-    passportIssuedCountry: "Country4",
-    passportExpiryYear: 2025,
-    gender: "Male",
-    // guarantorName: "Jane Smith",
-    // relationshipToGuarantor: "Friend",
-    // guarantorAddress: "456 Elm St",
-    // guarantorPhone: "9876543210",
-    // guarantorWorth: "$50000",
-    tripPurpose: "Vacation",
-    tuberculosis: false,
-    mentalDisorder: true,
-    mentalDisorderDetails: "Anxiety",
-    remainbeyondValidity: false,
-    refusedBefore: true,
-    refusedBeforeDetails: "Visa application rejected",
-    arrestedBefore: false,
-    arrestedBeforeDetails: "",
-    servedInMilitary: true,
-    servedInMilitaryDetails: "2 years of service",
-    memberOfViolentGroup: false,
-    participatedInViolentActivities: true,
   },
   familyMembers: [
     {

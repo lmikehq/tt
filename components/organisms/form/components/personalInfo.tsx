@@ -906,7 +906,7 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
           onClick={() => {
             console.log(formik);
           }}
-          disabled={!formik.isValid}
+          disabled={!formik.isValid || !formik.dirty}
         />
       </form>
     </Section>

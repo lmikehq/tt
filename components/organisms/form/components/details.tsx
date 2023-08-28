@@ -16,6 +16,7 @@ import Button from "@atom/button";
 import Spinner from "@components/icons/spinner";
 import { ttColors } from "theme/colors";
 import { useSearchParams } from "next/navigation";
+import ContinueButton from "@atom/continueButton";
 
 interface formProps {
   steps: string[];
@@ -158,34 +159,13 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
           </Section>
         )} */}
 
-        <Section
-          height="unset"
-          styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-        >
-          {" "}
-          <Button
-            width="100%"
-            height={"3.5rem"}
-            type="submit"
-            onClick={() => {
-              console.log(formik);
-            }}
-          >
-            <Flex align="center" width="100%" height="100%" justify="center">
-              {isLoading ? (
-                <Spinner size="40px" fill={ttColors.primary} />
-              ) : (
-                <Text
-                  type="span"
-                  text={"Save & Continue"}
-                  weight={600}
-                  size={20}
-                  color={ttColors.light}
-                />
-              )}
-            </Flex>
-          </Button>
-        </Section>
+        <ContinueButton
+          isLoading={isLoading}
+          onClick={() => {
+            console.log(formik);
+          }}
+          disabled={!formik.isValid || !formik.dirty}
+        />
       </form>
     </Section>
   );

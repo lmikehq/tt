@@ -123,6 +123,7 @@ export default function FamilyForm({
       <Flex justify="space-between">
         <Text type="p" text="Will you be traveling with this Family Member?" />
         <Switch
+          name={`familyMembers.${count}.accompanying`}
           checked={values?.accompanying}
           value={values?.accompanying}
           onChange={formik.handleChange}
@@ -195,7 +196,7 @@ export default function FamilyForm({
             </Section> */}
           </Flex>
           <Flex
-            margin="0"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}

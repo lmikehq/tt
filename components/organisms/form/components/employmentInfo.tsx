@@ -85,7 +85,7 @@ function EmploymentInfo({ steps, index, isLoading, formik }: formProps) {
             onClick={() => {
               console.log(formik);
             }}
-            disabled={!formik.isValid}
+            disabled={!formik.isValid || !formik.dirty}
           />
         </form>
       </Section>
