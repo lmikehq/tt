@@ -1,22 +1,40 @@
 import Flex from "@atom/flex";
-import Image from "@atom/image";
+// import Image from "@atom/image";
 import Text from "@atom/text";
 import styled from "styled-components";
 // import CountryLogo from "@asset/flags/ng.svg";
-import Button from "@atom/button";
+// import Button from "@atom/button";
 import Section from "@molecule/section";
-import { Divider } from "@mui/material";
-import { HiClock } from "react-icons/hi";
-import { IoCalendar } from "react-icons/io5";
+// import { Divider } from "@mui/material";
+// import { HiClock } from "react-icons/hi";
+// import { IoCalendar } from "react-icons/io5";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { ttColors } from "theme/colors";
-import CountryLogo from "../../../../assets/flags/ng.svg";
+// import CountryLogo from "../../../../assets/flags/ng.svg";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { FaFileDownload } from "react-icons/fa";
-import apiService from "hook/apiService";
-import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+// import { FaFileDownload } from "react-icons/fa";
+// import apiService from "hook/apiService";
+// import { useQuery } from "@tanstack/react-query";
+// import { format } from "date-fns";
+// import Center from "@atom/center";
+import Input from "@atom/input";
+// import Paper from "@mui/material/Paper";
+// import InputBase from "@mui/material/InputBase";
+// import IconButton from "@mui/material/IconButton";
+import { CiSearch } from "react-icons/ci";
+import { Grid } from "@atom/grid";
+import { BiSort } from "react-icons/bi";
+import VisaData from "@molecule/dashboardTabs/components/visaDetails";
+import React, { useState } from "react";
+import { Divider } from "@atom/divider";
 import Center from "@atom/center";
+import NoVisaApplication from "./noVisaApplication";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "hook/apiService";
+import VisaDashboardHeader from "./visaDashboardHeader";
+import NoVisa from "@image/noVisa.png";
+
+
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -31,6 +49,26 @@ const VisaWrapper = styled.div`
     height: fit-content;
     padding: 20px 16px;
   }
+`;
+
+const DropdownContent = styled.div`
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0; /* Align to the right */
+  background-color: #ffffff;
+  border: 1px solid #e7e7e7;
+  border-top: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 370px;
+  height: 367px;
+  z-index: 09999999;
+  overflow-y: scroll;
+  font-size: 16px;
+  font-weight: 400;
+  color: #7c7c7a;
+  line-height: 19.2px;
 `;
 
 const Logo = styled.div`
@@ -66,7 +104,6 @@ const DateSelected = styled.div`
   }
 `;
 const DateIcon = styled.div`
-  //   background: EBF6F2;
   background: #ebf6f2 !important;
   padding: 10px;
   height: 45px;
@@ -74,175 +111,155 @@ const DateIcon = styled.div`
   border-radius: 8px;
 `;
 
-const Visa = () => {
-  const { isMobile } = useScreenResolution();
-  // async function getVisas() {
-  //   return await apiService("/visa", "GET");
-  // }
+// interface VisaProps {
+//   countryLogoSrc: string;
+//   applicationDate: string;
+//   paymentFee: string;
+//   visaStatus: string;
+//   onDownloadStatusClick: () => void;
+// }
 
-  // const {
-  //   data: fetchedVisa,
-  //   isLoading,
-  //   error,
-  // } = useQuery(["visas"], getVisas) as any;
-  // if (isLoading) return <div>loading</div>;
-  // if (error) return <div>error loading visas, please try again</div>;
-  // const { data: visas } = fetchedVisa;
+const Visa = () => {
+  const countryLogoSrc = "../../../../assets/flags/ng.svg";
+  const applicationDate = "12th May, 2021";
+  const paymentFee = "$ 2000";
+  const visaStatus = "AWAITING CONFIRMATION";
+
+  const handleDownloadStatusClick = () => {
+    // Handle the download status click event
+  };
+
+
+
+  async function getVisas() {
+    return await apiService("/visa", "GET");
+  }
+
+  const {
+    data: fetchedVisa,
+    isLoading,
+    error,
+  } = useQuery(["visas"], getVisas) as any;
+  if (isLoading) return <div>loading</div>;
+  if (error) return <div>error loading visas, please try again</div>;
+  const { data: visas } = fetchedVisa;
+
+  const content = {
+    title: "You’ve got no Visa Application - Let’s help you get Started",
+    links: [
+      { text: "Search Flights", url: "/" },
+      { text: "Search Stays", url: "/" },
+    ],
+  };
+
   return (
     <VisaWrapper>
-      {/* {visas?.length > 0 ? (
-        visas?.map((visa: any, i: number) => ( */}
-      <Flex
-        justify="space-around"
-        gap={isMobile ? ".5rem" : "0rem"}
-        direction={isMobile ? "column" : "row"}
-        margin="2rem 0"
-        // key={i}
-        border="1px solid #E7E7E7"
-        padding="32px 24px"
-        borderRadius="16px"
-        align="center"
-      >
-        <Logo>
-          <Image
-            src={CountryLogo}
-            height={isMobile ? 20 : 40}
-            width={isMobile ? 40 : 58.5}
-            alt="country logo"
-          />
-        </Logo>
-        <Flex
-          justify="flex-start"
-          width={isMobile ? "100%" : "32%"}
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "7px" : "0rem"}
-        >
-          <Flex
-            margin="0px 0px 0px 1.5rem"
-            gap={isMobile ? "2rem" : "1rem"}
-            direction="column"
-          >
-            <Text
-              type="p"
-              letterSpacing="1px"
-              weight={400}
-              size={isMobile ? "1rem" : "1.3rem"}
-              // text="Nigeria(NG) — Canada(CA)"
-              // text={`${visa?.homeCountry} — ${visa?.destination}`}
-              text="Nigeria(NG) — Canada(CA)"
-              // whiteSpace="nowrap"
+      <VisaDashboardHeader />
+
+      <div>
+        {visas?.length > 0 ? (
+          visas?.map((visa: any, i: number) => (
+            <React.Fragment key={i}>
+              <VisaData
+                countryLogoSrc={countryLogoSrc}
+                applicationDate={applicationDate}
+                paymentFee={paymentFee}
+                visaStatus={visa.visaStatus}
+                onDownloadStatusClick={handleDownloadStatusClick}
+                downloadButtonText="Download Status"
+              />
+            </React.Fragment>
+          ))
+        ) : (
+          <Center margin="10rem 0" height="25rem">
+            <NoVisaApplication
+              noVisaImage={NoVisa}
+              content={content}
             />
+          </Center>
+        )}
+      </div>
 
-            <Flex justify="flex-start" gap="1rem">
-              <Flex
-                justify="space-between"
-                gap="10px"
-                margin="0px 0px 10px 0px"
-                width="100%"
-              >
-                <DateIcon>
-                  <IoCalendar color="#8DD3BB" size="1.5rem" />
-                </DateIcon>
-                <Section>
-                  <Text
-                    type="p"
-                    text="Application Date"
-                    color="#112211"
-                    size={12}
-                    opacity="60%"
-                  />
-                  <Text
-                    type="h5"
-                    text="12th May, 2021"
-                    color="#112211"
-                    size={14}
-                    weight={500}
-                    // text={format(new Date(visa?.date), "dd MMM, yyyy")}
-                    //  `${format(new Date(row.createdAt), "dd MMM, yyyy")}`,
-                  />
-                </Section>
-              </Flex>
-
-              <Flex justify="space-between" gap="10px">
-                <DateIcon>
-                  <HiClock color="#8DD3BB" size="1.5rem" />
-                </DateIcon>
-                <Section>
-                  <Text
-                    type="p"
-                    text="Payment Fee"
-                    whiteSpace="nowrap"
-                    color="#112211"
-                    size={12}
-                    opacity="60%"
-                  />
-                  <Text
-                    type="h5"
-                    text="$ 2000"
-                    color="#112211"
-                    size={14}
-                    weight={500}
-                  />
-                </Section>
-              </Flex>
-            </Flex>
-          </Flex>
-        </Flex>
-
-        <VisaStatus>
-          <Text
-            type="h5"
-            // text={visa.status}
-            text="AWAITING CONFIRMATION"
-            weight={800}
-            size={isMobile ? 13 : 14}
-          />
-        </VisaStatus>
-
-        <Flex
-          width="30%"
-          justify="space-between"
-          gap="1rem"
-          margin="0 -2.8rem 0 0"
-          align="center"
-        >
-          <Button
-            padding="8px 16px"
-            width="100px !important"
-            height="48px"
-            styles={{
-              marginLeft: isMobile ? "0px" : "55px",
-              display: isMobile ? "none" : "block",
-            }}
-          >
-            <Text type="h5" text="Download Status" weight={400} size={14} />
-          </Button>
-          
-
-          <Section
-            width="140px"
-            styles={{
-              display: isMobile ? "none" : "block",
-            }}
-          >
-            <Button
-              background="${ttColors.primary}"
-              color="${ttColors.dark}"
-              border={`1px solid ${ttColors.primary}`}
-              height="48px"
-              width="48px"
-            >
-              <MdKeyboardArrowDown size="1.5rem" />
-            </Button>
-          </Section>
-        </Flex>
-      </Flex>
-      {/* ))
-      ) : (
-        <Center margin="2rem 0" height="5rem">
-          No Visa Application Found
-        </Center>
-      )} */}
+      {/* // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="AWAITING EMBASSY DECISION"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Download Status"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="APPLICATION IN PROGRESS"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Re-apply Visa"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="VISA FEES REQUIRED"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Pay Visa Fees"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="AWAITING PASSPORT COLLECTION"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Download Status"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="APPROVED"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Make Payment"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus={visaStatus}
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Make Payment"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="DECLINED"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Download Status"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus="PASSPORT PHYSICALLY REQUIRED"
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Make Payment"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus={visaStatus}
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Download Status"
+      // />
+      // <VisaData */}
+      {/* //   countryLogoSrc={countryLogoSrc}
+      //   applicationDate={applicationDate}
+      //   paymentFee={paymentFee}
+      //   visaStatus={visaStatus}
+      //   onDownloadStatusClick={handleDownloadStatusClick}
+      //   downloadButtonText="Upload Document"
+      // /> */}
     </VisaWrapper>
   );
 };

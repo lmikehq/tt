@@ -18,16 +18,20 @@ interface TabPanelProps {
   value: number;
 }
 
-const TabWrapper = styled.div<{ isMobile?: boolean }>`
+const TabWrapper = styled.div<{ isMobile?: boolean; shadowShow?: boolean }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
     height: 3px;
   }
   .MuiTabs-root {
     padding: 0px;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: ${({ shadowShow }) =>
+      shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
+    box-shadow: ;
+
     border-radius: 6px;
-    height: 80px;
+    height: 48px;
+    background: #fff;
   }
   .css-1gsv261 {
     border-bottom: 1px solid transparent;
@@ -76,10 +80,12 @@ export default function CustomTab({
   tabItems,
   defaultIcons = false,
   page = "home",
+  shadowShow = false,
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
+  shadowShow?: boolean;
 }) {
   const [value, setValue] = useState(0);
 
@@ -96,18 +102,20 @@ export default function CustomTab({
   const { isMobile } = useScreenResolution();
 
   return (
-    <TabWrapper isMobile={isMobile}>
+    <TabWrapper isMobile={isMobile} shadowShow={shadowShow}>
       <Box>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="select your service"
-          sx={{
-            // display: "grid",
-            // "& .MuiTabs-flexContainer": {
-            //   gap: "2rem",
-            // },
-          }}
+          sx={
+            {
+              // display: "grid",
+              // "& .MuiTabs-flexContainer": {
+              //   gap: "2rem",
+              // },
+            }
+          }
         >
           {tabItems.map((tabItem, i) => (
             <Tab

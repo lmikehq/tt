@@ -8,15 +8,16 @@ import Visa from "./visa";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Center from "@atom/center";
 import RTQueryClient from "@components/layouts/rtqWrapper";
+import Flight from "./flight";
+
 
 const SectionTabs = styled.div`
   // padding: 2rem 0 0;
 
   .MuiButtonBase-root {
     width: 100% !important;
-    max-width: 50% !important;
+    max-width: 50% ;
     padding: 0px 24px;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   }
   .MuiTabs-flexContainer {
     justify-content: space-between;
@@ -25,18 +26,21 @@ const SectionTabs = styled.div`
 
 const Application = () => {
   const { isMobile } = useScreenResolution();
+  
 
   const tabItem = [
     {
       label: "Visa",
       value: 0,
-      content: <Visa />,
+      content: (
+        <Visa />
+      ),
     },
 
     {
       label: "Flight",
       value: 1,
-      content: <Center margin="2rem 0">Coming soon</Center>,
+      content: <Flight />,
     },
   ];
   return (
@@ -57,7 +61,7 @@ const Application = () => {
 
       <SectionTabs>
         <RTQueryClient>
-          <CustomTab tabItems={tabItem} defaultIcons />
+          <CustomTab tabItems={tabItem} shadowShow defaultIcons />
         </RTQueryClient>
       </SectionTabs>
     </Section>

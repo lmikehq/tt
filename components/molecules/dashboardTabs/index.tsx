@@ -72,7 +72,7 @@ function DashboardTabs() {
       ];
   return (
     <Wrapper>
-      <CustomTab tabItems={tabItems} />
+      <CustomTab shadowShow tabItems={tabItems} />
     </Wrapper>
   );
 }
