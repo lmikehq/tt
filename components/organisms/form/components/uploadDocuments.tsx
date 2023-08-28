@@ -135,9 +135,9 @@ function UploadDocuments({
               ...uploadedDocuments,
               {
                 name:
-                  name.length <= 100
+                  name.length <= 30
                     ? name
-                    : name.split(".")[0].substring(0, 100) +
+                    : name.split(".")[0].substring(0, 30) +
                       "..." +
                       name.split(".")[1],
                 size: `${size / 1000000} MB`,
@@ -151,9 +151,9 @@ function UploadDocuments({
             formikUploadedDocuments.splice(findIndex, 1, docObj);
             uploadedDocs.splice(findIndex, 1, {
               name:
-                name.length <= 100
+                name.length <= 30
                   ? name
-                  : name.split(".")[0].substring(0, 100) +
+                  : name.split(".")[0].substring(0, 30) +
                     "..." +
                     name.split(".")[1],
               size: `${size / 1000000} MB`,
