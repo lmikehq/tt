@@ -171,6 +171,15 @@ function UploadDocuments({
   return (
     <Section>
       <FormStepTitle steps={steps} index={index} />
+      <Section>
+        <Text
+          type="p"
+          size={18}
+          weight={400}
+          color={"#929292"}
+          text="If you don't have all document required, don't worry, our team will complete the rest for you"
+        />
+      </Section>
 
       <form onSubmit={formik.handleSubmit}>
         <Section>

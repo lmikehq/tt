@@ -135,7 +135,7 @@ export const getSteps = ({
       title: "Upload Document",
       content: (
         <UploadDocuments
-          steps={["Upload All Required Documents"]}
+          steps={["Upload all your available documents"]}
           index={5}
           formik={documentsFormik}
           isLoading={isLoading}
