@@ -124,6 +124,7 @@ function UploadDocuments({
             (el) => el.title == "International passport"
           );
           console.log(formik);
+          console.log(name);
           if (findIndex == -1) {
             formik.setFieldValue("documents", [
               ...formik.values.documents,
@@ -131,8 +132,14 @@ function UploadDocuments({
             ]);
 
             handleSetUploadedDocuments([
+              ...uploadedDocuments,
               {
-                name,
+                name:
+                  name.length <= 100
+                    ? name
+                    : name.split(".")[0].substring(0, 100) +
+                      "..." +
+                      name.split(".")[1],
                 size: `${size / 1000000} MB`,
                 type: type.split("/")[1].toUpperCase(),
                 title: docObj.name,
@@ -143,7 +150,12 @@ function UploadDocuments({
             let uploadedDocs = [...(uploadedDocuments ?? [])];
             formikUploadedDocuments.splice(findIndex, 1, docObj);
             uploadedDocs.splice(findIndex, 1, {
-              name,
+              name:
+                name.length <= 100
+                  ? name
+                  : name.split(".")[0].substring(0, 100) +
+                    "..." +
+                    name.split(".")[1],
               size: `${size / 1000000} MB`,
               type: type.split("/")[1].toUpperCase(),
               title: docObj.name,
