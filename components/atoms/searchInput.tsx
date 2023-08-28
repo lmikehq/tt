@@ -227,7 +227,7 @@ SearchProps) {
                   <StyledInput
                     ref={params.InputProps.ref}
                     inputProps={params.inputProps}
-                    placeholder="Hello"
+                    placeholder=""
                     autoFocus
                     onChange={(e) => setInputValue(e.target.value)}
                   />
@@ -240,7 +240,6 @@ SearchProps) {
     </>
   );
 }
-
 
 export function SearchInputAsString({
   placeholder,

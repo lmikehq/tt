@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  Autocomplete,
-  Box,
-  TextField as MUITextField
-} from "@mui/material";
+import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import {
   CSSProperties,
@@ -76,6 +72,7 @@ export interface InputProps {
     | "checkbox";
 
   value?: string;
+  defaultValue?: string;
   name?: string;
   id?: string;
   readOnly?: boolean;
@@ -121,12 +118,12 @@ const Input = ({
   flexGrow,
   parentWidth,
   styles,
+  defaultValue,
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
     type === "password" ? "password" : ""
   );
   if (type === "textArea") {
-
     return (
       <textarea
         aria-label="Your message"
@@ -157,6 +154,7 @@ const Input = ({
         placeholder={placeholder}
         onPaste={onPaste}
         value={value}
+        defaultValue={defaultValue}
         onChange={onChange}
         onKeyDown={onKeyDown}
         id={id}
