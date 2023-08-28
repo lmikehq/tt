@@ -1,14 +1,14 @@
 import Breadcrumb from "@atom/breadcrumb";
 import SectionLayout from "@components/layouts/sectionLayout";
-import ContactPage from "@molecule/contactPage";
+import AboutUsPage from "@molecule/aboutUs";
 import Section from "@molecule/section";
 
 const Contact = () => {
   return (
-    <Section styles={{ paddingTop: "2rem" }}>
+    <Section padding='1rem 0 0'>
       <Breadcrumb />
       <SectionLayout>
-        <ContactPage />
+        <AboutUsPage />
       </SectionLayout>
     </Section>
   );

@@ -426,7 +426,7 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
               <Text
                 type="p"
                 text="Partner’s Name (if applicable)"
-                margin={isMobile ? ".5rem 0" : "1rem 0"}
+                margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
               />
             </Flex>
             <FieldInput
@@ -612,7 +612,9 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
                 <CustomRadioGroup
                   
                   options={options}
-                  onChange={(e) => setFormData((prev) => ({...prev, disability: e}))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, disability: e }))
+                  }
                   justifyContent="flex-end"
                 /> */}
               </Flex>
