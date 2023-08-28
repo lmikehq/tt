@@ -315,8 +315,7 @@ export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(4, "You need to add 4 documents")
-  .max(5, "You can provide at most 5 documents");
+  .min(4, "You need to add 4 documents");
 
 export const manyEducationSchema = yup
   .object()
