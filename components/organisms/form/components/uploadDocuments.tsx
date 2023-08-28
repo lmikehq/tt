@@ -121,7 +121,7 @@ function UploadDocuments({
           };
           const { name, size, type } = plainFiles[0];
           const findIndex = (uploadedDocuments ?? []).findIndex(
-            (el) => el.title == documentToUpload
+            (el) => el.title == "International passport"
           );
           console.log(formik);
           if (findIndex == -1) {
@@ -174,7 +174,7 @@ function UploadDocuments({
             <SearchStringInput
               options={(() => {
                 const general = [
-                  " International passport",
+                  "International passport",
                   "Passport photograph",
                   "Means of ID",
                   "Bank statement",
@@ -188,7 +188,7 @@ function UploadDocuments({
                   "Police Character (if available)",
                 ];
                 switch (visaType) {
-                  case "Study Visa":
+                  case "Student Visa":
                     return general;
                   case "Work Visa":
                     return [...general, "Proof of Qualifications"];

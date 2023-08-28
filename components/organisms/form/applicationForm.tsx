@@ -223,7 +223,7 @@ function ApplicationForm() {
     if (currentPhase <= 6) {
       if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
     }
-    if (currentPhase < 6) sleep(2000);
+    if (currentPhase < 6) await sleep(2000);
     if (currentPhase == 6 && form) {
       const applicationFormRequest: ApplicationFormRequestInput = {
         applicationType: form.applicationType,
@@ -307,6 +307,7 @@ function ApplicationForm() {
 
     setCurrentPhase(currentPhase + 1);
     setNextStepLoading(false);
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
   const prevStep = async () => {
