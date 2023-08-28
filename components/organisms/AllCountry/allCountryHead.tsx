@@ -82,7 +82,7 @@ const AllCountryHead = ({
           style={{ height: isMobile ? "128px" : "230px" }}
         />
         <Overlay style={{ height: isMobile ? "128px" : "230px" }} />
-        <Text text={title} type="h2" transform="uppercase"/>
+        <Text text={title.slice(0, 20)} type="h2" transform="uppercase" styles={{width: 'max-content'}}/>
       </AllCountryHeader>
       <Breadcrumb />
     </>
