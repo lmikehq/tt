@@ -102,6 +102,7 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
                   "Student Visa",
                   "Medical Visa",
                   "Visa on Arrival",
+                  "Elite Migration Visa",
                   "Other",
                 ]}
                 placeholder="Select your Visa Type"

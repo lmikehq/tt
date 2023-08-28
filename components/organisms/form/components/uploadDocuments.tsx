@@ -170,13 +170,41 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
               margin="3rem 0 .9rem"
             />
             <SearchStringInput
-              options={[
-                "Passport sized photograph",
-                "Valid international passport",
-                "All academic certificates",
-                "Proof of address (utility bill)",
-                "Marriage certificate (if applicable)",
-              ]}
+              options={(() => {
+                const general = [
+                  " International passport",
+                  "Passport photograph",
+                  "Means of ID",
+                  "Bank statement",
+                  "Commitment Letter From Family or employer (if available)",
+                  "Proof of accommodation",
+                  "References from Employer",
+                  "Academic References",
+                  "Official Transcript from school",
+                  "Professsional CV",
+                  "Medical Records",
+                  "Police Character (if available)",
+                ];
+                switch (applicationType) {
+                  case "study visa":
+                    return general;
+                  case "work visa":
+                    return [...general, "Proof of Qualifications"];
+                  case "family visa":
+                    return [
+                      ...general,
+                      "Marriage Certificate",
+                      "Birth Certificate of Children",
+                    ];
+                  case "migration visa":
+                    return [
+                      ...general,
+                      "Investment Proof",
+                      "Proof of net worth",
+                      "CV",
+                    ];
+                }
+              })()}
               onChange={(e: string) => {
                 console.log(e);
                 console.log(formik);
