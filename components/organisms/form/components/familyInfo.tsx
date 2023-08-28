@@ -15,6 +15,7 @@ import { SingleFormType } from "../applicationForm";
 import FamilyForm from "@molecule/forms/familyForm";
 import ContinueButton from "@atom/continueButton";
 import { FamilyInfoInterface } from "types";
+import { toast } from "react-hot-toast";
 
 interface formProps {
   steps: string[];
@@ -37,6 +38,8 @@ function FamilyInfo({ steps, index, isLoading, formik }: formProps) {
                   <AddButton
                     disabled={formik.values.familyMembers.length === 3}
                     onClick={() => {
+                      if (!formik.isValid || !formik.dirty)
+                        return toast.error("Please validate all inputs");
                       if (formik.values.familyMembers.length < 3) {
                         arrayHelpers.insert(index + 1, familyInforKeys);
                       }

@@ -15,6 +15,7 @@ import {
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@atom/continueButton";
 import { EducationDetailsInterface } from "types";
+import { toast } from "react-hot-toast";
 
 interface formProps {
   steps: string[];
@@ -37,6 +38,8 @@ function EducationInfo({ steps, index, isLoading, formik }: formProps) {
                   <AddButton
                     disabled={formik.values.education.length === 3}
                     onClick={() => {
+                      if (!formik.isValid || !formik.dirty)
+                        return toast.error("Please validate all inputs");
                       if (formik.values.education.length < 3) {
                         arrayHelpers.insert(index + 1, educationKeys);
                       }

@@ -143,9 +143,9 @@ export default function EmploymentForm({
             name={`employment.${count}.startYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(`employment.${count}.startYear`, `${e.$y}`);
+              formik.setFieldValue(`employment.${count}.startYear`, e.$y);
             }}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -161,10 +161,10 @@ export default function EmploymentForm({
             name={`employment.${count}.endYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(`employment.${count}.endYear`, `${e.$y}`);
+              formik.setFieldValue(`employment.${count}.endYear`, e.$y);
             }}
-            minDate={dayjs(values.startYear)}
-            maxDate={dayjs(new Date())}
+            minDate={dayjs(`${values.startYear}`)}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>
