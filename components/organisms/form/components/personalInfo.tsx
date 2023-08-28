@@ -282,7 +282,7 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
               name="idNumber"
               placeholder="Enter your ID number"
               formik={formik}
-              disabled={formik.values.meansOfId == "International Passport"}
+              // disabled={formik.values.meansOfId == "International Passport"}
             />
           </Section>
         </Flex>
