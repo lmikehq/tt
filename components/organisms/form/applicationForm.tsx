@@ -447,24 +447,26 @@ function ApplicationForm() {
             styles={{ position: "relative" }}
           >
             <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
-              <Flex
-                align="center"
-                cursor="pointer"
-                gap="0.3rem"
-                onClick={prevStep}
-              >
-                <BsArrowLeft
-                  color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
-                  size="22px"
-                />
-                <Text
-                  text="Previous"
-                  type="p"
-                  color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
-                  size="16px"
-                  weight="bold"
-                />
-              </Flex>
+              {currentPhase < 7 && (
+                <Flex
+                  align="center"
+                  cursor="pointer"
+                  gap="0.3rem"
+                  onClick={prevStep}
+                >
+                  <BsArrowLeft
+                    color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
+                    size="22px"
+                  />
+                  <Text
+                    text="Previous"
+                    type="p"
+                    color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
+                    size="16px"
+                    weight="bold"
+                  />
+                </Flex>
+              )}
               {currentPhase > 1 && currentPhase < 7 && (
                 <VisaProgress
                   phase={currentPhase - 1}
