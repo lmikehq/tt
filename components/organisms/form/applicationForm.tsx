@@ -101,7 +101,7 @@ function ApplicationForm() {
       "POST",
       payload
     ).then((response) => {
-      if (response.statuCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         toast.success(
           "Your application has been submitted successfully, please proceed to make payment"
         );
@@ -267,6 +267,7 @@ function ApplicationForm() {
           // console.log(data);
           setCreateVisaApplicationData(data);
           setCurrentPhase(currentPhase + 1);
+          setNextStepLoading(false);
         })
         .catch((err) => {
           setNextStepLoading(false);
