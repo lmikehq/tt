@@ -1,4 +1,3 @@
-
 import { FlightProvider } from "context";
 
 interface layoutProps {
