@@ -17,7 +17,7 @@ import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
 import UploadDocuments from "@organism/form/components/uploadDocuments";
-import { SingleFormType } from "@organism/form/applicationForm";
+import { SingleFormType, UploadedDoc } from "@organism/form/applicationForm";
 import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
 import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
 import {
@@ -47,6 +47,9 @@ export const getSteps = ({
   familyMembersFormik,
   documentsFormik,
   paymentFormik,
+  handleSetUploadedDocuments,
+  uploadedDocuments,
+  visaType,
 }: {
   setFormFee: (n: number) => void;
   setCurrentPhase: (n: number) => void;
@@ -58,6 +61,9 @@ export const getSteps = ({
   educationFormik: FormikProps<{ education: EducationDetailsInterface[] }>;
   documentsFormik: FormikProps<{ documents: DocumentInterface[] }>;
   paymentFormik: FormikValues;
+  handleSetUploadedDocuments: (docs: UploadedDoc[]) => void;
+  uploadedDocuments: UploadedDoc[];
+  visaType: string;
 }): IFormStep[] => {
   return [
     {
@@ -133,6 +139,9 @@ export const getSteps = ({
           index={5}
           formik={documentsFormik}
           isLoading={isLoading}
+          uploadedDocuments={uploadedDocuments}
+          handleSetUploadedDocuments={handleSetUploadedDocuments}
+          visaType={visaType}
         />
       ),
     },

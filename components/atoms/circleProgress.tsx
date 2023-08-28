@@ -17,6 +17,7 @@ const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
   &::after {
     content: "";
     position: absolute;
+
     width: 70%;
     top: 20%;
     left: 64%;
@@ -29,28 +30,27 @@ const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
   cursor: pointer;
   /* Responsive Styles */
   @media (max-width: 1024px) {
-    width
+    // width
   }
 
- @media (max-width:1280px) {
+  @media (max-width: 1280px) {
     &::after {
       left: 70%;
       width: 58%;
     }
- }
-
+  }
 `;
 
-const Container = styled.div<{ active: boolean, isPassed: boolean }>`
+const Container = styled.div<{ active: boolean; isPassed: boolean }>`
   display: inline-block;
   text-align: center;
   margin: 0 25px;
-  color: ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
-  opacity: ${props => (props.active || props.isPassed ? "1" : "0.7")};
-  
+  color: ${(props) => (props.active || props.isPassed ? "#6092A7" : "gray")};
+  opacity: ${(props) => (props.active || props.isPassed ? "1" : "0.7")};
+
   @media (max-width: 1440px) {
     @media (min-width: 1280px) {
-      margin: 0 7.5px
+      margin: 0 7.5px;
     }
   }
 
@@ -59,12 +59,17 @@ const Container = styled.div<{ active: boolean, isPassed: boolean }>`
   }
 `;
 
-const Circle = styled.span<{ active: boolean, isPassed: boolean, disabled: boolean }>`
+const Circle = styled.span<{
+  active: boolean;
+  isPassed: boolean;
+  disabled: boolean;
+}>`
   display: flex;
   width: 1.5rem;
   height: 1.5rem;
-  background: ${props => (props.isPassed ? "#6092A7" : "none")};
-  border: 2px solid ${props => (props.active || props.isPassed ? "#6092A7" : "gray")};
+  background: ${(props) => (props.isPassed ? "#6092A7" : "white")};
+  border: 2px solid
+    ${(props) => (props.active || props.isPassed ? "#6092A7" : "gray")};
   padding: 1.25rem;
   align-items: center;
   justify-content: center;
@@ -73,14 +78,14 @@ const Circle = styled.span<{ active: boolean, isPassed: boolean, disabled: boole
   z-index: 9;
   position: relative;
   &:hover {
-    border: 2px solid ${props => (!props.disabled ? "#6092A7" : "none")};
-   }
+    border: 2px solid ${(props) => (!props.disabled ? "#6092A7" : "none")};
+  }
 `;
 
 const CircleText = styled.span`
- width: 100px;
- display: flex;
-`
+  width: 100px;
+  display: flex;
+`;
 
 function CircleProgress(props: circleProps) {
   return (
@@ -94,7 +99,11 @@ function CircleProgress(props: circleProps) {
         isPassed={props.isPassed}
         onClick={props.onClick}
       >
-        <Circle active={props.active} isPassed={props.isPassed} disabled={props.disabled}>
+        <Circle
+          active={props.active}
+          isPassed={props.isPassed}
+          disabled={props.disabled}
+        >
           <Text
             type="p"
             weight="bold"

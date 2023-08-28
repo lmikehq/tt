@@ -85,7 +85,12 @@ export type SingleFormType =
   | { employment: EmploymentDetailsInterface[] }
   | { familyMembers: FamilyInfoInterface[] }
   | { documents: DocumentInterface[] };
-
+export interface UploadedDoc {
+  name: string;
+  type: string;
+  size: string;
+  title: string;
+}
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
@@ -218,7 +223,7 @@ function ApplicationForm() {
     if (currentPhase <= 6) {
       if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
     }
-
+    if (currentPhase < 6) sleep(2000);
     if (currentPhase == 6 && form) {
       const applicationFormRequest: ApplicationFormRequestInput = {
         applicationType: form.applicationType,
@@ -311,6 +316,11 @@ function ApplicationForm() {
   };
 
   const [formFee, setFormFee] = useState(0);
+  const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDoc[]>();
+
+  const handleSetUploadedDocuments = (docs: UploadedDoc[]) => {
+    setUploadedDocuments([...docs]);
+  };
 
   // async function reloadFee() {
   //   setNextStepLoading(true);
@@ -406,6 +416,9 @@ function ApplicationForm() {
     documentsFormik,
     paymentFormik,
     isLoading: nextStepLoading,
+    handleSetUploadedDocuments,
+    uploadedDocuments: uploadedDocuments ?? [],
+    visaType: formData.visaType,
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {

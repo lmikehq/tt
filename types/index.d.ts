@@ -46,11 +46,11 @@ export interface DetailsKeys {
 export interface EducationDetailsInterface {
   school: string;
   degree: string;
-  cgpa: number;
+  cgpa: number | null;
   location: string;
   fieldOfStudy: string;
-  startYear: number;
-  endYear?: number;
+  startYear: number | null;
+  endYear?: number | null;
   stillAtSchool: boolean;
 }
 

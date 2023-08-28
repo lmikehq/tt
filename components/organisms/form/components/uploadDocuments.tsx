@@ -26,7 +26,7 @@ import { ttColors } from "theme/colors";
 import { AiOutlineCheck } from "react-icons/ai";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import { documentsArr, documentsSchema } from "@lib/application/schema";
-import { SingleFormType } from "../applicationForm";
+import { SingleFormType, UploadedDoc } from "../applicationForm";
 import Spinner from "@components/icons/spinner";
 import { DocumentInterface } from "types";
 import ContinueButton from "@atom/continueButton";
@@ -36,6 +36,9 @@ interface formProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<{ documents: DocumentInterface[] }>;
+  handleSetUploadedDocuments: (docs: UploadedDoc[]) => void;
+  uploadedDocuments: UploadedDoc[];
+  visaType: string;
 }
 
 const UploadArea = styled.div`
@@ -60,7 +63,15 @@ const UploadedDocumentsWrapper = styled.div`
   padding-top: 52px;
 `;
 
-function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
+function UploadDocuments({
+  steps,
+  index,
+  isLoading,
+  formik,
+  uploadedDocuments,
+  handleSetUploadedDocuments,
+  visaType,
+}: formProps) {
   const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -82,14 +93,6 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
 
   const [hovered, setHovered] = useState<number>(-1);
   const [documentToUpload, setDocumentToUpload] = useState<string>("");
-  const [uploadedDocuments, setUploadedDocuments] = useState<
-    {
-      name: string;
-      type: string;
-      size: string;
-      title: string;
-    }[]
-  >();
 
   const handleFailedValidation = () => {
     if (!formik.errors.documents) return;
@@ -127,8 +130,7 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
               docObj,
             ]);
 
-            setUploadedDocuments([
-              ...(uploadedDocuments ?? []),
+            handleSetUploadedDocuments([
               {
                 name,
                 size: `${size / 1000000} MB`,
@@ -147,7 +149,7 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
               title: docObj.name,
             });
             formik.setFieldValue("documents", formikUploadedDocuments);
-            setUploadedDocuments(uploadedDocs);
+            handleSetUploadedDocuments(uploadedDocs);
           }
         }
       });
@@ -185,10 +187,10 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
                   "Medical Records",
                   "Police Character (if available)",
                 ];
-                switch (applicationType) {
-                  case "study visa":
+                switch (visaType) {
+                  case "Study Visa":
                     return general;
-                  case "work visa":
+                  case "Work Visa":
                     return [...general, "Proof of Qualifications"];
                   case "family visa":
                     return [
@@ -196,9 +198,19 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
                       "Marriage Certificate",
                       "Birth Certificate of Children",
                     ];
-                  case "migration visa":
+                  case "Elite Migration Visa":
                     return [
                       ...general,
+                      "Investment Proof",
+                      "Proof of net worth",
+                      "CV",
+                    ];
+                  default:
+                    return [
+                      ...general,
+                      "Proof of Qualifications",
+                      "Marriage Certificate",
+                      "Birth Certificate of Children",
                       "Investment Proof",
                       "Proof of net worth",
                       "CV",
@@ -357,7 +369,7 @@ function UploadDocuments({ steps, index, isLoading, formik }: formProps) {
                                 background="red"
                                 color="#fff"
                                 onClick={() => {
-                                  setUploadedDocuments([
+                                  handleSetUploadedDocuments([
                                     ...uploadedDocuments.filter(
                                       (_: any, index: number) => index !== i
                                     ),

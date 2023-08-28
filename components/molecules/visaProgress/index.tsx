@@ -26,8 +26,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 2}
         disabled={highestPhase < 3}
         onClick={() => {
-          if (highestPhase >= 3) setPhase(3);
-          // setPhase(3);
+          // if (highestPhase >= 3) setPhase(3);
+          setPhase(3);
         }}
       />
       <CircleProgress
