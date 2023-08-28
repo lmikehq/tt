@@ -59,6 +59,7 @@ import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndC
 import CustomToaster from "@molecule/customToaster";
 import { setTimeout } from "timers";
 import { FormikProps, FormikValues, useFormik } from "formik";
+import VisApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
 
 const PromoInput = styled.div`
   display: flex;
