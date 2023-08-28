@@ -199,12 +199,9 @@ function ApplicationForm() {
   }) => {
     if (nextStepLoading) return;
     setNextStepLoading(true);
-    // if (currentPhase <= 6) {
-    //   if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
-    // }
-    console.log("got hereeaewr< ", currentPhase, highestPhase);
-    if (currentPhase === 1) setCurrentPhase(5);
-    if (currentPhase === 5) setHighestPhase(7);
+    if (currentPhase <= 6) {
+      if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
+    }
 
     setHighestPhase(currentPhase + 1);
 
