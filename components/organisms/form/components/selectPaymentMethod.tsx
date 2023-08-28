@@ -1,23 +1,15 @@
 import Flex from "@atom/flex";
-import Image from "@atom/image";
-import SearchInput, { RoundFlag, SearchInputAsString } from "@atom/searchInput";
+import SearchInput, { RoundFlag } from "@atom/searchInput";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { MenuItem, Select } from "@mui/material";
+import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
-import nigerianFlag from "@flag/ng.svg";
-import { styled } from "styled-components";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 
-import { useState } from "react";
-import { SingleFormType } from "../applicationForm";
-import Button from "@atom/button";
-import { ttColors } from "theme/colors";
-import Spinner from "@components/icons/spinner";
-import { FormikValues } from "formik";
 import ContinueButton from "@atom/continueButton";
+import { FormikValues } from "formik";
+import { useState } from "react";
 
 export interface CurrencyType {
   currency: string;
@@ -125,6 +117,7 @@ const SelectPaymentMethod = ({
             console.log("click");
             console.log(formik);
           }}
+          buttonText='Make Payment'
           disabled={!formik.isValid}
         />
       </form>

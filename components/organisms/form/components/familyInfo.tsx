@@ -1,20 +1,17 @@
-import Section from "@molecule/section";
-import { FieldArray, FormikProps, FormikProvider, useFormik } from "formik";
-import FormStepTitle from "./formStepsTitle";
-import Flex from "@atom/flex";
-import { ttColors } from "theme/colors";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import Text from "@atom/text";
 import AddButton from "@atom/addButton";
-import {
-  familyInfoArr,
-  familyInfoSchema,
-  familyInforKeys,
-} from "@lib/application/schema";
-import { SingleFormType } from "../applicationForm";
-import FamilyForm from "@molecule/forms/familyForm";
 import ContinueButton from "@atom/continueButton";
+import Flex from "@atom/flex";
+import Text from "@atom/text";
+import {
+  familyInforKeys
+} from "@lib/application/schema";
+import FamilyForm from "@molecule/forms/familyForm";
+import Section from "@molecule/section";
+import { FieldArray, FormikProps, FormikProvider } from "formik";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { ttColors } from "theme/colors";
 import { FamilyInfoInterface } from "types";
+import FormStepTitle from "./formStepsTitle";
 
 interface formProps {
   steps: string[];

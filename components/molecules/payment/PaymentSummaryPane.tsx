@@ -61,9 +61,9 @@ const PaymentSummaryPane = ({
         align="center"
         justify="space-between"
       >
-        <Text text="Total" type="p" weight={400} size={22} />
+        <Text text="Total" type="p" weight={400} size={20} />
 
-        <Text text={totalFee} type="p" weight={600} size={36} />
+        <Text text={totalFee} type="p" weight={600} size={30} />
       </Flex>
     </Section>
   );

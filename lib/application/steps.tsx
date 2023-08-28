@@ -6,30 +6,21 @@ import {
   familyInforKeys,
   personalInfoKeys,
 } from "./schema";
-import OtherInformation from "@organism/form/components/otherInformation";
-import Booking from "@organism/form/components/booking";
-import {
-  PaymentStatusFail,
-  PaymentStatusSuccess,
-} from "@organism/form/components/paymentStatus";
 
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
-import UploadDocuments from "@organism/form/components/uploadDocuments";
-import { SingleFormType } from "@organism/form/applicationForm";
-import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
 import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
+import UploadDocuments from "@organism/form/components/uploadDocuments";
+import { FormikProps, FormikValues } from "formik";
 import {
   DetailsKeys,
   DocumentInterface,
   EducationDetailsInterface,
   EmploymentDetailsInterface,
   FamilyInfoInterface,
-  PersonalInfoInterface,
-  VisaApplicationFormInterface,
+  PersonalInfoInterface
 } from "types";
-import { FormikProps, FormikValues } from "formik";
 
 interface IFormStep {
   id: number;
