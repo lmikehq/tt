@@ -22,24 +22,19 @@ interface TabPanelProps {
 const TabWrapper = styled.div<{ isMobile?: boolean }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
-    height: 3px;
+    // height: 3px;
   }
   .MuiTabs-root {
   }
   .css-1gsv261 {
-    border-bottom: 1px solid transparent;
+    // border-bottom: 1px solid transparent;
   }
 
   .MuiTabs-indicator .css-1aquho2-MuiTabs-indicator {
     width: 100% !important;
   }
-  .MuiTabs-flexContainer {
-    height: 100%;
-    width: 100%;
-    gap: 0;
-    justify-content: ${({ isMobile }) => (isMobile ? "center" : "flex-start")};
-    // border-bottom: 1px solid ${ttColors.dark};
-  }
+
+  z-index: 5;
 `;
 
 function TabPanel(props: TabPanelProps) {

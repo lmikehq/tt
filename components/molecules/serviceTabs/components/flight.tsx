@@ -1,3 +1,4 @@
+"use client"
 import Section from "@molecule/section";
 import Flex from "@atom/flex";
 import { CustomRadioGroup } from "@atom/radio";
@@ -7,6 +8,10 @@ import Button from "@atom/button";
 import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
 import { styled } from "styled-components";
+import { useRouter } from "next/navigation";
+import sleep from "@lib/sleep";
+import Spinner from "@components/icons/spinner";
+import { ttColors } from "theme/colors";
 
 const options = [
   { value: "round", label: "Round Trip" },
@@ -23,9 +28,9 @@ const ButtonWrapper = styled.div`
 
 function Flights() {
   const [value, setValue] = useState("round");
-  const [multiCityFlights, setMultiCityFlights] = useState<Array<JSX.Element>>(
-    []
-  );
+  const [multiCityFlights, setMultiCityFlights] = useState<Array<JSX.Element>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleAddMultiCityFlight = () => {
     const newIndex = multiCityFlights.length;
@@ -40,7 +45,7 @@ function Flights() {
       </div>
     );
 
-    newIndex > 4 ? '' : setMultiCityFlights([...multiCityFlights, newMultiCityFlight]);
+    newIndex > 3 ? '' : setMultiCityFlights([...multiCityFlights, newMultiCityFlight]);
   };
 
   const handleDeleteFlight = (index: number) => {
@@ -77,6 +82,7 @@ function Flights() {
               border="4px solid #06062A"
               width="15%"
               cursor="pointer"
+              
             >
               <Flex align="center" gap="1rem" justify="center">
                 <HiPlus color="#06062A" size={25} />
@@ -106,13 +112,21 @@ function Flights() {
           width="100%"
           padding="2rem"
           cursor="pointer"
+          onClick={async () => {
+            if (loading) return;
+            setLoading(true);
+            await sleep(200);
+            router.push(`/flight/listings`)
+          }}
         >
-          <Text
+          {loading ? (
+            <Spinner fill={ttColors.primary} size={"45px"} />
+          ) :(<Text
             type="p"
             text="Search for flight"
             size={18}
             weight={500}
-          />
+          />)}
         </Button>
       </ButtonWrapper>
     </Section>

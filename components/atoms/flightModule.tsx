@@ -1,5 +1,6 @@
+"use client";
 import Section from "@molecule/section";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Flex from "./flex";
 import Text from "./text";
 import SearchInput from "./searchInput";
@@ -12,23 +13,25 @@ import { ClickAwayListener } from "@mui/material";
 import Input from "./input";
 import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
-import { HiXMark } from "react-icons/hi2"
+import { HiXMark } from "react-icons/hi2";
+import { CountryType } from "@molecule/serviceTabs/components/visa";
+import { flightContext } from "context";
 
 interface flightProps {
-    value: string;
-    index: number;
-    length: number;
-    handleDeleteFlight: (index: number) => void;
+  value: string;
+  index: number;
+  length: number;
+  handleDeleteFlight: (index: number) => void;
 }
 
-const FlightCircle = styled.div<{ value: string}>`
+const FlightCircle = styled.div<{ value: string }>`
   position: absolute;
-  left: ${props => props.value === "one-way" ? "31%" : "27.5%"};
+  left: ${(props) => (props.value === "one-way" ? "31%" : "27.5%")};
   margin-top: 2.5rem;
   background: white;
   border: 1px solid #b6b6b6;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0.25rem;
   border-radius: 100%;
   z-index: 3;
@@ -37,7 +40,20 @@ const FlightCircle = styled.div<{ value: string}>`
   justify-items: center;
 `;
 
-function FlightModule({ value, index, handleDeleteFlight, length }: flightProps) {
+function FlightModule({
+  value,
+  index,
+  handleDeleteFlight,
+  length,
+}: flightProps) {
+  const context = flightContext();
+
+  if (!context) {
+    throw new Error("flightContext must be used within a FlightProvider");
+  }
+
+  const { state, dispatch } = context;
+
   const [data, setData] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -66,16 +82,20 @@ function FlightModule({ value, index, handleDeleteFlight, length }: flightProps)
               flag: x.flag,
               code: x.code,
             }))}
-            onChange={(x) => console.log(x)}
+            onChange={(x: CountryType) => {
+              dispatch({ type: "SET_DEPARTURE", payload: x.name });
+            }}
+            value={state.departureCountry}
+            placeholder="Current Location"
           >
             <Flex gap="1rem" cursor="pointer">
               <IoLocationOutline size={25} />
-              <Text type="p" text="Current Location" color="#929292" />
+              <Text type="p" text={state.departureCountry} color="black" />
             </Flex>
           </SearchInput>
         </Flex>
         <FlightCircle value={value}>
-          <GoArrowSwitch color={ttColors.primary} size={20} />
+          <GoArrowSwitch color={ttColors.primary} size={30} />
         </FlightCircle>
         <Flex direction="column" gap=".75rem">
           <Text type="h3" text="To" />
@@ -85,11 +105,15 @@ function FlightModule({ value, index, handleDeleteFlight, length }: flightProps)
               flag: x.flag,
               code: x.code,
             }))}
-            onChange={(x) => console.log(x)}
+            value={state.arrivalCountry}
+            onChange={(x: CountryType) => {
+              dispatch({ type: "SET_ARRIVAL", payload: x.name });
+            }}
+            placeholder="Where to?"
           >
             <Flex gap="1rem" cursor="pointer">
               <IoLocationOutline size={25} />
-              <Text type="p" text="Where to?" color="#929292" />
+              <Text type="p" text={state.arrivalCountry} color="black" />
             </Flex>
           </SearchInput>
         </Flex>
@@ -116,9 +140,16 @@ function FlightModule({ value, index, handleDeleteFlight, length }: flightProps)
             </div>
           </ClickAwayListener>
         </Flex>
-       {length >= 1 && (<Section width="0" padding="2rem 0 0 0">
-            <HiXMark size={30} color={ttColors.gray} onClick={() => handleDeleteFlight(index)} cursor="pointer" />
-        </Section>)}
+        {length >= 1 && (
+          <Section width="0" padding="2rem 0 0 0">
+            <HiXMark
+              size={30}
+              color={ttColors.gray}
+              onClick={() => handleDeleteFlight(index)}
+              cursor="pointer"
+            />
+          </Section>
+        )}
       </Flex>
     </Section>
   );

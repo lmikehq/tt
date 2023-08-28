@@ -158,7 +158,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
-        <Grid columns="1fr 1fr 1fr" align="center">
+        <Grid columns="3" align="center">
           <NavLink>
             {[
               { name: "Visa Apply", url: "visa", icon: <GiPassport /> },

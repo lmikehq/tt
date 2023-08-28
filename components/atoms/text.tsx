@@ -26,6 +26,7 @@ interface TextProps {
   decoration?: CSSProperties["textDecoration"];
   cursor?: CSSProperties["cursor"];
   textAlign?: CSSProperties["textAlign"]
+  width?: CSSProperties["width"];
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -41,6 +42,7 @@ export const Text: React.FC<TextProps> = ({
   padding,
   decoration,
   opacity,
+  width,
   letterSpacing,
   cursor,
   textAlign,
@@ -59,6 +61,7 @@ export const Text: React.FC<TextProps> = ({
     opacity,
     letterSpacing,
     cursor,
+    width,
     textAlign,
     ...styles,
   };

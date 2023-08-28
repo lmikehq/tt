@@ -14,7 +14,7 @@ interface flexProps {
     | "flex-end";
   align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
   gap?: string;
-  direction?: "row" | "column";
+  direction?: "row" | "column" | "row-reverse" | "column-reverse";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
   borderBottom?: string;
   margin?: string;
