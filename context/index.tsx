@@ -13,7 +13,7 @@ const initialValues: ContextType = {
     departureCountry: "Nigeria",
     arrivalCountry: "Canada",
     departureDate: dayjs(new Date()),
-    returnDate: dayjs(new Date())
+    returnDate: dayjs().add(1, 'day')
 }
 
 type Action = 

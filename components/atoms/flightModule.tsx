@@ -66,7 +66,7 @@ function FlightModule({
   };
 
   const handleDataChange = (data: any) => {
-    setData(`${data.count.adults} Adult, ${data.class}`);
+    setData(`${data.count.adults} Adult, ${data.count.children} Children, ${data.class}`);
   };
 
   const open = Boolean(anchorEl);
@@ -119,12 +119,24 @@ function FlightModule({
         </Flex>
         <Flex direction="column" gap=".75rem">
           <Text type="h3" text="Depart" />
-          <DatePicker placeholder="Select Date" position="start" />
+          <DatePicker placeholder="Select Date" position="start"
+              value={state.departureDate}
+              minDate={state.departureDate}
+              onChange={(e) => {
+                dispatch({ type: "SET_DEPARTURE_DATE", payload: e });
+              }}
+              />
         </Flex>
         {value !== "one-way" && (
           <Flex direction="column" gap=".75rem">
             <Text type="h3" text="Return" />
-            <DatePicker placeholder="Select Date" position="start" />
+            <DatePicker placeholder="Select Date" position="start"
+              value={state.returnDate}
+              minDate={state.departureDate}
+              onChange={(e) => {
+                dispatch({ type: "SET_RETURN_DATE", payload: e });
+              }}
+              />
           </Flex>
         )}
         <Flex direction="column" gap=".75rem">

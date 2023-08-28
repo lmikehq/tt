@@ -2,6 +2,7 @@ import Flex from "@atom/flex";
 import React from "react";
 import SortedColumn from "./sortedColumn";
 import Section from "@molecule/section";
+import AvailableFlights from "./availableFlights";
 
 function FlightList() {
   return (
@@ -10,7 +11,7 @@ function FlightList() {
         <SortedColumn/>
       </Section>
       <Section width="85%">
-        <SortedColumn/>
+        <AvailableFlights/>
       </Section>
     </Flex>
   );
