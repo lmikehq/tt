@@ -43,6 +43,7 @@ export const getSteps = ({
   handleSetUploadedDocuments,
   uploadedDocuments,
   visaType,
+  lastName,
 }: {
   setFormFee: (n: number) => void;
   setCurrentPhase: (n: number) => void;
@@ -57,6 +58,7 @@ export const getSteps = ({
   handleSetUploadedDocuments: (docs: UploadedDoc[]) => void;
   uploadedDocuments: UploadedDoc[];
   visaType: string;
+  lastName: string;
 }): IFormStep[] => {
   return [
     {
@@ -135,6 +137,7 @@ export const getSteps = ({
           uploadedDocuments={uploadedDocuments}
           handleSetUploadedDocuments={handleSetUploadedDocuments}
           visaType={visaType}
+          lastName={lastName}
         />
       ),
     },

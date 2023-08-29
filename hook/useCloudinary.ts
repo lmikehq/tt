@@ -1,19 +1,23 @@
 import { useState } from "react";
 import crypto from "crypto";
 import axios from "axios";
-const useCloudinaryUpload = (preset: any) => {
+const useCloudinaryUpload = ({
+  presets,
+}: {
+  presets: { publicId: string; folder: string };
+}) => {
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   const [progress, setProgress] = useState(0);
   const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY as string;
-  const apiSecret = "your_api_secret";
+  const apiSecret = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET_KEY as string;
 
-  const uploadImage = async (image: any) => {
+  const uploadImage = async ({ file }: { file: any }) => {
     const formData = new FormData();
-    formData.append("file", image);
+    formData.append("file", file);
     formData.append("api_key", apiKey);
-    formData.append("folder", preset.folder);
+    formData.append("folder", presets.folder);
     formData.append("upload_preset", "uy4br1wh");
 
     setLoading(true);
@@ -38,13 +42,20 @@ const useCloudinaryUpload = (preset: any) => {
     return response?.data.secure_url;
   };
 
-  const regex = /\/v\d+\/([^/]+)\.\w{3,4}$/;
+  // const regex = /\/v\d+\/([^/]+)\.\w{3,4}$/;
+  // const regex = /\/v\d+\/([\w-]+\/[\w-]+\.\w+)/;
 
   const getPublicIdFromUrl = (url: string) => {
+    const regex = /\/v\d+\/\d+-files\/([\w-]+)(?:\.\w+)/;
     const match = url.match(regex);
     return match ? match[1] : null;
   };
 
+  const getFolderFromUrl = (url: string) => {
+    const regex = /\/v\d+\/(\d+[-\w]+)\//;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
   const generateSHA1 = (data: any) => {
     const hash = crypto.createHash("sha1");
     hash.update(data);
@@ -72,6 +83,7 @@ const useCloudinaryUpload = (preset: any) => {
         signature: signature,
         api_key: apiKey,
         timestamp: timestamp,
+        folder: getFolderFromUrl(imageUrl),
       });
       setDeleting(false);
 
