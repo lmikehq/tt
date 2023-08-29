@@ -474,7 +474,7 @@ function ApplicationForm() {
 
   function getPaymentInformation(field: string) {
     let accompanies = 0;
-    if (formData.familyMembers.length > 1) {
+    if (formData.familyMembers.length > 0) {
       familyMembersFormik.values.familyMembers.forEach((member) => {
         if (member.accompanying) accompanies++;
       });

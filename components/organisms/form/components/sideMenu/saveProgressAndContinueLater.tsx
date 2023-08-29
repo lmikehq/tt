@@ -1,7 +1,9 @@
 import Button from "@atom/button";
 import Flex from "@atom/flex";
+import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "@molecule/section";
+import { toast } from "react-hot-toast";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { ttColors } from "theme/colors";
 
@@ -52,22 +54,25 @@ const SaveProgressAndContinueLater = () => {
             weight={600}
           />
         </Button>
-        <Button
-          border="1px solid #06062A"
-          width="100%"
-          background="none"
-          borderRadius="4px"
-          padding="1.5rem"
-        >
-          <Text
-            type="p"
-            text="Exit Application"
-            weight={600}
-            size={16}
-            color="#06062A"
-            cursor="pointer"
-          />
-        </Button>
+        <Link href="/">
+          <Button
+            border="1px solid #06062A"
+            width="100%"
+            background="none"
+            borderRadius="4px"
+            padding="1.5rem"
+            onClick={() => toast.success("Application Exited Successfully!")}
+          >
+            <Text
+              type="p"
+              text="Exit Application"
+              weight={600}
+              size={16}
+              color="#06062A"
+              cursor="pointer"
+            />
+          </Button>
+        </Link>
       </Flex>
     </Section>
   );
