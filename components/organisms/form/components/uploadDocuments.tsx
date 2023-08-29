@@ -109,7 +109,8 @@ function UploadDocuments({
     public_id: "lastName" || "unknown",
     folder: `${"lastName" || "unknown"}-files`,
   };
-  const { uploadImage, loading, progress } = useCloudinaryUpload(presets);
+  const { uploadImage, loading, progress, deleteImage, deleting } =
+    useCloudinaryUpload(presets);
 
   useEffect(() => {
     if (filesContent.length > 0) {
@@ -389,22 +390,34 @@ function UploadDocuments({
                               <Button
                                 background="red"
                                 color="#fff"
-                                onClick={() => {
-                                  handleSetUploadedDocuments([
-                                    ...uploadedDocuments.filter(
-                                      (_: any, index: number) => index !== i
-                                    ),
-                                  ]);
-                                  formik.setFieldValue(
-                                    "documents",
-                                    formik.values.documents.filter(
-                                      (_: any, index: number) => index !== i
-                                    )
-                                  );
-                                  handleModalClose();
+                                onClick={async () => {
+                                  try {
+                                    await deleteImage({
+                                      imageUrl: formik.values.documents[i].url,
+                                    });
+                                    handleSetUploadedDocuments([
+                                      ...uploadedDocuments.filter(
+                                        (_: any, index: number) => index !== i
+                                      ),
+                                    ]);
+                                    formik.setFieldValue(
+                                      "documents",
+                                      formik.values.documents.filter(
+                                        (_: any, index: number) => index !== i
+                                      )
+                                    );
+                                    handleModalClose();
+                                  } catch (error) {}
                                 }}
                               >
-                                Delete
+                                {deleting ? (
+                                  <Spinner
+                                    size={"16px"}
+                                    fill={ttColors.light}
+                                  />
+                                ) : (
+                                  "Delete"
+                                )}
                               </Button>
                             </>
                           ),
