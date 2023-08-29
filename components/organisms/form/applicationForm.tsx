@@ -71,6 +71,25 @@ const PromoInput = styled.div`
     height: 40px !important;
   }
 `;
+
+const ErrorToastComponent = styled.div`
+  width: 100%;
+  p {
+    color: ${ttColors.red};
+    padding: 0.5rem 0;
+  }
+
+  button {
+    display: block;
+    margin: 20px auto;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: ${ttColors.primary};
+    cursor: pointer;
+  }
+`;
+
 export type SingleFormType =
   | DetailsKeys
   | PersonalInfoInterface
@@ -83,6 +102,11 @@ export interface UploadedDoc {
   type: string;
   size: string;
   title: string;
+}
+
+interface ErrorInterface {
+  property: string;
+  constraints: string;
 }
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
@@ -264,19 +288,46 @@ function ApplicationForm() {
         })),
         documents: form.documents,
         user: user?._id ?? undefined,
-        // user: 'your_user_id_here', // Set the user ID appropriately
       };
 
       await handleVisaApplication({
         payload: applicationFormRequest,
       })
         .then((data) => {
-          // console.log(data);
           setCreateVisaApplicationData(data);
           setCurrentPhase(currentPhase + 1);
           setNextStepLoading(false);
         })
         .catch((err) => {
+          console.log("erorror: ", err);
+          if (
+            err.statusCode === 422 &&
+            err.errorMessage.includes("already exists")
+          ) {
+            toast.error("Please login to your account to continue");
+          } else if (err.statusCode === 400) {
+            toast(
+              (t) => (
+                <ErrorToastComponent>
+                  <p style={{ textAlign: "center" }}>
+                    There are errors in your form
+                  </p>{" "}
+                  {/* <br /> */}
+                  {err.data.map((error: ErrorInterface) => (
+                    <Text
+                      type="p"
+                      text={error.constraints}
+                      color={ttColors.red}
+                    />
+                  ))}
+                  <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                </ErrorToastComponent>
+              ),
+              {
+                duration: 100000,
+              }
+            );
+          }
           setNextStepLoading(false);
         });
       return;
