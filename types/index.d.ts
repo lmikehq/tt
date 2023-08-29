@@ -84,7 +84,7 @@ export interface PersonalInfoInterface {
   dateOfBirth: string;
   gender: string;
   maritalStatus: string;
-  partnersName: string;
+  partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: string;
   passportExpiryYear: number;

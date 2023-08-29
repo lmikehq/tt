@@ -51,7 +51,10 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     dateOfBirth: yup.string().required("Required"),
     gender: yup.string().required("Required"),
     maritalStatus: yup.string().required("Required"),
-    partnersName: yup.string().required("Required"),
+    partnersName: yup.string().when("maritalStatus", {
+      is: "Married",
+      then: (schema) => schema.required("Required"),
+    }),
     passportNumber: yup.string().required("Required"),
     passportIssuedCountry: yup.string().required("Required"),
     passportExpiryYear: yup
@@ -282,7 +285,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
 
 export const familyInforKeys: FamilyInfoInterface = {
   passportNumber: "",
-  expiryYear: '0',
+  expiryYear: "0",
   gender: "",
   dateOfBirth: "",
   membersName: "",
@@ -290,7 +293,7 @@ export const familyInforKeys: FamilyInfoInterface = {
   address: "",
   membersPhoneNumber: "",
   membersEmail: "",
-  issueYear: '0',
+  issueYear: "0",
   accompanying: false,
   // membersName: "Alice Smith",
   // relationshipToPrimary: "Spouse",
@@ -445,7 +448,7 @@ const test: ApplicationFormRequestInput = {
       dateOfBirth: "1992-05-15",
       gender: "Female",
       passportNumber: "P987654",
-      expiryYear: '2025',
+      expiryYear: "2025",
       issueYear: 2020,
     },
     {
