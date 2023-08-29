@@ -14,6 +14,7 @@ import Section from "@molecule/section";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { EducationDetailsInterface } from "types";
@@ -21,17 +22,13 @@ import { EducationDetailsInterface } from "types";
 interface formProps {
   formik: any;
   values: EducationDetailsInterface;
-  isMobile?: boolean;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function EducationForm({
-  formik,
-  isMobile,
-  count,
-  values,
-}: formProps) {
+export default function EducationForm({ formik, count, values }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   return (
     <Section height="unset">
       <Section margin="0">

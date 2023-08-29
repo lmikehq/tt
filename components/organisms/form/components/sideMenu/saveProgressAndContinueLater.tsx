@@ -3,11 +3,14 @@ import Flex from "@atom/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { toast } from "react-hot-toast";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { ttColors } from "theme/colors";
 
 const SaveProgressAndContinueLater = () => {
+  const { isMobile } = useScreenResolution();
+
   return (
     <Section height="unset">
       <Flex gap=".5rem">
@@ -37,7 +40,12 @@ const SaveProgressAndContinueLater = () => {
         </div>
       </Flex>
 
-      <Flex margin="3rem 0 0 0" direction="column" gap="0.5rem">
+      <Flex
+        styles={{ display: isMobile ? "none" : "block" }}
+        margin={isMobile ? "1.5rem 0 0 0 " : "3rem 0 0 0"}
+        direction="column"
+        gap="0.5rem"
+      >
         <Button
           border="1px solid #06062A"
           width="100%"

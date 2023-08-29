@@ -157,6 +157,10 @@ body {
   padding: 0px 14px !important;
 }
 
+.css-9emuhu-MuiPaper-root-MuiDrawer-paper {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
 :-ms-input-placeholder {
   font-weight: 500;
 }

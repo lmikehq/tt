@@ -123,7 +123,7 @@ function UploadDocuments({
       <Section>
         <Text
           type="p"
-          size={18}
+          size={isMobile ? 16 : 18}
           weight={400}
           color={"#929292"}
           text="If you don't have all document required, don't worry, our team will complete the rest for you"
@@ -139,7 +139,7 @@ function UploadDocuments({
               size={"1.125rem"}
               weight={400}
               color="#000000"
-              margin="3rem 0 .9rem"
+              margin={isMobile ? "1.5rem 0 0.9rem 0" : "3rem 0 .9rem"}
             />
             <SearchStringInput
               options={(() => {
@@ -198,37 +198,39 @@ function UploadDocuments({
             />
           </Section>
         </Section>
-        <DocumentUploadWidget
-          loading={loading}
-          deleting={deleting}
-          progress={progress}
-          documents={uploadedDocuments}
-          openFilePicker={() => {
-            if (!documentToUpload)
-              return toast.error("Please select a document to upload");
-            openFilePicker();
-          }}
-          handleDelete={async (i: number) => {
-            try {
-              await deleteImage({
-                imageUrl: formik.values.documents[i].url,
-              });
-              handleSetUploadedDocuments([
-                ...uploadedDocuments.filter(
-                  (_: any, index: number) => index !== i
-                ),
-              ]);
-              formik.setFieldValue(
-                "documents",
-                formik.values.documents.filter(
-                  (_: any, index: number) => index !== i
-                )
-              );
-            } catch (error) {
-              throw error;
-            }
-          }}
-        />
+        <Section styles={{ marginBottom: isMobile ? "1.5rem" : "0" }}>
+          <DocumentUploadWidget
+            loading={loading}
+            deleting={deleting}
+            progress={progress}
+            documents={uploadedDocuments}
+            openFilePicker={() => {
+              if (!documentToUpload)
+                return toast.error("Please select a document to upload");
+              openFilePicker();
+            }}
+            handleDelete={async (i: number) => {
+              try {
+                await deleteImage({
+                  imageUrl: formik.values.documents[i].url,
+                });
+                handleSetUploadedDocuments([
+                  ...uploadedDocuments.filter(
+                    (_: any, index: number) => index !== i
+                  ),
+                ]);
+                formik.setFieldValue(
+                  "documents",
+                  formik.values.documents.filter(
+                    (_: any, index: number) => index !== i
+                  )
+                );
+              } catch (error) {
+                throw error;
+              }
+            }}
+          />
+        </Section>
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {

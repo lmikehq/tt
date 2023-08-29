@@ -13,6 +13,9 @@ const SectionTitleContainer = styled.div`
   justify-content: space-between;
   gap: 0.5rem;
   margin-bottom: 20px;
+  @media (max-width: 900px) {
+    margin-bottom: 5px;
+  }
 `;
 
 const Title = styled.h2`
@@ -24,7 +27,7 @@ const Title = styled.h2`
   margin-bottom: 1rem;
 
   @media screen and (max-width: 900px) {
-    font-size: 1rem;
+    font-size: 1.125rem;
   }
 `;
 
@@ -36,7 +39,7 @@ const Description = styled.p`
   line-height: 1.2rem;
 
   @media screen and (max-width: 900px) {
-    font-size: 0.755rem;
+    font-size: 0.875rem;
     margin-top: -5px;
   }
 `;
@@ -74,7 +77,7 @@ const SectionTitle: React.FC<SectionTitleProps> = ({
         alignItems: isMobile ? "left" : "center",
       }}
     >
-      <div style={{width: isMobile ? "100%" : "80%"}}>
+      <div style={{ width: isMobile ? "100%" : "80%" }}>
         <Title>{title}</Title>
         <Description>{description}</Description>
       </div>
