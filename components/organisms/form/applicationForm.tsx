@@ -313,11 +313,12 @@ function ApplicationForm() {
                     There are errors in your form
                   </p>{" "}
                   {/* <br /> */}
-                  {err.data.map((error: ErrorInterface) => (
+                  {err.data.map((error: ErrorInterface, index: number) => (
                     <Text
                       type="p"
                       text={error.constraints}
                       color={ttColors.red}
+                      key={index}
                     />
                   ))}
                   <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
