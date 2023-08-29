@@ -51,6 +51,8 @@ import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndC
 import VisApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
 import currencyFormatter from "data/currencyFormatter";
 import sleep from "@lib/sleep";
+import { useUserStore } from "store/useStore";
+import { safelyConvertToNumber } from "@lib/utilFns";
 
 const PromoInput = styled.div`
   display: flex;
@@ -90,7 +92,7 @@ function ApplicationForm() {
     visa: string;
   }>();
 
-  // const { user } = useUserStore((state) => state);
+  const { user } = useUserStore((state) => state);
   async function handleVisaApplication({
     payload,
   }: {
@@ -255,8 +257,13 @@ function ApplicationForm() {
           education: form.education,
           employment: form.employment,
         },
-        familyMembers: form.familyMembers,
+        familyMembers: form.familyMembers.map((member) => ({
+          ...member,
+          issueYear: safelyConvertToNumber(member?.issueYear),
+          expiryYear: safelyConvertToNumber(member?.expiryYear),
+        })),
         documents: form.documents,
+        user: user?._id ?? undefined,
         // user: 'your_user_id_here', // Set the user ID appropriately
       };
 

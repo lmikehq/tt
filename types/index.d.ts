@@ -110,9 +110,9 @@ export interface FamilyInfoInterface {
   membersPhoneNumber: string;
   membersEmail: string;
   accompanying: boolean;
-  issueYear?: number;
+  issueYear?: string | number;
   passportNumber?: string;
-  expiryYear?: number;
+  expiryYear?: string | number;
   gender?: string;
   dateOfBirth?: string;
 }

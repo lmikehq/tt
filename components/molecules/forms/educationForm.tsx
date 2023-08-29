@@ -105,7 +105,7 @@ export default function EducationForm({
             min={1}
             defaultValue=""
             formik={formik}
-            type="text"
+            type="number"
             name={`education.${count}.cgpa`}
             placeholder="Enter your Grade"
           />
@@ -132,7 +132,7 @@ export default function EducationForm({
         <Section width="100%">
           <Text
             type="p"
-            text="Start Date"
+            text="Start Year"
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
@@ -149,7 +149,7 @@ export default function EducationForm({
         <Section>
           <Text
             type="p"
-            text="End Date"
+            text="End Year"
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
