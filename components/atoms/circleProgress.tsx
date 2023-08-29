@@ -17,10 +17,9 @@ const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
   &::after {
     content: "";
     position: absolute;
-
-    width: 70%;
+    width: 62%;
     top: 20%;
-    left: 64%;
+    left: 67.5%;
     opacity: ${(props) => (props.active ? "1" : "0.7")};
     border: 1px solid ${(props) => (props.isPassed ? "#6092A7" : "gray")};
   }
@@ -30,15 +29,16 @@ const CircleWrapper = styled.div<{ active: boolean; isPassed: boolean }>`
   cursor: pointer;
   /* Responsive Styles */
   @media (max-width: 1024px) {
-    // width
+    width
   }
 
-  @media (max-width: 1280px) {
+ @media (max-width:1280px) {
     &::after {
       left: 70%;
       width: 58%;
     }
-  }
+ }
+
 `;
 
 const Container = styled.div<{ active: boolean; isPassed: boolean }>`
@@ -67,7 +67,7 @@ const Circle = styled.span<{
   display: flex;
   width: 1.5rem;
   height: 1.5rem;
-  background: ${(props) => (props.isPassed ? "#6092A7" : "white")};
+  background: ${(props) => (props.isPassed ? "#6092A7" : "none")};
   border: 2px solid
     ${(props) => (props.active || props.isPassed ? "#6092A7" : "gray")};
   padding: 1.25rem;
