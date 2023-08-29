@@ -202,19 +202,21 @@ export default function FamilyForm({
             gap={isMobile ? "0px" : "1.5rem"}
           >
             <Section margin="0">
-              <Text type="p" text="Issue Date" />
+              <Text type="p" text="Issue Year" />
               <FieldAsDate
-                name={`familyMembers.${count}.issueDate`}
-                placeholder="Select Issue Date"
+                name={`familyMembers.${count}.issueYear`}
+                placeholder="Select Issue Year"
                 formik={formik}
+                views={["year"]}
               />
             </Section>
             <Section margin="0">
-              <Text type="p" text="Expiry Date" />
+              <Text type="p" text="Expiry Year" />
               <FieldAsDate
-                name={`familyMembers.${count}.expiryDate`}
-                placeholder="Select Expiry Date"
+                name={`familyMembers.${count}.expiryYear`}
+                placeholder="Select Expiry Year"
                 formik={formik}
+                views={["year"]}
               />
             </Section>
           </Flex>

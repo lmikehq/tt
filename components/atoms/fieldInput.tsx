@@ -11,6 +11,8 @@ import dayjs, { Dayjs } from "dayjs";
 
 interface FieldProps {
   value?: string;
+  defaultValue?: string;
+
   name: string;
   type?:
     | "text"
@@ -98,13 +100,14 @@ export const FieldInput = (props: FieldProps) => {
 };
 
 export const ArrayInput = (props: FieldProps) => {
-  const { name, type, placeholder, formik, addon, max, min } = props;
+  const { name, type, placeholder, formik, addon, max, min, defaultValue } =
+    props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
-    if (type === "number") {
-      parseFloat(value) > 5 ? (value = "5") : value;
-    }
+
+    parseFloat(value) > 5 ? (value = "5") : value;
+
     formik.setFieldValue(name, value);
   };
 
@@ -118,10 +121,11 @@ export const ArrayInput = (props: FieldProps) => {
         type={type}
         max={max}
         min={min}
+        defaultValue={defaultValue}
         placeholder={placeholder}
         padding="0 0 0 14px"
         onChange={handleChange}
-        value={value}
+        value={value == 0 ? "" : value}
         onBlur={formik.handleBlur}
       />
     </div>
@@ -206,7 +210,7 @@ export const FieldAsDate = (props: FieldProps) => {
         placeholder={placeholder}
         maxDate={maxDate}
         minDate={minDate}
-        value={value === "" ? null : dayjs(value)}
+        value={value === "" ? null : dayjs(`${value}`)}
         onChange={onChange ? onChange : handleChange}
       />
 

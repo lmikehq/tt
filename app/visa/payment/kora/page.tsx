@@ -2,7 +2,6 @@
 import Flex from "@atom/flex";
 import Spinner from "@components/icons/spinner";
 import Section from "@molecule/section";
-import apiService from "hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { ttColors } from "theme/colors";
@@ -11,15 +10,19 @@ const VerifyKoraPaymentPage = () => {
   const router = useRouter();
   const params = useSearchParams();
   const reference = params.get("reference");
-  const verifyKoraPayment = async () => {
-    return apiService(`/payment/${reference}/status`);
-  };
+  // const verifyKoraPayment = async () => {
+  //   return apiService(`/payment/${reference}/status`);
+  // };
+  // useEffect(() => {
+  //   if (!reference) return;
+  //   verifyKoraPayment().then((res) => {
+  //     router.push(`/visa/apply/?status=${res.status}`);
+  //   });
+  // });
   useEffect(() => {
     if (!reference) return;
-    verifyKoraPayment().then((res) => {
-      router.push(`/?application=${res.status}`);
-    });
-  });
+    router.push(`/visa/apply/?paymentRef=${reference}`);
+  }, [reference]);
   return (
     <Section height="100vh" width="100%">
       <Flex width="100%" height="100%" align="center" justify="center">

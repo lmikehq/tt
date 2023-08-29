@@ -51,7 +51,10 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     dateOfBirth: yup.string().required("Required"),
     gender: yup.string().required("Required"),
     maritalStatus: yup.string().required("Required"),
-    partnersName: yup.string().required("Required"),
+    partnersName: yup.string().when("maritalStatus", {
+      is: "Married",
+      then: (schema) => schema.required("Required"),
+    }),
     passportNumber: yup.string().required("Required"),
     passportIssuedCountry: yup.string().required("Required"),
     passportExpiryYear: yup
@@ -200,8 +203,8 @@ export const educationKeys: EducationDetailsInterface = {
   cgpa: 0,
   location: "",
   fieldOfStudy: "",
-  startYear: 0,
-  endYear: 0,
+  startYear: null,
+  endYear: null,
   stillAtSchool: false,
   // school: "University1",
   // degree: "Bachelor's",
@@ -262,7 +265,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    expiryYear: yup.number().when("accompanying", {
+    expiryYear: yup.string().when("accompanying", {
       is: true,
       then: (schema) => schema.required("Required"),
     }),
@@ -274,7 +277,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    issueYear: yup.number().when("accompanying", {
+    issueYear: yup.string().when("accompanying", {
       is: true,
       then: (schema) => schema.required("Required"),
     }),
@@ -282,7 +285,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
 
 export const familyInforKeys: FamilyInfoInterface = {
   passportNumber: "",
-  expiryYear: 0,
+  expiryYear: "0",
   gender: "",
   dateOfBirth: "",
   membersName: "",
@@ -290,7 +293,7 @@ export const familyInforKeys: FamilyInfoInterface = {
   address: "",
   membersPhoneNumber: "",
   membersEmail: "",
-  issueYear: 0,
+  issueYear: "0",
   accompanying: false,
   // membersName: "Alice Smith",
   // relationshipToPrimary: "Spouse",
@@ -315,8 +318,7 @@ export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(4, "You need to add 4 documents")
-  .max(5, "You can provide at most 5 documents");
+  .min(1, "You need to add 4 documents");
 
 export const manyEducationSchema = yup
   .object()
@@ -446,7 +448,7 @@ const test: ApplicationFormRequestInput = {
       dateOfBirth: "1992-05-15",
       gender: "Female",
       passportNumber: "P987654",
-      expiryYear: 2025,
+      expiryYear: "2025",
       issueYear: 2020,
     },
     {

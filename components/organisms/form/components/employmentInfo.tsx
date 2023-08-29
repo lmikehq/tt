@@ -23,6 +23,7 @@ import {
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@atom/continueButton";
 import { EmploymentDetailsInterface } from "types";
+import { toast } from "react-hot-toast";
 
 interface formProps {
   steps: string[];
@@ -45,6 +46,8 @@ function EmploymentInfo({ steps, index, isLoading, formik }: formProps) {
                   <AddButton
                     disabled={formik.values.employment.length === 3}
                     onClick={() => {
+                      if (!formik.isValid || !formik.dirty)
+                        return toast.error("Please validate all inputs");
                       if (formik.values.employment.length < 3) {
                         arrayHelpers.insert(index + 1, employmentKeys);
                       }

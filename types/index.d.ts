@@ -46,11 +46,11 @@ export interface DetailsKeys {
 export interface EducationDetailsInterface {
   school: string;
   degree: string;
-  cgpa: number;
+  cgpa: number | null;
   location: string;
   fieldOfStudy: string;
-  startYear: number;
-  endYear?: number;
+  startYear: number | null;
+  endYear?: number | null;
   stillAtSchool: boolean;
 }
 
@@ -84,7 +84,7 @@ export interface PersonalInfoInterface {
   dateOfBirth: string;
   gender: string;
   maritalStatus: string;
-  partnersName: string;
+  partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: string;
   passportExpiryYear: number;
@@ -110,9 +110,9 @@ export interface FamilyInfoInterface {
   membersPhoneNumber: string;
   membersEmail: string;
   accompanying: boolean;
-  issueYear?: number;
+  issueYear?: string | number;
   passportNumber?: string;
-  expiryYear?: number;
+  expiryYear?: string | number;
   gender?: string;
   dateOfBirth?: string;
 }

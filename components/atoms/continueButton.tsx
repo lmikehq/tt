@@ -10,12 +10,14 @@ interface ButtonProps {
   isLoading: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  buttonText?: string;
 }
 
 export default function ContinueButton({
   isLoading,
   disabled,
   onClick,
+  buttonText = "Save & Continue",
 }: ButtonProps) {
   return (
     <Section
@@ -37,7 +39,7 @@ export default function ContinueButton({
           ) : (
             <Text
               type="span"
-              text={"Save & Continue"}
+              text={buttonText}
               weight={600}
               size={20}
               color={ttColors.light}

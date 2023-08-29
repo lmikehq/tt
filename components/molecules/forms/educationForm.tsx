@@ -103,6 +103,7 @@ export default function EducationForm({
           <ArrayInput
             max={5.0}
             min={1}
+            defaultValue=""
             formik={formik}
             type="number"
             name={`education.${count}.cgpa`}
@@ -131,7 +132,7 @@ export default function EducationForm({
         <Section width="100%">
           <Text
             type="p"
-            text="Start Date"
+            text="Start Year"
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
@@ -142,13 +143,13 @@ export default function EducationForm({
             onChange={(e: any) => {
               formik.setFieldValue(`education.${count}.startYear`, e.$y);
             }}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
           <Text
             type="p"
-            text="End Date"
+            text="End Year"
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
@@ -161,8 +162,8 @@ export default function EducationForm({
               console.log(e);
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
-            minDate={dayjs(values.startYear)}
-            maxDate={dayjs(new Date())}
+            minDate={dayjs(`${values.startYear}`)}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

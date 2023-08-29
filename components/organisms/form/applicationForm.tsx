@@ -20,28 +20,21 @@ import {
   personalInfoKeys,
   personalInfoSchema,
   visaInitVals,
-  visaSchema,
 } from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
-import sleep from "@lib/sleep";
 import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 import Section from "@molecule/section";
 import SectionTitle from "@molecule/sectionTitle";
 import VisaProgress from "@molecule/visaProgress";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
-import currencyFormatter from "data/currencyFormatter";
 import apiService from "hook/apiService";
-import { usePaystack } from "hook/usePaystack";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsArrowLeft } from "react-icons/bs";
-import {
-  HiOutlineArrowNarrowLeft,
-  HiOutlineArrowNarrowRight,
-} from "react-icons/hi";
 // import { useUserStore } from "store/useStore";
+import { FormikProps, useFormik } from "formik";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import {
@@ -51,15 +44,15 @@ import {
   EducationDetailsInterface,
   EmploymentDetailsInterface,
   FamilyInfoInterface,
-  IFee,
   PersonalInfoInterface,
   VisaApplicationFormInterface,
 } from "types";
 import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndContinueLater";
-import CustomToaster from "@molecule/customToaster";
-import { setTimeout } from "timers";
-import { FormikProps, FormikValues, useFormik } from "formik";
 import VisApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
+import currencyFormatter from "data/currencyFormatter";
+import sleep from "@lib/sleep";
+import { useUserStore } from "store/useStore";
+import { safelyConvertToNumber } from "@lib/utilFns";
 
 const PromoInput = styled.div`
   display: flex;
@@ -78,6 +71,25 @@ const PromoInput = styled.div`
     height: 40px !important;
   }
 `;
+
+const ErrorToastComponent = styled.div`
+  width: 100%;
+  p {
+    color: ${ttColors.red};
+    padding: 0.5rem 0;
+  }
+
+  button {
+    display: block;
+    margin: 20px auto;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: ${ttColors.primary};
+    cursor: pointer;
+  }
+`;
+
 export type SingleFormType =
   | DetailsKeys
   | PersonalInfoInterface
@@ -85,20 +97,26 @@ export type SingleFormType =
   | { employment: EmploymentDetailsInterface[] }
   | { familyMembers: FamilyInfoInterface[] }
   | { documents: DocumentInterface[] };
+export interface UploadedDoc {
+  name: string;
+  type: string;
+  size: string;
+  title: string;
+}
 
+interface ErrorInterface {
+  property: string;
+  constraints: string;
+}
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
-  const [promoCode, setPromoCode] = useState("");
-  const [promocodeLoading, setPromocodeLoading] = useState(false);
-  const [applicationResponse, setApplicationResponse] = useState<any>();
+  ``;
   const [createVisaApplicationData, setCreateVisaApplicationData] = useState<{
     user: string;
     visa: string;
   }>();
 
-  // const { user } = useUserStore((state) => state);
-  const { startPayment, loading, error, response, setData, data } =
-    usePaystack();
+  const { user } = useUserStore((state) => state);
   async function handleVisaApplication({
     payload,
   }: {
@@ -109,13 +127,12 @@ function ApplicationForm() {
       "POST",
       payload
     ).then((response) => {
-      if (response.statuCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         toast.success(
           "Your application has been submitted successfully, please proceed to make payment"
         );
         return response.data;
       } else {
-        console.log("heress");
         toast.error(response.message);
 
         throw response;
@@ -203,7 +220,6 @@ function ApplicationForm() {
   // }
 
   const setPhase = async (number: number) => {
-    console.log("setPhase", number);
     setCurrentPhase(number);
     if (number > highestPhase) setHighestPhase(number);
   };
@@ -218,7 +234,7 @@ function ApplicationForm() {
     if (currentPhase <= 6) {
       if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
     }
-
+    if (currentPhase < 6) await sleep(2000);
     if (currentPhase == 6 && form) {
       const applicationFormRequest: ApplicationFormRequestInput = {
         applicationType: form.applicationType,
@@ -265,20 +281,55 @@ function ApplicationForm() {
           education: form.education,
           employment: form.employment,
         },
-        familyMembers: form.familyMembers,
+        familyMembers: form.familyMembers.map((member) => ({
+          ...member,
+          issueYear: safelyConvertToNumber(member?.issueYear),
+          expiryYear: safelyConvertToNumber(member?.expiryYear),
+        })),
         documents: form.documents,
-        // user: 'your_user_id_here', // Set the user ID appropriately
+        user: user?._id ?? undefined,
       };
 
       await handleVisaApplication({
         payload: applicationFormRequest,
       })
         .then((data) => {
-          // console.log(data);
           setCreateVisaApplicationData(data);
           setCurrentPhase(currentPhase + 1);
+          setNextStepLoading(false);
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         })
         .catch((err) => {
+          console.log("erorror: ", err);
+          if (
+            err.statusCode === 422 &&
+            err.errorMessage.includes("already exists")
+          ) {
+            toast.error("Please login to your account to continue");
+          } else if (err.statusCode === 400) {
+            toast(
+              (t) => (
+                <ErrorToastComponent>
+                  <p style={{ textAlign: "center" }}>
+                    There are errors in your form
+                  </p>{" "}
+                  {/* <br /> */}
+                  {err.data.map((error: ErrorInterface, index: number) => (
+                    <Text
+                      type="p"
+                      text={error.constraints}
+                      color={ttColors.red}
+                      key={index}
+                    />
+                  ))}
+                  <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                </ErrorToastComponent>
+              ),
+              {
+                duration: 100000,
+              }
+            );
+          }
           setNextStepLoading(false);
         });
       return;
@@ -302,6 +353,7 @@ function ApplicationForm() {
 
     setCurrentPhase(currentPhase + 1);
     setNextStepLoading(false);
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
   const prevStep = async () => {
@@ -311,6 +363,11 @@ function ApplicationForm() {
   };
 
   const [formFee, setFormFee] = useState(0);
+  const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDoc[]>();
+
+  const handleSetUploadedDocuments = (docs: UploadedDoc[]) => {
+    setUploadedDocuments([...docs]);
+  };
 
   // async function reloadFee() {
   //   setNextStepLoading(true);
@@ -406,6 +463,10 @@ function ApplicationForm() {
     documentsFormik,
     paymentFormik,
     isLoading: nextStepLoading,
+    handleSetUploadedDocuments,
+    uploadedDocuments: uploadedDocuments ?? [],
+    visaType: formData.visaType,
+    lastName: formData.lastName,
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {
@@ -413,6 +474,26 @@ function ApplicationForm() {
   }, [formData.homeCountry, formData.destination]);
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
+
+  function getPaymentInformation(field: string) {
+    let accompanies = 0;
+    if (formData.familyMembers.length > 0) {
+      familyMembersFormik.values.familyMembers.forEach((member) => {
+        if (member.accompanying) accompanies++;
+      });
+    }
+    switch (field) {
+      case "fee":
+        return accompanies > 0 ? 30000 : 20000;
+      case "numberOfPersons":
+        return accompanies + 1;
+      case "applicationType":
+        return detailsFormik.values.applicationType;
+      default:
+        return 0;
+    }
+  }
+
   return (
     <>
       <AllCountryHead cover={coverImage} title={formData.destination || ""} />
@@ -507,10 +588,18 @@ function ApplicationForm() {
                 } else if (currentPhase > 6) {
                   return (
                     <PaymentSummaryPane
-                      numberOfPersons={1}
-                      visaApplicationType="Individual"
-                      fee={"10000"}
-                      totalFee={"10000"}
+                      numberOfPersons={Number(
+                        getPaymentInformation("numberOfPersons")
+                      )}
+                      visaApplicationType={getPaymentInformation(
+                        "applicationType"
+                      ).toString()}
+                      fee={currencyFormatter(
+                        getPaymentInformation("fee").toString()
+                      )}
+                      totalFee={currencyFormatter(
+                        getPaymentInformation("fee").toString()
+                      )}
                     />
                   );
                 }
