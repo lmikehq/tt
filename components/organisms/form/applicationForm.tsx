@@ -159,7 +159,7 @@ function ApplicationForm() {
       }
     ).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        window.open(response.data.data.checkout_url);
+        window.open(response.data.data.checkout_url, "_self");
         return response.data;
       } else {
         toast.error(response.errorMessage);

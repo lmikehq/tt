@@ -64,7 +64,7 @@ const PaymentConfirmationModal = () => {
               <br />
               <Text
                 type="p"
-                text="Sorry, your Visa Application payment wasn’t
+                text="Sorry, your Visa Application payment was not
           successful."
                 weight={400}
                 size={18}
@@ -77,8 +77,10 @@ const PaymentConfirmationModal = () => {
                   width="100%"
                   background={ttColors.dark}
                   color={ttColors.light}
-                  // border="1px solid #19013b"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => {
+                    handleModalClose();
+                    router.push("/dashboard");
+                  }}
                 >
                   Try payment again
                 </Button>
@@ -87,7 +89,10 @@ const PaymentConfirmationModal = () => {
                   background="transparent"
                   color={ttColors.dark}
                   border="1px solid #19013b"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => {
+                    handleModalClose();
+                    router.push("/dashboard");
+                  }}
                 >
                   Back to dashboard
                 </Button>
@@ -141,7 +146,7 @@ const PaymentConfirmationModal = () => {
               <br />
               <Text
                 type="p"
-                text="Your application has been submitted and currently being reviewed by our administrative officer. Your details and information will be reviewed and we will get back to you for further steps."
+                text="Your application has been submitted and currently being reviewed by our application admin officers. Your information and uploaded docs will be reviewed and we will get back to you shortly for the next step."
                 weight={400}
                 size={18}
                 color="#929292"
@@ -153,8 +158,7 @@ const PaymentConfirmationModal = () => {
                   width="100%"
                   background={ttColors.dark}
                   color={ttColors.light}
-                  // border="1px solid #19013b"
-                  onClick={() => router.push("/visa/apply")}
+                  onClick={handleModalClose}
                 >
                   Make another Application
                 </Button>
@@ -163,7 +167,10 @@ const PaymentConfirmationModal = () => {
                   background="transparent"
                   color={ttColors.dark}
                   border="1px solid #19013b"
-                  onClick={() => router.push("/dashboard")}
+                  onClick={() => {
+                    handleModalClose();
+                    router.push("/dashboard");
+                  }}
                 >
                   Back to dashboard
                 </Button>
