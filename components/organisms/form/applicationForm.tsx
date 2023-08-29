@@ -51,6 +51,8 @@ import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndC
 import VisApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
 import currencyFormatter from "data/currencyFormatter";
 import sleep from "@lib/sleep";
+import { useUserStore } from "store/useStore";
+import { safelyConvertToNumber } from "@lib/utilFns";
 
 const PromoInput = styled.div`
   display: flex;
@@ -69,6 +71,25 @@ const PromoInput = styled.div`
     height: 40px !important;
   }
 `;
+
+const ErrorToastComponent = styled.div`
+  width: 100%;
+  p {
+    color: ${ttColors.red};
+    padding: 0.5rem 0;
+  }
+
+  button {
+    display: block;
+    margin: 20px auto;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    background: ${ttColors.primary};
+    cursor: pointer;
+  }
+`;
+
 export type SingleFormType =
   | DetailsKeys
   | PersonalInfoInterface
@@ -82,6 +103,11 @@ export interface UploadedDoc {
   size: string;
   title: string;
 }
+
+interface ErrorInterface {
+  property: string;
+  constraints: string;
+}
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
   ``;
@@ -90,7 +116,7 @@ function ApplicationForm() {
     visa: string;
   }>();
 
-  // const { user } = useUserStore((state) => state);
+  const { user } = useUserStore((state) => state);
   async function handleVisaApplication({
     payload,
   }: {
@@ -255,21 +281,54 @@ function ApplicationForm() {
           education: form.education,
           employment: form.employment,
         },
-        familyMembers: form.familyMembers,
+        familyMembers: form.familyMembers.map((member) => ({
+          ...member,
+          issueYear: safelyConvertToNumber(member?.issueYear),
+          expiryYear: safelyConvertToNumber(member?.expiryYear),
+        })),
         documents: form.documents,
-        // user: 'your_user_id_here', // Set the user ID appropriately
+        user: user?._id ?? undefined,
       };
 
       await handleVisaApplication({
         payload: applicationFormRequest,
       })
         .then((data) => {
-          // console.log(data);
           setCreateVisaApplicationData(data);
           setCurrentPhase(currentPhase + 1);
           setNextStepLoading(false);
         })
         .catch((err) => {
+          console.log("erorror: ", err);
+          if (
+            err.statusCode === 422 &&
+            err.errorMessage.includes("already exists")
+          ) {
+            toast.error("Please login to your account to continue");
+          } else if (err.statusCode === 400) {
+            toast(
+              (t) => (
+                <ErrorToastComponent>
+                  <p style={{ textAlign: "center" }}>
+                    There are errors in your form
+                  </p>{" "}
+                  {/* <br /> */}
+                  {err.data.map((error: ErrorInterface, index: number) => (
+                    <Text
+                      type="p"
+                      text={error.constraints}
+                      color={ttColors.red}
+                      key={index}
+                    />
+                  ))}
+                  <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                </ErrorToastComponent>
+              ),
+              {
+                duration: 100000,
+              }
+            );
+          }
           setNextStepLoading(false);
         });
       return;
@@ -416,7 +475,7 @@ function ApplicationForm() {
 
   function getPaymentInformation(field: string) {
     let accompanies = 0;
-    if (formData.familyMembers.length > 1) {
+    if (formData.familyMembers.length > 0) {
       familyMembersFormik.values.familyMembers.forEach((member) => {
         if (member.accompanying) accompanies++;
       });

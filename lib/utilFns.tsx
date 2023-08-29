@@ -23,3 +23,8 @@ export function concatArrays(
 ): (string | number)[] {
   return [...strings, ...numbers];
 }
+
+export function safelyConvertToNumber(value?: string | number): number {
+  const numValue = parseInt(value as string);
+  return isNaN(numValue) ? 0 : numValue;
+}
