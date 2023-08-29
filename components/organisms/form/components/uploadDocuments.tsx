@@ -13,6 +13,7 @@ import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import { UploadedDoc } from "../applicationForm";
 import { DocumentInterface } from "types";
 import ContinueButton from "@atom/continueButton";
+import DocumentUploadWidget from "@organism/DocumentUploadWidget";
 
 interface formProps {
   steps: string[];
@@ -197,6 +198,37 @@ function UploadDocuments({
             />
           </Section>
         </Section>
+        <DocumentUploadWidget
+          loading={loading}
+          deleting={deleting}
+          progress={progress}
+          documents={uploadedDocuments}
+          openFilePicker={() => {
+            if (!documentToUpload)
+              return toast.error("Please select a document to upload");
+            openFilePicker();
+          }}
+          handleDelete={async (i: number) => {
+            try {
+              await deleteImage({
+                imageUrl: formik.values.documents[i].url,
+              });
+              handleSetUploadedDocuments([
+                ...uploadedDocuments.filter(
+                  (_: any, index: number) => index !== i
+                ),
+              ]);
+              formik.setFieldValue(
+                "documents",
+                formik.values.documents.filter(
+                  (_: any, index: number) => index !== i
+                )
+              );
+            } catch (error) {
+              throw error;
+            }
+          }}
+        />
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {

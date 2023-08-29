@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import DocPlus from "@image/form/docUpload/docPlus.png";
+import DeleteIcon from "@image/visaIcons/delete.png";
 import { UploadedDoc } from "@organism/form/applicationForm";
 
 const UploadArea = styled.div`
@@ -39,12 +40,21 @@ const UploadedDocumentsWrapper = styled.div`
 
 interface DocumentUploadWidgetProps {
   loading: boolean;
+  deleting: boolean;
   progress: number;
-  openFilePicker?: () => void;
+  openFilePicker: () => void;
+  handleDelete: (i: number) => Promise<void>;
   documents: UploadedDoc[];
 }
 
-const DocumentUploadWidget = () => {
+const DocumentUploadWidget = ({
+  loading,
+  deleting,
+  progress,
+  openFilePicker,
+  handleDelete,
+  documents,
+}: DocumentUploadWidgetProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -125,11 +135,7 @@ const DocumentUploadWidget = () => {
                 background="#DAF0F9"
                 width="auto"
                 borderRadius="4px"
-                onClick={() => {
-                  if (!documentToUpload)
-                    return toast.error("Please select a document to upload");
-                  openFilePicker();
-                }}
+                onClick={openFilePicker}
                 styles={{ cursor: "pointer" }}
               >
                 <Text
@@ -144,7 +150,7 @@ const DocumentUploadWidget = () => {
           )}
         </Center>
       </UploadArea>
-      {uploadedDocuments?.length == 0 || !uploadedDocuments ? null : (
+      {documents?.length == 0 || !documents ? null : (
         <UploadedDocumentsWrapper>
           <Text
             type={"h5"}
@@ -156,24 +162,22 @@ const DocumentUploadWidget = () => {
           />
           <Text
             type={"p"}
-            text={`${uploadedDocuments?.length} document${
-              uploadedDocuments?.length == 1 ? "" : "s"
+            text={`${documents?.length} document${
+              documents?.length == 1 ? "" : "s"
             } uploaded`}
             weight={500}
             size={18}
             color="#B6B6B6"
             margin={"0 0 41px 0"}
           />
-          {(uploadedDocuments ?? []).map(({ name, type, size }, i: number) => {
+          {(documents ?? []).map(({ name, type, size }, i: number) => {
             return (
               <UploadedDocTile
                 key={i}
                 fileName={name}
                 fileType={type}
                 fileSize={`${size}`}
-                marginBottom={
-                  i == uploadedDocuments?.length ?? 0 - 1 ? "0px" : "12px"
-                }
+                marginBottom={i == documents?.length ?? 0 - 1 ? "0px" : "12px"}
                 removeDocument={() => {
                   setModalContent({
                     icon: (
@@ -202,23 +206,9 @@ const DocumentUploadWidget = () => {
                           background="red"
                           color="#fff"
                           onClick={async () => {
-                            try {
-                              await deleteImage({
-                                imageUrl: formik.values.documents[i].url,
-                              });
-                              handleSetUploadedDocuments([
-                                ...uploadedDocuments.filter(
-                                  (_: any, index: number) => index !== i
-                                ),
-                              ]);
-                              formik.setFieldValue(
-                                "documents",
-                                formik.values.documents.filter(
-                                  (_: any, index: number) => index !== i
-                                )
-                              );
-                              handleModalClose();
-                            } catch (error) {}
+                            await handleDelete(i).then((_) =>
+                              handleModalClose()
+                            );
                           }}
                         >
                           {deleting ? (
