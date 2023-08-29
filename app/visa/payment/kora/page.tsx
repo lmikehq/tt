@@ -16,8 +16,10 @@ const VerifyKoraPaymentPage = () => {
   };
   useEffect(() => {
     if (!reference) return;
+    console.log("reference", reference);
     verifyKoraPayment().then((res) => {
-      router.push(`/?application=${res.status}`);
+      // router.push(`visa/apply/?application=${res.status}`);
+      console.log('ress: ', res)
     });
   });
   return (
