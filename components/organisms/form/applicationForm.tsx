@@ -466,6 +466,7 @@ function ApplicationForm() {
     handleSetUploadedDocuments,
     uploadedDocuments: uploadedDocuments ?? [],
     visaType: formData.visaType,
+    lastName: formData.lastName,
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {

@@ -22,6 +22,7 @@ interface formProps {
   handleSetUploadedDocuments: (docs: UploadedDoc[]) => void;
   uploadedDocuments: UploadedDoc[];
   visaType: string;
+  lastName: string;
 }
 
 function UploadDocuments({
@@ -32,6 +33,7 @@ function UploadDocuments({
   uploadedDocuments,
   handleSetUploadedDocuments,
   visaType,
+  lastName,
 }: formProps) {
   const { isMobile } = useScreenResolution();
 
@@ -49,16 +51,17 @@ function UploadDocuments({
     multiple: false,
     maxFileSize: 10,
   });
+  const timestamp = new Date().getTime();
   const presets = {
-    public_id: "lastName" || "unknown",
-    folder: `${"lastName" || "unknown"}-files`,
+    publicId: lastName + timestamp || "unknown",
+    folder: `${lastName + timestamp || "unknown"}-files`,
   };
   const { uploadImage, loading, progress, deleteImage, deleting } =
-    useCloudinaryUpload(presets);
+    useCloudinaryUpload({ presets });
 
   useEffect(() => {
     if (filesContent.length > 0) {
-      uploadImage(filesContent[0].content).then((image) => {
+      uploadImage({ file: filesContent[0].content }).then((image) => {
         if (typeof image === "string") {
           const docObj: DocumentInterface = {
             name: documentToUpload,
