@@ -24,6 +24,10 @@ import IconButton from "@mui/material/IconButton";
 import { CiSearch } from "react-icons/ci";
 import { Grid } from "@atom/grid";
 import { BiSort } from "react-icons/bi";
+import VisaData from "./visaDetails";
+import { useState } from "react";
+import ReusableModal from "./dashboardModal";
+import checkIcon from "@image/checkIcon.png"
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -80,8 +84,33 @@ const DateIcon = styled.div`
   border-radius: 8px;
 `;
 
+ interface VisaProps {
+   countryLogoSrc: string;
+   applicationDate: string;
+   paymentFee: string;
+   visaStatus: string;
+   onDownloadStatusClick: () => void;
+ }
+
 const Visa = () => {
   const { isMobile } = useScreenResolution();
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+ const countryLogoSrc = "../../../../assets/flags/ng.svg";
+ const applicationDate = "12th May, 2021";
+ const paymentFee = "$ 2000";
+  const visaStatus = "AWAITING CONFIRMATION";
+   const handleDownloadStatusClick = () => {
+     // Handle the download status click event
+   };
 
   return (
     <VisaWrapper>
@@ -140,7 +169,7 @@ const Visa = () => {
         </Grid>
       </Flex>
 
-      <Flex
+      {/* <Flex
         justify="space-around"
         gap={isMobile ? ".5rem" : "0rem"}
         direction={isMobile ? "column" : "row"}
@@ -275,7 +304,106 @@ const Visa = () => {
             </Flex>
           </Section>
         </Flex>
-      </Flex>
+      </Flex> */}
+
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="AWAITING EMBASSY DECISION"
+        onDownloadStatusClick={handleOpenModal}
+        downloadButtonText="Download Status"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="APPLICATION IN PROGRESS"
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Re-apply Visa"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="VISA FEES REQUIRED"
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Pay Visa Fees"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="AWAITING PASSPORT COLLECTION"
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Download Status"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="APPROVED"
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Make Payment"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus={visaStatus}
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Make Payment"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="DECLINED"
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Download Status"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus="PASSPORT PHYSICALLY REQUIRED"
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Make Payment"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus={visaStatus}
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Download Status"
+      />
+      <VisaData
+        countryLogoSrc={countryLogoSrc}
+        applicationDate={applicationDate}
+        paymentFee={paymentFee}
+        visaStatus={visaStatus}
+        onDownloadStatusClick={handleDownloadStatusClick}
+        downloadButtonText="Upload Document"
+      />
+      <ReusableModal
+        open={openModal}
+        onClose={handleCloseModal}
+        headerText="Upload Document"
+        description="Kindly Upload the required Document as it will help continue your application"
+      >
+        <Image src={checkIcon} alt="" width={190} height={190} />
+        {/* Additional content goes here */}
+        <Text
+          type="p"
+          text="Proof of Address, International Passport, National ID Needed"
+
+          styles={{
+            textAlign: "center",
+          }}
+        />
+        
+      </ReusableModal>
     </VisaWrapper>
   );
 };

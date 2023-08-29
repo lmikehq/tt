@@ -4,7 +4,7 @@ import Text from "@atom/text";
 import styled from "styled-components";
 import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
-import Visa from "./visa";
+import Visa from "./visa1";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Center from "@atom/center";
 import RTQueryClient from "@components/layouts/rtqWrapper";
@@ -61,7 +61,13 @@ const Application = () => {
 
       <SectionTabs>
         <RTQueryClient>
-          <CustomTab tabItems={tabItem} shadowShow defaultIcons />
+          <CustomTab
+            tabItems={tabItem}
+            shadowShow
+            defaultIcons
+            addBackgroundColor
+            addColor
+          />
         </RTQueryClient>
       </SectionTabs>
     </Section>

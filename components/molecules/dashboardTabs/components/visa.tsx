@@ -147,8 +147,8 @@ const Visa = () => {
   const content = {
     title: "You’ve got no Visa Application - Let’s help you get Started",
     links: [
-      { text: "Search Flights", url: "/" },
-      { text: "Search Stays", url: "/" },
+      { text: "Apply for Visa", url: "/apply/visa" },
+      { text: "Book flight", url: "/flight" },
     ],
   };
 

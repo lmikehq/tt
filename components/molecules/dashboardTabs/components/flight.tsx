@@ -23,10 +23,10 @@ const FlightWrapper = styled.div`
 const Flight = () => {
 
      const content = {
-       title: "You’ve got no Visa Application - Let’s help you get Started",
+       title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
        links: [
-         { text: "Search Flights", url: "/" },
-         { text: "Search Stays", url: "/" },
+         { text: "Search Flights", url: "/flight" },
+         { text: "Search Stays", url: "/stays" },
        ],
      };
   return (

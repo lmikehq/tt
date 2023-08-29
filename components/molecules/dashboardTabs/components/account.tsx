@@ -6,6 +6,10 @@ import { ttColors } from "theme/colors";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { RiEditBoxFill } from "react-icons/ri";
 import { useScreenResolution } from "hook/useScreenResolution";
+import ReusableModal from "./dashboardModal";
+import { useState } from "react";
+import Section from "@molecule/section";
+import Input from "@atom/input";
 
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
@@ -39,11 +43,26 @@ const AccountDetails = styled.div`
 const Account = () => {
   const { isMobile } = useScreenResolution();
 
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
   const AccountInformation = [
     {
       title: "Name",
       description: "John Deo",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
@@ -58,28 +77,48 @@ const Account = () => {
     {
       title: "Password",
       description: "********",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
     {
       title: "Phone Number",
       description: "+1 000-000-0000",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
     {
       title: "Address",
       description: "St 32, main downtown, Los Angeles, California, USA",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
     {
       title: "Date of Birth",
       description: "01/01/1992",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
 
       editable: false,
     },
@@ -139,53 +178,52 @@ const Account = () => {
                   width={isMobile ? "100px" : "175px"}
                   fontSize={isMobile ? "12px" : "14px"}
                   lineHeight="14px"
+                  onClick={handleOpenModal}
                   styles={{
                     gap: "10px",
                     marginBottom: isMobile ? "1.4rem" : "",
                   }}
                 >
                   {detail.icon}
-                  <Text type="p" text={"Change"} />
+                  <Text type="p" text={"Edit"} />
                 </Button>
               )}
             </AccountRight>
           </Flex>
         ))}
 
-        {/* <Flex justify="space-between">
-          <AccountLeft>
-            <Text type="p" text="Email" />
-            <Text type="h3" text="john.deo@gmail.com" size="20px" />
-          </AccountLeft>
-          <AccountRight>
-            <Button
-              background="transparent"
-              border="1px solid var(--primary-color)"
-              color="var(--secondary-color)"
-              height="55px"
-              width="255px"
-              fontSize="17px"
-              lineHeight="17px"
-              styles={{ gap: "10px" }}
-            >
-              <AiFillPlusCircle size="1.5rem" />
-              <Text type="h3" text="Add another email" />
-            </Button>
-            <Button
-              background="transparent"
-              border="1px solid var(--primary-color)"
-              color="var(--secondary-color)"
-              height="55px"
-              width="140px"
-              fontSize="17px"
-              lineHeight="17px"
-              styles={{ gap: "10px" }}
-            >
-              <RiEditBoxFill size="1.5rem" style={{ borderRadius: "4px" }} />
-              <Text type="h3" text="Change" />
-            </Button>
-          </AccountRight>
-        </Flex> */}
+        <ReusableModal
+          open={openModal}
+          onClose={handleCloseModal}
+          headerText="Upload Document"
+          description="Secure your account: Change your password"
+        >
+          {/* Additional content goes here */}
+          <Section>
+            <Text
+              type="p"
+              text="Enter Current Password"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <Input placeholder="******" height="3rem" type="password" />
+          </Section>
+          <Section>
+            <Text
+              type="p"
+              text="Enter New Password"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <Input placeholder="******" height="3rem" type="password" />
+          </Section>
+          <Section margin="1rem 0px 1.5rem">
+            <Text
+              type="p"
+              text="Confirm New Password"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <Input placeholder="******" height="3rem" type="password" />
+          </Section>
+        </ReusableModal>
       </AccountDetails>
     </>
   );

@@ -102,6 +102,8 @@ export interface NoVisaApplicationProps {
   };
 }
 
+
+
 const NoVisaApplication: React.FC<NoVisaApplicationProps> = ({
   noVisaImage,
   content,

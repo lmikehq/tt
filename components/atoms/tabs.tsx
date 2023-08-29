@@ -18,7 +18,12 @@ interface TabPanelProps {
   value: number;
 }
 
-const TabWrapper = styled.div<{ isMobile?: boolean; shadowShow?: boolean }>`
+const TabWrapper = styled.div<{
+  isMobile?: boolean;
+  shadowShow?: boolean;
+  addBackgroundColor?: boolean;
+  addColor?: boolean;
+}>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
     height: 3px;
@@ -31,7 +36,12 @@ const TabWrapper = styled.div<{ isMobile?: boolean; shadowShow?: boolean }>`
 
     border-radius: 6px;
     height: 48px;
-    background: #fff;
+  }
+  .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
+ 
+    background: ${({ addBackgroundColor }) =>
+    addBackgroundColor ? "#87CEEB" : "#fff"};
+      color: ${({ addColor }) => addColor ? "#fff" : "#000000"};
   }
   .css-1gsv261 {
     border-bottom: 1px solid transparent;
@@ -81,11 +91,15 @@ export default function CustomTab({
   defaultIcons = false,
   page = "home",
   shadowShow = false,
+  addBackgroundColor = false,
+  addColor = false,
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
   shadowShow?: boolean;
+    addBackgroundColor?: boolean;
+  addColor?: boolean;
 }) {
   const [value, setValue] = useState(0);
 
@@ -102,7 +116,11 @@ export default function CustomTab({
   const { isMobile } = useScreenResolution();
 
   return (
-    <TabWrapper isMobile={isMobile} shadowShow={shadowShow}>
+    <TabWrapper
+      isMobile={isMobile}
+      shadowShow={shadowShow}
+      addBackgroundColor={addBackgroundColor}
+    >
       <Box>
         <Tabs
           value={value}

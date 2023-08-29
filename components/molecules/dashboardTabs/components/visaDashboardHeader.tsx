@@ -9,6 +9,7 @@ import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled from "styled-components";
+import DateRangePicker from "./dashboardDatepicker";
 
 const DropdownContent = styled.div`
   position: absolute;
@@ -45,101 +46,106 @@ const OptionText = styled.div<{ hovered: boolean }>`
 
 const VisaDashboardHeader = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
 
-     const toggleDropdown = () => {
-       setIsDropdownOpen(!isDropdownOpen);
-     };
-    
-    
-    
-     const sortOptions = [
-       { value: "Option 1", label: "Awaiting Embassy Decision" },
-       { value: "Option 2", label: "Awaiting Confirmation" },
-       { value: "Option 3", label: "Application in Progress" },
-       { value: "Option 4", label: "Visa Fees Required" },
-       { value: "Option 5", label: "Awaiting Passport Collection" },
-       { value: "Option 6", label: "Processing Fees Required" },
-       { value: "Option 7", label: "Courier Fees Required" },
-       { value: "Option 8", label: "Approved" },
-       { value: "Option 9", label: "Declined" },
-       { value: "Option 10", label: "Passport Physically Required" },
-     ];
-    
-    return (
-      <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
-        <Section>
-          <Text type="h1" text="All Visa Applications" size={24} weight={600} />
-        </Section>
-        <Grid
-          columns="72% 25%"
-          gap=".8rem"
-          style={{
-            justifySelf: "flex-end",
-          }}
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleDateChange = (dates: [Date, Date]) => {
+    console.log("Selected dates:", dates);
+  };
+
+  const sortOptions = [
+    { value: "Option 1", label: "Awaiting Embassy Decision" },
+    { value: "Option 2", label: "Awaiting Confirmation" },
+    { value: "Option 3", label: "Application in Progress" },
+    { value: "Option 4", label: "Visa Fees Required" },
+    { value: "Option 5", label: "Awaiting Passport Collection" },
+    { value: "Option 6", label: "Processing Fees Required" },
+    { value: "Option 7", label: "Courier Fees Required" },
+    { value: "Option 8", label: "Approved" },
+    { value: "Option 9", label: "Declined" },
+    { value: "Option 10", label: "Passport Physically Required" },
+  ];
+
+  return (
+    <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
+      <Section>
+        <Text type="h1" text="All Visa Applications" size={24} weight={600} />
+      </Section>
+      <Grid
+        columns="40% 35% 20%"
+        gap=".8rem"
+        style={{
+          justifySelf: "flex-end",
+        }}
+      >
+        <Flex
+          justify="flex-start"
+          align="center"
+          border="1px solid #E7E7E7"
+          padding="0px 10px"
+          borderRadius="8px"
+          borderBottom="1px solid #E7E7E7"
+          width="100%"
+          gap="10px"
         >
-          <Flex
-            justify="flex-start"
-            align="center"
-            border="1px solid #E7E7E7"
-            padding="0px 10px"
-            borderRadius="8px"
-            borderBottom="1px solid #E7E7E7"
-            width="100%"
-            gap="10px"
-          >
-            <CiSearch size="1.5rem" color="#5C5C5C" width="20%" />
-            <Section width="100%">
-              <Input
-                padding="0px"
-                placeholder="Type here to search"
-                styles={{
-                  border: "none",
-                }}
-              />
-            </Section>
-          </Flex>
-          <Flex
-            justify="space-between"
-            align="center"
-            border="1px solid #E7E7E7"
-            borderRadius="8px"
-            borderBottom="1px solid #e7e7e7"
-            padding="0px 16px"
-            styles={{ cursor: "pointer" }}
-            onClick={toggleDropdown}
-          >
-            <BiSort size="1.5rem" color="#606060" />
-            <Text
-              type="h5"
-              text="Sort By"
-              weight={400}
-              size={14}
-              color="#606060"
+          <CiSearch size="1.5rem" color="#5C5C5C" width="20%" />
+          <Section width="100%">
+            <Input
+              padding="0px"
+              placeholder="Type here to search"
+              styles={{
+                border: "none",
+              }}
             />
-            <MdKeyboardArrowDown size="1.5rem" color="#606060" />
-          </Flex>
+          </Section>
+        </Flex>
 
-          {isDropdownOpen && (
-            <DropdownContent>
-              {sortOptions.map((option, index) => (
-                <StyledOption
-                  key={option.value}
-                  hovered={hoveredOption === index}
-                  lastChild={index === sortOptions.length - 1}
-                  onMouseEnter={() => setHoveredOption(index)}
-                  onMouseLeave={() => setHoveredOption(null)}
-                >
-                  <OptionText hovered={hoveredOption === index}>
-                    {option.label}
-                  </OptionText>
-                </StyledOption>
-              ))}
-            </DropdownContent>
-          )}
-        </Grid>
-      </Flex>
-    );
-}
+        <DateRangePicker />
+
+        <Flex
+          justify="space-between"
+          align="center"
+          border="1px solid #E7E7E7"
+          borderRadius="8px"
+          borderBottom="1px solid #e7e7e7"
+          padding="0px 16px"
+          styles={{ cursor: "pointer" }}
+          onClick={toggleDropdown}
+        >
+          <BiSort size="1.5rem" color="#606060" />
+          <Text
+            type="h5"
+            text="Sort By"
+            weight={400}
+            size={14}
+            color="#606060"
+          />
+          <MdKeyboardArrowDown size="1.5rem" color="#606060" />
+        </Flex>
+
+        {isDropdownOpen && (
+          <DropdownContent>
+            {sortOptions.map((option, index) => (
+              <StyledOption
+                key={option.value}
+                hovered={hoveredOption === index}
+                lastChild={index === sortOptions.length - 1}
+                onMouseEnter={() => setHoveredOption(index)}
+                onMouseLeave={() => setHoveredOption(null)}
+              >
+                <OptionText hovered={hoveredOption === index}>
+                  {option.label}
+                </OptionText>
+              </StyledOption>
+            ))}
+          </DropdownContent>
+        )}
+      </Grid>
+    </Flex>
+  );
+};
 
 export default VisaDashboardHeader;
