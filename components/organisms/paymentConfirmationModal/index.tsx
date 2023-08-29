@@ -7,6 +7,7 @@ import Section from "@molecule/section";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
 } from "@organism/visaApplicationModal";
+import apiService from "hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidCheckCircle, BiSolidXCircle } from "react-icons/bi";
@@ -14,7 +15,7 @@ import { ttColors } from "theme/colors";
 
 const PaymentConfirmationModal = () => {
   const params = useSearchParams();
-  const status = params.get("application");
+  const paymentRef = params.get("paymentRef");
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -174,14 +175,19 @@ const PaymentConfirmationModal = () => {
     });
     handleModalOpen();
   };
+  const verifyKoraPayment = async () => {
+    return apiService(`/payment/${paymentRef}/status`);
+  };
   useEffect(() => {
-    if (!status) return;
-    if (status == "NOT PAID") {
-      handlePaymentFailed();
-    } else {
-      handlePaymentComplete();
-    }
-  }, [status]);
+    if (!paymentRef) return;
+    verifyKoraPayment().then((res) => {
+      if (res?.status === "SUCCESS") {
+        handlePaymentComplete();
+      } else {
+        handlePaymentFailed();
+      }
+    });
+  }, [paymentRef]);
   return (
     <>
       <CustomConfirmationModal
