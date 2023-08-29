@@ -13,6 +13,7 @@ import { Switch } from "@mui/material";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "data/utilData";
 import { FormikProps, FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import PhoneInput from "react-phone-input-2";
@@ -20,18 +21,13 @@ import { FamilyInfoInterface } from "types";
 
 interface formProps {
   formik: FormikValues;
-  isMobile?: boolean;
   count: number;
   values?: FamilyInfoInterface;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function FamilyForm({
-  formik,
-  isMobile,
-  count,
-  values,
-}: formProps) {
+export default function FamilyForm({ formik, count, values }: formProps) {
+  const { isMobile } = useScreenResolution();
   return (
     <Section height="unset">
       <Flex
@@ -120,7 +116,7 @@ export default function FamilyForm({
           />
         </Section>
       </Flex>
-      <Flex justify="space-between">
+      <Flex justify="space-between" margin="0 0 1rem">
         <Text type="p" text="Will you be traveling with this Family Member?" />
         <Switch
           name={`familyMembers.${count}.accompanying`}

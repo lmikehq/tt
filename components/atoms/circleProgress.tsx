@@ -77,6 +77,11 @@ const Circle = styled.span<{
   border-radius: 100%;
   z-index: 9;
   position: relative;
+  @media (max-width: 768px) {
+    width: 2rem;
+    height: 2rem;
+    padding: 0rem;
+  }
   &:hover {
     border: 2px solid ${(props) => (!props.disabled ? "#6092A7" : "none")};
   }
@@ -85,6 +90,9 @@ const Circle = styled.span<{
 const CircleText = styled.span`
   width: 100px;
   display: flex;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 function CircleProgress(props: circleProps) {

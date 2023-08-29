@@ -11,23 +11,20 @@ import Text from "@atom/text";
 import Section from "@molecule/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
 import { EmploymentDetailsInterface } from "types";
 
 interface formProps {
   formik: FormikValues;
-  isMobile?: boolean;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   values: EmploymentDetailsInterface;
 }
 
-export default function EmploymentForm({
-  formik,
-  isMobile,
-  count,
-  values,
-}: formProps) {
+export default function EmploymentForm({ formik, count, values }: formProps) {
+  const { isMobile } = useScreenResolution();
+
   return (
     <Section height="unset">
       <Section margin="0">
@@ -169,7 +166,7 @@ export default function EmploymentForm({
         </Section>
       </Flex>
       <Flex
-        align="center"
+        align={isMobile ? "flex-start" : "center"}
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "0.25rem"}
       >

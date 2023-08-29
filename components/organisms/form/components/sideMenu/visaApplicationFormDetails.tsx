@@ -23,9 +23,21 @@ const VisApplicationFormDetails = ({
         // direction={isMobile ? "column" : "row"}
         gap={isMobile ? "1.5rem" : "0rem"}
       >
-        <Text type="p" text={formData.homeCountry} size={24} weight={500} />
-        <TravelArrow />
-        <Text type="p" text={formData.destination} size={24} weight={500} />
+        <Section width="30%" height="unset">
+          <Text type="p" text={formData.homeCountry} size={24} weight={500} />
+        </Section>
+        <Section width="30%" height="unset">
+          <TravelArrow />
+        </Section>
+        <Section width="30%" height="unset">
+          <Text
+            type="p"
+            textAlign="right"
+            text={formData.destination}
+            size={24}
+            weight={500}
+          />
+        </Section>
       </Flex>
       <Divider margin={"1.5rem 0"} />
 
@@ -34,15 +46,15 @@ const VisApplicationFormDetails = ({
           <Text
             text="Application Fee"
             type="h3"
-            size={20}
+            size={isMobile ? 18 : 20}
             weight={500}
-            whiteSpace="nowrap"
+            // whiteSpace="nowrap"
             margin="0 0 .7rem 0"
           />
           <Text
             type="p"
-            size={18}
-            weight={300}
+            size={isMobile ? 16 : 18}
+            weight={400}
             text="Non-Refundable"
             whiteSpace="nowrap"
           />
@@ -51,52 +63,57 @@ const VisApplicationFormDetails = ({
           <Text
             text="Validity"
             type="h3"
-            size={20}
+            size={isMobile ? 18 : 20}
             weight={500}
-            whiteSpace="nowrap"
+            // whiteSpace="nowrap"
             margin="0 0 .7rem 0"
           />
           <Text
             type="p"
-            size={18}
-            weight={300}
+            size={isMobile ? 16 : 18}
+            weight={400}
             text="Passport dependent"
             whiteSpace="nowrap"
           />
         </Flex>
       </Flex>
       <Section padding="2.5rem 0">
-        <Text type="h3" text="Required Documents" weight={500} size={20} />
+        <Text
+          type="h3"
+          text="Required Documents"
+          weight={500}
+          size={isMobile ? 18 : 20}
+        />
         <BulletList>
           <ListItem>
             <Text
               type="p"
-              size={18}
-              weight={300}
+              size={isMobile ? 16 : 18}
+              weight={400}
               text="Passport sized photograph"
             />
           </ListItem>
           <ListItem>
             <Text
               type="p"
-              size={18}
-              weight={300}
+              size={isMobile ? 16 : 18}
+              weight={400}
               text="Valid international passport"
             />
           </ListItem>
           <ListItem>
             <Text
               type="p"
-              size={18}
-              weight={300}
+              size={isMobile ? 16 : 18}
+              weight={400}
               text="All academic certificates"
             />
           </ListItem>
           <ListItem>
             <Text
               type="p"
-              size={18}
-              weight={300}
+              size={isMobile ? 16 : 18}
+              weight={400}
               text="Proof of address (utility bill)"
             />
           </ListItem>
@@ -104,8 +121,8 @@ const VisApplicationFormDetails = ({
             <Text
               type="p"
               text="Marriage certificate (if applicable)"
-              size={18}
-              weight={300}
+              size={isMobile ? 16 : 18}
+              weight={400}
             />
           </ListItem>
         </BulletList>
