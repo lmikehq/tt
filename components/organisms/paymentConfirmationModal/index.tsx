@@ -1,17 +1,16 @@
 "use client";
 import Button from "@atom/button";
 import Flex from "@atom/flex";
-import Image from "@atom/image";
 import Text from "@atom/text";
+import Confetti from "@image/modal/confetti.png";
 import Section from "@molecule/section";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
 } from "@organism/visaApplicationModal";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BiSolidCheckCircle, BiSolidXCircle, BiXCircle } from "react-icons/bi";
+import { BiSolidCheckCircle, BiSolidXCircle } from "react-icons/bi";
 import { ttColors } from "theme/colors";
-import Confetti from "@image/modal/confetti.png";
 
 const PaymentConfirmationModal = () => {
   const params = useSearchParams();
@@ -33,6 +32,8 @@ const PaymentConfirmationModal = () => {
     subTitle: "",
     buttons: <></>,
   });
+
+  const router = useRouter();
 
   const handlePaymentFailed = () => {
     setModalContent({
@@ -62,8 +63,8 @@ const PaymentConfirmationModal = () => {
               <br />
               <Text
                 type="p"
-                text="Sorry that your Visa Application payment wasn’t
-          successfully."
+                text="Sorry, your Visa Application payment wasn’t
+          successful."
                 weight={400}
                 size={18}
                 color="#929292"
@@ -76,7 +77,7 @@ const PaymentConfirmationModal = () => {
                   background={ttColors.dark}
                   color={ttColors.light}
                   // border="1px solid #19013b"
-                  onClick={handleModalClose}
+                  onClick={() => router.push("/dashboard")}
                 >
                   Try payment again
                 </Button>
@@ -85,7 +86,7 @@ const PaymentConfirmationModal = () => {
                   background="transparent"
                   color={ttColors.dark}
                   border="1px solid #19013b"
-                  onClick={handleModalClose}
+                  onClick={() => router.push("/dashboard")}
                 >
                   Back to dashboard
                 </Button>
@@ -152,7 +153,7 @@ const PaymentConfirmationModal = () => {
                   background={ttColors.dark}
                   color={ttColors.light}
                   // border="1px solid #19013b"
-                  onClick={handleModalClose}
+                  onClick={() => router.push("/visa/apply")}
                 >
                   Make another Application
                 </Button>
@@ -161,7 +162,7 @@ const PaymentConfirmationModal = () => {
                   background="transparent"
                   color={ttColors.dark}
                   border="1px solid #19013b"
-                  onClick={handleModalClose}
+                  onClick={() => router.push("/dashboard")}
                 >
                   Back to dashboard
                 </Button>
