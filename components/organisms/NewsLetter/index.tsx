@@ -148,7 +148,7 @@ const NewsLetter = () => {
           align="center"
           width="auto"
           // direction={isMobile ? "column" : "row"}
-          styles={{ display: isMobile ? "none" : "block" }}
+          // styles={{ display: isMobile ? "none" : "block" }}
         >
           <Image
             src={Barcode}
