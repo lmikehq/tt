@@ -31,7 +31,7 @@ const Flight = () => {
      };
   return (
     <FlightWrapper>
-      <VisaDashboardHeader />
+      <VisaDashboardHeader headerText="All Flight Applications" />
       <NoVisaApplication
         noVisaImage={FlightImg}
         content={content}

@@ -6,9 +6,8 @@ import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
 import Visa from "./visa1";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Center from "@atom/center";
 import RTQueryClient from "@components/layouts/rtqWrapper";
-import Flight from "./flight";
+import Flight from "./flight1";
 
 
 const SectionTabs = styled.div`
@@ -70,6 +69,7 @@ const Application = () => {
           />
         </RTQueryClient>
       </SectionTabs>
+      
     </Section>
   );
 };

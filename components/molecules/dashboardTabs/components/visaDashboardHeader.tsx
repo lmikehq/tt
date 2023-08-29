@@ -10,6 +10,8 @@ import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled from "styled-components";
 import DateRangePicker from "./dashboardDatepicker";
+import Button from "@atom/button";
+import DashboardDatePicker from "./dashboardDatepicker";
 
 const DropdownContent = styled.div`
   position: absolute;
@@ -44,16 +46,18 @@ const OptionText = styled.div<{ hovered: boolean }>`
   flex: 1;
 `;
 
-const VisaDashboardHeader = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+interface VisaDashboardHeaderProps {
+  headerText: string; 
+}
+
+const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
+  headerText,
+}) => {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const handleDateChange = (dates: [Date, Date]) => {
-    console.log("Selected dates:", dates);
   };
 
   const sortOptions = [
@@ -72,7 +76,7 @@ const VisaDashboardHeader = () => {
   return (
     <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
       <Section>
-        <Text type="h1" text="All Visa Applications" size={24} weight={600} />
+        <Text type="h1" text={headerText} size={24} weight={600} />
       </Section>
       <Grid
         columns="40% 35% 20%"
@@ -103,7 +107,7 @@ const VisaDashboardHeader = () => {
           </Section>
         </Flex>
 
-        <DateRangePicker />
+        <>{/* <DashboardDatePicker /> */}</>
 
         <Flex
           justify="space-between"

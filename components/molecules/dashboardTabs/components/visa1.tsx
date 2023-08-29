@@ -28,6 +28,7 @@ import VisaData from "./visaDetails";
 import { useState } from "react";
 import ReusableModal from "./dashboardModal";
 import checkIcon from "@image/checkIcon.png"
+import VisaDashboardHeader from "./visaDashboardHeader";
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -114,7 +115,8 @@ const Visa = () => {
 
   return (
     <VisaWrapper>
-      <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
+      <VisaDashboardHeader headerText="All Visa Applications" />
+      {/* <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
         <Section>
           <Text type="h1" text="All Visa Applications" size={24} weight={600} />
         </Section>
@@ -167,7 +169,7 @@ const Visa = () => {
             <MdKeyboardArrowDown size="1.5rem" color="#606060" />
           </Flex>
         </Grid>
-      </Flex>
+      </Flex> */}
 
       {/* <Flex
         justify="space-around"
@@ -397,12 +399,10 @@ const Visa = () => {
         <Text
           type="p"
           text="Proof of Address, International Passport, National ID Needed"
-
           styles={{
             textAlign: "center",
           }}
         />
-        
       </ReusableModal>
     </VisaWrapper>
   );

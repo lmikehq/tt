@@ -40,6 +40,7 @@ const ModalIcon = styled.div`
   position: absolute;
   right: 10px;
   top: 10px;
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 30px;
@@ -69,9 +70,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
           <h2>{headerText}</h2>
         </StyledModalHeader>
         <ModalIcon>
-          <IconButton color="primary" onClick={onClose}>
             <IoMdClose />
-          </IconButton>
         </ModalIcon>
         <p>{description}</p>
         {children}

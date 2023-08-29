@@ -124,13 +124,13 @@ const VisaData: React.FC<VisaDataProps> = ({
         margin="2rem 0px 0px"
         border="1px solid #E7E7E7"
         padding="15px 10px"
-        // borderRadius="16px
+        borderRadius="16px"
         align="center"
         borderBottom="1px solid #E7E7E7"
         styles={{
           position: "relative",
-          borderTopLeftRadius: "16px",
-          borderTopRightRadius: "16px",
+          // borderTopLeftRadius: "16px",
+          // borderTopRightRadius: "16px",
         }}
       >
         <Logo>
@@ -236,7 +236,9 @@ const VisaData: React.FC<VisaDataProps> = ({
             }}
             onClick={onDownloadStatusClick}
           >
-            <Text type="h5" text={downloadButtonText} weight={400} size={14} />
+            <Text type="h5" text={downloadButtonText} weight={400} size={14} styles={{
+              width: "max-content", textAlign: "center",
+            }} />
           </Button>
           <Section
             width="60px"

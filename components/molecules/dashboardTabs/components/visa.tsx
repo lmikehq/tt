@@ -154,7 +154,7 @@ const Visa = () => {
 
   return (
     <VisaWrapper>
-      <VisaDashboardHeader />
+      <VisaDashboardHeader headerText="All Visa Applications" />
 
       <div>
         {visas?.length > 0 ? (
@@ -172,10 +172,7 @@ const Visa = () => {
           ))
         ) : (
           <Center margin="10rem 0" height="25rem">
-            <NoVisaApplication
-              noVisaImage={NoVisa}
-              content={content}
-            />
+            <NoVisaApplication noVisaImage={NoVisa} content={content} />
           </Center>
         )}
       </div>

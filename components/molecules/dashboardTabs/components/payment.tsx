@@ -6,8 +6,9 @@ import { Grid } from "@atom/grid";
 import Button from "@atom/button";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { FaFileDownload } from "react-icons/fa";
+import VisaDashboardHeader from "./visaDashboardHeader";
+import Section from "@molecule/section";
 
-const Section = styled.div``;
 const SectionTitle = styled.div`
   display: flex;
 
@@ -30,18 +31,16 @@ const History = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: flex-start;
 
   width: 100%;
   height: fit-content;
   padding: 0px 10px;
-
-  background: #ffffff;
-  //   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 16px;
+  border: 1px solid #e7e7e7;
+  border-radius: 14px;
 
   & div {
-    margin-left: 15px;
+    // margin-left: 15px;
 
     @media screen and (max-width: 390px) {
       margin-left: 0px;
@@ -66,6 +65,29 @@ const History = styled.div`
     width: 166px;
     height: 48px;
     marginleft: 55px;
+  }
+`;
+
+const HistoryItems = styled.div`
+  border: 1px solid #e7e7e7;
+  padding: 20px;
+  width: 100%;
+  border-radius: 28px;
+`;
+
+const PaymentWrapper = styled.div`
+  background: ${ttColors.defaultColor};
+  align-items: center;
+  margin-top: 15px;
+
+
+  & button {
+    width: 154px !important;
+  }
+
+  @media screen and (max-width: 900px) {
+    height: fit-content;
+    padding: 20px 16px;
   }
 `;
 
@@ -106,85 +128,172 @@ const PaymentHistory = () => {
     },
   ];
   return (
-    <div>
-      <Section>
-        <SectionTitle>
-          <Text
-            type="h2"
-            size={isMobile ? "16px" : "25px"}
-            text="Payment History"
-          />
-        </SectionTitle>
-        <History>
-          <Grid
-            columns={isMobile ? "55% 30% 15%" : "60% 15% 25%"}
-            width="100%"
-            gap="20px"
-            align="center"
-            textAlign="left"
-            padding="30px 25px"
-          >
-            {paymentRecords.map((record) => (
-              <>
-                <div key={record.id}>
-                  <Text
-                    type="p"
-                    size={isMobile ? "11px" : "16px"}
-                    text={record.date}
-                  />
-                  <Text
-                    type="h5"
-                    weight="400"
-                    size={isMobile ? "12px" : "19px"}
-                    text={record.description}
-                  />
-                </div>
+    <Section
+      margin="2rem 0"
+      styles={{
+        background: "#fff",
+        borderRadius: "14px",
+        padding: "2.5rem 1.5rem",
+      }}
+    >
+      <VisaDashboardHeader headerText="Payment History" />
+
+      <PaymentWrapper>
+        <Flex direction="column" gap="1rem">
+          <History>
+            <Flex
+              justify="space-between"
+              width="100%"
+              gap="20px"
+              align="center"
+              padding="28px 24px"
+            >
+              <div>
+                <Text type="p" text="23/04/2023" />
                 <Text
-                  type="p"
-                  size={isMobile ? "12px" : "16px"}
-                  text={record.amount}
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
                 />
-                <Button
-                  width="166px"
-                  height="48px"
-                  styles={{
-                    marginLeft: isMobile ? "0px" : "55px",
-                    display: isMobile ? "none" : "block",
-                  }}
-                >
-                  {record.receipt}
-                </Button>
-                <Button
-                  width="40px"
-                  height="40px"
-                  styles={{
-                    display: isMobile ? "block" : "none",
-                    marginLeft: isMobile ? "0px" : "55px",
-                  }}
-                >
-                  <FaFileDownload size="1rem" />
-                </Button>
-              </>
-            ))}
-          </Grid>
-        </History>
-      </Section>
-    </div>
+              </div>
+              <Text type="p" text="NGN 20,000" />
+              <Button
+                width="166px"
+                height="48px"
+                styles={{ marginLeft: "55px" }}
+              >
+                Download receipts
+              </Button>
+            </Flex>
+          </History>
+          <History>
+            <Flex
+              justify="space-between"
+              width="100%"
+              gap="20px"
+              align="center"
+              padding="28px 24px"
+            >
+              <div>
+                <Text type="p" text="23/04/2023" />
+                <Text
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
+                />
+              </div>
+              <Text type="p" text="NGN 20,000" />
+              <Button
+                width="166px"
+                height="48px"
+                styles={{ marginLeft: "55px" }}
+              >
+                Download receipts
+              </Button>
+            </Flex>
+          </History>
+          <History>
+            <Flex
+              justify="space-between"
+              width="100%"
+              gap="20px"
+              align="center"
+              padding="28px 24px"
+            >
+              <div>
+                <Text type="p" text="23/04/2023" />
+                <Text
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
+                />
+              </div>
+              <Text type="p" text="NGN 20,000" />
+              <Button
+                width="166px"
+                height="48px"
+                styles={{ marginLeft: "55px" }}
+              >
+                Download receipts
+              </Button>
+            </Flex>
+          </History>
+          <History>
+            <Flex
+              justify="space-between"
+              width="100%"
+              gap="20px"
+              align="center"
+              padding="28px 24px"
+            >
+              <div>
+                <Text type="p" text="23/04/2023" />
+                <Text
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
+                />
+              </div>
+              <Text type="p" text="NGN 20,000" />
+              <Button
+                width="166px"
+                height="48px"
+                styles={{ marginLeft: "55px" }}
+              >
+                Download receipts
+              </Button>
+            </Flex>
+          </History>
+          <History>
+            <Flex
+              justify="space-between"
+              width="100%"
+              gap="20px"
+              align="center"
+              padding="28px 24px"
+            >
+              <div>
+                <Text type="p" text="23/04/2023" />
+                <Text
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
+                />
+              </div>
+              <Text type="p" text="NGN 20,000" />
+              <Button
+                width="166px"
+                height="48px"
+                styles={{ marginLeft: "55px" }}
+              >
+                Download receipts
+              </Button>
+            </Flex>
+          </History>
+          <History>
+            <Flex
+              justify="space-between"
+              width="100%"
+              gap="20px"
+              align="center"
+              padding="28px 24px"
+            >
+              <div>
+                <Text type="p" text="23/04/2023" />
+                <Text
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
+                />
+              </div>
+              <Text type="p" text="NGN 20,000" />
+              <Button
+                width="166px"
+                height="48px"
+                styles={{ marginLeft: "55px" }}
+              >
+                Download receipts
+              </Button>
+            </Flex>
+          </History>
+        </Flex>
+      </PaymentWrapper>
+    </Section>
   );
 };
 
 export default PaymentHistory;
-
-{
-  /* <div>
-              <Text type="p" text="23/04/2023" />
-              <Text
-                type="h3"
-                text="Application fee for Canada - Employment visa"
-              />
-            </div>
-            <Text type="p" text="NGN 20,000" />
-            <Button width="166px" height="48px" styles={{ marginLeft: "55px" }}>
-              Download receipts
-            </Button> */
-}

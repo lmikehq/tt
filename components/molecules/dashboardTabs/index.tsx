@@ -5,8 +5,9 @@ import React from 'react'
 import { styled } from 'styled-components';
 import Application from './components/application';
 import PaymentHistory from './components/payment';
-import Referrals from './components/referral';
 import Account from './components/account';
+import Favourite from './components/favourite';
+import Notification from './components/notification';
 
 
 const Wrapper = styled.div`
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
     border-radius: 12px;
   }
   .MuiButtonBase-root {
-    width: 16.6666%;
+    width: 20%;
 
     .flex__FlexWrapper-sc-996d4228-0 {
       justify-content: center;
@@ -50,23 +51,18 @@ function DashboardTabs() {
         {
           label: "Favourites",
           value: 2,
-          content: <Referrals />,
+          content: <Favourite />,
         },
 
         {
           label: "Notifications",
           value: 3,
-          content: <Referrals />,
-        },
-        {
-          label: "Referral",
-          value: 4,
-          content: <Referrals />,
+          content: <Notification />,
         },
 
         {
           label: "Account",
-          value: 5,
+          value: 4,
           content: <Account />,
         },
       ];
