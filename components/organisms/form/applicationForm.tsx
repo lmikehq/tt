@@ -163,7 +163,7 @@ function ApplicationForm() {
       }
     ).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        window.open(response.data.data.checkout_url);
+        window.open(response.data.data.checkout_url, '_self');
         return response.data;
       } else {
         toast.error(response.errorMessage);
@@ -524,7 +524,8 @@ function ApplicationForm() {
         </CustomDrawer>
 
         <Flex
-          background="#FFFFFF"
+          {...(!isMobile && { background: "white" })}
+          // background='white'
           borderRadius={isMobile ? "0px" : "16px"}
           margin={isMobile ? "1.5rem 0" : "3rem 0px 5rem 0px"}
           styles={{
