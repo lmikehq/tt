@@ -72,7 +72,7 @@ function LoginPage() {
           ...submissionState,
           error: [res?.errors?.message[0].constraints],
         });
-      case 404:
+      case 401 || 404:
         return router.push("/auth/reset-password");
       default:
         return setSubmissionState({
