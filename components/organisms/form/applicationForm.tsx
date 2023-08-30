@@ -510,12 +510,16 @@ function ApplicationForm() {
         >
           <Section
             height="unset"
-            padding={"3.5rem 1.125rem"}
+            padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
             styles={{
               background: ttColors.light,
             }}
           >
-            <FormSideMenu currentPhase={currentPhase} formData={formData} />
+            <FormSideMenu
+              currentPhase={currentPhase}
+              formData={formData}
+              onClose={() => setBottomDrawerOpen(false)}
+            />
           </Section>
         </CustomDrawer>
 

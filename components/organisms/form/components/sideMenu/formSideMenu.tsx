@@ -12,8 +12,13 @@ import { useScreenResolution } from "hook/useScreenResolution";
 interface FormSideMenuProps {
   currentPhase: number;
   formData: VisaApplicationFormInterface;
+  onClose?: () => void;
 }
-const FormSideMenu = ({ currentPhase, formData }: FormSideMenuProps) => {
+const FormSideMenu = ({
+  currentPhase,
+  formData,
+  onClose,
+}: FormSideMenuProps) => {
   const { isMobile } = useScreenResolution();
 
   function getPaymentInformation(field: string) {
@@ -48,7 +53,7 @@ const FormSideMenu = ({ currentPhase, formData }: FormSideMenuProps) => {
               />
             </Section>
           ) : (
-            <VisApplicationFormDetails formData={formData} />
+            <VisApplicationFormDetails formData={formData} onClose={onClose} />
           );
         } else if (currentPhase > 6) {
           return (

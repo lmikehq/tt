@@ -1,3 +1,4 @@
+import Button from "@atom/button";
 import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import BulletList from "@atom/list";
@@ -6,22 +7,38 @@ import TravelArrow from "@atom/travelArrow";
 import Section from "@molecule/section";
 import { ListItem } from "@mui/material";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { BiX } from "react-icons/bi";
 import { VisaApplicationFormInterface } from "types";
 
 interface VisaApplicationFormDetailsProps {
   formData: VisaApplicationFormInterface;
+  onClose?: () => void;
 }
 const VisApplicationFormDetails = ({
   formData,
+  onClose,
 }: VisaApplicationFormDetailsProps) => {
   const { isMobile } = useScreenResolution();
   return (
     <Section height="unset">
+      <Flex justify="space-between" align="center" width="100%">
+        <Text type="h5" text="Required documents" size={20} weight={600} />
+        <Button
+          onClick={onClose}
+          background="transparent"
+          styles={{ padding: 0, width: "fit-content", minWidth: "auto" }}
+        >
+          <BiX size={32} color="#929292" />
+        </Button>
+      </Flex>
+      {!isMobile ? null : <Divider margin={"1.125rem 0"} />}
+
       <Flex
         align="center"
         justify="space-between"
         // direction={isMobile ? "column" : "row"}
         gap={isMobile ? "1.5rem" : "0rem"}
+        margin={isMobile ? "0 0 2rem" : "0"}
       >
         <Section width="30%" height="unset">
           <Text type="p" text={formData.homeCountry} size={24} weight={500} />
@@ -39,7 +56,7 @@ const VisApplicationFormDetails = ({
           />
         </Section>
       </Flex>
-      <Divider margin={"1.5rem 0"} />
+      {isMobile ? null : <Divider margin={"1.5rem 0"} />}
 
       <Flex gap="2rem">
         <Flex direction="column">
