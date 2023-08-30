@@ -30,7 +30,7 @@ import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsArrowLeft } from "react-icons/bs";
 // import { useUserStore } from "store/useStore";
@@ -53,6 +53,10 @@ import currencyFormatter from "data/currencyFormatter";
 import sleep from "@lib/sleep";
 import { useUserStore } from "store/useStore";
 import { safelyConvertToNumber } from "@lib/utilFns";
+import FormSideMenu from "./components/sideMenu/formSideMenu";
+import Button from "@atom/button";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { BottomNavigation } from "@mui/material";
 
 const PromoInput = styled.div`
   display: flex;
@@ -159,7 +163,7 @@ function ApplicationForm() {
       }
     ).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        window.open(response.data.data.checkout_url, "_self");
+        window.open(response.data.data.checkout_url, '_self');
         return response.data;
       } else {
         toast.error(response.errorMessage);
@@ -297,6 +301,7 @@ function ApplicationForm() {
           setCreateVisaApplicationData(data);
           setCurrentPhase(currentPhase + 1);
           setNextStepLoading(false);
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         })
         .catch((err) => {
           console.log("erorror: ", err);
@@ -465,6 +470,7 @@ function ApplicationForm() {
     handleSetUploadedDocuments,
     uploadedDocuments: uploadedDocuments ?? [],
     visaType: formData.visaType,
+    lastName: formData.lastName,
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {
@@ -472,25 +478,7 @@ function ApplicationForm() {
   }, [formData.homeCountry, formData.destination]);
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
-
-  function getPaymentInformation(field: string) {
-    let accompanies = 0;
-    if (formData.familyMembers.length > 0) {
-      familyMembersFormik.values.familyMembers.forEach((member) => {
-        if (member.accompanying) accompanies++;
-      });
-    }
-    switch (field) {
-      case "fee":
-        return accompanies > 0 ? 30000 : 20000;
-      case "numberOfPersons":
-        return accompanies + 1;
-      case "applicationType":
-        return detailsFormik.values.applicationType;
-      default:
-        return 0;
-    }
-  }
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
   return (
     <>
@@ -501,11 +489,45 @@ function ApplicationForm() {
           description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
           showButton={false}
         />
+        <Button
+          onClick={() => setBottomDrawerOpen(true)}
+          styles={{ display: isMobile ? "block" : "none" }}
+          background="transparent"
+          padding="0"
+          width="fit-content"
+          height="fit-content"
+        >
+          <Text
+            type="p"
+            color={ttColors.primary}
+            text="View Important Documents Required"
+          />
+        </Button>
+        <CustomDrawer
+          anchor="bottom"
+          open={bottomDrawerOpen}
+          onClose={() => setBottomDrawerOpen(false)}
+        >
+          <Section
+            height="unset"
+            padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
+            styles={{
+              background: ttColors.light,
+            }}
+          >
+            <FormSideMenu
+              currentPhase={currentPhase}
+              formData={formData}
+              onClose={() => setBottomDrawerOpen(false)}
+            />
+          </Section>
+        </CustomDrawer>
 
         <Flex
-          background="#FFFFFF"
+          {...(!isMobile && { background: "white" })}
+          // background='white'
           borderRadius={isMobile ? "0px" : "16px"}
-          margin="3rem 0px 5rem 0px"
+          margin={isMobile ? "1.5rem 0" : "3rem 0px 5rem 0px"}
           styles={{
             boxShadow: isMobile
               ? "none"
@@ -521,11 +543,15 @@ function ApplicationForm() {
         >
           <Section
             height="unset"
-            width="62%"
-            padding={"0 0 8rem 0"}
+            width={isMobile ? "100%" : "62%"}
+            padding={isMobile ? "0 0 1.5rem 0" : "0 0 8rem 0"}
             styles={{ position: "relative" }}
           >
-            <Flex direction="column" styles={{ flexGrow: 1 }} gap="2rem">
+            <Flex
+              direction="column"
+              styles={{ flexGrow: 1 }}
+              gap={isMobile ? "2.5rem" : "2rem"}
+            >
               {currentPhase < 7 && (
                 <Flex
                   align="center"
@@ -568,42 +594,7 @@ function ApplicationForm() {
             height="unset"
             styles={{ display: isMobile ? "none" : "block" }}
           >
-            <Flex direction="column" height="100%">
-              {(() => {
-                if (currentPhase <= 6) {
-                  return !isValid ? (
-                    <Section margin="0 0 2rem 0">
-                      <Text
-                        type="p"
-                        text={`Please select a 
-                ${!formData.destination ? "destination and" : ""} 
-                ${!formData.homeCountry ? "home country" : ""}`}
-                      />
-                    </Section>
-                  ) : (
-                    <VisApplicationFormDetails formData={formData} />
-                  );
-                } else if (currentPhase > 6) {
-                  return (
-                    <PaymentSummaryPane
-                      numberOfPersons={Number(
-                        getPaymentInformation("numberOfPersons")
-                      )}
-                      visaApplicationType={getPaymentInformation(
-                        "applicationType"
-                      ).toString()}
-                      fee={currencyFormatter(
-                        getPaymentInformation("fee").toString()
-                      )}
-                      totalFee={currencyFormatter(
-                        getPaymentInformation("fee").toString()
-                      )}
-                    />
-                  );
-                }
-              })()}
-              <SaveProgressAndContinueLater />
-            </Flex>
+            <FormSideMenu currentPhase={currentPhase} formData={formData} />
           </Section>
         </Flex>
       </SectionLayout>

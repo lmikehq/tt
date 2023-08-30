@@ -27,7 +27,7 @@ const Breadcrumb = () => {
   let pathArray = path.split("/");
   return (
     <BreadcrumbContainer>
-      <SectionLayout {...(isMobile && { padding: "0" })}>
+      <SectionLayout>
         <Flex gap={isMobile ? "0px" : ".7rem"} align="center">
           <Link href="/">
             <Text

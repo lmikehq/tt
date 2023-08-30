@@ -30,17 +30,20 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
 
   return (
     <Section height="unset">
-      <FormStepTitle steps={steps} index={index} />
+      <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
       <form onSubmit={formik.handleSubmit}>
-        <Section margin="1.5rem 0px 0px">
-          <Flex gap="1rem">
+        <Section >
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
                   type="p"
                   text="Where are you from?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                  size={isMobile ? 14 : 16}
+                  margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={isMobile ? 16 : 16}
                 />
                 <Required />
               </Flex>
@@ -58,10 +61,10 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 16}
+                  size={isMobile ? 16 : 16}
                   type="p"
                   text="Where to?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -82,11 +85,14 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
           </Flex>
         </Section>
         <Section>
-          <Flex gap="1rem" align="center">
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 16}
+                  size={isMobile ? 16 : 16}
                   type="p"
                   text="Visa type"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
@@ -114,7 +120,7 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 16}
+                  size={isMobile ? 16 : 16}
                   type="p"
                   text="Application type"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
@@ -142,7 +148,7 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
         {/* {formik?.values?.applicationType === "Family" && (
           <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
             <Text
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 16 : 16}
               type="p"
               text="Number of Travellers"
                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}

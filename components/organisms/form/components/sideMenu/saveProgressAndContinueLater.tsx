@@ -3,11 +3,14 @@ import Flex from "@atom/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { toast } from "react-hot-toast";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { ttColors } from "theme/colors";
 
 const SaveProgressAndContinueLater = () => {
+  const { isMobile } = useScreenResolution();
+
   return (
     <Section height="unset">
       <Flex gap=".5rem">
@@ -37,42 +40,50 @@ const SaveProgressAndContinueLater = () => {
         </div>
       </Flex>
 
-      <Flex margin="3rem 0 0 0" direction="column" gap="0.5rem">
-        <Button
-          border="1px solid #06062A"
-          width="100%"
-          background="none"
-          borderRadius="4px"
-          padding="1.5rem"
-        >
-          <Text
-            type="p"
-            text="Save Progress & Continue Later"
-            size={16}
-            color="#06062A"
-            cursor="pointer"
-            weight={600}
-          />
-        </Button>
-        <Link href="/">
+      <Flex
+        styles={{ display: isMobile ? "none" : "block" }}
+        margin={isMobile ? "1.5rem 0 0 0 " : "3rem 0 0 0"}
+        direction="column"
+      >
+        <Section height="unset" styles={{ marginBottom: "0.5rem" }}>
           <Button
             border="1px solid #06062A"
             width="100%"
             background="none"
             borderRadius="4px"
             padding="1.5rem"
-            onClick={() => toast.success("Application Exited Successfully!")}
           >
             <Text
               type="p"
-              text="Exit Application"
-              weight={600}
+              text="Save Progress & Continue Later"
               size={16}
               color="#06062A"
               cursor="pointer"
+              weight={600}
             />
           </Button>
-        </Link>
+        </Section>
+        <Section height="unset">
+          <Link href="/">
+            <Button
+              border="1px solid #06062A"
+              width="100%"
+              background="none"
+              borderRadius="4px"
+              padding="1.5rem"
+              onClick={() => toast.success("Application Exited Successfully!")}
+            >
+              <Text
+                type="p"
+                text="Exit Application"
+                weight={600}
+                size={16}
+                color="#06062A"
+                cursor="pointer"
+              />
+            </Button>
+          </Link>
+        </Section>
       </Flex>
     </Section>
   );
