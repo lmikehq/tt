@@ -1,6 +1,11 @@
 import CheckBox from "@atom/checkbox";
 import { BlockDatePicker } from "@atom/datepicker";
-import { ArrayInput, FieldAsDate, FieldInput, FieldString } from "@atom/fieldInput";
+import {
+  ArrayInput,
+  FieldAsDate,
+  FieldInput,
+  FieldString,
+} from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Input from "@atom/input";
 import Required from "@atom/required";
@@ -9,25 +14,20 @@ import Section from "@molecule/section";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
+import { EducationDetailsInterface } from "types";
 
 interface formProps {
   formik: any;
-  education?: any;
-  isMobile?: boolean;
+  values: EducationDetailsInterface;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function EducationForm({ formik, isMobile, count }: formProps) {
-  const [isCurrentlyInSchool, setIsCurrentlyInSchool] = useState(false);
-  const [maxYear, setMaxYear] = useState<Dayjs | null>(null)
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    setIsCurrentlyInSchool(checked);
-  };
+export default function EducationForm({ formik, count, values }: formProps) {
+  const { isMobile } = useScreenResolution();
 
   return (
     <Section height="unset">
@@ -36,13 +36,13 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text={`School Name ${count + 1}`}
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
         </Flex>
         <ArrayInput
           formik={formik}
-          name={`educations.${count}.schoolName`}
+          name={`education.${count}.school`}
           placeholder="Enter School Name"
         />
       </Section>
@@ -57,13 +57,13 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Text
               type="p"
               text="Degree"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldString
             options={DEGREES}
-            name={`educations.${count}.degree`}
+            name={`education.${count}.degree`}
             formik={formik}
             placeholder="Select your Degree"
           />
@@ -72,13 +72,13 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text="Field of Study"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldString
             options={COMMON_MAJORS}
             formik={formik}
             placeholder="Select your Field of Study"
-            name={`educations.${count}.courseOfStudy`}
+            name={`education.${count}.fieldOfStudy`}
           />
         </Section>
       </Flex>
@@ -93,16 +93,17 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
             <Text
               type="p"
               text="Grade"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <ArrayInput
             max={5.0}
             min={1}
+            defaultValue=""
             formik={formik}
             type="number"
-            name={`educations.${count}.grade`}
+            name={`education.${count}.cgpa`}
             placeholder="Enter your Grade"
           />
         </Section>
@@ -110,10 +111,10 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
           <Text
             type="p"
             text="School's Location"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldInput
-            name={`educations.${count}.schoolLocation`}
+            name={`education.${count}.location`}
             formik={formik}
             placeholder="Enter Location"
           />
@@ -128,38 +129,38 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
         <Section width="100%">
           <Text
             type="p"
-            text="Start Date"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            text="Start Year"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your Start Year"
             views={["year"]}
-            name={`educations.${count}.startYear`}
+            name={`education.${count}.startYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(`educations.${count}.startYear`, `${e.$y}`);
-              setMaxYear(dayjs(e))
+              formik.setFieldValue(`education.${count}.startYear`, e.$y);
             }}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
           <Text
             type="p"
-            text="End Date"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            text="End Year"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={isCurrentlyInSchool || maxYear === null}
+            disabled={values.stillAtSchool || !values.startYear}
             views={["year"]}
-            name={`educations.${count}.endYear`}
+            name={`education.${count}.endYear`}
             formik={formik}
-            onChange={(e: Dayjs) => {
-              formik.setFieldValue(`educations.${count}.endYear`, `${e}`);
+            onChange={(e) => {
+              console.log(e);
+              formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
-            minDate={maxYear}
-            maxDate={dayjs(new Date())}
+            minDate={dayjs(`${values.startYear}`)}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>
@@ -168,7 +169,11 @@ export default function EducationForm({ formik, isMobile, count }: formProps) {
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "0.25rem"}
       >
-        <CheckBox checked={isCurrentlyInSchool} onChange={handleCheckboxChange}>
+        <CheckBox
+          name={`education.${count}.stillAtSchool`}
+          onChange={formik.handleChange}
+          checked={values.stillAtSchool}
+        >
           <Text type="p" text="I am currently in school" />
         </CheckBox>
       </Flex>

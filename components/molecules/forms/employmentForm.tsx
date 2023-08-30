@@ -11,26 +11,19 @@ import Text from "@atom/text";
 import Section from "@molecule/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
+import { EmploymentDetailsInterface } from "types";
 
 interface formProps {
   formik: FormikValues;
-  isMobile?: boolean;
   count: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  values: EmploymentDetailsInterface;
 }
 
-export default function EmploymentForm({
-  formik,
-  isMobile,
-  count,
-}: formProps) {
-  const [maxYear, setMaxYear] = useState<Dayjs | null>(null)
-  const [isCurrentlyIncompany, setIsCurrentlyIncompany] = useState(false);
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = event.target.checked;
-    setIsCurrentlyIncompany(checked);
-  };
+export default function EmploymentForm({ formik, count, values }: formProps) {
+  const { isMobile } = useScreenResolution();
 
   return (
     <Section height="unset">
@@ -39,13 +32,13 @@ export default function EmploymentForm({
           <Text
             type="p"
             text={`Company Name ${count + 1}`}
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
         </Flex>
         <FieldInput
           formik={formik}
-          name={`employments.${count}.companyName`}
+          name={`employment.${count}.companyName`}
           placeholder="Enter your Company's name"
         />
       </Section>
@@ -60,13 +53,13 @@ export default function EmploymentForm({
             <Text
               type="p"
               text="Job Title"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             formik={formik}
-            name={`employments.${count}.jobTitle`}
+            name={`employment.${count}.jobTitle`}
             placeholder="Enter your Job Position"
           />
         </Section>
@@ -75,13 +68,13 @@ export default function EmploymentForm({
             <Text
               type="p"
               text="Employment Type"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldString
             placeholder="Select Employment Type"
-            name={`employments.${count}.employmentType`}
+            name={`employment.${count}.employmentType`}
             options={[
               "Full-Time",
               "Part-Time",
@@ -105,29 +98,29 @@ export default function EmploymentForm({
             <Text
               type="p"
               text="Company's Location"
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             formik={formik}
-            name={`employments.${count}.companyLocation`}
+            name={`employment.${count}.companyLocation`}
             placeholder="Enter Location"
           />
         </Section>
-        <Section>
+        {/* <Section>
           <Text
             type="p"
             text="Location Type"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldString
             placeholder="Select Location Type"
-            name={`employments.${count}.locationType`}
+            name={`employment.${count}.locationType`}
             options={["On-site", "Hybrid", "Remote"]}
             formik={formik}
           />
-        </Section>
+        </Section> */}
       </Flex>
       <Flex
         margin={isMobile ? "0px" : "0 0 1rem"}
@@ -138,52 +131,49 @@ export default function EmploymentForm({
         <Section>
           <Text
             type="p"
-            text="Start Date"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            text="Start Year"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your Start Year"
             views={["year"]}
-            name={`employments.${count}.startedYear`}
+            name={`employment.${count}.startYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(
-                `employments.${count}.startedYear`,
-                `${e.$y}`
-              );
-              setMaxYear(dayjs(e))
+              formik.setFieldValue(`employment.${count}.startYear`, e.$y);
             }}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
           <Text
             type="p"
-            text="End Date"
-             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            text="End Year"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={isCurrentlyIncompany || maxYear === null}
+            disabled={values.stillWorking || !values.startYear}
             views={["year"]}
-            name={`employments.${count}.endedYear`}
+            name={`employment.${count}.endYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(`employments.${count}.endedYear`, `${e.$y}`);
+              formik.setFieldValue(`employment.${count}.endYear`, e.$y);
             }}
-            minDate={maxYear}
-            maxDate={dayjs(new Date())}
+            minDate={dayjs(`${values.startYear}`)}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>
       <Flex
-        align="center"
+        align={isMobile ? "flex-start" : "center"}
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "0.25rem"}
       >
         <CheckBox
-          checked={isCurrentlyIncompany}
-          onChange={handleCheckboxChange}
+          name={`employment.${count}.stillWorking`}
+          onChange={formik.handleChange}
+          checked={values.stillWorking}
         >
           <Text type="p" text="I am currently working in this role" />
         </CheckBox>

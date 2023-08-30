@@ -2,7 +2,7 @@ import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { FormikValues, useFormik } from "formik";
+import { FormikProps, FormikValues, useFormik } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
@@ -16,44 +16,34 @@ import Button from "@atom/button";
 import Spinner from "@components/icons/spinner";
 import { ttColors } from "theme/colors";
 import { useSearchParams } from "next/navigation";
+import ContinueButton from "@atom/continueButton";
 
 interface formProps {
   steps: string[];
   index: number;
-  setFee: (n: number) => void;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<DetailsKeys>;
 }
 
-function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
+function TripDetails({ steps, index, isLoading, formik }: formProps) {
   const { isMobile } = useScreenResolution();
-  const params = useSearchParams();
-  const formik = useFormik({
-    initialValues: {
-      ...detailsKeys,
-      homeCountry: params.get("home") || "",
-      destination: params.get("destination") || "",
-      visaType: params.get("visaType") || "",
-    },
-    validationSchema: detailsSchema,
-    onSubmit: (values: DetailsKeys) => {
-      nextStep({ form: values });
-    },
-  });
 
   return (
     <Section height="unset">
-      <FormStepTitle steps={steps} index={index} />
+      <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
       <form onSubmit={formik.handleSubmit}>
-        <Section margin="1.5rem 0px 0px">
-          <Flex gap="1rem">
+        <Section>
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
                   type="p"
                   text="Where are you from?"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                  size={isMobile ? 14 : 16}
+                  margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={isMobile ? 16 : 16}
                 />
                 <Required />
               </Flex>
@@ -64,18 +54,17 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   flag: x.flag,
                   code: x.code,
                 }))}
-                name="home"
-                value={formik.values.homeCountry}
+                name="homeCountry"
                 placeholder="Select where you are"
               />
             </Flex>
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 16}
+                  size={isMobile ? 16 : 16}
                   type="p"
                   text="Where to?"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -96,14 +85,17 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
           </Flex>
         </Section>
         <Section>
-          <Flex gap="1rem" align="center">
+          <Flex
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 16}
+                  size={isMobile ? 16 : 16}
                   type="p"
                   text="Visa type"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -116,6 +108,7 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
                   "Student Visa",
                   "Medical Visa",
                   "Visa on Arrival",
+                  "Elite Migration Visa",
                   "Other",
                 ]}
                 placeholder="Select your Visa Type"
@@ -127,10 +120,10 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
-                  size={isMobile ? 14 : 16}
+                  size={isMobile ? 16 : 16}
                   type="p"
                   text="Application type"
-                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
               </Flex>
@@ -152,10 +145,10 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
           </Flex>
         </Section>
 
-        {formik?.values?.applicationType === "Family" && (
+        {/* {formik?.values?.applicationType === "Family" && (
           <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
             <Text
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 16 : 16}
               type="p"
               text="Number of Travellers"
                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
@@ -171,29 +164,15 @@ function TripDetails({ steps, index, setFee, nextStep, isLoading }: formProps) {
               placeholder="Number of Travellers"
             />
           </Section>
-        )}
+        )} */}
 
-        <Section
-          height="unset"
-          styles={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
-        >
-          {" "}
-          <Button width="100%" height={"3.5rem"} type="submit">
-            <Flex align="center" width="100%" height="100%" justify="center">
-              {isLoading ? (
-                <Spinner size="40px" fill={ttColors.primary} />
-              ) : (
-                <Text
-                  type="span"
-                  text={"Save & Continue"}
-                  weight={600}
-                  size={20}
-                  color={ttColors.light}
-                />
-              )}
-            </Flex>
-          </Button>
-        </Section>
+        <ContinueButton
+          isLoading={isLoading}
+          onClick={() => {
+            console.log(formik);
+          }}
+          disabled={!formik.isValid || !formik.dirty}
+        />
       </form>
     </Section>
   );

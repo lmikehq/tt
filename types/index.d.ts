@@ -39,18 +39,18 @@ export interface DetailsKeys {
   destination: string;
   applicationType: string;
   visaType: string;
-  travellingBy: string;
+  travellingBy?: string;
   // numberOfTravellers: number;
 }
 
 export interface EducationDetailsInterface {
   school: string;
   degree: string;
-  cgpa: number;
+  cgpa: number | null;
   location: string;
   fieldOfStudy: string;
-  startYear: number;
-  endYear?: number;
+  startYear: number | null;
+  endYear?: number | null;
   stillAtSchool: boolean;
 }
 
@@ -62,7 +62,7 @@ export interface EmploymentDetailsInterface {
   companyLocation: string;
   startYear: number;
   endYear?: number;
-  stillWorking?: boolean;
+  stillWorking: boolean;
 }
 
 export interface PersonalInfoInterface {
@@ -84,7 +84,7 @@ export interface PersonalInfoInterface {
   dateOfBirth: string;
   gender: string;
   maritalStatus: string;
-  partnersName: string;
+  partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: string;
   passportExpiryYear: number;
@@ -104,17 +104,17 @@ export interface PersonalInfoInterface {
 }
 
 export interface FamilyInfoInterface {
-  passportNumber: string;
-  expiryYear: number;
-  gender: string;
-  dateOfBirth: string;
   membersName: string;
   relationshipToPrimary: string;
   address: string;
   membersPhoneNumber: string;
   membersEmail: string;
-  issueYear: number;
   accompanying: boolean;
+  issueYear?: string | number;
+  passportNumber?: string;
+  expiryYear?: string | number;
+  gender?: string;
+  dateOfBirth?: string;
 }
 
 interface DocumentInterface {
@@ -124,7 +124,6 @@ interface DocumentInterface {
 export interface VisaApplicationFormInterface
   extends DetailsKeys,
     PersonalInfoInterface {
-  firstAndMiddleName?: string;
   education: EducationDetailsInterface[];
   employment: EmploymentDetailsInterface[];
   familyMembers: FamilyInfoInterface[];
@@ -143,6 +142,6 @@ export interface ApplicationFormRequestInput
   primaryTraveller: PrimaryTravellerInterface;
   familyMembers: FamilyInfoInterface[];
   documents: DocumentInterface[];
-  user: string;
+  user?: string;
 }
 declare module "@paystack/inline-js";

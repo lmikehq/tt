@@ -24,7 +24,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: #FAFBFC;
+  background: #fafbfc;
 }
 
 body {
@@ -131,12 +131,11 @@ body {
   height: 45px !important;
 }
 
-
 .react-tel-input .selected-flag {
   width: 46px !important;
 }
 
-.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   height: 45px !important;
   padding: 0px !important;
 }
@@ -144,27 +143,23 @@ body {
 .react-tel-input .form-control {
   padding-left: 50px !important;
 }
-.css-vqmohf-MuiButtonBase-root-MuiRadio-root{
+.css-vqmohf-MuiButtonBase-root-MuiRadio-root {
   padding: 3px !important;
 }
 
 .css-ahj2mt-MuiTypography-root {
   font-size: 16px !important;
   font-weight: 200 !important;
-
 }
-
-
 
 .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
   height: 45px !important;
   padding: 0px 14px !important;
 }
 
-
-
-
-
+.css-9emuhu-MuiPaper-root-MuiDrawer-paper {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
 
 :-ms-input-placeholder {
   font-weight: 500;
@@ -187,4 +182,8 @@ input[type="number"] {
 
 textarea:hover {
   border: 1px solid #000000;
+}
+
+.go2072408551 {
+  max-width: max-content;
 }

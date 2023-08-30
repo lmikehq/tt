@@ -12,27 +12,22 @@ import Section from "@molecule/section";
 import { Switch } from "@mui/material";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "data/utilData";
-import { FormikValues } from "formik";
+import { FormikProps, FormikValues } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import PhoneInput from "react-phone-input-2";
+import { FamilyInfoInterface } from "types";
 
 interface formProps {
   formik: FormikValues;
-  isMobile?: boolean;
   count: number;
-  family?: any;
+  values?: FamilyInfoInterface;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function FamilyForm({
-  formik,
-  isMobile,
-  count,
-  family,
-}: formProps) {
-  const [checked, setChecked] = useState(false);
-
+export default function FamilyForm({ formik, count, values }: formProps) {
+  const { isMobile } = useScreenResolution();
   return (
     <Section height="unset">
       <Flex
@@ -45,13 +40,13 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Family Member's Name ${count + 1}`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             formik={formik}
-            name={`familyInfo.${count}.membersName`}
+            name={`familyMembers.${count}.membersName`}
             placeholder="Enter the member's name"
           />
         </Section>
@@ -60,14 +55,14 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Relationship to you`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldString
             formik={formik}
             options={RELATIONSHIPS}
-            name={`familyInfo.${count}.membersRelationship`}
+            name={`familyMembers.${count}.relationshipToPrimary`}
             placeholder="Enter the relationship"
           />
         </Section>
@@ -76,11 +71,11 @@ export default function FamilyForm({
         <Text
           type="p"
           text={`Member's Address`}
-           margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+          margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
         />
         <FieldInput
           formik={formik}
-          name={`familyInfo.${count}.membersAddress`}
+          name={`familyMembers.${count}.address`}
           placeholder="Enter Member's Residential Address"
         />
       </Section>
@@ -94,13 +89,13 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Member's Phone Number`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             formik={formik}
-            name={`familyInfo.${count}.membersPhone`}
+            name={`familyMembers.${count}.membersPhoneNumber`}
             placeholder="Enter Member's Phone Number"
           />
         </Section>
@@ -109,26 +104,28 @@ export default function FamilyForm({
             <Text
               type="p"
               text={`Member's email`}
-               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
           </Flex>
           <FieldInput
             type="text"
             formik={formik}
-            name={`familyInfo.${count}.membersEmail`}
+            name={`familyMembers.${count}.membersEmail`}
             placeholder="Enter Member's Email Address"
           />
         </Section>
       </Flex>
-      <Flex justify="space-between">
+      <Flex justify="space-between" margin="0 0 1rem">
         <Text type="p" text="Will you be traveling with this Family Member?" />
         <Switch
-          checked={checked}
-          onChange={() => setChecked((prev) => !prev)}
+          name={`familyMembers.${count}.accompanying`}
+          checked={values?.accompanying}
+          value={values?.accompanying}
+          onChange={formik.handleChange}
         />
       </Flex>
-      {checked && (
+      {values?.accompanying && (
         <div>
           <Flex
             margin="0"
@@ -143,7 +140,7 @@ export default function FamilyForm({
               </Flex>
               <FieldString
                 formik={formik}
-                name={`familyInfo.${count}.gender`}
+                name={`familyMembers.${count}.gender`}
                 placeholder="Select your Gender"
                 options={["Male", "Female"]}
               />
@@ -154,7 +151,7 @@ export default function FamilyForm({
                 <Required />
               </Flex>
               <FieldAsDate
-                name={`familyInfo.${count}.membersDOB`}
+                name={`familyMembers.${count}.dateOfBirth`}
                 placeholder="Select your DOB"
                 formik={formik}
               />
@@ -174,10 +171,10 @@ export default function FamilyForm({
               <ArrayInput
                 formik={formik}
                 placeholder="Enter your Passport Number"
-                name={`familyInfo.${count}.passNumber`}
+                name={`familyMembers.${count}.passportNumber`}
               />
             </Section>
-            <Section margin="0">
+            {/* <Section margin="0">
               <Flex align="center" gap="0.25rem">
                 <Text type="p" text="Issued Country" />
                 <Required />
@@ -188,32 +185,34 @@ export default function FamilyForm({
                   flag: x.flag,
                   code: x.code,
                 }))}
-                name={`familyInfo.${count}.passIssueCountry`}
+                name={`familyMembers.${count}.passIssueCountry`}
                 formik={formik}
                 placeholder="Select the Issued Country"
               />
-            </Section>
+            </Section> */}
           </Flex>
           <Flex
-            margin="0"
+            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
             <Section margin="0">
-              <Text type="p" text="Issue Date" />
+              <Text type="p" text="Issue Year" />
               <FieldAsDate
-                name={`familyInfo.${count}.membersIssueDate`}
-                placeholder="Select Issue Date"
+                name={`familyMembers.${count}.issueYear`}
+                placeholder="Select Issue Year"
                 formik={formik}
+                views={["year"]}
               />
             </Section>
             <Section margin="0">
-              <Text type="p" text="Expiry Date" />
+              <Text type="p" text="Expiry Year" />
               <FieldAsDate
-                name={`familyInfo.${count}.membersExpiryDate`}
-                placeholder="Select Expiry Date"
+                name={`familyMembers.${count}.expiryYear`}
+                placeholder="Select Expiry Year"
                 formik={formik}
+                views={["year"]}
               />
             </Section>
           </Flex>

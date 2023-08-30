@@ -17,6 +17,9 @@ import SectionLayout from "@layout/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "@molecule/sectionTitle";
 
+import CoverImg from "@image/visaPageCover.jpg";
+import CoverDesktopImg from "@image/visaDesktopCover.jpg";
+
 const CountryWrapper = styled.section`
   // margin: 5rem 0;
 `;
@@ -107,9 +110,12 @@ const CountriesList = () => {
     }
   };
 
+  const coverImage = isMobile ? CoverImg : CoverDesktopImg;
+
+
   return (
     <CountryWrapper>
-      <AllCountryHead cover={allCountryHeadImg} title="ALL COUNTRIES" />
+      <AllCountryHead cover={coverImage} title="ALL COUNTRIES" />
       <SectionLayout>
         <SectionTitle
           title="All the countries we support!"

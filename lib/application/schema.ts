@@ -25,7 +25,7 @@ export const detailsKeys: DetailsKeys = {
   destination: "",
   applicationType: "",
   visaType: "", //
-  travellingBy: "",
+  travellingBy: "AirPlane",
 };
 
 // PERSONAL INFO
@@ -51,7 +51,10 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     dateOfBirth: yup.string().required("Required"),
     gender: yup.string().required("Required"),
     maritalStatus: yup.string().required("Required"),
-    partnersName: yup.string().required("Required"),
+    partnersName: yup.string().when("maritalStatus", {
+      is: "Married",
+      then: (schema) => schema.required("Required"),
+    }),
     passportNumber: yup.string().required("Required"),
     passportIssuedCountry: yup.string().required("Required"),
     passportExpiryYear: yup
@@ -124,6 +127,42 @@ export const personalInfoKeys: PersonalInfoInterface = {
   phoneNumber: "",
   countryOfCitizen: "",
   gender: "",
+
+  // firstName: "John",
+  // middleName: "M",
+  // lastName: "Doe",
+  // dateOfBirth: "1990-01-01",
+  // email: "tmike@yopmail.com",
+  // placeOfBirth: "City1",
+  // stateOfOrigin: "State1",
+  // phoneNumber: "1234567890",
+  // lgaOfOrigin: "LGA1",
+  // nativeLanguage: "English",
+  // meansOfId: "Passport",
+  // idNumber: "ABC123",
+  // issueDate: "2020-01-01",
+  // expiryDate: "2030-01-01",
+  // countryOfCitizen: "Country3",
+  // address: "123 Main St",
+  // maritalStatus: "Single",
+  // partnersName: "",
+  // passportNumber: "P123456",
+  // passportIssuedCountry: "Country4",
+  // passportExpiryYear: 2025,
+  // gender: "Male",
+  // tripPurpose: "Vacation",
+  // tuberculosis: false,
+  // mentalDisorder: true,
+  // mentalDisorderDetails: "Anxiety",
+  // remainbeyondValidity: false,
+  // refusedBefore: true,
+  // refusedBeforeDetails: "Visa application rejected",
+  // arrestedBefore: false,
+  // arrestedBeforeDetails: "",
+  // servedInMilitary: true,
+  // servedInMilitaryDetails: "2 years of service",
+  // memberOfViolentGroup: false,
+  // participatedInViolentActivities: true,
 };
 
 //DOCUMENT
@@ -164,9 +203,17 @@ export const educationKeys: EducationDetailsInterface = {
   cgpa: 0,
   location: "",
   fieldOfStudy: "",
-  startYear: 0,
-  endYear: 0,
+  startYear: null,
+  endYear: null,
   stillAtSchool: false,
+  // school: "University1",
+  // degree: "Bachelor's",
+  // fieldOfStudy: "Computer Science",
+  // cgpa: 3.8,
+  // location: "City3",
+  // startYear: 2014,
+  // stillAtSchool: false,
+  // endYear: 2018,
 };
 
 //EMPLOYMENT
@@ -182,7 +229,7 @@ export const singleEmploymentSchema: yup.ObjectSchema<EmploymentDetailsInterface
       is: false,
       then: (schema) => schema.required("Required"),
     }),
-    stillWorking: yup.boolean(),
+    stillWorking: yup.boolean().required(),
   });
 export const employmentKeys: EmploymentDetailsInterface = {
   companyName: "",
@@ -190,6 +237,14 @@ export const employmentKeys: EmploymentDetailsInterface = {
   employmentType: "",
   companyLocation: "",
   startYear: 0,
+  endYear: 0,
+  stillWorking: false,
+  // companyName: "Company1",
+  // jobTitle: "Developer",
+  // employmentType: "Full-time",
+  // companyLocation: "City2",
+  // startYear: 2018,
+  // stillWorking: true,
 };
 
 //FAMILY MEMBER
@@ -197,10 +252,6 @@ export const employmentKeys: EmploymentDetailsInterface = {
 export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
   .object()
   .shape({
-    passportNumber: yup.string().required("Required"),
-    expiryYear: yup.number().required("Required"),
-    gender: yup.string().required("Required"),
-    dateOfBirth: yup.string().required("Required"),
     membersName: yup.string().required("Required"),
     relationshipToPrimary: yup.string().required("Required"),
     address: yup.string().required("Required"),
@@ -209,13 +260,32 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
       .string()
       .required("Required")
       .email("Invalid email address"),
-    issueYear: yup.number().required("Required"),
     accompanying: yup.boolean().required("Required"),
+    passportNumber: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    expiryYear: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    dateOfBirth: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    gender: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
+    issueYear: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
   });
 
 export const familyInforKeys: FamilyInfoInterface = {
   passportNumber: "",
-  expiryYear: 0,
+  expiryYear: "0",
   gender: "",
   dateOfBirth: "",
   membersName: "",
@@ -223,8 +293,19 @@ export const familyInforKeys: FamilyInfoInterface = {
   address: "",
   membersPhoneNumber: "",
   membersEmail: "",
-  issueYear: 0,
-  accompanying: true,
+  issueYear: "0",
+  accompanying: false,
+  // membersName: "Alice Smith",
+  // relationshipToPrimary: "Spouse",
+  // address: "789 Elm St",
+  // membersEmail: "alice@example.com",
+  // membersPhoneNumber: "9876543210",
+  // accompanying: true,
+  // dateOfBirth: "1992-05-15",
+  // gender: "Female",
+  // passportNumber: "P987654",
+  // expiryYear: 2025,
+  // issueYear: 2020,
 };
 
 export const educationArraySchema = yup
@@ -237,8 +318,7 @@ export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(4, "You need to add 4 documents")
-  .max(5, "You can provide at most 5 documents");
+  .min(1, "You need to add 4 documents");
 
 export const manyEducationSchema = yup
   .object()
@@ -248,7 +328,7 @@ export const manyEmploymentSchema = yup
   .shape({ employment: employmentArraySchema });
 export const familyInfoSchema = yup
   .object()
-  .shape({ familyInfo: familyInfoArraySchema });
+  .shape({ familyMembers: familyInfoArraySchema });
 export const documentsSchema = yup
   .object()
   .shape({ documents: documentArraySchema });
@@ -317,6 +397,23 @@ const test: ApplicationFormRequestInput = {
     address: "123 Main St",
     maritalStatus: "Single",
     partnersName: "",
+    passportNumber: "P123456",
+    passportIssuedCountry: "Country4",
+    passportExpiryYear: 2025,
+    gender: "Male",
+    tripPurpose: "Vacation",
+    tuberculosis: false,
+    mentalDisorder: true,
+    mentalDisorderDetails: "Anxiety",
+    remainbeyondValidity: false,
+    refusedBefore: true,
+    refusedBeforeDetails: "Visa application rejected",
+    arrestedBefore: false,
+    arrestedBeforeDetails: "",
+    servedInMilitary: true,
+    servedInMilitaryDetails: "2 years of service",
+    memberOfViolentGroup: false,
+    participatedInViolentActivities: true,
     employment: [
       {
         companyName: "Company1",
@@ -339,28 +436,6 @@ const test: ApplicationFormRequestInput = {
         endYear: 2018,
       },
     ],
-    passportNumber: "P123456",
-    passportIssuedCountry: "Country4",
-    passportExpiryYear: 2025,
-    gender: "Male",
-    // guarantorName: "Jane Smith",
-    // relationshipToGuarantor: "Friend",
-    // guarantorAddress: "456 Elm St",
-    // guarantorPhone: "9876543210",
-    // guarantorWorth: "$50000",
-    tripPurpose: "Vacation",
-    tuberculosis: false,
-    mentalDisorder: true,
-    mentalDisorderDetails: "Anxiety",
-    remainbeyondValidity: false,
-    refusedBefore: true,
-    refusedBeforeDetails: "Visa application rejected",
-    arrestedBefore: false,
-    arrestedBeforeDetails: "",
-    servedInMilitary: true,
-    servedInMilitaryDetails: "2 years of service",
-    memberOfViolentGroup: false,
-    participatedInViolentActivities: true,
   },
   familyMembers: [
     {
@@ -373,7 +448,7 @@ const test: ApplicationFormRequestInput = {
       dateOfBirth: "1992-05-15",
       gender: "Female",
       passportNumber: "P987654",
-      expiryYear: 2025,
+      expiryYear: "2025",
       issueYear: 2020,
     },
     {

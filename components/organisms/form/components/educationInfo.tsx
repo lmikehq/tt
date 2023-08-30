@@ -1,9 +1,5 @@
 import Section from "@molecule/section";
-import {
-  FieldArray,
-  FormikProvider,
-  useFormik,
-} from "formik";
+import { FieldArray, FormikProps, FormikProvider, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import Flex from "@atom/flex";
 import { ttColors } from "theme/colors";
@@ -14,54 +10,50 @@ import AddButton from "@atom/addButton";
 import {
   educationKeys,
   educationsArr,
-  educationsSchema,
+  manyEducationSchema,
 } from "@lib/application/schema";
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@atom/continueButton";
+import { EducationDetailsInterface } from "types";
+import { toast } from "react-hot-toast";
 
 interface formProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<{ education: EducationDetailsInterface[] }>;
 }
 
-function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const formik = useFormik({
-    initialValues: educationsArr,
-    validationSchema: educationsSchema,
-    onSubmit: (values) => {
-      nextStep({ form: values.educations });
-    },
-    validateOnChange: true,
-  });
+function EducationInfo({ steps, index, isLoading, formik }: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>
         <form onSubmit={formik.handleSubmit}>
           <FieldArray
-            name="educations"
+            name="education"
             render={(arrayHelpers) => (
               <div>
                 <Flex justify="space-between" padding="0 0 2rem 0">
                   <FormStepTitle steps={steps} index={index} />
                   <AddButton
-                    disabled={formik.values.educations.length === 3}
+                    disabled={formik.values.education.length === 3}
                     onClick={() => {
-                      if (formik.values.educations.length < 3) {
+                      if (!formik.isValid || !formik.dirty)
+                        return toast.error("Please validate all inputs");
+                      if (formik.values.education.length < 3) {
                         arrayHelpers.insert(index + 1, educationKeys);
                       }
                     }}
                   />
                 </Flex>
-                {formik.values.educations.map((education, index) => (
+                {formik.values.education.map((education, index) => (
                   <div key={index}>
                     <EducationForm
                       formik={formik}
-                      education={education}
+                      values={education}
                       count={index}
                     />
-                    {formik.values.educations.length > 1 && (
+                    {formik.values.education.length > 1 && (
                       <Flex
                         justify="flex-end"
                         gap="0.25rem"
@@ -83,7 +75,13 @@ function EducationInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
+          <ContinueButton
+            isLoading={isLoading}
+            onClick={() => {
+              console.log(formik);
+            }}
+            disabled={!formik.isValid || !formik.dirty}
+          />
         </form>
       </Section>
     </FormikProvider>

@@ -137,7 +137,11 @@ const Visa = () => {
                     <Text type="p" text="Updated" />
                     <Text
                       type="h5"
-                      text={format(new Date(visa?.date), "dd MMM, yyyy")}
+                      text={
+                        visa?.data
+                          ? format(new Date(visa?.date), "dd MMM, yyyy")
+                          : ""
+                      }
                     />
                   </Section>
                 </Flex>
@@ -217,7 +221,9 @@ const Visa = () => {
           </Flex>
         ))
       ) : (
-        <Center margin="2rem 0" height="5rem">No Visa Application Found</Center>
+        <Center margin="2rem 0" height="5rem">
+          No Visa Application Found
+        </Center>
       )}
     </VisaWrapper>
   );

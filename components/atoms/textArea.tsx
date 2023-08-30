@@ -37,10 +37,11 @@ interface TextAreaProps {
   onChange?: (e: any) => void;
   onBlur: (e: FocusEvent<any, Element>) => void;
   name: string;
+  value?: string;
 }
-const TextArea = ({ onChange, name, onBlur }: TextAreaProps) => {
-  const [text, setText] = useState("");
-  const remainingChars = MaxCharCount - text.length;
+const TextArea = ({ onChange, name, onBlur, value }: TextAreaProps) => {
+  const [text, setText] = useState(value ?? "");
+  const remainingChars = MaxCharCount - text?.length;
 
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newText = event.target.value;

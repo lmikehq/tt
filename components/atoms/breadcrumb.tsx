@@ -8,6 +8,7 @@ import styled from "styled-components";
 import Flex from "./flex";
 import Text from "./text";
 import SectionLayout from "@components/layouts/sectionLayout";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const BreadcrumbContainer = styled.div`
   font-size: 14px;
@@ -19,19 +20,15 @@ const BreadcrumbContainer = styled.div`
   }
 `;
 
-interface BreadcrumbItem {
-  id: number;
-  label: string;
-  url?: string;
-}
-
 const Breadcrumb = () => {
+  const { isMobile } = useScreenResolution();
+
   let path = usePathname();
   let pathArray = path.split("/");
   return (
     <BreadcrumbContainer>
       <SectionLayout>
-        <Flex gap=".7rem" align="center">
+        <Flex gap={isMobile ? "0px" : ".7rem"} align="center">
           <Link href="/">
             <Text
               type="p"
@@ -60,7 +57,12 @@ const Breadcrumb = () => {
               );
             }
             return (
-              <Flex key={index} width="fit-content" align="center" gap="1rem">
+              <Flex
+                key={index}
+                width="fit-content"
+                align="center"
+                gap={isMobile ? "0px" : "1rem"}
+              >
                 <Link href={pathArray.slice(0, index + 1).join("/")}>
                   <Text
                     type="p"

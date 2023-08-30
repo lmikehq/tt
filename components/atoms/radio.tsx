@@ -16,12 +16,12 @@ interface Option {
 interface CustomRadioGroupProps {
   options: Option[];
   name: string;
-  value?: string;
   onChange: (selectedValue: ChangeEvent<any>) => void;
   onBlur?: (e: FocusEvent<any, Element>) => void;
   justifyContent: string;
-  direction?: 'row' | 'column';
-  align?: 'center' | 'flex-start' | 'flex-end';
+  direction?: "row" | "column";
+  align?: "center" | "flex-start" | "flex-end";
+  value: boolean | null;
 }
 
 export function CustomRadioGroup({
@@ -29,21 +29,21 @@ export function CustomRadioGroup({
   onChange,
   onBlur,
   name,
-  value,
   justifyContent,
-  align = 'center',
-  direction = 'row',
+  align = "center",
+  direction = "row",
+  value,
 }: CustomRadioGroupProps) {
   return (
     <FormControl>
       <RadioGroup
         name={name}
+        value={value}
         onChange={onChange}
         onBlur={onBlur}
         style={{
           justifyContent: justifyContent,
         }}
-        value={value}
       >
         <Flex align={align} gap="1rem" direction={direction}>
           {options.map((option) => (
@@ -53,9 +53,9 @@ export function CustomRadioGroup({
               control={<Radio />}
               label={option.label}
               sx={{
-                '.MuiFormControlLabel-label': {
-                  fontFamily: 'Poppins',
-                  fontWeight: '400 !important'
+                ".MuiFormControlLabel-label": {
+                  fontFamily: "Poppins",
+                  fontWeight: "400 !important",
                 },
               }}
             />

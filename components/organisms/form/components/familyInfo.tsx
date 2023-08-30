@@ -1,63 +1,50 @@
-import Section from "@molecule/section";
-import {
-  FieldArray,
-  FormikProvider,
-  useFormik,
-} from "formik";
-import FormStepTitle from "./formStepsTitle";
-import Flex from "@atom/flex";
-import { ttColors } from "theme/colors";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import Text from "@atom/text";
 import AddButton from "@atom/addButton";
-import {
-  familyInfoArr,
-  familyInfoSchema,
-  familyInforKeys,
-} from "@lib/application/schema";
-import { SingleFormType } from "../applicationForm";
-import FamilyForm from "@molecule/forms/familyForm";
 import ContinueButton from "@atom/continueButton";
+import Flex from "@atom/flex";
+import Text from "@atom/text";
+import { familyInforKeys } from "@lib/application/schema";
+import FamilyForm from "@molecule/forms/familyForm";
+import Section from "@molecule/section";
+import { FieldArray, FormikProps, FormikProvider } from "formik";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { ttColors } from "theme/colors";
+import { FamilyInfoInterface } from "types";
+import { toast } from "react-hot-toast";
+import FormStepTitle from "./formStepsTitle";
 
 interface formProps {
   steps: string[];
   index: number;
-  nextStep: ({ form }: { form: SingleFormType }) => void;
   isLoading: boolean;
+  formik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
 }
 
-function FamilyInfo({ steps, index, nextStep, isLoading }: formProps) {
-  const formik = useFormik({
-    initialValues: familyInfoArr,
-    validationSchema: familyInfoSchema,
-    onSubmit: (values) => {
-      nextStep({ form: values.familyInfo });
-    },
-    validateOnChange: true,
-  });
+function FamilyInfo({ steps, index, isLoading, formik }: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>
         <form onSubmit={formik.handleSubmit}>
           <FieldArray
-            name="familyInfo"
+            name="familyMembers"
             render={(arrayHelpers) => (
               <div>
                 <Flex justify="space-between" padding="0 0 2rem 0">
                   <FormStepTitle steps={steps} index={index} />
                   <AddButton
-                    disabled={formik.values.familyInfo.length === 3}
+                    disabled={formik.values.familyMembers.length === 3}
                     onClick={() => {
-                      if (formik.values.familyInfo.length < 3) {
+                      if (!formik.isValid || !formik.dirty)
+                        return toast.error("Please validate all inputs");
+                      if (formik.values.familyMembers.length < 3) {
                         arrayHelpers.insert(index + 1, familyInforKeys);
                       }
                     }}
                   />
                 </Flex>
-                {formik.values.familyInfo.map((family, index) => (
+                {formik.values.familyMembers.map((family, index) => (
                   <div key={index}>
-                    <FamilyForm formik={formik} family={family} count={index} />
-                    {formik.values.familyInfo.length > 1 && (
+                    <FamilyForm formik={formik} values={family} count={index} />
+                    {formik.values.familyMembers.length > 1 && (
                       <Flex
                         justify="flex-end"
                         gap="0.25rem"
@@ -79,7 +66,13 @@ function FamilyInfo({ steps, index, nextStep, isLoading }: formProps) {
               </div>
             )}
           />
-          <ContinueButton isLoading={isLoading} disabled={!formik.isValid} />
+          <ContinueButton
+            isLoading={isLoading}
+            onClick={() => {
+              console.log(formik);
+            }}
+            disabled={!formik.isValid || !formik.dirty}
+          />
         </form>
       </Section>
     </FormikProvider>
