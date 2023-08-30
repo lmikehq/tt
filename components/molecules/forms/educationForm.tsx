@@ -101,6 +101,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
             max={5.0}
             min={1}
             defaultValue=""
+            step="0.01"
             formik={formik}
             type="number"
             name={`education.${count}.cgpa`}

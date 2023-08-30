@@ -54,6 +54,7 @@ export const COMMON_MAJORS = [
   "History",
   "Environmental Science",
   "Physics",
+  "Entrepreneurship",
   "Social Work",
   "Art History",
   "Accounting",

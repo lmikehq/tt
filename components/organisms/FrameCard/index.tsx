@@ -1,11 +1,9 @@
-'use client';
+"use client";
 
 import Frame from "@atom/frame";
 
 const FrameCard = () => {
-    return (
-        <Frame />
-    )
-}
+  return <Frame />;
+};
 
-export default FrameCard
+export default FrameCard;

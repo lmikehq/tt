@@ -75,6 +75,7 @@ export interface InputProps {
   defaultValue?: string;
   name?: string;
   id?: string;
+  step?: string;
   readOnly?: boolean;
   legend?: string;
   border?: string;
@@ -118,6 +119,7 @@ const Input = ({
   flexGrow,
   parentWidth,
   styles,
+  step,
   defaultValue,
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
@@ -163,6 +165,7 @@ const Input = ({
         disabled={readOnly}
         min={min}
         max={max}
+        step={step}
         style={{
           margin,
           padding: padding || "0 1rem 0 1rem",

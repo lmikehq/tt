@@ -32,9 +32,9 @@ const FooterWrapper = styled.footer`
   // bottom: 0;
   // left: 0;
 
-  @media (max-width: 900px) {
-    padding: 1rem 0;
-  }
+  // @media (max-width: 900px) {
+  //   padding: 1rem 0;
+  // }
 `;
 const FooterGrid = styled.div<{ isMobile?: boolean }>`
   background-color: var(--primary-color);
@@ -122,10 +122,10 @@ const FooterSection = () => {
   if (isApply && isMobile) return null;
 
   return (
-    <FooterWrapper style={{ paddingBottom: isMobile ? "1rem" : "" }}>
+    <FooterWrapper>
       <NewsLetter />
       <FooterGrid isMobile={isMobile}>
-        <SectionLayout margin="0 auto" {...(isMobile && { padding: '0' })}>
+        <SectionLayout margin="0 auto" {...(isMobile && { padding: "0" })}>
           <Grid
             className="footerLayout"
             gap={isMobile ? "2rem" : "2.5rem"}
