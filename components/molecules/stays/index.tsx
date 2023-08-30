@@ -6,7 +6,8 @@ import { FaPlaneArrival } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
-import FAQ from "./components/FAQ";
+import FAQ from "./components/faq";
+import Map from "@atom/map";
 
 const BlueBox = styled.div`
   border: 2px solid #7bbbd6;
@@ -34,12 +35,12 @@ const ImageBox = styled.div<{ imageUrl: string }>`
   border-radius: 8px;
 `;
 
-const FlightSection = () => {
-  const image2 = require("../../../assets/images/flights/image2.png").default
+const StaySection = () => {
+  const image2 = require("../../../assets/images/stays/image2.jpg").default
     .src;
-  const image1 = require("../../../assets/images/flights/image1.jpg").default
+  const image1 = require("../../../assets/images/stays/image3.png").default
     .src;
-  const image3 = require("../../../assets/images/flights/image3.jpg").default
+  const image3 = require("../../../assets/images/stays/image1.jpg").default
     .src;
 
   return (
@@ -116,14 +117,14 @@ const FlightSection = () => {
         <Flex direction="column" gap=".65rem" wrap="wrap">
           <Text
             type="h1"
-            text="Flight Deals from Lagos"
+            text="Popular Stays Deals from Lagos"
             font="Montserrat"
             weight={700}
             size={36}
           />
           <Text
             type="p"
-            text="Here are the flight deals with the lowest prices. Act fast – they all 1-week trip in the next 6 months"
+            text="Here are the stays that are mainly booked from Lagos. You can check out the stays."
             size={18}
             whiteSpace="nowrap"
           />
@@ -131,34 +132,34 @@ const FlightSection = () => {
         <Flex gap="2rem">
           <Flex direction="column" gap="1rem">
             <ImageBox imageUrl={image3} />
-            <Flex justify="space-between">
+            <Flex direction="column" gap="1rem">
               <Flex direction="column" gap=".25rem">
                 <Text
                   type="h3"
-                  text="Venice"
+                  text="KAYAK Miami Beach"
                   weight={700}
                   size={28}
                   font="Montserrat"
                 />
                 <Text
                   type="p"
-                  text="Italy"
+                  text="Florida, USA"
                   color="#606060"
                   font="Montserrat"
                   weight={500}
                 />
               </Flex>
-              <Flex direction="column-reverse" gap=".25rem" align="flex-end">
+              <Flex gap=".25rem" align="center">
                 <Text
                   type="h3"
-                  text="$2,200"
+                  text="$170"
                   weight={700}
                   size={28}
                   font="Montserrat"
                 />
                 <Text
                   type="p"
-                  text="Starts from"
+                  text="Per night"
                   color="#606060"
                   font="Montserrat"
                   weight={500}
@@ -168,34 +169,34 @@ const FlightSection = () => {
           </Flex>
           <Flex direction="column" gap="1rem">
             <ImageBox imageUrl={image2} />
-            <Flex justify="space-between">
+            <Flex direction="column" gap="1rem">
               <Flex direction="column" gap=".25rem">
                 <Text
                   type="h3"
-                  text="Atlanta"
+                  text="Hotel Riu Plaza España"
                   weight={700}
                   size={28}
                   font="Montserrat"
                 />
                 <Text
                   type="p"
-                  text="United States"
+                  text="Madrid, Spain"
                   color="#606060"
                   font="Montserrat"
                   weight={500}
                 />
               </Flex>
-              <Flex direction="column-reverse" gap=".25rem" align="flex-end">
+              <Flex gap=".25rem" align="center">
                 <Text
                   type="h3"
-                  text="$1,850"
+                  text="$200"
                   weight={700}
                   size={28}
                   font="Montserrat"
                 />
                 <Text
                   type="p"
-                  text="Starts from"
+                  text="Per night"
                   color="#606060"
                   font="Montserrat"
                   weight={500}
@@ -205,34 +206,34 @@ const FlightSection = () => {
           </Flex>
           <Flex direction="column" gap="1rem">
             <ImageBox imageUrl={image1} />
-            <Flex justify="space-between">
+            <Flex direction="column" gap="1rem">
               <Flex direction="column" gap=".25rem">
                 <Text
                   type="h3"
-                  text="Sao Paulo"
+                  text="Nyx Hotel"
                   weight={700}
                   size={28}
                   font="Montserrat"
                 />
                 <Text
                   type="p"
-                  text="Brazil"
+                  text="Milan, Italy"
                   color="#606060"
                   font="Montserrat"
                   weight={500}
                 />
               </Flex>
-              <Flex direction="column-reverse" gap=".25rem" align="flex-end">
+              <Flex gap=".25rem" align="center">
                 <Text
                   type="h3"
-                  text="$2,250"
+                  text="$180"
                   weight={700}
                   size={28}
                   font="Montserrat"
                 />
                 <Text
                   type="p"
-                  text="Starts from"
+                  text="Per night"
                   color="#606060"
                   font="Montserrat"
                   weight={500}
@@ -242,6 +243,7 @@ const FlightSection = () => {
           </Flex>
         </Flex>
       </Flex>
+      <Map/>
       <Flex align="center" direction="column" padding="2rem 0">
         <Flex direction="column" align="center" gap=".5rem">
           <Text
@@ -263,4 +265,4 @@ const FlightSection = () => {
   );
 };
 
-export default FlightSection;
+export default StaySection;

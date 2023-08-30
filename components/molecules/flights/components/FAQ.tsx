@@ -1,9 +1,9 @@
 import { styled } from "styled-components";
-import Flex from "./flex";
-import Text from "./text";
 import Section from "@molecule/section";
 import { useState } from "react";
-import ShowButton from "./showButton";
+import Flex from "@atom/flex";
+import Text from "@atom/text";
+import ShowButton from "@atom/showButton";
 
 const Box = styled.div<{ color: string, border: string }>`
   border: 3px solid ${(props) => props.border};

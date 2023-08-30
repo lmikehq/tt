@@ -54,7 +54,7 @@ function Visa() {
       <Grid
         gap="2rem"
         justify="space-between"
-        columns={isMobile ? "1fr" : "1fr 1fr 1.5fr"}
+        columns={isMobile ? "1" : "3"}
         margin="3rem 0 0"
       >
         <SearchInput

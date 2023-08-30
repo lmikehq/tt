@@ -18,7 +18,7 @@ type flightProps = {
   departureDate: dayjs.Dayjs;
   arrivalDate: dayjs.Dayjs;
   price: number;
-  label?: string
+  label: string
 };
 
 const FlightContainer = styled.div`
@@ -40,6 +40,16 @@ const IconBorders = styled.div`
   gap: 0.5rem;
 `
 
+const LabelBox = styled.div`
+  padding: .5rem;
+  background: #F3FAFD;
+  width: 20%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 function FlightBox(props: flightProps) {
   function getRandomNumber() {
     return Math.floor(Math.random() * 5) + 1
@@ -52,18 +62,14 @@ function FlightBox(props: flightProps) {
   const randomHourDeparture = Math.floor(Math.random() * 24);
   const randomMinuteDeparture = Math.floor(Math.random() * 60);
   
-  // Generate additional random numbers for arrival time
   const randomHourArrival = Math.floor(Math.random() * 24);
   const randomMinuteArrival = Math.floor(Math.random() * 60);
   
-  // Assume these are your departure and arrival times
   const departureTime = dayjs().add(randomHourDeparture, 'hour').add(randomMinuteDeparture, 'minute');
   const arrivalTime = dayjs().add(1, 'day').add(randomHourDeparture + randomHourArrival, 'hour').add(randomMinuteDeparture + randomMinuteArrival, 'minute');
   
-  // Calculate the difference in minutes
   const diffInMinutes = arrivalTime.diff(departureTime, 'minute');
   
-  // Calculate the number of hours and minutes
   const hours = Math.floor(diffInMinutes / 60);
   const minutes = diffInMinutes % 60;
   
@@ -72,18 +78,21 @@ function FlightBox(props: flightProps) {
   const formattedDepartureTime = departureTime.format('HH:mm');
   const formattedArrivalTime = arrivalTime.format('HH:mm');
   
+  const price = Number(props.price?.toFixed(0)).toLocaleString();
+  
   return (
     <FlightContainer>
         <Flex>
-          <Flex direction="column" padding="2rem">
-            {props.label}
-            <Flex align="center" gap=".5rem">
+          <Flex direction="column" padding="1rem">
+            {props.label !== "" && (<LabelBox>
+              <Text type="p" text={props.label} color="#4A7181"/>
+            </LabelBox>)}
+            <Flex align="center" gap=".5rem" padding="1.5rem">
               <Text type="p" text="Depart" />
               &middot;
               <Text type="p" text={formatDate(props.departureDate)} />
             </Flex>
-            <Flex direction="column" gap="1rem">
-              <FaPlane />
+            <Flex direction="column" gap="1rem" padding="2rem">
               <Flex direction="column" gap="1rem">
                 <Flex gap="1rem">
                   <Text type="p" text={formattedDepartureTime} />
@@ -102,12 +111,12 @@ function FlightBox(props: flightProps) {
               </Flex>
             </Flex>
             <Divider direction="horizontal" borderStyle="dotted" />
-            <Flex align="center" gap=".5rem">
+            <Flex align="center" gap=".5rem" padding="1.5rem">
               <Text type="p" text="Return" />
               &middot;
               <Text type="p" text={formatDate(props.arrivalDate)} />
             </Flex>
-            <Flex direction="column" gap="1rem">
+            <Flex direction="column" gap="1rem" padding="2rem">
               <FaPlane />
               <Flex direction="column" gap="1rem">
                 <Flex gap="1rem">
@@ -144,7 +153,7 @@ function FlightBox(props: flightProps) {
             </Flex>
             <Flex direction="column" gap=".1rem">
               <Text type="h1" text={`${getRandomNumber()} seats left at this price`} weight={500} size={18} color="#929292"/>
-              <Text type="h1" text={`$ ${props.price.toLocaleString()}`} weight={600} size={40}/>
+              <Text type="h1" text={`$ ${price}`} weight={600} size={40}/>
             </Flex>
             <Button
               background="#7BBBD6"

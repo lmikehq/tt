@@ -162,7 +162,7 @@ const PopularDestinations = ({
           href="/visa/countries"
         />
         <Grid
-          columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
+          columns={isMobile ? "1fr" : "3"}
           gap="16px"
           className="destinationCard"
         >

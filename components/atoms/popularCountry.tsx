@@ -326,7 +326,7 @@ const TopCountriesSection: React.FC = () => {
             </Grid>
           </>
         ) : (
-          <Grid columns="repeat(2, 1fr)" gap="1rem" align="center">
+          <Grid columns="2" gap="1rem" align="center">
             <LeftSide>
               {activeImage !== null && (
                 <CountryInfo>

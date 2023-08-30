@@ -20,6 +20,8 @@ interface CustomRadioGroupProps {
   onChange: (selectedValue: ChangeEvent<any>) => void;
   onBlur?: (e: FocusEvent<any, Element>) => void;
   justifyContent: string;
+  direction?: 'row' | 'column';
+  align?: 'center' | 'flex-start' | 'flex-end';
 }
 
 export function CustomRadioGroup({
@@ -29,6 +31,8 @@ export function CustomRadioGroup({
   name,
   value,
   justifyContent,
+  align = 'center',
+  direction = 'row',
 }: CustomRadioGroupProps) {
   return (
     <FormControl>
@@ -41,7 +45,7 @@ export function CustomRadioGroup({
         }}
         value={value}
       >
-        <Flex align="center" gap="1rem">
+        <Flex align={align} gap="1rem" direction={direction}>
           {options.map((option) => (
             <FormControlLabel
               key={option.label}

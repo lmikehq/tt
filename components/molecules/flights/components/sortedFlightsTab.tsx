@@ -5,7 +5,7 @@ import { BsInfoCircle, BsSortUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 import { styled } from "styled-components";
 
-const FlightContainer = styled.div`
+export const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   border: 1px solid #e7e7e7;
   background: linear-gradient(0deg, #ffffff, #ffffff);
@@ -14,12 +14,12 @@ const FlightContainer = styled.div`
   border-radius: 12.5px;
 `;
 
-const ButtonBox = styled.div<{ active: boolean }>`
-    background: ${({ active }) => active ? '#06062A' : 'transparent'};
-    color: ${({ active }) => active ? 'white' : '#606060'};
-    padding: 1rem;
-    border-radius: 12.5px;
-    cursor: pointer;
+export const ButtonBox = styled.div<{ active: boolean }>`
+  background: ${({ active }) => active ? '#06062A' : 'transparent'};
+  color: ${({ active }) => active ? 'white' : '#606060'};
+  padding: 1rem;
+  border-radius: 12.5px;
+  cursor: pointer;
 `
 
 type sortProps = {
@@ -35,7 +35,7 @@ function SortedFlightsTab(props: sortProps) {
       <Flex justify="space-between" align="center">
         <Flex gap=".5rem">
           <ButtonBox active={props.sortType === "best"} onClick={() => props.setSortType("best")}>
-              <Flex direction="column">
+              <Flex direction="column" gap=".5rem">
                 <Flex gap="1rem" align="center">
                   <Text type="p" text="Best" weight={500} />
                   <BsInfoCircle size={20} />
@@ -43,20 +43,20 @@ function SortedFlightsTab(props: sortProps) {
                 <Flex gap=".5rem" align="center">
                   <Text
                     type="p"
-                    text={`$${props.bestPrice?.toFixed(0).toLocaleString()}`}
+                    text={`$${Number(props.bestPrice?.toFixed(0)).toLocaleString()}`}
                     weight={500}
                   />
                   <GoDotFill size={15} />
                   <Text
                     type="p"
-                    text={`$${props.cheapPrice?.toFixed(0).toLocaleString()}`}
+                    text={`$${Number(props.cheapPrice?.toFixed(0)).toLocaleString()}`}
                     weight={500}
                   />
                 </Flex>
               </Flex>
           </ButtonBox>
           <ButtonBox active={props.sortType === "cheap"} onClick={() => props.setSortType("cheap")}>
-              <Flex direction="column">
+              <Flex direction="column" gap=".5rem">
                 <Flex gap="1rem" align="center">
                   <Text type="p" text="Cheapest" weight={500} />
                   <BsInfoCircle size={20} />
@@ -64,13 +64,13 @@ function SortedFlightsTab(props: sortProps) {
                 <Flex gap=".5rem" align="center">
                   <Text
                     type="p"
-                    text={`$${props.cheapPrice?.toLocaleString()}`}
+                    text={`$${Number(props.cheapPrice?.toFixed(0)).toLocaleString()}`}
                     weight={500}
                   />
                   <GoDotFill size={15} />
                   <Text
                     type="p"
-                    text={`$${props.bestPrice?.toFixed(0).toLocaleString()}`}
+                    text={`$${Number(props.bestPrice?.toFixed(0)).toLocaleString()}`}
                     weight={500}
                   />
                 </Flex>

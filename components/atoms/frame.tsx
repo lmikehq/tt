@@ -131,7 +131,7 @@ const Frame: React.FC = () => {
   return (
     <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
       <SectionLayout>
-        <Grid columns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap="2rem">
+        <Grid columns={isMobile ? "1fr" : "2"} gap="2rem">
           {serviceCard.map((item) => (
             <ServiceCard key={item.id} style={{ position: "relative" }}>
               <Image src={item.img} alt="card image" />
