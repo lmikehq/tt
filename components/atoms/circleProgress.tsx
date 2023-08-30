@@ -50,7 +50,7 @@ const CircleText = styled.div`
   right: 0;
   transform: translateX(-50%);
   margin: auto;
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     display: none;
   }
 `;
