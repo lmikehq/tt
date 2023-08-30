@@ -479,20 +479,7 @@ function ApplicationForm() {
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
-  const [bottomNavVisible, setBottomNavVisible] = useState(true);
-  const handleScroll = () => {
-    const scrollPosition = window.scrollY;
-    if (scrollPosition > 100) {
-      setBottomNavVisible(false);
-    } else {
-      setBottomNavVisible(true);
-    }
-  };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
   return (
     <>
       <AllCountryHead cover={coverImage} title={formData.destination || ""} />
@@ -531,11 +518,6 @@ function ApplicationForm() {
             <FormSideMenu currentPhase={currentPhase} formData={formData} />
           </Section>
         </CustomDrawer>
-        {bottomNavVisible && (
-          <BottomNavigation className="bottom-navigation" showLabels>
-            <Section>s</Section>
-          </BottomNavigation>
-        )}
 
         <Flex
           background="#FFFFFF"
