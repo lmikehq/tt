@@ -62,8 +62,11 @@ const useCloudinaryUpload = ({
     return hash.digest("hex");
   };
 
-  const generateSignature = (publicId: string, apiSecret: string) => {
-    const timestamp = new Date().getTime();
+  const generateSignature = (
+    publicId: string,
+    apiSecret: string,
+    timestamp: number
+  ) => {
     return `public_id=${publicId}&timestamp=${timestamp}${apiSecret}`;
   };
   const deleteImage = async ({ imageUrl }: { imageUrl: string }) => {
@@ -71,7 +74,7 @@ const useCloudinaryUpload = ({
 
     const timestamp = new Date().getTime();
     const signature = generateSHA1(
-      generateSignature(publicId ?? "", apiSecret)
+      generateSignature(publicId ?? "", apiSecret, timestamp)
     );
     const url = `https://api.cloudinary.com/v1_1/thrillers-travels/image/destroy`;
 

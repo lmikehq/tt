@@ -76,6 +76,7 @@ export default function ContinueButton({
             left: 0,
             right: 0,
             height: "unset",
+            boxShadow: "0px 2px 4px 0px rgba(0, 0, 0, 0.15)",
           }}
           className="bottom-navigation"
           showLabels

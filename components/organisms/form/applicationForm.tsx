@@ -549,7 +549,7 @@ function ApplicationForm() {
             <Flex
               direction="column"
               styles={{ flexGrow: 1 }}
-              gap={isMobile ? "1.5rem" : "2rem"}
+              gap={isMobile ? "2.5rem" : "2rem"}
             >
               {currentPhase < 7 && (
                 <Flex
