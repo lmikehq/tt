@@ -44,43 +44,46 @@ const SaveProgressAndContinueLater = () => {
         styles={{ display: isMobile ? "none" : "block" }}
         margin={isMobile ? "1.5rem 0 0 0 " : "3rem 0 0 0"}
         direction="column"
-        gap="0.5rem"
       >
-        <Button
-          border="1px solid #06062A"
-          width="100%"
-          background="none"
-          borderRadius="4px"
-          padding="1.5rem"
-        >
-          <Text
-            type="p"
-            text="Save Progress & Continue Later"
-            size={16}
-            color="#06062A"
-            cursor="pointer"
-            weight={600}
-          />
-        </Button>
-        <Link href="/">
+        <Section height="unset" styles={{ marginBottom: "0.5rem" }}>
           <Button
             border="1px solid #06062A"
             width="100%"
             background="none"
             borderRadius="4px"
             padding="1.5rem"
-            onClick={() => toast.success("Application Exited Successfully!")}
           >
             <Text
               type="p"
-              text="Exit Application"
-              weight={600}
+              text="Save Progress & Continue Later"
               size={16}
               color="#06062A"
               cursor="pointer"
+              weight={600}
             />
           </Button>
-        </Link>
+        </Section>
+        <Section height="unset">
+          <Link href="/">
+            <Button
+              border="1px solid #06062A"
+              width="100%"
+              background="none"
+              borderRadius="4px"
+              padding="1.5rem"
+              onClick={() => toast.success("Application Exited Successfully!")}
+            >
+              <Text
+                type="p"
+                text="Exit Application"
+                weight={600}
+                size={16}
+                color="#06062A"
+                cursor="pointer"
+              />
+            </Button>
+          </Link>
+        </Section>
       </Flex>
     </Section>
   );
