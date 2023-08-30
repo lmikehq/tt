@@ -4,7 +4,7 @@ import Text from "@atom/text";
 import styled from "styled-components";
 import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
-import Visa from "./visa";
+import Visa from "./visa1";
 import { useScreenResolution } from "hook/useScreenResolution";
 import RTQueryClient from "@components/layouts/rtqWrapper";
 import Flight from "./flight1";

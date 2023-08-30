@@ -78,11 +78,11 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Section from "@molecule/section";
-import Image from "@atom/image";
 import Text from "@atom/text";
 import Flex from "@atom/flex";
 import Link from "@atom/link";
 import { StaticImageData } from "next/image";
+import Image from "@atom/image";
 
 
 
@@ -95,7 +95,7 @@ interface LinkItem {
   url: string;
 }
 export interface NoVisaApplicationProps {
-  noVisaImage: string | StaticImageData;
+  noVisaImage: any;
   content: {
     title: string;
     links: LinkItem[];
@@ -104,7 +104,7 @@ export interface NoVisaApplicationProps {
 
 
 
-const NoVisaApplication: React.FC<NoVisaApplicationProps> = ({
+const NoApplication: React.FC<NoVisaApplicationProps> = ({
   noVisaImage,
   content,
 }) => {
@@ -151,17 +151,17 @@ const NoVisaApplication: React.FC<NoVisaApplicationProps> = ({
   );
 };
 
-NoVisaApplication.propTypes = {
-  noVisaImage: PropTypes.string.isRequired,
-  content: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    links: PropTypes.arrayOf(
-      PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-  }).isRequired,
-};
+// NoVisaApplication.propTypes = {
+//   noVisaImage: PropTypes.string.isRequired,
+//   content: PropTypes.shape({
+//     title: PropTypes.string.isRequired,
+//     links: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         text: PropTypes.string.isRequired,
+//         url: PropTypes.string.isRequired,
+//       })
+//     ).isRequired,
+//   }).isRequired,
+// };
 
-export default NoVisaApplication;
+export default NoApplication;

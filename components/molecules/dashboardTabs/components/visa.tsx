@@ -28,13 +28,11 @@ import VisaData from "@molecule/dashboardTabs/components/visaDetails";
 import React, { useState } from "react";
 import { Divider } from "@atom/divider";
 import Center from "@atom/center";
-import NoVisaApplication from "./noVisaApplication";
+import NoVisaApplication from "./noApplication";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import NoVisa from "@image/noVisa.png";
-
-
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -129,8 +127,6 @@ const Visa = () => {
     // Handle the download status click event
   };
 
-
-
   async function getVisas() {
     return await apiService("/visa", "GET");
   }
@@ -176,87 +172,6 @@ const Visa = () => {
           </Center>
         )}
       </div>
-
-      {/* // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="AWAITING EMBASSY DECISION"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Download Status"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="APPLICATION IN PROGRESS"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Re-apply Visa"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="VISA FEES REQUIRED"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Pay Visa Fees"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="AWAITING PASSPORT COLLECTION"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Download Status"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="APPROVED"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Make Payment"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus={visaStatus}
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Make Payment"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="DECLINED"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Download Status"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus="PASSPORT PHYSICALLY REQUIRED"
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Make Payment"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus={visaStatus}
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Download Status"
-      // />
-      // <VisaData */}
-      {/* //   countryLogoSrc={countryLogoSrc}
-      //   applicationDate={applicationDate}
-      //   paymentFee={paymentFee}
-      //   visaStatus={visaStatus}
-      //   onDownloadStatusClick={handleDownloadStatusClick}
-      //   downloadButtonText="Upload Document"
-      // /> */}
     </VisaWrapper>
   );
 };

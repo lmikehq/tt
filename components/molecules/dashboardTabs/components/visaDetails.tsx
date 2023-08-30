@@ -129,8 +129,6 @@ const VisaData: React.FC<VisaDataProps> = ({
         borderBottom="1px solid #E7E7E7"
         styles={{
           position: "relative",
-          // borderTopLeftRadius: "16px",
-          // borderTopRightRadius: "16px",
         }}
       >
         <Logo>
@@ -191,7 +189,6 @@ const VisaData: React.FC<VisaDataProps> = ({
               <Flex justify="flex-start" gap="10px">
                 <DateIcon>
                   <HiClock color="#8DD3BB" size="1.5rem" />
-                  {/* Use IoClock for HiClock */}
                 </DateIcon>
                 <section>
                   <Text

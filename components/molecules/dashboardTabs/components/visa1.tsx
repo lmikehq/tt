@@ -29,6 +29,7 @@ import { useState } from "react";
 import ReusableModal from "./dashboardModal";
 import checkIcon from "@image/checkIcon.png"
 import VisaDashboardHeader from "./visaDashboardHeader";
+import VisaPaymentModal from "../visaPayment";
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -95,225 +96,95 @@ const DateIcon = styled.div`
 
 const Visa = () => {
   const { isMobile } = useScreenResolution();
-  const [openModal, setOpenModal] = useState(false);
+   const [openModal, setOpenModal] = useState(false);
+   const [modalStatus, setModalStatus] = useState<string | null>(null);
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+   const handleOpenModal = (status: string) => {
+     setModalStatus(status);
+     setOpenModal(true);
+   };
+
+   const handleCloseModal = () => {
+     setOpenModal(false);
+     setModalStatus(null);
+   };
+  
+  // end here
+
+  // const [openMakePaymentModal, setOpenMakePaymentModal] = useState(false);
+  // const [openUploadDocumentModal, setUploadDocumentModal] = useState(false);
+  // const [openDocumentUploadedModal, setDocumentUploadedModal] = useState(false);
+
+  // const handleOpenPaymentModal = () => {
+  //   setOpenMakePaymentModal(true);
+  // }
+  // const handleClosePaymentModal = () => {
+  //   setOpenMakePaymentModal(false);
+  // }
+
+  // const handleUploadDocumentModal = () => { 
+  //   setUploadDocumentModal(true);
+  // }
+
+  // const handleCloseUploadDocumentModal = () => {
+  //   setUploadDocumentModal(false);
+  // }
+
+  // const handleDocumentUploadedModal = () => { 
+  //   setDocumentUploadedModal(true);
+  // }
+
+  // const handleCloseDocumentUploadedModal = () => { 
+  //   setDocumentUploadedModal(false);
+  // }
+
+
+
+
+
+
+
 
  const countryLogoSrc = "../../../../assets/flags/ng.svg";
  const applicationDate = "12th May, 2021";
  const paymentFee = "$ 2000";
   const visaStatus = "AWAITING CONFIRMATION";
+
    const handleDownloadStatusClick = () => {
      // Handle the download status click event
    };
+  
+  const getModalContent = (status: string) => {
+    switch (status) {
+      case "APPLICATION IN PROGRESS":
+        return <VisaPaymentModal open={openModal} onClose={handleCloseModal} />;
+      case "VISA FEES REQUIRED":
+      case "PROCESSING FEES REQUIRED":
+      case "COURIER FEES REQUIRED":
+      case "PASSPORT PHYSICALLY REQUIRED":
+      case "ADDITIONAL DOCUMENTS REQUIRED":
+        return <VisaPaymentModal open={openModal} onClose={handleCloseModal} />;
+      case "AWAITING CONFIRMATION":
+      case "AWAITING EMBASSY DECISION":
+      case "AWAITING BIO METRIC":
+        return <VisaPaymentModal open={openModal} onClose={handleCloseModal} />;
+      // Add more cases for other status modals
+      default:
+        return null;
+    }
+  };
 
   return (
     <VisaWrapper>
       <VisaDashboardHeader headerText="All Visa Applications" />
-      {/* <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
-        <Section>
-          <Text type="h1" text="All Visa Applications" size={24} weight={600} />
-        </Section>
-        <Grid
-          columns="80% 17%"
-          gap=".8rem"
-          style={{
-            justifySelf: "flex-end",
-          }}
-        >
-          <Flex
-            justify="flex-start"
-            align="center"
-            border="1px solid #E7E7E7"
-            padding="0px 10px"
-            borderRadius="8px"
-            borderBottom="1px solid #E7E7E7"
-            width="100%"
-            gap="10px"
-          >
-            <CiSearch size="1.5rem" color="#5C5C5C" width="20%" />
-            <Section width="100%">
-              <Input
-                padding="0px"
-                placeholder="Type here to search"
-                styles={{
-                  border: "none",
-                }}
-              />
-            </Section>
-          </Flex>
-
-          <Flex
-            justify="space-between"
-            align="center"
-            border="1px solid #E7E7E7"
-            borderRadius="8px"
-            borderBottom="1px solid #e7e7e7"
-            padding="0px 16px"
-            styles={{ cursor: "pointer" }}
-          >
-            <BiSort size="1.5rem" color="#606060" />
-            <Text
-              type="h5"
-              text="Sort By"
-              weight={400}
-              size={14}
-              color="#606060"
-            />
-            <MdKeyboardArrowDown size="1.5rem" color="#606060" />
-          </Flex>
-        </Grid>
-      </Flex> */}
-
-      {/* <Flex
-        justify="space-around"
-        gap={isMobile ? ".5rem" : "0rem"}
-        direction={isMobile ? "column" : "row"}
-        margin="2rem 0"
-        border="1px solid #E7E7E7"
-        padding="20px 0px"
-        borderRadius="16px"
-        align="center"
-        borderBottom="1px solid #E7E7E7"
-      >
-        <Logo>
-          <Image
-            src={CountryLogo}
-            height={isMobile ? 20 : 40}
-            width={isMobile ? 40 : 58.5}
-            alt="country logo"
-          />
-        </Logo>
-        <Flex
-          justify="flex-start"
-          width={isMobile ? "100%" : "32%"}
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "7px" : "0rem"}
-        >
-          <Flex
-            margin="0px 0px 0px 1.5rem"
-            gap={isMobile ? "2rem" : "1rem"}
-            direction="column"
-          >
-            <Text
-              type="p"
-              letterSpacing="1px"
-              weight={400}
-              size={isMobile ? "1rem" : "1.3rem"}
-              text="Nigeria(NG) — Canada(CA)"
-            />
-
-            <Flex justify="flex-start" gap="1rem">
-              <Flex
-                justify="space-between"
-                gap="10px"
-                margin="0px 0px 10px 0px"
-                width="100%"
-              >
-                <DateIcon>
-                  <IoCalendar color="#8DD3BB" size="1.5rem" />
-                </DateIcon>
-                <Section>
-                  <Text
-                    type="p"
-                    text="Application Date"
-                    color="#112211"
-                    size={12}
-                    opacity="60%"
-                  />
-                  <Text
-                    type="h5"
-                    text="12th May, 2021"
-                    color="#112211"
-                    size={14}
-                    weight={500}
-                  />
-                </Section>
-              </Flex>
-
-              <Flex justify="space-between" gap="10px">
-                <DateIcon>
-                  <HiClock color="#8DD3BB" size="1.5rem" />
-                </DateIcon>
-                <Section>
-                  <Text
-                    type="p"
-                    text="Payment Fee"
-                    whiteSpace="nowrap"
-                    color="#112211"
-                    size={12}
-                    opacity="60%"
-                  />
-                  <Text
-                    type="h5"
-                    text="$ 2000"
-                    color="#112211"
-                    size={14}
-                    weight={500}
-                  />
-                </Section>
-              </Flex>
-            </Flex>
-          </Flex>
-        </Flex>
-
-        <VisaStatus>
-          <Text
-            type="h5"
-            text="AWAITING CONFIRMATION"
-            weight={800}
-            size={isMobile ? 13 : 14}
-          />
-        </VisaStatus>
-
-        <Flex width="25%" justify="flex-end" gap=".5rem" align="center">
-          <Button
-            padding="8px 16px"
-            width="100px !important"
-            height="48px"
-            styles={{
-              marginLeft: isMobile ? "0px" : "55px",
-              display: isMobile ? "none" : "block",
-            }}
-          >
-            <Text type="h5" text="Download Status" weight={400} size={14} />
-          </Button>
-
-          <Section
-            width="60px"
-            styles={{
-              display: isMobile ? "none" : "block",
-            }}
-          >
-            <Flex
-              border="1px solid #87CEEB"
-              borderBottom="1px solid #87CEEB"
-              align="center"
-              justify="center"
-              padding="8px"
-              borderRadius="4px"
-              height="48px"
-              width="48px"
-              styles={{ cursor: "pointer" }}
-            >
-              <MdKeyboardArrowDown size="1.5rem" />
-            </Flex>
-          </Section>
-        </Flex>
-      </Flex> */}
 
       <VisaData
         countryLogoSrc={countryLogoSrc}
         applicationDate={applicationDate}
         paymentFee={paymentFee}
         visaStatus="AWAITING EMBASSY DECISION"
-        onDownloadStatusClick={handleOpenModal}
+        onDownloadStatusClick={() => handleOpenModal("APPLICATION IN PROGRESS")}
         downloadButtonText="Download Status"
       />
       <VisaData
@@ -395,7 +266,7 @@ const Visa = () => {
         description="Kindly Upload the required Document as it will help continue your application"
       >
         <Image src={checkIcon} alt="" width={190} height={190} />
-        {/* Additional content goes here */}
+        
         <Text
           type="p"
           text="Proof of Address, International Passport, National ID Needed"
@@ -403,6 +274,7 @@ const Visa = () => {
             textAlign: "center",
           }}
         />
+        {modalStatus && getModalContent(modalStatus)}
       </ReusableModal>
     </VisaWrapper>
   );

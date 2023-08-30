@@ -1,4 +1,3 @@
-import React, { useState } from "react"; 
 import Text from "@atom/text"; 
 import Section from "@molecule/section";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -22,6 +21,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ open, onClose }) => {
       headerText="Edit Your Address"
       description="Keep us informed: Edit your address"
     >
+     
       {/* Additional content goes here */}
       <Section>
         <Flex align="center" gap="0.5rem">
@@ -35,8 +35,8 @@ const AddressModal: React.FC<AddressModalProps> = ({ open, onClose }) => {
         <Input
           placeholder="St 32 main downtown, Los Angeles, California, USA"
           height="3rem"
-                  type="text"
-                  margin="0px 0px 2.5rem"
+          type="text"
+          margin="0px 0px 2.5rem"
         />
       </Section>
     </ReusableModal>

@@ -79,7 +79,7 @@ const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
         <Text type="h1" text={headerText} size={24} weight={600} />
       </Section>
       <Grid
-        columns="40% 35% 20%"
+        columns="80%  20%"
         gap=".8rem"
         style={{
           justifySelf: "flex-end",

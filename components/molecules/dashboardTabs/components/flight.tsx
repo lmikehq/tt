@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import NoVisaApplication from "./noVisaApplication";
+import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import NoVisaBg from "@image/background.png";
 import FlightImg from "@image/flight.png";
@@ -21,21 +21,17 @@ const FlightWrapper = styled.div`
 `;
 
 const Flight = () => {
-
-     const content = {
-       title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
-       links: [
-         { text: "Search Flights", url: "/flight" },
-         { text: "Search Stays", url: "/stays" },
-       ],
-     };
+  const content = {
+    title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
+    links: [
+      { text: "Search Flights", url: "/flight" },
+      { text: "Search Stays", url: "/stays" },
+    ],
+  };
   return (
     <FlightWrapper>
       <VisaDashboardHeader headerText="All Flight Applications" />
-      <NoVisaApplication
-        noVisaImage={FlightImg}
-        content={content}
-      />
+      <NoVisaApplication noVisaImage={FlightImg} content={content} />
     </FlightWrapper>
   );
 };

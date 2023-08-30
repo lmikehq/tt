@@ -8,38 +8,17 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { FaFileDownload } from "react-icons/fa";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import Section from "@molecule/section";
-import { BiDotsVerticalRounded } from "react-icons/bi";
 import FlightIcon from "@image/flightBooking.png";
 import Image from "@atom/image";
-import { GoDotFill } from "react-icons/go";
-import NotificationItem from "@atom/notificationItem";
 
-const SectionTitle = styled.div`
-  display: flex;
 
-  & h2 {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    margin: 20px 0px 15px;
-    line-height: 48px;
-    /* identical to box height */
-
-    color: ${ttColors.dark};
-    @media screen and (max-width: 390px) {
-      margin: 0px 0px -4px !important;
-    }
-  }
-`;
 
 const History = styled.div`
   display: flex;
   flex-direction: column;
-  //   align-items: flex-start;
-  //   justify-content: flex-start;
 
   width: 100%;
-  height: fit-content;
+  height: 311px;
   border: 1px solid #e7e7e7;
   border-radius: 14px;
 `;
@@ -73,11 +52,10 @@ const Notification = () => {
 
   return (
     <Section
-      margin="2rem 0"
+      margin="10x 0"
       styles={{
-        background: "#fff",
         borderRadius: "14px",
-        padding: "2.5rem 1.5rem",
+        padding: ".5rem 1.5rem",
       }}
     >
       <VisaDashboardHeader headerText="All Flight Applications" />
