@@ -19,7 +19,7 @@ const options = [
   { value: "multi-city", label: "Multi-City" },
 ];
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   position: absolute;
   left: 35%;
   width: 25%;
