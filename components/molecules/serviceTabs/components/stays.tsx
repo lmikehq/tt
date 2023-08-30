@@ -1,16 +1,29 @@
+
+"use client"
 import Section from "@molecule/section";
-import Visa from "./visa";
 import Flex from "@atom/flex";
+import { CustomRadioGroup } from "@atom/radio";
+import { useEffect, useState } from "react";
+import FlightModule from "@atom/flightModule";
+import Button from "@atom/button";
+import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
+import { styled } from "styled-components";
+import { useRouter } from "next/navigation";
+import sleep from "@lib/sleep";
+import Spinner from "@components/icons/spinner";
+import { ttColors } from "theme/colors";
 import Input from "@atom/input";
 import { DatePicker } from "@atom/datepicker";
 import { ClickAwayListener } from "@mui/material";
-import { useState } from "react";
 import StaysMenu from "@atom/staysMenu";
+import { ButtonWrapper } from "./flight";
 
 function Stays() {
   const [data, setData] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -59,6 +72,28 @@ function Stays() {
           </ClickAwayListener>
         </Flex>
       </Flex>
+      <ButtonWrapper>
+        <Button
+          width="100%"
+          padding="2rem"
+          cursor="pointer"
+          onClick={async () => {
+            if (loading) return;
+            setLoading(true);
+            await sleep(200);
+            router.push(`https://www.booking.com/`)
+          }}
+        >
+          {loading ? (
+            <Spinner fill={ttColors.primary} size={"45px"} />
+          ) :(<Text
+            type="p"
+            text="Search for Hotels"
+            size={18}
+            weight={500}
+          />)}
+        </Button>
+      </ButtonWrapper>
     </Section>
   );
 }
