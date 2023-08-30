@@ -10,13 +10,15 @@ import ReusableModal from "./dashboardModal";
 import { useState } from "react";
 import Section from "@molecule/section";
 import Input from "@atom/input";
+import PasswordModal from "../accountPassword";
+import AddressModal from "../accountAddress";
+import PhoneModal from "../accountPhone";
 
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
   display: flex;
   gap: 20px;
 `;
-
 
 const AccountDetails = styled.div`
   background: #ffffff;
@@ -26,7 +28,7 @@ const AccountDetails = styled.div`
 const AccountWrapper = styled.div`
   background: ${ttColors.defaultColor};
   align-items: center;
-  margin-top: 15px;
+  margin: 1rem 0px 2rem;
 
   @media screen and (max-width: 900px) {
     height: fit-content;
@@ -37,44 +39,34 @@ const AccountWrapper = styled.div`
 const Account = () => {
   const { isMobile } = useScreenResolution();
 
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
   // from here
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [openAddEmailModal, setOpenAddEmailModal] = useState(false);
+  const [openAddAddressModal, setOpenAddAddressModal] = useState(false);
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
+  const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false);
 
-  const handleOpenEditModal = () => {
-    setOpenEditModal(true);
-  };
-
-  const handleCloseEditModal = () => {
-    setOpenEditModal(false);
-  };
+  
 
   const handleOpenAddAddressModal = () => {
     setOpenAddAddressModal(true);
-    setOpenModal(true);
   };
 
-  const handleCloseAddEmailModal = () => {
-    setOpenAddEmailModal(false);
+  const handleCloseAddAddressModal = () => {
+    setOpenAddAddressModal(false);
   };
 
   const handleOpenChangePasswordModal = () => {
     setOpenChangePasswordModal(true);
-    setOpenModal(true);
   };
 
   const handleCloseChangePasswordModal = () => {
     setOpenChangePasswordModal(false);
+  };
+  const handleOpenChangePhoneModal = () => {
+    setOpenChangePhoneModal(true);
+  };
+
+  const handleCloseChangePhoneModal = () => {
+    setOpenChangePhoneModal(false);
   };
   // To here
 
@@ -158,7 +150,7 @@ const Account = () => {
       }}
     >
       <Section margin="2.5rem 0px 0px">
-        <Text type="h1" text="Account" size={24} weight={600} />
+        <Text type="h1" text="Account" size={20} weight={600} />
       </Section>
 
       <AccountWrapper>
@@ -174,15 +166,15 @@ const Account = () => {
                 <Text
                   type="p"
                   text={detail.title}
-                  size={isMobile ? "13px" : "16px"}
+                  size={isMobile ? "10px" : "15px"}
                   color="#112211"
-                  weight="400"
+                  weight="300"
                 />
                 <Text
                   type="h5"
                   text={detail.description}
-                  weight="600"
-                  size={isMobile ? "14px" : "20px"}
+                  weight="400"
+                  size={isMobile ? "12px" : "18px"}
                 />
               </AccountLeft>
 
@@ -207,6 +199,8 @@ const Account = () => {
                         ? handleOpenAddAddressModal
                         : detail.title === "Password"
                         ? handleOpenChangePasswordModal
+                        : detail.title === "Phone Number"
+                        ? handleOpenChangePhoneModal
                         : undefined // Handle other modals
                     }
                   >
@@ -230,6 +224,8 @@ const Account = () => {
                         ? handleOpenAddAddressModal
                         : detail.title === "Password"
                         ? handleOpenChangePasswordModal
+                        : detail.title === "Phone Number"
+                        ? handleOpenChangePhoneModal
                         : undefined // Handle other modals
                     }
                     styles={{
@@ -241,17 +237,49 @@ const Account = () => {
                     <Text type="p" text={"Edit"} />
                   </Button>
                 )}
+
+                {/* {detail.title === "Email" && (
+                  <Button
+                    background="transparent"
+                    border="1px solid var(--primary-color)"
+                    color="var(--secondary-color)"
+                    height={isMobile ? "40px" : "48px"}
+                    width={isMobile ? "100px" : "175px"}
+                    fontSize={isMobile ? "12px" : "14px"}
+                    lineHeight="14px"
+                    styles={{
+                      gap: "10px",
+                      marginBottom: isMobile ? "1.4rem" : "",
+                    }}
+                    onClick={
+                      detail.title === "Email"
+                        ? undefined 
+                        : detail.title === "Address"
+                        ? handleOpenAddAddressModal
+                        : detail.title === "Password"
+                        ? handleOpenChangePasswordModal
+                        : detail.title === "Phone Number"
+                        ? handleOpenChangePhoneModal
+                        : undefined 
+                    }
+                  >
+                    <RiEditBoxFill
+                      size={isMobile ? ".8rem" : "1rem"}
+                      style={{ borderRadius: "4px" }}
+                    />
+                    <Text type="p" text={"Edit"} />
+                  </Button>
+                )} */}
               </AccountRight>
             </Flex>
           ))}
 
-          <ReusableModal
+          {/* <ReusableModal
             open={openModal}
             onClose={handleCloseModal}
             headerText="Upload Document"
             description="Secure your account: Change your password"
           >
-            {/* Additional content goes here */}
             <Section>
               <Text
                 type="p"
@@ -276,7 +304,20 @@ const Account = () => {
               />
               <Input placeholder="******" height="3rem" type="password" />
             </Section>
-          </ReusableModal>
+          </ReusableModal> */}
+
+          <PasswordModal
+            open={openChangePasswordModal}
+            onClose={handleCloseChangePasswordModal}
+          />
+          <AddressModal
+            open={openAddAddressModal}
+            onClose={handleCloseAddAddressModal}
+          />
+          <PhoneModal
+            open={openChangePhoneModal}
+            onClose={handleCloseChangePhoneModal}
+          />
         </AccountDetails>
       </AccountWrapper>
     </Section>

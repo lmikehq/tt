@@ -140,15 +140,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -156,113 +156,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -287,15 +189,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -303,113 +205,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -434,15 +238,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -450,113 +254,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -581,15 +287,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -597,113 +303,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -728,15 +336,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -744,113 +352,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -875,15 +385,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -891,113 +401,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -1022,15 +434,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -1038,113 +450,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -1169,15 +483,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -1185,113 +499,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>
@@ -1316,15 +532,15 @@ const Favourite = () => {
                 <Text
                   type="h3"
                   text="Venice"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
                 <Text
                   type="span"
                   text="Italy"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
               </Flex>
@@ -1332,701 +548,15 @@ const Favourite = () => {
                 <Text
                   type="span"
                   text="Starts from"
-                  size={18}
-                  weight={500}
+                  size={16}
+                  weight={400}
                   color="#606060"
                 />
                 <Text
                   type="h3"
                   text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg2}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Atalanta"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="United State"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src={FavouriteImg1}
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon>
-                <AiFillHeart size="1.5rem" color="red" />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  size={24}
-                  weight={700}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Brazil"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={18}
-                  weight={500}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  size={24}
-                  weight={700}
+                  size={20}
+                  weight={600}
                   color="#000000"
                 />
               </Flex>

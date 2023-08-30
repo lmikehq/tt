@@ -11,8 +11,8 @@ import Text from "@atom/text";
 const StyledModalContent = styled.div`
   background-color: white;
   border-radius: 8px;
-  padding: 20px;
-  max-width: 400px;
+  padding: 50px;
+  max-width: 647px;
   width: 100%;
   position: absolute;
   top: 50%;
@@ -22,7 +22,7 @@ const StyledModalContent = styled.div`
   text-align: center;
 
   & p {
-    margin: 2rem 0px;
+    margin: 1rem 0px;
   }
 `;
 
@@ -78,7 +78,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
           width="100%"
           background={ttColors.dark}
         >
-            <Text type="p" text="Continue" color={ttColors.dark} size="20px" />
+            <Text type="p" text="Save" color="#fff" size="20px" />
         </Button>
       </StyledModalContent>
     </Modal>

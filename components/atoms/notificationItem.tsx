@@ -103,6 +103,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
 
           <Button
             height="43px"
+            width="43px"
             styles={{ marginLeft: "55px" }}
             background="transparent"
             border="1px solid #B6B6B6"

@@ -144,18 +144,27 @@ const PaymentHistory = () => {
             <Flex
               justify="space-between"
               width="100%"
-              gap="20px"
               align="center"
               padding="28px 24px"
             >
-              <div>
-                <Text type="p" text="23/04/2023" />
+              <Flex gap=".3rem" direction="column" width="50%">
+                <Text
+                  type="p"
+                  text="23/04/2023"
+                  color="#112211"
+                  size={14}
+                  styles={{ opacity: "75%" }}
+                />
                 <Text
                   type="h3"
+                  size={18}
                   text="Application fee for Canada - Employment visa"
+                  color="#112211"
                 />
-              </div>
-              <Text type="p" text="NGN 20,000" />
+              </Flex>
+
+              <Text type="p" text="NGN 20,000" styles={{ width: "20%" }} />
+
               <Button
                 width="166px"
                 height="48px"
@@ -165,122 +174,31 @@ const PaymentHistory = () => {
               </Button>
             </Flex>
           </History>
+
           <History>
             <Flex
               justify="space-between"
               width="100%"
-              gap="20px"
               align="center"
               padding="28px 24px"
             >
-              <div>
-                <Text type="p" text="23/04/2023" />
+              <Flex gap=".3rem" direction="column" width="50%">
+                <Text
+                  type="p"
+                  text="23/04/2023"
+                  color="#112211"
+                  size={14}
+                  weight={400}
+                  styles={{ opacity: "75%" }}
+                />
                 <Text
                   type="h3"
                   text="Application fee for Canada - Employment visa"
                 />
-              </div>
-              <Text type="p" text="NGN 20,000" />
-              <Button
-                width="166px"
-                height="48px"
-                styles={{ marginLeft: "55px" }}
-              >
-                Download receipts
-              </Button>
-            </Flex>
-          </History>
-          <History>
-            <Flex
-              justify="space-between"
-              width="100%"
-              gap="20px"
-              align="center"
-              padding="28px 24px"
-            >
-              <div>
-                <Text type="p" text="23/04/2023" />
-                <Text
-                  type="h3"
-                  text="Application fee for Canada - Employment visa"
-                />
-              </div>
-              <Text type="p" text="NGN 20,000" />
-              <Button
-                width="166px"
-                height="48px"
-                styles={{ marginLeft: "55px" }}
-              >
-                Download receipts
-              </Button>
-            </Flex>
-          </History>
-          <History>
-            <Flex
-              justify="space-between"
-              width="100%"
-              gap="20px"
-              align="center"
-              padding="28px 24px"
-            >
-              <div>
-                <Text type="p" text="23/04/2023" />
-                <Text
-                  type="h3"
-                  text="Application fee for Canada - Employment visa"
-                />
-              </div>
-              <Text type="p" text="NGN 20,000" />
-              <Button
-                width="166px"
-                height="48px"
-                styles={{ marginLeft: "55px" }}
-              >
-                Download receipts
-              </Button>
-            </Flex>
-          </History>
-          <History>
-            <Flex
-              justify="space-between"
-              width="100%"
-              gap="20px"
-              align="center"
-              padding="28px 24px"
-            >
-              <div>
-                <Text type="p" text="23/04/2023" />
-                <Text
-                  type="h3"
-                  text="Application fee for Canada - Employment visa"
-                />
-              </div>
-              <Text type="p" text="NGN 20,000" />
-              <Button
-                width="166px"
-                height="48px"
-                styles={{ marginLeft: "55px" }}
-              >
-                Download receipts
-              </Button>
-            </Flex>
-          </History>
-          <History>
-            <Flex
-              justify="space-between"
-              width="100%"
-              gap="20px"
-              align="center"
-              padding="28px 24px"
-            >
-              <div>
-                <Text type="p" text="23/04/2023" />
-                <Text
-                  type="h3"
-                  text="Application fee for Canada - Employment visa"
-                />
-              </div>
-              <Text type="p" text="NGN 20,000" />
+              </Flex>
+
+              <Text type="p" text="NGN 20,000" styles={{ width: "20%" }} />
+
               <Button
                 width="166px"
                 height="48px"

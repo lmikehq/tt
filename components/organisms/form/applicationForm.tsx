@@ -516,6 +516,7 @@ function ApplicationForm() {
             text="View Important Documents Required"
           />
         </Button>
+
         <CustomDrawer
           anchor="bottom"
           open={bottomDrawerOpen}
@@ -533,7 +534,7 @@ function ApplicationForm() {
         </CustomDrawer>
         {bottomNavVisible && (
           <BottomNavigation className="bottom-navigation" showLabels>
-            <Section>s</Section>
+            <Section>s</Section> 
           </BottomNavigation>
         )}
 

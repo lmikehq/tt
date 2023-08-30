@@ -8,26 +8,6 @@ import NotificationImg1 from "@image/notification/notice1.png";
 import NotificationImg2 from "@image/notification/notice2.png";
 import NotificationItem from "@atom/notificationItem";
 
-const SectionTitle = styled.div`
-  display: flex;
-
-  & h2 {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    margin: 20px 0px 15px;
-    line-height: 48px;
-    /* identical to box height */
-
-    color: ${ttColors.dark};
-    @media screen and (max-width: 390px) {
-      margin: 0px 0px -4px !important;
-    }
-  }
-`;
-
-
-
 const NotificationWrapper = styled.div`
   background: ${ttColors.defaultColor};
   align-items: center;
@@ -50,7 +30,7 @@ const Notification = () => {
       styles={{
         background: "#fff",
         borderRadius: "14px",
-        padding: ".25rem 1.5rem",
+        padding: ".25rem 1.5rem 3rem",
       }}
     >
       <VisaDashboardHeader headerText="Notifications" />
