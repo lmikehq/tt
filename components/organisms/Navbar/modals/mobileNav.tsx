@@ -3,8 +3,9 @@ import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import CustomDrawer from "@molecule/drawers/customDrawer";
 import Section from "@molecule/section";
-import { Box, Drawer } from "@mui/material";
+import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
 import { handleLogout } from "hook/useLogout";
@@ -32,15 +33,10 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
   const router = useRouter();
   const { data: user } = useQuery(["getUser"], getUser);
   return (
-    <Drawer
+    <CustomDrawer
       anchor="bottom"
       open={isOpen}
       onClose={() => setIsOpen(!isOpen)}
-      sx={{
-        "& .MuiDrawer-paper": {
-          borderRadius: "1rem 1rem 0 0",
-        },
-      }}
     >
       <Section height="100%" padding="1rem">
         <div>
@@ -108,7 +104,12 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
         ) : (
           <Section>
             <Link href="/dashboard">
-              <Text type="p" text="Dashboard" decoration='underline' margin='1rem 0' />
+              <Text
+                type="p"
+                text="Dashboard"
+                decoration="underline"
+                margin="1rem 0"
+              />
             </Link>
             <Box
               onClick={() => {
@@ -121,7 +122,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
           </Section>
         )}
       </Section>
-    </Drawer>
+    </CustomDrawer>
   );
 }
 
