@@ -35,7 +35,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
   .shape({
     firstName: yup.string().required("Required"),
     lastName: yup.string().required("Required"),
-    middleName: yup.string().required("Required"),
+    middleName: yup.string(),
     email: yup.string().required("Required").email("Invalid email address"),
     placeOfBirth: yup.string().required("Required"),
     phoneNumber: yup.string().required("Required"),
