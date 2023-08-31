@@ -1,20 +1,20 @@
 "use client";
-import Flex from "../../../atoms/flex";
-import Image from "../../../atoms/image";
+import Section from "@molecule/section";
+import currencyFormatter from "data/currencyFormatter";
+import { format } from "date-fns";
 import { useScreenResolution } from "hook/useScreenResolution";
-import CountryLogo from "../../../../assets/flags/ng.svg";
+import { useState } from "react";
+import { HiClock } from "react-icons/hi";
+import { IoCalendar } from "react-icons/io5";
+import { PiDotsThreeCircleLight } from "react-icons/pi";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
-import Text from "../../../atoms/text";
-import { IoCalendar } from "react-icons/io5";
-import { HiClock } from "react-icons/hi";
 import Button from "../../../atoms/button";
-import { MdKeyboardArrowDown } from "react-icons/md";
-import Section from "@molecule/section";
-import { useState } from "react";
-import { format } from "date-fns";
-import currencyFormatter from "data/currencyFormatter";
+import Flex from "../../../atoms/flex";
+import Text from "../../../atoms/text";
 import VisaPaymentModal from "../visaPayment";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const Logo = styled.div`
   height: 64px;
@@ -123,7 +123,11 @@ function VisaDetail({ visa }: { visa: any }) {
       : { text: "#37008A", bg: "#F6F0FF" };
 
   return (
-    <Section>
+    <Section
+      styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
+      padding="15px 10px"
+      margin="2rem 0"
+    >
       <VisaPaymentModal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -139,12 +143,11 @@ function VisaDetail({ visa }: { visa: any }) {
         justify="space-around"
         gap={isMobile ? ".5rem" : "0rem"}
         direction={isMobile ? "column" : "row"}
-        margin="2rem 0px 0px"
-        border="1px solid #E7E7E7"
-        padding="15px 10px"
-        borderRadius="16px"
+        // margin="2rem 0px 0px"
+        // border="1px solid #E7E7E7"
+
         align="center"
-        borderBottom="1px solid #E7E7E7"
+        // borderBottom="1px solid #E7E7E7"
         styles={{
           position: "relative",
         }}
@@ -278,11 +281,31 @@ function VisaDetail({ visa }: { visa: any }) {
               styles={{ cursor: "pointer" }}
               onClick={handleAccordionClick}
             >
-              <MdKeyboardArrowDown size="1.5rem" />
+              {isOpen ? (
+                <MdKeyboardArrowUp size="1.5rem" />
+              ) : (
+                <MdKeyboardArrowDown size="1.5rem" />
+              )}
             </Flex>
           </Section>
         </Flex>
       </Flex>
+      {isOpen && (
+        <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
+          <Flex align="center" margin=".5rem 0" gap=".5rem">
+            <PiDotsThreeCircleLight size={20} />
+            <Text type="p" text={visa?.applicationStatus} size={"15px"} />
+          </Flex>
+          <Flex align="center" gap=".5rem">
+            <AiOutlineCheck size={20} />
+            <Text
+              type="p"
+              text={"NO DOCUMENTED REQUESTED FROM YOU"}
+              size={"15px"}
+            />
+          </Flex>
+        </Section>
+      )}
     </Section>
   );
 }

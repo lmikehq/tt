@@ -25,15 +25,6 @@ const VisaWrapper = styled.div`
 `;
 
 const Visa = () => {
-  const countryLogoSrc = "../../../../assets/flags/ng.svg";
-  const applicationDate = "12th May, 2021";
-  const paymentFee = "$ 2000";
-  const visaStatus = "AWAITING CONFIRMATION";
-
-  const handleDownloadStatusClick = () => {
-    // Handle the download status click event
-  };
-
   async function getVisas() {
     return await apiService("/visa", "GET");
   }
