@@ -28,9 +28,16 @@ interface FormProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<PersonalInfoInterface>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
+function PersonalInfo({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: FormProps) {
   const { isMobile } = useScreenResolution();
   const options = [
     { value: true, label: "Yes" },
@@ -229,7 +236,6 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
                 name: "phoneNumber",
               }}
               onChange={(e) => {
-                console.log(e);
                 formik.setFieldValue("phoneNumber", e);
               }}
               inputClass="w"
@@ -913,9 +919,9 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            console.log(formik);
           }}
           disabled={!formik.isValid || !formik.dirty}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       </form>
     </Section>

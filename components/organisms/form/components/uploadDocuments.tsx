@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { useFilePicker } from "use-file-picker";
+import { FileContent, useFilePicker } from "use-file-picker";
 import SearchStringInput from "@molecule/searchInputs/searchStringInput";
 import { UploadedDoc } from "../applicationForm";
 import { DocumentInterface } from "types";
@@ -24,6 +24,8 @@ interface formProps {
   uploadedDocuments: UploadedDoc[];
   visaType: string;
   lastName: string;
+  saveProgressAndContinueLater: () => void;
+  finalStepButtonText: string;
 }
 
 function UploadDocuments({
@@ -35,6 +37,8 @@ function UploadDocuments({
   handleSetUploadedDocuments,
   visaType,
   lastName,
+  saveProgressAndContinueLater,
+  finalStepButtonText,
 }: formProps) {
   const { isMobile } = useScreenResolution();
 
@@ -49,7 +53,7 @@ function UploadDocuments({
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
     accept: [".png", ".pdf", ".jpeg"],
-    multiple: false,
+    multiple: !(documentToUpload == "International passport"),
     maxFileSize: 10,
   });
   const timestamp = new Date().getTime();
@@ -60,61 +64,86 @@ function UploadDocuments({
   const { uploadImage, loading, progress, deleteImage, deleting } =
     useCloudinaryUpload({ presets });
 
-  useEffect(() => {
-    if (filesContent.length > 0) {
-      uploadImage({ file: filesContent[0].content }).then((image) => {
-        if (typeof image === "string") {
-          const docObj: DocumentInterface = {
-            name: documentToUpload,
-            url: image,
-          };
-          const { name, size, type } = plainFiles[0];
-          const findIndex = (uploadedDocuments ?? []).findIndex(
-            (el) => el.title == "International passport"
-          );
-          console.log(formik);
-          console.log(name);
-          if (findIndex == -1) {
-            formik.setFieldValue("documents", [
-              ...formik.values.documents,
-              docObj,
-            ]);
+  const uploadFileToCLoudinary = async ({ file }: { file: FileContent }) => {
+    return await uploadImage({ file: file.content }).then((image) => {
+      if (typeof image === "string") {
+        const docObj: DocumentInterface = {
+          name: documentToUpload,
+          url: image,
+        };
+        const { name, size, type } =
+          plainFiles[
+            filesContent.findIndex((el) => el.content == file.content)
+          ];
+        const findIndex =
+          documentToUpload == "International passport"
+            ? (uploadedDocuments ?? []).findIndex(
+                (el) => el.title == documentToUpload
+              )
+            : -1;
 
-            handleSetUploadedDocuments([
-              ...uploadedDocuments,
-              {
-                name:
-                  name.length <= 30
-                    ? name
-                    : name.split(".")[0].substring(0, 30) +
-                      "..." +
-                      name.split(".")[1],
-                size: `${size / 1000000} MB`,
-                type: type.split("/")[1].toUpperCase(),
-                title: docObj.name,
-              },
-            ]);
-          } else {
-            let formikUploadedDocuments = [...formik.values.documents];
-            let uploadedDocs = [...(uploadedDocuments ?? [])];
-            formikUploadedDocuments.splice(findIndex, 1, docObj);
-            uploadedDocs.splice(findIndex, 1, {
-              name:
-                name.length <= 30
-                  ? name
-                  : name.split(".")[0].substring(0, 30) +
-                    "..." +
-                    name.split(".")[1],
-              size: `${size / 1000000} MB`,
-              type: type.split("/")[1].toUpperCase(),
-              title: docObj.name,
-            });
+        if (findIndex == -1) {
+          const formikUploadedDocument = docObj;
+          // formik.setFieldValue("documents", formikUploadedDocuments);
+          const uploadedDoc = {
+            name:
+              name.length <= 30
+                ? name
+                : name.split(".")[0].substring(0, 30) +
+                  "..." +
+                  name.split(".")[1],
+            size: `${size / 1000000} MB`,
+            type: type.split("/")[1].toUpperCase(),
+            title: docObj.name,
+          };
+          // handleSetUploadedDocuments(uploadedDocs);
+
+          return { formikUploadedDocument, uploadedDoc };
+        } else {
+          let formikUploadedDocuments = [...formik.values.documents];
+          let uploadedDocs = [...(uploadedDocuments ?? [])];
+          formikUploadedDocuments.splice(findIndex, 1, docObj);
+          uploadedDocs.splice(findIndex, 1, {
+            name:
+              name.length <= 30
+                ? name
+                : name.split(".")[0].substring(0, 30) +
+                  "..." +
+                  name.split(".")[1],
+            size: `${size / 1000000} MB`,
+            type: type.split("/")[1].toUpperCase(),
+            title: docObj.name,
+          });
+          formik.setFieldValue("documents", formikUploadedDocuments);
+          handleSetUploadedDocuments(uploadedDocs);
+        }
+      }
+    });
+  };
+  const uploadFiles = async () => {
+    if (filesContent.length > 0) {
+      let formikUploadedDocuments: DocumentInterface[] = [
+        ...formik.values.documents,
+      ];
+      let uploadedDocs: UploadedDoc[] = [...uploadedDocuments];
+      for (const file of filesContent) {
+        await uploadFileToCLoudinary({ file }).then((data) => {
+          if (data) {
+            formikUploadedDocuments = [
+              ...formikUploadedDocuments,
+              data.formikUploadedDocument!,
+            ];
+            uploadedDocs = [...uploadedDocs, data.uploadedDoc!];
             formik.setFieldValue("documents", formikUploadedDocuments);
             handleSetUploadedDocuments(uploadedDocs);
           }
-        }
-      });
+        });
+      }
     }
+  };
+
+  useEffect(() => {
+    uploadFiles();
   }, [filesContent]);
 
   return (
@@ -187,12 +216,7 @@ function UploadDocuments({
                     ];
                 }
               })()}
-              onChange={(e: string) => {
-                console.log(e);
-                console.log(formik);
-
-                setDocumentToUpload(e);
-              }}
+              onChange={(e: string) => setDocumentToUpload(e)}
               value={documentToUpload}
               placeholder="Select each required document & Upload"
             />
@@ -233,10 +257,10 @@ function UploadDocuments({
         </Section>
         <ContinueButton
           isLoading={isLoading}
-          onClick={() => {
-            console.log(formik);
-          }}
+          onClick={() => {}}
           disabled={!formik.isValid || !formik.dirty}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
+          buttonText={finalStepButtonText}
         />
       </form>
     </Section>

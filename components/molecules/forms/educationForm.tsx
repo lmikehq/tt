@@ -157,7 +157,6 @@ export default function EducationForm({ formik, count, values }: formProps) {
             name={`education.${count}.endYear`}
             formik={formik}
             onChange={(e) => {
-              console.log(e);
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}

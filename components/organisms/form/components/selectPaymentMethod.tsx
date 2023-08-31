@@ -70,7 +70,6 @@ const SelectPaymentMethod = ({
                 })
               )}
               onChange={(x) => {
-                console.log(x);
                 setCurrency({
                   currency: x.name,
                   currencyCode: x.code,
@@ -114,8 +113,6 @@ const SelectPaymentMethod = ({
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            console.log("click");
-            console.log(formik);
           }}
           buttonText='Make Payment'
           disabled={!formik.isValid}

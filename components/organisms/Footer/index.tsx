@@ -93,7 +93,6 @@ const FooterSection = () => {
   const { isMobile } = useScreenResolution();
   const path = usePathname();
   const isApply = path.includes("visa/apply");
-  // console.log("apply: ", isApply && isMobile);
 
   const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
   const useful_links = [

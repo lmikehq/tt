@@ -19,27 +19,28 @@ const useCloudinaryUpload = ({
     formData.append("api_key", apiKey);
     formData.append("folder", presets.folder);
     formData.append("upload_preset", "uy4br1wh");
+    try {
+      setLoading(true);
 
-    setLoading(true);
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/thrillers-travels/image/upload",
+        formData,
+        {
+          onUploadProgress: (progressEvent) => {
+            const { loaded, total } = progressEvent;
+            if (!total) return;
+            const percentCompleted = Math.round((loaded * 100) / total);
+            setProgress(percentCompleted);
+          },
+        }
+      );
 
-    const response = await axios.post(
-      "https://api.cloudinary.com/v1_1/thrillers-travels/image/upload",
-      formData,
-      {
-        onUploadProgress: (progressEvent) => {
-          const { loaded, total } = progressEvent;
-          console.log(loaded);
-
-          if (!total) return;
-          const percentCompleted = Math.round((loaded * 100) / total);
-          console.log(percentCompleted);
-          setProgress(percentCompleted);
-        },
-      }
-    );
-
-    setLoading(false);
-    return response?.data.secure_url;
+      setLoading(false);
+      return response?.data.secure_url;
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
 
   // const regex = /\/v\d+\/([^/]+)\.\w{3,4}$/;
@@ -94,7 +95,7 @@ const useCloudinaryUpload = ({
     } catch (error) {
       console.error(error);
       setDeleting(false);
-      throw error;
+      // throw error;
     }
   };
 

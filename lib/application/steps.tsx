@@ -44,6 +44,8 @@ export const getSteps = ({
   uploadedDocuments,
   visaType,
   lastName,
+  saveProgressAndContinueLater,
+  finalStepButtonText,
 }: {
   setFormFee: (n: number) => void;
   setCurrentPhase: (n: number) => void;
@@ -59,6 +61,8 @@ export const getSteps = ({
   uploadedDocuments: UploadedDoc[];
   visaType: string;
   lastName: string;
+  saveProgressAndContinueLater: () => void;
+  finalStepButtonText: string;
 }): IFormStep[] => {
   return [
     {
@@ -70,6 +74,7 @@ export const getSteps = ({
           index={0}
           isLoading={isLoading}
           formik={detailsFormik}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
     },
@@ -82,6 +87,7 @@ export const getSteps = ({
           index={1}
           isLoading={isLoading}
           formik={personalInfoFormik}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(personalInfoKeys),
@@ -95,6 +101,7 @@ export const getSteps = ({
           index={2}
           formik={educationFormik}
           isLoading={isLoading}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(educationKeys),
@@ -108,6 +115,7 @@ export const getSteps = ({
           index={3}
           formik={employmentFormik}
           isLoading={isLoading}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(employmentKeys),
@@ -121,6 +129,7 @@ export const getSteps = ({
           index={4}
           formik={familyMembersFormik}
           isLoading={isLoading}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(familyInforKeys),
@@ -138,6 +147,8 @@ export const getSteps = ({
           handleSetUploadedDocuments={handleSetUploadedDocuments}
           visaType={visaType}
           lastName={lastName}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
+          finalStepButtonText={finalStepButtonText}
         />
       ),
     },

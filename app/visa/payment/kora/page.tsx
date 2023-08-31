@@ -2,7 +2,6 @@
 import Flex from "@atom/flex";
 import Spinner from "@components/icons/spinner";
 import Section from "@molecule/section";
-import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -27,15 +26,16 @@ const VerifyKoraPaymentPage = () => {
 
   async function getUser(): Promise<User | any> {
     const res = await apiService("/user", "GET");
-    setUser(res);
-    return res;
+    if (res?.email && res?._id) {
+      setUser(res);
+      return router.push(`/dashboard/?paymentRef=${reference}`);
+    }
+    return router.push(`/?paymentRef=${reference}`);
   }
-  const { data: user } = useQuery(["getUser"], getUser);
 
   useEffect(() => {
     if (!reference) return;
-    if (!user?.email) return router.push(`/?paymentRef=${reference}`);
-    return router.push(`/dashboard/?paymentRef=${reference}`);
+    getUser();
   }, [reference]);
   return (
     <Section height="100vh" width="100%">
