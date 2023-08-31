@@ -124,14 +124,14 @@ const CustomPopover = () => {
               ref={ref}
             >
               {[
-                "Settings",
-                "Travel Guide",
-                "Book Visa",
-                "Rent Stays",
-                "Book Flights",
-                "Logout",
+                { title: "Settings", url: "/dashboard" },
+                { title: "Travel Guide", url: "/chat" },
+                { title: "Book Visa", url: "/visa" },
+                { title: "Rent Stays", url: "/stays" },
+                { title: "Book Flights", url: "/flights" },
+                { title: "Logout", url: "/logout" },
               ].map((item, i) =>
-                item === "Logout" ? (
+                item.title === "Logout" ? (
                   <div
                     onClick={() => {
                       handleLogout();
@@ -140,7 +140,7 @@ const CustomPopover = () => {
                     key={i}
                   >
                     <Text
-                      text={item}
+                      text={item.title}
                       type="p"
                       whiteSpace="nowrap"
                       size={16}
@@ -150,9 +150,9 @@ const CustomPopover = () => {
                     />
                   </div>
                 ) : (
-                  <Link href={urlString(item)} key={i}>
+                  <Link href={item.url} key={i}>
                     <Text
-                      text={item}
+                      text={item.title}
                       type="p"
                       whiteSpace="nowrap"
                       size={16}
