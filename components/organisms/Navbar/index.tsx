@@ -27,6 +27,7 @@ import UserPopover from "./UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
 import { User } from "types";
 import { useUserStore } from "store/useStore";
+import { TbCurrencyNaira } from "react-icons/tb";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -199,7 +200,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
 
           <NavMenu>
             <Flex
-              onClick={handleOpen}
+              // onClick={handleOpen}
               background="transparent"
               gap=".4rem"
               align="center"
@@ -208,8 +209,8 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               <BsGlobe />
               <Text text="EN" type="span" weight={400} />
               <Divider />
-              <BiDollar />
-              <Text text="EN" type="span" weight={400} />
+              <TbCurrencyNaira />
+              {/* <Text text="NGN" type="span" weight={400} /> */}
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}
@@ -222,10 +223,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
             ) : (
               <Flex gap="1rem">
                 <Link href="/auth/login">
-                  <Button 
-                    border="1px solid #06062A"
-                    background="transparent"
-                  >
+                  <Button border="1px solid #06062A" background="transparent">
                     <Text
                       text="Sign in"
                       color="#06062A"
