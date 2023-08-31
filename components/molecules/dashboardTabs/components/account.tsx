@@ -1,17 +1,16 @@
-import styled from "styled-components";
-import Text from "@atom/text";
-import Flex from "@atom/flex";
 import Button from "@atom/button";
-import { ttColors } from "theme/colors";
+import Flex from "@atom/flex";
+import Text from "@atom/text";
+import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { RiEditBoxFill } from "react-icons/ri";
-import { useScreenResolution } from "hook/useScreenResolution";
-import ReusableModal from "./dashboardModal";
-import { useState } from "react";
-import Section from "@molecule/section";
-import Input from "@atom/input";
-import PasswordModal from "../accountPassword";
+import { useUserStore } from "store/useStore";
+import styled from "styled-components";
+import { ttColors } from "theme/colors";
 import AddressModal from "../accountAddress";
+import PasswordModal from "../accountPassword";
 import PhoneModal from "../accountPhone";
 
 const AccountLeft = styled.div``;
@@ -44,8 +43,6 @@ const Account = () => {
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
   const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false);
 
-  
-
   const handleOpenAddAddressModal = () => {
     setOpenAddAddressModal(true);
   };
@@ -70,24 +67,25 @@ const Account = () => {
   };
   // To here
 
+  const { user } = useUserStore((state) => state);
   const AccountInformation = [
     {
       title: "Name",
-      description: "John Deo",
+      description: user.firstName + " " + user.lastName,
       icon: (
         <RiEditBoxFill
           size={isMobile ? ".8rem" : "1rem"}
           style={{ borderRadius: "4px" }}
         />
       ),
-      editable: true,
+      editable: false,
     },
 
     {
       title: "Email",
-      description: "john.deo@gmail.com",
+      description: user.email,
       icon: <AiFillPlusCircle size={isMobile ? ".8rem" : "1rem"} />,
-      edit: "Add another email",
+      edit: "",
       editable: false,
     },
 
@@ -105,7 +103,7 @@ const Account = () => {
 
     {
       title: "Phone Number",
-      description: "+1 000-000-0000",
+      description: user?.phoneNumber,
       icon: (
         <RiEditBoxFill
           size={isMobile ? ".8rem" : "1rem"}
@@ -117,7 +115,7 @@ const Account = () => {
 
     {
       title: "Address",
-      description: "St 32, main downtown, Los Angeles, California, USA",
+      description: user?.address || "No address added",
       icon: (
         <RiEditBoxFill
           size={isMobile ? ".8rem" : "1rem"}
@@ -129,7 +127,7 @@ const Account = () => {
 
     {
       title: "Date of Birth",
-      description: "01/01/1992",
+      description: user?.dateOfBirth ? user?.dateOfBirth : "Not set",
       icon: (
         <RiEditBoxFill
           size={isMobile ? ".8rem" : "1rem"}

@@ -1,12 +1,11 @@
+import Flex from "@atom/flex";
+import NotificationItem from "@atom/notificationItem";
+import NotificationImg1 from "@image/notification/notice1.png";
+import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
-import Flex from "@atom/flex";
-import { useScreenResolution } from "hook/useScreenResolution";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import Section from "@molecule/section";
-import NotificationImg1 from "@image/notification/notice1.png";
-import NotificationImg2 from "@image/notification/notice2.png";
-import NotificationItem from "@atom/notificationItem";
 
 const NotificationWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -45,7 +44,7 @@ const Notification = () => {
             showDot
           />
 
-          <NotificationItem
+          {/* <NotificationItem
             src={NotificationImg2}
             title="Another notification"
             date="26/08/23"
@@ -67,7 +66,7 @@ const Notification = () => {
             date="26/08/23"
             time="2:30pm"
             showDot={false}
-          />
+          /> */}
         </Flex>
       </NotificationWrapper>
     </Section>
