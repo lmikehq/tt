@@ -1,21 +1,18 @@
 "use client";
 
-import Text from "@atom/text";
-import styled from "styled-components";
 import CustomTab from "@atom/tabs";
 import Section from "@molecule/section";
-import Visa from "./visa";
 import { useScreenResolution } from "hook/useScreenResolution";
-import RTQueryClient from "@components/layouts/rtqWrapper";
+import styled from "styled-components";
 import Flight from "./flight";
-
+import Visa from "./visa";
 
 const SectionTabs = styled.div`
   // padding: 2rem 0 0;
 
   .MuiButtonBase-root {
     width: 100% !important;
-    max-width: 50% ;
+    max-width: 50%;
     padding: 0px 24px;
   }
   .MuiTabs-flexContainer {
@@ -25,15 +22,12 @@ const SectionTabs = styled.div`
 
 const Application = () => {
   const { isMobile } = useScreenResolution();
-  
 
   const tabItem = [
     {
       label: "Visa",
       value: 0,
-      content: (
-        <Visa />
-      ),
+      content: <Visa />,
     },
 
     {
@@ -59,18 +53,14 @@ const Application = () => {
       /> */}
 
       <SectionTabs>
-        <RTQueryClient>
-          <CustomTab
-            tabItems={tabItem}
-            shadowShow
-            defaultIcons
-            addBackgroundColor
-            addColor
-          />
-        </RTQueryClient>
+        <CustomTab
+          tabItems={tabItem}
+          shadowShow
+          defaultIcons
+          addBackgroundColor
+          addColor
+        />
       </SectionTabs>
-
-      
     </Section>
   );
 };

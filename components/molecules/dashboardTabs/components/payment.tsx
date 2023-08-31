@@ -8,6 +8,8 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { FaFileDownload } from "react-icons/fa";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import Section from "@molecule/section";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "hook/apiService";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -80,7 +82,6 @@ const PaymentWrapper = styled.div`
   align-items: center;
   margin-top: 15px;
 
-
   & button {
     width: 154px !important;
   }
@@ -93,47 +94,24 @@ const PaymentWrapper = styled.div`
 
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
-
-  const paymentRecords = [
-    {
-      id: 1,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-
-    {
-      id: 2,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-
-    {
-      id: 3,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-
-    {
-      id: 4,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-  ];
+  async function getAllPayments() {
+    return await apiService("/payment", "GET");
+  }
+  const {
+    data: fetchedPayment,
+    isLoading,
+    error,
+  } = useQuery(["payments"], getAllPayments) as any;
+  if (isLoading) return <div>loading</div>;
+  if (error) return <div>error loading payments, please try again</div>;
+  const { data: payments } = fetchedPayment;
   return (
     <Section
       margin="2rem 0"
       styles={{
         background: "#fff",
         borderRadius: "14px",
-        padding: "2.5rem 1.5rem",
+        padding: "1rem 1.5rem",
       }}
     >
       <VisaDashboardHeader headerText="Payment History" />
@@ -160,40 +138,6 @@ const PaymentHistory = () => {
                   size={18}
                   text="Application fee for Canada - Employment visa"
                   color="#112211"
-                />
-              </Flex>
-
-              <Text type="p" text="NGN 20,000" styles={{ width: "20%" }} />
-
-              <Button
-                width="166px"
-                height="48px"
-                styles={{ marginLeft: "55px" }}
-              >
-                Download receipts
-              </Button>
-            </Flex>
-          </History>
-
-          <History>
-            <Flex
-              justify="space-between"
-              width="100%"
-              align="center"
-              padding="28px 24px"
-            >
-              <Flex gap=".3rem" direction="column" width="50%">
-                <Text
-                  type="p"
-                  text="23/04/2023"
-                  color="#112211"
-                  size={14}
-                  weight={400}
-                  styles={{ opacity: "75%" }}
-                />
-                <Text
-                  type="h3"
-                  text="Application fee for Canada - Employment visa"
                 />
               </Flex>
 

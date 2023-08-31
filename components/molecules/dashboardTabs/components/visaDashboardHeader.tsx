@@ -74,7 +74,7 @@ const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
   ];
 
   return (
-    <Flex justify="space-between" margin="2.5rem 0px" gap="0px">
+    <Flex justify="space-between" margin="1.5rem 0px" gap="0px">
       <Section>
         <Text type="h1" text={headerText} size={24} weight={600} />
       </Section>

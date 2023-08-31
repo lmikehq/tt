@@ -1,18 +1,17 @@
-'use client'
+"use client";
 
-import CustomTab from '@atom/tabs';
-import React from 'react'
-import { styled } from 'styled-components';
-import Application from './components/application';
-import PaymentHistory from './components/payment';
-import Account from './components/account';
-import Favourite from './components/favourite';
-import Notification from './components/notification';
-
+import CustomTab from "@atom/tabs";
+import React from "react";
+import { styled } from "styled-components";
+import Application from "./components/application";
+import PaymentHistory from "./components/payment";
+import Account from "./components/account";
+import Favourite from "./components/favourite";
+import Notification from "./components/notification";
+import RTQueryClient from "@components/layouts/rtqWrapper";
 
 const Wrapper = styled.div`
   margin-top: 250px;
- 
 
   @media screen and (max-width: 900px) {
     margin-top: 155px;
@@ -35,42 +34,43 @@ const Wrapper = styled.div`
   }
 `;
 
-
 function DashboardTabs() {
-      const tabItems = [
-        {
-          label: "All Applications",
-          value: 0,
-          content: <Application />,
-        },
-        {
-          label: "Payment History",
-          value: 1,
-          content: <PaymentHistory />,
-        },
-        {
-          label: "Favourites",
-          value: 2,
-          content: <Favourite />,
-        },
+  const tabItems = [
+    {
+      label: "All Applications",
+      value: 0,
+      content: <Application />,
+    },
+    {
+      label: "Payment History",
+      value: 1,
+      content: <PaymentHistory />,
+    },
+    {
+      label: "Favourites",
+      value: 2,
+      content: <Favourite />,
+    },
 
-        {
-          label: "Notifications",
-          value: 3,
-          content: <Notification />,
-        },
+    {
+      label: "Notifications",
+      value: 3,
+      content: <Notification />,
+    },
 
-        {
-          label: "Account",
-          value: 4,
-          content: <Account />,
-        },
-      ];
+    {
+      label: "Account",
+      value: 4,
+      content: <Account />,
+    },
+  ];
   return (
     <Wrapper>
-      <CustomTab shadowShow tabItems={tabItems} />
+      <RTQueryClient>
+        <CustomTab shadowShow tabItems={tabItems} />
+      </RTQueryClient>
     </Wrapper>
   );
 }
 
-export default DashboardTabs
+export default DashboardTabs;
