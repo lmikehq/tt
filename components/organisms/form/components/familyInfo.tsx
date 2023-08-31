@@ -17,9 +17,16 @@ interface formProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function FamilyInfo({ steps, index, isLoading, formik }: formProps) {
+function FamilyInfo({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -72,6 +79,7 @@ function FamilyInfo({ steps, index, isLoading, formik }: formProps) {
               console.log(formik);
             }}
             disabled={!formik.isValid || !formik.dirty}
+            saveProgressAndContinueLater={saveProgressAndContinueLater}
           />
         </form>
       </Section>

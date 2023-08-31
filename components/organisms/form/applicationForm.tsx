@@ -386,12 +386,49 @@ function ApplicationForm() {
     },
   });
 
+  const fetchRecentProgressFromSession = () => {
+    const form = sessionStorage.getItem("visa_application_form");
+    const uploadedDocuments = sessionStorage.getItem(
+      "visa_application_uploaded_documents"
+    );
+    const recent = {
+      form: form ? JSON.parse(form) : null,
+      uploadedDocuments: uploadedDocuments
+        ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
+        : null,
+    };
+    console.log(recent);
+    detailsFormik.setValues({
+      ...(recent?.form?.details ?? detailsKeys),
+      homeCountry: params.get("home") || detailsKeys.homeCountry,
+      destination: params.get("destination") || detailsKeys.destination,
+      visaType: params.get("visaType") || detailsKeys.visaType,
+    });
+    personalInfoFormik.setValues(
+      recent?.form?.personalInfo ?? personalInfoKeys
+    );
+    educationFormik.setValues({
+      education: recent?.form?.education ?? educationsArr.education,
+    });
+    employmentFormik.setValues({
+      employment: recent?.form?.employment ?? employmentsArr.employment,
+    });
+    familyMembersFormik.setValues({
+      familyMembers: recent?.form?.familyMembers ?? familyInfoArr.familyMembers,
+    });
+    documentsFormik.setValues({
+      documents: recent?.form?.documents ?? documentsArr.documents,
+    });
+
+    setUploadedDocuments(recent?.uploadedDocuments ?? []);
+  };
+
   const detailsFormik = useFormik({
     initialValues: {
       ...detailsKeys,
-      homeCountry: params.get("home") || "",
-      destination: params.get("destination") || "",
-      visaType: params.get("visaType") || "",
+      homeCountry: params.get("home") || detailsKeys.homeCountry,
+      destination: params.get("destination") || detailsKeys.destination,
+      visaType: params.get("visaType") || detailsKeys.visaType,
     },
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
@@ -450,6 +487,35 @@ function ApplicationForm() {
       nextStep({});
     },
   });
+  const finalStepButtonText = () => {
+    let accompanies = 0;
+    if (formData.familyMembers.length > 0) {
+      formData.familyMembers.forEach((member) => {
+        if (member.accompanying) accompanies++;
+      });
+    }
+    return accompanies > 0
+      ? "Make Payment (NGN 30,000)"
+      : "Make Payment (NGN 20,000)";
+  };
+  const saveProgressAndContinueLater = () => {
+    const form = {
+      details: detailsFormik.values,
+      personalInfo: personalInfoFormik.values,
+      ...educationFormik.values,
+      ...employmentFormik.values,
+      ...familyMembersFormik.values,
+      ...documentsFormik.values,
+    };
+
+    sessionStorage.setItem("visa_application_form", JSON.stringify(form));
+    sessionStorage.setItem(
+      "visa_application_uploaded_documents",
+      JSON.stringify(uploadedDocuments ?? [])
+    );
+
+    router.push("/");
+  };
 
   const step = getSteps({
     setFormFee,
@@ -466,6 +532,8 @@ function ApplicationForm() {
     uploadedDocuments: uploadedDocuments ?? [],
     visaType: formData.visaType,
     lastName: formData.lastName,
+    saveProgressAndContinueLater,
+    finalStepButtonText: finalStepButtonText(),
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {
@@ -474,6 +542,9 @@ function ApplicationForm() {
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  useEffect(() => {
+    fetchRecentProgressFromSession();
+  }, []);
 
   return (
     <>
@@ -590,7 +661,11 @@ function ApplicationForm() {
             height="unset"
             styles={{ display: isMobile ? "none" : "block" }}
           >
-            <FormSideMenu currentPhase={currentPhase} formData={formData} />
+            <FormSideMenu
+              currentPhase={currentPhase}
+              formData={formData}
+              saveProgressAndContinueLater={saveProgressAndContinueLater}
+            />
           </Section>
         </Flex>
       </SectionLayout>

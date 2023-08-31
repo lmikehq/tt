@@ -28,9 +28,16 @@ interface FormProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<PersonalInfoInterface>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
+function PersonalInfo({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: FormProps) {
   const { isMobile } = useScreenResolution();
   const options = [
     { value: true, label: "Yes" },
@@ -916,6 +923,7 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
             console.log(formik);
           }}
           disabled={!formik.isValid || !formik.dirty}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       </form>
     </Section>
