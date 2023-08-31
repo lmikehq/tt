@@ -74,15 +74,13 @@
 
 // export default NoVisaApplication;
 
+import Flex from "@atom/flex";
+import Image from "@atom/image";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import Section from "@molecule/section";
 import React from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
-import Section from "@molecule/section";
-import Text from "@atom/text";
-import Flex from "@atom/flex";
-import Link from "@atom/link";
-import { StaticImageData } from "next/image";
-import Image from "@atom/image";
 
 
 

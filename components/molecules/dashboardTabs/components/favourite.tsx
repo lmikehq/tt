@@ -1,126 +1,34 @@
-import styled from "styled-components";
-import Text from "@atom/text";
-import { ttColors } from "theme/colors";
-import Flex from "@atom/flex";
-import { Grid } from "@atom/grid";
-import Button from "@atom/button";
-import { useScreenResolution } from "hook/useScreenResolution";
-import { FaFileDownload } from "react-icons/fa";
-import VisaDashboardHeader from "./visaDashboardHeader";
+import Center from "@atom/center";
+import NoVisa from "@image/noVisa.png";
 import Section from "@molecule/section";
-import { AiFillHeart } from "react-icons/ai";
-import FavouriteImg1 from "@image/favourite/favourite1.png";
-import FavouriteImg2 from "@image/favourite/favourite2.png";
-import Image from "@atom/image";
-
-const SectionTitle = styled.div`
-  display: flex;
-
-  & h2 {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    margin: 20px 0px 15px;
-    line-height: 48px;
-    /* identical to box height */
-
-    color: ${ttColors.dark};
-    @media screen and (max-width: 390px) {
-      margin: 0px 0px -4px !important;
-    }
-  }
-`;
-
-const Items = styled.div`
-  border: 1px solid #e7e7e7;
-  padding: 20px;
-  width: 100%;
-  border-radius: 28px;
-`;
-
-const FavouriteWrapper = styled.div`
-  background: ${ttColors.defaultColor};
-  align-items: center;
-  margin-top: 15px;
-
-
-  @media screen and (max-width: 900px) {
-    height: fit-content;
-    padding: 20px 16px;
-  }
-`;
-
-const FavouriteCard = styled.div`
-  width: 370px;
-  border-radius: 4px;
-
-`;
-
-const FavouriteCardImg = styled.div`
-  position: relative;
-`;
-
-const FavouriteCardIcon = styled.div`
-  background: #fff;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 10px;
-  left: 305px;
-`;
+import { useScreenResolution } from "hook/useScreenResolution";
+import NoVisaApplication from "./noApplication";
+import VisaDashboardHeader from "./visaDashboardHeader";
 
 const Favourite = () => {
   const { isMobile } = useScreenResolution();
 
-  const FavouriteRecords = [
-    {
-      id: 1,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-
-    {
-      id: 2,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-
-    {
-      id: 3,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-
-    {
-      id: 4,
-      date: "23/04/2023",
-      description: "Application fee for Canada - Employment visa",
-      amount: "NGN 20,000",
-      receipt: "Download receipts",
-    },
-  ];
+  const content = {
+    title: "You’ve got no favorite - Let’s help you get Started",
+    links: [
+      { text: "Apply for Visa", url: "/apply/visa" },
+      { text: "Book flight", url: "/flight" },
+    ],
+  };
   return (
     <Section
       margin="2rem 0"
       styles={{
         background: "#fff",
         borderRadius: "20px",
-        padding: "2.5rem 1.5rem",
+        padding: ".5rem 1.5rem",
       }}
     >
       <VisaDashboardHeader headerText="Favourites" />
-
-      <FavouriteWrapper>
+      <Center margin="10rem 0" height="25rem">
+        <NoVisaApplication noVisaImage={NoVisa} content={content} />
+      </Center>
+      {/* <FavouriteWrapper>
         <Grid columns="1fr 1fr 1fr" gap="2rem">
           <FavouriteCard>
             <FavouriteCardImg>
@@ -563,7 +471,7 @@ const Favourite = () => {
             </Flex>
           </FavouriteCard>
         </Grid>
-      </FavouriteWrapper>
+      </FavouriteWrapper> */}
     </Section>
   );
 };
