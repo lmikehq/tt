@@ -129,7 +129,7 @@ const PaymentConfirmationModal = () => {
             <Section margin="0 0  24px" height="unset">
               <Text
                 type="p"
-                text="Visa Application Completed"
+                text="Payment Completed Successfully"
                 size={32}
                 weight={700}
                 color={ttColors.dark}
@@ -146,7 +146,7 @@ const PaymentConfirmationModal = () => {
               <br />
               <Text
                 type="p"
-                text="Your application has been submitted and currently being reviewed by our application admin officers. Your information and uploaded docs will be reviewed and we will get back to you shortly for the next step."
+                text="Your payment was successful, please login to your dashboard to continue. Thank you for trusting Thrillers Travels."
                 weight={400}
                 size={18}
                 color="#929292"

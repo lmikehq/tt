@@ -6,7 +6,6 @@ import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import { useState, useEffect } from "react";
 import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
@@ -212,6 +211,8 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
               placeholder="Enter your e-mail address"
             />
           </Section>
+
+
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
@@ -235,6 +236,8 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
               placeholder="Enter phone number"
             />
           </Section>
+
+
         </Flex>
         <Flex
           margin="0"

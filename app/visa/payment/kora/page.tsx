@@ -2,9 +2,13 @@
 import Flex from "@atom/flex";
 import Spinner from "@components/icons/spinner";
 import Section from "@molecule/section";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
+import { User } from "types";
 
 const VerifyKoraPaymentPage = () => {
   const router = useRouter();
@@ -19,9 +23,19 @@ const VerifyKoraPaymentPage = () => {
   //     router.push(`/visa/apply/?status=${res.status}`);
   //   });
   // });
+  const { setUser } = useUserStore((state) => state);
+
+  async function getUser(): Promise<User | any> {
+    const res = await apiService("/user", "GET");
+    setUser(res);
+    return res;
+  }
+  const { data: user } = useQuery(["getUser"], getUser);
+
   useEffect(() => {
     if (!reference) return;
-    router.push(`/visa/apply/?paymentRef=${reference}`);
+    if (!user?.email) return router.push(`/?paymentRef=${reference}`);
+    return router.push(`/dashboard/?paymentRef=${reference}`);
   }, [reference]);
   return (
     <Section height="100vh" width="100%">

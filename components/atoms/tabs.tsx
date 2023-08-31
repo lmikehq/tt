@@ -12,19 +12,36 @@ import Flex from "./flex";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
-import { Grid } from "./grid";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
 }
 
-const TabWrapper = styled.div<{ isMobile?: boolean }>`
+const TabWrapper = styled.div<{
+  isMobile?: boolean;
+  shadowShow?: boolean;
+  addBackgroundColor?: boolean;
+  addColor?: boolean;
+}>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
     height: 3px;
   }
   .MuiTabs-root {
+    padding: 0px;
+    box-shadow: ${({ shadowShow }) =>
+      shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
+    box-shadow: ;
+
+    border-radius: 6px;
+    height: 48px;
+  }
+  .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
+ 
+    background: ${({ addBackgroundColor }) =>
+    addBackgroundColor ? "#87CEEB" : "#fff"};
+      color: ${({ addColor }) => addColor ? "#fff" : "#000000"};
   }
   .css-1gsv261 {
     border-bottom: 1px solid transparent;
@@ -37,8 +54,14 @@ const TabWrapper = styled.div<{ isMobile?: boolean }>`
     height: 100%;
     width: 100%;
     gap: 0;
-    justify-content: ${({ isMobile }) => (isMobile ? "center" : "flex-start")};
+    justify-content: flex-start
+    
     // border-bottom: 1px solid ${ttColors.dark};
+
+    // @media screen and (max-width: 900px) {
+    //   justify-content: unset;
+    //   overflow: scroll;
+    // }
   }
 `;
 
@@ -73,10 +96,16 @@ export default function CustomTab({
   tabItems,
   defaultIcons = false,
   page = "home",
+  shadowShow = false,
+  addBackgroundColor = false,
+  addColor = false,
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
+  shadowShow?: boolean;
+    addBackgroundColor?: boolean;
+  addColor?: boolean;
 }) {
   const [value, setValue] = useState(0);
 
@@ -93,18 +122,24 @@ export default function CustomTab({
   const { isMobile } = useScreenResolution();
 
   return (
-    <TabWrapper isMobile={isMobile}>
+    <TabWrapper
+      isMobile={isMobile}
+      shadowShow={shadowShow}
+      addBackgroundColor={addBackgroundColor}
+    >
       <Box>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="select your service"
-          sx={{
-            // display: "grid",
-            // "& .MuiTabs-flexContainer": {
-            //   gap: "2rem",
-            // },
-          }}
+          sx={
+            {
+              // display: "grid",
+              // "& .MuiTabs-flexContainer": {
+              //   gap: "2rem",
+              // },
+            }
+          }
         >
           {tabItems.map((tabItem, i) => (
             <Tab

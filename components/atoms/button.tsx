@@ -21,6 +21,7 @@ interface buttonProps {
   lineHeight?: string;
   type?: "button" | "submit" | "reset" | undefined;
   underlined?: boolean;
+  disabled?: boolean;
 }
 
 export const Button: React.FC<buttonProps> = ({
@@ -41,13 +42,14 @@ export const Button: React.FC<buttonProps> = ({
   styles,
   lineHeight,
   type,
+  disabled,
 }) => {
   return (
     <ButtonBase
       style={{
         padding: padding,
         color: color || "#FFFFFF",
-        background: background || "#06062A",
+        background: disabled ? "#585870" : background || "#06062A",
         fontWeight: fontWeight,
         fontSize: fontSize,
         fontFamily: "Poppins",
@@ -62,7 +64,7 @@ export const Button: React.FC<buttonProps> = ({
         ...styles,
       }}
       type={type}
-      onClick={onClick}
+      onClick={!disabled ? onClick : undefined}
     >
       {children}
     </ButtonBase>
