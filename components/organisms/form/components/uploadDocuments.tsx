@@ -25,6 +25,7 @@ interface formProps {
   visaType: string;
   lastName: string;
   saveProgressAndContinueLater: () => void;
+  finalStepButtonText: string;
 }
 
 function UploadDocuments({
@@ -37,6 +38,7 @@ function UploadDocuments({
   visaType,
   lastName,
   saveProgressAndContinueLater,
+  finalStepButtonText,
 }: formProps) {
   const { isMobile } = useScreenResolution();
 
@@ -265,6 +267,7 @@ function UploadDocuments({
           }}
           disabled={!formik.isValid || !formik.dirty}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
+          buttonText={finalStepButtonText}
         />
       </form>
     </Section>

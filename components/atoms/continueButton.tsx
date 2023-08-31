@@ -21,7 +21,7 @@ export default function ContinueButton({
   isLoading,
   disabled,
   onClick,
-  buttonText = "Save & Continue",
+  buttonText,
   saveProgressAndContinueLater,
 }: ButtonProps) {
   const { isMobile } = useScreenResolution();
@@ -61,7 +61,7 @@ export default function ContinueButton({
               ) : (
                 <Text
                   type="span"
-                  text={buttonText}
+                  text={buttonText ?? "Save & Continue"}
                   weight={600}
                   size={20}
                   color={ttColors.light}
@@ -89,6 +89,7 @@ export default function ContinueButton({
               height={"3.5rem"}
               type="button"
               border="solid 1px #B6B6B6"
+              padding="0 1rem"
               background={"transparent"}
               onClick={saveProgressAndContinueLater}
             >
@@ -108,6 +109,7 @@ export default function ContinueButton({
               type="submit"
               background={disabled ? "#585870" : "#06062A"}
               cursor={disabled ? "not-allowed" : "pointer"}
+              padding="0 1rem"
               onClick={onClick}
             >
               <Flex align="center" width="100%" height="100%" justify="center">
@@ -116,7 +118,7 @@ export default function ContinueButton({
                 ) : (
                   <Text
                     type="span"
-                    text={"Continue"}
+                    text={buttonText ?? "Continue"}
                     weight={600}
                     size={14}
                     color={ttColors.light}

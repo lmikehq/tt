@@ -492,7 +492,17 @@ function ApplicationForm() {
       nextStep({});
     },
   });
-
+  const finalStepButtonText = () => {
+    let accompanies = 0;
+    if (formData.familyMembers.length > 0) {
+      formData.familyMembers.forEach((member) => {
+        if (member.accompanying) accompanies++;
+      });
+    }
+    return accompanies > 0
+      ? "Make Payment (NGN 30,000)"
+      : "Make Payment (NGN 20,000)";
+  };
   const saveProgressAndContinueLater = () => {
     const form = {
       details: detailsFormik.values,
@@ -528,6 +538,7 @@ function ApplicationForm() {
     visaType: formData.visaType,
     lastName: formData.lastName,
     saveProgressAndContinueLater,
+    finalStepButtonText: finalStepButtonText(),
   }).find((x) => x.id === currentPhase);
 
   const isValid: boolean = useMemo(() => {

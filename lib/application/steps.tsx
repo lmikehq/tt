@@ -45,6 +45,7 @@ export const getSteps = ({
   visaType,
   lastName,
   saveProgressAndContinueLater,
+  finalStepButtonText,
 }: {
   setFormFee: (n: number) => void;
   setCurrentPhase: (n: number) => void;
@@ -61,6 +62,7 @@ export const getSteps = ({
   visaType: string;
   lastName: string;
   saveProgressAndContinueLater: () => void;
+  finalStepButtonText: string;
 }): IFormStep[] => {
   return [
     {
@@ -146,6 +148,7 @@ export const getSteps = ({
           visaType={visaType}
           lastName={lastName}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
+          finalStepButtonText={finalStepButtonText}
         />
       ),
     },
