@@ -22,7 +22,6 @@ import {
   visaInitVals,
 } from "@lib/application/schema";
 import { getSteps } from "@lib/application/steps";
-import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 import Section from "@molecule/section";
 import SectionTitle from "@molecule/sectionTitle";
 import VisaProgress from "@molecule/visaProgress";
@@ -30,11 +29,16 @@ import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsArrowLeft } from "react-icons/bs";
 // import { useUserStore } from "store/useStore";
+import Button from "@atom/button";
+import sleep from "@lib/sleep";
+import { safelyConvertToNumber } from "@lib/utilFns";
+import CustomDrawer from "@molecule/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
+import { useUserStore } from "store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import {
@@ -47,16 +51,7 @@ import {
   PersonalInfoInterface,
   VisaApplicationFormInterface,
 } from "types";
-import SaveProgressAndContinueLater from "./components/sideMenu/saveProgressAndContinueLater";
-import VisApplicationFormDetails from "./components/sideMenu/visaApplicationFormDetails";
-import currencyFormatter from "data/currencyFormatter";
-import sleep from "@lib/sleep";
-import { useUserStore } from "store/useStore";
-import { safelyConvertToNumber } from "@lib/utilFns";
 import FormSideMenu from "./components/sideMenu/formSideMenu";
-import Button from "@atom/button";
-import CustomDrawer from "@molecule/drawers/customDrawer";
-import { BottomNavigation } from "@mui/material";
 
 const PromoInput = styled.div`
   display: flex;
