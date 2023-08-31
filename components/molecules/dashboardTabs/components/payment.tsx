@@ -1,17 +1,15 @@
-import styled from "styled-components";
-import Text from "@atom/text";
-import { ttColors } from "theme/colors";
-import Flex from "@atom/flex";
-import { Grid } from "@atom/grid";
 import Button from "@atom/button";
-import { useScreenResolution } from "hook/useScreenResolution";
-import { FaFileDownload } from "react-icons/fa";
-import VisaDashboardHeader from "./visaDashboardHeader";
+import Flex from "@atom/flex";
+import Text from "@atom/text";
 import Section from "@molecule/section";
 import { useQuery } from "@tanstack/react-query";
-import apiService from "hook/apiService";
-import { format } from "date-fns";
 import currencyFormatter from "data/currencyFormatter";
+import { format } from "date-fns";
+import apiService from "hook/apiService";
+import { useScreenResolution } from "hook/useScreenResolution";
+import styled from "styled-components";
+import { ttColors } from "theme/colors";
+import VisaDashboardHeader from "./visaDashboardHeader";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -128,8 +126,8 @@ const PaymentHistory = () => {
       <PaymentWrapper>
         <Flex direction="column" gap="1rem">
           {payments?.length > 0 ? (
-            payments?.map((payment: any) => (
-              <History>
+            payments?.map((payment: any, i: number) => (
+              <History key={i}>
                 <Flex
                   justify="space-between"
                   width="100%"
