@@ -1,6 +1,6 @@
 "use client";
 
-import { Autocomplete, Box, TextField as MUITextField, TextareaAutosize } from "@mui/material";
+import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import {
   CSSProperties,
@@ -14,15 +14,18 @@ import styled from "styled-components";
 const StyledInput = styled.input`
   background-color: transparent;
   border: 1px solid #bdbdbd;
-  &:focus {
-    outline: none;
+  &:hover {
+    border: 1px solid black;
   }
 
   &.error {
     border: 0;
     outline: 1px solid red;
   }
-
+  &::placeholder {
+    color: #929292 !important;
+    font-weight: 400 !important;
+  }
 `;
 
 const StyledMuiTextField = styled(MUITextField)`
@@ -53,9 +56,10 @@ export interface InputProps {
   onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
   onPaste?: () => void;
   placeholder?: string;
-  onBlur?: () => void;
+  onBlur?: (e: any) => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
+  touchedError?: boolean;
   type?:
     | "text"
     | "number"
@@ -65,11 +69,13 @@ export interface InputProps {
     | "email"
     | "tel"
     | "address"
-    | "checkbox"
+    | "checkbox";
 
   value?: string;
+  defaultValue?: string;
   name?: string;
   id?: string;
+  step?: string;
   readOnly?: boolean;
   legend?: string;
   border?: string;
@@ -113,6 +119,8 @@ const Input = ({
   flexGrow,
   parentWidth,
   styles,
+  step,
+  defaultValue,
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
     type === "password" ? "password" : ""
@@ -142,11 +150,13 @@ const Input = ({
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
+        className="custom-form-input"
         type={miniType || type}
         onBlur={onBlur}
         placeholder={placeholder}
         onPaste={onPaste}
         value={value}
+        defaultValue={defaultValue}
         onChange={onChange}
         onKeyDown={onKeyDown}
         id={id}
@@ -155,15 +165,16 @@ const Input = ({
         disabled={readOnly}
         min={min}
         max={max}
+        step={step}
         style={{
           margin,
-          padding: padding || "0 2rem 0 1rem",
+          padding: padding || "0 1rem 0 1rem",
           border,
           width: width || "100%",
-          height: height || "40px",
+          height: height || "45px",
           fontSize: size || "1rem",
           color: color || "#1C1B1F",
-          fontWeight: weight || "100",
+          fontWeight: weight || "400",
           fontFamily: "var(--font-family)",
           borderRadius: br || "4px",
           ...styles,

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Text from "@atom/text";
 import { ttColors } from "theme/colors";
 
-
 const StyledModal = styled(Modal)`
   display: flex;
   align-items: center;
@@ -14,12 +13,10 @@ const StyledModal = styled(Modal)`
 
 const ModalContainer = styled.div`
   background-color: white;
-  padding: 2rem;
   border-radius: 10px;
   outline: none;
   position: relative;
   width: 648px;
-  height: 476px;
 
   & h1 {
     font-size: 2rem;
@@ -28,37 +25,36 @@ const ModalContainer = styled.div`
   }
 `;
 
-
- const ModalHeader = styled.h2`
+const ModalHeader = styled.h2`
   font-size: 1.5rem;
   margin-top: 1rem;
   color: ${ttColors.dark};
   margin-bottom: 1rem;
-
 `;
 
- const ModalDescription = styled.p`
+const ModalDescription = styled.p`
   font-size: 1rem;
   margin-top: 1rem;
   color: #666;
   padding: 1rem 5rem;
 `;
 
- const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
 `;
 
-interface CustomConfirmationModalProps {
+export interface CustomConfirmationModalProps {
   open: boolean;
   handleClose: () => void;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   title?: string;
-  description?: string;
+  description?: string | React.ReactNode;
   subTitle?: string;
   buttons?: React.ReactNode;
+  child?: React.ReactNode;
 }
 
 const CustomConfirmationModal: React.FC<CustomConfirmationModalProps> = ({
@@ -69,6 +65,7 @@ const CustomConfirmationModal: React.FC<CustomConfirmationModalProps> = ({
   description,
   subTitle,
   buttons,
+  child,
 }) => {
   return (
     <StyledModal
@@ -82,13 +79,23 @@ const CustomConfirmationModal: React.FC<CustomConfirmationModalProps> = ({
       }}
     >
       <Fade in={open}>
-        <ModalContainer>
-          {icon}
-          {title && <ModalHeader>{title}</ModalHeader>}
-          {description && <ModalDescription>{description}</ModalDescription>}
-          {subTitle && <Text type="h3" text={subTitle} />}
-          {buttons && <ButtonWrapper>{buttons}</ButtonWrapper>}
-        </ModalContainer>
+        {
+          <ModalContainer style={{ padding: child ? "0rem" : "2rem" }}>
+            {child ? (
+              child
+            ) : (
+              <>
+                {icon}
+                {title && <ModalHeader>{title}</ModalHeader>}
+                {description && (
+                  <ModalDescription>{description}</ModalDescription>
+                )}
+                {subTitle && <Text type="h3" text={subTitle} />}
+                {buttons && <ButtonWrapper>{buttons}</ButtonWrapper>}
+              </>
+            )}
+          </ModalContainer>
+        }
       </Fade>
     </StyledModal>
   );

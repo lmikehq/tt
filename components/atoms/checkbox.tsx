@@ -7,10 +7,14 @@ function CheckBox({
   children,
   onChange,
   checked,
+  value,
+  name,
 }: {
   children: React.ReactNode;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
+  value?: boolean;
+  name?: string;
 }) {
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setChecked(event.target.checked);
@@ -20,7 +24,9 @@ function CheckBox({
       <FormControlLabel
         control={
           <MUIChecky
+            name={name}
             checked={checked}
+            value={value}
             onChange={onChange}
             inputProps={{ "aria-label": "controlled" }}
           />

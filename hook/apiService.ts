@@ -1,14 +1,11 @@
 import axios, { AxiosResponse } from "axios";
+import { toast } from "react-hot-toast";
 const globalAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
 });
 
-const apiService = (
-  url: string,
-  method?: string,
-  data?: any
-): Promise<AxiosResponse> => {
+const apiService = (url: string, method?: string, data?: any): Promise<any> => {
   return new Promise((resolve) => {
     globalAxios({
       url,
@@ -20,7 +17,12 @@ const apiService = (
       data,
     })
       .then((res) => resolve(res.data))
-      .catch((err) => resolve(err.response.data));
+      .catch((err) => {
+        // throw err;
+        console.log(err);
+
+        resolve(err.response.data);
+      });
   });
 };
 

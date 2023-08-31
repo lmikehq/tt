@@ -1,6 +1,9 @@
 import StyledComponentsRegistry from "@lib/registry";
 import LoaderLayout from "@organism/Loader/layout";
+import PaymentConfirmationModal from "@organism/paymentConfirmationModal";
 import "@style/globals.css";
+import "react-phone-input-2/lib/style.css";
+
 import { Siteconfig } from "config/site";
 import { Poppins } from "next/font/google";
 import Script from "next/script";
@@ -49,10 +52,9 @@ export default function RootLayout({
       </head>
       <body>
         <Toaster position="top-center" />
+        <PaymentConfirmationModal />
         <StyledComponentsRegistry>
-          <LoaderLayout>
-            {children}
-          </LoaderLayout>
+          <LoaderLayout>{children}</LoaderLayout>
         </StyledComponentsRegistry>
       </body>
     </html>

@@ -54,6 +54,7 @@ export const COMMON_MAJORS = [
   "History",
   "Environmental Science",
   "Physics",
+  "Entrepreneurship",
   "Social Work",
   "Art History",
   "Accounting",
@@ -132,3 +133,9 @@ export const COMMON_MAJORS = [
   "Biotechnology",
   "Others",
 ];
+
+export const RELATIONSHIPS = [
+  "Spouse", "Child",
+  "Parent", "Sibling",
+  "In-Law"
+]

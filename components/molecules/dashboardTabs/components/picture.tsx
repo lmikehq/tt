@@ -21,6 +21,7 @@ const DashboardCoverPicture = styled.div`
 
   & img {
     width: 100%;
+    border-radius: 12px;
   }
 
   & button {
@@ -151,7 +152,7 @@ function UserPicture() {
           height={isMobile ? 120 : 250}
           styles={{ width: "100%" }}
         />
-        <Button
+        {/* <Button
           styles={{
             height: isMobile ? "25px" : "65px",
             width: isMobile ? "25px" : "230px",
@@ -170,7 +171,7 @@ function UserPicture() {
             text="Upload another cover"
             styles={{ display: isMobile ? "none" : "block" }}
           />
-        </Button>
+        </Button> */}
       </DashboardCoverPicture>
 
       <DashboardProfilePictue>
@@ -178,7 +179,7 @@ function UserPicture() {
           src={user?.profilePicture || avatar}
           alt="profile-picture"
           height={isMobile ? 70 : 160}
-          styles={{ width: "160px" }}
+          styles={{ width: isMobile ? "" : "160px" }}
         />
         <Button
           styles={{

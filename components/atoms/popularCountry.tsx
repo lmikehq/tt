@@ -69,51 +69,55 @@ const CountryInfo = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 100%;
   overflow; hidden;
+  display: flex;
+  flex-direction: column;
+position: relative;
+
+@media (max-width: 900px) {
+  // height: 35rem;
+}}
+  & button.country-button {
+  @media (max-width: 900px) {
+    position: absolute;
+    bottom: 4%;
+    left: 7%;
+  }}
 `;
 
 const LeftHeaderText = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  align-self: stretch;
+  padding: 1.15em 0;
 `;
 
 const CountryName = styled.h3`
-  font-size: 32px;
-  // margin-bottom: 20px;
-  // width: 365px;
-
+  font-size: 40px;
   display: flex;
-  width: 363px;
-  flex-direction: column;
-  // font-size: 40px;
   font-family: Poppins;
-  font-weight: 700;
-
+  font-weight: 600;
   padding-right: 65px;
-  // text-align: start;
-  // margin-left: 1.2rem;
-  //   height: 120px;
+  line-height: 1.25em;
 `;
 
 const CountryDescription = styled.p`
-  margin: 28px auto;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  padding: 2px 0.2rem;
+  font-size: 15px;
+  font-weight: normal;
+  font-family: Montserrat;
+  max-height: 10.5rem;
+  line-height: 1.25em;
+  // padding: 2px 0.2rem;
 `;
 
 const IntervalTag = styled.div`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  right: 0;
+  top: 0;
   background-color: #fff;
   padding: 5px 10px;
   font-weight: bold;
   height: 65px;
-  width: 81px;
+  width: 100px;
   margin: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -123,14 +127,20 @@ const Button = styled.button`
   background-color: #fff;
   border: none;
   font-weight: bold;
-  position: absolute;
-  bottom: 0%;
-  left: 8.5%;
-  width: 83%;
+  font-family: Montserrat;
+  width: 85%;
   padding: 18px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-radius: 8px;
   cursor: pointer;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  bottom: 4%;
+  left: 0;
 `;
 
 const CountryNameTooltip = styled.span`
@@ -211,9 +221,9 @@ const TopCountriesSection: React.FC = () => {
       id: 1,
       name: "Canada",
       description1:
-        "Canada is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Imagine yourself exploring the stunning landscapes of Canada, from the vibrant cityscapes of Toronto to the breathtaking Rocky Mountains. Thrillers Travels is your gateway to Canada, offering seamless visa application services for those seeking to study, work, or settle in this land of endless possibilities.",
       description2:
-        "Canada is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: Canada,
       interval: "3 days",
     },
@@ -221,9 +231,9 @@ const TopCountriesSection: React.FC = () => {
       id: 2,
       name: "New Zealand",
       description1:
-        "New Zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "From the majestic beauty of the Southern Alps to the serene beaches, New Zealand calls out to adventurers and nature lovers. Thrillers Travels transforms your dreams into reality with visa application support, ensuring you can experience the thrill of this captivating land.",
       description2:
-        "New Zealand is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: newZealand,
       interval: "3 days",
     },
@@ -231,9 +241,9 @@ const TopCountriesSection: React.FC = () => {
       id: 3,
       name: "United Kingdom",
       description1:
-        "United Kingdom is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Experience the blend of tradition and modernity in the United Kingdom. Whether you're drawn to London's bustling streets or the historic charm of Edinburgh, Thrillers Travels is your partner in visa application excellence. Let us simplify your path to the UK, so you can make your mark in this iconic destination.",
       description2:
-        "United Kingdom is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: Uk,
       interval: "3 days",
     },
@@ -241,9 +251,9 @@ const TopCountriesSection: React.FC = () => {
       id: 4,
       name: "Norway",
       description1:
-        "Norway is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Immerse yourself in the allure of Norway, where stunning fjords, Northern Lights, and rich cultural heritage await. With Thrillers Travels by your side, the journey to Norway becomes a smooth one. Our visa expertise paves the way for you to experience the magic of this Nordic wonderland.",
       description2:
-        "Norway is my hometown is a unique experience as it's the best way to unplug from the pushes and pulls of daily life. It helps us to forget about our problems, frustrations, and fears at home. During our journey, we experience life in different ways. We explore new places, cultures, cuisines, traditions, and ways of living.",
+        "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: Norway,
       interval: "3 days",
     },
@@ -252,9 +262,7 @@ const TopCountriesSection: React.FC = () => {
   const router = useRouter();
 
   return (
-    <CountryWrapper
-      style={{ marginBottom: isMobile ? "3rem" : "10rem" }}
-    >
+    <CountryWrapper style={{ marginBottom: isMobile ? "3rem" : "10rem" }}>
       <CountryLayout>
         <SectionTitle
           title="Our top countries"
@@ -263,7 +271,7 @@ const TopCountriesSection: React.FC = () => {
         />
         {isMobile ? (
           <>
-            <RightSide style={{ marginBottom: "2rem" }}>
+            <RightSide style={{ margin: "2rem 0" }}>
               {countries.map((country) => (
                 <ImageWrapper
                   key={country.id}
@@ -294,51 +302,45 @@ const TopCountriesSection: React.FC = () => {
               <LeftSide>
                 {activeImage !== null && (
                   <CountryInfo>
+                    <CountryName>
+                      Get {countries[activeImage - 1].name} Work visa
+                    </CountryName>
                     <IntervalTag>
-                      <IntervalText>E-visa</IntervalText>
+                      <IntervalText>Work-visa</IntervalText>
                       <IntervalDays>3 days</IntervalDays>
                     </IntervalTag>
-                    <CountryName>
-                      Get {countries[activeImage - 1].name} E-visa
-                    </CountryName>
+
                     <CountryDescription
                       style={{
                         marginTop: isMobile ? "9px" : "50px",
-                        fontSize: isMobile
-                          ? "14px"
-                          
-                          
-                          : "1rem",
-                        lineHeight: isMobile
-                          ? "18px"
-                          
-                          
-                          : "14px",
+                        fontSize: isMobile ? "14px" : "1rem",
+                        lineHeight: isMobile ? "18px" : "14px",
                       }}
                     >
                       {countries[activeImage - 1].description1}
-                      <br />
-                      <br />
-                      {countries[activeImage - 1].description2}
+                      {/* {countries[activeImage - 1].description2} */}
                     </CountryDescription>
-                    <Button>Apply to {countries[activeImage - 1].name}</Button>
+
+                    <Button className="country-button">
+                      Apply to {countries[activeImage - 1].name}
+                    </Button>
                   </CountryInfo>
                 )}
               </LeftSide>
             </Grid>
           </>
         ) : (
-          <Grid columns="repeat(2, 1fr)" gap="1rem" align="center">
+          <Grid columns="repeat(2, 1fr)" gap="1rem" align="stretch">
             <LeftSide>
               {activeImage !== null && (
                 <CountryInfo>
                   <LeftHeaderText>
                     <IntervalTag>
-                      <IntervalText>E-visa</IntervalText>
+                      <IntervalText>Work-visa</IntervalText>
                       <IntervalDays>3 days</IntervalDays>
                     </IntervalTag>
                     <CountryName>
-                      Get {countries[activeImage - 1].name} E-visa
+                      Get {countries[activeImage - 1].name} Work visa
                     </CountryName>
                   </LeftHeaderText>
                   <CountryDescription>
@@ -347,17 +349,19 @@ const TopCountriesSection: React.FC = () => {
                     <br />
                     {countries[activeImage - 1].description2}
                   </CountryDescription>
-                  <Button
-                    onClick={() =>
-                      router.push(
-                        `/visa/apply?destination=${
-                          countries[activeImage - 1].name
-                        }`
-                      )
-                    }
-                  >
-                    Apply to {countries[activeImage - 1].name}
-                  </Button>
+                  <ButtonWrapper>
+                    <Button
+                      onClick={() =>
+                        router.push(
+                          `/visa/apply?destination=${
+                            countries[activeImage - 1].name
+                          }`
+                        )
+                      }
+                    >
+                      Apply to {countries[activeImage - 1].name}
+                    </Button>
+                  </ButtonWrapper>
                 </CountryInfo>
               )}
             </LeftSide>

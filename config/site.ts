@@ -1,9 +1,9 @@
 import { ISiteConfig } from "types";
 
 export const Siteconfig: ISiteConfig = {
-  name: "Thrillers Travels: Reach the Western World on Eagle's Wings",
+  name: "Thrillers Travels: Migrating Nigerians to The Western Countries on Eagle's Wings",
   description:
-    "Embark on a seamless journey with Thrillers Travels, your trusted partner for travel bookings, visa assistance, travel guide and opportunities to study and work abroad. Experience the thrill of stress-free travel document procurement, fly on eagle's wings to your dream western destination today!",
+    "Thrillers Travels, your trusted partner for visa assistance, travel bookings, travel guide and opportunities to study and work abroad. Experience the thrill of stress-free travel document procurement, fly on eagle's wings to your dream western destination today!",
   ogImage: "/favicon.png",
   keywords: [
     "travel",
