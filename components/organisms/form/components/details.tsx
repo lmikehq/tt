@@ -30,9 +30,9 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
 
   return (
     <Section height="unset">
-      <FormStepTitle steps={steps} index={index} />
+      <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
       <form onSubmit={formik.handleSubmit}>
-        <Section margin="1.5rem 0px 0px">
+        <Section >
           <Flex
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}

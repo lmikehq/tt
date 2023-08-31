@@ -542,7 +542,7 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
             text="Background Information"
             weight={600}
             size={24}
-            margin="4rem 0 .5rem"
+            margin="2rem 0 .5rem"
             styles={{
               lineHeight: "29.26px",
             }}
@@ -551,7 +551,11 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
         <Section>
           <ol>
             <li>
-              <Flex align="center" gap="2rem" justify="space-between">
+              <Flex
+                align="center"
+                gap={isMobile ? "0" : "2rem"}
+                justify="space-between"
+              >
                 <Text
                   styles={{
                     width: "65%",

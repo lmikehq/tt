@@ -128,7 +128,7 @@ const NewsLetter = () => {
             <Button
               height="52px"
               padding="0 1.5rem"
-              width="fit-content"
+              width={isMobile ? "100%" : "fit-content"}
               borderRadius="4px"
               styles={{ justifyContent: "center", alignItems: "center" }}
             >
@@ -148,7 +148,7 @@ const NewsLetter = () => {
           align="center"
           width="auto"
           // direction={isMobile ? "column" : "row"}
-          // styles={{ display: isMobile ? "none" : "block" }}
+          styles={{ display: isMobile ? "none" : "flex" }}
         >
           <Image
             src={Barcode}

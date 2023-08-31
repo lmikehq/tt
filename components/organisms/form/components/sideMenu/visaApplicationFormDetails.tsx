@@ -1,3 +1,4 @@
+import Button from "@atom/button";
 import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import BulletList from "@atom/list";
@@ -6,25 +7,44 @@ import TravelArrow from "@atom/travelArrow";
 import Section from "@molecule/section";
 import { ListItem } from "@mui/material";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { BiX } from "react-icons/bi";
 import { VisaApplicationFormInterface } from "types";
 
 interface VisaApplicationFormDetailsProps {
   formData: VisaApplicationFormInterface;
+  onClose?: () => void;
 }
 const VisApplicationFormDetails = ({
   formData,
+  onClose,
 }: VisaApplicationFormDetailsProps) => {
   const { isMobile } = useScreenResolution();
   return (
     <Section height="unset">
+      {isMobile && (
+        <Flex justify="space-between" align="center" width="100%">
+          <Text type="h5" text="Required documents" size={20} weight={600} />
+
+          <Button
+            onClick={onClose}
+            background="transparent"
+            styles={{ padding: 0, width: "fit-content", minWidth: "auto" }}
+          >
+            <BiX size={32} color="#929292" />
+          </Button>
+        </Flex>
+      )}
+      {!isMobile ? null : <Divider margin={"1.125rem 0"} />}
+
       <Flex
         align="center"
         justify="space-between"
         // direction={isMobile ? "column" : "row"}
         gap={isMobile ? "1.5rem" : "0rem"}
+        margin={isMobile ? "0 0 2rem" : "0"}
       >
         <Section width="30%" height="unset">
-          <Text type="p" text={formData.homeCountry} size={24} weight={500} />
+          <Text type="p" text={formData.homeCountry} size={20} weight={500} />
         </Section>
         <Section width="30%" height="unset">
           <TravelArrow />
@@ -34,26 +54,26 @@ const VisApplicationFormDetails = ({
             type="p"
             textAlign="right"
             text={formData.destination}
-            size={24}
+            size={20}
             weight={500}
           />
         </Section>
       </Flex>
-      <Divider margin={"1.5rem 0"} />
+      {isMobile ? null : <Divider margin={"1.5rem 0"} />}
 
       <Flex gap="2rem">
         <Flex direction="column">
           <Text
             text="Application Fee"
             type="h3"
-            size={isMobile ? 18 : 20}
+            size={isMobile ? 16 : 18}
             weight={500}
             // whiteSpace="nowrap"
             margin="0 0 .7rem 0"
           />
           <Text
             type="p"
-            size={isMobile ? 16 : 18}
+            size={isMobile ? 14 : 18}
             weight={400}
             text="Non-Refundable"
             whiteSpace="nowrap"
@@ -63,14 +83,14 @@ const VisApplicationFormDetails = ({
           <Text
             text="Validity"
             type="h3"
-            size={isMobile ? 18 : 20}
+            size={isMobile ? 16 : 18}
             weight={500}
             // whiteSpace="nowrap"
             margin="0 0 .7rem 0"
           />
           <Text
             type="p"
-            size={isMobile ? 16 : 18}
+            size={isMobile ? 14 : 18}
             weight={400}
             text="Passport dependent"
             whiteSpace="nowrap"
@@ -82,13 +102,13 @@ const VisApplicationFormDetails = ({
           type="h3"
           text="Required Documents"
           weight={500}
-          size={isMobile ? 18 : 20}
+          size={isMobile ? 16 : 18}
         />
         <BulletList>
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 16 : 18}
+              size={isMobile ? 14 : 16}
               weight={400}
               text="Passport sized photograph"
             />
@@ -96,7 +116,7 @@ const VisApplicationFormDetails = ({
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 16 : 18}
+              size={isMobile ? 14 : 16}
               weight={400}
               text="Valid international passport"
             />
@@ -104,7 +124,7 @@ const VisApplicationFormDetails = ({
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 16 : 18}
+              size={isMobile ? 14 : 16}
               weight={400}
               text="All academic certificates"
             />
@@ -112,7 +132,7 @@ const VisApplicationFormDetails = ({
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 16 : 18}
+              size={isMobile ? 14 : 16}
               weight={400}
               text="Proof of address (utility bill)"
             />
@@ -121,7 +141,7 @@ const VisApplicationFormDetails = ({
             <Text
               type="p"
               text="Marriage certificate (if applicable)"
-              size={isMobile ? 16 : 18}
+              size={isMobile ? 14 : 16}
               weight={400}
             />
           </ListItem>

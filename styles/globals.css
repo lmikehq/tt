@@ -62,10 +62,10 @@ body {
 }
 
 @media screen and (max-width: 1024px) {
-  .reviewCard {
+  /* .reviewCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;
-  }
+  } */
   .destinationCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;

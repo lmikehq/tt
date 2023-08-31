@@ -23,7 +23,7 @@ function FormStepTitle({
         size={isMobile ? "24px" : "24px"}
         weight={600}
         className="title-font"
-        margin={isMobile ? "0" : "2rem 0px 0px"}
+        // margin={isMobile ? "0" : "2rem 0px 0px"}
       />
       {steps.length > 1 && (
         <>

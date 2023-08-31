@@ -163,7 +163,7 @@ function ApplicationForm() {
       }
     ).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        window.open(response.data.data.checkout_url);
+        window.open(response.data.data.checkout_url, '_self');
         return response.data;
       } else {
         toast.error(response.errorMessage);
@@ -479,20 +479,7 @@ function ApplicationForm() {
 
   const coverImage = isMobile ? CoverImg : CoverDesktopImg;
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
-  const [bottomNavVisible, setBottomNavVisible] = useState(true);
-  const handleScroll = () => {
-    const scrollPosition = window.scrollY;
-    if (scrollPosition > 100) {
-      setBottomNavVisible(false);
-    } else {
-      setBottomNavVisible(true);
-    }
-  };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
   return (
     <>
       <AllCountryHead cover={coverImage} title={formData.destination || ""} />
@@ -524,22 +511,22 @@ function ApplicationForm() {
         >
           <Section
             height="unset"
-            padding={"3.5rem 1.125rem"}
+            padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
             styles={{
               background: ttColors.light,
             }}
           >
-            <FormSideMenu currentPhase={currentPhase} formData={formData} />
+            <FormSideMenu
+              currentPhase={currentPhase}
+              formData={formData}
+              onClose={() => setBottomDrawerOpen(false)}
+            />
           </Section>
         </CustomDrawer>
-        {bottomNavVisible && (
-          <BottomNavigation className="bottom-navigation" showLabels>
-            <Section>s</Section> 
-          </BottomNavigation>
-        )}
 
         <Flex
-          background="#FFFFFF"
+          {...(!isMobile && { background: "white" })}
+          // background='white'
           borderRadius={isMobile ? "0px" : "16px"}
           margin={isMobile ? "1.5rem 0" : "3rem 0px 5rem 0px"}
           styles={{
@@ -564,7 +551,7 @@ function ApplicationForm() {
             <Flex
               direction="column"
               styles={{ flexGrow: 1 }}
-              gap={isMobile ? "1.5rem" : "2rem"}
+              gap={isMobile ? "2.5rem" : "2rem"}
             >
               {currentPhase < 7 && (
                 <Flex
