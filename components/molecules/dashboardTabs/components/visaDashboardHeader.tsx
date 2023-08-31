@@ -1,18 +1,14 @@
-import { Divider } from "@atom/divider";
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Input from "@atom/input";
 import Text from "@atom/text";
 import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled from "styled-components";
-import DateRangePicker from "./dashboardDatepicker";
-import Button from "@atom/button";
-import DashboardDatePicker from "./dashboardDatepicker";
-import { useScreenResolution } from "hook/useScreenResolution";
 
 const DropdownContent = styled.div`
   position: absolute;
@@ -47,13 +43,11 @@ const OptionText = styled.div<{ hovered: boolean }>`
   flex: 1;
 `;
 
-interface VisaDashboardHeaderProps {
-  headerText: string;
-}
+// interface VisaDashboardHeaderProps {
+//   headerText: string;
+// }
 
-const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
-  headerText,
-}) => {
+function VisaDashboardHeader({ headerText }: { headerText: string }) {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -76,7 +70,7 @@ const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
 
   const { isMobile } = useScreenResolution();
 
-  if (isMobile) return;
+  if (isMobile) return <div></div>;
 
   return (
     <Flex justify="space-between" margin="1.5rem 0px" gap="0px">
@@ -111,8 +105,6 @@ const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
             />
           </Section>
         </Flex>
-
-        <>{/* <DashboardDatePicker /> */}</>
 
         <Flex
           justify="space-between"
@@ -155,6 +147,6 @@ const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
       </Grid>
     </Flex>
   );
-};
+}
 
 export default VisaDashboardHeader;
