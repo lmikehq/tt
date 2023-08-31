@@ -10,6 +10,8 @@ import VisaDashboardHeader from "./visaDashboardHeader";
 import Section from "@molecule/section";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
+import { format } from "date-fns";
+import currencyFormatter from "data/currencyFormatter";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -70,11 +72,14 @@ const History = styled.div`
   }
 `;
 
-const HistoryItems = styled.div`
-  border: 1px solid #e7e7e7;
-  padding: 20px;
-  width: 100%;
-  border-radius: 28px;
+const PaymentStatus = styled.div`
+  display: grid;
+  place-content: center;
+  background: #fffeef;
+  padding: 14px 18px;
+  border-radius: 24px;
+  height: 45px;
+  width: 25%;
 `;
 
 const PaymentWrapper = styled.div`
@@ -118,40 +123,75 @@ const PaymentHistory = () => {
 
       <PaymentWrapper>
         <Flex direction="column" gap="1rem">
-          <History>
+          {payments?.length > 0 ? (
+            payments?.map((payment: any) => (
+              <History>
+                <Flex
+                  justify="space-between"
+                  width="100%"
+                  align="center"
+                  padding="28px 24px"
+                >
+                  <Flex gap=".3rem" direction="column" width="50%">
+                    <Text
+                      type="p"
+                      text={format(
+                        new Date(payment?.updatedAt),
+                        "dd MMM, yyyy"
+                      )}
+                      color="#112211"
+                      size={14}
+                      styles={{ opacity: "75%" }}
+                    />
+                    <Text
+                      type="h3"
+                      size={18}
+                      text={payment?.paymentIntent}
+                      color="#112211"
+                    />
+                  </Flex>
+
+                  <Text
+                    type="p"
+                    text={currencyFormatter(payment?.totalAmount)}
+                    styles={{ width: "20%" }}
+                  />
+                  <PaymentStatus style={{ background: "#FFFEEF" }}>
+                    <Text
+                      type="p"
+                      text={payment.status}
+                      styles={{ width: "20%" }}
+                      whiteSpace="nowrap"
+                      // color="#7A7422"
+                    />
+                  </PaymentStatus>
+
+                  <Button
+                    width="166px"
+                    height="48px"
+                    styles={{ marginLeft: "55px" }}
+                  >
+                    Download receipts
+                  </Button>
+                </Flex>
+              </History>
+            ))
+          ) : (
             <Flex
               justify="space-between"
               width="100%"
               align="center"
               padding="28px 24px"
             >
-              <Flex gap=".3rem" direction="column" width="50%">
-                <Text
-                  type="p"
-                  text="23/04/2023"
-                  color="#112211"
-                  size={14}
-                  styles={{ opacity: "75%" }}
-                />
-                <Text
-                  type="h3"
-                  size={18}
-                  text="Application fee for Canada - Employment visa"
-                  color="#112211"
-                />
-              </Flex>
-
-              <Text type="p" text="NGN 20,000" styles={{ width: "20%" }} />
-
-              <Button
-                width="166px"
-                height="48px"
-                styles={{ marginLeft: "55px" }}
-              >
-                Download receipts
-              </Button>
+              <Text
+                type="p"
+                text="No payment history"
+                color="#112211"
+                size={14}
+                styles={{ opacity: "75%" }}
+              />
             </Flex>
-          </History>
+          )}
         </Flex>
       </PaymentWrapper>
     </Section>
