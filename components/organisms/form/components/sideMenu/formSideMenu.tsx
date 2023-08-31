@@ -13,11 +13,13 @@ interface FormSideMenuProps {
   currentPhase: number;
   formData: VisaApplicationFormInterface;
   onClose?: () => void;
+  saveProgressAndContinueLater?: () => void;
 }
 const FormSideMenu = ({
   currentPhase,
   formData,
   onClose,
+  saveProgressAndContinueLater,
 }: FormSideMenuProps) => {
   const { isMobile } = useScreenResolution();
 
@@ -71,7 +73,9 @@ const FormSideMenu = ({
         }
       })()}
       <Section>
-        <SaveProgressAndContinueLater />
+        <SaveProgressAndContinueLater
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
+        />
       </Section>
     </Flex>
   );
