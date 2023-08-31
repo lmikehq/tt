@@ -94,6 +94,14 @@ function VisaDetail({ visa }: { visa: any }) {
           intent: "",
         };
         break;
+      case "APPLICATION IN PROGRESS":
+        visaInformation = {
+          text: "...",
+          fn: () => {},
+          disabled: false,
+          intent: "",
+        };
+        break;
       case "AWAITING CONFIRMATION" || "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
