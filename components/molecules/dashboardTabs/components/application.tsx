@@ -51,12 +51,12 @@ const Application = () => {
         padding: "2.5rem 1.5rem",
       }}
     >
-      <Text
+      {/* <Text
         type="h2"
         text="All applications"
         size={isMobile ? "16px" : "25px"}
         margin="0px 0px 1.5rem 0px"
-      />
+      /> */}
 
       <SectionTabs>
         <RTQueryClient>

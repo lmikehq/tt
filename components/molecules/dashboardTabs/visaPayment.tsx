@@ -7,17 +7,58 @@ import { TbCurrencyNaira } from "react-icons/tb";
 import { FieldString } from "@atom/fieldInput";
 import { Formik } from "formik";
 import { BsExclamationCircleFill } from "react-icons/bs";
+import currencyFormatter from "data/currencyFormatter";
+import apiService from "hook/apiService";
+import { toast } from "react-hot-toast";
+import { useUserStore } from "store/useStore";
 
 type VisaPaymentModalProps = {
   open: boolean;
   onClose: () => void;
+  visaDetails: {
+    intent: string;
+    id: string;
+    accompanying: number;
+  };
 };
 
 const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   open,
   onClose,
+  visaDetails,
 }) => {
   const { isMobile } = useScreenResolution();
+  function paymentAmount() {
+    switch (visaDetails.intent) {
+      case "PROCESSING FEE":
+        return visaDetails.accompanying === 0
+          ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
+          : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
+      default:
+        return "2500000";
+    }
+  }
+
+  const { user } = useUserStore((state) => state);
+
+  const createPayment = async () => {
+    return await apiService("/payment/create-form-fee-charge", "POST", {
+      currency: "NGN",
+      gateway: "Kora",
+      service: "VISA",
+      user: user?._id,
+      serviceID: visaDetails.id,
+      paymentIntent: visaDetails.intent,
+    }).then((response) => {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        window.open(response.data.data.checkout_url, "_self");
+        return response.data;
+      } else {
+        toast.error(response.errorMessage);
+        throw response;
+      }
+    });
+  };
 
   return (
     <ReusableModal
@@ -25,17 +66,17 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       onClose={onClose}
       headerText="Make Payment"
       description="Kindly make payment for required Visa Application Process."
+      buttonProps={{
+        text: "Make Payment",
+        onClick: createPayment,
+      }}
     >
       {/* Additional content goes here */}
       <Section margin="3rem 0px 1.5rem">
         <Flex align="center" gap="0rem" justify="center">
-          <TbCurrencyNaira
-            size="2rem"
-            style={{ position: "relative", top: "0px", left: "3px" }}
-          />
-          <Text type="h1" text="20,000" />
+          <Text type="h1" text={currencyFormatter(paymentAmount())} />
         </Flex>
-        <Text type="p" text="Visa Application Payment" />
+        <Text type="p" text={visaDetails.intent} />
       </Section>
       <Section margin="0px">
         <Flex align="center" gap="0.25rem">
@@ -46,10 +87,12 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
           />
         </Flex>
         <FieldString
-          options={["NGN - Nigerian Naira", "USD", "EUR", "GBP"]}
+          options={["NGN - Nigerian Naira"]}
           name="currency"
-          placeholder="NGN - Nigerian Naira"
+          value="NGN - Nigerian Naira"
+          placeholder=""
           formik={Formik}
+          onChange={() => {}} // Handle the change event
         />
       </Section>
       <Section margin="-10px 0px 2.5rem">

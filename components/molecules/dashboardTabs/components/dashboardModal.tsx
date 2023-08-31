@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Modal, IconButton } from "@mui/material";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 import Text from "@atom/text";
+import Spinner from "@components/icons/spinner";
 
 // Styled component for the modal content wrapper
 const StyledModalContent = styled.div`
@@ -47,6 +48,7 @@ const ModalIcon = styled.div`
   width: 30px;
   background: #f3f3ff;
   border-radius: 4px;
+  cursor: pointer;
 `;
 interface ReusableModalProps {
   open: boolean;
@@ -54,6 +56,10 @@ interface ReusableModalProps {
   headerText: string;
   description: string;
   children?: React.ReactNode;
+  buttonProps?: {
+    text: string;
+    onClick: () => void;
+  };
 }
 // Reusable Modal Component
 const ReusableModal: React.FC<ReusableModalProps> = ({
@@ -62,23 +68,36 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   headerText,
   description,
   children,
+  buttonProps = {
+    text: "Save",
+    onClick: () => {},
+  },
 }) => {
+  const [loading, setLoading] = useState(false);
   return (
     <Modal open={open} onClose={onClose}>
       <StyledModalContent>
         <StyledModalHeader>
           <h2>{headerText}</h2>
         </StyledModalHeader>
-        <ModalIcon>
-            <IoMdClose />
+        <ModalIcon onClick={onClose}>
+          <IoMdClose />
         </ModalIcon>
         <p>{description}</p>
         {children}
         <Button
           width="100%"
           background={ttColors.dark}
+          onClick={() => {
+            setLoading(true);
+            buttonProps.onClick();
+          }}
         >
-            <Text type="p" text="Save" color="#fff" size="20px" />
+          {loading ? (
+            <Spinner size="40px" fill={ttColors.primary} />
+          ) : (
+            <Text type="p" text={buttonProps.text} color="#fff" size="20px" />
+          )}
         </Button>
       </StyledModalContent>
     </Modal>

@@ -12,6 +12,9 @@ import Button from "../../../atoms/button";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Section from "@molecule/section";
 import { useState } from "react";
+import { format } from "date-fns";
+import currencyFormatter from "data/currencyFormatter";
+import VisaPaymentModal from "../visaPayment";
 
 const Logo = styled.div`
   height: 64px;
@@ -45,78 +48,93 @@ const VisaStatus = styled.div`
 `;
 
 interface VisaDataProps {
-  countryLogoSrc: string;
-  applicationDate: string;
-  paymentFee: string;
-  visaStatus: string;
-  downloadButtonText: string;
-  onDownloadStatusClick: () => void;
+  // countryLogoSrc: string;
+  visa?: any;
+  // applicationDate: string;
+  // paymentFee: string;
+  // visaStatus: string;
+  // downloadButtonText: string;
+  // onDownloadStatusClick: () => void;
 }
 
-const VisaData: React.FC<VisaDataProps> = ({
-  applicationDate,
-  paymentFee,
-  visaStatus,
-  downloadButtonText,
-  onDownloadStatusClick,
-}) => {
+function VisaDetail({ visa }: { visa: any }) {
   const { isMobile } = useScreenResolution();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAccordionClick = () => {
     setIsOpen(!isOpen);
   };
 
-  const getStatusBackgroundColor = () => {
-    switch (visaStatus) {
-      case "APPLICATION IN PROGRESS":
-        return "#F6F0FF";
-      case "VISA FEES REQUIRED":
-      case "PROCESSING FEES REQUIRED":
-      case "COURIER FEES REQUIRED":
-      case "PASSPORT PHYSICALLY REQUIRED":
-      case "ADDITIONAL DOCUMENTS REQUIRED":
-        return "#FFF1F9";
-      case "AWAITING CONFIRMATION":
-      case "AWAITING EMBASSY DECISION":
-      case "AWAITING BIO METRIC":
-        return "#FFFEEF";
-      case "DECLINED":
-        return "#FFF1F1";
+  function getButtonInformation() {
+    let visaInformation = {
+      text: "",
+      fn: () => {},
+      disabled: false,
+      intent: "",
+    };
+    switch (visa?.applicationStatus) {
       case "APPROVED":
-        return "#F1FFF2";
-      case "AWAITING PASSPORT COLLECTION":
-        return "#FEF7F0";
-      default:
-        return "transparent";
-    }
-  };
-  const getStatusTextColor = () => {
-    switch (visaStatus) {
-      case "APPLICATION IN PROGRESS":
-        return "#37008A";
-      case "VISA FEES REQUIRED":
-      case "PROCESSING FEES REQUIRED":
-      case "COURIER FEES REQUIRED":
-      case "PASSPORT PHYSICALLY REQUIRED":
-      case "ADDITIONAL DOCUMENTS REQUIRED":
-        return "#7A0046";
-      case "AWAITING EMBASSY DECISION":
-      case "AWAITING BIO METRIC":
-        return "#7A7422";
+        visaInformation = {
+          text: "Download Visa",
+          fn: () => {},
+          disabled: false,
+          intent: "",
+        };
+        break;
       case "DECLINED":
-        return "#9C0000";
-      case "APPROVED":
-        return "#1A820A";
-      case "AWAITING PASSPORT COLLECTION":
-        return "#D96C00";
+        visaInformation = {
+          text: "Download Visa",
+          fn: () => {},
+          disabled: false,
+          intent: "",
+        };
+        break;
+      case "AWAITING CONFIRMATION" || "PROCESSING FEE REQUESTED":
+        visaInformation = {
+          text: "Pay Processing Fee",
+          fn: () => {
+            setIsModalOpen(true);
+          },
+          disabled: false,
+          intent: "PROCESSING FEE",
+        };
+        break;
       default:
-        return "#112211";
+        visaInformation = {
+          text: "Pay Visa Fee",
+          fn: () => {},
+          disabled: false,
+          intent: "",
+        };
     }
-  };
+
+    return visaInformation;
+  }
+
+  const recentPayment = visa?.payments[visa?.payments.length - 1];
+  const textAndBgColor =
+    visa?.applicationStatus === "DECLINED"
+      ? { text: "#9C0000", bg: "#FFF1F1" }
+      : visa?.applicationStatus === "APPROVED"
+      ? { text: "#1A820A", bg: "#F1FFF2" }
+      : visa?.applicationStatus === "AWAITING CONFIRMATION"
+      ? { text: "#7A7422", bg: "FFFEEF" }
+      : { text: "#37008A", bg: "#F6F0FF" };
 
   return (
-    <div>
+    <Section>
+      <VisaPaymentModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        visaDetails={{
+          id: visa?._id,
+          intent: getButtonInformation().intent,
+          accompanying: visa?.familyMembers.filter(
+            (fm: any) => fm.accompanying === true
+          ).length,
+        }}
+      />
       <Flex
         justify="space-around"
         gap={isMobile ? ".5rem" : "0rem"}
@@ -131,14 +149,7 @@ const VisaData: React.FC<VisaDataProps> = ({
           position: "relative",
         }}
       >
-        <Logo>
-          <Image
-            src={CountryLogo}
-            height={isMobile ? 20 : 40}
-            width={isMobile ? 40 : 58.5}
-            alt="country logo"
-          />
-        </Logo>
+        <Logo />
         <Flex
           justify="flex-start"
           width={isMobile ? "100%" : "32%"}
@@ -155,7 +166,7 @@ const VisaData: React.FC<VisaDataProps> = ({
               letterSpacing="1px"
               weight={400}
               size={isMobile ? "1rem" : "1.3rem"}
-              text="Nigeria(NG) — Canada(CA)"
+              text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
             />
 
             <Flex justify="flex-start" gap="0px">
@@ -171,14 +182,14 @@ const VisaData: React.FC<VisaDataProps> = ({
                 <Section>
                   <Text
                     type="p"
-                    text="Application Date"
+                    text="Last updated"
                     color="#112211"
                     size={12}
                     opacity="60%"
                   />
                   <Text
                     type="h5"
-                    text={applicationDate}
+                    text={format(new Date(visa.updatedAt), "dd MMM, yyyy")}
                     color="#112211"
                     size={14}
                     weight={500}
@@ -193,7 +204,7 @@ const VisaData: React.FC<VisaDataProps> = ({
                 <section>
                   <Text
                     type="p"
-                    text="Payment Fee"
+                    text="Recent payment"
                     whiteSpace="nowrap"
                     color="#112211"
                     size={12}
@@ -201,7 +212,11 @@ const VisaData: React.FC<VisaDataProps> = ({
                   />
                   <Text
                     type="h5"
-                    text={paymentFee}
+                    text={
+                      recentPayment?.totalAmount
+                        ? currencyFormatter(recentPayment.totalAmount)
+                        : "n/a"
+                    }
                     color="#112211"
                     size={14}
                     weight={500}
@@ -212,13 +227,13 @@ const VisaData: React.FC<VisaDataProps> = ({
           </Flex>
         </Flex>
 
-        <VisaStatus style={{ backgroundColor: getStatusBackgroundColor() }}>
+        <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
           <Text
             type="h5"
-            text={visaStatus}
+            text={visa.applicationStatus}
             weight={800}
             size={isMobile ? 13 : 14}
-            color={getStatusTextColor()}
+            color={textAndBgColor.text}
           />
         </VisaStatus>
 
@@ -229,13 +244,21 @@ const VisaData: React.FC<VisaDataProps> = ({
             height="48px"
             styles={{
               marginLeft: isMobile ? "0px" : "55px",
-              display: isMobile ? "none" : "block",
+              display: isMobile ? "none" : "inline-flex",
             }}
-            onClick={onDownloadStatusClick}
+            disabled={getButtonInformation().disabled}
+            onClick={getButtonInformation().fn}
           >
-            <Text type="h5" text={downloadButtonText} weight={400} size={14} styles={{
-              width: "max-content", textAlign: "center",
-            }} />
+            <Text
+              type="h5"
+              text={getButtonInformation().text}
+              weight={400}
+              size={14}
+              styles={{
+                width: "max-content",
+                textAlign: "center",
+              }}
+            />
           </Button>
           <Section
             width="60px"
@@ -260,7 +283,7 @@ const VisaData: React.FC<VisaDataProps> = ({
           </Section>
         </Flex>
       </Flex>
-    </div>
+    </Section>
   );
-};
-export default VisaData;
+}
+export default VisaDetail;
