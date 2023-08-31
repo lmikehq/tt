@@ -206,12 +206,10 @@ export const FieldAsDate = (props: FieldProps) => {
   const error = getNestedValue(formik.errors, name);
 
   const handleChange = (e: any) => {
-    console.log(e);
     formik.setFieldValue(name, `${e.$d}`);
   };
 
   const value = getNestedValue(formik.values, name);
-  console.log(value);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">

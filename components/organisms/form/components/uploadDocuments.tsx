@@ -216,12 +216,7 @@ function UploadDocuments({
                     ];
                 }
               })()}
-              onChange={(e: string) => {
-                console.log(e);
-                console.log(formik);
-
-                setDocumentToUpload(e);
-              }}
+              onChange={(e: string) => setDocumentToUpload(e)}
               value={documentToUpload}
               placeholder="Select each required document & Upload"
             />
@@ -262,9 +257,7 @@ function UploadDocuments({
         </Section>
         <ContinueButton
           isLoading={isLoading}
-          onClick={() => {
-            console.log(formik);
-          }}
+          onClick={() => {}}
           disabled={!formik.isValid || !formik.dirty}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
           buttonText={finalStepButtonText}

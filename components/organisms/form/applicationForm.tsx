@@ -29,7 +29,7 @@ import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsArrowLeft } from "react-icons/bs";
 // import { useUserStore } from "store/useStore";
@@ -299,7 +299,6 @@ function ApplicationForm() {
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         })
         .catch((err) => {
-          console.log("erorror: ", err);
           if (
             err.statusCode === 422 &&
             err.errorMessage.includes("already exists")
@@ -397,7 +396,6 @@ function ApplicationForm() {
         ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
         : null,
     };
-    console.log(recent);
     detailsFormik.setValues({
       ...(recent?.form?.details ?? detailsKeys),
       homeCountry: params.get("home") || detailsKeys.homeCountry,
@@ -434,7 +432,6 @@ function ApplicationForm() {
     onSubmit: (values: DetailsKeys) => {
       const form = { ...formData, ...values };
       setFormData(form);
-      console.log(values);
       nextStep({});
     },
   });
@@ -483,7 +480,6 @@ function ApplicationForm() {
     initialValues: {},
     // validationSchema: documentsSchema,
     onSubmit: (values) => {
-      console.log("here");
       nextStep({});
     },
   });

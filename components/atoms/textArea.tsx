@@ -48,7 +48,6 @@ const TextArea = ({ onChange, name, onBlur, value }: TextAreaProps) => {
     if (newText.length <= MaxCharCount) {
       setText(newText);
     }
-    console.log(remainingChars);
   };
 
   return (
@@ -62,7 +61,6 @@ const TextArea = ({ onChange, name, onBlur, value }: TextAreaProps) => {
         onBlur={onBlur}
         onChange={(e: any) => {
           if (onChange) {
-            console.log(e);
             onChange(e);
           }
           handleTextChange(e);

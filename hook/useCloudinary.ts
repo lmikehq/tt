@@ -28,11 +28,8 @@ const useCloudinaryUpload = ({
         {
           onUploadProgress: (progressEvent) => {
             const { loaded, total } = progressEvent;
-            console.log(loaded);
-
             if (!total) return;
             const percentCompleted = Math.round((loaded * 100) / total);
-            console.log(percentCompleted);
             setProgress(percentCompleted);
           },
         }

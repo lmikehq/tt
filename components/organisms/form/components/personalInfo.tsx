@@ -236,7 +236,6 @@ function PersonalInfo({
                 name: "phoneNumber",
               }}
               onChange={(e) => {
-                console.log(e);
                 formik.setFieldValue("phoneNumber", e);
               }}
               inputClass="w"
@@ -920,7 +919,6 @@ function PersonalInfo({
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            console.log(formik);
           }}
           disabled={!formik.isValid || !formik.dirty}
           saveProgressAndContinueLater={saveProgressAndContinueLater}

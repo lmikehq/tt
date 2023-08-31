@@ -76,7 +76,6 @@ function FamilyInfo({
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {
-              console.log(formik);
             }}
             disabled={!formik.isValid || !formik.dirty}
             saveProgressAndContinueLater={saveProgressAndContinueLater}

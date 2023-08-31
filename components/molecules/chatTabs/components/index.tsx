@@ -176,7 +176,6 @@ const Chat = () => {
 
   const handleMessageSend = async () => {
     if (message.trim() !== "") {
-      console.log(`Sending message: ${message}`);
       setChatHistory((prevHistory) => [...prevHistory, message]);
 
       try {
@@ -191,9 +190,6 @@ const Chat = () => {
         if (response.ok) {
           const data = await response.json();
           // Process the response data here
-          console.log("Response:", data);
-        } else {
-          console.log("Failed to send the message");
         }
       } catch (error) {
         console.error("Error sending the message:", error);
