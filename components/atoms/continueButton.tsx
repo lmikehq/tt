@@ -14,7 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   buttonText?: string;
-  saveProgressAndContinueLater: () => void;
+  saveProgressAndContinueLater?: () => void;
 }
 
 export default function ContinueButton({
