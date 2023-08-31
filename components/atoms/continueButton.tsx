@@ -14,6 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   buttonText?: string;
+  saveProgressAndContinueLater: () => void;
 }
 
 export default function ContinueButton({
@@ -21,6 +22,7 @@ export default function ContinueButton({
   disabled,
   onClick,
   buttonText = "Save & Continue",
+  saveProgressAndContinueLater,
 }: ButtonProps) {
   const { isMobile } = useScreenResolution();
   const [bottomNavVisible, setBottomNavVisible] = useState(true);
@@ -85,10 +87,10 @@ export default function ContinueButton({
             <Button
               width="50%"
               height={"3.5rem"}
-              type="submit"
+              type="button"
               border="solid 1px #B6B6B6"
               background={"transparent"}
-              onClick={onClick}
+              onClick={saveProgressAndContinueLater}
             >
               <Flex align="center" width="100%" height="100%" justify="center">
                 <Text

@@ -23,16 +23,23 @@ interface formProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<DetailsKeys>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function TripDetails({ steps, index, isLoading, formik }: formProps) {
+function TripDetails({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: formProps) {
   const { isMobile } = useScreenResolution();
 
   return (
     <Section height="unset">
       <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
       <form onSubmit={formik.handleSubmit}>
-        <Section >
+        <Section>
           <Flex
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
@@ -172,6 +179,7 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
             console.log(formik);
           }}
           disabled={!formik.isValid || !formik.dirty}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       </form>
     </Section>
