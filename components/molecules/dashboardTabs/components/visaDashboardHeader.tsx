@@ -12,6 +12,7 @@ import styled from "styled-components";
 import DateRangePicker from "./dashboardDatepicker";
 import Button from "@atom/button";
 import DashboardDatePicker from "./dashboardDatepicker";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const DropdownContent = styled.div`
   position: absolute;
@@ -47,7 +48,7 @@ const OptionText = styled.div<{ hovered: boolean }>`
 `;
 
 interface VisaDashboardHeaderProps {
-  headerText: string; 
+  headerText: string;
 }
 
 const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
@@ -72,6 +73,10 @@ const VisaDashboardHeader: React.FC<VisaDashboardHeaderProps> = ({
     { value: "Option 9", label: "Declined" },
     { value: "Option 10", label: "Passport Physically Required" },
   ];
+
+  const { isMobile } = useScreenResolution();
+
+  if (isMobile) return;
 
   return (
     <Flex justify="space-between" margin="1.5rem 0px" gap="0px">

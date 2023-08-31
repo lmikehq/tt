@@ -8,8 +8,6 @@ import Flight from "./flight";
 import Visa from "./visa";
 
 const SectionTabs = styled.div`
-  // padding: 2rem 0 0;
-
   .MuiButtonBase-root {
     width: 100% !important;
     max-width: 50%;
@@ -42,7 +40,7 @@ const Application = () => {
       styles={{
         background: "#fff",
         borderRadius: "20px",
-        padding: "2.5rem 1.5rem",
+        padding: isMobile ? "0" : "2.5rem 1.5rem",
       }}
     >
       {/* <Text

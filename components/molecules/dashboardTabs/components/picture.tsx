@@ -151,7 +151,6 @@ function UserPicture() {
           alt="cover-picture"
           height={isMobile ? 120 : 250}
           styles={{ width: "100%" }}
-          
         />
         {/* <Button
           styles={{
@@ -180,7 +179,7 @@ function UserPicture() {
           src={user?.profilePicture || avatar}
           alt="profile-picture"
           height={isMobile ? 70 : 160}
-          styles={{ width: "160px" }}
+          styles={{ width: isMobile ? "" : "160px" }}
         />
         <Button
           styles={{

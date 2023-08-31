@@ -45,6 +45,10 @@ const VisaStatus = styled.div`
   border-radius: 24px;
   height: 45px;
   width: 25%;
+
+  @media screen and (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 interface VisaDataProps {
@@ -126,7 +130,7 @@ function VisaDetail({ visa }: { visa: any }) {
     <Section
       styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
       padding="15px 10px"
-      margin="2rem 0"
+      margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
       <VisaPaymentModal
         open={isModalOpen}
@@ -145,7 +149,6 @@ function VisaDetail({ visa }: { visa: any }) {
         direction={isMobile ? "column" : "row"}
         // margin="2rem 0px 0px"
         // border="1px solid #E7E7E7"
-
         align="center"
         // borderBottom="1px solid #E7E7E7"
         styles={{
@@ -160,15 +163,16 @@ function VisaDetail({ visa }: { visa: any }) {
           gap={isMobile ? "7px" : "0rem"}
         >
           <Flex
-            margin="0px 0px 0px 1.5rem"
+            margin={isMobile ? "0" : "0px 0px 0px 1.5rem"}
             gap={isMobile ? "2rem" : "1rem"}
             direction="column"
           >
             <Text
               type="p"
               letterSpacing="1px"
-              weight={400}
+              weight={900}
               size={isMobile ? "1rem" : "1.3rem"}
+              textAlign={isMobile ? "center" : "left"}
               text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
             />
 
@@ -240,14 +244,20 @@ function VisaDetail({ visa }: { visa: any }) {
           />
         </VisaStatus>
 
-        <Flex width="25%" justify="flex-end" gap=".5rem" align="center">
+        <Flex
+          width={isMobile ? "100%" : "25%"}
+          justify={isMobile ? "space-between" : "flex-end"}
+          gap=".5rem"
+          align="center"
+        >
           <Button
             padding="8px 16px"
-            width="100px !important"
+            width={isMobile ? "300px!important" : "100px !important"}
             height="48px"
             styles={{
               marginLeft: isMobile ? "0px" : "55px",
-              display: isMobile ? "none" : "inline-flex",
+              display: isMobile ? "flex" : "inline-flex",
+              maxWidth: "100%",
             }}
             disabled={getButtonInformation().disabled}
             onClick={getButtonInformation().fn}
@@ -263,31 +273,33 @@ function VisaDetail({ visa }: { visa: any }) {
               }}
             />
           </Button>
-          <Section
-            width="60px"
-            styles={{
-              display: isMobile ? "none" : "block",
-            }}
-          >
-            <Flex
-              border="1px solid #87CEEB"
-              borderBottom="1px solid #87CEEB"
-              align="center"
-              justify="center"
-              padding="8px"
-              borderRadius="4px"
-              height="48px"
-              width="48px"
-              styles={{ cursor: "pointer" }}
-              onClick={handleAccordionClick}
+          {!isMobile && (
+            <Section
+              width="60px"
+              styles={{
+                display: isMobile ? "none" : "block",
+              }}
             >
-              {isOpen ? (
-                <MdKeyboardArrowUp size="1.5rem" />
-              ) : (
-                <MdKeyboardArrowDown size="1.5rem" />
-              )}
-            </Flex>
-          </Section>
+              <Flex
+                border="1px solid #87CEEB"
+                borderBottom="1px solid #87CEEB"
+                align="center"
+                justify="center"
+                padding="8px"
+                borderRadius="4px"
+                height="48px"
+                width="48px"
+                styles={{ cursor: "pointer" }}
+                onClick={handleAccordionClick}
+              >
+                {isOpen ? (
+                  <MdKeyboardArrowUp size="1.5rem" />
+                ) : (
+                  <MdKeyboardArrowDown size="1.5rem" />
+                )}
+              </Flex>
+            </Section>
+          )}
         </Flex>
       </Flex>
       {isOpen && (

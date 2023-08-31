@@ -95,23 +95,25 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
           onChange={() => {}} // Handle the change event
         />
       </Section>
-      <Section margin="-10px 0px 2.5rem">
-        <Flex align="center" justify="flex-start" gap="10px">
-          <BsExclamationCircleFill
-            color="#6092A7"
-            size="2.5rem"
-            style={{
-              position: "relative",
-              top: "-10px",
-            }}
-          />
-          <Text
-            type="p"
-            text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-            styles={{ textAlign: "left" }}
-          />
-        </Flex>
-      </Section>
+      {!isMobile && (
+        <Section margin="-10px 0px 2.5rem">
+          <Flex align="center" justify="flex-start" gap="10px">
+            <BsExclamationCircleFill
+              color="#6092A7"
+              size="2.5rem"
+              style={{
+                position: "relative",
+                top: "-10px",
+              }}
+            />
+            <Text
+              type="p"
+              text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+              styles={{ textAlign: "left" }}
+            />
+          </Flex>
+        </Section>
+      )}
     </ReusableModal>
   );
 };

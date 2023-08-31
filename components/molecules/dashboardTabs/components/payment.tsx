@@ -80,6 +80,10 @@ const PaymentStatus = styled.div`
   border-radius: 24px;
   height: 45px;
   width: 25%;
+
+  @media screen and (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const PaymentWrapper = styled.div`
@@ -93,7 +97,7 @@ const PaymentWrapper = styled.div`
 
   @media screen and (max-width: 900px) {
     height: fit-content;
-    padding: 20px 16px;
+    padding: 5px;
   }
 `;
 
@@ -116,7 +120,7 @@ const PaymentHistory = () => {
       styles={{
         background: "#fff",
         borderRadius: "14px",
-        padding: "1rem 1.5rem",
+        padding: isMobile ? ".5rem" : "1rem 1.5rem",
       }}
     >
       <VisaDashboardHeader headerText="Payment History" />
@@ -131,8 +135,14 @@ const PaymentHistory = () => {
                   width="100%"
                   align="center"
                   padding="28px 24px"
+                  direction={isMobile ? "column" : "row"}
+                  gap="1rem"
                 >
-                  <Flex gap=".3rem" direction="column" width="50%">
+                  <Flex
+                    gap=".3rem"
+                    direction="column"
+                    width={isMobile ? "100%" : "50%"}
+                  >
                     <Text
                       type="p"
                       text={format(
@@ -154,13 +164,13 @@ const PaymentHistory = () => {
                   <Text
                     type="p"
                     text={currencyFormatter(payment?.totalAmount)}
-                    styles={{ width: "20%" }}
+                    styles={{ width: isMobile ? "100%" : "20%" }}
                   />
                   <PaymentStatus style={{ background: "#FFFEEF" }}>
                     <Text
                       type="p"
                       text={payment.status}
-                      styles={{ width: "20%" }}
+                      styles={{ width: isMobile ? "100%" : "20%" }}
                       whiteSpace="nowrap"
                       // color="#7A7422"
                     />
@@ -169,7 +179,7 @@ const PaymentHistory = () => {
                   <Button
                     width="166px"
                     height="48px"
-                    styles={{ marginLeft: "55px" }}
+                    styles={{ marginLeft: isMobile ? 0 : "55px" }}
                   >
                     Download receipts
                   </Button>

@@ -12,8 +12,6 @@ const NotificationWrapper = styled.div`
   align-items: center;
   margin-top: 15px;
 
- 
-
   @media screen and (max-width: 900px) {
     height: fit-content;
     padding: 20px 16px;
@@ -36,13 +34,15 @@ const Notification = () => {
 
       <NotificationWrapper>
         <Flex direction="column" gap="1rem">
-          <NotificationItem
-            src={NotificationImg1}
-            title="Application fee for Canada - Employment visa"
-            date="25/08/23"
-            time="10:11am"
-            showDot
-          />
+          {!isMobile && (
+            <NotificationItem
+              src={NotificationImg1}
+              title="Application fee for Canada - Employment visa"
+              date="25/08/23"
+              time="10:11am"
+              showDot
+            />
+          )}
 
           {/* <NotificationItem
             src={NotificationImg2}

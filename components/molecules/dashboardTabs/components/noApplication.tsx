@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 // import Section from "@molecule/section";
 // import NoVisa from "@image/noVisa.png";
@@ -79,10 +79,9 @@ import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import styled from "styled-components";
-
-
 
 const NoVisaWrapper = styled.div`
   display: flex;
@@ -100,14 +99,13 @@ export interface NoVisaApplicationProps {
   };
 }
 
-
-
 const NoApplication: React.FC<NoVisaApplicationProps> = ({
   noVisaImage,
   content,
 }) => {
+  const { isMobile } = useScreenResolution();
+
   return (
-    
     <NoVisaWrapper>
       <Section
         styles={{
@@ -118,12 +116,12 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
           alignContent: "center",
         }}
       >
-          <Image
-            src={noVisaImage.src}
-            alt="no-visa"
-            width={330.89}
-            height={331.03}
-          />
+        <Image
+          src={noVisaImage.src}
+          alt="no-visa"
+          width={330.89}
+          height={331.03}
+        />
       </Section>
       <Text
         type="p"
@@ -132,6 +130,7 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
         size={24}
         margin="2.5rem auto 1rem"
         styles={{ lineHeight: "34px" }}
+        textAlign={isMobile ? "center" : "left"}
       />
       <Flex justify="center" gap="1rem" margin="0">
         {content.links.map((link) => (

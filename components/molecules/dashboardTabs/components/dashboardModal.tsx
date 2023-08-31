@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Modal, IconButton } from "@mui/material";
-import styled from "styled-components";
-import { IoMdClose } from "react-icons/io";
 import Button from "@atom/button";
-import { ttColors } from "theme/colors";
 import Text from "@atom/text";
 import Spinner from "@components/icons/spinner";
+import { Modal } from "@mui/material";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { IoMdClose } from "react-icons/io";
+import styled from "styled-components";
+import { ttColors } from "theme/colors";
 
 // Styled component for the modal content wrapper
 const StyledModalContent = styled.div`
@@ -25,6 +25,12 @@ const StyledModalContent = styled.div`
   & p {
     margin: 1rem 0px;
   }
+
+  // @media screen and (max-width: 900px) {
+  //   padding: 20px;
+  //   width: 100%;
+  //   max-width: 100%;
+  // }
 `;
 
 // Styled component for the modal header

@@ -54,8 +54,14 @@ const TabWrapper = styled.div<{
     height: 100%;
     width: 100%;
     gap: 0;
-    justify-content: ${({ isMobile }) => (isMobile ? "center" : "flex-start")};
+    justify-content: flex-start
+    
     // border-bottom: 1px solid ${ttColors.dark};
+
+    // @media screen and (max-width: 900px) {
+    //   justify-content: unset;
+    //   overflow: scroll;
+    // }
   }
 `;
 
