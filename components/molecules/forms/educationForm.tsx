@@ -165,7 +165,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
         </Section>
       </Flex>
       <Flex
-        align="center"
+        align={isMobile ? "flex-start" : "center"}
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "0.25rem"}
       >
