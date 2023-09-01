@@ -16,6 +16,7 @@ import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { flightContext } from "context";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface flightProps {
   value: string;
@@ -26,7 +27,8 @@ interface flightProps {
 
 const FlightCircle = styled.div<{ value: string }>`
   position: absolute;
-  left: ${(props) => (props.value === "one-way" ? "31%" : "27.5%")};
+  left: 0;
+  right: 0;
   margin-top: 2.5rem;
   background: white;
   border: 1px solid #b6b6b6;
@@ -66,16 +68,26 @@ function FlightModule({
   };
 
   const handleDataChange = (data: any) => {
-    setData(`${data.count.adults} Adult, ${data.count.children} Children, ${data.class}`);
+    setData(
+      `${data.count.adults} Adult, ${data.count.children} Children, ${data.class}`
+    );
   };
 
   const open = Boolean(anchorEl);
-
+  const { isMobile } = useScreenResolution();
   return (
-    <Section padding="2rem 0">
-      <Flex align="center" gap=".5rem">
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="From" />
+    <Section padding="2rem 0 0 0 " height="unset">
+      <Flex
+        direction={isMobile ? "column" : "row"}
+        align={isMobile ? "flex-start" : "center"}
+        gap=".5rem"
+      >
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text type="label" size={isMobile ? 16 : 18} text="From" />
           <SearchInput
             options={COUNTRY_FLAGS.map((x) => ({
               name: x.name,
@@ -89,16 +101,27 @@ function FlightModule({
             placeholder="Current Location"
           >
             <Flex gap="1rem" cursor="pointer">
-              <IoLocationOutline size={25} />
-              <Text type="p" text={state.departureCountry} color="black" />
+              <IoLocationOutline size={isMobile ? 20 : 25} />
+              <Text
+                type="p"
+                size={isMobile ? 16 : 18}
+                text={state.departureCountry}
+                color="black"
+              />
             </Flex>
           </SearchInput>
         </Flex>
-        <FlightCircle value={value}>
-          <GoArrowSwitch color={ttColors.primary} size={30} />
-        </FlightCircle>
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="To" />
+        {/* <Section styles={{ position: "relative" }} width="fit-content">
+          <FlightCircle value={value}>
+            <GoArrowSwitch color={ttColors.primary} size={30} />
+          </FlightCircle>
+        </Section> */}
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text type="label" size={isMobile ? 16 : 18} text="To" />
           <SearchInput
             options={COUNTRY_FLAGS.map((x) => ({
               name: x.name,
@@ -112,41 +135,67 @@ function FlightModule({
             placeholder="Where to?"
           >
             <Flex gap="1rem" cursor="pointer">
-              <IoLocationOutline size={25} />
-              <Text type="p" text={state.arrivalCountry} color="black" />
+              <IoLocationOutline size={isMobile ? 20 : 25} />
+              <Text
+                type="p"
+                size={isMobile ? 16 : 18}
+                text={state.arrivalCountry}
+                color="black"
+              />
             </Flex>
           </SearchInput>
         </Flex>
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="Depart" />
-          <DatePicker placeholder="Select Date" position="start"
-              value={state.departureDate}
-              minDate={state.departureDate}
-              onChange={(e) => {
-                dispatch({ type: "SET_DEPARTURE_DATE", payload: e });
-              }}
-              />
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text type="label" size={isMobile ? 16 : 18} text="Depart" />
+          <DatePicker
+            placeholder="Select Date"
+            position="start"
+            value={state.departureDate}
+            minDate={state.departureDate}
+            onChange={(e) => {
+              dispatch({ type: "SET_DEPARTURE_DATE", payload: e });
+            }}
+          />
         </Flex>
         {value !== "one-way" && (
-          <Flex direction="column" gap=".75rem">
-            <Text type="h3" text="Return" />
-            <DatePicker placeholder="Select Date" position="start"
+          <Flex
+            direction="column"
+            gap=".75rem"
+            styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+          >
+            <Text type="label" size={isMobile ? 16 : 18} text="Return" />
+            <DatePicker
+              placeholder="Select Date"
+              position="start"
               value={state.returnDate}
               minDate={state.departureDate}
               onChange={(e) => {
                 dispatch({ type: "SET_RETURN_DATE", payload: e });
               }}
-              />
+            />
           </Flex>
         )}
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="Cabin & Travelers" />
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text
+            type="label"
+            size={isMobile ? 16 : 18}
+            text="Cabin & Travelers"
+          />
           <ClickAwayListener onClickAway={handleClose}>
             <div>
               <Input
                 onClick={handleClick}
                 placeholder="Click me to open dropdown"
                 value={data}
+                styles={{ fontFamily: "poppins" }}
               />
               {open && <DropdownMenu onDataChange={handleDataChange} />}
             </div>

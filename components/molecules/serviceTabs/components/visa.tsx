@@ -50,7 +50,7 @@ function Visa() {
   const router = useRouter();
   const { isMobile } = useScreenResolution();
   return (
-    <Section>
+    <Section height="unset">
       <Grid
         gap="2rem"
         justify="space-between"

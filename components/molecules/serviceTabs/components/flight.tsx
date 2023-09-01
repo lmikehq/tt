@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Section from "@molecule/section";
 import Flex from "@atom/flex";
 import { CustomRadioGroup } from "@atom/radio";
@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import sleep from "@lib/sleep";
 import Spinner from "@components/icons/spinner";
 import { ttColors } from "theme/colors";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const options = [
   { value: "round", label: "Round Trip" },
@@ -24,11 +25,18 @@ export const ButtonWrapper = styled.div`
   left: 35%;
   width: 25%;
   margin-top: 1rem;
-`
+  @media (max-width: 900px) {
+    position: static;
+    width: 100%;
+  }
+`;
 
 function Flights() {
+  const { isMobile } = useScreenResolution();
   const [value, setValue] = useState("round");
-  const [multiCityFlights, setMultiCityFlights] = useState<Array<JSX.Element>>([]);
+  const [multiCityFlights, setMultiCityFlights] = useState<Array<JSX.Element>>(
+    []
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -45,7 +53,9 @@ function Flights() {
       </div>
     );
 
-    newIndex > 3 ? '' : setMultiCityFlights([...multiCityFlights, newMultiCityFlight]);
+    newIndex > 3
+      ? ""
+      : setMultiCityFlights([...multiCityFlights, newMultiCityFlight]);
   };
 
   const handleDeleteFlight = (index: number) => {
@@ -59,17 +69,18 @@ function Flights() {
       handleAddMultiCityFlight();
     }
   }, [value]);
-
   return (
-    <Section padding="2rem">
+    <Section padding={"2rem 0"}>
       <Flex direction="column">
-        <Flex align="center" gap="2rem">
+        <Flex align="center" gap={isMobile ? "1rem" : "2rem"}>
           <CustomRadioGroup
             options={options}
             value={value}
             name="flight"
             onChange={(e: any) => setValue(e.target.value)}
             justifyContent="flex-end"
+            align="flex-start"
+            direction={isMobile ? "column" : "row"}
           />
         </Flex>
         {value === "multi-city" ? (
@@ -77,12 +88,13 @@ function Flights() {
             {multiCityFlights}
             <Button
               onClick={handleAddMultiCityFlight}
-              padding="2rem .5rem"
+              padding="0rem .5rem"
+              borderRadius="4px"
               background="transparent"
-              border="4px solid #06062A"
-              width="15%"
+              border="1px solid #06062A"
+              width="fit-content"
               cursor="pointer"
-              
+              margin="1.2rem 0 0 0"
             >
               <Flex align="center" gap="1rem" justify="center">
                 <HiPlus color="#06062A" size={25} />
@@ -110,23 +122,20 @@ function Flights() {
       <ButtonWrapper>
         <Button
           width="100%"
-          padding="2rem"
           cursor="pointer"
+          borderRadius="4px"
           onClick={async () => {
             if (loading) return;
             setLoading(true);
             await sleep(200);
-            router.push(`/flight/listings`)
+            router.push(`/flight/listings`);
           }}
         >
           {loading ? (
             <Spinner fill={ttColors.primary} size={"45px"} />
-          ) :(<Text
-            type="p"
-            text="Search for flight"
-            size={18}
-            weight={500}
-          />)}
+          ) : (
+            <Text type="p" text="Search for flight" size={18} weight={500} />
+          )}
         </Button>
       </ButtonWrapper>
     </Section>

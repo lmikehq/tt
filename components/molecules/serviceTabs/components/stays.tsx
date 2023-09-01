@@ -1,5 +1,4 @@
-
-"use client"
+"use client";
 import Section from "@molecule/section";
 import Flex from "@atom/flex";
 import { CustomRadioGroup } from "@atom/radio";
@@ -18,12 +17,14 @@ import { DatePicker } from "@atom/datepicker";
 import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@atom/staysMenu";
 import { ButtonWrapper } from "./flight";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 function Stays() {
   const [data, setData] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const { isMobile } = useScreenResolution();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,38 +35,66 @@ function Stays() {
   };
 
   const handleDataChange = (data: any) => {
-    setData(`${data.count.adults} Adult, ${data.count.children} Children, ${data.count.rooms} Rooms`);
+    setData(
+      `${data.count.adults} Adult, ${data.count.children} Children, ${data.count.rooms} Rooms`
+    );
   };
 
-  const open = Boolean(anchorEl)
+  const open = Boolean(anchorEl);
 
   return (
-    <Section padding="2rem 0">
-      <Flex align="center" gap=".5rem">
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="Going to" />
+    <Section padding="2rem 0" height="unset">
+      <Flex align="center" direction={isMobile ? "column" : "row"} gap=".5rem">
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text
+            type="label"
+            size={isMobile ? 16 : 18}
+            text="Where do you want to stay?"
+          />
           <Input
-            placeholder="Current Location"
+            placeholder="Enter Destination or Hotel Name"
+            styles={{ fontFamily: "poppins" }}
           />
         </Flex>
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="Check In" />
-          <DatePicker placeholder="Select Date" position="start"/>
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text type="label" size={isMobile ? 16 : 18} text="Check In" />
+          <DatePicker placeholder="Select Date" position="start" />
         </Flex>
 
-          <Flex direction="column" gap=".75rem">
-            <Text type="h3" text="Return" />
-            <DatePicker placeholder="Select Date" position="start"/>
-          </Flex>
-        
-        <Flex direction="column" gap=".75rem">
-          <Text type="h3" text="Guests and Rooms" />
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text type="label" size={isMobile ? 16 : 18} text="Return" />
+          <DatePicker placeholder="Select Date" position="start" />
+        </Flex>
+
+        <Flex
+          direction="column"
+          gap=".75rem"
+          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+        >
+          <Text
+            type="label"
+            size={isMobile ? 16 : 18}
+            text="Guests and Rooms"
+          />
           <ClickAwayListener onClickAway={handleClose}>
             <div>
               <Input
                 onClick={handleClick}
                 placeholder="Click me to open dropdown"
                 value={data}
+                styles={{ fontFamily: "poppins" }}
               />
               {open && <StaysMenu onDataChange={handleDataChange} />}
             </div>
@@ -75,23 +104,20 @@ function Stays() {
       <ButtonWrapper>
         <Button
           width="100%"
-          padding="2rem"
+          borderRadius="4px"
           cursor="pointer"
           onClick={async () => {
             if (loading) return;
             setLoading(true);
             await sleep(200);
-            router.push(`https://www.booking.com/`)
+            router.push(`https://www.booking.com/`);
           }}
         >
           {loading ? (
             <Spinner fill={ttColors.primary} size={"45px"} />
-          ) :(<Text
-            type="p"
-            text="Search for Hotels"
-            size={18}
-            weight={500}
-          />)}
+          ) : (
+            <Text type="p" text="Search for Hotels" size={18} weight={500} />
+          )}
         </Button>
       </ButtonWrapper>
     </Section>

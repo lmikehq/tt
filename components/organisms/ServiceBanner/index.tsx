@@ -12,8 +12,8 @@ const BannerWrapper = styled.div`
   box-shadow: 0px 3px 24px #00000014;
 
   @media (max-width: 900px) {
-    width: 90vw;
-    margin-top: 4rem;
+    width: 100%;
+    margin-top: 0rem;
     padding: 1rem;
   }
 `;

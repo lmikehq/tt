@@ -15,7 +15,7 @@ const Section: React.FC<sectionProps> = ({
   height,
   padding,
   styles,
-    className,
+  className,
 }) => {
   return (
     <section
@@ -23,8 +23,8 @@ const Section: React.FC<sectionProps> = ({
         width: width ? width : "100%",
         margin: margin || "0",
         padding: padding || "0",
-        height: height || "100%",
-        ...styles
+        height: height || "unset",
+        ...styles,
       }}
     >
       {children}

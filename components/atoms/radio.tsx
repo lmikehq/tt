@@ -7,6 +7,7 @@ import {
   FormLabel,
 } from "@mui/material";
 import Flex from "@atom/flex";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 interface Option {
   value: any;
@@ -34,6 +35,7 @@ export function CustomRadioGroup({
   direction = "row",
   value,
 }: CustomRadioGroupProps) {
+  const { isMobile } = useScreenResolution();
   return (
     <FormControl>
       <RadioGroup
@@ -56,6 +58,7 @@ export function CustomRadioGroup({
                 ".MuiFormControlLabel-label": {
                   fontFamily: "Poppins",
                   fontWeight: "400 !important",
+                  fontSize: isMobile ? "1rem" : "1rem",
                 },
               }}
             />

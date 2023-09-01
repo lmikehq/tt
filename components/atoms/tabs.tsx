@@ -22,7 +22,7 @@ interface TabPanelProps {
 const TabWrapper = styled.div<{ isMobile?: boolean }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
-    // height: 3px;
+    height: 4px;
   }
   .MuiTabs-root {
   }
@@ -78,14 +78,13 @@ export default function CustomTab({
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  const { isMobile } = useScreenResolution();
 
   const icons = [
-    <GiPassport color="var(--secondary-color)" />,
-    <IoAirplaneSharp color="var(--secondary-color)" />,
-    <IoBedSharp color="var(--secondary-color)" />,
+    <GiPassport size={21} color="var(--secondary-color)" />,
+    <IoAirplaneSharp size={21} color="var(--secondary-color)" />,
+    <IoBedSharp size={21} color="var(--secondary-color)" />,
   ];
-
-  const { isMobile } = useScreenResolution();
 
   return (
     <TabWrapper isMobile={isMobile}>
@@ -93,22 +92,23 @@ export default function CustomTab({
         <Tabs
           value={value}
           onChange={handleChange}
+          variant={isMobile ? "fullWidth" : "standard"}
           aria-label="select your service"
           sx={{
-            fontFamily: "Montserrat"
+            fontFamily: "Montserrat",
           }}
         >
           {tabItems.map((tabItem, i) => (
             <Tab
               key={tabItem.value}
               label={
-                <Flex align="center" gap=".5rem">
+                <Flex align="center" justify="center" gap=".5rem">
                   {defaultIcons && icons[tabItem.value]}
                   <Text
                     font="Montserrat"
                     type="p"
                     text={tabItem.label}
-                    size={isMobile ? ".7rem" : "1rem"}
+                    size={isMobile ? "1rem" : "1rem"}
                     weight={600}
                     // color="var(--secondary-color)"
                   />
@@ -119,7 +119,8 @@ export default function CustomTab({
                   borderRight: "1px solid #ccc",
                 }),
                 ...(!isMobile && { padding: "0 2rem" }),
-                ...(isMobile && { borderBottom: `1px solid ${ttColors.dark}` }),
+                ...(isMobile && { padding: "0 0rem" }),
+                ...(isMobile && { borderBottom: `0px solid ${ttColors.dark}` }),
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",
                 },
