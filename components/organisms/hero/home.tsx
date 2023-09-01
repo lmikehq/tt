@@ -31,7 +31,7 @@ function HeroSection() {
         <SectionLayout>
           <Section
             styles={{ textAlign: "center" }}
-            padding={isMobile ? "3.75rem 0" : "0rem"}
+            padding={isMobile ? "3.75rem 0" : "6rem 0 0 0"}
           >
             <Text type="p" text="With you, we can" size={"1.2rem"} />
             <Text
