@@ -225,7 +225,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: Canada,
-      interval: "3 days",
+      interval: "3 Months",
     },
     {
       id: 2,
@@ -235,7 +235,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: newZealand,
-      interval: "3 days",
+      interval: "3 Months",
     },
     {
       id: 3,
@@ -245,7 +245,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: Uk,
-      interval: "3 days",
+      interval: "3 Months",
     },
     {
       id: 4,
@@ -255,7 +255,7 @@ const TopCountriesSection: React.FC = () => {
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
       image: Norway,
-      interval: "3 days",
+      interval: "3 Months",
     },
   ];
 
@@ -307,7 +307,7 @@ const TopCountriesSection: React.FC = () => {
                     </CountryName>
                     <IntervalTag>
                       <IntervalText>Work-visa</IntervalText>
-                      <IntervalDays>3 days</IntervalDays>
+                      <IntervalDays>3 Months</IntervalDays>
                     </IntervalTag>
 
                     <CountryDescription
@@ -337,7 +337,7 @@ const TopCountriesSection: React.FC = () => {
                   <LeftHeaderText>
                     <IntervalTag>
                       <IntervalText>Work-visa</IntervalText>
-                      <IntervalDays>3 days</IntervalDays>
+                      <IntervalDays>3 Months</IntervalDays>
                     </IntervalTag>
                     <CountryName>
                       Get {countries[activeImage - 1].name} Work visa
