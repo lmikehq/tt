@@ -5,7 +5,7 @@ import Flex from "@atom/flex";
 import Text from "@atom/text";
 import ShowButton from "@atom/showButton";
 
-const Box = styled.div<{ color: string, border: string }>`
+const Box = styled.div<{ color: string; border: string }>`
   border: 3px solid ${(props) => props.border};
   background: ${(props) => props.color};
   width: 100%;
@@ -53,7 +53,10 @@ function FAQ() {
 
   return (
     <Section padding="2rem 0">
-      <Box color={box.box1 ? "#F3FAFD" : "white"}  border= {box.box1 ? "#7BBBD6" : "#CDD6DA40"}>
+      <Box
+        color={box.box1 ? "#F3FAFD" : "white"}
+        border={box.box1 ? "#7BBBD6" : "#CDD6DA40"}
+      >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
             <Text
@@ -64,13 +67,13 @@ function FAQ() {
               color={box.box1 ? "#6092A7" : "#3C3C4380"}
             />
             <Flex width="52%">
-                <Text
-                  type="h1"
-                  text="Can I cancel or change my flight after booking?"
-                  size={32}
-                  weight={box.box1 ? 700 : 500}
-                  color={box.box1 ? "#6092A7" : "#3C3C4380"}
-                />
+              <Text
+                type="h1"
+                text="Can I cancel or change my flight after booking?"
+                size={32}
+                weight={box.box1 ? 700 : 500}
+                color={box.box1 ? "#6092A7" : "#3C3C4380"}
+              />
             </Flex>
             <ShowButton
               active={box.box1}
@@ -80,17 +83,20 @@ function FAQ() {
           <Flex justify="center">
             {box.box1 && (
               <BlueText>
-                Yes, you can usually cancel or change your flight, but there
+                {`Yes, you can usually cancel or change your flight, but there
                 might be fees involved. The ability to do this depends on the
                 fare type and airline policy. Flexible or refundable tickets
                 usually have more lenient change and cancellation policies. It's
-                advisable to review the terms and conditions when booking.
+                advisable to review the terms and conditions when booking.`}
               </BlueText>
             )}
           </Flex>
         </Flex>
       </Box>
-      <Box color={box.box2 ? "#F3FAFD" : "white"}  border= {box.box2 ? "#7BBBD6" : "#CDD6DA40"}>
+      <Box
+        color={box.box2 ? "#F3FAFD" : "white"}
+        border={box.box2 ? "#7BBBD6" : "#CDD6DA40"}
+      >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
             <Text
@@ -101,14 +107,14 @@ function FAQ() {
               color={box.box2 ? "#6092A7" : "#3C3C4380"}
             />
             <Flex width="52%">
-                <Text
-                  type="h1"
-                  text="Can I filter search results by specific preferences?"
-                  size={32}
-                  weight={box.box2 ? 700 : 500}
-                  color={box.box2 ? "#6092A7" : "#3C3C4380"}
-                  whiteSpace="nowrap"
-                />
+              <Text
+                type="h1"
+                text="Can I filter search results by specific preferences?"
+                size={32}
+                weight={box.box2 ? 700 : 500}
+                color={box.box2 ? "#6092A7" : "#3C3C4380"}
+                whiteSpace="nowrap"
+              />
             </Flex>
             <ShowButton
               active={box.box2}
@@ -126,7 +132,10 @@ function FAQ() {
           </Flex>
         </Flex>
       </Box>
-      <Box color={box.box3 ? "#F3FAFD" : "white"}  border= {box.box3 ? "#7BBBD6" : "#CDD6DA40"}>
+      <Box
+        color={box.box3 ? "#F3FAFD" : "white"}
+        border={box.box3 ? "#7BBBD6" : "#CDD6DA40"}
+      >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
             <Text
@@ -162,7 +171,10 @@ function FAQ() {
           </Flex>
         </Flex>
       </Box>
-      <Box color={box.box4 ? "#F3FAFD" : "white"}  border= {box.box4 ? "#7BBBD6" : "#CDD6DA40"}>
+      <Box
+        color={box.box4 ? "#F3FAFD" : "white"}
+        border={box.box4 ? "#7BBBD6" : "#CDD6DA40"}
+      >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
             <Text

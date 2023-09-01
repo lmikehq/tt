@@ -164,9 +164,9 @@ function FAQ() {
           <Flex justify="center">
             {box.box3 && (
               <BlueText>
-                After completing your booking, you'll receive an email
+                {` After completing your booking, you'll receive an email
                 confirmation with all the details you need, including check-in
-                instructions and contact information for the property.
+                instructions and contact information for the property.`}
               </BlueText>
             )}
           </Flex>
@@ -203,9 +203,9 @@ function FAQ() {
           <Flex justify="center">
             {box.box4 && (
               <BlueText>
-                If you anticipate arriving late, it's a good idea to inform the
+                {`  If you anticipate arriving late, it's a good idea to inform the
                 property in advance. Many places offer 24/7 check-in options or
-                have procedures for late arrivals.
+                have procedures for late arrivals.`}
               </BlueText>
             )}
           </Flex>

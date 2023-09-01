@@ -186,8 +186,8 @@ function SortedColumn() {
                   size={14}
                 />
               </Flex>
-              {airlines.map((airline) => (
-                <CheckBox checked={false}>
+              {airlines.map((airline, index) => (
+                <CheckBox key={index} checked={false}>
                   <Text type="p" text={airline} size={16} />
                 </CheckBox>
               ))}
@@ -269,8 +269,8 @@ function SortedColumn() {
           </Flex>
           {columnState.alliance && (
             <div>
-              {alliance.map((airline) => (
-                <CheckBox checked={false}>
+              {alliance.map((airline, index) => (
+                <CheckBox key={index} checked={false}>
                   <Text type="p" text={airline} size={16} />
                 </CheckBox>
               ))}

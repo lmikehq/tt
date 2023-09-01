@@ -22,7 +22,7 @@ interface CustomRadioGroupProps {
   justifyContent: string;
   direction?: "row" | "column";
   align?: "center" | "flex-start" | "flex-end";
-  value: any;
+  value?: any;
 }
 
 export function CustomRadioGroup({
