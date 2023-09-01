@@ -88,8 +88,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 5}
         disabled={highestPhase < 6}
         onClick={() => {
-          if (highestPhase >= 6) setPhase(6);
-          // setPhase(6);
+          // if (highestPhase >= 6) setPhase(6);
+          setPhase(6);
         }}
       />
     </Flex>

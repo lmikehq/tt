@@ -7,6 +7,7 @@ import DotIcon from "@image/form/docUpload/dotIcon.png";
 import { BiTrash } from "react-icons/bi";
 import { styled } from "styled-components";
 import Button from "@atom/button";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const Container = styled.div`
   height: 82px;
@@ -49,6 +50,7 @@ const UploadedDocTile = ({
   removeDocument,
   marginBottom,
 }: UploadedDocTileProps) => {
+  const { isMobile } = useScreenResolution();
   return (
     <Container style={{ marginBottom }}>
       <Row>
@@ -60,13 +62,32 @@ const UploadedDocTile = ({
           styles={{ marginRight: "16px" }}
         />
         <InnerRow>
-          <TextColumn>
+          <TextColumn
+            style={
+              {
+                // maxWidth: isMobile ? "260px" : "unset",
+                // whiteSpace: "nowrap",
+                // overflow: "hidden",
+                // textOverflow: "ellipsis",
+                // overflow: "hidden",
+              }
+            }
+          >
             <Text
               text={fileName}
               type={"p"}
               size={18}
               weight={600}
               color="#4A7181"
+              styles={{
+                maxWidth: isMobile ? "230px" : "unset",
+
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                // maxWidth: isMobile ? "260px" : "unset",
+                // textOverflow: "ellipsis",
+              }}
             />
             <Flex align="center">
               <Text
