@@ -47,7 +47,7 @@ const PaymentConfirmationModal = () => {
             <Section margin="0 0  24px" height="unset">
               <Text
                 type="h3"
-                text="Visa Payment Failed"
+                text="Payment Failed"
                 size={32}
                 weight={700}
                 color={ttColors.dark}
@@ -64,7 +64,7 @@ const PaymentConfirmationModal = () => {
               <br />
               <Text
                 type="p"
-                text="Sorry, your Visa Application payment was not
+                text="Sorry, your application payment was not
           successful."
                 weight={400}
                 size={18}
@@ -78,7 +78,7 @@ const PaymentConfirmationModal = () => {
                   background={ttColors.dark}
                   color={ttColors.light}
                   onClick={() => {
-                    handleModalClose();
+                    setModalOpen(false);
                     router.push("/dashboard");
                   }}
                 >
@@ -129,7 +129,7 @@ const PaymentConfirmationModal = () => {
             <Section margin="0 0  24px" height="unset">
               <Text
                 type="p"
-                text="Visa Application Completed"
+                text="Payment Completed Successfully"
                 size={32}
                 weight={700}
                 color={ttColors.dark}
@@ -146,7 +146,7 @@ const PaymentConfirmationModal = () => {
               <br />
               <Text
                 type="p"
-                text="Your application has been submitted and currently being reviewed by our application admin officers. Your information and uploaded docs will be reviewed and we will get back to you shortly for the next step."
+                text="Your payment was successful, please login to your dashboard to continue. Thank you for trusting Thrillers Travels."
                 weight={400}
                 size={18}
                 color="#929292"
@@ -158,7 +158,10 @@ const PaymentConfirmationModal = () => {
                   width="100%"
                   background={ttColors.dark}
                   color={ttColors.light}
-                  onClick={handleModalClose}
+                  onClick={() => {
+                    router.push("/visa/apply");
+                    handleModalClose();
+                  }}
                 >
                   Make another Application
                 </Button>

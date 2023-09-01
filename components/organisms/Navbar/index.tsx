@@ -16,17 +16,17 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { BiDollar } from "react-icons/bi";
 import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { TbCurrencyNaira } from "react-icons/tb";
+import { useUserStore } from "store/useStore";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
+import { User } from "types";
 import UserPopover from "./UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
-import { User } from "types";
-import { useUserStore } from "store/useStore";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -199,7 +199,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
 
           <NavMenu>
             <Flex
-              onClick={handleOpen}
+              // onClick={handleOpen}
               background="transparent"
               gap=".4rem"
               align="center"
@@ -208,8 +208,8 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               <BsGlobe />
               <Text text="EN" type="span" weight={400} />
               <Divider />
-              <BiDollar />
-              <Text text="EN" type="span" weight={400} />
+              <TbCurrencyNaira />
+              {/* <Text text="NGN" type="span" weight={400} /> */}
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}
@@ -222,10 +222,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
             ) : (
               <Flex gap="1rem">
                 <Link href="/auth/login">
-                  <Button 
-                    border="1px solid #06062A"
-                    background="transparent"
-                  >
+                  <Button border="1px solid #06062A" background="transparent">
                     <Text
                       text="Sign in"
                       color="#06062A"

@@ -1,11 +1,17 @@
-import styled from "styled-components";
-import Text from "@atom/text";
-import Flex from "@atom/flex";
 import Button from "@atom/button";
-import { ttColors } from "theme/colors";
+import Flex from "@atom/flex";
+import Text from "@atom/text";
+import Section from "@molecule/section";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { RiEditBoxFill } from "react-icons/ri";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useUserStore } from "store/useStore";
+import styled from "styled-components";
+import { ttColors } from "theme/colors";
+import AddressModal from "../accountAddress";
+import PasswordModal from "../accountPassword";
+import PhoneModal from "../accountPhone";
 
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
@@ -13,181 +19,306 @@ const AccountRight = styled.div`
   gap: 20px;
 `;
 
-const SectionTitle = styled.div`
-  display: flex;
-
-  & h2 {
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 32px;
-    margin: 20px 0px 15px;
-    line-height: 48px;
-
-    color: ${ttColors.dark};
-  }
-`;
-
 const AccountDetails = styled.div`
   background: #ffffff;
-  // box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
-  padding: 24px;
+`;
+
+const AccountWrapper = styled.div`
+  background: ${ttColors.defaultColor};
+  align-items: center;
+  margin: 1rem 0px 2rem;
+
+  @media screen and (max-width: 900px) {
+    height: fit-content;
+    padding: 20px 16px;
+  }
 `;
 
 const Account = () => {
   const { isMobile } = useScreenResolution();
 
+  // from here
+  const [openAddAddressModal, setOpenAddAddressModal] = useState(false);
+  const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
+  const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false);
+
+  const handleOpenAddAddressModal = () => {
+    setOpenAddAddressModal(true);
+  };
+
+  const handleCloseAddAddressModal = () => {
+    setOpenAddAddressModal(false);
+  };
+
+  const handleOpenChangePasswordModal = () => {
+    setOpenChangePasswordModal(true);
+  };
+
+  const handleCloseChangePasswordModal = () => {
+    setOpenChangePasswordModal(false);
+  };
+  const handleOpenChangePhoneModal = () => {
+    setOpenChangePhoneModal(true);
+  };
+
+  const handleCloseChangePhoneModal = () => {
+    setOpenChangePhoneModal(false);
+  };
+  // To here
+
+  const { user } = useUserStore((state) => state);
   const AccountInformation = [
     {
       title: "Name",
-      description: "John Deo",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
-      editable: true,
+      description: user.firstName + " " + user.lastName,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
+      editable: false,
     },
 
     {
       title: "Email",
-      description: "john.deo@gmail.com",
+      description: user.email,
       icon: <AiFillPlusCircle size={isMobile ? ".8rem" : "1rem"} />,
-      edit: "Add another email",
+      edit: "",
       editable: false,
     },
 
     {
       title: "Password",
       description: "********",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
     {
       title: "Phone Number",
-      description: "+1 000-000-0000",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      description: user?.phoneNumber,
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
     {
       title: "Address",
-      description: "St 32, main downtown, Los Angeles, California, USA",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      description: user?.address || "No address added",
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
       editable: true,
     },
 
     {
       title: "Date of Birth",
-      description: "01/01/1992",
-      icon: <RiEditBoxFill size={isMobile ? ".8rem" : "1rem"} style={{ borderRadius: "4px" }} />,
+      description: user?.dateOfBirth ? user?.dateOfBirth : "Not set",
+      icon: (
+        <RiEditBoxFill
+          size={isMobile ? ".8rem" : "1rem"}
+          style={{ borderRadius: "4px" }}
+        />
+      ),
 
       editable: false,
     },
   ];
   return (
-    <>
-      <SectionTitle>
-        <Text type="h2" size={isMobile ? "16px" : "25px"} text="Account" />
-      </SectionTitle>
-      <AccountDetails>
-        {AccountInformation.map((detail) => (
-          <Flex
-            justify="space-between"
-            key={detail.title}
-            gap="10px"
-            margin={isMobile ? "0px" : "35px 0 0"}
+    <Section
+      margin="2rem 0"
+      styles={{
+        background: "#fff",
+        borderRadius: "14px",
+        padding: ".25rem 1.5rem",
+      }}
+    >
+      <Section margin="2.5rem 0px 0px">
+        <Text type="h1" text="Account" size={20} weight={600} />
+      </Section>
+
+      <AccountWrapper>
+        <AccountDetails>
+          {AccountInformation.map((detail) => (
+            <Flex
+              justify="space-between"
+              key={detail.title}
+              gap="10px"
+              margin={isMobile ? "0px" : "35px 0 0"}
+            >
+              <AccountLeft>
+                <Text
+                  type="p"
+                  text={detail.title}
+                  size={isMobile ? "10px" : "15px"}
+                  color="#112211"
+                  weight="300"
+                />
+                <Text
+                  type="h5"
+                  text={detail.description}
+                  weight="400"
+                  size={isMobile ? "12px" : "18px"}
+                />
+              </AccountLeft>
+
+              <AccountRight>
+                {detail.edit && (
+                  <Button
+                    background="transparent"
+                    border="1px solid var(--primary-color)"
+                    color="var(--secondary-color)"
+                    height={isMobile ? "40px" : "48px"}
+                    width={isMobile ? "143px" : "175px"}
+                    fontSize={isMobile ? "12px" : "14px"}
+                    lineHeight="14px"
+                    styles={{
+                      gap: "10px",
+                      marginBottom: isMobile ? "1.4rem" : "",
+                    }}
+                    onClick={
+                      detail.title === "Name"
+                        ? undefined // Disable the "Edit" button for Name
+                        : detail.title === "Address"
+                        ? handleOpenAddAddressModal
+                        : detail.title === "Password"
+                        ? handleOpenChangePasswordModal
+                        : detail.title === "Phone Number"
+                        ? handleOpenChangePhoneModal
+                        : undefined // Handle other modals
+                    }
+                  >
+                    {detail.icon}
+                    <Text type="p" text={detail.edit} />
+                  </Button>
+                )}
+                {detail.editable && (
+                  <Button
+                    background="transparent"
+                    border="1px solid var(--primary-color)"
+                    color="var(--secondary-color)"
+                    height={isMobile ? "40px" : "48px"}
+                    width={isMobile ? "100px" : "175px"}
+                    fontSize={isMobile ? "12px" : "14px"}
+                    lineHeight="14px"
+                    onClick={
+                      detail.title === "Name"
+                        ? undefined // Disable the "Edit" button for Name
+                        : detail.title === "Address"
+                        ? handleOpenAddAddressModal
+                        : detail.title === "Password"
+                        ? handleOpenChangePasswordModal
+                        : detail.title === "Phone Number"
+                        ? handleOpenChangePhoneModal
+                        : undefined // Handle other modals
+                    }
+                    styles={{
+                      gap: "10px",
+                      marginBottom: isMobile ? "1.4rem" : "",
+                    }}
+                  >
+                    {detail.icon}
+                    <Text type="p" text={"Edit"} />
+                  </Button>
+                )}
+
+                {/* {detail.title === "Email" && (
+                  <Button
+                    background="transparent"
+                    border="1px solid var(--primary-color)"
+                    color="var(--secondary-color)"
+                    height={isMobile ? "40px" : "48px"}
+                    width={isMobile ? "100px" : "175px"}
+                    fontSize={isMobile ? "12px" : "14px"}
+                    lineHeight="14px"
+                    styles={{
+                      gap: "10px",
+                      marginBottom: isMobile ? "1.4rem" : "",
+                    }}
+                    onClick={
+                      detail.title === "Email"
+                        ? undefined 
+                        : detail.title === "Address"
+                        ? handleOpenAddAddressModal
+                        : detail.title === "Password"
+                        ? handleOpenChangePasswordModal
+                        : detail.title === "Phone Number"
+                        ? handleOpenChangePhoneModal
+                        : undefined 
+                    }
+                  >
+                    <RiEditBoxFill
+                      size={isMobile ? ".8rem" : "1rem"}
+                      style={{ borderRadius: "4px" }}
+                    />
+                    <Text type="p" text={"Edit"} />
+                  </Button>
+                )} */}
+              </AccountRight>
+            </Flex>
+          ))}
+
+          {/* <ReusableModal
+            open={openModal}
+            onClose={handleCloseModal}
+            headerText="Upload Document"
+            description="Secure your account: Change your password"
           >
-            <AccountLeft>
+            <Section>
               <Text
                 type="p"
-                text={detail.title}
-                size={isMobile ? "13px" : "25px"}
+                text="Enter Current Password"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
+              <Input placeholder="******" height="3rem" type="password" />
+            </Section>
+            <Section>
               <Text
-                type="h5"
-                text={detail.description}
-                weight="400"
-                size={isMobile ? "14px" : "25px"}
+                type="p"
+                text="Enter New Password"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
-            </AccountLeft>
+              <Input placeholder="******" height="3rem" type="password" />
+            </Section>
+            <Section margin="1rem 0px 1.5rem">
+              <Text
+                type="p"
+                text="Confirm New Password"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Input placeholder="******" height="3rem" type="password" />
+            </Section>
+          </ReusableModal> */}
 
-            <AccountRight>
-              {detail.edit && (
-                <Button
-                  background="transparent"
-                  border="1px solid var(--primary-color)"
-                  color="var(--secondary-color)"
-                  height={isMobile ? "40px" : "48px"}
-                  width={isMobile ? "143px" : "175px"}
-                  fontSize={isMobile ? "12px" : "14px"}
-                  lineHeight="14px"
-                  styles={{
-                    gap: "10px",
-                    marginBottom: isMobile ? "1.4rem" : "",
-                  }}
-                >
-                  {detail.icon}
-                  <Text type="p" text={"Add another email"} />
-                </Button>
-              )}
-              {detail.editable && (
-                <Button
-                  background="transparent"
-                  border="1px solid var(--primary-color)"
-                  color="var(--secondary-color)"
-                  height={isMobile ? "40px" : "48px"}
-                  width={isMobile ? "100px" : "175px"}
-                  fontSize={isMobile ? "12px" : "14px"}
-                  lineHeight="14px"
-                  styles={{
-                    gap: "10px",
-                    marginBottom: isMobile ? "1.4rem" : "",
-                  }}
-                >
-                  {detail.icon}
-                  <Text type="p" text={"Change"} />
-                </Button>
-              )}
-            </AccountRight>
-          </Flex>
-        ))}
-
-        {/* <Flex justify="space-between">
-          <AccountLeft>
-            <Text type="p" text="Email" />
-            <Text type="h3" text="john.deo@gmail.com" size="20px" />
-          </AccountLeft>
-          <AccountRight>
-            <Button
-              background="transparent"
-              border="1px solid var(--primary-color)"
-              color="var(--secondary-color)"
-              height="55px"
-              width="255px"
-              fontSize="17px"
-              lineHeight="17px"
-              styles={{ gap: "10px" }}
-            >
-              <AiFillPlusCircle size="1.5rem" />
-              <Text type="h3" text="Add another email" />
-            </Button>
-            <Button
-              background="transparent"
-              border="1px solid var(--primary-color)"
-              color="var(--secondary-color)"
-              height="55px"
-              width="140px"
-              fontSize="17px"
-              lineHeight="17px"
-              styles={{ gap: "10px" }}
-            >
-              <RiEditBoxFill size="1.5rem" style={{ borderRadius: "4px" }} />
-              <Text type="h3" text="Change" />
-            </Button>
-          </AccountRight>
-        </Flex> */}
-      </AccountDetails>
-    </>
+          <PasswordModal
+            open={openChangePasswordModal}
+            onClose={handleCloseChangePasswordModal}
+          />
+          <AddressModal
+            open={openAddAddressModal}
+            onClose={handleCloseAddAddressModal}
+          />
+          <PhoneModal
+            open={openChangePhoneModal}
+            onClose={handleCloseChangePhoneModal}
+          />
+        </AccountDetails>
+      </AccountWrapper>
+    </Section>
   );
 };
 

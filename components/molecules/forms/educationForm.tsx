@@ -101,6 +101,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
             max={5.0}
             min={1}
             defaultValue=""
+            step="0.01"
             formik={formik}
             type="number"
             name={`education.${count}.cgpa`}
@@ -156,7 +157,6 @@ export default function EducationForm({ formik, count, values }: formProps) {
             name={`education.${count}.endYear`}
             formik={formik}
             onChange={(e) => {
-              console.log(e);
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
@@ -165,7 +165,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
         </Section>
       </Flex>
       <Flex
-        align="center"
+        align={isMobile ? "flex-start" : "center"}
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "0.25rem"}
       >

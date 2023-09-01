@@ -8,7 +8,12 @@ import { toast } from "react-hot-toast";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { ttColors } from "theme/colors";
 
-const SaveProgressAndContinueLater = () => {
+interface SaveProgressAndContinueLaterProps {
+  saveProgressAndContinueLater?: () => void;
+}
+const SaveProgressAndContinueLater = ({
+  saveProgressAndContinueLater,
+}: SaveProgressAndContinueLaterProps) => {
   const { isMobile } = useScreenResolution();
 
   return (
@@ -52,6 +57,7 @@ const SaveProgressAndContinueLater = () => {
             background="none"
             borderRadius="4px"
             padding="1.5rem"
+            onClick={saveProgressAndContinueLater}
           >
             <Text
               type="p"

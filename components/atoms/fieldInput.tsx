@@ -24,6 +24,7 @@ interface FieldProps {
     | "tel"
     | "address"
     | "checkbox";
+  step?: string;
   placeholder: string;
   formik: FormikValues;
   options?: any[];
@@ -100,8 +101,17 @@ export const FieldInput = (props: FieldProps) => {
 };
 
 export const ArrayInput = (props: FieldProps) => {
-  const { name, type, placeholder, formik, addon, max, min, defaultValue } =
-    props;
+  const {
+    name,
+    type,
+    placeholder,
+    formik,
+    addon,
+    max,
+    min,
+    defaultValue,
+    step,
+  } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
@@ -118,6 +128,7 @@ export const ArrayInput = (props: FieldProps) => {
       <Input
         height="45px"
         addon={addon}
+        step={step}
         type={type}
         max={max}
         min={min}
@@ -195,12 +206,10 @@ export const FieldAsDate = (props: FieldProps) => {
   const error = getNestedValue(formik.errors, name);
 
   const handleChange = (e: any) => {
-    console.log(e);
     formik.setFieldValue(name, `${e.$d}`);
   };
 
   const value = getNestedValue(formik.values, name);
-  console.log(value);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">

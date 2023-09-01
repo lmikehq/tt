@@ -23,9 +23,16 @@ interface formProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<DetailsKeys>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function TripDetails({ steps, index, isLoading, formik }: formProps) {
+function TripDetails({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: formProps) {
   const { isMobile } = useScreenResolution();
 
   return (
@@ -169,9 +176,9 @@ function TripDetails({ steps, index, isLoading, formik }: formProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            console.log(formik);
           }}
           disabled={!formik.isValid || !formik.dirty}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       </form>
     </Section>

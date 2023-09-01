@@ -47,9 +47,9 @@ const FrameInfo = styled.div`
     
     border-radius: 0px 0px 24px 24px;
 
-    & h3 {
+    & h2 {
       margin-top: 4.5rem;
-      font-weight: 700;
+      // font-weight: 900;
       font-size: 40px;
       line-height: 60px;
       padding-bottom: 0.5rem;
@@ -74,6 +74,7 @@ const FrameInfo = styled.div`
       font-weight: 500;
       font-size: 14px;
       line-height: 17px;
+      left: 0
     }
   }
 `;
@@ -84,9 +85,10 @@ const serviceCard = [
     img: VisaImg,
     title: "Visas",
     description:
-      "Search Flights & Places Hire to our most popular destinations",
+      "Apply for a visa to over 200 countries around the world.",
     button: "Book visa",
     icon: <FaPaperPlane size={14} />,
+    url: "/visa",
   },
 
   {
@@ -94,9 +96,10 @@ const serviceCard = [
     img: FlightImg,
     title: "Flights",
     description:
-      "Search Flights & Places Hire to our most popular destinations",
+      "Travel the world with cheap flights, exclusive deals, and more.",
     button: "Search flights",
     icon: <FaPaperPlane size={14} />,
+    url: "/flight",
   },
 
   {
@@ -104,9 +107,10 @@ const serviceCard = [
     img: TravelImg,
     title: "Travel Guide",
     description:
-      "Search Flights & Places Hire to our most popular destinations",
+      "Get the best travel tips from our experts",
     button: "Explore guide",
     icon: <FaPaperPlane size={14} />,
+    url: "/contact-us",
   },
 
   {
@@ -114,7 +118,7 @@ const serviceCard = [
     img: HotelImg,
     title: "Hotels",
     description:
-      "Search Flights & Places Hire to our most popular destinations",
+      "Book hotels in over 100 countries around the world.",
     button: "Show hotels",
     icon: <FaPaperPlane size={14} />,
   },
@@ -136,13 +140,13 @@ const Frame: React.FC = () => {
             <ServiceCard key={item.id} style={{ position: "relative" }}>
               <Image src={item.img} alt="card image" />
               <FrameInfo>
-                <Text type="h3" text={item.title} />
+                <Text type="h2" text={item.title} weight={700} />
                 <Text type="p" text={item.description} />
                 <Button
                   zIndex="1"
                   background="var(--primary-color)"
                   padding="1rem 1.3rem"
-                  styles={{ width: isMobile ? "50%" : "40%" }}
+                  styles={{ width: isMobile ? "50%" : "40%",marginTop: isMobile ? ".5rem" : "0" }}
                   color="var(--secondary-color)"
                   onClick={applyButton}
                 >

@@ -1,13 +1,14 @@
-'use client'
+"use client";
 
-import CustomTab from '@atom/tabs';
-import React from 'react'
-import { styled } from 'styled-components';
-import Application from './components/application';
-import PaymentHistory from './components/payment';
-import Referrals from './components/referral';
-import Account from './components/account';
-
+import CustomTab from "@atom/tabs";
+import React from "react";
+import { styled } from "styled-components";
+import Application from "./components/application";
+import PaymentHistory from "./components/payment";
+import Account from "./components/account";
+import Favourite from "./components/favourite";
+import Notification from "./components/notification";
+import RTQueryClient from "@components/layouts/rtqWrapper";
 
 const Wrapper = styled.div`
   margin-top: 250px;
@@ -21,44 +22,55 @@ const Wrapper = styled.div`
     border-radius: 12px;
   }
   .MuiButtonBase-root {
-    width: 25%;
+    width: 20%;
 
     .flex__FlexWrapper-sc-996d4228-0 {
+      justify-content: center;
+    }
+
+    .flex__FlexWrapper-sc-54bd3624-0 {
       justify-content: center;
     }
   }
 `;
 
-
 function DashboardTabs() {
-      const tabItems = [
-        {
-          label: "Applications",
-          value: 0,
-          content: <Application />,
-        },
-        {
-          label: "history",
-          value: 1,
-          content: <PaymentHistory />,
-        },
-        {
-          label: "Referral",
-          value: 2,
-          content: <Referrals />,
-        },
+  const tabItems = [
+    {
+      label: "All Applications",
+      value: 0,
+      content: <Application />,
+    },
+    {
+      label: "Payment History",
+      value: 1,
+      content: <PaymentHistory />,
+    },
+    {
+      label: "Favourites",
+      value: 2,
+      content: <Favourite />,
+    },
 
-        {
-          label: "Account",
-          value: 3,
-          content: <Account />,
-        },
-      ];
+    {
+      label: "Notifications",
+      value: 3,
+      content: <Notification />,
+    },
+
+    {
+      label: "Account",
+      value: 4,
+      content: <Account />,
+    },
+  ];
   return (
     <Wrapper>
-      <CustomTab tabItems={tabItems} />
+      <RTQueryClient>
+        <CustomTab shadowShow tabItems={tabItems} />
+      </RTQueryClient>
     </Wrapper>
   );
 }
 
-export default DashboardTabs
+export default DashboardTabs;

@@ -6,7 +6,6 @@ import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import { useState, useEffect } from "react";
 import TextArea from "@atom/textArea";
 import { CustomRadioGroup } from "@atom/radio";
@@ -29,9 +28,16 @@ interface FormProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<PersonalInfoInterface>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
+function PersonalInfo({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: FormProps) {
   const { isMobile } = useScreenResolution();
   const options = [
     { value: true, label: "Yes" },
@@ -92,7 +98,6 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
                 text="Middle Name"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
-              <Required />
             </Flex>
             <FieldInput
               name="middleName"
@@ -212,6 +217,7 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
               placeholder="Enter your e-mail address"
             />
           </Section>
+
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
@@ -228,7 +234,6 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
                 name: "phoneNumber",
               }}
               onChange={(e) => {
-                console.log(e);
                 formik.setFieldValue("phoneNumber", e);
               }}
               inputClass="w"
@@ -908,10 +913,9 @@ function PersonalInfo({ steps, index, isLoading, formik }: FormProps) {
         </Section>
         <ContinueButton
           isLoading={isLoading}
-          onClick={() => {
-            console.log(formik);
-          }}
+          onClick={() => {}}
           disabled={!formik.isValid || !formik.dirty}
+          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       </form>
     </Section>

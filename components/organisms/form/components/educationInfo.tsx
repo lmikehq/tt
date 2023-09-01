@@ -22,9 +22,16 @@ interface formProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<{ education: EducationDetailsInterface[] }>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function EducationInfo({ steps, index, isLoading, formik }: formProps) {
+function EducationInfo({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -78,9 +85,9 @@ function EducationInfo({ steps, index, isLoading, formik }: formProps) {
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {
-              console.log(formik);
             }}
             disabled={!formik.isValid || !formik.dirty}
+            saveProgressAndContinueLater={saveProgressAndContinueLater}
           />
         </form>
       </Section>

@@ -30,7 +30,7 @@ body {
 body {
   font-family: var(--poppins-font);
   color: rgb(var(--foreground-rgb));
-  /* background: var(--bg-color); */
+  background: #fafbfc;
 }
 
 ::selection {
@@ -62,10 +62,10 @@ body {
 }
 
 @media screen and (max-width: 1024px) {
-  .reviewCard {
+  /* .reviewCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;
-  }
+  } */
   .destinationCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;
@@ -134,15 +134,16 @@ body {
 .react-tel-input .selected-flag {
   width: 46px !important;
 }
+.react-tel-input .form-control {
+  padding-left: 50px !important;
+}
 
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   height: 45px !important;
   padding: 0px !important;
 }
 
-.react-tel-input .form-control {
-  padding-left: 50px !important;
-}
+
 .css-vqmohf-MuiButtonBase-root-MuiRadio-root {
   padding: 3px !important;
 }
@@ -165,6 +166,10 @@ body {
   font-weight: 500;
 }
 
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 .title-font {
   font-family: var(--title-font) !important;
 }

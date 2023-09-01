@@ -30,9 +30,16 @@ interface formProps {
   index: number;
   isLoading: boolean;
   formik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
+  saveProgressAndContinueLater: () => void;
 }
 
-function EmploymentInfo({ steps, index, isLoading, formik }: formProps) {
+function EmploymentInfo({
+  steps,
+  index,
+  isLoading,
+  formik,
+  saveProgressAndContinueLater,
+}: formProps) {
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -86,9 +93,9 @@ function EmploymentInfo({ steps, index, isLoading, formik }: formProps) {
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {
-              console.log(formik);
             }}
             disabled={!formik.isValid || !formik.dirty}
+            saveProgressAndContinueLater={saveProgressAndContinueLater}
           />
         </form>
       </Section>

@@ -24,6 +24,7 @@ const Section: React.FC<sectionProps> = ({
         margin: margin || "0",
         padding: padding || "0",
         height: height || "unset",
+
         ...styles,
       }}
     >

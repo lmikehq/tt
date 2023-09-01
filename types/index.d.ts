@@ -68,7 +68,7 @@ export interface EmploymentDetailsInterface {
 export interface PersonalInfoInterface {
   firstName: string;
   lastName: string;
-  middleName: string;
+  middleName?: string;
   email: string;
   placeOfBirth: string;
   phoneNumber: string;

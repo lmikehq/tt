@@ -1,3 +1,5 @@
+
+
 import {
   ApplicationFormRequestInput,
   DetailsKeys,
@@ -24,7 +26,7 @@ export const detailsKeys: DetailsKeys = {
   homeCountry: "",
   destination: "",
   applicationType: "",
-  visaType: "", //
+  visaType: "Family", //
   travellingBy: "AirPlane",
 };
 
@@ -35,7 +37,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
   .shape({
     firstName: yup.string().required("Required"),
     lastName: yup.string().required("Required"),
-    middleName: yup.string().required("Required"),
+    middleName: yup.string(),
     email: yup.string().required("Required").email("Invalid email address"),
     placeOfBirth: yup.string().required("Required"),
     phoneNumber: yup.string().required("Required"),
@@ -374,7 +376,8 @@ export const waitlistSchema = yup.object().shape({
     .required({ message: "Please select readiness option" }),
 });
 
-const test: ApplicationFormRequestInput = {
+
+export const test: ApplicationFormRequestInput = {
   primaryTraveller: {
     homeCountry: "Country1",
     destination: "Country2",

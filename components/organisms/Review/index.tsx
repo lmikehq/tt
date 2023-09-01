@@ -1,11 +1,9 @@
-'use client'
+"use client";
 
-import Review from "@atom/review"
+import Review from "@atom/review";
 
 const ReviewSec = () => {
-    return (
-        <Review />
-    )
-}
+  return <Review />;
+};
 
-export default ReviewSec
+export default ReviewSec;
