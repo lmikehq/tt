@@ -485,7 +485,7 @@ function RegisterPage() {
                       I agree to all the&nbsp;
                       <span style={{ color: "#a0001d", fontWeight: "400" }}>
                         <Link
-                          href="/privacy"
+                          href="/privacy-policy"
                           text="Terms"
                           color="#a0001d"
                           style={{ fontWeight: "400" }}
@@ -494,7 +494,7 @@ function RegisterPage() {
                       &nbsp;and&nbsp;
                       <span style={{ color: "#a0001d", fontWeight: "400" }}>
                         <Link
-                          href="/privacy"
+                          href="/privacy-policy"
                           text=" Privacy Policies"
                           color="#a0001d"
                           style={{ fontWeight: "400" }}

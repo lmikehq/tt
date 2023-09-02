@@ -206,22 +206,22 @@ const ContactPage = () => {
     {
       number: "01",
       text: "Chat with our AI",
-      href: "",
+      href: "/chat",
     },
     {
       number: "02",
       text: "Chat with an Agent",
-      href: "",
+      href: "/chat",
     },
     {
       number: "03",
       text: "Chat with our travel guide",
-      href: "",
+      href: "/chat",
     },
     {
       number: "04",
       text: "Testimony",
-      href: "",
+      href: "/",
     },
   ];
 
