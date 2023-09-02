@@ -24,7 +24,7 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
       padding={isMobile ? "0" : "0 1.5rem"}
       margin={isMobile ? "0" : "0 0 5rem 0"}
     >
-      <Grid columns="25% 25% 25% 25%" gap="0">
+      <Grid columns="4" gap="0">
         <Flex align="center">
           <CircleProgress
             index="1"

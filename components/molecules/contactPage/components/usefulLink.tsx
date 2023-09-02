@@ -1,5 +1,6 @@
 "use client";
 
+import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
@@ -42,7 +43,7 @@ function UsefulLinks({
         }}
       >
         {navigationLinks.map((link) => (
-          <Grid columns="2% 98%" gap="1rem" key={link.number} align="center">
+          <Flex gap="1rem" key={link.number} align="center">
             <Text type="h6" text={link.number} color="#343a40" />
             <Link href={link.href}>
               <Text
@@ -54,7 +55,7 @@ function UsefulLinks({
                 text={link.text}
               />
             </Link>
-          </Grid>
+          </Flex>
         ))}
       </Section>
     </ContactLink>

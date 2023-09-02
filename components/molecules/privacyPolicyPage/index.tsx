@@ -1,17 +1,15 @@
 "use client";
 
-import Breadcrumb from "@atom/breadcrumb";
 import { Grid } from "@atom/grid";
 import UsefulLinks from "@molecule/contactPage/components/usefulLink";
 import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";
-
-import Text from "@atom/text";
+import SectionLayout from "@components/layouts/sectionLayout";
+import Section from "@molecule/section";
 import { customNavigationLinks } from "data/customNavigationLinks";
 import { PRIVACY_POLICY } from "data/privacyPolicy";
 import PrivacyPolicyDetails from "./prvacyPolicyDetails";
-import Section from "@molecule/section";
-import SectionLayout from "@components/layouts/sectionLayout";
+import Flex from "@atom/flex";
 
 const PrivacyPolicySection = styled.section`
   margin-top: 2.5rem;
@@ -21,28 +19,21 @@ const PrivacyPolicy = styled.div`
   margin-bottom: 2rem;
 `;
 
-const PrivacyPolicyCard = styled.div`
-  height: fit-content;
-  width: 100%;
-  background: #fff;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  padding: 1.5rem 2rem;
-`;
-
 const PrivacyPoliicyPage = () => {
   const { isMobile } = useScreenResolution();
   return (
-    <SectionLayout {...(isMobile && { padding: "0" })}>
+    <SectionLayout {...(isMobile && { padding: " 0 1rem" })}>
       {/* <PravacyPoliicyPage /> */}
       <PrivacyPolicySection>
-        <Grid
+        <Flex
           gap={isMobile ? "1rem" : "3rem"}
-          columns={isMobile ? "100%" : "25% 75%"}
+          direction={isMobile ? "column" : "row"}
           margin="2rem auto"
         >
-          <UsefulLinks navigationLinks={customNavigationLinks} />
-          <Section>
+          <Section width={isMobile ? "100%" : "25%"}>
+            <UsefulLinks navigationLinks={customNavigationLinks} />
+          </Section>
+          <Section width={isMobile ? "100%" : "75%"}>
             <PrivacyPolicy>
               <h1>Privacy Policy Section</h1>
             </PrivacyPolicy>
@@ -54,10 +45,10 @@ const PrivacyPoliicyPage = () => {
                 margin="0 0 2rem"
                 color="#475569"
               /> */}
-              <PrivacyPolicyDetails details={PRIVACY_POLICY} />
+            <PrivacyPolicyDetails details={PRIVACY_POLICY} />
             {/* </PrivacyPolicyCard> */}
           </Section>
-        </Grid>
+        </Flex>
       </PrivacyPolicySection>
     </SectionLayout>
   );
