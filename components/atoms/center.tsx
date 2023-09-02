@@ -18,7 +18,7 @@ function Center({
         justifyContent: "center",
         alignItems: "center",
         width: width || "100%",
-        height: height || "100%",
+        height: height || "unset",
         margin: margin || "0 auto",
       }}
     >

@@ -9,7 +9,7 @@ export default styled.section<{ margin?: string; padding?: string }>`
   position: relative;
 
   @media screen and (max-width: 900px) {
-    width: 100%;
     padding: ${(props) => props?.padding || "0 1.187rem"};
+    width: 100%;
   }
 `;

@@ -12,11 +12,15 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+
+    "@mui/styles": "^5.14.6",
+
     "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^5.14.6",
     "@mui/lab": "^5.0.0-alpha.141",
     "@mui/material": "^5.14.6",
     "@mui/x-date-pickers": "^6.12.0",
+
     "@paystack/inline-js": "^2.13.0",
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-query": "^4.29.19",
@@ -40,7 +44,7 @@
     "react-date-range": "^1.4.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^4.8.0",
+    "react-icons": "^4.10.1",
     "react-lottie": "^1.2.3",
     "react-next-keep-alive": "^1.0.15",
     "react-paystack": "^4.0.3",

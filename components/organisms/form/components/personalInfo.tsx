@@ -98,7 +98,6 @@ function PersonalInfo({
                 text="Middle Name"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
-              <Required />
             </Flex>
             <FieldInput
               name="middleName"
@@ -219,7 +218,6 @@ function PersonalInfo({
             />
           </Section>
 
-
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
@@ -242,8 +240,6 @@ function PersonalInfo({
               placeholder="Enter phone number"
             />
           </Section>
-
-
         </Flex>
         <Flex
           margin="0"
@@ -583,7 +579,6 @@ function PersonalInfo({
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
                   />
-
                   {formik.touched["tuberculosis"] &&
                     formik.errors["tuberculosis"] && (
                       <ErrorText text={formik.errors["tuberculosis"]} />
@@ -918,8 +913,7 @@ function PersonalInfo({
         </Section>
         <ContinueButton
           isLoading={isLoading}
-          onClick={() => {
-          }}
+          onClick={() => {}}
           disabled={!formik.isValid || !formik.dirty}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
