@@ -23,7 +23,8 @@ const Section: React.FC<sectionProps> = ({
         width: width ? width : "100%",
         margin: margin || "0",
         padding: padding || "0",
-        height: height || "100%",
+        height: height || "unset",
+
         ...styles,
       }}
     >

@@ -26,7 +26,7 @@ const TabWrapper = styled.div<{
 }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
-    height: 3px;
+    height: 4px;
   }
   .MuiTabs-root {
     padding: 0px;
@@ -44,25 +44,15 @@ const TabWrapper = styled.div<{
       color: ${({ addColor }) => addColor ? "#fff" : "#000000"};
   }
   .css-1gsv261 {
-    border-bottom: 1px solid transparent;
+    // border-bottom: 1px solid transparent;
   }
 
   .MuiTabs-indicator .css-1aquho2-MuiTabs-indicator {
     width: 100% !important;
   }
-  .MuiTabs-flexContainer {
-    height: 100%;
-    width: 100%;
-    gap: 0;
-    justify-content: flex-start
-    
-    // border-bottom: 1px solid ${ttColors.dark};
 
-    // @media screen and (max-width: 900px) {
-    //   justify-content: unset;
-    //   overflow: scroll;
-    // }
-  }
+  z-index: 5;
+
 `;
 
 function TabPanel(props: TabPanelProps) {
@@ -112,14 +102,13 @@ export default function CustomTab({
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  const { isMobile } = useScreenResolution();
 
   const icons = [
-    <GiPassport color="var(--secondary-color)" />,
-    <IoAirplaneSharp color="var(--secondary-color)" />,
-    <IoBedSharp color="var(--secondary-color)" />,
+    <GiPassport size={21} color="var(--secondary-color)" />,
+    <IoAirplaneSharp size={21} color="var(--secondary-color)" />,
+    <IoBedSharp size={21} color="var(--secondary-color)" />,
   ];
-
-  const { isMobile } = useScreenResolution();
 
   return (
     <TabWrapper
@@ -131,26 +120,23 @@ export default function CustomTab({
         <Tabs
           value={value}
           onChange={handleChange}
+          variant={isMobile ? "fullWidth" : "standard"}
           aria-label="select your service"
-          sx={
-            {
-              // display: "grid",
-              // "& .MuiTabs-flexContainer": {
-              //   gap: "2rem",
-              // },
-            }
-          }
-        >
+          sx={{
+            fontFamily: "Montserrat",
+          }}
+      >
           {tabItems.map((tabItem, i) => (
             <Tab
               key={tabItem.value}
               label={
-                <Flex align="center" gap=".5rem">
+                <Flex align="center" justify="center" gap=".5rem">
                   {defaultIcons && icons[tabItem.value]}
                   <Text
+                    font="Montserrat"
                     type="p"
                     text={tabItem.label}
-                    size={isMobile ? ".7rem" : "1rem"}
+                    size={isMobile ? "1rem" : "1rem"}
                     weight={600}
                     // color="var(--secondary-color)"
                   />
@@ -161,7 +147,8 @@ export default function CustomTab({
                   borderRight: "1px solid #ccc",
                 }),
                 ...(!isMobile && { padding: "0 2rem" }),
-                ...(isMobile && { borderBottom: `1px solid ${ttColors.dark}` }),
+                ...(isMobile && { padding: "0 0rem" }),
+                ...(isMobile && { borderBottom: `0px solid ${ttColors.dark}` }),
                 "&.MuiTab-textColorPrimary.Mui-selected": {
                   color: "var(--secondary-color)",
                 },

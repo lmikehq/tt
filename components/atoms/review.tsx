@@ -148,8 +148,9 @@ const Review = () => {
           buttonText={isMobile ? "" : "See all"}
           href=""
         />
+
         <Grid
-          columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
+          columns={isMobile ? "1" : "3"}
           gap={isMobile ? "1rem" : "2rem"}
           className="reviewCard"
         >

@@ -8,12 +8,13 @@ import { styled } from "styled-components";
 import bgImage from "../../../assets/images/herobg-map.png";
 import SectionLayout from "@components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Section from "@molecule/section";
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
   // height: 70vh;
   background: var(--bg-color);
   // max-height: 750px;
-  height: ${({isMobile}) => (isMobile ? "730px" : "800px")};
+  height: ${({ isMobile }) => (isMobile ? "unset" : "800px")};
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
@@ -27,8 +28,11 @@ function HeroSection() {
     <HeroWrapper isMobile={isMobile}>
       <Navbar page="home" />
       <Center>
-        <div>
-          <SectionLayout style={{ textAlign: "center" }}>
+        <SectionLayout>
+          <Section
+            styles={{ textAlign: "center" }}
+            padding={isMobile ? "3.75rem 0" : "6rem 0 0 0"}
+          >
             <Text type="p" text="With you, we can" size={"1.2rem"} />
             <Text
               type="p"
@@ -50,9 +54,9 @@ function HeroSection() {
               size={isMobile ? "1.2rem" : "3.5rem"}
               weight={900}
             />
-          </SectionLayout>
+          </Section>
           <ServiceBanner />
-        </div>
+        </SectionLayout>
       </Center>
     </HeroWrapper>
   );

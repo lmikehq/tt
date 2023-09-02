@@ -127,8 +127,8 @@ const CustomPopover = () => {
                 { title: "Settings", url: "/dashboard" },
                 { title: "Travel Guide", url: "/chat" },
                 { title: "Book Visa", url: "/visa" },
-                { title: "Rent Stays", url: "/stays" },
-                { title: "Book Flights", url: "/flights" },
+                { title: "Rent Stay", url: "/stay" },
+                { title: "Book Flight", url: "/flight" },
                 { title: "Logout", url: "/logout" },
               ].map((item, i) =>
                 item.title === "Logout" ? (

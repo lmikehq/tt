@@ -1,11 +1,18 @@
+import { FlightProvider } from "context";
+
 interface layoutProps {
   children: React.ReactNode;
 }
 
 export const metadata = {
-  title: "flights",
+  title: "Book your flights",
+  description: "Book your flights here"
 };
 
-export default async function FlightLayout({ children }: layoutProps) {
-  return <>{children}</>;
+export default function FlightLayout({ children }: layoutProps) {
+  return (
+    <FlightProvider>
+      {children}
+    </FlightProvider>
+  );
 }

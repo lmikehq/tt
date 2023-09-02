@@ -43,7 +43,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
           {[
             { name: "Book visa", url: "visa", icon: <GiPassport /> },
             { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
-            { name: "Find stays", url: "stay", icon: <IoBedSharp /> },
+            { name: "Find stay", url: "stay", icon: <IoBedSharp /> },
           ].map((item, index) => {
             const active = pathArray === item.url;
             return (

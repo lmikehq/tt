@@ -128,7 +128,7 @@ const FooterSection = () => {
           <Grid
             className="footerLayout"
             gap={isMobile ? "2rem" : "2.5rem"}
-            columns={isMobile ? "1fr" : "repeat(5, 1fr)"}
+            columns={isMobile ? "1" : "5"}
             padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
           >
             <div className="footerLogo">
@@ -137,7 +137,7 @@ const FooterSection = () => {
               </Link>
               <Grid
                 className="footerIcons"
-                columns="repeat(4, 1fr)"
+                columns="4"
                 gap="1rem"
                 justify="center"
                 width="fit-content"
