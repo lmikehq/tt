@@ -21,11 +21,14 @@ const options = [
 ];
 
 export const ButtonWrapper = styled.div`
-  position: absolute;
-  left: 35%;
   width: 25%;
-  margin-top: 1rem;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -24px;
   @media (max-width: 900px) {
+    margin-top: 1rem;
     position: static;
     width: 100%;
   }
@@ -128,7 +131,7 @@ function Flights() {
             if (loading) return;
             setLoading(true);
             await sleep(200);
-            router.push(`/flight/listings`);
+            router.push(`https://www.booking.com/`);
           }}
         >
           {loading ? (

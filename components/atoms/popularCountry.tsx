@@ -36,9 +36,9 @@ const CountryWrapper = styled.section`
 `;
 
 const LeftSide = styled.div`
-  height: 415px;
+  // height: 415px;
   @media (max-width: 900px) {
-    height: 460px;
+    // height: 460px;
   }
 `;
 
@@ -46,9 +46,9 @@ const RightSide = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
-  height: 415px;
+  // height: 415px;
   @media (max-width: 900px) {
-    height: 460px;
+    // height: 460px;
   }
 `;
 
@@ -62,7 +62,7 @@ const StyledImage = styled(Image)<{ active: boolean }>`
 
 const CountryInfo = styled.div`
   position: relative;
-  padding: 20px;
+  padding: 20px 20px 80px 20px;
   background: var(--primary-color);
   color: var(--secondary-color);
   border-radius: 1.4rem;
@@ -104,7 +104,7 @@ const CountryDescription = styled.p`
   font-size: 15px;
   font-weight: normal;
   font-family: Montserrat;
-  max-height: 10.5rem;
+  // max-height: 10.5rem;
   line-height: 1.25em;
   // padding: 2px 0.2rem;
 `;
@@ -330,9 +330,7 @@ const TopCountriesSection: React.FC = () => {
             </Grid>
           </>
         ) : (
-
-          <Grid columns="repeat(2, 1fr)" gap="1rem" align="stretch">
-
+          <Grid columns="2" gap="1rem" align="unset">
             <LeftSide>
               {activeImage !== null && (
                 <CountryInfo>
