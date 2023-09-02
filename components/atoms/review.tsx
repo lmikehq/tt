@@ -150,11 +150,10 @@ const Review = () => {
         />
 
         <Grid
-          columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
+          columns={isMobile ? "1" : "3"}
           gap={isMobile ? "1rem" : "2rem"}
           className="reviewCard"
         >
-
           {reviewCardToShow.map((review, index) => (
             <div key={review.id}>
               <Card
