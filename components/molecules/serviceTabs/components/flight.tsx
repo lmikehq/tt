@@ -27,6 +27,7 @@ export const ButtonWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: -24px;
+
   @media (max-width: 900px) {
     margin-top: 1rem;
     position: static;
@@ -73,7 +74,7 @@ function Flights() {
     }
   }, [value]);
   return (
-    <Section padding={"2rem 0"}>
+    <Section padding={"2rem 0"} styles={{ position: "relative" }}>
       <Flex direction="column">
         <Flex align="center" gap={isMobile ? "1rem" : "2rem"}>
           <CustomRadioGroup
@@ -89,7 +90,7 @@ function Flights() {
         {value === "multi-city" ? (
           <>
             {multiCityFlights}
-            <Button
+            {/* <Button
               onClick={handleAddMultiCityFlight}
               padding="0rem .5rem"
               borderRadius="4px"
@@ -111,7 +112,7 @@ function Flights() {
                   whiteSpace="nowrap"
                 />
               </Flex>
-            </Button>
+            </Button> */}
           </>
         ) : (
           <FlightModule

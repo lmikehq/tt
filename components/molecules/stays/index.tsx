@@ -8,6 +8,7 @@ import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
 import FAQ from "./components/faq";
 import Map from "@atom/map";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const BlueBox = styled.div`
   border: 2px solid #7bbbd6;
@@ -36,19 +37,17 @@ const ImageBox = styled.div<{ imageUrl: string }>`
 `;
 
 const StaySection = () => {
-  const image2 = require("../../../assets/images/stays/image2.jpg").default
-    .src;
-  const image1 = require("../../../assets/images/stays/image3.png").default
-    .src;
-  const image3 = require("../../../assets/images/stays/image1.jpg").default
-    .src;
+  const image2 = require("../../../assets/images/stays/image2.jpg").default.src;
+  const image1 = require("../../../assets/images/stays/image3.png").default.src;
+  const image3 = require("../../../assets/images/stays/image1.jpg").default.src;
 
+  const { isMobile } = useScreenResolution();
   return (
-    <Section padding="0 5rem">
+    <Section padding={isMobile ? "0 1rem" : "0 5rem"}>
       <Flex direction="column" gap=".65rem" wrap="wrap">
         <Text
           type="h1"
-          text="What Thrillers have to offer"
+          text="What Thrillers have to offer "
           font="Montserrat"
           weight={700}
           size={36}
@@ -59,7 +58,11 @@ const StaySection = () => {
           size={18}
         />
       </Flex>
-      <Flex padding="2rem 0" gap="4rem">
+      <Flex
+        padding="2rem 0"
+        gap={isMobile ? "2rem" : '"4rem"'}
+        direction={isMobile ? "column" : "row"}
+      >
         <BlueBox>
           <Flex direction="column" gap="1.5rem">
             <BlueIcon>
@@ -114,7 +117,11 @@ const StaySection = () => {
         </BlueBox>
       </Flex>
       <Flex padding="2rem 0" direction="column" gap="2rem">
-        <Flex direction="column" gap=".65rem" wrap="wrap">
+        <Flex
+          direction="column"
+          gap=".65rem"
+          wrap={isMobile ? "unset" : "wrap"}
+        >
           <Text
             type="h1"
             text="Popular Stays Deals from Lagos"
@@ -126,10 +133,10 @@ const StaySection = () => {
             type="p"
             text="Here are the stays that are mainly booked from Lagos. You can check out the stays."
             size={18}
-            whiteSpace="nowrap"
+            whiteSpace={isMobile ? "unset" : "nowrap"}
           />
         </Flex>
-        <Flex gap="2rem">
+        <Flex gap="2rem" direction={isMobile ? "column" : "row"}>
           <Flex direction="column" gap="1rem">
             <ImageBox imageUrl={image3} />
             <Flex direction="column" gap="1rem">
@@ -243,7 +250,7 @@ const StaySection = () => {
           </Flex>
         </Flex>
       </Flex>
-      <Map/>
+      <Map />
       <Flex align="center" direction="column" padding="2rem 0">
         <Flex direction="column" align="center" gap=".5rem">
           <Text

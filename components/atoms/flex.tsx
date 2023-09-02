@@ -43,7 +43,7 @@ interface flexProps {
     | "inherit"
     | "initial"
     | "unset";
-  wrap?: "wrap" | "nowrap";
+  wrap?: "wrap" | "nowrap" | "unset";
   border?: string;
   height?: string;
   cursor?: string;

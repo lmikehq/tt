@@ -1,29 +1,30 @@
 "use client";
 
 import Center from "@atom/center";
-import Text from "@atom/text";
+import bgImage from "@image/herobg-visa.png";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { styled } from "styled-components";
-import bgImage from "@image/herobg-visa.png";
 
-const HeroWrapper = styled.div`
+const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
   background: var(--bg-color);
-  height: 500px;
+  height: ${(props) => (props.isMobile ? "unset" : "500px")};
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  margin-bottom: 20rem;
-  `;
+  margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
+`;
 
 function StayHero() {
+  const { isMobile } = useScreenResolution();
   return (
     <>
-      <Navbar page='stay' />
-      <HeroWrapper>
-        <div style={{paddingTop:'14rem'}}>
+      <Navbar page="stay" />
+      <HeroWrapper isMobile={isMobile}>
+        <div style={{ paddingTop: "14rem" }}>
           <Center>
             <ServiceBanner />
           </Center>

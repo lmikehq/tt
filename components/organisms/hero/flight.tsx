@@ -10,16 +10,18 @@ import Flex from "@atom/flex";
 import SectionLayout from "@components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 
-const HeroWrapper = styled.div`
+const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
   background: var(--bg-color);
-  height: calc(100vh - 70px);
+  // height: calc(100vh - 70px);
+  height: ${({ isMobile }) => (isMobile ? "unset" : "600px")};
+
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 
-  margin-bottom: 20rem;
+  margin-bottom: 2rem;
   @media (max-width: 900px) {
     height: unset;
     background-image: none;
@@ -42,7 +44,7 @@ function FlightHero() {
   return (
     <>
       <Navbar page="flights" />
-      <HeroWrapper>
+      <HeroWrapper isMobile={isMobile}>
         <HeroBackground />
         <Flex
           height="100%"
