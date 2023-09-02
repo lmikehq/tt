@@ -163,7 +163,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
             {[
               { name: "Visa Apply", url: "visa", icon: <GiPassport /> },
               { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
-              { name: "Rent Stays", url: "stay", icon: <IoBedSharp /> },
+              { name: "Rent Stay", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;
               return (
