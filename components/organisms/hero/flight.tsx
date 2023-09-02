@@ -6,28 +6,53 @@ import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
 import bgImage from "@image/herobg-visa.png";
+import Flex from "@atom/flex";
+import SectionLayout from "@components/layouts/sectionLayout";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const HeroWrapper = styled.div`
   width: 100vw;
   background: var(--bg-color);
-  height: 500px;
+  height: calc(100vh - 70px);
   background-image: url(${bgImage.src});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+
   margin-bottom: 20rem;
-  `;
+  @media (max-width: 900px) {
+    height: unset;
+    background-image: none;
+    margin-bottom: 3.5rem;
+  }
+`;
+
+const HeroBackground = styled.div`
+  @media (max-width: 900px) {
+    background-image: url(${bgImage.src});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 14rem;
+  }
+`;
 
 function FlightHero() {
+  const { isMobile } = useScreenResolution();
   return (
     <>
-      <Navbar page='flights' />
+      <Navbar page="flights" />
       <HeroWrapper>
-        <div style={{paddingTop:'14rem'}}>
-          <Center>
-            <ServiceBanner />
-          </Center>
-        </div>
+        <HeroBackground />
+        <Flex
+          height="100%"
+          align="center"
+          justify="flex-end"
+          direction="column"
+          padding={isMobile ? "0 1.187rem" : "0"}
+        >
+          <ServiceBanner />
+        </Flex>
       </HeroWrapper>
     </>
   );

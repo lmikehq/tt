@@ -7,20 +7,25 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
 import FAQ from "./components/FAQ";
+import { useScreenResolution } from "hook/useScreenResolution";
+import SectionLayout from "@components/layouts/sectionLayout";
 
 const BlueBox = styled.div`
   border: 2px solid #7bbbd6;
   background: #f3fafd;
   padding: 3rem;
   border-radius: 8px;
+  @media (max-width: 900px) {
+    padding: 2rem 1.5rem;
+  }
 `;
 
 const BlueIcon = styled.div`
-  border: 2px solid #6092a7;
+  border: 1px solid #6092a7;
   background: #daf0f9;
   border-radius: 8px;
-  width: 20%;
-  padding: 1.5rem;
+  width: 57px;
+  height: 49px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -42,23 +47,29 @@ const FlightSection = () => {
   const image3 = require("../../../assets/images/flights/image3.jpg").default
     .src;
 
+  const { isMobile } = useScreenResolution();
   return (
-    <Section padding="0 5rem">
+    <SectionLayout>
       <Flex direction="column" gap=".65rem" wrap="wrap">
         <Text
           type="h1"
           text="What Thrillers have to offer"
           font="Montserrat"
           weight={700}
-          size={36}
+          size={isMobile ? 24 : 36}
         />
         <Text
           type="p"
           text="Our goal is to assist you in traveling with assurance and ensuring your voyage is as seamless as can be."
-          size={18}
+          size={isMobile ? 16 : 18}
+          weight={400}
         />
       </Flex>
-      <Flex padding="2rem 0" gap="4rem">
+      <Flex
+        padding="2rem 0"
+        direction={isMobile ? "column" : "row"}
+        gap={isMobile ? "1rem" : "4rem"}
+      >
         <BlueBox>
           <Flex direction="column" gap="1.5rem">
             <BlueIcon>
@@ -74,6 +85,7 @@ const FlightSection = () => {
               <Text
                 type="p"
                 text="Users can refine their search results based on criteria"
+                weight={400}
               />
             </Flex>
           </Flex>
@@ -88,6 +100,7 @@ const FlightSection = () => {
               <Text
                 type="p"
                 text="Not ready to book? Set alerts for when prices drop"
+                weight={400}
               />
             </Flex>
           </Flex>
@@ -107,6 +120,7 @@ const FlightSection = () => {
               <Text
                 type="p"
                 text="Users can refine their search results based on criteria"
+                weight={400}
               />
             </Flex>
           </Flex>
@@ -119,16 +133,16 @@ const FlightSection = () => {
             text="Flight Deals from Lagos"
             font="Montserrat"
             weight={700}
-            size={36}
+            size={isMobile ? 24 : 36}
           />
           <Text
             type="p"
             text="Here are the flight deals with the lowest prices. Act fast – they all 1-week trip in the next 6 months"
-            size={18}
-            whiteSpace="nowrap"
+            size={isMobile ? 16 : 18}
+            weight={400}
           />
         </Flex>
-        <Flex gap="2rem">
+        <Flex direction={isMobile ? "column" : "row"} gap="2rem">
           <Flex direction="column" gap="1rem">
             <ImageBox imageUrl={image3} />
             <Flex justify="space-between">
@@ -137,7 +151,7 @@ const FlightSection = () => {
                   type="h3"
                   text="Venice"
                   weight={700}
-                  size={28}
+                  size={isMobile ? 24 : 28}
                   font="Montserrat"
                 />
                 <Text
@@ -146,6 +160,7 @@ const FlightSection = () => {
                   color="#606060"
                   font="Montserrat"
                   weight={500}
+                  size={isMobile ? 16 : 18}
                 />
               </Flex>
               <Flex direction="column-reverse" gap=".25rem" align="flex-end">
@@ -153,7 +168,7 @@ const FlightSection = () => {
                   type="h3"
                   text="$2,200"
                   weight={700}
-                  size={28}
+                  size={isMobile ? 24 : 28}
                   font="Montserrat"
                 />
                 <Text
@@ -162,6 +177,7 @@ const FlightSection = () => {
                   color="#606060"
                   font="Montserrat"
                   weight={500}
+                  size={isMobile ? 16 : 18}
                 />
               </Flex>
             </Flex>
@@ -174,7 +190,7 @@ const FlightSection = () => {
                   type="h3"
                   text="Atlanta"
                   weight={700}
-                  size={28}
+                  size={isMobile ? 24 : 28}
                   font="Montserrat"
                 />
                 <Text
@@ -182,6 +198,7 @@ const FlightSection = () => {
                   text="United States"
                   color="#606060"
                   font="Montserrat"
+                  size={isMobile ? 16 : 18}
                   weight={500}
                 />
               </Flex>
@@ -190,7 +207,7 @@ const FlightSection = () => {
                   type="h3"
                   text="$1,850"
                   weight={700}
-                  size={28}
+                  size={isMobile ? 24 : 28}
                   font="Montserrat"
                 />
                 <Text
@@ -198,6 +215,7 @@ const FlightSection = () => {
                   text="Starts from"
                   color="#606060"
                   font="Montserrat"
+                  size={isMobile ? 16 : 18}
                   weight={500}
                 />
               </Flex>
@@ -211,7 +229,7 @@ const FlightSection = () => {
                   type="h3"
                   text="Sao Paulo"
                   weight={700}
-                  size={28}
+                  size={isMobile ? 24 : 28}
                   font="Montserrat"
                 />
                 <Text
@@ -220,6 +238,7 @@ const FlightSection = () => {
                   color="#606060"
                   font="Montserrat"
                   weight={500}
+                  size={isMobile ? 16 : 18}
                 />
               </Flex>
               <Flex direction="column-reverse" gap=".25rem" align="flex-end">
@@ -227,7 +246,7 @@ const FlightSection = () => {
                   type="h3"
                   text="$2,250"
                   weight={700}
-                  size={28}
+                  size={isMobile ? 24 : 28}
                   font="Montserrat"
                 />
                 <Text
@@ -236,6 +255,7 @@ const FlightSection = () => {
                   color="#606060"
                   font="Montserrat"
                   weight={500}
+                  size={isMobile ? 16 : 18}
                 />
               </Flex>
             </Flex>
@@ -243,23 +263,23 @@ const FlightSection = () => {
         </Flex>
       </Flex>
       <Flex align="center" direction="column" padding="2rem 0">
-        <Flex direction="column" align="center" gap=".5rem">
+        <Flex direction="column" gap=".5rem">
           <Text
             type="h2"
             text="Frequently Asked Questions"
-            size={36}
+            size={isMobile ? 24 : 36}
             font="Montserrat"
             weight={700}
           />
           <Text
             type="p"
             text="Have all your questions answered here?"
-            size={18}
+            size={isMobile ? 16 : 18}
           />
           <FAQ />
         </Flex>
       </Flex>
-    </Section>
+    </SectionLayout>
   );
 };
 

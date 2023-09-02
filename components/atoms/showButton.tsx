@@ -1,3 +1,4 @@
+import { useScreenResolution } from "hook/useScreenResolution";
 import { BiSolidMinusCircle } from "react-icons/bi";
 import { BsPlusCircleFill } from "react-icons/bs";
 
@@ -7,13 +8,14 @@ interface showProps {
 }
 
 export default function ShowButton({ active, handleClick }: showProps) {
+  const { isMobile } = useScreenResolution();
   return (
     <div>
       {active ? (
         <>
           <BiSolidMinusCircle
             color="#6092A7"
-            size={50}
+            size={isMobile ? 32 : 50}
             onClick={handleClick}
             cursor="pointer"
           />
@@ -22,7 +24,7 @@ export default function ShowButton({ active, handleClick }: showProps) {
         <>
           <BsPlusCircleFill
             color="#3C3C4380"
-            size={45}
+            size={isMobile ? 32 : 45}
             onClick={handleClick}
             cursor="pointer"
           />

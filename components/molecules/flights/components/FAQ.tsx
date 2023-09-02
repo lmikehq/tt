@@ -4,6 +4,7 @@ import { useState } from "react";
 import Flex from "@atom/flex";
 import Text from "@atom/text";
 import ShowButton from "@atom/showButton";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const Box = styled.div<{ color: string; border: string }>`
   border: 3px solid ${(props) => props.border};
@@ -11,7 +12,7 @@ const Box = styled.div<{ color: string; border: string }>`
   width: 100%;
   height: 100%;
   padding: 3rem 0;
-  border-width: 3px 0px;
+  border-width: 1px 0px;
 
   &:first-child {
     border-top: 0;
@@ -20,6 +21,9 @@ const Box = styled.div<{ color: string; border: string }>`
   &:last-child {
     border-bottom: 0;
   }
+  @media (max-width: 900px) {
+    padding: 1.5rem;
+  }
 `;
 
 const BlueText = styled.div`
@@ -27,6 +31,10 @@ const BlueText = styled.div`
   font-weight: 400;
   font-size: 18px;
   width: 52%;
+  @media (max-width: 900px) {
+    width: 100%;
+    font-size: 1rem;
+  }
 `;
 
 interface BoxTypes {
@@ -50,6 +58,7 @@ function FAQ() {
       [box]: !prev[box],
     }));
   };
+  const { isMobile } = useScreenResolution();
 
   return (
     <Section padding="2rem 0">
@@ -59,18 +68,20 @@ function FAQ() {
       >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
-            <Text
-              type="h1"
-              text="01"
-              size={48}
-              weight={700}
-              color={box.box1 ? "#6092A7" : "#3C3C4380"}
-            />
-            <Flex width="52%">
+            {isMobile ? null : (
+              <Text
+                type="h1"
+                text="01"
+                size={48}
+                weight={700}
+                color={box.box1 ? "#6092A7" : "#3C3C4380"}
+              />
+            )}
+            <Flex width={isMobile ? "100%" : "52%"}>
               <Text
                 type="h1"
                 text="Can I cancel or change my flight after booking?"
-                size={32}
+                size={isMobile ? 20 : 32}
                 weight={box.box1 ? 700 : 500}
                 color={box.box1 ? "#6092A7" : "#3C3C4380"}
               />
@@ -99,21 +110,22 @@ function FAQ() {
       >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
-            <Text
-              type="h1"
-              text="02"
-              size={48}
-              weight={700}
-              color={box.box2 ? "#6092A7" : "#3C3C4380"}
-            />
-            <Flex width="52%">
+            {isMobile ? null : (
+              <Text
+                type="h1"
+                text="02"
+                size={48}
+                weight={700}
+                color={box.box2 ? "#6092A7" : "#3C3C4380"}
+              />
+            )}
+            <Flex width={isMobile ? "100%" : "52%"}>
               <Text
                 type="h1"
                 text="Can I filter search results by specific preferences?"
-                size={32}
+                size={isMobile ? 20 : 32}
                 weight={box.box2 ? 700 : 500}
                 color={box.box2 ? "#6092A7" : "#3C3C4380"}
-                whiteSpace="nowrap"
               />
             </Flex>
             <ShowButton
@@ -138,21 +150,22 @@ function FAQ() {
       >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
-            <Text
-              type="h1"
-              text="03"
-              size={48}
-              weight={700}
-              color={box.box3 ? "#6092A7" : "#3C3C4380"}
-            />
-            <Flex width="52%">
+            {isMobile ? null : (
+              <Text
+                type="h1"
+                text="03"
+                size={48}
+                weight={700}
+                color={box.box3 ? "#6092A7" : "#3C3C4380"}
+              />
+            )}
+            <Flex width={isMobile ? "100%" : "52%"}>
               <Text
                 type="h1"
                 text="Is my payment information secure on the website?"
-                size={32}
+                size={isMobile ? 20 : 32}
                 weight={box.box3 ? 700 : 500}
                 color={box.box3 ? "#6092A7" : "#3C3C4380"}
-                whiteSpace="nowrap"
               />
             </Flex>
             <ShowButton
@@ -177,18 +190,20 @@ function FAQ() {
       >
         <Flex direction="column" gap=".75rem">
           <Flex align="center" justify="space-around">
-            <Text
-              type="h1"
-              text="04"
-              size={48}
-              weight={700}
-              color={box.box4 ? "#6092A7" : "#3C3C4380"}
-            />
-            <Flex width="52.5%">
+            {isMobile ? null : (
+              <Text
+                type="h1"
+                text="04"
+                size={48}
+                weight={700}
+                color={box.box4 ? "#6092A7" : "#3C3C4380"}
+              />
+            )}
+            <Flex width={isMobile ? "100%" : "52%"}>
               <Text
                 type="h1"
                 text="Can I book hotels and car rentals alongside my flight on the same website?"
-                size={32}
+                size={isMobile ? 20 : 32}
                 weight={box.box4 ? 700 : 500}
                 color={box.box4 ? "#6092A7" : "#3C3C4380"}
               />
