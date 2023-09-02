@@ -38,10 +38,9 @@ const TabWrapper = styled.div<{
     height: 48px;
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
- 
     background: ${({ addBackgroundColor }) =>
-    addBackgroundColor ? "#87CEEB" : "#fff"};
-      color: ${({ addColor }) => addColor ? "#fff" : "#000000"};
+      addBackgroundColor ? "#87CEEB" : "#fff"};
+    color: ${({ addColor }) => (addColor ? "#fff" : "#000000")};
   }
   .css-1gsv261 {
     // border-bottom: 1px solid transparent;
@@ -51,8 +50,11 @@ const TabWrapper = styled.div<{
     width: 100% !important;
   }
 
-  z-index: 5;
+  .MuiTabs-scroller.MuiTabs-fixed.css-jpln7h-MuiTabs-scroller {
+    overflow: auto;
+  }
 
+  z-index: 5;
 `;
 
 function TabPanel(props: TabPanelProps) {
@@ -94,7 +96,7 @@ export default function CustomTab({
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
   shadowShow?: boolean;
-    addBackgroundColor?: boolean;
+  addBackgroundColor?: boolean;
   addColor?: boolean;
 }) {
   const [value, setValue] = useState(0);
@@ -125,7 +127,7 @@ export default function CustomTab({
           sx={{
             fontFamily: "Montserrat",
           }}
-      >
+        >
           {tabItems.map((tabItem, i) => (
             <Tab
               key={tabItem.value}

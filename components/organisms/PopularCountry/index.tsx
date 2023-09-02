@@ -1,13 +1,9 @@
-'use client'
+"use client";
 
 import TopCountriesSection from "@atom/popularCountry";
 
 const PopularCountry = () => {
-    return (
-      <div>
-        <TopCountriesSection />
-      </div>
-    );
-}
+  return <TopCountriesSection />;
+};
 
-export default PopularCountry
+export default PopularCountry;
