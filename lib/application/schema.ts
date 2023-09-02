@@ -320,7 +320,7 @@ export const familyInfoArraySchema = yup.array().of(singleFamilyInfoSchema);
 export const documentArraySchema = yup
   .array()
   .of(documentShema)
-  .min(1, "You need to add 4 documents");
+  .min(1, "Please upload at least one documents");
 
 export const manyEducationSchema = yup
   .object()

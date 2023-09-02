@@ -128,7 +128,9 @@ function ApplicationForm() {
     ).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
         toast.success(
-          "Your application has been submitted successfully, please proceed to make payment"
+          "Your application has been submitted successfully, please proceed to make payment", {
+            duration: 15000
+          }
         );
         return response.data;
       } else {
@@ -490,7 +492,7 @@ function ApplicationForm() {
         if (member.accompanying) accompanies++;
       });
     }
-    return accompanies > 0
+    return !isMobile ? 'Make Payment' : accompanies > 0 
       ? "Make Payment (NGN 30,000)"
       : "Make Payment (NGN 20,000)";
   };
