@@ -11,7 +11,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import SectionLayout from "@components/layouts/sectionLayout";
 
 const BlueBox = styled.div`
-  border: 2px solid #7bbbd6;
+  border: 1px solid #7bbbd6;
   background: #f3fafd;
   padding: 3rem;
   border-radius: 8px;
