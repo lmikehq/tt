@@ -87,6 +87,9 @@ function LoginPage() {
         columns="repeat(auto-fit, minmax(300px, 1fr))"
         margin={isMobile ? "1rem 0" : "4rem 0"}
         gap="5rem"
+        style={{
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        }}
       >
         <Section styles={{ display: isMobile ? "none" : "block" }}>
           <Slider {...settings}>

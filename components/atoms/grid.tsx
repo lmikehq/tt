@@ -27,7 +27,6 @@ const GridWrapper = styled.div<{
   textAlign?: string;
   padding?: string;
   className?: string;
-  style?: string;
 }>`
   display: grid;
   grid-template-columns: repeat(${(props) => props.columns}, 1fr);
@@ -39,8 +38,7 @@ const GridWrapper = styled.div<{
   justify-content: ${({ justify }) => (justify ? justify : "center")};
   text-align: ${({ textAlign }) => (textAlign ? textAlign : "unset")};
   padding: ${({ padding }) => (padding ? padding : "unset")};
-  className: ${({ className }) => (className ? className : "unset")}
-  
+  classname: ${({ className }) => (className ? className : "unset")};
 `;
 
 export const Grid: React.FC<gridProps> = ({
@@ -51,10 +49,11 @@ export const Grid: React.FC<gridProps> = ({
   justify,
   margin,
   align,
-    textAlign,
+  textAlign,
   padding,
   width,
-    className,
+  className,
+  style,
 }) => {
   return (
     <GridWrapper
@@ -64,10 +63,11 @@ export const Grid: React.FC<gridProps> = ({
       justify={justify}
       margin={margin}
       align={align}
-        textAlign={textAlign}
+      textAlign={textAlign}
       padding={padding}
       width={width}
       className={className}
+      style={style}
     >
       {children}
     </GridWrapper>

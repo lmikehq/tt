@@ -125,6 +125,9 @@ function LoginPage() {
         columns="repeat(auto-fit, minmax(300px, 1fr))"
         margin={isMobile ? "1rem 0" : "4rem 0"}
         gap="5rem"
+        style={{
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+        }}
       >
         <Section styles={{ display: isMobile ? "none" : "block" }}>
           <Slider {...settings}>
@@ -331,7 +334,12 @@ function LoginPage() {
             >
               Do not have an account? &nbsp;
               <Link href="/auth/register">
-                <Text type='span' text="Sign up" color="#a0001d" cursor="pointer" />
+                <Text
+                  type="span"
+                  text="Sign up"
+                  color="#a0001d"
+                  cursor="pointer"
+                />
               </Link>
             </p>
             <Flex
