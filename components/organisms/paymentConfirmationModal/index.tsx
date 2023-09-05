@@ -27,7 +27,7 @@ export const PaymentCompleteSection = ({
   const { isMobile } = useScreenResolution();
   return (
     <Section
-      padding="3rem 6rem"
+      padding={isMobile ? "3rem 1rem" : "3rem 6rem"}
       height="unset"
       styles={{
         backgroundImage: `url(${Confetti.src})`,
