@@ -69,6 +69,8 @@ function RegisterPage() {
   }
 
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
 
   const { isMobile } = useScreenResolution();
 
@@ -259,11 +261,11 @@ function RegisterPage() {
                 onClick={() => router.push("/")}
                 style={{ cursor: "pointer" }}
               />
-                <SideBtn
-                  title="Already have an account?"
-                  linkUrl="/auth/login"
-                  linkText="Login"
-                />
+              <SideBtn
+                title="Already have an account?"
+                linkUrl="/auth/login"
+                linkText="Login"
+              />
             </Flex>
             <Text
               type="h1"
@@ -418,7 +420,7 @@ function RegisterPage() {
                 </Section>
               </Flex>
 
-              <Section>
+              {/* <Section>
                 <Text
                   type="p"
                   text="Password"
@@ -485,6 +487,91 @@ function RegisterPage() {
                     </div>
                   ))}
                 </Section>
+              </Section> */}
+              <Section>
+                <Text
+                  type="p"
+                  text="Password"
+                  margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
+                />
+                <div
+                  onFocus={() => setIsPasswordFocused(true)} // Set the focus flag to true
+                  onBlur={() => setIsPasswordFocused(false)} // Set the focus flag to false when the input loses focus
+                >
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        password: e.target.value,
+                      })
+                    }
+                    border={
+                      checkIfFieldHasError("password")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                    value={registerData.password}
+                  />
+                </div>
+                {checkIfFieldHasError("password") && (
+                  <Text
+                    type="p"
+                    text={checkIfFieldHasError("password") || ""}
+                    color="#FF8682"
+                  />
+                )}
+
+                {/* Validation section will be shown only when the input is focused */}
+                {isPasswordFocused && (
+                  <Section margin="1rem 0px 0px">
+                    <Text
+                      type="h1"
+                      text="Your Password must have the following."
+                      size={16}
+                      weight={500}
+                      styles={{
+                        margin: "0px 0px .9rem 0px",
+                        lineHeight: "1.5rem",
+                      }}
+                    />
+                    {validationOptions.map((option) => (
+                      <div
+                        key={option.value}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "0.5rem",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                          color: isPasswordValid(
+                            registerData.password,
+                            option.value
+                          )
+                            ? "#000000"
+                            : "#000000",
+                        }}
+                      >
+                        <AiFillCheckCircle
+                          size="1.5rem"
+                          style={{
+                            color: isPasswordValid(
+                              registerData.password,
+                              option.value
+                            )
+                              ? "#7BBBD6"
+                              : "#B6B6B6",
+                          }}
+                        />
+                        <span style={{ marginLeft: "0.5rem" }}>
+                          {option.label}
+                        </span>
+                      </div>
+                    ))}
+                  </Section>
+                )}
               </Section>
 
               <Section>
