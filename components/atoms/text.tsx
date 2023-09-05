@@ -47,6 +47,7 @@ export const Text: React.FC<TextProps> = ({
   cursor,
   textAlign,
   styles = {},
+
 }) => {
   const updatedStyles: CSSProperties = {
     color,

@@ -179,7 +179,8 @@ function ApplicationForm() {
     destination: params.get("destination") || "",
   });
   const [currentPhase, setCurrentPhase] = useState(
-    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+    // type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+    7
   );
   // const [currentPhase, setCurrentPhase] = useState(5);
   const [highestPhase, setHighestPhase] = useState(1);

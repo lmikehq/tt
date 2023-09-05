@@ -2,6 +2,7 @@ import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { BiSolidUser } from "react-icons/bi";
+import { useVisaApplicationVoucherStore } from "store/useStore";
 import { styled } from "styled-components";
 
 const Container = styled.div`
@@ -21,6 +22,8 @@ const PaymentSummaryPane = ({
   fee,
   totalFee,
 }: PaymentSummaryPanePops) => {
+  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
+
   return (
     <Section>
       <Container>
@@ -53,7 +56,13 @@ const PaymentSummaryPane = ({
         >
           <Text text={visaApplicationType} type="p" weight={600} size={18} />
 
-          <Text text={fee} type="p" weight={400} size={16} />
+          <Text
+            text={fee}
+            type="p"
+            weight={400}
+            size={16}
+            decoration={applied && voucher ? "line-through" : ""}
+          />
         </Flex>
       </Container>
       <Flex
@@ -63,7 +72,13 @@ const PaymentSummaryPane = ({
       >
         <Text text="Total" type="p" weight={400} size={20} />
 
-        <Text text={totalFee} type="p" weight={600} size={30} />
+        <Text
+          text={totalFee}
+          type="p"
+          weight={600}
+          size={30}
+          decoration={applied && voucher ? "line-through" : ""}
+        />
       </Flex>
     </Section>
   );
