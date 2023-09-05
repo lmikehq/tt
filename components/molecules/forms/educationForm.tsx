@@ -1,5 +1,4 @@
 import CheckBox from "@atom/checkbox";
-import { BlockDatePicker } from "@atom/datepicker";
 import {
   ArrayInput,
   FieldAsDate,
@@ -7,16 +6,13 @@ import {
   FieldString,
 } from "@atom/fieldInput";
 import Flex from "@atom/flex";
-import Input from "@atom/input";
 import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
-import dayjs, { Dayjs } from "dayjs";
-import { FormikValues } from "formik";
+import dayjs from "dayjs";
 import { useScreenResolution } from "hook/useScreenResolution";
-import React, { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
+import React from "react";
 import { EducationDetailsInterface } from "types";
 
 interface formProps {

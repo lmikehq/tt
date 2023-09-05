@@ -1,16 +1,4 @@
-import Flex from "@atom/flex";
-import Text from "@atom/text";
-import Section from "@molecule/section";
-import { FormikProps, useFormik } from "formik";
-import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
-import Required from "@atom/required";
-import PhoneInput from "react-phone-input-2";
-import { useState, useEffect } from "react";
-import TextArea from "@atom/textArea";
-import { CustomRadioGroup } from "@atom/radio";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { personalInfoKeys, personalInfoSchema } from "@lib/application/schema";
+import ContinueButton from "@atom/continueButton";
 import {
   ErrorText,
   FieldAsDate,
@@ -18,10 +6,19 @@ import {
   FieldInput,
   FieldString,
 } from "@atom/fieldInput";
-import { SingleFormType } from "../applicationForm";
+import Flex from "@atom/flex";
+import { CustomRadioGroup } from "@atom/radio";
+import Required from "@atom/required";
+import Text from "@atom/text";
+import TextArea from "@atom/textArea";
+import Section from "@molecule/section";
+import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import dayjs from "dayjs";
+import { FormikProps } from "formik";
+import { useScreenResolution } from "hook/useScreenResolution";
+import PhoneInput from "react-phone-input-2";
 import { PersonalInfoInterface } from "types";
-import ContinueButton from "@atom/continueButton";
-import dayjs, { Dayjs } from "dayjs";
+import FormStepTitle from "./formStepsTitle";
 
 interface FormProps {
   steps: string[];
