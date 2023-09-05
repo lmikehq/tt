@@ -1,13 +1,12 @@
 import Flex from "@atom/flex";
+import Text from "@atom/text";
 import PaymentSummaryPane from "@molecule/payment/PaymentSummaryPane";
 import Section from "@molecule/section";
 import currencyFormatter from "data/currencyFormatter";
 import { isValid } from "date-fns";
+import { VisaApplicationFormInterface } from "types";
 import SaveProgressAndContinueLater from "./saveProgressAndContinueLater";
 import VisApplicationFormDetails from "./visaApplicationFormDetails";
-import Text from "@atom/text";
-import { VisaApplicationFormInterface } from "types";
-import { useScreenResolution } from "hook/useScreenResolution";
 
 interface FormSideMenuProps {
   currentPhase: number;
@@ -21,8 +20,6 @@ const FormSideMenu = ({
   onClose,
   saveProgressAndContinueLater,
 }: FormSideMenuProps) => {
-  const { isMobile } = useScreenResolution();
-
   function getPaymentInformation(field: string) {
     let accompanies = 0;
     if (formData.familyMembers.length > 0) {

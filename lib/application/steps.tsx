@@ -7,11 +7,10 @@ import {
   personalInfoKeys,
 } from "./schema";
 
+import { UploadedDoc } from "@organism/form/applicationForm";
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
-import { SingleFormType, UploadedDoc } from "@organism/form/applicationForm";
-import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
 import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
 import UploadDocuments from "@organism/form/components/uploadDocuments";
 import { FormikProps, FormikValues } from "formik";

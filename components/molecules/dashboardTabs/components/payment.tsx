@@ -10,6 +10,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
+import { useVisaApplicationVoucherStore } from "store/useStore";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -112,6 +113,8 @@ const PaymentHistory = () => {
   if (isLoading) return <div>loading</div>;
   if (error) return <div>error loading payments, please try again</div>;
   const { data: payments } = fetchedPayment;
+  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
+
   return (
     <Section
       margin="2rem 0"
@@ -162,6 +165,7 @@ const PaymentHistory = () => {
                   <Text
                     type="p"
                     text={currencyFormatter(payment?.totalAmount)}
+                    decoration={applied && voucher ? "line-through" : ""}
                     styles={{ width: isMobile ? "100%" : "20%" }}
                   />
                   <PaymentStatus style={{ background: "#FFFEEF" }}>
