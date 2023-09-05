@@ -123,7 +123,8 @@ function LoginPage() {
     <SectionLayout {...(isMobile && { padding: "0" })}>
       <Grid
         columns="repeat(auto-fit, minmax(300px, 1fr))"
-        margin={isMobile ? "1rem 0" : "4rem 0"}
+        margin={isMobile ? "0px" : "4rem 0"}
+        padding={isMobile ? "1.5rem 2.5rem" : "unset"}
         gap="5rem"
         style={{
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -206,12 +207,13 @@ function LoginPage() {
             </div>
           </Slider>
         </Section>
+
         <Section>
           <Flex justify="space-between">
             <img
               src={logo.src}
               alt="logo"
-              height={60}
+              height={isMobile ? "45px" : "60px"}
               onClick={() => router.push("/")}
               style={{ cursor: "pointer" }}
             />
@@ -225,15 +227,16 @@ function LoginPage() {
 
           <Text
             type="h1"
-            margin="2rem 0 .3rem"
+            margin={isMobile ? "1rem 0" : "2rem 0 1rem"}
             text="Welcome back"
-            size={isMobile ? "30px" : "40px"}
+            size={isMobile ? "25px" : "40px"}
             weight={700}
           />
           <Text
             type="p"
             text="Login to access your Travels account"
-            size="17px"
+            size={isMobile ? "14px" : "17px"}
+            weight={isMobile ? 300 : 400}
           />
           <Flex
             margin={isMobile ? "1rem 0 0" : "2rem 0"}
@@ -247,6 +250,7 @@ function LoginPage() {
                 type="p"
                 text="Email"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
               />
               <Input
                 placeholder="Enter your email"
@@ -265,6 +269,7 @@ function LoginPage() {
                 type="p"
                 text="Password"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
               />
               <Input
                 placeholder="******"
@@ -298,7 +303,11 @@ function LoginPage() {
                     });
                   }}
                 >
-                  <Text type="p" text="Remember me" />
+                  <Text
+                    type="p"
+                    text="Remember me"
+                    size={isMobile ? "14.5px" : "16px"}
+                  />
                 </CheckBox>
               </Flex>
               <Link href="/auth/forgot-password">
@@ -308,6 +317,7 @@ function LoginPage() {
                   color="#a0001d"
                   whiteSpace="nowrap"
                   cursor="pointer"
+                  size={isMobile ? "14.5px" : "16px"}
                 />
               </Link>
             </Flex>
