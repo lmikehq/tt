@@ -1,14 +1,11 @@
 "use client";
 
-import Center from "@atom/center";
-import Text from "@atom/text";
+import Flex from "@atom/flex";
+import bgImage from "@image/herobg-visa.png";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
-import { styled } from "styled-components";
-import bgImage from "@image/herobg-visa.png";
-import Flex from "@atom/flex";
-import SectionLayout from "@components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { styled } from "styled-components";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
