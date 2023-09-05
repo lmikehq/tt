@@ -102,6 +102,7 @@ const PaymentWrapper = styled.div`
 
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
+  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
   async function getAllPayments() {
     return await apiService("/payment", "GET");
   }
@@ -113,7 +114,7 @@ const PaymentHistory = () => {
   if (isLoading) return <div>loading</div>;
   if (error) return <div>error loading payments, please try again</div>;
   const { data: payments } = fetchedPayment;
-  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
+  
 
   return (
     <Section
