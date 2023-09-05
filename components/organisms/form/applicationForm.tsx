@@ -149,7 +149,8 @@ function ApplicationForm() {
       }
     });
   }
-  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
+  const { applied, voucher, setVoucherApplied } =
+    useVisaApplicationVoucherStore((state) => state);
   // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
   const params = useSearchParams();
   // const action = params.get("action"); // payment
@@ -161,7 +162,8 @@ function ApplicationForm() {
     destination: params.get("destination") || "",
   });
   const [currentPhase, setCurrentPhase] = useState(
-    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+    // type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
+    7
   );
   // const [currentPhase, setCurrentPhase] = useState(5);
   const [highestPhase, setHighestPhase] = useState(1);
@@ -319,7 +321,13 @@ function ApplicationForm() {
     }
     if (currentPhase === 7) {
       if (applied && voucher) {
+        setNextStepLoading(true);
+        await sleep(4000);
         setModalOpen(true);
+        setVoucherApplied({
+          applied: false,
+          voucher: null,
+        });
         return setNextStepLoading(false);
       }
       handlePayment({
@@ -480,7 +488,7 @@ function ApplicationForm() {
       });
     }
     return !isMobile
-      ? "Make Payment"
+      ? "continue"
       : accompanies > 0
       ? "Make Payment (NGN 30,000)"
       : "Make Payment (NGN 20,000)";

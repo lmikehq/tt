@@ -41,14 +41,7 @@ function UploadDocuments({
   finalStepButtonText,
 }: formProps) {
   const { isMobile } = useScreenResolution();
-
-  const [hovered, setHovered] = useState<number>(-1);
   const [documentToUpload, setDocumentToUpload] = useState<string>("");
-
-  const handleFailedValidation = () => {
-    if (!formik.errors.documents) return;
-    return toast.error(formik.errors.documents as string);
-  };
 
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
@@ -176,7 +169,7 @@ function UploadDocuments({
                   "International passport",
                   "Passport photograph",
                   "Means of ID",
-                  "Bank statement",
+                  "Bank Statements with Reference (personal and sponsorship)",
                   "Commitment Letter From Family or employer (if available)",
                   "Proof of accommodation",
                   "References from Employer",
@@ -185,18 +178,23 @@ function UploadDocuments({
                   "Professsional CV",
                   "Medical Records",
                   "Police Character (if available)",
+                  "Marriage Certificate (if applicable)",
+                  "Birth Certificate of Children (if applicable)",
+                  "Vocational Qualifications (if available)",
+                  "Landed Property Documents (if available)",
+                  "Covid 19 Vaccination Certificate (if available)",
+                  "Company Employment documents (if available)",
+                  "CAC/Tax clearance/Business Documents. (if available)",
+                  "Invitation Letter (if available)",
+                  "Invitation Contact Persons i.D (if available)",
+                  "Sponsorship I.D card/Utility bills/Sponsorship statement (if available)",
+                  "Itineraries (if available)",
                 ];
                 switch (visaType) {
                   case "Student Visa":
                     return general;
                   case "Work Visa":
                     return [...general, "Proof of Qualifications"];
-                  case "family visa":
-                    return [
-                      ...general,
-                      "Marriage Certificate",
-                      "Birth Certificate of Children",
-                    ];
                   case "Elite Migration Visa":
                     return [
                       ...general,

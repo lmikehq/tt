@@ -8,6 +8,7 @@ import CustomConfirmationModal, {
   CustomConfirmationModalProps,
 } from "@organism/visaApplicationModal";
 import apiService from "hook/apiService";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidCheckCircle, BiSolidXCircle } from "react-icons/bi";
@@ -23,6 +24,7 @@ export const PaymentCompleteSection = ({
   description?: string;
 }) => {
   const router = useRouter();
+  const { isMobile } = useScreenResolution();
   return (
     <Section
       padding="3rem 6rem"
@@ -197,7 +199,9 @@ const PaymentConfirmationModal = () => {
 
   const handlePaymentComplete = () => {
     setModalContent({
-      child: <PaymentCompleteSection handleModalClose={()=>setModalOpen(false)} />,
+      child: (
+        <PaymentCompleteSection handleModalClose={() => setModalOpen(false)} />
+      ),
     });
     handleModalOpen();
   };

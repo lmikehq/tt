@@ -81,9 +81,11 @@ const SelectPaymentMethod = ({
     }
   }
 
+  const { isMobile } = useScreenResolution();
+
   return (
     <Section>
-      <Section margin="0 0 3.375rem 0">
+      <Section margin={`0 0 ${isMobile ? "1rem" : "2.375rem"} 0`}>
         <Text
           text={"Select Visa Payment"}
           type={"h3"}
@@ -91,14 +93,16 @@ const SelectPaymentMethod = ({
           size={24}
           margin={"0 0 0.75rem 0"}
         />
-        <Text
-          text={"Select your preferred currency to make payment"}
-          weight={400}
-          size={18}
-          color="#606060"
-          type={"p"}
-          margin={""}
-        />
+        {!isMobile && (
+          <Text
+            text={"Select your preferred currency to make payment"}
+            weight={400}
+            size={18}
+            color="#606060"
+            type={"p"}
+            margin={""}
+          />
+        )}
       </Section>
       <form onSubmit={formik.handleSubmit}>
         <Section>
@@ -154,7 +158,9 @@ const SelectPaymentMethod = ({
             />
             <Section>
               <Text
-                text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+                text={`Only the Nigerian currency naira (Naira) is active for now. ${
+                  !isMobile && "Other currencies will be made available soon."
+                }`}
                 type="p"
               />
             </Section>
@@ -179,7 +185,11 @@ const SelectPaymentMethod = ({
             margin={""}
           />
           <form>
-            <Flex gap="1rem" margin="4rem 0 .5rem">
+            <Flex
+              gap="1rem"
+              margin={`${isMobile ? "1rem" : "4rem"} 0 .5rem`}
+              direction={isMobile ? "column" : "row"}
+            >
               <Input
                 placeholder="Enter Promo Code"
                 width="100%"
@@ -193,7 +203,7 @@ const SelectPaymentMethod = ({
               <Button
                 type="submit"
                 onClick={handlePromoCode}
-                width="25%"
+                width={isMobile ? "100%" : "25%"}
                 borderRadius="4px"
               >
                 <Text
@@ -218,7 +228,11 @@ const SelectPaymentMethod = ({
               </Flex>
             )}
             {voucher && (
-              <Flex gap="1rem" margin="1rem 0 0" width="50%">
+              <Flex
+                gap="1rem"
+                margin="1rem 0 0"
+                width={isMobile ? "100%" : "50%"}
+              >
                 <Flex gap=".5rem" align="center">
                   <BsFillCheckCircleFill size={20} color="#6092A7" />
                   <Text type="p" text={voucher} />
