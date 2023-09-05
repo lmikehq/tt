@@ -1,16 +1,15 @@
+import { FieldString } from "@atom/fieldInput";
+import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import { useScreenResolution } from "hook/useScreenResolution";
-import ReusableModal from "./components/dashboardModal";
-import Flex from "@atom/flex";
-import { TbCurrencyNaira } from "react-icons/tb";
-import { FieldString } from "@atom/fieldInput";
-import { Formik } from "formik";
-import { BsExclamationCircleFill } from "react-icons/bs";
 import currencyFormatter from "data/currencyFormatter";
+import { Formik } from "formik";
 import apiService from "hook/apiService";
+import { useScreenResolution } from "hook/useScreenResolution";
 import { toast } from "react-hot-toast";
-import { useUserStore } from "store/useStore";
+import { BsExclamationCircleFill } from "react-icons/bs";
+import { useUserStore, useVisaApplicationVoucherStore } from "store/useStore";
+import ReusableModal from "./components/dashboardModal";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -40,9 +39,9 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   }
 
   const { user } = useUserStore((state) => state);
-
+  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
   const createPayment = async () => {
-    return await apiService("/payment/create-form-fee-charge", "POST", {
+    return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
       service: "VISA",
@@ -74,7 +73,11 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       {/* Additional content goes here */}
       <Section margin="3rem 0px 1.5rem">
         <Flex align="center" gap="0rem" justify="center">
-          <Text type="h1" text={currencyFormatter(paymentAmount())} />
+          <Text
+            type="h1"
+            text={currencyFormatter(paymentAmount())}
+            decoration={applied && voucher ? "line-through" : ""}
+          />
         </Flex>
         <Text type="p" text={visaDetails.intent} />
       </Section>

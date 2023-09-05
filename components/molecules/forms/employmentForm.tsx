@@ -1,18 +1,17 @@
 import CheckBox from "@atom/checkbox";
 import {
-  ArrayInput,
   FieldAsDate,
   FieldInput,
-  FieldString,
+  FieldString
 } from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "@molecule/section";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { FormikValues } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
-import React, { useState } from "react";
+import React from "react";
 import { EmploymentDetailsInterface } from "types";
 
 interface formProps {
@@ -153,7 +152,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={values.stillWorking || !values.startYear}
+            disabled={values.stillWorking}
             views={["year"]}
             name={`employment.${count}.endYear`}
             formik={formik}

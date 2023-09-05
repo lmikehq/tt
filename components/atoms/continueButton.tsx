@@ -1,13 +1,12 @@
-import Section from "@molecule/section";
-import { Button } from "./button";
-import React, { useEffect, useState } from "react";
-import Flex from "./flex";
 import Spinner from "@components/icons/spinner";
-import Text from "./text";
-import { ttColors } from "theme/colors";
+import Section from "@molecule/section";
 import { BottomNavigation } from "@mui/material";
-import { Grid } from "./grid";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { useEffect, useState } from "react";
+import { ttColors } from "theme/colors";
+import { Button } from "./button";
+import Flex from "./flex";
+import Text from "./text";
 
 interface ButtonProps {
   isLoading: boolean;
