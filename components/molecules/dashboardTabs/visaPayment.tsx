@@ -41,7 +41,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   const { user } = useUserStore((state) => state);
   const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
   const createPayment = async () => {
-    return await apiService("/payment/create-form-fee-charge", "POST", {
+    return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
       service: "VISA",

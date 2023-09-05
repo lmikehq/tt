@@ -13,6 +13,96 @@ import { useEffect, useState } from "react";
 import { BiSolidCheckCircle, BiSolidXCircle } from "react-icons/bi";
 import { ttColors } from "theme/colors";
 
+export const PaymentCompleteSection = ({
+  handleModalClose,
+  title,
+  description,
+}: {
+  handleModalClose?: () => void;
+  title?: string;
+  description?: string;
+}) => {
+  const router = useRouter();
+  return (
+    <Section
+      padding="3rem 6rem"
+      height="unset"
+      styles={{
+        backgroundImage: `url(${Confetti.src})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "top",
+      }}
+    >
+      <Flex direction="column" justify="center">
+        <Section
+          margin="0 auto 14px auto"
+          height="78.58px"
+          width="79.58px"
+          styles={{ borderRadius: "50%", background: ttColors.light }}
+        >
+          <BiSolidCheckCircle size={79.58} color={ttColors.primary} />
+        </Section>
+        <Section margin="0 0  24px" height="unset">
+          <Text
+            type="p"
+            text={title || "Payment Completed Successfully"}
+            size={32}
+            weight={700}
+            color={ttColors.dark}
+          />
+        </Section>
+        <Section margin="0 0  57.5px" height="unset">
+          <Text
+            type="p"
+            text=" Congratulations!!."
+            size={18}
+            weight={400}
+            color="#929292"
+          />
+          <br />
+          <Text
+            type="p"
+            text={
+              description ||
+              "Your payment was successful, please login to your dashboard to continue. Thank you for trusting Thrillers Travels."
+            }
+            weight={400}
+            size={18}
+            color="#929292"
+          />
+        </Section>
+        <Section>
+          <Flex width="100%" gap="8px" direction="column">
+            <Button
+              width="100%"
+              background={ttColors.dark}
+              color={ttColors.light}
+              onClick={() => {
+                router.push("/visa/apply");
+                handleModalClose;
+              }}
+            >
+              Make another Application
+            </Button>
+            <Button
+              width="100%"
+              background="transparent"
+              color={ttColors.dark}
+              border="1px solid #19013b"
+              onClick={() => {
+                handleModalClose;
+                router.push("/dashboard");
+              }}
+            >
+              Back to dashboard
+            </Button>
+          </Flex>
+        </Section>
+      </Flex>
+    </Section>
+  );
+};
+
 const PaymentConfirmationModal = () => {
   const params = useSearchParams();
   const paymentRef = params.get("paymentRef");
@@ -107,81 +197,7 @@ const PaymentConfirmationModal = () => {
 
   const handlePaymentComplete = () => {
     setModalContent({
-      child: (
-        <Section
-          padding="3rem 6rem"
-          height="unset"
-          styles={{
-            backgroundImage: `url(${Confetti.src})`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "top",
-          }}
-        >
-          <Flex direction="column" justify="center">
-            <Section
-              margin="0 auto 14px auto"
-              height="78.58px"
-              width="79.58px"
-              styles={{ borderRadius: "50%", background: ttColors.light }}
-            >
-              <BiSolidCheckCircle size={79.58} color={ttColors.primary} />
-            </Section>
-            <Section margin="0 0  24px" height="unset">
-              <Text
-                type="p"
-                text="Payment Completed Successfully"
-                size={32}
-                weight={700}
-                color={ttColors.dark}
-              />
-            </Section>
-            <Section margin="0 0  57.5px" height="unset">
-              <Text
-                type="p"
-                text=" Congratulations!!."
-                size={18}
-                weight={400}
-                color="#929292"
-              />
-              <br />
-              <Text
-                type="p"
-                text="Your payment was successful, please login to your dashboard to continue. Thank you for trusting Thrillers Travels."
-                weight={400}
-                size={18}
-                color="#929292"
-              />
-            </Section>
-            <Section>
-              <Flex width="100%" gap="8px" direction="column">
-                <Button
-                  width="100%"
-                  background={ttColors.dark}
-                  color={ttColors.light}
-                  onClick={() => {
-                    router.push("/visa/apply");
-                    handleModalClose();
-                  }}
-                >
-                  Make another Application
-                </Button>
-                <Button
-                  width="100%"
-                  background="transparent"
-                  color={ttColors.dark}
-                  border="1px solid #19013b"
-                  onClick={() => {
-                    handleModalClose();
-                    router.push("/dashboard");
-                  }}
-                >
-                  Back to dashboard
-                </Button>
-              </Flex>
-            </Section>
-          </Flex>
-        </Section>
-      ),
+      child: <PaymentCompleteSection handleModalClose={()=>setModalOpen(false)} />,
     });
     handleModalOpen();
   };
