@@ -15,6 +15,7 @@ import Flex from "../../../atoms/flex";
 import Text from "../../../atoms/text";
 import VisaPaymentModal from "../visaPayment";
 import { AiOutlineCheck } from "react-icons/ai";
+import { useVisaApplicationVoucherStore } from "store/useStore";
 
 const Logo = styled.div`
   height: 64px;
@@ -133,6 +134,7 @@ function VisaDetail({ visa }: { visa: any }) {
       : visa?.applicationStatus === "AWAITING CONFIRMATION"
       ? { text: "#7A7422", bg: "FFFEEF" }
       : { text: "#37008A", bg: "#F6F0FF" };
+  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
 
   return (
     <Section
@@ -232,6 +234,7 @@ function VisaDetail({ visa }: { visa: any }) {
                         ? currencyFormatter(recentPayment.totalAmount)
                         : "n/a"
                     }
+                    decoration={applied && voucher ? "line-through" : ""}
                     color="#112211"
                     size={14}
                     weight={500}
