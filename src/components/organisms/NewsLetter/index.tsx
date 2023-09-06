@@ -3,19 +3,16 @@ import styled from "styled-components";
 import Text from "../../atoms/text";
 import Flex from "../../atoms/flex";
 // import Link from "../../atoms/link";
-import Image from "next/image";
+import Image from "@atom/image";
 import Button from "src/components/atoms/button";
-import Barcode from "@image/walink.png";
-import AppLogo from "@image/app-store.svg";
-import PlayStore from "@image/google-play.svg";
-import newsLetterBg from "@image/newsLetterbg.png";
 
 import { useScreenResolution } from "hook/useScreenResolution";
 import Input from "src/components/atoms/input";
+import Section from "@molecule/section";
 
 const SubscribeWrapper = styled.div<{ isMobile?: boolean }>`
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  background-image: url(${newsLetterBg.src});
+  background-image: url(${"/assets/images/newsLetterbg.png"});
   background-size: cover;
   background-repeat: no-repeat;
   justify-content: center;
@@ -151,10 +148,10 @@ const NewsLetter = () => {
           styles={{ display: isMobile ? "none" : "flex" }}
         >
           <Image
-            src={Barcode}
+            src={"/assets/images/walink.png"}
             alt="visa"
-            width={isMobile ? "80" : "160"}
-            height={isMobile ? "80" : "160"}
+            width={isMobile ? 80 : 160}
+            height={isMobile ? 80 : 160}
           />
           <Flex
             direction="column"
@@ -162,12 +159,20 @@ const NewsLetter = () => {
             align={isMobile ? "flex-start" : "center"}
             // padding={isMobile ? '0' : "1.5rem 0 1.5rem 1.85rem"}
           >
-            <Image width={isMobile ? 120 : 215} src={AppLogo} alt="app-store" />
-            <Image
-              width={isMobile ? 120 : 215}
-              src={PlayStore}
-              alt="play-store"
-            />
+            <Section
+              height={isMobile ? "36.28px" : "65px"}
+              width={isMobile ? "120px" : "215px"}
+              styles={{ position: "relative" }}
+            >
+              <Image src={"/assets/images/app-store.svg"} alt="app-store" />
+            </Section>
+            <Section
+              width={isMobile ? "120px" : "215px"}
+              height={isMobile ? "36.28px" : "65px"}
+              styles={{ position: "relative" }}
+            >
+              <Image src={"/assets/images/google-play.svg"} alt="play-store" />
+            </Section>
           </Flex>
         </Flex>
       </Flex>

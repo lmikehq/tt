@@ -1,7 +1,7 @@
 "use client";
 
-import CoverDesktopImg from "@image/visaDesktopCover.jpg";
-import CoverImg from "@image/visaPageCover.jpg";
+import CoverDesktopImg from "/assets/images/visaDesktopCover.jpg";
+import CoverImg from "/assets/images/visaPageCover.jpg";
 
 import Flex from "src/components/atoms/flex";
 import Text from "src/components/atoms/text";
@@ -541,7 +541,9 @@ function ApplicationForm() {
     return formData.homeCountry !== "" && formData.destination !== "";
   }, [formData.homeCountry, formData.destination]);
 
-  const coverImage = isMobile ? CoverImg : CoverDesktopImg;
+  const coverImage = isMobile
+    ? "/assets/images/visaPageCover.jpg"
+    : "/assets/images/visaDesktopCover.jpg";
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
   useEffect(() => {
     fetchRecentProgressFromSession();

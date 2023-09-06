@@ -5,7 +5,6 @@ import Text from "src/components/atoms/text";
 import Navbar from "src/components/organisms/Navbar";
 import ServiceBanner from "src/components/organisms/ServiceBanner";
 import { styled } from "styled-components";
-import bgImage from "@image/herobg-visa.png";
 import Flex from "src/components/atoms/flex";
 import SectionLayout from "src/components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -16,7 +15,7 @@ const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   // height: calc(100vh - 70px);
   height: ${({ isMobile }) => (isMobile ? "unset" : "600px")};
 
-  background-image: url(${bgImage.src});
+  background-image: url(${"/assets/images/herobg-visa.png"});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -31,7 +30,7 @@ const HeroWrapper = styled.div<{ isMobile?: boolean }>`
 
 const HeroBackground = styled.div`
   @media (max-width: 900px) {
-    background-image: url(${bgImage.src});
+    background-image: url(${"/assets/images/herobg-visa.png"});
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

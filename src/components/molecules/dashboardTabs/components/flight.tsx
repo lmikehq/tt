@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import NoVisaBg from "@image/background.png";
-import FlightImg from "@image/flight.png";
+import NoVisaBg from "/assets/images/background.png";
+import FlightImg from "/assets/images/flight.png";
 import { ttColors } from "theme/colors";
 import Flex from "src/components/atoms/flex";
 import Text from "src/components/atoms/text";
 import Image from "src/components/atoms/image";
-import FlightIcon from "@image/flightBooking.png";
+import FlightIcon from "/assets/images/flightBooking.png";
 
 const FlightWrapper = styled.div`
   background: ${ttColors.defaultColor};

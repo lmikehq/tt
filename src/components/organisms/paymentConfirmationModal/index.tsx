@@ -2,7 +2,6 @@
 import Button from "src/components/atoms/button";
 import Flex from "src/components/atoms/flex";
 import Text from "src/components/atoms/text";
-import Confetti from "@image/modal/confetti.png";
 import Section from "src/components/molecules/section";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
@@ -112,7 +111,7 @@ const PaymentConfirmationModal = () => {
           padding="3rem 6rem"
           height="unset"
           styles={{
-            backgroundImage: `url(${Confetti.src})`,
+            backgroundImage: `url(${"/assets/images/modal/confetti.png"})`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "top",
           }}

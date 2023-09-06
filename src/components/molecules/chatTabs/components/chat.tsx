@@ -6,7 +6,6 @@ import Image from "src/components/atoms/image";
 import Input from "src/components/atoms/input";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
-import Vector from "@image/Vector.svg";
 import { ButtonBase } from "@mui/material";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useRef, useState } from "react";
@@ -235,7 +234,7 @@ const Chat = () => {
     {
       name: "Thrillers Travel AI",
       description: "Your advanced AI consultant bot",
-      icon: <Image src={Vector} alt="message icon" />,
+      icon: <Image src={"/assets/images/Vector.svg"} alt="message icon" />,
       width: "145px",
     },
     {

@@ -68,7 +68,7 @@ const AllCountryHead = ({
   cover,
   title,
 }: {
-  cover: StaticImageData;
+  cover: StaticImageData | string;
   title: string;
 }) => {
   const { isMobile } = useScreenResolution();

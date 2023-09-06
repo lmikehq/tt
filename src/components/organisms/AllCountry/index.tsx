@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import Image from "@atom/image";
 import React, { useState } from "react";
 import { COUNTRY_FLAGS, sorted } from "../../../../data/data";
 import { Grid } from "src/components/atoms/grid";
@@ -12,13 +12,13 @@ import Button from "src/components/atoms/button";
 import { ttColors } from "theme/colors";
 import Flex from "src/components/atoms/flex";
 import { urlString } from "src/lib/url";
-import allCountryHeadImg from "@image/allCountryHeaderImg.png";
+import allCountryHeadImg from "/assets/images/allCountryHeaderImg.png";
 import SectionLayout from "src/components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 
-import CoverImg from "@image/visaPageCover.jpg";
-import CoverDesktopImg from "@image/visaDesktopCover.jpg";
+import CoverImg from "/assets/images/visaPageCover.jpg";
+import CoverDesktopImg from "/assets/images/visaDesktopCover.jpg";
 
 const CountryWrapper = styled.section`
   // margin: 5rem 0;

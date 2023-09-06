@@ -8,7 +8,7 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
+import Image from "@atom/image";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "./flex";
 import Text from "./text";

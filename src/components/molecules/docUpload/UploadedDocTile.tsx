@@ -1,8 +1,6 @@
 import Flex from "src/components/atoms/flex";
 import Image from "src/components/atoms/image";
 import Text from "src/components/atoms/text";
-import UploadedDocIcon from "@image/form/docUpload/uploadedDoc.png";
-import DotIcon from "@image/form/docUpload/dotIcon.png";
 
 import { BiTrash } from "react-icons/bi";
 import { styled } from "styled-components";
@@ -55,7 +53,7 @@ const UploadedDocTile = ({
     <Container style={{ marginBottom }}>
       <Row>
         <Image
-          src={UploadedDocIcon}
+          src={"/assets/images/form/docUpload/uploadedDoc.png"}
           alt={"document_icon"}
           width={40}
           height={40}
@@ -98,7 +96,7 @@ const UploadedDocTile = ({
                 color="#4A7181"
               />
               <Image
-                src={DotIcon}
+                src={"/assets/images/form/docUpload/dotIcon.png"}
                 alt={"dot"}
                 width={6}
                 height={6}

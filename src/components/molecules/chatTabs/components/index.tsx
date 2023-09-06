@@ -5,7 +5,7 @@ import Flex from "src/components/atoms/flex";
 import Image from "src/components/atoms/image";
 import Input from "src/components/atoms/input";
 import Text from "src/components/atoms/text";
-import Vector from "@image/Vector.svg";
+import Vector from "/assets/images/Vector.svg";
 import { ButtonBase } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { BsCheckCircle, BsSearch, BsSend } from "react-icons/bs";

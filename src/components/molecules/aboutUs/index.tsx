@@ -3,7 +3,7 @@ import Flex from "src/components/atoms/flex";
 import { Grid } from "src/components/atoms/grid";
 import Image from "src/components/atoms/image";
 import styled from "styled-components";
-import team from "@image/Business-Team.jpeg";
+import team from "/assets/images/Business-Team.jpeg";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { ttColors } from "theme/colors";
 import Text from "src/components/atoms/text";

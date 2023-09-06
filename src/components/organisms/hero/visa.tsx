@@ -5,7 +5,7 @@ import Text from "src/components/atoms/text";
 import Navbar from "src/components/organisms/Navbar";
 import ServiceBanner from "src/components/organisms/ServiceBanner";
 import { styled } from "styled-components";
-import bgImage from "@image/herobg-visa.png";
+import bgImage from "/assets/images/herobg-visa.png";
 
 const HeroWrapper = styled.div`
   width: 100vw;

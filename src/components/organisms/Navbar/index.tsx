@@ -6,14 +6,12 @@ import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import RTQueryClient from "src/components/layouts/rtqWrapper";
 import NavbarLayout from "src/components/layouts/sectionLayout";
-import Logo from "@image/brand/favicon.svg";
-import MobileLogo from "@image/brand/tt_blue_logo_with_text.png";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "src/components/organisms/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Image from "next/image";
+import Image from "@atom/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BsGlobe } from "react-icons/bs";
@@ -133,7 +131,12 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
       <MobileWrapper isSticky={isSticky}>
         <Flex padding="1rem" justify="space-between" ref={ref}>
           <ButtonBase onClick={() => router.push("/")}>
-            <Image src={MobileLogo} alt="thrillers travels logo" height={35} />
+            <Image
+              src={"/assets/images/brand/tt_blue_logo_with_text.png"}
+              alt="thrillers travels logo"
+              height={35}
+              width={0}
+            />
           </ButtonBase>
 
           <ButtonBase onClick={() => setModalOpen(!modalOpen)}>
@@ -193,7 +196,12 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
 
           <NavLogo>
             <Link href="/">
-              <Image src={Logo} height="45" width="45" alt="TTLogo" />
+              <Image
+                src={"/assets/images/brand/favicon.svg"}
+                height={45}
+                width={45}
+                alt="TTLogo"
+              />
             </Link>
           </NavLogo>
 

@@ -1,5 +1,5 @@
 "use client";
-import NigeriaFlag from "@image/nigeriaFlag.png";
+import NigeriaFlag from "/assets/images/nigeriaFlag.png";
 import styled from "styled-components";
 import Flex from "src/components/atoms/flex";
 import CountryInformationHead from "./components/countryInformationHead";

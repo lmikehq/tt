@@ -6,21 +6,12 @@ import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import Flex from "src/components/atoms/flex";
 import { Grid } from "src/components/atoms/grid";
-import Image from "next/image";
 import { BsDot } from "react-icons/bs";
-import Canada from "@image/popularDestination/canada.png";
-import NewZealand from "@image/popularDestination/newZealand.png";
-import Norway from "@image/popularDestination/norway.png";
-import Uk from "@image/popularDestination/uk.png";
-import Us from "@image/popularDestination/us.png";
-import Switzerland from "@image/popularDestination/switzerland.png";
-import Australia from "@image/popularDestination/australia.png";
-import Singapore from "@image/popularDestination/singapore.png";
-import Germany from "@image/popularDestination/germany.png";
 import React from "react";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
+import Image from "@atom/image";
 
 const DestinationWrapper = styled.div`
   // margin: 5rem 0;
@@ -73,7 +64,7 @@ const PopularDestinations = ({
   const destinationCard = [
     {
       id: 1,
-      image: Canada,
+      image: "/assets/images/popularDestination/canada.png",
       title: "Toronto, Canada",
       description: "Visa . Employment . Apply",
       name: "Canada",
@@ -81,7 +72,7 @@ const PopularDestinations = ({
 
     {
       id: 2,
-      image: NewZealand,
+      image: "/assets/images/popularDestination/newZealand.png",
       title: "Auckland, New Zealand",
       description: "Visa . Employment . Apply",
       name: "New Zealand",
@@ -89,7 +80,7 @@ const PopularDestinations = ({
 
     {
       id: 3,
-      image: Norway,
+      image: "/assets/images/popularDestination/norway.png",
       title: "Oslo, Norway",
       description: "Visa . Employment . Apply",
       name: "Norway",
@@ -97,7 +88,7 @@ const PopularDestinations = ({
 
     {
       id: 4,
-      image: Uk,
+      image: "/assets/images/popularDestination/uk.png",
       title: "London, United Kingdom",
       description: "Visa . Employment . Apply",
       name: "United Kingdom",
@@ -105,7 +96,7 @@ const PopularDestinations = ({
 
     {
       id: 5,
-      image: Us,
+      image: "/assets/images/popularDestination/us.png",
       title: "New York, United States",
       description: "Visa . Employment . Apply",
       name: "United States",
@@ -113,7 +104,7 @@ const PopularDestinations = ({
 
     {
       id: 6,
-      image: Switzerland,
+      image: "/assets/images/popularDestination/switzerland.png",
       title: "Zurich, Switzerland",
       description: "Visa . Employment . Apply",
       name: "Switzerland",
@@ -121,7 +112,7 @@ const PopularDestinations = ({
 
     {
       id: 7,
-      image: Australia,
+      image: "/assets/images/popularDestination/australia.png",
       title: "Sydney, Australia",
       description: "Visa . Employment . Apply",
       name: "Australia",
@@ -129,7 +120,7 @@ const PopularDestinations = ({
 
     {
       id: 8,
-      image: Singapore,
+      image: "/assets/images/popularDestination/singapore.png",
       title: "Singapore, Singapore",
       description: "Visa . Employment . Apply",
       name: "Singapore",
@@ -137,7 +128,7 @@ const PopularDestinations = ({
 
     {
       id: 9,
-      image: Germany,
+      image: "/assets/images/popularDestination/germany.png",
       title: "Berlin, Germany",
       description: "Visa . Employment . Apply",
       name: "Germany",
@@ -171,7 +162,12 @@ const PopularDestinations = ({
               >
                 <Card>
                   <Flex justify="space-between" gap="1rem">
-                    <Image src={destination.image} alt="" />
+                    <Image
+                      src={destination.image}
+                      width={10}
+                      height={10}
+                      alt=""
+                    />
 
                     <Flex direction="column" alignSelf="center">
                       <Text type="h3" text={destination.title} />

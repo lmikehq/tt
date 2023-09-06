@@ -7,7 +7,7 @@ import { RiBarChartHorizontalLine } from "react-icons/ri";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import Logo from "../../assets/images/brand/logo1.svg";
-import Image from "next/image";
+import Image from "@atom/image";
 import { Grid } from "src/components/atoms/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 

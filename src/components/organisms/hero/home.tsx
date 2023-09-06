@@ -15,7 +15,7 @@ const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   background: var(--bg-color);
   // max-height: 750px;
   height: ${({ isMobile }) => (isMobile ? "unset" : "800px")};
-  background-image: url(${bgImage.src});
+  background-image: url(${"/assets/images/herobg-map.png"});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

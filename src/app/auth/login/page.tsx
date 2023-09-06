@@ -13,16 +13,6 @@ import SideBtn from "src/components/atoms/sideBtn";
 import Text from "src/components/atoms/text";
 import Spinner from "src/components/icons/spinner";
 import SectionLayout from "src/components/layouts/sectionLayout";
-import bgImage from "@image/auth-bg.png";
-import bgImage1 from "@image/auth-bg1.png";
-import bgImage2 from "@image/auth-bg2.png";
-import bgImage3 from "@image/auth-bg3.jpeg";
-import bgImage4 from "@image/auth-bg4.jpeg";
-import bgImage5 from "@image/auth-bg5.jpeg";
-import bgImage7 from "@image/auth-bg7.jpeg";
-import bgImage8 from "@image/auth-bg8.jpeg";
-import logo from "@image/brand/tt_blue_logo_with_text1.png";
-import google from "@image/google.svg";
 import sleep from "src/lib/sleep";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";
@@ -36,6 +26,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { useUserStore } from "store/useStore";
 import { ttColors } from "theme/colors";
+import Image from "@atom/image";
 
 const settings = {
   infinite: true,
@@ -133,7 +124,7 @@ function LoginPage() {
           <Slider {...settings}>
             <div>
               <img
-                src={bgImage.src}
+                src={"/assets/images/auth-bg.png"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -142,7 +133,7 @@ function LoginPage() {
             </div>
             <div>
               <img
-                src={bgImage1.src}
+                src={"/assets/images/auth-bg1.png"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -151,7 +142,7 @@ function LoginPage() {
             </div>
             <div>
               <img
-                src={bgImage2.src}
+                src={"/assets/images/auth-bg2.png"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -160,7 +151,7 @@ function LoginPage() {
             </div>
             <div>
               <img
-                src={bgImage3.src}
+                src={"/assets/images/auth-bg3.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -169,7 +160,7 @@ function LoginPage() {
             </div>
             <div>
               <img
-                src={bgImage4.src}
+                src={"/assets/images/auth-bg4.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -178,7 +169,7 @@ function LoginPage() {
             </div>
             <div>
               <img
-                src={bgImage5.src}
+                src={"/assets/images/auth-bg5.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -188,7 +179,7 @@ function LoginPage() {
 
             <div>
               <img
-                src={bgImage7.src}
+                src={"/assets/images/auth-bg7.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -197,7 +188,7 @@ function LoginPage() {
             </div>
             <div>
               <img
-                src={bgImage8.src}
+                src={"/assets/images/auth-bg8.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -208,12 +199,12 @@ function LoginPage() {
         </Section>
         <Section>
           <Flex justify="space-between">
-            <img
-              src={logo.src}
+            <Image
+              src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="logo"
               height={60}
               onClick={() => router.push("/")}
-              style={{ cursor: "pointer" }}
+              styles={{ cursor: "pointer" }}
             />
             <SideBtn
               title="Do not have an account? "
@@ -361,7 +352,12 @@ function LoginPage() {
               border={`1px solid ${ttColors.primary}`}
               width="100%"
             >
-              <img src={google.src} alt="google" height="30" width={30} />
+              <img
+                src={"/assets/images/google.svg"}
+                alt="google"
+                height="30"
+                width={30}
+              />
               <Text
                 type="p"
                 size={14}

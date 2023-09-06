@@ -5,14 +5,9 @@ import { Grid } from "src/components/atoms/grid";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import SectionLayout from "src/components/layouts/sectionLayout";
-import AppLogo from "@image/app-store.svg";
-import TTLogo from "@image/brand/tt_blue_logo_with_text.png";
-import PlayStore from "@image/google-play.svg";
-import Thread from "@image/thread.png";
-import Barcode from "@image/walink.png";
 import NewsLetter from "src/components/organisms/NewsLetter";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Image from "next/image";
+import Image from "@atom/image";
 import { usePathname } from "next/navigation";
 import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
@@ -20,6 +15,7 @@ import { FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
 import { RiWhatsappFill } from "react-icons/ri";
 import styled from "styled-components";
+import Section from "@molecule/section";
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -82,7 +78,13 @@ const FooterIcons = [
   {
     id: 8,
     icon: (
-      <Image src={Thread} alt="" height={16} style={{ borderRadius: "2px" }} />
+      <Section height={"16px"} styles={{ position: "relative" }}>
+        <Image
+          src={"/assets/images/thread.png"}
+          alt=""
+          styles={{ borderRadius: "2px" }}
+        />
+      </Section>
     ),
     url: "https://www.threads.net/@thrillerstravel",
   },
@@ -136,7 +138,16 @@ const FooterSection = () => {
           >
             <div className="footerLogo">
               <Link href="/">
-                <Image src={TTLogo} height="50" alt="logo" />
+                <Section
+                  height={"50px"}
+                  width="100%"
+                  styles={{ position: "relative" }}
+                >
+                  <Image
+                    src={"/assets/images/brand/tt_blue_logo_with_text.png"}
+                    alt="logo"
+                  />
+                </Section>
               </Link>
               <Grid
                 className="footerIcons"
@@ -262,14 +273,14 @@ const FooterSection = () => {
           >
             {/* position: absolute; bottom: 124px; right: 252px; */}
             <Image
-              src={Barcode}
+              src={"/assets/images/walink.png"}
               alt="visa"
-              style={{
+              width={isMobile ? 60 : 110}
+              height={isMobile ? 60 : 110}
+              styles={{
                 marginLeft: isMobile ? "0rem" : "7rem",
                 marginTop: isMobile ? "20px" : "",
                 marginBottom: isMobile ? ".8rem" : "1.2rem",
-                width: isMobile ? "60px" : "110px",
-                height: isMobile ? "60px" : "110px",
               }}
             />
             <Flex
@@ -282,20 +293,16 @@ const FooterSection = () => {
               styles={{ marginTop: isMobile ? "32px" : "" }}
             >
               <Image
-                src={AppLogo}
+                src={"/assets/images/app-store.svg"}
                 alt="mastercard"
-                style={{
-                  width: isMobile ? "89.33px" : "134px",
-                  height: isMobile ? "29.33px" : "44px",
-                }}
+                width={isMobile ? 89.33 : 134}
+                height={isMobile ? 29.33 : 44}
               />
               <Image
-                src={PlayStore}
+                src={"/assets/images/google-play.svg"}
                 alt="american-express"
-                style={{
-                  width: isMobile ? "89.33px" : "134px",
-                  height: isMobile ? "29.33px" : "44px",
-                }}
+                width={isMobile ? 89.33 : 134}
+                height={isMobile ? 29.33 : 44}
               />
             </Flex>
           </Flex>

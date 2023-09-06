@@ -1,1777 +1,1254 @@
-import ad from "@flag/ad.svg";
-import ae from "@flag/ae.svg";
-import af from "@flag/af.svg";
-import ag from "@flag/ag.svg";
-import ai from "@flag/ai.svg";
-import al from "@flag/al.svg";
-import am from "@flag/am.svg";
-import ao from "@flag/ao.svg";
-import aq from "@flag/aq.svg";
-import ar from "@flag/ar.svg";
-import as from "@flag/as.svg";
-import at from "@flag/at.svg";
-import au from "@flag/au.svg";
-import aw from "@flag/aw.svg";
-import ax from "@flag/ax.svg";
-import az from "@flag/az.svg";
-import ba from "@flag/ba.svg";
-import bb from "@flag/bb.svg";
-import bd from "@flag/bd.svg";
-import be from "@flag/be.svg";
-import bf from "@flag/bf.svg";
-import bg from "@flag/bg.svg";
-import bh from "@flag/bh.svg";
-import bi from "@flag/bi.svg";
-import bj from "@flag/bj.svg";
-import bl from "@flag/bl.svg";
-import bm from "@flag/bm.svg";
-import bn from "@flag/bn.svg";
-import bo from "@flag/bo.svg";
-import bq from "@flag/bq.svg";
-import br from "@flag/br.svg";
-import bs from "@flag/bs.svg";
-import bt from "@flag/bt.svg";
-import bv from "@flag/bv.svg";
-import bw from "@flag/bw.svg";
-import by from "@flag/by.svg";
-import bz from "@flag/bz.svg";
-import ca from "@flag/ca.svg";
-import cc from "@flag/cc.svg";
-import cd from "@flag/cd.svg";
-import cf from "@flag/cf.svg";
-import cg from "@flag/cg.svg";
-import ch from "@flag/ch.svg";
-import ci from "@flag/ci.svg";
-import ck from "@flag/ck.svg";
-import cl from "@flag/cl.svg";
-import cm from "@flag/cm.svg";
-import cn from "@flag/cn.svg";
-import co from "@flag/co.svg";
-import cr from "@flag/cr.svg";
-import cu from "@flag/cu.svg";
-import cv from "@flag/cv.svg";
-import cw from "@flag/cw.svg";
-import cx from "@flag/cx.svg";
-import cy from "@flag/cy.svg";
-import cz from "@flag/cz.svg";
-import de from "@flag/de.svg";
-import dj from "@flag/dj.svg";
-import dk from "@flag/dk.svg";
-import dm from "@flag/dm.svg";
-import DO from "@flag/do.svg";
-import dz from "@flag/dz.svg";
-import ec from "@flag/ec.svg";
-import ee from "@flag/ee.svg";
-import eg from "@flag/eg.svg";
-import eh from "@flag/eh.svg";
-import er from "@flag/er.svg";
-import es from "@flag/es.svg";
-import et from "@flag/et.svg";
-import eu from "@flag/eu.svg";
-import fi from "@flag/fi.svg";
-import fj from "@flag/fj.svg";
-import fk from "@flag/fk.svg";
-import fm from "@flag/fm.svg";
-import fo from "@flag/fo.svg";
-import fr from "@flag/fr.svg";
-import ga from "@flag/ga.svg";
-import gb from "@flag/gb.svg";
-import gd from "@flag/gd.svg";
-import ge from "@flag/ge.svg";
-import gf from "@flag/gf.svg";
-import gg from "@flag/gg.svg";
-import gh from "@flag/gh.svg";
-import gi from "@flag/gi.svg";
-import gl from "@flag/gl.svg";
-import gm from "@flag/gm.svg";
-import gn from "@flag/gn.svg";
-import gp from "@flag/gp.svg";
-import gq from "@flag/gq.svg";
-import gr from "@flag/gr.svg";
-import gs from "@flag/gs.svg";
-import gt from "@flag/gt.svg";
-import gu from "@flag/gu.svg";
-import gw from "@flag/gw.svg";
-import gy from "@flag/gy.svg";
-import hk from "@flag/hk.svg";
-import hm from "@flag/hm.svg";
-import hn from "@flag/hn.svg";
-import hr from "@flag/hr.svg";
-import ht from "@flag/ht.svg";
-import hu from "@flag/hu.svg";
-import id from "@flag/id.svg";
-import ie from "@flag/ie.svg";
-import il from "@flag/il.svg";
-import im from "@flag/im.svg";
-import IN from "@flag/in.svg";
-import io from "@flag/io.svg";
-import iq from "@flag/iq.svg";
-import ir from "@flag/ir.svg";
-import IS from "@flag/is.svg";
-import it from "@flag/it.svg";
-import je from "@flag/je.svg";
-import jm from "@flag/jm.svg";
-import jo from "@flag/jo.svg";
-import jp from "@flag/jp.svg";
-import ke from "@flag/ke.svg";
-import kg from "@flag/kg.svg";
-import kh from "@flag/kh.svg";
-import ki from "@flag/ki.svg";
-import km from "@flag/km.svg";
-import kn from "@flag/kn.svg";
-import kp from "@flag/kp.svg";
-import kr from "@flag/kr.svg";
-import kw from "@flag/kw.svg";
-import ky from "@flag/ky.svg";
-import kz from "@flag/kz.svg";
-import la from "@flag/la.svg";
-import lb from "@flag/lb.svg";
-import lc from "@flag/lc.svg";
-import li from "@flag/li.svg";
-import lk from "@flag/lk.svg";
-import lr from "@flag/lr.svg";
-import ls from "@flag/ls.svg";
-import lt from "@flag/lt.svg";
-import lu from "@flag/lu.svg";
-import lv from "@flag/lv.svg";
-import ly from "@flag/ly.svg";
-import ma from "@flag/ma.svg";
-import mc from "@flag/mc.svg";
-import md from "@flag/md.svg";
-import me from "@flag/me.svg";
-import mf from "@flag/mf.svg";
-import mg from "@flag/mg.svg";
-import mh from "@flag/mh.svg";
-import mk from "@flag/mk.svg";
-import ml from "@flag/ml.svg";
-import mm from "@flag/mm.svg";
-import mn from "@flag/mn.svg";
-import mo from "@flag/mo.svg";
-import mp from "@flag/mp.svg";
-import mq from "@flag/mq.svg";
-import mr from "@flag/mr.svg";
-import ms from "@flag/ms.svg";
-import mt from "@flag/mt.svg";
-import mu from "@flag/mu.svg";
-import mv from "@flag/mv.svg";
-import mw from "@flag/mw.svg";
-import mx from "@flag/mx.svg";
-import my from "@flag/my.svg";
-import mz from "@flag/mz.svg";
-import na from "@flag/na.svg";
-import nc from "@flag/nc.svg";
-import ne from "@flag/ne.svg";
-import nf from "@flag/nf.svg";
-import ng from "@flag/ng.svg";
-import ni from "@flag/ni.svg";
-import nl from "@flag/nl.svg";
-import no from "@flag/no.svg";
-import np from "@flag/np.svg";
-import nr from "@flag/nr.svg";
-import nu from "@flag/nu.svg";
-import nz from "@flag/nz.svg";
-import om from "@flag/om.svg";
-import pa from "@flag/pa.svg";
-import pe from "@flag/pe.svg";
-import pf from "@flag/pf.svg";
-import pg from "@flag/pg.svg";
-import ph from "@flag/ph.svg";
-import pk from "@flag/pk.svg";
-import pl from "@flag/pl.svg";
-import pm from "@flag/pm.svg";
-import pn from "@flag/pn.svg";
-import pr from "@flag/pr.svg";
-import ps from "@flag/ps.svg";
-import pt from "@flag/pt.svg";
-import pw from "@flag/pw.svg";
-import py from "@flag/py.svg";
-import qa from "@flag/qa.svg";
-import re from "@flag/re.svg";
-import ro from "@flag/ro.svg";
-import rs from "@flag/rs.svg";
-import ru from "@flag/ru.svg";
-import rw from "@flag/rw.svg";
-import sa from "@flag/sa.svg";
-import sb from "@flag/sb.svg";
-import sc from "@flag/sc.svg";
-import sd from "@flag/sd.svg";
-import se from "@flag/se.svg";
-import sg from "@flag/sg.svg";
-import sh from "@flag/sh.svg";
-import si from "@flag/si.svg";
-import sj from "@flag/sj.svg";
-import sk from "@flag/sk.svg";
-import sl from "@flag/sl.svg";
-import sm from "@flag/sm.svg";
-import sn from "@flag/sn.svg";
-import so from "@flag/so.svg";
-import sr from "@flag/sr.svg";
-import ss from "@flag/ss.svg";
-import st from "@flag/st.svg";
-import sv from "@flag/sv.svg";
-import sx from "@flag/sx.svg";
-import sy from "@flag/sy.svg";
-import sz from "@flag/sz.svg";
-import tc from "@flag/tc.svg";
-import td from "@flag/td.svg";
-import tf from "@flag/tf.svg";
-import tg from "@flag/tg.svg";
-import th from "@flag/th.svg";
-import tj from "@flag/tj.svg";
-import tk from "@flag/tk.svg";
-import tl from "@flag/tl.svg";
-import tm from "@flag/tm.svg";
-import tn from "@flag/tn.svg";
-import to from "@flag/to.svg";
-import tr from "@flag/tr.svg";
-import tt from "@flag/tt.svg";
-import tv from "@flag/tv.svg";
-import tw from "@flag/tw.svg";
-import tz from "@flag/tz.svg";
-import ua from "@flag/ua.svg";
-import ug from "@flag/ug.svg";
-import um from "@flag/um.svg";
-import us from "@flag/us.svg";
-import uy from "@flag/uy.svg";
-import uz from "@flag/uz.svg";
-import va from "@flag/va.svg";
-import vc from "@flag/vc.svg";
-import ve from "@flag/ve.svg";
-import vg from "@flag/vg.svg";
-import vi from "@flag/vi.svg";
-import vn from "@flag/vn.svg";
-import vu from "@flag/vu.svg";
-import wf from "@flag/wf.svg";
-import ws from "@flag/ws.svg";
-import ye from "@flag/ye.svg";
-import yt from "@flag/yt.svg";
-import za from "@flag/za.svg";
-import zm from "@flag/zm.svg";
-import zw from "@flag/zw.svg";
-
 export const COUNTRY_FLAGS = [
   {
-    name: "Andora",
-    flag: ad,
+    name: "Andorra",
+    flag: "/assets/flags/ad.svg",
     code: "AD",
   },
-
   {
     name: "United Arab Emirates",
-    flag: ae,
+    flag: "/assets/flags/ae.svg",
     code: "AE",
   },
-
   {
     name: "Afghanistan",
-    flag: af,
+    flag: "/assets/flags/af.svg",
     code: "AF",
   },
-
   {
     name: "Antigua and Barbuda",
-    flag: ag,
+    flag: "/assets/flags/ag.svg",
     code: "AG",
   },
-
   {
     name: "Anguilla",
-    flag: ai,
+    flag: "/assets/flags/ai.svg",
     code: "AI",
   },
-
   {
     name: "Albania",
-    flag: al,
+    flag: "/assets/flags/al.svg",
     code: "AL",
   },
-
   {
     name: "Armenia",
-    flag: am,
+    flag: "/assets/flags/am.svg",
     code: "AM",
   },
-
+  {
+    name: "Netherlands Antilles",
+    flag: "/assets/flags/an.svg",
+    code: "AN",
+  },
   {
     name: "Angola",
-    flag: ao,
+    flag: "/assets/flags/ao.svg",
     code: "AO",
   },
-
   {
     name: "Antarctica",
-    flag: aq,
+    flag: "/assets/flags/aq.svg",
     code: "AQ",
   },
-
   {
     name: "Argentina",
-    flag: ar,
+    flag: "/assets/flags/ar.svg",
     code: "AR",
   },
-
   {
     name: "American Samoa",
-    flag: as,
+    flag: "/assets/flags/as.svg",
     code: "AS",
   },
-
   {
     name: "Austria",
-    flag: at,
+    flag: "/assets/flags/at.svg",
     code: "AT",
   },
-
   {
     name: "Australia",
-    flag: au,
+    flag: "/assets/flags/au.svg",
     code: "AU",
   },
-
   {
     name: "Aruba",
-    flag: aw,
+    flag: "/assets/flags/aw.svg",
     code: "AW",
   },
-
   {
-    name: "Aland Islands",
-    flag: ax,
+    name: "Åland Islands",
+    flag: "/assets/flags/ax.svg",
     code: "AX",
   },
-
   {
     name: "Azerbaijan",
-    flag: az,
+    flag: "/assets/flags/az.svg",
     code: "AZ",
   },
-
   {
     name: "Bosnia and Herzegovina",
-    flag: ba,
+    flag: "/assets/flags/ba.svg",
     code: "BA",
   },
-
   {
     name: "Barbados",
-    flag: bb,
+    flag: "/assets/flags/bb.svg",
     code: "BB",
   },
-
   {
     name: "Bangladesh",
-    flag: bd,
+    flag: "/assets/flags/bd.svg",
     code: "BD",
   },
-
   {
     name: "Belgium",
-    flag: be,
+    flag: "/assets/flags/be.svg",
     code: "BE",
   },
-
   {
     name: "Burkina Faso",
-    flag: bf,
+    flag: "/assets/flags/bf.svg",
     code: "BF",
   },
-
   {
     name: "Bulgaria",
-    flag: bg,
+    flag: "/assets/flags/bg.svg",
     code: "BG",
   },
-
   {
     name: "Bahrain",
-    flag: bh,
+    flag: "/assets/flags/bh.svg",
     code: "BH",
   },
-
   {
     name: "Burundi",
-    flag: bi,
+    flag: "/assets/flags/bi.svg",
     code: "BI",
   },
-
   {
     name: "Benin",
-    flag: bj,
+    flag: "/assets/flags/bj.svg",
     code: "BJ",
   },
-
   {
     name: "Saint Barthélemy",
-    flag: bl,
+    flag: "/assets/flags/bl.svg",
     code: "BL",
   },
-
   {
     name: "Bermuda",
-    flag: bm,
+    flag: "/assets/flags/bm.svg",
     code: "BM",
   },
-
   {
     name: "Brunei Darussalam",
-    flag: bn,
+    flag: "/assets/flags/bn.svg",
     code: "BN",
   },
-
   {
-    name: "Bolivia, Plurinational State",
-    flag: bo,
+    name: "Bolivia (Plurinational State of)",
+    flag: "/assets/flags/bo.svg",
     code: "BO",
   },
-
   {
     name: "Bonaire, Sint Eustatius and Saba",
-    flag: bq,
+    flag: "/assets/flags/bq.svg",
     code: "BQ",
   },
-
   {
     name: "Brazil",
-    flag: br,
+    flag: "/assets/flags/br.svg",
     code: "BR",
   },
-
   {
     name: "Bahamas",
-    flag: bs,
+    flag: "/assets/flags/bs.svg",
     code: "BS",
   },
-
   {
     name: "Bhutan",
-    flag: bt,
+    flag: "/assets/flags/bt.svg",
     code: "BT",
   },
-
   {
     name: "Bouvet Island",
-    flag: bv,
+    flag: "/assets/flags/bv.svg",
     code: "BV",
   },
-
   {
     name: "Botswana",
-    flag: bw,
+    flag: "/assets/flags/bw.svg",
     code: "BW",
   },
-
   {
     name: "Belarus",
-    flag: by,
+    flag: "/assets/flags/by.svg",
     code: "BY",
   },
-
   {
     name: "Belize",
-    flag: bz,
+    flag: "/assets/flags/bz.svg",
     code: "BZ",
   },
-
   {
     name: "Canada",
-    flag: ca,
+    flag: "/assets/flags/ca.svg",
     code: "CA",
   },
-
   {
     name: "Cocos (Keeling) Islands",
-    flag: cc,
+    flag: "/assets/flags/cc.svg",
     code: "CC",
   },
-
   {
-    name: "Congo",
-    flag: cd,
+    name: "Congo (Democratic Republic of the)",
+    flag: "/assets/flags/cd.svg",
     code: "CD",
   },
-
   {
     name: "Central African Republic",
-    flag: cf,
+    flag: "/assets/flags/cf.svg",
     code: "CF",
   },
-
   {
     name: "Congo",
-    flag: cg,
+    flag: "/assets/flags/cg.svg",
     code: "CG",
   },
-
   {
     name: "Switzerland",
-    flag: ch,
+    flag: "/assets/flags/ch.svg",
     code: "CH",
   },
-
   {
     name: "Côte d'Ivoire",
-    flag: ci,
+    flag: "/assets/flags/ci.svg",
     code: "CI",
   },
-
   {
     name: "Cook Islands",
-    flag: ck,
+    flag: "/assets/flags/ck.svg",
     code: "CK",
   },
-
   {
     name: "Chile",
-    flag: cl,
+    flag: "/assets/flags/cl.svg",
     code: "CL",
   },
-
   {
     name: "Cameroon",
-    flag: cm,
+    flag: "/assets/flags/cm.svg",
     code: "CM",
   },
-
   {
     name: "China",
-    flag: cn,
+    flag: "/assets/flags/cn.svg",
     code: "CN",
   },
-
   {
     name: "Colombia",
-    flag: co,
+    flag: "/assets/flags/co.svg",
     code: "CO",
   },
-
   {
     name: "Costa Rica",
-    flag: cr,
+    flag: "/assets/flags/cr.svg",
     code: "CR",
   },
-
   {
     name: "Cuba",
-    flag: cu,
+    flag: "/assets/flags/cu.svg",
     code: "CU",
   },
-
   {
     name: "Cabo Verde",
-    flag: cv,
+    flag: "/assets/flags/cv.svg",
     code: "CV",
   },
-
   {
     name: "Curaçao",
-    flag: cw,
+    flag: "/assets/flags/cw.svg",
     code: "CW",
   },
-
   {
     name: "Christmas Island",
-    flag: cx,
+    flag: "/assets/flags/cx.svg",
     code: "CX",
   },
-
   {
     name: "Cyprus",
-    flag: cy,
+    flag: "/assets/flags/cy.svg",
     code: "CY",
   },
-
   {
     name: "Czech Republic",
-    flag: cz,
+    flag: "/assets/flags/cz.svg",
     code: "CZ",
   },
-
   {
     name: "Germany",
-    flag: de,
+    flag: "/assets/flags/de.svg",
     code: "DE",
   },
-
   {
     name: "Djibouti",
-    flag: dj,
+    flag: "/assets/flags/dj.svg",
     code: "DJ",
   },
-
   {
     name: "Denmark",
-    flag: dk,
+    flag: "/assets/flags/dk.svg",
     code: "DK",
   },
-
   {
     name: "Dominica",
-    flag: dm,
+    flag: "/assets/flags/dm.svg",
     code: "DM",
   },
-
   {
     name: "Dominican Republic",
-    flag: DO,
+    flag: "/assets/flags/do.svg",
     code: "DO",
   },
-
   {
     name: "Algeria",
-    flag: dz,
+    flag: "/assets/flags/dz.svg",
     code: "DZ",
   },
-
   {
     name: "Ecuador",
-    flag: ec,
+    flag: "/assets/flags/ec.svg",
     code: "EC",
   },
-
   {
     name: "Estonia",
-    flag: ee,
+    flag: "/assets/flags/ee.svg",
     code: "EE",
   },
-
   {
     name: "Egypt",
-    flag: eg,
+    flag: "/assets/flags/eg.svg",
     code: "EG",
   },
-
   {
     name: "Western Sahara",
-    flag: eh,
+    flag: "/assets/flags/eh.svg",
     code: "EH",
   },
-
   {
     name: "Eritrea",
-    flag: er,
+    flag: "/assets/flags/er.svg",
     code: "ER",
-  },
-
-  {
-    name: "Ethiopia",
-    flag: et,
-    code: "ET",
-  },
-
-  {
-    name: "Falkland Islands (Malvinas)",
-    flag: fk,
-    code: "FK",
-  },
-
-  {
-    name: "Micronesia",
-    flag: fm,
-    code: "FM",
-  },
-
-  {
-    name: "Faroe Islands",
-    flag: fo,
-    code: "FO",
-  },
-
-  {
-    name: "Gabon",
-    flag: ga,
-    code: "GA",
-  },
-
-  {
-    name: "United Kingdom",
-    flag: gb,
-    code: "GB",
-  },
-
-  {
-    name: "Georgia",
-    flag: ge,
-    code: "GE",
-  },
-
-  {
-    name: "Guernsey",
-    flag: gg,
-    code: "GG",
-  },
-
-  {
-    name: "Ghana",
-    flag: gh,
-    code: "GH",
-  },
-
-  {
-    name: "Gibraltar",
-    flag: gi,
-    code: "GI",
-  },
-
-  {
-    name: "Greenland",
-    flag: gl,
-    code: "GL",
-  },
-
-  {
-    name: "Greece",
-    flag: gr,
-    code: "GR",
   },
   {
     name: "Spain",
-    flag: es,
+    flag: "/assets/flags/es.svg",
     code: "ES",
   },
-
   {
     name: "Ethiopia",
-    flag: et,
+    flag: "/assets/flags/et.svg",
     code: "ET",
   },
-
   {
     name: "Finland",
-    flag: fi,
+    flag: "/assets/flags/fi.svg",
     code: "FI",
   },
-
   {
     name: "Fiji",
-    flag: fj,
+    flag: "/assets/flags/fj.svg",
     code: "FJ",
   },
-
   {
     name: "Falkland Islands (Malvinas)",
-    flag: fk,
+    flag: "/assets/flags/fk.svg",
     code: "FK",
   },
-
+  {
+    name: "Micronesia (Federated States of)",
+    flag: "/assets/flags/fm.svg",
+    code: "FM",
+  },
+  {
+    name: "Faroe Islands",
+    flag: "/assets/flags/fo.svg",
+    code: "FO",
+  },
   {
     name: "France",
-    flag: fr,
+    flag: "/assets/flags/fr.svg",
     code: "FR",
   },
-
   {
     name: "Gabon",
-    flag: ga,
+    flag: "/assets/flags/ga.svg",
     code: "GA",
   },
-
+  {
+    name: "United Kingdom of Great Britain and Northern Ireland",
+    flag: "/assets/flags/gb.svg",
+    code: "GB",
+  },
   {
     name: "Grenada",
-    flag: gd,
+    flag: "/assets/flags/gd.svg",
     code: "GD",
   },
-
+  {
+    name: "Georgia",
+    flag: "/assets/flags/ge.svg",
+    code: "GE",
+  },
   {
     name: "French Guiana",
-    flag: gf,
+    flag: "/assets/flags/gf.svg",
     code: "GF",
   },
-
+  {
+    name: "Guernsey",
+    flag: "/assets/flags/gg.svg",
+    code: "GG",
+  },
+  {
+    name: "Ghana",
+    flag: "/assets/flags/gh.svg",
+    code: "GH",
+  },
   {
     name: "Gibraltar",
-    flag: gi,
+    flag: "/assets/flags/gi.svg",
     code: "GI",
   },
-
   {
     name: "Greenland",
-    flag: gl,
+    flag: "/assets/flags/gl.svg",
     code: "GL",
   },
-
   {
     name: "Gambia",
-    flag: gm,
+    flag: "/assets/flags/gm.svg",
     code: "GM",
   },
-
   {
     name: "Guinea",
-    flag: gn,
+    flag: "/assets/flags/gn.svg",
     code: "GN",
   },
-
   {
     name: "Guadeloupe",
-    flag: gp,
+    flag: "/assets/flags/gp.svg",
     code: "GP",
   },
-
   {
     name: "Equatorial Guinea",
-    flag: gq,
+    flag: "/assets/flags/gq.svg",
     code: "GQ",
   },
-
+  {
+    name: "Greece",
+    flag: "/assets/flags/gr.svg",
+    code: "GR",
+  },
   {
     name: "South Georgia and the South Sandwich Islands",
-    flag: gs,
+    flag: "/assets/flags/gs.svg",
     code: "GS",
   },
-
   {
     name: "Guatemala",
-    flag: gt,
+    flag: "/assets/flags/gt.svg",
     code: "GT",
   },
-
   {
     name: "Guam",
-    flag: gu,
+    flag: "/assets/flags/gu.svg",
     code: "GU",
   },
-
   {
     name: "Guinea-Bissau",
-    flag: gw,
+    flag: "/assets/flags/gw.svg",
     code: "GW",
   },
-
   {
     name: "Guyana",
-    flag: gy,
+    flag: "/assets/flags/gy.svg",
     code: "GY",
   },
-
   {
     name: "Hong Kong",
-    flag: hk,
+    flag: "/assets/flags/hk.svg",
     code: "HK",
   },
-
   {
     name: "Heard Island and McDonald Islands",
-    flag: hm,
+    flag: "/assets/flags/hm.svg",
     code: "HM",
   },
-
   {
     name: "Honduras",
-    flag: hn,
+    flag: "/assets/flags/hn.svg",
     code: "HN",
   },
-
   {
     name: "Croatia",
-    flag: hr,
+    flag: "/assets/flags/hr.svg",
     code: "HR",
   },
-
   {
     name: "Haiti",
-    flag: ht,
+    flag: "/assets/flags/ht.svg",
     code: "HT",
   },
-
   {
     name: "Hungary",
-    flag: hu,
+    flag: "/assets/flags/hu.svg",
     code: "HU",
   },
-
   {
     name: "Indonesia",
-    flag: id,
+    flag: "/assets/flags/id.svg",
     code: "ID",
   },
-
   {
     name: "Ireland",
-    flag: ie,
+    flag: "/assets/flags/ie.svg",
     code: "IE",
   },
-
   {
     name: "Israel",
-    flag: il,
+    flag: "/assets/flags/il.svg",
     code: "IL",
   },
-
   {
     name: "Isle of Man",
-    flag: im,
+    flag: "/assets/flags/im.svg",
     code: "IM",
   },
-
   {
     name: "India",
-    flag: IN,
+    flag: "/assets/flags/in.svg",
     code: "IN",
   },
-
   {
     name: "British Indian Ocean Territory",
-    flag: io,
+    flag: "/assets/flags/io.svg",
     code: "IO",
   },
-
   {
     name: "Iraq",
-    flag: iq,
+    flag: "/assets/flags/iq.svg",
     code: "IQ",
   },
-
   {
-    name: "Iran ",
-    flag: ir,
+    name: "Iran (Islamic Republic of)",
+    flag: "/assets/flags/ir.svg",
     code: "IR",
   },
-
   {
     name: "Iceland",
-    flag: IS,
+    flag: "/assets/flags/is.svg",
     code: "IS",
   },
-
   {
     name: "Italy",
-    flag: it,
+    flag: "/assets/flags/it.svg",
     code: "IT",
   },
-
   {
     name: "Jersey",
-    flag: je,
+    flag: "/assets/flags/je.svg",
     code: "JE",
   },
-
   {
     name: "Jamaica",
-    flag: jm,
+    flag: "/assets/flags/jm.svg",
     code: "JM",
   },
-
   {
     name: "Jordan",
-    flag: jo,
+    flag: "/assets/flags/jo.svg",
     code: "JO",
   },
-
   {
     name: "Japan",
-    flag: jp,
+    flag: "/assets/flags/jp.svg",
     code: "JP",
   },
-
   {
     name: "Kenya",
-    flag: ke,
+    flag: "/assets/flags/ke.svg",
     code: "KE",
   },
-
   {
     name: "Kyrgyzstan",
-    flag: kg,
+    flag: "/assets/flags/kg.svg",
     code: "KG",
   },
-
   {
     name: "Cambodia",
-    flag: kh,
+    flag: "/assets/flags/kh.svg",
     code: "KH",
   },
-
   {
     name: "Kiribati",
-    flag: ki,
+    flag: "/assets/flags/ki.svg",
     code: "KI",
   },
-
   {
     name: "Comoros",
-    flag: km,
+    flag: "/assets/flags/km.svg",
     code: "KM",
   },
-
   {
     name: "Saint Kitts and Nevis",
-    flag: kn,
+    flag: "/assets/flags/kn.svg",
     code: "KN",
   },
-
   {
-    name: "Korea, Democratic People's Republic",
-    flag: kp,
+    name: "Korea (Democratic People's Republic of)",
+    flag: "/assets/flags/kp.svg",
     code: "KP",
   },
-
   {
-    name: "Korea",
-    flag: kr,
+    name: "Korea (Republic of)",
+    flag: "/assets/flags/kr.svg",
     code: "KR",
   },
-
   {
     name: "Kuwait",
-    flag: kw,
+    flag: "/assets/flags/kw.svg",
     code: "KW",
   },
-
   {
     name: "Cayman Islands",
-    flag: ky,
+    flag: "/assets/flags/ky.svg",
     code: "KY",
   },
-
   {
     name: "Kazakhstan",
-    flag: kz,
+    flag: "/assets/flags/kz.svg",
     code: "KZ",
   },
-
   {
     name: "Lao People's Democratic Republic",
-    flag: la,
+    flag: "/assets/flags/la.svg",
     code: "LA",
   },
-
   {
     name: "Lebanon",
-    flag: lb,
+    flag: "/assets/flags/lb.svg",
     code: "LB",
   },
-
   {
     name: "Saint Lucia",
-    flag: lc,
+    flag: "/assets/flags/lc.svg",
     code: "LC",
   },
-
   {
     name: "Liechtenstein",
-    flag: li,
+    flag: "/assets/flags/li.svg",
     code: "LI",
   },
-
   {
     name: "Sri Lanka",
-    flag: lk,
+    flag: "/assets/flags/lk.svg",
     code: "LK",
   },
-
   {
     name: "Liberia",
-    flag: lr,
+    flag: "/assets/flags/lr.svg",
     code: "LR",
   },
-
   {
     name: "Lesotho",
-    flag: ls,
+    flag: "/assets/flags/ls.svg",
     code: "LS",
   },
-
   {
     name: "Lithuania",
-    flag: lt,
+    flag: "/assets/flags/lt.svg",
     code: "LT",
   },
-
   {
     name: "Luxembourg",
-    flag: lu,
+    flag: "/assets/flags/lu.svg",
     code: "LU",
   },
-
   {
     name: "Latvia",
-    flag: lv,
+    flag: "/assets/flags/lv.svg",
     code: "LV",
   },
-
   {
     name: "Libya",
-    flag: ly,
+    flag: "/assets/flags/ly.svg",
     code: "LY",
   },
-
   {
     name: "Morocco",
-    flag: ma,
+    flag: "/assets/flags/ma.svg",
     code: "MA",
   },
-
   {
     name: "Monaco",
-    flag: mc,
+    flag: "/assets/flags/mc.svg",
     code: "MC",
   },
-
   {
-    name: "Moldova",
-    flag: md,
+    name: "Moldova (Republic of)",
+    flag: "/assets/flags/md.svg",
     code: "MD",
   },
-
   {
     name: "Montenegro",
-    flag: me,
+    flag: "/assets/flags/me.svg",
     code: "ME",
   },
-
   {
     name: "Saint Martin (French part)",
-    flag: mf,
+    flag: "/assets/flags/mf.svg",
     code: "MF",
   },
-
   {
     name: "Madagascar",
-    flag: mg,
+    flag: "/assets/flags/mg.svg",
     code: "MG",
   },
-
   {
     name: "Marshall Islands",
-    flag: mh,
+    flag: "/assets/flags/mh.svg",
     code: "MH",
   },
-
   {
     name: "North Macedonia",
-    flag: mk,
+    flag: "/assets/flags/mk.svg",
     code: "MK",
   },
-
   {
     name: "Mali",
-    flag: ml,
+    flag: "/assets/flags/ml.svg",
     code: "ML",
   },
-
   {
     name: "Myanmar",
-    flag: mm,
+    flag: "/assets/flags/mm.svg",
     code: "MM",
   },
-
   {
     name: "Mongolia",
-    flag: mn,
+    flag: "/assets/flags/mn.svg",
     code: "MN",
   },
-
   {
     name: "Macao",
-    flag: mo,
+    flag: "/assets/flags/mo.svg",
     code: "MO",
   },
-
   {
     name: "Northern Mariana Islands",
-    flag: mp,
+    flag: "/assets/flags/mp.svg",
     code: "MP",
   },
-
   {
     name: "Martinique",
-    flag: mq,
+    flag: "/assets/flags/mq.svg",
     code: "MQ",
   },
-
   {
     name: "Mauritania",
-    flag: mr,
+    flag: "/assets/flags/mr.svg",
     code: "MR",
   },
-
   {
     name: "Montserrat",
-    flag: ms,
+    flag: "/assets/flags/ms.svg",
     code: "MS",
   },
-
   {
     name: "Malta",
-    flag: mt,
+    flag: "/assets/flags/mt.svg",
     code: "MT",
   },
-
   {
     name: "Mauritius",
-    flag: mu,
+    flag: "/assets/flags/mu.svg",
     code: "MU",
   },
-
   {
     name: "Maldives",
-    flag: mv,
+    flag: "/assets/flags/mv.svg",
     code: "MV",
   },
-
   {
     name: "Malawi",
-    flag: mw,
+    flag: "/assets/flags/mw.svg",
     code: "MW",
   },
-
   {
     name: "Mexico",
-    flag: mx,
+    flag: "/assets/flags/mx.svg",
     code: "MX",
   },
-
   {
     name: "Malaysia",
-    flag: my,
+    flag: "/assets/flags/my.svg",
     code: "MY",
   },
-
   {
     name: "Mozambique",
-    flag: mz,
+    flag: "/assets/flags/mz.svg",
     code: "MZ",
   },
-
   {
     name: "Namibia",
-    flag: na,
+    flag: "/assets/flags/na.svg",
     code: "NA",
   },
-
   {
     name: "New Caledonia",
-    flag: nc,
+    flag: "/assets/flags/nc.svg",
     code: "NC",
   },
-
   {
     name: "Niger",
-    flag: ne,
+    flag: "/assets/flags/ne.svg",
     code: "NE",
   },
-
   {
     name: "Norfolk Island",
-    flag: nf,
+    flag: "/assets/flags/nf.svg",
     code: "NF",
   },
-
   {
     name: "Nigeria",
-    flag: ng,
+    flag: "/assets/flags/ng.svg",
     code: "NG",
-    currency: "Nigerian Naira",
-    currencyCode: "NGN",
   },
-
   {
     name: "Nicaragua",
-    flag: ni,
+    flag: "/assets/flags/ni.svg",
     code: "NI",
   },
-
   {
     name: "Netherlands",
-    flag: nl,
+    flag: "/assets/flags/nl.svg",
     code: "NL",
   },
-
   {
     name: "Norway",
-    flag: no,
+    flag: "/assets/flags/no.svg",
     code: "NO",
   },
-
   {
     name: "Nepal",
-    flag: np,
+    flag: "/assets/flags/np.svg",
     code: "NP",
   },
-
   {
     name: "Nauru",
-    flag: nr,
+    flag: "/assets/flags/nr.svg",
     code: "NR",
   },
-
   {
     name: "Niue",
-    flag: nu,
+    flag: "/assets/flags/nu.svg",
     code: "NU",
   },
-
   {
     name: "New Zealand",
-    flag: nz,
+    flag: "/assets/flags/nz.svg",
     code: "NZ",
   },
-
   {
     name: "Oman",
-    flag: om,
+    flag: "/assets/flags/om.svg",
     code: "OM",
   },
-
   {
     name: "Panama",
-    flag: pa,
+    flag: "/assets/flags/pa.svg",
     code: "PA",
   },
-
   {
     name: "Peru",
-    flag: pe,
+    flag: "/assets/flags/pe.svg",
     code: "PE",
   },
-
   {
     name: "French Polynesia",
-    flag: pf,
+    flag: "/assets/flags/pf.svg",
     code: "PF",
   },
-
   {
     name: "Papua New Guinea",
-    flag: pg,
+    flag: "/assets/flags/pg.svg",
     code: "PG",
   },
-
   {
     name: "Philippines",
-    flag: ph,
+    flag: "/assets/flags/ph.svg",
     code: "PH",
   },
-
   {
     name: "Pakistan",
-    flag: pk,
+    flag: "/assets/flags/pk.svg",
     code: "PK",
   },
-
   {
     name: "Poland",
-    flag: pl,
+    flag: "/assets/flags/pl.svg",
     code: "PL",
   },
-
   {
     name: "Saint Pierre and Miquelon",
-    flag: pm,
+    flag: "/assets/flags/pm.svg",
     code: "PM",
   },
-
   {
     name: "Pitcairn",
-    flag: pn,
+    flag: "/assets/flags/pn.svg",
     code: "PN",
   },
-
   {
     name: "Puerto Rico",
-    flag: pr,
+    flag: "/assets/flags/pr.svg",
     code: "PR",
   },
-
   {
-    name: "Palestinian Territory, Occupied",
-    flag: ps,
+    name: "Palestine, State of",
+    flag: "/assets/flags/ps.svg",
     code: "PS",
   },
-
   {
     name: "Portugal",
-    flag: pt,
+    flag: "/assets/flags/pt.svg",
     code: "PT",
   },
-
   {
     name: "Palau",
-    flag: pw,
+    flag: "/assets/flags/pw.svg",
     code: "PW",
   },
-
   {
     name: "Paraguay",
-    flag: py,
+    flag: "/assets/flags/py.svg",
     code: "PY",
   },
-
   {
     name: "Qatar",
-    flag: qa,
+    flag: "/assets/flags/qa.svg",
     code: "QA",
   },
-
   {
     name: "Réunion",
-    flag: re,
+    flag: "/assets/flags/re.svg",
     code: "RE",
   },
-
   {
     name: "Romania",
-    flag: ro,
+    flag: "/assets/flags/ro.svg",
     code: "RO",
   },
-
   {
     name: "Serbia",
-    flag: rs,
+    flag: "/assets/flags/rs.svg",
     code: "RS",
   },
-
   {
     name: "Russian Federation",
-    flag: ru,
+    flag: "/assets/flags/ru.svg",
     code: "RU",
   },
-
   {
     name: "Rwanda",
-    flag: rw,
+    flag: "/assets/flags/rw.svg",
     code: "RW",
   },
-
   {
     name: "Saudi Arabia",
-    flag: sa,
+    flag: "/assets/flags/sa.svg",
     code: "SA",
   },
-
   {
     name: "Solomon Islands",
-    flag: sb,
+    flag: "/assets/flags/sb.svg",
     code: "SB",
   },
-
   {
     name: "Seychelles",
-    flag: sc,
+    flag: "/assets/flags/sc.svg",
     code: "SC",
   },
-
   {
     name: "Sudan",
-    flag: sd,
+    flag: "/assets/flags/sd.svg",
     code: "SD",
   },
-
   {
     name: "Sweden",
-    flag: se,
+    flag: "/assets/flags/se.svg",
     code: "SE",
   },
-
   {
     name: "Singapore",
-    flag: sg,
+    flag: "/assets/flags/sg.svg",
     code: "SG",
   },
-
   {
     name: "Saint Helena, Ascension and Tristan da Cunha",
-    flag: sh,
+    flag: "/assets/flags/sh.svg",
     code: "SH",
   },
-
   {
     name: "Slovenia",
-    flag: si,
+    flag: "/assets/flags/si.svg",
     code: "SI",
   },
-
   {
-    name: "Svalbard and Jan Mayen Islands",
-    flag: sj,
+    name: "Svalbard and Jan Mayen",
+    flag: "/assets/flags/sj.svg",
     code: "SJ",
   },
-
   {
     name: "Slovakia",
-    flag: sk,
+    flag: "/assets/flags/sk.svg",
     code: "SK",
   },
-
   {
     name: "Sierra Leone",
-    flag: sl,
+    flag: "/assets/flags/sl.svg",
     code: "SL",
   },
-
   {
     name: "San Marino",
-    flag: sm,
+    flag: "/assets/flags/sm.svg",
     code: "SM",
   },
-
   {
     name: "Senegal",
-    flag: sn,
+    flag: "/assets/flags/sn.svg",
     code: "SN",
   },
-
   {
     name: "Somalia",
-    flag: so,
+    flag: "/assets/flags/so.svg",
     code: "SO",
   },
-
   {
     name: "Suriname",
-    flag: sr,
+    flag: "/assets/flags/sr.svg",
     code: "SR",
   },
-
   {
     name: "South Sudan",
-    flag: ss,
+    flag: "/assets/flags/ss.svg",
     code: "SS",
   },
-
   {
     name: "Sao Tome and Principe",
-    flag: st,
+    flag: "/assets/flags/st.svg",
     code: "ST",
   },
-
   {
     name: "El Salvador",
-    flag: sv,
+    flag: "/assets/flags/sv.svg",
     code: "SV",
   },
-
   {
     name: "Sint Maarten (Dutch part)",
-    flag: sx,
+    flag: "/assets/flags/sx.svg",
     code: "SX",
   },
-
   {
     name: "Syrian Arab Republic",
-    flag: sy,
+    flag: "/assets/flags/sy.svg",
     code: "SY",
   },
-
   {
-    name: "Swaziland",
-    flag: sz,
+    name: "Eswatini",
+    flag: "/assets/flags/sz.svg",
     code: "SZ",
   },
-
   {
     name: "Turks and Caicos Islands",
-    flag: tc,
+    flag: "/assets/flags/tc.svg",
     code: "TC",
   },
-
   {
     name: "Chad",
-    flag: td,
+    flag: "/assets/flags/td.svg",
     code: "TD",
   },
-
   {
     name: "French Southern Territories",
-    flag: tf,
+    flag: "/assets/flags/tf.svg",
     code: "TF",
   },
-
   {
     name: "Togo",
-    flag: tg,
+    flag: "/assets/flags/tg.svg",
     code: "TG",
   },
-
   {
     name: "Thailand",
-    flag: th,
+    flag: "/assets/flags/th.svg",
     code: "TH",
   },
-
   {
     name: "Tajikistan",
-    flag: tj,
+    flag: "/assets/flags/tj.svg",
     code: "TJ",
   },
-
   {
     name: "Tokelau",
-    flag: tk,
+    flag: "/assets/flags/tk.svg",
     code: "TK",
   },
-
   {
     name: "Timor-Leste",
-    flag: tl,
+    flag: "/assets/flags/tl.svg",
     code: "TL",
   },
-
   {
     name: "Turkmenistan",
-    flag: tm,
+    flag: "/assets/flags/tm.svg",
     code: "TM",
   },
-
   {
     name: "Tunisia",
-    flag: tn,
+    flag: "/assets/flags/tn.svg",
     code: "TN",
   },
-
   {
     name: "Tonga",
-    flag: to,
+    flag: "/assets/flags/to.svg",
     code: "TO",
   },
-
   {
     name: "Turkey",
-    flag: tr,
+    flag: "/assets/flags/tr.svg",
     code: "TR",
   },
-
   {
     name: "Trinidad and Tobago",
-    flag: tt,
+    flag: "/assets/flags/tt.svg",
     code: "TT",
   },
-
   {
     name: "Tuvalu",
-    flag: tv,
+    flag: "/assets/flags/tv.svg",
     code: "TV",
   },
-
   {
     name: "Taiwan, Province of China",
-    flag: tw,
+    flag: "/assets/flags/tw.svg",
     code: "TW",
   },
-
   {
-    name: "Tanzania",
-    flag: tz,
+    name: "Tanzania, United Republic of",
+    flag: "/assets/flags/tz.svg",
     code: "TZ",
   },
-
   {
     name: "Ukraine",
-    flag: ua,
+    flag: "/assets/flags/ua.svg",
     code: "UA",
   },
-
   {
     name: "Uganda",
-    flag: ug,
+    flag: "/assets/flags/ug.svg",
     code: "UG",
   },
-
   {
     name: "United States Minor Outlying Islands",
-    flag: um,
+    flag: "/assets/flags/um.svg",
     code: "UM",
   },
-
   {
     name: "United States of America",
-    flag: us,
+    flag: "/assets/flags/us.svg",
     code: "US",
   },
-
   {
     name: "Uruguay",
-    flag: uy,
+    flag: "/assets/flags/uy.svg",
     code: "UY",
   },
-
   {
     name: "Uzbekistan",
-    flag: uz,
+    flag: "/assets/flags/uz.svg",
     code: "UZ",
   },
-
   {
     name: "Holy See",
-    flag: va,
+    flag: "/assets/flags/va.svg",
     code: "VA",
   },
-
   {
     name: "Saint Vincent and the Grenadines",
-    flag: vc,
+    flag: "/assets/flags/vc.svg",
     code: "VC",
   },
-
   {
-    name: "Venezuela (Bolivarian Republic)",
-    flag: ve,
+    name: "Venezuela (Bolivarian Republic of)",
+    flag: "/assets/flags/ve.svg",
     code: "VE",
   },
-
   {
     name: "Virgin Islands (British)",
-    flag: vg,
+    flag: "/assets/flags/vg.svg",
     code: "VG",
   },
-
   {
     name: "Virgin Islands (U.S.)",
-    flag: vi,
+    flag: "/assets/flags/vi.svg",
     code: "VI",
   },
-
   {
     name: "Viet Nam",
-    flag: vn,
+    flag: "/assets/flags/vn.svg",
     code: "VN",
   },
-
   {
     name: "Vanuatu",
-    flag: vu,
+    flag: "/assets/flags/vu.svg",
     code: "VU",
   },
-
   {
     name: "Wallis and Futuna",
-    flag: wf,
+    flag: "/assets/flags/wf.svg",
     code: "WF",
   },
-
   {
     name: "Samoa",
-    flag: ws,
+    flag: "/assets/flags/ws.svg",
     code: "WS",
   },
-
   {
     name: "Yemen",
-    flag: ye,
+    flag: "/assets/flags/ye.svg",
     code: "YE",
   },
-
   {
     name: "Mayotte",
-    flag: yt,
+    flag: "/assets/flags/yt.svg",
     code: "YT",
   },
-
   {
     name: "South Africa",
-    flag: za,
+    flag: "/assets/flags/za.svg",
     code: "ZA",
   },
-
   {
     name: "Zambia",
-    flag: zm,
+    flag: "/assets/flags/zm.svg",
     code: "ZM",
   },
-
   {
     name: "Zimbabwe",
-    flag: zw,
+    flag: "/assets/flags/zw.svg",
     code: "ZW",
   },
 ];
+
+// Now the `country_flags` array contains all the objects from the original data.

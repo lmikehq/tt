@@ -1,6 +1,6 @@
 "use client";
 import Text from "src/components/atoms/text";
-import lottie from "@lottie/check-mark.json";
+import lottie from "/assets/lotties/check-mark.json";
 import Lottie from "lottie-react";
 import { IoCloseSharp } from "react-icons/io5";
 import Button from "src/components/atoms/button";

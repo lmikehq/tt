@@ -1,7 +1,6 @@
 "use client";
 
 import Center from "src/components/atoms/center";
-import bgImage from "@image/herobg-visa.png";
 import Navbar from "src/components/organisms/Navbar";
 import ServiceBanner from "src/components/organisms/ServiceBanner";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -11,7 +10,7 @@ const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
   background: var(--bg-color);
   height: ${(props) => (props.isMobile ? "unset" : "500px")};
-  background-image: url(${bgImage.src});
+  background-image: url(${"/assets/images/herobg-visa.png"});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

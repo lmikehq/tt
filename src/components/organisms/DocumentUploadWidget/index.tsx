@@ -12,8 +12,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
-import DocPlus from "@image/form/docUpload/docPlus.png";
-import DeleteIcon from "@image/visaIcons/delete.png";
+
 import { UploadedDoc } from "src/components/organisms/form/applicationForm";
 
 const UploadArea = styled.div`
@@ -109,7 +108,7 @@ const DocumentUploadWidget = ({
             <DocUploadCenteredChild>
               <Image
                 styles={{ marginBottom: "21px" }}
-                src={DocPlus}
+                src={"/assets/images/form/docUpload/docPlus.png"}
                 alt="add_doc_icon"
                 height={56}
                 width={56}
@@ -182,7 +181,7 @@ const DocumentUploadWidget = ({
                   setModalContent({
                     icon: (
                       <Image
-                        src={DeleteIcon}
+                        src={"/assets/images/visaIcons/delete.png"}
                         alt="delete-icon"
                         width={95.5}
                         height={95.5}

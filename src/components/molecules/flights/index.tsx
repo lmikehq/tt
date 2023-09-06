@@ -40,13 +40,6 @@ const ImageBox = styled.div<{ imageUrl: string }>`
 `;
 
 const FlightSection = () => {
-  const image2 = require("../../../assets/images/flights/image2.png").default
-    .src;
-  const image1 = require("../../../assets/images/flights/image1.jpg").default
-    .src;
-  const image3 = require("../../../assets/images/flights/image3.jpg").default
-    .src;
-
   const { isMobile } = useScreenResolution();
   return (
     <SectionLayout>
@@ -144,7 +137,7 @@ const FlightSection = () => {
         </Flex>
         <Flex direction={isMobile ? "column" : "row"} gap="2rem">
           <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={image3} />
+            <ImageBox imageUrl={"/assets/images/flights/image3.png"} />
             <Flex justify="space-between">
               <Flex direction="column" gap=".25rem">
                 <Text
@@ -183,7 +176,7 @@ const FlightSection = () => {
             </Flex>
           </Flex>
           <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={image2} />
+            <ImageBox imageUrl={"/assets/images/flights/image2.png"} />
             <Flex justify="space-between">
               <Flex direction="column" gap=".25rem">
                 <Text
@@ -222,7 +215,7 @@ const FlightSection = () => {
             </Flex>
           </Flex>
           <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={image1} />
+            <ImageBox imageUrl={"/assets/images/flights/image1.png"} />
             <Flex justify="space-between">
               <Flex direction="column" gap=".25rem">
                 <Text

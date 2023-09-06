@@ -2,13 +2,9 @@
 import styled from "styled-components";
 import Text from "src/components/atoms/text";
 import { Grid } from "src/components/atoms/grid";
-import Image from "next/image";
+import Image from "@atom/image";
 import { FaPaperPlane } from "react-icons/fa";
 import Button from "src/components/atoms/button";
-import VisaImg from "@image/serviceCard/visas.png";
-import FlightImg from "@image/serviceCard/flight.png";
-import HotelImg from "@image/serviceCard/hotel.png";
-import TravelImg from "@image/serviceCard/travel.png";
 import { useRouter } from "next/navigation";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "./flex";
@@ -19,10 +15,10 @@ const FrameWrapper = styled.div`
 `;
 const ServiceCard = styled.div`
   display: block;
+  height: 25rem;
 
   & img {
     width: 100%;
-    height: 25rem;
     border-radius: 24px;
   }
 `;
@@ -82,7 +78,7 @@ const FrameInfo = styled.div`
 const serviceCard = [
   {
     id: 1,
-    img: VisaImg,
+    img: "/assets/images/serviceCard/visas.png",
     title: "Visas",
     description: "Apply for a visa to over 200 countries around the world.",
     button: "Book visa",
@@ -92,7 +88,7 @@ const serviceCard = [
 
   {
     id: 2,
-    img: FlightImg,
+    img: "/assets/images/serviceCard/flight.png",
     title: "Flights",
     description:
       "Travel the world with cheap flights, exclusive deals, and more.",
@@ -103,7 +99,7 @@ const serviceCard = [
 
   {
     id: 3,
-    img: TravelImg,
+    img: "/assets/images/serviceCard/travel.png",
     title: "Travel Guide",
     description: "Get the best travel tips from our experts",
     button: "Explore guide",
@@ -113,7 +109,7 @@ const serviceCard = [
 
   {
     id: 4,
-    img: HotelImg,
+    img: "/assets/images/serviceCard/hotel.png",
     title: "Hotels",
     description: "Book hotels in over 100 countries around the world.",
     button: "Show hotels",

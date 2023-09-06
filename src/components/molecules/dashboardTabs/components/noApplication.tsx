@@ -1,9 +1,9 @@
 "use client";
 
 // import Section from "@molecule/section";
-// import NoVisa from "@image/noVisa.png";
+// import NoVisa from "/assets/images/noVisa.png";
 // import Image from "@atom/image";
-// import NoVisaBg from "@image/background.png";
+// import NoVisaBg from "/assets/images/background.png";
 // import styled from "styled-components";
 // import Text from "@atom/text";
 // import Flex from "@atom/flex";

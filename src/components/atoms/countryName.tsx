@@ -12,8 +12,8 @@ import CountryRequirementDetails from "src/components/atoms/countryRequirementDe
 import { SAMPLE_COUNTRY_REQUIREMENT } from "data/countryRequirement";
 import HelpfulOrNot from "src/components/atoms/helpfulOrNot";
 import SectionTitle from "src/components/molecules/sectionTitle";
-import CoverImg from "@image/visaPageCover.jpg";
-import CoverDesktopImg from "@image/visaDesktopCover.jpg";
+import CoverImg from "/assets/images/visaPageCover.jpg";
+import CoverDesktopImg from "/assets/images/visaDesktopCover.jpg";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 interface pageProps {

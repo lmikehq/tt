@@ -1,5 +1,5 @@
 import Center from "src/components/atoms/center";
-import NoVisa from "@image/noVisa.png";
+import NoVisa from "/assets/images/noVisa.png";
 import VisaDetail from "src/components/molecules/dashboardTabs/components/visaDetails";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";

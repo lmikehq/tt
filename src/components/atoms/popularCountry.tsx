@@ -1,25 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import newZealand from "@image/topCountries/zealand.jpeg";
-import Uk from "@image/topCountries/uk.jpeg";
-import Canada from "@image/topCountries/Canada.jpeg";
-import Norway from "@image/topCountries/norway.jpeg";
-import Image, { StaticImageData } from "next/image";
 import { Grid } from "src/components/atoms/grid";
 
 import CountryLayout from "src/components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
-import { RiLineHeight } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import Image from "./image";
 
 interface Country {
   id: number;
   name: string;
   description1: string;
   description2: string;
-  image: StaticImageData;
+  image: string;
   interval: string;
 }
 
@@ -224,7 +219,7 @@ const TopCountriesSection: React.FC = () => {
         "Imagine yourself exploring the stunning landscapes of Canada, from the vibrant cityscapes of Toronto to the breathtaking Rocky Mountains. Thrillers Travels is your gateway to Canada, offering seamless visa application services for those seeking to study, work, or settle in this land of endless possibilities.",
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
-      image: Canada,
+      image: "/assets/images/topCountries/Canada.jpeg",
       interval: "3 Months",
     },
     {
@@ -234,7 +229,7 @@ const TopCountriesSection: React.FC = () => {
         "From the majestic beauty of the Southern Alps to the serene beaches, New Zealand calls out to adventurers and nature lovers. Thrillers Travels transforms your dreams into reality with visa application support, ensuring you can experience the thrill of this captivating land.",
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
-      image: newZealand,
+      image: "/assets/images/topCountries/zealand.jpeg",
       interval: "3 Months",
     },
     {
@@ -244,7 +239,7 @@ const TopCountriesSection: React.FC = () => {
         "Experience the blend of tradition and modernity in the United Kingdom. Whether you're drawn to London's bustling streets or the historic charm of Edinburgh, Thrillers Travels is your partner in visa application excellence. Let us simplify your path to the UK, so you can make your mark in this iconic destination.",
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
-      image: Uk,
+      image: "/assets/images/topCountries/uk.jpeg",
       interval: "3 Months",
     },
     {
@@ -254,7 +249,7 @@ const TopCountriesSection: React.FC = () => {
         "Immerse yourself in the allure of Norway, where stunning fjords, Northern Lights, and rich cultural heritage await. With Thrillers Travels by your side, the journey to Norway becomes a smooth one. Our visa expertise paves the way for you to experience the magic of this Nordic wonderland.",
       description2:
         "Don't wait any longer to embark on your journey to Canada, Australia, Norway, or the United Kingdom! Let Thrillers Travels be your guide, turning your travel aspirations into unforgettable realities.",
-      image: Norway,
+      image: "/assets/images/topCountries/norway.jpeg",
       interval: "3 Months",
     },
   ];

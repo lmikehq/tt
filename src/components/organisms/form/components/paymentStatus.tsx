@@ -1,10 +1,10 @@
 import Button from "src/components/atoms/button";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
-import covetti from "@image/success-coveti.svg";
-import sadFace from "@image/sad-face-emoji.svg";
+import covetti from "/assets/images/success-coveti.svg";
+import sadFace from "/assets/images/sad-face-emoji.svg";
 import Section from "src/components/molecules/section";
-import Image from "next/image";
+import Image from "@atom/image";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";

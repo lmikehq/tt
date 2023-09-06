@@ -1,10 +1,9 @@
-'use client'
+"use client";
 import { useState } from "react";
 import styled from "styled-components";
 import Flex from "./flex";
 import { BsPlusLg } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
-import map from "../../assets/images/map.png";
 import { Divider } from "./divider";
 import { useScreenResolution } from "hook/useScreenResolution";
 
@@ -14,7 +13,7 @@ interface MapBoxProps {
 }
 
 const MapBox = styled.div<MapBoxProps>`
-  background-image: url(${map.src});
+  background-image: url(${"/assets/images/map.png"});
   width: 100%;
   height: ${(props) => (props.isMobile ? "auto" : "30rem")};
   display: flex;

@@ -37,10 +37,6 @@ const ImageBox = styled.div<{ imageUrl: string }>`
 `;
 
 const StaySection = () => {
-  const image2 = require("../../../assets/images/stays/image2.jpg").default.src;
-  const image1 = require("../../../assets/images/stays/image3.png").default.src;
-  const image3 = require("../../../assets/images/stays/image1.jpg").default.src;
-
   const { isMobile } = useScreenResolution();
   return (
     <Section padding={isMobile ? "0 1rem" : "0 5rem"}>
@@ -138,7 +134,7 @@ const StaySection = () => {
         </Flex>
         <Flex gap="2rem" direction={isMobile ? "column" : "row"}>
           <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={image3} />
+            <ImageBox imageUrl={"/assets/images/stays/image1.jpg"} />
             <Flex direction="column" gap="1rem">
               <Flex direction="column" gap=".25rem">
                 <Text
@@ -175,7 +171,7 @@ const StaySection = () => {
             </Flex>
           </Flex>
           <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={image2} />
+            <ImageBox imageUrl={"/assets/images/stays/image2"} />
             <Flex direction="column" gap="1rem">
               <Flex direction="column" gap=".25rem">
                 <Text
@@ -212,7 +208,7 @@ const StaySection = () => {
             </Flex>
           </Flex>
           <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={image1} />
+            <ImageBox imageUrl={"/assets/images/stays/image3.png"} />
             <Flex direction="column" gap="1rem">
               <Flex direction="column" gap=".25rem">
                 <Text

@@ -1,5 +1,5 @@
 import Center from "src/components/atoms/center";
-import NoVisa from "@image/noVisa.png";
+import NoVisa from "/assets/images/noVisa.png";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import NoVisaApplication from "./noApplication";

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Loader from "src/components/organisms/Loader/loader";
-import spinnerLogo from "@image/brand/favicon.svg";
 import styled from "styled-components";
 
 const LayoutWrapper = styled.div``;
@@ -29,7 +28,11 @@ const LoaderLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <LayoutWrapper>
-      {isLoading ? <Loader logo={spinnerLogo} /> : <>{children}</>}
+      {isLoading ? (
+        <Loader logo={"/assets/images/brand/favicon.svg"} />
+      ) : (
+        <>{children}</>
+      )}
     </LayoutWrapper>
   );
 };
