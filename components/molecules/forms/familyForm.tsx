@@ -12,6 +12,7 @@ import Section from "@molecule/section";
 import { Switch } from "@mui/material";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "data/utilData";
+import dayjs from "dayjs";
 import { FormikProps, FormikValues } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";
@@ -204,6 +205,7 @@ export default function FamilyForm({ formik, count, values }: formProps) {
                 placeholder="Select Issue Year"
                 formik={formik}
                 views={["year"]}
+                maxDate={dayjs(new Date())}
               />
             </Section>
             <Section margin="0">
@@ -213,6 +215,8 @@ export default function FamilyForm({ formik, count, values }: formProps) {
                 placeholder="Select Expiry Year"
                 formik={formik}
                 views={["year"]}
+                minDate={dayjs(`${values.issueYear}`)}
+
               />
             </Section>
           </Flex>

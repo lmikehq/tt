@@ -12,6 +12,7 @@ import Image from "next/image";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "./flex";
 import Text from "./text";
+import { ttColors } from "theme/colors";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -139,6 +140,9 @@ SearchProps) {
               display: "flex",
               justifyContent: "center",
               width: "92%",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: `${ttColors.primary}`,
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -291,6 +295,9 @@ export function SearchInputAsString({
               justifyContent: "center",
               width: "100%",
               // color: "inherit !important",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: `${ttColors.primary}`,
             },
             '& fieldset': {
               border: border === "bottom" ? "none" : border,

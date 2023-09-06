@@ -24,6 +24,10 @@ const CustomTextarea = styled.textarea`
   &:focus-visible {
     outline: 0;
   }
+
+  &:hover {
+    border: 1px solid ${ttColors.primary}
+  }
 `;
 
 const Placeholder = styled.span`

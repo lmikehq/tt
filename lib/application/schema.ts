@@ -1,5 +1,3 @@
-
-
 import {
   ApplicationFormRequestInput,
   DetailsKeys,
@@ -26,12 +24,11 @@ export const detailsKeys: DetailsKeys = {
   homeCountry: "",
   destination: "",
   applicationType: "",
-  visaType: "Family", //
+  visaType: "", //
   travellingBy: "AirPlane",
 };
 
 // PERSONAL INFO
-
 export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
   .object()
   .shape({
@@ -191,8 +188,8 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
     location: yup.string().required("Required"),
     fieldOfStudy: yup.string().required("Required"),
 
-    startYear: yup.number().required("Required"),
-    endYear: yup.number().when("st", {
+    startYear: yup.string().required("Required"),
+    endYear: yup.string().when("st", {
       is: false,
       then: (schema) => schema.required("Required"),
     }),
@@ -205,8 +202,8 @@ export const educationKeys: EducationDetailsInterface = {
   cgpa: 0,
   location: "",
   fieldOfStudy: "",
-  startYear: null,
-  endYear: null,
+  startYear: "",
+  endYear: "",
   stillAtSchool: false,
   // school: "University1",
   // degree: "Bachelor's",
@@ -226,8 +223,8 @@ export const singleEmploymentSchema: yup.ObjectSchema<EmploymentDetailsInterface
     jobTitle: yup.string().required("Required"),
     employmentType: yup.string().required("Required"),
     companyLocation: yup.string().required("Required"),
-    startYear: yup.number().required("Required"),
-    endYear: yup.number().when("stillWorking", {
+    startYear: yup.string().required("Required"),
+    endYear: yup.string().when("stillWorking", {
       is: false,
       then: (schema) => schema.required("Required"),
     }),
@@ -238,8 +235,8 @@ export const employmentKeys: EmploymentDetailsInterface = {
   jobTitle: "",
   employmentType: "",
   companyLocation: "",
-  startYear: 0,
-  endYear: 0,
+  startYear: "",
+  endYear: "",
   stillWorking: false,
   // companyName: "Company1",
   // jobTitle: "Developer",
@@ -287,7 +284,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
 
 export const familyInforKeys: FamilyInfoInterface = {
   passportNumber: "",
-  expiryYear: "0",
+  expiryYear: "",
   gender: "",
   dateOfBirth: "",
   membersName: "",
@@ -295,7 +292,7 @@ export const familyInforKeys: FamilyInfoInterface = {
   address: "",
   membersPhoneNumber: "",
   membersEmail: "",
-  issueYear: "0",
+  issueYear: "",
   accompanying: false,
   // membersName: "Alice Smith",
   // relationshipToPrimary: "Spouse",
@@ -423,7 +420,7 @@ export const test: ApplicationFormRequestInput = {
         jobTitle: "Developer",
         employmentType: "Full-time",
         companyLocation: "City2",
-        startYear: 2018,
+        startYear: "2018",
         stillWorking: true,
       },
     ],
@@ -434,9 +431,9 @@ export const test: ApplicationFormRequestInput = {
         fieldOfStudy: "Computer Science",
         cgpa: 3.8,
         location: "City3",
-        startYear: 2014,
+        startYear: "2014",
         stillAtSchool: false,
-        endYear: 2018,
+        endYear: "2018",
       },
     ],
   },
@@ -452,7 +449,7 @@ export const test: ApplicationFormRequestInput = {
       gender: "Female",
       passportNumber: "P987654",
       expiryYear: "2025",
-      issueYear: 2020,
+      issueYear: "2020",
     },
     {
       membersName: "Alice Smith",
@@ -464,8 +461,8 @@ export const test: ApplicationFormRequestInput = {
       dateOfBirth: "1992-05-15",
       gender: "Female",
       passportNumber: "P987654",
-      expiryYear: 2025,
-      issueYear: 2020,
+      expiryYear: "2025",
+      issueYear: "2020",
     },
   ],
   documents: [

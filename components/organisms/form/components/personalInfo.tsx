@@ -185,11 +185,12 @@ function PersonalInfo({
             />
             <FieldAsDate
               name="dateOfBirth"
-              placeholder="Select your Issue Date"
+              placeholder="Select your Date of Birth"
               formik={formik}
               // onChange={(e: any) => {
               //   setEndDate(dayjs(e));
               // }}
+              maxDate={dayjs(new Date())}
             />
           </Section>
         </Flex>

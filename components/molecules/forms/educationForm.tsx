@@ -43,7 +43,6 @@ export default function EducationForm({ formik, count, values }: formProps) {
         />
       </Section>
       <Flex
-        margin="0"
         justify="space-between"
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "1.5rem"}
@@ -79,7 +78,6 @@ export default function EducationForm({ formik, count, values }: formProps) {
         </Section>
       </Flex>
       <Flex
-        margin={isMobile ? "0px" : "0 0 1rem"}
         justify="space-between"
         direction={isMobile ? "column" : "row"}
         gap={isMobile ? "0px" : "1.5rem"}
@@ -137,7 +135,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
             onChange={(e: any) => {
               formik.setFieldValue(`education.${count}.startYear`, e.$y);
             }}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>

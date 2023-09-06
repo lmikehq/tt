@@ -10,6 +10,7 @@ import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { IoCalendarOutline } from "react-icons/io5";
+import { ttColors } from "theme/colors";
 
 interface BlockDatePickerProps {
   value?: Range;
@@ -75,14 +76,22 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
         sx={{
           width: "100%",
           cursor: "pointer",
+          height: '40px',
           "& input": {
             color: "#1C1B1F",
             fontWeight: 400,
             fontFamily: "'Poppins', sans-serif",
           },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: `${ttColors.primary}`,
+          },
+          "&:hover .MuiInputBase-root": {
+            color: `${ttColors.primary}`,
+          },
           '& .MuiInputBase-root': {
             flexDirection: position === 'start' ? 'row-reverse': 'row',
-          }
+          },
+
         }}
         slotProps={{
           textField: {

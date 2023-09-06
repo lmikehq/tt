@@ -61,7 +61,7 @@ export const ErrorText = ({ text }: { text: string }) => {
         <Text
           type="p"
           size={14}
-          weight={200}
+          weight={500}
           color={ttColors.red}
           styles={{ wordBreak: "break-all" }}
           text={text}
@@ -82,7 +82,7 @@ export const FieldInput = (props: FieldProps) => {
   const error = getNestedValue(formik.errors, name);
 
   return (
-    <Section padding="0 0 1.2rem 0">
+    <Section>
       <Input
         height="45px"
         addon={addon}
@@ -115,8 +115,9 @@ export const ArrayInput = (props: FieldProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
-
-    parseFloat(value) > 5 ? (value = "5") : value;
+    if(name.includes('cgpa')) {
+      parseFloat(value) > 5 ? (value = "5") : value;
+    }
 
     formik.setFieldValue(name, value);
   };
@@ -155,7 +156,7 @@ export const FieldAsString = (props: FieldProps) => {
   const formikvalue = getNestedValue(formik.values, name);
 
   return (
-    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+    <Section styles={{ position: "relative" }}>
       <SearchFlagInput
         value={value ? value : formikvalue}
         options={options}
@@ -179,7 +180,7 @@ export const FieldString = (props: FieldProps) => {
   const formikvalue = getNestedValue(formik.values, name);
 
   return (
-    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+    <Section styles={{ position: "relative" }}>
       <SearchStringInput
         options={options}
         onChange={onChange ? onChange : handleChange}
