@@ -4,18 +4,18 @@ import currencyFormatter from "data/currencyFormatter";
 import { format } from "date-fns";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useState } from "react";
+import { AiOutlineCheck } from "react-icons/ai";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
-import { PiDotsThreeCircleLight } from "react-icons/pi";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
+import { useVisaApplicationVoucherStore } from "store/useStore";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import Button from "../../../atoms/button";
 import Flex from "../../../atoms/flex";
 import Text from "../../../atoms/text";
 import VisaPaymentModal from "../visaPayment";
-import { AiOutlineCheck } from "react-icons/ai";
-import { useVisaApplicationVoucherStore } from "store/useStore";
 
 const Logo = styled.div`
   height: 64px;
@@ -103,7 +103,17 @@ function VisaDetail({ visa }: { visa: any }) {
           intent: "",
         };
         break;
-      case "AWAITING CONFIRMATION" || "PROCESSING FEE REQUESTED":
+      case "FORM FEE REQUESTED":
+        visaInformation = {
+          text: "Pay form Fee",
+          fn: () => {
+            setIsModalOpen(true);
+          },
+          disabled: false,
+          intent: "FORM FEE",
+        };
+        break;
+      case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
           fn: () => {
@@ -116,9 +126,9 @@ function VisaDetail({ visa }: { visa: any }) {
       default:
         visaInformation = {
           text: "Pay Visa Fee",
-          fn: () => {},
+          fn: () => setIsModalOpen(true),
           disabled: false,
-          intent: "",
+          intent: "PROCESSING FEE",
         };
     }
 
@@ -232,6 +242,8 @@ function VisaDetail({ visa }: { visa: any }) {
                     text={
                       recentPayment?.totalAmount
                         ? currencyFormatter(recentPayment.totalAmount)
+                        : visa?.usedFormFeeVoucher
+                        ? "Travel voucher"
                         : "n/a"
                     }
                     decoration={applied && voucher ? "line-through" : ""}
@@ -319,6 +331,16 @@ function VisaDetail({ visa }: { visa: any }) {
             <PiDotsThreeCircleLight size={20} />
             <Text type="p" text={visa?.applicationStatus} size={"15px"} />
           </Flex>
+          {visa?.usedFormFeeVoucher && (
+            <Flex align="center" margin=".5rem 0" gap=".5rem">
+              <PiWalletLight size={20} />
+              <Text
+                type="p"
+                text={"Application fee paid with Travel Voucher"}
+                size={"15px"}
+              />
+            </Flex>
+          )}
           <Flex align="center" gap=".5rem">
             <AiOutlineCheck size={20} />
             <Text
