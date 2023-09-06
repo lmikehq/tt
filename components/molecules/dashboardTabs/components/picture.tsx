@@ -1,18 +1,14 @@
 "use client";
-import { IoCloudUpload } from "react-icons/io5";
-import React from "react";
-import { styled } from "styled-components";
-import Image from "@atom/image";
-import cover from "@image/dashboard/cover.jpg";
-import profileImage from "@image/dashboard/profilePicture.png";
 import Button from "@atom/button";
+import Image from "@atom/image";
 import Text from "@atom/text";
-import { HiPencil } from "react-icons/hi";
-import { ttColors } from "theme/colors";
-import { useScreenResolution } from "hook/useScreenResolution";
-import { BsFillCameraFill } from "react-icons/bs";
-import { useUserStore } from "store/useStore";
 import avatar from "@image/avatar.jpg";
+import cover from "@image/dashboard/cover.jpg";
+import { useScreenResolution } from "hook/useScreenResolution";
+import { HiPencil } from "react-icons/hi";
+import { useUserStore } from "store/useStore";
+import { styled } from "styled-components";
+import { ttColors } from "theme/colors";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
@@ -143,7 +139,6 @@ const DashboardProfilePictue = styled.div`
 function UserPicture() {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
-  console.log(user)
   return (
     <div>
       <DashboardCoverPicture>
