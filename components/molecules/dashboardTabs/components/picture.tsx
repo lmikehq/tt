@@ -143,7 +143,6 @@ const DashboardProfilePictue = styled.div`
 function UserPicture() {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
-  console.log(user)
   return (
     <div>
       <DashboardCoverPicture>
