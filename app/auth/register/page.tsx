@@ -114,7 +114,7 @@ function RegisterPage() {
       return alert("Please agree to the terms and conditions");
     }
 
-    if (registerData.password !== registerData.confirmPassword) {
+    if (registerData.password !== confirmPassword) {
       setSubmissionState({
         ...submissionState,
         error: [
@@ -424,12 +424,13 @@ function RegisterPage() {
                   )}
                 </Section>
               </Flex>
+
+              
               <Section>
                 <Text
                   type="p"
                   text="Password"
                   margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
-                  size={isMobile ? "14.5px" : "16px"}
                 />
                 <div
                   onFocus={() => setIsPasswordFocused(true)}
@@ -453,13 +454,6 @@ function RegisterPage() {
                     value={registerData.password}
                   />
                 </div>
-                {checkIfFieldHasError("password") && (
-                  <Text
-                    type="p"
-                    text={checkIfFieldHasError("password") || ""}
-                    color="#FF8682"
-                  />
-                )}
 
                 {isPasswordFocused && (
                   <Section margin="1rem 0px 0px">
@@ -510,12 +504,13 @@ function RegisterPage() {
                 )}
               </Section>
 
+             
+
               <Section>
                 <Text
                   type="p"
                   text="Confirm Password"
                   margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
-                  size={isMobile ? "14.5px" : "16px"}
                 />
                 <Input
                   placeholder="Confirm your password"
@@ -537,6 +532,7 @@ function RegisterPage() {
                   />
                 )}
               </Section>
+
               <section>
                 <Text
                   type="p"
@@ -597,18 +593,7 @@ function RegisterPage() {
                 </Flex>
               </Flex>
 
-              {/* <div style={{ margin: "-1rem 0" }}>
-                {submissionState.error.length > 0 &&
-                  submissionState.error.map((err: any, i: number) => (
-                    <Text
-                      type="p"
-                      text={err.constraints}
-                      color="#FF8682"
-                      size="17px"
-                      key={i}
-                    />
-                  ))}
-              </div> */}
+              
               <Button
                 width="100%"
                 margin="2rem 0 0"
