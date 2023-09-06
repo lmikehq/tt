@@ -85,7 +85,8 @@ function LoginPage() {
     <SectionLayout {...(isMobile && { padding: "0" })}>
       <Grid
         columns="repeat(auto-fit, minmax(300px, 1fr))"
-        margin={isMobile ? "1rem 0" : "4rem 0"}
+        margin={isMobile ? "0px" : "4rem 0"}
+        padding={isMobile ? "1.5rem 2.5rem" : "unset"}
         gap="5rem"
         style={{
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -168,12 +169,13 @@ function LoginPage() {
             </div>
           </Slider>
         </Section>
+
         <Section width={isMobile ? "100%" : "90%"}>
           <Flex justify="space-between">
             <img
               src={logo.src}
               alt="logo"
-              height={60}
+              height={isMobile ? "45px" : "60px"}
               onClick={() => router.push("/")}
               style={{ cursor: "pointer" }}
             />
@@ -195,15 +197,16 @@ function LoginPage() {
           </Flex> */}
           <Text
             type="h1"
-            margin="2rem 0 1rem"
+            margin={isMobile ? "1rem 0" : "2rem 0 1rem"}
             text="Forgot your password?"
-            size={isMobile ? "30px" : "40px"}
+            size={isMobile ? "25px" : "40px"}
             weight={700}
           />
           <Text
             type="p"
             text="Don’t worry, happens to all of us. Enter your email below to recover your password"
-            size="17px"
+            size={isMobile ? "14px" : "17px"}
+            weight={isMobile ? 300 : 400}
           />
           <Flex margin="3rem 0" direction="column" gap="1rem" overflow="unset">
             {/* <TextField
@@ -216,6 +219,7 @@ function LoginPage() {
                 type="p"
                 text="Email Address"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
               />
               <Input
                 placeholder="mike.doe@gmail.com"

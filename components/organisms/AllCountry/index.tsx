@@ -1,24 +1,22 @@
 "use client";
-import Image from "next/image";
-import React, { useState } from "react";
-import { COUNTRY_FLAGS, sorted } from "../../../data/data";
+import Button from "@atom/button";
+import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
-import styled from "styled-components";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import CountryLayout from "@layout/sectionLayout";
-import AllCountryHead from "./allCountryHead";
-import Button from "@atom/button";
-import { ttColors } from "theme/colors";
-import Flex from "@atom/flex";
-import { urlString } from "@lib/url";
-import allCountryHeadImg from "@image/allCountryHeaderImg.png";
 import SectionLayout from "@layout/sectionLayout";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { urlString } from "@lib/url";
 import SectionTitle from "@molecule/sectionTitle";
+import { useScreenResolution } from "hook/useScreenResolution";
+import Image from "next/image";
+import { useState } from "react";
+import styled from "styled-components";
+import { ttColors } from "theme/colors";
+import { COUNTRY_FLAGS } from "../../../data/data";
+import AllCountryHead from "./allCountryHead";
 
-import CoverImg from "@image/visaPageCover.jpg";
 import CoverDesktopImg from "@image/visaDesktopCover.jpg";
+import CoverImg from "@image/visaPageCover.jpg";
 
 const CountryWrapper = styled.section`
   // margin: 5rem 0;
