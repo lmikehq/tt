@@ -321,12 +321,18 @@ function ApplicationForm() {
     if (currentPhase === 7) {
       if (applied && voucher) {
         setNextStepLoading(true);
-        await sleep(4000);
-        setModalOpen(true);
-        setVoucherApplied({
-          applied: false,
-          voucher: null,
+        const res = await apiService(`/voucher/use/${voucher}`, "POST", {
+          serviceId: createVisaApplicationData?.visa ?? "",
         });
+        if (res.statusCode === 200 || res.statusCode === 201) {
+          setModalOpen(true);
+          setVoucherApplied({
+            applied: false,
+            voucher: null,
+          });
+        } else {
+          toast.error(res.errorMessage);
+        }
         return setNextStepLoading(false);
       }
       handlePayment({

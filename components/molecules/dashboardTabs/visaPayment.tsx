@@ -33,6 +33,10 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
         return visaDetails.accompanying === 0
           ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
           : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
+      case "VISA FEE":
+        return "1000"
+      case "FORM FEE":
+        return visaDetails.accompanying === 0 ? "200" : "250";
       default:
         return "2500000";
     }

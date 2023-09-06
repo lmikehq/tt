@@ -103,7 +103,17 @@ function VisaDetail({ visa }: { visa: any }) {
           intent: "",
         };
         break;
-      case "AWAITING CONFIRMATION" || "PROCESSING FEE REQUESTED":
+      case "FORM FEE REQUESTED":
+        visaInformation = {
+          text: "Pay form Fee",
+          fn: () => {
+            setIsModalOpen(true);
+          },
+          disabled: false,
+          intent: "FORM FEE",
+        };
+        break;
+      case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
           fn: () => {
@@ -116,9 +126,9 @@ function VisaDetail({ visa }: { visa: any }) {
       default:
         visaInformation = {
           text: "Pay Visa Fee",
-          fn: () => {},
+          fn: () => setIsModalOpen(true),
           disabled: false,
-          intent: "",
+          intent: "PROCESSING FEE",
         };
     }
 
