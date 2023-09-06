@@ -9,7 +9,7 @@ import { Poppins } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 const poppins = Poppins({
-  weight: "100",
+  weight: "400",
   style: ["normal"],
   display: "swap",
   subsets: ["latin-ext"],

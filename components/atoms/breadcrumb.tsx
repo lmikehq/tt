@@ -51,7 +51,7 @@ const Breadcrumb = () => {
                   type="p"
                   text={item}
                   size="1rem"
-                  weight={100}
+                  weight={300}
                   decoration="none"
                 />
               );
