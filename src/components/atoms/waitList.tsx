@@ -10,9 +10,6 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { useState } from "react";
 import { RiBarChartHorizontalLine } from "react-icons/ri";
 import styled from "styled-components";
-import Logo from "/assets/images/brand/tt_blue_logo_with_text.png";
-import waitListImg from "/assets/images/waitlist/waitlist-icon.svg";
-import Image from "./image";
 import Input from "./input";
 import { SearchInputAsString } from "./searchInput";
 import sleep from "src/lib/sleep";
@@ -20,6 +17,8 @@ import apiService from "hook/apiService";
 import WaitlistModal from "src/components/organisms/modal/components/waitlistModal";
 import { useRouter } from "next/navigation";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import Section from "@molecule/section";
+import Image from "./image";
 
 const WaitListWrapper = styled.div`
   overflow-x: hidden;
@@ -343,7 +342,15 @@ const WaitList = () => {
                 text="Joining our waitlist is the first step on your journey to the Western world. It's more than just a list – it's your ticket to joining thousands of other people  we have helped to settle in Canada, USA, UK, Australia, New Zealand and other countries"
               />
             </LeftSideText>
-            <Image src={waitListImg} alt="" />
+
+            <Image
+              src={"/assets/images/waitlist/waitlist-icon.svg"}
+              styles={{
+                width: "100%",
+                height: "auto",
+              }}
+              alt=""
+            />
           </LeftSide>
         )}
 
@@ -352,7 +359,12 @@ const WaitList = () => {
             <Container>
               <TtBrand>
                 <Link href="/">
-                  <Image src={Logo} alt="" height={35} />
+                  <Section height={"35px"} styles={{ position: "relative" }}>
+                    <Image
+                      src={"/assets/images/brand/tt_blue_logo_with_text.svg"}
+                      alt=""
+                    />
+                  </Section>
                 </Link>
               </TtBrand>
 

@@ -18,10 +18,22 @@ const Image: React.FC<imageProps> = (props: imageProps) => {
   return (
     <NextImage
       {...props}
-      fill={!props.width && !props.height ? true : undefined}
-      width={props.width}
-      height={props.height}
-      style={{ ...props.styles }}
+      width={props.width ?? 1336}
+      height={props.height ?? 862}
+      style={{
+        ...props.styles,
+
+        width: props.width
+          ? typeof props.width == "number"
+            ? props.width + "px"
+            : props.width
+          : "100%",
+        height: props.height
+          ? typeof props.height == "number"
+            ? props.height + "px"
+            : props.height
+          : "100%",
+      }}
     />
   );
 };

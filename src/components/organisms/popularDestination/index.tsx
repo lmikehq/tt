@@ -12,6 +12,7 @@ import SectionTitle from "src/components/molecules/sectionTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import Image from "@atom/image";
+import Section from "@molecule/section";
 
 const DestinationWrapper = styled.div`
   // margin: 5rem 0;
@@ -36,8 +37,6 @@ const Card = styled.div`
   border-radius: 16px;
 
   & img {
-    width: 90px;
-    height: 90px;
   }
 
   & h3 {
@@ -162,12 +161,18 @@ const PopularDestinations = ({
               >
                 <Card>
                   <Flex justify="space-between" gap="1rem">
-                    <Image
-                      src={destination.image}
-                      width={10}
-                      height={10}
-                      alt=""
-                    />
+                    <Section
+                      height="90px"
+                      width="90px"
+                      styles={{ flex: "none" }}
+                    >
+                      <Image
+                        src={destination.image}
+                        alt=""
+                        width={90}
+                        height={90}
+                      />
+                    </Section>
 
                     <Flex direction="column" alignSelf="center">
                       <Text type="h3" text={destination.title} />

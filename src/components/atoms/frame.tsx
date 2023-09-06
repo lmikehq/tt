@@ -18,7 +18,7 @@ const ServiceCard = styled.div`
   height: 25rem;
 
   & img {
-    width: 100%;
+    // width: 100%;
     border-radius: 24px;
   }
 `;

@@ -1,6 +1,5 @@
 "use client";
 import Text from "src/components/atoms/text";
-import lottie from "/assets/lotties/check-mark.json";
 import Lottie from "lottie-react";
 import { IoCloseSharp } from "react-icons/io5";
 import Button from "src/components/atoms/button";
@@ -50,7 +49,10 @@ function WaitlistModal({
         <span>
           <IoCloseSharp onClick={handleClose} size={24} color="#959AA5" />
         </span>
-        <Lottie animationData={lottie} style={{ width: "160px" }} />
+        <Lottie
+          animationData="/assets/lotties/check-mark.json"
+          style={{ width: "160px" }}
+        />
         <Text type="p" text="You're on the waitlist!" size={25} weight={500} />
         {number && (
           <Flex width="fit-content" align="center" gap=".4rem">
