@@ -33,6 +33,7 @@ const DocUploadCenteredChild = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 1rem;
 `;
 const UploadedDocumentsWrapper = styled.div`
   padding-top: 52px;
