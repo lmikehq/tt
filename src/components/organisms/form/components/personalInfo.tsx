@@ -1,19 +1,15 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { FormikProps, useFormik } from "formik";
+import { FormikProps } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
-import { useState, useEffect } from "react";
+import { IState, State } from "country-state-city"
 import TextArea from "@molecule/textArea";
 import { CustomRadioGroup } from "@molecule/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import {
-  personalInfoKeys,
-  personalInfoSchema,
-} from "src/lib/application/schema";
 import {
   ErrorText,
   FieldAsDate,
@@ -21,10 +17,10 @@ import {
   FieldInput,
   FieldString,
 } from "@organism/fieldInput";
-import { SingleFormType } from "../applicationForm";
 import { PersonalInfoInterface } from "types";
 import ContinueButton from "@organism/continueButton";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 interface FormProps {
   steps: string[];
@@ -46,6 +42,15 @@ function PersonalInfo({
     { value: true, label: "Yes" },
     { value: false, label: "No" },
   ];
+
+  const [countryCode, setCountryCode] = useState('')
+  const [states, setStates] = useState<IState[]>([])
+
+  useEffect(() => {
+    if(countryCode !== '') {
+      setStates(State.getStatesOfCountry(`${countryCode}`))
+    }
+  }, [countryCode])
 
   return (
     <Section>
@@ -117,10 +122,19 @@ function PersonalInfo({
               />
               <Required />
             </Flex>
-            <FieldInput
+            <FieldAsString
               name="stateOfOrigin"
               placeholder="Select your State of Origin"
               formik={formik}
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              onChange={(e: any) => {
+                formik.setFieldValue('stateOfOrigin', e.name)
+                setCountryCode(e.code)
+              }}
             />
           </Section>
         </Flex>
@@ -139,10 +153,15 @@ function PersonalInfo({
               />
               <Required />
             </Flex>
-            <FieldInput
-              name="lgaOfOrigin"
-              placeholder="Select your LG of origin"
+            <FieldAsString
               formik={formik}
+              options={states.map((x) => ({
+                name: x.name
+              }))}
+              name="lgaOfOrigin"
+              disabled={formik.values.stateOfOrigin === ''}
+              placeholder="Select your Local Government"
+              
             />
           </Section>
           <Section>
@@ -191,11 +210,8 @@ function PersonalInfo({
             />
             <FieldAsDate
               name="dateOfBirth"
-              placeholder="Select your Issue Date"
+              placeholder="Select your Date Of Birth"
               formik={formik}
-              // onChange={(e: any) => {
-              //   setEndDate(dayjs(e));
-              // }}
             />
           </Section>
         </Flex>
@@ -362,7 +378,7 @@ function PersonalInfo({
             <Flex align="center" gap="0.25rem">
               <Text
                 type="p"
-                text="Place of Birth (Country & State)"
+                text="Place of Birth"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
               <Required />

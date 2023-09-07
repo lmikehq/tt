@@ -145,7 +145,7 @@ export const ArrayInput = (props: FieldProps) => {
 };
 
 export const FieldAsString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder, value } = props;
+  const { name, options = [], formik, placeholder, value, onChange, disabled } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
 
@@ -160,8 +160,9 @@ export const FieldAsString = (props: FieldProps) => {
       <SearchFlagInput
         value={value ? value : formikvalue}
         options={options}
-        onChange={handleChange}
+        onChange={onChange ? onChange : handleChange}
         placeholder={placeholder}
+        disabled={disabled}
       />{" "}
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>

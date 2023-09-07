@@ -11,6 +11,7 @@ import { ttColors } from "theme/colors";
 import { FamilyInfoInterface } from "types";
 import { toast } from "react-hot-toast";
 import FormStepTitle from "./formStepsTitle";
+import { createRef, useEffect, useRef } from "react";
 
 interface formProps {
   steps: string[];
@@ -27,6 +28,16 @@ function FamilyInfo({
   formik,
   saveProgressAndContinueLater,
 }: formProps) {
+  const familyFormRefs = useRef(
+    formik.values.familyMembers.map(() => createRef<HTMLDivElement>())
+  );
+
+  useEffect(() => {
+    familyFormRefs.current = formik.values.familyMembers.map(() =>
+      createRef<HTMLDivElement>()
+    );
+  }, [formik.values.familyMembers]);
+
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -56,7 +67,14 @@ function FamilyInfo({
                         justify="flex-end"
                         gap="0.25rem"
                         align="center"
-                        onClick={() => arrayHelpers.remove(index)}
+                        onClick={() => {
+                          arrayHelpers.remove(index);
+                          const element =
+                            familyFormRefs.current[index - 1].current;
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }}
                         cursor="pointer"
                       >
                         <RiDeleteBin6Line color={ttColors.red} size={25} />

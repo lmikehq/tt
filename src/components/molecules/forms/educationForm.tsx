@@ -141,7 +141,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
             onChange={(e: any) => {
               formik.setFieldValue(`education.${count}.startYear`, e.$y);
             }}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -160,7 +160,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

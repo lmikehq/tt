@@ -7,15 +7,11 @@ import EducationForm from "src/components/molecules/forms/educationForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@molecule/addButton";
-import {
-  educationKeys,
-  educationsArr,
-  manyEducationSchema,
-} from "src/lib/application/schema";
-import { SingleFormType } from "../applicationForm";
+import { educationKeys } from "src/lib/application/schema";
 import ContinueButton from "@organism/continueButton";
 import { EducationDetailsInterface } from "types";
 import { toast } from "react-hot-toast";
+import { createRef, useEffect, useRef } from "react";
 
 interface formProps {
   steps: string[];
@@ -32,6 +28,16 @@ function EducationInfo({
   formik,
   saveProgressAndContinueLater,
 }: formProps) {
+  const educationFormRefs = useRef(
+    formik.values.education.map(() => createRef<HTMLDivElement>())
+  );
+
+  useEffect(() => {
+    educationFormRefs.current = formik.values.education.map(() =>
+      createRef<HTMLDivElement>()
+    );
+  }, [formik.values.education]);
+
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -54,7 +60,7 @@ function EducationInfo({
                   />
                 </Flex>
                 {formik.values.education.map((education, index) => (
-                  <div key={index}>
+                  <div key={index} ref={educationFormRefs.current[index]}>
                     <EducationForm
                       formik={formik}
                       values={education}
@@ -65,7 +71,14 @@ function EducationInfo({
                         justify="flex-end"
                         gap="0.25rem"
                         align="center"
-                        onClick={() => arrayHelpers.remove(index)}
+                        onClick={() => {
+                          arrayHelpers.remove(index);
+                          const element =
+                            educationFormRefs.current[index - 1].current;
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }}
                         cursor="pointer"
                       >
                         <RiDeleteBin6Line color={ttColors.red} size={25} />

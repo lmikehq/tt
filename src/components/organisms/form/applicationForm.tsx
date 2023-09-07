@@ -280,11 +280,7 @@ function ApplicationForm() {
           education: form.education,
           employment: form.employment,
         },
-        familyMembers: form.familyMembers.map((member) => ({
-          ...member,
-          issueYear: safelyConvertToNumber(member?.issueYear),
-          expiryYear: safelyConvertToNumber(member?.expiryYear),
-        })),
+        familyMembers: form.familyMembers,
         documents: form.documents,
         user: user?._id ?? undefined,
       };

@@ -1,11 +1,8 @@
 import Section from "src/components/molecules/section";
 import {
   FieldArray,
-  Formik,
   FormikProps,
   FormikProvider,
-  FormikValues,
-  useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -15,15 +12,11 @@ import EmploymentForm from "src/components/molecules/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@molecule/addButton";
-import {
-  employmentKeys,
-  employmentsArr,
-  manyEmploymentSchema,
-} from "src/lib/application/schema";
-import { SingleFormType } from "../applicationForm";
+import { employmentKeys } from "src/lib/application/schema";
 import ContinueButton from "@organism/continueButton";
 import { EmploymentDetailsInterface } from "types";
 import { toast } from "react-hot-toast";
+import { createRef, useEffect, useRef } from "react";
 
 interface formProps {
   steps: string[];
@@ -40,6 +33,16 @@ function EmploymentInfo({
   formik,
   saveProgressAndContinueLater,
 }: formProps) {
+  const employmentFormRefs = useRef(
+    formik.values.employment.map(() => createRef<HTMLDivElement>())
+  );
+
+  useEffect(() => {
+    employmentFormRefs.current = formik.values.employment.map(() =>
+      createRef<HTMLDivElement>()
+    );
+  }, [formik.values.employment]);
+
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -62,7 +65,7 @@ function EmploymentInfo({
                   />
                 </Flex>
                 {formik.values.employment.map((employment, index) => (
-                  <div key={index}>
+                  <div key={index} ref={employmentFormRefs.current[index]}>
                     <EmploymentForm
                       formik={formik}
                       values={employment}
@@ -73,7 +76,14 @@ function EmploymentInfo({
                         justify="flex-end"
                         gap="0.25rem"
                         align="center"
-                        onClick={() => arrayHelpers.remove(index)}
+                        onClick={() => {
+                          arrayHelpers.remove(index);
+                          const element =
+                            employmentFormRefs.current[index - 1].current;
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }}
                         cursor="pointer"
                       >
                         <RiDeleteBin6Line color={ttColors.red} size={25} />

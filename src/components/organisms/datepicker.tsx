@@ -83,10 +83,10 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
             fontFamily: "'Poppins', sans-serif",
           },
           '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: `${ttColors.primary}`,
+            borderColor: `${ttColors.primary} !important`,
           },
           "&:hover .MuiInputBase-root": {
-            color: `${ttColors.primary}`,
+            color: `${ttColors.primary} !important`,
           },
           '& .MuiInputBase-root': {
             flexDirection: position === 'start' ? 'row-reverse': 'row',
