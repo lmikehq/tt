@@ -1,7 +1,7 @@
 "use client";
 
 import Flex from "@atom/flex";
-import bgImage from "@image/herobg-visa.png";
+import bgImage from "@image/herobg-flight.avif";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { useScreenResolution } from "hook/useScreenResolution";

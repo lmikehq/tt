@@ -1,23 +1,19 @@
 "use client";
-import Section from "@molecule/section";
-import Flex from "@atom/flex";
-import { CustomRadioGroup } from "@atom/radio";
-import { useEffect, useState } from "react";
-import FlightModule from "@atom/flightModule";
 import Button from "@atom/button";
-import { HiPlus } from "react-icons/hi2";
-import Text from "@atom/text";
-import { styled } from "styled-components";
-import { useRouter } from "next/navigation";
-import sleep from "@lib/sleep";
-import Spinner from "@components/icons/spinner";
-import { ttColors } from "theme/colors";
-import Input from "@atom/input";
 import { DatePicker } from "@atom/datepicker";
-import { ClickAwayListener } from "@mui/material";
+import Flex from "@atom/flex";
+import Input from "@atom/input";
 import StaysMenu from "@atom/staysMenu";
-import { ButtonWrapper } from "./flight";
+import Text from "@atom/text";
+import Spinner from "@components/icons/spinner";
+import sleep from "@lib/sleep";
+import Section from "@molecule/section";
+import { ClickAwayListener } from "@mui/material";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ttColors } from "theme/colors";
+import { ButtonWrapper } from "./flight";
 
 function Stays() {
   const [data, setData] = useState("");

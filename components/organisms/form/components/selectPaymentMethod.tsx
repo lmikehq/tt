@@ -191,7 +191,7 @@ const SelectPaymentMethod = ({
               direction={isMobile ? "column" : "row"}
             >
               <Input
-                placeholder="Enter Promo Code"
+                placeholder="Enter a valid voucher code"
                 width="100%"
                 flexGrow={1}
                 onChange={(e) => setPromoCode(e.target.value)}

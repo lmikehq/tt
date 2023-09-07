@@ -38,11 +38,11 @@ function FamilyInfo({
                 <Flex justify="space-between" padding="0 0 2rem 0">
                   <FormStepTitle steps={steps} index={index} />
                   <AddButton
-                    disabled={formik.values.familyMembers.length === 3}
+                    disabled={formik.values.familyMembers.length === 6}
                     onClick={() => {
                       if (!formik.isValid || !formik.dirty)
-                        return toast.error("Please validate all inputs");
-                      if (formik.values.familyMembers.length < 3) {
+                        return toast.error("Please fill this form first");
+                      if (formik.values.familyMembers.length < 6) {
                         arrayHelpers.insert(index + 1, familyInforKeys);
                       }
                     }}

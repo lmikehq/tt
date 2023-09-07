@@ -30,13 +30,34 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   function paymentAmount() {
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
-        return visaDetails.accompanying === 0
-          ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
-          : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
+        const processingFee =
+          process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000";
+        const acccompanyingFee =
+          process.env.NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
+          "200000";
+        return (
+          parseInt(processingFee) + parseInt(acccompanyingFee) * visaDetails.accompanying
+        );
+      // return visaDetails.accompanying === 0
+      //   ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
+      //   : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
       case "VISA FEE":
-        return "1000"
+        return "1000";
       case "FORM FEE":
-        return visaDetails.accompanying === 0 ? "200" : "250";
+        // const formFee =
+        //   process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "10000";
+        // const accompanying =
+        //   process.env.NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
+        //   "200000";
+        // return parseInt(formFee) + parseInt(accompanying) * visaDetails.accompanying;
+        return visaDetails.accompanying > 0
+          ? parseInt(
+              process.env.NEXT_PUBLIC_FAMILY_VISA_APPLICATION_FEE || "20000"
+            )
+          : parseInt(
+              process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "30000"
+            );
+      // return visaDetails.accompanying === 0 ? "200" : "250";
       default:
         return "2500000";
     }
