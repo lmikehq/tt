@@ -1,10 +1,11 @@
 "use client";
 
-import Image, { StaticImageData } from "next/image";
+import { StaticImageData } from "next/image";
 import styled from "styled-components";
 import Text from "@atom/text";
 import Breadcrumb from "@organism/breadcrumb";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Image from "@atom/image";
 
 const AllCountryHeader = styled.div`
   position: relative;
@@ -79,9 +80,9 @@ const AllCountryHead = ({
         <Image
           src={cover}
           alt=""
-          style={{ height: isMobile ? "128px" : "230px" }}
+          styles={{ height: isMobile ? "128px" : "250px" }}
         />
-        <Overlay style={{ height: isMobile ? "128px" : "230px" }} />
+        <Overlay style={{ height: isMobile ? "128px" : "250px" }} />
         <Text
           text={title.slice(0, 20)}
           type="h2"

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Grid } from "@components/templates/grid";
 
-import CountryLayout from "src/app/visa/countries/layout";
+import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import { useRouter } from "next/navigation";
@@ -258,7 +258,7 @@ const TopCountriesSection: React.FC = () => {
 
   return (
     <CountryWrapper style={{ marginBottom: isMobile ? "3rem" : "10rem" }}>
-      <CountryLayout>
+      <SectionLayout>
         <SectionTitle
           title="Our top countries"
           description="Going somewhere to celebrate this season? Whether you’re going home or somewhere to roam, we’ve got the travel tools to get you to your destination."
@@ -390,7 +390,7 @@ const TopCountriesSection: React.FC = () => {
             </RightSide>
           </Grid>
         )}
-      </CountryLayout>
+      </SectionLayout>
     </CountryWrapper>
   );
 };
