@@ -1,0 +1,195 @@
+"use client";
+
+import styled from "styled-components";
+import { Grid } from "@components/templates/grid";
+import RatingComponent from "./reviewStar";
+import { useScreenResolution } from "hook/useScreenResolution";
+import React from "react";
+import { Divider } from "@mui/material";
+import SectionTitle from "@molecule/sectionTitle";
+import SectionLayout from "@components/templates/SectionLayout";
+
+const ReviewWrapper = styled.div`
+  margin: 5rem 0 0 0;
+`;
+const Card = styled.div`
+  display: block;
+  align-items: center;
+  padding: 0.7rem;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 2rem;
+
+  background: var(--default-color);
+  box-shadow: 2px 4px 16px rgba(17, 34, 17, 0.1);
+  border-radius: 20px;
+
+  @media screen and (max-width: 900px) {
+    width: 87%;
+    margin: 0 auto;
+  }
+`;
+const CardHeader = styled.div`
+  font-style: normal;
+  font-weight: 700;
+  width: 22.8125rem;
+  height: 3.5rem;
+  font-size: 1.1rem;
+  padding: 1rem;
+  line-height: 30px;
+  color: var(--secondary-color);
+  // margin-bottom: 2.5rem;
+`;
+const CardDescription = styled.div`
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15.3px;
+  padding: 0 0.7rem;
+  line-height: 20px;
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+
+  opacity: 0.5;
+`;
+const CardFooter = styled.div`
+  display: block;
+  padding: 0 0.7rem;
+
+  & h5 {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--text-color);
+  }
+
+  & p {
+    font-weight: 500;
+    margin-top: 0.5rem;
+    font-size: 12px;
+    line-height: 15px;
+    opacity: 0.5;
+    color: var(--text-color);
+  }
+`;
+
+const Review = () => {
+  const { isMobile } = useScreenResolution();
+
+  const reviewCard = [
+    {
+      id: 1,
+      title: "“Dream Come True!”",
+      description:
+        "Always wanted to move to the UK. Thrillers made it happen. Now I'm living my dream life in London!",
+      rating: 4.8,
+      name: "James K.",
+      designation: "Employment visa - UK",
+    },
+
+    {
+      id: 2,
+      title: "“Smooth Sailing!”",
+      description:
+        "Moving to Canada felt like a breeze with Thrillers. Their support was priceless during my transition.",
+      rating: 4.6,
+      name: "Nuga Temitope",
+      designation: "Employment visa - Canada",
+    },
+
+    {
+      id: 3,
+      title: "“Professionalism at its Best!”",
+      description:
+        "Thrillers handled all the complex UK relocation paperwork with ease. Their team is a game-changer",
+      rating: 4.5,
+      name: "Rapheal Oyeniran",
+      designation: "Employment visa - Canada",
+    },
+
+    {
+      id: 4,
+      title: "“Supported All The Way!”",
+      description:
+        "Relocating was a huge step, but Thrillers had my back. Now I'm happy and settled in Canada..",
+      rating: 4.5,
+      name: "Bolarinwa Taiwo",
+      designation: "Employment visa - Canada",
+    },
+
+    {
+      id: 5,
+      title: "“Guiding Light!”",
+      description:
+        "From start to finish, Thrillers was there for my UK move. They genuinely care about their clients",
+      rating: 5,
+      name: "Isu Ekpo",
+      designation: "Employment visa - UK",
+    },
+
+    {
+      id: 6,
+      title: "“Impossible Made Possible!”",
+      description:
+        "Moving to the UK seemed impossible. Thrillers made it happen. Now I'm starting a new life in London!",
+      rating: 4.5,
+      name: "Aileriomo Mary",
+      designation: "Employment visa - UK",
+    },
+  ];
+  const reviewCardToShow = isMobile ? reviewCard.slice(0, 3) : reviewCard;
+
+  return (
+    <ReviewWrapper style={{ marginTop: isMobile ? "1rem" : "5rem" }}>
+      <SectionLayout>
+        <SectionTitle
+          title="Reviews"
+          description="What people says about Golobe facilities."
+          buttonText={isMobile ? "" : "See all"}
+          href=""
+        />
+
+        <Grid
+          columns={isMobile ? "1" : "3"}
+          gap={isMobile ? "1rem" : "2rem"}
+          className="reviewCard"
+        >
+          {reviewCardToShow.map((review, index) => (
+            <div key={review.id}>
+              <Card
+                key={review.id}
+                style={{
+                  boxShadow: isMobile
+                    ? "none"
+                    : "2px 4px 16px rgba(17, 34, 17, 0.1)",
+                  marginBottom: isMobile ? "0px" : "2rem",
+                }}
+              >
+                <CardHeader>
+                  <h3>{review.title}</h3>
+                </CardHeader>
+                <CardDescription>
+                  <p>{review.description}</p>
+                </CardDescription>
+                <RatingComponent rating={review.rating} />
+                <CardFooter>
+                  <p>{review.name}</p>
+                  <p>{review.designation}</p>
+                </CardFooter>
+              </Card>
+              {isMobile && index !== reviewCardToShow.length - 1 && <Divider />}
+            </div>
+          ))}
+        </Grid>
+        <SectionTitle
+          title=""
+          description=""
+          buttonText={isMobile ? "See all review" : ""}
+          href=""
+        />
+      </SectionLayout>
+    </ReviewWrapper>
+  );
+};
+
+export default Review;
