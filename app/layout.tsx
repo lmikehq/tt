@@ -47,6 +47,21 @@ export default function RootLayout({
                     });
                 `}
       </Script>
+      <Script strategy="lazyOnload" id="crisp-chat">
+        {`
+    window.$crisp = [];
+    window.CRISP_WEBSITE_ID = '6111d110-e09c-4dbe-a69b-a6ea385b8dfa';
+    
+    (function () {
+      var d = document;
+      var s = d.createElement('script');
+      s.src = 'https://client.crisp.chat/l.js';
+      s.async = 1;
+      d.getElementsByTagName('head')[0].appendChild(s);
+    })();
+  `}
+      </Script>
+
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>

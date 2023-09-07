@@ -1,22 +1,18 @@
 import {
   ArrayInput,
   FieldAsDate,
-  FieldAsString,
   FieldInput,
-  FieldString,
+  FieldString
 } from "@atom/fieldInput";
 import Flex from "@atom/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "@molecule/section";
 import { Switch } from "@mui/material";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "data/utilData";
-import { FormikProps, FormikValues } from "formik";
+import { FormikValues } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
-import React, { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
-import PhoneInput from "react-phone-input-2";
+import React from "react";
 import { FamilyInfoInterface } from "types";
 
 interface formProps {
