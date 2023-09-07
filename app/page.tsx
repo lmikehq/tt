@@ -10,7 +10,7 @@ import { FlightProvider } from "context";
 
 export default function Home() {
   return (
-    <FlightProvider>
+    <>
       <ChatAlert />
       <HeroSection />
       <PopularCountry />
@@ -18,6 +18,6 @@ export default function Home() {
       <FrameCard />
       <ReviewSec />
       <FooterSection />
-    </FlightProvider>
+    </>
   );
 }

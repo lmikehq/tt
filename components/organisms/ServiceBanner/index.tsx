@@ -2,7 +2,6 @@
 
 import SectionLayout from "@components/layouts/sectionLayout";
 import ServiceTabs from "@molecule/serviceTabs";
-import { styled } from "styled-components";
 
 // const BannerWrapper = styled.div`
 //   width: 80vw;

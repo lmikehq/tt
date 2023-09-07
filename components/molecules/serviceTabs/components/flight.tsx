@@ -1,18 +1,17 @@
 "use client";
-import Section from "@molecule/section";
-import Flex from "@atom/flex";
-import { CustomRadioGroup } from "@atom/radio";
-import { useEffect, useState } from "react";
-import FlightModule from "@atom/flightModule";
 import Button from "@atom/button";
-import { HiPlus } from "react-icons/hi2";
+import Flex from "@atom/flex";
+import FlightModule from "@atom/flightModule";
+import { CustomRadioGroup } from "@atom/radio";
 import Text from "@atom/text";
-import { styled } from "styled-components";
-import { useRouter } from "next/navigation";
-import sleep from "@lib/sleep";
 import Spinner from "@components/icons/spinner";
-import { ttColors } from "theme/colors";
+import sleep from "@lib/sleep";
+import Section from "@molecule/section";
 import { useScreenResolution } from "hook/useScreenResolution";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { styled } from "styled-components";
+import { ttColors } from "theme/colors";
 
 const options = [
   { value: "round", label: "Round Trip" },

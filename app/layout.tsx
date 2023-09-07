@@ -47,6 +47,9 @@ export default function RootLayout({
                     });
                 `}
       </Script>
+      <script type="text/javascript">
+        {`window.$crisp=[];window.CRISP_WEBSITE_ID="6111d110-e09c-4dbe-a69b-a6ea385b8dfa";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();`}
+      </script>
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
