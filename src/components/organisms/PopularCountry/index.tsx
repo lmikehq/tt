@@ -1,6 +1,6 @@
 "use client";
 
-import TopCountriesSection from "@atom/popularCountry";
+import TopCountriesSection from "@organism/popularCountry";
 
 const PopularCountry = () => {
   return <TopCountriesSection />;

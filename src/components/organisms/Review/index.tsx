@@ -1,6 +1,6 @@
 "use client";
 
-import Review from "@atom/review";
+import Review from "@organism/review";
 
 const ReviewSec = () => {
   return <Review />;
