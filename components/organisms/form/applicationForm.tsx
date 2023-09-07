@@ -57,6 +57,8 @@ import { PaymentCompleteSection } from "@organism/paymentConfirmationModal";
 
 const ErrorToastComponent = styled.div`
   width: 100%;
+  max-height: 50vh;
+  overflow-y: scroll;
   p {
     color: ${ttColors.red};
     padding: 0.5rem 0;

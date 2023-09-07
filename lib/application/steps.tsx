@@ -147,7 +147,7 @@ export const getSteps = ({
           visaType={visaType}
           lastName={lastName}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
-          finalStepButtonText={'Continue'}
+          finalStepButtonText={"Continue"}
         />
       ),
     },
@@ -156,7 +156,11 @@ export const getSteps = ({
       id: 7,
       title: "Select Payment Method",
       content: (
-        <SelectPaymentMethod isLoading={isLoading} formik={paymentFormik} />
+        <SelectPaymentMethod
+          isLoading={isLoading}
+          formik={paymentFormik}
+          buttonText={finalStepButtonText}
+        />
       ),
     },
   ];

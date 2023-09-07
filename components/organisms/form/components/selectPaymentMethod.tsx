@@ -28,10 +28,12 @@ export interface CurrencyType {
 interface SelectPaymentMethodProps {
   isLoading: boolean;
   formik: FormikValues;
+  buttonText: string;
 }
 const SelectPaymentMethod = ({
   isLoading,
   formik,
+  buttonText,
 }: SelectPaymentMethodProps) => {
   const [currency, setCurrency] = useState<CurrencyType>({
     currency: "Nigerian Naira",
@@ -259,7 +261,7 @@ const SelectPaymentMethod = ({
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {}}
-          buttonText="Complete Application"
+          buttonText={buttonText}
           disabled={!formik.isValid}
         />
       </form>
