@@ -1,11 +1,11 @@
-import CheckBox from "src/components/atoms/checkbox";
-import { BlockDatePicker } from "src/components/atoms/datepicker";
+import CheckBox from "@molecule/checkbox";
+import { BlockDatePicker } from "@organism/datepicker";
 import {
   ArrayInput,
   FieldAsDate,
   FieldInput,
   FieldString,
-} from "src/components/atoms/fieldInput";
+} from "@organism/fieldInput";
 import Flex from "src/components/atoms/flex";
 import Input from "src/components/atoms/input";
 import Required from "src/components/atoms/required";

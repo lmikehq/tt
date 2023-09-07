@@ -1,5 +1,5 @@
 import Flex from "src/components/atoms/flex";
-import NotificationItem from "src/components/atoms/notificationItem";
+import NotificationItem from "@molecule/notificationItem";
 import NotificationImg1 from "/assets/images/notification/notice1.png";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";

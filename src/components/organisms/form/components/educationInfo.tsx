@@ -6,14 +6,14 @@ import { ttColors } from "theme/colors";
 import EducationForm from "src/components/molecules/forms/educationForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "src/components/atoms/text";
-import AddButton from "src/components/atoms/addButton";
+import AddButton from "@molecule/addButton";
 import {
   educationKeys,
   educationsArr,
   manyEducationSchema,
 } from "src/lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import ContinueButton from "src/components/atoms/continueButton";
+import ContinueButton from "@organism/continueButton";
 import { EducationDetailsInterface } from "types";
 import { toast } from "react-hot-toast";
 

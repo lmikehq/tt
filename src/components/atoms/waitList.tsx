@@ -1,8 +1,8 @@
 "use client";
 
 import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import Flex from "@components/templates/flex";
+import { Grid } from "@components/templates/grid";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import { waitlistSchema } from "src/lib/application/schema";
@@ -11,7 +11,7 @@ import { useState } from "react";
 import { RiBarChartHorizontalLine } from "react-icons/ri";
 import styled from "styled-components";
 import Input from "./input";
-import { SearchInputAsString } from "./searchInput";
+import { SearchInputAsString } from "@organism/searchInput";
 import sleep from "src/lib/sleep";
 import apiService from "hook/apiService";
 import WaitlistModal from "src/components/organisms/modal/components/waitlistModal";

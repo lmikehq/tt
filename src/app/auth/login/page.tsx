@@ -3,10 +3,10 @@
 "use client";
 
 import Button from "src/components/atoms/button";
-import CheckBox from "src/components/atoms/checkbox";
+import CheckBox from "@molecule/checkbox";
 // import { Divider } from "@atom/divider";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Input from "src/components/atoms/input";
 import Link from "src/components/atoms/link";
 import SideBtn from "src/components/atoms/sideBtn";

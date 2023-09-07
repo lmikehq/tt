@@ -12,7 +12,7 @@ import { FileContent, useFilePicker } from "use-file-picker";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import { UploadedDoc } from "../applicationForm";
 import { DocumentInterface } from "types";
-import ContinueButton from "src/components/atoms/continueButton";
+import ContinueButton from "@organism/continueButton";
 import DocumentUploadWidget from "src/components/organisms/DocumentUploadWidget";
 
 interface formProps {

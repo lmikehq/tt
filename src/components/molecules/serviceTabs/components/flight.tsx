@@ -1,9 +1,9 @@
 "use client";
 import Section from "src/components/molecules/section";
 import Flex from "src/components/atoms/flex";
-import { CustomRadioGroup } from "src/components/atoms/radio";
+import { CustomRadioGroup } from "@molecule/radio";
 import { useEffect, useState } from "react";
-import FlightModule from "src/components/atoms/flightModule";
+import FlightModule from "@organism/flightModule";
 import Button from "src/components/atoms/button";
 import { HiPlus } from "react-icons/hi2";
 import Text from "src/components/atoms/text";

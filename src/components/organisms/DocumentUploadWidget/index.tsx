@@ -1,5 +1,5 @@
 import Button from "src/components/atoms/button";
-import Center from "src/components/atoms/center";
+import Center from "@components/templates/center";
 import Image from "src/components/atoms/image";
 import Text from "src/components/atoms/text";
 import Spinner from "src/components/icons/spinner";

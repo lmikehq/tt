@@ -1,6 +1,6 @@
 "use client";
 
-import Frame from "src/components/atoms/frame";
+import Frame from "@organism/frame";
 
 const FrameCard = () => {
   return <Frame />;

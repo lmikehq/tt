@@ -8,7 +8,7 @@ import { SyntheticEvent, useState } from "react";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import Text from "./text";
-import Flex from "./flex";
+import Flex from "@components/templates/flex";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";

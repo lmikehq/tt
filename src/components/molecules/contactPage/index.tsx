@@ -2,7 +2,7 @@
 
 import Button from "src/components/atoms/button";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Image from "src/components/atoms/image";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";

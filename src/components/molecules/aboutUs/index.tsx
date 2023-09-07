@@ -1,6 +1,6 @@
 "use client";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Image from "src/components/atoms/image";
 import styled from "styled-components";
 import team from "/assets/images/Business-Team.jpeg";

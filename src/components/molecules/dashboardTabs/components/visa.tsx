@@ -1,4 +1,4 @@
-import Center from "src/components/atoms/center";
+import Center from "@components/templates/center";
 import NoVisa from "/assets/images/noVisa.png";
 import VisaDetail from "src/components/molecules/dashboardTabs/components/visaDetails";
 import { useQuery } from "@tanstack/react-query";

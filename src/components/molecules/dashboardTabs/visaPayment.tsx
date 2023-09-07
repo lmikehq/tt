@@ -4,7 +4,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
 import Flex from "src/components/atoms/flex";
 import { TbCurrencyNaira } from "react-icons/tb";
-import { FieldString } from "src/components/atoms/fieldInput";
+import { FieldString } from "@organism/fieldInput";
 import { Formik } from "formik";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import currencyFormatter from "data/currencyFormatter";

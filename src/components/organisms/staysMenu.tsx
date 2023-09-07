@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import Section from "src/components/molecules/section";
-import Flex from "./flex";
-import Text from "./text";
+import Flex from "../atoms/flex";
+import Text from "../atoms/text";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { ttColors } from "theme/colors";
 import { styled } from "styled-components";

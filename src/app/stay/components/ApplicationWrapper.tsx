@@ -1,4 +1,4 @@
-import RTQueryClient from "src/components/layouts/rtqWrapper";
+import RTQueryClient from "@components/templates/rtqWrapper";
 import React, { ReactNode } from "react";
 
 function ApplicationWrapper({ children }: { children: ReactNode }) {

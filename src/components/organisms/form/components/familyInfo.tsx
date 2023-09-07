@@ -1,5 +1,5 @@
-import AddButton from "src/components/atoms/addButton";
-import ContinueButton from "src/components/atoms/continueButton";
+import AddButton from "@molecule/addButton";
+import ContinueButton from "@organism/continueButton";
 import Flex from "src/components/atoms/flex";
 import Text from "src/components/atoms/text";
 import { familyInforKeys } from "src/lib/application/schema";

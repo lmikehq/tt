@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import UsefulLinks from "src/components/molecules/contactPage/components/usefulLink";
 import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";

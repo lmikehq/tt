@@ -2,7 +2,7 @@
 "use client";
 
 import Button from "src/components/atoms/button";
-import CheckBox from "src/components/atoms/checkbox";
+import CheckBox from "@molecule/checkbox";
 import Flex from "src/components/atoms/flex";
 import Input from "src/components/atoms/input";
 import Link from "src/components/atoms/link";
@@ -11,7 +11,7 @@ import Spinner from "src/components/icons/spinner";
 import SectionLayout from "src/components/layouts/sectionLayout";
 
 // import bgImage6 from "/assets/images/auth-bg6.jpeg";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import SideBtn from "src/components/atoms/sideBtn";
 
 import sleep from "src/lib/sleep";

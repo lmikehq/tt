@@ -1,7 +1,7 @@
-import CheckBox from "src/components/atoms/checkbox";
+import CheckBox from "@molecule/checkbox";
 import { Divider } from "src/components/atoms/divider";
 import Flex from "src/components/atoms/flex";
-import { CustomRadioGroup } from "src/components/atoms/radio";
+import { CustomRadioGroup } from "@molecule/radio";
 import { SearchInputAsString } from "src/components/atoms/searchInput";
 import Text from "src/components/atoms/text";
 import Section from "src/components/molecules/section";

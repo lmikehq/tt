@@ -1,6 +1,6 @@
 "use client";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Text from "src/components/atoms/text";
 import UsefulLinks from "src/components/molecules/contactPage/components/usefulLink";
 import { useScreenResolution } from "hook/useScreenResolution";

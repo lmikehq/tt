@@ -14,14 +14,14 @@ import { ttColors } from "theme/colors";
 import EmploymentForm from "src/components/molecules/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "src/components/atoms/text";
-import AddButton from "src/components/atoms/addButton";
+import AddButton from "@molecule/addButton";
 import {
   employmentKeys,
   employmentsArr,
   manyEmploymentSchema,
 } from "src/lib/application/schema";
 import { SingleFormType } from "../applicationForm";
-import ContinueButton from "src/components/atoms/continueButton";
+import ContinueButton from "@organism/continueButton";
 import { EmploymentDetailsInterface } from "types";
 import { toast } from "react-hot-toast";
 

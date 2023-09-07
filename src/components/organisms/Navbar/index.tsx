@@ -1,10 +1,10 @@
 "use client";
 import Button from "src/components/atoms/button";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
-import RTQueryClient from "src/components/layouts/rtqWrapper";
+import RTQueryClient from "@components/templates/rtqWrapper";
 import NavbarLayout from "src/components/layouts/sectionLayout";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "src/components/organisms/customModal/components/LanguageCurrencyModal";

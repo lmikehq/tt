@@ -1,5 +1,5 @@
 "use client";
-import Center from "src/components/atoms/center";
+import Center from "@components/templates/center";
 import Section from "src/components/molecules/section";
 import Flights from "src/components/molecules/serviceTabs/components/flight";
 import ServiceBanner from "src/components/organisms/ServiceBanner";

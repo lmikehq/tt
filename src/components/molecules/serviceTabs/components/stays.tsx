@@ -1,9 +1,9 @@
 "use client";
 import Section from "src/components/molecules/section";
 import Flex from "src/components/atoms/flex";
-import { CustomRadioGroup } from "src/components/atoms/radio";
+import { CustomRadioGroup } from "@molecule/radio";
 import { useEffect, useState } from "react";
-import FlightModule from "src/components/atoms/flightModule";
+import FlightModule from "@organism/flightModule";
 import Button from "src/components/atoms/button";
 import { HiPlus } from "react-icons/hi2";
 import Text from "src/components/atoms/text";
@@ -13,9 +13,9 @@ import sleep from "src/lib/sleep";
 import Spinner from "src/components/icons/spinner";
 import { ttColors } from "theme/colors";
 import Input from "src/components/atoms/input";
-import { DatePicker } from "src/components/atoms/datepicker";
+import { DatePicker } from "@organism/datepicker";
 import { ClickAwayListener } from "@mui/material";
-import StaysMenu from "src/components/atoms/staysMenu";
+import StaysMenu from "@organism/staysMenu";
 import { ButtonWrapper } from "./flight";
 import { useScreenResolution } from "hook/useScreenResolution";
 

@@ -2,7 +2,7 @@
 import Image from "@atom/image";
 import React, { useState } from "react";
 import { COUNTRY_FLAGS, sorted } from "../../../../data/data";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import styled from "styled-components";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";

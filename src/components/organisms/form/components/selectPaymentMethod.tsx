@@ -7,7 +7,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
 
-import ContinueButton from "src/components/atoms/continueButton";
+import ContinueButton from "@organism/continueButton";
 import { FormikValues } from "formik";
 import { useState } from "react";
 

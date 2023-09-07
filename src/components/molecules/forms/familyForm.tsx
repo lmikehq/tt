@@ -4,7 +4,7 @@ import {
   FieldAsString,
   FieldInput,
   FieldString,
-} from "src/components/atoms/fieldInput";
+} from "@organism/fieldInput";
 import Flex from "src/components/atoms/flex";
 import Required from "src/components/atoms/required";
 import Text from "src/components/atoms/text";

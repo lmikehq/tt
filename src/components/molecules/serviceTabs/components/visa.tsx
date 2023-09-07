@@ -1,7 +1,7 @@
 "use client";
 import Button from "src/components/atoms/button";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import SearchInput, {
   SearchInputAsString,
 } from "src/components/atoms/searchInput";

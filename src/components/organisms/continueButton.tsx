@@ -1,12 +1,12 @@
 import Section from "src/components/molecules/section";
-import { Button } from "./button";
+import { Button } from "../atoms/button";
 import React, { useEffect, useState } from "react";
-import Flex from "./flex";
+import Flex from "../atoms/flex";
 import Spinner from "src/components/icons/spinner";
-import Text from "./text";
+import Text from "../atoms/text";
 import { ttColors } from "theme/colors";
 import { BottomNavigation } from "@mui/material";
-import { Grid } from "./grid";
+import { Grid } from "../templates/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 interface ButtonProps {

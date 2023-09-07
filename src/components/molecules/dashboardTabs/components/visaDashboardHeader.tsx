@@ -1,5 +1,5 @@
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Input from "src/components/atoms/input";
 import Text from "src/components/atoms/text";
 import Section from "src/components/molecules/section";

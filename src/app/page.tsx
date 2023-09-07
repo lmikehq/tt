@@ -1,5 +1,5 @@
 "use client";
-import ChatAlert from "src/components/atoms/chatAlert";
+import ChatAlert from "@molecule/chatAlert";
 import FooterSection from "src/components/organisms/Footer";
 import FrameCard from "src/components/organisms/FrameCard";
 import PopularCountry from "src/components/organisms/PopularCountry";

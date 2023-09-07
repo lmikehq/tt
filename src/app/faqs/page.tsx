@@ -1,4 +1,4 @@
-import Breadcrumb from "src/components/atoms/breadcrumb";
+import Breadcrumb from "@organism/breadcrumb";
 import SectionLayout from "src/components/layouts/sectionLayout";
 import FaqSection from "src/components/molecules/faq";
 import Section from "src/components/molecules/section";

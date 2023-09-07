@@ -8,7 +8,7 @@ import PaymentHistory from "./components/payment";
 import Account from "./components/account";
 import Favourite from "./components/favourite";
 import Notification from "./components/notification";
-import RTQueryClient from "src/components/layouts/rtqWrapper";
+import RTQueryClient from "@components/templates/rtqWrapper";
 
 const Wrapper = styled.div`
   margin-top: 250px;

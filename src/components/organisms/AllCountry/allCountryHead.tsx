@@ -3,7 +3,7 @@
 import Image, { StaticImageData } from "next/image";
 import styled from "styled-components";
 import Text from "src/components/atoms/text";
-import Breadcrumb from "src/components/atoms/breadcrumb";
+import Breadcrumb from "@organism/breadcrumb";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const AllCountryHeader = styled.div`

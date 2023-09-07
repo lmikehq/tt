@@ -1,10 +1,10 @@
-import CheckBox from "src/components/atoms/checkbox";
+import CheckBox from "@molecule/checkbox";
 import {
   ArrayInput,
   FieldAsDate,
   FieldInput,
   FieldString,
-} from "src/components/atoms/fieldInput";
+} from "@organism/fieldInput";
 import Flex from "src/components/atoms/flex";
 import Required from "src/components/atoms/required";
 import Text from "src/components/atoms/text";

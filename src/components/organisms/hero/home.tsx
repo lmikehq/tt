@@ -1,6 +1,6 @@
 "use client";
 
-import Center from "src/components/atoms/center";
+import Center from "@components/templates/center";
 import Text from "src/components/atoms/text";
 import Navbar from "src/components/organisms/Navbar";
 import ServiceBanner from "src/components/organisms/ServiceBanner";

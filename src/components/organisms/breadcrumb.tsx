@@ -5,8 +5,8 @@ import { capitalized } from "src/lib/capitalize";
 import { usePathname } from "next/navigation";
 import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
-import Flex from "./flex";
-import Text from "./text";
+import Flex from "../atoms/flex";
+import Text from "../atoms/text";
 import SectionLayout from "src/components/layouts/sectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 

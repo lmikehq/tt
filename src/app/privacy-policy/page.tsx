@@ -1,4 +1,4 @@
-import Breadcrumb from "src/components/atoms/breadcrumb";
+import Breadcrumb from "@organism/breadcrumb";
 import PrivacyPoliicyPage from "src/components/molecules/privacyPolicyPage";
 import Section from "src/components/molecules/section";
 

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import styled from "styled-components";
-import Flex from "./flex";
+import Flex from "@components/templates/flex";
 import { BsPlusLg } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
-import { Divider } from "./divider";
+import { Divider } from "../atoms/divider";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 interface MapBoxProps {

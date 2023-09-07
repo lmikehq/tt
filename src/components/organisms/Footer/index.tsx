@@ -1,7 +1,7 @@
 "use client";
 
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import SectionLayout from "src/components/layouts/sectionLayout";

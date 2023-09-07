@@ -1,6 +1,6 @@
-import CircleProgress from "src/components/atoms/circleProgress";
+import CircleProgress from "@molecule/circleProgress";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { styled } from "styled-components";
 

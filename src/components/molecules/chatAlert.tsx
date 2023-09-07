@@ -1,9 +1,9 @@
 "use client";
 
 import { ttColors } from "theme/colors";
-import Flex from "./flex";
-import Link from "./link";
-import Text from "./text";
+import Flex from "../atoms/flex";
+import Link from "../atoms/link";
+import Text from "../atoms/text";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 function ChatAlert() {

@@ -7,7 +7,7 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
 import FAQ from "./components/faq";
-import Map from "src/components/atoms/map";
+import Map from "@molecule/map";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const BlueBox = styled.div`

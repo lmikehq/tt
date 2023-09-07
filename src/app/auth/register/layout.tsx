@@ -1,4 +1,4 @@
-import RTQueryClient from "src/components/layouts/rtqWrapper";
+import RTQueryClient from "@components/templates/rtqWrapper";
 
 export const metadata = {
   title: "Register your travels account",

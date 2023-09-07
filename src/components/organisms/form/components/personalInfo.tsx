@@ -7,8 +7,8 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "src/components/atoms/required";
 import PhoneInput from "react-phone-input-2";
 import { useState, useEffect } from "react";
-import TextArea from "src/components/atoms/textArea";
-import { CustomRadioGroup } from "src/components/atoms/radio";
+import TextArea from "@molecule/textArea";
+import { CustomRadioGroup } from "@molecule/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import {
   personalInfoKeys,
@@ -20,10 +20,10 @@ import {
   FieldAsString,
   FieldInput,
   FieldString,
-} from "src/components/atoms/fieldInput";
+} from "@organism/fieldInput";
 import { SingleFormType } from "../applicationForm";
 import { PersonalInfoInterface } from "types";
-import ContinueButton from "src/components/atoms/continueButton";
+import ContinueButton from "@organism/continueButton";
 import dayjs, { Dayjs } from "dayjs";
 
 interface FormProps {

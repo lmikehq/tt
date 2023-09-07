@@ -1,9 +1,9 @@
 import Button from "src/components/atoms/button";
 import { Divider } from "src/components/atoms/divider";
-import Flex from "src/components/atoms/flex";
-import BulletList from "src/components/atoms/list";
+import Flex from "@components/templates/flex";
+import BulletList from "@components/templates/list";
 import Text from "src/components/atoms/text";
-import TravelArrow from "src/components/atoms/travelArrow";
+import TravelArrow from "@molecule/travelArrow";
 import Section from "src/components/molecules/section";
 import { ListItem } from "@mui/material";
 import { useScreenResolution } from "hook/useScreenResolution";

@@ -10,13 +10,13 @@ import SearchStringInput from "src/components/molecules/searchInputs/searchStrin
 import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
 import { detailsKeys, detailsSchema } from "src/lib/application/schema";
 import { DetailsKeys } from "types";
-import { FieldAsString, FieldString } from "src/components/atoms/fieldInput";
+import { FieldAsString, FieldString } from "@organism/fieldInput";
 import { SingleFormType } from "../applicationForm";
 import Button from "src/components/atoms/button";
 import Spinner from "src/components/icons/spinner";
 import { ttColors } from "theme/colors";
 import { useSearchParams } from "next/navigation";
-import ContinueButton from "src/components/atoms/continueButton";
+import ContinueButton from "@organism/continueButton";
 
 interface formProps {
   steps: string[];

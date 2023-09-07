@@ -3,7 +3,7 @@ import Section from "src/components/molecules/section";
 import { useState } from "react";
 import Flex from "src/components/atoms/flex";
 import Text from "src/components/atoms/text";
-import ShowButton from "src/components/atoms/showButton";
+import ShowButton from "@molecule/showButton";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const Box = styled.div<{ color: string; border: string }>`

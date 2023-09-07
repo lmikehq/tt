@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 
-import CountryLayout from "src/components/layouts/sectionLayout";
+import CountryLayout from "src/app/visa/countries/layout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import { useRouter } from "next/navigation";
-import Image from "./image";
+import Image from "../atoms/image";
 
 interface Country {
   id: number;

@@ -1,13 +1,13 @@
 "use client";
 
 import styled from "styled-components";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import RatingComponent from "./reviewStar";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import { Divider } from "@mui/material";
-import SectionTitle from "src/components/molecules/sectionTitle";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import SectionTitle from "@molecule/sectionTitle";
+import SectionLayout from "@components/templates/sectionLayout";
 
 const ReviewWrapper = styled.div`
   margin: 5rem 0 0 0;

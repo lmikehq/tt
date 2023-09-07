@@ -28,6 +28,7 @@
       "@molecule/*": ["src/components/molecules/*"],
       "@components/*": ["src/components/*"],
       "@layout/*": ["src/components/layouts/*"],
+      "@template/*": ["src/components/templates/*"],
       "@style/*": ["styles/*"],
       "@image/*": ["/assets/images/*"],
       "@lottie/*": ["/assets/lotties/*"],

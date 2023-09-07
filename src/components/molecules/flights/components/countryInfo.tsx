@@ -1,6 +1,6 @@
 "use client";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Text from "src/components/atoms/text";
 import Section from "src/components/molecules/section";
 import { flightContext } from "context";

@@ -6,7 +6,7 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import Center from "src/components/atoms/center";
+import Center from "@components/templates/center";
 
 interface CircularProgressBarProps {
   fontWeight?: number;

@@ -1,9 +1,9 @@
 import { FormikProvider, FormikValues, useField } from "formik";
-import Input from "./input";
-import Text from "./text";
+import Input from "../atoms/input";
+import Text from "../atoms/text";
 import { ttColors } from "theme/colors";
 import { ReactNode } from "react";
-import { DatePicker } from "src/components/atoms/datepicker";
+import { DatePicker } from "@organism/datepicker";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
 import Section from "src/components/molecules/section";

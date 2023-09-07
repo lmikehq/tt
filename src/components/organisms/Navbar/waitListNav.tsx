@@ -8,7 +8,7 @@ import Link from "src/components/atoms/link";
 import Text from "src/components/atoms/text";
 import Logo from "../../assets/images/brand/logo1.svg";
 import Image from "@atom/image";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const WaitlistNavbar: React.FC = () => {

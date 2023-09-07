@@ -2,7 +2,7 @@
 "use client";
 import Button from "src/components/atoms/button";
 import Flex from "src/components/atoms/flex";
-import { Grid } from "src/components/atoms/grid";
+import { Grid } from "@components/templates/grid";
 import Input, { TextField } from "src/components/atoms/input";
 import Text from "src/components/atoms/text";
 import SectionLayout from "src/components/layouts/sectionLayout";

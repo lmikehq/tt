@@ -1,4 +1,4 @@
-import Center from "src/components/atoms/center";
+import Center from "@components/templates/center";
 import NoVisa from "/assets/images/noVisa.png";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
