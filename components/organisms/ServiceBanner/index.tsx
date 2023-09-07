@@ -23,7 +23,7 @@ import { styled } from "styled-components";
 function ServiceBanner({}) {
   return (
     <SectionLayout
-      margin="6rem 0px 0px 0px !important"
+      // margin="6rem 0px 0px 0px"
       style={{
         backgroundColor: "var(--default-color)",
         borderRadius: "1rem",

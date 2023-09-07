@@ -1,6 +1,3 @@
-
-
-
 export const DEGREES = [
   "Bachelor of Arts (BA)",
   "Bachelor of Science (BSc)",
@@ -19,6 +16,7 @@ export const DEGREES = [
   "Doctor of Philosophy (PhD)",
   "Doctor of Medicine (MD)",
   "Ordinary National Diploma (OND)",
+  "SSCE",
   "Higher National Diploma (HND)",
   "Nigeria Certificate In Education (NCE)",
   "Bachelor of Laws (LLB)",
@@ -43,6 +41,7 @@ export const DEGREES = [
 export const COMMON_MAJORS = [
   "Computer Science",
   "Business Administration",
+  "All SSCE Subjects",
   "Psychology",
   "Nursing",
   "Biology",
@@ -141,8 +140,4 @@ export const COMMON_MAJORS = [
   "Others",
 ];
 
-export const RELATIONSHIPS = [
-  "Spouse", "Child",
-  "Parent", "Sibling",
-  "In-Law"
-]
+export const RELATIONSHIPS = ["Spouse", "Child", "Parent", "Sibling", "In-Law"];

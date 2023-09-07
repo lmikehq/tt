@@ -29,7 +29,7 @@ const SelectVisaPayment = ({ nextStep, isLoading }: SelectVisaPaymentProps) => {
       <Section className="">
         <VisaApplicationTypeTile
           title={"Family Visa"}
-          subTitle={"Maximum of 5 persons"}
+          subTitle={"Maximum of 6 persons"}
           fee="# 500"
         />
       </Section>
