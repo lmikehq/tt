@@ -22,6 +22,11 @@ const FormSideMenu = ({
 }: FormSideMenuProps) => {
   function getPaymentInformation(field: string) {
     let accompanies = 0;
+
+    //  return (
+    //    parseInt(processingFee) +
+    //    parseInt(acccompanyingFee) * visaDetails.accompanying
+    //  );
     if (formData.familyMembers.length > 0) {
       formData.familyMembers.forEach((member) => {
         if (member.accompanying) accompanies++;
@@ -29,11 +34,13 @@ const FormSideMenu = ({
     }
     switch (field) {
       case "fee":
-        return accompanies > 0 ? 30000 : 20000;
+        return accompanies > 0
+          ? parseInt(process.env.NEXT_PUBLIC_FAMILY_VISA_APPLICATION_FEE || "20000")
+          : parseInt(process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "30000")
       case "numberOfPersons":
         return accompanies + 1;
       case "applicationType":
-        return formData.applicationType;
+        return accompanies >= 1 ? "Family" : "Single";
       default:
         return 0;
     }

@@ -105,7 +105,7 @@ function VisaDetail({ visa }: { visa: any }) {
         break;
       case "FORM FEE REQUESTED":
         visaInformation = {
-          text: "Pay form Fee",
+          text: "Submit Application",
           fn: () => {
             setIsModalOpen(true);
           },
@@ -143,6 +143,8 @@ function VisaDetail({ visa }: { visa: any }) {
       ? { text: "#1A820A", bg: "#F1FFF2" }
       : visa?.applicationStatus === "AWAITING CONFIRMATION"
       ? { text: "#7A7422", bg: "FFFEEF" }
+      : visa?.applicationStatus === "FORM FEE REQUESTED"
+      ? { text: "#fff", bg: "#8f3d3d" }
       : { text: "#37008A", bg: "#F6F0FF" };
   const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
 
@@ -260,7 +262,11 @@ function VisaDetail({ visa }: { visa: any }) {
         <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
           <Text
             type="h5"
-            text={visa.applicationStatus}
+            text={
+              visa.applicationStatus === "FORM FEE REQUESTED"
+                ? "APPLICATION NOT SUBMITTED"
+                : visa.applicationStatus
+            }
             weight={800}
             size={isMobile ? 13 : 14}
             color={textAndBgColor.text}
@@ -327,28 +333,41 @@ function VisaDetail({ visa }: { visa: any }) {
       </Flex>
       {isOpen && (
         <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
-          <Flex align="center" margin=".5rem 0" gap=".5rem">
-            <PiDotsThreeCircleLight size={20} />
-            <Text type="p" text={visa?.applicationStatus} size={"15px"} />
-          </Flex>
-          {visa?.usedFormFeeVoucher && (
-            <Flex align="center" margin=".5rem 0" gap=".5rem">
-              <PiWalletLight size={20} />
+          {visa.applicationStatus === "FORM FEE REQUESTED" ? (
+            <Flex align="center" gap=".5rem">
+              <PiDotsThreeCircleLight size={20} color="red" />
               <Text
                 type="p"
-                text={"Application fee paid with Travel Voucher"}
+                text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
                 size={"15px"}
               />
             </Flex>
+          ) : (
+            <>
+              <Flex align="center" margin=".5rem 0" gap=".5rem">
+                <PiDotsThreeCircleLight size={20} />
+                <Text type="p" text={visa?.applicationStatus} size={"15px"} />
+              </Flex>
+              {visa?.usedFormFeeVoucher && (
+                <Flex align="center" margin=".5rem 0" gap=".5rem">
+                  <PiWalletLight size={20} />
+                  <Text
+                    type="p"
+                    text={"Application fee paid with Travel Voucher"}
+                    size={"15px"}
+                  />
+                </Flex>
+              )}
+              <Flex align="center" gap=".5rem">
+                <AiOutlineCheck size={20} />
+                <Text
+                  type="p"
+                  text={"NO DOCUMENTED REQUESTED FROM YOU"}
+                  size={"15px"}
+                />
+              </Flex>
+            </>
           )}
-          <Flex align="center" gap=".5rem">
-            <AiOutlineCheck size={20} />
-            <Text
-              type="p"
-              text={"NO DOCUMENTED REQUESTED FROM YOU"}
-              size={"15px"}
-            />
-          </Flex>
         </Section>
       )}
     </Section>
