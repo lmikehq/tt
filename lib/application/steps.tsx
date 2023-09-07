@@ -147,7 +147,7 @@ export const getSteps = ({
           visaType={visaType}
           lastName={lastName}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
-          finalStepButtonText={finalStepButtonText}
+          finalStepButtonText={'Continue'}
         />
       ),
     },
