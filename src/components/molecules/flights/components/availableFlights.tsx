@@ -3,7 +3,7 @@ import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
 import FlightBox from "./flightBox";
-import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";

@@ -9,7 +9,7 @@ import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
-import sleep from "@lib/helpers/sleep";
+import sleep from "@lib/extensions/helpers/sleep";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import Input from "@atom/input";
@@ -17,7 +17,7 @@ import { DatePicker } from "@organism/datepicker";
 import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
 import { ButtonWrapper } from "./flight";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 function Stays() {
   const [data, setData] = useState("");

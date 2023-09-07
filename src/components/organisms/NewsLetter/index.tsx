@@ -6,7 +6,7 @@ import Flex from "@components/templates/flex";
 import Image from "@atom/image";
 import Button from "@atom/button";
 
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Input from "@atom/input";
 import Section from "@molecule/section";
 

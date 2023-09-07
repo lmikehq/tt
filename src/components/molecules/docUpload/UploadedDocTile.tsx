@@ -5,7 +5,7 @@ import Text from "@atom/text";
 import { BiTrash } from "react-icons/bi";
 import { styled } from "styled-components";
 import Button from "@atom/button";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 const Container = styled.div`
   height: 82px;

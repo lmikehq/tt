@@ -2,12 +2,12 @@
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { FormikProps } from "formik";
-import useCloudinaryUpload from "@lib/hook/useCloudinary";
+import useCloudinaryUpload from "@lib/extensions/hook/useCloudinary";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { FileContent, useFilePicker } from "use-file-picker";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import { UploadedDoc } from "../applicationForm";

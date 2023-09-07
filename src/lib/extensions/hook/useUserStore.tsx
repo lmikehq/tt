@@ -1,6 +1,6 @@
 "use client";
 
-import apiService from "@lib/hook/apiService";
+import apiService from "@lib/extensions/hook/apiService";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useUserStore } from "@lib/store/useStore";

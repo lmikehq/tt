@@ -7,7 +7,7 @@ import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import { ButtonBase } from "@mui/material";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useRef, useState } from "react";
 import { BsCheckCircle, BsSearch, BsSend } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa";

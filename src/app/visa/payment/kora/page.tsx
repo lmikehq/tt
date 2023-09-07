@@ -2,7 +2,7 @@
 import Flex from "@components/templates/flex";
 import Spinner from "@molecule/icons/spinner";
 import Section from "src/components/molecules/section";
-import apiService from "@lib/hook/apiService";
+import apiService from "@lib/extensions/hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useUserStore } from "@lib/store/useStore";

@@ -69,11 +69,11 @@
 import Flex from "@components/templates/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import sleep from "@lib/helpers/sleep";
-import { urlString } from "@lib/helpers/url";
-import apiService from "@lib/hook/apiService";
-import { useDetectOutsideClick } from "@lib/hook/useDetectOutsideClick";
-import { handleLogout } from "@lib/hook/useLogout";
+import sleep from "@lib/extensions/helpers/sleep";
+import { urlString } from "@lib/extensions/helpers/url";
+import apiService from "@lib/extensions/hook/apiService";
+import { useDetectOutsideClick } from "@lib/extensions/hook/useDetectOutsideClick";
+import { handleLogout } from "@lib/extensions/hook/useLogout";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { toast } from "react-hot-toast";

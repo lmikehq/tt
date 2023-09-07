@@ -1,8 +1,8 @@
 "use client";
 import Section from "src/components/molecules/section";
-import currencyFormatter from "@lib/data/currencyFormatter";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { format } from "date-fns";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";

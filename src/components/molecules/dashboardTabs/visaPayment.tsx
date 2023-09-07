@@ -1,14 +1,14 @@
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
 import Flex from "@components/templates/flex";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { FieldString } from "@organism/fieldInput";
 import { Formik } from "formik";
 import { BsExclamationCircleFill } from "react-icons/bs";
-import currencyFormatter from "@lib/data/currencyFormatter";
-import apiService from "@lib/hook/apiService";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
+import apiService from "@lib/extensions/hook/apiService";
 import { toast } from "react-hot-toast";
 import { useUserStore } from "@lib/store/useStore";
 

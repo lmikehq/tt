@@ -5,7 +5,7 @@ import Section from "src/components/molecules/section";
 import Image from "@atom/image";
 import { ttColors } from "@lib/theme/colors";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 interface formProps {
   steps: string[];
   index: number;

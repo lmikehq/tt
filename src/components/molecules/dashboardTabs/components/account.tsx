@@ -2,7 +2,7 @@ import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { RiEditBoxFill } from "react-icons/ri";

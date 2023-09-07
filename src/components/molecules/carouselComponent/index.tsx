@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Grid } from "@components/templates/grid";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 // Here's your styled card
 const CarouselWrapper = styled.div`

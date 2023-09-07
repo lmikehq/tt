@@ -7,7 +7,7 @@ import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
 import { BottomNavigation } from "@mui/material";
 import { Grid } from "../templates/grid";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface ButtonProps {
   isLoading: boolean;

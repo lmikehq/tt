@@ -1,4 +1,4 @@
-import { FlightProvider } from "@lib/context";
+import { FlightProvider } from "@lib/extensions/context";
 
 interface layoutProps {
   children: React.ReactNode;

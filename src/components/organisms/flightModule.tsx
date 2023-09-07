@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SearchInput from "./searchInput";
-import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { IoLocationOutline } from "react-icons/io5";
 import { GoArrowSwitch } from "react-icons/go";
 import { ttColors } from "@lib/theme/colors";
@@ -15,8 +15,8 @@ import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
-import { flightContext } from "@lib/context";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { flightContext } from "@lib/extensions/context";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface flightProps {
   value: string;

@@ -137,11 +137,4 @@ export interface PrimaryTravellerInterface
   employment: EmploymentDetailsInterface[];
 }
 
-export interface ApplicationFormRequestInput
-  extends Pick<DetailsKeys, "applicationType" | "visaType"> {
-  primaryTraveller: PrimaryTravellerInterface;
-  familyMembers: FamilyInfoInterface[];
-  documents: DocumentInterface[];
-  user?: string;
-}
 declare module "@paystack/inline-js";

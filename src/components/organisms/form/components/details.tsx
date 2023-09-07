@@ -1,9 +1,9 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps, FormikValues, useFormik } from "formik";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";

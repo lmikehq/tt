@@ -9,7 +9,7 @@ import { Grid } from "@components/templates/grid";
 import { BsDot } from "react-icons/bs";
 import React from "react";
 import SectionTitle from "src/components/molecules/sectionTitle";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import Image from "@atom/image";
 import Section from "@molecule/section";

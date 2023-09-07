@@ -1,7 +1,7 @@
 import Flex from "@components/templates/flex";
 import NotificationItem from "@molecule/notificationItem";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";

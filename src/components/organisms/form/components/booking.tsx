@@ -9,7 +9,7 @@ import { useState } from "react";
 import { ttColors } from "@lib/theme/colors";
 import FormStepTitle from "./formStepsTitle";
 import { useUserStore } from "@lib/store/useStore";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface formProps {
   steps: string[];

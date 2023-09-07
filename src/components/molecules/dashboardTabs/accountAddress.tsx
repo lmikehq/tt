@@ -1,6 +1,6 @@
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
 import Input from "@atom/input";
 import Flex from "@components/templates/flex";

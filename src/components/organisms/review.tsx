@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import { Grid } from "@components/templates/grid";
 import RatingComponent from "./reviewStar";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React from "react";
 import { Divider } from "@mui/material";
 import SectionTitle from "@molecule/sectionTitle";

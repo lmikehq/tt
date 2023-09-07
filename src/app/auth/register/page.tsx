@@ -13,10 +13,10 @@ import SectionLayout from "@components/templates/SectionLayout";
 import { Grid } from "@components/templates/grid";
 import SideBtn from "@molecule/sideBtn";
 
-import sleep from "@lib/helpers/sleep";
+import sleep from "@lib/extensions/helpers/sleep";
 import Section from "src/components/molecules/section";
-import apiService from "@lib/hook/apiService";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import apiService from "@lib/extensions/hook/apiService";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";

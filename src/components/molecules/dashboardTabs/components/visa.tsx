@@ -1,7 +1,7 @@
 import Center from "@components/templates/center";
 import VisaDetail from "src/components/molecules/dashboardTabs/components/visaDetails";
 import { useQuery } from "@tanstack/react-query";
-import apiService from "@lib/hook/apiService";
+import apiService from "@lib/extensions/hook/apiService";
 import React from "react";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";

@@ -7,7 +7,7 @@ import Button from "@atom/button";
 import Text from "@atom/text";
 import { HiPencil } from "react-icons/hi";
 import { ttColors } from "@lib/theme/colors";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { BsFillCameraFill } from "react-icons/bs";
 import { useUserStore } from "@lib/store/useStore";
 const DashboardCoverPicture = styled.div`

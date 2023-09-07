@@ -1,7 +1,7 @@
 "use client";
 import Image from "@atom/image";
 import React, { useState } from "react";
-import { COUNTRY_FLAGS, sorted } from "../../../lib/data/data";
+import { COUNTRY_FLAGS, sorted } from "../../../lib/extensions/data/data";
 import { Grid } from "@components/templates/grid";
 import styled from "styled-components";
 import Link from "@atom/link";
@@ -11,9 +11,9 @@ import AllCountryHead from "./allCountryHead";
 import Button from "@atom/button";
 import { ttColors } from "@lib/theme/colors";
 import Flex from "@components/templates/flex";
-import { urlString } from "@lib/helpers/url";
+import { urlString } from "@lib/extensions/helpers/url";
 import SectionLayout from "@components/templates/SectionLayout";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 
 const CountryWrapper = styled.section`

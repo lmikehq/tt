@@ -1,7 +1,7 @@
 import Text from "@atom/text";
 import VisaApplicationTypeTile from "src/components/molecules/payment/VisaApplicationTypeTile";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { SingleFormType } from "../applicationForm";
 import Spinner from "@molecule/icons/spinner";
 import Flex from "@components/templates/flex";

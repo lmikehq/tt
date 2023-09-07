@@ -8,7 +8,7 @@ import {
   useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
 import { ttColors } from "@lib/theme/colors";
 import EmploymentForm from "src/components/molecules/forms/employmentForm";

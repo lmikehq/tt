@@ -1,13 +1,13 @@
 import Flex from "@components/templates/flex";
 import PaymentSummaryPane from "src/components/molecules/payment/PaymentSummaryPane";
 import Section from "src/components/molecules/section";
-import currencyFormatter from "@lib/data/currencyFormatter";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { isValid } from "date-fns";
 import SaveProgressAndContinueLater from "./saveProgressAndContinueLater";
 import VisApplicationFormDetails from "./visaApplicationFormDetails";
 import Text from "@atom/text";
 import { VisaApplicationFormInterface } from "types";
-import { useScreenResolution } from "@lib/hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface FormSideMenuProps {
   currentPhase: number;
