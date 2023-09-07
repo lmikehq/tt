@@ -1,12 +1,11 @@
 "use client";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Image from "src/components/atoms/image";
+import Image from "@atom/image";
 import styled from "styled-components";
-import team from "/assets/images/Business-Team.jpeg";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { ttColors } from "theme/colors";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Carousel from "src/components/molecules/carouselComponent";
 
 const AboutUsWrapper = styled.div`
@@ -216,7 +215,7 @@ const AboutUsPage = () => {
             </StoryContent>
           </Fleft>
           <Fright>
-            <Image src={team} alt="teamImage" />
+            <Image src={"/assets/images/Business-Team.jpeg"} alt="teamImage" />
           </Fright>
         </Flex>
 

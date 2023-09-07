@@ -1,6 +1,6 @@
 "use client";
 
-import CustomTab from "src/components/atoms/tabs";
+import CustomTab from "@atom/tabs";
 import React from "react";
 import { styled } from "styled-components";
 import Application from "./components/application";

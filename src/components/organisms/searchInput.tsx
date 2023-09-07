@@ -10,8 +10,8 @@ import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "@atom/image";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
-import Flex from "./flex";
-import Text from "./text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -275,9 +275,10 @@ export function SearchInputAsString({
   useEffect(() => {}, [inputValue]);
   return (
     <>
-      <Box ref={ref}
+      <Box
+        ref={ref}
         sx={{
-          border: 0
+          border: 0,
         }}
       >
         <TextField
@@ -292,7 +293,7 @@ export function SearchInputAsString({
               width: "100%",
               // color: "inherit !important",
             },
-            '& fieldset': {
+            "& fieldset": {
               border: border === "bottom" ? "none" : border,
             },
             "& svg": {
@@ -305,7 +306,7 @@ export function SearchInputAsString({
               position: "relative",
               // color: "inherit !important",
               borderBottom: border === "bottom" ? "1px solid #E7E7E7" : "",
-              borderRadius: border === "bottom" ? "0" : "4px" 
+              borderRadius: border === "bottom" ? "0" : "4px",
             },
             "& label": {
               fontSize: "16px!important",
@@ -315,7 +316,6 @@ export function SearchInputAsString({
               height: height || "45px",
               padding: padding || "0px",
             },
-            
           }}
           onClick={handleClick}
           label={legend}
@@ -325,7 +325,7 @@ export function SearchInputAsString({
                 <Box sx={{ width: "100%" }}>{children}</Box>
                 {/* <IoIosArrowDown size={20} /> */}
               </InputAdornment>
-            )
+            ),
           }}
           placeholder={placeholder}
         />

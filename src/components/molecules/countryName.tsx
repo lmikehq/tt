@@ -1,10 +1,10 @@
 "use client";
 
-import AllCountryHead from "src/components/organisms/AllCountry/allCountryHead";
+import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import React from "react";
 import { Qparams } from "types";
 import { unUrlString } from "src/lib/url";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import CountryDetails from "./countryDetails";
 import { SAMPLE_COUNTRY_INFO } from "data/countryInfo";
 import { Grid } from "@components/templates/grid";
@@ -12,8 +12,6 @@ import CountryRequirementDetails from "./countryRequirementDetails";
 import { SAMPLE_COUNTRY_REQUIREMENT } from "data/countryRequirement";
 import HelpfulOrNot from "@molecule/helpfulOrNot";
 import SectionTitle from "src/components/molecules/sectionTitle";
-import CoverImg from "/assets/images/visaPageCover.jpg";
-import CoverDesktopImg from "/assets/images/visaDesktopCover.jpg";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 interface pageProps {
@@ -22,7 +20,9 @@ interface pageProps {
 
 const CountryPage: React.FC<pageProps> = ({ params }) => {
   const { isMobile } = useScreenResolution();
-  const coverImage = isMobile ? CoverImg : CoverDesktopImg;
+  const coverImage = isMobile
+    ? "/assets/images/visaPageCover.jpg"
+    : "/assets/images/visaDesktopCover.jpg";
 
   return (
     <div>

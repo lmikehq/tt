@@ -1,4 +1,4 @@
-import ApplicationForm from "src/components/organisms/form/applicationForm";
+import ApplicationForm from "@organism/form/applicationForm";
 import ApplicationWrapper from "./components/ApplicationWrapper";
 
 // interface pageProps {

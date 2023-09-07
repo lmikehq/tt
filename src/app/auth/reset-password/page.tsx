@@ -1,13 +1,13 @@
 // @next/next/no-img-element
 "use client";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Input from "src/components/atoms/input";
-import Link from "src/components/atoms/link";
-import SideBtn from "src/components/atoms/sideBtn";
-import Text from "src/components/atoms/text";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import Input from "@atom/input";
+import Link from "@atom/link";
+import SideBtn from "@molecule/sideBtn";
+import Text from "@atom/text";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";

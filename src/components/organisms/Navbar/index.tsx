@@ -1,13 +1,13 @@
 "use client";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import RTQueryClient from "@components/templates/rtqWrapper";
-import NavbarLayout from "src/components/layouts/sectionLayout";
+import NavbarLayout from "@components/templates/SectionLayout";
 import { ButtonBase } from "@mui/material";
-import LanguageCurrencyModal from "src/components/organisms/customModal/components/LanguageCurrencyModal";
+import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -23,7 +23,7 @@ import { useUserStore } from "store/useStore";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import { User } from "types";
-import UserPopover from "./UserPopover";
+import UserPopover from "@organism/Navbar/UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;

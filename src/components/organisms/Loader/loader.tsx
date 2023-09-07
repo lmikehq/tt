@@ -2,10 +2,9 @@
 
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import FlyingPlane from "/assets/images/airplaneIcon.gif";
-import Image from "../../atoms/image";
+import Image from "@atom/image";
 import { ttColors } from "theme/colors";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 
 const LoaderWrapper = styled.div`
   display: flex;

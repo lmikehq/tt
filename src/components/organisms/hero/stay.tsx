@@ -1,8 +1,8 @@
 "use client";
 
 import Center from "@components/templates/center";
-import Navbar from "src/components/organisms/Navbar";
-import ServiceBanner from "src/components/organisms/ServiceBanner";
+import Navbar from "@organism/Navbar";
+import ServiceBanner from "@organism/ServiceBanner";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { styled } from "styled-components";
 

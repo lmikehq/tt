@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 
-import CustomTab from "src/components/atoms/tabs";
+import CustomTab from "@atom/tabs";
 import { SERVICES } from "data/services";
 import Flights from "./components/flight";
 import Stays from "./components/stays";

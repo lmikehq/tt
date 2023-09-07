@@ -1,8 +1,6 @@
-import Button from "src/components/atoms/button";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
-import covetti from "/assets/images/success-coveti.svg";
-import sadFace from "/assets/images/sad-face-emoji.svg";
+import Button from "@atom/button";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import Image from "@atom/image";
 import { ttColors } from "theme/colors";
@@ -21,7 +19,12 @@ export function PaymentStatusSuccess({ steps, index }: formProps) {
     <Section>
       <FormStepTitle steps={steps} index={index} />
       <Section styles={{ textAlign: "center", margin: "6rem 0" }}>
-        <Image src={covetti} alt="success" width={300} height={200} />
+        <Image
+          src={"/assets/images/success-coveti.svg"}
+          alt="success"
+          width={300}
+          height={200}
+        />
         <Text
           type="p"
           text="Your payment was successful"
@@ -45,7 +48,12 @@ export function PaymentStatusFail({ steps, index, setPhase }: formProps) {
     <Section width={isMobile ? "100%" : "50%"}>
       <FormStepTitle steps={steps} index={index} />
       <Section styles={{ textAlign: "center", margin: "6rem 0" }}>
-        <Image src={sadFace} alt="success" width={300} height={200} />
+        <Image
+          src={"/assets/images/sad-face-emoji.svg"}
+          alt="success"
+          width={300}
+          height={200}
+        />
         <Text
           type="p"
           text="Your payment wasn’t successful"

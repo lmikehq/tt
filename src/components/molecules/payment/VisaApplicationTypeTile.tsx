@@ -1,4 +1,4 @@
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Div from "src/components/molecules/section";
 import { styled } from "styled-components";
 

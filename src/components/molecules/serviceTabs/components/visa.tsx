@@ -1,15 +1,13 @@
 "use client";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import SearchInput, {
-  SearchInputAsString,
-} from "src/components/atoms/searchInput";
-import Text from "src/components/atoms/text";
+import SearchInput, { SearchInputAsString } from "@organism/searchInput";
+import Text from "@atom/text";
 import Spinner from "src/components/icons/spinner";
 import sleep from "src/lib/sleep";
 import Section from "src/components/molecules/section";
-import { getIpDetails } from "src/components/organisms/form/visaApis";
+import { getIpDetails } from "@organism/form/visaApis";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
@@ -37,7 +35,7 @@ function Visa() {
     getIpDetails().then((x: any) =>
       setHome({
         name: x.country || "Nigerian",
-        flag: COUNTRY_FLAGS.find((y) => y.code === x.countryCode)?.flag,
+        flag: COUNTRY_FLAGS.find((y) => y.code === x.countryCode)?.flag ?? "",
         code: x.country_code || "NG",
       })
     );

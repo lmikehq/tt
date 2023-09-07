@@ -1,7 +1,7 @@
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Input from "src/components/atoms/input";
-import Text from "src/components/atoms/text";
+import Input from "@atom/input";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React, { useState } from "react";

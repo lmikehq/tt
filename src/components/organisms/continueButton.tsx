@@ -1,9 +1,9 @@
 import Section from "src/components/molecules/section";
-import { Button } from "../atoms/button";
+import { Button } from "@atom/button";
 import React, { useEffect, useState } from "react";
-import Flex from "../atoms/flex";
+import Flex from "@components/templates/flex";
 import Spinner from "src/components/icons/spinner";
-import Text from "../atoms/text";
+import Text from "@atom/text";
 import { ttColors } from "theme/colors";
 import { BottomNavigation } from "@mui/material";
 import { Grid } from "../templates/grid";

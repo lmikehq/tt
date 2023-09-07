@@ -4,12 +4,12 @@ import { Grid } from "@components/templates/grid";
 import UsefulLinks from "src/components/molecules/contactPage/components/usefulLink";
 import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import { customNavigationLinks } from "data/customNavigationLinks";
 import { PRIVACY_POLICY } from "data/privacyPolicy";
 import PrivacyPolicyDetails from "./prvacyPolicyDetails";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 
 const PrivacyPolicySection = styled.section`
   margin-top: 2.5rem;

@@ -1,10 +1,10 @@
 "use client";
 
 import styled from "styled-components";
-import DestinationLayout from "src/components/layouts/sectionLayout";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
-import Flex from "src/components/atoms/flex";
+import DestinationLayout from "@components/templates/SectionLayout";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import { BsDot } from "react-icons/bs";
 import React from "react";

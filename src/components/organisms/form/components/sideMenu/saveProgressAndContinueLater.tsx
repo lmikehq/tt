@@ -1,7 +1,7 @@
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { toast } from "react-hot-toast";

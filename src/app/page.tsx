@@ -1,11 +1,11 @@
 "use client";
 import ChatAlert from "@molecule/chatAlert";
-import FooterSection from "src/components/organisms/Footer";
-import FrameCard from "src/components/organisms/FrameCard";
-import PopularCountry from "src/components/organisms/PopularCountry";
-import ReviewSec from "src/components/organisms/Review";
-import HeroSection from "src/components/organisms/hero/home";
-import PopularDestination from "src/components/organisms/popularDestination";
+import FooterSection from "@organism/Footer";
+import FrameCard from "@organism/FrameCard";
+import PopularCountry from "@organism/popularCountry";
+import ReviewSec from "@organism/review";
+import HeroSection from "@organism/hero/home";
+import PopularDestination from "@organism/popularDestination";
 import { FlightProvider } from "context";
 
 export default function Home() {

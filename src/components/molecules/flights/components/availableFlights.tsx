@@ -4,9 +4,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import SortedFlightsTab from "./sortedFlightsTab";
 
 function AvailableFlights() {

@@ -1,10 +1,10 @@
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
-import Input from "src/components/atoms/input";
-import Flex from "src/components/atoms/flex";
-import Required from "src/components/atoms/required";
+import Input from "@atom/input";
+import Flex from "@components/templates/flex";
+import Required from "@atom/required";
 
 type AddressModalProps = {
   open: boolean;

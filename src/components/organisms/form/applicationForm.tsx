@@ -1,11 +1,8 @@
 "use client";
 
-import CoverDesktopImg from "/assets/images/visaDesktopCover.jpg";
-import CoverImg from "/assets/images/visaPageCover.jpg";
-
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import SectionLayout from "@components/templates/SectionLayout";
 import {
   detailsKeys,
   detailsSchema,
@@ -25,7 +22,7 @@ import { getSteps } from "src/lib/application/steps";
 import Section from "src/components/molecules/section";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import VisaProgress from "src/components/molecules/visaProgress";
-import AllCountryHead from "src/components/organisms/AllCountry/allCountryHead";
+import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import apiService from "hook/apiService";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -33,7 +30,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsArrowLeft } from "react-icons/bs";
 // import { useUserStore } from "store/useStore";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import sleep from "src/lib/sleep";
 import { safelyConvertToNumber } from "src/lib/utilFns";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";

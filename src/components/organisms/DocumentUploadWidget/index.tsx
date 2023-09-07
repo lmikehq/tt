@@ -1,19 +1,19 @@
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import Center from "@components/templates/center";
-import Image from "src/components/atoms/image";
-import Text from "src/components/atoms/text";
+import Image from "@atom/image";
+import Text from "@atom/text";
 import Spinner from "src/components/icons/spinner";
 import UploadedDocTile from "src/components/molecules/docUpload/UploadedDocTile";
 import CircularProgressBar from "src/components/molecules/progressBars/CircularProgressBar";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
-} from "src/components/organisms/visaApplicationModal";
+} from "@organism/visaApplicationModal";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { styled } from "styled-components";
 import { ttColors } from "theme/colors";
 
-import { UploadedDoc } from "src/components/organisms/form/applicationForm";
+import { UploadedDoc } from "@organism/form/applicationForm";
 
 const UploadArea = styled.div`
   width: 100%;

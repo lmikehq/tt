@@ -1,5 +1,5 @@
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";

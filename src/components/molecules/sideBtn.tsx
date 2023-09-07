@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import Link from "src/components/atoms/link";
+import Link from "@atom/link";
 import PropTypes from "prop-types";
 
 const LoginBtn = styled.div`

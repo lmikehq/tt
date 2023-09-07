@@ -1,6 +1,6 @@
-import Flex from "src/components/atoms/flex";
-import { SearchInputAsString } from "src/components/atoms/searchInput";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import { SearchInputAsString } from "@organism/searchInput";
+import Text from "@atom/text";
 import { CSSProperties } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";

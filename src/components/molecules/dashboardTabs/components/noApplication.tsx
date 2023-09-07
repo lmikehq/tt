@@ -1,83 +1,9 @@
 "use client";
 
-// import Section from "@molecule/section";
-// import NoVisa from "/assets/images/noVisa.png";
-// import Image from "@atom/image";
-// import NoVisaBg from "/assets/images/background.png";
-// import styled from "styled-components";
-// import Text from "@atom/text";
-// import Flex from "@atom/flex";
-// import Link from "@atom/link";
-
-// const AbsoluteImg = styled.div`
-//   top: "30px";
-//   left: "38%";
-// `;
-
-// const NoVisaWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const NoVisaApplication: React.FC = () => {
-//   return (
-//     <NoVisaWrapper>
-//       <Section
-//         styles={{
-//           display: "flex",
-//           position: "relative",
-//           justifyContent: "center",
-//           backgroundRepeat: "no-repeat",
-//           alignContent: "center",
-//         }}
-//       >
-//         <Image src={NoVisaBg} alt="no-visa-bg" width={369.96} height={382.06} />
-//         <AbsoluteImg
-//           style={{
-//             position: "absolute",
-//             left: "30%",
-//             top: "19px",
-//           }}
-//         >
-//           <Image src={NoVisa} alt="no-visa" width={330.89} height={331.03} />
-//         </AbsoluteImg>
-//       </Section>
-//       <Text
-//         type="p"
-//         text="You’ve got no Visa Application - Let’s help you get Started "
-//         weight={600}
-//         size={24}
-//         margin="2.5rem auto 1rem"
-//         styles={{ lineHeight: "34px" }}
-//       />
-//       <Flex justify="center" gap="1rem" margin="0">
-//         <Link href="">
-//           <Text
-//             type="p"
-//             text="Search Flights"
-//             color="#6092A7"
-//             decoration="underline"
-//           />
-//         </Link>
-//         <Link href="">
-//           <Text
-//             type="p"
-//             text="Search Stays"
-//             color="#6092A7"
-//             decoration="underline"
-//           />
-//         </Link>
-//       </Flex>
-//     </NoVisaWrapper>
-//   );
-// };
-
-// export default NoVisaApplication;
-
-import Flex from "src/components/atoms/flex";
-import Image from "src/components/atoms/image";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Image from "@atom/image";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";

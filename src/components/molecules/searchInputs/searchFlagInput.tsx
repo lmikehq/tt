@@ -1,6 +1,6 @@
-import Flex from "src/components/atoms/flex";
-import SearchInput from "src/components/atoms/searchInput";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import SearchInput from "@organism/searchInput";
+import Text from "@atom/text";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { CSSProperties } from "react";

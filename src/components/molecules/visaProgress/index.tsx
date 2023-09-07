@@ -1,5 +1,5 @@
 import CircleProgress from "@molecule/circleProgress";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { styled } from "styled-components";

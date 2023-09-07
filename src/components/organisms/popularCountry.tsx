@@ -7,7 +7,7 @@ import CountryLayout from "src/app/visa/countries/layout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import { useRouter } from "next/navigation";
-import Image from "../atoms/image";
+import Image from "@atom/image";
 
 interface Country {
   id: number;

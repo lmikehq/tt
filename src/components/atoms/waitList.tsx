@@ -1,10 +1,10 @@
 "use client";
 
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import { waitlistSchema } from "src/lib/application/schema";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useState } from "react";
@@ -14,7 +14,7 @@ import Input from "./input";
 import { SearchInputAsString } from "@organism/searchInput";
 import sleep from "src/lib/sleep";
 import apiService from "hook/apiService";
-import WaitlistModal from "src/components/organisms/modal/components/waitlistModal";
+import WaitlistModal from "@organism/modal/components/waitlistModal";
 import { useRouter } from "next/navigation";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import Section from "@molecule/section";

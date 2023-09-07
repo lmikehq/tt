@@ -1,6 +1,6 @@
 "use client";
 
-import CustomTab from "src/components/atoms/tabs";
+import CustomTab from "@atom/tabs";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";

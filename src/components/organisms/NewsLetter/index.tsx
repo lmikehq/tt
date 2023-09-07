@@ -1,13 +1,13 @@
 "use client";
 import styled from "styled-components";
-import Text from "../../atoms/text";
-import Flex from "../../atoms/flex";
-// import Link from "../../atoms/link";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
+// import Link from "@atom/link";
 import Image from "@atom/image";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 
 import { useScreenResolution } from "hook/useScreenResolution";
-import Input from "src/components/atoms/input";
+import Input from "@atom/input";
 import Section from "@molecule/section";
 
 const SubscribeWrapper = styled.div<{ isMobile?: boolean }>`

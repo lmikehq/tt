@@ -1,17 +1,16 @@
 "use client";
 
 import Center from "@components/templates/center";
-import Text from "src/components/atoms/text";
-import Navbar from "src/components/organisms/Navbar";
-import ServiceBanner from "src/components/organisms/ServiceBanner";
+import Text from "@atom/text";
+import Navbar from "@organism/Navbar";
+import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
-import bgImage from "/assets/images/herobg-visa.png";
 
 const HeroWrapper = styled.div`
   width: 100vw;
   background: var(--bg-color);
   height: 500px;
-  background-image: url(${bgImage.src});
+  background-image: url(${"/assets/images/herobg-visa.png"});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

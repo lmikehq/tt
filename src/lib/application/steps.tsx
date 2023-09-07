@@ -1,5 +1,5 @@
-import TripDetails from "src/components/organisms/form/components/details";
-import PersonalInfo from "src/components/organisms/form/components/personalInfo";
+import TripDetails from "@organism/form/components/details";
+import PersonalInfo from "@organism/form/components/personalInfo";
 import {
   educationKeys,
   employmentKeys,
@@ -7,16 +7,13 @@ import {
   personalInfoKeys,
 } from "./schema";
 
-import EducationInfo from "src/components/organisms/form/components/educationInfo";
-import EmploymentInfo from "src/components/organisms/form/components/employmentInfo";
-import FamilyInfo from "src/components/organisms/form/components/familyInfo";
-import {
-  SingleFormType,
-  UploadedDoc,
-} from "src/components/organisms/form/applicationForm";
-import SelectVisaPayment from "src/components/organisms/form/components/selectVisaPayment";
-import SelectPaymentMethod from "src/components/organisms/form/components/selectPaymentMethod";
-import UploadDocuments from "src/components/organisms/form/components/uploadDocuments";
+import EducationInfo from "@organism/form/components/educationInfo";
+import EmploymentInfo from "@organism/form/components/employmentInfo";
+import FamilyInfo from "@organism/form/components/familyInfo";
+import { SingleFormType, UploadedDoc } from "@organism/form/applicationForm";
+import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
+import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
+import UploadDocuments from "@organism/form/components/uploadDocuments";
 import { FormikProps, FormikValues } from "formik";
 import {
   DetailsKeys,

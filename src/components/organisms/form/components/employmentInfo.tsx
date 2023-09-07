@@ -9,11 +9,11 @@ import {
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { ttColors } from "theme/colors";
 import EmploymentForm from "src/components/molecules/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import AddButton from "@molecule/addButton";
 import {
   employmentKeys,

@@ -1,5 +1,4 @@
 import Center from "@components/templates/center";
-import NoVisa from "/assets/images/noVisa.png";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import NoVisaApplication from "./noApplication";
@@ -26,7 +25,10 @@ const Favourite = () => {
     >
       <VisaDashboardHeader headerText="Favourites" />
       <Center margin="10rem 0" height="25rem">
-        <NoVisaApplication noVisaImage={NoVisa} content={content} />
+        <NoVisaApplication
+          noVisaImage={"/assets/images/noVisa.png"}
+          content={content}
+        />
       </Center>
       {/* <FavouriteWrapper>
         <Grid columns="1fr 1fr 1fr" gap="2rem">

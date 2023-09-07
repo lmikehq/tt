@@ -7,7 +7,7 @@ import { useScreenResolution } from "hook/useScreenResolution";
 import React from "react";
 import { Divider } from "@mui/material";
 import SectionTitle from "@molecule/sectionTitle";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const ReviewWrapper = styled.div`
   margin: 5rem 0 0 0;

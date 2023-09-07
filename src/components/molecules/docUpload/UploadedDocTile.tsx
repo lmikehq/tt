@@ -1,10 +1,10 @@
-import Flex from "src/components/atoms/flex";
-import Image from "src/components/atoms/image";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Image from "@atom/image";
+import Text from "@atom/text";
 
 import { BiTrash } from "react-icons/bi";
 import { styled } from "styled-components";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const Container = styled.div`

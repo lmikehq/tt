@@ -1,8 +1,8 @@
-import Button from "src/components/atoms/button";
-import { Divider } from "src/components/atoms/divider";
+import Button from "@atom/button";
+import { Divider } from "@atom/divider";
 import Flex from "@components/templates/flex";
 import BulletList from "@components/templates/list";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import TravelArrow from "@molecule/travelArrow";
 import Section from "src/components/molecules/section";
 import { ListItem } from "@mui/material";

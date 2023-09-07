@@ -1,5 +1,5 @@
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import React, { Dispatch, SetStateAction } from "react";
 import { BsInfoCircle, BsSortUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";

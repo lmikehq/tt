@@ -2,11 +2,10 @@
 
 import React, { useState } from "react";
 import "./waitList.css";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import { RiBarChartHorizontalLine } from "react-icons/ri";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
-import Logo from "../../assets/images/brand/logo1.svg";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import Image from "@atom/image";
 import { Grid } from "@components/templates/grid";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -22,7 +21,7 @@ const WaitlistNavbar: React.FC = () => {
     <nav className="navbar">
       <div className="container">
         <div className="logo">
-          <Image src={Logo} alt="" height="180" />
+          <Image src={"/assets/images/brand/logo1.svg"} alt="" height={180} />
         </div>
 
         <div className="menu-icon" onClick={handleShowNavbar}>

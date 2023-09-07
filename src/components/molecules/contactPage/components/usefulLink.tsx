@@ -1,9 +1,9 @@
 "use client";
 
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { styled } from "styled-components";
 

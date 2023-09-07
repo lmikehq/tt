@@ -1,5 +1,5 @@
-import Button from "src/components/atoms/button";
-import Text from "src/components/atoms/text";
+import Button from "@atom/button";
+import Text from "@atom/text";
 import Spinner from "src/components/icons/spinner";
 import { Modal } from "@mui/material";
 import PropTypes from "prop-types";

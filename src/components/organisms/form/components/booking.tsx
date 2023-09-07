@@ -1,8 +1,7 @@
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import Input from "src/components/atoms/input";
-import Text from "src/components/atoms/text";
-import google from "/assets/images/google.svg";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Input from "@atom/input";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { Divider, FormControlLabel, Radio } from "@mui/material";
 import Image from "@atom/image";
@@ -10,12 +9,7 @@ import { useState } from "react";
 import { ttColors } from "theme/colors";
 import FormStepTitle from "./formStepsTitle";
 import { useUserStore } from "store/useStore";
-import { FormikValues } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
-import VisaApplicationTypeTile from "src/components/molecules/payment/VisaApplicationTypeTile";
-import { IoIosArrowDown } from "react-icons/io";
-import { SearchInputAsString } from "src/components/atoms/searchInput";
-import { BiInfoCircle, BiInfoSquare, BiSolidInfoCircle } from "react-icons/bi";
 
 interface formProps {
   steps: string[];
@@ -141,7 +135,12 @@ function Booking({ steps, index }: formProps) {
             border={`1px solid ${ttColors.primary}`}
             width="100%"
           >
-            <Image src={google.src} alt="google" height="30" width={30} />
+            <Image
+              src={"/assets/images/google.svg"}
+              alt="google"
+              height={30}
+              width={30}
+            />
           </Button>
         </Section>
       ) : (

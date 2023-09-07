@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Flex from "@components/templates/flex";
-import Image from "../atoms/image";
-import Text from "../atoms/text";
+import Image from "@atom/image";
+import Text from "@atom/text";
 import { GoDotFill } from "react-icons/go";
-import Button from "../atoms/button";
+import Button from "@atom/button";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { ttColors } from "theme/colors";
 import styled from "styled-components";
@@ -46,7 +46,7 @@ const History = styled.div`
 `;
 
 interface NotificationItemProps {
-  src: StaticImageData;
+  src: StaticImageData | string;
   title: string;
   date: string;
   time: string;

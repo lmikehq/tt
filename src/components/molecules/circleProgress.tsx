@@ -1,5 +1,5 @@
 import { ttColors } from "theme/colors";
-import Text from "../atoms/text";
+import Text from "@atom/text";
 import { styled } from "styled-components";
 
 interface circleProps {

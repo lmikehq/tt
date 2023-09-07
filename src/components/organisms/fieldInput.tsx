@@ -1,6 +1,6 @@
 import { FormikProvider, FormikValues, useField } from "formik";
-import Input from "../atoms/input";
-import Text from "../atoms/text";
+import Input from "@atom/input";
+import Text from "@atom/text";
 import { ttColors } from "theme/colors";
 import { ReactNode } from "react";
 import { DatePicker } from "@organism/datepicker";

@@ -1,6 +1,6 @@
 "use client";
 
-import Review from "src/components/atoms/review";
+import Review from "@atom/review";
 
 const ReviewSec = () => {
   return <Review />;

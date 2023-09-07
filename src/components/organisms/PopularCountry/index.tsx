@@ -1,6 +1,6 @@
 "use client";
 
-import TopCountriesSection from "src/components/atoms/popularCountry";
+import TopCountriesSection from "@atom/popularCountry";
 
 const PopularCountry = () => {
   return <TopCountriesSection />;

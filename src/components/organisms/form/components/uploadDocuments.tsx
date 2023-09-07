@@ -1,5 +1,5 @@
 "use client";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { FormikProps } from "formik";
 import useCloudinaryUpload from "hook/useCloudinary";
@@ -13,7 +13,7 @@ import SearchStringInput from "src/components/molecules/searchInputs/searchStrin
 import { UploadedDoc } from "../applicationForm";
 import { DocumentInterface } from "types";
 import ContinueButton from "@organism/continueButton";
-import DocumentUploadWidget from "src/components/organisms/DocumentUploadWidget";
+import DocumentUploadWidget from "@organism/DocumentUploadWidget";
 
 interface formProps {
   steps: string[];

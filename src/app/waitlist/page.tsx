@@ -1,4 +1,4 @@
-import WaitList from "src/components/atoms/waitList";
+import WaitList from "@atom/waitList";
 import "@style/waitList.css";
 const WaitListPage = () => {
   return <WaitList />;

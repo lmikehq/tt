@@ -1,5 +1,4 @@
 import Center from "@components/templates/center";
-import NoVisa from "/assets/images/noVisa.png";
 import VisaDetail from "src/components/molecules/dashboardTabs/components/visaDetails";
 import { useQuery } from "@tanstack/react-query";
 import apiService from "hook/apiService";
@@ -59,7 +58,10 @@ const Visa = () => {
           ))
         ) : (
           <Center margin="10rem 0" height="25rem">
-            <NoVisaApplication noVisaImage={NoVisa} content={content} />
+            <NoVisaApplication
+              noVisaImage={"/assets/images/noVisa.png"}
+              content={content}
+            />
           </Center>
         )}
       </div>

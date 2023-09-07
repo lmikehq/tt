@@ -1,6 +1,6 @@
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
-import { Divider } from "src/components/atoms/divider";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import { Divider } from "@atom/divider";
 import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
 import { styled } from "styled-components";
@@ -8,7 +8,7 @@ import { BsShare } from "react-icons/bs";
 import { ttColors } from "theme/colors";
 import { MdOutlineLuggage } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 
 type flightProps = {
   departureCountryCode: string;

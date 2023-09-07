@@ -1,11 +1,11 @@
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import PaymentSummaryPane from "src/components/molecules/payment/PaymentSummaryPane";
 import Section from "src/components/molecules/section";
 import currencyFormatter from "data/currencyFormatter";
 import { isValid } from "date-fns";
 import SaveProgressAndContinueLater from "./saveProgressAndContinueLater";
 import VisApplicationFormDetails from "./visaApplicationFormDetails";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import { VisaApplicationFormInterface } from "types";
 import { useScreenResolution } from "hook/useScreenResolution";
 

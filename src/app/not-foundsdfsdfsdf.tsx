@@ -1,8 +1,9 @@
-import Image from "src/components/atoms/image";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import Image from "@atom/image";
+// import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
-import FooterSection from "src/components/organisms/Footer";
-import Navbar from "src/components/organisms/Navbar";
+import FooterSection from "@organism/Footer";
+import Navbar from "@organism/Navbar";
 import Center from "@components/templates/center";
 function NotFoundPage() {
   return (

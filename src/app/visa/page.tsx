@@ -1,6 +1,6 @@
-import FooterSection from "src/components/organisms/Footer";
-import VisaHero from "src/components/organisms/hero/visa";
-import PopularDestinations from "src/components/organisms/popularDestination";
+import FooterSection from "@organism/Footer";
+import VisaHero from "@organism/hero/visa";
+import PopularDestinations from "@organism/popularDestination";
 import React from "react";
 
 interface pageProps {}

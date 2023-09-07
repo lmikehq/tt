@@ -1,10 +1,10 @@
 "use client";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Lottie from "lottie-react";
 import { IoCloseSharp } from "react-icons/io5";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import Link from "src/components/atoms/link";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Link from "@atom/link";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import { BsInstagram } from "react-icons/bs";
 import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";

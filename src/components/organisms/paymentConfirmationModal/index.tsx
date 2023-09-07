@@ -1,11 +1,11 @@
 "use client";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
-} from "src/components/organisms/visaApplicationModal";
+} from "@organism/visaApplicationModal";
 import apiService from "hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

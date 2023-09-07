@@ -1,8 +1,8 @@
-import Button from "src/components/atoms/button";
-import { Divider } from "src/components/atoms/divider";
-import Flex from "src/components/atoms/flex";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Button from "@atom/button";
+import { Divider } from "@atom/divider";
+import Flex from "@components/templates/flex";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import Section from "src/components/molecules/section";
 import { Box } from "@mui/material";

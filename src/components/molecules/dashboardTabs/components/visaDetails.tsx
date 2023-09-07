@@ -10,9 +10,9 @@ import { PiDotsThreeCircleLight } from "react-icons/pi";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
-import Button from "../../../atoms/button";
-import Flex from "../../../atoms/flex";
-import Text from "../../../atoms/text";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
 import { AiOutlineCheck } from "react-icons/ai";
 

@@ -1,4 +1,4 @@
-import CountriesList from "src/components/organisms/AllCountry";
+import CountriesList from "@organism/AllCountry";
 import React from "react";
 
 interface pageProps {}

@@ -1,10 +1,10 @@
 import React, { useState } from "react"; // Import your modal component
-import Text from "src/components/atoms/text"; // Import other necessary components
+import Text from "@atom/text"; // Import other necessary components
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
-import Flex from "src/components/atoms/flex";
-import Required from "src/components/atoms/required";
+import Flex from "@components/templates/flex";
+import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
 
 type PhoneModalProps = {

@@ -1,6 +1,6 @@
 import FlightSection from "src/components/molecules/flights";
-import FooterSection from "src/components/organisms/Footer";
-import FlightHero from "src/components/organisms/hero/flight";
+import FooterSection from "@organism/Footer";
+import FlightHero from "@organism/hero/flight";
 import React from "react";
 
 interface pageProps {}

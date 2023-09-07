@@ -6,7 +6,7 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 interface Option {

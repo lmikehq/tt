@@ -1,7 +1,7 @@
 import AddButton from "@molecule/addButton";
 import ContinueButton from "@organism/continueButton";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import { familyInforKeys } from "src/lib/application/schema";
 import FamilyForm from "src/components/molecules/forms/familyForm";
 import Section from "src/components/molecules/section";

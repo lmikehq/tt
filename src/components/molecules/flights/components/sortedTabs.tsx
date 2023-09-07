@@ -1,6 +1,6 @@
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import React from "react";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
@@ -47,7 +47,6 @@ function sortedTabs() {
           </Flex>
         </Button>
       </Flex>
-      <Flex></Flex>
     </Flex>
   );
 }

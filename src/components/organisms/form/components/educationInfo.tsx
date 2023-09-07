@@ -1,11 +1,11 @@
 import Section from "src/components/molecules/section";
 import { FieldArray, FormikProps, FormikProvider, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { ttColors } from "theme/colors";
 import EducationForm from "src/components/molecules/forms/educationForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import AddButton from "@molecule/addButton";
 import {
   educationKeys,

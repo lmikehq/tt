@@ -4,21 +4,17 @@ import React, { useState } from "react";
 import { COUNTRY_FLAGS, sorted } from "../../../../data/data";
 import { Grid } from "@components/templates/grid";
 import styled from "styled-components";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
-import CountryLayout from "src/components/layouts/sectionLayout";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import CountryLayout from "src/app/visa/countries/layout";
 import AllCountryHead from "./allCountryHead";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import { ttColors } from "theme/colors";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { urlString } from "src/lib/url";
-import allCountryHeadImg from "/assets/images/allCountryHeaderImg.png";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
-
-import CoverImg from "/assets/images/visaPageCover.jpg";
-import CoverDesktopImg from "/assets/images/visaDesktopCover.jpg";
 
 const CountryWrapper = styled.section`
   // margin: 5rem 0;
@@ -110,7 +106,9 @@ const CountriesList = () => {
     }
   };
 
-  const coverImage = isMobile ? CoverImg : CoverDesktopImg;
+  const coverImage = isMobile
+    ? "/assets/images/visaPageCover.jpg"
+    : "/assets/images/visaDesktopCover.jpg";
 
   return (
     <CountryWrapper>

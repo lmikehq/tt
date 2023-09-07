@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { Grid } from "@components/templates/grid";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
 

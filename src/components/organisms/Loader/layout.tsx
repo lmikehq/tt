@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Loader from "src/components/organisms/Loader/loader";
+import Loader from "@organism/Loader/loader";
 import styled from "styled-components";
 
 const LayoutWrapper = styled.div``;

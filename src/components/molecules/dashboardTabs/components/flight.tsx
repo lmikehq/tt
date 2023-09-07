@@ -1,13 +1,7 @@
 import styled from "styled-components";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import NoVisaBg from "/assets/images/background.png";
-import FlightImg from "/assets/images/flight.png";
 import { ttColors } from "theme/colors";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
-import Image from "src/components/atoms/image";
-import FlightIcon from "/assets/images/flightBooking.png";
 
 const FlightWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -68,7 +62,10 @@ const Flight = () => {
   return (
     <FlightWrapper>
       <VisaDashboardHeader headerText="All Flight Applications" />
-      <NoVisaApplication noVisaImage={FlightImg} content={content} />
+      <NoVisaApplication
+        noVisaImage={"/assets/images/flight.png"}
+        content={content}
+      />
       {/* <Flex direction="column" gap="1rem">
         <History>
           <Flex

@@ -1,6 +1,6 @@
 "use client";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { FaPlaneArrival } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
@@ -8,7 +8,7 @@ import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
 import FAQ from "./components/FAQ";
 import { useScreenResolution } from "hook/useScreenResolution";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const BlueBox = styled.div`
   border: 1px solid #7bbbd6;

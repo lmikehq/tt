@@ -1,13 +1,11 @@
 // @next/next/no-img-element
 "use client";
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Input, { TextField } from "src/components/atoms/input";
-import Text from "src/components/atoms/text";
-import SectionLayout from "src/components/layouts/sectionLayout";
-import logo from "/assets/images/brand/tt_blue_logo_with_text1.png";
-import google from "/assets/images/google.svg";
+import Input, { TextField } from "@atom/input";
+import Text from "@atom/text";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";
 import apiService from "hook/apiService";
@@ -18,7 +16,7 @@ import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { ttColors } from "theme/colors";
-import SideBtn from "src/components/atoms/sideBtn";
+import SideBtn from "@molecule/sideBtn";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -161,7 +159,7 @@ function LoginPage() {
         <Section width={isMobile ? "100%" : "90%"}>
           <Flex justify="space-between">
             <img
-              src={logo.src}
+              src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="logo"
               height={60}
               onClick={() => router.push("/")}

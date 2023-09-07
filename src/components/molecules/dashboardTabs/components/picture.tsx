@@ -2,17 +2,14 @@
 import { IoCloudUpload } from "react-icons/io5";
 import React from "react";
 import { styled } from "styled-components";
-import Image from "src/components/atoms/image";
-import cover from "/assets/images/dashboard/cover.jpg";
-import profileImage from "/assets/images/dashboard/profilePicture.png";
-import Button from "src/components/atoms/button";
-import Text from "src/components/atoms/text";
+import Image from "@atom/image";
+import Button from "@atom/button";
+import Text from "@atom/text";
 import { HiPencil } from "react-icons/hi";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { BsFillCameraFill } from "react-icons/bs";
 import { useUserStore } from "store/useStore";
-import avatar from "/assets/images/avatar.jpg";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
@@ -147,7 +144,7 @@ function UserPicture() {
     <div>
       <DashboardCoverPicture>
         <Image
-          src={user?.coverPicture || cover}
+          src={user?.coverPicture || "/assets/images/dashboard/cover.jpg"}
           alt="cover-picture"
           height={isMobile ? 120 : 250}
           styles={{ width: "100%" }}
@@ -176,7 +173,7 @@ function UserPicture() {
 
       <DashboardProfilePictue>
         <Image
-          src={user?.profilePicture || avatar}
+          src={user?.profilePicture || "/assets/images/avatar.jpg"}
           alt="profile-picture"
           height={isMobile ? 70 : 160}
           styles={{ width: isMobile ? "" : "160px" }}

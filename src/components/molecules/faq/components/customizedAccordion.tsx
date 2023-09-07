@@ -7,7 +7,7 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 
 interface AccordionItemProps {
   header: string;

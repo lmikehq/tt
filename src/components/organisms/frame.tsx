@@ -1,14 +1,14 @@
 "use client";
 import styled from "styled-components";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import { Grid } from "@components/templates/grid";
 import Image from "@atom/image";
 import { FaPaperPlane } from "react-icons/fa";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import { useRouter } from "next/navigation";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Flex from "@components/templates/flex";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;

@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "src/components/atoms/link";
+import Link from "@atom/link";
 import { capitalized } from "src/lib/capitalize";
 import { usePathname } from "next/navigation";
 import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
-import Flex from "../atoms/flex";
-import Text from "../atoms/text";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const BreadcrumbContainer = styled.div`

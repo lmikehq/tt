@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useRouter } from "next/navigation";
-import Link from "src/components/atoms/link";
+import Link from "@atom/link";
 
 const SectionTitleContainer = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import React from "react";
 import SortedColumn from "./sortedColumn";
 import Section from "src/components/molecules/section";

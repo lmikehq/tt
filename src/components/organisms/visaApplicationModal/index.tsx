@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal, Backdrop, Fade } from "@mui/material";
 import styled from "styled-components";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import { ttColors } from "theme/colors";
 
 const StyledModal = styled(Modal)`

@@ -1,11 +1,12 @@
 "use client";
 
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
-import SectionLayout from "src/components/layouts/sectionLayout";
-import NewsLetter from "src/components/organisms/NewsLetter";
+import Link from "@atom/link";
+import Text from "@atom/text";
+// import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
+import NewsLetter from "@organism/NewsLetter";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Image from "@atom/image";
 import { usePathname } from "next/navigation";

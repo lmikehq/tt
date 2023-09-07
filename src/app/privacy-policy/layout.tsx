@@ -1,5 +1,5 @@
-import FooterSection from "src/components/organisms/Footer";
-import Navbar from "src/components/organisms/Navbar";
+import FooterSection from "@organism/Footer";
+import Navbar from "@organism/Navbar";
 
 interface layoutProps {
   children: React.ReactNode;

@@ -1,6 +1,5 @@
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import NotificationItem from "@molecule/notificationItem";
-import NotificationImg1 from "/assets/images/notification/notice1.png";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import styled from "styled-components";
@@ -36,7 +35,7 @@ const Notification = () => {
         <Flex direction="column" gap="1rem">
           {!isMobile && (
             <NotificationItem
-              src={NotificationImg1}
+              src={"/assets/images/notification/notice1.png"}
               title="Application fee for Canada - Employment visa"
               date="25/08/23"
               time="10:11am"

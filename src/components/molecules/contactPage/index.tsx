@@ -1,11 +1,11 @@
 "use client";
 
-import Button from "src/components/atoms/button";
-import Flex from "src/components/atoms/flex";
+import Button from "@atom/button";
+import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import Image from "src/components/atoms/image";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Image from "@atom/image";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import { Autocomplete, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
@@ -25,13 +25,9 @@ import { LuPhoneCall } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import styled from "styled-components";
 import { ttColors } from "theme/colors";
-import ContactImg from "../../../assets/images/contact.svg";
-import ApplicationIcon from "../../../assets/images/customerCare/order-delivery.png";
-import CustomerCare from "../../../assets/images/customerservice.png";
 
-import { Divider } from "src/components/atoms/divider";
-import OrderStatus from "../../../assets/images/customerCare/resume.png";
-import User from "../../../assets/images/customerCare/user.png";
+import { Divider } from "@atom/divider";
+
 import UsefulLinks from "./components/usefulLink";
 import { customNavigationLinks } from "data/customNavigationLinks";
 
@@ -175,19 +171,19 @@ const CustomerCareText = styled.div`
 
 const ContactCardItems = [
   {
-    image: ApplicationIcon,
+    image: "/assets/images/customerCare/order-delivery.png",
     alt: "",
     text: "Start New Application",
     link: "/visa/apply",
   },
   {
-    image: OrderStatus,
+    image: "/assets/images/customerCare/resume.png",
     alt: "",
     text: "Application Status",
     link: "/auth/login",
   },
   {
-    image: User,
+    image: "/assets/images/customerCare/user.png",
     alt: "",
     text: "Log in to My Account",
     link: "auth/login",
@@ -267,7 +263,7 @@ const ContactPage = () => {
               padding={isMobile ? "0.5rem" : "0rem"}
             >
               <CustomerCareImg>
-                <Image src={CustomerCare} alt="" />
+                <Image src={"/assets/images/customerservice.png"} alt="" />
               </CustomerCareImg>
 
               <CustomerCareText>

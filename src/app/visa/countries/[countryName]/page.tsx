@@ -1,4 +1,4 @@
-import CountryPage from "src/components/atoms/countryName";
+import CountryPage from "@molecule/countryName";
 import React from "react";
 import { Qparams } from "types";
 

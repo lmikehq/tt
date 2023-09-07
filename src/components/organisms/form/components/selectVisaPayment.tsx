@@ -1,11 +1,11 @@
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import VisaApplicationTypeTile from "src/components/molecules/payment/VisaApplicationTypeTile";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { SingleFormType } from "../applicationForm";
 import Spinner from "src/components/icons/spinner";
-import Flex from "src/components/atoms/flex";
-import Button from "src/components/atoms/button";
+import Flex from "@components/templates/flex";
+import Button from "@atom/button";
 import { ttColors } from "theme/colors";
 
 interface SelectVisaPaymentProps {

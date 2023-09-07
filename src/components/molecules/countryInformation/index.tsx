@@ -1,7 +1,6 @@
 "use client";
-import NigeriaFlag from "/assets/images/nigeriaFlag.png";
 import styled from "styled-components";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import CountryInformationHead from "./components/countryInformationHead";
 
 const CountryInformationWrapper = styled(Flex)``;
@@ -9,7 +8,10 @@ const CountryInformationWrapper = styled(Flex)``;
 const CountryInformation = () => {
   return (
     <CountryInformationWrapper>
-      <CountryInformationHead cover={NigeriaFlag} title="NIGERIA" />
+      <CountryInformationHead
+        cover={"/assets/images/nigeriaFlag.png"}
+        title="NIGERIA"
+      />
     </CountryInformationWrapper>
   );
 };

@@ -1,6 +1,6 @@
 import StyledComponentsRegistry from "src/lib/registry";
-import LoaderLayout from "src/components/organisms/Loader/layout";
-import PaymentConfirmationModal from "src/components/organisms/paymentConfirmationModal";
+import LoaderLayout from "@organism/Loader/layout";
+import PaymentConfirmationModal from "@organism/paymentConfirmationModal";
 import "@style/globals.css";
 import "react-phone-input-2/lib/style.css";
 

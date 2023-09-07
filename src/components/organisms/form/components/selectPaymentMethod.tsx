@@ -1,6 +1,6 @@
-import Flex from "src/components/atoms/flex";
-import SearchInput, { RoundFlag } from "src/components/atoms/searchInput";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import SearchInput, { RoundFlag } from "@organism/searchInput";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
 import { useScreenResolution } from "hook/useScreenResolution";
@@ -28,7 +28,7 @@ const SelectPaymentMethod = ({
   const { isMobile } = useScreenResolution();
   const [currency, setCurrency] = useState<CurrencyType>({
     currency: "Nigerian Naira",
-    flag: COUNTRY_FLAGS.find((el) => el.code == "NG")?.flag.src,
+    flag: COUNTRY_FLAGS.find((el) => el.code == "NG")?.flag ?? "",
     currencyCode: "NGN",
   });
   return (

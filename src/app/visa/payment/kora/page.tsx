@@ -1,5 +1,5 @@
 "use client";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import Spinner from "src/components/icons/spinner";
 import Section from "src/components/molecules/section";
 import apiService from "hook/apiService";

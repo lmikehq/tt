@@ -1,7 +1,7 @@
 import FlightSection from "src/components/molecules/flights";
 import StaySection from "src/components/molecules/stays";
-import FooterSection from "src/components/organisms/Footer";
-import StayHero from "src/components/organisms/hero/stay";
+import FooterSection from "@organism/Footer";
+import StayHero from "@organism/hero/stay";
 import React from "react";
 
 interface pageProps {}

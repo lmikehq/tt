@@ -2,7 +2,7 @@
 
 import Image, { StaticImageData } from "next/image";
 import styled from "styled-components";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Breadcrumb from "@organism/breadcrumb";
 
 const CountryInformationHeader = styled.div`
@@ -47,7 +47,7 @@ const CountryInformationHead = ({
   cover,
   title,
 }: {
-  cover: StaticImageData;
+  cover: StaticImageData | string;
   title: string;
 }) => {
   return (

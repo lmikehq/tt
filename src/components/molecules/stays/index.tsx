@@ -1,6 +1,6 @@
 "use client";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { FaPlaneArrival } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";

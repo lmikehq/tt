@@ -1,10 +1,10 @@
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { FormikProps, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
-import Required from "src/components/atoms/required";
+import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
 import { useState, useEffect } from "react";
 import TextArea from "@molecule/textArea";

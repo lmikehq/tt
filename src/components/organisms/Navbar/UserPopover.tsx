@@ -3,7 +3,7 @@
 // import MenuItem from "@mui/material/MenuItem";
 // import Link from "@atom/link";
 // import Text from "@atom/text";
-// import Flex from "@atom/flex";
+// import Flex from "@components/templates/flex";
 // import { RxAvatar } from "react-icons/rx";
 // import { IoIosArrowDown } from "react-icons/io";
 // import { MouseEvent, useState } from "react";
@@ -66,9 +66,9 @@
 //   );
 // }
 
-import Flex from "src/components/atoms/flex";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import sleep from "src/lib/sleep";
 import { urlString } from "src/lib/url";
 import apiService from "hook/apiService";

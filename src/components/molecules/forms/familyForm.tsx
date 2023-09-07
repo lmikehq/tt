@@ -5,9 +5,9 @@ import {
   FieldInput,
   FieldString,
 } from "@organism/fieldInput";
-import Flex from "src/components/atoms/flex";
-import Required from "src/components/atoms/required";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Required from "@atom/required";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { Switch } from "@mui/material";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";

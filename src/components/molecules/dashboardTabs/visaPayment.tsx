@@ -1,8 +1,8 @@
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { FieldString } from "@organism/fieldInput";
 import { Formik } from "formik";

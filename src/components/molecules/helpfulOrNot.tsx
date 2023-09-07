@@ -2,7 +2,7 @@
 import { BsHandThumbsDown, BsHandThumbsUp } from "react-icons/bs";
 import { ttColors } from "theme/colors";
 import Flex from "@components/templates/flex";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import { useState } from "react";
 import styled from "styled-components";
 

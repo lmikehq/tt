@@ -1,5 +1,5 @@
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { BiSolidUser } from "react-icons/bi";
 import { styled } from "styled-components";

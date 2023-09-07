@@ -1,8 +1,9 @@
 import { styled } from "styled-components";
 import Section from "src/components/molecules/section";
 import { useState } from "react";
-import Flex from "src/components/atoms/flex";
-import Text from "src/components/atoms/text";
+// import Flex from "@components/templates/flex";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import ShowButton from "@molecule/showButton";
 import { useScreenResolution } from "hook/useScreenResolution";
 

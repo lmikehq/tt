@@ -1,6 +1,6 @@
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import { Autocomplete, TextField, Typography } from "@mui/material";
-import CustomModal from "src/components/organisms/customModal";
+import CustomModal from "@organism/customModal";
 import { isoLangs } from "data/isoLangs";
 import React from "react";
 import { styled } from "styled-components";

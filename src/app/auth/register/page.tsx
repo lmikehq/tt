@@ -1,18 +1,17 @@
 // @next/next/no-img-element
 "use client";
 
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import CheckBox from "@molecule/checkbox";
-import Flex from "src/components/atoms/flex";
-import Input from "src/components/atoms/input";
-import Link from "src/components/atoms/link";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Input from "@atom/input";
+import Link from "@atom/link";
+import Text from "@atom/text";
 import Spinner from "src/components/icons/spinner";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
-// import bgImage6 from "/assets/images/auth-bg6.jpeg";
 import { Grid } from "@components/templates/grid";
-import SideBtn from "src/components/atoms/sideBtn";
+import SideBtn from "@molecule/sideBtn";
 
 import sleep from "src/lib/sleep";
 import Section from "src/components/molecules/section";

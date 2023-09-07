@@ -1,9 +1,10 @@
 import CheckBox from "@molecule/checkbox";
-import { Divider } from "src/components/atoms/divider";
-import Flex from "src/components/atoms/flex";
+import { Divider } from "@atom/divider";
+import Flex from "@components/templates/flex";
 import { CustomRadioGroup } from "@molecule/radio";
-import { SearchInputAsString } from "src/components/atoms/searchInput";
-import Text from "src/components/atoms/text";
+// import { SearchInputAsString } from "@organism/searchInput";
+import { SearchInputAsString } from "@organism/searchInput";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { Slider } from "@mui/material";
 import React, { useState } from "react";

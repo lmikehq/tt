@@ -1,12 +1,12 @@
 "use client";
 import Section from "src/components/molecules/section";
-import Flex from "src/components/atoms/flex";
+import Flex from "@components/templates/flex";
 import { CustomRadioGroup } from "@molecule/radio";
 import { useEffect, useState } from "react";
 import FlightModule from "@organism/flightModule";
-import Button from "src/components/atoms/button";
+import Button from "@atom/button";
 import { HiPlus } from "react-icons/hi2";
-import Text from "src/components/atoms/text";
+import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
 import sleep from "src/lib/sleep";

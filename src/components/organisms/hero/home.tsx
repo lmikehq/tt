@@ -1,12 +1,11 @@
 "use client";
 
 import Center from "@components/templates/center";
-import Text from "src/components/atoms/text";
-import Navbar from "src/components/organisms/Navbar";
-import ServiceBanner from "src/components/organisms/ServiceBanner";
+import Text from "@atom/text";
+import Navbar from "@organism/Navbar";
+import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
-import bgImage from "../../../assets/images/herobg-map.png";
-import SectionLayout from "src/components/layouts/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Section from "src/components/molecules/section";
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`

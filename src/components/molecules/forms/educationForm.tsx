@@ -6,10 +6,10 @@ import {
   FieldInput,
   FieldString,
 } from "@organism/fieldInput";
-import Flex from "src/components/atoms/flex";
-import Input from "src/components/atoms/input";
-import Required from "src/components/atoms/required";
-import Text from "src/components/atoms/text";
+import Flex from "@components/templates/flex";
+import Input from "@atom/input";
+import Required from "@atom/required";
+import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { COMMON_MAJORS, DEGREES } from "data/utilData";
 import dayjs, { Dayjs } from "dayjs";
