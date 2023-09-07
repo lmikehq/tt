@@ -16,7 +16,7 @@ function ServiceTabs() {
     };
   });
   return (
-    <div>
+    <div style={{padding: "1.5rem 2rem"}}>
       <CustomTab tabItems={services} defaultIcons />
     </div>
   );

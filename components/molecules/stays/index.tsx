@@ -9,6 +9,7 @@ import { styled } from "styled-components";
 import FAQ from "./components/faq";
 import Map from "@atom/map";
 import { useScreenResolution } from "hook/useScreenResolution";
+import SectionLayout from "@components/layouts/sectionLayout";
 
 const BlueBox = styled.div`
   border: 2px solid #7bbbd6;
@@ -43,7 +44,7 @@ const StaySection = () => {
 
   const { isMobile } = useScreenResolution();
   return (
-    <Section padding={isMobile ? "0 1rem" : "0 5rem"}>
+    <SectionLayout padding={isMobile ? "0 1rem" : "0 5rem"}>
       <Flex direction="column" gap=".65rem" wrap="wrap">
         <Text
           type="h1"
@@ -60,7 +61,7 @@ const StaySection = () => {
       </Flex>
       <Flex
         padding="2rem 0"
-        gap={isMobile ? "2rem" : '"4rem"'}
+        gap={isMobile ? "2rem" : "4rem"}
         direction={isMobile ? "column" : "row"}
       >
         <BlueBox>
@@ -268,7 +269,7 @@ const StaySection = () => {
           <FAQ />
         </Flex>
       </Flex>
-    </Section>
+    </SectionLayout>
   );
 };
 
