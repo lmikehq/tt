@@ -1,3 +1,4 @@
+'use client'
 /* eslint-disable react/jsx-key */
 
 import CustomTab from "@atom/tabs";
@@ -5,6 +6,8 @@ import { SERVICES } from "data/services";
 import Flights from "./components/flight";
 import Stays from "./components/stays";
 import Visa from "./components/visa";
+import { useScreenResolution } from "hook/useScreenResolution";
+import Section from "@molecule/section";
 
 function ServiceTabs() {
   const components = [<Visa />, <Flights />, <Stays />];
@@ -15,10 +18,11 @@ function ServiceTabs() {
       content: components[i],
     };
   });
+  const { isMobile } = useScreenResolution();
   return (
-    <div style={{padding: "1.5rem 2rem"}}>
+    <Section {...(!isMobile && { padding: "1.5rem 2rem" })}>
       <CustomTab tabItems={services} defaultIcons />
-    </div>
+    </Section>
   );
 }
 

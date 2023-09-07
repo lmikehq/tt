@@ -1,7 +1,7 @@
 "use client";
 
 import Center from "@atom/center";
-import bgImage from "@image/herobg-visa.png";
+import bgImage from "@image/herobg-stay.png";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { useScreenResolution } from "hook/useScreenResolution";

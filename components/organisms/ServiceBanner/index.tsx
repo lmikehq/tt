@@ -2,6 +2,7 @@
 
 import SectionLayout from "@components/layouts/sectionLayout";
 import ServiceTabs from "@molecule/serviceTabs";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 // const BannerWrapper = styled.div`
 //   width: 80vw;
@@ -20,9 +21,10 @@ import ServiceTabs from "@molecule/serviceTabs";
 // `;
 
 function ServiceBanner({}) {
+  const { isMobile } = useScreenResolution();
   return (
     <SectionLayout
-      // margin="6rem 0px 0px 0px"
+      margin={isMobile ? "0" : "6rem 0px 0px 0px !important"}
       style={{
         backgroundColor: "var(--default-color)",
         borderRadius: "1rem",
