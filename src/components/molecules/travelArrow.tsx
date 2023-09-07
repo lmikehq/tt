@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoAirplane } from "react-icons/io5";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const CircleLineWrapper = styled.div`
   display: flex;

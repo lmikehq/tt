@@ -4,7 +4,7 @@ import PaymentConfirmationModal from "@organism/paymentConfirmationModal";
 import "@style/globals.css";
 import "react-phone-input-2/lib/style.css";
 
-import { Siteconfig } from "config/site";
+import { Siteconfig } from "@lib/config/site";
 import { Poppins } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";

@@ -1,12 +1,12 @@
 import Text from "@atom/text";
 import VisaApplicationTypeTile from "src/components/molecules/payment/VisaApplicationTypeTile";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { SingleFormType } from "../applicationForm";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import Flex from "@components/templates/flex";
 import Button from "@atom/button";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 interface SelectVisaPaymentProps {
   nextStep: ({ form }: { form: SingleFormType }) => void;

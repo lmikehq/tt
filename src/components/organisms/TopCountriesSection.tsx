@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Grid } from "@components/templates/grid";
 
 import SectionLayout from "@components/templates/SectionLayout";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import { useRouter } from "next/navigation";
 import Image from "@atom/image";

@@ -8,9 +8,9 @@ import {
   useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import EmploymentForm from "src/components/molecules/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
@@ -19,7 +19,7 @@ import {
   employmentKeys,
   employmentsArr,
   manyEmploymentSchema,
-} from "src/lib/application/schema";
+} from "@lib/types/schema";
 import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@organism/continueButton";
 import { EmploymentDetailsInterface } from "types";

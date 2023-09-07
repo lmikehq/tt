@@ -2,12 +2,12 @@ import Section from "src/components/molecules/section";
 import { Button } from "@atom/button";
 import React, { useEffect, useState } from "react";
 import Flex from "@components/templates/flex";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import Text from "@atom/text";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import { BottomNavigation } from "@mui/material";
 import { Grid } from "../templates/grid";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 interface ButtonProps {
   isLoading: boolean;

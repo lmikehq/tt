@@ -5,7 +5,7 @@ import Flex from "@components/templates/flex";
 import { BsPlusLg } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
 import { Divider } from "@atom/divider";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 interface MapBoxProps {
   zoom: number;

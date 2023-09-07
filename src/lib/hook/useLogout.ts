@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import apiService from "./apiService";
-import sleep from "src/lib/sleep";
+import sleep from "@lib/helpers/sleep";
 
 export async function handleLogout() {
   const res = await apiService("/auth/logout", "POST");

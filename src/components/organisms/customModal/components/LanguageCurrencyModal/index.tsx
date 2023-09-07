@@ -1,7 +1,7 @@
 import Button from "@atom/button";
 import { Autocomplete, TextField, Typography } from "@mui/material";
 import CustomModal from "@organism/customModal";
-import { isoLangs } from "data/isoLangs";
+import { isoLangs } from "@lib/data/isoLangs";
 import React from "react";
 import { styled } from "styled-components";
 const Form = styled.form`

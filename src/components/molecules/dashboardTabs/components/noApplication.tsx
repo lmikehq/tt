@@ -5,7 +5,7 @@ import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import React from "react";
 import styled from "styled-components";
 

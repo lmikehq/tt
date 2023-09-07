@@ -11,21 +11,21 @@ import Input from "@atom/input";
 import Link from "@atom/link";
 import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import SectionLayout from "@components/templates/SectionLayout";
-import sleep from "src/lib/sleep";
+import sleep from "@lib/helpers/sleep";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import apiService from "@lib/hook/apiService";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { useUserStore } from "store/useStore";
-import { ttColors } from "theme/colors";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
 import Image from "@atom/image";
 
 const settings = {

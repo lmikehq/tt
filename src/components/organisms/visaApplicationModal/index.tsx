@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Modal, Backdrop, Fade } from "@mui/material";
 import styled from "styled-components";
 import Text from "@atom/text";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const StyledModal = styled(Modal)`
   display: flex;

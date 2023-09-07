@@ -5,7 +5,7 @@ import {
   employmentKeys,
   familyInforKeys,
   personalInfoKeys,
-} from "./schema";
+} from "../types/schema";
 
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";

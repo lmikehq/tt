@@ -6,7 +6,7 @@ import Text from "@atom/text";
 import TravelArrow from "@molecule/travelArrow";
 import Section from "src/components/molecules/section";
 import { ListItem } from "@mui/material";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { BiX } from "react-icons/bi";
 import { VisaApplicationFormInterface } from "types";
 

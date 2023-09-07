@@ -1,6 +1,6 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import React from "react";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 

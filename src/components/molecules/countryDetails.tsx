@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import CountryArticle from "./countryArticle";
 import Button from "@atom/button";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 const Wrapper = styled.div`
   width: 100%;

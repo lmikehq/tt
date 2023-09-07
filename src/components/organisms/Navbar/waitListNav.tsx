@@ -8,7 +8,7 @@ import Link from "@atom/link";
 import Text from "@atom/text";
 import Image from "@atom/image";
 import { Grid } from "@components/templates/grid";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 const WaitlistNavbar: React.FC = () => {
   const { isMobile } = useScreenResolution();

@@ -3,7 +3,7 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { flightContext } from "context";
+import { flightContext } from "@lib/context";
 import { styled } from "styled-components";
 import { canadianCities } from "./country";
 import { useState, useEffect } from "react";

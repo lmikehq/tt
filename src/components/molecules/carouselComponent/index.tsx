@@ -5,8 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { Grid } from "@components/templates/grid";
 import Text from "@atom/text";
-import { ttColors } from "theme/colors";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 // Here's your styled card
 const CarouselWrapper = styled.div`

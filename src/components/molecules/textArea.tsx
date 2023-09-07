@@ -1,6 +1,6 @@
 import { FocusEvent, useState } from "react";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import Text from "@atom/text";
 
 const MaxCharCount = 1000;

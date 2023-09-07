@@ -1,7 +1,7 @@
 "use client";
 
 import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
-import { isoLangs } from "data/isoLangs";
+import { isoLangs } from "@lib/data/isoLangs";
 import {
   CSSProperties,
   KeyboardEventHandler,

@@ -9,8 +9,8 @@ import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
 import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import apiService from "@lib/hook/apiService";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -18,7 +18,7 @@ import { FaSpinner } from "react-icons/fa";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const settings = {
   infinite: true,

@@ -2,8 +2,8 @@ import Flex from "@components/templates/flex";
 import SearchInput, { RoundFlag } from "@organism/searchInput";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { BiSolidInfoCircle } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
 

@@ -17,27 +17,27 @@ import {
   personalInfoKeys,
   personalInfoSchema,
   visaInitVals,
-} from "src/lib/application/schema";
+} from "@lib/types/schema";
 import { getSteps } from "src/lib/application/steps";
 import Section from "src/components/molecules/section";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import VisaProgress from "src/components/molecules/visaProgress";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import apiService from "@lib/hook/apiService";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsArrowLeft } from "react-icons/bs";
 // import { useUserStore } from "store/useStore";
 import Button from "@atom/button";
-import sleep from "src/lib/sleep";
+import sleep from "@lib/helpers/sleep";
 import { safelyConvertToNumber } from "src/lib/utilFns";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
-import { useUserStore } from "store/useStore";
+import { useUserStore } from "@lib/store/useStore";
 import { styled } from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import {
   ApplicationFormRequestInput,
   DetailsKeys,

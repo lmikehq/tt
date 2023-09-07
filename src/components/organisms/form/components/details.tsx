@@ -1,20 +1,20 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
 import { FormikProps, FormikValues, useFormik } from "formik";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
-import { detailsKeys, detailsSchema } from "src/lib/application/schema";
+import { detailsKeys, detailsSchema } from "@lib/types/schema";
 import { DetailsKeys } from "types";
 import { FieldAsString, FieldString } from "@organism/fieldInput";
 import { SingleFormType } from "../applicationForm";
 import Button from "@atom/button";
-import Spinner from "src/components/icons/spinner";
-import { ttColors } from "theme/colors";
+import Spinner from "@molecule/icons/spinner";
+import { ttColors } from "@lib/theme/colors";
 import { useSearchParams } from "next/navigation";
 import ContinueButton from "@organism/continueButton";
 

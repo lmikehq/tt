@@ -1,6 +1,6 @@
 import Center from "@components/templates/center";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
 

@@ -11,7 +11,7 @@ import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import React, { useState } from "react";
 import { EmploymentDetailsInterface } from "types";
 

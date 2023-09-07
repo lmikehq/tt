@@ -2,12 +2,12 @@
 
 import { Grid } from "@components/templates/grid";
 import UsefulLinks from "src/components/molecules/contactPage/components/usefulLink";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import styled from "styled-components";
 import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
-import { customNavigationLinks } from "data/customNavigationLinks";
-import { PRIVACY_POLICY } from "data/privacyPolicy";
+import { customNavigationLinks } from "@lib/data/customNavigationLinks";
+import { PRIVACY_POLICY } from "@lib/data/privacyPolicy";
 import PrivacyPolicyDetails from "./prvacyPolicyDetails";
 import Flex from "@components/templates/flex";
 

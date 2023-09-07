@@ -1,4 +1,4 @@
-import { document } from "../src/lib/application/schema";
+import { document } from "../src/lib/types/schema";
 export type ISiteConfig = {
   name: string;
   description: string;

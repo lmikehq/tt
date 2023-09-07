@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const FlightWrapper = styled.div`
   background: ${ttColors.defaultColor};

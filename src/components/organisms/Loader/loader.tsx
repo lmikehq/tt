@@ -3,7 +3,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Image from "@atom/image";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import Text from "@atom/text";
 
 const LoaderWrapper = styled.div`

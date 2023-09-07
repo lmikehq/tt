@@ -3,12 +3,12 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useQuery } from "@tanstack/react-query";
-import currencyFormatter from "data/currencyFormatter";
+import currencyFormatter from "@lib/data/currencyFormatter";
 import { format } from "date-fns";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import apiService from "@lib/hook/apiService";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
 
 const SectionTitle = styled.div`

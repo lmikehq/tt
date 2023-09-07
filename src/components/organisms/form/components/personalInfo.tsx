@@ -3,17 +3,14 @@ import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { FormikProps, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
 import { useState, useEffect } from "react";
 import TextArea from "@molecule/textArea";
 import { CustomRadioGroup } from "@molecule/radio";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import {
-  personalInfoKeys,
-  personalInfoSchema,
-} from "src/lib/application/schema";
+import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
+import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema";
 import {
   ErrorText,
   FieldAsDate,

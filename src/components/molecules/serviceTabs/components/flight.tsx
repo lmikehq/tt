@@ -9,10 +9,10 @@ import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
-import sleep from "src/lib/sleep";
-import Spinner from "src/components/icons/spinner";
-import { ttColors } from "theme/colors";
-import { useScreenResolution } from "hook/useScreenResolution";
+import sleep from "@lib/helpers/sleep";
+import Spinner from "@molecule/icons/spinner";
+import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 const options = [
   { value: "round", label: "Round Trip" },

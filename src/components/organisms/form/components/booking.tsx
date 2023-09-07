@@ -6,10 +6,10 @@ import Section from "src/components/molecules/section";
 import { Divider, FormControlLabel, Radio } from "@mui/material";
 import Image from "@atom/image";
 import { useState } from "react";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import FormStepTitle from "./formStepsTitle";
-import { useUserStore } from "store/useStore";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useUserStore } from "@lib/store/useStore";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 interface formProps {
   steps: string[];

@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 interface buttonProps {
   onClick: (event: any) => void;

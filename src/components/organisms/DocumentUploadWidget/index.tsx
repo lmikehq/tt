@@ -2,7 +2,7 @@ import Button from "@atom/button";
 import Center from "@components/templates/center";
 import Image from "@atom/image";
 import Text from "@atom/text";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import UploadedDocTile from "src/components/molecules/docUpload/UploadedDocTile";
 import CircularProgressBar from "src/components/molecules/progressBars/CircularProgressBar";
 import CustomConfirmationModal, {
@@ -11,7 +11,7 @@ import CustomConfirmationModal, {
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { styled } from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 import { UploadedDoc } from "@organism/form/applicationForm";
 

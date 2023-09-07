@@ -8,8 +8,8 @@ import Link from "@atom/link";
 import Text from "@atom/text";
 import { Autocomplete, Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { COUNTRY_FLAGS } from "@lib/data/COUNTRY_FLAGS";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { useState } from "react";
 import { BsEnvelope } from "react-icons/bs";
 import {
@@ -24,12 +24,12 @@ import { ImWhatsapp } from "react-icons/im";
 import { LuPhoneCall } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 import { Divider } from "@atom/divider";
 
 import UsefulLinks from "./components/usefulLink";
-import { customNavigationLinks } from "data/customNavigationLinks";
+import { customNavigationLinks } from "@lib/data/customNavigationLinks";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;

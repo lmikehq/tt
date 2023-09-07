@@ -4,7 +4,7 @@ import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import { styled } from "styled-components";
 
 const FlightDropdown = styled.section`

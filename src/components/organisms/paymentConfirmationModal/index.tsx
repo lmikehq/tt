@@ -6,11 +6,11 @@ import Section from "src/components/molecules/section";
 import CustomConfirmationModal, {
   CustomConfirmationModalProps,
 } from "@organism/visaApplicationModal";
-import apiService from "hook/apiService";
+import apiService from "@lib/hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiSolidCheckCircle, BiSolidXCircle } from "react-icons/bi";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const PaymentConfirmationModal = () => {
   const params = useSearchParams();

@@ -3,7 +3,7 @@ import { Grid } from "@components/templates/grid";
 import Input from "@atom/input";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import React, { useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";

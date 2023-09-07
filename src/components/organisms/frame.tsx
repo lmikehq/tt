@@ -6,7 +6,7 @@ import Image from "@atom/image";
 import { FaPaperPlane } from "react-icons/fa";
 import Button from "@atom/button";
 import { useRouter } from "next/navigation";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
 import SectionLayout from "@components/templates/SectionLayout";
 

@@ -7,23 +7,23 @@ import Flex from "@components/templates/flex";
 import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import SectionLayout from "@components/templates/SectionLayout";
 
 import { Grid } from "@components/templates/grid";
 import SideBtn from "@molecule/sideBtn";
 
-import sleep from "src/lib/sleep";
+import sleep from "@lib/helpers/sleep";
 import Section from "src/components/molecules/section";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import apiService from "@lib/hook/apiService";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const settings = {
   infinite: true,

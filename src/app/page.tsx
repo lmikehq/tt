@@ -5,7 +5,7 @@ import FrameCard from "@organism/FrameCard";
 import ReviewSec from "@organism/review";
 import HeroSection from "@organism/hero/home";
 import PopularDestination from "@organism/popularDestination";
-import { FlightProvider } from "context";
+import { FlightProvider } from "@lib/context";
 import TopCountriesSection from "@organism/TopCountriesSection";
 
 export default function Home() {

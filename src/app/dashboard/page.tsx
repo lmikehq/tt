@@ -1,5 +1,5 @@
 import DashboardHeader from "src/components/molecules/dashboardTabs/dashboard";
-import UserStoreProvider from "hook/useUserStore";
+import UserStoreProvider from "@lib/hook/useUserStore";
 
 const DashboardHeaderComponent = () => {
   return (

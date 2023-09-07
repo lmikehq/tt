@@ -6,10 +6,10 @@ import Image from "@atom/image";
 import Button from "@atom/button";
 import Text from "@atom/text";
 import { HiPencil } from "react-icons/hi";
-import { ttColors } from "theme/colors";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { BsFillCameraFill } from "react-icons/bs";
-import { useUserStore } from "store/useStore";
+import { useUserStore } from "@lib/store/useStore";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;

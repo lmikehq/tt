@@ -3,10 +3,10 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Text from "@atom/text";
 import UsefulLinks from "src/components/molecules/contactPage/components/usefulLink";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import styled from "styled-components";
 import CustomizedAccordions from "./components/customizedAccordion";
-import { customNavigationLinks } from "data/customNavigationLinks";
+import { customNavigationLinks } from "@lib/data/customNavigationLinks";
 
 const FaqsSection = styled.section`
   margin-top: 1rem;

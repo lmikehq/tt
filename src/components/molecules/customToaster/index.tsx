@@ -6,7 +6,7 @@ import { styled as custom } from "@mui/material";
 import React from "react";
 import { BiInfoCircle, BiX } from "react-icons/bi";
 import { styled } from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 // import { styled } from "styled-components";
 
 interface CustomTosterProps {

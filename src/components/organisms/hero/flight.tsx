@@ -7,7 +7,7 @@ import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
 import Flex from "@components/templates/flex";
 import SectionLayout from "@components/templates/SectionLayout";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;

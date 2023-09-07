@@ -1,7 +1,7 @@
 import React, { useState } from "react"; // Import your modal component
 import Text from "@atom/text"; // Import other necessary components
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import ReusableModal from "./components/dashboardModal";
 import Input from "@atom/input";
 import Flex from "@components/templates/flex";

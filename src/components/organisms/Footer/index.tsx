@@ -7,7 +7,7 @@ import Text from "@atom/text";
 // import SectionLayout from "@components/templates/SectionLayout";
 import SectionLayout from "@components/templates/SectionLayout";
 import NewsLetter from "@organism/NewsLetter";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import Image from "@atom/image";
 import { usePathname } from "next/navigation";
 import { AiFillInstagram } from "react-icons/ai";

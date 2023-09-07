@@ -3,16 +3,16 @@
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import React from "react";
 import { Qparams } from "types";
-import { unUrlString } from "src/lib/url";
+import { unUrlString } from "@lib/helpers/url";
 import SectionLayout from "@components/templates/SectionLayout";
 import CountryDetails from "./countryDetails";
-import { SAMPLE_COUNTRY_INFO } from "data/countryInfo";
+import { SAMPLE_COUNTRY_INFO } from "@lib/data/countryInfo";
 import { Grid } from "@components/templates/grid";
 import CountryRequirementDetails from "./countryRequirementDetails";
-import { SAMPLE_COUNTRY_REQUIREMENT } from "data/countryRequirement";
+import { SAMPLE_COUNTRY_REQUIREMENT } from "@lib/data/countryRequirement";
 import HelpfulOrNot from "@molecule/helpfulOrNot";
 import SectionTitle from "src/components/molecules/sectionTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 
 interface pageProps {
   params: Qparams["params"];

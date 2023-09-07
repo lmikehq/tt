@@ -1,15 +1,15 @@
 "use client";
 import Section from "src/components/molecules/section";
-import currencyFormatter from "data/currencyFormatter";
+import currencyFormatter from "@lib/data/currencyFormatter";
 import { format } from "date-fns";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/hook/useScreenResolution";
 import { useState } from "react";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
 import { PiDotsThreeCircleLight } from "react-icons/pi";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
