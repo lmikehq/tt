@@ -1,12 +1,15 @@
+import { visaInitVals } from "@lib/types/schema";
 import { VisaApplicationFormInterface } from "types";
 import { create } from "zustand";
 
-interface ApplicationFormState {
+interface ApplicationFormStore {
   form: VisaApplicationFormInterface;
-  setForm: () => void;
+  setForm: (form: VisaApplicationFormInterface) => void;
 }
 
-export const useUserStore = create<userState>((set) => ({
-  user: null,
-  setUser: (user: any) => set({ user }),
-}));
+const store = (set: any): ApplicationFormStore => ({
+  form: visaInitVals,
+  setForm: (form: VisaApplicationFormInterface) => set({ form }),
+});
+
+export const useUserStore = create<ApplicationFormStore>(store);
