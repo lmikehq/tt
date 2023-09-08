@@ -1,5 +1,6 @@
 import axiosClient from "@lib/axios/axios-client";
 import { ApplicationFormRequestInput } from "@lib/types/request-models/application-form.type";
+import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
 
 export class ApplicationFormService {
   static createApplicationForm = async ({
@@ -7,6 +8,9 @@ export class ApplicationFormService {
   }: {
     data: ApplicationFormRequestInput;
   }) => {
-    await axiosClient.get("/visa/new-application");
+    return await axiosClient.post<any, CreateVisaApplicationResponse>(
+      "/visa/new-application",
+      data
+    );
   };
 }

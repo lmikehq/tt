@@ -1,4 +1,4 @@
-export type CreateApplicationFormResponse = {
+export type CreateVisaApplicationResponse = {
   user: string;
   visa: string;
 };

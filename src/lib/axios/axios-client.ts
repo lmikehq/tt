@@ -3,10 +3,16 @@ import axios, {
   AxiosResponse,
   AxiosError,
   InternalAxiosRequestConfig,
+  AxiosRequestConfig,
 } from "axios";
 import { toast } from "react-hot-toast";
 
-const axiosClient: AxiosInstance = axios.create({
+interface XAxiosInstance extends AxiosInstance {
+  request<T = any, R = AxiosResponse<T>>(
+    config: AxiosRequestConfig
+  ): Promise<R>;
+}
+const axiosClient: XAxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   timeout: 5000,
   //   withCredentials: true,
@@ -15,21 +21,6 @@ const axiosClient: AxiosInstance = axios.create({
     Authorization: getAuthToken(),
   },
 });
-
-axiosClient.interceptors.request.use(
-  async (config: InternalAxiosRequestConfig) => {
-    const token = getAuthToken();
-
-    if (token) {
-      config.headers!["Authorization"] = token;
-    }
-
-    return config;
-  },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  }
-);
 
 function getAuthToken(): string | null {
   const user = localStorage.getItem("user");
