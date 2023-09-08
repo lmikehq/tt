@@ -89,7 +89,7 @@ interface SearchProps {
   value?: any;
   border?: string;
   disabled?: boolean;
-
+  error?: boolean;
   onChange: (x: any) => void;
 }
 
@@ -101,6 +101,7 @@ export default function SearchInput({
   value,
   height,
   padding,
+  error,
   onChange,
   disabled = false,
 }: // anchorEl,
@@ -146,6 +147,9 @@ SearchProps) {
             },
             "&:hover .MuiInputBase-root": {
               color: `${ttColors.primary} !important`,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: error ? "red" : "",
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -258,6 +262,7 @@ export function SearchInputAsString({
   options,
   legend,
   value,
+  error,
   onChange,
   height,
   padding,
@@ -314,6 +319,9 @@ export function SearchInputAsString({
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: error ? "red" : "",
             },
             "&:hover .MuiInputBase-root": {
               color: `${ttColors.primary} !important`,

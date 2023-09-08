@@ -132,10 +132,9 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
         <Flex padding="1rem" justify="space-between" ref={ref}>
           <ButtonBase onClick={() => router.push("/")}>
             <Image
-              src={"/assets/images/brand/tt_blue_logo_with_text.png"}
+              src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="thrillers travels logo"
-              height={35}
-              width={0}
+              height={40}
             />
           </ButtonBase>
 

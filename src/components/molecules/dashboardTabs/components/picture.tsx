@@ -1,6 +1,6 @@
 "use client";
 import { IoCloudUpload } from "react-icons/io5";
-import React from "react";
+import React, { useRef } from "react";
 import { styled } from "styled-components";
 import Image from "@atom/image";
 import Button from "@atom/button";
@@ -10,6 +10,7 @@ import { ttColors } from "theme/colors";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { BsFillCameraFill } from "react-icons/bs";
 import { useUserStore } from "store/useStore";
+import Input from "@atom/input";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
@@ -17,7 +18,7 @@ const DashboardCoverPicture = styled.div`
   display: block;
 
   & img {
-    width: 100%;
+    width: 15%;
     border-radius: 12px;
   }
 
@@ -111,8 +112,8 @@ const DashboardProfilePictue = styled.div`
   }
 
   & button {
-    top: 16px !important;
-    right: 44.5% !important;
+    top: 20px !important;
+    right: 42.5% !important;
     position: absolute;
 
     @media screen and (max-width: 900px) {
@@ -140,13 +141,20 @@ const DashboardProfilePictue = styled.div`
 function UserPicture() {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
   return (
     <div>
       <DashboardCoverPicture>
         <Image
           src={user?.coverPicture || "/assets/images/dashboard/cover.jpg"}
           alt="cover-picture"
-          height={isMobile ? 120 : 250}
+          height={isMobile ? 120 : 215}
           styles={{ width: "100%" }}
         />
         {/* <Button
@@ -177,6 +185,7 @@ function UserPicture() {
           alt="profile-picture"
           height={isMobile ? 70 : 160}
           styles={{ width: isMobile ? "" : "160px" }}
+          width={160}
         />
         <Button
           styles={{
@@ -190,9 +199,16 @@ function UserPicture() {
             width: "50px",
             padding: "9px",
           }}
+          onClick={handleButtonClick}
         >
           <HiPencil size="2rem" />
         </Button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={inputRef}
+          style={{ display: "none" }}
+        />
         <ProfileInfomation>
           <Text type="h3" text={user?.firstName + " " + user?.lastName} />
           <Text type="p" text={user?.email} />

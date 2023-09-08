@@ -201,12 +201,12 @@ function LoginPage() {
 
         <Section>
           <Flex justify="space-between">
-            <Image
+            <img
               src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="logo"
               height={isMobile ? "45px" : "60px"}
               onClick={() => router.push("/")}
-              styles={{ cursor: "pointer" }}
+              style={{ cursor: "pointer" }}
             />
             <SideBtn
               title="Do not have an account? "

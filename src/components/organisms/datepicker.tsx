@@ -60,9 +60,10 @@ interface DatePickerProps {
   maxDate?: Dayjs;
   placeholder?: string;
   position?: "start";
+  error?: boolean;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position, error }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
@@ -96,7 +97,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
         slotProps={{
           textField: {
             placeholder: placeholder,
-            error: false,
+            error: error,
           },
         }}
         slots={{

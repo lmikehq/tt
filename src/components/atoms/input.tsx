@@ -1,5 +1,4 @@
 "use client";
-
 import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "data/isoLangs";
 import {
@@ -72,7 +71,6 @@ export interface InputProps {
     | "tel"
     | "address"
     | "checkbox";
-
   value?: string;
   defaultValue?: string;
   name?: string;
@@ -93,6 +91,7 @@ export interface InputProps {
   flexGrow?: number;
   parentWidth?: string;
   styles?: CSSProperties;
+  error?: boolean;
 }
 
 const Input = ({
@@ -123,6 +122,7 @@ const Input = ({
   parentWidth,
   styles,
   step,
+  error,
   defaultValue,
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
@@ -154,7 +154,7 @@ const Input = ({
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
         onClick={onClick}
-        className="custom-form-input"
+        className={`custom-form-input ${error ? "error" : ""}`}
         type={miniType || type}
         onBlur={onBlur}
         placeholder={placeholder}

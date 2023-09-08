@@ -127,7 +127,7 @@ function RegisterPage() {
     if (error) return error.constraints;
   }
   return (
-    <SectionLayout {...(isMobile && { padding: "0" })}>
+    <SectionLayout >
       <form onSubmit={handleSubmit}>
         <Grid
           columns={isMobile ? "1fr" : `repeat(auto-fit, minmax(300px, 1fr))`}

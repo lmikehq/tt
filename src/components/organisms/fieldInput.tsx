@@ -93,8 +93,8 @@ export const FieldInput = (props: FieldProps) => {
         onChange={onChange ? onChange : handleChange}
         value={getNestedValue(formik.values, name)}
         onBlur={() => formik.setTouched({ ...formik.touched, [name]: true })}
+        error={touched && error}
       />
-
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );
@@ -123,6 +123,8 @@ export const ArrayInput = (props: FieldProps) => {
   };
 
   const value = getNestedValue(formik.values, name);
+  const touched = getNestedValue(formik.touched, name);
+  const error = getNestedValue(formik.errors, name);
 
   return (
     <div>
@@ -139,7 +141,9 @@ export const ArrayInput = (props: FieldProps) => {
         onChange={handleChange}
         value={value == 0 ? "" : value}
         onBlur={formik.handleBlur}
+        error={touched && error}
       />
+      {touched && error ? <ErrorText text={error} /> : null}
     </div>
   );
 };
@@ -163,6 +167,7 @@ export const FieldAsString = (props: FieldProps) => {
         onChange={onChange ? onChange : handleChange}
         placeholder={placeholder}
         disabled={disabled}
+        error={touched && error}
       />{" "}
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
@@ -187,6 +192,7 @@ export const FieldString = (props: FieldProps) => {
         onChange={onChange ? onChange : handleChange}
         placeholder={placeholder}
         value={value ? value : formikvalue}
+        error={touched && error}
       />
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
@@ -223,8 +229,8 @@ export const FieldAsDate = (props: FieldProps) => {
         minDate={minDate}
         value={value === "" ? null : dayjs(`${value}`)}
         onChange={onChange ? onChange : handleChange}
+        error={touched && error}
       />
-
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );

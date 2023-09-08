@@ -4,7 +4,7 @@ import Input from "@atom/input";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "hook/useScreenResolution";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -50,6 +50,12 @@ const OptionText = styled.div<{ hovered: boolean }>`
 function VisaDashboardHeader({ headerText }: { headerText: string }) {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [focusInput, setFocusInput] = useState(false)
+
+  const handleFlexClick = () => {
+    console.log('Worked')
+  };
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -103,10 +109,10 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
               styles={{
                 border: "none",
               }}
+              onBlur={() => setFocusInput(true)}
             />
           </Section>
         </Flex>
-
         <Flex
           justify="space-between"
           align="center"
