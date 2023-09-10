@@ -47,7 +47,7 @@ export default function RootLayout({
                     });
                 `}
       </Script> */}
-      <Script strategy="lazyOnload">
+      <Script strategy="lazyOnload" id='analytics'>
         {`
     // Crisp Chat Script
     window.$crisp = [];
