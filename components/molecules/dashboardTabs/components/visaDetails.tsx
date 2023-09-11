@@ -188,6 +188,7 @@ function VisaDetail({ visa }: { visa: any }) {
             margin={isMobile ? "0" : "0px 0px 0px 1.5rem"}
             gap={isMobile ? "2rem" : "1rem"}
             direction="column"
+            styles={{ display: isMobile ? "none" : "block" }}
           >
             <Text
               type="p"
@@ -257,9 +258,32 @@ function VisaDetail({ visa }: { visa: any }) {
               </Flex>
             </Flex>
           </Flex>
+          <Flex styles={{ display: isMobile ? "block" : "none" }}>
+            <Text
+              type="p"
+              letterSpacing="1px"
+              weight={900}
+              size={isMobile ? "1rem" : "1.3rem"}
+              textAlign={isMobile ? "center" : "left"}
+              text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
+            />
+            <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+              <Text
+                type="h5"
+                text={
+                  visa.applicationStatus === "FORM FEE REQUESTED"
+                    ? "APPLICATION NOT SUBMITTED"
+                    : visa.applicationStatus
+                }
+                weight={800}
+                size={isMobile ? 13 : 14}
+                color={textAndBgColor.text}
+              />
+            </VisaStatus>
+          </Flex>
         </Flex>
 
-        <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+        <VisaStatus style={{ backgroundColor: textAndBgColor.bg, display: isMobile ? "none" : "block" }}>
           <Text
             type="h5"
             text={
@@ -330,6 +354,16 @@ function VisaDetail({ visa }: { visa: any }) {
             </Section>
           )}
         </Flex>
+
+
+
+
+
+
+
+
+        
+
       </Flex>
       {isOpen && (
         <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>

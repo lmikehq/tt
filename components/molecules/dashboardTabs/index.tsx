@@ -9,13 +9,12 @@ import Account from "./components/account";
 import Favourite from "./components/favourite";
 import Notification from "./components/notification";
 import RTQueryClient from "@components/layouts/rtqWrapper";
+import Visa from "./components/visa";
+import Flight from "./components/flight";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const Wrapper = styled.div`
-  margin-top: 250px;
-
-  @media screen and (max-width: 900px) {
-    margin-top: 155px;
-  }
+  margin-top: 10px;
 
   .MuiBox-root.css-1gsv261 {
     box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
@@ -35,6 +34,8 @@ const Wrapper = styled.div`
 `;
 
 function DashboardTabs() {
+  const { isMobile } = useScreenResolution();
+
   const tabItems = [
     {
       label: "All Applications",
@@ -64,10 +65,23 @@ function DashboardTabs() {
       content: <Account />,
     },
   ];
+  const applicationTabItems = [
+    {
+      label: "Visa",
+      value: 0,
+      content: <Visa />,
+    },
+
+    {
+      label: "Flight",
+      value: 1,
+      content: <Flight />,
+    },
+  ];
   return (
     <Wrapper>
       <RTQueryClient>
-        <CustomTab shadowShow tabItems={tabItems} />
+        <CustomTab shadowShow tabItems={isMobile ? applicationTabItems : tabItems} />
       </RTQueryClient>
     </Wrapper>
   );
