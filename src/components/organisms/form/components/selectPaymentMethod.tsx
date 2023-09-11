@@ -10,6 +10,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import ContinueButton from "@organism/continueButton";
 import { FormikValues } from "formik";
 import { useState } from "react";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { Mode } from "@lib/types";
 
 export interface CurrencyType {
   currency: string;
@@ -17,15 +19,11 @@ export interface CurrencyType {
   currencyCode: string;
 }
 
-interface SelectPaymentMethodProps {
-  isLoading: boolean;
-  formik: FormikValues;
-}
-const SelectPaymentMethod = ({
-  isLoading,
-  formik,
-}: SelectPaymentMethodProps) => {
+interface SelectPaymentMethodProps {}
+const SelectPaymentMethod = () => {
   const { isMobile } = useScreenResolution();
+  const { createFormFeeCharge, createVisaApplicationResponse, mode } =
+    useApplicationFormStore((state) => state);
   const [currency, setCurrency] = useState<CurrencyType>({
     currency: "Nigerian Naira",
     flag: COUNTRY_FLAGS.find((el) => el.code == "NG")?.flag ?? "",
@@ -50,73 +48,75 @@ const SelectPaymentMethod = ({
           margin={""}
         />
       </Section>
-      <form onSubmit={formik.handleSubmit}>
-        <Section>
-          <Text
-            text={"Select currency"}
-            weight={400}
-            size={18}
-            type={"h5"}
-            margin={"0 0 1.125rem 0"}
-          />
+      <Section>
+        <Text
+          text={"Select currency"}
+          weight={400}
+          size={18}
+          type={"h5"}
+          margin={"0 0 1.125rem 0"}
+        />
 
-          <Section margin="0 0 1.5rem 0">
-            <SearchInput
-              options={COUNTRY_FLAGS.filter((x) => x.code == "NG").map(
-                (el) => ({
-                  flag: el.flag,
-                  code: el.currencyCode,
-                  name: el.currency,
-                })
-              )}
-              onChange={(x) => {
-                setCurrency({
-                  currency: x.name,
-                  currencyCode: x.code,
-                  flag: x.flag.src,
-                });
-              }}
-            >
-              <Flex gap="1.5rem" margin="0 .6rem" align="center">
-                <RoundFlag flag={currency?.flag ?? ""} />
-                <Flex
-                  gap=".6rem"
-                  justify="space-between"
-                  align="center"
-                  cursor="pointer"
-                >
-                  <Text
-                    type="p"
-                    text={`${currency?.currencyCode} - ${currency?.currency}`}
-                    color="#1C1B1F"
-                    weight={100}
-                  />
-                  <IoIosArrowDown size={20} />
-                </Flex>
+        <Section margin="0 0 1.5rem 0">
+          <SearchInput
+            options={COUNTRY_FLAGS.filter((x) => x.code == "NG").map((el) => ({
+              flag: el.flag,
+              code: el.currencyCode,
+              name: el.currency,
+            }))}
+            onChange={(x) => {
+              setCurrency({
+                currency: x.name,
+                currencyCode: x.code,
+                flag: x.flag.src,
+              });
+            }}
+          >
+            <Flex gap="1.5rem" margin="0 .6rem" align="center">
+              <RoundFlag flag={currency?.flag ?? ""} />
+              <Flex
+                gap=".6rem"
+                justify="space-between"
+                align="center"
+                cursor="pointer"
+              >
+                <Text
+                  type="p"
+                  text={`${currency?.currencyCode} - ${currency?.currency}`}
+                  color="#1C1B1F"
+                  weight={100}
+                />
+                <IoIosArrowDown size={20} />
               </Flex>
-            </SearchInput>
-          </Section>
-          <Section styles={{ display: "flex" }}>
-            <BiSolidInfoCircle
-              size={32}
-              color={"#6092A7"}
-              style={{ marginRight: "1.125rem" }}
+            </Flex>
+          </SearchInput>
+        </Section>
+        <Section styles={{ display: "flex" }}>
+          <BiSolidInfoCircle
+            size={32}
+            color={"#6092A7"}
+            style={{ marginRight: "1.125rem" }}
+          />
+          <Section>
+            <Text
+              text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+              type="p"
             />
-            <Section>
-              <Text
-                text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-                type="p"
-              />
-            </Section>
           </Section>
         </Section>
-        <ContinueButton
-          isLoading={isLoading}
-          onClick={() => {}}
-          buttonText="Make Payment"
-          disabled={!formik.isValid}
-        />
-      </form>
+      </Section>
+      <ContinueButton
+        isLoading={mode == Mode.loading}
+        onClick={() => {
+          if (!createVisaApplicationResponse) return;
+          createFormFeeCharge({ data: createVisaApplicationResponse }).then(
+            (response) => {
+              window.open(response.data.data.checkout_url, "_self");
+            }
+          );
+        }}
+        buttonText="Make Payment"
+      />
     </Section>
   );
 };

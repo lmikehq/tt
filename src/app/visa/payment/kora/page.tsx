@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
-import { User } from "types";
+import { User } from "@lib/types";
 
 const VerifyKoraPaymentPage = () => {
   const router = useRouter();

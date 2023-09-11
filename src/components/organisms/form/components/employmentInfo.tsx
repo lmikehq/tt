@@ -20,26 +20,23 @@ import {
   employmentsArr,
   manyEmploymentSchema,
 } from "@lib/types/schema";
-import { SingleFormType } from "../applicationForm";
 import ContinueButton from "@organism/continueButton";
-import { EmploymentDetailsInterface } from "types";
+import { EmploymentDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { useRouter } from "next/navigation";
 
 interface formProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
-  saveProgressAndContinueLater: () => void;
 }
 
-function EmploymentInfo({
-  steps,
-  index,
-  isLoading,
-  formik,
-  saveProgressAndContinueLater,
-}: formProps) {
+function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
+  const { mode } = useApplicationFormStore((state) => state);
+  const isLoading = mode == Mode.loading;
+
   return (
     <FormikProvider value={formik}>
       <Section>
@@ -93,8 +90,8 @@ function EmploymentInfo({
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {}}
-            disabled={!formik.isValid || !formik.dirty}
-            saveProgressAndContinueLater={saveProgressAndContinueLater}
+            disabled={!formik.isValid}
+            saveProgress={persistForm}
           />
         </form>
       </Section>

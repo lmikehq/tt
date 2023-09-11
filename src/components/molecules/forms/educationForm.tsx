@@ -17,7 +17,7 @@ import { FormikValues } from "formik";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
-import { EducationDetailsInterface } from "types";
+import { EducationDetailsInterface } from "@lib/types";
 
 interface formProps {
   formik: any;

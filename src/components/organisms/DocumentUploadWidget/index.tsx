@@ -31,6 +31,7 @@ const DocUploadCenteredChild = styled.div`
   width: fit-content;
   display: flex;
   flex-direction: column;
+  height: unset;
   align-items: center;
 `;
 const UploadedDocumentsWrapper = styled.div`
@@ -74,7 +75,7 @@ const DocumentUploadWidget = ({
   return (
     <>
       <UploadArea>
-        <Center>
+        <Center height="100%">
           {loading ? (
             <DocUploadCenteredChild>
               <CircularProgressBar progress={progress} />

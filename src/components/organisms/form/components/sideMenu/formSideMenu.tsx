@@ -3,23 +3,23 @@ import PaymentSummaryPane from "src/components/molecules/payment/PaymentSummaryP
 import Section from "src/components/molecules/section";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { isValid } from "date-fns";
-import SaveProgressAndContinueLater from "./saveProgressAndContinueLater";
+import SaveProgressAndContinueLater from "./saveProgress";
 import VisApplicationFormDetails from "./visaApplicationFormDetails";
 import Text from "@atom/text";
-import { VisaApplicationFormInterface } from "types";
+import { VisaApplicationFormInterface } from "@lib/types";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface FormSideMenuProps {
   currentPhase: number;
   formData: VisaApplicationFormInterface;
   onClose?: () => void;
-  saveProgressAndContinueLater?: () => void;
+  saveProgress?: () => void;
 }
 const FormSideMenu = ({
   currentPhase,
   formData,
   onClose,
-  saveProgressAndContinueLater,
+  saveProgress,
 }: FormSideMenuProps) => {
   const { isMobile } = useScreenResolution();
 
@@ -36,7 +36,7 @@ const FormSideMenu = ({
       case "numberOfPersons":
         return accompanies + 1;
       case "applicationType":
-        return formData.applicationType;
+        return formData.tripDetails.applicationType;
       default:
         return 0;
     }
@@ -50,8 +50,8 @@ const FormSideMenu = ({
               <Text
                 type="p"
                 text={`Please select a 
-          ${!formData.destination ? "destination and" : ""} 
-          ${!formData.homeCountry ? "home country" : ""}`}
+          ${!formData.tripDetails.destination ? "destination and" : ""} 
+          ${!formData.tripDetails.homeCountry ? "home country" : ""}`}
               />
             </Section>
           ) : (
@@ -73,9 +73,7 @@ const FormSideMenu = ({
         }
       })()}
       <Section>
-        <SaveProgressAndContinueLater
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
-        />
+        <SaveProgressAndContinueLater saveProgress={saveProgress} />
       </Section>
     </Flex>
   );

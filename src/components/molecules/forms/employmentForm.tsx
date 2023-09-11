@@ -13,7 +13,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useState } from "react";
-import { EmploymentDetailsInterface } from "types";
+import { EmploymentDetailsInterface } from "@lib/types";
 
 interface formProps {
   formik: FormikValues;

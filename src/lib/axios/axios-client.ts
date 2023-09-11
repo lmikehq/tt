@@ -12,7 +12,7 @@ interface XAxiosInstance extends AxiosInstance {
     config: AxiosRequestConfig
   ): Promise<R>;
 }
-const axiosClient: XAxiosInstance = axios.create({
+const axiosClient: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_SERVER,
   timeout: 5000,
   //   withCredentials: true,
@@ -32,7 +32,7 @@ axiosClient.interceptors.response.use(
     return response.data;
   },
   (error: AxiosError) => {
-    toast.error(error.message);
+    // toast.error(error.message);
     return Promise.reject(error);
   }
 );

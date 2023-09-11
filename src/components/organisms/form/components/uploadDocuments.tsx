@@ -1,7 +1,7 @@
 "use client";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { FormikProps } from "formik";
+import { FormikProps, useFormik } from "formik";
 import useCloudinaryUpload from "@lib/extensions/hook/useCloudinary";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -11,36 +11,39 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { FileContent, useFilePicker } from "use-file-picker";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import { UploadedDoc } from "../applicationForm";
-import { DocumentInterface } from "types";
+import { DocumentInterface, Mode } from "@lib/types";
 import ContinueButton from "@organism/continueButton";
 import DocumentUploadWidget from "@organism/DocumentUploadWidget";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { documentsSchema } from "@lib/types/schema";
+import { useRouter } from "next/navigation";
 
 interface formProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<{ documents: DocumentInterface[] }>;
-  handleSetUploadedDocuments: (docs: UploadedDoc[]) => void;
-  uploadedDocuments: UploadedDoc[];
-  visaType: string;
-  lastName: string;
-  saveProgressAndContinueLater: () => void;
-  finalStepButtonText: string;
 }
 
-function UploadDocuments({
-  steps,
-  index,
-  isLoading,
-  formik,
-  uploadedDocuments,
-  handleSetUploadedDocuments,
-  visaType,
-  lastName,
-  saveProgressAndContinueLater,
-  finalStepButtonText,
-}: formProps) {
+function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
   const { isMobile } = useScreenResolution();
+  const { form, mode, setUploadedDocuments, uploadedDocuments } =
+    useApplicationFormStore((state) => state);
+  const isLoading = mode == Mode.loading;
+
+  const computeButtonText = () => {
+    let accompanies = 0;
+    if (form.familyMembers.length > 0) {
+      form.familyMembers.forEach((member) => {
+        if (member.accompanying) accompanies++;
+      });
+    }
+    return !isMobile
+      ? "Make Payment"
+      : accompanies > 0
+      ? "Make Payment (NGN 30,000)"
+      : "Make Payment (NGN 20,000)";
+  };
 
   const [hovered, setHovered] = useState<number>(-1);
   const [documentToUpload, setDocumentToUpload] = useState<string>("");
@@ -58,8 +61,8 @@ function UploadDocuments({
   });
   const timestamp = new Date().getTime();
   const presets = {
-    publicId: lastName + timestamp || "unknown",
-    folder: `${lastName + timestamp || "unknown"}-files`,
+    publicId: form.personalInfo.lastName + timestamp || "unknown",
+    folder: `${form.personalInfo.lastName + timestamp || "unknown"}-files`,
   };
   const { uploadImage, loading, progress, deleteImage, deleting } =
     useCloudinaryUpload({ presets });
@@ -96,7 +99,7 @@ function UploadDocuments({
             type: type.split("/")[1].toUpperCase(),
             title: docObj.name,
           };
-          // handleSetUploadedDocuments(uploadedDocs);
+          // setUploadedDocuments(uploadedDocs);
 
           return { formikUploadedDocument, uploadedDoc };
         } else {
@@ -115,7 +118,7 @@ function UploadDocuments({
             title: docObj.name,
           });
           formik.setFieldValue("documents", formikUploadedDocuments);
-          handleSetUploadedDocuments(uploadedDocs);
+          setUploadedDocuments(uploadedDocs);
         }
       }
     });
@@ -135,7 +138,7 @@ function UploadDocuments({
             ];
             uploadedDocs = [...uploadedDocs, data.uploadedDoc!];
             formik.setFieldValue("documents", formikUploadedDocuments);
-            handleSetUploadedDocuments(uploadedDocs);
+            setUploadedDocuments(uploadedDocs);
           }
         });
       }
@@ -186,7 +189,7 @@ function UploadDocuments({
                   "Medical Records",
                   "Police Character (if available)",
                 ];
-                switch (visaType) {
+                switch (form.tripDetails.visaType) {
                   case "Student Visa":
                     return general;
                   case "Work Visa":
@@ -238,7 +241,7 @@ function UploadDocuments({
                 await deleteImage({
                   imageUrl: formik.values.documents[i].url,
                 });
-                handleSetUploadedDocuments([
+                setUploadedDocuments([
                   ...uploadedDocuments.filter(
                     (_: any, index: number) => index !== i
                   ),
@@ -258,9 +261,9 @@ function UploadDocuments({
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {}}
-          disabled={!formik.isValid || !formik.dirty}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
-          buttonText={finalStepButtonText}
+          disabled={!formik.isValid}
+          saveProgress={persistForm}
+          buttonText={computeButtonText()}
         />
       </form>
     </Section>

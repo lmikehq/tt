@@ -5,9 +5,9 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { styled } from "styled-components";
 
 interface ComponentProps {
-  setPhase: (number: number) => Promise<void>;
   phase: number;
   highestPhase: number;
+  setStep: ({ step }: { step: number }) => void;
 }
 const HorizontalLine = styled.div<{
   isPassed: boolean;
@@ -17,7 +17,7 @@ const HorizontalLine = styled.div<{
   background: ${({ isPassed }) => (isPassed ? "#6092A7" : "#929292")};
 `;
 
-function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
+function VisaProgress({ phase, highestPhase, setStep }: ComponentProps) {
   const { isMobile } = useScreenResolution();
   return (
     <Flex
@@ -33,7 +33,7 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
             isPassed={phase > 1}
             disabled={highestPhase < 2}
             onClick={() => {
-              if (highestPhase >= 2) setPhase(2);
+              if (highestPhase >= 2) setStep({ step: 2 });
             }}
           />
           <HorizontalLine isPassed={phase > 1} />
@@ -46,8 +46,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
             isPassed={phase > 2}
             disabled={highestPhase < 3}
             onClick={() => {
-              if (highestPhase >= 3) setPhase(3);
-              // setPhase(3);
+              if (highestPhase >= 3) setStep({ step: 3 });
+              // setStep(3);
             }}
           />
           <HorizontalLine isPassed={phase > 2} />
@@ -60,8 +60,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
             isPassed={phase > 3}
             disabled={highestPhase < 4}
             onClick={() => {
-              if (highestPhase >= 4) setPhase(4);
-              // setPhase(4);
+              if (highestPhase >= 4) setStep({ step: 4 });
+              // setStep(4);
             }}
           />
           <HorizontalLine isPassed={phase > 3} />
@@ -74,8 +74,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
             isPassed={phase > 4}
             disabled={highestPhase < 5}
             onClick={() => {
-              if (highestPhase >= 5) setPhase(5);
-              // setPhase(5);
+              if (highestPhase >= 5) setStep({ step: 5 });
+              // setStep(5);
             }}
           />
           <HorizontalLine isPassed={phase > 4} />
@@ -88,8 +88,8 @@ function VisaProgress({ phase, setPhase, highestPhase }: ComponentProps) {
         isPassed={phase > 5}
         disabled={highestPhase < 6}
         onClick={() => {
-          // if (highestPhase >= 6) setPhase(6);
-          setPhase(6);
+          if (highestPhase >= 6) setStep({ step: 6 });
+          // setStep({ step: 6 });
         }}
       />
     </Flex>

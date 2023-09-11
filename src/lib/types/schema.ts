@@ -6,7 +6,7 @@ import {
   FamilyInfoInterface,
   PersonalInfoInterface,
   VisaApplicationFormInterface,
-} from "types";
+} from "@lib/types";
 import * as yup from "yup";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 
@@ -354,11 +354,11 @@ export const documentsArr: { documents: DocumentInterface[] } = {
   documents: [],
 };
 export const visaInitVals: VisaApplicationFormInterface = {
-  ...detailsKeys,
+  tripDetails: detailsKeys,
   ...educationsArr,
   ...employmentsArr,
   ...familyInfoArr,
-  ...personalInfoKeys,
+  personalInfo: personalInfoKeys,
   ...documentsArr,
 };
 

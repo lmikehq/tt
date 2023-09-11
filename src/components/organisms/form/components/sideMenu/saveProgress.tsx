@@ -9,10 +9,10 @@ import { BsFillShieldLockFill } from "react-icons/bs";
 import { ttColors } from "@lib/theme/colors";
 
 interface SaveProgressAndContinueLaterProps {
-  saveProgressAndContinueLater?: () => void;
+  saveProgress?: () => void;
 }
 const SaveProgressAndContinueLater = ({
-  saveProgressAndContinueLater,
+  saveProgress,
 }: SaveProgressAndContinueLaterProps) => {
   const { isMobile } = useScreenResolution();
 
@@ -57,7 +57,7 @@ const SaveProgressAndContinueLater = ({
             background="none"
             borderRadius="4px"
             padding="1.5rem"
-            onClick={saveProgressAndContinueLater}
+            onClick={saveProgress}
           >
             <Text
               type="p"

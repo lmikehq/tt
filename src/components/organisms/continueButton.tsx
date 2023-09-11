@@ -14,7 +14,7 @@ interface ButtonProps {
   disabled?: boolean;
   onClick?: () => void;
   buttonText?: string;
-  saveProgressAndContinueLater?: () => void;
+  saveProgress?: () => void;
 }
 
 export default function ContinueButton({
@@ -22,7 +22,7 @@ export default function ContinueButton({
   disabled,
   onClick,
   buttonText,
-  saveProgressAndContinueLater,
+  saveProgress,
 }: ButtonProps) {
   const { isMobile } = useScreenResolution();
   const [bottomNavVisible, setBottomNavVisible] = useState(true);
@@ -54,6 +54,7 @@ export default function ContinueButton({
             background={disabled ? "#585870" : "#06062A"}
             cursor={disabled ? "not-allowed" : "pointer"}
             onClick={onClick}
+            disabled={disabled}
           >
             <Flex align="center" width="100%" height="100%" justify="center">
               {isLoading ? (
@@ -91,7 +92,7 @@ export default function ContinueButton({
               border="solid 1px #B6B6B6"
               padding="0 1rem"
               background={"transparent"}
-              onClick={saveProgressAndContinueLater}
+              onClick={saveProgress}
             >
               <Flex align="center" width="100%" height="100%" justify="center">
                 <Text
@@ -111,6 +112,7 @@ export default function ContinueButton({
               cursor={disabled ? "not-allowed" : "pointer"}
               padding="0 1rem"
               onClick={onClick}
+              disabled={disabled}
             >
               <Flex align="center" width="100%" height="100%" justify="center">
                 {isLoading ? (

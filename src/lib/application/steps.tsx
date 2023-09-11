@@ -10,11 +10,9 @@ import {
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";
-import { SingleFormType, UploadedDoc } from "@organism/form/applicationForm";
-import SelectVisaPayment from "@organism/form/components/selectVisaPayment";
 import SelectPaymentMethod from "@organism/form/components/selectPaymentMethod";
 import UploadDocuments from "@organism/form/components/uploadDocuments";
-import { FormikProps, FormikValues } from "formik";
+import { FormikProps } from "formik";
 import {
   DetailsKeys,
   DocumentInterface,
@@ -22,7 +20,7 @@ import {
   EmploymentDetailsInterface,
   FamilyInfoInterface,
   PersonalInfoInterface,
-} from "types";
+} from "@lib/types";
 
 interface IFormStep {
   id: number;
@@ -32,37 +30,21 @@ interface IFormStep {
 }
 
 export const getSteps = ({
-  isLoading,
   detailsFormik,
   personalInfoFormik,
   educationFormik,
   employmentFormik,
   familyMembersFormik,
   documentsFormik,
-  paymentFormik,
-  handleSetUploadedDocuments,
-  uploadedDocuments,
-  visaType,
-  lastName,
-  saveProgressAndContinueLater,
-  finalStepButtonText,
+  persistForm,
 }: {
-  setFormFee: (n: number) => void;
-  setCurrentPhase: (n: number) => void;
-  isLoading: boolean;
   personalInfoFormik: FormikProps<PersonalInfoInterface>;
   detailsFormik: FormikProps<DetailsKeys>;
   familyMembersFormik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
   employmentFormik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
   educationFormik: FormikProps<{ education: EducationDetailsInterface[] }>;
   documentsFormik: FormikProps<{ documents: DocumentInterface[] }>;
-  paymentFormik: FormikValues;
-  handleSetUploadedDocuments: (docs: UploadedDoc[]) => void;
-  uploadedDocuments: UploadedDoc[];
-  visaType: string;
-  lastName: string;
-  saveProgressAndContinueLater: () => void;
-  finalStepButtonText: string;
+  persistForm: () => void;
 }): IFormStep[] => {
   return [
     {
@@ -72,9 +54,8 @@ export const getSteps = ({
         <TripDetails
           steps={["Enter your Trip Details"]}
           index={0}
-          isLoading={isLoading}
+          persistForm={persistForm}
           formik={detailsFormik}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
     },
@@ -85,9 +66,8 @@ export const getSteps = ({
         <PersonalInfo
           steps={["Personal Information"]}
           index={1}
-          isLoading={isLoading}
+          persistForm={persistForm}
           formik={personalInfoFormik}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(personalInfoKeys),
@@ -99,9 +79,8 @@ export const getSteps = ({
         <EducationInfo
           steps={["Education Details"]}
           index={2}
+          persistForm={persistForm}
           formik={educationFormik}
-          isLoading={isLoading}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(educationKeys),
@@ -113,9 +92,8 @@ export const getSteps = ({
         <EmploymentInfo
           steps={["Employment Details"]}
           index={3}
+          persistForm={persistForm}
           formik={employmentFormik}
-          isLoading={isLoading}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(employmentKeys),
@@ -127,9 +105,8 @@ export const getSteps = ({
         <FamilyInfo
           steps={["Family Members' Information"]}
           index={4}
+          persistForm={persistForm}
           formik={familyMembersFormik}
-          isLoading={isLoading}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
         />
       ),
       valKeys: Object.keys(familyInforKeys),
@@ -141,24 +118,15 @@ export const getSteps = ({
         <UploadDocuments
           steps={["Upload all your available documents"]}
           index={5}
+          persistForm={persistForm}
           formik={documentsFormik}
-          isLoading={isLoading}
-          uploadedDocuments={uploadedDocuments}
-          handleSetUploadedDocuments={handleSetUploadedDocuments}
-          visaType={visaType}
-          lastName={lastName}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
-          finalStepButtonText={finalStepButtonText}
         />
       ),
     },
-
     {
       id: 7,
       title: "Select Payment Method",
-      content: (
-        <SelectPaymentMethod isLoading={isLoading} formik={paymentFormik} />
-      ),
+      content: <SelectPaymentMethod />,
     },
   ];
 };

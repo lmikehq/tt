@@ -18,27 +18,26 @@ import {
   FieldInput,
   FieldString,
 } from "@organism/fieldInput";
-import { SingleFormType } from "../applicationForm";
-import { PersonalInfoInterface } from "types";
+import { Mode, PersonalInfoInterface } from "@lib/types";
 import ContinueButton from "@organism/continueButton";
 import dayjs, { Dayjs } from "dayjs";
+import { useStore } from "zustand";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { useRouter } from "next/navigation";
 
 interface FormProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<PersonalInfoInterface>;
-  saveProgressAndContinueLater: () => void;
 }
 
-function PersonalInfo({
-  steps,
-  index,
-  isLoading,
-  formik,
-  saveProgressAndContinueLater,
-}: FormProps) {
+function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
   const { isMobile } = useScreenResolution();
+  const { mode } = useApplicationFormStore((state) => state);
+
+  const isLoading = mode == Mode.loading;
+
   const options = [
     { value: true, label: "Yes" },
     { value: false, label: "No" },
@@ -914,8 +913,8 @@ function PersonalInfo({
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {}}
-          disabled={!formik.isValid || !formik.dirty}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
+          disabled={!formik.isValid}
+          saveProgress={persistForm}
         />
       </form>
     </Section>

@@ -8,7 +8,7 @@ import Section from "src/components/molecules/section";
 import { ListItem } from "@mui/material";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { BiX } from "react-icons/bi";
-import { VisaApplicationFormInterface } from "types";
+import { VisaApplicationFormInterface } from "@lib/types";
 
 interface VisaApplicationFormDetailsProps {
   formData: VisaApplicationFormInterface;
@@ -44,7 +44,12 @@ const VisApplicationFormDetails = ({
         margin={isMobile ? "0 0 2rem" : "0"}
       >
         <Section width="30%" height="unset">
-          <Text type="p" text={formData.homeCountry} size={20} weight={500} />
+          <Text
+            type="p"
+            text={formData.tripDetails.homeCountry}
+            size={20}
+            weight={500}
+          />
         </Section>
         <Section width="30%" height="unset">
           <TravelArrow />
@@ -53,7 +58,7 @@ const VisApplicationFormDetails = ({
           <Text
             type="p"
             textAlign="right"
-            text={formData.destination}
+            text={formData.tripDetails.destination}
             size={20}
             weight={500}
           />

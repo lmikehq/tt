@@ -15,7 +15,7 @@ import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
-import { User } from "types";
+import { User } from "@lib/types";
 
 interface Props {
   isOpen: boolean;

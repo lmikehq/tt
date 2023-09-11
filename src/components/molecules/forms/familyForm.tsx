@@ -17,7 +17,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import PhoneInput from "react-phone-input-2";
-import { FamilyInfoInterface } from "types";
+import { FamilyInfoInterface } from "@lib/types";
 
 interface formProps {
   formik: FormikValues;

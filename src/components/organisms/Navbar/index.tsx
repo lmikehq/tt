@@ -22,7 +22,7 @@ import { TbCurrencyNaira } from "react-icons/tb";
 import { useUserStore } from "@lib/store/useStore";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
-import { User } from "types";
+import { User } from "@lib/types";
 import UserPopover from "@organism/Navbar/UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
 const NavbarWrapper = styled.div<{ page?: string }>`

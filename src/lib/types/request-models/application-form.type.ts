@@ -3,7 +3,7 @@ import {
   PrimaryTravellerInterface,
   FamilyInfoInterface,
   DocumentInterface,
-} from "types";
+} from "@lib/types";
 
 export interface ApplicationFormRequestInput
   extends Pick<DetailsKeys, "applicationType" | "visaType"> {
