@@ -36,6 +36,7 @@ interface FieldProps {
   maxDate?: Dayjs;
   max?: number;
   min?: number;
+  format?: string;
 }
 
 function getNestedValue(obj: any, propertyPath: string) {
@@ -209,6 +210,7 @@ export const FieldAsDate = (props: FieldProps) => {
     minDate,
     maxDate,
     placeholder,
+    format
   } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
@@ -230,6 +232,7 @@ export const FieldAsDate = (props: FieldProps) => {
         value={value === "" ? null : dayjs(`${value}`)}
         onChange={onChange ? onChange : handleChange}
         error={touched && error}
+        format={format}
       />
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>

@@ -61,9 +61,10 @@ interface DatePickerProps {
   placeholder?: string;
   position?: "start";
   error?: boolean;
+  format?: string;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position, error }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position, error, format }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
@@ -103,6 +104,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
         slots={{
           openPickerIcon: IoCalendarOutline,        
         }}
+        format={format}
       />
     </LocalizationProvider>
   );

@@ -52,11 +52,6 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [focusInput, setFocusInput] = useState(false)
 
-  const handleFlexClick = () => {
-    console.log('Worked')
-  };
-
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -94,7 +89,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         <Flex
           justify="flex-start"
           align="center"
-          border="1px solid #E7E7E7"
+          border={focusInput ? "2px solid black" : "1px solid #E7E7E7"}
           padding="0px 10px"
           borderRadius="8px"
           borderBottom="1px solid #E7E7E7"
@@ -109,7 +104,9 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
               styles={{
                 border: "none",
               }}
-              onBlur={() => setFocusInput(true)}
+              id="focus-none"
+              onFocus={() => setFocusInput(true)}
+              onBlur={() => setFocusInput(false)}
             />
           </Section>
         </Flex>

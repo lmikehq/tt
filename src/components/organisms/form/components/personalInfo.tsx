@@ -212,6 +212,7 @@ function PersonalInfo({
               name="dateOfBirth"
               placeholder="Select your Date Of Birth"
               formik={formik}
+              format="DD/MM/YYYY"
             />
           </Section>
         </Flex>
@@ -327,9 +328,8 @@ function PersonalInfo({
                 name="issueDate"
                 placeholder="Select your Issue Date"
                 formik={formik}
-                // onChange={(e: any) => {
-                //   setEndDate(dayjs(e));
-                // }}
+                maxDate={dayjs()}
+                format="DD/MM/YYYY"
               />
             </Section>
             <Section>
@@ -344,6 +344,7 @@ function PersonalInfo({
                 formik={formik}
                 minDate={dayjs(formik.values.issueDate)}
                 disabled={!formik.values.issueDate}
+                format="DD/MM/YYYY"
               />
             </Section>
           </Flex>
@@ -534,8 +535,8 @@ function PersonalInfo({
                 name="passportExpiryDate"
                 placeholder="Select your Expiry Date"
                 formik={formik}
-                // disabled={formik.values === null}
-                // minDate={passEndDate}
+                maxDate={dayjs()}
+                format="DD/MM/YYYY"
               />
             </Section>
           </Flex>

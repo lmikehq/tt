@@ -58,6 +58,7 @@ export interface InputProps {
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: (e: any) => void;
+  onFocus?: (e: any) => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
   touchedError?: boolean;
@@ -98,6 +99,7 @@ const Input = ({
   onClick,
   onChange,
   onKeyDown,
+  onFocus,
   onPaste,
   placeholder,
   value,
@@ -154,6 +156,7 @@ const Input = ({
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
         onClick={onClick}
+        onFocus={onFocus}
         className={`custom-form-input ${error ? "error" : ""}`}
         type={miniType || type}
         onBlur={onBlur}
