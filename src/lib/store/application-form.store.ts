@@ -21,34 +21,25 @@ interface State {
 }
 interface Actions {
   prevStep: () => void;
-  nextStep: ({ data }: { data: VisaFormUnionType }) => void;
-  saveProgress: ({
-    data,
-  }: {
+  nextStep: (params: { data: VisaFormUnionType }) => void;
+  saveProgress: (params: {
     data: VisaApplicationFormInterface;
     uploadedDocuments: UploadedDoc[];
   }) => void;
   setUploadedDocuments: (docs: UploadedDoc[]) => void;
   fetchRecentProgressFromSession: () => void;
-  fetchDetailsFromURL: ({
-    homeCountry,
-    destination,
-  }: {
+  fetchDetailsFromURL: (params: {
     homeCountry: string;
     destination: string;
     visaType: string;
   }) => void;
-  createVisaApplication: ({
-    data,
-  }: {
+  createVisaApplication: (params: {
     data: VisaApplicationFormInterface;
   }) => Promise<void>;
-  createFormFeeCharge: ({
-    data,
-  }: {
+  createFormFeeCharge: (params: {
     data: CreateVisaApplicationResponse;
   }) => Promise<any>;
-  setStep: ({ step }: { step: number }) => void;
+  setStep: (params: { step: number }) => void;
 }
 
 export const useApplicationFormStore = create<State & Actions>(
@@ -195,6 +186,7 @@ export const useApplicationFormStore = create<State & Actions>(
     setStep: ({ step }: { step: number }) => {
       set({ step });
     },
+
     setUploadedDocuments: (docs: UploadedDoc[]) => {
       set({ uploadedDocuments: docs });
     },
