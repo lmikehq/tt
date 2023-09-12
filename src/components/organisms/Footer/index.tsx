@@ -120,8 +120,8 @@ const FooterSection = () => {
       text: "Careers",
       color: "#06062A",
     },
-    { href: "/", text: "Press", color: "#06062A" },
-    { href: "/", text: "Blog", color: "#06062A" },
+    { href: "/press", text: "Press", color: "#06062A" },
+    { href: "/blog", text: "Blog", color: "#06062A" },
   ];
 
   if (isApply && isMobile) return null;

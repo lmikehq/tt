@@ -11,6 +11,7 @@ import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import apiService from "@lib/extensions/hook/apiService";
 import { toast } from "react-hot-toast";
 import { useUserStore } from "@lib/store/useStore";
+import { useVoucherStore } from "@lib/store/voucher.store";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -31,18 +32,44 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   function paymentAmount() {
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
-        return visaDetails.accompanying === 0
-          ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
-          : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
+        const processingFee =
+          process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000";
+        const acccompanyingFee =
+          process.env.NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
+          "200000";
+        return (
+          parseInt(processingFee) +
+          parseInt(acccompanyingFee) * visaDetails.accompanying
+        );
+      // return visaDetails.accompanying === 0
+      //   ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
+      //   : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
+      case "VISA FEE":
+        return "1000";
+      case "FORM FEE":
+        // const formFee =
+        //   process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "10000";
+        // const accompanying =
+        //   process.env.NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
+        //   "200000";
+        // return parseInt(formFee) + parseInt(accompanying) * visaDetails.accompanying;
+        return visaDetails.accompanying > 0
+          ? parseInt(
+              process.env.NEXT_PUBLIC_FAMILY_VISA_APPLICATION_FEE || "20000"
+            )
+          : parseInt(
+              process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "30000"
+            );
+      // return visaDetails.accompanying === 0 ? "200" : "250";
       default:
         return "2500000";
     }
   }
 
   const { user } = useUserStore((state) => state);
-
+  const { applied, voucher } = useVoucherStore((state) => state);
   const createPayment = async () => {
-    return await apiService("/payment/create-form-fee-charge", "POST", {
+    return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
       service: "VISA",
@@ -74,7 +101,11 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       {/* Additional content goes here */}
       <Section margin="3rem 0px 1.5rem">
         <Flex align="center" gap="0rem" justify="center">
-          <Text type="h1" text={currencyFormatter(paymentAmount())} />
+          <Text
+            type="h1"
+            text={currencyFormatter(paymentAmount())}
+            decoration={applied && voucher ? "line-through" : ""}
+          />
         </Flex>
         <Text type="p" text={visaDetails.intent} />
       </Section>

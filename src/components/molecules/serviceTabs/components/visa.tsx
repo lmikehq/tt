@@ -45,7 +45,7 @@ function Visa() {
     flag: "🇨🇦",
     code: "CA",
   });
-  const [type, setType] = useState<string>("Employment");
+  const [type, setType] = useState<string>("Work");
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const { isMobile } = useScreenResolution();

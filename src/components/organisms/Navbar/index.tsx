@@ -165,7 +165,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
           <NavLink>
             {[
               { name: "Visa Apply", url: "visa", icon: <GiPassport /> },
-              { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
+              { name: "Find Flight", url: "flight", icon: <IoAirplaneSharp /> },
               { name: "Rent Stay", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;

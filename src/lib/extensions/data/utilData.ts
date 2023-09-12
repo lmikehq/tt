@@ -1,6 +1,3 @@
-
-
-
 export const DEGREES = [
   "Bachelor of Arts (BA)",
   "Bachelor of Science (BSc)",
@@ -18,6 +15,12 @@ export const DEGREES = [
   "Master of Computer Science (MCS)",
   "Doctor of Philosophy (PhD)",
   "Doctor of Medicine (MD)",
+  "Ordinary National Diploma (OND)",
+  "SSCE",
+  "Higher National Diploma (HND)",
+  "Nigeria Certificate In Education (NCE)",
+  "Bachelor of Laws (LLB)",
+  "Master of Laws (LLM)",
   "Juris Doctor (JD)",
   "Bachelor of Nursing (BN)",
   "Bachelor of Architecture (BArch)",
@@ -32,11 +35,13 @@ export const DEGREES = [
   "Master of Public Health (MPH)",
   "Master of Applied Psychology (MAP)",
   "Master of Information Technology (MIT)",
+  "Others",
 ];
 
 export const COMMON_MAJORS = [
   "Computer Science",
   "Business Administration",
+  "All SSCE Subjects",
   "Psychology",
   "Nursing",
   "Biology",
@@ -44,6 +49,7 @@ export const COMMON_MAJORS = [
   "Marketing",
   "Economics",
   "Education",
+  "Electrical Engineering",
   "Communication Studies",
   "English Literature",
   "Mathematics",
@@ -134,8 +140,4 @@ export const COMMON_MAJORS = [
   "Others",
 ];
 
-export const RELATIONSHIPS = [
-  "Spouse", "Child",
-  "Parent", "Sibling",
-  "In-Law"
-]
+export const RELATIONSHIPS = ["Spouse", "Child", "Parent", "Sibling", "In-Law"];

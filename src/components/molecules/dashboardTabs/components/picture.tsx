@@ -2,8 +2,8 @@
 import { IoCloudUpload } from "react-icons/io5";
 import React from "react";
 import { styled } from "styled-components";
-import Image from "@atom/image";
 import Button from "@atom/button";
+import Image from "@atom/image";
 import Text from "@atom/text";
 import { HiPencil } from "react-icons/hi";
 import { ttColors } from "@lib/theme/colors";

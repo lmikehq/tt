@@ -24,6 +24,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const settings = {
   infinite: true,
@@ -34,6 +35,35 @@ const settings = {
 };
 
 function RegisterPage() {
+  const [selectedOption, setSelectedOption] = useState("length");
+  const validationOptions = [
+    { value: "length", label: "8 or more characters" },
+    { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
+    { value: "number", label: "At least one number" },
+    {
+      value: "specialCharacter",
+      label: "Have Numbers, and Special symbols (e.g., !, @, #, $)",
+    },
+  ];
+
+  function isPasswordValid(password: string, selectedOption: string) {
+    switch (selectedOption) {
+      case "length":
+        return password.length >= 8;
+      case "uppercaseLowercase":
+        return /[A-Z]/.test(password) && /[a-z]/.test(password);
+      case "number":
+        return /\d/.test(password);
+      case "specialCharacter":
+        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
+      default:
+        return false;
+    }
+  }
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   const { isMobile } = useScreenResolution();
 
   const router = useRouter();
@@ -76,16 +106,16 @@ function RegisterPage() {
       return alert("Please agree to the terms and conditions");
     }
 
-    if (registerData.password !== registerData.confirmPassword) {
+    if (registerData.password !== confirmPassword) {
       setSubmissionState({
         ...submissionState,
         error: [
           {
-            constraints: "Password and confirm password do not match",
+            constraints: "Password do not match",
             property: "confirmPassword",
           },
           {
-            constraints: "Password and confirm password do not match",
+            constraints: "Password do not match",
             property: "password",
           },
         ],
@@ -131,7 +161,8 @@ function RegisterPage() {
       <form onSubmit={handleSubmit}>
         <Grid
           columns={isMobile ? "1fr" : `repeat(auto-fit, minmax(300px, 1fr))`}
-          margin={isMobile ? "1rem 0" : "4rem 0"}
+          margin={isMobile ? "0px" : "4rem 0"}
+          padding={isMobile ? "1.5rem 2.5rem" : "unset"}
           gap="5rem"
           style={{
             gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -219,7 +250,7 @@ function RegisterPage() {
               <img
                 src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
                 alt="logo"
-                height={60}
+                height={isMobile ? "45px" : "60px"}
                 onClick={() => router.push("/")}
                 style={{ cursor: "pointer" }}
               />
@@ -231,16 +262,16 @@ function RegisterPage() {
             </Flex>
             <Text
               type="h1"
-              margin="2rem 0 1rem"
+              margin={isMobile ? "1rem 0" : "2rem 0 1rem"}
               text="Create your account!"
-              size={isMobile ? "30px" : "40px"}
+              size={isMobile ? "25px" : "40px"}
               weight={700}
             />
             <Text
               type="p"
               text="Let’s get you all st up so you can access your personal account."
-              size="17px"
-              weight={400}
+              size={isMobile ? "14px" : "17px"}
+              weight={isMobile ? 300 : 400}
             />
 
             <Flex
@@ -259,6 +290,7 @@ function RegisterPage() {
                     type="p"
                     text="First Name"
                     margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={isMobile ? "14.5px" : "16px"}
                   />
                   <Input
                     placeholder="Enter your first name"
@@ -289,6 +321,7 @@ function RegisterPage() {
                     type="p"
                     text="Last Name"
                     margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={isMobile ? "14.5px" : "16px"}
                   />
                   <Input
                     placeholder="Enter your last name"
@@ -325,6 +358,7 @@ function RegisterPage() {
                     type="p"
                     text="Email"
                     margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={isMobile ? "14.5px" : "16px"}
                   />
                   <Input
                     placeholder="Enter you email"
@@ -354,6 +388,7 @@ function RegisterPage() {
                     type="p"
                     text="Phone Number"
                     margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={isMobile ? "14.5px" : "16px"}
                   />
                   <Input
                     placeholder="Enter your phone number"
@@ -369,7 +404,7 @@ function RegisterPage() {
                         : ""
                     }
                     height="3rem"
-                    type="tel"
+                    type="number"
                     value={registerData.phoneNumber}
                   />
                   {checkIfFieldHasError("phoneNumber") && (
@@ -381,57 +416,102 @@ function RegisterPage() {
                   )}
                 </Section>
               </Flex>
+
               <Section>
                 <Text
                   type="p"
                   text="Password"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
                 />
-                <Input
-                  placeholder="Enter your password"
-                  type="password"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      password: e.target.value,
-                    })
-                  }
-                  border={
-                    checkIfFieldHasError("password") ? "1px solid #FF8682" : ""
-                  }
-                  height="3rem"
-                  value={registerData.password}
-                />
-                {checkIfFieldHasError("password") && (
-                  <Text
-                    type="p"
-                    text={checkIfFieldHasError("password") || ""}
-                    color="#FF8682"
+                <div
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
+                >
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        password: e.target.value,
+                      })
+                    }
+                    border={
+                      checkIfFieldHasError("password")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                    value={registerData.password}
                   />
+                </div>
+
+                {isPasswordFocused && (
+                  <Section margin="1rem 0px 0px">
+                    <Text
+                      type="h1"
+                      text="Your Password must have the following."
+                      size={16}
+                      weight={500}
+                      styles={{
+                        margin: "0px 0px .9rem 0px",
+                        lineHeight: "1.5rem",
+                      }}
+                    />
+                    {validationOptions.map((option) => (
+                      <div
+                        key={option.value}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "0.5rem",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                          color: isPasswordValid(
+                            registerData.password,
+                            option.value
+                          )
+                            ? "#000000"
+                            : "#000000",
+                        }}
+                      >
+                        <AiFillCheckCircle
+                          size="1.5rem"
+                          style={{
+                            color: isPasswordValid(
+                              registerData.password,
+                              option.value
+                            )
+                              ? "#7BBBD6"
+                              : "#B6B6B6",
+                          }}
+                        />
+                        <span style={{ marginLeft: "0.5rem" }}>
+                          {option.label}
+                        </span>
+                      </div>
+                    ))}
+                  </Section>
                 )}
               </Section>
+
               <Section>
                 <Text
                   type="p"
                   text="Confirm Password"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Input
+                  placeholder="Confirm your password"
                   type="password"
-                  placeholder="Confirm Password"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   border={
                     checkIfFieldHasError("confirmPassword")
                       ? "1px solid #FF8682"
                       : ""
                   }
                   height="3rem"
-                  value={registerData.confirmPassword}
+                  value={confirmPassword}
                 />
                 {checkIfFieldHasError("confirmPassword") && (
                   <Text
@@ -441,14 +521,16 @@ function RegisterPage() {
                   />
                 )}
               </Section>
+
               <section>
                 <Text
                   type="p"
                   text="Referral Code"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={isMobile ? "14.5px" : "16px"}
                 />
                 <Input
-                  placeholder="Enter your referral code"
+                  placeholder="n/a"
                   onChange={(e) =>
                     setRegisterData({
                       ...registerData,
@@ -500,18 +582,6 @@ function RegisterPage() {
                 </Flex>
               </Flex>
 
-              <div style={{ margin: "-1rem 0" }}>
-                {submissionState.error.length > 0 &&
-                  submissionState.error.map((err: any, i: number) => (
-                    <Text
-                      type="p"
-                      text={err.constraints}
-                      color="#FF8682"
-                      size="17px"
-                      key={i}
-                    />
-                  ))}
-              </div>
               <Button
                 width="100%"
                 margin="2rem 0 0"
@@ -538,7 +608,7 @@ function RegisterPage() {
                   display: isMobile ? "block" : "none",
                 }}
               >
-                Already have an account?{" "}
+                Already have an account?
                 <Link
                   href="/auth/login"
                   text="Login"

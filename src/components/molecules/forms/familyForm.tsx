@@ -1,7 +1,6 @@
 import {
   ArrayInput,
   FieldAsDate,
-  FieldAsString,
   FieldInput,
   FieldString,
 } from "@organism/fieldInput";
@@ -10,13 +9,10 @@ import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { Switch } from "@mui/material";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { RELATIONSHIPS } from "@lib/extensions/data/utilData";
-import { FormikProps, FormikValues } from "formik";
+import { FormikValues } from "formik";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import React, { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
-import PhoneInput from "react-phone-input-2";
+import React from "react";
 import { FamilyInfoInterface } from "@lib/types";
 
 interface formProps {

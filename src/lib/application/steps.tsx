@@ -7,6 +7,7 @@ import {
   personalInfoKeys,
 } from "../types/schema";
 
+import { UploadedDoc } from "@organism/form/applicationForm";
 import EducationInfo from "@organism/form/components/educationInfo";
 import EmploymentInfo from "@organism/form/components/employmentInfo";
 import FamilyInfo from "@organism/form/components/familyInfo";

@@ -7,8 +7,8 @@ import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const BreadcrumbContainer = styled.div`
   font-size: 14px;

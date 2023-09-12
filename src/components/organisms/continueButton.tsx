@@ -97,7 +97,7 @@ export default function ContinueButton({
               <Flex align="center" width="100%" height="100%" justify="center">
                 <Text
                   type="span"
-                  text={"Save & Continue Later"}
+                  text={"Exit & Continue Later"}
                   weight={600}
                   size={14}
                   color={"#585870"}
