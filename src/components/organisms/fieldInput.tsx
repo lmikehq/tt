@@ -54,7 +54,7 @@ function getNestedValue(obj: any, propertyPath: string) {
 
 export const ErrorText = ({ text }: { text: string }) => {
   return (
-    <Section styles={{ position: "relative" }}>
+    <Section styles={{ position: "relative", marginBottom: "1rem" }}>
       <Section
         height="fit-content"
         styles={{ position: "absolute", top: "0.25rem" }}

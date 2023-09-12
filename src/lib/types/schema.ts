@@ -133,7 +133,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   // placeOfBirth: "City1",
   // stateOfOrigin: "State1",
   // phoneNumber: "1234567890",
-  // lgaOfOrigin: "LGA1",
+  // placeOfOrigin: "LGA1",
   // nativeLanguage: "English",
   // meansOfId: "Passport",
   // idNumber: "ABC123",

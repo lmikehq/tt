@@ -2,8 +2,8 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { BiSolidUser } from "react-icons/bi";
-import { useVisaApplicationVoucherStore } from "store/useStore";
 import { styled } from "styled-components";
+import { useVisaApplicationVoucherStore } from "@lib/store/useStore";
 
 const Container = styled.div`
   border: solid 1px #e7e7e7;

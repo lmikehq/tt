@@ -12,7 +12,7 @@ import Image from "@atom/image";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 interface PopperComponentProps {
   anchorEl?: any;

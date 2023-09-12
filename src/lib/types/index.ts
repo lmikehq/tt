@@ -75,7 +75,7 @@ export interface PersonalInfoInterface {
   placeOfBirth: string;
   phoneNumber: string;
   stateOfOrigin: string;
-  lgaOfOrigin: string;
+  placeOfOrigin: string;
   nativeLanguage: string;
   meansOfId: string;
   idNumber: string;
@@ -189,7 +189,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
       placeOfBirth: data.personalInfo.placeOfBirth,
       phoneNumber: data.personalInfo.phoneNumber,
       stateOfOrigin: data.personalInfo.stateOfOrigin,
-      lgaOfOrigin: data.personalInfo.lgaOfOrigin,
+      placeOfOrigin: data.personalInfo.placeOfOrigin,
       nativeLanguage: data.personalInfo.nativeLanguage,
       meansOfId: data.personalInfo.meansOfId,
       idNumber: data.personalInfo.idNumber,
