@@ -9,8 +9,6 @@ import Account from "./components/account";
 import Favourite from "./components/favourite";
 import Notification from "./components/notification";
 import RTQueryClient from "@components/layouts/rtqWrapper";
-import Visa from "./components/visa";
-import Flight from "./components/flight";
 import { useScreenResolution } from "hook/useScreenResolution";
 
 const Wrapper = styled.div`
@@ -30,7 +28,13 @@ const Wrapper = styled.div`
     .flex__FlexWrapper-sc-54bd3624-0 {
       justify-content: center;
     }
+
+    @media screen and (max-width: 900px) {
+      width: 50%;
+    }
   }
+
+ 
 `;
 
 function DashboardTabs() {
@@ -65,23 +69,11 @@ function DashboardTabs() {
       content: <Account />,
     },
   ];
-  const applicationTabItems = [
-    {
-      label: "Visa",
-      value: 0,
-      content: <Visa />,
-    },
 
-    {
-      label: "Flight",
-      value: 1,
-      content: <Flight />,
-    },
-  ];
   return (
     <Wrapper>
       <RTQueryClient>
-        <CustomTab shadowShow tabItems={isMobile ? applicationTabItems : tabItems} />
+        <CustomTab shadowShow tabItems={tabItems} />
       </RTQueryClient>
     </Wrapper>
   );

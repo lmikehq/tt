@@ -114,20 +114,21 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
           justifyContent: "center",
           backgroundRepeat: "no-repeat",
           alignContent: "center",
+          margin: isMobile ? "0px" : "10rem 0px",
         }}
       >
         <Image
           src={noVisaImage.src}
           alt="no-visa"
-          width={330.89}
-          height={331.03}
+          width={isMobile ? 196.95 : 330.89}
+          height={isMobile ? 197.55 : 331.03}
         />
       </Section>
       <Text
         type="p"
         text={content.title}
         weight={600}
-        size={24}
+        size={isMobile ? 18 : 24}
         margin="2.5rem auto 1rem"
         styles={{ lineHeight: "34px" }}
         textAlign={isMobile ? "center" : "left"}

@@ -1,5 +1,6 @@
 import Flex from "@atom/flex";
 import { Grid } from "@atom/grid";
+import Image from "@atom/image";
 import Input from "@atom/input";
 import Text from "@atom/text";
 import Section from "@molecule/section";
@@ -9,11 +10,12 @@ import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled from "styled-components";
+import Filter from "@image/dashboard/filter.png";
 
 const DropdownContent = styled.div`
   position: absolute;
   top: calc(100% + 5px);
-  right: 0; /* Align to the right */
+  right: 0; 
   background-color: #ffffff;
   border: 1px solid #e7e7e7;
   border-top: none;
@@ -70,12 +72,17 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
 
   const { isMobile } = useScreenResolution();
 
-  if (isMobile) return <div></div>;
+  // if (isMobile) return <div></div>;
 
   return (
-    <Flex justify="space-between" margin="1.5rem 0px" gap="0px">
+    <Flex justify="space-between" align="center" margin={isMobile ? ".5rem 0px" :"1.5rem 0px"} gap="0px">
       <Section>
-        <Text type="h1" text={headerText} size={24} weight={600} />
+        <Text
+          type="h1"
+          text={headerText}
+          size={isMobile ? "18px" : "24"}
+          weight={600}
+        />
       </Section>
       <Grid
         columns="73%  25%"
@@ -83,6 +90,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         style={{
           justifySelf: "flex-end",
           gridTemplateColumns: "73% 25%",
+          display: isMobile ? "none" : "grid",
         }}
       >
         <Flex
@@ -146,6 +154,22 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
           </DropdownContent>
         )}
       </Grid>
+      <Flex
+        justify="flex-end"
+        align="center"
+        border="1px solid #E7E7E7"
+        padding="0px 15px"
+        height="44px"
+        borderRadius="8px"
+        borderBottom="1px solid #E7E7E7"
+        width="40%"
+        gap="10px"
+        styles={{ display: isMobile ? "flex" : "none", cursor: "pointer" }}
+        onClick={toggleDropdown}
+      >
+        <Image src={Filter} alt="" />
+        <Text type="h5" text="Filter" weight={400} size={14} color="#606060" />
+      </Flex>
     </Flex>
   );
 }

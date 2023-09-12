@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -25,6 +26,8 @@ const VisaWrapper = styled.div`
 `;
 
 const Visa = () => {
+  const { isMobile } = useScreenResolution();
+
   async function getVisas() {
     return await apiService("/visa", "GET");
   }
@@ -58,7 +61,7 @@ const Visa = () => {
             </React.Fragment>
           ))
         ) : (
-          <Center margin="10rem 0" height="25rem">
+          <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
             <NoVisaApplication noVisaImage={NoVisa} content={content} />
           </Center>
         )}

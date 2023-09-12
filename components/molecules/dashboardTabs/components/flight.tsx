@@ -8,6 +8,8 @@ import Flex from "@atom/flex";
 import Text from "@atom/text";
 import Image from "@atom/image";
 import FlightIcon from "@image/flightBooking.png";
+import Center from "@atom/center";
+import { useScreenResolution } from "hook/useScreenResolution";
 
 const FlightWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -58,6 +60,8 @@ const TextContainer = styled.div`
 `;
 
 const Flight = () => {
+  const { isMobile } = useScreenResolution();
+
   const content = {
     title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
     links: [
@@ -68,7 +72,10 @@ const Flight = () => {
   return (
     <FlightWrapper>
       <VisaDashboardHeader headerText="All Flight Applications" />
-      <NoVisaApplication noVisaImage={FlightImg} content={content} />
+
+      <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+        <NoVisaApplication noVisaImage={FlightImg} content={content} />
+      </Center>
       {/* <Flex direction="column" gap="1rem">
         <History>
           <Flex

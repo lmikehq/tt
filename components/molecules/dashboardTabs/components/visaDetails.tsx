@@ -355,15 +355,6 @@ function VisaDetail({ visa }: { visa: any }) {
           )}
         </Flex>
 
-
-
-
-
-
-
-
-        
-
       </Flex>
       {isOpen && (
         <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
@@ -408,3 +399,18 @@ function VisaDetail({ visa }: { visa: any }) {
   );
 }
 export default VisaDetail;
+
+
+  // const applicationTabItems = [
+  //   {
+  //     label: "Visa",
+  //     value: 0,
+  //     content: <Visa />,
+  //   },
+
+  //   {
+  //     label: "Flight",
+  //     value: 1,
+  //     content: <Flight />,
+  //   },
+  // ];
