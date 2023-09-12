@@ -4,7 +4,7 @@ import Text from "@atom/text";
 import React from "react";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 function sortedTabs() {
   return (

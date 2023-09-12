@@ -1,4 +1,4 @@
-import { ISiteConfig } from "types";
+import { ISiteConfig } from "@lib/types";
 
 export const Siteconfig: ISiteConfig = {
   name: "Thrillers Travels: Migrating Nigerians to The Western Countries on Eagle's Wings",

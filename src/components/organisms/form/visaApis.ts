@@ -1,4 +1,4 @@
-import apiService, { extApiService } from "hook/apiService";
+import apiService, { extApiService } from "@lib/extensions/hook/apiService";
 
 export async function getIpDetails() {
   return await extApiService("https://get.geojs.io/v1/ip/geo.json");

@@ -29,11 +29,11 @@
       "@components/*": ["src/components/*"],
       "@layout/*": ["src/components/layouts/*"],
       "@template/*": ["src/components/templates/*"],
-      "@style/*": ["styles/*"],
+      "@style/*": ["src/styles/*"],
       "@image/*": ["/assets/images/*"],
       "@lottie/*": ["/assets/lotties/*"],
       "@font/*": ["assets/fonts/*"],
-      "@icon/*": ["src/components/icons/*"],
+      "@icon/*": ["src/components/molecules/icons/*"],
       "/assets/flags/*": ["/assets/flags/*"],
       "@lib/*": ["src/lib/*"]
     }

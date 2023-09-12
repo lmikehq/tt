@@ -5,7 +5,7 @@ import { useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import ShowButton from "@molecule/showButton";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 const Box = styled.div<{ color: string; border: string }>`
   border: 3px solid ${(props) => props.border};

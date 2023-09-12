@@ -3,8 +3,8 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Image from "@atom/image";
 import styled from "styled-components";
-import { useScreenResolution } from "hook/useScreenResolution";
-import { ttColors } from "theme/colors";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { ttColors } from "@lib/theme/colors";
 import Text from "@atom/text";
 import Carousel from "src/components/molecules/carouselComponent";
 

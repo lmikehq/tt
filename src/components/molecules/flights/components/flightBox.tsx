@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
 import { styled } from "styled-components";
 import { BsShare } from "react-icons/bs";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import { MdOutlineLuggage } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
 import Button from "@atom/button";

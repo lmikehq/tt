@@ -7,7 +7,7 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
 import FAQ from "./components/FAQ";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
 
 const BlueBox = styled.div`

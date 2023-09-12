@@ -10,7 +10,7 @@ import React, { useRef, useState } from "react";
 import { BsCheckCircle, BsSearch, BsSend } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const ChatContainer = styled.div`
   display: flex;

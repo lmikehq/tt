@@ -11,9 +11,9 @@ import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useState } from "react";
-import { EmploymentDetailsInterface } from "types";
+import { EmploymentDetailsInterface } from "@lib/types";
 
 interface formProps {
   formik: FormikValues;
@@ -142,7 +142,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
             onChange={(e: any) => {
               formik.setFieldValue(`employment.${count}.startYear`, e.$y);
             }}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -161,7 +161,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
               formik.setFieldValue(`employment.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

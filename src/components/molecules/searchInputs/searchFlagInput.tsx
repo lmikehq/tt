@@ -1,8 +1,8 @@
 import Flex from "@components/templates/flex";
 import SearchInput from "@organism/searchInput";
 import Text from "@atom/text";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { CSSProperties } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";

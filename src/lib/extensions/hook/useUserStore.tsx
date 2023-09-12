@@ -1,9 +1,9 @@
 "use client";
 
-import apiService from "hook/apiService";
+import apiService from "@lib/extensions/hook/apiService";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useUserStore } from "store/useStore";
+import { useUserStore } from "@lib/store/useStore";
 
 function UserStoreProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();

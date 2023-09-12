@@ -1,31 +1,38 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps, FormikValues, useFormik } from "formik";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
-import { DetailsKeys } from "types";
+import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
+import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
+import { detailsKeys, detailsSchema } from "@lib/types/schema";
+import { DetailsKeys, Mode } from "@lib/types";
 import { FieldAsString, FieldString } from "@organism/fieldInput";
+import Button from "@atom/button";
+import Spinner from "@molecule/icons/spinner";
+import { ttColors } from "@lib/theme/colors";
+import { useRouter, useSearchParams } from "next/navigation";
 import ContinueButton from "@organism/continueButton";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
 
 interface formProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<DetailsKeys>;
-  saveProgressAndContinueLater: () => void;
 }
 
-function TripDetails({
-  steps,
-  index,
-  isLoading,
-  formik,
-  saveProgressAndContinueLater,
-}: formProps) {
+function TripDetails({ steps, index, persistForm, formik }: formProps) {
   const { isMobile } = useScreenResolution();
+  const router = useRouter();
+  const { form, nextStep, saveProgress, mode } = useApplicationFormStore(
+    (state) => state
+  );
+  const { tripDetails } = form;
+  const isLoading = mode == Mode.loading;
 
   return (
     <Section height="unset">
@@ -168,8 +175,8 @@ function TripDetails({
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {}}
-          disabled={!formik.isValid || !formik.dirty}
-          saveProgressAndContinueLater={saveProgressAndContinueLater}
+          disabled={!formik.isValid}
+          saveProgress={persistForm}
         />
       </form>
     </Section>

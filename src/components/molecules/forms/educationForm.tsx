@@ -11,13 +11,13 @@ import Input from "@atom/input";
 import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { COMMON_MAJORS, DEGREES } from "data/utilData";
+import { COMMON_MAJORS, DEGREES } from "@lib/extensions/data/utilData";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
-import { EducationDetailsInterface } from "types";
+import { EducationDetailsInterface } from "@lib/types";
 
 interface formProps {
   formik: any;
@@ -141,7 +141,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
             onChange={(e: any) => {
               formik.setFieldValue(`education.${count}.startYear`, e.$y);
             }}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -160,7 +160,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            maxDate={dayjs(new Date())}
+            // maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

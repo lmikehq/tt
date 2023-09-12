@@ -1,4 +1,4 @@
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { BiSolidMinusCircle } from "react-icons/bi";
 import { BsPlusCircleFill } from "react-icons/bs";
 

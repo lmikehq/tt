@@ -2,8 +2,8 @@
 
 import React from "react";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import Link from "@atom/link";
 

@@ -1,10 +1,10 @@
 "use client";
 
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import Flex from "@components/templates/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 function ChatAlert() {
   const { isMobile } = useScreenResolution();

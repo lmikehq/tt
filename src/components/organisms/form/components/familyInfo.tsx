@@ -2,41 +2,28 @@ import AddButton from "@molecule/addButton";
 import ContinueButton from "@organism/continueButton";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import { familyInforKeys } from "src/lib/application/schema";
+import { familyInfoSchema, familyInforKeys } from "@lib/types/schema";
 import FamilyForm from "src/components/molecules/forms/familyForm";
 import Section from "src/components/molecules/section";
-import { FieldArray, FormikProps, FormikProvider } from "formik";
+import { FieldArray, FormikProps, FormikProvider, useFormik } from "formik";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { ttColors } from "theme/colors";
-import { FamilyInfoInterface } from "types";
+import { ttColors } from "@lib/theme/colors";
+import { FamilyInfoInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
 import FormStepTitle from "./formStepsTitle";
-import { createRef, useEffect, useRef } from "react";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { useRouter } from "next/navigation";
 
 interface formProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
-  saveProgressAndContinueLater: () => void;
 }
 
-function FamilyInfo({
-  steps,
-  index,
-  isLoading,
-  formik,
-  saveProgressAndContinueLater,
-}: formProps) {
-  const familyFormRefs = useRef(
-    formik.values.familyMembers.map(() => createRef<HTMLDivElement>())
-  );
-
-  useEffect(() => {
-    familyFormRefs.current = formik.values.familyMembers.map(() =>
-      createRef<HTMLDivElement>()
-    );
-  }, [formik.values.familyMembers]);
+function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
+  const { mode } = useApplicationFormStore((state) => state);
+  const isLoading = mode == Mode.loading;
 
   return (
     <FormikProvider value={formik}>
@@ -67,14 +54,7 @@ function FamilyInfo({
                         justify="flex-end"
                         gap="0.25rem"
                         align="center"
-                        onClick={() => {
-                          arrayHelpers.remove(index);
-                          const element =
-                            familyFormRefs.current[index - 1].current;
-                          if (element) {
-                            element.scrollIntoView({ behavior: "smooth" });
-                          }
-                        }}
+                        onClick={() => arrayHelpers.remove(index)}
                         cursor="pointer"
                       >
                         <RiDeleteBin6Line color={ttColors.red} size={25} />
@@ -94,8 +74,8 @@ function FamilyInfo({
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {}}
-            disabled={!formik.isValid || !formik.dirty}
-            saveProgressAndContinueLater={saveProgressAndContinueLater}
+            disabled={!formik.isValid}
+            saveProgress={persistForm}
           />
         </form>
       </Section>

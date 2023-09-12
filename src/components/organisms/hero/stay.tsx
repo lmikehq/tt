@@ -3,7 +3,7 @@
 import Center from "@components/templates/center";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { styled } from "styled-components";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`

@@ -1,7 +1,7 @@
 import { FormikProvider, FormikValues, useField } from "formik";
 import Input from "@atom/input";
 import Text from "@atom/text";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import { ReactNode } from "react";
 import { DatePicker } from "@organism/datepicker";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";

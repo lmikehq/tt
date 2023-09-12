@@ -3,14 +3,13 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { useQuery } from "@tanstack/react-query";
-import currencyFormatter from "data/currencyFormatter";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { format } from "date-fns";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import apiService from "@lib/extensions/hook/apiService";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import { useVisaApplicationVoucherStore } from "store/useStore";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -102,7 +101,6 @@ const PaymentWrapper = styled.div`
 
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
-  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
   async function getAllPayments() {
     return await apiService("/payment", "GET");
   }
@@ -114,8 +112,6 @@ const PaymentHistory = () => {
   if (isLoading) return <div>loading</div>;
   if (error) return <div>error loading payments, please try again</div>;
   const { data: payments } = fetchedPayment;
-  
-
   return (
     <Section
       margin="2rem 0"
@@ -166,7 +162,6 @@ const PaymentHistory = () => {
                   <Text
                     type="p"
                     text={currencyFormatter(payment?.totalAmount)}
-                    decoration={applied && voucher ? "line-through" : ""}
                     styles={{ width: isMobile ? "100%" : "20%" }}
                   />
                   <PaymentStatus style={{ background: "#FFFEEF" }}>

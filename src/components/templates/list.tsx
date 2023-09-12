@@ -1,7 +1,7 @@
 import { List } from "@mui/material";
 import { ReactNode } from "react";
 import { styled } from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 interface ListProps {
   children: ReactNode;

@@ -7,15 +7,15 @@ import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import Section from "src/components/molecules/section";
 import { Box } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import apiService from "hook/apiService";
-import { handleLogout } from "hook/useLogout";
+import apiService from "@lib/extensions/hook/apiService";
+import { handleLogout } from "@lib/extensions/hook/useLogout";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
-import { useUserStore } from "store/useStore";
-import { ttColors } from "theme/colors";
-import { User } from "types";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
+import { User } from "@lib/types";
 
 interface Props {
   isOpen: boolean;

@@ -1,5 +1,4 @@
 import {
-  ApplicationFormRequestInput,
   DetailsKeys,
   DocumentInterface,
   EducationDetailsInterface,
@@ -7,8 +6,9 @@ import {
   FamilyInfoInterface,
   PersonalInfoInterface,
   VisaApplicationFormInterface,
-} from "types";
+} from "@lib/types";
 import * as yup from "yup";
+import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 
 //TRIP DETAILS
 
@@ -351,11 +351,11 @@ export const documentsArr: { documents: DocumentInterface[] } = {
   documents: [],
 };
 export const visaInitVals: VisaApplicationFormInterface = {
-  ...detailsKeys,
+  tripDetails: detailsKeys,
   ...educationsArr,
   ...employmentsArr,
   ...familyInfoArr,
-  ...personalInfoKeys,
+  personalInfo: personalInfoKeys,
   ...documentsArr,
 };
 
@@ -370,7 +370,6 @@ export const waitlistSchema = yup.object().shape({
     .string()
     .required({ message: "Please select readiness option" }),
 });
-
 
 export const test: ApplicationFormRequestInput = {
   primaryTraveller: {

@@ -2,53 +2,36 @@
 
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import SectionLayout from "@components/templates/SectionLayout";
 import {
-  detailsKeys,
   detailsSchema,
-  documentsArr,
   documentsSchema,
-  educationsArr,
-  employmentsArr,
-  familyInfoArr,
   familyInfoSchema,
   manyEducationSchema,
   manyEmploymentSchema,
-  personalInfoKeys,
   personalInfoSchema,
-  visaInitVals,
-} from "src/lib/application/schema";
+} from "@lib/types/schema";
 import { getSteps } from "src/lib/application/steps";
 import Section from "src/components/molecules/section";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import VisaProgress from "src/components/molecules/visaProgress";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
-import apiService from "hook/apiService";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "react-hot-toast";
+import { useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 // import { useUserStore } from "store/useStore";
 import Button from "@atom/button";
-import sleep from "src/lib/sleep";
-import { safelyConvertToNumber } from "src/lib/utilFns";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
-import { useUserStore } from "store/useStore";
+import { useUserStore } from "@lib/store/useStore";
 import { styled } from "styled-components";
-import { ttColors } from "theme/colors";
-import {
-  ApplicationFormRequestInput,
-  DetailsKeys,
-  DocumentInterface,
-  EducationDetailsInterface,
-  EmploymentDetailsInterface,
-  FamilyInfoInterface,
-  PersonalInfoInterface,
-  VisaApplicationFormInterface,
-} from "types";
+import { ttColors } from "@lib/theme/colors";
+
 import FormSideMenu from "./components/sideMenu/formSideMenu";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
+import toast from "react-hot-toast";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const PromoInput = styled.div`
   display: flex;
@@ -86,215 +69,133 @@ const ErrorToastComponent = styled.div`
   }
 `;
 
-export type SingleFormType =
-  | DetailsKeys
-  | PersonalInfoInterface
-  | { education: EducationDetailsInterface[] }
-  | { employment: EmploymentDetailsInterface[] }
-  | { familyMembers: FamilyInfoInterface[] }
-  | { documents: DocumentInterface[] };
 export interface UploadedDoc {
   name: string;
   type: string;
   size: string;
   title: string;
 }
-
 interface ErrorInterface {
   property: string;
   constraints: string;
 }
+
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
-  ``;
-  const [createVisaApplicationData, setCreateVisaApplicationData] = useState<{
-    user: string;
-    visa: string;
-  }>();
 
   const { user } = useUserStore((state) => state);
-  async function handleVisaApplication({
-    payload,
-  }: {
-    payload: ApplicationFormRequestInput;
-  }): Promise<{ user: string; visa: string }> {
-    const response: any = await apiService(
-      "/visa/new-application",
-      "POST",
-      payload
-    ).then((response) => {
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        toast.success(
-          "Your application has been submitted successfully, please proceed to make payment",
-          {
-            duration: 15000,
-          }
-        );
-        return response.data;
-      } else {
-        toast.error(response.message);
 
-        throw response;
-        // toast.error(response);
-      }
-    });
-    return response;
-  }
-  async function handlePayment({
-    payload,
-  }: {
-    payload: { user: string; visa: string };
-  }): Promise<void> {
-    const response: any = await apiService(
-      "/payment/create-form-fee-charge",
-      "POST",
-      {
-        currency: "NGN",
-        gateway: "Kora",
-        service: "VISA",
-        user: payload.user,
-        serviceID: payload.visa,
-        paymentIntent: "FORM FEE",
-      }
-    ).then((response) => {
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        window.open(response.data.data.checkout_url, "_self");
-        return response.data;
-      } else {
-        toast.error(response.errorMessage);
-        throw response;
-      }
-    });
-  }
-  // localhost:3000/visa/apply?action=payment&type=visa-application-fee&status=success
+  const {
+    fetchRecentProgressFromSession,
+    form,
+    fetchDetailsFromURL,
+    prevStep,
+    step,
+    highestStep,
+    setStep,
+    nextStep,
+    createVisaApplication,
+    mode,
+    saveProgress,
+    uploadedDocuments,
+  } = useApplicationFormStore((state) => state);
+
+  const {
+    tripDetails,
+    personalInfo,
+    education,
+    employment,
+    familyMembers,
+    documents,
+  } = form;
+
+  const isLoading = mode == Mode.loading;
+
   const params = useSearchParams();
-  // const action = params.get("action"); // payment
-  const type = params.get("type"); // visa-application-fee
-  const status = params.get("status"); // success | fail
-  const [formData, setFormData] = useState<VisaApplicationFormInterface>({
-    ...visaInitVals,
-    homeCountry: params.get("home") || "",
-    destination: params.get("destination") || "",
-  });
-  const [currentPhase, setCurrentPhase] = useState(
-    type !== "visa-application-fee" ? 1 : status === "success" ? 6 : 7
-  );
-  // const [currentPhase, setCurrentPhase] = useState(5);
-  const [highestPhase, setHighestPhase] = useState(1);
-  const [nextStepLoading, setNextStepLoading] = useState(false);
+
   const router = useRouter();
 
-  // async function onSuccess() {
-  //   // toast.success("Payment Successful, please check your email for receipt");
-  //   toast.loading("Payment Successful, please wait...", {
-  //     duration: 5000,
-  //   });
-  //   await apiService("/payment/paystack-success-callback", "POST", {
-  //     visaId: applicationResponse.id,
-  //     user: user?._id || applicationResponse.userId,
-  //     method: "CARD",
-  //     gateway: "Paystack",
-  //     status: "SUCCESS",
-  //     currency: "NGN",
-  //     totalAmount: applicationResponse.fee.total,
-  //     service: "VISA",
-  //     description: "Payment Successful",
-  //   });
-  //   setCurrentPhase(currentPhase + 1);
-  // }
-  // async function onCancel() {
-  //   await apiService("/payment/paystack-success-callback", "POST", {
-  //     visaId: applicationResponse.id,
-  //     user: user?._id || applicationResponse.userId,
-  //     method: "CARD",
-  //     gateway: "Paystack",
-  //     status: "FAILED",
-  //     currency: "NGN",
-  //     totalAmount: applicationResponse.fee.total,
-  //     service: "VISA",
-  //     description: "Payment Cancelled",
-  //   });
-  //   toast.error("Payment Cancelled");
-  //   setCurrentPhase(currentPhase + 2);
-  // }
+  const detailsFormik = useFormik({
+    initialValues: tripDetails,
+    validationSchema: detailsSchema,
+    validateOnMount: true,
+    enableReinitialize: true,
+    onSubmit: (values: DetailsKeys) => {
+      if (isLoading) return;
+      nextStep({ data: { tripDetails: values } });
+    },
+  });
 
-  const setPhase = async (number: number) => {
-    setCurrentPhase(number);
-    if (number > highestPhase) setHighestPhase(number);
-  };
+  const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
+    initialValues: personalInfo,
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: personalInfoSchema,
+    validateOnChange: true,
+    onSubmit: (values: PersonalInfoInterface) => {
+      if (isLoading) return;
+      nextStep({ data: { personalInfo: values } });
+    },
+  });
 
-  const nextStep = async ({
-    form,
-  }: {
-    form?: VisaApplicationFormInterface;
-  }) => {
-    if (nextStepLoading) return;
-    setNextStepLoading(true);
-    if (currentPhase <= 6) {
-      if (currentPhase + 1 > highestPhase) setHighestPhase(currentPhase + 1);
-    }
-    if (currentPhase < 6) await sleep(2000);
-    if (currentPhase == 6 && form) {
-      const applicationFormRequest: ApplicationFormRequestInput = {
-        applicationType: form.applicationType,
-        visaType: form.visaType,
-        primaryTraveller: {
-          firstName: form.firstName,
-          lastName: form.lastName,
-          travellingBy: "Airplane",
-          middleName: form.middleName,
-          email: form.email,
-          homeCountry: form.homeCountry,
-          destination: form.destination,
-          placeOfBirth: form.placeOfBirth,
-          phoneNumber: form.phoneNumber,
-          stateOfOrigin: form.stateOfOrigin,
-          placeOfOrigin: form.placeOfOrigin,
-          nativeLanguage: form.nativeLanguage,
-          meansOfId: form.meansOfId,
-          idNumber: form.idNumber,
-          issueDate: form.issueDate,
-          expiryDate: form.expiryDate,
-          address: form.address,
-          countryOfCitizen: form.countryOfCitizen,
-          dateOfBirth: form.dateOfBirth,
-          gender: form.gender,
-          maritalStatus: form.maritalStatus,
-          partnersName: form.partnersName,
-          passportNumber: form.passportNumber,
-          passportIssuedCountry: form.passportIssuedCountry,
-          passportExpiryYear: form.passportExpiryYear,
-          tripPurpose: form.tripPurpose,
-          tuberculosis: form.tuberculosis,
-          mentalDisorder: form.mentalDisorder,
-          mentalDisorderDetails: form.mentalDisorderDetails,
-          remainbeyondValidity: form.remainbeyondValidity,
-          refusedBefore: form.refusedBefore,
-          refusedBeforeDetails: form.refusedBeforeDetails,
-          arrestedBefore: form.arrestedBefore,
-          arrestedBeforeDetails: form.arrestedBeforeDetails,
-          servedInMilitary: form.servedInMilitary,
-          servedInMilitaryDetails: form.servedInMilitaryDetails,
-          memberOfViolentGroup: form.memberOfViolentGroup,
-          participatedInViolentActivities: form.participatedInViolentActivities,
-          education: form.education,
-          employment: form.employment,
+  const educationFormik = useFormik({
+    initialValues: { education },
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: manyEducationSchema,
+    onSubmit: (values) => {
+      if (isLoading) return;
+      nextStep({ data: { education: values.education } });
+    },
+    validateOnChange: true,
+  });
+
+  const employmentFormik = useFormik({
+    initialValues: { employment },
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: manyEmploymentSchema,
+    onSubmit: (values) => {
+      if (isLoading) return;
+      nextStep({ data: { employment: values.employment } });
+    },
+    validateOnChange: false,
+  });
+
+  const familyMembersFormik = useFormik({
+    initialValues: { familyMembers },
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: familyInfoSchema,
+    onSubmit: (values) => {
+      if (isLoading) return;
+      nextStep({ data: { familyMembers: values.familyMembers } });
+    },
+    validateOnChange: true,
+  });
+
+  const documentsFormik = useFormik({
+    initialValues: { documents },
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: documentsSchema,
+    onSubmit: (values) => {
+      createVisaApplication({
+        data: {
+          ...form,
+          documents: values.documents,
         },
-        familyMembers: form.familyMembers,
-        documents: form.documents,
-        user: user?._id ?? undefined,
-      };
-
-      await handleVisaApplication({
-        payload: applicationFormRequest,
       })
-        .then((data) => {
-          setCreateVisaApplicationData(data);
-          setCurrentPhase(currentPhase + 1);
-          setNextStepLoading(false);
-          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        .then((_: any) => {
+          toast.success(
+            "Your application has been submitted successfully, please proceed to make payment",
+            {
+              duration: 15000,
+            }
+          );
         })
-        .catch((err) => {
+        .catch((error) => {
+          const err = error.response.data;
           if (
             err.statusCode === 422 &&
             err.errorMessage.includes("already exists")
@@ -324,230 +225,70 @@ function ApplicationForm() {
               }
             );
           }
-          setNextStepLoading(false);
         });
-      return;
-    }
-    if (currentPhase == 7) {
-      await handlePayment({
-        payload: {
-          user: createVisaApplicationData?.user ?? "",
-          visa: createVisaApplicationData?.visa ?? "",
-        },
-      })
-        .then((data) => {
-          setNextStepLoading(false);
-        })
-        .catch((error) => {
-          setNextStepLoading(false);
-        });
-
-      return;
-    }
-
-    setCurrentPhase(currentPhase + 1);
-    setNextStepLoading(false);
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  };
-
-  const prevStep = async () => {
-    if (nextStepLoading || currentPhase === 1) return;
-    // await reloadFee();
-    setCurrentPhase(currentPhase - 1);
-  };
-
-  const [formFee, setFormFee] = useState(0);
-  const [uploadedDocuments, setUploadedDocuments] = useState<UploadedDoc[]>();
-
-  const handleSetUploadedDocuments = (docs: UploadedDoc[]) => {
-    setUploadedDocuments([...docs]);
-  };
-
-  // async function reloadFee() {
-  //   setNextStepLoading(true);
-  //   setShownFees([]);
-  //   await sleep(1000);
-  //   setNextStepLoading(false);
-  //   // setShownFees(calcFees(formFee));
-  // }
-  const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
-    initialValues: personalInfoKeys,
-    validationSchema: personalInfoSchema,
-    validateOnChange: true,
-    onSubmit: (values: PersonalInfoInterface) => {
-      const form = { ...formData, ...values };
-      setFormData(form);
-      nextStep({});
     },
   });
 
-  const fetchRecentProgressFromSession = () => {
-    const form = sessionStorage.getItem("visa_application_form");
-    const uploadedDocuments = sessionStorage.getItem(
-      "visa_application_uploaded_documents"
-    );
-    const recent = {
-      form: form ? JSON.parse(form) : null,
-      uploadedDocuments: uploadedDocuments
-        ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
-        : null,
-    };
-    detailsFormik.setValues({
-      ...(recent?.form?.details ?? detailsKeys),
-      homeCountry: params.get("home") || detailsKeys.homeCountry,
-      destination: params.get("destination") || detailsKeys.destination,
-      visaType: params.get("visaType") || detailsKeys.visaType,
+  const persistForm = () => {
+    saveProgress({
+      data: {
+        tripDetails: detailsFormik.values,
+        personalInfo: personalInfoFormik.values,
+        education: educationFormik.values.education,
+        employment: employmentFormik.values.employment,
+        familyMembers: familyMembersFormik.values.familyMembers,
+        documents: documentsFormik.values.documents,
+      },
+      uploadedDocuments,
     });
-    personalInfoFormik.setValues(
-      recent?.form?.personalInfo ?? personalInfoKeys
-    );
-    educationFormik.setValues({
-      education: recent?.form?.education ?? educationsArr.education,
-    });
-    employmentFormik.setValues({
-      employment: recent?.form?.employment ?? employmentsArr.employment,
-    });
-    familyMembersFormik.setValues({
-      familyMembers: recent?.form?.familyMembers ?? familyInfoArr.familyMembers,
-    });
-    documentsFormik.setValues({
-      documents: recent?.form?.documents ?? documentsArr.documents,
-    });
-
-    setUploadedDocuments(recent?.uploadedDocuments ?? []);
-  };
-
-  const detailsFormik = useFormik({
-    initialValues: {
-      ...detailsKeys,
-      homeCountry: params.get("home") || detailsKeys.homeCountry,
-      destination: params.get("destination") || detailsKeys.destination,
-      visaType: params.get("visaType") || detailsKeys.visaType,
-    },
-    validationSchema: detailsSchema,
-    onSubmit: (values: DetailsKeys) => {
-      const form = { ...formData, ...values };
-      setFormData(form);
-      nextStep({});
-    },
-  });
-
-  const educationFormik = useFormik({
-    initialValues: educationsArr,
-    validationSchema: manyEducationSchema,
-    onSubmit: (values) => {
-      const form = { ...formData, ...values };
-      setFormData(form);
-      nextStep({});
-    },
-    validateOnChange: true,
-  });
-
-  const employmentFormik = useFormik({
-    initialValues: employmentsArr,
-    validationSchema: manyEmploymentSchema,
-    onSubmit: (values) => {
-      const form = { ...formData, ...values };
-      setFormData(form);
-      nextStep({});
-    },
-    validateOnChange: false,
-  });
-  const familyMembersFormik = useFormik({
-    initialValues: familyInfoArr,
-    validationSchema: familyInfoSchema,
-    onSubmit: (values) => {
-      const form = { ...formData, ...values };
-      setFormData(form);
-      nextStep({});
-    },
-    validateOnChange: true,
-  });
-  const documentsFormik = useFormik({
-    initialValues: documentsArr,
-    validationSchema: documentsSchema,
-    onSubmit: (values) => {
-      const completedForm = { ...formData, ...values };
-      setFormData(completedForm);
-      nextStep({ form: completedForm });
-    },
-  });
-  const paymentFormik = useFormik({
-    initialValues: {},
-    // validationSchema: documentsSchema,
-    onSubmit: (values) => {
-      nextStep({});
-    },
-  });
-  const finalStepButtonText = () => {
-    let accompanies = 0;
-    if (formData.familyMembers.length > 0) {
-      formData.familyMembers.forEach((member) => {
-        if (member.accompanying) accompanies++;
-      });
-    }
-    return !isMobile
-      ? "Make Payment"
-      : accompanies > 0
-      ? "Make Payment (NGN 30,000)"
-      : "Make Payment (NGN 20,000)";
-  };
-  const saveProgressAndContinueLater = () => {
-    const form = {
-      details: detailsFormik.values,
-      personalInfo: personalInfoFormik.values,
-      ...educationFormik.values,
-      ...employmentFormik.values,
-      ...familyMembersFormik.values,
-      ...documentsFormik.values,
-    };
-
-    sessionStorage.setItem("visa_application_form", JSON.stringify(form));
-    sessionStorage.setItem(
-      "visa_application_uploaded_documents",
-      JSON.stringify(uploadedDocuments ?? [])
-    );
-
     router.push("/");
   };
 
-  const step = getSteps({
-    setFormFee,
-    setCurrentPhase,
+  const steps = getSteps({
     detailsFormik,
     personalInfoFormik,
     educationFormik,
     employmentFormik,
     familyMembersFormik,
     documentsFormik,
-    paymentFormik,
-    isLoading: nextStepLoading,
-    handleSetUploadedDocuments,
-    uploadedDocuments: uploadedDocuments ?? [],
-    visaType: formData.visaType,
-    lastName: formData.lastName,
-    saveProgressAndContinueLater,
-    finalStepButtonText: finalStepButtonText(),
-  }).find((x) => x.id === currentPhase);
+    persistForm,
+  }).find((x) => x.id === step);
 
-  const isValid: boolean = useMemo(() => {
-    return formData.homeCountry !== "" && formData.destination !== "";
-  }, [formData.homeCountry, formData.destination]);
+  // const isValid: boolean = useMemo(() => {
+  //   return (
+  //     form.tripDetails.homeCountry !== "" && form.tripDetails.destination !== ""
+  //   );
+  // }, [form.tripDetails.homeCountry, form.tripDetails.destination]);
 
   const coverImage = isMobile
     ? "/assets/images/visaPageCover.jpg"
     : "/assets/images/visaDesktopCover.jpg";
+
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    console.log(searchParams.get("home"));
+    fetchDetailsFromURL({
+      homeCountry: searchParams.get("home") || "",
+      destination: searchParams.get("destination") || "",
+      visaType: searchParams.get("visaType") || "",
+    });
+    console.log(searchParams.get("home"));
     fetchRecentProgressFromSession();
-  }, []);
+  }, [params]);
 
   return (
     <>
-      <AllCountryHead cover={coverImage} title={formData.destination || ""} />
+      <AllCountryHead
+        cover={coverImage}
+        title={form.tripDetails.destination || ""}
+      />
       <SectionLayout>
         <SectionTitle
-          title={`Apply Now for ${formData.destination || ""} Employment Visa`}
+          title={`Apply Now for ${
+            form.tripDetails.destination || ""
+          } Employment Visa`}
           description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
           showButton={false}
         />
@@ -579,8 +320,8 @@ function ApplicationForm() {
             }}
           >
             <FormSideMenu
-              currentPhase={currentPhase}
-              formData={formData}
+              currentPhase={step}
+              formData={form}
               onClose={() => setBottomDrawerOpen(false)}
             />
           </Section>
@@ -615,7 +356,7 @@ function ApplicationForm() {
               styles={{ flexGrow: 1 }}
               gap={isMobile ? "2.5rem" : "2rem"}
             >
-              {currentPhase < 7 && (
+              {step < 7 && (
                 <Flex
                   align="center"
                   cursor="pointer"
@@ -623,23 +364,23 @@ function ApplicationForm() {
                   onClick={prevStep}
                 >
                   <BsArrowLeft
-                    color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
+                    color={step > 1 ? ttColors.primary : ttColors.gray}
                     size="22px"
                   />
                   <Text
                     text="Previous"
                     type="p"
-                    color={currentPhase > 1 ? ttColors.primary : ttColors.gray}
+                    color={step > 1 ? ttColors.primary : ttColors.gray}
                     size="16px"
                     weight="bold"
                   />
                 </Flex>
               )}
-              {currentPhase > 1 && currentPhase < 7 && (
+              {step > 1 && step < 7 && (
                 <VisaProgress
-                  phase={currentPhase - 1}
-                  setPhase={setPhase}
-                  highestPhase={highestPhase}
+                  phase={step - 1}
+                  setStep={setStep}
+                  highestPhase={highestStep}
                 />
               )}
               <Section
@@ -647,7 +388,7 @@ function ApplicationForm() {
                 height="unset"
                 padding="0px 0px 2rem 0px"
               >
-                {step?.content}
+                {steps?.content}
               </Section>
             </Flex>
           </Section>
@@ -658,9 +399,9 @@ function ApplicationForm() {
             styles={{ display: isMobile ? "none" : "block" }}
           >
             <FormSideMenu
-              currentPhase={currentPhase}
-              formData={formData}
-              saveProgressAndContinueLater={saveProgressAndContinueLater}
+              currentPhase={step}
+              formData={form}
+              saveProgress={persistForm}
             />
           </Section>
         </Flex>

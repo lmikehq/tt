@@ -2,41 +2,33 @@ import Section from "src/components/molecules/section";
 import { FieldArray, FormikProps, FormikProvider, useFormik } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import Flex from "@components/templates/flex";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import EducationForm from "src/components/molecules/forms/educationForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@molecule/addButton";
-import { educationKeys } from "src/lib/application/schema";
+import {
+  educationKeys,
+  educationsArr,
+  manyEducationSchema,
+} from "@lib/types/schema";
 import ContinueButton from "@organism/continueButton";
-import { EducationDetailsInterface } from "types";
+import { EducationDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
-import { createRef, useEffect, useRef } from "react";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { useRouter } from "next/navigation";
 
 interface formProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<{ education: EducationDetailsInterface[] }>;
-  saveProgressAndContinueLater: () => void;
 }
 
-function EducationInfo({
-  steps,
-  index,
-  isLoading,
-  formik,
-  saveProgressAndContinueLater,
-}: formProps) {
-  const educationFormRefs = useRef(
-    formik.values.education.map(() => createRef<HTMLDivElement>())
-  );
+function EducationInfo({ steps, index, persistForm, formik }: formProps) {
+  const { mode } = useApplicationFormStore((state) => state);
 
-  useEffect(() => {
-    educationFormRefs.current = formik.values.education.map(() =>
-      createRef<HTMLDivElement>()
-    );
-  }, [formik.values.education]);
+  const isLoading = mode == Mode.loading;
 
   return (
     <FormikProvider value={formik}>
@@ -60,7 +52,7 @@ function EducationInfo({
                   />
                 </Flex>
                 {formik.values.education.map((education, index) => (
-                  <div key={index} ref={educationFormRefs.current[index]}>
+                  <div key={index}>
                     <EducationForm
                       formik={formik}
                       values={education}
@@ -71,14 +63,7 @@ function EducationInfo({
                         justify="flex-end"
                         gap="0.25rem"
                         align="center"
-                        onClick={() => {
-                          arrayHelpers.remove(index);
-                          const element =
-                            educationFormRefs.current[index - 1].current;
-                          if (element) {
-                            element.scrollIntoView({ behavior: "smooth" });
-                          }
-                        }}
+                        onClick={() => arrayHelpers.remove(index)}
                         cursor="pointer"
                       >
                         <RiDeleteBin6Line color={ttColors.red} size={25} />
@@ -98,8 +83,8 @@ function EducationInfo({
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {}}
-            disabled={!formik.isValid || !formik.dirty}
-            saveProgressAndContinueLater={saveProgressAndContinueLater}
+            disabled={!formik.isValid}
+            saveProgress={persistForm}
           />
         </form>
       </Section>

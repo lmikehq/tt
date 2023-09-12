@@ -2,7 +2,7 @@
 
 import CustomTab from "@atom/tabs";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import styled from "styled-components";
 import Flight from "./flight";
 import Visa from "./visa";

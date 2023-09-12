@@ -3,16 +3,16 @@ import Flex from "@components/templates/flex";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { toast } from "react-hot-toast";
 import { BsFillShieldLockFill } from "react-icons/bs";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 interface SaveProgressAndContinueLaterProps {
-  saveProgressAndContinueLater?: () => void;
+  saveProgress?: () => void;
 }
 const SaveProgressAndContinueLater = ({
-  saveProgressAndContinueLater,
+  saveProgress,
 }: SaveProgressAndContinueLaterProps) => {
   const { isMobile } = useScreenResolution();
 
@@ -57,7 +57,7 @@ const SaveProgressAndContinueLater = ({
             background="none"
             borderRadius="4px"
             padding="1.5rem"
-            onClick={saveProgressAndContinueLater}
+            onClick={saveProgress}
           >
             <Text
               type="p"
@@ -77,13 +77,7 @@ const SaveProgressAndContinueLater = ({
               background="none"
               borderRadius="4px"
               padding="1.5rem"
-              onClick={() => {
-                toast.success("Application Exited Successfully!");
-                sessionStorage.removeItem("visa_application_form");
-                sessionStorage.removeItem(
-                  "visa_application_uploaded_documents"
-                );
-              }}
+              onClick={() => toast.success("Application Exited Successfully!")}
             >
               <Text
                 type="p"

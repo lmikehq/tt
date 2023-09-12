@@ -3,8 +3,8 @@ import { Grid } from "@components/templates/grid";
 import Input from "@atom/input";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { useScreenResolution } from "hook/useScreenResolution";
-import React, { useRef, useState } from "react";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import React, { useState } from "react";
 import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -50,7 +50,6 @@ const OptionText = styled.div<{ hovered: boolean }>`
 function VisaDashboardHeader({ headerText }: { headerText: string }) {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [focusInput, setFocusInput] = useState(false)
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -83,13 +82,12 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         gap=".8rem"
         style={{
           justifySelf: "flex-end",
-          gridTemplateColumns: "73% 25%",
         }}
       >
         <Flex
           justify="flex-start"
           align="center"
-          border={focusInput ? "2px solid black" : "1px solid #E7E7E7"}
+          border="1px solid #E7E7E7"
           padding="0px 10px"
           borderRadius="8px"
           borderBottom="1px solid #E7E7E7"
@@ -104,12 +102,10 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
               styles={{
                 border: "none",
               }}
-              id="focus-none"
-              onFocus={() => setFocusInput(true)}
-              onBlur={() => setFocusInput(false)}
             />
           </Section>
         </Flex>
+
         <Flex
           justify="space-between"
           align="center"

@@ -10,15 +10,14 @@ import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { Switch } from "@mui/material";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
-import { RELATIONSHIPS } from "data/utilData";
-import dayjs from "dayjs";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { RELATIONSHIPS } from "@lib/extensions/data/utilData";
 import { FormikProps, FormikValues } from "formik";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React, { useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import PhoneInput from "react-phone-input-2";
-import { FamilyInfoInterface } from "types";
+import { FamilyInfoInterface } from "@lib/types";
 
 interface formProps {
   formik: FormikValues;
@@ -205,7 +204,6 @@ export default function FamilyForm({ formik, count, values }: formProps) {
                 placeholder="Select Issue Year"
                 formik={formik}
                 views={["year"]}
-                maxDate={dayjs(new Date())}
               />
             </Section>
             <Section margin="0">
@@ -215,8 +213,6 @@ export default function FamilyForm({ formik, count, values }: formProps) {
                 placeholder="Select Expiry Year"
                 formik={formik}
                 views={["year"]}
-                minDate={dayjs(`${values.issueYear}`)}
-
               />
             </Section>
           </Flex>

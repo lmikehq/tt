@@ -6,7 +6,7 @@ import Text from "@atom/text";
 import { GoDotFill } from "react-icons/go";
 import Button from "@atom/button";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import styled from "styled-components";
 import { StaticImageData } from "next/image";
 

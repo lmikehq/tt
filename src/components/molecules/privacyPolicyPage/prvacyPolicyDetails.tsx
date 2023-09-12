@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import PrivacyPolicy from "./privacyPolicy";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 const Wrapper = styled.div`
   width: 100%;

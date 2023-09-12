@@ -3,9 +3,9 @@ import Link from "@atom/link";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import Image from "@atom/image";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 interface formProps {
   steps: string[];
   index: number;

@@ -1,4 +1,4 @@
-import { FlightProvider } from "context";
+import { FlightProvider } from "@lib/extensions/context";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -6,13 +6,9 @@ interface layoutProps {
 
 export const metadata = {
   title: "Rent your rooms",
-  description: "Rent a room here"
+  description: "Rent a room here",
 };
 
 export default function FlightLayout({ children }: layoutProps) {
-  return (
-    <FlightProvider>
-      {children}
-    </FlightProvider>
-  );
+  return <FlightProvider>{children}</FlightProvider>;
 }

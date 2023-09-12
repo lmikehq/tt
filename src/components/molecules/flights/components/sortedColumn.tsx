@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import { ButtonBox } from "./sortedFlightsTab";
 import { styled } from "styled-components";
 

@@ -1,13 +1,13 @@
 "use client";
 import Flex from "@components/templates/flex";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import Section from "src/components/molecules/section";
-import apiService from "hook/apiService";
+import apiService from "@lib/extensions/hook/apiService";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { useUserStore } from "store/useStore";
-import { ttColors } from "theme/colors";
-import { User } from "types";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
+import { User } from "@lib/types";
 
 const VerifyKoraPaymentPage = () => {
   const router = useRouter();

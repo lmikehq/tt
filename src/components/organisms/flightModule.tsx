@@ -4,10 +4,10 @@ import React, { useState, useContext } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SearchInput from "./searchInput";
-import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { IoLocationOutline } from "react-icons/io5";
 import { GoArrowSwitch } from "react-icons/go";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import { DatePicker } from "./datepicker";
 import { ClickAwayListener } from "@mui/material";
 import Input from "@atom/input";
@@ -15,8 +15,8 @@ import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
-import { flightContext } from "context";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { flightContext } from "@lib/extensions/context";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface flightProps {
   value: string;

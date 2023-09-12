@@ -1,6 +1,6 @@
 import CountryPage from "@molecule/countryName";
 import React from "react";
-import { Qparams } from "types";
+import { Qparams } from "@lib/types";
 
 interface pageProps {
   params: Qparams["params"];

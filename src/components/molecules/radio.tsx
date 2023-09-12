@@ -7,7 +7,7 @@ import {
   FormLabel,
 } from "@mui/material";
 import Flex from "@components/templates/flex";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface Option {
   value: any;

@@ -1,12 +1,12 @@
 import Button from "@atom/button";
 import Text from "@atom/text";
-import Spinner from "src/components/icons/spinner";
+import Spinner from "@molecule/icons/spinner";
 import { Modal } from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 
 // Styled component for the modal content wrapper
 const StyledModalContent = styled.div`

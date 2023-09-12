@@ -1,6 +1,6 @@
 "use client";
 import { BsHandThumbsDown, BsHandThumbsUp } from "react-icons/bs";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { useState } from "react";

@@ -1,47 +1,41 @@
 import Section from "src/components/molecules/section";
 import {
   FieldArray,
+  Formik,
   FormikProps,
   FormikProvider,
+  FormikValues,
+  useFormik,
 } from "formik";
 import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import EmploymentForm from "src/components/molecules/forms/employmentForm";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Text from "@atom/text";
 import AddButton from "@molecule/addButton";
-import { employmentKeys } from "src/lib/application/schema";
+import {
+  employmentKeys,
+  employmentsArr,
+  manyEmploymentSchema,
+} from "@lib/types/schema";
 import ContinueButton from "@organism/continueButton";
-import { EmploymentDetailsInterface } from "types";
+import { EmploymentDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
-import { createRef, useEffect, useRef } from "react";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import { useRouter } from "next/navigation";
 
 interface formProps {
   steps: string[];
   index: number;
-  isLoading: boolean;
+  persistForm: () => void;
   formik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
-  saveProgressAndContinueLater: () => void;
 }
 
-function EmploymentInfo({
-  steps,
-  index,
-  isLoading,
-  formik,
-  saveProgressAndContinueLater,
-}: formProps) {
-  const employmentFormRefs = useRef(
-    formik.values.employment.map(() => createRef<HTMLDivElement>())
-  );
-
-  useEffect(() => {
-    employmentFormRefs.current = formik.values.employment.map(() =>
-      createRef<HTMLDivElement>()
-    );
-  }, [formik.values.employment]);
+function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
+  const { mode } = useApplicationFormStore((state) => state);
+  const isLoading = mode == Mode.loading;
 
   return (
     <FormikProvider value={formik}>
@@ -65,7 +59,7 @@ function EmploymentInfo({
                   />
                 </Flex>
                 {formik.values.employment.map((employment, index) => (
-                  <div key={index} ref={employmentFormRefs.current[index]}>
+                  <div key={index}>
                     <EmploymentForm
                       formik={formik}
                       values={employment}
@@ -76,14 +70,7 @@ function EmploymentInfo({
                         justify="flex-end"
                         gap="0.25rem"
                         align="center"
-                        onClick={() => {
-                          arrayHelpers.remove(index);
-                          const element =
-                            employmentFormRefs.current[index - 1].current;
-                          if (element) {
-                            element.scrollIntoView({ behavior: "smooth" });
-                          }
-                        }}
+                        onClick={() => arrayHelpers.remove(index)}
                         cursor="pointer"
                       >
                         <RiDeleteBin6Line color={ttColors.red} size={25} />
@@ -103,8 +90,8 @@ function EmploymentInfo({
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {}}
-            disabled={!formik.isValid || !formik.dirty}
-            saveProgressAndContinueLater={saveProgressAndContinueLater}
+            disabled={!formik.isValid}
+            saveProgress={persistForm}
           />
         </form>
       </Section>

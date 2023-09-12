@@ -1,21 +1,20 @@
 "use client";
 import Section from "src/components/molecules/section";
-import currencyFormatter from "data/currencyFormatter";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { format } from "date-fns";
-import { useScreenResolution } from "hook/useScreenResolution";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
+import { PiDotsThreeCircleLight } from "react-icons/pi";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
-import { useVisaApplicationVoucherStore } from "store/useStore";
 import styled from "styled-components";
-import { ttColors } from "theme/colors";
+import { ttColors } from "@lib/theme/colors";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const Logo = styled.div`
   height: 64px;
@@ -103,17 +102,7 @@ function VisaDetail({ visa }: { visa: any }) {
           intent: "",
         };
         break;
-      case "FORM FEE REQUESTED":
-        visaInformation = {
-          text: "Pay form Fee",
-          fn: () => {
-            setIsModalOpen(true);
-          },
-          disabled: false,
-          intent: "FORM FEE",
-        };
-        break;
-      case "PROCESSING FEE REQUESTED":
+      case "AWAITING CONFIRMATION" || "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
           fn: () => {
@@ -126,9 +115,9 @@ function VisaDetail({ visa }: { visa: any }) {
       default:
         visaInformation = {
           text: "Pay Visa Fee",
-          fn: () => setIsModalOpen(true),
+          fn: () => {},
           disabled: false,
-          intent: "PROCESSING FEE",
+          intent: "",
         };
     }
 
@@ -144,7 +133,6 @@ function VisaDetail({ visa }: { visa: any }) {
       : visa?.applicationStatus === "AWAITING CONFIRMATION"
       ? { text: "#7A7422", bg: "FFFEEF" }
       : { text: "#37008A", bg: "#F6F0FF" };
-  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
 
   return (
     <Section
@@ -242,11 +230,8 @@ function VisaDetail({ visa }: { visa: any }) {
                     text={
                       recentPayment?.totalAmount
                         ? currencyFormatter(recentPayment.totalAmount)
-                        : visa?.usedFormFeeVoucher
-                        ? "Travel voucher"
                         : "n/a"
                     }
-                    decoration={applied && voucher ? "line-through" : ""}
                     color="#112211"
                     size={14}
                     weight={500}
@@ -331,16 +316,6 @@ function VisaDetail({ visa }: { visa: any }) {
             <PiDotsThreeCircleLight size={20} />
             <Text type="p" text={visa?.applicationStatus} size={"15px"} />
           </Flex>
-          {visa?.usedFormFeeVoucher && (
-            <Flex align="center" margin=".5rem 0" gap=".5rem">
-              <PiWalletLight size={20} />
-              <Text
-                type="p"
-                text={"Application fee paid with Travel Voucher"}
-                size={"15px"}
-              />
-            </Flex>
-          )}
           <Flex align="center" gap=".5rem">
             <AiOutlineCheck size={20} />
             <Text
