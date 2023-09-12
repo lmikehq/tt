@@ -2,7 +2,6 @@
 
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import SectionLayout from "@components/templates/SectionLayout";
 import {
   detailsSchema,
   documentsSchema,
@@ -32,6 +31,7 @@ import FormSideMenu from "./components/sideMenu/formSideMenu";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const PromoInput = styled.div`
   display: flex;

@@ -17,4 +17,24 @@ export class VoucherService {
         throw error;
       });
   };
+  static useVoucher = async ({
+    promoCode,
+    serviceId,
+  }: {
+    promoCode: string;
+    serviceId: string;
+  }) => {
+    return await axiosClient
+      .post<any, AxiosResponse<any>>(`/voucher/use/${promoCode}`, {
+        serviceId,
+      })
+      .then((response) => {
+        console.log(response);
+        return response.data;
+      })
+      .catch((error) => {
+        toast.error(error.response.data.errorMessage);
+        throw error;
+      });
+  };
 }
