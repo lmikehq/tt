@@ -249,7 +249,7 @@ function ApplicationForm() {
           placeOfBirth: form.placeOfBirth,
           phoneNumber: form.phoneNumber,
           stateOfOrigin: form.stateOfOrigin,
-          lgaOfOrigin: form.lgaOfOrigin,
+          placeOfOrigin: form.placeOfOrigin,
           nativeLanguage: form.nativeLanguage,
           meansOfId: form.meansOfId,
           idNumber: form.idNumber,

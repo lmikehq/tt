@@ -1,12 +1,12 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { FormikProps } from "formik";
+import { FormikProps, FormikValues } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "hook/useScreenResolution";
 import Required from "@atom/required";
 import PhoneInput from "react-phone-input-2";
-import { IState, State } from "country-state-city"
+import { IState, State } from "country-state-city";
 import TextArea from "@molecule/textArea";
 import { CustomRadioGroup } from "@molecule/radio";
 import { COUNTRY_FLAGS } from "data/COUNTRY_FLAGS";
@@ -44,14 +44,14 @@ function PersonalInfo({
     { value: false, label: "No" },
   ];
 
-  const [countryCode, setCountryCode] = useState('')
-  const [states, setStates] = useState<IState[]>([])
+  const [countryCode, setCountryCode] = useState("");
+  const [states, setStates] = useState<IState[]>([]);
 
   useEffect(() => {
-    if(countryCode !== '') {
-      setStates(State.getStatesOfCountry(`${countryCode}`))
+    if (countryCode !== "") {
+      setStates(State.getStatesOfCountry(`${countryCode}`));
     }
-  }, [countryCode])
+  }, [countryCode]);
 
   return (
     <Section>
@@ -133,8 +133,8 @@ function PersonalInfo({
                 code: x.code,
               }))}
               onChange={(e: any) => {
-                formik.setFieldValue('stateOfOrigin', e.name)
-                setCountryCode(e.code)
+                formik.setFieldValue("stateOfOrigin", e.name);
+                setCountryCode(e.code);
               }}
             />
           </Section>
@@ -157,12 +157,11 @@ function PersonalInfo({
             <FieldAsString
               formik={formik}
               options={states.map((x) => ({
-                name: x.name
+                name: x.name,
               }))}
               name="lgaOfOrigin"
-              disabled={formik.values.stateOfOrigin === ''}
+              disabled={formik.values.stateOfOrigin === ""}
               placeholder="Select your Local Government"
-              
             />
           </Section>
           <Section>
@@ -238,7 +237,6 @@ function PersonalInfo({
               placeholder="Enter your e-mail address"
             />
           </Section>
-
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
@@ -413,6 +411,44 @@ function PersonalInfo({
             placeholder="Enter your residential address"
           />
         </Section>
+        {formik.values.meansOfId == "International Passport" && (
+          <Flex
+            margin={isMobile ? "0px" : "0 0 1rem"}
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            {/* <Section width="100%">
+              <Text
+                type="p"
+                text="Issued Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="passportIssueDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+                onChange={(e: any) => {
+                  setPassEndDate(e);
+                }}
+              />
+            </Section> */}
+            <Section>
+              <Text
+                type="p"
+                text="Expiry Date"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+              />
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+                maxDate={dayjs()}
+                format="DD/MM/YYYY"
+              />
+            </Section>
+          </Flex>
+        )}
         <Flex
           margin="0"
           justify="space-between"
@@ -447,20 +483,22 @@ function PersonalInfo({
               formik={formik}
             />
           </Section>
-          <Section>
-            <Flex align="center" gap="0.25rem">
-              <Text
-                type="p"
-                text="Partner’s Name (if applicable)"
-                margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
+          {formik.values.maritalStatus === "Married" && (
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Partner’s Name (if applicable)"
+                  margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
+                />
+              </Flex>
+              <FieldInput
+                name="partnersName"
+                formik={formik}
+                placeholder="Enter your partner's name"
               />
-            </Flex>
-            <FieldInput
-              name="partnersName"
-              formik={formik}
-              placeholder="Enter your partner's name"
-            />
-          </Section>
+            </Section>
+          )}
         </Flex>
         <Flex
           margin="0"
@@ -504,45 +542,6 @@ function PersonalInfo({
             />
           </Section>
         </Flex>
-        {formik.values.meansOfId == "International Passport" && (
-          <Flex
-            margin={isMobile ? "0px" : "0 0 1rem"}
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
-          >
-            {/* <Section width="100%">
-              <Text
-                type="p"
-                text="Issued Date"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <FieldAsDate
-                name="passportIssueDate"
-                placeholder="Select your Issued Date"
-                formik={formik}
-                onChange={(e: any) => {
-                  setPassEndDate(e);
-                }}
-              />
-            </Section> */}
-            <Section>
-              <Text
-                type="p"
-                text="Expiry Date"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <FieldAsDate
-                name="passportExpiryDate"
-                placeholder="Select your Expiry Date"
-                formik={formik}
-                maxDate={dayjs()}
-                format="DD/MM/YYYY"
-              />
-            </Section>
-          </Flex>
-        )}
-
         <Section>
           <Text
             type="p"
@@ -702,7 +701,6 @@ function PersonalInfo({
                 </Section>
               </Flex>
             </li>
-
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -756,7 +754,6 @@ function PersonalInfo({
                   )}
               </Section>
             )}
-
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -780,7 +777,6 @@ function PersonalInfo({
                     onBlur={formik.handleBlur}
                     justifyContent="flex-end"
                   />
-
                   {formik.touched["arrestedBefore"] &&
                     formik.errors["arrestedBefore"] && (
                       <ErrorText text={formik.errors["arrestedBefore"]} />
@@ -896,7 +892,6 @@ function PersonalInfo({
                 </Section>
               </Flex>
             </li>
-
             <li>
               <Flex align="center" gap="2rem" justify="space-between">
                 <Text
@@ -936,7 +931,9 @@ function PersonalInfo({
           isLoading={isLoading}
           onClick={() => {
             if (!formik.isValid || !formik.dirty)
-              return toast.error("There are some information still required on the Form. Please do well to provide them so as you can proceed to the next step.");
+              return toast.error(
+                "There are some information still required on the Form. Please do well to provide them so as you can proceed to the next step."
+              );
           }}
           disabled={!formik.isValid || !formik.dirty}
           saveProgressAndContinueLater={saveProgressAndContinueLater}

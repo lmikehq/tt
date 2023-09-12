@@ -6,16 +6,8 @@ import { FormikProps, FormikValues, useFormik } from "formik";
 import { useScreenResolution } from "hook/useScreenResolution";
 import FormStepTitle from "./formStepsTitle";
 import Required from "@atom/required";
-import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
-import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
-import { detailsKeys, detailsSchema } from "src/lib/application/schema";
 import { DetailsKeys } from "types";
 import { FieldAsString, FieldString } from "@organism/fieldInput";
-import { SingleFormType } from "../applicationForm";
-import Button from "@atom/button";
-import Spinner from "src/components/icons/spinner";
-import { ttColors } from "theme/colors";
-import { useSearchParams } from "next/navigation";
 import ContinueButton from "@organism/continueButton";
 
 interface formProps {

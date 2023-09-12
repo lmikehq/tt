@@ -73,7 +73,7 @@ export interface PersonalInfoInterface {
   placeOfBirth: string;
   phoneNumber: string;
   stateOfOrigin: string;
-  lgaOfOrigin: string;
+  placeOfOrigin: string;
   nativeLanguage: string;
   meansOfId: string;
   idNumber: string;

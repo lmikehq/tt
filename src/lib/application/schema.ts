@@ -39,7 +39,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     placeOfBirth: yup.string().required("Required"),
     phoneNumber: yup.string().required("Required"),
     stateOfOrigin: yup.string().required("Required"),
-    lgaOfOrigin: yup.string().required("Required"),
+    placeOfOrigin: yup.string().required("Required"),
     nativeLanguage: yup.string().required("Required"),
     meansOfId: yup.string().required("Required"),
     idNumber: yup.string().required("Required"),
@@ -58,7 +58,6 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     passportIssuedCountry: yup.string().required("Required"),
     passportExpiryYear: yup
       .number()
-      .required("Required")
       .positive("Expiry year must be a positive number"),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
@@ -92,9 +91,8 @@ export const personalInfoKeys: PersonalInfoInterface = {
   lastName: "",
   middleName: "",
   email: "",
-  // placeOfOrigin: "",
+  placeOfOrigin: "",
   stateOfOrigin: "",
-  lgaOfOrigin: "",
   nativeLanguage: "",
   meansOfId: "",
   idNumber: "",
@@ -387,7 +385,7 @@ export const test: ApplicationFormRequestInput = {
     placeOfBirth: "City1",
     stateOfOrigin: "State1",
     phoneNumber: "1234567890",
-    lgaOfOrigin: "LGA1",
+    placeOfOrigin: "LGA1",
     nativeLanguage: "English",
     meansOfId: "Passport",
     idNumber: "ABC123",
