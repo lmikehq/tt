@@ -15,12 +15,13 @@ import Text from "@atom/text";
 import { useState } from "react";
 
 const FavouriteWrapper = styled.div``;
-const FavouriteCard = styled.div``;
+const FavouriteCard = styled.div`
+position: relative`;
 const FavouriteCardImg = styled.div``;
 const FavouriteCardIcon = styled.div`
   position: absolute;
-  top: 10px;
-  right: -20px;
+  top: 20px;
+  right: 145px;
   padding: 5px;
   background: #ffffff;
   height: 48px;
@@ -29,6 +30,10 @@ const FavouriteCardIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 900px) {
+    right: 20px
+  }
 `;
 
 const Favourite = () => {
@@ -62,7 +67,7 @@ const Favourite = () => {
         <NoVisaApplication noVisaImage={NoVisa} content={content} />
       </Center> */}
       <FavouriteWrapper>
-        <Grid columns="3, 1fr !important" gap="2rem">
+        <Grid columns={isMobile ? "1" : "3"} gap="1rem">
           <FavouriteCard>
             <FavouriteCardImg>
               <Image

@@ -29,7 +29,7 @@ const GridWrapper = styled.div<{
   className?: string;
 }>`
   display: grid;
-  grid-template-columns: repeat(${(props) => props.columns});
+  grid-template-columns: repeat(${(props) => props.columns}, 1fr);
   grid-gap: ${(props) => props.gap};
   position: ${(props) => props.position};
   width: ${({ width }) => width || "100%"};
