@@ -257,7 +257,7 @@ const SelectPaymentMethod = () => {
               : createFormFeeCharge({
                   data: createVisaApplicationResponse,
                 }).then((response) => {
-                  window.open(response.data.data.checkout_url, "_self");
+                  window.open(response.data.checkout_url, "_self");
                 });
           }}
           buttonText="Make Payment"
