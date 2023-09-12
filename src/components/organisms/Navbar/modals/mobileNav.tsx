@@ -77,7 +77,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                 width="100%"
                 background="transparent"
                 border={`1px solid #06062A`}
-                margin="2rem 0 1.4rem"
+                margin=".75rem 0 1rem"
               >
                 <Text
                   text="Login"
@@ -90,7 +90,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
               </Button>
             </Link>
             <Link href="/auth/register">
-              <Button width="100%" margin="0 0 5rem">
+              <Button width="100%">
                 <Text
                   text="Sign Up"
                   type="p"

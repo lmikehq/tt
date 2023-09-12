@@ -514,7 +514,7 @@ function RegisterPage() {
               </div>
               <Button
                 width="100%"
-                margin="2rem 0 0"
+                margin="1.25rem 0 0"
                 background={
                   submissionState.loading ? "#87ceeb36" : ttColors.primary
                 }
@@ -527,7 +527,7 @@ function RegisterPage() {
                     type="p"
                     text="Create account"
                     color={ttColors.dark}
-                    size="20px"
+                    size={isMobile ? "16px": "20px"}
                   />
                 )}
               </Button>
@@ -542,7 +542,7 @@ function RegisterPage() {
                 <Link
                   href="/auth/login"
                   text="Login"
-                  color="#a0001d"
+                  color={ttColors.primary}
                   style={{
                     fontWeight: "400",
                   }}

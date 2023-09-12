@@ -314,7 +314,7 @@ function LoginPage() {
             </Flex>
             <Button
               width="100%"
-              margin="2rem 0"
+              margin=".5rem 0"
               background={
                 submissionState.loading ? "#87ceeb36" : ttColors.primary
               }
@@ -323,7 +323,7 @@ function LoginPage() {
               {submissionState.loading ? (
                 <Spinner size="40px" fill={ttColors.primary} />
               ) : (
-                <Text type="p" text="Login" color={ttColors.dark} size="20px" />
+                <Text type="p" text="Login" color={ttColors.dark} size={isMobile ? "16px": "20px"} />
               )}
             </Button>
             <p
@@ -338,7 +338,7 @@ function LoginPage() {
                 <Text
                   type="span"
                   text="Sign up"
-                  color="#a0001d"
+                  color={ttColors.primary}
                   cursor="pointer"
                 />
               </Link>

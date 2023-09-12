@@ -21,6 +21,7 @@ import { PersonalInfoInterface } from "types";
 import ContinueButton from "@organism/continueButton";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface FormProps {
   steps: string[];
@@ -933,7 +934,10 @@ function PersonalInfo({
         </Section>
         <ContinueButton
           isLoading={isLoading}
-          onClick={() => {}}
+          onClick={() => {
+            if (!formik.isValid || !formik.dirty)
+              return toast.error("There are some information still required on the Form. Please do well to provide them so as you can proceed to the next step.");
+          }}
           disabled={!formik.isValid || !formik.dirty}
           saveProgressAndContinueLater={saveProgressAndContinueLater}
         />

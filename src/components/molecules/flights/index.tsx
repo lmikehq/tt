@@ -47,7 +47,6 @@ const FlightSection = () => {
         <Text
           type="h1"
           text="What Thrillers have to offer"
-          font="Montserrat"
           weight={700}
           size={isMobile ? 24 : 36}
         />
@@ -124,7 +123,7 @@ const FlightSection = () => {
           <Text
             type="h1"
             text="Flight Deals from Lagos"
-            font="Montserrat"
+  
             weight={700}
             size={isMobile ? 24 : 36}
           />
@@ -145,13 +144,13 @@ const FlightSection = () => {
                   text="Venice"
                   weight={700}
                   size={isMobile ? 24 : 28}
-                  font="Montserrat"
+        
                 />
                 <Text
                   type="p"
                   text="Italy"
                   color="#606060"
-                  font="Montserrat"
+        
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -162,13 +161,13 @@ const FlightSection = () => {
                   text="$2,200"
                   weight={700}
                   size={isMobile ? 24 : 28}
-                  font="Montserrat"
+        
                 />
                 <Text
                   type="p"
                   text="Starts from"
                   color="#606060"
-                  font="Montserrat"
+        
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -184,13 +183,13 @@ const FlightSection = () => {
                   text="Atlanta"
                   weight={700}
                   size={isMobile ? 24 : 28}
-                  font="Montserrat"
+        
                 />
                 <Text
                   type="p"
                   text="United States"
                   color="#606060"
-                  font="Montserrat"
+        
                   size={isMobile ? 16 : 18}
                   weight={500}
                 />
@@ -201,13 +200,13 @@ const FlightSection = () => {
                   text="$1,850"
                   weight={700}
                   size={isMobile ? 24 : 28}
-                  font="Montserrat"
+        
                 />
                 <Text
                   type="p"
                   text="Starts from"
                   color="#606060"
-                  font="Montserrat"
+        
                   size={isMobile ? 16 : 18}
                   weight={500}
                 />
@@ -223,13 +222,13 @@ const FlightSection = () => {
                   text="Sao Paulo"
                   weight={700}
                   size={isMobile ? 24 : 28}
-                  font="Montserrat"
+        
                 />
                 <Text
                   type="p"
                   text="Brazil"
                   color="#606060"
-                  font="Montserrat"
+        
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -240,13 +239,13 @@ const FlightSection = () => {
                   text="$2,250"
                   weight={700}
                   size={isMobile ? 24 : 28}
-                  font="Montserrat"
+        
                 />
                 <Text
                   type="p"
                   text="Starts from"
                   color="#606060"
-                  font="Montserrat"
+        
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -256,12 +255,12 @@ const FlightSection = () => {
         </Flex>
       </Flex>
       <Flex align="center" direction="column" padding="2rem 0">
-        <Flex direction="column" gap=".5rem">
+        <Flex direction="column" align="center" justify="center" gap=".5rem">
           <Text
             type="h2"
             text="Frequently Asked Questions"
             size={isMobile ? 24 : 36}
-            font="Montserrat"
+  
             weight={700}
           />
           <Text
