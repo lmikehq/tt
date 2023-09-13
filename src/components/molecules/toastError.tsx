@@ -35,6 +35,7 @@ const CustomToast: React.FC<CustomToastProps> = ({ message, id }) => {
 const ToastError = () => {
     return toast((t) => <CustomToast message="There are some information still required on the Form. Please do well to provide them so as you can proceed to the next step." id={t.id} />,
     {
+        duration: 5000,
       style: {
         borderLeft: '6px solid #A0001D',
         maxWidth: '650px'
