@@ -17,6 +17,7 @@ import { EducationDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { useRouter } from "next/navigation";
+import ToastError from "@molecule/toastError";
 
 interface formProps {
   steps: string[];
@@ -82,9 +83,11 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
           />
           <ContinueButton
             isLoading={isLoading}
-            onClick={() => {}}
+            onClick={() => {
+              if (!formik.isValid || !formik.dirty)
+                return ToastError()
+            }}
             disabled={!formik.isValid}
-            saveProgress={persistForm}
           />
         </form>
       </Section>

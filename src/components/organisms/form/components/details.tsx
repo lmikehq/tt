@@ -17,6 +17,7 @@ import { ttColors } from "@lib/theme/colors";
 import { useRouter, useSearchParams } from "next/navigation";
 import ContinueButton from "@organism/continueButton";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
+import ToastError from "@molecule/toastError";
 
 interface formProps {
   steps: string[];
@@ -174,9 +175,11 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
 
         <ContinueButton
           isLoading={isLoading}
-          onClick={() => {}}
+          onClick={() => {
+            if (!formik.isValid || !formik.dirty)
+              return ToastError()
+          }}
           disabled={!formik.isValid}
-          saveProgress={persistForm}
         />
       </form>
     </Section>

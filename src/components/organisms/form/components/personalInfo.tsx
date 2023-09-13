@@ -22,8 +22,7 @@ import { Mode, PersonalInfoInterface } from "@lib/types";
 import ContinueButton from "@organism/continueButton";
 import dayjs from "dayjs";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
+import ToastError from "@molecule/toastError";
 
 interface FormProps {
   steps: string[];
@@ -909,14 +908,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
           isLoading={isLoading}
           onClick={() => {
             if (!formik.isValid || !formik.dirty)
-              return toast.error(
-                "There are some information still required on the Form. Please do well to provide them so as you can proceed to the next step.",
-                {
-                  style: {
-                    border: '1px solid'
-                  }
-                }
-              );
+              return ToastError()
           }}
           disabled={!formik.isValid || !formik.dirty}
         />
