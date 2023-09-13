@@ -12,7 +12,7 @@ import Link from "@atom/link";
 import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
 import Spinner from "@molecule/icons/spinner";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import sleep from "@lib/extensions/helpers/sleep";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";

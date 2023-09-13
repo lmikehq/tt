@@ -8,7 +8,7 @@ import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
 import FAQ from "./components/FAQ";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 
 const BlueBox = styled.div`
   border: 1px solid #7bbbd6;

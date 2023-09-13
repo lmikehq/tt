@@ -8,7 +8,7 @@ import Button from "@atom/button";
 import { useRouter } from "next/navigation";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;
@@ -128,9 +128,13 @@ const Frame: React.FC = () => {
   return (
     <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
       <SectionLayout>
-        <Grid columns={isMobile ? "1fr" : "2"} gap="2rem" style={{
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-        }}>
+        <Grid
+          columns={isMobile ? "1fr" : "2"}
+          gap="2rem"
+          style={{
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+          }}
+        >
           {serviceCard.map((item) => (
             <ServiceCard key={item.id} style={{ position: "relative" }}>
               <Image src={item.img} alt="card image" />

@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import DestinationLayout from "@components/templates/SectionLayout";
+import DestinationLayout from "@components/templates/sectionLayout";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Flex from "@components/templates/flex";

@@ -1,4 +1,4 @@
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import DashboardTabs from "src/components/molecules/dashboardTabs";
 import UserPicture from "src/components/molecules/dashboardTabs/components/picture";
 import Section from "src/components/molecules/section";

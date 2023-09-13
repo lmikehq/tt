@@ -8,7 +8,7 @@ import styled from "styled-components";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 
 const BreadcrumbContainer = styled.div`
   font-size: 14px;

@@ -7,7 +7,7 @@ import Input from "@atom/input";
 import Link from "@atom/link";
 import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import Section from "src/components/molecules/section";
 import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
