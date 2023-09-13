@@ -1,18 +1,18 @@
-import Center from "@atom/center";
+
 import NoVisa from "@image/noVisa.png";
-import Section from "@molecule/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import { Grid } from "@atom/grid";
-import Image from "@atom/image";
 import FavouriteImg1 from "@image/favourite/favourite1.png";
 import FavouriteImg2 from "@image/favourite/favourite2.png";
 import styled from "styled-components";
 import { AiFillHeart } from "react-icons/ai";
-import Flex from "@atom/flex";
-import Text from "@atom/text";
 import { useState } from "react";
+import Section from "components/molecules/section";
+import { Grid } from "components/atoms/grid";
+import Flex from "components/atoms/flex";
+import Text from "components/atoms/text";
+import Image from "components/atoms/image";
 
 const FavouriteWrapper = styled.div``;
 const FavouriteCard = styled.div`

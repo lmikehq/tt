@@ -76,7 +76,7 @@ const Flight = () => {
       <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
         <NoVisaApplication noVisaImage={FlightImg} content={content} />
       </Center>
-      {/* <Flex direction="column" gap="1rem">
+      <Flex direction="column" gap="1rem">
         <History>
           <Flex
             justify="space-between"
@@ -248,7 +248,7 @@ const Flight = () => {
             </Flex>
           </Flex>
         </History>
-      </Flex> */}
+      </Flex>
     </FlightWrapper>
   );
 };
