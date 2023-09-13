@@ -8,7 +8,7 @@ import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Spinner from "@molecule/icons/spinner";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 
 import { Grid } from "@components/templates/grid";
 import SideBtn from "@molecule/sideBtn";
@@ -24,6 +24,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const settings = {
   infinite: true,
@@ -34,6 +35,35 @@ const settings = {
 };
 
 function RegisterPage() {
+  const [selectedOption, setSelectedOption] = useState("length");
+  const validationOptions = [
+    { value: "length", label: "8 or more characters" },
+    { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
+    { value: "number", label: "At least one number" },
+    {
+      value: "specialCharacter",
+      label: "Have Numbers, and Special symbols (e.g., !, @, #, $)",
+    },
+  ];
+
+  function isPasswordValid(password: string, selectedOption: string) {
+    switch (selectedOption) {
+      case "length":
+        return password.length >= 8;
+      case "uppercaseLowercase":
+        return /[A-Z]/.test(password) && /[a-z]/.test(password);
+      case "number":
+        return /\d/.test(password);
+      case "specialCharacter":
+        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
+      default:
+        return false;
+    }
+  }
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   const { isMobile } = useScreenResolution();
 
   const router = useRouter();
@@ -500,18 +530,6 @@ function RegisterPage() {
                 </Flex>
               </Flex>
 
-              <div style={{ margin: "-1rem 0" }}>
-                {submissionState.error.length > 0 &&
-                  submissionState.error.map((err: any, i: number) => (
-                    <Text
-                      type="p"
-                      text={err.constraints}
-                      color="#FF8682"
-                      size="17px"
-                      key={i}
-                    />
-                  ))}
-              </div>
               <Button
                 width="100%"
                 margin="1.25rem 0 0"

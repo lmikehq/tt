@@ -5,7 +5,6 @@ import { CustomRadioGroup } from "@molecule/radio";
 import { useEffect, useState } from "react";
 import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
-import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";

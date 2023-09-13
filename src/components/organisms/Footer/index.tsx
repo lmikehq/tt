@@ -4,8 +4,8 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
-// import SectionLayout from "@components/templates/SectionLayout";
-import SectionLayout from "@components/templates/SectionLayout";
+// import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import NewsLetter from "@organism/NewsLetter";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Image from "@atom/image";
@@ -120,8 +120,8 @@ const FooterSection = () => {
       text: "Careers",
       color: "#06062A",
     },
-    { href: "/", text: "Press", color: "#06062A" },
-    { href: "/", text: "Blog", color: "#06062A" },
+    { href: "/press", text: "Press", color: "#06062A" },
+    { href: "/blog", text: "Blog", color: "#06062A" },
   ];
 
   if (isApply && isMobile) return null;

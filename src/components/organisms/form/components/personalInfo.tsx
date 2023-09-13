@@ -10,6 +10,7 @@ import { City, ICity, IState, State } from "country-state-city";
 import TextArea from "@molecule/textArea";
 import { CustomRadioGroup } from "@molecule/radio";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema";
 import {
   ErrorText,
   FieldAsDate,
@@ -21,7 +22,7 @@ import { Mode, PersonalInfoInterface } from "@lib/types";
 import ContinueButton from "@organism/continueButton";
 import dayjs from "dayjs";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 interface FormProps {

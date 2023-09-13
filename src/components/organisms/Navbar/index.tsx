@@ -5,7 +5,7 @@ import { Grid } from "@components/templates/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import RTQueryClient from "@components/templates/rtqWrapper";
-import NavbarLayout from "@components/templates/SectionLayout";
+import NavbarLayout from "@components/templates/sectionLayout";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";
@@ -164,7 +164,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
           <NavLink>
             {[
               { name: "Visa Apply", url: "visa", icon: <GiPassport /> },
-              { name: "Find flight", url: "flight", icon: <IoAirplaneSharp /> },
+              { name: "Find Flight", url: "flight", icon: <IoAirplaneSharp /> },
               { name: "Rent Stay", url: "stay", icon: <IoBedSharp /> },
             ].map((item, index) => {
               const active = pathArray === item.url;

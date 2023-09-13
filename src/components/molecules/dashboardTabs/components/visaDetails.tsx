@@ -8,6 +8,8 @@ import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
 import { PiDotsThreeCircleLight } from "react-icons/pi";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
+import { useVoucherStore } from "@lib/store/voucher.store";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import Button from "@atom/button";
@@ -102,7 +104,17 @@ function VisaDetail({ visa }: { visa: any }) {
           intent: "",
         };
         break;
-      case "AWAITING CONFIRMATION" || "PROCESSING FEE REQUESTED":
+      case "FORM FEE REQUESTED":
+        visaInformation = {
+          text: "Submit Application",
+          fn: () => {
+            setIsModalOpen(true);
+          },
+          disabled: false,
+          intent: "FORM FEE",
+        };
+        break;
+      case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
           fn: () => {
@@ -132,7 +144,10 @@ function VisaDetail({ visa }: { visa: any }) {
       ? { text: "#1A820A", bg: "#F1FFF2" }
       : visa?.applicationStatus === "AWAITING CONFIRMATION"
       ? { text: "#7A7422", bg: "FFFEEF" }
+      : visa?.applicationStatus === "FORM FEE REQUESTED"
+      ? { text: "#fff", bg: "#8f3d3d" }
       : { text: "#37008A", bg: "#F6F0FF" };
+  const { applied, voucher } = useVoucherStore((state) => state);
 
   return (
     <Section
@@ -245,7 +260,11 @@ function VisaDetail({ visa }: { visa: any }) {
         <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
           <Text
             type="h5"
-            text={visa.applicationStatus}
+            text={
+              visa.applicationStatus === "FORM FEE REQUESTED"
+                ? "APPLICATION NOT SUBMITTED"
+                : visa.applicationStatus
+            }
             weight={800}
             size={isMobile ? 13 : 14}
             color={textAndBgColor.text}
@@ -312,18 +331,41 @@ function VisaDetail({ visa }: { visa: any }) {
       </Flex>
       {isOpen && (
         <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
-          <Flex align="center" margin=".5rem 0" gap=".5rem">
-            <PiDotsThreeCircleLight size={20} />
-            <Text type="p" text={visa?.applicationStatus} size={"15px"} />
-          </Flex>
-          <Flex align="center" gap=".5rem">
-            <AiOutlineCheck size={20} />
-            <Text
-              type="p"
-              text={"NO DOCUMENTED REQUESTED FROM YOU"}
-              size={"15px"}
-            />
-          </Flex>
+          {visa.applicationStatus === "FORM FEE REQUESTED" ? (
+            <Flex align="center" gap=".5rem">
+              <PiDotsThreeCircleLight size={20} color="red" />
+              <Text
+                type="p"
+                text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
+                size={"15px"}
+              />
+            </Flex>
+          ) : (
+            <>
+              <Flex align="center" margin=".5rem 0" gap=".5rem">
+                <PiDotsThreeCircleLight size={20} />
+                <Text type="p" text={visa?.applicationStatus} size={"15px"} />
+              </Flex>
+              {visa?.usedFormFeeVoucher && (
+                <Flex align="center" margin=".5rem 0" gap=".5rem">
+                  <PiWalletLight size={20} />
+                  <Text
+                    type="p"
+                    text={"Application fee paid with Travel Voucher"}
+                    size={"15px"}
+                  />
+                </Flex>
+              )}
+              <Flex align="center" gap=".5rem">
+                <AiOutlineCheck size={20} />
+                <Text
+                  type="p"
+                  text={"NO DOCUMENTED REQUESTED FROM YOU"}
+                  size={"15px"}
+                />
+              </Flex>
+            </>
+          )}
         </Section>
       )}
     </Section>

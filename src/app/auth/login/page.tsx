@@ -12,7 +12,7 @@ import Link from "@atom/link";
 import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
 import Spinner from "@molecule/icons/spinner";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import sleep from "@lib/extensions/helpers/sleep";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";
@@ -204,7 +204,7 @@ function LoginPage() {
             <img
               src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="logo"
-              height={isMobile ? "45px" : "60px"}
+              height={isMobile ? 45 : 60}
               onClick={() => router.push("/")}
               style={{ cursor: "pointer" }}
             />

@@ -2,6 +2,7 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { BiSolidUser } from "react-icons/bi";
+import { useVoucherStore } from "@lib/store/voucher.store";
 import { styled } from "styled-components";
 import { useVisaApplicationVoucherStore } from "@lib/store/useStore";
 
@@ -22,7 +23,7 @@ const PaymentSummaryPane = ({
   fee,
   totalFee,
 }: PaymentSummaryPanePops) => {
-  const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
+  const { applied, voucher } = useVoucherStore((state) => state);
 
   return (
     <Section>

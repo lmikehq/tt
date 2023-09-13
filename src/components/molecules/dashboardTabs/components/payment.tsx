@@ -10,6 +10,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
+import { useVoucherStore } from "@lib/store/voucher.store";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -101,6 +102,7 @@ const PaymentWrapper = styled.div`
 
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
+  const { applied, voucher } = useVoucherStore((state) => state);
   async function getAllPayments() {
     return await apiService("/payment", "GET");
   }

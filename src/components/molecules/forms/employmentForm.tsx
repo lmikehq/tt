@@ -1,10 +1,5 @@
 import CheckBox from "@molecule/checkbox";
-import {
-  ArrayInput,
-  FieldAsDate,
-  FieldInput,
-  FieldString,
-} from "@organism/fieldInput";
+import { FieldAsDate, FieldInput, FieldString } from "@organism/fieldInput";
 import Flex from "@components/templates/flex";
 import Required from "@atom/required";
 import Text from "@atom/text";

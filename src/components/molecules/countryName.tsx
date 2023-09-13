@@ -2,8 +2,9 @@
 
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import React from "react";
-import { Qparams } from "types";
-import SectionLayout from "@components/templates/SectionLayout";
+import { Qparams } from "@lib/types";
+import { unUrlString } from "@lib/extensions/helpers/url";
+import SectionLayout from "@components/templates/sectionLayout";
 import CountryDetails from "./countryDetails";
 import { SAMPLE_COUNTRY_INFO } from "@lib/extensions/data/countryInfo";
 import { Grid } from "@components/templates/grid";

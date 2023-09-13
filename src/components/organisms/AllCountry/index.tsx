@@ -12,7 +12,7 @@ import Button from "@atom/button";
 import { ttColors } from "@lib/theme/colors";
 import Flex from "@components/templates/flex";
 import { urlString } from "@lib/extensions/helpers/url";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 

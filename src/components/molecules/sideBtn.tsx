@@ -1,60 +1,51 @@
 "use client";
 
 import styled from "styled-components";
-import Link from "@atom/link";
 import PropTypes from "prop-types";
-
-const LoginBtn = styled.div`
-  background: #e7e7e7;
-  height: max-content;
-  width: max-content;
-  border-radius: 60px;
-  border: 1px solid #f6f6f6;
-  padding: 16px 20px;
-
-  p {
-    font-size: 14px;
-    color: #06062a;
-    font-weight: 500;
-    text-align: center;
-  }
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
+import Link from "@atom/link";
+import Button from "@atom/button";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface SideBtnProps {
   title: string;
-  // buttonText: string;
   linkUrl: string;
   linkText: string;
 }
 
-const SideBtn: React.FC<SideBtnProps> = ({
-  title,
-  // buttonText,
-  linkUrl,
-  linkText,
-}) => {
+const SideBtn: React.FC<SideBtnProps> = ({ title, linkUrl, linkText }) => {
+  const { isMobile } = useScreenResolution();
+
   return (
-    <LoginBtn>
-      <p
-        style={{
-          textAlign: "center",
-          fontSize: "16px",
+    <Link href={linkUrl}>
+      <Button
+        styles={{
+          background: "#e7e7e7",
+          height: "max-content",
+          width: "max-content",
+          borderRadius: "60px",
+          border: "1px solid #f6f6f6",
+          padding: "16px 20px",
+          display: isMobile ? "none" : "block",
         }}
       >
-        {`${title} `}
-        <Link href={linkUrl} text={linkText} color="#a0001d" />
-      </p>
-    </LoginBtn>
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "16px",
+            color: "#06062a",
+            fontWeight: 500,
+          }}
+        >
+          {`${title} `}
+          <span style={{ color: "#a0001d" }}>{linkText}</span>
+        </p>
+      </Button>
+    </Link>
   );
 };
 
 SideBtn.propTypes = {
   title: PropTypes.string.isRequired,
-  // buttonText: PropTypes.string.isRequired,
   linkUrl: PropTypes.string.isRequired,
   linkText: PropTypes.string.isRequired,
 };

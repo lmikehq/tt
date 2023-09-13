@@ -6,7 +6,7 @@ import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
 import Flex from "@components/templates/flex";
-import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/sectionLayout";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`

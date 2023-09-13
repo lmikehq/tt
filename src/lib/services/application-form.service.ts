@@ -31,7 +31,7 @@ export class ApplicationFormService {
     payload: CreateVisaApplicationResponse;
   }) => {
     return await axiosClient
-      .post<any, any>("/payment/create-form-fee-charge", {
+      .post<any, any>("/payment/create-visa-fee-charge", {
         currency: "NGN",
         gateway: "Kora",
         service: "VISA",
