@@ -103,19 +103,6 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
             placeholder="Enter Location"
           />
         </Section>
-        {/* <Section>
-          <Text
-            type="p"
-            text="Location Type"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-          />
-          <FieldString
-            placeholder="Select Location Type"
-            name={`employment.${count}.locationType`}
-            options={["On-site", "Hybrid", "Remote"]}
-            formik={formik}
-          />
-        </Section> */}
       </Flex>
       <Flex
         margin={isMobile ? "0px" : "0 0 1rem"}
@@ -137,7 +124,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
             onChange={(e: any) => {
               formik.setFieldValue(`employment.${count}.startYear`, e.$y);
             }}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs(new Date())}
           />
         </Section>
         <Section>
@@ -156,7 +143,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
               formik.setFieldValue(`employment.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs(new Date())}
           />
         </Section>
       </Flex>

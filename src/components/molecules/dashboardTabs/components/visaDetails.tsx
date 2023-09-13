@@ -6,7 +6,6 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
-import { PiDotsThreeCircleLight } from "react-icons/pi";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
 import { useVoucherStore } from "@lib/store/voucher.store";

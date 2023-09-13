@@ -1,5 +1,4 @@
 "use client";
-
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import React from "react";
 import { Qparams } from "@lib/types";
@@ -13,7 +12,6 @@ import { SAMPLE_COUNTRY_REQUIREMENT } from "@lib/extensions/data/countryRequirem
 import HelpfulOrNot from "@molecule/helpfulOrNot";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionTitle from "./sectionTitle";
-import { unUrlString } from "@lib/extensions/helpers/url";
 
 interface pageProps {
   params: Qparams["params"];
