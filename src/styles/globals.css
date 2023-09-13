@@ -185,6 +185,11 @@ input[type="number"] {
   appearance: textfield;
 }
 
+#focus-none:focus {
+  outline: none;
+  border: 0;
+}
+
 textarea:hover {
   border: 1px solid #000000;
 }

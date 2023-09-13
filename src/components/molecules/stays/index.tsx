@@ -9,7 +9,7 @@ import { styled } from "styled-components";
 import FAQ from "./components/faq";
 import Map from "@molecule/map";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const BlueBox = styled.div`
   border: 2px solid #7bbbd6;

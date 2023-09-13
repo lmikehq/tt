@@ -4,7 +4,7 @@ import Button from "@atom/button";
 
 import Image from "@atom/image";
 import Text from "@atom/text";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import Center from "@components/templates/center";
 import Flex from "@components/templates/flex";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";

@@ -4,6 +4,7 @@ import Section from "src/components/molecules/section";
 import { BiSolidUser } from "react-icons/bi";
 import { useVoucherStore } from "@lib/store/voucher.store";
 import { styled } from "styled-components";
+import { useVisaApplicationVoucherStore } from "@lib/store/useStore";
 
 const Container = styled.div`
   border: solid 1px #e7e7e7;

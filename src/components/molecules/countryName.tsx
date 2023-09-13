@@ -1,18 +1,17 @@
 "use client";
-
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import React from "react";
 import { Qparams } from "@lib/types";
 import { unUrlString } from "@lib/extensions/helpers/url";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import CountryDetails from "./countryDetails";
 import { SAMPLE_COUNTRY_INFO } from "@lib/extensions/data/countryInfo";
 import { Grid } from "@components/templates/grid";
 import CountryRequirementDetails from "./countryRequirementDetails";
 import { SAMPLE_COUNTRY_REQUIREMENT } from "@lib/extensions/data/countryRequirement";
 import HelpfulOrNot from "@molecule/helpfulOrNot";
-import SectionTitle from "src/components/molecules/sectionTitle";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import SectionTitle from "./sectionTitle";
 
 interface pageProps {
   params: Qparams["params"];

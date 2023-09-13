@@ -77,13 +77,7 @@ const SaveProgressAndContinueLater = ({
               background="none"
               borderRadius="4px"
               padding="1.5rem"
-              onClick={() => {
-                toast.success("Application Exited Successfully!");
-                sessionStorage.removeItem("visa_application_form");
-                sessionStorage.removeItem(
-                  "visa_application_uploaded_documents"
-                );
-              }}
+              onClick={() => toast.success("Application Exited Successfully!")}
             >
               <Text
                 type="p"

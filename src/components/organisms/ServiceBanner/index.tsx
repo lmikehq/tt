@@ -1,6 +1,6 @@
 "use client";
 
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import ServiceTabs from "src/components/molecules/serviceTabs";
 import { styled } from "styled-components";

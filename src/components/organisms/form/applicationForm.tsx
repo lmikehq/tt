@@ -26,12 +26,11 @@ import { FormikProps, useFormik } from "formik";
 import { useUserStore } from "@lib/store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
-
 import FormSideMenu from "./components/sideMenu/formSideMenu";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const PromoInput = styled.div`
   display: flex;
@@ -82,9 +81,7 @@ interface ErrorInterface {
 
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
-
   const { user } = useUserStore((state) => state);
-
   const {
     fetchRecentProgressFromSession,
     form,
@@ -110,11 +107,8 @@ function ApplicationForm() {
   } = form;
 
   const isLoading = mode == Mode.loading;
-
   const params = useSearchParams();
-
   const router = useRouter();
-
   const detailsFormik = useFormik({
     initialValues: tripDetails,
     validationSchema: detailsSchema,
@@ -255,12 +249,6 @@ function ApplicationForm() {
     persistForm,
   }).find((x) => x.id === step);
 
-  // const isValid: boolean = useMemo(() => {
-  //   return (
-  //     form.tripDetails.homeCountry !== "" && form.tripDetails.destination !== ""
-  //   );
-  // }, [form.tripDetails.homeCountry, form.tripDetails.destination]);
-
   const coverImage = isMobile
     ? "/assets/images/visaPageCover.jpg"
     : "/assets/images/visaDesktopCover.jpg";
@@ -307,7 +295,6 @@ function ApplicationForm() {
             text="View Important Documents Required"
           />
         </Button>
-
         <CustomDrawer
           anchor="bottom"
           open={bottomDrawerOpen}
@@ -327,7 +314,6 @@ function ApplicationForm() {
             />
           </Section>
         </CustomDrawer>
-
         <Flex
           {...(!isMobile && { background: "white" })}
           // background='white'
@@ -393,7 +379,6 @@ function ApplicationForm() {
               </Section>
             </Flex>
           </Section>
-
           <Section
             width="38%"
             height="unset"
@@ -402,7 +387,7 @@ function ApplicationForm() {
             <FormSideMenu
               currentPhase={step}
               formData={form}
-              saveProgress={persistForm}
+      
             />
           </Section>
         </Flex>

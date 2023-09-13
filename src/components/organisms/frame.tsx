@@ -8,7 +8,7 @@ import Button from "@atom/button";
 import { useRouter } from "next/navigation";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const FrameWrapper = styled.div`
   margin: 5rem 0;

@@ -48,6 +48,11 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
   const [hovered, setHovered] = useState<number>(-1);
   const [documentToUpload, setDocumentToUpload] = useState<string>("");
 
+  const handleFailedValidation = () => {
+    if (!formik.errors.documents) return;
+    return toast.error(formik.errors.documents as string);
+  };
+
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
     accept: [".png", ".pdf", ".jpeg"],
@@ -174,7 +179,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
                   "International passport",
                   "Passport photograph",
                   "Means of ID",
-                  "Bank Statements with Reference (personal and sponsorship)",
+                  "Bank statement",
                   "Commitment Letter From Family or employer (if available)",
                   "Proof of accommodation",
                   "References from Employer",
@@ -183,23 +188,18 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
                   "Professsional CV",
                   "Medical Records",
                   "Police Character (if available)",
-                  "Marriage Certificate (if applicable)",
-                  "Birth Certificate of Children (if applicable)",
-                  "Vocational Qualifications (if available)",
-                  "Landed Property Documents (if available)",
-                  "Covid 19 Vaccination Certificate (if available)",
-                  "Company Employment documents (if available)",
-                  "CAC/Tax clearance/Business Documents. (if available)",
-                  "Invitation Letter (if available)",
-                  "Invitation Contact Persons i.D (if available)",
-                  "Sponsorship I.D card/Utility bills/Sponsorship statement (if available)",
-                  "Itineraries (if available)",
                 ];
                 switch (form.tripDetails.visaType) {
                   case "Student Visa":
                     return general;
                   case "Work Visa":
                     return [...general, "Proof of Qualifications"];
+                  case "family visa":
+                    return [
+                      ...general,
+                      "Marriage Certificate",
+                      "Birth Certificate of Children",
+                    ];
                   case "Elite Migration Visa":
                     return [
                       ...general,
@@ -262,7 +262,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
           isLoading={isLoading}
           onClick={() => {}}
           disabled={!formik.isValid}
-          saveProgress={persistForm}
+  
           buttonText={computeButtonText()}
         />
       </form>
