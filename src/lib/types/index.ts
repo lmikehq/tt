@@ -60,10 +60,9 @@ export interface EmploymentDetailsInterface {
   companyName: string;
   jobTitle: string;
   employmentType: string;
-  // locationType: string;
   companyLocation: string;
-  startYear: number;
-  endYear?: number;
+  startYear: number | null;
+  endYear?: number | null;
   stillWorking: boolean;
 }
 
@@ -89,7 +88,7 @@ export interface PersonalInfoInterface {
   partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: string;
-  passportExpiryYear: number;
+  passportExpiryYear: string;
   tripPurpose: string;
   tuberculosis: boolean | null;
   mentalDisorder: boolean | null;

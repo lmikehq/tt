@@ -5,7 +5,7 @@ import { Grid } from "@components/templates/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import RTQueryClient from "@components/templates/rtqWrapper";
-import NavbarLayout from "@components/templates/sectionLayout";
+import NavbarLayout from "@components/templates/SectionLayout";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";

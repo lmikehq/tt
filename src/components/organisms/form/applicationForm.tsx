@@ -30,7 +30,7 @@ import FormSideMenu from "./components/sideMenu/formSideMenu";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const PromoInput = styled.div`
   display: flex;
@@ -387,7 +387,7 @@ function ApplicationForm() {
             <FormSideMenu
               currentPhase={step}
               formData={form}
-              saveProgress={persistForm}
+      
             />
           </Section>
         </Flex>

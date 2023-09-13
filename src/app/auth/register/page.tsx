@@ -8,7 +8,7 @@ import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Spinner from "@molecule/icons/spinner";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 import { Grid } from "@components/templates/grid";
 import SideBtn from "@molecule/sideBtn";

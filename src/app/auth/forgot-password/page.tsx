@@ -5,7 +5,7 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Input, { TextField } from "@atom/input";
 import Text from "@atom/text";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";
 import apiService from "@lib/extensions/hook/apiService";

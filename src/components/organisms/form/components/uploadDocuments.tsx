@@ -262,7 +262,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
           isLoading={isLoading}
           onClick={() => {}}
           disabled={!formik.isValid}
-          saveProgress={persistForm}
+  
           buttonText={computeButtonText()}
         />
       </form>

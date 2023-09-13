@@ -1,5 +1,5 @@
 import Breadcrumb from "@organism/breadcrumb";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import AboutUsPage from "src/components/molecules/aboutUs";
 import Section from "src/components/molecules/section";
 

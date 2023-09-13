@@ -5,7 +5,7 @@ import Text from "@atom/text";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Section from "src/components/molecules/section";
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`

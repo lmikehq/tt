@@ -4,7 +4,7 @@ import { Grid } from "@components/templates/grid";
 import UsefulLinks from "src/components/molecules/contactPage/components/usefulLink";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import styled from "styled-components";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import { customNavigationLinks } from "@lib/extensions/data/customNavigationLinks";
 import { PRIVACY_POLICY } from "@lib/extensions/data/privacyPolicy";
