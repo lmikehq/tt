@@ -49,13 +49,13 @@ function LoginPage() {
   });
   const login = useGoogleLogin({
     onSuccess: async (credentialResponse) => {
-      return await apiService("/auth/google-login", "POST", {
-        credentialResponse,
+      return await apiService("/auth/google", "POST", {
+        token: credentialResponse.access_token,
       })
         .then(async (res) => {
           setSubmissionState({
             ...submissionState,
-            loading: true,
+            loadingGoogleAuth: true,
           });
           setUser(res?.user);
           toast.success("You have successfully logged in!");
@@ -83,6 +83,7 @@ function LoginPage() {
 
   const [submissionState, setSubmissionState] = useState({
     loading: false,
+    loadingGoogleAuth: false,
     error: [] as any,
     success: false,
   });
@@ -395,20 +396,26 @@ function LoginPage() {
               border={`1px solid ${ttColors.primary}`}
               width="100%"
             >
-              <img
-                src={"/assets/images/google.svg"}
-                alt="google"
-                height="30"
-                width={30}
-              />
-              <Text
-                type="p"
-                size={14}
-                weight={600}
-                text="Login With Google"
-                color="#19013b"
-                margin="0px 0px 0px .5rem"
-              />
+              {submissionState.loadingGoogleAuth ? (
+                <Spinner size="40px" fill={ttColors.primary} />
+              ) : (
+                <>
+                  <img
+                    src={"/assets/images/google.svg"}
+                    alt="google"
+                    height="30"
+                    width={30}
+                  />
+                  <Text
+                    type="p"
+                    size={14}
+                    weight={600}
+                    text="Login With Google"
+                    color="#19013b"
+                    margin="0px 0px 0px .5rem"
+                  />
+                </>
+              )}
             </Button>
           </Flex>
         </Section>
