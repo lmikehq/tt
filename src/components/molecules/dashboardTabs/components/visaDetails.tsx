@@ -6,7 +6,12 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import {
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+  MdNumbers,
+  MdOutlineFamilyRestroom,
+} from "react-icons/md";
 import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
 import { useVoucherStore } from "@lib/store/voucher.store";
 import styled from "styled-components";
@@ -16,6 +21,7 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
 import { AiOutlineCheck } from "react-icons/ai";
+import { RxAvatar } from "react-icons/rx";
 
 const Logo = styled.div`
   height: 64px;
@@ -147,7 +153,9 @@ function VisaDetail({ visa }: { visa: any }) {
       ? { text: "#fff", bg: "#8f3d3d" }
       : { text: "#37008A", bg: "#F6F0FF" };
   // const { applied, voucher } = useVoucherStore((state) => state);
-
+  const accompanying = visa?.familyMembers.filter(
+    (fm: any) => fm.accompanying === true
+  ).length;
   return (
     <Section
       styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
@@ -160,9 +168,7 @@ function VisaDetail({ visa }: { visa: any }) {
         visaDetails={{
           id: visa?._id,
           intent: getButtonInformation().intent,
-          accompanying: visa?.familyMembers.filter(
-            (fm: any) => fm.accompanying === true
-          ).length,
+          accompanying: accompanying,
         }}
       />
       <Flex
@@ -309,7 +315,7 @@ function VisaDetail({ visa }: { visa: any }) {
               }}
             >
               <Flex
-                border="1px solid #87CEEB"
+                // border="1px solid #87CEEB"
                 borderBottom="1px solid #87CEEB"
                 align="center"
                 justify="center"
@@ -331,9 +337,9 @@ function VisaDetail({ visa }: { visa: any }) {
         </Flex>
       </Flex>
       {isOpen && (
-        <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
+        <Section styles={{ transition: "all 3s" }}>
           {visa.applicationStatus === "FORM FEE REQUESTED" ? (
-            <Flex align="center" gap=".5rem">
+            <Flex align="center" gap=".5rem" margin="2rem 2rem 0">
               <PiDotsThreeCircleLight size={20} color="red" />
               <Text
                 type="p"
@@ -342,30 +348,71 @@ function VisaDetail({ visa }: { visa: any }) {
               />
             </Flex>
           ) : (
-            <>
-              <Flex align="center" margin=".5rem 0" gap=".5rem">
-                <PiDotsThreeCircleLight size={20} />
-                <Text type="p" text={visa?.applicationStatus} size={"15px"} />
-              </Flex>
-              {visa?.usedFormFeeVoucher && (
+            <Flex justify="space-between" align="center" margin="2rem 0">
+              <div>
                 <Flex align="center" margin=".5rem 0" gap=".5rem">
-                  <PiWalletLight size={20} />
+                  <PiDotsThreeCircleLight size={20} />
+                  <Text type="p" text={visa?.applicationStatus} size={"15px"} />
+                </Flex>
+                {visa?.usedFormFeeVoucher && (
+                  <Flex align="center" margin=".5rem 0" gap=".5rem">
+                    <PiWalletLight size={20} />
+                    <Text
+                      type="p"
+                      text={"Application fee paid with Travel Voucher"}
+                      size={"15px"}
+                    />
+                  </Flex>
+                )}
+                <Flex align="center" gap=".5rem">
+                  <AiOutlineCheck size={20} />
                   <Text
                     type="p"
-                    text={"Application fee paid with Travel Voucher"}
+                    text={"NO DOCUMENTED REQUESTED FROM YOU"}
                     size={"15px"}
                   />
                 </Flex>
-              )}
-              <Flex align="center" gap=".5rem">
-                <AiOutlineCheck size={20} />
-                <Text
-                  type="p"
-                  text={"NO DOCUMENTED REQUESTED FROM YOU"}
-                  size={"15px"}
-                />
-              </Flex>
-            </>
+              </div>
+              <div>
+                <Flex align="center" margin=".5rem 0" gap=".5rem">
+                  <RxAvatar size={20} />
+                  <Text
+                    type="p"
+                    text={`${visa?.primaryTraveller?.firstName} ${visa?.primaryTraveller?.lastName}`}
+                    size={"15px"}
+                  />
+                </Flex>
+
+                <Flex align="center" margin=".5rem 0" gap=".5rem">
+                  <MdOutlineFamilyRestroom size={20} />
+                  <Text
+                    type="p"
+                    text={accompanying > 0 ? "Family" : "Single"}
+                    size={"15px"}
+                  />
+                </Flex>
+
+                <Flex align="center" gap=".5rem">
+                  <MdNumbers size={20} />
+                  <Text type="p" text={visa?.uniqueVisaId} size={"15px"} />
+                </Flex>
+              </div>
+              <div>
+                <Flex>
+                  <Button
+                    width="200px"
+                    styles={{
+                      maxWidth: "100%",
+                    }}
+                    background="transparent"
+                    border="1px solid black"
+                    color="black"
+                  >
+                    <Text type="p" text="+ Add accompanying" size={"15px"} />
+                  </Button>
+                </Flex>
+              </div>
+            </Flex>
           )}
         </Section>
       )}
