@@ -1,6 +1,6 @@
 import Image from "@atom/image";
-// import SectionLayout from "@components/templates/sectionLayout";
-import SectionLayout from "@components/templates/sectionLayout";
+// import SectionLayout from "@components/templates/SectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import FooterSection from "@organism/Footer";
 import Navbar from "@organism/Navbar";

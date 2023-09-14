@@ -82,7 +82,6 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         gap=".8rem"
         style={{
           justifySelf: "flex-end",
-          gridTemplateColumns: "73% 25%",
         }}
       >
         <Flex

@@ -21,6 +21,8 @@ const FormSideMenu = ({
   onClose,
   saveProgress,
 }: FormSideMenuProps) => {
+  const { isMobile } = useScreenResolution();
+
   function getPaymentInformation(field: string) {
     let accompanies = 0;
 

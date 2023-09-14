@@ -1,7 +1,7 @@
 "use client";
-
-import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
 import { isoLangs } from "@lib/extensions/data/isoLangs";
+import { ttColors } from "@lib/theme/colors";
+import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
 import {
   CSSProperties,
   KeyboardEventHandler,
@@ -15,7 +15,7 @@ const StyledInput = styled.input`
   background-color: transparent;
   border: 1px solid #bdbdbd;
   &:hover {
-    border: 1px solid black;
+    border: 1px solid ${ttColors.primary};
   }
 
   &.error {
@@ -58,6 +58,7 @@ export interface InputProps {
   onPaste?: () => void;
   placeholder?: string;
   onBlur?: (e: any) => void;
+  onFocus?: (e: any) => void;
   margin?: CSSProperties["margin"];
   padding?: CSSProperties["padding"];
   touchedError?: boolean;
@@ -71,7 +72,6 @@ export interface InputProps {
     | "tel"
     | "address"
     | "checkbox";
-
   value?: string;
   defaultValue?: string;
   name?: string;
@@ -92,12 +92,14 @@ export interface InputProps {
   flexGrow?: number;
   parentWidth?: string;
   styles?: CSSProperties;
+  error?: boolean;
 }
 
 const Input = ({
   onClick,
   onChange,
   onKeyDown,
+  onFocus,
   onPaste,
   placeholder,
   value,
@@ -122,6 +124,7 @@ const Input = ({
   parentWidth,
   styles,
   step,
+  error,
   defaultValue,
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
@@ -153,7 +156,8 @@ const Input = ({
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
         onClick={onClick}
-        className="custom-form-input"
+        onFocus={onFocus}
+        className={`custom-form-input ${error ? "error" : ""}`}
         type={miniType || type}
         onBlur={onBlur}
         placeholder={placeholder}

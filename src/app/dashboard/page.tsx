@@ -3,9 +3,9 @@ import UserStoreProvider from "@lib/extensions/hook/useUserStore";
 
 const DashboardHeaderComponent = () => {
   return (
-    <UserStoreProvider>
+   // <UserStoreProvider>
       <DashboardHeader />
-    </UserStoreProvider>
+   // </UserStoreProvider>
   );
 };
 

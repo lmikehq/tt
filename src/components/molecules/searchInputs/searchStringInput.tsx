@@ -4,6 +4,7 @@ import Text from "@atom/text";
 import { CSSProperties } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
+import { error } from "console";
 interface SearchStringInputProps {
   value?: string;
   placeholder: string;
@@ -11,6 +12,7 @@ interface SearchStringInputProps {
   options: any[];
   size?: CSSProperties["fontSize"];
   border?: string;
+  error?: boolean;
 }
 
 const SearchStringInput = ({
@@ -19,6 +21,7 @@ const SearchStringInput = ({
   onChange,
   options,
   size,
+  error,
   border,
 }: SearchStringInputProps) => {
   return (
@@ -28,6 +31,7 @@ const SearchStringInput = ({
       height="45px"
       onChange={onChange}
       border={border}
+      error={error}
     >
       <Flex justify="space-between">
         <Text

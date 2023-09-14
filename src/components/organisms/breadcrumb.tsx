@@ -8,7 +8,7 @@ import styled from "styled-components";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const BreadcrumbContainer = styled.div`
   font-size: 14px;
@@ -51,7 +51,7 @@ const Breadcrumb = () => {
                   type="p"
                   text={item}
                   size="1rem"
-                  weight={100}
+                  weight={300}
                   decoration="none"
                 />
               );

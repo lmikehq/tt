@@ -12,7 +12,7 @@ import Link from "@atom/link";
 import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
 import Spinner from "@molecule/icons/spinner";
-import SectionLayout from "@components/templates/sectionLayout";
+import SectionLayout from "@components/templates/SectionLayout";
 import sleep from "@lib/extensions/helpers/sleep";
 import Section from "src/components/molecules/section";
 import { Divider } from "@mui/material";
@@ -201,12 +201,12 @@ function LoginPage() {
 
         <Section>
           <Flex justify="space-between">
-            <Image
+            <img
               src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="logo"
               height={isMobile ? 45 : 60}
               onClick={() => router.push("/")}
-              styles={{ cursor: "pointer" }}
+              style={{ cursor: "pointer" }}
             />
             <SideBtn
               title="Do not have an account? "
@@ -314,7 +314,7 @@ function LoginPage() {
             </Flex>
             <Button
               width="100%"
-              margin="2rem 0"
+              margin=".5rem 0"
               background={
                 submissionState.loading ? "#87ceeb36" : ttColors.primary
               }
@@ -323,7 +323,7 @@ function LoginPage() {
               {submissionState.loading ? (
                 <Spinner size="40px" fill={ttColors.primary} />
               ) : (
-                <Text type="p" text="Login" color={ttColors.dark} size="20px" />
+                <Text type="p" text="Login" color={ttColors.dark} size={isMobile ? "16px": "20px"} />
               )}
             </Button>
             <p
@@ -338,7 +338,7 @@ function LoginPage() {
                 <Text
                   type="span"
                   text="Sign up"
-                  color="#a0001d"
+                  color={ttColors.primary}
                   cursor="pointer"
                 />
               </Link>

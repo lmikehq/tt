@@ -12,6 +12,7 @@ import Image from "@atom/image";
 import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
+import { ttColors } from "@lib/theme/colors";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -88,7 +89,7 @@ interface SearchProps {
   value?: any;
   border?: string;
   disabled?: boolean;
-
+  error?: boolean;
   onChange: (x: any) => void;
 }
 
@@ -100,6 +101,7 @@ export default function SearchInput({
   value,
   height,
   padding,
+  error,
   onChange,
   disabled = false,
 }: // anchorEl,
@@ -139,6 +141,15 @@ SearchProps) {
               display: "flex",
               justifyContent: "center",
               width: "92%",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: `${ttColors.primary} !important`,
+            },
+            "&:hover .MuiInputBase-root": {
+              color: `${ttColors.primary} !important`,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: error ? "red" : "",
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -217,6 +228,7 @@ SearchProps) {
                         text={`${option.code} - ${option.name}`}
                         weight={100}
                       />
+
                     </Flex>
                     <br />
                   </li>
@@ -247,6 +259,7 @@ export function SearchInputAsString({
   options,
   legend,
   value,
+  error,
   onChange,
   height,
   padding,
@@ -300,6 +313,15 @@ export function SearchInputAsString({
               position: "absolute",
               right: "25px",
               bottom: "-10px",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: `${ttColors.primary} !important`,
+            },
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: error ? "red" : "",
+            },
+            "&:hover .MuiInputBase-root": {
+              color: `${ttColors.primary} !important`,
             },
             "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root": {
               display: "block!important",
@@ -377,7 +399,7 @@ export function SearchInputAsString({
                 <li {...props}>
                   <Flex align="center" margin=".4rem .6rem" gap=".6rem">
                     {/* <Image src={option.flag} width={16} height={16} alt="" /> */}
-                    <Text type="p" text={`${option}`} weight={100} />
+                    <Text type="p" text={`${option}`} weight={300} />
                   </Flex>
                   <br />
                 </li>

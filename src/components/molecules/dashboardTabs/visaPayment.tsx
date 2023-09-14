@@ -69,7 +69,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   const { user } = useUserStore((state) => state);
   const { applied, voucher } = useVoucherStore((state) => state);
   const createPayment = async () => {
-    return await apiService("/payment/create-visa-fee-charge", "POST", {
+    return await apiService("/payment/create-form-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
       service: "VISA",
@@ -101,11 +101,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       {/* Additional content goes here */}
       <Section margin="3rem 0px 1.5rem">
         <Flex align="center" gap="0rem" justify="center">
-          <Text
-            type="h1"
-            text={currencyFormatter(paymentAmount())}
-            decoration={applied && voucher ? "line-through" : ""}
-          />
+          <Text type="h1" text={currencyFormatter(paymentAmount())} />
         </Flex>
         <Text type="p" text={visaDetails.intent} />
       </Section>

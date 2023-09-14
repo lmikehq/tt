@@ -61,10 +61,9 @@ export interface EmploymentDetailsInterface {
   companyName: string;
   jobTitle: string;
   employmentType: string;
-  // locationType: string;
   companyLocation: string;
-  startYear: number;
-  endYear?: number;
+  startYear: number | null;
+  endYear?: number | null;
   stillWorking: boolean;
 }
 
@@ -76,7 +75,7 @@ export interface PersonalInfoInterface {
   placeOfBirth: CountryType;
   phoneNumber: string;
   stateOfOrigin: string;
-  lgaOfOrigin: string;
+  placeOfOrigin: string;
   nativeLanguage: string;
   meansOfId: string;
   idNumber: string;
@@ -198,7 +197,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
       placeOfBirth: data.personalInfo.placeOfBirth.name,
       phoneNumber: data.personalInfo.phoneNumber,
       stateOfOrigin: data.personalInfo.stateOfOrigin,
-      lgaOfOrigin: data.personalInfo.lgaOfOrigin,
+      placeOfOrigin: data.personalInfo.placeOfOrigin,
       nativeLanguage: data.personalInfo.nativeLanguage,
       meansOfId: data.personalInfo.meansOfId,
       idNumber: data.personalInfo.idNumber,

@@ -4,7 +4,6 @@ import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { format } from "date-fns";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
-import { AiOutlineCheck } from "react-icons/ai";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
@@ -16,6 +15,7 @@ import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const Logo = styled.div`
   height: 64px;
@@ -126,9 +126,9 @@ function VisaDetail({ visa }: { visa: any }) {
       default:
         visaInformation = {
           text: "Pay Visa Fee",
-          fn: () => setIsModalOpen(true),
+          fn: () => {},
           disabled: false,
-          intent: "PROCESSING FEE",
+          intent: "",
         };
     }
 
@@ -244,11 +244,8 @@ function VisaDetail({ visa }: { visa: any }) {
                     text={
                       recentPayment?.totalAmount
                         ? currencyFormatter(recentPayment.totalAmount)
-                        : visa?.usedFormFeeVoucher
-                        ? "Travel voucher"
                         : "n/a"
                     }
-                    decoration={applied && voucher ? "line-through" : ""}
                     color="#112211"
                     size={14}
                     weight={500}

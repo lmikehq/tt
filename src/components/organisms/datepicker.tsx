@@ -10,6 +10,7 @@ import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { IoCalendarOutline } from "react-icons/io5";
+import { ttColors } from "@lib/theme/colors";
 
 interface BlockDatePickerProps {
   value?: Range;
@@ -59,9 +60,11 @@ interface DatePickerProps {
   maxDate?: Dayjs;
   placeholder?: string;
   position?: "start";
+  error?: boolean;
+  format?: string;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position, error, format }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
@@ -75,24 +78,33 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
         sx={{
           width: "100%",
           cursor: "pointer",
+          height: '40px',
           "& input": {
             color: "#1C1B1F",
             fontWeight: 400,
             fontFamily: "'Poppins', sans-serif",
           },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: `${ttColors.primary} !important`,
+          },
+          "&:hover .MuiInputBase-root": {
+            color: `${ttColors.primary} !important`,
+          },
           '& .MuiInputBase-root': {
             flexDirection: position === 'start' ? 'row-reverse': 'row',
-          }
+          },
+
         }}
         slotProps={{
           textField: {
             placeholder: placeholder,
-            error: false,
+            error: error,
           },
         }}
         slots={{
           openPickerIcon: IoCalendarOutline,        
         }}
+        format={format}
       />
     </LocalizationProvider>
   );

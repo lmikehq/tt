@@ -1,5 +1,4 @@
 "use client";
-
 import styled from "styled-components";
 
 const SectionLayout = styled.section<{ margin?: string; padding?: string }>`

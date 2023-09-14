@@ -37,12 +37,11 @@ export const detailsKeys: DetailsKeys = {
   homeCountry: mockCountry,
   destination: mockCountry,
   applicationType: "",
-  visaType: "Family", //
+  visaType: "", //
   travellingBy: "AirPlane",
 };
 
 // PERSONAL INFO
-
 export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
   .object()
   .shape({
@@ -53,7 +52,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     placeOfBirth: countrySchema.required(),
     phoneNumber: yup.string().required("Required"),
     stateOfOrigin: yup.string().required("Required"),
-    lgaOfOrigin: yup.string().required("Required"),
+    placeOfOrigin: yup.string().required("Required"),
     nativeLanguage: yup.string().required("Required"),
     meansOfId: yup.string().required("Required"),
     idNumber: yup.string().required("Required"),
@@ -69,11 +68,13 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       then: (schema) => schema.required("Required"),
     }),
     passportNumber: yup.string().required("Required"),
+
     passportIssuedCountry: countrySchema.required(),
     passportExpiryYear: yup
       .number()
       .required("Required")
       .positive("Expiry year must be a positive number"),
+
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     mentalDisorder: yup.boolean().required("Required"),
@@ -106,9 +107,8 @@ export const personalInfoKeys: PersonalInfoInterface = {
   lastName: "",
   middleName: "",
   email: "",
-  // placeOfOrigin: "",
+  placeOfOrigin: "",
   stateOfOrigin: "",
-  lgaOfOrigin: "",
   nativeLanguage: "",
   meansOfId: "",
   idNumber: "",
@@ -122,7 +122,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   passportNumber: "",
   passportIssuedCountry: mockCountry,
   // passportIssueDate: "",
-  passportExpiryYear: 2000,
+  passportExpiryYear: '',
   tripPurpose: "",
   tuberculosis: null,
   mentalDisorder: null,
@@ -149,7 +149,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   // placeOfBirth: "City1",
   // stateOfOrigin: "State1",
   // phoneNumber: "1234567890",
-  // lgaOfOrigin: "LGA1",
+  // placeOfOrigin: "LGA1",
   // nativeLanguage: "English",
   // meansOfId: "Passport",
   // idNumber: "ABC123",
@@ -201,7 +201,6 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
       .required("Required"),
     location: yup.string().required("Required"),
     fieldOfStudy: yup.string().required("Required"),
-
     startYear: yup.number().required("Required"),
     endYear: yup.number().when("st", {
       is: false,
@@ -249,8 +248,8 @@ export const employmentKeys: EmploymentDetailsInterface = {
   jobTitle: "",
   employmentType: "",
   companyLocation: "",
-  startYear: 0,
-  endYear: 0,
+  startYear: null,
+  endYear: null,
   stillWorking: false,
   // companyName: "Company1",
   // jobTitle: "Developer",
@@ -298,7 +297,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
 
 export const familyInforKeys: FamilyInfoInterface = {
   passportNumber: "",
-  expiryYear: "0",
+  expiryYear: "",
   gender: "",
   dateOfBirth: "",
   membersName: "",
@@ -306,7 +305,7 @@ export const familyInforKeys: FamilyInfoInterface = {
   address: "",
   membersPhoneNumber: "",
   membersEmail: "",
-  issueYear: "0",
+  issueYear: "",
   accompanying: false,
   // membersName: "Alice Smith",
   // relationshipToPrimary: "Spouse",
@@ -400,7 +399,7 @@ export const test: ApplicationFormRequestInput = {
     placeOfBirth: "City1",
     stateOfOrigin: "State1",
     phoneNumber: "1234567890",
-    lgaOfOrigin: "LGA1",
+    placeOfOrigin: "LGA1",
     nativeLanguage: "English",
     meansOfId: "Passport",
     idNumber: "ABC123",
@@ -412,7 +411,7 @@ export const test: ApplicationFormRequestInput = {
     partnersName: "",
     passportNumber: "P123456",
     passportIssuedCountry: "Country4",
-    passportExpiryYear: 2025,
+    passportExpiryYear: '',
     gender: "Male",
     tripPurpose: "Vacation",
     tuberculosis: false,
@@ -462,7 +461,7 @@ export const test: ApplicationFormRequestInput = {
       gender: "Female",
       passportNumber: "P987654",
       expiryYear: "2025",
-      issueYear: 2020,
+      issueYear: "2020",
     },
     {
       membersName: "Alice Smith",
@@ -474,8 +473,8 @@ export const test: ApplicationFormRequestInput = {
       dateOfBirth: "1992-05-15",
       gender: "Female",
       passportNumber: "P987654",
-      expiryYear: 2025,
-      issueYear: 2020,
+      expiryYear: "2025",
+      issueYear: "2020",
     },
   ],
   documents: [

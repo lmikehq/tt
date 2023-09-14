@@ -5,7 +5,7 @@ import { Grid } from "@components/templates/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
 import RTQueryClient from "@components/templates/rtqWrapper";
-import NavbarLayout from "@components/templates/sectionLayout";
+import NavbarLayout from "@components/templates/SectionLayout";
 import { ButtonBase } from "@mui/material";
 import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";
@@ -132,10 +132,9 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
         <Flex padding="1rem" justify="space-between" ref={ref}>
           <ButtonBase onClick={() => router.push("/")}>
             <Image
-              src={"/assets/images/brand/tt_blue_logo_with_text.png"}
+              src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="thrillers travels logo"
-              height={35}
-              width={0}
+              height={40}
             />
           </ButtonBase>
 
