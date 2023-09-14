@@ -70,11 +70,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     passportNumber: yup.string().required("Required"),
 
     passportIssuedCountry: countrySchema.required(),
-    passportExpiryYear: yup
-      .number()
-      .required("Required")
-      .positive("Expiry year must be a positive number"),
-
+    passportExpiryYear: yup.string().required("Required"),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     mentalDisorder: yup.boolean().required("Required"),
@@ -122,7 +118,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   passportNumber: "",
   passportIssuedCountry: mockCountry,
   // passportIssueDate: "",
-  passportExpiryYear: '',
+  passportExpiryYear: "",
   tripPurpose: "",
   tuberculosis: null,
   mentalDisorder: null,
@@ -411,7 +407,7 @@ export const test: ApplicationFormRequestInput = {
     partnersName: "",
     passportNumber: "P123456",
     passportIssuedCountry: "Country4",
-    passportExpiryYear: '',
+    passportExpiryYear: "",
     gender: "Male",
     tripPurpose: "Vacation",
     tuberculosis: false,

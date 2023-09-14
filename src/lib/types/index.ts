@@ -89,7 +89,7 @@ export interface PersonalInfoInterface {
   partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: CountryType;
-  passportExpiryYear: number;
+  passportExpiryYear: string;
   tripPurpose: string;
   tuberculosis: boolean | null;
   mentalDisorder: boolean | null;

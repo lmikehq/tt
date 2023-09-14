@@ -42,10 +42,17 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
     { value: false, label: "No" },
   ];
 
-  const country = COUNTRY_FLAGS.find(country => country.name === form.tripDetails.homeCountry)
-  const states: IState[] = (State.getStatesOfCountry(`${country?.code}`));
-  const state = states.find(state => state.name === formik.values.stateOfOrigin)
-  const cities: ICity[] = (City.getCitiesOfState(`${country?.code}`, `${state?.isoCode}`))
+  const country = COUNTRY_FLAGS.find(
+    (country) => country.name === form.tripDetails.homeCountry.name
+  );
+  const states: IState[] = State.getStatesOfCountry(`${country?.code}`);
+  const state = states.find(
+    (state) => state.name === formik.values.stateOfOrigin
+  );
+  const cities: ICity[] = City.getCitiesOfState(
+    `${country?.code}`,
+    `${state?.isoCode}`
+  );
 
   return (
     <Section>
@@ -907,8 +914,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            if (!formik.isValid || !formik.dirty)
-              return ToastError()
+            if (!formik.isValid || !formik.dirty) return ToastError();
           }}
           disabled={!formik.isValid || !formik.dirty}
         />
