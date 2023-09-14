@@ -45,9 +45,7 @@ const OptionText = styled.div<{ hovered: boolean }>`
   flex: 1;
 `;
 
-// interface VisaDashboardHeaderProps {
-//   headerText: string;
-// }
+
 
 function VisaDashboardHeader({ headerText }: { headerText: string }) {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
@@ -72,7 +70,6 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
 
   const { isMobile } = useScreenResolution();
 
-  // if (isMobile) return <div></div>;
 
   return (
     <Flex justify="space-between" align="center" margin={isMobile ? ".5rem 0px" :"1.5rem 0px"} gap="0px">
@@ -80,7 +77,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         <Text
           type="h1"
           text={headerText}
-          size={isMobile ? "18px" : "24"}
+          size={isMobile ? "18px" : "24px"}
           weight={600}
         />
       </Section>

@@ -293,6 +293,7 @@ function RegisterPage() {
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
+
                 <Section>
                   <Text
                     type="p"
@@ -324,6 +325,7 @@ function RegisterPage() {
                     />
                   )}
                 </Section>
+
                 <Section>
                   <Text
                     type="p"
@@ -357,7 +359,7 @@ function RegisterPage() {
                 </Section>
               </Flex>
               <Flex
-                gap={".5rem"}
+        a        gap={".5rem"}
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -503,8 +505,6 @@ function RegisterPage() {
                   </Section>
                 )}
               </Section>
-
-             
 
               <Section>
                 <Text

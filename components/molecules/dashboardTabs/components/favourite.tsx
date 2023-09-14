@@ -67,7 +67,7 @@ const Favourite = () => {
         <NoVisaApplication noVisaImage={NoVisa} content={content} />
       </Center> */}
       <FavouriteWrapper>
-        <Grid columns={isMobile ? "1" : "3"} gap="1rem">
+        <Grid columns={isMobile ? "1" : "3"} gap={isMobile ? "1.5rem" : "1rem"}>
           <FavouriteCard>
             <FavouriteCardImg>
               <Image

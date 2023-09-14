@@ -4,7 +4,7 @@ import Text from "@atom/text";
 import Section from "@molecule/section";
 import { useScreenResolution } from "hook/useScreenResolution";
 import { useState } from "react";
-import { AiFillPlusCircle } from "react-icons/ai";
+import { AiFillCheckCircle, AiFillPlusCircle } from "react-icons/ai";
 import { RiEditBoxFill } from "react-icons/ri";
 import { useUserStore } from "store/useStore";
 import styled from "styled-components";
@@ -12,6 +12,12 @@ import { ttColors } from "theme/colors";
 import AddressModal from "../accountAddress";
 import PasswordModal from "../accountPassword";
 import PhoneModal from "../accountPhone";
+import { BiSolidPencil } from "react-icons/bi";
+import Input from "@atom/input";
+import toast from "react-hot-toast";
+import sleep from "@lib/sleep";
+import apiService from "hook/apiService";
+import Center from "@atom/center";
 
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
@@ -22,6 +28,9 @@ const AccountRight = styled.div`
 const AccountDetails = styled.div`
   background: #ffffff;
   border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 const AccountWrapper = styled.div`
@@ -42,6 +51,73 @@ const Account = () => {
   const [openAddAddressModal, setOpenAddAddressModal] = useState(false);
   const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
   const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false);
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+  const validationOptions = [
+    { value: "length", label: "8 or more characters" },
+    { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
+    { value: "number", label: "At least one number" },
+    {
+      value: "specialCharacter",
+      label: "Have Numbers, and Special symbols (e.g., !, @, #, $)",
+    },
+  ];
+
+  function isPasswordValid(password: string, selectedOption: string) {
+    switch (selectedOption) {
+      case "length":
+        return password.length >= 8;
+      case "uppercaseLowercase":
+        return /[A-Z]/.test(password) && /[a-z]/.test(password);
+      case "number":
+        return /\d/.test(password);
+      case "specialCharacter":
+        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
+      default:
+        return false;
+    }
+  }
+
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+
+
+  const [isMobileEdit, setIsMobileEdit] = useState(false);
+  // const [editedInfo, setEditedInfo] = useState({
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  //   phoneNumber: "",
+  //   address: "",
+  // });
+
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+    address: "",
+    dateOfBirth: "",
+    consent: false,
+  });
+
+  const [isSaving, setIsSaving] = useState(false); // Define setIsSaving
+  const [error, setError] = useState(null);
+
+  const toggleMobileEdit = () => {
+    setIsMobileEdit(!isMobileEdit);
+  };
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setRegisterData({
+  //     ...registerData,
+  //     [name]: value,
+  //   });
+  // };
+
+
 
   const handleOpenAddAddressModal = () => {
     setOpenAddAddressModal(true);
@@ -66,6 +142,8 @@ const Account = () => {
     setOpenChangePhoneModal(false);
   };
   // To here
+
+  
 
   const { user } = useUserStore((state) => state);
   const AccountInformation = [
@@ -103,7 +181,7 @@ const Account = () => {
 
     {
       title: "Phone Number",
-      description: user?.phoneNumber,
+      description: user?.phoneNumber || "No phone number added",
       icon: (
         <RiEditBoxFill
           size={isMobile ? ".8rem" : "1rem"}
@@ -138,6 +216,83 @@ const Account = () => {
       editable: false,
     },
   ];
+
+ const [submissionState, setSubmissionState] = useState({
+   loading: false,
+   error: [] as any,
+   success: false,
+ });
+ async function handleRegister(): Promise<any> {
+   const response = await apiService("/user", "POST", {
+     ...registerData,
+     email: registerData?.email?.toLowerCase(),
+   });
+   return response;
+ }
+
+ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+   e.preventDefault();
+   if (submissionState.loading) return;
+   setSubmissionState({
+     ...submissionState,
+     loading: true,
+   });
+   if (!registerData.consent) {
+     setSubmissionState({
+       ...submissionState,
+       loading: false,
+     });
+     return alert("Please agree to the terms and conditions");
+   }
+
+   if (registerData.password !== confirmPassword) {
+     setSubmissionState({
+       ...submissionState,
+       error: [
+         {
+           constraints: "Password do not match",
+           property: "confirmPassword",
+         },
+         {
+           constraints: "Password do not match",
+           property: "password",
+         },
+       ],
+       loading: false,
+     });
+     return;
+   }
+
+   const res = await handleRegister();
+   if (res.statusCode === 400) {
+     return setSubmissionState({
+       ...submissionState,
+       error: res.errors.message,
+       loading: false,
+     });
+   } else if (res.statusCode === 422) {
+     return setSubmissionState({
+       ...submissionState,
+       error: [{ property: "email", constraints: res.errors.message }],
+     });
+   }
+
+   setSubmissionState({
+     ...submissionState,
+     loading: true,
+   });
+   toast.success("Your details has been updated successfully!");
+   await sleep(3000);
+   toast.loading("Redirecting to login page...", {
+     duration: 3000,
+   });
+ }
+ function checkIfFieldHasError(field: string) {
+   const error: { constraints: string } = submissionState?.error?.find(
+     (err: any) => err.property.includes(field)
+   );
+   if (error) return error.constraints;
+ }
   return (
     <Section
       margin="2rem 0"
@@ -147,96 +302,370 @@ const Account = () => {
         padding: ".25rem 1.5rem",
       }}
     >
-      <Section margin="2.5rem 0px 0px">
+      <Flex margin="2.5rem 0px 0px" justify="space-between" align="center">
         <Text type="h1" text="Account" size={20} weight={600} />
-      </Section>
+        <BiSolidPencil onClick={toggleMobileEdit} />
+      </Flex>
 
-      <AccountWrapper>
-        <AccountDetails>
-          {AccountInformation.map((detail) => (
-            <Flex
-              justify="space-between"
-              key={detail.title}
-              gap="10px"
-              margin={isMobile ? "0px" : "35px 0 0"}
-            >
-              <AccountLeft>
+      {isMobileEdit ? (
+        <form onSubmit={handleSubmit}>
+          <Flex direction="column" gap="1rem">
+            <Section>
+              <Text
+                type="p"
+                text="Name"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
+              />
+              <Input
+                placeholder="Enter your first name"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    name: e.target.value,
+                  })
+                }
+                value={registerData.name}
+                border={checkIfFieldHasError("name") ? "1px solid #FF8682" : ""}
+                height="3rem"
+              />
+              {checkIfFieldHasError("name") && (
                 <Text
                   type="p"
-                  text={detail.title}
-                  size={isMobile ? "10px" : "15px"}
-                  color="#112211"
-                  weight="300"
+                  text={checkIfFieldHasError("name") || ""}
+                  color="#FF8682"
                 />
+              )}
+            </Section>
+
+            <Section>
+              <Text
+                type="p"
+                text="Email"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
+              />
+              <Input
+                placeholder="Enter you email"
+                type="email"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    email: e.target.value,
+                  })
+                }
+                value={registerData.email}
+                border={
+                  checkIfFieldHasError("email") ? "1px solid #FF8682" : ""
+                }
+                height="3rem"
+              />
+              {checkIfFieldHasError("email") && (
                 <Text
-                  type="h5"
-                  text={detail.description}
-                  weight="400"
-                  size={isMobile ? "12px" : "18px"}
+                  type="p"
+                  text={checkIfFieldHasError("email") || ""}
+                  color="#FF8682"
                 />
-              </AccountLeft>
+              )}
+            </Section>
 
-              <AccountRight>
-                {detail.edit && (
-                  <Button
-                    background="transparent"
-                    border="1px solid var(--primary-color)"
-                    color="var(--secondary-color)"
-                    height={isMobile ? "40px" : "48px"}
-                    width={isMobile ? "143px" : "175px"}
-                    fontSize={isMobile ? "12px" : "14px"}
-                    lineHeight="14px"
-                    styles={{
-                      gap: "10px",
-                      marginBottom: isMobile ? "1.4rem" : "",
-                    }}
-                    onClick={
-                      detail.title === "Name"
-                        ? undefined // Disable the "Edit" button for Name
-                        : detail.title === "Address"
-                        ? handleOpenAddAddressModal
-                        : detail.title === "Password"
-                        ? handleOpenChangePasswordModal
-                        : detail.title === "Phone Number"
-                        ? handleOpenChangePhoneModal
-                        : undefined // Handle other modals
-                    }
-                  >
-                    {detail.icon}
-                    <Text type="p" text={detail.edit} />
-                  </Button>
-                )}
-                {detail.editable && (
-                  <Button
-                    background="transparent"
-                    border="1px solid var(--primary-color)"
-                    color="var(--secondary-color)"
-                    height={isMobile ? "40px" : "48px"}
-                    width={isMobile ? "100px" : "175px"}
-                    fontSize={isMobile ? "12px" : "14px"}
-                    lineHeight="14px"
-                    onClick={
-                      detail.title === "Name"
-                        ? undefined // Disable the "Edit" button for Name
-                        : detail.title === "Address"
-                        ? handleOpenAddAddressModal
-                        : detail.title === "Password"
-                        ? handleOpenChangePasswordModal
-                        : detail.title === "Phone Number"
-                        ? handleOpenChangePhoneModal
-                        : undefined // Handle other modals
-                    }
-                    styles={{
-                      gap: "10px",
-                      marginBottom: isMobile ? "1.4rem" : "",
-                    }}
-                  >
-                    {detail.icon}
-                    <Text type="p" text={"Edit"} />
-                  </Button>
-                )}
+            <Section>
+              <Text
+                type="p"
+                text="Password"
+                margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
+              />
+              <div
+                onFocus={() => setIsPasswordFocused(true)}
+                onBlur={() => setIsPasswordFocused(false)}
+              >
+                <Input
+                  placeholder="Enter your password"
+                  type="password"
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      password: e.target.value,
+                    })
+                  }
+                  border={
+                    checkIfFieldHasError("password") ? "1px solid #FF8682" : ""
+                  }
+                  height="3rem"
+                  value={registerData.password}
+                />
+              </div>
 
-                {/* {detail.title === "Email" && (
+              {isPasswordFocused && (
+                <Section margin="1rem 0px 0px">
+                  <Text
+                    type="h1"
+                    text="Your Password must have the following."
+                    size={16}
+                    weight={500}
+                    styles={{
+                      margin: "0px 0px .9rem 0px",
+                      lineHeight: "1.5rem",
+                    }}
+                  />
+                  {validationOptions.map((option) => (
+                    <div
+                      key={option.value}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "0.5rem",
+                        fontSize: "16px",
+                        fontWeight: 400,
+                        color: isPasswordValid(
+                          registerData.password,
+                          option.value
+                        )
+                          ? "#000000"
+                          : "#000000",
+                      }}
+                    >
+                      <AiFillCheckCircle
+                        size="1.5rem"
+                        style={{
+                          color: isPasswordValid(
+                            registerData.password,
+                            option.value
+                          )
+                            ? "#7BBBD6"
+                            : "#B6B6B6",
+                        }}
+                      />
+                      <span style={{ marginLeft: "0.5rem" }}>
+                        {option.label}
+                      </span>
+                    </div>
+                  ))}
+                </Section>
+              )}
+            </Section>
+
+            <Section>
+              <Text
+                type="p"
+                text="Confirm Password"
+                margin={isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Input
+                placeholder="Confirm your password"
+                type="password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                border={
+                  checkIfFieldHasError("confirmPassword")
+                    ? "1px solid #FF8682"
+                    : ""
+                }
+                height="3rem"
+                value={confirmPassword}
+              />
+              {checkIfFieldHasError("confirmPassword") && (
+                <Text
+                  type="p"
+                  text={checkIfFieldHasError("confirmPassword") || ""}
+                  color="#FF8682"
+                />
+              )}
+            </Section>
+
+            <Section>
+              <Text
+                type="p"
+                text="Phone Number"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
+              />
+              <Input
+                placeholder="Enter your phone number"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    phoneNumber: e.target.value,
+                  })
+                }
+                border={
+                  checkIfFieldHasError("phoneNumber") ? "1px solid #FF8682" : ""
+                }
+                height="3rem"
+                type="number"
+                value={registerData.phoneNumber}
+              />
+              {checkIfFieldHasError("phoneNumber") && (
+                <Text
+                  type="p"
+                  text={checkIfFieldHasError("phoneNumber") || ""}
+                  color="#FF8682"
+                />
+              )}
+            </Section>
+
+            <Section>
+              <Text
+                type="p"
+                text="Address"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
+              />
+              <Input
+                placeholder="Enter your address"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    address: e.target.value,
+                  })
+                }
+                border={
+                  checkIfFieldHasError("address") ? "1px solid #FF8682" : ""
+                }
+                height="3rem"
+                type="text"
+                value={registerData.address}
+              />
+              {checkIfFieldHasError("address") && (
+                <Text
+                  type="p"
+                  text={checkIfFieldHasError("address") || ""}
+                  color="#FF8682"
+                />
+              )}
+            </Section>
+
+            <Section>
+              <Text
+                type="p"
+                text="Date Of Birth"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={isMobile ? "14.5px" : "16px"}
+              />
+              <Input
+                placeholder="DD-MM-YYYY"
+                onChange={(e) =>
+                  setRegisterData({
+                    ...registerData,
+                    dateOfBirth: e.target.value,
+                  })
+                }
+                border={
+                  checkIfFieldHasError("dateOfBirth") ? "1px solid #FF8682" : ""
+                }
+                height="3rem"
+                type="text"
+                value={registerData.dateOfBirth}
+              />
+              {checkIfFieldHasError("dateOfBirth") && (
+                <Text
+                  type="p"
+                  text={checkIfFieldHasError("dateOfBirth") || ""}
+                  color="#FF8682"
+                />
+              )}
+            </Section>
+          </Flex>
+
+          <Center>
+            <Button
+              type="submit"
+              disabled={isSaving}
+              margin="1rem 0px 1.5rem"
+              styles={{ justifyContent: "center", alignContent: "center" }}
+            >
+              {isSaving ? "Saving..." : "Save"}
+            </Button>
+          </Center>
+        </form>
+      ) : (
+        <AccountWrapper>
+          <AccountDetails>
+            {AccountInformation.map((detail) => (
+              <Flex
+                justify="space-between"
+                key={detail.title}
+                gap={isMobile ? "1.5rem" : "10px"}
+                margin={isMobile ? "0px" : "35px 0 0"}
+              >
+                <AccountLeft>
+                  <Text
+                    type="p"
+                    text={detail.title}
+                    size={isMobile ? "16px" : "15px"}
+                    color="#112211"
+                    weight="300"
+                  />
+                  <Text
+                    type="h5"
+                    text={detail.description}
+                    weight={isMobile ? "600" : "400"}
+                    size={isMobile ? "16px" : "18px"}
+                  />
+                </AccountLeft>
+
+                <AccountRight>
+                  {detail.edit && (
+                    <Button
+                      background="transparent"
+                      border="1px solid var(--primary-color)"
+                      color="var(--secondary-color)"
+                      height={isMobile ? "40px" : "48px"}
+                      width={isMobile ? "143px" : "175px"}
+                      fontSize={isMobile ? "12px" : "14px"}
+                      lineHeight="14px"
+                      styles={{
+                        gap: "10px",
+                        marginBottom: isMobile ? "1.4rem" : "",
+                        display: isMobile ? "none" : "block",
+                      }}
+                      onClick={
+                        detail.title === "Name"
+                          ? undefined // Disable the "Edit" button for Name
+                          : detail.title === "Address"
+                          ? handleOpenAddAddressModal
+                          : detail.title === "Password"
+                          ? handleOpenChangePasswordModal
+                          : detail.title === "Phone Number"
+                          ? handleOpenChangePhoneModal
+                          : undefined // Handle other modals
+                      }
+                    >
+                      {detail.icon}
+                      <Text type="p" text={detail.edit} />
+                    </Button>
+                  )}
+                  {detail.editable && (
+                    <Button
+                      background="transparent"
+                      border="1px solid var(--primary-color)"
+                      color="var(--secondary-color)"
+                      height={isMobile ? "40px" : "48px"}
+                      width={isMobile ? "100px" : "175px"}
+                      fontSize={isMobile ? "12px" : "14px"}
+                      lineHeight="14px"
+                      onClick={
+                        detail.title === "Name"
+                          ? undefined // Disable the "Edit" button for Name
+                          : detail.title === "Address"
+                          ? handleOpenAddAddressModal
+                          : detail.title === "Password"
+                          ? handleOpenChangePasswordModal
+                          : detail.title === "Phone Number"
+                          ? handleOpenChangePhoneModal
+                          : undefined // Handle other modals
+                      }
+                      styles={{
+                        gap: "10px",
+                        marginBottom: isMobile ? "1.4rem" : "",
+                        display: isMobile ? "none" : "block",
+                      }}
+                    >
+                      {detail.icon}
+                      <Text type="p" text={"Edit"} />
+                    </Button>
+                  )}
+
+                  {/* {detail.title === "Email" && (
                   <Button
                     background="transparent"
                     border="1px solid var(--primary-color)"
@@ -268,11 +697,11 @@ const Account = () => {
                     <Text type="p" text={"Edit"} />
                   </Button>
                 )} */}
-              </AccountRight>
-            </Flex>
-          ))}
+                </AccountRight>
+              </Flex>
+            ))}
 
-          {/* <ReusableModal
+            {/* <ReusableModal
             open={openModal}
             onClose={handleCloseModal}
             headerText="Upload Document"
@@ -304,20 +733,21 @@ const Account = () => {
             </Section>
           </ReusableModal> */}
 
-          <PasswordModal
-            open={openChangePasswordModal}
-            onClose={handleCloseChangePasswordModal}
-          />
-          <AddressModal
-            open={openAddAddressModal}
-            onClose={handleCloseAddAddressModal}
-          />
-          <PhoneModal
-            open={openChangePhoneModal}
-            onClose={handleCloseChangePhoneModal}
-          />
-        </AccountDetails>
-      </AccountWrapper>
+            <PasswordModal
+              open={openChangePasswordModal}
+              onClose={handleCloseChangePasswordModal}
+            />
+            <AddressModal
+              open={openAddAddressModal}
+              onClose={handleCloseAddAddressModal}
+            />
+            <PhoneModal
+              open={openChangePhoneModal}
+              onClose={handleCloseChangePhoneModal}
+            />
+          </AccountDetails>
+        </AccountWrapper>
+      )}
     </Section>
   );
 };

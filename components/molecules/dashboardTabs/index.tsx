@@ -10,6 +10,7 @@ import Favourite from "./components/favourite";
 import Notification from "./components/notification";
 import RTQueryClient from "@components/layouts/rtqWrapper";
 import { useScreenResolution } from "hook/useScreenResolution";
+import Referrals from "./components/referral";
 
 const Wrapper = styled.div`
   margin-top: 10px;
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
     border-radius: 12px;
   }
   .MuiButtonBase-root {
-    width: 20%;
+    width: 16.6666667%;
 
     .flex__FlexWrapper-sc-996d4228-0 {
       justify-content: center;
@@ -68,6 +69,11 @@ function DashboardTabs() {
       value: 4,
       content: <Account />,
     },
+    {
+      label: "Referral",
+      value: 5,
+      content: <Referrals />,
+    }
   ];
 
   return (
