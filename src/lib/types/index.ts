@@ -1,3 +1,4 @@
+import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 import { document } from "./schema";
 import { safelyConvertToNumber } from "@lib/utilFns";
@@ -37,8 +38,8 @@ export interface User {
 }
 
 export interface DetailsKeys {
-  homeCountry: string;
-  destination: string;
+  homeCountry: CountryType;
+  destination: CountryType;
   applicationType: string;
   visaType: string;
   travellingBy?: string;
@@ -72,7 +73,7 @@ export interface PersonalInfoInterface {
   lastName: string;
   middleName?: string;
   email: string;
-  placeOfBirth: string;
+  placeOfBirth: CountryType;
   phoneNumber: string;
   stateOfOrigin: string;
   lgaOfOrigin: string;
@@ -82,13 +83,13 @@ export interface PersonalInfoInterface {
   issueDate: string;
   expiryDate: string;
   address: string;
-  countryOfCitizen: string;
+  countryOfCitizen: CountryType;
   dateOfBirth: string;
   gender: string;
   maritalStatus: string;
   partnersName?: string;
   passportNumber: string;
-  passportIssuedCountry: string;
+  passportIssuedCountry: CountryType;
   passportExpiryYear: number;
   tripPurpose: string;
   tuberculosis: boolean | null;
@@ -147,8 +148,16 @@ export interface VisaApplicationFormInterface
 }
 
 export interface PrimaryTravellerInterface
-  extends PersonalInfoInterface,
-    Omit<DetailsKeys, "applicationType" | "visaType"> {
+  extends Omit<
+    PersonalInfoInterface,
+    "placeOfBirth" | "countryOfCitizen" | "passportIssuedCountry"
+  > {
+  homeCountry: string;
+  destination: string;
+  placeOfBirth: string;
+  countryOfCitizen: string;
+  passportIssuedCountry: string;
+  travellingBy?: string;
   education: EducationDetailsInterface[];
   employment: EmploymentDetailsInterface[];
 }
@@ -184,9 +193,9 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
       travellingBy: "Airplane",
       middleName: data.personalInfo.middleName,
       email: data.personalInfo.email,
-      homeCountry: data.tripDetails.homeCountry,
-      destination: data.tripDetails.destination,
-      placeOfBirth: data.personalInfo.placeOfBirth,
+      homeCountry: data.tripDetails.homeCountry.name,
+      destination: data.tripDetails.destination.name,
+      placeOfBirth: data.personalInfo.placeOfBirth.name,
       phoneNumber: data.personalInfo.phoneNumber,
       stateOfOrigin: data.personalInfo.stateOfOrigin,
       lgaOfOrigin: data.personalInfo.lgaOfOrigin,
@@ -196,13 +205,13 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
       issueDate: data.personalInfo.issueDate,
       expiryDate: data.personalInfo.expiryDate,
       address: data.personalInfo.address,
-      countryOfCitizen: data.personalInfo.countryOfCitizen,
+      countryOfCitizen: data.personalInfo.countryOfCitizen.name,
       dateOfBirth: data.personalInfo.dateOfBirth,
       gender: data.personalInfo.gender,
       maritalStatus: data.personalInfo.maritalStatus,
       partnersName: data.personalInfo.partnersName,
       passportNumber: data.personalInfo.passportNumber,
-      passportIssuedCountry: data.personalInfo.passportIssuedCountry,
+      passportIssuedCountry: data.personalInfo.passportIssuedCountry.name,
       passportExpiryYear: data.personalInfo.passportExpiryYear,
       tripPurpose: data.personalInfo.tripPurpose,
       tuberculosis: data.personalInfo.tuberculosis,

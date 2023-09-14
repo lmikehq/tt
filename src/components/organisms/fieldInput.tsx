@@ -10,7 +10,7 @@ import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 
 interface FieldProps {
-  value?: string;
+  value?: any;
   defaultValue?: string;
 
   name: string;
@@ -149,7 +149,7 @@ export const FieldAsString = (props: FieldProps) => {
   const error = getNestedValue(formik.errors, name);
 
   const handleChange = (e: any) => {
-    formik.setFieldValue(name, e.name);
+    formik.setFieldValue(name, e);
   };
 
   const formikvalue = getNestedValue(formik.values, name);

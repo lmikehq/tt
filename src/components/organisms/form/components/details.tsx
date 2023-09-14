@@ -77,7 +77,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
               <FieldAsString
                 formik={formik}
                 options={COUNTRY_FLAGS.filter(
-                  (el) => el.name != formik.values.homeCountry
+                  (el) => el.name != formik.values.homeCountry.name
                 ).map((x) => ({
                   name: x.name,
                   flag: x.flag,

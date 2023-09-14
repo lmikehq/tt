@@ -283,12 +283,12 @@ function ApplicationForm() {
     <>
       <AllCountryHead
         cover={coverImage}
-        title={form.tripDetails.destination || ""}
+        title={form.tripDetails.destination.name || ""}
       />
       <SectionLayout>
         <SectionTitle
           title={`Apply Now for ${
-            form.tripDetails.destination || ""
+            form.tripDetails.destination.name || ""
           } Employment Visa`}
           description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
           showButton={false}
