@@ -19,6 +19,7 @@
     "@mui/styles": "^5.14.6",
     "@mui/x-date-pickers": "^6.12.0",
     "@paystack/inline-js": "^2.13.0",
+    "@react-oauth/google": "^0.11.1",
     "@tailwindcss/typography": "^0.5.9",
     "@tanstack/react-query": "^4.29.19",
     "@types/node": "20.2.3",
