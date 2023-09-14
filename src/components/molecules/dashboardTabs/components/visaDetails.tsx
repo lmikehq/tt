@@ -146,7 +146,7 @@ function VisaDetail({ visa }: { visa: any }) {
       : visa?.applicationStatus === "FORM FEE REQUESTED"
       ? { text: "#fff", bg: "#8f3d3d" }
       : { text: "#37008A", bg: "#F6F0FF" };
-  const { applied, voucher } = useVoucherStore((state) => state);
+  // const { applied, voucher } = useVoucherStore((state) => state);
 
   return (
     <Section
@@ -242,8 +242,10 @@ function VisaDetail({ visa }: { visa: any }) {
                   <Text
                     type="h5"
                     text={
-                      recentPayment?.totalAmount
+                      visa?.payments.length
                         ? currencyFormatter(recentPayment.totalAmount)
+                        : visa?.usedFormFeeVoucher
+                        ? "Travel voucher"
                         : "n/a"
                     }
                     color="#112211"
