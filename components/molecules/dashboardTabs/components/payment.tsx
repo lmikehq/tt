@@ -11,6 +11,15 @@ import styled from "styled-components";
 import { ttColors } from "theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import { useVisaApplicationVoucherStore } from "store/useStore";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { useState } from "react";
+import Payment from "@image/dashboard/payment.png";
+import Image from "@atom/image";
+import { PiEyeLight } from "react-icons/pi";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { GrFormClose } from "react-icons/gr";
+import { Divider } from "@atom/divider";
+
 
 const SectionTitle = styled.div`
   display: flex;
@@ -81,7 +90,9 @@ const PaymentStatus = styled.div`
   width: 25%;
 
   @media screen and (max-width: 900px) {
-    width: 100%;
+    width: 92px;
+    height: 35px;
+    padding: 10px 16px;
   }
 `;
 
@@ -100,9 +111,53 @@ const PaymentWrapper = styled.div`
   }
 `;
 
+const DropdownContent = styled.div`
+  position: absolute;
+  top: calc(78.5% + 5px);
+  right: 33px;
+  background-color: #ffffff;
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+  // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 274px;
+  height: max-content;
+  z-index: 09999999;
+  overflow-y: scroll;
+  font-size: 16px;
+  line-height: 19.2px;
+
+ 
+`;
+
+const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: 24px 18px;
+  cursor: pointer;
+  background-color: ${({ hovered }) => (hovered ? "#F3FAFD" : "transparent")};
+  border-bottom: ${({ lastChild }) =>
+    lastChild ? "none" : "1px solid #dedee3"};
+`;
+
+const OptionText = styled.div<{ hovered: boolean }>`
+  color: ${({ hovered }) => (hovered ? "#6092A7" : "#101010")};
+  font-weight: 400;
+  flex: 1;
+`;
+
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
   const { applied, voucher } = useVisaApplicationVoucherStore((state) => state);
+  const [isMobileEdit, setIsMobileEdit] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+
+
+function PaymentIcon() {
+  return <Image src={Payment} alt="" width={17.2} height={12.4} />;
+}
+
   async function getAllPayments() {
     return await apiService("/payment", "GET");
   }
@@ -114,7 +169,29 @@ const PaymentHistory = () => {
   if (isLoading) return <div>loading</div>;
   if (error) return <div>error loading payments, please try again</div>;
   const { data: payments } = fetchedPayment;
-  
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    setHoveredOption(null);
+  };
+
+  const sortOptions = [
+    {
+      value: "Option 1",
+      label: "Make Payment",
+      icon: <PaymentIcon />,
+      action: () => {},
+    },
+    {
+      value: "Option 2",
+      label: "View More Details",
+      icon: <PiEyeLight size="1rem" />,
+      action: () => {
+        setBottomDrawerOpen(true);
+        setIsDropdownOpen(false);
+      },
+    },
+  ];
 
   return (
     <Section
@@ -128,6 +205,183 @@ const PaymentHistory = () => {
       <VisaDashboardHeader headerText="Payment History" />
 
       <PaymentWrapper>
+        {isMobileEdit ? (
+        <History>
+          <Flex
+            justify="space-between"
+            width="100%"
+            align="center"
+            padding="18px 14px"
+          >
+            <Flex direction="column" gap="1rem">
+              <Text
+                type="p"
+                text="Application fee for Canada - Employment visa"
+                size={14}
+                weight={400}
+              />
+              <Flex gap="1.5rem" align="center" justify="flex-start">
+                <Text
+                  type="p"
+                  text="23/04/2023"
+                  color="#112211"
+                  size={12}
+                  styles={{ opacity: "75%" }}
+                />
+                <PaymentStatus style={{ background: "#FFFEEF" }}>
+                  <Text
+                    type="p"
+                    text="PENDING"
+                    styles={{ width: isMobile ? "100%" : "20%" }}
+                    whiteSpace="nowrap"
+                    size={12}
+                  />
+                </PaymentStatus>
+              </Flex>
+            </Flex>
+            <BiDotsVerticalRounded
+              color="#040404"
+              size="1.5rem"
+              onClick={toggleDropdown}
+            />
+            {isDropdownOpen && (
+              <DropdownContent>
+                {sortOptions.map((option, index) => (
+                  <StyledOption
+                    key={option.value}
+                    hovered={hoveredOption === index}
+                    lastChild={index === sortOptions.length - 1}
+                    onMouseEnter={() => setHoveredOption(index)}
+                    onMouseLeave={() => setHoveredOption(null)}
+                    onClick={option.action}
+                  >
+                    <OptionText hovered={hoveredOption === index}>
+                      <Flex gap="1rem" align="center">
+                        {option.icon}
+                        {option.label}
+                      </Flex>
+                    </OptionText>
+                  </StyledOption>
+                ))}
+              </DropdownContent>
+            )}
+            <CustomDrawer
+              anchor="bottom"
+              open={bottomDrawerOpen}
+              onClose={() => setBottomDrawerOpen(false)}
+            >
+              <Section
+                height="unset"
+                padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
+                styles={{
+                  background: ttColors.light,
+                }}
+              >
+                <Flex justify="space-between" align="center">
+                  <Flex justify="flex-start" gap="1rem" align="center">
+                    <Text
+                      type="h3"
+                      text="Application fee for Canada - Employment visa"
+                      size={16}
+                      weight={600}
+                      width="max-content"
+                      color="#112211"
+                      styles={{
+                        width: "80%",
+                      }}
+                    />
+                  </Flex>
+                  <GrFormClose />
+                </Flex>
+                <Divider direction="horizontal" margin="0px 0px 1rem" />
+                <Flex gap="1rem" direction="column">
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Email"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Text
+                      type="h3"
+                      text="Jonathanadah @gmail.com"
+                      size={isMobile ? 14 : 16}
+                      weight={400}
+                      width="max-content"
+                      color="#5C5C5C"
+                    />
+                  </Flex>
+
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Date"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Text
+                      type="h3"
+                      text="Date"
+                      size={isMobile ? 14 : 16}
+                      weight={400}
+                      width="max-content"
+                      color="#5C5C5C"
+                    />
+                  </Flex>
+
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Amount"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Text
+                      type="h3"
+                      text="NGN 20,000"
+                      size={isMobile ? 14 : 16}
+                      weight={400}
+                      width="max-content"
+                      color="#5C5C5C"
+                    />
+                  </Flex>
+
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Referral Status"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Button
+                      width="max-content"
+                      height="48px"
+                      padding="5px 20px"
+                      styles={{
+                        marginLeft: "55px",
+                        background: "#FFF1C2",
+                        borderRadius: "24px",
+                        color: "#614909",
+                        display: isMobile ? "block" : "none",
+                      }}
+                    >
+                      <Text type="p" text="PENDING" size={14} weight={600} />
+                    </Button>
+                  </Flex>
+                </Flex>
+              </Section>
+            </CustomDrawer>
+          </Flex>
+        </History>
+        ) : ( 
         <Flex direction="column" gap="1rem">
           {payments?.length > 0 ? (
             payments?.map((payment: any, i: number) => (
@@ -175,7 +429,6 @@ const PaymentHistory = () => {
                       text={payment.status}
                       styles={{ width: isMobile ? "100%" : "20%" }}
                       whiteSpace="nowrap"
-                      // color="#7A7422"
                     />
                   </PaymentStatus>
 
@@ -206,6 +459,7 @@ const PaymentHistory = () => {
             </Flex>
           )}
         </Flex>
+        )} 
       </PaymentWrapper>
     </Section>
   );

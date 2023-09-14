@@ -359,7 +359,7 @@ function RegisterPage() {
                 </Section>
               </Flex>
               <Flex
-        a        gap={".5rem"}
+                gap={".5rem"}
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
