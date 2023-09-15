@@ -37,21 +37,11 @@ export default function RootLayout({
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
 
-      {/* <Script strategy="lazyOnload" id="google-analytics">
-        {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-                    page_path: window.location.pathname,
-                    });
-                `}
-      </Script> */}
-      <Script strategy="lazyOnload" id='analytics'>
+      <Script strategy="lazyOnload" id="analytics">
         {`
     // Crisp Chat Script
     window.$crisp = [];
-    window.CRISP_WEBSITE_ID = '6111d110-e09c-4dbe-a69b-a6ea385b8dfa';
+    window.CRISP_WEBSITE_ID = ${process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID}
     
     (function () {
       var d = document;

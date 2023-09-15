@@ -176,7 +176,7 @@ function UserPicture() {
           src={user?.profilePicture || "/assets/images/avatar.jpg"}
           alt="profile-picture"
           height={isMobile ? 70 : 160}
-          styles={{ width: isMobile ? "" : "160px" }}
+          width={isMobile ? 70 : 160}
         />
         <Button
           styles={{

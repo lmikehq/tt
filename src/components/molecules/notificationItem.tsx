@@ -70,7 +70,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         padding="28px 24px"
       >
         <Flex gap="1.5rem" align="center">
-          <Image src={src} alt="" />
+          <Image src={src} alt="" width={30} />
           <div>
             <Text type="h3" text={title} margin="0px 0px .8rem" />
             <Flex gap=".8rem">
