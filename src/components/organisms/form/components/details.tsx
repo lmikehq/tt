@@ -29,11 +29,10 @@ interface formProps {
 function TripDetails({ steps, index, persistForm, formik }: formProps) {
   const { isMobile } = useScreenResolution();
   const router = useRouter();
-  const { form, nextStep, saveProgress, mode } = useApplicationFormStore(
-    (state) => state
-  );
+  const { form, mode } = useApplicationFormStore((state) => state);
   const { tripDetails } = form;
   const isLoading = mode == Mode.loading;
+  console.log(formik);
 
   return (
     <Section height="unset">
@@ -176,6 +175,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
+            console.log(formik);
             if (!formik.isValid) return ToastError();
           }}
           disabled={!formik.isValid}
