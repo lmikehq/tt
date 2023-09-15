@@ -61,8 +61,8 @@ const FormSideMenu = ({
               <Text
                 type="p"
                 text={`Please select a 
-          ${!formData.tripDetails.destination ? "destination and" : ""} 
-          ${!formData.tripDetails.homeCountry ? "home country" : ""}`}
+          ${!formData.tripDetails.destination.name ? "destination and" : ""} 
+          ${!formData.tripDetails.homeCountry.name ? "home country" : ""}`}
               />
             </Section>
           ) : (

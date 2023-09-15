@@ -42,10 +42,17 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
     { value: false, label: "No" },
   ];
 
-  const country = COUNTRY_FLAGS.find(country => country.name === form.tripDetails.homeCountry)
-  const states: IState[] = (State.getStatesOfCountry(`${country?.code}`));
-  const state = states.find(state => state.name === formik.values.stateOfOrigin)
-  const cities: ICity[] = (City.getCitiesOfState(`${country?.code}`, `${state?.isoCode}`))
+  const country = COUNTRY_FLAGS.find(
+    (country) => country.name === form.tripDetails.homeCountry.name
+  );
+  const states: IState[] = State.getStatesOfCountry(`${country?.code}`);
+  const state = states.find(
+    (state) => state.name === formik.values.stateOfOrigin
+  );
+  const cities: ICity[] = City.getCitiesOfState(
+    `${country?.code}`,
+    `${state?.isoCode}`
+  );
 
   return (
     <Section>
@@ -117,13 +124,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               />
               <Required />
             </Flex>
-            <FieldAsString
-              name="stateOfOrigin"
-              placeholder="Select your State of Origin"
+
+            <FieldString
               formik={formik}
-              options={states.map((x) => ({
-                name: x.name,
-              }))}
+              name={"stateOfOrigin"}
+              placeholder="Select your State of Origin"
+              options={states.map((x) => x.name)}
             />
           </Section>
         </Flex>
@@ -142,11 +148,9 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               />
               <Required />
             </Flex>
-            <FieldAsString
+            <FieldString
               formik={formik}
-              options={cities.map((x) => ({
-                name: x.name,
-              }))}
+              options={cities.map((x) => x.name)}
               name="placeOfOrigin"
               disabled={formik.values.stateOfOrigin === ""}
               placeholder="Select your Place of Origin"
@@ -907,10 +911,9 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            if (!formik.isValid || !formik.dirty)
-              return ToastError()
+            if (!formik.isValid) return ToastError();
           }}
-          disabled={!formik.isValid || !formik.dirty}
+          disabled={!formik.isValid}
         />
       </form>
     </Section>

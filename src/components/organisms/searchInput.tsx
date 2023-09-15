@@ -196,7 +196,7 @@ SearchProps) {
                     handleClose();
                   }
                 }}
-                value={value}
+                value={value?.name ? value : null}
                 onChange={(event, newValue, reason) => {
                   if (reason === "clear") {
                     return;
@@ -222,16 +222,12 @@ SearchProps) {
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
                     <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
-                      {option.flag && <RoundFlag flag={option.flag} />}
-                      {option.code ? (
-                        <Text
-                          type="p"
-                          text={`${option.code} - ${option.name}`}
-                          weight={300}
-                        />
-                      ) : (
-                        <Text type="p" text={`${option.name}`} weight={300} />
-                      )}
+                      <RoundFlag flag={option.flag} />
+                      <Text
+                        type="p"
+                        text={`${option.code} - ${option.name}`}
+                        weight={100}
+                      />
                     </Flex>
                     <br />
                   </li>

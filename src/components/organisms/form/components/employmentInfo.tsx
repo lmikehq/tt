@@ -91,8 +91,7 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {
-              if (!formik.isValid || !formik.dirty)
-                return ToastError()
+              if (!formik.isValid) return ToastError();
             }}
             disabled={!formik.isValid}
           />
