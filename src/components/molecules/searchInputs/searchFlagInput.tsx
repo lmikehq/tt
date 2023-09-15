@@ -7,7 +7,7 @@ import { CSSProperties } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 interface SearchFlagInputProps {
-  value?: string;
+  value?: any;
   placeholder: string;
   options: any[];
   onChange: (x: any) => void;
@@ -25,10 +25,9 @@ const SearchFlagInput = ({
   error,
   disabled,
 }: SearchFlagInputProps) => {
-
   return (
     <SearchInput
-      // value={value}
+      value={value}
       options={options}
       height="45px"
       onChange={onChange}
@@ -38,8 +37,8 @@ const SearchFlagInput = ({
       <Flex justify="space-between">
         <Text
           type="p"
-          text={value ? value : placeholder}
-          color={value ? "#1C1B1F" : "#929292"}
+          text={value?.name ? value?.name : placeholder}
+          color={value?.name ? "#1C1B1F" : "#929292"}
           weight={400}
           size={size}
           styles={{
@@ -49,7 +48,7 @@ const SearchFlagInput = ({
             overflow: "hidden",
           }}
         />
-        {value ? (
+        {value?.name ? (
           <AiOutlineCheck color="#3BB98E" />
         ) : (
           <IoIosArrowDown size={20} />

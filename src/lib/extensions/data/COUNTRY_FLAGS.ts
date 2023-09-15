@@ -1,4 +1,4 @@
-export const COUNTRY_FLAGS = [
+const COUNTRY_FLAGS = [
   {
     name: "Andorra",
     flag: "/assets/flags/ad.svg",
@@ -1253,4 +1253,15 @@ export const COUNTRY_FLAGS = [
   },
 ];
 
+const findCountry = ({ name }: { name: string }) => {
+  const regex = new RegExp(`^${name}$`, "i");
+  const country = COUNTRY_FLAGS.find((el) => regex.test(el.name));
+
+  return {
+    name: country?.name ?? "",
+    code: country?.code ?? "",
+    flag: country?.flag ?? "",
+  };
+};
 // Now the `country_flags` array contains all the objects from the original data.
+export { COUNTRY_FLAGS, findCountry };

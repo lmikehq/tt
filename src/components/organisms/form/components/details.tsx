@@ -78,7 +78,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
               <FieldAsString
                 formik={formik}
                 options={COUNTRY_FLAGS.filter(
-                  (el) => el.name != formik.values.homeCountry
+                  (el) => el.name != formik.values.homeCountry.name
                 ).map((x) => ({
                   name: x.name,
                   flag: x.flag,
@@ -176,8 +176,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            if (!formik.isValid || !formik.dirty)
-              return ToastError()
+            if (!formik.isValid) return ToastError();
           }}
           disabled={!formik.isValid}
         />

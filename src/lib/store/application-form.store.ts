@@ -10,6 +10,7 @@ import {
   mapVisaApplicationFormInterfaceToApplicationFormRequestInput,
 } from "@lib/types";
 import { create } from "zustand";
+import { COUNTRY_FLAGS, findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
 
 interface State {
   form: VisaApplicationFormInterface;
@@ -175,8 +176,8 @@ export const useApplicationFormStore = create<State & Actions>(
           ...state.form,
           tripDetails: {
             ...state.form.tripDetails,
-            homeCountry,
-            destination,
+            homeCountry: findCountry({ name: homeCountry }),
+            destination: findCountry({ name: destination }),
             visaType,
           },
         },
