@@ -22,6 +22,8 @@ import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
 import { AiOutlineCheck } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
+import { BiError } from "react-icons/bi";
+import VisaUploadDocModal from "../visaUploadDoc";
 
 const Logo = styled.div`
   height: 64px;
@@ -70,7 +72,10 @@ interface VisaDataProps {
 
 function VisaDetail({ visa }: { visa: any }) {
   const { isMobile } = useScreenResolution();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalState, setModalState] = useState({
+    open: false,
+    type: "",
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAccordionClick = () => {
@@ -112,9 +117,7 @@ function VisaDetail({ visa }: { visa: any }) {
       case "FORM FEE REQUESTED":
         visaInformation = {
           text: "Submit Application",
-          fn: () => {
-            setIsModalOpen(true);
-          },
+          fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "FORM FEE",
         };
@@ -122,16 +125,22 @@ function VisaDetail({ visa }: { visa: any }) {
       case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
-          fn: () => {
-            setIsModalOpen(true);
-          },
+          fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "PROCESSING FEE",
         };
         break;
+      case "ADDITIONAL INFO REQUESTED":
+        visaInformation = {
+          text: "Upload documents",
+          fn: () => setModalState({ open: true, type: "upload" }),
+          disabled: false,
+          intent: "",
+        };
+        break;
       default:
         visaInformation = {
-          text: "Pay Visa Fee",
+          text: "No action",
           fn: () => {},
           disabled: false,
           intent: "",
@@ -156,6 +165,7 @@ function VisaDetail({ visa }: { visa: any }) {
   const accompanying = visa?.familyMembers.filter(
     (fm: any) => fm.accompanying === true
   ).length;
+ 
   return (
     <Section
       styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
@@ -163,13 +173,18 @@ function VisaDetail({ visa }: { visa: any }) {
       margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
       <VisaPaymentModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        open={modalState.open && modalState.type === "payment"}
+        onClose={() => setModalState({ open: false, type: "" })}
         visaDetails={{
           id: visa?._id,
           intent: getButtonInformation().intent,
           accompanying: accompanying,
         }}
+      />
+      <VisaUploadDocModal
+        onClose={() => setModalState({ open: false, type: "" })}
+        open={modalState.open && modalState.type === "upload"}
+        visa={visa}
       />
       <Flex
         justify="space-around"
@@ -365,10 +380,18 @@ function VisaDetail({ visa }: { visa: any }) {
                   </Flex>
                 )}
                 <Flex align="center" gap=".5rem">
-                  <AiOutlineCheck size={20} />
+                  {visa?.applicationStatus !== "ADDITIONAL INFO REQUESTED" ? (
+                    <AiOutlineCheck size={20} />
+                  ) : (
+                    <BiError color="red" size={20} />
+                  )}
                   <Text
                     type="p"
-                    text={"NO DOCUMENTED REQUESTED FROM YOU"}
+                    text={
+                      visa?.applicationStatus === "ADDITIONAL INFO REQUESTED"
+                        ? "ADDITIONAL DOCUMENT REQUESTED"
+                        : "NO DOCUMENTED REQUESTED FROM YOU"
+                    }
                     size={"15px"}
                   />
                 </Flex>

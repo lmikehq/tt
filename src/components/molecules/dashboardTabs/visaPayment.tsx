@@ -1,17 +1,16 @@
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import ReusableModal from "./components/dashboardModal";
 import Flex from "@components/templates/flex";
-import { TbCurrencyNaira } from "react-icons/tb";
-import { FieldString } from "@organism/fieldInput";
-import { Formik } from "formik";
-import { BsExclamationCircleFill } from "react-icons/bs";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import apiService from "@lib/extensions/hook/apiService";
-import { toast } from "react-hot-toast";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { useVoucherStore } from "@lib/store/voucher.store";
+import { FieldString } from "@organism/fieldInput";
+import { Formik } from "formik";
+import { toast } from "react-hot-toast";
+import { BsExclamationCircleFill } from "react-icons/bs";
+import Section from "src/components/molecules/section";
+import ReusableModal from "./components/dashboardModal";
 
 type VisaPaymentModalProps = {
   open: boolean;
