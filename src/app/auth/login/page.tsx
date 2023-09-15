@@ -1,4 +1,4 @@
-// @next/next/no-img-element
+// @next/next/no-Image-element
 
 "use client";
 
@@ -124,76 +124,76 @@ function LoginPage() {
         <Section styles={{ display: isMobile ? "none" : "block" }}>
           <Slider {...settings}>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg.png"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg1.png"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg2.png"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg3.jpeg"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg4.jpeg"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg5.jpeg"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
 
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg7.jpeg"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
             <div>
-              <img
+              <Image
                 src={"/assets/images/auth-bg8.jpeg"}
                 alt="background image"
-                width="100%"
-                height="798px"
-                style={{ borderRadius: "30px", objectFit: "cover" }}
+                
+                height={798}
+                styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
               />
             </div>
           </Slider>
@@ -201,12 +201,12 @@ function LoginPage() {
 
         <Section>
           <Flex justify="space-between">
-            <img
+            <Image
               src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="logo"
               height={isMobile ? 45 : 60}
               onClick={() => router.push("/")}
-              style={{ cursor: "pointer" }}
+              styles={{ cursor: "pointer" }}
             />
             <SideBtn
               title="Do not have an account? "
@@ -313,7 +313,7 @@ function LoginPage() {
               </Link>
             </Flex>
             <Button
-              width="100%"
+              
               margin=".5rem 0"
               background={
                 submissionState.loading ? "#87ceeb36" : ttColors.primary
@@ -346,7 +346,7 @@ function LoginPage() {
             <Flex
               justify="center"
               align="center"
-              width="100%"
+              
               margin="2rem 0 1rem"
             >
               <Divider
@@ -360,12 +360,12 @@ function LoginPage() {
             <Button
               background="transparent"
               border={`1px solid ${ttColors.primary}`}
-              width="100%"
+              
             >
-              <img
+              <Image
                 src={"/assets/images/google.svg"}
                 alt="google"
-                height="30"
+                height={30}
                 width={30}
               />
               <Text

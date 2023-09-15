@@ -168,7 +168,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         styles={{ display: isMobile ? "flex" : "none", cursor: "pointer" }}
         onClick={toggleDropdown}
       >
-        <Image src="/assets/images/dashboard/filter.png" alt="" />
+        <Image src="/assets/images/dashboard/filter.png" alt="" height={20} width={20} />
         <Text type="h5" text="Filter" weight={400} size={14} color="#606060" />
       </Flex>
     </Flex>

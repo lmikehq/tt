@@ -64,11 +64,16 @@ const Flight = () => {
       { text: "Search Stays", url: "/stays" },
     ],
   };
+
+  function NoFlightImg() {
+    return <Image src="/assets/images/flight.png" alt="" />;
+  }
+
   return (
     <FlightWrapper>
       <VisaDashboardHeader headerText="All Flight Applications" />
       <NoVisaApplication
-        noVisaImage="/assets/images/flight.png"
+        noVisaImage={NoFlightImg}
         content={content}
       />
       {/* <Flex direction="column" gap="1rem">

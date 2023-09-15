@@ -17,7 +17,7 @@ const FavouriteCardImg = styled.div``;
 const FavouriteCardIcon = styled.div`
   position: absolute;
   top: 20px;
-  right: 145px;
+  right: 20px;
   padding: 5px;
   background: #ffffff;
   height: 48px;

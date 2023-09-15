@@ -142,7 +142,6 @@ const DashboardProfilePictue = styled.div`
 `;
 
 const ReferralLink = styled.div`
- 
   background: rgb(123 187 214 / 30%);
   width: max-content;
   border-radius: 6px;
@@ -202,7 +201,7 @@ function UserPicture() {
           src={user?.profilePicture || "/assets/images/avatar.jpg"}
           alt="profile-picture"
           height={isMobile ? 70 : 160}
-          styles={{ width: isMobile ? "" : "160px" }}
+          width={isMobile ? 70 : 160}
         />
         <Button
           styles={{
@@ -234,7 +233,6 @@ function UserPicture() {
           border: "1px solid #7BBBD6 !important",
           padding: isMobile ? "8px" : "10px",
           margin: isMobile ? "8rem 0px 1.5rem" : "10rem 0px .5rem",
-          
         }}
       >
         <Flex
@@ -243,9 +241,12 @@ function UserPicture() {
           onClick={copyToClipboard}
           cursor="pointer"
           width="max-content"
+          align="center"
         >
           <Image
-            src="/assest/images/dashboard/copyIcon.png"
+            src="/assets/images/dashboard/copyIcon.png"
+            height={24}
+            width={24}
             alt=""
             styles={{
               position: "relative",

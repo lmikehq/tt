@@ -9,7 +9,6 @@ import Account from "./components/account";
 import Favourite from "./components/favourite";
 import Notification from "./components/notification";
 import RTQueryClient from "@components/templates/rtqWrapper";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Referrals from "./components/referral";
 
 const Wrapper = styled.div`
@@ -39,7 +38,6 @@ const Wrapper = styled.div`
 `;
 
 function DashboardTabs() {
-  const { isMobile } = useScreenResolution();
 
   const tabItems = [
     {

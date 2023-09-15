@@ -1,4 +1,4 @@
-// @next/next/no-img-element
+// @next/next/no-Image-element
 "use client";
 
 import Button from "@atom/button";
@@ -25,6 +25,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
+import Image from "@atom/image";
 
 const settings = {
   infinite: true,
@@ -170,75 +171,75 @@ function RegisterPage() {
           <Section styles={{ display: isMobile ? "none" : "block" }}>
             <Slider {...settings}>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg1.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg2.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg3.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg4.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg5.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg7.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
               <div>
-                <img
+                <Image
                   src={"/assets/images/auth-bg8.png"}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  
+                  height={798}
+                  styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
                 />
               </div>
             </Slider>
@@ -246,12 +247,12 @@ function RegisterPage() {
 
           <Section>
             <Flex justify="space-between">
-              <img
+              <Image
                 src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
                 alt="logo"
                 height={60}
                 onClick={() => router.push("/")}
-                style={{ cursor: "pointer" }}
+                styles={{ cursor: "pointer" }}
               />
               <SideBtn
                 title="Already have an account?"
@@ -534,7 +535,7 @@ function RegisterPage() {
               </Flex>
 
               <Button
-                width="100%"
+                
                 margin="1.25rem 0 0"
                 background={
                   submissionState.loading ? "#87ceeb36" : ttColors.primary

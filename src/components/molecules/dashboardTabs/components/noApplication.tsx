@@ -22,7 +22,7 @@ export interface NoVisaApplicationProps {
   content: {
     title: string;
     links: LinkItem[];
-  };
+  }
 }
 
 const NoApplication: React.FC<NoVisaApplicationProps> = ({
