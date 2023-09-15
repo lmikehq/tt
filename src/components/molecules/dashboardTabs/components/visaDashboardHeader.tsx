@@ -9,7 +9,6 @@ import { BiSort } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import styled from "styled-components";
-import Filter from "@image/dashboard/filter.png";
 import Image from "@atom/image";
 
 const DropdownContent = styled.div`
@@ -72,7 +71,12 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
 
 
   return (
-    <Flex justify="space-between" align="center" margin={isMobile ? ".5rem 0px" :"1.5rem 0px"} gap="0px">
+    <Flex
+      justify="space-between"
+      align="center"
+      margin={isMobile ? ".5rem 0px" : "1.5rem 0px"}
+      gap="0px"
+    >
       <Section>
         <Text
           type="h1"
@@ -164,7 +168,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         styles={{ display: isMobile ? "flex" : "none", cursor: "pointer" }}
         onClick={toggleDropdown}
       >
-        <Image src={Filter} alt="" />
+        <Image src="/assets/images/dashboard/filter.png" alt="" />
         <Text type="h5" text="Filter" weight={400} size={14} color="#606060" />
       </Flex>
     </Flex>

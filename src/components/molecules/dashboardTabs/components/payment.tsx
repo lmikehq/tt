@@ -12,7 +12,6 @@ import { ttColors } from "@lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useState } from "react";
-import Payment from "@image/dashboard/payment.png";
 import Image from "@atom/image";
 import { PiEyeLight } from "react-icons/pi";
 import CustomDrawer from "@molecule/drawers/customDrawer";
@@ -20,7 +19,6 @@ import { GrFormClose } from "react-icons/gr";
 import { Divider } from "@atom/divider";
 
 import { useVoucherStore } from "@lib/store/voucher.store";
-import { useVisaApplicationVoucherStore } from "@lib/store/useStore";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -155,7 +153,7 @@ const PaymentHistory = () => {
 
 
 function PaymentIcon() {
-  return <Image src={Payment} alt="" width={17.2} height={12.4} />;
+  return <Image src="/assets/images/dashboard/payment.png" alt="" width={17.2} height={12.4} />;
 }
 
   const { applied, voucher } = useVoucherStore((state) => state);

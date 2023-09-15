@@ -8,7 +8,6 @@ import { ttColors } from "@lib/theme/colors";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import NoVisa from "@image/noVisa.png"
 
 const VisaWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -62,8 +61,10 @@ const Visa = () => {
           ))
         ) : (
           <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
-            <NoVisaApplication noVisaImage={NoVisa} content={content} />
-          
+            <NoVisaApplication
+              noVisaImage="/assets/images/noVisa.png"
+              content={content}
+            />
           </Center>
         )}
       </div>

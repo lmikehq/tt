@@ -13,8 +13,8 @@ import { Divider } from "@atom/divider";
 import { GrFormClose } from "react-icons/gr";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import VisaDashboardHeader from "components/molecules/dashboardTabs/components/visaDashboardHeader";
 import Flex from "@components/templates/flex";
+import VisaDashboardHeader from "./visaDashboardHeader";
 
 const Referral = styled.div`
   display: flex;
@@ -115,7 +115,7 @@ const Referrals = () => {
             align={isMobile ? "flex-start" : "center"}
           >
             <Image
-              src={Referral1}
+              src="/assets/images/dashboard/referral1.png"
               alt=""
               width={isMobile ? 30 : 64}
               height={isMobile ? 30 : 64}

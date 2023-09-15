@@ -185,7 +185,14 @@ function VisaDetail({ visa }: { visa: any }) {
   }
 
   function PaymentIcon() {
-    return <Image src={Payment} alt="" width={17.2} height={12.4} />;
+    return (
+      <Image
+        src="/assets/images/dashboard/payment.png"
+        alt=""
+        width={17.2}
+        height={12.4}
+      />
+    );
   }
 
   const recentPayment = visa?.payments[visa?.payments.length - 1];

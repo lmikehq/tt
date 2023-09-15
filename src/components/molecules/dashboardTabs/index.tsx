@@ -10,7 +10,7 @@ import Favourite from "./components/favourite";
 import Notification from "./components/notification";
 import RTQueryClient from "@components/templates/rtqWrapper";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import Referrals from "components/molecules/dashboardTabs/components/referral";
+import Referrals from "./components/referral";
 
 const Wrapper = styled.div`
   margin-top: 10px;
