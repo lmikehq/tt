@@ -74,7 +74,7 @@ function Flights() {
     }
   }, [value]);
   return (
-    <Section padding={"2rem 0"} styles={{ position: "relative" }}>
+    <Section padding={"2rem 0 1rem 0"} styles={{ position: "relative" }}>
       <Flex direction="column">
         <Flex align="center" gap={isMobile ? "1rem" : "2rem"}>
           <CustomRadioGroup

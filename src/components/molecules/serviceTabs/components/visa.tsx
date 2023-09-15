@@ -50,12 +50,12 @@ function Visa() {
   const router = useRouter();
   const { isMobile } = useScreenResolution();
   return (
-    <Section height="unset">
+    <Section height="unset" padding={"2rem 0 1rem 0"}>
       <Grid
         gap="2rem"
         justify="space-between"
         columns={isMobile ? "1" : "3"}
-        margin="3rem 0 0"
+        margin={isMobile ? "0" : "3rem 0 0"}
       >
         <SearchInput
           options={COUNTRY_FLAGS.map((x) => ({

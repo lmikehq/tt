@@ -42,7 +42,11 @@ function Stays() {
   const open = Boolean(anchorEl);
 
   return (
-    <Section padding="2rem 0" height="unset" styles={{ position: "relative" }}>
+    <Section
+      padding={"2rem 0 1rem 0"}
+      height="unset"
+      styles={{ position: "relative" }}
+    >
       <Flex align="center" direction={isMobile ? "column" : "row"} gap=".5rem">
         <Flex
           direction="column"
