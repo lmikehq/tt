@@ -56,7 +56,7 @@ function Stays() {
           <Text
             type="label"
             size={isMobile ? 16 : 18}
-            text="Where do you want to stay?"
+            text="Your stay preference?"
           />
           <Input
             placeholder="Enter Destination or Hotel Name"
