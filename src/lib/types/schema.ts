@@ -57,7 +57,9 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     meansOfId: yup.string().required("Required"),
     idNumber: yup.string().required("Required"),
     issueDate: yup.string().required("Required"),
-    expiryDate: yup.string().optional(),
+
+    expiryDate: yup.string().notRequired(),
+
     address: yup.string().required("Required"),
     countryOfCitizen: countrySchema.required(),
     dateOfBirth: yup.string().required("Required"),
@@ -70,7 +72,10 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     passportNumber: yup.string().required("Required"),
 
     passportIssuedCountry: countrySchema.required(),
-    passportExpiryYear: yup.string().required("Required"),
+    passportExpiryYear: yup.string().when("meansOfId", {
+      is: "International Passport",
+      then: (schema) => schema.required("Required"),
+    }),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     mentalDisorder: yup.boolean().required("Required"),
@@ -78,7 +83,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    remainbeyondValidity: yup.boolean().required(),
+    remainbeyondValidity: yup.boolean().required("Required"),
     refusedBefore: yup.boolean().required("Required"),
     refusedBeforeDetails: yup.string().when("refusedBefore", {
       is: true,
@@ -109,7 +114,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   meansOfId: "",
   idNumber: "",
   issueDate: "",
-  expiryDate: "",
+  // expiryDate: "",
   // homeCountry: "",
   address: "",
   dateOfBirth: "",

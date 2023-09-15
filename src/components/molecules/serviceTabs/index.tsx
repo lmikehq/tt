@@ -20,7 +20,7 @@ function ServiceTabs() {
   });
   const { isMobile } = useScreenResolution();
   return (
-    <Section {...(!isMobile && { padding: "1.5rem 2rem" })}>
+    <Section {...(!isMobile && { padding: "1.65rem 1.5rem" })}>
       <CustomTab tabItems={services} defaultIcons />
     </Section>
   );

@@ -139,14 +139,12 @@ const FooterSection = () => {
           >
             <div className="footerLogo">
               <Link href="/">
-                <Section
-                  height={"50px"}
-                  width="100%"
-                  styles={{ position: "relative" }}
-                >
+                <Section>
                   <Image
                     src={"/assets/images/brand/tt_blue_logo_with_text.png"}
                     alt="logo"
+                    width={142}
+                    height={43}
                   />
                 </Section>
               </Link>

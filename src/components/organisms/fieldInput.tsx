@@ -116,7 +116,7 @@ export const ArrayInput = (props: FieldProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { value } = e.target;
-    if(name.includes('cgpa')) {
+    if (name.includes("cgpa")) {
       parseFloat(value) > 5 ? (value = "5") : value;
     }
 
@@ -150,7 +150,15 @@ export const ArrayInput = (props: FieldProps) => {
 };
 
 export const FieldAsString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder, value, onChange, disabled } = props;
+  const {
+    name,
+    options = [],
+    formik,
+    placeholder,
+    value,
+    onChange,
+    disabled,
+  } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);
 
@@ -170,7 +178,7 @@ export const FieldAsString = (props: FieldProps) => {
         disabled={disabled}
         error={touched && error}
       />{" "}
-      {touched && error ? <ErrorText text={error} /> : null}
+      {touched && error ? <ErrorText text={error.name} /> : null}
     </Section>
   );
 };
@@ -210,7 +218,7 @@ export const FieldAsDate = (props: FieldProps) => {
     minDate,
     maxDate,
     placeholder,
-    format
+    format,
   } = props;
   const touched = getNestedValue(formik.touched, name);
   const error = getNestedValue(formik.errors, name);

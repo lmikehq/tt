@@ -80,7 +80,9 @@ export interface PersonalInfoInterface {
   meansOfId: string;
   idNumber: string;
   issueDate: string;
-  expiryDate?: string;
+
+  expiryDate?: string | null;
+
   address: string;
   countryOfCitizen: CountryType;
   dateOfBirth: string;
@@ -89,7 +91,7 @@ export interface PersonalInfoInterface {
   partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: CountryType;
-  passportExpiryYear: string;
+  passportExpiryYear?: string;
   tripPurpose: string;
   tuberculosis: boolean | null;
   mentalDisorder: boolean | null;

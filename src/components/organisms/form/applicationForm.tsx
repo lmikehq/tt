@@ -384,11 +384,7 @@ function ApplicationForm() {
             height="unset"
             styles={{ display: isMobile ? "none" : "block" }}
           >
-            <FormSideMenu
-              currentPhase={step}
-              formData={form}
-      
-            />
+            <FormSideMenu currentPhase={step} formData={form} />
           </Section>
         </Flex>
       </SectionLayout>
