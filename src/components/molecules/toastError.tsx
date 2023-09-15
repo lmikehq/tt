@@ -12,20 +12,20 @@ interface CustomToastProps {
 }
 
 const ErrorCircle = styled.div`
-    width: 3rem;
-    height: 3rem;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    background-color: #FFE4E9;
-    border-radius: 100%;
-`
+  width: 3rem;
+  height: 3rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  background-color: #ffe4e9;
+  border-radius: 100%;
+`;
 
 const CustomToast: React.FC<CustomToastProps> = ({ message, id }) => {
   return (
     <Flex align="center" gap="1rem">
       <ErrorCircle>
-          <BiErrorCircle fontSize={70} color="#A0001D" />
+        <BiErrorCircle fontSize={70} color="#A0001D" />
       </ErrorCircle>
       <Text type="p" text={message} />
     </Flex>
@@ -33,15 +33,21 @@ const CustomToast: React.FC<CustomToastProps> = ({ message, id }) => {
 };
 
 const ToastError = () => {
-    return toast((t) => <CustomToast message="There are some information still required on the Form. Please do well to provide them so as you can proceed to the next step." id={t.id} />,
+  return toast(
+    (t) => (
+      <CustomToast
+        message="There are errors in the form. Please do well to provide the required information so you can proceed to the next step."
+        id={t.id}
+      />
+    ),
     {
-        duration: 5000,
+      duration: 5000,
       style: {
-        borderLeft: '6px solid #A0001D',
-        maxWidth: '650px'
-      }
+        borderLeft: "6px solid #A0001D",
+        maxWidth: "650px",
+      },
     }
   );
-}
+};
 
 export default ToastError;

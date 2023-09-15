@@ -6,9 +6,13 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import {
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+  MdNumbers,
+  MdOutlineFamilyRestroom,
+} from "react-icons/md";
 import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
-import { useVoucherStore } from "@lib/store/voucher.store";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import Button from "@atom/button";
@@ -16,6 +20,9 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
 import { AiOutlineCheck } from "react-icons/ai";
+import { RxAvatar } from "react-icons/rx";
+import { BiError } from "react-icons/bi";
+import VisaUploadDocModal from "../visaUploadDoc";
 
 const Logo = styled.div`
   height: 64px;
@@ -62,9 +69,12 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa }: { visa: any }) {
+function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
   const { isMobile } = useScreenResolution();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalState, setModalState] = useState({
+    open: false,
+    type: "",
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   const handleAccordionClick = () => {
@@ -106,9 +116,7 @@ function VisaDetail({ visa }: { visa: any }) {
       case "FORM FEE REQUESTED":
         visaInformation = {
           text: "Submit Application",
-          fn: () => {
-            setIsModalOpen(true);
-          },
+          fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "FORM FEE",
         };
@@ -116,18 +124,32 @@ function VisaDetail({ visa }: { visa: any }) {
       case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
-          fn: () => {
-            setIsModalOpen(true);
-          },
+          fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "PROCESSING FEE",
         };
         break;
+      case "ADDITIONAL INFORMATION REQUESTED":
+        visaInformation = {
+          text: "Upload documents",
+          fn: () => setModalState({ open: true, type: "upload" }),
+          disabled: false,
+          intent: "",
+        };
+        break;
+      case "ADDITIONAL DOCUMENT REQUESTED":
+        visaInformation = {
+          text: "Upload documents",
+          fn: () => setModalState({ open: true, type: "upload" }),
+          disabled: false,
+          intent: "",
+        };
+        break;
       default:
         visaInformation = {
-          text: "Pay Visa Fee",
+          text: "No action required",
           fn: () => {},
-          disabled: false,
+          disabled: true,
           intent: "",
         };
     }
@@ -146,8 +168,11 @@ function VisaDetail({ visa }: { visa: any }) {
       : visa?.applicationStatus === "FORM FEE REQUESTED"
       ? { text: "#fff", bg: "#8f3d3d" }
       : { text: "#37008A", bg: "#F6F0FF" };
-  const { applied, voucher } = useVoucherStore((state) => state);
-
+  // const { applied, voucher } = useVoucherStore((state) => state);
+  const accompanying = visa?.familyMembers.filter(
+    (fm: any) => fm.accompanying === true
+  ).length;
+ 
   return (
     <Section
       styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
@@ -155,15 +180,19 @@ function VisaDetail({ visa }: { visa: any }) {
       margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
       <VisaPaymentModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        open={modalState.open && modalState.type === "payment"}
+        onClose={() => setModalState({ open: false, type: "" })}
         visaDetails={{
           id: visa?._id,
           intent: getButtonInformation().intent,
-          accompanying: visa?.familyMembers.filter(
-            (fm: any) => fm.accompanying === true
-          ).length,
+          accompanying: accompanying,
         }}
+      />
+      <VisaUploadDocModal
+        onClose={() => setModalState({ open: false, type: "" })}
+        open={modalState.open && modalState.type === "upload"}
+        visa={visa}
+        refetch={refetch}
       />
       <Flex
         justify="space-around"
@@ -242,8 +271,10 @@ function VisaDetail({ visa }: { visa: any }) {
                   <Text
                     type="h5"
                     text={
-                      recentPayment?.totalAmount
+                      visa?.payments.length
                         ? currencyFormatter(recentPayment.totalAmount)
+                        : visa?.usedFormFeeVoucher
+                        ? "Travel voucher"
                         : "n/a"
                     }
                     color="#112211"
@@ -307,7 +338,7 @@ function VisaDetail({ visa }: { visa: any }) {
               }}
             >
               <Flex
-                border="1px solid #87CEEB"
+                // border="1px solid #87CEEB"
                 borderBottom="1px solid #87CEEB"
                 align="center"
                 justify="center"
@@ -329,9 +360,9 @@ function VisaDetail({ visa }: { visa: any }) {
         </Flex>
       </Flex>
       {isOpen && (
-        <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
+        <Section styles={{ transition: "all 3s" }}>
           {visa.applicationStatus === "FORM FEE REQUESTED" ? (
-            <Flex align="center" gap=".5rem">
+            <Flex align="center" gap=".5rem" margin="2rem 2rem 0">
               <PiDotsThreeCircleLight size={20} color="red" />
               <Text
                 type="p"
@@ -340,30 +371,79 @@ function VisaDetail({ visa }: { visa: any }) {
               />
             </Flex>
           ) : (
-            <>
-              <Flex align="center" margin=".5rem 0" gap=".5rem">
-                <PiDotsThreeCircleLight size={20} />
-                <Text type="p" text={visa?.applicationStatus} size={"15px"} />
-              </Flex>
-              {visa?.usedFormFeeVoucher && (
+            <Flex justify="space-between" align="center" margin="2rem 0">
+              <div>
                 <Flex align="center" margin=".5rem 0" gap=".5rem">
-                  <PiWalletLight size={20} />
+                  <PiDotsThreeCircleLight size={20} />
+                  <Text type="p" text={visa?.applicationStatus} size={"15px"} />
+                </Flex>
+                {visa?.usedFormFeeVoucher && (
+                  <Flex align="center" margin=".5rem 0" gap=".5rem">
+                    <PiWalletLight size={20} />
+                    <Text
+                      type="p"
+                      text={"Application fee paid with Travel Voucher"}
+                      size={"15px"}
+                    />
+                  </Flex>
+                )}
+                <Flex align="center" gap=".5rem">
+                  {visa?.applicationStatus !== "ADDITIONAL INFO REQUESTED" ? (
+                    <AiOutlineCheck size={20} />
+                  ) : (
+                    <BiError color="red" size={20} />
+                  )}
                   <Text
                     type="p"
-                    text={"Application fee paid with Travel Voucher"}
+                    text={
+                      visa?.applicationStatus === "ADDITIONAL INFO REQUESTED"
+                        ? "ADDITIONAL DOCUMENT REQUESTED"
+                        : "NO DOCUMENTED REQUESTED FROM YOU"
+                    }
                     size={"15px"}
                   />
                 </Flex>
-              )}
-              <Flex align="center" gap=".5rem">
-                <AiOutlineCheck size={20} />
-                <Text
-                  type="p"
-                  text={"NO DOCUMENTED REQUESTED FROM YOU"}
-                  size={"15px"}
-                />
-              </Flex>
-            </>
+              </div>
+              <div>
+                <Flex align="center" margin=".5rem 0" gap=".5rem">
+                  <RxAvatar size={20} />
+                  <Text
+                    type="p"
+                    text={`${visa?.primaryTraveller?.firstName} ${visa?.primaryTraveller?.lastName}`}
+                    size={"15px"}
+                  />
+                </Flex>
+
+                <Flex align="center" margin=".5rem 0" gap=".5rem">
+                  <MdOutlineFamilyRestroom size={20} />
+                  <Text
+                    type="p"
+                    text={accompanying > 0 ? "Family" : "Single"}
+                    size={"15px"}
+                  />
+                </Flex>
+
+                <Flex align="center" gap=".5rem">
+                  <MdNumbers size={20} />
+                  <Text type="p" text={visa?.uniqueVisaId} size={"15px"} />
+                </Flex>
+              </div>
+              <div>
+                <Flex>
+                  <Button
+                    width="200px"
+                    styles={{
+                      maxWidth: "100%",
+                    }}
+                    background="transparent"
+                    border="1px solid black"
+                    color="black"
+                  >
+                    <Text type="p" text="+ Add accompanying" size={"15px"} />
+                  </Button>
+                </Flex>
+              </div>
+            </Flex>
           )}
         </Section>
       )}
