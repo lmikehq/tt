@@ -57,7 +57,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     meansOfId: yup.string().required("Required"),
     idNumber: yup.string().required("Required"),
     issueDate: yup.string().required("Required"),
-    expiryDate: yup.string().required("Required"),
+    expiryDate: yup.string().optional(),
     address: yup.string().required("Required"),
     countryOfCitizen: countrySchema.required(),
     dateOfBirth: yup.string().required("Required"),

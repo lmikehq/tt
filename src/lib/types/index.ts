@@ -80,7 +80,7 @@ export interface PersonalInfoInterface {
   meansOfId: string;
   idNumber: string;
   issueDate: string;
-  expiryDate: string;
+  expiryDate?: string;
   address: string;
   countryOfCitizen: CountryType;
   dateOfBirth: string;
