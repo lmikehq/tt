@@ -74,6 +74,8 @@ interface ReusableModalProps {
   width?: string;
   maxWidth?: string;
   maxHeight?: string;
+  loading?: boolean;
+  setLoading?: (loading: boolean) => void;
   buttonProps?: {
     text: string;
     onClick: () => void;
@@ -90,12 +92,13 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   maxWidth,
   maxHeight,
   children,
+  loading = false, setLoading = () => {},
   buttonProps = {
     text: "Save",
     onClick: () => {},
   },
 }) => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   return (
     <Modal open={open} onClose={onClose}>
       <StyledModalContent

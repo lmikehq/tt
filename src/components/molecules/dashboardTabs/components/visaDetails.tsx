@@ -13,7 +13,6 @@ import {
   MdOutlineFamilyRestroom,
 } from "react-icons/md";
 import { PiDotsThreeCircleLight, PiWalletLight } from "react-icons/pi";
-import { useVoucherStore } from "@lib/store/voucher.store";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import Button from "@atom/button";
@@ -70,7 +69,7 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa }: { visa: any }) {
+function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
   const { isMobile } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
@@ -130,7 +129,15 @@ function VisaDetail({ visa }: { visa: any }) {
           intent: "PROCESSING FEE",
         };
         break;
-      case "ADDITIONAL INFO REQUESTED":
+      case "ADDITIONAL INFORMATION REQUESTED":
+        visaInformation = {
+          text: "Upload documents",
+          fn: () => setModalState({ open: true, type: "upload" }),
+          disabled: false,
+          intent: "",
+        };
+        break;
+      case "ADDITIONAL DOCUMENT REQUESTED":
         visaInformation = {
           text: "Upload documents",
           fn: () => setModalState({ open: true, type: "upload" }),
@@ -140,9 +147,9 @@ function VisaDetail({ visa }: { visa: any }) {
         break;
       default:
         visaInformation = {
-          text: "No action",
+          text: "No action required",
           fn: () => {},
-          disabled: false,
+          disabled: true,
           intent: "",
         };
     }
@@ -185,6 +192,7 @@ function VisaDetail({ visa }: { visa: any }) {
         onClose={() => setModalState({ open: false, type: "" })}
         open={modalState.open && modalState.type === "upload"}
         visa={visa}
+        refetch={refetch}
       />
       <Flex
         justify="space-around"

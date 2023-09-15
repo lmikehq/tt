@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import Section from "src/components/molecules/section";
 import ReusableModal from "./components/dashboardModal";
+import { useState } from "react";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -66,9 +67,9 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   }
 
   const { user } = useUserStore((state) => state);
-  const { applied, voucher } = useVoucherStore((state) => state);
+  // const { applied, voucher } = useVoucherStore((state) => state);
   const createPayment = async () => {
-    return await apiService("/payment/create-form-fee-charge", "POST", {
+    return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
       service: "VISA",
@@ -85,6 +86,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       }
     });
   };
+  const [loading, setLoading] = useState(false);
 
   return (
     <ReusableModal
@@ -92,6 +94,8 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       onClose={onClose}
       headerText="Make Payment"
       description="Kindly make payment for required Visa Application Process."
+      loading={loading}
+      setLoading={setLoading}
       buttonProps={{
         text: "Make Payment",
         onClick: createPayment,

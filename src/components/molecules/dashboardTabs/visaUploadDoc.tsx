@@ -1,24 +1,23 @@
 import Text from "@atom/text";
 import Flex from "@components/templates/flex";
-import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import apiService from "@lib/extensions/hook/apiService";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useUserStore } from "@lib/store/useStore";
-import { useVoucherStore } from "@lib/store/voucher.store";
-import { FieldString } from "@organism/fieldInput";
-import { Formik } from "formik";
-import { toast } from "react-hot-toast";
-import { BsExclamationCircleFill } from "react-icons/bs";
-import Section from "src/components/molecules/section";
-import ReusableModal from "./components/dashboardModal";
-import { useState } from "react";
-import DocumentUploadWidget from "@organism/DocumentUploadWidget";
 import useCloudinaryUpload from "@lib/extensions/hook/useCloudinary";
-import { useFilePicker } from "use-file-picker";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import DocumentUploadWidget from "@organism/DocumentUploadWidget";
+import { FieldString } from "@organism/fieldInput";
+import { UploadedDoc } from "@organism/form/applicationForm";
+import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import Section from "src/components/molecules/section";
+import { DocumentInterface } from "types";
+import { FileContent, useFilePicker } from "use-file-picker";
+import ReusableModal from "./components/dashboardModal";
 
 type VisaUploadDocModalProps = {
   open: boolean;
   onClose: () => void;
+  refetch: () => void;
   visa: any;
 };
 
@@ -26,6 +25,7 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
   open,
   onClose,
   visa,
+  refetch
 }) => {
   const { isMobile } = useScreenResolution();
   const infoRequests = visa?.infoRequests
@@ -34,54 +34,158 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
   const docs = infoRequests.map((req: any) => ({
     information: req?.information,
     id: req?._id,
+    infoType: req?.infoType,
   }));
-  const [selectedDoc, setSelectedDoc] = useState(docs[0]?.information[0]);
-  const { user } = useUserStore((state) => state);
+  const [uploadedState, setUploadedState] = useState<{
+    uploaded: boolean;
+    loading: boolean;
+  }>({
+    uploaded: false,
+    loading: false,
+  });
+
+  async function replyDocUploadRequest() {
+    if (uploadedState.loading) return;
+    if (uploadedDocuments.length < 1)
+      return toast.error("Please upload a document");
+    console.log("uploadedDocuments: ", docs[0]);
+    
+    const res = await apiService(
+      `/visa/info-request/reply/${docs[0]?.id}`,
+      "POST",
+      {
+        information: uploadedDocuments.map((doc: any) => ({
+          name: doc.title,
+          url: doc.url,
+        })),
+        infoType: docs[0]?.infoType,
+      }
+    );
+    if (res.statusCode === 200) {
+      setUploadedState({ uploaded: true, loading: false });
+      toast.success("Documents uploaded successfully");
+      onClose();
+      refetch();
+    } else {
+      setUploadedState({ uploaded: false, loading: false });
+      toast.error("Something went wrong");
+    }
+  }
+
   const timestamp = new Date().getTime();
   const [uploadedDocuments, setUploadedDocuments] = useState<any>([]);
-  const [documentToUpload, setDocumentToUpload] = useState<string>("");
-
-  const uploadDoc = async () => {
-    // return await apiService("/payment/create-form-fee-charge", "POST", {
-    //   currency: "NGN",
-    //   gateway: "Kora",
-    //   service: "VISA",
-    //   user: user?._id,
-    //   serviceID: visaDetails.id,
-    //   paymentIntent: visaDetails.intent,
-    // }).then((response) => {
-    //   if (response.statusCode == 200 || response.statusCode == 201) {
-    //     window.open(response.data.data.checkout_url, "_self");
-    //     return response.data;
-    //   } else {
-    //     toast.error(response.errorMessage);
-    //     throw response;
-    //   }
-    // });
-  };
-    const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
-      readAs: "DataURL",
-      accept: [".png", ".pdf", ".jpeg"],
-      multiple: !(documentToUpload == "International passport"),
-      maxFileSize: 10,
-    });
+  const [documentToUpload, setDocumentToUpload] = useState<string>(
+    docs[0]?.information[0]
+  );
+  const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
+    readAs: "DataURL",
+    accept: [".png", ".pdf", ".jpeg"],
+    multiple: !(documentToUpload == "International Passport"),
+    maxFileSize: 10,
+  });
   const presets = {
     publicId: visa?.primaryTraveller.lastName + timestamp || "unknown",
     folder: `${visa?.primaryTraveller.lastName + timestamp || "unknown"}-files`,
   };
   const { uploadImage, loading, progress, deleteImage, deleting } =
     useCloudinaryUpload({ presets });
+
+  const uploadFileToCLoudinary = async ({ file }: { file: FileContent }) => {
+    return await uploadImage({ file: file.content }).then((image) => {
+      if (typeof image === "string") {
+        const docObj: DocumentInterface = {
+          name: documentToUpload,
+          url: image,
+        };
+        const { name, size, type } =
+          plainFiles[
+            filesContent.findIndex((el) => el.content == file.content)
+          ];
+        const findIndex =
+          documentToUpload == "International passport"
+            ? (uploadedDocuments ?? []).findIndex(
+                (el: any) => el.title == documentToUpload
+              )
+            : -1;
+
+        if (findIndex == -1) {
+          const formikUploadedDocument = docObj;
+          // formik.setFieldValue("documents", formikUploadedDocuments);
+          const uploadedDoc = {
+            name:
+              name.length <= 30
+                ? name
+                : name.split(".")[0].substring(0, 30) +
+                  "..." +
+                  name.split(".")[1],
+            size: `${size / 1000000} MB`,
+            type: type.split("/")[1].toUpperCase(),
+            title: docObj.name,
+            url: image,
+          };
+          // setUploadedDocuments(uploadedDocs);
+
+          return { formikUploadedDocument, uploadedDoc };
+        } else {
+          let formikUploadedDocuments = uploadedDocuments;
+          let uploadedDocs = [...(uploadedDocuments ?? [])];
+          formikUploadedDocuments.splice(findIndex, 1, docObj);
+          uploadedDocs.splice(findIndex, 1, {
+            name:
+              name.length <= 30
+                ? name
+                : name.split(".")[0].substring(0, 30) +
+                  "..." +
+                  name.split(".")[1],
+            size: `${size / 1000000} MB`,
+            type: type.split("/")[1].toUpperCase(),
+            title: docObj.name,
+            url: image,
+          });
+          setUploadedDocuments(uploadedDocs);
+        }
+      }
+    });
+  };
+  const uploadFiles = async () => {
+    if (filesContent.length > 0) {
+      let formikUploadedDocuments: DocumentInterface[] = uploadedDocuments;
+      let uploadedDocs: UploadedDoc[] = [...uploadedDocuments];
+      for (const file of filesContent) {
+        await uploadFileToCLoudinary({ file }).then((data) => {
+          if (data) {
+            formikUploadedDocuments = [
+              ...formikUploadedDocuments,
+              data.formikUploadedDocument!,
+            ];
+            uploadedDocs = [...uploadedDocs, data.uploadedDoc!];
+            setUploadedDocuments(uploadedDocs);
+          }
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    uploadFiles();
+  }, [filesContent]);
   return (
     <ReusableModal
       open={open}
       onClose={onClose}
       headerText="Upload Document"
       description=""
-    //   description="Kindly Upload the required Document as it will help continue your application."
+      //   description="Kindly Upload the required Document as it will help continue your application."
       maxHeight="70%"
+      loading={uploadedState.loading}
+      maxWidth="50%"
       buttonProps={{
-        text: "Continue",
-        onClick: uploadDoc,
+        text: uploadedState.uploaded
+          ? "Close"
+          : uploadedState.loading
+          ? "Uploading..."
+          : "Continue",
+        onClick: uploadedState.uploaded ? onClose : replyDocUploadRequest,
       }}
     >
       <Section margin="0 0 2rem">
@@ -101,10 +205,10 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
           <FieldString
             options={docs[0]?.information}
             name="document"
-            value={selectedDoc}
+            value={documentToUpload}
             placeholder=""
             formik={Formik}
-            onChange={(e) => setSelectedDoc(e)} // Handle the change event
+            onChange={(e) => setDocumentToUpload(e)} // Handle the change event
           />
         </Section>
 
@@ -119,27 +223,20 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
             openFilePicker();
           }}
           height="17rem"
-          handleDelete={async (e: number) => console.log("e: ", e)}
-          // handleDelete={async (i: number) => {
-          //   try {
-          //     await deleteImage({
-          //       imageUrl: formik.values.documents[i].url,
-          //     });
-          //     setUploadedDocuments([
-          //       ...uploadedDocuments.filter(
-          //         (_: any, index: number) => index !== i
-          //       ),
-          //     ]);
-          //     formik.setFieldValue(
-          //       "documents",
-          //       formik.values.documents.filter(
-          //         (_: any, index: number) => index !== i
-          //       )
-          //     );
-          //   } catch (error) {
-          //     throw error;
-          //   }
-          // }}
+          handleDelete={async (i: number) => {
+            try {
+              await deleteImage({
+                imageUrl: uploadedDocuments[i].url,
+              });
+              setUploadedDocuments([
+                ...uploadedDocuments.filter(
+                  (_: any, index: number) => index !== i
+                ),
+              ]);
+            } catch (error) {
+              throw error;
+            }
+          }}
         />
       </Section>
     </ReusableModal>

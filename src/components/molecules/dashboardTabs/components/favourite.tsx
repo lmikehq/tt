@@ -5,7 +5,6 @@ import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
 
 const Favourite = () => {
-  const { isMobile } = useScreenResolution();
 
   const content = {
     title: "You’ve got no favorite - Let’s help you get Started",

@@ -222,7 +222,7 @@ SearchProps) {
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
                     <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
-                      {option.flag && <RoundFlag flag={option.flag.src} />}
+                      {option.flag && <RoundFlag flag={option.flag} />}
                       {option.code ? (
                         <Text
                           type="p"
