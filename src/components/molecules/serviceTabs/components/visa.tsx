@@ -55,7 +55,7 @@ function Visa() {
         gap="2rem"
         justify="space-between"
         columns={isMobile ? "1" : "3"}
-        margin={isMobile ? "0" : "3rem 0 0"}
+        margin={"0"}
       >
         <SearchInput
           options={COUNTRY_FLAGS.map((x) => ({

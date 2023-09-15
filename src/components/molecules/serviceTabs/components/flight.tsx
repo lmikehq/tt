@@ -23,10 +23,11 @@ const options = [
 export const ButtonWrapper = styled.div`
   width: 25%;
   margin: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -24px;
+  // position: absolute;
+  // left: 0;
+  // right: 0;
+  // bottom: -24px;
+  transform: translateY(66px);
 
   @media (max-width: 900px) {
     margin-top: 1rem;
