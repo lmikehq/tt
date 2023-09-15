@@ -196,7 +196,7 @@ SearchProps) {
                     handleClose();
                   }
                 }}
-                value={value.name ? value : null}
+                value={value?.name ? value : null}
                 onChange={(event, newValue, reason) => {
                   if (reason === "clear") {
                     return;
@@ -228,7 +228,6 @@ SearchProps) {
                         text={`${option.code} - ${option.name}`}
                         weight={100}
                       />
-
                     </Flex>
                     <br />
                   </li>

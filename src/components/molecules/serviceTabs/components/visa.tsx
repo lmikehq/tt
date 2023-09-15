@@ -27,14 +27,14 @@ export interface LabelType {
 
 function Visa() {
   const [home, setHome] = useState<CountryType>({
-    name: "Nigerian",
+    name: "Nigeria",
     flag: "🇳🇬",
     code: "NG",
   });
   useEffect(() => {
     getIpDetails().then((x: any) =>
       setHome({
-        name: x.country || "Nigerian",
+        name: x.country || "Nigeria",
         flag: COUNTRY_FLAGS.find((y) => y.code === x.countryCode)?.flag ?? "",
         code: x.country_code || "NG",
       })
