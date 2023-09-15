@@ -49,10 +49,12 @@ function LoginPage() {
   });
   const login = useGoogleLogin({
     onSuccess: async (credentialResponse) => {
+      console.log(credentialResponse);
       return await apiService("/auth/google", "POST", {
         token: credentialResponse.access_token,
       })
         .then(async (res) => {
+          if (res.statusCode === 401) return;
           setSubmissionState({
             ...submissionState,
             loadingGoogleAuth: true,
