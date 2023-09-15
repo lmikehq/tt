@@ -120,7 +120,7 @@ function Visa() {
       </Grid>
       <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
-          width="240px"
+          width={isMobile ? "100%" : "240px"}
           borderRadius="4px"
           onClick={async () => {
             if (loading) return;
