@@ -199,7 +199,12 @@ const Referrals = () => {
               >
                 <Flex justify="space-between" align="center">
                   <Flex justify="flex-start" gap="1rem" align="center">
-                    <Image src={Referral1} alt="" width={40} height={40} />
+                    <Image
+                      src="/assets/images/dashboard/referral1.png"
+                      alt=""
+                      width={40}
+                      height={40}
+                    />
                     <Text
                       type="h3"
                       text="Adah Jonathan"

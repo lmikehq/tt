@@ -15,9 +15,9 @@ import PhoneModal from "../accountPhone";
 import { BiSolidPencil } from "react-icons/bi";
 import Input from "@atom/input";
 import toast from "react-hot-toast";
-import sleep from "@lib/sleep";
-import apiService from "hook/apiService";
-import Center from "@atom/center";
+import apiService from "@lib/extensions/hook/apiService";
+import sleep from "@lib/extensions/helpers/sleep";
+import Center from "@components/templates/center";
 
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
@@ -409,11 +409,9 @@ const Account = () => {
                     }}
                   />
                   {validationOptions.map((option) => (
-                    <div
+                    <Flex align="center"
                       key={option.value}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
+                      styles={{
                         marginBottom: "0.5rem",
                         fontSize: "16px",
                         fontWeight: 400,
@@ -436,10 +434,10 @@ const Account = () => {
                             : "#B6B6B6",
                         }}
                       />
-                      <span style={{ marginLeft: "0.5rem" }}>
+                      <span>
                         {option.label}
                       </span>
-                    </div>
+                    </Flex>
                   ))}
                 </Section>
               )}

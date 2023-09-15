@@ -245,7 +245,7 @@ function UserPicture() {
           width="max-content"
         >
           <Image
-            src={copyIcon}
+            src="/assest/images/dashboard/copyIcon.png"
             alt=""
             styles={{
               position: "relative",
