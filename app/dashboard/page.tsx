@@ -1,12 +1,12 @@
+import UserStoreProvider from "@lib/extensions/hook/useUserStore";
+import DashboardHeader from "@molecule/dashboardTabs/dashboard";
 
-import DashboardHeader from "components/molecules/dashboardTabs/dashboard";
-import UserStoreProvider from "hook/useUserStore";
 
 const DashboardHeaderComponent = () => {
   return (
-    // <UserStoreProvider>
+    <UserStoreProvider>
       <DashboardHeader />
-    // </UserStoreProvider>
+   </UserStoreProvider>
   );
 };
 

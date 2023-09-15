@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Flex from "./flex";
-import Image from "./image";
-import Text from "./text";
 import { GoDotFill } from "react-icons/go";
-import Button from "./button";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import { ttColors } from "theme/colors";
 import styled from "styled-components";
 import { StaticImageData } from "next/image";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { TfiBrushAlt } from "react-icons/tfi";
+import { ttColors } from "@lib/theme/colors";
+import Flex from "@components/templates/flex";
+import Image from "@atom/image";
+import Text from "@atom/text";
+import Button from "@atom/button";
 
 const History = styled.div`
   display: flex;
