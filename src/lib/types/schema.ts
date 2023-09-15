@@ -70,7 +70,10 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     passportNumber: yup.string().required("Required"),
 
     passportIssuedCountry: countrySchema.required(),
-    passportExpiryYear: yup.string().required("Required"),
+    passportExpiryYear: yup.string().when("meansOfId", {
+      is: "International Passport",
+      then: (schema) => schema.required("Required"),
+    }),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     mentalDisorder: yup.boolean().required("Required"),
