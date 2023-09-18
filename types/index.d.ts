@@ -1,4 +1,4 @@
-import { document } from "./../lib/application/schema";
+import { document } from "../src/lib/application/schema";
 export type ISiteConfig = {
   name: string;
   description: string;
@@ -49,8 +49,8 @@ export interface EducationDetailsInterface {
   cgpa: number | null;
   location: string;
   fieldOfStudy: string;
-  startYear: number | null;
-  endYear?: number | null;
+  startYear: string;
+  endYear?: string;
   stillAtSchool: boolean;
 }
 
@@ -60,8 +60,8 @@ export interface EmploymentDetailsInterface {
   employmentType: string;
   // locationType: string;
   companyLocation: string;
-  startYear: number;
-  endYear?: number;
+  startYear: string;
+  endYear?: string;
   stillWorking: boolean;
 }
 
@@ -73,7 +73,7 @@ export interface PersonalInfoInterface {
   placeOfBirth: string;
   phoneNumber: string;
   stateOfOrigin: string;
-  lgaOfOrigin: string;
+  placeOfOrigin: string;
   nativeLanguage: string;
   meansOfId: string;
   idNumber: string;
@@ -110,9 +110,9 @@ export interface FamilyInfoInterface {
   membersPhoneNumber: string;
   membersEmail: string;
   accompanying: boolean;
-  issueYear?: string | number;
+  issueYear?: string;
   passportNumber?: string;
-  expiryYear?: string | number;
+  expiryYear?: string;
   gender?: string;
   dateOfBirth?: string;
 }
