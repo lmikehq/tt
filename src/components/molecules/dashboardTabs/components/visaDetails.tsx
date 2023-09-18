@@ -323,6 +323,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
             weight={800}
             size={isMobile ? 13 : 14}
             color={textAndBgColor.text}
+            textAlign="center"
           />
         </VisaStatus>
 
@@ -413,7 +414,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   </Flex>
                 )}
                 <Flex align="center" gap=".5rem">
-                  {visa?.applicationStatus !== "ADDITIONAL INFO REQUESTED" ? (
+                  {visa?.applicationStatus !==
+                  "ADDITIONAL INFORMATION REQUESTED" ? (
                     <AiOutlineCheck size={20} />
                   ) : (
                     <BiError color="red" size={20} />
@@ -421,9 +423,10 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   <Text
                     type="p"
                     text={
-                      visa?.applicationStatus === "ADDITIONAL INFO REQUESTED"
+                      visa?.applicationStatus ===
+                      "ADDITIONAL INFORMATION REQUESTED"
                         ? "ADDITIONAL DOCUMENT REQUESTED"
-                        : "NO DOCUMENTED REQUESTED FROM YOU"
+                        : "NO DOCUMENT REQUESTED FROM YOU"
                     }
                     size={"15px"}
                   />

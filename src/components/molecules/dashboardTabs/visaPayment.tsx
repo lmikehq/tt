@@ -102,48 +102,50 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       }}
     >
       {/* Additional content goes here */}
-      <Section margin="3rem 0px 1.5rem">
-        <Flex align="center" gap="0rem" justify="center">
-          <Text type="h1" text={currencyFormatter(paymentAmount())} />
-        </Flex>
-        <Text type="p" text={visaDetails.intent} />
-      </Section>
-      <Section margin="0px">
-        <Flex align="center" gap="0.25rem">
-          <Text
-            type="p"
-            text="Select Currency"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-          />
-        </Flex>
-        <FieldString
-          options={["NGN - Nigerian Naira"]}
-          name="currency"
-          value="NGN - Nigerian Naira"
-          placeholder=""
-          formik={Formik}
-          onChange={() => {}} // Handle the change event
-        />
-      </Section>
-      {!isMobile && (
-        <Section margin="-10px 0px 2.5rem">
-          <Flex align="center" justify="flex-start" gap="10px">
-            <BsExclamationCircleFill
-              color="#6092A7"
-              size="2.5rem"
-              style={{
-                position: "relative",
-                top: "-10px",
-              }}
-            />
+      <Section margin="2rem 0">
+        <Section margin="3rem 0px 1.5rem">
+          <Flex align="center" gap="0rem" justify="center">
+            <Text type="h1" text={currencyFormatter(paymentAmount())} />
+          </Flex>
+          <Text type="p" text={visaDetails.intent} />
+        </Section>
+        <Section margin="0px">
+          <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-              styles={{ textAlign: "left" }}
+              text="Select Currency"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
           </Flex>
+          <FieldString
+            options={["NGN - Nigerian Naira"]}
+            name="currency"
+            value="NGN - Nigerian Naira"
+            placeholder=""
+            formik={Formik}
+            onChange={() => {}} // Handle the change event
+          />
         </Section>
-      )}
+        {!isMobile && (
+          <Section margin="-10px 0px 2.5rem">
+            <Flex align="center" justify="flex-start" gap="10px">
+              <BsExclamationCircleFill
+                color="#6092A7"
+                size="2.5rem"
+                style={{
+                  position: "relative",
+                  top: "-10px",
+                }}
+              />
+              <Text
+                type="p"
+                text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+                styles={{ textAlign: "left" }}
+              />
+            </Flex>
+          </Section>
+        )}
+      </Section>
     </ReusableModal>
   );
 };

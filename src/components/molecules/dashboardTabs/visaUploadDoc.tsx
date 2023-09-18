@@ -25,8 +25,13 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
   open,
   onClose,
   visa,
-  refetch
+  refetch,
 }) => {
+  const handleClose = () => {
+    setUploadedState({ uploaded: false, loading: false });
+    setUploadedDocuments([]);
+    onClose()
+  };
   const { isMobile } = useScreenResolution();
   const infoRequests = visa?.infoRequests
     ? visa?.infoRequests.filter((req: any) => req?.isAnswered === false)
@@ -48,8 +53,7 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
     if (uploadedState.loading) return;
     if (uploadedDocuments.length < 1)
       return toast.error("Please upload a document");
-    console.log("uploadedDocuments: ", docs[0]);
-    
+
     const res = await apiService(
       `/visa/info-request/reply/${docs[0]?.id}`,
       "POST",
@@ -64,7 +68,7 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
     if (res.statusCode === 200) {
       setUploadedState({ uploaded: true, loading: false });
       toast.success("Documents uploaded successfully");
-      onClose();
+      handleClose();
       refetch();
     } else {
       setUploadedState({ uploaded: false, loading: false });
@@ -172,20 +176,20 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
   return (
     <ReusableModal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       headerText="Upload Document"
       description=""
       //   description="Kindly Upload the required Document as it will help continue your application."
       maxHeight="70%"
       loading={uploadedState.loading}
-      maxWidth="50%"
+      maxWidth={isMobile ? "90%" : "50%"}
       buttonProps={{
         text: uploadedState.uploaded
           ? "Close"
           : uploadedState.loading
           ? "Uploading..."
           : "Continue",
-        onClick: uploadedState.uploaded ? onClose : replyDocUploadRequest,
+        onClick: uploadedState.uploaded ? handleClose : replyDocUploadRequest,
       }}
     >
       <Section margin="0 0 2rem">
@@ -222,7 +226,7 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
               return toast.error("Please select a document to upload");
             openFilePicker();
           }}
-          height="17rem"
+          height={isMobile ? "fit-content" : "17rem"}
           handleDelete={async (i: number) => {
             try {
               await deleteImage({
