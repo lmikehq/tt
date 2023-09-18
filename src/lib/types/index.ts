@@ -1,7 +1,6 @@
+import { safelyConvertToNumber } from "@lib/utilFns";
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
-import { document } from "./schema";
-import { safelyConvertToNumber } from "@lib/utilFns";
 export type ISiteConfig = {
   name: string;
   description: string;
@@ -34,7 +33,7 @@ export interface IFee {
 }
 
 export interface User {
-  id: number;
+  _id: number;
 }
 
 export interface DetailsKeys {
@@ -191,6 +190,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
   data: VisaApplicationFormInterface;
   user?: User;
 }) => {
+  console.log('user: ', user)
   const applicationFormRequest: ApplicationFormRequestInput = {
     applicationType: data.tripDetails.applicationType,
     visaType: data.tripDetails.visaType,
@@ -250,10 +250,10 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
     })),
     documents: data.documents,
   };
-  if (user?.id)
+  if (user?._id)
     return {
       ...applicationFormRequest,
-      user: `${user?.id}` ?? "",
+      user: `${user?._id}` ?? "",
     };
   return applicationFormRequest;
 };

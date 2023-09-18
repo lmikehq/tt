@@ -234,7 +234,7 @@ const Card = styled.div`
 const CountriesList = () => {
   const { isMobile } = useScreenResolution();
   const [showAll, setShowAll] = useState(false);
-  const countriesPerPage = 50;
+  const countriesPerPage = 48;
   const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
   const [displayedCountries, setDisplayedCountries] = useState(
     countries.slice(0, countriesPerPage)
@@ -248,7 +248,7 @@ const CountriesList = () => {
     } else {
       const remainingCountries = countries.slice(
         displayedCountries.length,
-        displayedCountries.length + 25
+        displayedCountries.length + 24
       );
 
       if (remainingCountries.length > 0) {
@@ -284,9 +284,9 @@ const CountriesList = () => {
           showButton={false}
         />
         <Grid
-          columns={isMobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)"}
+          columns={isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)"}
           style={{
-            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(5, 1fr)",
+            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
           }}
           gap={isMobile ? ".8rem" : "1.5rem"}
           margin="2rem 0 0"
@@ -296,9 +296,12 @@ const CountriesList = () => {
               href={`/visa/countries/${urlString(country.name)}`}
               key={index}
             >
-              <Flex background="#fff" align="center" gap="2rem">
+              <Flex background="#fff" align="center" gap="2rem" padding="15px" borderRadius="12px">
                 <Image src={country.flag} alt={country.name} width={50} />
-                <Text text={country.name} type="h3" />
+                <Text
+                  text={country.name.split(" ").slice(0, 2).join("+")}
+                  type="p"
+                />
               </Flex>
             </Link>
           ))}

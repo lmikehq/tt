@@ -506,7 +506,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Flex align="center" gap="0.25rem">
                 <Text
                   type="p"
-                  text="Partner’s Name (if applicable)"
+                  text="Partner’s Name"
                   margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
                 />
               </Flex>

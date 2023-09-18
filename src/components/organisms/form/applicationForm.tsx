@@ -31,6 +31,7 @@ import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
+import { COUNTRY_FLAGS } from "@/lib/extensions/data/data";
 
 const PromoInput = styled.div`
   display: flex;
@@ -52,6 +53,11 @@ const PromoInput = styled.div`
 
 const ErrorToastComponent = styled.div`
   width: 100%;
+  max-height: 50vh;
+  overflow-y: scroll;
+  background: white;
+  // width: 500px;
+  max-width: 90vw;
   p {
     color: ${ttColors.red};
     padding: 0.5rem 0;
@@ -81,7 +87,6 @@ interface ErrorInterface {
 
 function ApplicationForm() {
   const { isMobile } = useScreenResolution();
-  const { user } = useUserStore((state) => state);
   const {
     fetchRecentProgressFromSession,
     form,
@@ -256,13 +261,14 @@ function ApplicationForm() {
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
   useEffect(() => {
+   
     const searchParams = new URLSearchParams(window.location.search);
+
     fetchDetailsFromURL({
       homeCountry: searchParams.get("home") || "",
       destination: searchParams.get("destination") || "",
       visaType: searchParams.get("visaType") || "",
     });
-    console.log(searchParams.get("home"));
     fetchRecentProgressFromSession();
   }, [params]);
 

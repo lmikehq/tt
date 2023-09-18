@@ -1,13 +1,5 @@
-import sleep from "@lib/extensions/helpers/sleep";
-import { ApplicationFormService } from "@lib/services/application-form.service";
-import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
-import { visaInitVals } from "@lib/types/schema";
-import { UploadedDoc } from "@organism/form/applicationForm";
 import {
-  Mode,
-  VisaApplicationFormInterface,
-  VisaFormUnionType,
-  mapVisaApplicationFormInterfaceToApplicationFormRequestInput,
+  Mode
 } from "@lib/types";
 import { create } from "zustand";
 import { VoucherService } from "../services/voucher.service";

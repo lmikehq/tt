@@ -1,16 +1,17 @@
-import { findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
 import sleep from "@lib/extensions/helpers/sleep";
 import { ApplicationFormService } from "@lib/services/application-form.service";
+import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
+import { visaInitVals } from "@lib/types/schema";
+import { UploadedDoc } from "@organism/form/applicationForm";
 import {
   Mode,
   VisaApplicationFormInterface,
   VisaFormUnionType,
   mapVisaApplicationFormInterfaceToApplicationFormRequestInput,
 } from "@lib/types";
-import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
-import { visaInitVals } from "@lib/types/schema";
-import { UploadedDoc } from "@organism/form/applicationForm";
 import { create } from "zustand";
+import { COUNTRY_FLAGS, findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { useUserStore } from "./useStore";
 
 interface State {
   form: VisaApplicationFormInterface;
@@ -56,7 +57,7 @@ export const useApplicationFormStore = create<State & Actions>(
       set({
         mode: Mode.loading,
       });
-      await sleep(2000);
+      await sleep(1500);
       set((state) => ({
         mode: Mode.loaded,
         step: state.step + 1,
@@ -118,8 +119,9 @@ export const useApplicationFormStore = create<State & Actions>(
       data: VisaApplicationFormInterface;
     }) => {
       set({ mode: Mode.loading, form: data });
+      const { user } = useUserStore.getState();
       const payload =
-        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({ data });
+        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({ data, user });
       return await ApplicationFormService.createVisaApplication({
         payload,
       })
