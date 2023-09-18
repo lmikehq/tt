@@ -46,7 +46,7 @@ const VisApplicationFormDetails = ({
         <Section width="30%" height="unset">
           <Text
             type="p"
-            text={formData.tripDetails.homeCountry}
+            text={formData.tripDetails.homeCountry.name}
             size={20}
             weight={500}
           />
@@ -58,7 +58,7 @@ const VisApplicationFormDetails = ({
           <Text
             type="p"
             textAlign="right"
-            text={formData.tripDetails.destination}
+            text={formData.tripDetails.destination.name}
             size={20}
             weight={500}
           />

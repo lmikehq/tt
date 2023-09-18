@@ -29,11 +29,10 @@ interface formProps {
 function TripDetails({ steps, index, persistForm, formik }: formProps) {
   const { isMobile } = useScreenResolution();
   const router = useRouter();
-  const { form, nextStep, saveProgress, mode } = useApplicationFormStore(
-    (state) => state
-  );
+  const { form, mode } = useApplicationFormStore((state) => state);
   const { tripDetails } = form;
   const isLoading = mode == Mode.loading;
+  console.log(formik);
 
   return (
     <Section height="unset">
@@ -78,7 +77,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
               <FieldAsString
                 formik={formik}
                 options={COUNTRY_FLAGS.filter(
-                  (el) => el.name != formik.values.homeCountry
+                  (el) => el.name != formik.values.homeCountry.name
                 ).map((x) => ({
                   name: x.name,
                   flag: x.flag,
@@ -176,8 +175,8 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            if (!formik.isValid || !formik.dirty)
-              return ToastError()
+            console.log(formik);
+            if (!formik.isValid) return ToastError();
           }}
           disabled={!formik.isValid}
         />

@@ -42,7 +42,11 @@ function Stays() {
   const open = Boolean(anchorEl);
 
   return (
-    <Section padding="2rem 0" height="unset" styles={{ position: "relative" }}>
+    <Section
+      padding={"2rem 0 1rem 0"}
+      height="unset"
+      styles={{ position: "relative" }}
+    >
       <Flex align="center" direction={isMobile ? "column" : "row"} gap=".5rem">
         <Flex
           direction="column"
@@ -52,7 +56,7 @@ function Stays() {
           <Text
             type="label"
             size={isMobile ? 16 : 18}
-            text="Where do you want to stay?"
+            text="Your stay preference?"
           />
           <Input
             placeholder="Enter Destination or Hotel Name"
