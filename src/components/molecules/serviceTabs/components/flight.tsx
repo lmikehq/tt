@@ -5,7 +5,6 @@ import { CustomRadioGroup } from "@molecule/radio";
 import { useEffect, useState } from "react";
 import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
-import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
@@ -139,7 +138,7 @@ function Flights() {
           {loading ? (
             <Spinner fill={ttColors.primary} size={"45px"} />
           ) : (
-            <Text type="p" text="Search for flight" size={18} weight={500} />
+            <Text type="p" text="Search Flight" size={18} weight={500} />
           )}
         </Button>
       </ButtonWrapper>
