@@ -257,7 +257,6 @@ function ApplicationForm() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    console.log(searchParams.get("home"));
     fetchDetailsFromURL({
       homeCountry: searchParams.get("home") || "",
       destination: searchParams.get("destination") || "",

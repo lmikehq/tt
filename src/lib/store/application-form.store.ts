@@ -1,16 +1,16 @@
+import { findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
 import sleep from "@lib/extensions/helpers/sleep";
 import { ApplicationFormService } from "@lib/services/application-form.service";
-import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
-import { visaInitVals } from "@lib/types/schema";
-import { UploadedDoc } from "@organism/form/applicationForm";
 import {
   Mode,
   VisaApplicationFormInterface,
   VisaFormUnionType,
   mapVisaApplicationFormInterfaceToApplicationFormRequestInput,
 } from "@lib/types";
+import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
+import { visaInitVals } from "@lib/types/schema";
+import { UploadedDoc } from "@organism/form/applicationForm";
 import { create } from "zustand";
-import { COUNTRY_FLAGS, findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
 
 interface State {
   form: VisaApplicationFormInterface;

@@ -91,7 +91,7 @@ export interface PersonalInfoInterface {
   partnersName?: string;
   passportNumber: string;
   passportIssuedCountry: CountryType;
-  passportExpiryYear?: string;
+  passportExpiryDate?: string | null;
   tripPurpose: string;
   tuberculosis: boolean | null;
   mentalDisorder: boolean | null;
@@ -153,8 +153,14 @@ export interface PrimaryTravellerInterface
     PersonalInfoInterface,
     "placeOfBirth" | "countryOfCitizen" | "passportIssuedCountry"
   > {
-  homeCountry: string;
-  destination: string;
+  homeCountry: {
+    name: string;
+    code: string;
+  };
+  destination: {
+    name: string;
+    code: string;
+  };
   placeOfBirth: string;
   countryOfCitizen: string;
   passportIssuedCountry: string;
@@ -194,8 +200,14 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
       travellingBy: "Airplane",
       middleName: data.personalInfo.middleName,
       email: data.personalInfo.email,
-      homeCountry: data.tripDetails.homeCountry.name,
-      destination: data.tripDetails.destination.name,
+      homeCountry: {
+        name: data.tripDetails.homeCountry.name,
+        code: data.tripDetails.homeCountry.code,
+      },
+      destination: {
+        name: data.tripDetails.destination.name,
+        code: data.tripDetails.destination.code,
+      },
       placeOfBirth: data.personalInfo.placeOfBirth.name,
       phoneNumber: data.personalInfo.phoneNumber,
       stateOfOrigin: data.personalInfo.stateOfOrigin,
@@ -213,7 +225,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
       partnersName: data.personalInfo.partnersName,
       passportNumber: data.personalInfo.passportNumber,
       passportIssuedCountry: data.personalInfo.passportIssuedCountry.name,
-      passportExpiryYear: data.personalInfo.passportExpiryYear,
+      passportExpiryDate: data.personalInfo.passportExpiryDate,
       tripPurpose: data.personalInfo.tripPurpose,
       tuberculosis: data.personalInfo.tuberculosis,
       mentalDisorder: data.personalInfo.mentalDisorder,

@@ -72,10 +72,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     passportNumber: yup.string().required("Required"),
 
     passportIssuedCountry: countrySchema.required(),
-    passportExpiryYear: yup.string().when("meansOfId", {
-      is: "International Passport",
-      then: (schema) => schema.required("Required"),
-    }),
+    passportExpiryDate: yup.string().notRequired(),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     mentalDisorder: yup.boolean().required("Required"),
@@ -123,7 +120,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   passportNumber: "",
   passportIssuedCountry: mockCountry,
   // passportIssueDate: "",
-  passportExpiryYear: "",
+  passportExpiryDate: "",
   tripPurpose: "",
   tuberculosis: null,
   mentalDisorder: null,
@@ -389,8 +386,14 @@ export const waitlistSchema = yup.object().shape({
 
 export const test: ApplicationFormRequestInput = {
   primaryTraveller: {
-    homeCountry: "Country1",
-    destination: "Country2",
+    homeCountry: {
+      name: "Country1",
+      code: "C1",
+    },
+    destination: {
+      name: "Country2",
+      code: "C2",
+    },
     travellingBy: "Airplane",
     firstName: "John",
     middleName: "M",
@@ -412,7 +415,7 @@ export const test: ApplicationFormRequestInput = {
     partnersName: "",
     passportNumber: "P123456",
     passportIssuedCountry: "Country4",
-    passportExpiryYear: "",
+    passportExpiryDate: "",
     gender: "Male",
     tripPurpose: "Vacation",
     tuberculosis: false,

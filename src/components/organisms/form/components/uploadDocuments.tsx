@@ -1,22 +1,20 @@
 "use client";
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { FormikProps, useFormik } from "formik";
 import useCloudinaryUpload from "@lib/extensions/hook/useCloudinary";
+import { FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import Section from "src/components/molecules/section";
 
-import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { FileContent, useFilePicker } from "use-file-picker";
-import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
-import { UploadedDoc } from "../applicationForm";
-import { DocumentInterface, Mode } from "@lib/types";
-import ContinueButton from "@organism/continueButton";
-import DocumentUploadWidget from "@organism/DocumentUploadWidget";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { documentsSchema } from "@lib/types/schema";
-import { useRouter } from "next/navigation";
+import { DocumentInterface, Mode } from "@lib/types";
+import DocumentUploadWidget from "@organism/DocumentUploadWidget";
+import ContinueButton from "@organism/continueButton";
+import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
+import { FileContent, useFilePicker } from "use-file-picker";
+import { UploadedDoc } from "../applicationForm";
+import FormStepTitle from "./formStepsTitle";
 
 interface formProps {
   steps: string[];
@@ -39,7 +37,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
       });
     }
     return !isMobile
-      ? "Make Payment"
+      ? "Proceed to payment"
       : accompanies > 0
       ? "Make Payment (NGN 30,000)"
       : "Make Payment (NGN 20,000)";
