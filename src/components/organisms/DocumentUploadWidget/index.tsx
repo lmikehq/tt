@@ -111,14 +111,14 @@ const DocumentUploadWidget = ({
           ) : (
             <DocUploadCenteredChild>
               <Image
-                // styles={{ marginBottom: "21px" }}
+                styles={{ marginBottom: "21px" }}
                 src={"/assets/images/form/docUpload/docPlus.png"}
                 alt="add_doc_icon"
                 height={56}
                 width={56}
               />
               <Text
-                // styles={{ marginBottom: "56px" }}
+                styles={{ marginBottom: "16px" }}
                 type={"p"}
                 text="PNG, JPG, PDF up to 10MB"
                 weight={400}
@@ -126,7 +126,7 @@ const DocumentUploadWidget = ({
                 color="#929292"
               />
               <Text
-                // styles={{ marginBottom: "18px" }}
+                styles={{ marginBottom: "18px" }}
                 type={"p"}
                 text="Drag or drop your file here"
                 weight={600}

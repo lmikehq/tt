@@ -23,6 +23,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { RxAvatar } from "react-icons/rx";
 import { BiError } from "react-icons/bi";
 import VisaUploadDocModal from "../visaUploadDoc";
+import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 
 const Logo = styled.div`
   height: 64px;
@@ -69,7 +70,7 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
+function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   const { isMobile } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
@@ -172,7 +173,13 @@ function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
   const accompanying = visa?.familyMembers.filter(
     (fm: any) => fm.accompanying === true
   ).length;
- 
+
+  function getLocationField(field: string) {
+    return typeof visa?.primaryTraveller[field] === "string"
+      ? visa?.primaryTraveller?.[field]
+      : `${visa?.primaryTraveller?.[field]?.name} - (${visa?.primaryTraveller?.[field]?.code})`;
+  }
+
   return (
     <Section
       styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
@@ -206,7 +213,23 @@ function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
           position: "relative",
         }}
       >
-        <Logo />
+        <Logo>
+          {visa?.primaryTraveller?.destination?.code && (
+            <img
+              src={
+                COUNTRY_FLAGS.find(
+                  (x) => x.code === visa?.primaryTraveller?.destination?.code
+                )?.flag
+              }
+              alt="logo"
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "contain",
+              }}
+            />
+          )}
+        </Logo>
         <Flex
           justify="flex-start"
           width={isMobile ? "100%" : "32%"}
@@ -224,7 +247,9 @@ function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
               weight={900}
               size={isMobile ? "1rem" : "1.3rem"}
               textAlign={isMobile ? "center" : "left"}
-              text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
+              text={`${getLocationField("homeCountry")} — ${getLocationField(
+                "destination"
+              )}`}
             />
 
             <Flex justify="flex-start" gap="0px">
@@ -298,6 +323,7 @@ function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
             weight={800}
             size={isMobile ? 13 : 14}
             color={textAndBgColor.text}
+            textAlign="center"
           />
         </VisaStatus>
 
@@ -388,7 +414,8 @@ function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
                   </Flex>
                 )}
                 <Flex align="center" gap=".5rem">
-                  {visa?.applicationStatus !== "ADDITIONAL INFO REQUESTED" ? (
+                  {visa?.applicationStatus !==
+                  "ADDITIONAL INFORMATION REQUESTED" ? (
                     <AiOutlineCheck size={20} />
                   ) : (
                     <BiError color="red" size={20} />
@@ -396,9 +423,10 @@ function VisaDetail({ visa, refetch }: { visa: any, refetch: any }) {
                   <Text
                     type="p"
                     text={
-                      visa?.applicationStatus === "ADDITIONAL INFO REQUESTED"
+                      visa?.applicationStatus ===
+                      "ADDITIONAL INFORMATION REQUESTED"
                         ? "ADDITIONAL DOCUMENT REQUESTED"
-                        : "NO DOCUMENTED REQUESTED FROM YOU"
+                        : "NO DOCUMENT REQUESTED FROM YOU"
                     }
                     size={"15px"}
                   />
