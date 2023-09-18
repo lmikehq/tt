@@ -12,7 +12,6 @@ export const metadata = {
 export default async function ApplyLayout({ children }: layoutProps) {
   return (
     <>
-      <Navbar page="flight" />
       {children}
       <FooterSection />
     </>

@@ -47,6 +47,8 @@ const page: React.FC<pageProps> = ({}) => {
   };
   return (
     <div>
+      <FlightHero />
+
       <Container maxWidth="lg">
         <Box
           sx={{
