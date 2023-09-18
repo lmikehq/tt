@@ -35,8 +35,13 @@ export default function SortButton() {
             onChange={handleChange}
             name="radio-buttons-group"
           >
-            {Object.entries(options).map(([key, value]) => (
-              <FormControlLabel value={value} control={<Radio />} label={key} />
+            {options.map((key) => (
+              <FormControlLabel
+                key={key}
+                value={key}
+                control={<Radio />}
+                label={key}
+              />
             ))}
           </RadioGroup>
         </FormControl>

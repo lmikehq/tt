@@ -21,7 +21,7 @@ import { styled } from "styled-components";
 //   }
 // `;
 
-function ServiceBanner({ page }: { page: string }) {
+function ServiceBanner({ page }: { page?: string }) {
   const { isMobile } = useScreenResolution();
   return (
     <SectionLayout

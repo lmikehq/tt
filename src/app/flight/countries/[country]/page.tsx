@@ -13,7 +13,7 @@ import CabinButton from "./components/CabinButton";
 
 interface pageProps {}
 
-const page: React.FC<pageProps> = ({}) => {
+const Page: React.FC<pageProps> = ({}) => {
   const cities = [
     { name: "Berlin", price: "$2,600" },
     { name: "Frankfurt", price: "$2,300" },
@@ -145,4 +145,4 @@ const page: React.FC<pageProps> = ({}) => {
     </div>
   );
 };
-export default page;
+export default Page;

@@ -9,7 +9,7 @@ import Visa from "./components/visa";
 import Section from "@molecule/section";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
-function ServiceTabs({ page }: { page: string }) {
+function ServiceTabs({ page }: { page?: string }) {
   const components = [<Visa />, <Flights />, <Stays />];
   const services = SERVICES.map((service, i) => {
     return {
