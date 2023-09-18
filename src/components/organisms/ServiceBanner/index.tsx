@@ -21,7 +21,7 @@ import { styled } from "styled-components";
 //   }
 // `;
 
-function ServiceBanner({}) {
+function ServiceBanner({ page }: { page?: string }) {
   const { isMobile } = useScreenResolution();
   return (
     <SectionLayout
@@ -32,7 +32,7 @@ function ServiceBanner({}) {
         boxShadow: "0px 3px 24px #00000014",
       }}
     >
-      <ServiceTabs />
+      <ServiceTabs page={page} />
     </SectionLayout>
   );
 }

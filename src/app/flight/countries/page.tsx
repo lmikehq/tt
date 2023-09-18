@@ -1,10 +1,6 @@
-import ApplicationWrapper from "./components/ApplicationWrapper";
-import FlightForm from "src/components/molecules/flights/components/flightForm";
+interface pageProps {}
 
-export default function page() {
-  return (
-    <ApplicationWrapper>
-      <FlightForm />
-    </ApplicationWrapper>
-  );
-}
+const page: React.FC<pageProps> = ({}) => {
+  return <div>No country was selected</div>;
+};
+export default page;
