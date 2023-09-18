@@ -52,7 +52,7 @@ function FlightHero() {
           direction="column"
           padding={isMobile ? "0 1.187rem" : "0"}
         >
-          <ServiceBanner />
+          <ServiceBanner page="flights" />
         </Flex>
       </HeroWrapper>
     </>

@@ -2,7 +2,6 @@
 import Center from "@components/templates/center";
 import Section from "src/components/molecules/section";
 import Flights from "src/components/molecules/serviceTabs/components/flight";
-import ServiceBanner from "@organism/ServiceBanner";
 import React from "react";
 import { styled } from "styled-components";
 import CountryInfo from "./countryInfo";
