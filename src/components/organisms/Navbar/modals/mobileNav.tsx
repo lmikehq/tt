@@ -307,18 +307,20 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                   text={user?.firstName?.charAt(0) ?? "T"}
                 />
               </Flex>
-              <Section>
+              <Section styles={{ minWidth: 0 }}>
                 <Text
                   type="p"
                   size={20}
                   weight={600}
                   text={user?.firstName + " " + user?.lastName}
+                  className="truncate"
                 />
                 <Text
                   type="p"
                   size={16}
                   weight={400}
                   text={user?.email ?? "jonathanadah@gmail.com"}
+                  className="truncate"
                 />
               </Section>
             </Flex>

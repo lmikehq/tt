@@ -51,6 +51,11 @@ body {
   animation: spin 1s linear infinite;
   /* animation-duration: 2ms; */
 }
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Media Queries Here */
 
@@ -143,7 +148,6 @@ body {
   padding: 0px !important;
 }
 
-
 .css-vqmohf-MuiButtonBase-root-MuiRadio-root {
   padding: 3px !important;
 }
@@ -166,10 +170,10 @@ body {
   font-weight: 500;
 }
 
-  input[type="number"] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
 .title-font {
   font-family: var(--title-font) !important;
 }
