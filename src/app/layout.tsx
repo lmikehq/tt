@@ -39,9 +39,9 @@ export default function RootLayout({
 
       <Script strategy="lazyOnload" id="analytics">
         {`
-    // Crisp Chat Script
+  
     window.$crisp = [];
-    window.CRISP_WEBSITE_ID = ${process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID}
+    window.CRISP_WEBSITE_ID = '${process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID}';
     
     (function () {
       var d = document;
