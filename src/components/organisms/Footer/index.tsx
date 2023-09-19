@@ -145,7 +145,6 @@ const FooterSection = () => {
                   />
                 </Section>
               </Link>
-
             </Section>
           )}
           <Grid
@@ -174,7 +173,7 @@ const FooterSection = () => {
                   width="fit-content"
                   margin={"1rem 0rem 0rem 0rem"}
                 >
-                  {FooterIcons.map((icon) => (
+                  {footerIcons.map((icon) => (
                     <Link href={icon.url} key="key">
                       {icon.icon}
                     </Link>
@@ -288,7 +287,7 @@ const FooterSection = () => {
                 width="fit-content"
                 margin={"auto"}
               >
-                {FooterIcons.map((icon) => (
+                {footerIcons.map((icon) => (
                   <Link href={icon.url} key="key">
                     {icon.icon}
                   </Link>
