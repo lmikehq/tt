@@ -51,6 +51,11 @@ body {
   animation: spin 1s linear infinite;
   /* animation-duration: 2ms; */
 }
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* Media Queries Here */
 
