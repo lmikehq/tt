@@ -166,44 +166,46 @@ const SelectPaymentMethod = () => {
             type={"p"}
             margin={""}
           />
-          <Flex
-            gap="1rem"
-            margin={`${isMobile ? "1rem" : "4rem"} 0 .5rem`}
-            direction={isMobile ? "column" : "row"}
-          >
-            <Input
-              placeholder="Enter a valid voucher code"
-              width="100%"
-              flexGrow={1}
-              onChange={(e) => setPromoCode(e.target.value)}
-              value={promoCode}
-              border={`1px solid ${
-                voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
-              }`}
-              height="50px"
-              styles={{ outline: "none" }}
-            />
-            <Button
-              onClick={() => {
-                if (voucherMode == Mode.loading) return;
-
-                checkVoucher({ promoCode }).then((response) => {
-                  toast.success("Travel voucher applied");
-                  setPromoCode("");
-                });
-              }}
-              disabled={!promoCode}
-              width={isMobile ? "100%" : "25%"}
-              borderRadius="4px"
+          <form onSubmit={(e) => e.preventDefault()}>
+            <Flex
+              gap="1rem"
+              margin={`${isMobile ? "1rem" : "4rem"} 0 .5rem`}
+              direction={isMobile ? "column" : "row"}
             >
-              <Text
-                type="p"
-                text={voucherMode == Mode.loading ? "Loading..." : "Apply"}
-                weight={600}
-                size="1rem"
+              <Input
+                placeholder="Enter a valid voucher code"
+                width="100%"
+                flexGrow={1}
+                onChange={(e) => setPromoCode(e.target.value)}
+                value={promoCode}
+                border={`1px solid ${
+                  voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
+                }`}
+                height="50px"
+                styles={{ outline: "none" }}
               />
-            </Button>
-          </Flex>
+              <Button
+                onClick={() => {
+                  if (voucherMode == Mode.loading) return;
+
+                  checkVoucher({ promoCode }).then((response) => {
+                    toast.success("Travel voucher applied");
+                    setPromoCode("");
+                  });
+                }}
+                disabled={!promoCode}
+                width={isMobile ? "100%" : "25%"}
+                borderRadius="4px"
+              >
+                <Text
+                  type="p"
+                  text={voucherMode == Mode.loading ? "Loading..." : "Apply"}
+                  weight={600}
+                  size="1rem"
+                />
+              </Button>
+            </Flex>
+          </form>
           {voucherMode == Mode.error && (
             <Flex gap="1rem">
               <BiSolidErrorCircle size={25} color="#A0001D" />
@@ -260,7 +262,9 @@ const SelectPaymentMethod = () => {
                   window.open(response.data.checkout_url, "_self");
                 });
           }}
-          buttonText="Make Payment"
+          buttonText={
+            applied && voucher ? "Complete application" : "Make payment"
+          }
         />
       </Section>
     </>

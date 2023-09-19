@@ -99,11 +99,6 @@ body {
     grid-template-columns: 1fr !important;
   }
 
-  .footerLayout {
-    display: grid;
-    grid-template-columns: 1fr !important;
-  }
-
   .contactCard {
     display: grid !important;
     grid-template-columns: 1fr !important;

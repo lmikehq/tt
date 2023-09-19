@@ -20,9 +20,9 @@
       }
     ],
     "typeRoots": ["types"],
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["/*"],
+      "@/*": ["src/*"],
       "@atom/*": ["src/components/atoms/*"],
       "@organism/*": ["src/components/organisms/*"],
       "@molecule/*": ["src/components/molecules/*"],

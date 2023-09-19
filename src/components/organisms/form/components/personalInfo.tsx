@@ -269,7 +269,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             </Flex>
             <FieldString
               options={[
-                "National Passport",
                 "International Passport",
                 "National ID Card",
                 "Driver's License",
@@ -304,7 +303,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         </Flex>
         {formik.values.meansOfId && (
           <Flex
-            margin={isMobile ? "0px" : "0 0 1rem"}
+            // margin={isMobile ? "0px" : "0 0 1rem"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
@@ -326,12 +325,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             <Section>
               <Text
                 type="p"
-                text="Expiry Date"
+                text="ID Expiry Date"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
               />
               <FieldAsDate
                 name="expiryDate"
-                placeholder="Select the Expiry Date"
+                placeholder="Select ID's Expiry Date"
                 formik={formik}
                 minDate={dayjs(formik.values.issueDate)}
                 disabled={!formik.values.issueDate}
@@ -403,28 +402,55 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             placeholder="Enter your residential address"
           />
         </Section>
-        {formik.values.meansOfId == "International Passport" && (
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
+        >
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Passport Number"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldInput
+              name="passportNumber"
+              formik={formik}
+              placeholder="Enter your Passport Number"
+            />
+          </Section>
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Issued Country"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+              <Required />
+            </Flex>
+            <FieldAsString
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
+              formik={formik}
+              name="passportIssuedCountry"
+              placeholder="Select the country"
+            />
+          </Section>
+        </Flex>
+        {formik.values.meansOfId !== "International Passport" && (
           <Flex
             margin={isMobile ? "0px" : "0 0 1rem"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
           >
-            {/* <Section width="100%">
-              <Text
-                type="p"
-                text="Issued Date"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-              />
-              <FieldAsDate
-                name="passportIssueDate"
-                placeholder="Select your Issued Date"
-                formik={formik}
-                onChange={(e: any) => {
-                  setPassEndDate(e);
-                }}
-              />
-            </Section> */}
             <Section>
               <Text
                 type="p"
@@ -435,7 +461,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 name="passportExpiryDate"
                 placeholder="Select your Expiry Date"
                 formik={formik}
-                maxDate={dayjs()}
+                // maxDate={dayjs()}
                 format="DD/MM/YYYY"
               />
             </Section>
@@ -480,7 +506,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Flex align="center" gap="0.25rem">
                 <Text
                   type="p"
-                  text="Partner’s Name (if applicable)"
+                  text="Partner’s Name"
                   margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
                 />
               </Flex>
@@ -492,48 +518,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             </Section>
           )}
         </Flex>
-        <Flex
-          margin="0"
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
-        >
-          <Section>
-            <Flex align="center" gap="0.25rem">
-              <Text
-                type="p"
-                text="Passport Number"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              />
-              <Required />
-            </Flex>
-            <FieldInput
-              name="passportNumber"
-              formik={formik}
-              placeholder="Enter your Passport Number"
-            />
-          </Section>
-          <Section>
-            <Flex align="center" gap="0.25rem">
-              <Text
-                type="p"
-                text="Issued Country"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              />
-              <Required />
-            </Flex>
-            <FieldAsString
-              options={COUNTRY_FLAGS.map((x) => ({
-                name: x.name,
-                flag: x.flag,
-                code: x.code,
-              }))}
-              formik={formik}
-              name="passportIssuedCountry"
-              placeholder="Select the country"
-            />
-          </Section>
-        </Flex>
+
         <Section>
           <Text
             type="p"

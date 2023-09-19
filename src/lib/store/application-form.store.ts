@@ -11,6 +11,7 @@ import {
 } from "@lib/types";
 import { create } from "zustand";
 import { COUNTRY_FLAGS, findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { useUserStore } from "./useStore";
 
 interface State {
   form: VisaApplicationFormInterface;
@@ -56,7 +57,7 @@ export const useApplicationFormStore = create<State & Actions>(
       set({
         mode: Mode.loading,
       });
-      await sleep(2000);
+      await sleep(1500);
       set((state) => ({
         mode: Mode.loaded,
         step: state.step + 1,
@@ -118,8 +119,9 @@ export const useApplicationFormStore = create<State & Actions>(
       data: VisaApplicationFormInterface;
     }) => {
       set({ mode: Mode.loading, form: data });
+      const { user } = useUserStore.getState();
       const payload =
-        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({ data });
+        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({ data, user });
       return await ApplicationFormService.createVisaApplication({
         payload,
       })
