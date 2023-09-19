@@ -25,6 +25,7 @@ import { ttColors } from "@lib/theme/colors";
 import { User } from "@lib/types";
 import UserPopover from "@organism/Navbar/UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
+import { BiSolidUserCircle, BiUserCircle } from "react-icons/bi";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -86,6 +87,7 @@ interface navbarProps {
 const Navbar = ({ page }: { page: string }) => {
   let path = usePathname();
   let pathArray = path.split("/")[1];
+
   const { isMobile } = useScreenResolution();
   if (isMobile)
     return (
@@ -105,6 +107,7 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
   const router = useRouter();
   const ref = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
+  const { user, setUser } = useUserStore((state) => state);
 
   const checkScrollTop = () => {
     if (page === "home" && window.scrollY > 88) {
@@ -137,10 +140,23 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
               height={40}
             />
           </ButtonBase>
-
-          <ButtonBase onClick={() => setModalOpen(!modalOpen)}>
-            <RxHamburgerMenu size={30} />
-          </ButtonBase>
+          <Flex gap="2rem" width="fit-content">
+            {!user && (
+              <Button
+                onClick={() => router.push("/auth/login")}
+                background="transparent"
+                color={ttColors.dark}
+              >
+                <Flex align="center" gap="8px">
+                  {" "}
+                  <BiSolidUserCircle size={28} /> Sign In
+                </Flex>
+              </Button>
+            )}
+            <ButtonBase onClick={() => setModalOpen(!modalOpen)}>
+              <RxHamburgerMenu size={30} />
+            </ButtonBase>
+          </Flex>
         </Flex>
       </MobileWrapper>
     </>
