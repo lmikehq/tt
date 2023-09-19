@@ -37,7 +37,7 @@ const FooterGrid = styled.div<{ isMobile?: boolean }>`
   padding: ${(props) => (props.isMobile ? "0rem" : "5.3125rem")};
 `;
 
-const FooterIcons = [
+const footerIcons = [
   {
     id: 1,
     icon: <BsFacebook size="1rem" color="#06062A" />,
@@ -156,7 +156,7 @@ const FooterSection = () => {
                 width="fit-content"
                 margin={"1rem 0rem 0rem 0rem"}
               >
-                {FooterIcons.map((icon) => (
+                {footerIcons.map((icon) => (
                   <Link href={icon.url} key="key">
                     {icon.icon}
                   </Link>

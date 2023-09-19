@@ -44,30 +44,6 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
   const [collapseSupport, setCollapseSupport] = useState(false);
   const [collapseCompany, setCollapseCompany] = useState(false);
 
-  const FooterIcons = [
-    {
-      id: 1,
-      icon: <BsFacebook size="1.5rem" color="#06062A" />,
-      url: "https://www.facebook.com/thrillerstravels",
-    },
-    {
-      id: 2,
-      icon: <BsTwitter size="1.5rem" color="#06062A" />,
-      url: "https://www.twitter.com/thrillerstravel",
-    },
-
-    {
-      id: 3,
-      icon: <BsYoutube size="1.5rem" color="#06062A" />,
-      url: "https://www.youtube.com/@ThrillersTravel",
-    },
-    {
-      id: 4,
-      icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
-      url: "https://www.instagram.com/thrillerstravel",
-    },
-  ];
-
   const CollapsedItem = ({
     name,
     url,
@@ -95,6 +71,148 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
       </ListItemButton>
     );
   };
+  const menuListWithIcon = [
+    {
+      name: "Book visa",
+      url: "visa",
+      icon: <GiPassport size={19} />,
+    },
+    {
+      name: "Find flight",
+      url: "flight",
+      icon: <IoAirplaneSharp size={19} />,
+    },
+    {
+      name: "Find stay",
+      url: "stay",
+      icon: <IoBedSharp size={19} />,
+    },
+    {
+      name: "Support",
+      url: "stay",
+      icon: <BiSupport size={19} />,
+      action: () => setCollapseSupport(!collapseSupport),
+      collapsed: collapseSupport,
+      collapse: (
+        <Collapse in={collapseSupport} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {[
+              {
+                name: "Help Center",
+                url: "",
+              },
+              {
+                name: "Contact Us",
+                url: "",
+              },
+            ].map((el, index) => (
+              <CollapsedItem
+                key={`collapsed-item-${index}`}
+                name={el.name}
+                url={el.url}
+                pl={"32.6"}
+              />
+            ))}
+          </List>
+        </Collapse>
+      ),
+    },
+    {
+      name: "Company",
+      url: "stay",
+      icon: <BiSolidBusiness size={19} />,
+      hasCollapse: true,
+    },
+  ];
+  const menuListWithoutIcon = [
+    {
+      name: "All Applications",
+      url: "",
+    },
+    {
+      name: "Payment History",
+      url: "",
+    },
+    {
+      name: "Favourites",
+      url: "",
+    },
+    {
+      name: "Notifications",
+      url: "",
+    },
+    {
+      name: "Referral",
+      url: "",
+    },
+    {
+      name: "Account",
+      url: "",
+    },
+    {
+      name: "Logout",
+      action: () => {
+        handleLogout();
+        router.push("/auth/login");
+      },
+    },
+    {
+      name: "Support",
+      action: () => setCollapseSupport(!collapseSupport),
+      collapsed: collapseSupport,
+      collapse: (
+        <Collapse in={collapseSupport} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {[
+              {
+                name: "Help Center",
+                url: "",
+              },
+              {
+                name: "Contact Us",
+                url: "",
+              },
+            ].map((el, index) => (
+              <CollapsedItem
+                key={`collapsed-item-${index}`}
+                name={el.name}
+                url={el.url}
+                pl={"8"}
+              />
+            ))}
+          </List>
+        </Collapse>
+      ),
+    },
+    {
+      name: "Company",
+      url: "stay",
+      hasCollapse: true,
+    },
+  ];
+  const FooterIcons = [
+    {
+      id: 1,
+      icon: <BsFacebook size="1.5rem" color="#06062A" />,
+      url: "https://www.facebook.com/thrillerstravels",
+    },
+    {
+      id: 2,
+      icon: <BsTwitter size="1.5rem" color="#06062A" />,
+      url: "https://www.twitter.com/thrillerstravel",
+    },
+
+    {
+      id: 3,
+      icon: <BsYoutube size="1.5rem" color="#06062A" />,
+      url: "https://www.youtube.com/@ThrillersTravel",
+    },
+    {
+      id: 4,
+      icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
+      url: "https://www.instagram.com/thrillerstravel",
+    },
+  ];
 
   return (
     <CustomDrawer
@@ -178,63 +296,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                 }
               </Section>
               <div>
-                {[
-                  {
-                    name: "Book visa",
-                    url: "visa",
-                    icon: <GiPassport size={19} />,
-                  },
-                  {
-                    name: "Find flight",
-                    url: "flight",
-                    icon: <IoAirplaneSharp size={19} />,
-                  },
-                  {
-                    name: "Find stay",
-                    url: "stay",
-                    icon: <IoBedSharp size={19} />,
-                  },
-                  {
-                    name: "Support",
-                    url: "stay",
-                    icon: <BiSupport size={19} />,
-                    action: () => setCollapseSupport(!collapseSupport),
-                    collapsed: collapseSupport,
-                    collapse: (
-                      <Collapse
-                        in={collapseSupport}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <List component="div" disablePadding>
-                          {[
-                            {
-                              name: "Help Center",
-                              url: "",
-                            },
-                            {
-                              name: "Contact Us",
-                              url: "",
-                            },
-                          ].map((el, index) => (
-                            <CollapsedItem
-                              key={`collapsed-item-${index}`}
-                              name={el.name}
-                              url={el.url}
-                              pl={"32.6"}
-                            />
-                          ))}
-                        </List>
-                      </Collapse>
-                    ),
-                  },
-                  {
-                    name: "Company",
-                    url: "stay",
-                    icon: <BiSolidBusiness size={19} />,
-                    hasCollapse: true,
-                  },
-                ].map((item, index) => {
+                {menuListWithIcon.map((item, index) => {
                   const active = pathArray === item.url;
                   return (
                     <>
@@ -334,72 +396,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
               />
             </Section>
             <List>
-              {[
-                {
-                  name: "All Applications",
-                  url: "",
-                },
-                {
-                  name: "Payment History",
-                  url: "",
-                },
-                {
-                  name: "Favourites",
-                  url: "",
-                },
-                {
-                  name: "Notifications",
-                  url: "",
-                },
-                {
-                  name: "Referral",
-                  url: "",
-                },
-                {
-                  name: "Account",
-                  url: "",
-                },
-                {
-                  name: "Logout",
-                  action: () => {
-                    handleLogout();
-                    router.push("/auth/login");
-                  },
-                },
-                {
-                  name: "Support",
-                  action: () => setCollapseSupport(!collapseSupport),
-                  collapsed: collapseSupport,
-                  collapse: (
-                    <Collapse in={collapseSupport} timeout="auto" unmountOnExit>
-                      <List component="div" disablePadding>
-                        {[
-                          {
-                            name: "Help Center",
-                            url: "",
-                          },
-                          {
-                            name: "Contact Us",
-                            url: "",
-                          },
-                        ].map((el, index) => (
-                          <CollapsedItem
-                            key={`collapsed-item-${index}`}
-                            name={el.name}
-                            url={el.url}
-                            pl={"8"}
-                          />
-                        ))}
-                      </List>
-                    </Collapse>
-                  ),
-                },
-                {
-                  name: "Company",
-                  url: "stay",
-                  hasCollapse: true,
-                },
-              ].map((item, index) => {
+              {menuListWithoutIcon.map((item, index) => {
                 return (
                   <>
                     <ListItemButton
