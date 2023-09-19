@@ -21,18 +21,18 @@ import { styled } from "styled-components";
 //   }
 // `;
 
-function ServiceBanner({}) {
+function ServiceBanner({ page }: { page?: string }) {
   const { isMobile } = useScreenResolution();
   return (
     <SectionLayout
-      margin={isMobile ? "0" : "6rem 0px 0px 0px !important"}
+      padding={isMobile ? "1.65rem" : "6rem 0px 0px 0px !important"}
       style={{
         backgroundColor: "var(--default-color)",
         borderRadius: "1rem",
         boxShadow: "0px 3px 24px #00000014",
       }}
     >
-      <ServiceTabs />
+      <ServiceTabs page={page} />
     </SectionLayout>
   );
 }

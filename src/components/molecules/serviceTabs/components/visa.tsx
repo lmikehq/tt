@@ -27,14 +27,14 @@ export interface LabelType {
 
 function Visa() {
   const [home, setHome] = useState<CountryType>({
-    name: "Nigerian",
+    name: "Nigeria",
     flag: "🇳🇬",
     code: "NG",
   });
   useEffect(() => {
     getIpDetails().then((x: any) =>
       setHome({
-        name: x.country || "Nigerian",
+        name: x.country || "Nigeria",
         flag: COUNTRY_FLAGS.find((y) => y.code === x.countryCode)?.flag ?? "",
         code: x.country_code || "NG",
       })
@@ -50,12 +50,12 @@ function Visa() {
   const router = useRouter();
   const { isMobile } = useScreenResolution();
   return (
-    <Section height="unset">
+    <Section height="unset" padding={"2rem 0 1rem 0"}>
       <Grid
         gap="2rem"
         justify="space-between"
         columns={isMobile ? "1" : "3"}
-        margin="3rem 0 0"
+        margin={"0"}
       >
         <SearchInput
           options={COUNTRY_FLAGS.map((x) => ({
@@ -120,7 +120,7 @@ function Visa() {
       </Grid>
       <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
-          width="240px"
+          width={isMobile ? "100%" : "240px"}
           borderRadius="4px"
           onClick={async () => {
             if (loading) return;

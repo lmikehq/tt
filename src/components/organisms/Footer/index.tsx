@@ -37,58 +37,58 @@ const FooterGrid = styled.div<{ isMobile?: boolean }>`
   padding: ${(props) => (props.isMobile ? "0rem" : "5.3125rem")};
 `;
 
-const FooterIcons = [
+const footerIcons = [
   {
     id: 1,
-    icon: <BsFacebook size="1rem" color="#06062A" />,
+    icon: <BsFacebook size="1.5rem" color="#06062A" />,
     url: "https://www.facebook.com/thrillerstravels",
   },
 
   {
     id: 2,
-    icon: <BsTwitter size="1rem" color="#06062A" />,
+    icon: <BsTwitter size="1.5rem" color="#06062A" />,
     url: "https://www.twitter.com/thrillerstravel",
   },
 
   {
     id: 3,
-    icon: <BsYoutube size="1rem" color="#06062A" />,
+    icon: <BsYoutube size="1.5rem" color="#06062A" />,
     url: "https://www.youtube.com/@ThrillersTravel",
   },
 
   {
     id: 4,
-    icon: <AiFillInstagram size="1rem" color="#06062A" />,
+    icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
     url: "https://www.instagram.com/thrillerstravel",
   },
-  {
-    id: 5,
-    icon: <FaTiktok size="1rem" color="#06062A" />,
-    url: "https://www.tiktok.com/@thrillers_travels",
-  },
-  {
-    id: 6,
-    icon: <ImLinkedin size="1rem" color="#06062A" />,
-    url: "http://www.linkedin.com/in/thrillerstravels",
-  },
-  {
-    id: 7,
-    icon: <RiWhatsappFill size="1rem" color="#06062A" />,
-    url: "https://chat.whatsapp.com/IpZEWEAdZngD5jGJKGZvy7",
-  },
-  {
-    id: 8,
-    icon: (
-      <Section height={"16px"} styles={{ position: "relative" }}>
-        <Image
-          src={"/assets/images/thread.png"}
-          alt=""
-          styles={{ borderRadius: "2px" }}
-        />
-      </Section>
-    ),
-    url: "https://www.threads.net/@thrillerstravel",
-  },
+  // {
+  //   id: 5,
+  //   icon: <FaTiktok size="1rem" color="#06062A" />,
+  //   url: "https://www.tiktok.com/@thrillers_travels",
+  // },
+  // {
+  //   id: 6,
+  //   icon: <ImLinkedin size="1rem" color="#06062A" />,
+  //   url: "http://www.linkedin.com/in/thrillerstravels",
+  // },
+  // {
+  //   id: 7,
+  //   icon: <RiWhatsappFill size="1rem" color="#06062A" />,
+  //   url: "https://chat.whatsapp.com/IpZEWEAdZngD5jGJKGZvy7",
+  // },
+  // {
+  //   id: 8,
+  //   icon: (
+  //     <Section height={"16px"} styles={{ position: "relative" }}>
+  //       <Image
+  //         src={"/assets/images/thread.png"}
+  //         alt=""
+  //         styles={{ borderRadius: "2px" }}
+  //       />
+  //     </Section>
+  //   ),
+  //   url: "https://www.threads.net/@thrillerstravel",
+  // },
 ];
 
 const FooterSection = () => {
@@ -101,8 +101,7 @@ const FooterSection = () => {
     { text: "Waitlist", href: "/waitlist", color: "#06062A" },
     { text: "Travel guide", href: "/travel-guide", color: "#06062A" },
     { text: "FAQs", href: "/faqs", color: "#06062A" },
-    { text: "Reviews", href: "/reviews", color: "#06062A" },
-    { text: "Visa Showcase", href: "/visa-showcase", color: "#06062A" },
+    { text: "Referral Program", href: "/reviews", color: "#06062A" },
   ];
 
   const supports = [
@@ -130,41 +129,58 @@ const FooterSection = () => {
     <FooterWrapper>
       <NewsLetter />
       <FooterGrid isMobile={isMobile}>
-        <SectionLayout margin="0 auto" {...(isMobile && { padding: "0" })}>
-          <Grid
-            className="footerLayout"
-            gap={isMobile ? "2rem" : "2.5rem"}
-            columns={isMobile ? "1" : "5"}
-            padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
-          >
-            <div className="footerLogo">
+        <SectionLayout
+          margin="0 auto"
+          padding={isMobile ? "3rem 0px 0px 20px;" : "1rem"}
+        >
+          {!isMobile ? null : (
+            <Section styles={{ marginBottom: "59px" }}>
               <Link href="/">
-                <Section
-                  height={"50px"}
-                  width="100%"
-                  styles={{ position: "relative" }}
-                >
+                <Section>
                   <Image
                     src={"/assets/images/brand/tt_blue_logo_with_text.png"}
                     alt="logo"
+                    width={142}
+                    height={43}
                   />
                 </Section>
               </Link>
-              <Grid
-                className="footerIcons"
-                columns="4"
-                gap="1rem"
-                justify="center"
-                width="fit-content"
-                margin={"1rem 0rem 0rem 0rem"}
-              >
-                {FooterIcons.map((icon) => (
-                  <Link href={icon.url} key="key">
-                    {icon.icon}
-                  </Link>
-                ))}
-              </Grid>
-            </div>
+            </Section>
+          )}
+          <Grid
+            className="footerLayout"
+            gap={isMobile ? "2rem" : "2.5rem"}
+            style={{ gridRowGap: isMobile ? "3rem" : "2.5rem" }}
+            columns={isMobile ? "2" : "5"}
+          >
+            {isMobile ? null : (
+              <div className="footerLogo">
+                <Link href="/">
+                  <Section>
+                    <Image
+                      src={"/assets/images/brand/tt_blue_logo_with_text.png"}
+                      alt="logo"
+                      width={142}
+                      height={43}
+                    />
+                  </Section>
+                </Link>
+                <Grid
+                  className="footerIcons"
+                  columns="4"
+                  gap="1rem"
+                  justify="center"
+                  width="fit-content"
+                  margin={"1rem 0rem 0rem 0rem"}
+                >
+                  {footerIcons.map((icon) => (
+                    <Link href={icon.url} key="key">
+                      {icon.icon}
+                    </Link>
+                  ))}
+                </Grid>
+              </div>
+            )}
 
             <div className="topCountries">
               <Text
@@ -261,6 +277,24 @@ const FooterSection = () => {
               </Flex>
             </div>
           </Grid>
+          {!isMobile ? null : (
+            <Section styles={{ margin: "59px 0" }}>
+              <Grid
+                className="footerIcons"
+                columns="4"
+                gap="2.5rem"
+                justify="center"
+                width="fit-content"
+                margin={"auto"}
+              >
+                {footerIcons.map((icon) => (
+                  <Link href={icon.url} key="key">
+                    {icon.icon}
+                  </Link>
+                ))}
+              </Grid>
+            </Section>
+          )}
           <Flex
             gap="1rem"
             align={isMobile ? "center" : "flex-end"}
@@ -276,8 +310,8 @@ const FooterSection = () => {
             <Image
               src={"/assets/images/walink.png"}
               alt="visa"
-              width={isMobile ? 60 : 110}
-              height={isMobile ? 60 : 110}
+              width={isMobile ? 120 : 110}
+              height={isMobile ? 120 : 110}
               styles={{
                 marginLeft: isMobile ? "0rem" : "7rem",
                 marginTop: isMobile ? "20px" : "",
@@ -290,20 +324,20 @@ const FooterSection = () => {
               gap={isMobile ? "0.2px" : "0.5px"}
               align="center"
               padding="0rem 0rem 1.5rem"
-              width={isMobile ? "4rem" : "10rem"}
+              width={isMobile ? "fit-content" : "10rem"}
               styles={{ marginTop: isMobile ? "32px" : "" }}
             >
               <Image
                 src={"/assets/images/app-store.svg"}
                 alt="mastercard"
-                width={isMobile ? 89.33 : 134}
-                height={isMobile ? 29.33 : 44}
+                width={isMobile ? 178.66 : 134}
+                height={isMobile ? 58.66 : 44}
               />
               <Image
                 src={"/assets/images/google-play.svg"}
                 alt="american-express"
-                width={isMobile ? 89.33 : 134}
-                height={isMobile ? 29.33 : 44}
+                width={isMobile ? 178.66 : 134}
+                height={isMobile ? 58.66 : 44}
               />
             </Flex>
           </Flex>

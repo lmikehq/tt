@@ -1,6 +1,6 @@
-import { ButtonBase } from "@mui/material";
+import ButtonBase from "@mui/material/ButtonBase";
+import Box from "@mui/material/Box";
 import React, { CSSProperties } from "react";
-import styled from "styled-components";
 
 interface buttonProps {
   children: React.ReactNode;
@@ -22,6 +22,9 @@ interface buttonProps {
   type?: "button" | "submit" | "reset" | undefined;
   underlined?: boolean;
   disabled?: boolean;
+  id?: string;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
 }
 
 export const Button: React.FC<buttonProps> = ({
@@ -43,9 +46,13 @@ export const Button: React.FC<buttonProps> = ({
   lineHeight,
   type,
   disabled,
+  id,
+  startIcon,
+  endIcon,
 }) => {
   return (
     <ButtonBase
+      id={id}
       style={{
         padding: padding,
         color: color || "#FFFFFF",
@@ -66,7 +73,18 @@ export const Button: React.FC<buttonProps> = ({
       type={type}
       onClick={!disabled ? onClick : undefined}
     >
-      {children}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          columnGap: "5px",
+        }}
+      >
+        {startIcon}
+        {children}
+        {endIcon}
+      </Box>
     </ButtonBase>
   );
 };

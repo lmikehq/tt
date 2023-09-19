@@ -1,17 +1,17 @@
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import ReusableModal from "./components/dashboardModal";
 import Flex from "@components/templates/flex";
-import { TbCurrencyNaira } from "react-icons/tb";
-import { FieldString } from "@organism/fieldInput";
-import { Formik } from "formik";
-import { BsExclamationCircleFill } from "react-icons/bs";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import apiService from "@lib/extensions/hook/apiService";
-import { toast } from "react-hot-toast";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { useVoucherStore } from "@lib/store/voucher.store";
+import { FieldString } from "@organism/fieldInput";
+import { Formik } from "formik";
+import { toast } from "react-hot-toast";
+import { BsExclamationCircleFill } from "react-icons/bs";
+import Section from "src/components/molecules/section";
+import ReusableModal from "./components/dashboardModal";
+import { useState } from "react";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -67,9 +67,9 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   }
 
   const { user } = useUserStore((state) => state);
-  const { applied, voucher } = useVoucherStore((state) => state);
+  // const { applied, voucher } = useVoucherStore((state) => state);
   const createPayment = async () => {
-    return await apiService("/payment/create-form-fee-charge", "POST", {
+    return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
       service: "VISA",
@@ -86,6 +86,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       }
     });
   };
+  const [loading, setLoading] = useState(false);
 
   return (
     <ReusableModal
@@ -93,54 +94,58 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       onClose={onClose}
       headerText="Make Payment"
       description="Kindly make payment for required Visa Application Process."
+      loading={loading}
+      setLoading={setLoading}
       buttonProps={{
         text: "Make Payment",
         onClick: createPayment,
       }}
     >
       {/* Additional content goes here */}
-      <Section margin="3rem 0px 1.5rem">
-        <Flex align="center" gap="0rem" justify="center">
-          <Text type="h1" text={currencyFormatter(paymentAmount())} />
-        </Flex>
-        <Text type="p" text={visaDetails.intent} />
-      </Section>
-      <Section margin="0px">
-        <Flex align="center" gap="0.25rem">
-          <Text
-            type="p"
-            text="Select Currency"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-          />
-        </Flex>
-        <FieldString
-          options={["NGN - Nigerian Naira"]}
-          name="currency"
-          value="NGN - Nigerian Naira"
-          placeholder=""
-          formik={Formik}
-          onChange={() => {}} // Handle the change event
-        />
-      </Section>
-      {!isMobile && (
-        <Section margin="-10px 0px 2.5rem">
-          <Flex align="center" justify="flex-start" gap="10px">
-            <BsExclamationCircleFill
-              color="#6092A7"
-              size="2.5rem"
-              style={{
-                position: "relative",
-                top: "-10px",
-              }}
-            />
+      <Section margin="2rem 0">
+        <Section margin="3rem 0px 1.5rem">
+          <Flex align="center" gap="0rem" justify="center">
+            <Text type="h1" text={currencyFormatter(paymentAmount())} />
+          </Flex>
+          <Text type="p" text={visaDetails.intent} />
+        </Section>
+        <Section margin="0px">
+          <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-              styles={{ textAlign: "left" }}
+              text="Select Currency"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
           </Flex>
+          <FieldString
+            options={["NGN - Nigerian Naira"]}
+            name="currency"
+            value="NGN - Nigerian Naira"
+            placeholder=""
+            formik={Formik}
+            onChange={() => {}} // Handle the change event
+          />
         </Section>
-      )}
+        {!isMobile && (
+          <Section margin="-10px 0px 2.5rem">
+            <Flex align="center" justify="flex-start" gap="10px">
+              <BsExclamationCircleFill
+                color="#6092A7"
+                size="2.5rem"
+                style={{
+                  position: "relative",
+                  top: "-10px",
+                }}
+              />
+              <Text
+                type="p"
+                text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+                styles={{ textAlign: "left" }}
+              />
+            </Flex>
+          </Section>
+        )}
+      </Section>
     </ReusableModal>
   );
 };

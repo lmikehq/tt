@@ -5,7 +5,6 @@ export const metadata = {
   description: "Login to your Thrillers Travels account",
 };
 
-
 export default function Layout({ children }: { children: React.ReactNode }) {
   return <div>{children}</div>;
 }

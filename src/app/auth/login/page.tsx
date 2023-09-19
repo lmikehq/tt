@@ -26,6 +26,8 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
+import { useGoogleLogin } from "@react-oauth/google";
+
 import Image from "@atom/image";
 
 const settings = {
@@ -45,6 +47,33 @@ function LoginPage() {
     password: "",
     rememberMe: false,
   });
+  const login = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      console.log(credentialResponse);
+      return await apiService("/auth/google", "POST", {
+        token: credentialResponse.access_token,
+      })
+        .then(async (res) => {
+          if (res.statusCode === 401) return;
+          setSubmissionState({
+            ...submissionState,
+            loadingGoogleAuth: true,
+          });
+          setUser(res?.user);
+          toast.success("You have successfully logged in!");
+          await sleep(3000);
+          toast.loading("Redirecting to your dashboard...", {
+            duration: 3000,
+          });
+          await sleep(2000);
+          router.push("/dashboard");
+        })
+        .catch((error) => {});
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+  });
   useEffect(() => {
     if (submissionState.error.length > 0) {
       setSubmissionState({
@@ -56,6 +85,7 @@ function LoginPage() {
 
   const [submissionState, setSubmissionState] = useState({
     loading: false,
+    loadingGoogleAuth: false,
     error: [] as any,
     success: false,
   });
@@ -323,7 +353,12 @@ function LoginPage() {
               {submissionState.loading ? (
                 <Spinner size="40px" fill={ttColors.primary} />
               ) : (
-                <Text type="p" text="Login" color={ttColors.dark} size={isMobile ? "16px": "20px"} />
+                <Text
+                  type="p"
+                  text="Login"
+                  color={ttColors.dark}
+                  size={isMobile ? "16px" : "20px"}
+                />
               )}
             </Button>
             <p
@@ -358,6 +393,7 @@ function LoginPage() {
               />
             </Flex>
             <Button
+              onClick={() => login()}
               background="transparent"
               border={`1px solid ${ttColors.primary}`}
               

@@ -9,20 +9,33 @@ import {
 } from "@lib/types";
 import * as yup from "yup";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
+import { CountryType } from "@molecule/serviceTabs/components/visa";
+
+const countrySchema: yup.ObjectSchema<CountryType> = yup.object().shape({
+  name: yup.string().required("Required"),
+  flag: yup.string().required("Required"),
+  code: yup.string().required("Required"),
+});
+
+const mockCountry: CountryType = {
+  name: "",
+  flag: "",
+  code: "",
+};
 
 //TRIP DETAILS
 
 export const detailsSchema: yup.ObjectSchema<DetailsKeys> = yup.object().shape({
-  homeCountry: yup.string().required("Required"),
-  destination: yup.string().required("Required"),
+  homeCountry: countrySchema.required(),
+  destination: countrySchema.required(),
   applicationType: yup.string().required("Required"),
   travellingBy: yup.string().required("Required"),
   visaType: yup.string().required("Required"),
 });
 
 export const detailsKeys: DetailsKeys = {
-  homeCountry: "",
-  destination: "",
+  homeCountry: mockCountry,
+  destination: mockCountry,
   applicationType: "",
   visaType: "", //
   travellingBy: "AirPlane",
@@ -36,7 +49,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     lastName: yup.string().required("Required"),
     middleName: yup.string(),
     email: yup.string().required("Required").email("Invalid email address"),
-    placeOfBirth: yup.string().required("Required"),
+    placeOfBirth: countrySchema.required(),
     phoneNumber: yup.string().required("Required"),
     stateOfOrigin: yup.string().required("Required"),
     placeOfOrigin: yup.string().required("Required"),
@@ -44,9 +57,11 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     meansOfId: yup.string().required("Required"),
     idNumber: yup.string().required("Required"),
     issueDate: yup.string().required("Required"),
-    expiryDate: yup.string().required("Required"),
+
+    expiryDate: yup.string().notRequired(),
+
     address: yup.string().required("Required"),
-    countryOfCitizen: yup.string().required("Required"),
+    countryOfCitizen: countrySchema.required(),
     dateOfBirth: yup.string().required("Required"),
     gender: yup.string().required("Required"),
     maritalStatus: yup.string().required("Required"),
@@ -55,8 +70,9 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       then: (schema) => schema.required("Required"),
     }),
     passportNumber: yup.string().required("Required"),
-    passportIssuedCountry: yup.string().required("Required"),
-    passportExpiryYear: yup.string().required("Required"),
+
+    passportIssuedCountry: countrySchema.required(),
+    passportExpiryDate: yup.string().notRequired(),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     mentalDisorder: yup.boolean().required("Required"),
@@ -64,7 +80,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    remainbeyondValidity: yup.boolean().required(),
+    remainbeyondValidity: yup.boolean().required("Required"),
     refusedBefore: yup.boolean().required("Required"),
     refusedBeforeDetails: yup.string().when("refusedBefore", {
       is: true,
@@ -95,16 +111,16 @@ export const personalInfoKeys: PersonalInfoInterface = {
   meansOfId: "",
   idNumber: "",
   issueDate: "",
-  expiryDate: "",
+  // expiryDate: "",
   // homeCountry: "",
   address: "",
   dateOfBirth: "",
   maritalStatus: "",
   partnersName: "",
   passportNumber: "",
-  passportIssuedCountry: "",
+  passportIssuedCountry: mockCountry,
   // passportIssueDate: "",
-  passportExpiryYear: '',
+  passportExpiryDate: "",
   tripPurpose: "",
   tuberculosis: null,
   mentalDisorder: null,
@@ -118,9 +134,9 @@ export const personalInfoKeys: PersonalInfoInterface = {
   servedInMilitaryDetails: "",
   memberOfViolentGroup: null,
   participatedInViolentActivities: null,
-  placeOfBirth: "",
+  placeOfBirth: mockCountry,
   phoneNumber: "",
-  countryOfCitizen: "",
+  countryOfCitizen: mockCountry,
   gender: "",
 
   // firstName: "John",
@@ -370,8 +386,14 @@ export const waitlistSchema = yup.object().shape({
 
 export const test: ApplicationFormRequestInput = {
   primaryTraveller: {
-    homeCountry: "Country1",
-    destination: "Country2",
+    homeCountry: {
+      name: "Country1",
+      code: "C1",
+    },
+    destination: {
+      name: "Country2",
+      code: "C2",
+    },
     travellingBy: "Airplane",
     firstName: "John",
     middleName: "M",
@@ -393,7 +415,7 @@ export const test: ApplicationFormRequestInput = {
     partnersName: "",
     passportNumber: "P123456",
     passportIssuedCountry: "Country4",
-    passportExpiryYear: '',
+    passportExpiryDate: "",
     gender: "Male",
     tripPurpose: "Vacation",
     tuberculosis: false,

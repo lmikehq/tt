@@ -36,6 +36,7 @@ const Visa = () => {
     data: fetchedVisa,
     isLoading,
     error,
+    refetch,
   } = useQuery(["visas"], getVisas) as any;
   if (isLoading) return <div>loading</div>;
   if (error) return <div>error loading visas, please try again</div>;
@@ -61,7 +62,7 @@ const Visa = () => {
         {visas?.length > 0 ? (
           visas?.map((visa: any, i: number) => (
             <React.Fragment key={i}>
-              <VisaDetail visa={visa} />
+              <VisaDetail visa={visa} refetch={refetch}/>
             </React.Fragment>
           ))
         ) : (

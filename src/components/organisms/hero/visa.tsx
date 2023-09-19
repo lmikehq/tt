@@ -5,6 +5,7 @@ import Text from "@atom/text";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 const HeroWrapper = styled.div`
   width: 100vw;
@@ -18,11 +19,12 @@ const HeroWrapper = styled.div`
 `;
 
 function VisaHero() {
+  const {isMobile} = useScreenResolution()
   return (
     <>
       <Navbar page="visa" />
       <HeroWrapper>
-        <div style={{ paddingTop: "14rem" }}>
+        <div style={{ paddingTop: isMobile? '10rem': "17rem" }}>
           <Center>
             <ServiceBanner />
           </Center>

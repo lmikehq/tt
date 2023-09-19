@@ -43,7 +43,7 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
         }}
       >
         <Image
-          src={noVisaImage.src}
+          src={noVisaImage}
           alt="no-visa"
           width={330.89}
           height={331.03}

@@ -5,7 +5,6 @@ import { CustomRadioGroup } from "@molecule/radio";
 import { useEffect, useState } from "react";
 import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
-import { HiPlus } from "react-icons/hi2";
 import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
@@ -23,10 +22,11 @@ const options = [
 export const ButtonWrapper = styled.div`
   width: 25%;
   margin: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -24px;
+  // position: absolute;
+  // left: 0;
+  // right: 0;
+  // bottom: -24px;
+  transform: translateY(66px);
 
   @media (max-width: 900px) {
     margin-top: 1rem;
@@ -74,7 +74,7 @@ function Flights() {
     }
   }, [value]);
   return (
-    <Section padding={"2rem 0"} styles={{ position: "relative" }}>
+    <Section padding={"2rem 0 1rem 0"} styles={{ position: "relative" }}>
       <Flex direction="column">
         <Flex align="center" gap={isMobile ? "1rem" : "2rem"}>
           <CustomRadioGroup
@@ -138,7 +138,7 @@ function Flights() {
           {loading ? (
             <Spinner fill={ttColors.primary} size={"45px"} />
           ) : (
-            <Text type="p" text="Search for flight" size={18} weight={500} />
+            <Text type="p" text="Search Flight" size={18} weight={500} />
           )}
         </Button>
       </ButtonWrapper>

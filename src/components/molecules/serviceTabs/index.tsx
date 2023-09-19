@@ -9,7 +9,7 @@ import Visa from "./components/visa";
 import Section from "@molecule/section";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
-function ServiceTabs() {
+function ServiceTabs({ page }: { page?: string }) {
   const components = [<Visa />, <Flights />, <Stays />];
   const services = SERVICES.map((service, i) => {
     return {
@@ -21,7 +21,7 @@ function ServiceTabs() {
   const { isMobile } = useScreenResolution();
   return (
     <Section {...(!isMobile && { padding: "1.5rem 2rem" })}>
-      <CustomTab tabItems={services} defaultIcons />
+      <CustomTab tabItems={services} activeTab={page} defaultIcons />
     </Section>
   );
 }

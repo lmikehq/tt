@@ -53,7 +53,7 @@ const Overlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 300px;
+  // height: 300px;
   // background: #06062a94;
   background: linear-gradient(
     90deg,
@@ -76,11 +76,11 @@ const AllCountryHead = ({
 
   return (
     <>
-      <AllCountryHeader style={{ height: isMobile ? "160px" : "250px" }}>
+      <AllCountryHeader style={{ height: isMobile ? "160px" : "250px", marginBottom: isMobile?'0':'10px' }}>
         <Image
           src={cover}
           alt=""
-          styles={{ height: isMobile ? "128px" : "250px" }}
+          height={isMobile ? 128 : 250}
         />
         <Overlay style={{ height: isMobile ? "128px" : "250px" }} />
         <Text

@@ -15,9 +15,9 @@ import { ttColors } from "@lib/theme/colors";
 
 import { UploadedDoc } from "@organism/form/applicationForm";
 
-const UploadArea = styled.div`
+const UploadArea = styled.div<{ height?: string }>`
   width: 100%;
-  height: 21.32rem;
+  height: ${({ height }) => height || "21.32rem;"};
   text-align: center;
   background: #ffffff;
   border: 2px dashed rgba(0, 0, 0, 0.28);
@@ -46,6 +46,7 @@ interface DocumentUploadWidgetProps {
   openFilePicker: () => void;
   handleDelete: (i: number) => Promise<void>;
   documents: UploadedDoc[];
+  height?: string;
 }
 
 const DocumentUploadWidget = ({
@@ -55,6 +56,7 @@ const DocumentUploadWidget = ({
   openFilePicker,
   handleDelete,
   documents,
+  height,
 }: DocumentUploadWidgetProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => {
@@ -75,7 +77,7 @@ const DocumentUploadWidget = ({
   });
   return (
     <>
-      <UploadArea>
+      <UploadArea height={height}>
         <Center height="100%">
           {loading ? (
             <DocUploadCenteredChild>
@@ -116,7 +118,7 @@ const DocumentUploadWidget = ({
                 width={56}
               />
               <Text
-                styles={{ marginBottom: "56px" }}
+                styles={{ marginBottom: "16px" }}
                 type={"p"}
                 text="PNG, JPG, PDF up to 10MB"
                 weight={400}

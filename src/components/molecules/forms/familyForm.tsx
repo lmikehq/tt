@@ -112,7 +112,7 @@ export default function FamilyForm({ formik, count, values }: formProps) {
           />
         </Section>
       </Flex>
-      <Flex justify="space-between" margin="0 0 1rem">
+      <Flex justify="space-between" margin="1rem 0 1rem">
         <Text type="p" text="Will you be traveling with this Family Member?" />
         <Switch
           name={`familyMembers.${count}.accompanying`}

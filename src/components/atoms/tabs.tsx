@@ -101,6 +101,7 @@ export default function CustomTab({
   shadowShow = false,
   addBackgroundColor = false,
   addColor = false,
+  activeTab,
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
@@ -108,6 +109,7 @@ export default function CustomTab({
   shadowShow?: boolean;
   addBackgroundColor?: boolean;
   addColor?: boolean;
+  activeTab?: string;
 }) {
   const [value, setValue] = useState(0);
 

@@ -9,12 +9,20 @@ import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 
 // Styled component for the modal content wrapper
-const StyledModalContent = styled.div`
+const StyledModalContent = styled.div<{
+  width?: string;
+  height?: string;
+  maxWidth?: string;
+  maxHeight?: string;
+}>`
   background-color: white;
   border-radius: 8px;
   padding: 50px;
-  max-width: 647px;
-  width: 100%;
+  max-width: ${({ maxWidth }) => maxWidth || " 647px"};
+  width: ${({ width }) => width || "100%"};
+  max-height: ${({ maxHeight }) => maxHeight || " auto"};
+  height: ${({ height }) => height || "auto"};
+  overflow-y: scroll;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -62,6 +70,12 @@ interface ReusableModalProps {
   headerText: string;
   description: string;
   children?: React.ReactNode;
+  height?: string;
+  width?: string;
+  maxWidth?: string;
+  maxHeight?: string;
+  loading?: boolean;
+  setLoading?: (loading: boolean) => void;
   buttonProps?: {
     text: string;
     onClick: () => void;
@@ -73,23 +87,33 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   onClose,
   headerText,
   description,
+  height,
+  width,
+  maxWidth,
+  maxHeight,
   children,
+  loading = false, setLoading = () => {},
   buttonProps = {
     text: "Save",
     onClick: () => {},
   },
 }) => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   return (
     <Modal open={open} onClose={onClose}>
-      <StyledModalContent>
+      <StyledModalContent
+        height={height}
+        width={width}
+        maxHeight={maxHeight}
+        maxWidth={maxWidth}
+      >
         <StyledModalHeader>
           <h2>{headerText}</h2>
         </StyledModalHeader>
         <ModalIcon onClick={onClose}>
           <IoMdClose />
         </ModalIcon>
-        <p>{description}</p>
+      {description &&   <p>{description}</p> }
         {children}
         <Button
           width="100%"

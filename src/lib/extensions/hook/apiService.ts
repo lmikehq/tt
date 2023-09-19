@@ -18,7 +18,7 @@ const apiService = (url: string, method?: string, data?: any): Promise<any> => {
     })
       .then((res) => resolve(res.data))
       .catch((err) => {
-        resolve(err.response.data);
+        resolve(err?.response?.data);
       });
   });
 };
