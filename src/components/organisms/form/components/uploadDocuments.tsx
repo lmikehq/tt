@@ -53,7 +53,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
 
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
-    accept: [".png", ".pdf", ".jpeg"],
+    accept: ["image/*", ".pdf"],
     multiple: !(documentToUpload == "International passport"),
     maxFileSize: 10,
   });
