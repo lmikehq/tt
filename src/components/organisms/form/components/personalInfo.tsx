@@ -446,7 +446,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         </Flex>
         {formik.values.meansOfId !== "International Passport" && (
           <Flex
-            margin={isMobile ? "0px" : "0 0 1rem"}
+            margin={"0px"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}

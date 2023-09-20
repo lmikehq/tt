@@ -123,9 +123,10 @@ function Flights() {
           />
         )}
       </Flex>
-      <ButtonWrapper>
+      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
-          width="100%"
+          width={isMobile ? "100%" : "fit-content"}
+          padding={"0 1.5rem"}
           cursor="pointer"
           borderRadius="4px"
           onClick={async () => {
@@ -141,7 +142,7 @@ function Flights() {
             <Text type="p" text="Search Flight" size={18} weight={500} />
           )}
         </Button>
-      </ButtonWrapper>
+      </Flex>
     </Section>
   );
 }
