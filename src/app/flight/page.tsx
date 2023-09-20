@@ -10,7 +10,7 @@ const Page: React.FC<pageProps> = ({}) => {
     <div>
       <FlightHero />
       <FlightSection />
-      <FooterSection />
+      <FooterSection showNewsletter={false} />
     </div>
   );
 };
