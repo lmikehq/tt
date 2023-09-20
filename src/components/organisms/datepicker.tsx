@@ -94,6 +94,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           "& input": {
             color: "#1C1B1F",
             fontWeight: 400,
+            padding: " 0 14px",
 
             height: "45px",
             fontFamily: "'Poppins', sans-serif",
