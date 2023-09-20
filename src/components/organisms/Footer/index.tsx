@@ -91,7 +91,7 @@ const footerIcons = [
   // },
 ];
 
-const FooterSection = () => {
+const FooterSection = ({ showNewsletter = true }) => {
   const { isMobile } = useScreenResolution();
   const path = usePathname();
   const isApply = path.includes("visa/apply");
@@ -127,7 +127,7 @@ const FooterSection = () => {
 
   return (
     <FooterWrapper>
-      <NewsLetter />
+      {showNewsletter && <NewsLetter />}
       <FooterGrid isMobile={isMobile}>
         <SectionLayout
           margin="0 auto"

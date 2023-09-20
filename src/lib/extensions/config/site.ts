@@ -42,10 +42,10 @@ export const Siteconfig: ISiteConfig = {
     "Expert travel planning",
     "Study and work abroad",
   ],
-  url: ["thrillers.travels", "thrillerstravels.com"],
+  url: ["https://thrillers.travels", "https://thrillerstravels.com"],
 
   links: {
-    email: "info@thrillerstravels.com",
+    email: "support@thrillers.travel",
     github: "https://github.com/thrillerstravels",
     instagram: "instagram.com/thrillerstravels",
     linkedin: "linkedin.com/company/",
