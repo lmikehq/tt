@@ -53,7 +53,7 @@ export const BlockDatePicker: React.FC<BlockDatePickerProps> = ({
 interface DatePickerProps {
   value?: Dayjs | null;
   onChange?: (value: any) => void;
-  views?: ('year' | 'month' | 'day' )[];
+  views?: ("year" | "month" | "day")[];
   disabled?: boolean;
   label?: string;
   minDate?: Dayjs | null;
@@ -64,7 +64,19 @@ interface DatePickerProps {
   format?: string;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, disabled, label, minDate, maxDate, placeholder, position, error, format }) => {
+export const DatePicker: React.FC<DatePickerProps> = ({
+  onChange,
+  value,
+  views,
+  disabled,
+  label,
+  minDate,
+  maxDate,
+  placeholder,
+  position,
+  error,
+  format,
+}) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatepicker
@@ -78,22 +90,23 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
         sx={{
           width: "100%",
           cursor: "pointer",
-          height: '40px',
+
           "& input": {
             color: "#1C1B1F",
             fontWeight: 400,
+
+            height: "45px",
             fontFamily: "'Poppins', sans-serif",
           },
-          '&:hover .MuiOutlinedInput-notchedOutline': {
+          "&:hover .MuiOutlinedInput-notchedOutline": {
             borderColor: `${ttColors.primary} !important`,
           },
           "&:hover .MuiInputBase-root": {
             color: `${ttColors.primary} !important`,
           },
-          '& .MuiInputBase-root': {
-            flexDirection: position === 'start' ? 'row-reverse': 'row',
+          "& .MuiInputBase-root": {
+            flexDirection: position === "start" ? "row-reverse" : "row",
           },
-
         }}
         slotProps={{
           textField: {
@@ -102,7 +115,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ onChange, value, views, 
           },
         }}
         slots={{
-          openPickerIcon: IoCalendarOutline,        
+          openPickerIcon: IoCalendarOutline,
         }}
         format={format}
       />
