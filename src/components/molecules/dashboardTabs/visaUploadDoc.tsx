@@ -83,7 +83,7 @@ const VisaUploadDocModal: React.FC<VisaUploadDocModalProps> = ({
   );
   const [openFilePicker, { filesContent, plainFiles }] = useFilePicker({
     readAs: "DataURL",
-    accept: [".png", ".pdf", ".jpeg"],
+    accept: ["image/*", ".pdf"],
     multiple: !(documentToUpload == "International Passport"),
     maxFileSize: 10,
   });
