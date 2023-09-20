@@ -1,22 +1,17 @@
 import Button from "@atom/button";
-import { Divider } from "@atom/divider";
-import Flex from "@components/templates/flex";
+import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import CustomDrawer from "src/components/molecules/drawers/customDrawer";
-import Section from "src/components/molecules/section";
-import { Box, Collapse, List, ListItemButton } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import Flex from "@components/templates/flex";
 import apiService from "@lib/extensions/hook/apiService";
 import { handleLogout } from "@lib/extensions/hook/useLogout";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { GiPassport } from "react-icons/gi";
-import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
 import { User } from "@lib/types";
-import Image from "@atom/image";
+import { Collapse, List, ListItemButton } from "@mui/material";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { AiFillInstagram } from "react-icons/ai";
 import {
   BiChevronDown,
   BiChevronUp,
@@ -24,8 +19,11 @@ import {
   BiSupport,
   BiX,
 } from "react-icons/bi";
-import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
+import { GiPassport } from "react-icons/gi";
+import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
+import CustomDrawer from "src/components/molecules/drawers/customDrawer";
+import Section from "src/components/molecules/section";
 
 interface Props {
   isOpen: boolean;
@@ -127,27 +125,27 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
   const menuListWithoutIcon = [
     {
       name: "All Applications",
-      url: "",
+      url: "/dashboard",
     },
     {
       name: "Payment History",
-      url: "",
+      url: "/dashboard",
     },
     {
       name: "Favourites",
-      url: "",
+      url: "/dashboard",
     },
     {
       name: "Notifications",
-      url: "",
+      url: "/dashboard",
     },
     {
       name: "Referral",
-      url: "",
+      url: "/dashboard",
     },
     {
       name: "Account",
-      url: "",
+      url: "/dashboard",
     },
     {
       name: "Logout",
@@ -166,11 +164,11 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             {[
               {
                 name: "Help Center",
-                url: "",
+                url: "/help-center",
               },
               {
                 name: "Contact Us",
-                url: "",
+                url: "/contact",
               },
             ].map((el, index) => (
               <CollapsedItem
@@ -186,7 +184,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
     },
     {
       name: "Company",
-      url: "stay",
+      url: "/about-us",
       hasCollapse: true,
     },
   ];
