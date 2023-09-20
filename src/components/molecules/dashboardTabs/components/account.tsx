@@ -92,7 +92,8 @@ const Account = () => {
   // });
 
   const [registerData, setRegisterData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phoneNumber: "",
     password: "",
@@ -161,7 +162,7 @@ const Account = () => {
 
     {
       title: "Email",
-      description: user.email,
+      description: user.email || "No email added",
       icon: <AiFillPlusCircle size={isMobile ? ".8rem" : "1rem"} />,
       edit: "",
       editable: false,
@@ -310,33 +311,67 @@ const Account = () => {
       {isMobileEdit ? (
         <form onSubmit={handleSubmit}>
           <Flex direction="column" gap="1rem">
-            <Section>
-              <Text
-                type="p"
-                text="Name"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={isMobile ? "14.5px" : "16px"}
-              />
-              <Input
-                placeholder="Enter your first name"
-                onChange={(e) =>
-                  setRegisterData({
-                    ...registerData,
-                    name: e.target.value,
-                  })
-                }
-                value={registerData.name}
-                border={checkIfFieldHasError("name") ? "1px solid #FF8682" : ""}
-                height="3rem"
-              />
-              {checkIfFieldHasError("name") && (
+            <Flex gap="1rem">
+              <Section>
                 <Text
                   type="p"
-                  text={checkIfFieldHasError("name") || ""}
-                  color="#FF8682"
+                  text="First Name"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={isMobile ? "14.5px" : "16px"}
                 />
-              )}
-            </Section>
+                <Input
+                  placeholder="Enter your first name"
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      firstName: e.target.value,
+                    })
+                  }
+                  value={registerData.firstName}
+                  border={
+                    checkIfFieldHasError("firstName") ? "1px solid #FF8682" : ""
+                  }
+                  height="3rem"
+                />
+                {checkIfFieldHasError("firstName") && (
+                  <Text
+                    type="p"
+                    text={checkIfFieldHasError("firstName") || ""}
+                    color="#FF8682"
+                  />
+                )}
+              </Section>
+
+              <Section>
+                <Text
+                  type="p"
+                  text="Last Name"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={isMobile ? "14.5px" : "16px"}
+                />
+                <Input
+                  placeholder="Enter your first name"
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      lastName: e.target.value,
+                    })
+                  }
+                  value={registerData.lastName}
+                  border={
+                    checkIfFieldHasError("lastName") ? "1px solid #FF8682" : ""
+                  }
+                  height="3rem"
+                />
+                {checkIfFieldHasError("lastName") && (
+                  <Text
+                    type="p"
+                    text={checkIfFieldHasError("lastName") || ""}
+                    color="#FF8682"
+                  />
+                )}
+              </Section>
+            </Flex>
 
             <Section>
               <Text
@@ -409,7 +444,8 @@ const Account = () => {
                     }}
                   />
                   {validationOptions.map((option) => (
-                    <Flex align="center"
+                    <Flex
+                      align="center"
                       key={option.value}
                       styles={{
                         marginBottom: "0.5rem",
@@ -434,9 +470,7 @@ const Account = () => {
                             : "#B6B6B6",
                         }}
                       />
-                      <span>
-                        {option.label}
-                      </span>
+                      <span>{option.label}</span>
                     </Flex>
                   ))}
                 </Section>
@@ -638,7 +672,7 @@ const Account = () => {
                       border="1px solid var(--primary-color)"
                       color="var(--secondary-color)"
                       height={isMobile ? "40px" : "48px"}
-                      width={isMobile ? "100px" : "175px"}
+                      width={isMobile ? "100px" : "105px"}
                       fontSize={isMobile ? "12px" : "14px"}
                       lineHeight="14px"
                       onClick={
@@ -655,7 +689,7 @@ const Account = () => {
                       styles={{
                         gap: "10px",
                         marginBottom: isMobile ? "1.4rem" : "",
-                        display: isMobile ? "none" : "block",
+                        display: isMobile ? "none" : "flex",
                       }}
                     >
                       {detail.icon}
