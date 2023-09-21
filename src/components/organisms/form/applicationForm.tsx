@@ -282,15 +282,15 @@ function ApplicationForm() {
         handleClose={() => setShowApplicationExistsModal(false)}
         icon={
           <Image
-            src={"/assets/images/visaIcons/delete.png"}
+            src={"/assets/images/visaIcons/duplicate_icon.svg"}
             alt="delete-icon"
             width={95.5}
             height={95.5}
           />
         }
-        title={"Delete File?"}
-        description="Are you sure you want to delete the selected file? Deleting the file is a permanent action and cannot be retrieved."
-        subTitle={"name"}
+        title={"Duplicate Application"}
+        description="There is an existing application with the same details."
+        subTitle={"Continue to your dashboard to view application?"}
         buttons={
           <>
             <Button
@@ -299,10 +299,16 @@ function ApplicationForm() {
               border="1px solid #19013b"
               onClick={() => setShowApplicationExistsModal(false)}
             >
-              No Thanks
+              Cancel
             </Button>
-            <Button background="red" color="#fff">
-              Delete
+            <Button
+              background={ttColors.blackishBlue}
+              color="#fff"
+              onClick={() => {
+                router.push("/dashboard");
+              }}
+            >
+              Continue
             </Button>
           </>
         }
