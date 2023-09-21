@@ -104,9 +104,10 @@ function Stays() {
           </ClickAwayListener>
         </Flex>
       </Flex>
-      <ButtonWrapper>
+      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
-          width="100%"
+          width={isMobile ? "100%" : "fit-content"}
+          padding={"0 1.5rem"}
           borderRadius="4px"
           cursor="pointer"
           onClick={async () => {
@@ -122,7 +123,7 @@ function Stays() {
             <Text type="p" text="Search for Hotels" size={18} weight={500} />
           )}
         </Button>
-      </ButtonWrapper>
+      </Flex>
     </Section>
   );
 }

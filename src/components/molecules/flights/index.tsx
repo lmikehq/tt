@@ -1,7 +1,6 @@
 "use client";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
 import { FaPlaneArrival } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { ImPriceTag } from "react-icons/im";
@@ -9,6 +8,7 @@ import { styled } from "styled-components";
 import FAQ from "./components/FAQ";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
+import FlightDealCard from "./components/FlightDealCard";
 
 const BlueBox = styled.div`
   border: 1px solid #7bbbd6;
@@ -31,16 +31,32 @@ const BlueIcon = styled.div`
   justify-content: center;
 `;
 
-const ImageBox = styled.div<{ imageUrl: string }>`
-  width: 100%;
-  height: 20rem;
-  background-image: url(${(props) => props.imageUrl});
-  background-size: cover;
-  border-radius: 8px;
-`;
-
 const FlightSection = () => {
   const { isMobile } = useScreenResolution();
+
+  const flightDeals = [
+    {
+      city_name: "Venice",
+      country: "Italy",
+      prices_from: 2000,
+      is_favorite: true,
+      image_url: "/assets/images/flights/image3.jpg",
+    },
+    {
+      city_name: "Atlanta",
+      country: "United States",
+      prices_from: 1850,
+      is_favorite: false,
+      image_url: "/assets/images/flights/image2.png",
+    },
+    {
+      city_name: "Sao Paulo",
+      country: "Brazil",
+      prices_from: 2250,
+      is_favorite: true,
+      image_url: "/assets/images/flights/image1.jpg",
+    },
+  ];
   return (
     <SectionLayout>
       <Flex direction="column" gap=".65rem" wrap="wrap">
@@ -123,7 +139,6 @@ const FlightSection = () => {
           <Text
             type="h1"
             text="Flight Deals from Lagos"
-  
             weight={700}
             size={isMobile ? 24 : 36}
           />
@@ -135,123 +150,16 @@ const FlightSection = () => {
           />
         </Flex>
         <Flex direction={isMobile ? "column" : "row"} gap="2rem">
-          <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={"/assets/images/flights/image3.png"} />
-            <Flex justify="space-between">
-              <Flex direction="column" gap=".25rem">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  weight={700}
-                  size={isMobile ? 24 : 28}
-        
-                />
-                <Text
-                  type="p"
-                  text="Italy"
-                  color="#606060"
-        
-                  weight={500}
-                  size={isMobile ? 16 : 18}
-                />
-              </Flex>
-              <Flex direction="column-reverse" gap=".25rem" align="flex-end">
-                <Text
-                  type="h3"
-                  text="$2,200"
-                  weight={700}
-                  size={isMobile ? 24 : 28}
-        
-                />
-                <Text
-                  type="p"
-                  text="Starts from"
-                  color="#606060"
-        
-                  weight={500}
-                  size={isMobile ? 16 : 18}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={"/assets/images/flights/image2.png"} />
-            <Flex justify="space-between">
-              <Flex direction="column" gap=".25rem">
-                <Text
-                  type="h3"
-                  text="Atlanta"
-                  weight={700}
-                  size={isMobile ? 24 : 28}
-        
-                />
-                <Text
-                  type="p"
-                  text="United States"
-                  color="#606060"
-        
-                  size={isMobile ? 16 : 18}
-                  weight={500}
-                />
-              </Flex>
-              <Flex direction="column-reverse" gap=".25rem" align="flex-end">
-                <Text
-                  type="h3"
-                  text="$1,850"
-                  weight={700}
-                  size={isMobile ? 24 : 28}
-        
-                />
-                <Text
-                  type="p"
-                  text="Starts from"
-                  color="#606060"
-        
-                  size={isMobile ? 16 : 18}
-                  weight={500}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-          <Flex direction="column" gap="1rem">
-            <ImageBox imageUrl={"/assets/images/flights/image1.png"} />
-            <Flex justify="space-between">
-              <Flex direction="column" gap=".25rem">
-                <Text
-                  type="h3"
-                  text="Sao Paulo"
-                  weight={700}
-                  size={isMobile ? 24 : 28}
-        
-                />
-                <Text
-                  type="p"
-                  text="Brazil"
-                  color="#606060"
-        
-                  weight={500}
-                  size={isMobile ? 16 : 18}
-                />
-              </Flex>
-              <Flex direction="column-reverse" gap=".25rem" align="flex-end">
-                <Text
-                  type="h3"
-                  text="$2,250"
-                  weight={700}
-                  size={isMobile ? 24 : 28}
-        
-                />
-                <Text
-                  type="p"
-                  text="Starts from"
-                  color="#606060"
-        
-                  weight={500}
-                  size={isMobile ? 16 : 18}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
+          {flightDeals.map((deal) => (
+            <FlightDealCard
+              key={deal.city_name}
+              city={deal.city_name}
+              country={deal.country}
+              startingPrice={deal.prices_from}
+              isFavorite={deal.is_favorite}
+              imageURL={deal.image_url}
+            />
+          ))}
         </Flex>
       </Flex>
       <Flex align="center" direction="column" padding="2rem 0">
@@ -260,7 +168,6 @@ const FlightSection = () => {
             type="h2"
             text="Frequently Asked Questions"
             size={isMobile ? 24 : 36}
-  
             weight={700}
           />
           <Text
