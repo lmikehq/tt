@@ -87,6 +87,7 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
               if (!formik.isValid) return ToastError();
             }}
             disabled={!formik.isValid}
+            saveProgressAndContinueLater={persistForm}
           />
         </form>
       </Section>

@@ -90,6 +90,7 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
           />
           <ContinueButton
             isLoading={isLoading}
+            saveProgressAndContinueLater={persistForm}
             onClick={() => {
               if (!formik.isValid) return ToastError();
             }}
