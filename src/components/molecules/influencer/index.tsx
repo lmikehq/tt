@@ -94,8 +94,8 @@ const Box = styled.div`
 `;
 
 const SmallBox = styled.div`
-  width: 74px;
-  height: 64px;
+  width: 70px;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -105,28 +105,57 @@ const SmallBox = styled.div`
   .icon {
     color: #6092a7;
   }
+
+  @media (max-width: 900px) {
+    height: 40px;
+    width: 50px;
+  }
 `;
 
+// const Card = styled.div`
+//   background: #7bbbd6;
+//   width: 100%;
+//   height: 377px;
+//   border-radius: 16px;
+//   padding: 20px;
+//   text-align: center;
+//   color: #fff;
+
+//   &:nth-child(2) {
+//     background: #afdef26b;
+//     color: #6092a7;
+//     border: 1px solid #afdef2;
+
+//     &:hover {
+//       background: #7bbbd6;
+//       color: #fff;
+//     }
+//   }
+
+//   &:nth-child(3) {
+//     background: #afdef26b;
+//     color: #6092a7;
+//     border: 1px solid #afdef2;
+
+//     &:hover {
+//       background: #7bbbd6;
+//       color: #fff;
+//     }
+//   }
+// `;
+
 const Card = styled.div`
-  background: #7bbbd6;
+  background: #afdef26b;
   width: 100%;
   height: 377px;
   border-radius: 16px;
-  padding: 20px;
+  padding: 13px;
   text-align: center;
   color: #fff;
+  position: relative;
 
-  &:nth-child(2) {
-    background: #afdef26b;
-    color: #6092a7;
-    border: 1px solid #afdef2;
-
-    &:hover {
-      background: #7bbbd6;
-      color: #fff;
-    }
-  }
-
+  &:nth-child(1),
+  &:nth-child(2),
   &:nth-child(3) {
     background: #afdef26b;
     color: #6092a7;
@@ -135,7 +164,15 @@ const Card = styled.div`
     &:hover {
       background: #7bbbd6;
       color: #fff;
+      & > *:first-child {
+        filter: brightness(0) invert(1);
+      }
     }
+  }
+
+  @media (max-width: 900px) {
+    height: 300px;
+    width: 350px;
   }
 `;
 
@@ -181,7 +218,7 @@ const OfferCardTwo = styled.div`
 
   @media (max-width: 900px) {
     height: 85px;
-    width: 285px;
+    width: 291px;
     left: 9%;
     bottom: -11%;
   }
@@ -224,16 +261,16 @@ const InfluencerPage = () => {
     },
   ];
 
-   const handleIconHover = (text: string, key: string) => {
-     setHoveredIconText(text);
-     setActiveIcon(key);
-   };
+  const handleIconHover = (text: string, key: string) => {
+    setHoveredIconText(text);
+    setActiveIcon(key);
+  };
 
-   const handleIconLeave = () => {
-     setHoveredIconText(
-       iconData.find((item) => item.key === activeIcon)?.text || ""
-     );
-   };
+  const handleIconLeave = () => {
+    setHoveredIconText(
+      iconData.find((item) => item.key === activeIcon)?.text || ""
+    );
+  };
 
   return (
     <>
@@ -328,7 +365,7 @@ const InfluencerPage = () => {
 
       <Flex
         direction="column"
-        margin="5rem auto"
+        margin={isMobile ? "3rem auto" : "5rem auto"}
         justify="center"
         align="center"
       >
@@ -338,7 +375,7 @@ const InfluencerPage = () => {
           justify="center"
           align="center"
           styles={{ textAlign: "center" }}
-          gap={isMobile ? "1.3rem" : "1rem"}
+          gap={isMobile ? ".3rem" : "1rem"}
         >
           <Text
             type="h2"
@@ -353,12 +390,16 @@ const InfluencerPage = () => {
             color="#606060"
             size={isMobile ? 14 : 16}
             weight={400}
-            width={isMobile ? 384 : 620}
+            width={isMobile ? 345 : 620}
             styles={{ textAlign: "center" }}
           />
         </Flex>
 
-        <Grid columns={isMobile ? "1" : "3"} gap="1rem" margin="5rem auto">
+        <Grid
+          columns={isMobile ? "1" : "3"}
+          gap="1rem"
+          margin={isMobile ? ".3rem 0" : "5rem auto"}
+        >
           <Card>
             <Flex
               direction="column"
@@ -368,18 +409,24 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/book.png"
+                src="/assets/images/influencer/icon/book.svg"
                 alt=""
-                width={60.01}
-                height={60}
+                width={isMobile ? 46.01 : 60.01}
+                height={isMobile ? 46 : 60}
               />
-              <Text type="p" text="Plan a Trip" weight={600} size={24} />
+              <Text
+                type="p"
+                text="Plan a Trip"
+                weight={600}
+                size={isMobile ? 20 : 24}
+              />
             </Flex>
             <Text
               type="p"
               text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
-              size={18}
+              size={isMobile ? 15 : 18}
               weight={500}
+              width={isMobile ? 304 : 345}
             />
           </Card>
 
@@ -392,18 +439,24 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/location.png"
+                src="/assets/images/influencer/icon/location.svg"
                 alt=""
-                width={60.01}
-                height={60}
+                width={isMobile ? 46.01 : 60.01}
+                height={isMobile ? 46 : 60}
               />
-              <Text type="p" text="Plan a Trip" weight={600} size={24} />
+              <Text
+                type="p"
+                text="Explore Trips"
+                weight={600}
+                size={isMobile ? 20 : 24}
+              />
             </Flex>
             <Text
               type="p"
-              text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
-              size={18}
+              text="Get ready to explore the world's wonders with Thrillers Travels. Our handpicked trips offer a gateway to diverse destinations and captivating experiences."
+              size={isMobile ? 15 : 18}
               weight={500}
+              width={isMobile ? 304 : 345}
             />
           </Card>
 
@@ -416,18 +469,24 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/umbrella.png"
+                src="/assets/images/influencer/icon/umbrella.svg"
                 alt=""
-                width={85.92}
-                height={60}
+                width={isMobile ? 68.01 : 60.01}
+                height={isMobile ? 46 : 60}
               />
-              <Text type="p" text="Plan a Trip" weight={600} size={24} />
+              <Text
+                type="p"
+                text="Enjoy your Trips"
+                weight={600}
+                size={isMobile ? 20 : 24}
+              />
             </Flex>
             <Text
               type="p"
-              text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
-              size={18}
+              text="Relax, unwind, and fully enjoy your Travel Journey with Thrillers Travels. We are dedicated to making every moment of your journey memorable and fun."
+              size={isMobile ? 15 : 18}
               weight={500}
+              width={isMobile ? 304 : 345}
             />
           </Card>
         </Grid>
@@ -435,14 +494,14 @@ const InfluencerPage = () => {
 
       <Flex
         direction="column"
-        margin="5rem auto"
+        margin={isMobile ? "3rem auto" : "5rem auto"}
         justify="center"
         align="center"
         styles={{ textAlign: isMobile ? "center" : "unset" }}
       >
         <Flex
           direction="column"
-          margin="0 auto 4rem"
+          margin={isMobile ? "0 0 2rem" : "0 auto 4rem"}
           justify="center"
           align="center"
           gap={isMobile ? "1.3rem" : "1rem"}
@@ -553,13 +612,14 @@ const InfluencerPage = () => {
                     type="h3"
                     text="Flight Booking"
                     weight={600}
-                    size={22}
+                    size={isMobile ? 20 : 22}
                   />
                   <Text
                     type="p"
                     text="Experience seamless flight booking with Thrillers Travels. We're your ticket to exploring the world. We ensure hassle-free reservations, competitive fares, and travel itineraries tailored to your needs"
                     weight={400}
-                    size={16}
+                    size={isMobile ? 14 : 16}
+                    color={isMobile ? "#414141" : "#000000"}
                     width={isMobile ? 300 : 400}
                     styles={{ textAlign: isMobile ? "start" : "center" }}
                   />
@@ -585,13 +645,14 @@ const InfluencerPage = () => {
                     type="h3"
                     text="Visa Application"
                     weight={600}
-                    size={22}
+                    size={isMobile ? 20 : 22}
                   />
                   <Text
                     type="p"
                     text="Simplify your visa application process with Thrillers Travels. Our experts guide you through the intricate details, making obtaining the necessary visas a breeze."
                     weight={400}
-                    size={16}
+                    size={isMobile ? 14 : 16}
+                    color={isMobile ? "#414141" : "#000000"}
                     width={isMobile ? 300 : 400}
                     styles={{ textAlign: isMobile ? "start" : "center" }}
                   />
@@ -613,12 +674,18 @@ const InfluencerPage = () => {
                   justify={isMobile ? "flex-start" : "center"}
                   align={isMobile ? "flex-start" : "center"}
                 >
-                  <Text type="h3" text="Rent Stays" weight={600} size={22} />
+                  <Text
+                    type="h3"
+                    text="Rent Stays"
+                    weight={600}
+                    size={isMobile ? 20 : 22}
+                  />
                   <Text
                     type="p"
                     text="Find your home away from home with Thrillers Travels' rent stay services. We offer a range of accommodation options, from cozy apartments to luxurious villas, tailored to your destination"
                     weight={400}
-                    size={16}
+                    size={isMobile ? 14 : 16}
+                    color={isMobile ? "#414141" : "#000000"}
                     width={isMobile ? 300 : 400}
                     styles={{ textAlign: isMobile ? "start" : "center" }}
                   />
@@ -795,7 +862,7 @@ const InfluencerPage = () => {
       </Flex>
 
       <Flex
-        margin={isMobile ? "-3rem 0" : "10rem auto"}
+        margin={isMobile ? "-5rem 0" : "10rem auto"}
         justify={isMobile ? "center" : "space-between"}
         align={isMobile ? "center" : "flex-start"}
         styles={{ textAlign: "left" }}
@@ -854,7 +921,7 @@ const InfluencerPage = () => {
         >
           <Flex
             direction="column"
-            margin="0 auto 2rem"
+            margin={isMobile ? "2rem 0" : "0 auto 2rem"}
             gap={isMobile ? "1.3rem" : "1rem"}
           >
             <Text
@@ -872,7 +939,7 @@ const InfluencerPage = () => {
               weight={400}
               styles={{ textAlign: "left" }}
             />
-            <Button width="50%" margin="2rem 0 0">
+            <Button width={isMobile ? "70%" : "50%"} margin="2rem 0 0">
               <Text type="h3" text="Get Started" weight={500} size={16} />
             </Button>
           </Flex>
