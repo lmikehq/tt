@@ -6,11 +6,11 @@ import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { Grid } from "@/components/templates/grid";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { AiFillStar } from "react-icons/ai";
 import { GiPassport } from "react-icons/gi";
 import { IoBed } from "react-icons/io5";
 import { RiPlaneLine } from "react-icons/ri";
 import styled from "styled-components";
-
 
 const HeroImg = styled.div`
   position: relative;
@@ -53,10 +53,10 @@ const InfluencerIcon = styled.div`
   justify-content: center;
   align-items: center;
 
-    @media (max-width: 900px) {
-        width: 87px;
-        height: 70px;
-    }
+  @media (max-width: 900px) {
+    width: 87px;
+    height: 70px;
+  }
 `;
 
 const Box = styled.div`
@@ -85,115 +85,723 @@ const Box = styled.div`
   }
 `;
 
-const Card = styled.div``;
+const SmallBox = styled.div`
+  width: 74px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  background: #83cceb40;
+
+  .icon {
+    color: #6092a7;
+  }
+`;
+
+const Card = styled.div`
+  background: #7bbbd6;
+  width: 100%;
+  height: 377px;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+
+  &:nth-child(2) {
+    background: #afdef26b;
+    color: #6092a7;
+    border: 1px solid #afdef2;
+  }
+
+  &:nth-child(3) {
+    background: #afdef26b;
+    color: #6092a7;
+    border: 1px solid #afdef2;
+  }
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  position: relative;
+  //   display: grid;
+  //   grid-template-columns: 1fr 1fr;
+`;
+
+const OfferCard = styled.div`
+  width: 227px;
+  height: 83px;
+  position: absolute;
+  top: 44%;
+  left: -16%;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px #0000000d;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+`;
+
+const OfferCardTwo = styled.div`
+  width: 337px;
+  height: 98px;
+  position: absolute;
+  bottom: -7%;
+  left: 20%;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px #0000000d;
+
+  @media (max-width: 900px) {
+    height: 85px;
+    width: 285px;
+    left: 9%;
+    bottom: -11%;
+  }
+`;
 
 const InfluencerPage = () => {
   const { isMobile } = useScreenResolution();
 
-    return (
-      <>
-        <div>
-          <HeroImg>
-            <Image
-              src="/assets/images/influencer/heroImg.png"
-              alt=""
-              styles={{ borderRadius: "8px" }}
-              height={806}
-            />
-          </HeroImg>
+  return (
+    <>
+      <div>
+        <HeroImg>
+          <Image
+            src="/assets/images/influencer/heroImg.png"
+            alt=""
+            styles={{ borderRadius: "8px" }}
+            height={806}
+          />
+        </HeroImg>
 
-          <HeroCard>
+        <HeroCard>
+          <Flex gap="1rem" margin={isMobile ? "0 auto 1.5rem" : "0 auto 1rem"}>
+            <InfluencerIcon>
+              <Text
+                type="h5"
+                text="THRILLERS INFLUENCER"
+                weight={600}
+                size={isMobile ? 12 : 14}
+              />
+            </InfluencerIcon>
+            <Flex direction="column">
+              <Text
+                type="p"
+                text="You were Invited by"
+                color="#000000"
+                weight={400}
+                size={isMobile ? 13 : 16}
+              />
+              <Text
+                type="h3"
+                text="Sabinus"
+                color="#000000"
+                weight={600}
+                size={28}
+              />
+            </Flex>
+          </Flex>
+          <Text
+            type="p"
+            text="Apply for Visa at your own convenience on our platform"
+            weight={500}
+            size={18}
+            styles={{ lineHeight: isMobile ? "30px" : "36px" }}
+            width={isMobile ? 300 : 425}
+          />
+          <Flex
+            align="center"
+            width="100%"
+            background="#c8e8f680"
+            height={isMobile ? "105px" : "145px"}
+            borderRadius="12px"
+            border="1px solid #c8e8f6"
+            borderBottom="1px solid #c8e8f6"
+            margin="2.5rem 0"
+            padding={isMobile ? "10px" : "20px"}
+            justify="space-between"
+          >
+            <Box>
+              <GiPassport size="2rem" className="icon" />
+            </Box>
+            <Box>
+              <RiPlaneLine size="2rem" className="icon" />
+            </Box>
+            <Box>
+              <IoBed size="2rem" className="icon" />
+            </Box>
+          </Flex>
+
+          <Button width="100%">
+            <Text type="h3" text="Get Started" weight={500} size={16} />
+          </Button>
+        </HeroCard>
+      </div>
+
+      <Flex
+        direction="column"
+        margin="5rem auto"
+        justify="center"
+        align="center"
+      >
+        <Flex
+          direction="column"
+          margin="0 auto 2rem"
+          justify="center"
+          align="center"
+          styles={{ textAlign: "center" }}
+          gap={isMobile ? "1.3rem" : "1rem"}
+        >
+          <Text
+            type="h2"
+            text="WHY THRILLERS TRAVELS?"
+            size={isMobile ? 22 : 30}
+            weight={700}
+            styles={{ lineHeight: "48px" }}
+          />
+          <Text
+            type="p"
+            text="At Thrillers Travels, we redefine the art of travel, offering unparalleled journeys to destinations that inspire and captivate."
+            color="#606060"
+            size={isMobile ? 14 : 16}
+            weight={400}
+            width={isMobile ? 384 : 620}
+            styles={{ textAlign: "center" }}
+          />
+        </Flex>
+
+        <Grid columns={isMobile ? "1" : "3"} gap="1rem" margin="5rem auto">
+          <Card>
             <Flex
+              direction="column"
+              justify="center"
+              align="center"
               gap="1rem"
-              margin={isMobile ? "0 auto 1.5rem" : "0 auto 1rem"}
+              margin="0 0 1.5rem"
             >
-              <InfluencerIcon>
-                <Text
-                  type="h5"
-                  text="THRILLERS INFLUENCER"
-                  weight={600}
-                  size={isMobile ? 12 : 14}
-                />
-              </InfluencerIcon>
-              <Flex direction="column">
-                <Text
-                  type="p"
-                  text="You were Invited by"
-                  color="#000000"
-                  weight={400}
-                  size={isMobile ? 13 : 16}
-                />
-                <Text
-                  type="h3"
-                  text="Sabinus"
-                  color="#000000"
-                  weight={600}
-                  size={28}
-                />
+              <Image
+                src="/assets/images/influencer/icon/book.png"
+                alt=""
+                width={60.01}
+                height={60}
+              />
+              <Text type="p" text="Plan a Trip" weight={600} size={24} />
+            </Flex>
+            <Text
+              type="p"
+              text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
+              size={18}
+              weight={500}
+            />
+          </Card>
+
+          <Card>
+            <Flex
+              direction="column"
+              justify="center"
+              align="center"
+              gap="1rem"
+              margin="0 0 1.5rem"
+            >
+              <Image
+                src="/assets/images/influencer/icon/location.png"
+                alt=""
+                width={60.01}
+                height={60}
+              />
+              <Text type="p" text="Plan a Trip" weight={600} size={24} />
+            </Flex>
+            <Text
+              type="p"
+              text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
+              size={18}
+              weight={500}
+            />
+          </Card>
+
+          <Card>
+            <Flex
+              direction="column"
+              justify="center"
+              align="center"
+              gap="1rem"
+              margin="0 0 1.5rem"
+            >
+              <Image
+                src="/assets/images/influencer/icon/umbrella.png"
+                alt=""
+                width={85.92}
+                height={60}
+              />
+              <Text type="p" text="Plan a Trip" weight={600} size={24} />
+            </Flex>
+            <Text
+              type="p"
+              text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
+              size={18}
+              weight={500}
+            />
+          </Card>
+        </Grid>
+      </Flex>
+
+      <Flex
+        direction="column"
+        margin="5rem auto"
+        justify="center"
+        align="center"
+        styles={{ textAlign: isMobile ? "center" : "unset" }}
+      >
+        <Flex
+          direction="column"
+          margin="0 auto 4rem"
+          justify="center"
+          align="center"
+          gap={isMobile ? "1.3rem" : "1rem"}
+        >
+          <Text
+            type="h2"
+            text="WHAT WE OFFER AT THRILLERS TRAVELS"
+            size={isMobile ? 20 : 30}
+            weight={700}
+            styles={{ lineHeight: isMobile ? "33px" : "48px" }}
+          />
+          <Text
+            type="p"
+            text="Here are all we offer at Thrillers Travels"
+            color="#606060"
+            size={16}
+            weight={400}
+            width={620}
+            styles={{ textAlign: "center" }}
+          />
+        </Flex>
+
+        {isMobile ? (
+          <>
+            <Wrapper>
+              <Image
+                src="/assets/images/influencer/subHeroImg.png"
+                alt=""
+                styles={{
+                  borderRadius: "8px",
+                  width: "100%",
+                  objectFit: "cover",
+                }}
+                height={isMobile ? 384 : 576}
+              />
+              <OfferCard>
+                <Flex gap=".8rem">
+                  <Image
+                    src="/assets/images/influencer/user2.png"
+                    alt=""
+                    width={52}
+                    height={52}
+                  />
+                  <Flex direction="column">
+                    <Text type="p" text="Daniella Frank" />
+                    <Flex justify="flex-start" align="center" gap=".5rem">
+                      <AiFillStar color="#FFA800" />{" "}
+                      <Text type="p" text="4.8" />
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </OfferCard>
+
+              <OfferCardTwo>
+                <Flex gap=".8rem" align={isMobile ? "flex-start" : "center"}>
+                  <Image
+                    src="/assets/images/influencer/user1.png"
+                    alt=""
+                    width={isMobile ? 48 : 52}
+                    height={isMobile ? 48 : 52}
+                  />
+                  <Flex
+                    direction="column"
+                    justify="flex-start"
+                    align="flex-start"
+                  >
+                    <Text
+                      type="p"
+                      text="Felix Peters"
+                      weight={400}
+                      size={isMobile ? 16 : 18}
+                    />
+                    <Text
+                      type="p"
+                      text="Thrillers Travels has always been the best travel platform"
+                      color="#606060"
+                      size={isMobile ? 12 : 14}
+                      width={isMobile ? 215 : 237}
+                      styles={{ textAlign: "left" }}
+                    />
+                  </Flex>
+                </Flex>
+              </OfferCardTwo>
+            </Wrapper>
+            <Flex
+              justify={isMobile ? "flex-start" : "space-between"}
+              direction="column"
+              gap={isMobile ? "1.5rem" : "0px"}
+              margin={isMobile ? "5.5rem 0" : "2rem 0"}
+              align={isMobile ? "flex-start" : "center"}
+            >
+              <Flex
+                direction="row"
+                margin="0 auto"
+                align="flex-start"
+                gap=".8rem"
+              >
+                <SmallBox>
+                  <RiPlaneLine size="1.5rem" className="icon" />
+                </SmallBox>
+                <Flex
+                  direction="column"
+                  gap=".5rem"
+                  justify={isMobile ? "flex-start" : "center"}
+                  align={isMobile ? "flex-start" : "center"}
+                >
+                  <Text
+                    type="h3"
+                    text="Flight Booking"
+                    weight={600}
+                    size={22}
+                  />
+                  <Text
+                    type="p"
+                    text="Experience seamless flight booking with Thrillers Travels. We're your ticket to exploring the world. We ensure hassle-free reservations, competitive fares, and travel itineraries tailored to your needs"
+                    weight={400}
+                    size={16}
+                    width={isMobile ? 300 : 400}
+                    styles={{ textAlign: isMobile ? "start" : "center" }}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex
+                direction="row"
+                margin="0 auto"
+                align="flex-start"
+                gap=".8rem"
+              >
+                <SmallBox>
+                  <GiPassport size="1.5rem" className="icon" />
+                </SmallBox>
+                <Flex
+                  direction="column"
+                  gap=".5rem"
+                  justify={isMobile ? "flex-start" : "center"}
+                  align={isMobile ? "flex-start" : "center"}
+                >
+                  <Text
+                    type="h3"
+                    text="Visa Application"
+                    weight={600}
+                    size={22}
+                  />
+                  <Text
+                    type="p"
+                    text="Simplify your visa application process with Thrillers Travels. Our experts guide you through the intricate details, making obtaining the necessary visas a breeze."
+                    weight={400}
+                    size={16}
+                    width={isMobile ? 300 : 400}
+                    styles={{ textAlign: isMobile ? "start" : "center" }}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex
+                direction="row"
+                margin="0 auto"
+                align="flex-start"
+                gap=".8rem"
+              >
+                <SmallBox>
+                  <IoBed size="1.5rem" className="icon" />
+                </SmallBox>
+                <Flex
+                  direction="column"
+                  gap=".5rem"
+                  justify={isMobile ? "flex-start" : "center"}
+                  align={isMobile ? "flex-start" : "center"}
+                >
+                  <Text type="h3" text="Rent Stays" weight={600} size={22} />
+                  <Text
+                    type="p"
+                    text="Find your home away from home with Thrillers Travels' rent stay services. We offer a range of accommodation options, from cozy apartments to luxurious villas, tailored to your destination"
+                    weight={400}
+                    size={16}
+                    width={isMobile ? 300 : 400}
+                    styles={{ textAlign: isMobile ? "start" : "center" }}
+                  />
+                </Flex>
               </Flex>
             </Flex>
-            <Text
-              type="p"
-              text="Apply for Visa at your own convenience on our platform"
-              weight={500}
-              size={18}
-              styles={{ lineHeight: isMobile ? "30px" : "36px" }}
-              width={isMobile ? 300 : 425}
-            />
+          </>
+        ) : (
+          <Grid columns={isMobile ? "1" : "2"} gap={isMobile ? "1rem" : "2rem"}>
             <Flex
-              align="center"
-              width="100%"
-              background="#c8e8f680"
-              height={isMobile ? "105px" : "145px"}
-              borderRadius="12px"
-              border="1px solid #c8e8f6"
-              borderBottom="1px solid #c8e8f6"
-              margin="2.5rem 0"
-              padding={isMobile ? "10px" : "20px"}
-              justify="space-between"
+              justify={isMobile ? "flex-start" : "space-between"}
+              direction="column"
+              gap="0px"
+              margin="2rem 0"
+              align={isMobile ? "flex-start" : "center"}
             >
-              <Box>
-                <GiPassport size="2rem" className="icon" />
-              </Box>
-              <Box>
-                <RiPlaneLine size="2rem" className="icon" />
-              </Box>
-              <Box>
-                <IoBed size="2rem" className="icon" />
-              </Box>
+              <Flex
+                direction="row"
+                margin="0 auto"
+                align="flex-start"
+                gap=".8rem"
+                justify="flex-start"
+              >
+                <SmallBox>
+                  <RiPlaneLine size="1.5rem" className="icon" />
+                </SmallBox>
+                <Flex
+                  direction="column"
+                  gap=".5rem"
+                  justify="flex-start"
+                  align="flex-start"
+                >
+                  <Text
+                    type="h3"
+                    text="Flight Booking"
+                    weight={600}
+                    size={22}
+                  />
+                  <Text
+                    type="p"
+                    text="Experience seamless flight booking with Thrillers Travels. We're your ticket to exploring the world. We ensure hassle-free reservations, competitive fares, and travel itineraries tailored to your needs"
+                    weight={400}
+                    size={16}
+                    width={isMobile ? 300 : 400}
+                    styles={{ textAlign: "left" }}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex
+                direction="row"
+                margin="0 auto"
+                align="flex-start"
+                gap=".8rem"
+                justify="flex-start"
+              >
+                <SmallBox>
+                  <GiPassport size="1.5rem" className="icon" />
+                </SmallBox>
+                <Flex
+                  direction="column"
+                  gap=".5rem"
+                  justify="flex-start"
+                  align="flex-start"
+                >
+                  <Text
+                    type="h3"
+                    text="Visa Application"
+                    weight={600}
+                    size={22}
+                  />
+                  <Text
+                    type="p"
+                    text="Simplify your visa application process with Thrillers Travels. Our experts guide you through the intricate details, making obtaining the necessary visas a breeze."
+                    weight={400}
+                    size={16}
+                    width={isMobile ? 300 : 400}
+                    styles={{ textAlign: "left" }}
+                  />
+                </Flex>
+              </Flex>
+
+              <Flex
+                direction="row"
+                margin="0 auto"
+                align="flex-start"
+                gap=".8rem"
+                justify="flex-start"
+              >
+                <SmallBox>
+                  <IoBed size="1.5rem" className="icon" />
+                </SmallBox>
+                <Flex
+                  direction="column"
+                  gap=".5rem"
+                  justify="flex-start"
+                  align="flex-start"
+                >
+                  <Text type="h3" text="Rent Stays" weight={600} size={22} />
+                  <Text
+                    type="p"
+                    text="Find your home away from home with Thrillers Travels' rent stay services. We offer a range of accommodation options, from cozy apartments to luxurious villas, tailored to your destination"
+                    weight={400}
+                    size={16}
+                    width={isMobile ? 300 : 400}
+                    styles={{ textAlign: "left" }}
+                  />
+                </Flex>
+              </Flex>
             </Flex>
 
-            <Button width="100%">
-              <Text type="h3" text="Get Started" weight={500} size={16} />
-            </Button>
-          </HeroCard>
-            </div>
-            
-        <Flex direction="column" margin="2rem auto" justify="center" align="center">
-          <Flex direction="column" margin="0 auto 1.5rem">
+            <Wrapper>
+              <Image
+                src="/assets/images/influencer/subHeroImg.png"
+                alt=""
+                styles={{
+                  borderRadius: "8px",
+                  width: "100%",
+                  objectFit: "cover",
+                }}
+                height={isMobile ? 384 : 576}
+              />
+              <OfferCard>
+                <Flex gap=".8rem">
+                  <Image
+                    src="/assets/images/influencer/user2.png"
+                    alt=""
+                    width={52}
+                    height={52}
+                  />
+                  <Flex direction="column">
+                    <Text type="p" text="Daniella Frank" />
+                    <Flex justify="flex-start" align="center" gap=".5rem">
+                      <AiFillStar color="#FFA800" />{" "}
+                      <Text type="p" text="4.8" />
+                    </Flex>
+                  </Flex>
+                </Flex>
+              </OfferCard>
+
+              <OfferCardTwo>
+                <Flex gap=".8rem" align={isMobile ? "flex-start" : "center"}>
+                  <Image
+                    src="/assets/images/influencer/user1.png"
+                    alt=""
+                    width={isMobile ? 48 : 52}
+                    height={isMobile ? 48 : 52}
+                  />
+                  <Flex
+                    direction="column"
+                    justify="flex-start"
+                    align="flex-start"
+                  >
+                    <Text
+                      type="p"
+                      text="Felix Peters"
+                      weight={400}
+                      size={isMobile ? 16 : 18}
+                    />
+                    <Text
+                      type="p"
+                      text="Thrillers Travels has always been the best travel platform"
+                      color="#606060"
+                      size={isMobile ? 12 : 14}
+                      width={isMobile ? 215 : 237}
+                      styles={{ textAlign: "left" }}
+                    />
+                  </Flex>
+                </Flex>
+              </OfferCardTwo>
+            </Wrapper>
+          </Grid>
+        )}
+      </Flex>
+
+      <Flex
+        margin={isMobile ? "-3rem 0" : "10rem auto"}
+        justify={isMobile ? "center" : "space-between"}
+        align={isMobile ? "center" : "flex-start"}
+        styles={{ textAlign: "left" }}
+        width="100%"
+        gap="1.5rem"
+        direction={isMobile ? "column" : "row"}
+      >
+        <Flex
+          gap={isMobile ? "1.3rem" : "1rem"}
+          width={isMobile ? "100%" : "50%"}
+          direction={isMobile ? "column" : "row"}
+          align={isMobile ? "center" : "flex-end"}
+        >
+          <Image
+            src="/assets/images/influencer/frame1.png"
+            alt=""
+            height={isMobile ? 375 : 506}
+            width={isMobile ? 369 : 378}
+            styles={{
+              objectFit: "cover",
+              borderRadius: isMobile ? "20px" : "auto",
+            }}
+          />
+          <Flex
+            direction={isMobile ? "row" : "column"}
+            gap=".5rem"
+            justify={isMobile ? "center" : "flex-end"}
+          >
+            <Image
+              src="/assets/images/influencer/frame2.png"
+              alt=""
+              height={isMobile ? 112 : 144}
+              width={isMobile ? 121 : 151}
+              styles={{ objectFit: "cover", height: "100px" }}
+            />
+            <Image
+              src="/assets/images/influencer/frame3.png"
+              alt=""
+              height={isMobile ? 112 : 144}
+              width={isMobile ? 121 : 151}
+              styles={{ objectFit: "cover", height: "100px" }}
+            />
+            <Image
+              src="/assets/images/influencer/frame4.png"
+              alt=""
+              height={isMobile ? 112 : 144}
+              width={isMobile ? 121 : 151}
+              styles={{ objectFit: "cover", height: "100px" }}
+            />
+          </Flex>
+        </Flex>
+
+        <Flex
+          width={isMobile ? "100%" : "43%"}
+          align={isMobile ? "center" : "flex-start"}
+        >
+          <Flex
+            direction="column"
+            margin="0 auto 2rem"
+            gap={isMobile ? "1.3rem" : "1rem"}
+          >
             <Text
               type="h2"
-              text="WHY THRILLERS TRAVELS?"
-              size={30}
+              text="PREPARE YOURSELF TO SEE THE WORLD WITH US"
+              size={isMobile ? 20 : 30}
               weight={700}
-              styles={{ lineHeight: "48px" }}
+              styles={{ lineHeight: isMobile ? "30px" : "40px" }}
             />
             <Text
               type="p"
-                        text="At Thrillers Travels, we redefine the art of travel, offering unparalleled journeys to destinations that inspire and captivate."
-                        color="#606060" size={16} weight={400}
+              text="Prepare for an exhilarating global adventure with Thrillers Travels by following these steps: Dream big and envision your ideal destinations, research to make informed choices, budget wisely with our assistance, consult our experts, pack smart, prioritize health and safety, ensure your documentation is in order with our visa assistance, stay informed, embrace local culture, and embark on your journey with an open heart. Thrillers Travels is your partner in turning travel dreams into unforgettable memories."
+              color="#606060"
+              size={16}
+              weight={400}
+              styles={{ textAlign: "left" }}
             />
-                </Flex>
-                <Grid columns={isMobile ? "1" : "3"}>
-                    <Card>
-                        <Flex direction="column">
-                            <Image src="/assets/images/influencer/icon/book.png" alt="" />
-                    </Flex>
-                    </Card>
-                </Grid>
+            <Button width="50%" margin="2rem 0 0">
+              <Text type="h3" text="Get Started" weight={500} size={16} />
+            </Button>
+          </Flex>
         </Flex>
-      </>
-    );
+      </Flex>
+    </>
+  );
 };
 
 export default InfluencerPage;
