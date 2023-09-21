@@ -6,6 +6,7 @@ import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { Grid } from "@/components/templates/grid";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { GiPassport } from "react-icons/gi";
 import { IoBed } from "react-icons/io5";
@@ -79,6 +80,13 @@ const Box = styled.div`
     color: #87ceeb;
   }
 
+  &.active-icon {
+    background: #fff;
+    .icon {
+      color: #6092a7;
+    }
+  }
+
   @media (max-width: 900px) {
     height: 70px;
     width: 77px;
@@ -112,12 +120,22 @@ const Card = styled.div`
     background: #afdef26b;
     color: #6092a7;
     border: 1px solid #afdef2;
+
+    &:hover {
+      background: #7bbbd6;
+      color: #fff;
+    }
   }
 
   &:nth-child(3) {
     background: #afdef26b;
     color: #6092a7;
     border: 1px solid #afdef2;
+
+    &:hover {
+      background: #7bbbd6;
+      color: #fff;
+    }
   }
 `;
 
@@ -171,6 +189,51 @@ const OfferCardTwo = styled.div`
 
 const InfluencerPage = () => {
   const { isMobile } = useScreenResolution();
+  const [activeIcon, setActiveIcon] = useState<string>("Passport");
+  const [hoveredIconText, setHoveredIconText] = useState("");
+  const iconData = [
+    {
+      icon: (
+        <GiPassport
+          size="2rem"
+          className={`icon ${activeIcon === "Passport" ? "active" : ""}`}
+        />
+      ),
+      text: "Apply for Visa at your own convenience on our platform",
+      key: "Passport",
+    },
+    {
+      icon: (
+        <RiPlaneLine
+          size="2rem"
+          className={`icon ${activeIcon === "Plane" ? "active" : ""}`}
+        />
+      ),
+      text: "Book Flight at your own convenience on our platform",
+      key: "Plane",
+    },
+    {
+      icon: (
+        <IoBed
+          size="2rem"
+          className={`icon ${activeIcon === "Bed" ? "active" : ""}`}
+        />
+      ),
+      text: "Rent Stays at your own convenience on our platform",
+      key: "Bed",
+    },
+  ];
+
+   const handleIconHover = (text: string, key: string) => {
+     setHoveredIconText(text);
+     setActiveIcon(key);
+   };
+
+   const handleIconLeave = () => {
+     setHoveredIconText(
+       iconData.find((item) => item.key === activeIcon)?.text || ""
+     );
+   };
 
   return (
     <>
@@ -211,35 +274,50 @@ const InfluencerPage = () => {
               />
             </Flex>
           </Flex>
-          <Text
-            type="p"
-            text="Apply for Visa at your own convenience on our platform"
-            weight={500}
-            size={18}
-            styles={{ lineHeight: isMobile ? "30px" : "36px" }}
-            width={isMobile ? 300 : 425}
-          />
-          <Flex
-            align="center"
-            width="100%"
-            background="#c8e8f680"
-            height={isMobile ? "105px" : "145px"}
-            borderRadius="12px"
-            border="1px solid #c8e8f6"
-            borderBottom="1px solid #c8e8f6"
-            margin="2.5rem 0"
-            padding={isMobile ? "10px" : "20px"}
-            justify="space-between"
-          >
-            <Box>
-              <GiPassport size="2rem" className="icon" />
-            </Box>
-            <Box>
-              <RiPlaneLine size="2rem" className="icon" />
-            </Box>
-            <Box>
-              <IoBed size="2rem" className="icon" />
-            </Box>
+          <Flex direction="column">
+            <Text
+              type="p"
+              text={
+                hoveredIconText ||
+                "Apply for Visa at your own convenience on our platform"
+              }
+              weight={500}
+              size={18}
+              styles={{ lineHeight: isMobile ? "30px" : "36px" }}
+              width={isMobile ? 300 : 425}
+            />
+            <Flex
+              align="center"
+              width="100%"
+              background="#c8e8f680"
+              height={isMobile ? "105px" : "145px"}
+              borderRadius="12px"
+              border="1px solid #c8e8f6"
+              borderBottom="1px solid #c8e8f6"
+              margin="2.5rem 0"
+              padding={isMobile ? "10px" : "20px"}
+              justify="space-between"
+            >
+              {/* <Box>
+                <GiPassport size="2rem" className="icon" />
+              </Box>
+              <Box>
+                <RiPlaneLine size="2rem" className="icon" />
+              </Box>
+              <Box>
+                <IoBed size="2rem" className="icon" />
+              </Box> */}
+              {iconData.map((item, index) => (
+                <Box
+                  key={index}
+                  onMouseEnter={() => handleIconHover(item.text, item.key)}
+                  onMouseLeave={handleIconLeave}
+                  className={activeIcon === item.key ? "active-icon" : ""}
+                >
+                  {item.icon}
+                </Box>
+              ))}
+            </Flex>
           </Flex>
 
           <Button width="100%">
