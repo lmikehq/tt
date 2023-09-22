@@ -3,7 +3,7 @@ import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
 import InfluencerPage from "@/components/molecules/influencer";
 
-const FaqsComponent = () => {
+const Influencer = () => {
   return (
     <Section styles={{ paddingTop: "1rem" }}>
       {/* <Breadcrumb /> */}
@@ -14,4 +14,4 @@ const FaqsComponent = () => {
   );
 };
 
-export default FaqsComponent;
+export default Influencer;

@@ -67,14 +67,7 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 12px;
-
-  &:hover {
-    background: #fff;
-
-    .icon {
-      color: #6092a7;
-    }
-  }
+  cursor: pointer;
 
   .icon {
     color: #87ceeb;
@@ -347,7 +340,7 @@ const InfluencerPage = () => {
               {iconData.map((item, index) => (
                 <Box
                   key={index}
-                  onMouseEnter={() => handleIconHover(item.text, item.key)}
+                  onClick={() => handleIconHover(item.text, item.key)}
                   onMouseLeave={handleIconLeave}
                   className={activeIcon === item.key ? "active-icon" : ""}
                 >
@@ -426,7 +419,6 @@ const InfluencerPage = () => {
               text="Embark on a hassle-free journey with Thrillers Travels as we take care of every detail of your trip planning.  Our team creates customized itineraries that match your preferences."
               size={isMobile ? 15 : 18}
               weight={500}
-              width={isMobile ? 304 : 345}
             />
           </Card>
 
@@ -456,7 +448,6 @@ const InfluencerPage = () => {
               text="Get ready to explore the world's wonders with Thrillers Travels. Our handpicked trips offer a gateway to diverse destinations and captivating experiences."
               size={isMobile ? 15 : 18}
               weight={500}
-              width={isMobile ? 304 : 345}
             />
           </Card>
 
@@ -486,7 +477,6 @@ const InfluencerPage = () => {
               text="Relax, unwind, and fully enjoy your Travel Journey with Thrillers Travels. We are dedicated to making every moment of your journey memorable and fun."
               size={isMobile ? 15 : 18}
               weight={500}
-              width={isMobile ? 304 : 345}
             />
           </Card>
         </Grid>
