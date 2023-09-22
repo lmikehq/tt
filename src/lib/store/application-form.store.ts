@@ -121,7 +121,10 @@ export const useApplicationFormStore = create<State & Actions>(
       set({ mode: Mode.loading, form: data });
       const { user } = useUserStore.getState();
       const payload =
-        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({ data, user });
+        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({
+          data,
+          user,
+        });
       return await ApplicationFormService.createVisaApplication({
         payload,
       })

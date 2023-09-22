@@ -20,7 +20,15 @@ export class ApplicationFormService {
         return response.data;
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        const err = error.response.data;
+        if (
+          !(
+            err.statusCode === 422 &&
+            err.errorMessage.includes("already exists")
+          )
+        ) {
+          toast.error(error.response.data.message);
+        }
         throw error;
       });
   };

@@ -32,6 +32,8 @@ import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/data";
+import CustomConfirmationModal from "../visaApplicationModal";
+import Image from "@/components/atoms/image";
 
 const PromoInput = styled.div`
   display: flex;
@@ -114,6 +116,8 @@ function ApplicationForm() {
   const isLoading = mode == Mode.loading;
   const params = useSearchParams();
   const router = useRouter();
+  const [showApplicationExistsModal, setShowApplicationExistsModal] =
+    useState(false);
   const detailsFormik = useFormik({
     initialValues: tripDetails,
     validationSchema: detailsSchema,
@@ -200,7 +204,7 @@ function ApplicationForm() {
             err.statusCode === 422 &&
             err.errorMessage.includes("already exists")
           ) {
-            toast.error("Please login to your account to continue");
+            setShowApplicationExistsModal(true);
           } else if (err.statusCode === 400) {
             toast(
               (t) => (
@@ -261,7 +265,6 @@ function ApplicationForm() {
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
   useEffect(() => {
-   
     const searchParams = new URLSearchParams(window.location.search);
 
     fetchDetailsFromURL({
@@ -274,6 +277,43 @@ function ApplicationForm() {
 
   return (
     <>
+      <CustomConfirmationModal
+        open={showApplicationExistsModal}
+        handleClose={() => setShowApplicationExistsModal(false)}
+        icon={
+          <Image
+            src={"/assets/images/visaIcons/duplicate_icon.svg"}
+            alt="delete-icon"
+            width={95.5}
+            height={95.5}
+          />
+        }
+        title={"Duplicate Application"}
+        description="There is an existing application with the same details."
+        subTitle={"Continue to your dashboard to view application?"}
+        buttons={
+          <>
+            <Button
+              background="transparent"
+              color={ttColors.dark}
+              border="1px solid #19013b"
+              onClick={() => setShowApplicationExistsModal(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              background={ttColors.blackishBlue}
+              color="#fff"
+              onClick={() => {
+                router.push("/dashboard");
+              }}
+            >
+              Continue
+            </Button>
+          </>
+        }
+      />
+
       <AllCountryHead
         cover={coverImage}
         title={form.tripDetails.destination.name || ""}
@@ -389,7 +429,11 @@ function ApplicationForm() {
             height="unset"
             styles={{ display: isMobile ? "none" : "block" }}
           >
-            <FormSideMenu currentPhase={step} formData={form} />
+            <FormSideMenu
+              currentPhase={step}
+              formData={form}
+              saveProgress={persistForm}
+            />
           </Section>
         </Flex>
       </SectionLayout>

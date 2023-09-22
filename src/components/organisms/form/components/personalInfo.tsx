@@ -318,7 +318,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 name="issueDate"
                 placeholder="Select your Issue Date"
                 formik={formik}
-                maxDate={dayjs()}
+                maxDate={dayjs(formik.values.expiryDate)}
                 format="DD/MM/YYYY"
               />
             </Section>
@@ -333,7 +333,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 placeholder="Select ID's Expiry Date"
                 formik={formik}
                 minDate={dayjs(formik.values.issueDate)}
-                disabled={!formik.values.issueDate}
                 format="DD/MM/YYYY"
               />
             </Section>
@@ -520,11 +519,15 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         </Flex>
 
         <Section>
-          <Text
-            type="p"
-            text="Main Purpose of your Trip"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-          />
+          <Flex align="center" gap="0.25rem">
+            <Text
+              type="p"
+              text="Main Purpose of your Trip"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <Required />
+          </Flex>
+
           <TextArea
             name="tripPurpose"
             onChange={formik.handleChange}
@@ -899,6 +902,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             if (!formik.isValid) return ToastError();
           }}
           disabled={!formik.isValid}
+          saveProgressAndContinueLater={persistForm}
         />
       </form>
     </Section>
