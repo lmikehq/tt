@@ -105,7 +105,7 @@ function VerifyCode() {
             </div>
             <div>
               <img
-                src={"/assets/images/auth-bg3.png"}
+                src={"/assets/images/auth-bg3.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -114,7 +114,7 @@ function VerifyCode() {
             </div>
             <div>
               <img
-                src={"/assets/images/auth-bg4.png"}
+                src={"/assets/images/auth-bg4.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -123,7 +123,7 @@ function VerifyCode() {
             </div>
             <div>
               <img
-                src={"/assets/images/auth-bg5.png"}
+                src={"/assets/images/auth-bg5.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -133,7 +133,7 @@ function VerifyCode() {
 
             <div>
               <img
-                src={"/assets/images/auth-bg7.png"}
+                src={"/assets/images/auth-bg7.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"
@@ -142,7 +142,7 @@ function VerifyCode() {
             </div>
             <div>
               <img
-                src={"/assets/images/auth-bg8.png"}
+                src={"/assets/images/auth-bg8.jpeg"}
                 alt="background image"
                 width="100%"
                 height="798px"

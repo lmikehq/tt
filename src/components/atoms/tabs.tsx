@@ -55,6 +55,16 @@ const TabWrapper = styled.div<{
   }
 
   z-index: 5;
+
+  @media (max-width: 900px) {
+    .MuiTabs-scroller.MuiTabs-fixed.css-jpln7h-MuiTabs-scroller {
+    /* You can adjust the breakpoint as needed */
+    width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+    /* You may also need to adjust the height and other styles for mobile */
+    }
+  }
 `;
 
 function TabPanel(props: TabPanelProps) {
@@ -124,8 +134,9 @@ export default function CustomTab({
         <Tabs
           value={value}
           onChange={handleChange}
-          variant={isMobile ? "fullWidth" : "standard"}
+          variant={isMobile ? "scrollable" : "standard"}
           aria-label="select your service"
+          scrollButtons="auto"
           sx={{
             fontFamily: "Montserrat",
           }}
