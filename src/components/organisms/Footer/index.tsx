@@ -61,34 +61,34 @@ const footerIcons = [
     icon: <AiFillInstagram size="1.5rem" color="#06062A" />,
     url: "https://www.instagram.com/thrillerstravel",
   },
-  // {
-  //   id: 5,
-  //   icon: <FaTiktok size="1rem" color="#06062A" />,
-  //   url: "https://www.tiktok.com/@thrillers_travels",
-  // },
-  // {
-  //   id: 6,
-  //   icon: <ImLinkedin size="1rem" color="#06062A" />,
-  //   url: "http://www.linkedin.com/in/thrillerstravels",
-  // },
-  // {
-  //   id: 7,
-  //   icon: <RiWhatsappFill size="1rem" color="#06062A" />,
-  //   url: "https://chat.whatsapp.com/IpZEWEAdZngD5jGJKGZvy7",
-  // },
-  // {
-  //   id: 8,
-  //   icon: (
-  //     <Section height={"16px"} styles={{ position: "relative" }}>
-  //       <Image
-  //         src={"/assets/images/thread.png"}
-  //         alt=""
-  //         styles={{ borderRadius: "2px" }}
-  //       />
-  //     </Section>
-  //   ),
-  //   url: "https://www.threads.net/@thrillerstravel",
-  // },
+  {
+    id: 5,
+    icon: <FaTiktok size="1.5rem" color="#06062A" />,
+    url: "https://www.tiktok.com/@thrillers_travels",
+  },
+  {
+    id: 6,
+    icon: <ImLinkedin size="1.5rem" color="#06062A" />,
+    url: "http://www.linkedin.com/in/thrillerstravels",
+  },
+  {
+    id: 7,
+    icon: <RiWhatsappFill size="1.5rem" color="#06062A" />,
+    url: "https://chat.whatsapp.com/IpZEWEAdZngD5jGJKGZvy7",
+  },
+  {
+    id: 8,
+    icon: (
+      <Section height={"24px"} styles={{ position: "relative" }}>
+        <Image
+          src={"/assets/images/thread.png"}
+          alt=""
+          styles={{ borderRadius: "2px" }}
+        />
+      </Section>
+    ),
+    url: "https://www.threads.net/@thrillerstravel",
+  },
 ];
 
 const FooterSection = ({ showNewsletter = true }) => {
