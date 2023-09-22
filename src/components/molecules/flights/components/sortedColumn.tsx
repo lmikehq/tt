@@ -11,9 +11,10 @@ import React, { useState } from "react";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
-import { ttColors } from "@lib/theme/colors";
 import { ButtonBox } from "./sortedFlightsTab";
 import { styled } from "styled-components";
+import PriceAlerts from "./priceAlerts";
+import PlusMinusButton from "@/app/flight/countries/[country]/components/PlusMinusButton";
 
 function SortedColumn() {
   const options = [
@@ -78,6 +79,7 @@ function SortedColumn() {
   return (
     <Section>
       <Flex direction="column">
+        <PriceAlerts />
         <Flex direction="column">
           <Flex
             align="center"
@@ -104,9 +106,11 @@ function SortedColumn() {
                   whiteSpace="nowrap"
                 />
                 <Flex gap=".75rem" align="center" justify="flex-end">
-                  <AiOutlineMinusCircle size={30} />
+                  {/* <AiOutlineMinusCircle size={30} /> */}
+                  <PlusMinusButton>+</PlusMinusButton>
                   <Text type="p" text="0" />
-                  <AiOutlinePlusCircle size={30} />
+                  {/* <AiOutlinePlusCircle size={30} /> */}
+                  <PlusMinusButton>-</PlusMinusButton>
                 </Flex>
               </Flex>
               <Flex align="center" justify="space-between">

@@ -26,13 +26,13 @@ const RoundedButton = styled(Button)(({ theme }) => ({
 interface IPlusMinusButton {
   children: React.ReactNode;
   isDisabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 function PlusMinusButton({
   children,
   isDisabled = false,
-  onClick,
+  onClick = () => {},
 }: IPlusMinusButton) {
   return (
     <RoundedButton

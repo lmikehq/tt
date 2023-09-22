@@ -2,13 +2,16 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { Divider } from "@atom/divider";
 import dayjs, { Dayjs } from "dayjs";
-import { FaPlane } from "react-icons/fa";
 import { styled } from "styled-components";
 import { BsShare } from "react-icons/bs";
 import { ttColors } from "@lib/theme/colors";
 import { MdOutlineLuggage } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
 import Button from "@atom/button";
+import Dot from "@/components/atoms/dot";
+import { Box } from "@mui/material";
+import FlightDepartureIcon from "./flightDepartureIcon";
+import StopsPill from "./stopsPill";
 
 type flightProps = {
   departureCountryCode: string;
@@ -87,63 +90,126 @@ function FlightBox(props: flightProps) {
 
   return (
     <FlightContainer>
-      <Flex>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "8fr 1fr 4fr",
+        }}
+      >
         <Flex direction="column" padding="1rem">
           {props.label !== "" && (
             <LabelBox>
               <Text type="p" text={props.label} color="#4A7181" />
             </LabelBox>
           )}
-          <Flex align="center" gap=".5rem" padding="1.5rem">
-            <Text type="p" text="Depart" />
-            &middot;
-            <Text type="p" text={formatDate(props.departureDate)} />
-          </Flex>
-          <Flex direction="column" gap="1rem" padding="2rem">
-            <Flex direction="column" gap="1rem">
-              <Flex gap="1rem">
-                <Text type="p" text={formattedDepartureTime} />
-                <Text type="p" text={props.airportName1} />
-                <Text type="p" text={props.departureCountryCode} />
-              </Flex>
-              <Flex gap="1rem">
-                <Text type="p" text={interval} />
-                <Text type="p" text={`${getRandomNumber()} stops`} />
-              </Flex>
-              <Flex gap="1rem">
-                <Text type="p" text={formattedArrivalTime} />
-                <Text type="p" text={props.airportName2} />
-                <Text type="p" text={props.arrivalCountryCode} />
+
+          <Box
+            sx={{
+              color: ttColors.lighterGray,
+              fontWeight: "medium",
+            }}
+          >
+            <Flex align="center" gap="5px" margin="1rem 0">
+              <Text type="p" text="Depart" />
+              <Dot fontSize="5rem" />
+
+              <Text type="p" text={formatDate(props.departureDate)} />
+            </Flex>
+          </Box>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "25px 1fr",
+            }}
+          >
+            <FlightDepartureIcon />
+
+            <Flex direction="column" gap="1rem" margin="0 1rem">
+              <Flex direction="column" gap="1rem">
+                <Flex gap="1rem">
+                  <Text
+                    type="p"
+                    weight={"bold"}
+                    text={formattedDepartureTime}
+                  />
+                  <Text type="p" text={props.airportName1} />
+                  <Text type="p" text={props.departureCountryCode} />
+                </Flex>
+                <Flex align={"center"} gap="1rem">
+                  <Text type="p" color={ttColors.lighterGray} text={interval} />
+                  <StopsPill numberOfStops={getRandomNumber()} />
+                </Flex>
+                <Flex gap="1rem">
+                  <Text type="p" weight={"bold"} text={formattedArrivalTime} />
+                  <Text type="p" text={props.airportName2} />
+                  <Text type="p" text={props.arrivalCountryCode} />
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
-          <Divider direction="horizontal" borderStyle="dotted" />
-          <Flex align="center" gap=".5rem" padding="1.5rem">
-            <Text type="p" text="Return" />
-            &middot;
-            <Text type="p" text={formatDate(props.arrivalDate)} />
-          </Flex>
-          <Flex direction="column" gap="1rem" padding="2rem">
-            <FaPlane />
-            <Flex direction="column" gap="1rem">
-              <Flex gap="1rem">
-                <Text type="p" text={formattedDepartureTime} />
-                <Text type="p" text={props.airportName1} />
-                <Text type="p" text={props.departureCountryCode} />
+          </Box>
+
+          <Divider
+            direction="horizontal"
+            borderStyle="dotted"
+            margin="1rem 0"
+          />
+
+          <Flex direction="column">
+            <Box
+              sx={{
+                color: ttColors.lighterGray,
+                fontWeight: "medium",
+              }}
+            >
+              <Flex align="center" gap="5px" margin="1rem 0">
+                <Text type="p" text="Return" />
+                <Dot fontSize="5rem" />
+                <Text type="p" text={formatDate(props.arrivalDate)} />
               </Flex>
-              <Flex gap="1rem">
-                <Text type="p" text={interval} />
-                <Text type="p" text={`${getRandomNumber()} stops`} />
+            </Box>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "25px 1fr",
+              }}
+            >
+              <FlightDepartureIcon />
+
+              <Flex direction="column" gap="1rem" margin="0 1rem">
+                <Flex direction="column" gap="1rem">
+                  <Flex gap="1rem">
+                    <Text
+                      type="p"
+                      weight={"bold"}
+                      text={formattedDepartureTime}
+                    />
+                    <Text type="p" text={props.airportName1} />
+                    <Text type="p" text={props.departureCountryCode} />
+                  </Flex>
+                  <Flex align={"center"} gap="1rem">
+                    <Text
+                      type="p"
+                      color={ttColors.lighterGray}
+                      text={interval}
+                    />
+                    <StopsPill numberOfStops={getRandomNumber()} />
+                  </Flex>
+                  <Flex gap="1rem">
+                    <Text
+                      type="p"
+                      weight={"bold"}
+                      text={formattedArrivalTime}
+                    />
+                    <Text type="p" text={props.airportName2} />
+                    <Text type="p" text={props.arrivalCountryCode} />
+                  </Flex>
+                </Flex>
               </Flex>
-              <Flex gap="1rem">
-                <Text type="p" text={formattedArrivalTime} />
-                <Text type="p" text={props.airportName2} />
-                <Text type="p" text={props.arrivalCountryCode} />
-              </Flex>
-            </Flex>
+            </Box>
           </Flex>
         </Flex>
-        <Divider direction="vertical" borderStyle="dotted" />
+        <Divider direction="vertical" borderStyle="dotted" margin="0" />
         <Flex direction="column" padding="2rem" justify="space-between">
           <Flex align="center">
             <Flex gap=".5rem">
@@ -188,7 +254,7 @@ function FlightBox(props: flightProps) {
             />
           </Button>
         </Flex>
-      </Flex>
+      </Box>
     </FlightContainer>
   );
 }
