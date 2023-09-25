@@ -137,7 +137,8 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
             <Image
               src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="thrillers travels logo"
-              height={40}
+              width={142}
+              height={43}
             />
           </ButtonBase>
           <Flex gap="2rem" width="fit-content">
