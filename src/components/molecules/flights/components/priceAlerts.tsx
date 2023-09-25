@@ -1,4 +1,4 @@
-import Switch from "@/components/atoms/switch";
+import Switch from "@/components/molecules/switch";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
