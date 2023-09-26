@@ -13,10 +13,10 @@ import { LuSearch } from "react-icons/lu";
 import { ButtonBox } from "./sortedFlightsTab";
 import { styled } from "styled-components";
 import PriceAlerts from "./priceAlerts";
-import PlusMinusButton from "@/app/flight/countries/[country]/components/PlusMinusButton";
 import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import Slider from "../../slider";
+import PlusMinusButton from "@/components/organisms/flights/PlusMinusButton";
 
 function SortedColumn() {
   const options = [
