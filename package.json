@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sitemap": "next-sitemap",
+    "postbuild": "next-sitemap",
     "build+push": "yarn build && git add . && git commit -am 'built for push' && git pull origin main && git push"
   },
   "dependencies": {
