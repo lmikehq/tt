@@ -8,6 +8,7 @@ const RoundedButton = styled(Button)(({ theme }) => ({
   borderRadius: "50%",
   width: "36px",
   height: "36px",
+  fontSize: "20px",
   minWidth: 0,
   padding: 0,
   color: ttColors.foundation.gray,

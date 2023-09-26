@@ -1,6 +1,7 @@
 import ButtonBase from "@mui/material/ButtonBase";
 import Box from "@mui/material/Box";
 import React, { CSSProperties } from "react";
+import { ttColors } from "@/lib/theme/colors";
 
 interface buttonProps {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ interface buttonProps {
   id?: string;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  variant?: "solid" | "outline" | "link";
 }
 
 export const Button: React.FC<buttonProps> = ({
@@ -47,29 +49,46 @@ export const Button: React.FC<buttonProps> = ({
   type,
   disabled,
   id,
+  underlined,
   startIcon,
   endIcon,
+  variant = "solid",
 }) => {
+  const buttonStyles: CSSProperties = {
+    padding: padding,
+    color: color || "#FFFFFF",
+    fontWeight: fontWeight,
+    fontSize: fontSize,
+    fontFamily: "Poppins",
+    width: width || "104px",
+    height: height || "48px",
+    borderRadius: borderRadius || "8px",
+    cursor: cursor || "pointer",
+    zIndex: zIndex,
+    border: border,
+    margin: margin,
+    textDecoration: underlined ? "underlined" : "none",
+    lineHeight: lineHeight,
+    ...styles,
+  };
+
+  if (variant === "outline") {
+    buttonStyles.background = "transparent";
+    buttonStyles.border = `2px solid ${color || "#FFFFFF"}`;
+    buttonStyles.color = color || "#FFFFFF";
+  } else if (variant === "link") {
+    buttonStyles.background = "transparent";
+    buttonStyles.border = "none";
+    buttonStyles.color = color || ttColors.primaryLight;
+    buttonStyles.textDecoration = "underline";
+  } else {
+    buttonStyles.background = disabled ? "#585870" : background || "#06062A";
+  }
+
   return (
     <ButtonBase
       id={id}
-      style={{
-        padding: padding,
-        color: color || "#FFFFFF",
-        background: disabled ? "#585870" : background || "#06062A",
-        fontWeight: fontWeight,
-        fontSize: fontSize,
-        fontFamily: "Poppins",
-        width: width || "104px",
-        height: height || "48px",
-        borderRadius: borderRadius || "8px",
-        cursor: cursor || "pointer",
-        zIndex: zIndex,
-        border: border,
-        margin: margin,
-        lineHeight: lineHeight,
-        ...styles,
-      }}
+      style={buttonStyles}
       type={type}
       onClick={!disabled ? onClick : undefined}
     >
