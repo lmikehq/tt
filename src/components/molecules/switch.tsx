@@ -69,10 +69,15 @@ export default function Switch({
   labelPlacement?: "start" | "end" | "bottom" | "top";
 }) {
   return (
-    <FormGroup>
+    <FormGroup
+      sx={{
+        width: "100%",
+      }}
+    >
       <FormControlLabel
         control={<SwitchComponent sx={{ m: 1 }} defaultChecked />}
         label={label}
+        sx={{ width: "100%", marginLeft: 0, justifyContent: "space-between" }}
         labelPlacement={labelPlacement}
       />
     </FormGroup>
