@@ -6,10 +6,14 @@ import Button from "@atom/button";
 import Image from "@atom/image";
 import Text from "@atom/text";
 import { HiPencil } from "react-icons/hi";
-import { ttColors } from "@lib/theme/colors";
+import copyIcon from "@image/dashboard/copyIcon.png";
+import toast from "react-hot-toast";
+import { BsClipboard } from "react-icons/bs";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { BsFillCameraFill } from "react-icons/bs";
+import { ttColors } from "@lib/theme/colors";
 import { useUserStore } from "@lib/store/useStore";
+import Flex from "@components/templates/flex";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
@@ -105,7 +109,7 @@ const DashboardProfilePictue = styled.div`
     transform: translate(-50%, -50%);
 
     @media screen and (max-width: 900px) {
-      transform: translate(-50%, 100%) !important;
+      transform: translate(-50%, 100%) ;
       position: sticky;
     }
   }
@@ -137,11 +141,32 @@ const DashboardProfilePictue = styled.div`
   }
 `;
 
+const ReferralLink = styled.div`
+  background: rgb(123 187 214 / 30%);
+  width: max-content;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #7bbbd6;
+  position: relative;
+  transform: translate(-50%, -50%) !important;
+  left: 50% !important;
+`;
+
 function UserPicture() {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
+
+  const referralLink =
+    "https://thrillerstravels.com/register?ref=john_doe.2332";
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(referralLink).then(() => {
+      toast.success("Referral link copied to clipboard");
+    });
+  };
   return (
-    <div>
+    <Flex direction="column" gap="1rem" margin="0px">
       <DashboardCoverPicture>
         <Image
           src={user?.coverPicture || "/assets/images/dashboard/cover.jpg"}
@@ -194,11 +219,52 @@ function UserPicture() {
           <HiPencil size="2rem" />
         </Button>
         <ProfileInfomation>
-          <Text type="h3" text={user?.firstName + " " + user?.lastName} />
+          <Text
+            type="h3"
+            text={user?.firstName + " " + user?.lastName}
+            size={isMobile ? "12px" : "14px"}
+          />
           <Text type="p" text={user?.email} />
         </ProfileInfomation>
       </DashboardProfilePictue>
-    </div>
+
+      <ReferralLink
+        style={{
+          border: "1px solid #7BBBD6 !important",
+          padding: isMobile ? "8px" : "10px",
+          margin: isMobile ? "8rem 0px 1.5rem" : "10rem 0px .5rem",
+        }}
+      >
+        <Flex
+          gap=".5rem"
+          justify="center"
+          onClick={copyToClipboard}
+          cursor="pointer"
+          width="max-content"
+          align="center"
+        >
+          <Image
+            src="/assets/images/dashboard/copyIcon.png"
+            height={24}
+            width={24}
+            alt=""
+            styles={{
+              position: "relative",
+              transform: isMobile ? "none" : "none",
+              top: isMobile ? "0px" : "5px",
+              left: "0px",
+              alignContent: "center",
+            }}
+          />
+          <Text
+            type="h5"
+            size={isMobile ? "9px" : "19px"}
+            decoration="underline"
+            text={referralLink}
+          />
+        </Flex>
+      </ReferralLink>
+    </Flex>
   );
 }
 

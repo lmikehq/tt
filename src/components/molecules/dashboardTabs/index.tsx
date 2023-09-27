@@ -9,20 +9,17 @@ import Account from "./components/account";
 import Favourite from "./components/favourite";
 import Notification from "./components/notification";
 import RTQueryClient from "@components/templates/rtqWrapper";
+import Referrals from "./components/referral";
 
 const Wrapper = styled.div`
-  margin-top: 250px;
-
-  @media screen and (max-width: 900px) {
-    margin-top: 155px;
-  }
+  margin-top: 10px;
 
   .MuiBox-root.css-1gsv261 {
     box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
     border-radius: 12px;
   }
   .MuiButtonBase-root {
-    width: 20%;
+    width: 16.6666667%;
 
     .flex__FlexWrapper-sc-996d4228-0 {
       justify-content: center;
@@ -31,10 +28,17 @@ const Wrapper = styled.div`
     .flex__FlexWrapper-sc-54bd3624-0 {
       justify-content: center;
     }
+
+    @media screen and (max-width: 900px) {
+      width: 50%;
+    }
   }
+
+ 
 `;
 
 function DashboardTabs() {
+
   const tabItems = [
     {
       label: "All Applications",
@@ -63,7 +67,13 @@ function DashboardTabs() {
       value: 4,
       content: <Account />,
     },
+    {
+      label: "Referral",
+      value: 5,
+      content: <Referrals />,
+    }
   ];
+
   return (
     <Wrapper>
       <RTQueryClient>

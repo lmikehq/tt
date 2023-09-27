@@ -22,6 +22,8 @@ export const ttColors = {
   red: "#A0001D",
   blackishBlue: "#06062A",
   grayishAsh: "#F3F3FF",
+  lighterGray: "#929292",
+  primaryLight: "#6092A7",
   foundation: {
     gray: "#606060",
   },

@@ -1,5 +1,4 @@
 "use client";
-import ApplicationWrapper from "../countries/components/ApplicationWrapper";
 import Flights from "src/components/molecules/serviceTabs/components/flight";
 import FlightList from "src/components/molecules/flights/components/flightList";
 import { styled } from "styled-components";
@@ -14,12 +13,12 @@ const FlightTab = styled.div`
 
 function page() {
   return (
-    <ApplicationWrapper>
+    <>
       <FlightTab>
         <Flights />
       </FlightTab>
       <FlightList />
-    </ApplicationWrapper>
+    </>
   );
 }
 

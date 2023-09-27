@@ -6,14 +6,17 @@ import { CustomRadioGroup } from "@molecule/radio";
 import { SearchInputAsString } from "@organism/searchInput";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { Slider } from "@mui/material";
 import React, { useState } from "react";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
-import { ttColors } from "@lib/theme/colors";
 import { ButtonBox } from "./sortedFlightsTab";
 import { styled } from "styled-components";
+import PriceAlerts from "./priceAlerts";
+import Button from "@/components/atoms/button";
+import { ttColors } from "@/lib/theme/colors";
+import Slider from "../../slider";
+import PlusMinusButton from "@/components/organisms/flights/PlusMinusButton";
 
 function SortedColumn() {
   const options = [
@@ -78,6 +81,7 @@ function SortedColumn() {
   return (
     <Section>
       <Flex direction="column">
+        <PriceAlerts />
         <Flex direction="column">
           <Flex
             align="center"
@@ -104,9 +108,11 @@ function SortedColumn() {
                   whiteSpace="nowrap"
                 />
                 <Flex gap=".75rem" align="center" justify="flex-end">
-                  <AiOutlineMinusCircle size={30} />
+                  {/* <AiOutlineMinusCircle size={30} /> */}
+                  <PlusMinusButton>+</PlusMinusButton>
                   <Text type="p" text="0" />
-                  <AiOutlinePlusCircle size={30} />
+                  {/* <AiOutlinePlusCircle size={30} /> */}
+                  <PlusMinusButton>-</PlusMinusButton>
                 </Flex>
               </Flex>
               <Flex align="center" justify="space-between">
@@ -117,9 +123,9 @@ function SortedColumn() {
                   whiteSpace="nowrap"
                 />
                 <Flex gap=".75rem" align="center" justify="flex-end">
-                  <AiOutlineMinusCircle size={30} />
+                  <PlusMinusButton>+</PlusMinusButton>
                   <Text type="p" text="0" />
-                  <AiOutlinePlusCircle size={30} />
+                  <PlusMinusButton>-</PlusMinusButton>
                 </Flex>
               </Flex>
             </Flex>
@@ -178,21 +184,23 @@ function SortedColumn() {
                 >
                   <LuSearch color="#929292" size={20} />
                 </SearchInputAsString>
-                <Text
-                  type="p"
-                  text="Select all"
-                  color="#6092A7"
-                  weight={600}
-                  whiteSpace="nowrap"
-                  size={14}
-                />
+
+                <Button
+                  variant="link"
+                  underlined={false}
+                  color={ttColors.primaryLight}
+                >
+                  Select all
+                </Button>
               </Flex>
               {airlines.map((airline, index) => (
                 <CheckBox key={index} checked={false}>
                   <Text type="p" text={airline} size={16} />
                 </CheckBox>
               ))}
-              <Text type="p" text="Show less" color="#6092A7" weight={600} />
+              <Button variant="link" padding="1rem 0" underlined={false}>
+                Show less
+              </Button>
             </Flex>
           )}
           <Divider direction="horizontal" />
@@ -229,6 +237,7 @@ function SortedColumn() {
                   weight={500}
                   color="#7BBBD6"
                 />
+
                 <Slider
                   marks={[
                     { value: 0, label: "0:00" },
@@ -303,7 +312,7 @@ function SortedColumn() {
                 />
                 <Slider
                   marks={[{ value: 100, label: "Max" }]}
-                  defaultValue={100}
+                  defaultValue={[0, 100]}
                 />
               </Flex>
               <Flex direction="column" gap=".25rem" padding=".5rem 0">
@@ -338,7 +347,16 @@ function SortedColumn() {
             <Text type="p" text="Price" weight={500} color="#06062A" />
             <BsChevronDown color="#06062A" size={20} />
           </Flex>
-          {columnState.price && <Slider defaultValue={0} marks={marks} />}
+          <Text
+            type="p"
+            text="$0 - $40,000"
+            size={16}
+            weight={500}
+            color="#7BBBD6"
+          />
+          {columnState.price && (
+            <Slider defaultValue={[0, 100]} marks={marks} />
+          )}
           <Divider direction="horizontal" />
         </Flex>
         <Flex direction="column">
