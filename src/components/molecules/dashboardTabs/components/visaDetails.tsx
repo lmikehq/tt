@@ -69,6 +69,7 @@ const VisaStatus = styled.div`
   @media screen and (max-width: 900px) {
     width: 100%;
     font-size: 14px;
+    padding: 10px 0px;
   }
 `;
 
@@ -134,7 +135,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   //   setIsDropdownOpen(!isDropdownOpen);
   //   setHoveredOption(null);
   // };
-  console.log("clicked again", isDropdownOpen);
+
   const ref = useRef(null);
   useDetectOutsideClick(ref, () => setIsDropdownOpen(false));
 
@@ -446,8 +447,10 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   <Text
                     type="h3"
                     text={
-                      recentPayment?.totalAmount
+                      visa?.payments.length
                         ? currencyFormatter(recentPayment.totalAmount)
+                        : visa?.usedFormFeeVoucher
+                        ? "Travel voucher"
                         : "n/a"
                     }
                     size={16}
@@ -502,7 +505,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 </Flex>
                 <Flex>
                   <Button
-                    padding="8px 16px"
+                    padding="8px 10px"
                     width={"100%"}
                     height="48px"
                     styles={{

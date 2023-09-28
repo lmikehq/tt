@@ -1,24 +1,23 @@
 import Button from "@atom/button";
-import Flex from "@components/templates/flex";
+import { Divider } from "@atom/divider";
+import Image from "@atom/image";
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { useQuery } from "@tanstack/react-query";
+import Flex from "@components/templates/flex";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
-import { format } from "date-fns";
 import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
-import VisaDashboardHeader from "./visaDashboardHeader";
-import { BiDotsVerticalRounded } from "react-icons/bi";
-import { useState } from "react";
-import Image from "@atom/image";
-import { PiEyeLight } from "react-icons/pi";
 import CustomDrawer from "@molecule/drawers/customDrawer";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { useRef, useState } from "react";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 import { GrFormClose } from "react-icons/gr";
-import { Divider } from "@atom/divider";
-
-import { useVoucherStore } from "@lib/store/voucher.store";
+import { PiEyeLight } from "react-icons/pi";
+import Section from "src/components/molecules/section";
+import styled from "styled-components";
+import VisaDashboardHeader from "./visaDashboardHeader";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
 
 const SectionTitle = styled.div`
   display: flex;
@@ -124,8 +123,6 @@ const DropdownContent = styled.div`
   overflow-y: scroll;
   font-size: 16px;
   line-height: 19.2px;
-
- 
 `;
 
 const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
@@ -146,17 +143,21 @@ const OptionText = styled.div<{ hovered: boolean }>`
 
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
-  const [isMobileEdit, setIsMobileEdit] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
+  function PaymentIcon() {
+    return (
+      <Image
+        src="/assets/images/dashboard/payment.png"
+        alt=""
+        width={17.2}
+        height={12.4}
+      />
+    );
+  }
 
-function PaymentIcon() {
-  return <Image src="/assets/images/dashboard/payment.png" alt="" width={17.2} height={12.4} />;
-}
-
-  const { applied, voucher } = useVoucherStore((state) => state);
   async function getAllPayments() {
     return await apiService("/payment", "GET");
   }
@@ -175,12 +176,12 @@ function PaymentIcon() {
   };
 
   const sortOptions = [
-    {
-      value: "Option 1",
-      label: "Make Payment",
-      icon: <PaymentIcon />,
-      action: () => {},
-    },
+    // {
+    //   value: "Option 1",
+    //   label: "Make Payment",
+    //   icon: <PaymentIcon />,
+    //   action: () => {},
+    // },
     {
       value: "Option 2",
       label: "View More Details",
@@ -192,6 +193,8 @@ function PaymentIcon() {
     },
   ];
 
+  // const ref = useRef(null);
+  // useDetectOutsideClick(ref, () => setIsDropdownOpen(false))
   return (
     <Section
       margin="2rem 0"
@@ -204,260 +207,281 @@ function PaymentIcon() {
       <VisaDashboardHeader headerText="Payment History" />
 
       <PaymentWrapper>
-        {isMobileEdit ? (
-        <History>
-          <Flex
-            justify="space-between"
-            width="100%"
-            align="center"
-            padding="18px 14px"
-          >
-            <Flex direction="column" gap="1rem">
-              <Text
-                type="p"
-                text="Application fee for Canada - Employment visa"
-                size={14}
-                weight={400}
-              />
-              <Flex gap="1.5rem" align="center" justify="flex-start">
-                <Text
-                  type="p"
-                  text="23/04/2023"
-                  color="#112211"
-                  size={12}
-                  styles={{ opacity: "75%" }}
-                />
-                <PaymentStatus style={{ background: "#FFFEEF" }}>
-                  <Text
-                    type="p"
-                    text="PENDING"
-                    styles={{ width: isMobile ? "100%" : "20%" }}
-                    whiteSpace="nowrap"
-                    size={12}
-                  />
-                </PaymentStatus>
-              </Flex>
-            </Flex>
-            <BiDotsVerticalRounded
-              color="#040404"
-              size="1.5rem"
-              onClick={toggleDropdown}
-            />
-            {isDropdownOpen && (
-              <DropdownContent>
-                {sortOptions.map((option, index) => (
-                  <StyledOption
-                    key={option.value}
-                    hovered={hoveredOption === index}
-                    lastChild={index === sortOptions.length - 1}
-                    onMouseEnter={() => setHoveredOption(index)}
-                    onMouseLeave={() => setHoveredOption(null)}
-                    onClick={option.action}
-                  >
-                    <OptionText hovered={hoveredOption === index}>
-                      <Flex gap="1rem" align="center">
-                        {option.icon}
-                        {option.label}
-                      </Flex>
-                    </OptionText>
-                  </StyledOption>
-                ))}
-              </DropdownContent>
-            )}
-            <CustomDrawer
-              anchor="bottom"
-              open={bottomDrawerOpen}
-              onClose={() => setBottomDrawerOpen(false)}
-            >
-              <Section
-                height="unset"
-                padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
-                styles={{
-                  background: ttColors.light,
-                }}
-              >
-                <Flex justify="space-between" align="center">
-                  <Flex justify="flex-start" gap="1rem" align="center">
-                    <Text
-                      type="h3"
-                      text="Application fee for Canada - Employment visa"
-                      size={16}
-                      weight={600}
-                      width="max-content"
-                      color="#112211"
-                      styles={{
-                        width: "80%",
-                      }}
-                    />
-                  </Flex>
-                  <GrFormClose />
-                </Flex>
-                <Divider direction="horizontal" margin="0px 0px 1rem" />
-                <Flex gap="1rem" direction="column">
-                  <Flex justify="space-between" align="center">
-                    <Text
-                      type="h3"
-                      text="Email"
-                      size={16}
-                      weight={500}
-                      width="max-content"
-                      color="#000000"
-                    />
-                    <Text
-                      type="h3"
-                      text="Jonathanadah @gmail.com"
-                      size={isMobile ? 14 : 16}
-                      weight={400}
-                      width="max-content"
-                      color="#5C5C5C"
-                    />
-                  </Flex>
-
-                  <Flex justify="space-between" align="center">
-                    <Text
-                      type="h3"
-                      text="Date"
-                      size={16}
-                      weight={500}
-                      width="max-content"
-                      color="#000000"
-                    />
-                    <Text
-                      type="h3"
-                      text="Date"
-                      size={isMobile ? 14 : 16}
-                      weight={400}
-                      width="max-content"
-                      color="#5C5C5C"
-                    />
-                  </Flex>
-
-                  <Flex justify="space-between" align="center">
-                    <Text
-                      type="h3"
-                      text="Amount"
-                      size={16}
-                      weight={500}
-                      width="max-content"
-                      color="#000000"
-                    />
-                    <Text
-                      type="h3"
-                      text="NGN 20,000"
-                      size={isMobile ? 14 : 16}
-                      weight={400}
-                      width="max-content"
-                      color="#5C5C5C"
-                    />
-                  </Flex>
-
-                  <Flex justify="space-between" align="center">
-                    <Text
-                      type="h3"
-                      text="Referral Status"
-                      size={16}
-                      weight={500}
-                      width="max-content"
-                      color="#000000"
-                    />
-                    <Button
-                      width="max-content"
-                      height="48px"
-                      padding="5px 20px"
-                      styles={{
-                        marginLeft: "55px",
-                        background: "#FFF1C2",
-                        borderRadius: "24px",
-                        color: "#614909",
-                        display: isMobile ? "block" : "none",
-                      }}
-                    >
-                      <Text type="p" text="PENDING" size={14} weight={600} />
-                    </Button>
-                  </Flex>
-                </Flex>
-              </Section>
-            </CustomDrawer>
-          </Flex>
-        </History>
-        ) : ( 
-        <Flex direction="column" gap="1rem">
-          {payments?.length > 0 ? (
-            payments?.map((payment: any, i: number) => (
+        {isMobile ? (
+          payments?.length > 0 ? (
+            payments.map((payment: any, i: number) => (
               <History key={i}>
                 <Flex
                   justify="space-between"
                   width="100%"
                   align="center"
-                  padding="28px 24px"
-                  direction={isMobile ? "column" : "row"}
-                  gap="1rem"
+                  padding="18px 14px"
                 >
-                  <Flex
-                    gap=".3rem"
-                    direction="column"
-                    width={isMobile ? "100%" : "50%"}
-                  >
+                  <Flex direction="column" gap="1rem">
                     <Text
                       type="p"
-                      text={format(
-                        new Date(payment?.updatedAt),
-                        "dd MMM, yyyy"
-                      )}
-                      color="#112211"
+                      text={`${payment?.paymentIntent} - ${currencyFormatter(
+                        payment?.totalAmount
+                      )} `}
                       size={14}
-                      styles={{ opacity: "75%" }}
+                      weight={400}
                     />
-                    <Text
-                      type="h3"
-                      size={18}
-                      text={payment?.paymentIntent}
-                      color="#112211"
-                    />
+                    <Flex gap="1.5rem" align="center" justify="flex-start">
+                      <Text
+                        type="p"
+                        text={
+                          payment?.updatedAt
+                            ? format(
+                                new Date(payment?.updatedAt),
+                                "dd MMM, yyyy"
+                              )
+                            : "n/a"
+                        }
+                        color="#112211"
+                        size={12}
+                        styles={{ opacity: "75%" }}
+                      />
+                      <PaymentStatus style={{ background: "#FFFEEF" }}>
+                        <Text
+                          type="p"
+                          text={payment?.status}
+                          styles={{ width: isMobile ? "100%" : "20%" }}
+                          whiteSpace="nowrap"
+                          size={12}
+                        />
+                      </PaymentStatus>
+                    </Flex>
                   </Flex>
-
-                  <Text
-                    type="p"
-                    text={currencyFormatter(payment?.totalAmount)}
-                    styles={{ width: isMobile ? "100%" : "20%" }}
+                  <BiDotsVerticalRounded
+                    color="#040404"
+                    size="1.5rem"
+                    // onClick={toggleDropdown}
                   />
-                  <PaymentStatus style={{ background: "#FFFEEF" }}>
-                    <Text
-                      type="p"
-                      text={payment.status}
-                      styles={{ width: isMobile ? "100%" : "20%" }}
-                      whiteSpace="nowrap"
-                    />
-                  </PaymentStatus>
-
-                  <Button
-                    width="166px"
-                    height="48px"
-                    styles={{ marginLeft: isMobile ? 0 : "55px" }}
+                  {isDropdownOpen && (
+                    <DropdownContent>
+                      {sortOptions.map((option, index) => (
+                        <StyledOption
+                          key={option.value}
+                          hovered={hoveredOption === index}
+                          lastChild={index === sortOptions.length - 1}
+                          onMouseEnter={() => setHoveredOption(index)}
+                          onMouseLeave={() => setHoveredOption(null)}
+                          onClick={option.action}
+                        >
+                          <OptionText hovered={hoveredOption === index}>
+                            <Flex gap="1rem" align="center">
+                              {option.icon}
+                              {option.label}
+                            </Flex>
+                          </OptionText>
+                        </StyledOption>
+                      ))}
+                    </DropdownContent>
+                  )}
+                  <CustomDrawer
+                    anchor="bottom"
+                    open={bottomDrawerOpen}
+                    onClose={() => setBottomDrawerOpen(false)}
                   >
-                    Download receipts
-                  </Button>
+                    <Section
+                      height="unset"
+                      padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
+                      styles={{
+                        background: ttColors.light,
+                      }}
+                    >
+                      <Flex justify="space-between" align="center">
+                        <Flex justify="flex-start" gap="1rem" align="center">
+                          <Text
+                            type="h3"
+                            text="Application fee for Canada - Employment visa"
+                            size={16}
+                            weight={600}
+                            width="max-content"
+                            color="#112211"
+                            styles={{
+                              width: "80%",
+                            }}
+                          />
+                        </Flex>
+                        <GrFormClose />
+                      </Flex>
+                      <Divider direction="horizontal" margin="0px 0px 1rem" />
+                      <Flex gap="1rem" direction="column">
+                        <Flex justify="space-between" align="center">
+                          <Text
+                            type="h3"
+                            text="Email"
+                            size={16}
+                            weight={500}
+                            width="max-content"
+                            color="#000000"
+                          />
+                          <Text
+                            type="h3"
+                            text="Jonathanadah @gmail.com"
+                            size={isMobile ? 14 : 16}
+                            weight={400}
+                            width="max-content"
+                            color="#5C5C5C"
+                          />
+                        </Flex>
+
+                        <Flex justify="space-between" align="center">
+                          <Text
+                            type="h3"
+                            text="Date"
+                            size={16}
+                            weight={500}
+                            width="max-content"
+                            color="#000000"
+                          />
+                          <Text
+                            type="h3"
+                            text="Date"
+                            size={isMobile ? 14 : 16}
+                            weight={400}
+                            width="max-content"
+                            color="#5C5C5C"
+                          />
+                        </Flex>
+
+                        <Flex justify="space-between" align="center">
+                          <Text
+                            type="h3"
+                            text="Amount"
+                            size={16}
+                            weight={500}
+                            width="max-content"
+                            color="#000000"
+                          />
+                          <Text
+                            type="h3"
+                            text="NGN 20,000"
+                            size={isMobile ? 14 : 16}
+                            weight={400}
+                            width="max-content"
+                            color="#5C5C5C"
+                          />
+                        </Flex>
+
+                        <Flex justify="space-between" align="center">
+                          <Text
+                            type="h3"
+                            text="Referral Status"
+                            size={16}
+                            weight={500}
+                            width="max-content"
+                            color="#000000"
+                          />
+                          <Button
+                            width="max-content"
+                            height="48px"
+                            padding="5px 20px"
+                            styles={{
+                              marginLeft: "55px",
+                              background: "#FFF1C2",
+                              borderRadius: "24px",
+                              color: "#614909",
+                              display: isMobile ? "block" : "none",
+                            }}
+                          >
+                            <Text
+                              type="p"
+                              text="PENDING"
+                              size={14}
+                              weight={600}
+                            />
+                          </Button>
+                        </Flex>
+                      </Flex>
+                    </Section>
+                  </CustomDrawer>
                 </Flex>
               </History>
             ))
           ) : (
-            <Flex
-              justify="space-between"
-              width="100%"
-              align="center"
-              padding="28px 24px"
-            >
-              <Text
-                type="p"
-                text="No payment history"
-                color="#112211"
-                size={14}
-                styles={{ opacity: "75%" }}
-              />
-            </Flex>
-          )}
-        </Flex>
-        )} 
+            "No payment history"
+          )
+        ) : (
+          <Flex direction="column" gap="1rem">
+            {payments?.length > 0 ? (
+              payments?.map((payment: any, i: number) => (
+                <History key={i}>
+                  <Flex
+                    justify="space-between"
+                    width="100%"
+                    align="center"
+                    padding="28px 24px"
+                    direction={isMobile ? "column" : "row"}
+                    gap="1rem"
+                  >
+                    <Flex
+                      gap=".3rem"
+                      direction="column"
+                      width={isMobile ? "100%" : "50%"}
+                    >
+                      <Text
+                        type="p"
+                        text={format(
+                          new Date(payment?.updatedAt),
+                          "dd MMM, yyyy"
+                        )}
+                        color="#112211"
+                        size={14}
+                        styles={{ opacity: "75%" }}
+                      />
+                      <Text
+                        type="h3"
+                        size={18}
+                        text={payment?.paymentIntent}
+                        color="#112211"
+                      />
+                    </Flex>
+
+                    <Text
+                      type="p"
+                      text={currencyFormatter(payment?.totalAmount)}
+                      styles={{ width: isMobile ? "100%" : "20%" }}
+                    />
+                    <PaymentStatus style={{ background: "#FFFEEF" }}>
+                      <Text
+                        type="p"
+                        text={payment.status}
+                        styles={{ width: isMobile ? "100%" : "20%" }}
+                        whiteSpace="nowrap"
+                      />
+                    </PaymentStatus>
+
+                    <Button
+                      width="166px"
+                      height="48px"
+                      styles={{ marginLeft: isMobile ? 0 : "55px" }}
+                      disabled
+                    >
+                      Download receipts
+                    </Button>
+                  </Flex>
+                </History>
+              ))
+            ) : (
+              <Flex
+                justify="space-between"
+                width="100%"
+                align="center"
+                padding="28px 24px"
+              >
+                <Text
+                  type="p"
+                  text="No payment history"
+                  color="#112211"
+                  size={14}
+                  styles={{ opacity: "75%" }}
+                />
+              </Flex>
+            )}
+          </Flex>
+        )}
       </PaymentWrapper>
     </Section>
   );
