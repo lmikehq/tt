@@ -7,6 +7,9 @@ interface CustomDrawerProps {
   open: boolean;
   children: React.ReactNode;
   variant?: "permanent" | "persistent" | "temporary";
+  top?: string;
+  height?: string;
+  borderRadius?: string;
 }
 const CustomDrawer = ({
   anchor,
@@ -14,10 +17,25 @@ const CustomDrawer = ({
   open,
   children,
   variant = "temporary",
+  top,
+  height,
+  borderRadius
 }: CustomDrawerProps) => {
   return (
     <>
-      <Drawer anchor={anchor} open={open} onClose={onClose} variant={variant}>
+      <Drawer
+        anchor={anchor}
+        open={open}
+        onClose={onClose}
+        variant={variant}
+        PaperProps={{
+          sx: {
+            height: height,
+            top: top,
+            borderRadius: borderRadius,
+          },
+        }}
+      >
         {children}
       </Drawer>
     </>

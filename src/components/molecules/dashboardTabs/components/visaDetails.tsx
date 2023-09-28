@@ -3,7 +3,7 @@ import Section from "src/components/molecules/section";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
 import { format } from "date-fns";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { HiClock, HiOutlinePlusSm } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
 import {
@@ -35,6 +35,7 @@ import VisaUploadDocModal from "../visaUploadDoc";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { BiError } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
 
 const Logo = styled.div`
   height: 64px;
@@ -58,30 +59,30 @@ const DateIcon = styled.div`
 `;
 
 const VisaStatus = styled.div`
-  display: grid;
-  place-content: center;
   background: #fffeef;
   padding: 14px 18px;
   border-radius: 24px;
-  height: 45px;
+  // height: 45px;
   width: 25%;
+  text-align: center;
 
   @media screen and (max-width: 900px) {
     width: 100%;
+    font-size: 14px;
   }
 `;
 
 const DropdownContent = styled.div`
   position: absolute;
-  top: calc(93.5% + 5px);
-  right: 20px;
+  top: 20%;
+  right: 0;
   background-color: #ffffff;
   border: 1px solid #e7e7e7;
   border-radius: 12px;
-  // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: 274px;
   height: max-content;
-  z-index: 09999999;
+  z-index: 9999999;
   overflow-y: scroll;
   font-size: 16px;
   line-height: 19.2px;
@@ -124,16 +125,18 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
-  const [isMobileVersion, setIsMobileVersion] = useState(false);
 
   const handleAccordionClick = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-    setHoveredOption(null);
-  };
+  // const toggleDropdown = () => {
+  //   setIsDropdownOpen(!isDropdownOpen);
+  //   setHoveredOption(null);
+  // };
+  console.log("clicked again", isDropdownOpen);
+  const ref = useRef(null);
+  useDetectOutsideClick(ref, () => setIsDropdownOpen(false));
 
   function getButtonInformation() {
     let visaInformation = {
@@ -211,16 +214,16 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
     return visaInformation;
   }
 
-  function PaymentIcon() {
-    return (
-      <Image
-        src="/assets/images/dashboard/payment.png"
-        alt=""
-        width={17.2}
-        height={12.4}
-      />
-    );
-  }
+  // function PaymentIcon() {
+  //   return (
+  //     <Image
+  //       src="/assets/images/dashboard/payment.png"
+  //       alt=""
+  //       width={17.2}
+  //       height={12.4}
+  //     />
+  //   );
+  // }
 
   const recentPayment = visa?.payments[visa?.payments.length - 1];
   const textAndBgColor =
@@ -242,22 +245,17 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   function getLocationField(field: string) {
     return typeof visa?.primaryTraveller[field] === "string"
       ? visa?.primaryTraveller?.[field]
-      : `${visa?.primaryTraveller?.[field]?.name} - (${visa?.primaryTraveller?.[field]?.code})`;
+      : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`;
   }
 
   const sortOptions = [
-    {
-      value: "Option 1",
-      label: "Add Accompanies",
-      icon: <HiOutlinePlusSm size="1rem" />,
-      action: () => {},
-    },
-    {
-      value: "Option 2",
-      label: "Make Payment",
-      icon: <PaymentIcon />,
-      action: () => {},
-    },
+    // {
+    //   value: "Option 1",
+    //   label: "Add Accompanies",
+    //   icon: <HiOutlinePlusSm size="1rem" />,
+    //   action: () => {},
+    //   disabled: true,
+    // },
     {
       value: "Option 3",
       label: "View More Details",
@@ -271,22 +269,13 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
 
   return (
     <Section
-      styles={{ border: "1px solid #E7E7E7", borderRadius: "16px" }}
+      styles={{
+        border: "1px solid #E7E7E7",
+        borderRadius: "16px",
+      }}
       padding="15px 10px"
       margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
-      {/* <VisaPaymentModal
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        visaDetails={{
-          id: visa?._id,
-          intent: getButtonInformation().intent,
-          accompanying: visa?.familyMembers.filter(
-            (fm: any) => fm.accompanying === true
-          ).length,
-        }}
-      /> */}
-
       <VisaPaymentModal
         open={modalState.open && modalState.type === "payment"}
         onClose={() => setModalState({ open: false, type: "" })}
@@ -304,17 +293,40 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         refetch={refetch}
       />
 
-      {isMobileVersion ? (
-        <Flex gap="1.5rem" justify="space-between" align="center">
-          <Logo />
+      {isMobile ? (
+        <Flex
+          gap="1.5rem"
+          justify="space-between"
+          align="center"
+          styles={{ position: "relative" }}
+        >
+          <Logo>
+            {visa?.primaryTraveller?.destination?.code && (
+              <img
+                src={
+                  COUNTRY_FLAGS.find(
+                    (x) => x.code === visa?.primaryTraveller?.destination?.code
+                  )?.flag
+                }
+                alt="logo"
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            )}
+          </Logo>
           <Flex direction="column" gap=".5rem">
             <Text
               type="p"
-              letterSpacing="1px"
               weight={900}
               size={isMobile ? "14px" : "20px"}
               textAlign={isMobile ? "center" : "left"}
-              text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
+              text={`${getLocationField("homeCountry")} — ${getLocationField(
+                "destination"
+              )}`}
+              letterSpacing={"unset"}
             />
             <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
               <Text
@@ -333,10 +345,10 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           <BsThreeDotsVertical
             color="#040404"
             size="2rem"
-            onClick={toggleDropdown}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
           {isDropdownOpen && (
-            <DropdownContent>
+            <DropdownContent ref={ref}>
               {sortOptions.map((option, index) => (
                 <StyledOption
                   key={option.value}
@@ -356,33 +368,49 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
               ))}
             </DropdownContent>
           )}
+          {/* {isDropdownOpen && <DropdownContent>yessss</DropdownContent>} */}
           <CustomDrawer
             anchor="bottom"
             open={bottomDrawerOpen}
             onClose={() => setBottomDrawerOpen(false)}
+            height="50vh"
+            borderRadius="16px 16px 0px 0px"
           >
             <Section
               height="unset"
-              padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
+              padding={"1rem 1.5rem 1.5rem"}
               styles={{
                 background: ttColors.light,
               }}
             >
-              <Flex justify="space-between" align="center">
+              <Flex
+                justify="space-between"
+                align="center"
+                margin="1rem 0 .6rem"
+              >
                 <Flex justify="flex-start" gap="1rem" align="center">
                   <Text
                     type="h3"
-                    text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
+                    text={`${getLocationField(
+                      "homeCountry"
+                    )} — ${getLocationField("destination")}`}
                     size={16}
                     weight={600}
                     width="max-content"
                     color="#112211"
                   />
                 </Flex>
-                <GrFormClose />
+                <GrFormClose
+                  size={30}
+                  color="#848484"
+                  onClick={() => {
+                    setBottomDrawerOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                />
               </Flex>
               <Divider direction="horizontal" margin="0px 0px 1rem" />
-              <Flex gap="1rem" direction="column">
+              <Flex gap="2rem" direction="column">
                 <Flex justify="space-between" align="center">
                   <Text
                     type="h3"
@@ -394,8 +422,12 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   />
                   <Text
                     type="h3"
-                    text="12-11-22"
-                    size={isMobile ? 12 : 16}
+                    text={
+                      visa?.createdAt
+                        ? format(new Date(visa?.createdAt), "dd MMM, yyyy")
+                        : "n/a"
+                    }
+                    size={16}
                     weight={400}
                     width="max-content"
                     color="#5C5C5C"
@@ -405,7 +437,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 <Flex justify="space-between" align="center">
                   <Text
                     type="h3"
-                    text="Payment Fee"
+                    text="Recent paymemt"
                     size={16}
                     weight={500}
                     width="max-content"
@@ -418,7 +450,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         ? currencyFormatter(recentPayment.totalAmount)
                         : "n/a"
                     }
-                    size={isMobile ? 12 : 16}
+                    size={16}
                     weight={400}
                     width="max-content"
                     color="#5C5C5C"
@@ -428,7 +460,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 <Flex justify="space-between" align="center">
                   <Text
                     type="h3"
-                    text="Visa Type"
+                    text="Application Type"
                     size={16}
                     weight={500}
                     width="max-content"
@@ -436,8 +468,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   />
                   <Text
                     type="h3"
-                    text="Family"
-                    size={isMobile ? 12 : 16}
+                    text={visa?.applicationType}
+                    size={16}
                     weight={400}
                     width="max-content"
                     color="#5C5C5C"
@@ -445,23 +477,51 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 </Flex>
 
                 <Flex justify="space-between" align="center">
-                  <Button
+                  <Text
+                    type="h3"
+                    text="Status"
+                    size={16}
+                    weight={500}
                     width="max-content"
+                    color="#000000"
+                  />
+
+                  <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+                    <Text
+                      type="h5"
+                      text={
+                        visa.applicationStatus === "FORM FEE REQUESTED"
+                          ? "APPLICATION NOT SUBMITTED"
+                          : visa.applicationStatus
+                      }
+                      weight={800}
+                      size={isMobile ? 13 : 14}
+                      color={textAndBgColor.text}
+                    />
+                  </VisaStatus>
+                </Flex>
+                <Flex>
+                  <Button
+                    padding="8px 16px"
+                    width={"100%"}
                     height="48px"
-                    padding="5px 20px"
                     styles={{
-                      marginLeft: "55px",
-                      background: "#FFF1C2",
-                      borderRadius: "24px",
-                      color: "#614909",
-                      display: isMobile ? "block" : "none",
+                      marginLeft: isMobile ? "0px" : "55px",
+                      display: isMobile ? "flex" : "inline-flex",
+                      maxWidth: "100%",
                     }}
+                    disabled={getButtonInformation().disabled}
+                    onClick={getButtonInformation().fn}
                   >
                     <Text
-                      type="p"
-                      text="AWAITING EMBASSY DECISION"
-                      size={12}
-                      weight={600}
+                      type="h5"
+                      text={getButtonInformation().text}
+                      weight={400}
+                      size={14}
+                      styles={{
+                        width: "max-content",
+                        textAlign: "center",
+                      }}
                     />
                   </Button>
                 </Flex>

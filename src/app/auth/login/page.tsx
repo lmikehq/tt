@@ -47,7 +47,7 @@ function LoginPage() {
     password: "",
     rememberMe: false,
   });
-  const login = async () => {}
+  const login = async () => {};
   // const login = useGoogleLogin({
   //   onSuccess: async (credentialResponse) => {
   //     console.log(credentialResponse);
@@ -126,19 +126,27 @@ function LoginPage() {
         loading: false,
       });
       return;
+    } else if (res.statusCode === 201) {
+      setSubmissionState({
+        ...submissionState,
+        loading: true,
+      });
+      setUser(res?.user);
+      toast.success("You have successfully logged in!");
+      await sleep(3000);
+      toast.loading("Redirecting to your dashboard...", {
+        duration: 3000,
+      });
+      await sleep(2000);
+      router.push("/dashboard");
+    } else {
+      setSubmissionState({
+        ...submissionState,
+        error: "Something went wrong, please try again later",
+        loading: false,
+      });
+      return;
     }
-    setSubmissionState({
-      ...submissionState,
-      loading: true,
-    });
-    setUser(res?.user);
-    toast.success("You have successfully logged in!");
-    await sleep(3000);
-    toast.loading("Redirecting to your dashboard...", {
-      duration: 3000,
-    });
-    await sleep(2000);
-    router.push("/dashboard");
   }
 
   return (

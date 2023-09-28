@@ -158,7 +158,7 @@ function UserPicture() {
   const { user } = useUserStore((state) => state);
 
   const referralLink =
-    "https://thrillerstravels.com/register?ref=john_doe.2332";
+    `https://thrillers.travel/register?ref=${user?.firstName.toLocaleLowerCase()}-${user?.lastName.toLocaleLowerCase()}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(referralLink).then(() => {
