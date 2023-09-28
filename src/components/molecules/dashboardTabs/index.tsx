@@ -33,12 +33,9 @@ const Wrapper = styled.div`
       width: 50%;
     }
   }
-
- 
 `;
 
 function DashboardTabs() {
-
   const tabItems = [
     {
       label: "All Applications",
@@ -71,7 +68,7 @@ function DashboardTabs() {
       label: "Referral",
       value: 5,
       content: <Referrals />,
-    }
+    },
   ];
 
   return (
