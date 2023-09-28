@@ -63,7 +63,7 @@ export const Button: React.FC<buttonProps> = ({
     width: width || "104px",
     height: height || "48px",
     borderRadius: borderRadius || "8px",
-    cursor: cursor || "pointer",
+    cursor: disabled ? "not-allowed" : cursor || "pointer",
     zIndex: zIndex,
     border: border,
     margin: margin,

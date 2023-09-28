@@ -21,7 +21,7 @@ const VisaWrapper = styled.div`
 
   @media screen and (max-width: 900px) {
     height: fit-content;
-    padding: 20px 16px;
+    padding: 20px 0
   }
 `;
 
