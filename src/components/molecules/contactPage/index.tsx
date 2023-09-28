@@ -1,17 +1,10 @@
 "use client";
 
-import Button from "@atom/button";
 import Flex from "@components/templates/flex";
-import { Grid } from "@components/templates/grid";
 import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import { Autocomplete, Box } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useState } from "react";
-import { BsEnvelope } from "react-icons/bs";
 import {
   FaFacebookF,
   FaInstagram,
@@ -30,544 +23,387 @@ import { Divider } from "@atom/divider";
 
 import UsefulLinks from "./components/usefulLink";
 import { customNavigationLinks } from "@lib/extensions/data/customNavigationLinks";
+import { BiSolidChat } from "react-icons/bi";
+import { MdCall, MdLocationOn } from "react-icons/md";
+import Section from "../section";
+import { FieldInput, FieldString } from "@/components/organisms/fieldInput";
+import { Formik, FormikProps } from "formik";
+import TextArea from "../textArea";
+import Button from "@/components/atoms/button";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;
 `;
 
-const ContactCard = styled.div`
-  display: grid;
-  justify-content: start;
-  width: 40%;
-  @media screen and (max-width: 900px) {
-    display: none;
+const Box = styled.div`
+  width: 45%;
+  height: fit-content;
+  background: #7bbbd6;
+  padding: 2.5rem;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  @media (max-width: 900px) {
+    width: 100%;
   }
 `;
 
-const LinkFrame = styled.div`
-  position: relative;
-  left: 2rem;
-  width: 90%;
-`;
-
-const SocialDiv = styled.div`
-  background: ${ttColors.primary};
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
+const Card = styled.div`
+  background: #afdef2;
+  color: #6092a7;
+  width: 301px;
   height: fit-content;
-  width: 60px;
-  padding: 1rem 0rem;
-  position: absolute;
-  bottom: 60px;
-  right: -85px;
-  display: grid;
-  place-content: center;
-  gap: 1.5rem;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
-
-const ContactWrapper = styled.div`
-  background: #ffffff;
-  width: 100%;
-  height: fit-content;
-  width: 100%;
-  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   border-radius: 8px;
-  padding: 20px;
-  margin-top: 1rem;
-
-  @media screen and (max-width: 900px) {
-    form {
-      width: 100% !important;
-    }
-  }
+  border: 1px solid;
 `;
 
-const ContactDetails = styled.div`
-  @media screen and (max-width: 900px) {
-    height: fit-content;
+const SmallBox = styled.div`
+  width: 78px;
+  height: 65px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    width: 49px;
+    height: 39px;
   }
 `;
-
-const ChatAgent = styled.div`
-  background: #f8fafc;
-  margin-bottom: 2rem;
-  height: fit-content;
-  border: 1px solid lightgrey;
-  border-radius: 5px;
-`;
-
-const HelpTool = styled.div`
-  margin: 5rem 0rem;
-  @media screen and (max-width: 900px) {
-    margin: 2rem 0rem;
-  }
-`;
-const HelpHeader = styled.div`
-  text-align: center;
-  position: relative;
-`;
-
-const HelpPara = styled.p`
-  text-align: center;
-  width: 100%;
-  display: grid;
-  place-content: center;
-  padding: 1rem 8rem;
-  margin-bottom: 1rem;
-
-  @media screen and (max-width: 900px) {
-    padding: 1rem 3rem;
-  }
-  @media screen and (max-width: 600px) {
-    padding: 1rem;
-  }
-`;
-
-const CustomerCareImg = styled.div`
-  position: relative;
-  left: 30px;
-  bottom: -7px;
-
-  & img {
-    height: 144px;
-    width: 144px;
-  }
-
-  @media screen and (max-width: 900px) {
-    position: relative;
-    left: 5px;
-    bottom: -8px;
-
-    & img {
-      display: block;
-    }
-  }
-  @media screen and (max-width: 768px) {
-    & img {
-      display: none;
-    }
-  }
-`;
-const CustomerCareText = styled.div`
-  padding-top: 1rem;
-
-  & h2 {
-    line-height: 2;
-    color: #19013b;
-  }
-  & p {
-    line-height: 1.5;
-    width: 95%;
-  }
-
-  @media screen and (max-width: 900px) {
-    padding-top: 0rem;
-  }
-`;
-
-const ContactCardItems = [
-  {
-    image: "/assets/images/customerCare/order-delivery.png",
-    alt: "",
-    text: "Start New Application",
-    link: "/visa/apply",
-  },
-  {
-    image: "/assets/images/customerCare/resume.png",
-    alt: "",
-    text: "Application Status",
-    link: "/auth/login",
-  },
-  {
-    image: "/assets/images/customerCare/user.png",
-    alt: "",
-    text: "Log in to My Account",
-    link: "auth/login",
-  },
-  // {
-  //   image: Support,
-  //   alt: "",
-  //   text: "Support",
-  //   link: "#support",
-  // },
-];
 
 const ContactPage = () => {
   const { isMobile } = useScreenResolution();
-  const customNavigationLinks = [
-    {
-      number: "01",
-      text: "Chat with our AI",
-      href: "/chat",
-    },
-    {
-      number: "02",
-      text: "Chat with an Agent",
-      href: "/chat",
-    },
-    {
-      number: "03",
-      text: "Chat with our travel guide",
-      href: "/chat",
-    },
-    {
-      number: "04",
-      text: "Testimony",
-      href: "/",
-    },
-  ];
-
-  const [selectedOption, setSelectedOption] = useState<{
-    label: string;
-  } | null>(null);
-
-  const renderTextField = () => (
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": {
-          width: "50%",
-          marginTop: isMobile ? "1rem" : "3rem",
-        },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField placeholder="Application" label="Application" />
-    </Box>
-  );
 
   return (
     <ContactSection>
-      <Text
-        type="h1"
-        text="Contact Us"
-        size="2.25rem"
-        styles={{ fontFamily: "Poppins" }}
-      />
-      <Grid
-        gap={isMobile ? "1rem" : "3rem"}
-        columns={isMobile ? "100%" : "25% 75%"}
-        margin="2rem auto"
+      <Flex
+        gap={isMobile ? "1rem" : "2rem"}
+        justify="space-between"
+        direction={isMobile ? "column-reverse" : "row"}
       >
-        <UsefulLinks navigationLinks={customNavigationLinks} />
-
-        <ContactDetails>
-          <ChatAgent>
-            <Flex
-              gap={isMobile ? "1rem" : "3rem"}
-              padding={isMobile ? "0.5rem" : "0rem"}
-            >
-              <CustomerCareImg>
-                <Image src={"/assets/images/customerservice.png"} alt="" />
-              </CustomerCareImg>
-
-              <CustomerCareText>
-                <Text type="h2" text="Chat with an Agent" />
+        <Box>
+          <Flex
+            justify="space-between"
+            direction="column"
+            align="flex-start"
+            gap="3.5rem"
+          >
+            <Flex justify="flex-start" align="flex-start" gap="1.5rem">
+              <SmallBox>
+                <BiSolidChat
+                  color="#7BBBD6"
+                  size={isMobile ? "1rem" : "2rem"}
+                />
+              </SmallBox>
+              <Flex direction="column" gap=".5rem">
+                <Flex direction="column" gap="0px">
+                  <Text
+                    type="h2"
+                    text="Chat Us"
+                    color="#ffffff"
+                    weight={600}
+                    size={24}
+                  />
+                  <Text
+                    type="span"
+                    text="Thrillers Team is always here to help"
+                    color="#ffffff"
+                    weight={400}
+                    size={16}
+                  />
+                </Flex>
                 <Text
                   type="p"
-                  text="Access your account and receive immediate assistance from our dedicated Customer Service team. Our team is available round-the-clock to provide support and resolve any inquiries or problems you may encounter."
+                  text="support@ thrillers.travel"
+                  color="#ffffff"
+                  weight={500}
+                  size={16}
                 />
-              </CustomerCareText>
+              </Flex>
             </Flex>
-          </ChatAgent>
 
-          <HelpTool>
-            <HelpHeader>
-              <Text
-                type="h2"
-                text="use self help tools"
-                transform="capitalize"
-              />
-            </HelpHeader>
-            <HelpPara>
-              <Text
-                type="p"
-                text="If you have any concerns about your order or need assistance with the application process, take advantage of our convenient tools designed to simplify the experience and help you save time."
-              />
-            </HelpPara>
-
-            <Grid
-              className="contactCard"
-              gap="2rem"
-              columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
-              width="100%"
-            >
-              {ContactCardItems.map((item, index) => (
-                <Link key={index} href={item.link}>
-                  <Flex
-                    key={index}
-                    gap="1rem"
-                    justify="center"
-                    styles={{
-                      background: "#fff",
-                      padding: "15px",
-                      borderRadius: "5px",
-                      boxShadow: "0px 0px 7px 3px rgba(0,0,0,0.1)",
-                      width: `{isMobile ? "100%" : "207.13px"}`,
-                      height: "64px",
-                    }}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.alt}
-                      styles={{ color: "red" }}
-                      height={30}
-                      width={30}
-                    />
-                    <Text type="p" text={item.text} />
-                  </Flex>
-                </Link>
-              ))}
-            </Grid>
-          </HelpTool>
-
-          <ContactWrapper>
-            <Text type="h2" text="Send us a message" />
-
-            <Divider />
-
-            <Text
-              margin="2rem 0rem"
-              type="p"
-              text="Simply complete this form, and we'll provide you with the assistance you require at the earliest opportunity."
-            />
-            <Grid
-              columns={isMobile ? "100%" : "60% 40%"}
-              justify={isMobile ? "flex-start" : "space-between"}
-              gap="10px"
-              width="100%"
-            >
-              <form
-                style={{
-                  width: `100%`,
-                  display: `${isMobile ? "block" : "grid"}`,
-                }}
-              >
-                <Flex
-                  direction="column"
-                  gap={isMobile ? "1rem" : "2rem"}
-                  width="100%"
-                >
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField placeholder="full name" label="Full Name" />
-                  </Box>
-
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                      "& > div": {
-                        display: isMobile ? "grid" : "flex",
-
-                        gap: "1rem",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <div>
-                      <TextField placeholder="Email" label="Email" />
-                      <TextField placeholder="Phone" label="Phone" />
-                    </div>
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <Autocomplete
-                      disablePortal
-                      id="combo-box-demo"
-                      options={TravellTo}
-                      getOptionLabel={(option) => option.label}
-                      sx={{ width: "100%" }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Travelling to" />
-                      )}
-                    />
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <Autocomplete
-                      disablePortal
-                      id="combo-box-demo"
-                      options={ContactReason}
-                      getOptionLabel={(option) => option.label}
-                      sx={{ width: "100%" }}
-                      onInputChange={(_e, newInputValue) => {
-                        setSelectedOption({ label: newInputValue });
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Contact Reason" />
-                      )}
-                    />
-
-                    {selectedOption?.label?.includes("Existing applicant") &&
-                      renderTextField()}
-                  </Box>
-
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": { width: "100%" },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Your Message"
-                      placeholder="Enter Your Message here..."
-                      multiline
-                      rows={5}
-                    />
-                  </Box>
-                </Flex>
-
-                <Button
-                  height="50px"
-                  width="240px"
-                  styles={{
-                    marginTop: "3rem",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    fontSize: "1.3rem",
-                  }}
-                >
+            <Flex justify="flex-start" align="flex-start" gap="1.5rem">
+              <SmallBox>
+                <MdCall color="#7BBBD6" size={isMobile ? "1rem" : "2rem"} />
+              </SmallBox>
+              <Flex direction="column" gap=".5rem">
+                <Flex direction="column" gap="0px">
                   <Text
-                    text="Send"
-                    type="h4"
-                    whiteSpace="nowrap"
-                    weight={400}
-                    color="#fff"
+                    type="h2"
+                    text="Chat Us"
+                    color="#ffffff"
+                    weight={600}
+                    size={24}
                   />
-                </Button>
-              </form>
-              <ContactCard>
-                {/* <Image src={ContactImg} alt="" styles={{height:'100%'}} /> */}
-                <LinkFrame>
-                  <Flex gap="20px" align="flex-start">
-                    <Link href="">
-                      <SlLocationPin size="1.2rem" />
-                    </Link>
-                    <Link href="https://www.google.com/maps/dir/6.4487012,3.5509084/thrillers+travels/@6.4430573,3.5487716,16z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x103bf71f39b935b1:0xef53f715e7e75726!2m2!1d3.5578637!2d6.437351?entry=ttu">
-                      <Text
-                        type="p"
-                        text="Ikota, Lekki County Homes, IVY HOMES, THRILLERS HOUSE. Lagos Nigeria "
-                      />
-                    </Link>
-                  </Flex>
+                  <Text
+                    type="span"
+                    text="Thrillers Team is always here to help"
+                    color="#ffffff"
+                    weight={400}
+                    size={16}
+                  />
+                </Flex>
+                <Text
+                  type="p"
+                  text="support@ thrillers.travel"
+                  color="#ffffff"
+                  weight={500}
+                  size={16}
+                />
+              </Flex>
+            </Flex>
 
-                  <br />
-                  <Flex gap="20px">
-                    <Link href="">
-                      <LuPhoneCall size="1.2rem" />
-                    </Link>
-                    <Link href="tel:+2349077210321">
-                      <Text type="p" text="+2349077210321" />
-                    </Link>
-                  </Flex>
-                  <br />
+            <Flex justify="flex-start" align="flex-start" gap="1.5rem">
+              <SmallBox>
+                <MdLocationOn
+                  color="#7BBBD6"
+                  size={isMobile ? "1rem" : "2rem"}
+                />
+              </SmallBox>
+              <Flex direction="column" gap=".5rem">
+                <Text
+                  type="h2"
+                  text="Visit Us"
+                  color="#ffffff"
+                  weight={600}
+                  size={24}
+                />
+                <Text
+                  type="span"
+                  text="Come say Hello at Our office."
+                  color="#ffffff"
+                  weight={400}
+                  size={16}
+                />
+              </Flex>
+            </Flex>
+            <Flex direction="column" gap="1rem">
+              <Text
+                type="h3"
+                text="Toronto Canada: Exchange Tower, 130 King Street West Suite 1800, Toronto, Ontario M5X 1E3"
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="London United Kingdom: Old Street, 167 City Road, London UK. EC1V 1AW"
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Dubai United Arab Emirate: Boulevard Plaza Tower 1, Sheikh Mohammed Bin Rashid Blvd, Business Bay, Dubai UAE."
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos."
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos."
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Abuja Nigeria: 4th Floor, Tower C Churchgate Plaza, Cadastral Zone, Abuja, 900211"
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="PortHarcourt Nigeria: 129-132, Old Michelin Compound, Trans Amadi Ind. Layout, PortHarcourt 500221"
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Oshogbo Nigeria: No 7, Adegboye Lasaki Street, Alapata, Offatedo Via Oshogbo, Oshogbo."
+                weight={500} font="Poppins" size="1.2rem" color="#fff"
+              />
+            </Flex>
+          </Flex>
 
-                  <Flex gap="20px">
-                    <Link href="">
-                      <ImWhatsapp size="1.2rem" />
-                    </Link>
-                    <Link href="https://wa.link/ob8vpa">
-                      <Text type="p" text="+2349077210321" />
-                    </Link>
-                  </Flex>
-                  <br />
-
-                  <Flex gap="20px">
-                    <Link href="">
-                      <BsEnvelope size="1.2rem" />
-                    </Link>
-                    <Link href="mailto:support@thrillers.travel">
-                      <Text type="p" text="support@thrillers.travel" />
-                    </Link>
-                  </Flex>
-                </LinkFrame>
-              </ContactCard>
-            </Grid>
-          </ContactWrapper>
-
-          <SocialDiv>
+          <Flex justify="space-between" align="flex-start" gap="0px">
             <Link href="https://www.facebook.com/thrillerstravels">
-              <FaFacebookF size="1.2rem" />
+              <FaFacebookF size="2rem" color="#fff" />
             </Link>
             <Link href="https://twitter.com/thrillerstravel">
-              <FaTwitter size="1.2rem" />
+              <FaTwitter size="2rem" color="#fff" />
             </Link>
             <Link href="http://www.linkedin.com/in/thrillerstravels">
-              <FaLinkedinIn size="1.2rem" />
+              <FaLinkedinIn size="2rem" color="#fff" />
             </Link>
             <Link href="https://www.instagram.com/thrillerstravel/">
-              <FaInstagram size="1.2rem" />
+              <FaInstagram size="2rem" color="#fff" />
             </Link>
             <Link href="https://www.tiktok.com/@thrillers_travels?lang=en">
-              <FaTiktok size="1.2rem" />
+              <FaTiktok size="2rem" color="#fff" />
             </Link>
             <Link href="https://www.youtube.com/@ThrillersTravel">
-              <FaYoutube size="1.2rem" />
+              <FaYoutube size="2rem" color="#fff" />
             </Link>
-          </SocialDiv>
-        </ContactDetails>
-      </Grid>
+          </Flex>
+        </Box>
+
+        <Flex width={isMobile ? "100%" : "50%"} direction="column" gap="2.5rem">
+          <Flex
+            justify={isMobile ? "center" : "space-between"}
+            align="center"
+            gap="1rem"
+            direction={isMobile ? "column" : "row"}
+          >
+            <Card>
+              <Flex gap=".5rem" justify="center" align="center">
+                <Image
+                  src="/assets/images/check.svg"
+                  alt=""
+                  height={26}
+                  width={26}
+                />
+                <Text
+                  type="p"
+                  text="Check Application Status"
+                  weight={500}
+                  size={16}
+                  styles={{ width: "max-content" }}
+                />
+              </Flex>
+            </Card>
+            <Card>
+              <Flex gap=".5rem" justify="center" align="center">
+                <Image
+                  src="/assets/images/headset.svg"
+                  alt=""
+                  height={26}
+                  width={26}
+                />
+                <Text
+                  type="p"
+                  text="Chat Live Support"
+                  weight={500}
+                  size={16}
+                  styles={{ width: "max-content" }}
+                />
+              </Flex>
+            </Card>
+          </Flex>
+
+          <Flex justify="space-between" direction="column" gap="1rem">
+            <Text
+              type="h1"
+              text="Thrillers Team would love to hear from you, Get in touch &nbsp; 👋"
+              weight={700}
+              size={33}
+            />
+
+            <form>
+              <Flex
+                direction="column"
+                justify="space-between"
+                gap="1rem"
+                margin="0 0 1.5rem"
+              >
+                <Section>
+                  <Text
+                    type="p"
+                    text="Full Name"
+                    color="#000000"
+                    weight={500}
+                    size={18}
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+                  <FieldInput
+                    name="fullName"
+                    placeholder="Enter your Full Name"
+                    formik={Formik}
+                  />
+                </Section>
+
+                <Section>
+                  <Text
+                    type="p"
+                    weight={500}
+                    color="#000000"
+                    size={18}
+                    text="Email Address"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+                  <FieldInput
+                    name="email"
+                    placeholder="Enter your Email Address"
+                    formik={Formik}
+                  />
+                </Section>
+
+                <Section>
+                  <Text
+                    type="p"
+                    text="Contact Reason"
+                    weight={500}
+                    size={18}
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+
+                  <FieldString
+                    formik={Formik}
+                    name={"reasons"}
+                    placeholder="Select your reason for contacting"
+                    options={ContactOptions}
+                  />
+                </Section>
+
+                <Section>
+                  <Text
+                    type="p"
+                    weight={500}
+                    color="#000000"
+                    size={18}
+                    text="Message"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+                  <TextArea
+                    name="message"
+                    placeholder="Enter your Message"
+                    value=""
+                    onChange={""}
+                    onBlur={""}
+                    row={10}
+                    style={{ background: "transparent" }}
+                  />
+                </Section>
+              </Flex>
+              <Button width="100%">
+                <Text type="p" text="Update Status" size={14} weight={500} />
+              </Button>
+            </form>
+          </Flex>
+        </Flex>
+      </Flex>
     </ContactSection>
   );
 };
 
-const TravellTo = Object.values(COUNTRY_FLAGS).map((country) => ({
-  label: country.name,
-  code: country.code,
-}));
-
-const ContactReason = [
+export const ContactOptions = [
+  { label: "Requests to modify travel plans", value: "request" },
   {
-    label: "Existing applicant: I need help with my Visa Application",
-    value: "existo",
+    label: "Inquiries about schedules, baggage, and seat allocation",
+    value: "Inquiries",
+  },
+  { label: "Guidance on visas and passport rules.", value: "guidance" },
+  {
+    label: "Help with payments, billing, and credit card charges.",
+    value: "helpOnPayment",
   },
   {
-    label: "Existing applicant: I need help with my Photo Application",
+    label: "Inquiries on group bookings and coordination.",
+    value: "bookingCoordination",
   },
+  { label: "Requesting booking confirmations and invoices", value: "invoice" },
   {
-    label: "New applicant: I am new to the website",
-  },
-  {
-    label: "New Business Partner Only: I am an iVisa Partner",
-  },
-  {
-    label: "Human Resources Only: I'm interested in a job position",
+    label: "Help with cancellations and understanding policies.",
+    value: "policies",
   },
 ];
 

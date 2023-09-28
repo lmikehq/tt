@@ -66,6 +66,8 @@ export interface EmploymentDetailsInterface {
   stillWorking: boolean;
 }
 
+
+
 export interface PersonalInfoInterface {
   firstName: string;
   lastName: string;
