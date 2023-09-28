@@ -47,11 +47,12 @@ const Box = styled.div`
 
   @media (max-width: 900px) {
     width: 100%;
+    padding: 1.5rem 1rem;
   }
 `;
 
 const Card = styled.div`
-  background: #afdef2;
+  background: #afdef266;
   color: #6092a7;
   width: 301px;
   height: fit-content;
@@ -181,46 +182,71 @@ const ContactPage = () => {
                 />
               </Flex>
             </Flex>
-            <Flex direction="column" gap="1rem">
+
+            <Flex direction="column" gap="1rem" margin="0 0 5rem">
               <Text
                 type="h3"
                 text="Toronto Canada: Exchange Tower, 130 King Street West Suite 1800, Toronto, Ontario M5X 1E3"
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="London United Kingdom: Old Street, 167 City Road, London UK. EC1V 1AW"
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="Dubai United Arab Emirate: Boulevard Plaza Tower 1, Sheikh Mohammed Bin Rashid Blvd, Business Bay, Dubai UAE."
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos."
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos."
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="Abuja Nigeria: 4th Floor, Tower C Churchgate Plaza, Cadastral Zone, Abuja, 900211"
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="PortHarcourt Nigeria: 129-132, Old Michelin Compound, Trans Amadi Ind. Layout, PortHarcourt 500221"
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
               <Text
                 type="h3"
                 text="Oshogbo Nigeria: No 7, Adegboye Lasaki Street, Alapata, Offatedo Via Oshogbo, Oshogbo."
-                weight={500} font="Poppins" size="1.2rem" color="#fff"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
               />
             </Flex>
           </Flex>
@@ -295,7 +321,7 @@ const ContactPage = () => {
               type="h1"
               text="Thrillers Team would love to hear from you, Get in touch &nbsp; 👋"
               weight={700}
-              size={33}
+              size={isMobile ? 22 : 33}
             />
 
             <form>
@@ -372,6 +398,7 @@ const ContactPage = () => {
                     row={10}
                     style={{ background: "transparent" }}
                   />
+
                 </Section>
               </Flex>
               <Button width="100%">
