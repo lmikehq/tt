@@ -203,10 +203,10 @@ function UserPicture() {
           height={isMobile ? 70 : 160}
           width={isMobile ? 70 : 160}
         />
-        <Button
+        {/* <Button
           styles={{
             position: "absolute",
-            background: "var(--primary-color)",
+            background: "red",
             color: "var(--secondary-color)",
             top: "10px",
             right: " 45.5%",
@@ -217,7 +217,7 @@ function UserPicture() {
           }}
         >
           <HiPencil size="2rem" />
-        </Button>
+        </Button> */}
         <ProfileInfomation>
           <Text
             type="h3"
