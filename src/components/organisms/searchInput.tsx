@@ -1,3 +1,4 @@
+"use client";
 import { InputAdornment, TextField } from "@mui/material";
 import Autocomplete, {
   AutocompleteCloseReason,
