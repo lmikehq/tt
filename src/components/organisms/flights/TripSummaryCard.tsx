@@ -16,7 +16,7 @@ const StyledAccordion = styled((props: AccordionProps) => (
   <Accordion sx={{ my: "2rem" }} {...props} />
 ))(({ theme }) => ({
   "& .MuiPaper-root": {
-    marginTop: "500px",
+    marginTop: "10px",
   },
 }));
 
@@ -32,7 +32,10 @@ export default function TripSummaryCard() {
       </Flex>
 
       <Flex margin="1rem 0" align="center" justify="space-between">
-        <Flex margin="1rem 0" align="center" gap="1rem">
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          margin="1rem 0"
+        >
           <Box
             style={{
               backgroundSize: "cover",
@@ -45,9 +48,9 @@ export default function TripSummaryCard() {
 
           <Text text={"Departure"} type="p" weight={"bold"} />
           <Text text={"EgyptAir"} type="p" />
-        </Flex>
+        </Box>
 
-        <Text text={"24 Aug 2023"} type="p" size={"1.2rem"} />
+        <Text text={"24 Aug 2023"} type="p" size={"1rem"} />
       </Flex>
 
       <Flex margin="1rem 0" align="center" justify="space-between">
