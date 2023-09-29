@@ -5,13 +5,14 @@ import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { useVoucherStore } from "@lib/store/voucher.store";
-import { FieldString } from "@organism/fieldInput";
-import { Formik } from "formik";
+import { FieldInput, FieldString } from "@organism/fieldInput";
+import { Formik, useFormik } from "formik";
 import { toast } from "react-hot-toast";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import Section from "src/components/molecules/section";
 import ReusableModal from "./components/dashboardModal";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { CustomRadioGroup } from "../radio";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -29,6 +30,8 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   visaDetails,
 }) => {
   const { isMobile } = useScreenResolution();
+  const [paymentType, setPaymentType] = useState("full_payment");
+  const formik = useFormik({ initialValues: {}, onSubmit: () => {} });
   function paymentAmount() {
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
@@ -103,13 +106,77 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     >
       {/* Additional content goes here */}
       <Section margin="2rem 0">
-        <Section margin="3rem 0px 1.5rem">
+        <Section margin="2.75rem 0px 4.1rem">
           <Flex align="center" gap="0rem" justify="center">
-            <Text type="h1" text={currencyFormatter(paymentAmount())} />
+            <Text
+              type="h1"
+              size={48}
+              weight={600}
+              text={currencyFormatter(paymentAmount())}
+            />
           </Flex>
-          <Text type="p" text={visaDetails.intent} />
+          <Text
+            type="p"
+            margin={0}
+            size={16}
+            weight={400}
+            color="#929292"
+            textAlign="center"
+            text={visaDetails.intent}
+          />
         </Section>
         <Section margin="0px">
+          <Section>
+            <Section>
+              <Text
+                text={"Select Payment Type"}
+                weight={400}
+                size={18}
+                type={"h5"}
+                margin={"0 0 1.125rem 0"}
+              />
+              <Section width="fit-content">
+                <CustomRadioGroup
+                  options={[
+                    { value: "full_payment", label: "Full Payment" },
+                    { value: "part_payment", label: "Part Payment" },
+                  ]}
+                  name="paymentType"
+                  value={paymentType}
+                  onChange={(e: ChangeEvent<any>) =>
+                    setPaymentType(e.target.value)
+                  }
+                  justifyContent="flex-end"
+                />
+              </Section>
+            </Section>
+            <Section>
+              <Section margin="1.5rem 0 1.75rem 0">
+                <Text
+                  type="p"
+                  styles={{ display: "inline" }}
+                  text="You are expected to make the Visa Application Payment in 3 Installments. The least amount should be "
+                />
+                <Text type="p" text="# 4000" styles={{ display: "inline" }} />
+              </Section>
+              <Section margin="0 0 2.5rem 0">
+                <Text
+                  text={"Enter amount"}
+                  weight={400}
+                  size={18}
+                  type={"h5"}
+                  margin={"0 0 1.125rem 0"}
+                />
+                <Section>
+                  <FieldInput
+                    name="installmentalAmount"
+                    placeholder="Enter Last Name"
+                    formik={formik}
+                  />
+                </Section>
+              </Section>
+            </Section>
+          </Section>
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
