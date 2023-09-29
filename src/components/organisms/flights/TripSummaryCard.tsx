@@ -11,12 +11,16 @@ import { styled } from "@mui/material/styles";
 import { ttColors } from "@/lib/theme/colors";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import TripSummaryDetails from "./TripSummaryDetails";
 
 const StyledAccordion = styled((props: AccordionProps) => (
-  <Accordion sx={{ my: "2rem" }} {...props} />
-))(({ theme }) => ({
-  "& .MuiPaper-root": {
-    marginTop: "10px",
+  <Accordion disableGutters elevation={0} {...props} />
+))(() => ({
+  "&::before": {
+    content: '""',
+    border: "none",
+    borderTop: `3px dotted ${ttColors.lightestGray}`,
+    backgroundColor: "transparent",
   },
 }));
 
@@ -53,27 +57,38 @@ export default function TripSummaryCard() {
         <Text text={"24 Aug 2023"} type="p" size={"1rem"} />
       </Flex>
 
-      <Flex margin="1rem 0" align="center" justify="space-between">
-        <Box>
-          <Text type="p" text={"22:00 LAG"} size={"1.3rem"} weight="bold" />
-          <Text type="p" text={"Sat, 26 Aug"} />
-          <Text type="p" text={"Murtala Muhammed, TI"} />
-          <Text type="p" text={"Lagos (Nigeria)"} />
-        </Box>
-
-        <Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          margin: "1rem 0",
+          gap: "1rem",
+        }}
+      >
+        <Flex justify="space-between" align="center">
           <Box>
-            <img src="/assets/images/flights/departure-right.png" alt="" />
+            <Text type="p" text={"22:00 LAG"} size={"1.3rem"} weight="bold" />
+            <Text type="p" text={"Sat, 26 Aug"} />
+            <Text type="p" text={"Murtala Muhammed, TI"} />
+            <Text type="p" text={"Lagos (Nigeria)"} />
           </Box>
-          <Text type="p" text="2 Stops" />
-        </Box>
 
-        <Box>
-          <Text type="p" text={"22:00 LAG"} size={"1.3rem"} weight="bold" />
-          <Text type="p" text={"Sat, 26 Aug"} />
-          <Text type="p" text={"Murtala Muhammed, TI"} />
-          <Text type="p" text={"Lagos (Nigeria)"} />
-        </Box>
+          <Box>
+            <Box>
+              <img src="/assets/images/flights/departure-right.png" alt="" />
+            </Box>
+            <Text type="p" text="2 Stops" />
+          </Box>
+
+          <Box>
+            <Text type="p" text={"22:00 LAG"} size={"1.3rem"} weight="bold" />
+            <Text type="p" text={"Sat, 26 Aug"} />
+            <Text type="p" text={"Murtala Muhammed, TI"} />
+            <Text type="p" text={"Lagos (Nigeria)"} />
+          </Box>
+        </Flex>
 
         <Box>
           <Text text={"9h 15'"} type="p" />
@@ -83,23 +98,19 @@ export default function TripSummaryCard() {
             color={ttColors.primary}
           />
         </Box>
-      </Flex>
-
-      <hr style={{ border: "1px dotted #E7E7E7" }} />
+      </Box>
 
       <StyledAccordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
+          aria-controls="flight-details-content"
+          id="flight-details-header"
         >
-          <Typography>Show Details</Typography>
+          <Text color={ttColors.primary} type="p" text={"Show Details"} />
         </AccordionSummary>
+
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <TripSummaryDetails />
         </AccordionDetails>
       </StyledAccordion>
     </Paper>

@@ -1,4 +1,5 @@
 "use client";
+import Button from "@/components/atoms/button";
 import Image from "@/components/atoms/image";
 import Section from "@/components/molecules/section";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
@@ -7,6 +8,7 @@ import PriceSumary from "@/components/organisms/flights/PriceSummary";
 import TripSteps from "@/components/organisms/flights/TripSteps";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import Navbar from "@/components/organisms/Navbar";
+import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 import Container from "@mui/material/Container";
 
@@ -29,7 +31,7 @@ export default function Page() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            flexDirection: { xs: "column", md: "column" },
+            flexDirection: { xs: "column", md: "row" },
             columnGap: "3rem",
             rowGap: "2rem",
             marginY: "4rem",
@@ -46,6 +48,11 @@ export default function Page() {
             </Box>
             <Box>
               <MainPassenger />
+            </Box>
+            <Box sx={{ marginY: "3rem" }}>
+              <Button background={ttColors.dark} width="100%">
+                Continue
+              </Button>
             </Box>
           </Box>
 

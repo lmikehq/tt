@@ -86,7 +86,7 @@ export default function PriceSumary() {
         <Text type="h3" text="Check-In Baggage" />
         <Text type="p" text="Details on baggage needed to travel" />
 
-        <Box>
+        <Box sx={{ marginY: "2rem" }}>
           <Flex justify="space-between" align="center">
             <Text type="p" text="Departure" />
             <Text type="p" text={"No bags"} color={ttColors.lighterGray} />

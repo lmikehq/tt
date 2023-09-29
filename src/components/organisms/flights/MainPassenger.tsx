@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useState } from "react";
 import { FormLabel, OutlinedInput } from "@mui/material";
 import Alert from "../Alert";
+import PassengerCard from "./PassengerCard";
 
 export default function MainPassenger() {
   const [age, setAge] = useState<string>("18");
@@ -73,6 +74,11 @@ export default function MainPassenger() {
             type="p"
             text="Choose an option. Various airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
           />
+
+          <Box sx={{ marginY: "1rem" }}>
+            <PassengerCard />
+            <PassengerCard />
+          </Box>
         </Box>
       </Box>
     </Paper>

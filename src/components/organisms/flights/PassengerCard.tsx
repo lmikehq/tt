@@ -1,10 +1,10 @@
 import Flex from "@/components/templates/flex";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Text from "@/components/atoms/text";
 import Button from "@/components/atoms/button";
 import DropdownButton from "./DropdownButton";
 import { BsArrowRight } from "react-icons/bs";
+import LuggageOutlinedIcon from "@mui/icons-material/LuggageOutlined";
 import { ttColors } from "@/lib/theme/colors";
 
 export default function PassengerCard() {
@@ -13,7 +13,9 @@ export default function PassengerCard() {
       sx={{
         padding: "1rem",
         display: "grid",
-        gridTemplateColumns: "100px 0.7fr 1fr 1fr",
+        gap: "1rem",
+        gridTemplateColumns: "50px 1fr 0.8fr 0.8fr",
+        alignItems: "center",
       }}
     >
       <Box
@@ -23,6 +25,7 @@ export default function PassengerCard() {
           width: "50px",
           height: "50px",
           border: "1px solid gray",
+          borderRadius: "50px",
           backgroundImage: "url('/assets/images/flights/EgyptAirLogo.jpg')",
         }}
       />
@@ -30,19 +33,25 @@ export default function PassengerCard() {
       <Box>
         <Text type="p" text="Departure" />
 
-        <Flex justify="space-between" align="center" gap="1rem">
+        <Flex align="center" gap="1rem">
           <Text type="p" text="Lagos" />
           <BsArrowRight />
           <Text type="p" text="Germany" />
         </Flex>
       </Box>
 
-      <Box>
+      <Flex justify="space-between" align="center">
         <Text type="p" text="1x" color={ttColors.lighterGray} />
-        <Button background={ttColors.primaryLight} borderRadius="30px">
+        <LuggageOutlinedIcon color={"disabled"} />
+        <Button
+          width="100px"
+          height="35px"
+          background={ttColors.primaryLight}
+          borderRadius="30px"
+        >
           INCLUDED
         </Button>
-      </Box>
+      </Flex>
 
       <DropdownButton title="Add Baggage">
         <Text type="p" text="Option 1" />
