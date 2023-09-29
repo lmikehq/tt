@@ -376,7 +376,7 @@ const ContactPage = () => {
                     formik={Formik}
                     name={"reasons"}
                     placeholder="Select your reason for contacting"
-                    options={ContactOptions}
+                    options={ContactOptions.map(contact => contact.label)}
                   />
                 </Section>
 
@@ -391,18 +391,15 @@ const ContactPage = () => {
                   />
                   <TextArea
                     name="message"
-                    placeholder="Enter your Message"
                     value=""
-                    onChange={""}
-                    onBlur={""}
-                    row={10}
-                    style={{ background: "transparent" }}
+                    onChange={() => {}}
+                    onBlur={() => {}}
                   />
 
                 </Section>
               </Flex>
               <Button width="100%">
-                <Text type="p" text="Update Status" size={14} weight={500} />
+                <Text type="p" text="Send" size={14} weight={500} />
               </Button>
             </form>
           </Flex>
