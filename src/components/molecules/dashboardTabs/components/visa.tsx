@@ -61,9 +61,9 @@ const Visa = () => {
       <div>
         {visas?.length > 0 ? (
           visas?.map((visa: any, i: number) => (
-            <React.Fragment key={i}>
+            <div key={i}>
               <VisaDetail visa={visa} refetch={refetch}/>
-            </React.Fragment>
+            </div>
           ))
         ) : (
           <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
