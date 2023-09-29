@@ -4,31 +4,27 @@
 
 import Button from "@atom/button";
 import CheckBox from "@molecule/checkbox";
-// import { Divider } from "@atom/divider";
-import Flex from "@components/templates/flex";
-import { Grid } from "@components/templates/grid";
 import Input from "@atom/input";
 import Link from "@atom/link";
-import SideBtn from "@molecule/sideBtn";
 import Text from "@atom/text";
-import Spinner from "@molecule/icons/spinner";
 import SectionLayout from "@components/templates/SectionLayout";
-import sleep from "@lib/extensions/helpers/sleep";
-import Section from "src/components/molecules/section";
-import { Divider } from "@mui/material";
+import Flex from "@components/templates/flex";
+import { Grid } from "@components/templates/grid";
 import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
+import Spinner from "@molecule/icons/spinner";
+import SideBtn from "@molecule/sideBtn";
+import { Divider } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { useUserStore } from "@lib/store/useStore";
-import { ttColors } from "@lib/theme/colors";
-import { useGoogleLogin } from "@react-oauth/google";
-
-import Image from "@atom/image";
+import Section from "src/components/molecules/section";
+// import { useGoogleLogin } from "@react-oauth/google";
 
 const settings = {
   infinite: true,
@@ -47,33 +43,30 @@ function LoginPage() {
     password: "",
     rememberMe: false,
   });
-  const login = useGoogleLogin({
-    onSuccess: async (credentialResponse) => {
-      console.log(credentialResponse);
-      return await apiService("/auth/google", "POST", {
-        token: credentialResponse.access_token,
-      })
-        .then(async (res) => {
-          if (res.statusCode === 401) return;
-          setSubmissionState({
-            ...submissionState,
-            loadingGoogleAuth: true,
-          });
-          setUser(res?.user);
-          toast.success("You have successfully logged in!");
-          await sleep(3000);
-          toast.loading("Redirecting to your dashboard...", {
-            duration: 3000,
-          });
-          await sleep(2000);
-          router.push("/dashboard");
-        })
-        .catch((error) => {});
-    },
-    onError: () => {
-      console.log("Login Failed");
-    },
-  });
+  // const login = useGoogleLogin({
+  //   onSuccess: async (credentialResponse) => {
+  //     return await apiService("/auth/google", "POST", {
+  //       token: credentialResponse.access_token,
+  //     })
+  //       .then(async (res) => {
+  //         if (res.statusCode === 401) return;
+  //         setSubmissionState({
+  //           ...submissionState,
+  //           loadingGoogleAuth: true,
+  //         });
+  //         setUser(res?.user);
+  //         toast.success("You have successfully logged in!");
+  //         toast.loading("Redirecting to your dashboard...", {
+  //           duration: 3000,
+  //         });
+  //         router.push("/dashboard");
+  //       })
+  //       .catch((error) => {});
+  //   },
+  //   onError: () => {
+  //     console.log("Login Failed");
+  //   },
+  // });
   useEffect(() => {
     if (submissionState.error.length > 0) {
       setSubmissionState({
@@ -109,8 +102,9 @@ function LoginPage() {
     if (submissionState.loading) return;
     setSubmissionState({ ...submissionState, loading: true });
     const res = await handleLogin();
-    if (res.statusCode === 401) {
-      setSubmissionState({
+    console.log('res: ', res)
+    if (res?.statusCode === 401) {
+      return setSubmissionState({
         ...submissionState,
         error: [
           {
@@ -124,20 +118,27 @@ function LoginPage() {
         ],
         loading: false,
       });
-      return;
+    } else if (res?.token) {
+      setSubmissionState({
+        ...submissionState,
+        loading: true,
+      });
+      setUser(res?.user);
+      toast.success("You have successfully logged in!");
+      toast.loading("Redirecting to your dashboard...", {
+        duration: 3000,
+      });
+      return router.push("/dashboard");
+    } else {
+      setSubmissionState({
+        ...submissionState,
+        error: [
+          { constraints: "something went wrong", property: "email" },
+          { constraints: "something went wrong", property: "password" },
+        ],
+        loading: false,
+      });
     }
-    setSubmissionState({
-      ...submissionState,
-      loading: true,
-    });
-    setUser(res?.user);
-    toast.success("You have successfully logged in!");
-    await sleep(3000);
-    toast.loading("Redirecting to your dashboard...", {
-      duration: 3000,
-    });
-    await sleep(2000);
-    router.push("/dashboard");
   }
 
   return (
@@ -307,7 +308,7 @@ function LoginPage() {
               {checkIfFieldHasError("email") && (
                 <Text
                   type="p"
-                  text={"Invalid email or password"}
+                  text={submissionState.error[0].constraints}
                   color="#FF8682"
                   margin={"0.5rem 0 0"}
                 />
@@ -393,7 +394,7 @@ function LoginPage() {
               />
             </Flex>
             <Button
-              onClick={() => login()}
+              onClick={() => {}}
               background="transparent"
               border={`1px solid ${ttColors.primary}`}
               width="100%"
@@ -401,7 +402,7 @@ function LoginPage() {
               {submissionState.loadingGoogleAuth ? (
                 <Spinner size="40px" fill={ttColors.primary} />
               ) : (
-                <>
+                <Flex align="center">
                   <img
                     src={"/assets/images/google.svg"}
                     alt="google"
@@ -416,7 +417,7 @@ function LoginPage() {
                     color="#19013b"
                     margin="0px 0px 0px .5rem"
                   />
-                </>
+                </Flex>
               )}
             </Button>
           </Flex>

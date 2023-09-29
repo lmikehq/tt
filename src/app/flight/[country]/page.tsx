@@ -3,13 +3,13 @@ import FlightHero from "@organism/hero/flight";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import React, { useState } from "react";
-import BagsButton from "./components/BagsButton";
-import StopsButton from "./components/StopsButton";
-import PricesButton from "./components/PricesButton";
-import DepartureTimeButton from "./components/DepartureTimeButton";
-import SortButton from "./components/SortButton";
-import { Typography } from "@mui/material";
-import CabinButton from "./components/CabinButton";
+import Text from "@/components/atoms/text";
+import BagsButton from "@/components/organisms/flights/BagsButton";
+import StopsButton from "@/components/organisms/flights/StopsButton";
+import PricesButton from "@/components/organisms/flights/PricesButton";
+import DepartureTimeButton from "@/components/organisms/flights/DepartureTimeButton";
+import CabinButton from "@/components/organisms/flights/CabinButton";
+import SortButton from "@/components/organisms/flights/SortButton";
 
 interface pageProps {}
 
@@ -69,10 +69,11 @@ const Page: React.FC<pageProps> = ({}) => {
           <SortButton />
         </Box>
         <Box sx={{ marginBottom: "1rem" }}>
-          <h1>Explore Germany</h1>
-          <p>
-            Select your preferred destination to view all available flights.
-          </p>
+          <Text type="h1" text="Explore Germany" />
+          <Text
+            type="p"
+            text="Select your preferred destination to view all available flights."
+          />
         </Box>
 
         <Box
@@ -128,13 +129,11 @@ const Page: React.FC<pageProps> = ({}) => {
 
               <Box sx={{ zIndex: 1, color: "white" }} padding={2}>
                 {city.name === hoveredCity ? (
-                  <Typography variant="h4" component="p">
-                    {city.name}
-                  </Typography>
+                  <Text type="h2" text={city.name} />
                 ) : (
                   <>
-                    <Typography>{city.name}</Typography>
-                    <Typography>Prices from {city.price}</Typography>
+                    <Text type="p" text={city.name} />
+                    <Text type="p" text={`Prices from ${city.price}`} />
                   </>
                 )}
               </Box>

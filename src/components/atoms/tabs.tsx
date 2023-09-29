@@ -55,6 +55,21 @@ const TabWrapper = styled.div<{
   }
 
   z-index: 5;
+
+  @media (max-width: 900px) {
+    .MuiTabs-scroller.MuiTabs-fixed.css-jpln7h-MuiTabs-scroller {
+      width: 100%;
+      overflow-x: scroll;
+      white-space: nowrap;
+    }
+  }
+  .MuiTabs-flexContainer {
+    @media (max-width: 900px) {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
 `;
 
 function TabPanel(props: TabPanelProps) {
@@ -124,42 +139,56 @@ export default function CustomTab({
         <Tabs
           value={value}
           onChange={handleChange}
-          variant={isMobile ? "fullWidth" : "standard"}
+          variant={isMobile ? "scrollable" : "standard"}
           aria-label="select your service"
+          scrollButtons="auto"
           sx={{
             fontFamily: "Montserrat",
           }}
         >
-          {tabItems.map((tabItem, i) => (
-            <Tab
-              key={tabItem.value}
-              label={
-                <Flex align="center" justify="center" gap=".5rem">
-                  {defaultIcons && icons[tabItem.value]}
-                  <Text
-                    font="Montserrat"
-                    type="p"
-                    text={tabItem.label}
-                    size={isMobile ? "1rem" : "1rem"}
-                    weight={600}
-                    // color="var(--secondary-color)"
-                  />
-                </Flex>
-              }
-              sx={{
-                ...(i !== tabItems.length - 1 && {
-                  borderRight: "1px solid #ccc",
-                }),
-                ...(!isMobile && { padding: "0 2rem" }),
-                ...(isMobile && { padding: "0 0rem" }),
-                ...(isMobile && { borderBottom: `0px solid ${ttColors.dark}` }),
-                "&.MuiTab-textColorPrimary.Mui-selected": {
-                  color: "var(--secondary-color)",
-                },
-              }}
-              {...a11yProps(tabItem.value)}
-            />
-          ))}
+          {tabItems.map((tabItem, i) => {
+            const borderStyle = {
+              border: "none",
+              borderRight: "none",
+              borderLeft: "none",
+            };
+
+           if (i % 4 === 0) {
+             borderStyle.borderRight = "1px solid #ccc";
+           } else if (i % 4 === 2) {
+             borderStyle.borderLeft = "1px solid #ccc";
+           }
+            return (
+              <Tab
+                key={tabItem.value}
+                label={
+                  <Flex align="center" justify="center" gap=".5rem">
+                    {defaultIcons && icons[tabItem.value]}
+                    <Text
+                      font="Montserrat"
+                      type="p"
+                      text={tabItem.label}
+                      size={isMobile ? "1rem" : "1rem"}
+                      weight={600}
+                      // color="var(--secondary-color)"
+                    />
+                  </Flex>
+                }
+                sx={{
+                  ...borderStyle,
+                  ...(!isMobile && { padding: "0 2rem" }),
+                  ...(isMobile && { padding: "0 0rem" }),
+                  ...(isMobile && {
+                    borderBottom: `0px solid ${ttColors.dark}`,
+                  }),
+                  "&.MuiTab-textColorPrimary.Mui-selected": {
+                    color: "var(--secondary-color)",
+                  },
+                }}
+                {...a11yProps(tabItem.value)}
+              />
+            );
+          })}
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (

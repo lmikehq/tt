@@ -19,7 +19,6 @@ const SideBtn: React.FC<SideBtnProps> = ({ title, linkUrl, linkText }) => {
     <Link href={linkUrl}>
       <Button
         styles={{
-          background: "#e7e7e7",
           height: "max-content",
           width: "max-content",
           borderRadius: "60px",
@@ -27,6 +26,7 @@ const SideBtn: React.FC<SideBtnProps> = ({ title, linkUrl, linkText }) => {
           padding: "16px 20px",
           display: isMobile ? "none" : "block",
         }}
+        background="#e7e7e7"
       >
         <p
           style={{

@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Image from "@atom/image";
 
 interface SignUpCarouselProps {
   images: string[];
@@ -24,12 +25,11 @@ const SignUpCarousel: React.FC<SignUpCarouselProps> = ({ images }) => {
       <Slider {...settings}>
         {images.map((imageSrc, index) => (
           <div key={index}>
-            <img
+            <Image
               src={imageSrc}
               alt={`background image ${index}`}
-              width="100%"
-              height="798px"
-              style={{ borderRadius: "30px", objectFit: "cover" }}
+              height={798}
+              styles={{ borderRadius: "30px", objectFit: "cover", width: "100%" }}
             />
           </div>
         ))}

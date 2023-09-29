@@ -8,6 +8,7 @@ const RoundedButton = styled(Button)(({ theme }) => ({
   borderRadius: "50%",
   width: "36px",
   height: "36px",
+  fontSize: "20px",
   minWidth: 0,
   padding: 0,
   color: ttColors.foundation.gray,
@@ -26,13 +27,13 @@ const RoundedButton = styled(Button)(({ theme }) => ({
 interface IPlusMinusButton {
   children: React.ReactNode;
   isDisabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 function PlusMinusButton({
   children,
   isDisabled = false,
-  onClick,
+  onClick = () => {},
 }: IPlusMinusButton) {
   return (
     <RoundedButton
