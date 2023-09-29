@@ -157,7 +157,7 @@ function RegisterPage() {
     if (error) return error.constraints;
   }
   return (
-    <SectionLayout >
+    <SectionLayout>
       <form onSubmit={handleSubmit}>
         <Grid
           columns={isMobile ? "1fr" : `repeat(auto-fit, minmax(300px, 1fr))`}
@@ -198,7 +198,7 @@ function RegisterPage() {
               </div>
               <div>
                 <img
-                  src={"/assets/images/auth-bg3.png"}
+                  src={"/assets/images/auth-bg3.jpeg"}
                   alt="background image"
                   width="100%"
                   height="798px"
@@ -207,7 +207,7 @@ function RegisterPage() {
               </div>
               <div>
                 <img
-                  src={"/assets/images/auth-bg4.png"}
+                  src={"/assets/images/auth-bg4.jpeg"}
                   alt="background image"
                   width="100%"
                   height="798px"
@@ -216,7 +216,17 @@ function RegisterPage() {
               </div>
               <div>
                 <img
-                  src={"/assets/images/auth-bg5.png"}
+                  src={"/assets/images/auth-bg5.jpeg"}
+                  alt="background image"
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                />
+              </div>
+
+              <div>
+                <img
+                  src={"/assets/images/auth-bg7.jpeg"}
                   alt="background image"
                   width="100%"
                   height="798px"
@@ -225,16 +235,7 @@ function RegisterPage() {
               </div>
               <div>
                 <img
-                  src={"/assets/images/auth-bg7.png"}
-                  alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
-                />
-              </div>
-              <div>
-                <img
-                  src={"/assets/images/auth-bg8.png"}
+                  src={"/assets/images/auth-bg8.jpeg"}
                   alt="background image"
                   width="100%"
                   height="798px"
@@ -545,7 +546,7 @@ function RegisterPage() {
                     type="p"
                     text="Create account"
                     color={ttColors.dark}
-                    size={isMobile ? "16px": "20px"}
+                    size={isMobile ? "16px" : "20px"}
                   />
                 )}
               </Button>

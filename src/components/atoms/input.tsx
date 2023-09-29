@@ -249,7 +249,7 @@ export const TextField = ({
         label={legend}
         id={id}
         // name={name}
-        // disabled={readOnly}
+        disabled={readOnly}
         style={{
           margin,
           border: border,

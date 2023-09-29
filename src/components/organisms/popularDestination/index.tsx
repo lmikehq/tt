@@ -180,12 +180,12 @@ const PopularDestinations = ({
                         {destination.description
                           .split(".")
                           .map((desc, index) => (
-                            <React.Fragment key={index}>
+                            <div key={index}>
                               <Text type="p" text={desc.trim()} />
                               {index !==
                                 destination.description.split(".").length -
                                   1 && <BsDot />}
-                            </React.Fragment>
+                            </div>
                           ))}
                       </Flex>
                     </Flex>

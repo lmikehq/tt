@@ -1,6 +1,11 @@
 import styled from "styled-components";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
+import NoVisaBg from "@image/background.png";
+import FlightImg from "@image/flight.png";
+import Text from "@atom/text";
+import Image from "@atom/image";
+import FlightIcon from "@image/flightBooking.png";
 import { ttColors } from "@lib/theme/colors";
 
 const FlightWrapper = styled.div`
@@ -59,11 +64,16 @@ const Flight = () => {
       { text: "Search Stays", url: "/stays" },
     ],
   };
+
+  function NoFlightImg() {
+    return <Image src="/assets/images/flight.png" alt="" />;
+  }
+
   return (
     <FlightWrapper>
       <VisaDashboardHeader headerText="All Flight Applications" />
       <NoVisaApplication
-        noVisaImage={"/assets/images/flight.png"}
+        noVisaImage={NoFlightImg}
         content={content}
       />
       {/* <Flex direction="column" gap="1rem">
