@@ -76,7 +76,7 @@ export const ErrorText = ({ text }: { text: string }) => {
 };
 
 export const FieldInput = (props: FieldProps) => {
-  const { id, name, type, placeholder, formik, addon, onChange, disabled } =
+  const { id, name, type, placeholder, formik, addon, onChange, disabled, min, max } =
     props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,6 +94,8 @@ export const FieldInput = (props: FieldProps) => {
         height="45px"
         addon={addon}
         readOnly={disabled}
+        min={min}
+        max={max}
         type={type}
         placeholder={placeholder}
         padding="0 0 0 14px"

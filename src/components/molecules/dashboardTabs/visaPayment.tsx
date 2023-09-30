@@ -36,7 +36,10 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
 }) => {
   const { isMobile } = useScreenResolution();
   const [paymentType, setPaymentType] = useState("full_payment");
-  const formik = useFormik({ initialValues: {}, onSubmit: () => {} });
+  const formik = useFormik({
+    initialValues: { amount: 0 },
+    onSubmit: () => {},
+  });
   function paymentAmount() {
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
@@ -77,8 +80,19 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   const { user } = useUserStore((state) => state);
   const router = useRouter();
   const { applied, voucher, useVoucher } = useVoucherStore((state) => state);
+  const [installmentAmount, setInstallmentAmount] = useState(0);
   const [currency, _] = useState("NGN - Nigerian Naira");
   const createPayment = async () => {
+    if (
+      paymentType === "part_payment" &&
+      installmentAmount < Number(paymentAmount()) / 4
+    ) {
+      toast.error(
+        "Amount must be greater than or equal to 25% of the total amount"
+      );
+      setLoading(false);
+      return;
+    }
     return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
       gateway: "Kora",
@@ -86,6 +100,10 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       user: user?._id,
       serviceID: visaDetails.id,
       paymentIntent: visaDetails.intent,
+      ...(paymentType === "part_payment" && {
+        isPartPayment: true,
+        amount: Number(installmentAmount),
+      }),
     }).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
         window.open(response.data.data.checkout_url, "_self");
@@ -106,7 +124,6 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     });
   };
   const [loading, setLoading] = useState(false);
-
   return (
     <>
       <CustomConfirmationModal
@@ -131,7 +148,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       <ReusableModal
         open={open}
         onClose={() => {
-          onClose()
+          onClose();
           setLoading(false);
         }}
         headerText={"Make Payment"}
@@ -155,7 +172,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
             <Flex align="center" gap="0rem" justify="center">
               <Text
                 type="h1"
-                size={48}
+                size={38}
                 weight={600}
                 text={currencyFormatter(paymentAmount())}
               />
@@ -196,36 +213,43 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
                     />
                   </Section>
                 </Section>
-                <Section>
-                  <Section margin="1.5rem 0 1.75rem 0">
-                    <Text
-                      type="p"
-                      styles={{ display: "inline" }}
-                      text="You are expected to make the Visa Application Payment in 3 Installments. The least amount should be "
-                    />
-                    <Text
-                      type="p"
-                      text="# 4000"
-                      styles={{ display: "inline" }}
-                    />
-                  </Section>
-                  <Section margin="0 0 2.5rem 0">
-                    <Text
-                      text={"Enter amount"}
-                      weight={400}
-                      size={18}
-                      type={"h5"}
-                      margin={"0 0 1.125rem 0"}
-                    />
-                    <Section>
-                      <FieldInput
-                        name="installmentalAmount"
-                        placeholder="Enter Last Name"
-                        formik={formik}
+                {paymentType === "part_payment" && (
+                  <Section>
+                    <Section margin="1.5rem 0 1.75rem 0">
+                      <Text
+                        type="p"
+                        styles={{ display: "inline" }}
+                        text="You are expected to pay the Visa Processing fee Payment in not less than 4 Installments. The least amount should be "
+                      />
+                      <Text
+                        type="p"
+                        text={currencyFormatter(Number(paymentAmount()) / 4)}
+                        styles={{ display: "inline" }}
                       />
                     </Section>
+                    <Section margin="0 0 1.5rem 0">
+                      <Text
+                        text={"Enter amount"}
+                        weight={400}
+                        size={18}
+                        type={"h5"}
+                        margin={"0 0 1rem 0"}
+                      />
+                      <Section>
+                        <FieldInput
+                          name="installmentalAmount"
+                          // value={currencyFormatter(installmentAmount).replace('NGN', '')}
+                          placeholder={`${Number(paymentAmount()) / 4}`}
+                          formik={formik}
+                          max={Number(paymentAmount())}
+                          type="number"
+                          min={Number(paymentAmount()) / 4}
+                          onChange={(e) => setInstallmentAmount(e.target.value)}
+                        />
+                      </Section>
+                    </Section>
                   </Section>
-                </Section>
+                )}
               </Section>
             )}
             <Flex align="center" gap="0.25rem">

@@ -72,7 +72,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <Toaster position="top-center" />
+        <Toaster position="top-center"  />
         <PaymentConfirmationModal />
         <StyledComponentsRegistry>
           <LoaderLayout>{children}</LoaderLayout>
