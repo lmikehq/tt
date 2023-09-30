@@ -1,25 +1,20 @@
-import Flex from "@components/templates/flex";
-import SearchInput, { RoundFlag } from "@organism/searchInput";
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
+import Flex from "@components/templates/flex";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { BiSolidErrorCircle, BiSolidInfoCircle } from "react-icons/bi";
+import SearchInput, { RoundFlag } from "@organism/searchInput";
+import { BiSolidInfoCircle } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
+import Section from "src/components/molecules/section";
 
-import ContinueButton from "@organism/continueButton";
-import { FormikValues } from "formik";
-import { useState } from "react";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { Mode } from "@lib/types";
-import { BsFillCheckCircleFill, BsTrash } from "react-icons/bs";
 import { useVoucherStore } from "@lib/store/voucher.store";
-import Button from "@atom/button";
-import Input from "@atom/input";
-import { toast } from "react-hot-toast";
-import CustomConfirmationModal from "@organism/visaApplicationModal";
+import { Mode } from "@lib/types";
+import ContinueButton from "@organism/continueButton";
 import { PaymentCompleteSection } from "@organism/paymentConfirmationModal";
+import CustomConfirmationModal from "@organism/visaApplicationModal";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import VoucherForm from "./voucherForm";
 
 export interface CurrencyType {
   currency: string;
@@ -27,25 +22,15 @@ export interface CurrencyType {
   currencyCode: string;
 }
 
-interface SelectPaymentMethodProps {}
 const SelectPaymentMethod = () => {
-  const { isMobile } = useScreenResolution();
-  const [promoCode, setPromoCode] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
   const router = useRouter();
   const { createFormFeeCharge, createVisaApplicationResponse, mode } =
     useApplicationFormStore((state) => state);
-  const {
-    applied,
-    voucher,
-    errorMessage,
-    checkVoucher,
-    useVoucher,
-    mode: voucherMode,
-    useVoucherMode,
-    deleteVoucher,
-  } = useVoucherStore((state) => state);
+  const { applied, voucher, useVoucher, useVoucherMode } = useVoucherStore(
+    (state) => state
+  );
   const [currency, setCurrency] = useState<CurrencyType>({
     currency: "Nigerian Naira",
     flag: COUNTRY_FLAGS.find((el) => el.code == "NG")?.flag ?? "",
@@ -148,102 +133,7 @@ const SelectPaymentMethod = () => {
             </Section>
           </Section>
         </Section>
-        <Section margin="3rem  0 0">
-          <Text
-            text={"Enter Travel Voucher"}
-            type={"h3"}
-            weight={600}
-            size={20}
-            margin={"0 0 0.75rem 0"}
-          />
-          <Text
-            text={
-              "Enter a travel voucher to unlock a free ticket to complete your visa application "
-            }
-            weight={400}
-            size={15}
-            color="#606060"
-            type={"p"}
-            margin={""}
-          />
-          <form onSubmit={(e) => e.preventDefault()}>
-            <Flex
-              gap="1rem"
-              margin={`${isMobile ? "1rem" : "4rem"} 0 .5rem`}
-              direction={isMobile ? "column" : "row"}
-            >
-              <Input
-                placeholder="Enter a valid voucher code"
-                width="100%"
-                flexGrow={1}
-                onChange={(e) => setPromoCode(e.target.value)}
-                value={promoCode}
-                border={`1px solid ${
-                  voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
-                }`}
-                height="50px"
-                styles={{ outline: "none" }}
-              />
-              <Button
-                onClick={() => {
-                  if (voucherMode == Mode.loading) return;
-
-                  checkVoucher({ promoCode }).then((response) => {
-                    toast.success("Travel voucher applied");
-                    setPromoCode("");
-                  });
-                }}
-                disabled={!promoCode}
-                width={isMobile ? "100%" : "25%"}
-                borderRadius="4px"
-              >
-                <Text
-                  type="p"
-                  text={voucherMode == Mode.loading ? "Loading..." : "Apply"}
-                  weight={600}
-                  size="1rem"
-                />
-              </Button>
-            </Flex>
-          </form>
-          {voucherMode == Mode.error && (
-            <Flex gap="1rem">
-              <BiSolidErrorCircle size={25} color="#A0001D" />
-              <Text
-                text={errorMessage || ""}
-                weight={400}
-                size={16}
-                color="#A0001D"
-                type={"p"}
-                margin={""}
-              />
-            </Flex>
-          )}
-          {voucher && (
-            <Flex
-              gap="1rem"
-              margin="1rem 0 0"
-              width={isMobile ? "100%" : "50%"}
-            >
-              <Flex gap=".5rem" align="center">
-                <BsFillCheckCircleFill size={20} color="#6092A7" />
-                <Text type="p" text={voucher} />
-              </Flex>
-              <Flex
-                align="center"
-                gap=".5rem"
-                cursor="pointer"
-                onClick={() => {
-                  deleteVoucher();
-                  setPromoCode("");
-                }}
-              >
-                <BsTrash size={20} color="#A0001D" />
-                <Text type="p" text={"Delete Code"} color="#A0001D" />
-              </Flex>
-            </Flex>
-          )}
-        </Section>
+        <VoucherForm />
         <ContinueButton
           isLoading={mode == Mode.loading || useVoucherMode == Mode.loading}
           onClick={() => {

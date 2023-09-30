@@ -121,7 +121,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
     open: false,
     type: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);

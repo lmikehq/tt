@@ -13,6 +13,11 @@ import Section from "src/components/molecules/section";
 import ReusableModal from "./components/dashboardModal";
 import { ChangeEvent, useState } from "react";
 import { CustomRadioGroup } from "../radio";
+import SearchStringInput from "../searchInputs/searchStringInput";
+import VoucherForm from "@/components/organisms/form/components/voucherForm";
+import CustomConfirmationModal from "@/components/organisms/visaApplicationModal";
+import { useRouter } from "next/navigation";
+import { PaymentCompleteSection } from "@/components/organisms/paymentConfirmationModal";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -68,9 +73,11 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
         return "2500000";
     }
   }
-
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const { user } = useUserStore((state) => state);
-  // const { applied, voucher } = useVoucherStore((state) => state);
+  const router = useRouter();
+  const { applied, voucher, useVoucher } = useVoucherStore((state) => state);
+  const [currency, _] = useState("NGN - Nigerian Naira");
   const createPayment = async () => {
     return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
@@ -89,131 +96,175 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       }
     });
   };
+  const applyVoucher = async () => {
+    useVoucher({
+      promoCode: voucher as string,
+      serviceId: visaDetails.id,
+    }).then((response) => {
+      onClose();
+      setSuccessModalOpen(true);
+    });
+  };
   const [loading, setLoading] = useState(false);
 
   return (
-    <ReusableModal
-      open={open}
-      onClose={onClose}
-      headerText="Make Payment"
-      description="Kindly make payment for required Visa Application Process."
-      loading={loading}
-      setLoading={setLoading}
-      buttonProps={{
-        text: "Make Payment",
-        onClick: createPayment,
-      }}
-    >
-      {/* Additional content goes here */}
-      <Section margin="2rem 0">
-        <Section margin="2.75rem 0px 4.1rem">
-          <Flex align="center" gap="0rem" justify="center">
-            <Text
-              type="h1"
-              size={48}
-              weight={600}
-              text={currencyFormatter(paymentAmount())}
-            />
-          </Flex>
-          <Text
-            type="p"
-            margin={0}
-            size={16}
-            weight={400}
-            color="#929292"
-            textAlign="center"
-            text={visaDetails.intent}
+    <>
+      <CustomConfirmationModal
+        handleClose={() => {
+          setSuccessModalOpen(false);
+          onClose();
+          router.push("/dashboard");
+        }}
+        open={successModalOpen}
+        child={
+          <PaymentCompleteSection
+            handleModalClose={() => {
+              setSuccessModalOpen(false);
+              onClose();
+              router.push("/dashboard");
+            }}
+            title="Application Submitted"
+            description="Your application has been submitted successfully, and a travel voucher was used to pay for your application. Thank you for trusting Thrillers Travels."
           />
-        </Section>
-        <Section margin="0px">
-          <Section>
-            <Section>
+        }
+      />
+      <ReusableModal
+        open={open}
+        onClose={() => {
+          onClose()
+          setLoading(false);
+        }}
+        headerText={"Make Payment"}
+        description="Kindly make payment for required Visa Application Process."
+        loading={loading}
+        setLoading={setLoading}
+        buttonProps={{
+          text:
+            applied && visaDetails.intent === "FORM FEE"
+              ? "Submit Application"
+              : "Make Payment",
+          onClick:
+            applied && visaDetails.intent === "FORM FEE"
+              ? applyVoucher
+              : createPayment,
+        }}
+      >
+        {/* Additional content goes here */}
+        <Section margin="2rem 0">
+          <Section margin="1.75rem 0px 1.1rem">
+            <Flex align="center" gap="0rem" justify="center">
               <Text
-                text={"Select Payment Type"}
-                weight={400}
-                size={18}
-                type={"h5"}
-                margin={"0 0 1.125rem 0"}
-              />
-              <Section width="fit-content">
-                <CustomRadioGroup
-                  options={[
-                    { value: "full_payment", label: "Full Payment" },
-                    { value: "part_payment", label: "Part Payment" },
-                  ]}
-                  name="paymentType"
-                  value={paymentType}
-                  onChange={(e: ChangeEvent<any>) =>
-                    setPaymentType(e.target.value)
-                  }
-                  justifyContent="flex-end"
-                />
-              </Section>
-            </Section>
-            <Section>
-              <Section margin="1.5rem 0 1.75rem 0">
-                <Text
-                  type="p"
-                  styles={{ display: "inline" }}
-                  text="You are expected to make the Visa Application Payment in 3 Installments. The least amount should be "
-                />
-                <Text type="p" text="# 4000" styles={{ display: "inline" }} />
-              </Section>
-              <Section margin="0 0 2.5rem 0">
-                <Text
-                  text={"Enter amount"}
-                  weight={400}
-                  size={18}
-                  type={"h5"}
-                  margin={"0 0 1.125rem 0"}
-                />
-                <Section>
-                  <FieldInput
-                    name="installmentalAmount"
-                    placeholder="Enter Last Name"
-                    formik={formik}
-                  />
-                </Section>
-              </Section>
-            </Section>
-          </Section>
-          <Flex align="center" gap="0.25rem">
-            <Text
-              type="p"
-              text="Select Currency"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-            />
-          </Flex>
-          <FieldString
-            options={["NGN - Nigerian Naira"]}
-            name="currency"
-            value="NGN - Nigerian Naira"
-            placeholder=""
-            formik={Formik}
-            onChange={() => {}} // Handle the change event
-          />
-        </Section>
-        {!isMobile && (
-          <Section margin="-10px 0px 2.5rem">
-            <Flex align="center" justify="flex-start" gap="10px">
-              <BsExclamationCircleFill
-                color="#6092A7"
-                size="2.5rem"
-                style={{
-                  position: "relative",
-                  top: "-10px",
-                }}
-              />
-              <Text
-                type="p"
-                text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-                styles={{ textAlign: "left" }}
+                type="h1"
+                size={48}
+                weight={600}
+                text={currencyFormatter(paymentAmount())}
               />
             </Flex>
+            <Text
+              type="p"
+              margin={0}
+              size={16}
+              weight={400}
+              color="#929292"
+              textAlign="center"
+              text={visaDetails.intent}
+            />
           </Section>
-        )}
-      </Section>
-    </ReusableModal>
+          <Section margin="0px">
+            {visaDetails.intent === "PROCESSING FEE" && (
+              <Section>
+                <Section>
+                  <Text
+                    text={"Select Payment Type"}
+                    weight={400}
+                    size={18}
+                    type={"h5"}
+                    margin={"0 0 1.125rem 0"}
+                  />
+                  <Section width="fit-content">
+                    <CustomRadioGroup
+                      options={[
+                        { value: "full_payment", label: "Full Payment" },
+                        { value: "part_payment", label: "Part Payment" },
+                      ]}
+                      name="paymentType"
+                      value={paymentType}
+                      onChange={(e: ChangeEvent<any>) =>
+                        setPaymentType(e.target.value)
+                      }
+                      justifyContent="flex-end"
+                    />
+                  </Section>
+                </Section>
+                <Section>
+                  <Section margin="1.5rem 0 1.75rem 0">
+                    <Text
+                      type="p"
+                      styles={{ display: "inline" }}
+                      text="You are expected to make the Visa Application Payment in 3 Installments. The least amount should be "
+                    />
+                    <Text
+                      type="p"
+                      text="# 4000"
+                      styles={{ display: "inline" }}
+                    />
+                  </Section>
+                  <Section margin="0 0 2.5rem 0">
+                    <Text
+                      text={"Enter amount"}
+                      weight={400}
+                      size={18}
+                      type={"h5"}
+                      margin={"0 0 1.125rem 0"}
+                    />
+                    <Section>
+                      <FieldInput
+                        name="installmentalAmount"
+                        placeholder="Enter Last Name"
+                        formik={formik}
+                      />
+                    </Section>
+                  </Section>
+                </Section>
+              </Section>
+            )}
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="Select Currency"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              />
+            </Flex>
+            <SearchStringInput
+              options={["NGN - Nigerian Naira"]}
+              onChange={(e) => console.log("ee: ", e)}
+              placeholder={""}
+              value={currency}
+            />
+          </Section>
+          {!isMobile && (
+            <Section margin="-10px 0px 2.5rem">
+              <Flex align="center" justify="flex-start" gap="10px">
+                <BsExclamationCircleFill
+                  color="#6092A7"
+                  size="2.5rem"
+                  style={{
+                    position: "relative",
+                    top: "-10px",
+                  }}
+                />
+                <Text
+                  type="p"
+                  text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+                  styles={{ textAlign: "left" }}
+                />
+              </Flex>
+            </Section>
+          )}
+          {visaDetails.intent === "FORM FEE" && <VoucherForm modal />}
+        </Section>
+      </ReusableModal>
+    </>
   );
 };
 

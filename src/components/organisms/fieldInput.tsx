@@ -195,6 +195,7 @@ export const FieldString = (props: FieldProps) => {
   const error = getNestedValue(formik.errors, name);
 
   const handleChange = (e: any) => {
+    console.log('ee: ', e)
     formik.setFieldValue(name, e);
   };
 
@@ -204,7 +205,7 @@ export const FieldString = (props: FieldProps) => {
     <Section styles={{ position: "relative" }}>
       <SearchStringInput
         options={options}
-        onChange={onChange ? onChange : handleChange}
+        onChange={e=>console.log('ee: ', e)}
         placeholder={placeholder}
         value={value ? value : formikvalue}
         error={touched && error}
