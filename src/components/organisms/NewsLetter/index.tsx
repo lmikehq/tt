@@ -9,6 +9,14 @@ import Button from "@atom/button";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Input from "@atom/input";
 import Section from "@molecule/section";
+import { FieldInput } from "../fieldInput";
+import { Formik } from "formik";
+import { useState } from "react";
+import { ttColors } from "@/lib/theme/colors";
+import Spinner from "@/components/molecules/icons/spinner";
+import { validateEmail } from "@/lib/utilFns";
+import apiService from "@/lib/extensions/hook/apiService";
+import { toast } from "react-hot-toast";
 
 const SubscribeWrapper = styled.div<{ isMobile?: boolean }>`
   box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
@@ -76,6 +84,39 @@ const Subcribe = styled.div`
 
 const NewsLetter = () => {
   const { isMobile } = useScreenResolution();
+  const [email, setEmail] = useState("");
+  const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    error: "",
+  });
+  const handleSubmit = async () => {
+    if (submissionState.loading) return;
+    if (!email || !validateEmail(email))
+      return setSubmissionState({
+        loading: false,
+        error: "Please enter a valid email address",
+      });
+
+    setSubmissionState({ loading: true, error: "" });
+    const res = await apiService(
+      "/mail/list/newsletter@mails.thrillers.travel/add-member",
+      "POST",
+      {
+        address: email,
+        name: email.split("@")[0],
+      }
+    );
+    if (res.subscribed) {
+      setSubmissionState({ loading: false, error: "" });
+      setEmail("");
+      return toast.success(
+        "You have successfully subscribed to our newsletter"
+      );
+    } else {
+      setSubmissionState({ loading: false, error: res.message });
+      return toast.error(res.message);
+    }
+  };
   return (
     <SubscribeWrapper
       className="newsLetter"
@@ -96,7 +137,7 @@ const NewsLetter = () => {
         <Subcribe className="newsLetter">
           <Text
             type="h3"
-            text="Subscribe to our newsletter"
+            text="Want travel deals?"
             weight={700}
             size={isMobile ? "1.28rem" : "2.5rem"}
             color="#06062A"
@@ -104,7 +145,7 @@ const NewsLetter = () => {
           />
           <Text
             type="p"
-            text="Discover a world of inspiration! Unlock exclusive travel discounts, gain invaluable visa tips, and immerse yourself in captivating behind-the-scenes stories"
+            text="Be the first know when our next promo starts, or when we publish new article. Stay updated with all latest news and events."
             size="1rem"
             color="#06062A"
             margin={isMobile ? "0" : "-1.1rem 0 .7rem 0"}
@@ -119,25 +160,52 @@ const NewsLetter = () => {
               height="52px"
               width="100%"
               parentWidth="100%"
-              styles={{ backgroundColor: "#FFFFFF" }}
+              styles={{
+                backgroundColor: "#FFFFFF",
+                border: submissionState.error.includes("email")
+                  ? "1px solid red"
+                  : "none",
+              }}
               placeholder="Your email address"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setSubmissionState({ ...submissionState, error: "" });
+              }}
             />
+
             <Button
               height="52px"
               padding="0 1.5rem"
               width={isMobile ? "100%" : "fit-content"}
+              background="#06062A"
               borderRadius="4px"
               styles={{ justifyContent: "center", alignItems: "center" }}
+              onClick={handleSubmit}
             >
-              <Text
-                color="#FFFFFF"
-                text="Subscribe"
-                type={"span"}
-                weight={600}
-                size={16}
-              />
+              {submissionState.loading ? (
+                <Spinner size="40px" fill={ttColors.primary} />
+              ) : (
+                <Text
+                  color="#FFFFFF"
+                  text="Subscribe"
+                  type={"span"}
+                  weight={600}
+                  size={16}
+                />
+              )}
             </Button>
           </Flex>
+          {submissionState.error && (
+            <Text
+              type="p"
+              text={submissionState.error}
+              color="red"
+              margin="0.5rem 0 0 0"
+              size="1rem"
+              textAlign={isMobile ? "center" : "left"}
+            />
+          )}
         </Subcribe>
 
         <Flex

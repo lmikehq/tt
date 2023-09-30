@@ -1,3 +1,4 @@
+"use client";
 import { FormikProvider, FormikValues, useField } from "formik";
 import Input from "@atom/input";
 import Text from "@atom/text";
@@ -8,8 +9,10 @@ import SearchStringInput from "src/components/molecules/searchInputs/searchStrin
 import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
+import InputLabel from "@mui/material/InputLabel";
 
 interface FieldProps {
+  id?: string;
   value?: any;
   defaultValue?: string;
 
@@ -73,7 +76,18 @@ export const ErrorText = ({ text }: { text: string }) => {
 };
 
 export const FieldInput = (props: FieldProps) => {
-  const { name, type, placeholder, formik, addon, onChange, disabled } = props;
+  const {
+    id,
+    name,
+    type,
+    placeholder,
+    formik,
+    addon,
+    onChange,
+    disabled,
+    min,
+    max,
+  } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -84,10 +98,14 @@ export const FieldInput = (props: FieldProps) => {
 
   return (
     <Section>
+      <InputLabel />
       <Input
+        id={id}
         height="45px"
         addon={addon}
         readOnly={disabled}
+        min={min}
+        max={max}
         type={type}
         placeholder={placeholder}
         padding="0 0 0 14px"
@@ -189,6 +207,7 @@ export const FieldString = (props: FieldProps) => {
   const error = getNestedValue(formik.errors, name);
 
   const handleChange = (e: any) => {
+    console.log("ee: ", e);
     formik.setFieldValue(name, e);
   };
 
@@ -198,7 +217,7 @@ export const FieldString = (props: FieldProps) => {
     <Section styles={{ position: "relative" }}>
       <SearchStringInput
         options={options}
-        onChange={onChange ? onChange : handleChange}
+        onChange={(e) => console.log("ee: ", e)}
         placeholder={placeholder}
         value={value ? value : formikvalue}
         error={touched && error}
