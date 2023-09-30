@@ -121,6 +121,7 @@ function Visa() {
       <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
           width={isMobile ? "100%" : "240px"}
+          background="#06062A"
           borderRadius="4px"
           onClick={async () => {
             if (loading) return;
