@@ -108,6 +108,7 @@ function Stays() {
         <Button
           width={isMobile ? "100%" : "fit-content"}
           padding={"0 1.5rem"}
+          background="#06062A"
           borderRadius="4px"
           cursor="pointer"
           onClick={async () => {

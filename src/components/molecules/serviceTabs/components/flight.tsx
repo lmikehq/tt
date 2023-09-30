@@ -129,6 +129,7 @@ function Flights() {
           padding={"0 1.5rem"}
           cursor="pointer"
           borderRadius="4px"
+          background="#06062A"
           onClick={async () => {
             if (loading) return;
             setLoading(true);
