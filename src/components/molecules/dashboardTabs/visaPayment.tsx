@@ -8,7 +8,7 @@ import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { useVoucherStore } from "@lib/store/voucher.store";
-import { FieldInput } from "@organism/fieldInput";
+import { FieldInput, FieldString } from "@organism/fieldInput";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
@@ -82,7 +82,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   const router = useRouter();
   const { applied, voucher, useVoucher } = useVoucherStore((state) => state);
   const [installmentAmount, setInstallmentAmount] = useState(0);
-  const [currency, _] = useState("NGN - Nigerian Naira");
+  const [currency, setCurrency] = useState("NGN - Nigerian Naira");
   const createPayment = async () => {
     if (
       paymentType === "part_payment" &&
@@ -261,11 +261,19 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               />
             </Flex>
-            <SearchStringInput
+            {/* <SearchStringInput
               options={["NGN - Nigerian Naira"]}
               onChange={(e) => console.log("ee: ", e)}
               placeholder={""}
               value={currency}
+            /> */}
+            <FieldString
+              name="currency"
+              formik={formik}
+              value={currency}
+              placeholder="NGN - Nigerian Naira"
+              options={["NGN - Nigerian Naira"]}
+              onChange={(e) => setCurrency(e)}
             />
           </Section>
           {!isMobile && (

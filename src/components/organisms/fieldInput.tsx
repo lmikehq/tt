@@ -28,6 +28,7 @@ interface FieldProps {
     | "address"
     | "checkbox";
   step?: string;
+  border?: string;
   placeholder: string;
   formik: FormikValues;
   options?: any[];
@@ -87,6 +88,7 @@ export const FieldInput = (props: FieldProps) => {
     disabled,
     min,
     max,
+    border,
   } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +104,7 @@ export const FieldInput = (props: FieldProps) => {
       <Input
         id={id}
         height="45px"
+        border={border}
         addon={addon}
         readOnly={disabled}
         min={min}
@@ -217,7 +220,7 @@ export const FieldString = (props: FieldProps) => {
     <Section styles={{ position: "relative" }}>
       <SearchStringInput
         options={options}
-        onChange={(e) => console.log("ee: ", e)}
+        onChange={onChange ? onChange : handleChange}
         placeholder={placeholder}
         value={value ? value : formikvalue}
         error={touched && error}

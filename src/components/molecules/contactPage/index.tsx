@@ -1,17 +1,10 @@
 "use client";
 
-import Button from "@atom/button";
-import Flex from "@components/templates/flex";
-import { Grid } from "@components/templates/grid";
 import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import { Autocomplete, Box } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import Flex from "@components/templates/flex";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useState } from "react";
-import { BsEnvelope } from "react-icons/bs";
 import {
   FaFacebookF,
   FaInstagram,
@@ -20,554 +13,698 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import { ImWhatsapp } from "react-icons/im";
-import { LuPhoneCall } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
 import styled from "styled-components";
-import { ttColors } from "@lib/theme/colors";
-
-import { Divider } from "@atom/divider";
-
-import UsefulLinks from "./components/usefulLink";
-import { customNavigationLinks } from "@lib/extensions/data/customNavigationLinks";
+import Button from "@/components/atoms/button";
+import { FieldInput, FieldString } from "@/components/organisms/fieldInput";
+import { Formik } from "formik";
+import { useRouter } from "next/navigation";
+import { BiSolidChat } from "react-icons/bi";
+import { MdCall, MdLocationOn } from "react-icons/md";
+import Section from "../section";
+import TextArea from "../textArea";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
+import apiService from "@/lib/extensions/hook/apiService";
+import { validateEmail } from "@/lib/utilFns";
+import Spinner from "../icons/spinner";
+import { ttColors } from "@/lib/theme/colors";
+import { useUserStore } from "@/lib/store/useStore";
+import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;
 `;
 
-const ContactCard = styled.div`
-  display: grid;
-  justify-content: start;
-  width: 40%;
-  @media screen and (max-width: 900px) {
-    display: none;
+const Box = styled.div`
+  width: 45%;
+  height: fit-content;
+  background: #7bbbd6;
+  padding: 2.5rem;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    padding: 1.5rem 1rem;
   }
 `;
 
-const LinkFrame = styled.div`
-  position: relative;
-  left: 2rem;
-  width: 90%;
-`;
-
-const SocialDiv = styled.div`
-  background: ${ttColors.primary};
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
-  height: fit-content;
-  width: 60px;
-  padding: 1rem 0rem;
-  position: absolute;
-  bottom: 60px;
-  right: -85px;
-  display: grid;
-  place-content: center;
-  gap: 1.5rem;
+const Flag = styled.div`
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
 
   @media screen and (max-width: 900px) {
-    display: none;
+    height: 41px;
+    width: 65px;
   }
 `;
 
-const ContactWrapper = styled.div`
-  background: #ffffff;
-  width: 100%;
+const Card = styled.div`
+  background: #afdef266;
+  color: #6092a7;
+  width: 301px;
   height: fit-content;
-  width: 100%;
-  box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
   border-radius: 8px;
-  padding: 20px;
-  margin-top: 1rem;
-
-  @media screen and (max-width: 900px) {
-    form {
-      width: 100% !important;
-    }
-  }
+  border: 1px solid;
 `;
 
-const ContactDetails = styled.div`
-  @media screen and (max-width: 900px) {
-    height: fit-content;
+const SmallBox = styled.div`
+  width: 78px;
+  height: 65px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    width: 49px;
+    height: 39px;
   }
 `;
-
-const ChatAgent = styled.div`
-  background: #f8fafc;
-  margin-bottom: 2rem;
-  height: fit-content;
-  border: 1px solid lightgrey;
-  border-radius: 5px;
-`;
-
-const HelpTool = styled.div`
-  margin: 5rem 0rem;
-  @media screen and (max-width: 900px) {
-    margin: 2rem 0rem;
-  }
-`;
-const HelpHeader = styled.div`
-  text-align: center;
-  position: relative;
-`;
-
-const HelpPara = styled.p`
-  text-align: center;
-  width: 100%;
-  display: grid;
-  place-content: center;
-  padding: 1rem 8rem;
-  margin-bottom: 1rem;
-
-  @media screen and (max-width: 900px) {
-    padding: 1rem 3rem;
-  }
-  @media screen and (max-width: 600px) {
-    padding: 1rem;
-  }
-`;
-
-const CustomerCareImg = styled.div`
-  position: relative;
-  left: 30px;
-  bottom: -7px;
-
-  & img {
-    height: 144px;
-    width: 144px;
-  }
-
-  @media screen and (max-width: 900px) {
-    position: relative;
-    left: 5px;
-    bottom: -8px;
-
-    & img {
-      display: block;
-    }
-  }
-  @media screen and (max-width: 768px) {
-    & img {
-      display: none;
-    }
-  }
-`;
-const CustomerCareText = styled.div`
-  padding-top: 1rem;
-
-  & h2 {
-    line-height: 2;
-    color: #19013b;
-  }
-  & p {
-    line-height: 1.5;
-    width: 95%;
-  }
-
-  @media screen and (max-width: 900px) {
-    padding-top: 0rem;
-  }
-`;
-
-const ContactCardItems = [
-  {
-    image: "/assets/images/customerCare/order-delivery.png",
-    alt: "",
-    text: "Start New Application",
-    link: "/visa/apply",
-  },
-  {
-    image: "/assets/images/customerCare/resume.png",
-    alt: "",
-    text: "Application Status",
-    link: "/auth/login",
-  },
-  {
-    image: "/assets/images/customerCare/user.png",
-    alt: "",
-    text: "Log in to My Account",
-    link: "auth/login",
-  },
-  // {
-  //   image: Support,
-  //   alt: "",
-  //   text: "Support",
-  //   link: "#support",
-  // },
-];
 
 const ContactPage = () => {
   const { isMobile } = useScreenResolution();
-  const customNavigationLinks = [
+  const { user } = useUserStore();
+  const router = useRouter();
+  const [formSubmission, setFormSubmission] = useState({
+    initialValues: {
+      fullName: "",
+      email: "",
+      reason: "",
+      message: "",
+    },
+    loading: false,
+    error: "",
+  });
+  async function handleSubmit() {
+    if (formSubmission.loading) return;
+    setFormSubmission({ ...formSubmission, loading: true });
+    const { fullName, email, message } = formSubmission.initialValues;
+    if (!fullName)
+      return setFormSubmission({
+        ...formSubmission,
+        error: "Please provide your full name",
+        loading: false,
+      });
+    if (!email || !validateEmail(email))
+      return setFormSubmission({
+        ...formSubmission,
+        error: "Please provide a valid email address",
+        loading: false,
+      });
+    if (!message)
+      return setFormSubmission({
+        ...formSubmission,
+        error: "Please provide message",
+        loading: false,
+      });
+    const response = await apiService("/contact", "POST", {
+      ...formSubmission.initialValues,
+      ...(user && { user: user?._id }),
+    });
+    if (response?.status === 200) {
+      toast.success("Your message has been sent successfully!");
+      setFormSubmission({
+        ...formSubmission,
+        loading: false,
+        initialValues: {
+          fullName: "",
+          email: "",
+          reason: "",
+          message: "",
+        },
+      });
+    } else {
+      toast.error("An error occured, please try again");
+      setFormSubmission({
+        ...formSubmission,
+        loading: false,
+        error: response.message,
+      });
+    }
+  }
+  const addresses = [
     {
-      number: "01",
-      text: "Chat with our AI",
-      href: "/chat",
+      address:
+        "Toronto Canada: Exchange Tower, 130 King Street West Suite 1800, Toronto, Ontario M5X 1E3",
+      countryCode: "CA",
+      direction:
+        "https://www.google.com/maps/place/Exchange+Tower,+130+King+St+W,+Toronto,+ON+M5X+2A2,+Canada/@43.6485354,-79.385917,17z/data=!4m15!1m8!3m7!1s0x882b34d28a4d9355:0xadb9c5c4179614d6!2s130+King+St+W,+Toronto,+ON+M5X+2A2,+Canada!3b1!8m2!3d43.6485315!4d-79.3833421!16s%2Fg%2F11flvrfqqp!3m5!1s0x882b34d261f4dcd5:0xf4cbfd9fae484747!8m2!3d43.648528!4d-79.3833359!16zL20vMDhsNHZx?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+Toronto+office.+My+name+is&type=phone_number&app_absent=0",
     },
     {
-      number: "02",
-      text: "Chat with an Agent",
-      href: "/chat",
+      address:
+        "London United Kingdom: Old Street, 167 City Road, London UK. EC1V 1AW",
+      countryCode: "GB",
+      direction:
+        "https://www.google.com/maps/place/167+City+Rd,+London+EC1V+1AW,+UK/@51.5282756,-0.0921794,17z/data=!3m1!4b1!4m6!3m5!1s0x48761ca6f6650b9f:0x8a0a8d94c4a1f157!8m2!3d51.5282756!4d-0.0895991!16s%2Fg%2F11c5nx_15b?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+London+office.+My+name+is&type=phone_number&app_absent=0",
     },
     {
-      number: "03",
-      text: "Chat with our travel guide",
-      href: "/chat",
+      address:
+        "Dubai United Arab Emirate: Boulevard Plaza Tower 1, Sheikh Mohammed Bin Rashid Blvd, Business Bay, Dubai UAE.",
+      countryCode: "AE",
+      direction:
+        "https://www.google.com/maps/place/Boulevard+Plaza,+Tower+1+-+Downtown+Dubai+-+Dubai+-+United+Arab+Emirates/@25.2000941,55.2702614,17z/data=!3m1!4b1!4m6!3m5!1s0x3e5f42816493e4a1:0x9991d05586e972fd!8m2!3d25.2000893!4d55.2751323!16s%2Fg%2F11b6y9f7gk?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+UAE+office.+My+name+is&type=phone_number&app_absent=0",
     },
     {
-      number: "04",
-      text: "Testimony",
-      href: "/",
+      address:
+        "Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos.",
+      countryCode: "NG",
+      direction:
+        "https://www.google.com/maps/place/The+Lennox+Mall/@6.4390473,3.4528698,17z/data=!3m1!4b1!4m6!3m5!1s0x103bf437c0332e21:0xf257f7382c710835!8m2!3d6.439042!4d3.4554447!16s%2Fg%2F11hdsq258h?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+Lagos+office.+My+name+is&type=phone_number&app_absent=0",
+    },
+    {
+      address:
+        "Abuja Nigeria: 4th Floor, Tower C Churchgate Plaza, Cadastral Zone, Abuja, 900211",
+      countryCode: "NG",
+      direction:
+        "https://www.google.com/maps/place/Churchgate+Tower+Abuja/@9.0489572,7.4703362,17z/data=!3m1!4b1!4m6!3m5!1s0x104e0b0c90624bcf:0xa1d6460ae41e8149!8m2!3d9.0489572!4d7.4752017!16s%2Fg%2F11rvxw16b?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+Abuja+office.+My+name+is&type=phone_number&app_absent=0",
+    },
+    {
+      address:
+        "PortHarcourt Nigeria: 129-132, Old Michelin Compound, Trans Amadi Ind. Layout, PortHarcourt 500221",
+      countryCode: "NG",
+      direction:
+        "https://www.google.com/maps/place/Trans-Amadi+Industrial+Layout+Rd,+500102,+Port+Harcourt,+Rivers/@4.8243015,7.0365844,17z/data=!3m1!4b1!4m6!3m5!1s0x1069cdb01fd434fb:0x51a1c23f63f24c3d!8m2!3d4.8242962!4d7.0391593!16s%2Fg%2F1tf1knq7?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+Port+Hartcourt+office.+My+name+is&type=phone_number&app_absent=0",
+    },
+    {
+      address:
+        "Oshogbo Nigeria: No 7, Adegboye Lasaki Street, Alapata, Offatedo Via Oshogbo, Oshogbo.",
+      countryCode: "NG",
+      direction:
+        "https://www.google.com/maps/place/Alhaji+Yaya+Adegboye+St,+230284,+Osogbo,+Osun/@7.7925939,4.52765,17z/data=!3m1!4b1!4m6!3m5!1s0x103787a56a27262d:0xb239996947074e01!8m2!3d7.7925886!4d4.5302249!16s%2Fg%2F11j0tb80fb?entry=ttu",
+      appointment:
+        "https://api.whatsapp.com/send/?phone=%2B2349077210321&text=Hello%2C+Hello+Thrillers+Travels%2C+I+want+to+book+an+appointment+to+come+to+your+Osogbo+office.+My+name+is&type=phone_number&app_absent=0",
     },
   ];
-
-  const [selectedOption, setSelectedOption] = useState<{
-    label: string;
-  } | null>(null);
-
-  const renderTextField = () => (
-    <Box
-      component="form"
-      sx={{
-        "& .MuiTextField-root": {
-          width: "50%",
-          marginTop: isMobile ? "1rem" : "3rem",
-        },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField placeholder="Application" label="Application" />
-    </Box>
-  );
-
   return (
     <ContactSection>
-      <Text
-        type="h1"
-        text="Contact Us"
-        size="2.25rem"
-        styles={{ fontFamily: "Poppins" }}
-      />
-      <Grid
-        gap={isMobile ? "1rem" : "3rem"}
-        columns={isMobile ? "100%" : "25% 75%"}
-        margin="2rem auto"
+      <Flex
+        gap={isMobile ? "1rem" : "2rem"}
+        justify="space-between"
+        direction={isMobile ? "column-reverse" : "row"}
       >
-        <UsefulLinks navigationLinks={customNavigationLinks} />
-
-        <ContactDetails>
-          <ChatAgent>
-            <Flex
-              gap={isMobile ? "1rem" : "3rem"}
-              padding={isMobile ? "0.5rem" : "0rem"}
+        <Box>
+          <Flex
+            justify="space-between"
+            direction="column"
+            align="flex-start"
+            gap="1.5rem"
+          >
+            <Link
+              href="mailto:support@thrillers.travel?subject= I Need help with - "
+              target="_blank"
             >
-              <CustomerCareImg>
-                <Image src={"/assets/images/customerservice.png"} alt="" />
-              </CustomerCareImg>
-
-              <CustomerCareText>
-                <Text type="h2" text="Chat with an Agent" />
-                <Text
-                  type="p"
-                  text="Access your account and receive immediate assistance from our dedicated Customer Service team. Our team is available round-the-clock to provide support and resolve any inquiries or problems you may encounter."
-                />
-              </CustomerCareText>
-            </Flex>
-          </ChatAgent>
-
-          <HelpTool>
-            <HelpHeader>
-              <Text
-                type="h2"
-                text="use self help tools"
-                transform="capitalize"
-              />
-            </HelpHeader>
-            <HelpPara>
-              <Text
-                type="p"
-                text="If you have any concerns about your order or need assistance with the application process, take advantage of our convenient tools designed to simplify the experience and help you save time."
-              />
-            </HelpPara>
-
-            <Grid
-              className="contactCard"
-              gap="2rem"
-              columns={isMobile ? "1fr" : "repeat(3, 1fr)"}
-              width="100%"
-            >
-              {ContactCardItems.map((item, index) => (
-                <Link key={index} href={item.link}>
-                  <Flex
-                    key={index}
-                    gap="1rem"
-                    justify="center"
-                    styles={{
-                      background: "#fff",
-                      padding: "15px",
-                      borderRadius: "5px",
-                      boxShadow: "0px 0px 7px 3px rgba(0,0,0,0.1)",
-                      width: `{isMobile ? "100%" : "207.13px"}`,
-                      height: "64px",
-                    }}
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.alt}
-                      styles={{ color: "red" }}
-                      height={30}
-                      width={30}
-                    />
-                    <Text type="p" text={item.text} />
-                  </Flex>
-                </Link>
-              ))}
-            </Grid>
-          </HelpTool>
-
-          <ContactWrapper>
-            <Text type="h2" text="Send us a message" />
-
-            <Divider />
-
-            <Text
-              margin="2rem 0rem"
-              type="p"
-              text="Simply complete this form, and we'll provide you with the assistance you require at the earliest opportunity."
-            />
-            <Grid
-              columns={isMobile ? "100%" : "60% 40%"}
-              justify={isMobile ? "flex-start" : "space-between"}
-              gap="10px"
-              width="100%"
-            >
-              <form
-                style={{
-                  width: `100%`,
-                  display: `${isMobile ? "block" : "grid"}`,
-                }}
-              >
-                <Flex
-                  direction="column"
-                  gap={isMobile ? "1rem" : "2rem"}
-                  width="100%"
-                >
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField placeholder="full name" label="Full Name" />
-                  </Box>
-
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                      "& > div": {
-                        display: isMobile ? "grid" : "flex",
-
-                        gap: "1rem",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <div>
-                      <TextField placeholder="Email" label="Email" />
-                      <TextField placeholder="Phone" label="Phone" />
-                    </div>
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <Autocomplete
-                      disablePortal
-                      id="combo-box-demo"
-                      options={TravellTo}
-                      getOptionLabel={(option) => option.label}
-                      sx={{ width: "100%" }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Travelling to" />
-                      )}
-                    />
-                  </Box>
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": {
-                        width: "100%",
-                      },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <Autocomplete
-                      disablePortal
-                      id="combo-box-demo"
-                      options={ContactReason}
-                      getOptionLabel={(option) => option.label}
-                      sx={{ width: "100%" }}
-                      onInputChange={(_e, newInputValue) => {
-                        setSelectedOption({ label: newInputValue });
-                      }}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Contact Reason" />
-                      )}
-                    />
-
-                    {selectedOption?.label?.includes("Existing applicant") &&
-                      renderTextField()}
-                  </Box>
-
-                  <Box
-                    component="form"
-                    sx={{
-                      "& .MuiTextField-root": { width: "100%" },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Your Message"
-                      placeholder="Enter Your Message here..."
-                      multiline
-                      rows={5}
-                    />
-                  </Box>
-                </Flex>
-
-                <Button
-                  height="50px"
-                  width="240px"
-                  styles={{
-                    marginTop: "3rem",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    fontSize: "1.3rem",
-                  }}
-                >
-                  <Text
-                    text="Send"
-                    type="h4"
-                    whiteSpace="nowrap"
-                    weight={400}
-                    color="#fff"
+              <Flex justify="flex-start" align="flex-start" gap="1.5rem">
+                <SmallBox>
+                  <BiSolidChat
+                    color="#7BBBD6"
+                    size={isMobile ? "1rem" : "2rem"}
                   />
-                </Button>
-              </form>
-              <ContactCard>
-                {/* <Image src={ContactImg} alt="" styles={{height:'100%'}} /> */}
-                <LinkFrame>
-                  <Flex gap="20px" align="flex-start">
-                    <Link href="">
-                      <SlLocationPin size="1.2rem" />
-                    </Link>
-                    <Link href="https://www.google.com/maps/dir/6.4487012,3.5509084/thrillers+travels/@6.4430573,3.5487716,16z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x103bf71f39b935b1:0xef53f715e7e75726!2m2!1d3.5578637!2d6.437351?entry=ttu">
-                      <Text
-                        type="p"
-                        text="Ikota, Lekki County Homes, IVY HOMES, THRILLERS HOUSE. Lagos Nigeria "
-                      />
-                    </Link>
+                </SmallBox>
+                <Flex direction="column" gap=".5rem">
+                  <Flex direction="column" gap="0px">
+                    <Text
+                      type="h2"
+                      text="Reach our support"
+                      color="#ffffff"
+                      weight={600}
+                      size={24}
+                    />
+                    <Text
+                      type="span"
+                      text="Our support is always here to help"
+                      color="#ffffff"
+                      weight={400}
+                      size={16}
+                    />
                   </Flex>
-
-                  <br />
-                  <Flex gap="20px">
-                    <Link href="">
-                      <LuPhoneCall size="1.2rem" />
-                    </Link>
-                    <Link href="tel:+2349077210321">
-                      <Text type="p" text="+2349077210321" />
-                    </Link>
+                  <Text
+                    type="p"
+                    text="support@thrillers.travel"
+                    color="#ffffff"
+                    weight={500}
+                    size={16}
+                  />
+                </Flex>
+              </Flex>
+            </Link>
+            <Link href="tel:09077210321">
+              <Flex justify="flex-start" align="flex-start" gap="1.5rem">
+                <SmallBox>
+                  <MdCall color="#7BBBD6" size={isMobile ? "1rem" : "2rem"} />
+                </SmallBox>
+                <Flex direction="column" gap=".5rem">
+                  <Flex direction="column" gap="0px">
+                    <Text
+                      type="h2"
+                      text="Call us"
+                      color="#ffffff"
+                      weight={600}
+                      size={24}
+                    />
+                    <Text
+                      type="span"
+                      text="Mon-Fri from 10am to 6pm"
+                      color="#ffffff"
+                      weight={400}
+                      size={16}
+                    />
                   </Flex>
-                  <br />
+                  <Text
+                    type="p"
+                    text="+2349077210321"
+                    color="#ffffff"
+                    weight={500}
+                    size={16}
+                  />
+                </Flex>
+              </Flex>
+            </Link>
+            <Flex justify="flex-start" align="flex-start" gap="1.5rem">
+              <SmallBox>
+                <MdLocationOn
+                  color="#7BBBD6"
+                  size={isMobile ? "1rem" : "2rem"}
+                />
+              </SmallBox>
+              <Flex direction="column" gap=".5rem">
+                <Text
+                  type="h2"
+                  text="Visit Us"
+                  color="#ffffff"
+                  weight={600}
+                  size={24}
+                />
+                <Text
+                  type="span"
+                  text="Come say Hello at Our office."
+                  color="#ffffff"
+                  weight={400}
+                  size={16}
+                />
+              </Flex>
+            </Flex>
 
-                  <Flex gap="20px">
-                    <Link href="">
-                      <ImWhatsapp size="1.2rem" />
-                    </Link>
-                    <Link href="https://wa.link/ob8vpa">
-                      <Text type="p" text="+2349077210321" />
-                    </Link>
-                  </Flex>
-                  <br />
+            <Flex direction="column" gap="1rem" margin="0 0 5rem">
+              {addresses.map((address, i) => (
+                <Flex key={i} gap="1rem">
+                  <img
+                    src={
+                      COUNTRY_FLAGS.find((x) => x.code === address.countryCode)
+                        ?.flag
+                    }
+                    alt="flag"
+                    style={{
+                      height: "45px",
+                      width: "45px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <div>
+                    <Text
+                      type="h3"
+                      text={address.address}
+                      weight={500}
+                      font="Poppins"
+                      size="1rem"
+                      color="#fff"
+                    />
+                    <Flex gap="1rem" margin=".8rem 0">
+                      <Link href={address.direction} target="_blank">
+                        <Button
+                          background="transparent"
+                          border="1px solid #fff"
+                          height="35px"
+                        >
+                          <Text type="p" text="Get Direction" />
+                        </Button>
+                      </Link>
+                      <Link href={address.appointment} target="_blank">
+                        <Button
+                          background="#FFFFFF"
+                          width="140px"
+                          height="35px"
+                        >
+                          <Text
+                            type="p"
+                            text="Book appointment"
+                            color="#6092A7"
+                            whiteSpace={isMobile ? "normal" : "nowrap"}
+                          />
+                        </Button>
+                      </Link>
+                    </Flex>
+                  </div>
+                </Flex>
+              ))}
+              {/* <Text
+                type="h3"
+                text="Toronto Canada: Exchange Tower, 130 King Street West Suite 1800, Toronto, Ontario M5X 1E3"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="London United Kingdom: Old Street, 167 City Road, London UK. EC1V 1AW"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Dubai United Arab Emirate: Boulevard Plaza Tower 1, Sheikh Mohammed Bin Rashid Blvd, Business Bay, Dubai UAE."
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos."
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Lagos Nigeria: The Lennox Mall, Block 10, Plot 2&3 Admiralty Way, Lekki Phase 1, Lagos."
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Abuja Nigeria: 4th Floor, Tower C Churchgate Plaza, Cadastral Zone, Abuja, 900211"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="PortHarcourt Nigeria: 129-132, Old Michelin Compound, Trans Amadi Ind. Layout, PortHarcourt 500221"
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              />
+              <Text
+                type="h3"
+                text="Oshogbo Nigeria: No 7, Adegboye Lasaki Street, Alapata, Offatedo Via Oshogbo, Oshogbo."
+                weight={500}
+                font="Poppins"
+                size="1rem"
+                color="#fff"
+              /> */}
+            </Flex>
+          </Flex>
 
-                  <Flex gap="20px">
-                    <Link href="">
-                      <BsEnvelope size="1.2rem" />
-                    </Link>
-                    <Link href="mailto:support@thrillers.travel">
-                      <Text type="p" text="support@thrillers.travel" />
-                    </Link>
-                  </Flex>
-                </LinkFrame>
-              </ContactCard>
-            </Grid>
-          </ContactWrapper>
-
-          <SocialDiv>
+          <Flex justify="space-between" align="flex-start" gap="0px">
             <Link href="https://www.facebook.com/thrillerstravels">
-              <FaFacebookF size="1.2rem" />
+              <FaFacebookF size="2rem" color="#fff" />
             </Link>
             <Link href="https://twitter.com/thrillerstravel">
-              <FaTwitter size="1.2rem" />
+              <FaTwitter size="2rem" color="#fff" />
             </Link>
             <Link href="http://www.linkedin.com/in/thrillerstravels">
-              <FaLinkedinIn size="1.2rem" />
+              <FaLinkedinIn size="2rem" color="#fff" />
             </Link>
             <Link href="https://www.instagram.com/thrillerstravel/">
-              <FaInstagram size="1.2rem" />
+              <FaInstagram size="2rem" color="#fff" />
             </Link>
             <Link href="https://www.tiktok.com/@thrillers_travels?lang=en">
-              <FaTiktok size="1.2rem" />
+              <FaTiktok size="2rem" color="#fff" />
             </Link>
             <Link href="https://www.youtube.com/@ThrillersTravel">
-              <FaYoutube size="1.2rem" />
+              <FaYoutube size="2rem" color="#fff" />
             </Link>
-          </SocialDiv>
-        </ContactDetails>
-      </Grid>
+          </Flex>
+        </Box>
+
+        <Flex width={isMobile ? "100%" : "50%"} direction="column" gap="2.5rem">
+          <Flex
+            justify={isMobile ? "center" : "space-between"}
+            align="center"
+            gap="1rem"
+            direction={isMobile ? "column" : "row"}
+          >
+            <Card>
+              <Flex
+                gap=".5rem"
+                justify="center"
+                align="center"
+                cursor="pointer"
+                onClick={() => router.push("/")}
+              >
+                <Image
+                  src="/assets/images/check.svg"
+                  alt=""
+                  height={26}
+                  width={26}
+                />
+                <Text
+                  type="p"
+                  text="Check Application Status"
+                  weight={500}
+                  size={16}
+                  styles={{ width: "max-content" }}
+                />
+              </Flex>
+            </Card>
+            <Card>
+              <Flex
+                gap=".5rem"
+                justify="center"
+                align="center"
+                cursor="pointer"
+              >
+                <Image
+                  src="/assets/images/headset.svg"
+                  alt=""
+                  height={26}
+                  width={26}
+                />
+                <Text
+                  type="p"
+                  text="Chat Live Support"
+                  weight={500}
+                  size={16}
+                  styles={{ width: "max-content" }}
+                />
+              </Flex>
+            </Card>
+          </Flex>
+
+          <Flex justify="space-between" direction="column" gap="1rem">
+            <Text
+              type="h1"
+              text="We take your complaints/enquiries very seriously., please fill the form below"
+              weight={700}
+              size={isMobile ? 18 : 22}
+            />
+
+            <form>
+              <Flex
+                direction="column"
+                justify="space-between"
+                gap="1rem"
+                margin="0 0 1.5rem"
+              >
+                <Section>
+                  <Text
+                    type="p"
+                    text="Full Name"
+                    color="#000000"
+                    weight={500}
+                    size={18}
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+                  <FieldInput
+                    name="fullName"
+                    placeholder="Enter your Full Name"
+                    formik={Formik}
+                    border={
+                      formSubmission.error.includes("name")
+                        ? "1px solid red"
+                        : ""
+                    }
+                    value={formSubmission.initialValues.fullName}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          fullName: e.target.value,
+                        },
+                        error: "",
+                      });
+                    }}
+                  />
+                </Section>
+
+                <Section>
+                  <Text
+                    type="p"
+                    weight={500}
+                    color="#000000"
+                    size={18}
+                    text="Email Address"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+                  <FieldInput
+                    name="email"
+                    placeholder="Enter your Email Address"
+                    formik={Formik}
+                    border={
+                      formSubmission.error.includes("email")
+                        ? "1px solid red"
+                        : ""
+                    }
+                    value={formSubmission.initialValues.email}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          email: e.target.value,
+                        },
+                        error: "",
+                      });
+                    }}
+                  />
+                </Section>
+
+                <Section>
+                  <Text
+                    type="p"
+                    text="Contact Reason"
+                    weight={500}
+                    size={18}
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+
+                  <FieldString
+                    formik={Formik}
+                    name={"reason"}
+                    placeholder="Select your reason for contacting"
+                    options={ContactOptions.map((contact) => contact.label)}
+                    value={formSubmission.initialValues.reason}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          reason: e,
+                        },
+                        error: "",
+                      });
+                    }}
+                  />
+                </Section>
+
+                <Section>
+                  <Text
+                    type="p"
+                    weight={500}
+                    color="#000000"
+                    size={18}
+                    text="Message"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  />
+                  <TextArea
+                    name="message"
+                    value={formSubmission.initialValues.message}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          message: e.target.value,
+                        },
+                        error: "",
+                      });
+                    }}
+                    onBlur={() => {}}
+                    border={
+                      formSubmission.error.includes("message")
+                        ? "1px solid red"
+                        : ""
+                    }
+                  />
+                </Section>
+                {formSubmission.error && (
+                  <Flex gap=".4rem" align="center">
+                    <AiOutlineExclamationCircle color="red" />
+                    <Text type="p" text={formSubmission.error} color="red" />
+                  </Flex>
+                )}
+              </Flex>
+              <Button width="100%" onClick={handleSubmit} background="#06062A">
+                {formSubmission.loading ? (
+                  <Spinner size="40px" fill={ttColors.primary} />
+                ) : (
+                  <Text type="p" text="Send" size={17} weight={500} />
+                )}
+              </Button>
+            </form>
+          </Flex>
+        </Flex>
+      </Flex>
     </ContactSection>
   );
 };
 
-const TravellTo = Object.values(COUNTRY_FLAGS).map((country) => ({
-  label: country.name,
-  code: country.code,
-}));
-
-const ContactReason = [
+export const ContactOptions = [
+  { label: "Your visa application", value: "guidance" },
+  { label: "Requests to update your application", value: "request" },
   {
-    label: "Existing applicant: I need help with my Visa Application",
-    value: "existo",
+    label: "Inquiries about our services",
+    value: "Inquiries",
   },
   {
-    label: "Existing applicant: I need help with my Photo Application",
+    label: "Help with payments, billing, or your account",
+    value: "helpOnPayment",
+  },
+  { label: "Requesting for information", value: "invoice" },
+  {
+    label: "Report a technical issue",
+    value: "bookingCoordination",
   },
   {
-    label: "New applicant: I am new to the website",
+    label: "Book office appointment",
+    value: "appointment",
   },
   {
-    label: "New Business Partner Only: I am an iVisa Partner",
+    label: "Partner with Thrillers Travels",
+    value: "partner",
   },
   {
-    label: "Human Resources Only: I'm interested in a job position",
+    label: "Others",
+    value: "others",
   },
 ];
 
