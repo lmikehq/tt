@@ -114,7 +114,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       }
     });
   };
-  const applyVoucher = async () => {
+  function useApplyVoucher() {
     useVoucher({
       promoCode: voucher as string,
       serviceId: visaDetails.id,
@@ -122,7 +122,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       onClose();
       setSuccessModalOpen(true);
     });
-  };
+  }
   const [loading, setLoading] = useState(false);
   return (
     <>
@@ -162,7 +162,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
               : "Make Payment",
           onClick:
             applied && visaDetails.intent === "FORM FEE"
-              ? applyVoucher
+              ? useApplyVoucher
               : createPayment,
         }}
       >

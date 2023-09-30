@@ -95,8 +95,8 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
         </Flex>
       )}
       {voucher && (
-        <Flex gap="1rem" margin="1rem 0 0" width={isMobile ? "100%" : "50%"}>
-          <Flex gap=".5rem" align="center">
+        <Flex gap="2rem" margin="1rem 0 0" >
+          <Flex gap=".5rem" align="center" width="fit-content">
             <BsFillCheckCircleFill size={20} color="#6092A7" />
             <Text type="p" text={voucher} />
           </Flex>
@@ -104,13 +104,14 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
             align="center"
             gap=".5rem"
             cursor="pointer"
+            width="fit-content"
             onClick={() => {
               deleteVoucher();
               setPromoCode("");
             }}
           >
             <BsTrash size={20} color="#A0001D" />
-            <Text type="p" text={"Delete Code"} color="#A0001D" />
+            <Text type="p" text={"Delete Code"} color="#A0001D" whiteSpace="nowrap" />
           </Flex>
         </Flex>
       )}
