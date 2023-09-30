@@ -82,7 +82,9 @@ export const Button: React.FC<buttonProps> = ({
     buttonStyles.color = color || ttColors.primaryLight;
     buttonStyles.textDecoration = "underline";
   } else {
-    buttonStyles.background = disabled ? "#585870" : background || "#06062A";
+    buttonStyles.background = disabled
+      ? "#585870"
+      : background || ttColors.primary;
   }
 
   return (

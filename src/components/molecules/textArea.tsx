@@ -9,7 +9,7 @@ const CustomTextareaWrapper = styled.div`
   position: relative;
 `;
 
-const CustomTextarea = styled.textarea`
+const CustomTextarea = styled.textarea<{ border?: string }>`
   width: 100%;
   resize: none;
   height: 144px;
@@ -19,14 +19,14 @@ const CustomTextarea = styled.textarea`
   line-height: 1.5;
   padding: 12px;
   border-radius: 6px;
-  border: 1px solid #e7e7e7;
+  border: ${({ border }) => (border ? border : `1px solid #e7e7e7`)};
 
   &:focus-visible {
     outline: 0;
   }
 
   &:hover {
-    border: 1px solid ${ttColors.primary}
+    border: 1px solid ${ttColors.primary};
   }
 `;
 
@@ -42,8 +42,9 @@ interface TextAreaProps {
   onBlur: (e: FocusEvent<any, Element>) => void;
   name: string;
   value?: string;
+  border?: string;
 }
-const TextArea = ({ onChange, name, onBlur, value }: TextAreaProps) => {
+const TextArea = ({ onChange, name, onBlur, value, border }: TextAreaProps) => {
   const [text, setText] = useState(value ?? "");
   const remainingChars = MaxCharCount - text?.length;
 
@@ -57,6 +58,7 @@ const TextArea = ({ onChange, name, onBlur, value }: TextAreaProps) => {
   return (
     <CustomTextareaWrapper>
       <CustomTextarea
+        border={border}
         aria-label="minimum height"
         rows={8}
         placeholder=""

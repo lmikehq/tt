@@ -12,9 +12,9 @@ import Image from "@atom/image";
 import { usePathname } from "next/navigation";
 import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
-import { FaTiktok } from "react-icons/fa";
+import { FaTiktok} from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
-import { RiWhatsappFill } from "react-icons/ri";
+import { RiThreadsFill, RiWhatsappFill } from "react-icons/ri";
 import styled from "styled-components";
 import Section from "@molecule/section";
 
@@ -73,20 +73,21 @@ const footerIcons = [
   },
   {
     id: 7,
-    icon: <RiWhatsappFill size="1.5rem" color="#06062A" />,
+    icon: <RiWhatsappFill size="1.5rem" color="#06062A" fontWeight={900} />,
     url: "https://chat.whatsapp.com/IpZEWEAdZngD5jGJKGZvy7",
   },
   {
     id: 8,
-    icon: (
-      <Section height={"24px"} styles={{ position: "relative" }}>
-        <Image
-          src={"/assets/images/thread.png"}
-          alt=""
-          styles={{ borderRadius: "2px" }}
-        />
-      </Section>
-    ),
+    icon: <RiThreadsFill size="1.5rem" color="#06062A" />,
+    // icon: (
+    //   <Section height={"24px"} styles={{ position: "relative" }}>
+    //     <Image
+    //       src={"/assets/images/thread.png"}
+    //       alt=""
+    //       styles={{ borderRadius: "2px" }}
+    //     />
+    //   </Section>
+    // ),
     url: "https://www.threads.net/@thrillerstravel",
   },
 ];

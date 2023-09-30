@@ -176,16 +176,16 @@ const PopularDestinations = ({
 
                     <Flex direction="column" alignSelf="center">
                       <Text type="h3" text={destination.title} />
-                      <Flex>
+                      <Flex align="center">
                         {destination.description
                           .split(".")
                           .map((desc, index) => (
-                            <div key={index}>
+                            <React.Fragment key={index}>
                               <Text type="p" text={desc.trim()} />
                               {index !==
                                 destination.description.split(".").length -
                                   1 && <BsDot />}
-                            </div>
+                            </React.Fragment>
                           ))}
                       </Flex>
                     </Flex>
