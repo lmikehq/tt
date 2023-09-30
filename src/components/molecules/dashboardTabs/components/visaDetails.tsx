@@ -283,6 +283,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           id: visa?._id,
           intent: getButtonInformation().intent,
           accompanying: accompanying,
+          refetch,
         }}
       />
 

@@ -1,3 +1,6 @@
+import VoucherForm from "@/components/organisms/form/components/voucherForm";
+import { PaymentCompleteSection } from "@/components/organisms/paymentConfirmationModal";
+import CustomConfirmationModal from "@/components/organisms/visaApplicationModal";
 import Text from "@atom/text";
 import Flex from "@components/templates/flex";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
@@ -5,19 +8,16 @@ import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { useVoucherStore } from "@lib/store/voucher.store";
-import { FieldInput, FieldString } from "@organism/fieldInput";
-import { Formik, useFormik } from "formik";
+import { FieldInput } from "@organism/fieldInput";
+import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import Section from "src/components/molecules/section";
-import ReusableModal from "./components/dashboardModal";
-import { ChangeEvent, useState } from "react";
 import { CustomRadioGroup } from "../radio";
 import SearchStringInput from "../searchInputs/searchStringInput";
-import VoucherForm from "@/components/organisms/form/components/voucherForm";
-import CustomConfirmationModal from "@/components/organisms/visaApplicationModal";
-import { useRouter } from "next/navigation";
-import { PaymentCompleteSection } from "@/components/organisms/paymentConfirmationModal";
+import ReusableModal from "./components/dashboardModal";
 
 type VisaPaymentModalProps = {
   open: boolean;
@@ -26,6 +26,7 @@ type VisaPaymentModalProps = {
     intent: string;
     id: string;
     accompanying: number;
+    refetch: () => void;
   };
 };
 
@@ -118,7 +119,8 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     useVoucher({
       promoCode: voucher as string,
       serviceId: visaDetails.id,
-    }).then((response) => {
+    }).then(() => {
+      visaDetails.refetch();
       onClose();
       setSuccessModalOpen(true);
     });
