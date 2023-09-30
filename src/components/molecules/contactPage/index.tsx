@@ -1,9 +1,9 @@
 "use client";
 
-import Flex from "@components/templates/flex";
 import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
+import Flex from "@components/templates/flex";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import {
   FaFacebookF,
@@ -13,23 +13,23 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import { ImWhatsapp } from "react-icons/im";
-import { LuPhoneCall } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
 import styled from "styled-components";
-import { ttColors } from "@lib/theme/colors";
-
-import { Divider } from "@atom/divider";
-
-import UsefulLinks from "./components/usefulLink";
-import { customNavigationLinks } from "@lib/extensions/data/customNavigationLinks";
+import Button from "@/components/atoms/button";
+import { FieldInput, FieldString } from "@/components/organisms/fieldInput";
+import { Formik } from "formik";
+import { useRouter } from "next/navigation";
 import { BiSolidChat } from "react-icons/bi";
 import { MdCall, MdLocationOn } from "react-icons/md";
 import Section from "../section";
-import { FieldInput, FieldString } from "@/components/organisms/fieldInput";
-import { Formik, FormikProps } from "formik";
 import TextArea from "../textArea";
-import Button from "@/components/atoms/button";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
+import apiService from "@/lib/extensions/hook/apiService";
+import { validateEmail } from "@/lib/utilFns";
+import Spinner from "../icons/spinner";
+import { ttColors } from "@/lib/theme/colors";
+import { useUserStore } from "@/lib/store/useStore";
 
 const ContactSection = styled.div`
   margin-top: 2.5rem;
@@ -78,7 +78,65 @@ const SmallBox = styled.div`
 
 const ContactPage = () => {
   const { isMobile } = useScreenResolution();
-
+  const { user } = useUserStore();
+  const router = useRouter();
+  const [formSubmission, setFormSubmission] = useState({
+    initialValues: {
+      fullName: "",
+      email: "",
+      reason: "",
+      message: "",
+    },
+    loading: false,
+    error: "",
+  });
+  async function handleSubmit() {
+    if (formSubmission.loading) return;
+    setFormSubmission({ ...formSubmission, loading: true });
+    const { fullName, email, message } = formSubmission.initialValues;
+    if (!fullName)
+      return setFormSubmission({
+        ...formSubmission,
+        error: "Please provide your full name",
+        loading: false,
+      });
+    if (!email || !validateEmail(email))
+      return setFormSubmission({
+        ...formSubmission,
+        error: "Please provide a valid email address",
+        loading: false,
+      });
+    if (!message)
+      return setFormSubmission({
+        ...formSubmission,
+        error: "Please provide message",
+        loading: false,
+      });
+    const response = await apiService("/contact", "POST", {
+      ...formSubmission.initialValues,
+      ...(user && { user: user?._id }),
+    });
+    if (response?.status === 200) {
+      toast.success("Your message has been sent successfully!");
+      setFormSubmission({
+        ...formSubmission,
+        loading: false,
+        initialValues: {
+          fullName: "",
+          email: "",
+          reason: "",
+          message: "",
+        },
+      });
+    } else {
+      toast.error("An error occured, please try again");
+      setFormSubmission({
+        ...formSubmission,
+        loading: false,
+        error: response.message,
+      });
+    }
+  }
   return (
     <ContactSection>
       <Flex
@@ -281,7 +339,13 @@ const ContactPage = () => {
             direction={isMobile ? "column" : "row"}
           >
             <Card>
-              <Flex gap=".5rem" justify="center" align="center">
+              <Flex
+                gap=".5rem"
+                justify="center"
+                align="center"
+                cursor="pointer"
+                onClick={() => router.push("/")}
+              >
                 <Image
                   src="/assets/images/check.svg"
                   alt=""
@@ -298,7 +362,12 @@ const ContactPage = () => {
               </Flex>
             </Card>
             <Card>
-              <Flex gap=".5rem" justify="center" align="center">
+              <Flex
+                gap=".5rem"
+                justify="center"
+                align="center"
+                cursor="pointer"
+              >
                 <Image
                   src="/assets/images/headset.svg"
                   alt=""
@@ -319,9 +388,9 @@ const ContactPage = () => {
           <Flex justify="space-between" direction="column" gap="1rem">
             <Text
               type="h1"
-              text="Thrillers Team would love to hear from you, Get in touch &nbsp; 👋"
+              text="We take your complaints/enquiries very seriously., please fill the form below"
               weight={700}
-              size={isMobile ? 22 : 33}
+              size={isMobile ? 18 : 22}
             />
 
             <form>
@@ -344,6 +413,22 @@ const ContactPage = () => {
                     name="fullName"
                     placeholder="Enter your Full Name"
                     formik={Formik}
+                    border={
+                      formSubmission.error.includes("name")
+                        ? "1px solid red"
+                        : ""
+                    }
+                    value={formSubmission.initialValues.fullName}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          fullName: e.target.value,
+                        },
+                        error: "",
+                      });
+                    }}
                   />
                 </Section>
 
@@ -360,6 +445,22 @@ const ContactPage = () => {
                     name="email"
                     placeholder="Enter your Email Address"
                     formik={Formik}
+                    border={
+                      formSubmission.error.includes("email")
+                        ? "1px solid red"
+                        : ""
+                    }
+                    value={formSubmission.initialValues.email}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          email: e.target.value,
+                        },
+                        error: "",
+                      });
+                    }}
                   />
                 </Section>
 
@@ -374,9 +475,20 @@ const ContactPage = () => {
 
                   <FieldString
                     formik={Formik}
-                    name={"reasons"}
+                    name={"reason"}
                     placeholder="Select your reason for contacting"
-                    options={ContactOptions.map(contact => contact.label)}
+                    options={ContactOptions.map((contact) => contact.label)}
+                    value={formSubmission.initialValues.reason}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          reason: e,
+                        },
+                        error: "",
+                      });
+                    }}
                   />
                 </Section>
 
@@ -391,15 +503,38 @@ const ContactPage = () => {
                   />
                   <TextArea
                     name="message"
-                    value=""
-                    onChange={() => {}}
+                    value={formSubmission.initialValues.message}
+                    onChange={(e) => {
+                      setFormSubmission({
+                        ...formSubmission,
+                        initialValues: {
+                          ...formSubmission.initialValues,
+                          message: e.target.value,
+                        },
+                        error: "",
+                      });
+                    }}
                     onBlur={() => {}}
+                    border={
+                      formSubmission.error.includes("message")
+                        ? "1px solid red"
+                        : ""
+                    }
                   />
-
                 </Section>
+                {formSubmission.error && (
+                  <Flex gap=".4rem" align="center">
+                    <AiOutlineExclamationCircle color="red" />
+                    <Text type="p" text={formSubmission.error} color="red" />
+                  </Flex>
+                )}
               </Flex>
-              <Button width="100%">
-                <Text type="p" text="Send" size={14} weight={500} />
+              <Button width="100%" onClick={handleSubmit} background="#06062A">
+                {formSubmission.loading ? (
+                  <Spinner size="40px" fill={ttColors.primary} />
+                ) : (
+                  <Text type="p" text="Send" size={17} weight={500} />
+                )}
               </Button>
             </form>
           </Flex>
@@ -410,24 +545,32 @@ const ContactPage = () => {
 };
 
 export const ContactOptions = [
-  { label: "Requests to modify travel plans", value: "request" },
+  { label: "Your visa application", value: "guidance" },
+  { label: "Requests to update your application", value: "request" },
   {
-    label: "Inquiries about schedules, baggage, and seat allocation",
+    label: "Inquiries about our services",
     value: "Inquiries",
   },
-  { label: "Guidance on visas and passport rules.", value: "guidance" },
   {
-    label: "Help with payments, billing, and credit card charges.",
+    label: "Help with payments, billing, or your account",
     value: "helpOnPayment",
   },
+  { label: "Requesting for information", value: "invoice" },
   {
-    label: "Inquiries on group bookings and coordination.",
+    label: "Report a technical issue",
     value: "bookingCoordination",
   },
-  { label: "Requesting booking confirmations and invoices", value: "invoice" },
   {
-    label: "Help with cancellations and understanding policies.",
-    value: "policies",
+    label: "Book office appointment",
+    value: "appointment",
+  },
+  {
+    label: "Partner with Thrillers Travels",
+    value: "partner",
+  },
+  {
+    label: "Others",
+    value: "others",
   },
 ];
 
