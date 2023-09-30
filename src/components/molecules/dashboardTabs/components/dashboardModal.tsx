@@ -20,7 +20,7 @@ const StyledModalContent = styled.div<{
   padding: 50px;
   max-width: ${({ maxWidth }) => maxWidth || " 647px"};
   width: ${({ width }) => width || "100%"};
-  max-height: ${({ maxHeight }) => maxHeight || " auto"};
+  max-height: calc(100vh - 3rem);
   height: ${({ height }) => height || "auto"};
   overflow-y: scroll;
   position: absolute;
@@ -28,7 +28,7 @@ const StyledModalContent = styled.div<{
   left: 50%;
   transform: translate(-50%, -50%);
   justify-content: center;
-  text-align: center;
+  // text-align: center;
 
   & p {
     margin: 1rem 0px;
@@ -92,7 +92,8 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   maxWidth,
   maxHeight,
   children,
-  loading = false, setLoading = () => {},
+  loading = false,
+  setLoading = () => {},
   buttonProps = {
     text: "Save",
     onClick: () => {},
@@ -113,7 +114,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         <ModalIcon onClick={onClose}>
           <IoMdClose />
         </ModalIcon>
-      {description &&   <p>{description}</p> }
+        {description && <p style={{ textAlign: "center" }}>{description}</p>}
         {children}
         <Button
           width="100%"

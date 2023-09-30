@@ -121,7 +121,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
     open: false,
     type: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -284,6 +283,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           id: visa?._id,
           intent: getButtonInformation().intent,
           accompanying: accompanying,
+          refetch,
         }}
       />
 
@@ -508,6 +508,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     padding="8px 10px"
                     width={"100%"}
                     height="48px"
+                    background="#06062A"
                     styles={{
                       marginLeft: isMobile ? "0px" : "55px",
                       display: isMobile ? "flex" : "inline-flex",
@@ -708,6 +709,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
               <Button
                 padding="8px 16px"
                 width={isMobile ? "300px!important" : "100px !important"}
+                background="#06062A"
                 height="48px"
                 styles={{
                   marginLeft: isMobile ? "0px" : "55px",

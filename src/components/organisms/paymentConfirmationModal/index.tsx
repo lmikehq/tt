@@ -18,7 +18,7 @@ export const PaymentCompleteSection = ({
   title,
   description,
 }: {
-  handleModalClose?: () => void;
+  handleModalClose: () => void;
   title?: string;
   description?: string;
 }) => {
@@ -80,7 +80,7 @@ export const PaymentCompleteSection = ({
               color={ttColors.light}
               onClick={() => {
                 router.push("/visa/apply");
-                handleModalClose;
+                handleModalClose()
               }}
             >
               Make another Application
@@ -91,7 +91,7 @@ export const PaymentCompleteSection = ({
               color={ttColors.dark}
               border="1px solid #19013b"
               onClick={() => {
-                handleModalClose;
+                handleModalClose();
                 router.push("/dashboard");
               }}
             >

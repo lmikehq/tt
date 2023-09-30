@@ -431,12 +431,22 @@ const PaymentHistory = () => {
                         size={14}
                         styles={{ opacity: "75%" }}
                       />
-                      <Text
-                        type="h3"
-                        size={18}
-                        text={payment?.paymentIntent}
-                        color="#112211"
-                      />
+                      <Flex gap=".5rem">
+                        <Text
+                          type="h3"
+                          size={18}
+                          text={payment?.paymentIntent}
+                          color="#112211"
+                        />
+                        {payment?.isPartPayment && (
+                          <Text
+                            type="h3"
+                            size={14}
+                            text={` - part payment`}
+                            color="#112211"
+                          />
+                        )}
+                      </Flex>
                     </Flex>
 
                     <Text
@@ -454,12 +464,12 @@ const PaymentHistory = () => {
                     </PaymentStatus>
 
                     <Button
-                      width="166px"
+                      // width="176px"
                       height="48px"
                       styles={{ marginLeft: isMobile ? 0 : "55px" }}
                       disabled
                     >
-                      Download receipts
+                      no action
                     </Button>
                   </Flex>
                 </History>
