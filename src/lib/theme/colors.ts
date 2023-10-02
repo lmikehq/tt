@@ -15,6 +15,7 @@ export const ttColors = {
   dark: "#06062A",
   light: "#FAFBFC",
   primary: "#87CEEB",
+  primary600: "#7BBBD6",
   defaultColor: "#FFFFFF",
   salmon: "#FF8682",
   slamon: "#FF8682",

@@ -12,7 +12,7 @@ import Image from "@atom/image";
 import { usePathname } from "next/navigation";
 import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTwitter, BsYoutube } from "react-icons/bs";
-import { FaTiktok} from "react-icons/fa";
+import { FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
 import { RiThreadsFill, RiWhatsappFill } from "react-icons/ri";
 import styled from "styled-components";
@@ -175,7 +175,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                   margin={"1rem 0rem 0rem 0rem"}
                 >
                   {footerIcons.map((icon) => (
-                    <Link href={icon.url} key="key">
+                    <Link href={icon.url} key={icon.id}>
                       {icon.icon}
                     </Link>
                   ))}

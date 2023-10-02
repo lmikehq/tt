@@ -1,14 +1,12 @@
 "use client";
-import Button from "@/components/atoms/button";
+import Text from "@/components/atoms/text";
 import Section from "@/components/molecules/section";
-import ContactDetails from "@/components/organisms/flights/ContactDetails";
-import MainPassenger from "@/components/organisms/flights/MainPassenger";
 import PriceSumary from "@/components/organisms/flights/PriceSummary";
+import TicketFareTable from "@/components/organisms/flights/TicketFareTable";
 import TripSteps from "@/components/organisms/flights/TripSteps";
-import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import Navbar from "@/components/organisms/Navbar";
-import { ttColors } from "@/lib/theme/colors";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import Container from "@mui/material/Container";
 
 export default function Page() {
@@ -36,23 +34,18 @@ export default function Page() {
             marginY: "4rem",
           }}
         >
-          <Box
-            sx={{ display: "flex", flexDirection: "column", rowGap: "1rem" }}
-          >
-            <Box>
-              <TripSummaryCard />
-            </Box>
-            <Box>
-              <ContactDetails />
-            </Box>
-            <Box>
-              <MainPassenger />
-            </Box>
-            <Box sx={{ marginY: "3rem" }}>
-              <Button background={ttColors.dark} width="100%">
-                Continue
-              </Button>
-            </Box>
+          <Box>
+            <Paper sx={{ padding: "2rem", width: "100%" }}>
+              <Box marginBottom={"2rem"}>
+                <Text type="h2" text="Choose Ticket Fare" />
+                <Text
+                  type="p"
+                  text="Switch to the Advanced level now to feel secure in case your plans end up changing."
+                />
+              </Box>
+
+              <TicketFareTable />
+            </Paper>
           </Box>
 
           <Box>

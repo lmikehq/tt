@@ -4,11 +4,12 @@ import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import PlusMinusButton from "./PlusMinusButton";
+import Image from "@/components/atoms/image";
 
 export default function PriceSumary() {
   return (
     <Box>
-      <Text type="h2" text="Price Summary" />
+      <Text type="h3" text="Price Summary" />
       <Text type="p" text="Taxes and service charges included" />
 
       <Box
@@ -104,6 +105,13 @@ export default function PriceSumary() {
           <Text type="p" text={`This booking will be unavailable in 17h 40m`} />
         </Flex>
       </Box>
+
+      <Image
+        width={384}
+        height={525}
+        src="/assets/images/flights/baggage.png"
+        alt="Baggage"
+      />
     </Box>
   );
 }
