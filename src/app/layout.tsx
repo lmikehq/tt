@@ -37,6 +37,13 @@ export default function RootLayout({
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
       />
 
+      <script
+        src="https://cdn.popupsmart.com/bundle.js"
+        data-id={process.env.NEXT_PUBLIC_POPUPSMART_ID}
+        async
+        defer
+      ></script>
+
       <Script strategy="lazyOnload" id="analytics">
         {`
   
@@ -72,7 +79,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <Toaster position="top-center"  />
+        <Toaster position="top-center" />
         <PaymentConfirmationModal />
         <StyledComponentsRegistry>
           <LoaderLayout>{children}</LoaderLayout>

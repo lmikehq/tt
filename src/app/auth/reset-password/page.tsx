@@ -19,6 +19,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
+import { checkIfFieldHasError } from "@/lib/utilFns";
 
 const settings = {
   infinite: true,
@@ -40,11 +41,11 @@ function VerifyCode() {
   async function handleResetPassword() {
     if (resetDetails.loading) return;
     setResetDetails({ ...resetDetails, loading: true });
-    if (!resetDetails.token || !resetDetails.password)
+    if (!resetDetails.token)
       return setResetDetails({
         ...resetDetails,
         loading: false,
-        error: ["Please fill all fields"],
+        error: [{ property: "token", constraints: "Please fill all fields" }],
       });
     const response = (await apiService(
       "/auth/reset-password",
@@ -54,11 +55,18 @@ function VerifyCode() {
     if (response.statusCode === 200) {
       toast.success("Password reset successful");
       router.push("/auth/login");
+    } else if (response?.statusCode === 401) {
+      setResetDetails({
+        ...resetDetails,
+        loading: false,
+        error: [{ property: "token", constraints: response?.errors?.message }],
+      });
+      return;
     } else {
       setResetDetails({
         ...resetDetails,
         loading: false,
-        error: ["Token is invalid or expired"],
+        error: response?.errors?.message,
       });
     }
   }
@@ -210,6 +218,11 @@ function VerifyCode() {
                 onChange={(e) =>
                   setResetDetails({ ...resetDetails, token: e.target.value })
                 }
+                border={
+                  checkIfFieldHasError(resetDetails?.error, "token")
+                    ? "1px solid #FF8682"
+                    : ""
+                }
                 value={resetDetails.token}
               />
             </Section>
@@ -228,6 +241,11 @@ function VerifyCode() {
                 onChange={(e) =>
                   setResetDetails({ ...resetDetails, password: e.target.value })
                 }
+                border={
+                  checkIfFieldHasError(resetDetails?.error, "password")
+                    ? "1px solid #FF8682"
+                    : ""
+                }
               />
             </Section>
 
@@ -241,7 +259,7 @@ function VerifyCode() {
             </p>
 
             {resetDetails?.error?.map((err: any, i: number) => (
-              <Text type="p" text={err} color="red" key={i} />
+              <Text type="p" text={err.constraints} color="red" key={i} />
             ))}
 
             <Button

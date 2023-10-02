@@ -28,3 +28,11 @@ export function safelyConvertToNumber(value?: string | number): number {
   const numValue = parseInt(value as string);
   return isNaN(numValue) ? 0 : numValue;
 }
+
+
+export function checkIfFieldHasError(obj: any, field: string) {
+  const error: { constraints: string } = obj.find((err: any) =>
+    err.property.includes(field)
+  );
+  if (error) return error.constraints;
+}
