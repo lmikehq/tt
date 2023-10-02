@@ -1,31 +1,31 @@
 "use client";
 import Button from "@atom/button";
-import Flex from "@components/templates/flex";
-import { Grid } from "@components/templates/grid";
+import Image from "@atom/image";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import RTQueryClient from "@components/templates/rtqWrapper";
 import NavbarLayout from "@components/templates/SectionLayout";
-import { ButtonBase } from "@mui/material";
-import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
-import { useQuery } from "@tanstack/react-query";
+import Flex from "@components/templates/flex";
+import { Grid } from "@components/templates/grid";
+import RTQueryClient from "@components/templates/rtqWrapper";
 import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import Image from "@atom/image";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
+import { User } from "@lib/types";
+import { ButtonBase } from "@mui/material";
+import UserPopover from "@organism/Navbar/UserPopover";
+import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
+import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { BiSolidUserCircle } from "react-icons/bi";
 import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { TbCurrencyNaira } from "react-icons/tb";
-import { useUserStore } from "@lib/store/useStore";
 import styled from "styled-components";
-import { ttColors } from "@lib/theme/colors";
-import { User } from "@lib/types";
-import UserPopover from "@organism/Navbar/UserPopover";
 import MobileNavigationDrawer from "./modals/mobileNav";
-import { BiSolidUserCircle, BiUserCircle } from "react-icons/bi";
 const NavbarWrapper = styled.div<{ page?: string }>`
   position: relative;
   width: 100%;
@@ -166,7 +166,6 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const handleOpen = () => setModalOpen(true);
   const { setUser } = useUserStore((state) => state);
   async function getUser(): Promise<User | any> {
     const res = await apiService("/user", "GET");
@@ -258,7 +257,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   </Button>
                 </Link>
                 <Link href="/auth/register">
-                  <Button>
+                  <Button background={ttColors.dark}>
                     <Text
                       text="Sign up"
                       type="p"

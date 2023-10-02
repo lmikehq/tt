@@ -26,6 +26,13 @@ import "slick-carousel/slick/slick.css";
 import Section from "src/components/molecules/section";
 // import { useGoogleLogin } from "@react-oauth/google";
 
+export function checkIfFieldHasError(obj: any, field: string) {
+  const error: { constraints: string } = obj.find((err: any) =>
+    err.property.includes(field)
+  );
+  if (error) return error.constraints;
+}
+
 const settings = {
   infinite: true,
   speed: 500,
@@ -83,13 +90,6 @@ function LoginPage() {
     success: false,
   });
 
-  function checkIfFieldHasError(field: string) {
-    const error: { constraints: string } = submissionState?.error?.find(
-      (err: any) => err.property.includes(field)
-    );
-    if (error) return error.constraints;
-  }
-
   async function handleLogin(): Promise<any> {
     return await apiService("/auth/login", "POST", {
       ...loginData,
@@ -102,7 +102,7 @@ function LoginPage() {
     if (submissionState.loading) return;
     setSubmissionState({ ...submissionState, loading: true });
     const res = await handleLogin();
-    console.log('res: ', res)
+    console.log("res: ", res);
     if (res?.statusCode === 401) {
       return setSubmissionState({
         ...submissionState,
@@ -278,7 +278,9 @@ function LoginPage() {
                 placeholder="Enter your email"
                 height="3rem"
                 border={
-                  checkIfFieldHasError("email") ? "1px solid #FF8682" : ""
+                  checkIfFieldHasError(submissionState?.error, "email")
+                    ? "1px solid #FF8682"
+                    : ""
                 }
                 onChange={(e) =>
                   setLoginData({ ...loginData, email: e.target.value })
@@ -298,14 +300,14 @@ function LoginPage() {
                 height="3rem"
                 type="password"
                 border={
-                  checkIfFieldHasError("password") ? "1px solid #FF8682" : ""
+                  checkIfFieldHasError(submissionState?.error,"password") ? "1px solid #FF8682" : ""
                 }
                 onChange={(e) =>
                   setLoginData({ ...loginData, password: e.target.value })
                 }
                 value={loginData.password}
               />
-              {checkIfFieldHasError("email") && (
+              {checkIfFieldHasError(submissionState?.error, "email") && (
                 <Text
                   type="p"
                   text={submissionState.error[0].constraints}
