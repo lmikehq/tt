@@ -19,7 +19,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
-import { checkIfFieldHasError } from "../login/page";
+import { checkIfFieldHasError } from "@/lib/utilFns";
 
 const settings = {
   infinite: true,

@@ -24,14 +24,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import Section from "src/components/molecules/section";
+import { checkIfFieldHasError } from "@/lib/utilFns";
 // import { useGoogleLogin } from "@react-oauth/google";
 
-export function checkIfFieldHasError(obj: any, field: string) {
-  const error: { constraints: string } = obj.find((err: any) =>
-    err.property.includes(field)
-  );
-  if (error) return error.constraints;
-}
+
 
 const settings = {
   infinite: true,
