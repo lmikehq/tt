@@ -1,4 +1,4 @@
-
+// @next/next/no-img-element
 "use client";
 
 import Button from "@atom/button";
@@ -71,7 +71,6 @@ function RegisterPage() {
 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-
 
   const { isMobile } = useScreenResolution();
 
