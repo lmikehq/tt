@@ -32,7 +32,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
-
+// kindly remerge this code to the main branch
 const settings = {
   infinite: true,
   speed: 500,
