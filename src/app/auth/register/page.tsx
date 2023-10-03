@@ -25,8 +25,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
-import Image from "@atom/image";
-// kindly remerge this code to the main branch
+
 const settings = {
   infinite: true,
   speed: 500,
@@ -107,16 +106,16 @@ function RegisterPage() {
       return alert("Please agree to the terms and conditions");
     }
 
-    if (registerData.password !== registerData.confirmPassword) {
+    if (registerData.password !== confirmPassword) {
       setSubmissionState({
         ...submissionState,
         error: [
           {
-            constraints: "Password and confirm password do not match",
+            constraints: "Password do not match",
             property: "confirmPassword",
           },
           {
-            constraints: "Password and confirm password do not match",
+            constraints: "Password do not match",
             property: "password",
           },
         ],
@@ -174,72 +173,54 @@ function RegisterPage() {
                 <img
                   src={"/assets/images/auth-bg.png"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
                 <img
                   src={"/assets/images/auth-bg1.png"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
                 <img
                   src={"/assets/images/auth-bg2.png"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
                 <img
                   src={"/assets/images/auth-bg3.jpeg"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
                 <img
                   src={"/assets/images/auth-bg4.jpeg"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
                 <img
                   src={"/assets/images/auth-bg5.jpeg"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
 
@@ -247,24 +228,18 @@ function RegisterPage() {
                 <img
                   src={"/assets/images/auth-bg7.jpeg"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
               <div>
                 <img
                   src={"/assets/images/auth-bg8.jpeg"}
                   alt="background image"
-                  style={{
-                    borderRadius: "30px",
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "798px",
-                  }}
+                  width="100%"
+                  height="798px"
+                  style={{ borderRadius: "30px", objectFit: "cover" }}
                 />
               </div>
             </Slider>
@@ -277,10 +252,7 @@ function RegisterPage() {
                 alt="logo"
                 height={60}
                 onClick={() => router.push("/")}
-                style={{
-                  cursor: "pointer",
-                  height: isMobile ? "45px" : "60px",
-                }}
+                style={{ cursor: "pointer" }}
               />
               <SideBtn
                 title="Already have an account?"
@@ -309,7 +281,7 @@ function RegisterPage() {
               overflow="unset"
             >
               <Flex
-                gap={".5rem"}
+                gap=".5rem"
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -375,7 +347,7 @@ function RegisterPage() {
                 </Section>
               </Flex>
               <Flex
-                gap={".5rem"}
+                gap=".5rem"
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
               >
@@ -440,33 +412,81 @@ function RegisterPage() {
                   )}
                 </Section>
               </Flex>
+
               <Section>
                 <Text
                   type="p"
                   text="Password"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
-                <Input
-                  placeholder="Enter your password"
-                  type="password"
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      password: e.target.value,
-                    })
-                  }
-                  border={
-                    checkIfFieldHasError("password") ? "1px solid #FF8682" : ""
-                  }
-                  height="3rem"
-                  value={registerData.password}
-                />
-                {checkIfFieldHasError("password") && (
-                  <Text
-                    type="p"
-                    text={checkIfFieldHasError("password") || ""}
-                    color="#FF8682"
+                <div
+                  onFocus={() => setIsPasswordFocused(true)}
+                  onBlur={() => setIsPasswordFocused(false)}
+                >
+                  <Input
+                    placeholder="Enter your password"
+                    type="password"
+                    onChange={(e) =>
+                      setRegisterData({
+                        ...registerData,
+                        password: e.target.value,
+                      })
+                    }
+                    border={
+                      checkIfFieldHasError("password")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                    value={registerData.password}
                   />
+                </div>
+                {isPasswordFocused && (
+                  <Section margin="1rem 0px 0px">
+                    <Text
+                      type="h1"
+                      text="Your Password must have the following."
+                      size={16}
+                      weight={500}
+                      styles={{
+                        margin: "0px 0px .9rem 0px",
+                        lineHeight: "1.5rem",
+                      }}
+                    />
+                    {validationOptions.map((option) => (
+                      <div
+                        key={option.value}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "0.5rem",
+                          fontSize: "16px",
+                          fontWeight: 400,
+                          color: isPasswordValid(
+                            registerData.password,
+                            option.value
+                          )
+                            ? "#000000"
+                            : "#000000",
+                        }}
+                      >
+                        <AiFillCheckCircle
+                          size="1.5rem"
+                          style={{
+                            color: isPasswordValid(
+                              registerData.password,
+                              option.value
+                            )
+                              ? "#7BBBD6"
+                              : "#B6B6B6",
+                          }}
+                        />
+                        <span style={{ marginLeft: "0.5rem" }}>
+                          {option.label}
+                        </span>
+                      </div>
+                    ))}
+                  </Section>
                 )}
               </Section>
               <Section>
