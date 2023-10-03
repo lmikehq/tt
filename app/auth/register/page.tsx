@@ -1,19 +1,18 @@
 // @next/next/no-img-element
 "use client";
-
 import Button from "@atom/button";
 import Input from "@atom/input";
 import Link from "@atom/link";
 import Text from "@atom/text";
-import bgImage from "@image/auth-bg.png";
+import bgImage from "../../../public/assets/images/auth-bg.png";
 import bgImage1 from "../../../public/assets/images/auth-bg1.png";
-import bgImage2 from "../../../public/assets/image/auth-bg2.png";
-import bgImage3 from "../../../public/assets/image/auth-bg3.jpeg";
-import bgImage4 from "../../../public/assets/image/auth-bg4.jpeg";
-import bgImage5 from "../../../public/assets/image/auth-bg5.jpeg";
-import bgImage7 from "../../../public/assets/image/auth-bg7.jpeg";
-import bgImage8 from "../../../public/assets/image/auth-bg8.jpeg";
-import logo from "../../../public/assets/image/brand/tt_blue_logo_with_text1.png";
+import bgImage2 from "../../../public/assets/images/auth-bg2.png";
+import bgImage3 from "../../../public/assets/images/auth-bg3.jpeg";
+import bgImage4 from "../../../public/assets/images/auth-bg4.jpeg";
+import bgImage5 from "../../../public/assets/images/auth-bg5.jpeg";
+import bgImage7 from "../../../public/assets/images/auth-bg7.jpeg";
+import bgImage8 from "../../../public/assets/images/auth-bg8.jpeg";
+import logo from "../../../public/assets/images/brand/tt_blue_logo_with_text1.png";
 import Section from "@molecule/section";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
