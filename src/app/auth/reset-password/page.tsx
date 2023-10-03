@@ -84,12 +84,6 @@ function VerifyCode() {
     }
   }
 
-// function checkIfFieldHasError(field: string) {
-//   const error: { constraints: string } = resetDetails?.error?.find((err: any) =>
-//     err.property.includes(field)
-//   );
-//   if (error) return error.constraints;
-// }
   
   
   function isPasswordValid(password: string, selectedOption: string) {
@@ -212,16 +206,7 @@ function VerifyCode() {
               linkUrl="/auth/login"
             />
           </Flex>
-          {/* <Flex
-            margin="2rem 0 0 "
-            cursor="pointer"
-            align="center"
-            gap=".5rem"
-            onClick={() => router.push("/auth/login")}
-          >
-            <IoIosArrowBack />
-            <Text type="p" text="Back to login" size="17px" />
-          </Flex> */}
+          
           <Text
             type="h1"
             margin={isMobile ? "1rem 0" : "2rem 0 1rem"}
@@ -263,28 +248,7 @@ function VerifyCode() {
                 value={resetDetails.token}
               />
             </Section>
-            {/* <Section>
-              <Text
-                type="p"
-                text="Enter new password"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={isMobile ? "14.5px" : "16px"}
-              />
-              <Input
-                type="password"
-                placeholder="New password"
-                value={resetDetails.password}
-                height="50px"
-                onChange={(e) =>
-                  setResetDetails({ ...resetDetails, password: e.target.value })
-                }
-                border={
-                  checkIfFieldHasError(resetDetails?.error, "password")
-                    ? "1px solid #FF8682"
-                    : ""
-                }
-              />
-            </Section> */}
+            
             <Section>
               <Text
                 type="p"
