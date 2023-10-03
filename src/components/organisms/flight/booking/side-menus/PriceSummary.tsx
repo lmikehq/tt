@@ -3,7 +3,7 @@ import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
-import PlusMinusButton from "./PlusMinusButton";
+import PlusMinusButton from "../../../flights/PlusMinusButton";
 import Image from "@/components/atoms/image";
 
 export default function PriceSumary() {

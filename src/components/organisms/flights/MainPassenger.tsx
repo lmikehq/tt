@@ -20,7 +20,7 @@ export default function MainPassenger() {
   };
 
   return (
-    <Paper sx={{ padding: "2rem" }}>
+    <>
       <Flex justify="space-between" align="center">
         <Text type="h2" text="Main Passenger" />
 
@@ -81,6 +81,6 @@ export default function MainPassenger() {
           </Box>
         </Box>
       </Box>
-    </Paper>
+    </>
   );
 }
