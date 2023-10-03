@@ -26,7 +26,7 @@ const StyledAccordion = styled((props: AccordionProps) => (
 
 export default function TripSummaryCard() {
   return (
-    <Paper sx={{ padding: "1rem" }}>
+    <>
       <Flex margin="1rem 0" align="center" justify="space-between">
         <Text text="Your Trip Summary" type="h1" />
 
@@ -113,6 +113,6 @@ export default function TripSummaryCard() {
           <TripSummaryDetails />
         </AccordionDetails>
       </StyledAccordion>
-    </Paper>
+    </>
   );
 }

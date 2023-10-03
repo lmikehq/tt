@@ -22,7 +22,7 @@ export default function ContactDetails() {
   });
 
   return (
-    <Paper sx={{ padding: "1rem" }}>
+    <>
       <Text type="h2" text="Contact Details" />
 
       <Box
@@ -69,6 +69,6 @@ export default function ContactDetails() {
           I want to receive SMS updates about my trip.
         </CheckBox>
       </FormControl>
-    </Paper>
+    </>
   );
 }
