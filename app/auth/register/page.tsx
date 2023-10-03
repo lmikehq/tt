@@ -1,4 +1,4 @@
-// @next/next/no-img-element
+
 "use client";
 
 import Button from "@atom/button";
@@ -32,6 +32,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
+import Image from "@atom/image";
 // kindly remerge this code to the main branch
 const settings = {
   infinite: true,
@@ -179,75 +180,99 @@ function RegisterPage() {
           <Section styles={{ display: isMobile ? "none" : "block" }}>
             <Slider {...settings}>
               <div>
-                <img
-                  src={bgImage.src}
+                <Image
+                  src={bgImage}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage1.src}
+                <Image
+                  src={bgImage1}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage2.src}
+                <Image
+                  src={bgImage2}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage3.src}
+                <Image
+                  src={bgImage3}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage4.src}
+                <Image
+                  src={bgImage4}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage5.src}
+                <Image
+                  src={bgImage5}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage7.src}
+                <Image
+                  src={bgImage7}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
               <div>
-                <img
-                  src={bgImage8.src}
+                <Image
+                  src={bgImage8}
                   alt="background image"
-                  width="100%"
-                  height="798px"
-                  style={{ borderRadius: "30px", objectFit: "cover" }}
+                  styles={{
+                    borderRadius: "30px",
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "798px",
+                  }}
                 />
               </div>
             </Slider>
@@ -258,9 +283,11 @@ function RegisterPage() {
               <img
                 src={logo.src}
                 alt="logo"
-                height={isMobile ? "45px" : "60px"}
                 onClick={() => router.push("/")}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  height: isMobile ? "45px" : "60px",
+                }}
               />
               <SideBtn
                 title="Already have an account?"
@@ -425,7 +452,6 @@ function RegisterPage() {
                 </Section>
               </Flex>
 
-              
               <Section>
                 <Text
                   type="p"
@@ -503,8 +529,6 @@ function RegisterPage() {
                   </Section>
                 )}
               </Section>
-
-             
 
               <Section>
                 <Text
@@ -593,7 +617,6 @@ function RegisterPage() {
                 </Flex>
               </Flex>
 
-              
               <Button
                 width="100%"
                 margin="2rem 0 0"
