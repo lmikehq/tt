@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url><loc>https://example.com/about-us</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/auth/forgot-password</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/auth/login</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/auth/register</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/auth/reset-password</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/blog</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/chat</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/contact</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/faqs</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/dashboard</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/flight/listings</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/flight</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/flight/ticket-fare</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/flight/trip-summary</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/influencer</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/privacy-policy</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/stay/apply</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/stay</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/visa/apply</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/visa/countries</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/visa</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/visa/payment/kora</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://example.com/waitlist</loc><lastmod>2023-10-02T17:27:54.736Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+</urlset>
