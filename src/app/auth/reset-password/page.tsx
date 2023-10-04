@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
 import { checkIfFieldHasError } from "@/lib/utilFns";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const settings = {
   infinite: true,
@@ -29,8 +30,20 @@ const settings = {
   autoplay: true,
 };
 
+const validationOptions = [
+  { value: "length", label: "8 or more characters" },
+  { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
+  { value: "number", label: "At least one number" },
+  {
+    value: "specialCharacter",
+    label: "Have Numbers, and Special symbols (e.g., !, @, #, $)",
+  },
+];
+
 function VerifyCode() {
   const { isMobile } = useScreenResolution();
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
   const router = useRouter();
   const [resetDetails, setResetDetails] = useState({
     token: "",
@@ -70,6 +83,24 @@ function VerifyCode() {
       });
     }
   }
+
+  
+  
+  function isPasswordValid(password: string, selectedOption: string) {
+    switch (selectedOption) {
+      case "length":
+        return password.length >= 8;
+      case "uppercaseLowercase":
+        return /[A-Z]/.test(password) && /[a-z]/.test(password);
+      case "number":
+        return /\d/.test(password);
+      case "specialCharacter":
+        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
+      default:
+        return false;
+    }
+  }
+  
 
   return (
     <SectionLayout {...(isMobile && { padding: "0" })}>
@@ -175,16 +206,7 @@ function VerifyCode() {
               linkUrl="/auth/login"
             />
           </Flex>
-          {/* <Flex
-            margin="2rem 0 0 "
-            cursor="pointer"
-            align="center"
-            gap=".5rem"
-            onClick={() => router.push("/auth/login")}
-          >
-            <IoIosArrowBack />
-            <Text type="p" text="Back to login" size="17px" />
-          </Flex> */}
+          
           <Text
             type="h1"
             margin={isMobile ? "1rem 0" : "2rem 0 1rem"}
@@ -226,27 +248,82 @@ function VerifyCode() {
                 value={resetDetails.token}
               />
             </Section>
+            
             <Section>
               <Text
                 type="p"
-                text="Enter new password"
+                text="Password"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={isMobile ? "14.5px" : "16px"}
               />
-              <Input
-                type="password"
-                placeholder="New password"
-                value={resetDetails.password}
-                height="50px"
-                onChange={(e) =>
-                  setResetDetails({ ...resetDetails, password: e.target.value })
-                }
-                border={
-                  checkIfFieldHasError(resetDetails?.error, "password")
-                    ? "1px solid #FF8682"
-                    : ""
-                }
-              />
+              <div
+                onFocus={() => setIsPasswordFocused(true)}
+                onBlur={() => setIsPasswordFocused(false)}
+              >
+                <Input
+                  placeholder="New password"
+                  type="password"
+                  onChange={(e) =>
+                    setResetDetails({
+                      ...resetDetails,
+                      password: e.target.value,
+                    })
+                  }
+                  border={
+                    checkIfFieldHasError(resetDetails?.error, "password")
+                      ? "1px solid #FF8682"
+                      : ""
+                  }
+                  height="50px"
+                  value={resetDetails.password}
+                />
+              </div>
+              {isPasswordFocused && (
+                <Section margin="1rem 0px 0px">
+                  <Text
+                    type="h1"
+                    text="Your Password must have the following."
+                    size={16}
+                    weight={500}
+                    styles={{
+                      margin: "0px 0px .9rem 0px",
+                      lineHeight: "1.5rem",
+                    }}
+                  />
+                  {validationOptions.map((option) => (
+                    <div
+                      key={option.value}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "0.5rem",
+                        fontSize: "16px",
+                        fontWeight: 400,
+                        color: isPasswordValid(
+                          resetDetails.password,
+                          option.value
+                        )
+                          ? "#000000"
+                          : "#000000",
+                      }}
+                    >
+                      <AiFillCheckCircle
+                        size="1.5rem"
+                        style={{
+                          color: isPasswordValid(
+                            resetDetails.password,
+                            option.value
+                          )
+                            ? "#7BBBD6"
+                            : "#B6B6B6",
+                        }}
+                      />
+                      <span style={{ marginLeft: "0.5rem" }}>
+                        {option.label}
+                      </span>
+                    </div>
+                  ))}
+                </Section>
+              )}
             </Section>
 
             <p style={{ fontSize: "16px" }}>
