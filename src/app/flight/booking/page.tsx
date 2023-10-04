@@ -2,9 +2,11 @@
 
 import FlightBookingProgress from "@/components/molecules/FormProgress/FlightBookingProgress";
 import Section from "@/components/molecules/section";
+import OverviewSystem from "@/components/organisms/flight/booking/side-menus/OverviewSystem";
 import PriceSummary from "@/components/organisms/flight/booking/side-menus/PriceSummary";
 import SeatSelectionMenu from "@/components/organisms/flight/booking/side-menus/SeatSelectionMenu";
 import ChooseTicketFare from "@/components/organisms/flight/booking/steps/ChooseTicketFare";
+import OverviewAndPayment from "@/components/organisms/flight/booking/steps/OverviewAndPayment";
 import SeatSelection from "@/components/organisms/flight/booking/steps/SeatSelection";
 import TripSummary from "@/components/organisms/flight/booking/steps/TripSummary";
 import MultiStepWithSideMenu from "@/components/templates/MultiStepWithSideMenu";
@@ -31,6 +33,8 @@ const FlightBookingPage = () => {
               case 2:
               case 3:
                 return <PriceSummary />;
+              case 5:
+                return <OverviewSystem/>;
               case 4:
                 return <SeatSelectionMenu />;
             }
@@ -40,9 +44,11 @@ const FlightBookingPage = () => {
             {(() => {
               switch (step) {
                 case 2:
-                  return <TripSummary />;
+                  return <TripSummary/>;
                 case 3:
                   return <ChooseTicketFare />;
+                case 5:
+                  return <OverviewAndPayment/>;
                 case 4:
                   return <SeatSelection />;
               }
