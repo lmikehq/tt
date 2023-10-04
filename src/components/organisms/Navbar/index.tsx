@@ -26,7 +26,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { TbCurrencyNaira } from "react-icons/tb";
 import styled from "styled-components";
 import MobileNavigationDrawer from "./modals/mobileNav";
-const NavbarWrapper = styled.div<{ page?: string }>`
+const NavbarWrapper = styled.div<{ page: string }>`
   position: relative;
   width: 100%;
   height: 70px;
@@ -36,7 +36,9 @@ const NavbarWrapper = styled.div<{ page?: string }>`
   z-index: 100;
   // padding: ${({ page }) => (page === "home" ? "2rem 0 0" : "1rem 0")};
   box-shadow: ${({ page }) =>
-    page !== "home" ? "0px 4px 16px rgba(17, 34, 17, 0.05)" : "none"};
+    !["home", "ai-guide"].includes(page)
+      ? "0px 4px 16px rgba(17, 34, 17, 0.05)"
+      : "none"};
   & button {
     background: var(--secondary-color);
     // color: var(--default-color);

@@ -14,6 +14,7 @@ import styled from "styled-components";
 const StyledInput = styled.input`
   background-color: transparent;
   border: 1px solid #bdbdbd;
+  outline: none;
   &:hover {
     border: 1px solid ${ttColors.primary};
   }
