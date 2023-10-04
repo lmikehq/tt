@@ -60,6 +60,7 @@ interface DatePickerProps {
   maxDate?: Dayjs;
   placeholder?: string;
   position?: "start";
+  height?: string;
   error?: boolean;
   format?: string;
 }
@@ -72,6 +73,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   label,
   minDate,
   maxDate,
+  height,
   placeholder,
   position,
   error,
@@ -96,7 +98,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
             fontWeight: 400,
             padding: " 0 14px",
 
-            height: "45px",
+            height: height || "45px",
             fontFamily: "'Poppins', sans-serif",
           },
           "&:hover .MuiOutlinedInput-notchedOutline": {
