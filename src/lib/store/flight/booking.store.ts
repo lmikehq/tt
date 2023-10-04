@@ -13,8 +13,8 @@ interface Actions {
 
 export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
-    step: 2,
-    highestStep: 2,
+    step: 4,
+    highestStep: 4,
     mode: Mode.init,
 
     prevStep: () => {

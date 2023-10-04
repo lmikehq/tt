@@ -3,7 +3,9 @@
 import FlightBookingProgress from "@/components/molecules/FormProgress/FlightBookingProgress";
 import Section from "@/components/molecules/section";
 import PriceSummary from "@/components/organisms/flight/booking/side-menus/PriceSummary";
+import SeatSelectionMenu from "@/components/organisms/flight/booking/side-menus/SeatSelectionMenu";
 import ChooseTicketFare from "@/components/organisms/flight/booking/steps/ChooseTicketFare";
+import SeatSelection from "@/components/organisms/flight/booking/steps/SeatSelection";
 import TripSummary from "@/components/organisms/flight/booking/steps/TripSummary";
 import MultiStepWithSideMenu from "@/components/templates/MultiStepWithSideMenu";
 import SectionLayout from "@/components/templates/SectionLayout";
@@ -20,9 +22,7 @@ const FlightBookingPage = () => {
           <FlightBookingProgress
             phase={step}
             highestPhase={highestStep}
-            setStep={function ({ step }: { step: number }): void {
-              throw new Error("Function not implemented.");
-            }}
+            setStep={setStep}
           />
         </Section>
         <MultiStepWithSideMenu
@@ -32,7 +32,7 @@ const FlightBookingPage = () => {
               case 3:
                 return <PriceSummary />;
               case 4:
-                return;
+                return <SeatSelectionMenu />;
             }
           })()}
         >
@@ -44,7 +44,7 @@ const FlightBookingPage = () => {
                 case 3:
                   return <ChooseTicketFare />;
                 case 4:
-                  return;
+                  return <SeatSelection />;
               }
             })()}
           </>
