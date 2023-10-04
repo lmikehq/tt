@@ -22,9 +22,7 @@ const FlightBookingPage = () => {
           <FlightBookingProgress
             phase={step}
             highestPhase={highestStep}
-            setStep={function ({ step }: { step: number }): void {
-              throw new Error("Function not implemented.");
-            }}
+            setStep={setStep}
           />
         </Section>
         <MultiStepWithSideMenu
