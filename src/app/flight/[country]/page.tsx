@@ -68,8 +68,8 @@ const Page: React.FC<pageProps> = ({}) => {
 
           <SortButton />
         </Box>
-        <Box sx={{ marginBottom: "1rem" }}>
-          <Text type="h1" text="Explore Germany" />
+        <Box sx={{ marginBottom: "2.5rem" }}>
+          <Text type="h1" weight={"bold"} text="Explore Germany" />
           <Text
             type="p"
             text="Select your preferred destination to view all available flights."
@@ -129,10 +129,15 @@ const Page: React.FC<pageProps> = ({}) => {
 
               <Box sx={{ zIndex: 1, color: "white" }} padding={2}>
                 {city.name === hoveredCity ? (
-                  <Text type="h2" text={city.name} />
+                  <Text type="h2" size="2rem" weight="bold" text={city.name} />
                 ) : (
                   <>
-                    <Text type="p" text={city.name} />
+                    <Text
+                      weight="600"
+                      size="1.5rem"
+                      type="p"
+                      text={city.name}
+                    />
                     <Text type="p" text={`Prices from ${city.price}`} />
                   </>
                 )}

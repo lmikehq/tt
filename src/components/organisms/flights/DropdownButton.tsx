@@ -5,6 +5,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { styled, alpha } from "@mui/material/styles";
 import { ttColors } from "@lib/theme/colors";
 import Button from "@atom/button";
+import Text from "@/components/atoms/text";
 
 interface DropdownButtonProps {
   children: React.ReactNode;
@@ -91,7 +92,7 @@ export default function DropdownButton({
         background={backgroundColor}
         borderRadius="6px"
       >
-        {title}
+        <Text text={title} type="p" weight="medium" />
       </Button>
       <StyledMenu
         id="dropdown-menu"

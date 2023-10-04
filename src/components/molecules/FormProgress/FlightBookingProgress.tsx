@@ -3,6 +3,7 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { styled } from "styled-components";
+import { ttColors } from "@/lib/theme/colors";
 
 interface ComponentProps {
   phase: number;
@@ -14,7 +15,7 @@ const HorizontalLine = styled.div<{
 }>`
   height: 1px;
   flex-grow: 1;
-  background: ${({ isPassed }) => (isPassed ? "#6092A7" : "#929292")};
+  background: ${({ isPassed }) => (isPassed ? ttColors.primary600 : "#929292")};
 `;
 
 function FlightBookingProgress({
