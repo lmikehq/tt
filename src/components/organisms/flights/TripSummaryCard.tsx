@@ -4,12 +4,10 @@ import Text from "@/components/atoms/text";
 import Accordion, { AccordionProps } from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Flex from "@/components/templates/flex";
 import { styled } from "@mui/material/styles";
 import { ttColors } from "@/lib/theme/colors";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import TripSummaryDetails from "./TripSummaryDetails";
 
@@ -27,10 +25,24 @@ const StyledAccordion = styled((props: AccordionProps) => (
 export default function TripSummaryCard() {
   return (
     <>
-      <Flex margin="1rem 0" align="center" justify="space-between">
-        <Text text="Your Trip Summary" type="h1" />
+      <Flex gap="1rem" margin="1rem 0" align="center" justify="space-between">
+        <Flex gap="1rem" align="center">
+          <Text text="Your Trip Summary" type="h2" />
+          <Box
+            sx={{
+              background: ttColors.primary100,
+              padding: "5px",
+              borderRadius: "100px",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+            }}
+          >
+            <img src="/assets/icons/airplane.svg" alt="airplane" />
+          </Box>
+        </Flex>
 
-        <Button variant="outline" padding="1rem">
+        <Button width="200px" color={ttColors.dark} variant="outline">
           Change Flight
         </Button>
       </Flex>
