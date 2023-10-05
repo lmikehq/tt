@@ -27,7 +27,7 @@ export default function useSocket() {
       socket.emit("message", { message, session });
     };
 
-    socket.on("message-received", (res) => {
+    socket.on("ai-messaging", (res) => {
       console.log("output already; ", outputMessages, res);
       if (res) addOutputMessage(res);
     });
