@@ -1,3 +1,129 @@
+interface CountryInfo {
+  code: string;
+  name: string;
+}
+
+interface DurationInfo {
+  departure: number;
+  return: number;
+  total: number;
+}
+
+interface ConversionInfo {
+  EUR: number;
+  NGN: number;
+}
+
+interface FareInfo {
+  adults: number;
+  children: number;
+  infants: number;
+}
+
+interface PriceDropdownInfo {
+  base_fare: number;
+  fees: number;
+}
+
+interface BagsPriceInfo {
+  "1": number;
+  "2": number;
+}
+
+interface BagLimitInfo {
+  hand_height: number;
+  hand_length: number;
+  hand_weight: number;
+  hand_width: number;
+  hold_dimensions_sum: number;
+  hold_height: number;
+  hold_length: number;
+  hold_weight: number;
+  hold_width: number;
+  personal_item_height: number;
+  personal_item_length: number;
+  personal_item_weight: number;
+  personal_item_width: number;
+}
+
+interface AvailabilityInfo {
+  seats: number;
+}
+
+interface RouteInfo {
+  id: string;
+  combination_id: string;
+  flyFrom: string;
+  flyTo: string;
+  cityFrom: string;
+  cityCodeFrom: string;
+  cityTo: string;
+  cityCodeTo: string;
+  local_departure: string;
+  utc_departure: string;
+  local_arrival: string;
+  utc_arrival: string;
+  airline: string;
+  flight_no: number;
+  operating_carrier: string;
+  operating_flight_no: string;
+  fare_basis: string;
+  fare_category: string;
+  fare_classes: string;
+  fare_family: string;
+  return: number;
+  bags_recheck_required: boolean;
+  vi_connection: boolean;
+  guarantee: boolean;
+  equipment: null | string;
+  vehicle_type: string;
+}
+
+export interface FlightInfo {
+  id: string;
+  flyFrom: string;
+  flyTo: string;
+  cityFrom: string;
+  cityCodeFrom: string;
+  cityTo: string;
+  cityCodeTo: string;
+  countryFrom: CountryInfo;
+  countryTo: CountryInfo;
+  local_departure: string;
+  utc_departure: string;
+  local_arrival: string;
+  utc_arrival: string;
+  nightsInDest: null | number;
+  quality: number;
+  distance: number;
+  duration: DurationInfo;
+  price: number;
+  conversion: ConversionInfo;
+  fare: FareInfo;
+  price_dropdown: PriceDropdownInfo;
+  bags_price: BagsPriceInfo;
+  baglimit: BagLimitInfo;
+  availability: AvailabilityInfo;
+  airlines: string[];
+  route: RouteInfo[];
+  booking_token: string;
+  facilitated_booking_available: boolean;
+  pnr_count: number;
+  has_airport_change: boolean;
+  technical_stops: number;
+  throw_away_ticketing: boolean;
+  hidden_city_ticketing: boolean;
+  virtual_interlining: boolean;
+}
+
+export interface SearchFlightsResponse {
+  search_id: string;
+  currency: string;
+  fx_rate: number;
+  data: FlightInfo[];
+  _results: number;
+}
+
 export enum SeatAvailability {
   available = "available",
   unavailable = "unavailable",
