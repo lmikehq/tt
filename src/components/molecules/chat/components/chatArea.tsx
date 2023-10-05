@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Button from "@/components/atoms/button";
 import Input from "@/components/atoms/input";
@@ -12,6 +12,7 @@ import { IoSendSharp } from "react-icons/io5";
 import { styled } from "styled-components";
 import Section from "../../section";
 import { useAiChatStore } from "@/lib/store/socket/useSocketStore";
+import { useUserStore } from "@/lib/store/useStore";
 
 const ChatAreaWrapper = styled.div`
   background: #f3f3ff;
@@ -98,10 +99,27 @@ function ChatArea() {
   ];
   const [message, setMessage] = useState("");
   const { sendMessage } = useSocket();
+  const { user, geoInfo } = useUserStore();
+  // const userId = user?._id ?? geoInfo?.ip ?? "anonymous";
   const { outputMessages, chatSessionId } = useAiChatStore();
+  function scrollToBottom() {
+    const chatArea = document.getElementById("chat-area");
+    chatArea?.scrollTo({
+      top: chatArea.scrollHeight,
+      behavior: "smooth",
+    });
+  }
+  function handleSubmitOrClick() {
+    sendMessage(message, chatSessionId, {
+      userId: user?._id,
+      ip: geoInfo?.ip,
+      type: user?._id ? "userId" : "ipAddress",
+    });
+    setMessage("");
+  }
   console.log("receivd: ", outputMessages, chatSessionId);
   return (
-    <ChatAreaWrapper>
+    <ChatAreaWrapper className="chat-area">
       <Flex justify="space-between">
         <Section>
           <Text
@@ -152,10 +170,7 @@ function ChatArea() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              sendMessage(message, chatSessionId);
-              setMessage("");
-            }
+            if (e.key === "Enter") handleSubmitOrClick();
           }}
           parentWidth="100%"
         />
@@ -166,10 +181,7 @@ function ChatArea() {
           <IoSendSharp
             size="1.1rem"
             color={`#606060`}
-            onClick={() => {
-              sendMessage(message);
-              setMessage("");
-            }}
+            onClick={handleSubmitOrClick}
           />
         </Button>
       </InputContainer>

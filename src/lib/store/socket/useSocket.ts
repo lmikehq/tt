@@ -1,6 +1,7 @@
 import socketIOClient from "socket.io-client";
 import { useAiChatStore } from "./useSocketStore";
 import { useEffect, useState } from "react";
+import { ChatUserIdentity } from "@/lib/types";
 
 export default function useSocket() {
   const {
@@ -23,8 +24,12 @@ export default function useSocket() {
       setChatSessionId(res);
     });
 
-    const sendMessageToServer = (message: string, session: string) => {
-      socket.emit("message", { message, session });
+    const sendMessageToServer = (
+      message: string,
+      session: string,
+      user: ChatUserIdentity
+    ) => {
+      socket.emit("message", { message, session, user });
     };
 
     socket.on("ai-messaging", (res) => {

@@ -26,6 +26,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { TbCurrencyNaira } from "react-icons/tb";
 import styled from "styled-components";
 import MobileNavigationDrawer from "./modals/mobileNav";
+import { getIpDetails } from "../form/visaApis";
 const NavbarWrapper = styled.div<{ page: string }>`
   position: relative;
   width: 100%;
@@ -89,6 +90,10 @@ interface navbarProps {
 const Navbar = ({ page }: { page: string }) => {
   let path = usePathname();
   let pathArray = path.split("/")[1];
+  const { setGeoInfo } = useUserStore((state) => state);
+  useEffect(() => {
+    getIpDetails().then((res) => setGeoInfo(res));
+  }, []);
 
   const { isMobile } = useScreenResolution();
   if (isMobile)
