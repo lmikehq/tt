@@ -52,7 +52,7 @@ function AvailableFlights() {
         setSortType={setSortType}
         fastPrice={0}
       />
-      {searchFlightsResults.map((flight: FlightInfo, index: number) => (
+      {searchFlightsResults?.map((flight: FlightInfo, index: number) => (
         <FlightBox
           key={index}
           selectFlight={({ bookingToken }) => {
@@ -73,7 +73,7 @@ function AvailableFlights() {
       ))}
       <Flex justify="center">
         {count < totalFlights && (
-          <Button width="90%" padding="2rem 0" onClick={loadMoreItems}>
+          <Button width="100%" padding="2rem 0" onClick={loadMoreItems}>
             <Text type="p" text="Load More" weight={500} size={18} />
           </Button>
         )}

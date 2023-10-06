@@ -31,7 +31,7 @@ const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   border: 1px solid #e7e7e7;
   background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin: 1rem 2rem;
+  margin: 1rem 0;
   border-radius: 12.5px;
 `;
 
@@ -242,7 +242,11 @@ function FlightBox(props: flightProps) {
             </Flex>
             {!isMobile && <BsShare size={30} />}
           </Flex>
-          <Flex align="center" gap="3rem" direction={isMobile ? "row" : "column"}>
+          <Flex
+            align="center"
+            gap="3rem"
+            direction={isMobile ? "row" : "column"}
+          >
             <Flex
               direction={isMobile ? "column-reverse" : "column"}
               gap=".1rem"

@@ -11,7 +11,7 @@ export const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   border: 1px solid #e7e7e7;
   background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin: 2rem;
+  margin-bottom: 2rem;
   padding: 1rem;
   border-radius: 12.5px;
 
@@ -68,7 +68,11 @@ function SortedFlightsTab(props: sortProps) {
               justify={isMobile ? "center" : "flex-start"}
               padding=".5rem 1.25rem"
             >
-              <Flex gap="1rem" align="center" justify={isMobile ? "center" : "flex-start"}>
+              <Flex
+                gap="1rem"
+                align="center"
+                justify={isMobile ? "center" : "flex-start"}
+              >
                 <Text type="p" text="Best" />
                 <BsInfoCircle size={20} />
               </Flex>
@@ -85,7 +89,7 @@ function SortedFlightsTab(props: sortProps) {
                   weight={600}
                 />
                 {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m"  whiteSpace="nowrap" />
+                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
               </Flex>
             </Flex>
           </ButtonBox>
@@ -93,8 +97,17 @@ function SortedFlightsTab(props: sortProps) {
             active={props.sortType === "cheap"}
             onClick={() => props.setSortType("cheap")}
           >
-            <Flex direction="column" justify={isMobile ? "center" : "flex-start"} gap=".5rem" padding=".5rem 1.25rem">
-              <Flex gap="1rem" align="center" justify={isMobile ? "center" : "flex-start"}>
+            <Flex
+              direction="column"
+              justify={isMobile ? "center" : "flex-start"}
+              gap=".5rem"
+              padding=".5rem 1.25rem"
+            >
+              <Flex
+                gap="1rem"
+                align="center"
+                justify={isMobile ? "center" : "flex-start"}
+              >
                 <Text type="p" text="Cheapest" />
                 <BsInfoCircle size={20} />
               </Flex>
@@ -111,7 +124,7 @@ function SortedFlightsTab(props: sortProps) {
                   weight={600}
                 />
                 {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m"  whiteSpace="nowrap" />
+                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
               </Flex>
             </Flex>
           </ButtonBox>
@@ -120,7 +133,12 @@ function SortedFlightsTab(props: sortProps) {
               active={props.sortType === "fast"}
               onClick={() => props.setSortType("fast")}
             >
-              <Flex direction="column" justify="center" gap=".5rem" padding=".5rem 1.25rem">
+              <Flex
+                direction="column"
+                justify="center"
+                gap=".5rem"
+                padding=".5rem 1.25rem"
+              >
                 <Flex gap="1rem" align="center" justify="center">
                   <Text type="p" text="Fastest" />
                   <BsInfoCircle size={20} />
@@ -138,7 +156,7 @@ function SortedFlightsTab(props: sortProps) {
                     weight={600}
                   />
                   {!isMobile && <GoDotFill size={15} />}
-                  <Text type="p" text="20 h 32 m"  whiteSpace="nowrap" />
+                  <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
                 </Flex>
               </Flex>
             </ButtonBox>
