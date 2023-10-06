@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
@@ -9,13 +9,18 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SortedFlightsTab from "./sortedFlightsTab";
 
-function AvailableFlights() {
+type flightProps = {
+  sortType: string;
+  setSortType: Dispatch<SetStateAction<string>>;
+  setResults: Dispatch<SetStateAction<number>>;
+};
+
+function AvailableFlights({ sortType, setSortType, setResults }: flightProps) {
   const [count, setCount] = useState(10);
   const [prices, setPrices] = useState<number[]>([]);
   const [totalFlights] = useState(
     Math.min(Math.floor(Math.random() * 50) + 1, COUNTRY_FLAGS.length)
   );
-  const [sortType, setSortType] = useState("best");
 
   const loadMoreItems = () => {
     setCount((prevCount) => prevCount + Math.min(5, totalFlights - prevCount));
@@ -26,10 +31,12 @@ function AvailableFlights() {
       .fill(0)
       .map(() => Math.random() * (15000 - 1000) + 1000);
     setPrices(newPrices);
+    setResults(totalFlights)
   }, []);
 
   const averagePrice = prices.reduce((a, b) => a + b, 0) / prices.length;
   const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
 
   let closestToAveragePrice: number;
   if (prices.length > 0) {
@@ -51,7 +58,7 @@ function AvailableFlights() {
           ? "Cheapest"
           : prices[index] === closestToAveragePrice
           ? "Best"
-          : "",
+          : prices[index] === minPrice ? "Fastest" : "",
     })
   );
 
@@ -62,6 +69,8 @@ function AvailableFlights() {
     );
   } else if (sortType === "cheap") {
     flights.sort((a, b) => a.price - b.price);
+  } else if (sortType === "fast") {
+    flights.sort((a, b) => b.price - a.price);
   }
 
   return (
@@ -69,6 +78,7 @@ function AvailableFlights() {
       <SortedFlightsTab
         cheapPrice={minPrice}
         bestPrice={averagePrice}
+        fastPrice={maxPrice}
         sortType={sortType}
         setSortType={setSortType}
       />
