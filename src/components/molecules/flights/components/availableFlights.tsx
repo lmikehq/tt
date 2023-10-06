@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
@@ -21,11 +21,11 @@ function AvailableFlights() {
     updateSearchQuery,
     searchQuery,
   } = useFlightBookingStore((state) => state);
+
   const [count, setCount] = useState(10);
   const [totalFlights] = useState(
     Math.min(Math.floor(Math.random() * 50) + 1, COUNTRY_FLAGS.length)
   );
-  const [sortType, setSortType] = useState("best");
 
   const loadMoreItems = () => {
     setCount((prevCount) => prevCount + Math.min(5, totalFlights - prevCount));

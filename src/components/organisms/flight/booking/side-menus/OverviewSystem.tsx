@@ -2,11 +2,14 @@ import { Divider } from "@/components/atoms/divider";
 import Text from "@/components/atoms/text";
 import Section from "@/components/molecules/section";
 import Flex from "@/components/templates/flex";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 import React from "react";
 
 function OverviewSystem() {
+  const { isMobile } = useScreenResolution()
+
   return (
     <Section>
       <Box
@@ -103,27 +106,27 @@ function OverviewSystem() {
           alignItems: "flex-end",
         }}
       >
-        <Flex gap="1rem" justify="flex-end" align="center">
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-end"} align="center">
           <Text type="p" text="Base Fare" />
           <Text type="p" text="$ 1800.00" color="#606060" />
         </Flex>
 
-        <Flex gap="1rem" justify="flex-end" align="center">
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-end"} align="center">
           <Text type="p" text="Taxes and charges" />
           <Text type="p" text="$ 200.00" color="#606060" />
         </Flex>
 
-        <Flex gap="1rem" justify="flex-end" align="center">
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-end"} align="center">
           <Text type="p" text="Service charges" />
           <Text type="p" text="$ 135" color="#606060" />
         </Flex>
 
-        <Flex gap="1rem" justify="flex-end" align="center">
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-end"} align="center">
           <Text type="p" text="Thrillers discount" />
           <Text type="p" text="-$ 100" color="#606060" />
         </Flex>
 
-        <Flex gap="1rem" justify="flex-end" align="center">
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-end"} align="center">
           <Text type="p" text="Total" />
           <Text type="p" text="$ 2,035" color="#606060" />
         </Flex>
