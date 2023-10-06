@@ -41,6 +41,7 @@ export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
     step: 2,
     highestStep: 2,
+
     mode: Mode.init,
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],

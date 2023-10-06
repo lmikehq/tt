@@ -12,6 +12,7 @@ import Dot from "@/components/atoms/dot";
 import { Box } from "@mui/material";
 import FlightDepartureIcon from "./flightDepartureIcon";
 import StopsPill from "./stopsPill";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 type flightProps = {
   departureCountryCode: string;
@@ -56,6 +57,7 @@ const LabelBox = styled.div`
 `;
 
 function FlightBox(props: flightProps) {
+  const { isMobile } = useScreenResolution();
   function getRandomNumber() {
     return Math.floor(Math.random() * 5) + 1;
   }
@@ -96,7 +98,9 @@ function FlightBox(props: flightProps) {
     >
       <Box
         sx={{
-          display: "grid",
+          display: isMobile ? "flex" : "grid",
+          flexDirection: "column",
+          width: "100%",
           gridTemplateColumns: "8fr 1fr 4fr",
         }}
       >
@@ -222,41 +226,47 @@ function FlightBox(props: flightProps) {
                   type="p"
                   text={getRandomNumber().toString()}
                   weight={500}
-                  size={18}
+                  size={isMobile ? 16 : 18}
                 />
-                <MdOutlineLuggage size={30} />
+                <MdOutlineLuggage size={isMobile ? 25 : 30} color="#929292" />
               </IconBorders>
               <IconBorders>
                 <Text
                   type="p"
                   text={getRandomNumber().toString()}
                   weight={500}
-                  size={18}
+                  size={isMobile ? 16 : 18}
                 />
-                <AiOutlineShopping size={30} />
+                <AiOutlineShopping size={isMobile ? 25 : 30} color="#929292" />
               </IconBorders>
             </Flex>
-            <BsShare size={30} />
+            {!isMobile && <BsShare size={30} />}
           </Flex>
-          <Flex direction="column" gap=".1rem">
-            <Text
-              type="h1"
-              text={`${getRandomNumber()} seats left at this price`}
-              weight={500}
-              size={18}
-              color="#929292"
-            />
-            <Text type="h1" text={`$ ${price}`} weight={600} size={40} />
+          <Flex align="center" gap="3rem" direction={isMobile ? "row" : "column"}>
+            <Flex
+              direction={isMobile ? "column-reverse" : "column"}
+              gap=".1rem"
+              padding={isMobile ? "2rem 0" : ""}
+            >
+              <Text
+                type="h1"
+                text={`${getRandomNumber()} seats left at this price`}
+                weight={500}
+                size={18}
+                color="#929292"
+              />
+              <Text type="h1" text={`$ ${price}`} weight={600} size={40} />
+            </Flex>
+            <Button background="#7BBBD6" width="100%" padding="2rem 0">
+              <Text
+                type="h1"
+                text="Select"
+                weight={600}
+                size={18}
+                font="Montserrat"
+              />
+            </Button>
           </Flex>
-          <Button background="#7BBBD6" width="100%" padding="2rem 0">
-            <Text
-              type="h1"
-              text="Select"
-              weight={600}
-              size={18}
-              font="Montserrat"
-            />
-          </Button>
         </Flex>
       </Box>
     </FlightContainer>
