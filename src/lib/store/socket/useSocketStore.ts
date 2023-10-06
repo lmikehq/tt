@@ -17,40 +17,38 @@ interface Actions {
   setAiThinking: (aiThinking: boolean) => void;
   setInputMessage: (inputMessage: string) => void;
   setOutputMessages: (outputMessages: Message[]) => void;
-  setSuggestions: (suggestions: string[]) => void;
+  setChatSuggestions: (suggestions: string[]) => void;
   addOutputMessage: (message: Message) => void;
   setChatSessionId: (id: string) => void;
 }
 
-export const useAiChatStore = create<State & Actions>(
-  (set): State & Actions => ({
-    aiThinking: false,
-    inputMessage: "",
-    outputMessages: [],
-    suggestions: [],
-    chatSessionId: "",
+export const useAiChatStore = create<State & Actions>((set): State & Actions => ({
+  aiThinking: false,
+  inputMessage: "",
+  outputMessages: [],
+  suggestions: [],
+  chatSessionId: "",
 
-    setAiThinking: (aiThinking: boolean) => {
-      set({ aiThinking });
-    },
+  setAiThinking: (aiThinking: boolean) => {
+    set({ aiThinking });
+  },
 
-    setInputMessage: (inputMessage: string) => {
-      set({ inputMessage });
-    },
+  setInputMessage: (inputMessage: string) => {
+    set({ inputMessage });
+  },
 
-    setOutputMessages: (outputMessages: Message[]) => {
-      set({ outputMessages });
-    },
+  setOutputMessages: (outputMessages: Message[]) => {
+    set({ outputMessages });
+  },
 
-    setSuggestions: (suggestions: string[]) => {
-      set({ suggestions });
-    },
+  setChatSuggestions: (suggestions: string[]) => {
+    set({ suggestions });
+  },
 
-    addOutputMessage: (message: Message) => {
-      set((state) => ({ outputMessages: [...state.outputMessages, message] }));
-    },
-    setChatSessionId: (chatSessionId: string) => {
-      set({ chatSessionId });
-    },
-  })
-);
+  addOutputMessage: (message: Message) => {
+    set((state) => ({ outputMessages: [...state.outputMessages, message] }));
+  },
+  setChatSessionId: (chatSessionId: string) => {
+    set({ chatSessionId });
+  },
+}));

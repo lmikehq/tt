@@ -5,7 +5,7 @@ import Input from "@/components/atoms/input";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import useSocket from "@/lib/store/socket/useSocket";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsMicFill } from "react-icons/bs";
 import { GrRefresh } from "react-icons/gr";
 import { IoSendSharp } from "react-icons/io5";
@@ -59,7 +59,7 @@ const Sugestion = styled.div`
 `;
 
 function ChatArea() {
-  const suggestions = [
+  const defaultSuggestion = [
     {
       title: "What documents do I need",
       subtitle: "to prepare my Visa Application",
@@ -98,9 +98,12 @@ function ChatArea() {
     },
   ];
   const [message, setMessage] = useState("");
-  const { sendMessage } = useSocket();
+  const { sendMessage, initialChats, suggestions } = useSocket();
   const { user, geoInfo } = useUserStore();
-  // const userId = user?._id ?? geoInfo?.ip ?? "anonymous";
+  useEffect(() => {
+    const chats = suggestions();
+    console.log("chats suggestions: ", chats);
+  }, []);
   const { outputMessages, chatSessionId } = useAiChatStore();
   function scrollToBottom() {
     const chatArea = document.getElementById("chat-area");
@@ -142,13 +145,17 @@ function ChatArea() {
           align="center"
           justify="center"
           cursor="pointer"
+          styles={{
+            userSelect: "none",
+          }}
+          onClick={()=>{const chat = suggestions(); console.log("chat: ", chat, suggestions())}}
         >
           <GrRefresh size={24} />
         </Flex>
       </Flex>
 
       <Flex wrap="wrap" justify="space-between" gap=".1rem" margin="10vh 0 0">
-        {suggestions.map((_, i) => (
+        {defaultSuggestion.map((_, i) => (
           <Sugestion
             key={i}
             onClick={() => {
