@@ -33,10 +33,10 @@ const FlightBookingPage = () => {
               case 2:
               case 3:
                 return <PriceSummary />;
-              case 5:
-                return <OverviewSystem/>;
               case 4:
                 return <SeatSelectionMenu />;
+              case 5:
+                return <OverviewSystem />;
             }
           })()}
         >
@@ -44,13 +44,13 @@ const FlightBookingPage = () => {
             {(() => {
               switch (step) {
                 case 2:
-                  return <TripSummary/>;
+                  return <TripSummary />;
                 case 3:
                   return <ChooseTicketFare />;
-                case 5:
-                  return <OverviewAndPayment/>;
                 case 4:
                   return <SeatSelection />;
+                case 5:
+                  return <OverviewAndPayment />;
               }
             })()}
           </>

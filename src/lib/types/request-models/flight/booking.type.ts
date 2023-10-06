@@ -89,7 +89,15 @@ export interface SearchFlightsRequestQuery {
 
 export interface CheckFlightsRequestInput {
   booking_token: string;
-  session_id: string;
+  session_id?: string;
+}
+export interface CheckFlightsQuery {
+  booking_token?: string;
+  session_id?: string;
+  bnum: number;
+  adults?: number;
+  children?: number;
+  infants?: number;
 }
 export interface CheckSeatingRequestInput {
   ancillaries: string[];

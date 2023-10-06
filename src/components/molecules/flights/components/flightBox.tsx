@@ -23,6 +23,8 @@ type flightProps = {
   arrivalDate: dayjs.Dayjs;
   price: number;
   label: string;
+  bookingToken: string;
+  selectFlight(params: { bookingToken: string }): void;
 };
 
 const FlightContainer = styled.div`
@@ -91,7 +93,9 @@ function FlightBox(props: flightProps) {
   const price = Number(props.price?.toFixed(0)).toLocaleString();
 
   return (
-    <FlightContainer>
+    <FlightContainer
+      onClick={() => props.selectFlight({ bookingToken: props.bookingToken })}
+    >
       <Box
         sx={{
           display: isMobile ? "flex" : "grid",

@@ -37,4 +37,25 @@ axiosClient.interceptors.response.use(
   }
 );
 
-export default axiosClient;
+const kiwiClient: AxiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER,
+  timeout: 5000,
+  //   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: getAuthToken(),
+    apikey: process.env.NEXT_PUBLIC_KIWI_API_KEY,
+  },
+});
+
+axiosClient.interceptors.response.use(
+  (response: AxiosResponse) => {
+    return response.data;
+  },
+  (error: AxiosError) => {
+    // toast.error(error.message);
+    return Promise.reject(error);
+  }
+);
+
+export { axiosClient, kiwiClient };

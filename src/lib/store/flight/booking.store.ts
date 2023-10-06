@@ -1,5 +1,6 @@
 import { FlightBookingService } from "@/lib/services/flight-booking.service";
 import {
+  CheckFlightsQuery,
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
@@ -18,16 +19,19 @@ interface State {
   searchFlightsResults: FlightInfo[];
   searchQuery: SearchFlightsRequestQuery;
 
+  bookingToken?: string;
+  sessionId: string | null;
   mode: Mode;
 }
 interface Actions {
   prevStep: () => void;
   setStep: (params: { step: number }) => void;
   searchFlights: (params: { data: SearchFlightsRequestQuery }) => Promise<void>;
-  checkFlights: (params: { data: CheckFlightsRequestInput }) => Promise<void>;
+  checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
   checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
   saveBooking: (params: { data: SaveBookingRequestInput }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
+  updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
   confirmPaymentZooz: (params: {
     data: ConfirmPaymentZoozRequestInput;
   }) => Promise<void>;
@@ -42,6 +46,7 @@ export const useFlightBookingStore = create<State & Actions>(
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],
     searchQuery: {},
+    sessionId: null,
 
     prevStep: () => {
       set((state) => ({
@@ -55,7 +60,11 @@ export const useFlightBookingStore = create<State & Actions>(
     setStep: ({ step }: { step: number }) => {
       set({ step });
     },
-
+    updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
+      set({
+        searchQuery: data,
+      });
+    },
     searchFlights: async ({ data }: { data: SearchFlightsRequestQuery }) => {
       set({ searchFlightsMode: Mode.loading });
       return await FlightBookingService.searchFlights({
@@ -74,15 +83,18 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
-    checkFlights: async ({ data }: { data: CheckFlightsRequestInput }) => {
+    checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
       set({ mode: Mode.loading });
       return await FlightBookingService.checkFlights({
-        data,
+        query,
       })
         .then((response) => {
+          console.log(response);
           set((state) => ({
             mode: Mode.loaded,
+            sessionId: response.session_id,
           }));
+          return response;
         })
         .catch((error) => {
           set({

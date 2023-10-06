@@ -8,16 +8,21 @@ import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SortedFlightsTab from "./sortedFlightsTab";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { useRouter } from "next/navigation";
 
-type flightProps = {
-  sortType: string;
-  setSortType: Dispatch<SetStateAction<string>>;
-  setResults: Dispatch<SetStateAction<number>>;
-};
+function AvailableFlights() {
+  const router = useRouter();
+  const {
+    searchFlightsResults,
+    searchFlights,
+    updateSearchQuery,
+    searchQuery,
+  } = useFlightBookingStore((state) => state);
 
-function AvailableFlights({ sortType, setSortType, setResults }: flightProps) {
   const [count, setCount] = useState(10);
-  const [prices, setPrices] = useState<number[]>([]);
   const [totalFlights] = useState(
     Math.min(Math.floor(Math.random() * 50) + 1, COUNTRY_FLAGS.length)
   );
@@ -27,72 +32,43 @@ function AvailableFlights({ sortType, setSortType, setResults }: flightProps) {
   };
 
   useEffect(() => {
-    const newPrices = Array(totalFlights)
-      .fill(0)
-      .map(() => Math.random() * (15000 - 1000) + 1000);
-    setPrices(newPrices);
-    setResults(totalFlights)
+    const searchParams = extractSearchParamsFromUrl({
+      url: window.location.href,
+    });
+    updateSearchQuery({ data: searchParams });
+    searchFlights({ data: searchParams });
   }, []);
 
-  const averagePrice = prices.reduce((a, b) => a + b, 0) / prices.length;
-  const minPrice = Math.min(...prices);
-  const maxPrice = Math.max(...prices);
-
-  let closestToAveragePrice: number;
-  if (prices.length > 0) {
-    closestToAveragePrice = prices.reduce((prev, curr) =>
-      Math.abs(curr - averagePrice) < Math.abs(prev - averagePrice)
-        ? curr
-        : prev
-    );
-  } else {
-    closestToAveragePrice = 0;
-  }
-
-  const flights = COUNTRY_FLAGS.slice(0, Math.min(count, totalFlights)).map(
-    (country, index) => ({
-      country,
-      price: prices[index],
-      label:
-        prices[index] === minPrice
-          ? "Cheapest"
-          : prices[index] === closestToAveragePrice
-          ? "Best"
-          : prices[index] === minPrice ? "Fastest" : "",
-    })
-  );
-
-  if (sortType === "best") {
-    flights.sort(
-      (a, b) =>
-        Math.abs(a.price - averagePrice) - Math.abs(b.price - averagePrice)
-    );
-  } else if (sortType === "cheap") {
-    flights.sort((a, b) => a.price - b.price);
-  } else if (sortType === "fast") {
-    flights.sort((a, b) => b.price - a.price);
+  function setSortType(value: SetStateAction<string>): void {
+    throw new Error("Function not implemented.");
   }
 
   return (
     <Flex direction="column">
       <SortedFlightsTab
-        cheapPrice={minPrice}
-        bestPrice={averagePrice}
-        fastPrice={maxPrice}
-        sortType={sortType}
+        cheapPrice={1}
+        bestPrice={1}
+        sortType={"s"}
         setSortType={setSortType}
+        fastPrice={0}
       />
-      {flights.map((flight, index) => (
+      {searchFlightsResults.map((flight: FlightInfo, index: number) => (
         <FlightBox
           key={index}
+          selectFlight={({ bookingToken }) => {
+            router.push(
+              `/flight/booking?bnum=2&adults=2&children=1&infants=0&booking_token=${bookingToken}`
+            );
+          }}
+          bookingToken={flight.booking_token}
           departureCountryCode="Country Code 1"
-          arrivalCountryCode={flight.country.code}
+          arrivalCountryCode={flight.cityCodeTo}
           airportName1="Airport Name 1"
-          airportName2={flight.country.name}
+          airportName2={"Airport 2"}
           departureDate={dayjs()}
           arrivalDate={dayjs().add(1, "day")}
           price={flight.price}
-          label={flight.label}
+          label={"Cheapest"}
         />
       ))}
       <Flex justify="center">
