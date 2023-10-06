@@ -21,7 +21,7 @@ export default function SortButton() {
 
   return (
     <DropdownButton
-      title="Sort by"
+      title="Sort&nbsp;by"
       leftIcon={<SortIcon />}
       rightIcon={null}
       backgroundColor="transparent"

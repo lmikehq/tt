@@ -67,7 +67,7 @@ export const Button: React.FC<buttonProps> = ({
     zIndex: zIndex,
     border: border,
     margin: margin,
-    textDecoration: underlined ? "underlined" : "none",
+    textDecoration: underlined ? "underline" : "none",
     lineHeight: lineHeight,
     ...styles,
   };
@@ -80,7 +80,7 @@ export const Button: React.FC<buttonProps> = ({
     buttonStyles.background = "transparent";
     buttonStyles.border = "none";
     buttonStyles.color = color || ttColors.primaryLight;
-    buttonStyles.textDecoration = "underline";
+    buttonStyles.textDecoration = underlined ? "underline" : "none";
   } else {
     buttonStyles.background = disabled
       ? "#585870"
