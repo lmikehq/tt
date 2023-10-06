@@ -39,6 +39,10 @@ function AvailableFlights() {
     searchFlights({ data: searchParams });
   }, []);
 
+  function setSortType(value: SetStateAction<string>): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <Flex direction="column">
       <SortedFlightsTab
@@ -46,6 +50,7 @@ function AvailableFlights() {
         bestPrice={1}
         sortType={"s"}
         setSortType={setSortType}
+        fastPrice={0}
       />
       {searchFlightsResults.map((flight: FlightInfo, index: number) => (
         <FlightBox
