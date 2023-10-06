@@ -1,4 +1,5 @@
 "use client";
+import Text from "@/components/atoms/text";
 import { Box } from "@mui/material";
 import { useState } from "react";
 import DropdownButton from "./DropdownButton";
@@ -19,7 +20,7 @@ export default function BagsButton() {
           columnGap: "3rem",
         }}
       >
-        <p>Cabin Baggage</p>
+        <Text text="Cabin Baggage" type="p" />
 
         <Box sx={{ display: "flex", columnGap: 1.5, alignItems: "center" }}>
           <PlusMinusButton onClick={() => setCabinBaggage(cabinBaggage + 1)}>

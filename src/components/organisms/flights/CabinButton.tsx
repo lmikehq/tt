@@ -8,7 +8,7 @@ import DropdownButton from "./DropdownButton";
 
 export default function CabinButton() {
   return (
-    <DropdownButton title="Departure Time">
+    <DropdownButton title="Cabin">
       <Box sx={{ padding: "2rem" }}>
         <FormGroup>
           <FormControlLabel
