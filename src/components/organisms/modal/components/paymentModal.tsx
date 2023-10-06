@@ -11,6 +11,11 @@ import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { styled } from "styled-components";
 import Modal from "..";
 import Input from "@/components/atoms/input";
+import { HiOutlineXMark } from "react-icons/hi2";
+import { ttColors } from "@/lib/theme/colors";
+import { ChangeEvent, useState } from "react";
+import { DatePicker } from "../../datepicker";
+import dayjs from "dayjs";
 
 const Wrapper = styled.div`
   background: white;
@@ -35,6 +40,15 @@ const Wrapper = styled.div`
   }
 `;
 
+export const CloseMark = styled(HiOutlineXMark)`
+  background: #f3f3ff;
+  border-radius: 4px;
+  width: 3rem;
+  height: 3rem;
+  padding: 0.75rem;
+  cursor: pointer;
+`;
+
 function PaymentModal({
   open,
   handleClose,
@@ -42,12 +56,23 @@ function PaymentModal({
   open: boolean;
   handleClose: () => void;
 }) {
+  const [cvv, setCvv] = useState("");
+
+  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (value.length > 3) {
+      setCvv(value.slice(0, 3));
+    } else {
+      setCvv(value);
+    }
+  };
+
   return (
     <Modal open={open} handleClose={handleClose}>
       <Wrapper>
         <Flex direction="column" align="center">
           <Flex justify="flex-end">
-            {/* <CloseMark fontSize={40} onClick={props.setOpen} /> */}
+            <CloseMark fontSize={40} onClick={handleClose} />
           </Flex>
           <Flex direction="column" gap=".2rem" justify="center" align="center">
             <Text type="h2" text="Insert Card" size={30} weight={600} />
@@ -82,27 +107,36 @@ function PaymentModal({
               />
             </Flex>
             <Flex gap="2rem">
-            <Flex direction="column" gap=".5rem">
-              <Text type="p" text="Expiry Date" />
-              <Input
-                type="email"
-                border="1px solid #E7E7E7"
-                padding="1rem"
-                placeholder="Enter Card Name"
-              />
-            </Flex>
-            <Flex direction="column" gap=".5rem">
-              <Text type="p" text="CVV" />
-              <Input
-                type="text"
-                border="1px solid #E7E7E7"
-                padding="1rem"
-                placeholder="Enter CVV"
-              />
-            </Flex>
+              <Flex direction="column" gap=".5rem">
+                <Text type="p" text="Expiry Date" />
+                <DatePicker
+                  placeholder="MM/YY"
+                  minDate={dayjs()}
+                  views={["month", "year"]}
+                  height="40px"
+                  format="MM/YY"
+                />
+              </Flex>
+              <Flex direction="column" gap=".5rem">
+                <Text type="p" text="CVV" />
+                <Input
+                  type="number"
+                  border="1px solid #E7E7E7"
+                  padding="1rem"
+                  placeholder="Enter CVV"
+                  min={3}
+                  max={3}
+                  value={cvv}
+                  onChange={handleInput}
+                />
+              </Flex>
             </Flex>
           </Flex>
-          <Button padding="2rem" width="100%">
+          <Button
+            padding="2rem"
+            width="100%"
+            background={ttColors.blackishBlue}
+          >
             <Text type="p" text="Add to List" size={16} weight={500} />
           </Button>
         </Flex>

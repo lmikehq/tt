@@ -35,8 +35,9 @@ interface Actions {
 
 export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
-    step: 5,
-    highestStep: 5,
+    step: 2,
+    highestStep: 2,
+
     mode: Mode.init,
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],

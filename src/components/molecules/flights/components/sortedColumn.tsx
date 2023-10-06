@@ -1,402 +1,98 @@
-import CheckBox from "@molecule/checkbox";
-import { Divider } from "@atom/divider";
-import Flex from "@components/templates/flex";
-import { CustomRadioGroup } from "@molecule/radio";
-// import { SearchInputAsString } from "@organism/searchInput";
-import { SearchInputAsString } from "@organism/searchInput";
-import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import React, { useState } from "react";
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { BsChevronDown } from "react-icons/bs";
-import { LuSearch } from "react-icons/lu";
-import { ButtonBox } from "./sortedFlightsTab";
-import { styled } from "styled-components";
-import PriceAlerts from "./priceAlerts";
-import Button from "@/components/atoms/button";
+import SortingColumns from "../listings/sortingColumns";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import Flex from "@/components/templates/flex";
+import Text from "@/components/atoms/text";
 import { ttColors } from "@/lib/theme/colors";
-import Slider from "../../slider";
-import PlusMinusButton from "@/components/organisms/flights/PlusMinusButton";
+import { useState } from "react";
+import { FilterModal, SortModal } from "../listings/flightModal";
+import Button from "@/components/atoms/button";
 
-function SortedColumn() {
-  const options = [
-    { value: "any", label: "Any" },
-    { value: "non", label: "Nonstop" },
-    { value: "1stop", label: "Up to 1 stop" },
-    { value: "2stop", label: "Up to 2 stops" },
-  ];
+type sortProps = {
+  results: number;
+  sortType: string;
+};
 
-  const marks = [
-    {
-      value: 0,
-      label: "$0",
-    },
-    {
-      value: 100,
-      label: "Max",
-    },
-  ];
-
-  const airlines = [
-    "Air Canada",
-    "WestJet",
-    "Air Transat",
-    "Porter Airlines",
-    "Sunwing Airlines",
-    "Delta Air Lines",
-    "United Airlines",
-    "American Airlines",
-    "British Airways",
-    "Lufthansa",
-  ];
-
-  const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
-
-  const TimeBox = styled.div`
-    background: #f3f3ff;
-    padding: 0.5rem;
-    border-radius: 8px;
-  `;
-
-  const [columnState, setColumnState] = useState({
-    bags: false,
-    stops: false,
-    airlines: false,
-    times: false,
-    alliance: false,
-    duration: false,
-    price: false,
-    cabin: false,
+function SortedColumn({ results, sortType }: sortProps) {
+  const { isMobile } = useScreenResolution();
+  const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
+  const [open, setOpen] = useState({
+    filter: false,
+    sort: false,
   });
-
-  type ColumnName = keyof typeof columnState;
-
-  const toggleColumn = (columnName: ColumnName) => {
-    setColumnState((prevState) => ({
-      ...prevState,
-      [columnName]: !prevState[columnName],
-    }));
-  };
 
   return (
     <Section>
-      <Flex direction="column">
-        <PriceAlerts />
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("bags")}
-            cursor="pointer"
-          >
-            <Text type="p" text="Bags" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
+      {isMobile ? (
+        <Flex justify="space-between" align="center" padding="2rem">
+          <Flex direction="column">
+            <Text type="h1" text="Flights" weight={600} size={22} />
+            <Text
+              type="p"
+              text={`${results} results sorted by ${sorted}`}
+              size={14}
+            />
           </Flex>
-          {columnState.bags && (
-            <Flex
-              direction="column"
-              justify="center"
-              gap="1rem"
-              padding="1rem 0"
+          <Flex align="center" justify="flex-end" gap="2rem">
+            <Button
+              width="max-content"
+              onClick={() =>
+                setOpen((prev) => ({
+                  ...prev,
+                  filter: true,
+                }))
+              }
+              background="none"
             >
-              <Flex align="center" justify="space-between">
-                <Text
-                  type="p"
-                  text="Cabin Babbage"
-                  size={14.5}
-                  whiteSpace="nowrap"
-                />
-                <Flex gap=".75rem" align="center" justify="flex-end">
-                  {/* <AiOutlineMinusCircle size={30} /> */}
-                  <PlusMinusButton>+</PlusMinusButton>
-                  <Text type="p" text="0" />
-                  {/* <AiOutlinePlusCircle size={30} /> */}
-                  <PlusMinusButton>-</PlusMinusButton>
-                </Flex>
-              </Flex>
-              <Flex align="center" justify="space-between">
-                <Text
-                  type="p"
-                  text="Checked Baggage"
-                  size={14.5}
-                  whiteSpace="nowrap"
-                />
-                <Flex gap=".75rem" align="center" justify="flex-end">
-                  <PlusMinusButton>+</PlusMinusButton>
-                  <Text type="p" text="0" />
-                  <PlusMinusButton>-</PlusMinusButton>
-                </Flex>
-              </Flex>
-            </Flex>
-          )}
-          <Divider direction="horizontal" />
-        </Flex>
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("stops")}
-          >
-            <Text type="p" text="Stops" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
-          </Flex>
-          {columnState.stops && (
-            <Flex direction="column" align="flex-start" gap=".5rem">
-              <CustomRadioGroup
-                options={options}
-                name="flight"
-                onChange={(e: any) => console.log(e.target.value)}
-                justifyContent="flex-end"
-                align="flex-start"
-                direction="column"
+              <Text
+                type="p"
+                text="Filter"
+                color={ttColors.primary}
+                weight={600}
+                size={18}
               />
-              <CheckBox checked={false}>
-                <Text
-                  type="p"
-                  text="Allow overnight stopovers"
-                  whiteSpace="nowrap"
-                />
-              </CheckBox>
-            </Flex>
-          )}
-          <Divider direction="horizontal" />
-        </Flex>
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("airlines")}
-            cursor="pointer"
-          >
-            <Text type="p" text="Airlines" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
+            </Button>
+            <Button
+              width="max-content"
+              onClick={() =>
+                setOpen((prev) => ({
+                  ...prev,
+                  sort: true,
+                }))
+              }
+              background="none"
+            >
+              <Text
+                type="p"
+                text="Sort"
+                color={ttColors.primary}
+                weight={600}
+                size={18}
+              />
+            </Button>
           </Flex>
-          {columnState.airlines && (
-            <Flex direction="column" gap=".5rem">
-              <Flex justify="space-between" align="center" gap=".5rem">
-                <SearchInputAsString
-                  options={airlines}
-                  onChange={(e: any) => console.log(e)}
-                  placeholder="Search Airlines"
-                >
-                  <LuSearch color="#929292" size={20} />
-                </SearchInputAsString>
-
-                <Button
-                  variant="link"
-                  underlined={false}
-                  color={ttColors.primaryLight}
-                >
-                  Select all
-                </Button>
-              </Flex>
-              {airlines.map((airline, index) => (
-                <CheckBox key={index} checked={false}>
-                  <Text type="p" text={airline} size={16} />
-                </CheckBox>
-              ))}
-              <Button variant="link" padding="1rem 0" underlined={false}>
-                Show less
-              </Button>
-            </Flex>
-          )}
-          <Divider direction="horizontal" />
-        </Flex>
-        <Flex direction="column" gap=".5rem">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("times")}
-            cursor="pointer"
-          >
-            <Text type="p" text="Times" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
-          </Flex>
-          {columnState.times && (
-            <Flex direction="column">
-              <TimeBox>
-                <Flex gap=".5rem" align="center" justify="center">
-                  <ButtonBox active={true}>
-                    <Text type="p" text="Departure" weight={500} />
-                  </ButtonBox>
-                  <ButtonBox active={false}>
-                    <Text type="p" text="Return" weight={500} />
-                  </ButtonBox>
-                </Flex>
-              </TimeBox>
-              <Flex direction="column" gap=".25rem" padding="1rem 0">
-                <Text type="p" text="Departure" size={18} weight={500} />
-                <Text
-                  type="p"
-                  text="All Day"
-                  size={16}
-                  weight={500}
-                  color="#7BBBD6"
-                />
-
-                <Slider
-                  marks={[
-                    { value: 0, label: "0:00" },
-                    { value: 100, label: "23:59" },
-                  ]}
-                  defaultValue={[0, 100]}
-                />
-              </Flex>
-              <Flex direction="column" gap=".25rem" padding="1rem 0">
-                <Text type="p" text="Arrival" size={18} weight={500} />
-                <Text
-                  type="p"
-                  text="All Day"
-                  size={16}
-                  weight={500}
-                  color="#7BBBD6"
-                />
-                <Slider
-                  marks={[
-                    { value: 0, label: "0:00" },
-                    { value: 100, label: "23:59" },
-                  ]}
-                  defaultValue={[0, 100]}
-                />
-              </Flex>
-            </Flex>
-          )}
-        </Flex>
-        <Divider direction="horizontal" />
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("alliance")}
-          >
-            <Text type="p" text="Alliance" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
-          </Flex>
-          {columnState.alliance && (
-            <div>
-              {alliance.map((airline, index) => (
-                <CheckBox key={index} checked={false}>
-                  <Text type="p" text={airline} size={16} />
-                </CheckBox>
-              ))}
-            </div>
-          )}
-          <Divider direction="horizontal" />
-        </Flex>
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("duration")}
-            cursor="pointer"
-          >
-            <Text type="p" text="Duration" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
-          </Flex>
-          {columnState.duration && (
-            <div>
-              <Flex direction="column" gap=".25rem" padding=".5rem 0">
-                <Text type="p" text="Max Travel Time" size={18} weight={500} />
-                <Text
-                  type="p"
-                  text="Any"
-                  size={16}
-                  weight={500}
-                  color="#7BBBD6"
-                />
-                <Slider
-                  marks={[{ value: 100, label: "Max" }]}
-                  defaultValue={[0, 100]}
-                />
-              </Flex>
-              <Flex direction="column" gap=".25rem" padding=".5rem 0">
-                <Text type="p" text="Stop Overs" size={18} weight={500} />
-                <Text
-                  type="p"
-                  text="2 - 25 Hours"
-                  size={16}
-                  weight={500}
-                  color="#7BBBD6"
-                />
-                <Slider
-                  marks={[
-                    { value: 0, label: "2 Hours" },
-                    { value: 100, label: "25 Hours" },
-                  ]}
-                  defaultValue={[0, 100]}
-                />
-              </Flex>
-            </div>
-          )}
-          <Divider direction="horizontal" />
-        </Flex>
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("price")}
-            cursor="pointer"
-          >
-            <Text type="p" text="Price" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
-          </Flex>
-          <Text
-            type="p"
-            text="$0 - $40,000"
-            size={16}
-            weight={500}
-            color="#7BBBD6"
+          <FilterModal
+            open={open.filter}
+            handleClose={() =>
+              setOpen((prev) => ({
+                ...prev,
+                filter: false,
+              }))
+            }
           />
-          {columnState.price && (
-            <Slider defaultValue={[0, 100]} marks={marks} />
-          )}
-          <Divider direction="horizontal" />
+          <SortModal
+            open={open.sort}
+            handleClose={() =>
+              setOpen((prev) => ({
+                ...prev,
+                sort: false,
+              }))
+            }
+          />
         </Flex>
-        <Flex direction="column">
-          <Flex
-            align="center"
-            justify="space-between"
-            padding="1rem 0"
-            onClick={() => toggleColumn("cabin")}
-            cursor="pointer"
-          >
-            <Text type="p" text="Cabin" weight={500} color="#06062A" />
-            <BsChevronDown color="#06062A" size={20} />
-          </Flex>
-          {columnState.cabin && (
-            <Flex direction="column" gap=".75rem">
-              <CheckBox checked={false}>
-                <Text type="p" text="All Cabins" whiteSpace="nowrap" />
-              </CheckBox>
-              <CheckBox checked={false}>
-                <Text type="p" text="Economy" whiteSpace="nowrap" />
-              </CheckBox>
-              <CheckBox checked={false}>
-                <Text type="p" text="Premium Economy" whiteSpace="nowrap" />
-              </CheckBox>
-              <CheckBox checked={false}>
-                <Text type="p" text="Business" whiteSpace="nowrap" />
-              </CheckBox>
-              <CheckBox checked={false}>
-                <Text
-                  type="p"
-                  text="First Class"
-                  whiteSpace="nowrap"
-                  weight={400}
-                />
-              </CheckBox>
-            </Flex>
-          )}
-          <Divider direction="horizontal" />
-        </Flex>
-      </Flex>
+      ) : (
+        <SortingColumns />
+      )}
     </Section>
   );
 }

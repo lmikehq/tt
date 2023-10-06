@@ -41,9 +41,8 @@ const MultiStepWithSideMenu = ({
         {children}
       </Section>
       <Section
-        width="38%"
+        width={isMobile ? "100%" : "38%"}
         height="unset"
-        styles={{ display: isMobile ? "none" : "block" }}
       >
         {sideMenu}
       </Section>
