@@ -3,16 +3,18 @@
 import Button from "@/components/atoms/button";
 import Input from "@/components/atoms/input";
 import Text from "@/components/atoms/text";
+import Center from "@/components/templates/center";
 import Flex from "@/components/templates/flex";
 import useSocket from "@/lib/store/socket/useSocket";
-import { useEffect, useState } from "react";
+import { useAiChatStore } from "@/lib/store/socket/useSocketStore";
+import { useUserStore } from "@/lib/store/useStore";
+import { useEffect, useRef, useState } from "react";
 import { BsMicFill } from "react-icons/bs";
 import { GrRefresh } from "react-icons/gr";
 import { IoSendSharp } from "react-icons/io5";
 import { styled } from "styled-components";
+import Spinner from "../../icons/spinner";
 import Section from "../../section";
-import { useAiChatStore } from "@/lib/store/socket/useSocketStore";
-import { useUserStore } from "@/lib/store/useStore";
 
 const ChatAreaWrapper = styled.div`
   background: #f3f3ff;
@@ -98,13 +100,13 @@ function ChatArea() {
     },
   ];
   const [message, setMessage] = useState("");
-  const { sendMessage, initialChats, suggestions } = useSocket();
+  const { sendMessage, suggestions, initialSuggestions } = useSocket();
   const { user, geoInfo } = useUserStore();
   useEffect(() => {
-    const chats = suggestions();
-    console.log("chats suggestions: ", chats);
+    initialSuggestions;
+    return () => {};
   }, []);
-  const { outputMessages, chatSessionId } = useAiChatStore();
+  const { chatSessionId, aiSuggestions } = useAiChatStore();
   function scrollToBottom() {
     const chatArea = document.getElementById("chat-area");
     chatArea?.scrollTo({
@@ -120,7 +122,7 @@ function ChatArea() {
     });
     setMessage("");
   }
-  console.log("receivd: ", outputMessages, chatSessionId);
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <ChatAreaWrapper className="chat-area">
       <Flex justify="space-between">
@@ -148,31 +150,46 @@ function ChatArea() {
           styles={{
             userSelect: "none",
           }}
-          onClick={()=>{const chat = suggestions(); console.log("chat: ", chat, suggestions())}}
+          onClick={suggestions}
         >
-          <GrRefresh size={24} />
+          {aiSuggestions?.loading ? (
+            <Spinner size="30px" />
+          ) : (
+            <GrRefresh size={24} />
+          )}
         </Flex>
       </Flex>
 
       <Flex wrap="wrap" justify="space-between" gap=".1rem" margin="10vh 0 0">
-        {defaultSuggestion.map((_, i) => (
-          <Sugestion
-            key={i}
-            onClick={() => {
-              setMessage(_.title + ", " + _.subtitle);
-            }}
-          >
-            <Text type="p" text={_.title} weight={500} />
-            <Text type="p" text={_.subtitle} weight={300} />
-          </Sugestion>
-        ))}
+        {aiSuggestions?.loading ? (
+          <Center>
+            <Spinner size="40px" />
+          </Center>
+        ) : (
+          aiSuggestions?.suggestions.slice(0, 9).map((_, i) => (
+            <Sugestion
+              key={i}
+              onClick={() => {
+                setMessage(_);
+                if (!inputRef.current) return;
+                inputRef.current.autofocus = true;
+                inputRef.current.focus();
+              }}
+            >
+              <Text type="p" text={_.split("-")[0]} weight={500} />
+              <Text type="p" text={_.split("-")[1]} weight={300} />
+            </Sugestion>
+          ))
+        )}
       </Flex>
 
       <InputContainer>
         <Input
+          ref={inputRef}
           border="none"
           width="97%"
           type="text"
+          autoFocus
           placeholder="Enter a message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

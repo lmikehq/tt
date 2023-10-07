@@ -10,12 +10,13 @@ export default function useSocket() {
     addOutputMessage,
     setChatSuggestions,
     setChatSessionId,
+    setInitialAiChats,
     outputMessages,
   } = useAiChatStore();
   const [sendMessage, setSendMessage] = useState<any>(null);
-  const [suggestions, setSuggestions] = useState<any>([]);
-  const [initialChats, setInitialChatsChats] = useState<string[]>([]);
-
+  const [suggestions, setSuggestions] = useState<any>(null);
+  const [initialChats, setInitialChats] = useState<any>(null);
+  const [initialSuggestions, setInitialSuggestions] = useState<any>([]);
   useEffect(() => {
     const socket = socketIOClient(process.env.NEXT_PUBLIC_API_SERVER as string);
     socket.on("connect", () => {
@@ -42,12 +43,28 @@ export default function useSocket() {
     setSendMessage(() => sendMessageToServer);
 
     // FIRST TIME USER GETS TO CHATS PAGE
+
+    // refreshing suggestions
     const getSuggestions = () => {
-      socket.emit("suggestions-and-chats");
+      socket.emit("ai-suggestions");
     };
+
     setSuggestions(() => getSuggestions);
+
+    // first time loading chats
+    setInitialSuggestions(() => socket.emit("ai-suggestions"));
+    // setInitialChatsChats((ipOrUserId: string) => {
+    //   socket.emit("ai-initial-chats", ipOrUserId);
+    // });
+    setInitialChats(() => console.log("dont know bro"));
+    // response to suggestions from server
     socket.on("suggestions-and-chats-processed", (res) => {
-      console.log("suggestions-and-chats-processed", res);
+      setChatSuggestions(res);
+    });
+
+    socket.on("initial-chats-processed", (res) => {
+      console.log("returned something: ", res);
+      setInitialAiChats(res);
     });
 
     return () => {
@@ -55,5 +72,5 @@ export default function useSocket() {
     };
   }, []); // Empty dependency array ensures this effect runs only once (on mount)
 
-  return { sendMessage, initialChats, suggestions };
+  return { sendMessage, initialChats, suggestions, initialSuggestions };
 }

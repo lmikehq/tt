@@ -4,51 +4,67 @@ interface State {
   aiThinking?: boolean;
   inputMessage?: string;
   outputMessages: Message[];
-  suggestions?: string[];
+  aiSuggestions?: SuggestionsType | null;
   chatSessionId?: string;
+  initialAiChats?: InitialAiChats | null;
 }
 
 interface Message {
   role: string;
   content: string;
 }
+interface SuggestionsType {
+  suggestions: string[];
+  loading: boolean;
+}
+interface InitialAiChats {
+  chats: Message[];
+  loading: boolean;
+}
 
 interface Actions {
   setAiThinking: (aiThinking: boolean) => void;
   setInputMessage: (inputMessage: string) => void;
   setOutputMessages: (outputMessages: Message[]) => void;
-  setChatSuggestions: (suggestions: string[]) => void;
+  setChatSuggestions: (suggestions: SuggestionsType) => void;
   addOutputMessage: (message: Message) => void;
   setChatSessionId: (id: string) => void;
+  setInitialAiChats: (chats: InitialAiChats) => void;
 }
 
-export const useAiChatStore = create<State & Actions>((set): State & Actions => ({
-  aiThinking: false,
-  inputMessage: "",
-  outputMessages: [],
-  suggestions: [],
-  chatSessionId: "",
+export const useAiChatStore = create<State & Actions>(
+  (set): State & Actions => ({
+    aiThinking: false,
+    inputMessage: "",
+    outputMessages: [],
+    aiSuggestions: null,
+    chatSessionId: "",
+    initialAiChats: null,
 
-  setAiThinking: (aiThinking: boolean) => {
-    set({ aiThinking });
-  },
+    setAiThinking: (aiThinking: boolean) => {
+      set({ aiThinking });
+    },
 
-  setInputMessage: (inputMessage: string) => {
-    set({ inputMessage });
-  },
+    setInputMessage: (inputMessage: string) => {
+      set({ inputMessage });
+    },
 
-  setOutputMessages: (outputMessages: Message[]) => {
-    set({ outputMessages });
-  },
+    setOutputMessages: (outputMessages: Message[]) => {
+      set({ outputMessages });
+    },
 
-  setChatSuggestions: (suggestions: string[]) => {
-    set({ suggestions });
-  },
+    setChatSuggestions: (aiSuggestions: SuggestionsType) => {
+      set({ aiSuggestions });
+    },
 
-  addOutputMessage: (message: Message) => {
-    set((state) => ({ outputMessages: [...state.outputMessages, message] }));
-  },
-  setChatSessionId: (chatSessionId: string) => {
-    set({ chatSessionId });
-  },
-}));
+    addOutputMessage: (message: Message) => {
+      set((state) => ({ outputMessages: [...state.outputMessages, message] }));
+    },
+    setChatSessionId: (chatSessionId: string) => {
+      set({ chatSessionId });
+    },
+    setInitialAiChats: (initialAiChats: InitialAiChats) => {
+      set({ initialAiChats });
+    },
+  })
+);
