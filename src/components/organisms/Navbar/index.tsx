@@ -25,8 +25,8 @@ import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { TbCurrencyNaira } from "react-icons/tb";
 import styled from "styled-components";
-import MobileNavigationDrawer from "./modals/mobileNav";
 import { getIpDetails } from "../form/visaApis";
+import MobileNavigationDrawer from "./modals/mobileNav";
 const NavbarWrapper = styled.div<{ page: string }>`
   position: relative;
   width: 100%;
@@ -141,11 +141,10 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
       <MobileWrapper isSticky={isSticky}>
         <Flex padding="1rem" justify="space-between" ref={ref}>
           <ButtonBase onClick={() => router.push("/")}>
-            <Image
+            <img
               src={"/assets/images/brand/tt_blue_logo_with_text1.png"}
               alt="thrillers travels logo"
-              width={142}
-              height={43}
+              width={100}
             />
           </ButtonBase>
           <Flex gap="2rem" width="fit-content">

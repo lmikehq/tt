@@ -40,7 +40,7 @@ export default function DepartureTimeButton() {
   };
 
   return (
-    <DropdownButton title="Departure Time">
+    <DropdownButton title="Departure&nbsp;Time">
       <Box sx={{ padding: "1rem 4rem 1rem 1rem" }}>
         <FormGroup>
           {departureTimes.map((departureTime) => (

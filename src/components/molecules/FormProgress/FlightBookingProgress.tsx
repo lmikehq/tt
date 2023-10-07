@@ -3,6 +3,7 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { styled } from "styled-components";
+import { ttColors } from "@/lib/theme/colors";
 
 interface ComponentProps {
   phase: number;
@@ -14,7 +15,7 @@ const HorizontalLine = styled.div<{
 }>`
   height: 1px;
   flex-grow: 1;
-  background: ${({ isPassed }) => (isPassed ? "#6092A7" : "#929292")};
+  background: ${({ isPassed }) => (isPassed ? ttColors.primary600 : "#929292")};
 `;
 
 function FlightBookingProgress({
@@ -35,9 +36,9 @@ function FlightBookingProgress({
             title="Search Flight"
             active={phase === 1}
             isPassed={phase > 1}
-            disabled={highestPhase < 2}
+            disabled={true}
             onClick={() => {
-              if (highestPhase >= 2) setStep({ step: 2 });
+              // if (highestPhase >= 1) setStep({ step: 1 });
             }}
           />
           <HorizontalLine isPassed={phase > 1} />
@@ -48,9 +49,9 @@ function FlightBookingProgress({
             title="Passengers & baggage"
             active={phase === 2}
             isPassed={phase > 2}
-            disabled={highestPhase < 3}
+            disabled={highestPhase < 2}
             onClick={() => {
-              if (highestPhase >= 3) setStep({ step: 3 });
+              if (highestPhase >= 2) setStep({ step: 2 });
               // setStep(3);
             }}
           />
@@ -62,9 +63,9 @@ function FlightBookingProgress({
             title="Choose Ticket Fare"
             active={phase === 3}
             isPassed={phase > 3}
-            disabled={highestPhase < 4}
+            disabled={highestPhase < 3}
             onClick={() => {
-              if (highestPhase >= 4) setStep({ step: 4 });
+              if (highestPhase >= 3) setStep({ step: 3 });
               // setStep(4);
             }}
           />
@@ -76,9 +77,9 @@ function FlightBookingProgress({
             title="Seat Selection"
             active={phase === 4}
             isPassed={phase > 4}
-            disabled={highestPhase < 5}
+            disabled={highestPhase < 4}
             onClick={() => {
-              if (highestPhase >= 5) setStep({ step: 5 });
+              if (highestPhase >= 4) setStep({ step: 4 });
               // setStep(5);
             }}
           />
@@ -90,9 +91,9 @@ function FlightBookingProgress({
         title="Overview & Payment"
         active={phase === 5}
         isPassed={phase > 5}
-        disabled={highestPhase < 6}
+        disabled={highestPhase < 5}
         onClick={() => {
-          if (highestPhase >= 6) setStep({ step: 6 });
+          if (highestPhase >= 5) setStep({ step: 5 });
           // setStep({ step: 6 });
         }}
       />

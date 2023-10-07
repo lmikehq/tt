@@ -2,7 +2,7 @@
 import FlightHero from "@organism/hero/flight";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Text from "@/components/atoms/text";
 import BagsButton from "@/components/organisms/flights/BagsButton";
 import StopsButton from "@/components/organisms/flights/StopsButton";
@@ -10,6 +10,11 @@ import PricesButton from "@/components/organisms/flights/PricesButton";
 import DepartureTimeButton from "@/components/organisms/flights/DepartureTimeButton";
 import CabinButton from "@/components/organisms/flights/CabinButton";
 import SortButton from "@/components/organisms/flights/SortButton";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import MobileServiceBanner from "@/components/organisms/flights/MobileServiceBanner";
+import Navbar from "@/components/organisms/Navbar";
+import ServiceBanner from "@/components/organisms/ServiceBanner";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
 
 interface pageProps {}
 
@@ -37,6 +42,7 @@ const Page: React.FC<pageProps> = ({}) => {
   ];
 
   const [hoveredCity, setHoveredCity] = useState<null | string>(null);
+  const [serviceBannerOpen, setServiceBannerOpen] = useState(false);
 
   const handleMouseEnter = (name: string) => {
     setHoveredCity(name);
@@ -45,16 +51,42 @@ const Page: React.FC<pageProps> = ({}) => {
   const handleMouseLeave = () => {
     setHoveredCity(null);
   };
+
+  const { isMobile } = useScreenResolution();
+  const serviceBannerRef = useRef();
+
+  useDetectOutsideClick(serviceBannerRef, () => setServiceBannerOpen(false));
+
   return (
     <div>
-      <FlightHero />
+      {isMobile ? <Navbar page="flights" /> : <FlightHero />}
+
+      {isMobile && (
+        <Box marginBottom={"2rem"}>
+          <MobileServiceBanner setServiceBannerOpen={setServiceBannerOpen} />
+        </Box>
+      )}
+
+      {serviceBannerOpen && (
+        <Box ref={serviceBannerRef}>
+          <ServiceBanner page="flights" />
+        </Box>
+      )}
 
       <Container maxWidth="lg">
+        {isMobile && (
+          <Box marginBottom="1rem">
+            <Text type="h1" weight={"bold"} text="Explore Germany" />
+          </Box>
+        )}
+
         <Box
           sx={{
-            display: "flex",
+            display: isMobile ? "flex" : "grid",
+            gridTemplateColumns: isMobile ? "70% 20%" : "60% 20%",
+            columnGap: isMobile ? "100px" : "20%",
             alignItems: "center",
-            justifyContent: "space-between",
+            overflowX: isMobile ? "scroll" : "none",
           }}
           marginBottom="2rem"
         >
@@ -66,15 +98,20 @@ const Page: React.FC<pageProps> = ({}) => {
             <CabinButton />
           </Box>
 
-          <SortButton />
+          <Box sx={{ justifySelf: "end" }}>
+            <SortButton />
+          </Box>
         </Box>
-        <Box sx={{ marginBottom: "1rem" }}>
-          <Text type="h1" text="Explore Germany" />
-          <Text
-            type="p"
-            text="Select your preferred destination to view all available flights."
-          />
-        </Box>
+        {!isMobile && (
+          <Box sx={{ marginBottom: "2.5rem" }}>
+            <Text type="h1" weight={"bold"} text="Explore Germany" />
+
+            <Text
+              type="p"
+              text="Select your preferred destination to view all available flights."
+            />
+          </Box>
+        )}
 
         <Box
           sx={{
@@ -99,12 +136,14 @@ const Page: React.FC<pageProps> = ({}) => {
                   xs: "250px",
                   md: "270px",
                 },
-                ":hover": {
-                  height: "auto",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                },
+                ":hover": !isMobile
+                  ? {
+                      height: "auto",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }
+                  : {},
                 borderRadius: "10px",
                 position: "relative",
                 backgroundSize: "cover",
@@ -128,11 +167,16 @@ const Page: React.FC<pageProps> = ({}) => {
               />
 
               <Box sx={{ zIndex: 1, color: "white" }} padding={2}>
-                {city.name === hoveredCity ? (
-                  <Text type="h2" text={city.name} />
+                {city.name === hoveredCity && !isMobile ? (
+                  <Text type="h2" size="2rem" weight="bold" text={city.name} />
                 ) : (
                   <>
-                    <Text type="p" text={city.name} />
+                    <Text
+                      weight="600"
+                      size="1.5rem"
+                      type="p"
+                      text={city.name}
+                    />
                     <Text type="p" text={`Prices from ${city.price}`} />
                   </>
                 )}

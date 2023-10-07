@@ -1,13 +1,11 @@
 "use client";
 import Text from "@/components/atoms/text";
 import FormControl from "@mui/material/FormControl";
-import Paper from "@mui/material/Paper";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import { useFormik } from "formik";
 import CheckBox from "@/components/molecules/checkbox";
-import FormLabel from "@mui/material/FormLabel";
 import Box from "@mui/material/Box";
-import InputAdornment from "@mui/material/InputAdornment";
+import { FieldInput } from "../fieldInput";
+import FormLabel from "@/components/atoms/FormLabel";
 
 export default function ContactDetails() {
   const contactFormik = useFormik({
@@ -30,7 +28,7 @@ export default function ContactDetails() {
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gridGap: "1rem",
-          marginY: "2rem",
+          marginY: "1rem",
         }}
       >
         <FormControl>
@@ -38,10 +36,10 @@ export default function ContactDetails() {
             Email
           </FormLabel>
 
-          <OutlinedInput
-            id="email-input"
-            sx={{ paddingX: "1rem" }}
-            placeholder="Email"
+          <FieldInput
+            formik={contactFormik}
+            name="email"
+            placeholder="Enter your Email Address"
           />
         </FormControl>
 
@@ -50,22 +48,19 @@ export default function ContactDetails() {
             Phone Number
           </FormLabel>
 
-          <OutlinedInput
-            id="phone-input"
-            inputProps={{
-              startAdornment: (
-                <InputAdornment position="start">🇳🇬</InputAdornment>
-              ),
-            }}
-            type="number"
-            sx={{ paddingX: "1rem" }}
-            placeholder="Phone number"
+          <FieldInput
+            formik={contactFormik}
+            name="phone"
+            placeholder="Enter your Phone Number"
           />
         </FormControl>
       </Box>
 
       <FormControl>
-        <CheckBox checked={contactFormik.values.receiveSMSUpdates}>
+        <CheckBox
+          onChange={contactFormik.handleChange}
+          checked={contactFormik.values.receiveSMSUpdates}
+        >
           I want to receive SMS updates about my trip.
         </CheckBox>
       </FormControl>

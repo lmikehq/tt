@@ -30,9 +30,6 @@ const SubscribeWrapper = styled.div<{ isMobile?: boolean }>`
   border-radius: 1.5rem;
   padding: 0rem 3.5rem;
   margin-bottom: 5rem;
-  @media (max-width: 1300px) {
-    background-position: -8rem 0;
-  }
 `;
 
 const Subcribe = styled.div`

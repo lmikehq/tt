@@ -14,15 +14,10 @@ const MultiStepWithSideMenu = ({
 
   return (
     <Flex
-      {...(!isMobile && { background: "white" })}
       // background='white'
       borderRadius={isMobile ? "0px" : "16px"}
       margin={isMobile ? "1.5rem 0" : "3rem 0px 5rem 0px"}
       styles={{
-        boxShadow: isMobile
-          ? "none"
-          : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
-
         marginBottom: isMobile ? "3rem" : "0px",
         position: "relative",
       }}
@@ -34,15 +29,20 @@ const MultiStepWithSideMenu = ({
       <Section
         height="unset"
         width={isMobile ? "100%" : "62%"}
-        padding={isMobile ? "0 0 1.5rem 0" : "0 0 8rem 0"}
-        styles={{ position: "relative" }}
+        padding={isMobile ? "2rem 2rem 1.5rem " : "2rem 2rem 8rem"}
+        styles={{ position: "relative",
+        boxShadow: isMobile
+        ? "none"
+        : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
+        background: "white",
+        borderRadius: "12px"
+      }}
       >
         {children}
       </Section>
       <Section
-        width="38%"
+        width={isMobile ? "100%" : "38%"}
         height="unset"
-        styles={{ display: isMobile ? "none" : "block" }}
       >
         {sideMenu}
       </Section>
