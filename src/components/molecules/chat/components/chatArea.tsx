@@ -8,7 +8,7 @@ import Flex from "@/components/templates/flex";
 import useSocket from "@/lib/store/socket/useSocket";
 import { useAiChatStore } from "@/lib/store/socket/useSocketStore";
 import { useUserStore } from "@/lib/store/useStore";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { BsMicFill } from "react-icons/bs";
 import { GrRefresh } from "react-icons/gr";
 import { IoSendSharp } from "react-icons/io5";
@@ -123,6 +123,12 @@ function ChatArea() {
     setMessage("");
   }
   const inputRef = useRef<HTMLInputElement>(null);
+  const handleChange = useMemo(
+    () => (e: ChangeEvent<HTMLInputElement>) => {
+      setMessage(e.target.value);
+    },
+    []
+  );
   return (
     <ChatAreaWrapper className="chat-area">
       <Flex justify="space-between">
@@ -192,7 +198,7 @@ function ChatArea() {
           autoFocus
           placeholder="Enter a message"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleChange}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSubmitOrClick();
           }}

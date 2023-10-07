@@ -12,6 +12,7 @@ interface State {
 interface Message {
   role: string;
   content: string;
+  message?: string;
 }
 interface SuggestionsType {
   suggestions: string[];
@@ -39,7 +40,10 @@ export const useAiChatStore = create<State & Actions>(
     outputMessages: [],
     aiSuggestions: null,
     chatSessionId: "",
-    initialAiChats: null,
+    initialAiChats: {
+      chats: [],
+      loading: true,
+    },
 
     setAiThinking: (aiThinking: boolean) => {
       set({ aiThinking });

@@ -2,6 +2,7 @@ import socketIOClient from "socket.io-client";
 import { useAiChatStore } from "./useSocketStore";
 import { useEffect, useState } from "react";
 import { ChatUserIdentity } from "@/lib/types";
+import { useUserStore } from "../useStore";
 
 export default function useSocket() {
   const {
@@ -17,6 +18,8 @@ export default function useSocket() {
   const [suggestions, setSuggestions] = useState<any>(null);
   const [initialChats, setInitialChats] = useState<any>(null);
   const [initialSuggestions, setInitialSuggestions] = useState<any>([]);
+  const { user, geoInfo } = useUserStore();
+  const [apiCallCount, setApiCallCount] = useState<number>(0);
   useEffect(() => {
     const socket = socketIOClient(process.env.NEXT_PUBLIC_API_SERVER as string);
     socket.on("connect", () => {
@@ -46,31 +49,36 @@ export default function useSocket() {
 
     // refreshing suggestions
     const getSuggestions = () => {
-      socket.emit("ai-suggestions");
+      socket.emit("ai-suggestions-and-initial-chats", {
+        getSuggestions: true,
+      });
     };
-
     setSuggestions(() => getSuggestions);
 
     // first time loading chats
-    setInitialSuggestions(() => socket.emit("ai-suggestions"));
+    setInitialSuggestions(() => {
+      socket.emit("ai-suggestions-and-initial-chats", {
+        ipOrUserId: user?._id || geoInfo?.ip,
+        getSuggestions: apiCallCount <= 1,
+      });
+      setApiCallCount((prev) => prev + 1);
+    });
     // setInitialChatsChats((ipOrUserId: string) => {
     //   socket.emit("ai-initial-chats", ipOrUserId);
     // });
-    setInitialChats(() => console.log("dont know bro"));
     // response to suggestions from server
-    socket.on("suggestions-and-chats-processed", (res) => {
+    socket.on("ai-suggestions-processed", (res) => {
       setChatSuggestions(res);
     });
 
     socket.on("initial-chats-processed", (res) => {
-      console.log("returned something: ", res);
       setInitialAiChats(res);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, []); // Empty dependency array ensures this effect runs only once (on mount)
+  }, [user, geoInfo]); // Empty dependency array ensures this effect runs only once (on mount)
 
   return { sendMessage, initialChats, suggestions, initialSuggestions };
 }
