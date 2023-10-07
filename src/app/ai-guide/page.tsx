@@ -1,12 +1,13 @@
 import AIChat from "@/components/molecules/chat/aichat";
 import Navbar from "@/components/organisms/Navbar";
+import UserStoreProvider from "@/lib/extensions/hook/useUserStore";
 
 function AiGuidePage() {
   return (
-    <div>
+    <UserStoreProvider>
       <Navbar page="ai-guide" />
       <AIChat />
-    </div>
+    </UserStoreProvider>
   );
 }
 
