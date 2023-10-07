@@ -324,9 +324,9 @@ function ChatArea() {
         />
         {!aiThinking && (
           <>
-            <Button background="transparent" width="50px">
+            {/* <Button background="transparent" width="50px">
               <BsMicFill size="1.1rem" color={`#606060`} />
-            </Button>
+            </Button> */}
             <Button background="transparent" width="50px">
               <IoSendSharp
                 size="1.1rem"
