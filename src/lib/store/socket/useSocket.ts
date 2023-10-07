@@ -1,22 +1,18 @@
-import socketIOClient from "socket.io-client";
-import { useAiChatStore } from "./useSocketStore";
-import { useEffect, useState } from "react";
 import { ChatUserIdentity } from "@/lib/types";
+import { useEffect, useState } from "react";
+import socketIOClient from "socket.io-client";
 import { useUserStore } from "../useStore";
+import { useAiChatStore } from "./useSocketStore";
 
 export default function useSocket() {
   const {
-    setAiThinking,
-    setInputMessage,
     addOutputMessage,
     setChatSuggestions,
     setChatSessionId,
     setInitialAiChats,
-    outputMessages,
   } = useAiChatStore();
   const [sendMessage, setSendMessage] = useState<any>(null);
   const [suggestions, setSuggestions] = useState<any>(null);
-  const [initialChats, setInitialChats] = useState<any>(null);
   const [initialSuggestions, setInitialSuggestions] = useState<any>([]);
   const { user, geoInfo } = useUserStore();
   const [apiCallCount, setApiCallCount] = useState<number>(0);
@@ -40,7 +36,6 @@ export default function useSocket() {
       socket.emit("message", { message, session: session?.sessionId, user });
     };
     socket.on("ai-messaging", (res) => {
-      console.log("output already; ", outputMessages, res);
       if (res) addOutputMessage(res);
     });
     setSendMessage(() => sendMessageToServer);
@@ -80,5 +75,5 @@ export default function useSocket() {
     };
   }, [user, geoInfo]); // Empty dependency array ensures this effect runs only once (on mount)
 
-  return { sendMessage, initialChats, suggestions, initialSuggestions };
+  return { sendMessage, suggestions, initialSuggestions };
 }
