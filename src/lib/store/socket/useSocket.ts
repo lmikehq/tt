@@ -11,7 +11,7 @@ export default function useSocket() {
     setChatSessionId,
     setInitialAiChats,
     updateLastMessage,
-    outputMessages,
+    setAiThinking,
   } = useAiChatStore();
   const [sendMessage, setSendMessage] = useState<any>(null);
   const [suggestions, setSuggestions] = useState<any>(null);
@@ -38,7 +38,10 @@ export default function useSocket() {
       socket.emit("message", { message, session: session?.sessionId, user });
     };
     socket.on("ai-messaging", (res) => {
-      if (res?.loading) return addOutputMessage(res);
+      if (res?.loading) {
+        addOutputMessage(res);
+        return setAiThinking(true);
+      }
       updateLastMessage(res?.response);
     });
     setSendMessage(() => sendMessageToServer);

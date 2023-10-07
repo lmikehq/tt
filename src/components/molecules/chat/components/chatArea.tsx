@@ -192,15 +192,21 @@ function ChatArea() {
     initialSuggestions;
     return () => {};
   }, []);
-  const { chatSessionId, aiSuggestions, outputMessages } = useAiChatStore();
-  console.log("outputMessages: ", outputMessages);
-  function scrollToBottom() {
-    const chatArea = document.getElementById("chat-area");
-    chatArea?.scrollTo({
-      top: chatArea.scrollHeight,
-      behavior: "smooth",
-    });
-  }
+  const { chatSessionId, aiSuggestions, outputMessages, aiThinking } =
+    useAiChatStore();
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    function scrollToBottom() {
+      const chatArea = document.getElementById("messages");
+      chatArea?.scrollTo({
+        top: chatArea.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+    scrollToBottom();
+    return () => {};
+  }, [outputMessages]);
   function handleSubmitOrClick() {
     sendMessage(message, chatSessionId, {
       userId: user?._id,
@@ -217,13 +223,15 @@ function ChatArea() {
     []
   );
   return (
-    <ChatAreaWrapper className="chat-area">
+    <ChatAreaWrapper>
       {outputMessages.length ? (
         <Flex
           direction="column"
           overflowY="auto"
           height="90%"
           className="messages"
+          id="messages"
+          ref={chatContainerRef}
         >
           {outputMessages.map((output, i) => (
             <Message
@@ -303,6 +311,7 @@ function ChatArea() {
           ref={inputRef}
           border="none"
           width="97%"
+          readOnly={aiThinking}
           type="text"
           autoFocus
           placeholder="Enter a message"
@@ -313,16 +322,20 @@ function ChatArea() {
           }}
           parentWidth="100%"
         />
-        <Button background="transparent" width="50px">
-          <BsMicFill size="1.1rem" color={`#606060`} />
-        </Button>
-        <Button background="transparent" width="50px">
-          <IoSendSharp
-            size="1.1rem"
-            color={`#606060`}
-            onClick={handleSubmitOrClick}
-          />
-        </Button>
+        {!aiThinking && (
+          <>
+            <Button background="transparent" width="50px">
+              <BsMicFill size="1.1rem" color={`#606060`} />
+            </Button>
+            <Button background="transparent" width="50px">
+              <IoSendSharp
+                size="1.1rem"
+                color={`#606060`}
+                onClick={handleSubmitOrClick}
+              />
+            </Button>
+          </>
+        )}
       </InputContainer>
     </ChatAreaWrapper>
   );
