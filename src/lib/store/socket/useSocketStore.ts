@@ -10,9 +10,10 @@ interface State {
 }
 
 interface Message {
-  role: string;
-  content: string;
+  role?: string;
+  response: string;
   message?: string;
+  id?: string;
 }
 interface SuggestionsType {
   suggestions: string[];
@@ -31,6 +32,7 @@ interface Actions {
   addOutputMessage: (message: Message) => void;
   setChatSessionId: (id: string) => void;
   setInitialAiChats: (chats: InitialAiChats) => void;
+  updateLastMessage: (message: Message['response']) => void;
 }
 
 export const useAiChatStore = create<State & Actions>(
@@ -69,6 +71,13 @@ export const useAiChatStore = create<State & Actions>(
     },
     setInitialAiChats: (initialAiChats: InitialAiChats) => {
       set({ initialAiChats });
+    },
+    updateLastMessage: (response: Message['response']) => {
+      set((state) => {
+        const outputMessages = [...state.outputMessages];
+        outputMessages[outputMessages.length - 1].response = response;
+        return { outputMessages };
+      });
     },
   })
 );

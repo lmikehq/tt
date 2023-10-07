@@ -12,11 +12,21 @@ import Spinner from "../../icons/spinner";
 const ChatSessionsWrapper = styled.div`
   background-color: #fff;
   // height: 100vh;
-  padding: 3rem 0;
+  padding: 3rem 0 0;
 `;
 
 const RecentChats = styled.div`
   padding: 2rem 0;
+  margin: 1rem 0;
+  overflow-y: scroll;
+  max-height: calc(100vh - 200px);
+
+  // &::-webkit-scrollbar {
+  //   display: none;
+  // }
+
+  // -ms-overflow-style: none;
+  // scrollbar-width: none;
 `;
 
 function ChatSessions() {
@@ -34,7 +44,9 @@ function ChatSessions() {
         <RecentChats>
           <Text type="p" text="Recent" color={ttColors.dark} />
           {initialAiChats?.loading ? (
-            <Spinner size="40px" />
+            <Center>
+              <Spinner size="30px" />
+            </Center>
           ) : (
             initialAiChats?.chats.map((chat) => (
               <Flex

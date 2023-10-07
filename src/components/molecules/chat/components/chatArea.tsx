@@ -15,6 +15,13 @@ import { IoSendSharp } from "react-icons/io5";
 import { styled } from "styled-components";
 import Spinner from "../../icons/spinner";
 import Section from "../../section";
+import { RxAvatar } from "react-icons/rx";
+import Image from "@/components/atoms/image";
+import { PiCopySimple } from "react-icons/pi";
+import { HiOutlineHandThumbDown, HiOutlineHandThumbUp } from "react-icons/hi2";
+import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
+import MicIcon from "public/assets/icons/mic";
+import useTextToSpeech from "@/lib/extensions/hook/useTextToSpeech";
 
 const ChatAreaWrapper = styled.div`
   background: #f3f3ff;
@@ -26,6 +33,14 @@ const ChatAreaWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  & .messages {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -33,10 +48,10 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #bdbdbd50;
+  border: 1px solid #929292;
   border-radius: 8px;
   padding-left: 6px;
-  background: white;
+  background: #f8f8ff;
   height: 70px;
   & input {
     font-size: 1.2rem;
@@ -59,6 +74,77 @@ const Sugestion = styled.div`
   border: 1px solid #d4d4d4;
   cursor: pointer;
 `;
+
+const Message = ({ message, response }: any) => {
+  const { copyToClipboard } = useClipboard();
+  const { play, pause, stop, isPlaying } = useTextToSpeech(response);
+  return (
+    <Section margin="1rem 0">
+      <Flex gap="1rem">
+        <RxAvatar size={34} />
+        <Text type="p" text={message} weight={500} />
+      </Flex>
+      <Flex
+        margin="1rem 0"
+        background="#FFFFFF"
+        padding="1.4rem"
+        borderRadius="10px"
+        gap="1rem"
+        width="100%"
+      >
+        <Image
+          src={"/assets/images/brand/favicon.svg"}
+          height={45}
+          width={45}
+          alt="TTLogo"
+        />
+        <Section>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: response.replace(/\n/g, "<br/>"),
+            }}
+          />
+          {response !== "thinking..." && (
+            <Flex gap="2rem" margin="2rem 0 0">
+              <PiCopySimple
+                size={25}
+                cursor="pointer"
+                onClick={() => copyToClipboard(response, "message copied")}
+              />
+              <HiOutlineHandThumbUp
+                size={25}
+                cursor="not-allowed"
+                color="#04040450"
+              />
+              <HiOutlineHandThumbDown
+                size={25}
+                cursor="not-allowed"
+                color="#04040450"
+              />
+            </Flex>
+          )}
+        </Section>
+        {response !== "thinking..." && (
+          <Section
+            width="fit-content"
+            styles={{
+              cursor: "pointer",
+            }}
+          >
+            <span
+              onClick={() => {
+                if (isPlaying) return pause();
+                play();
+              }}
+            >
+              <MicIcon size={40} />
+            </span>
+          </Section>
+        )}
+      </Flex>
+    </Section>
+  );
+};
 
 function ChatArea() {
   const defaultSuggestion = [
@@ -106,7 +192,8 @@ function ChatArea() {
     initialSuggestions;
     return () => {};
   }, []);
-  const { chatSessionId, aiSuggestions } = useAiChatStore();
+  const { chatSessionId, aiSuggestions, outputMessages } = useAiChatStore();
+  console.log("outputMessages: ", outputMessages);
   function scrollToBottom() {
     const chatArea = document.getElementById("chat-area");
     chatArea?.scrollTo({
@@ -131,64 +218,86 @@ function ChatArea() {
   );
   return (
     <ChatAreaWrapper className="chat-area">
-      <Flex justify="space-between">
-        <Section>
-          <Text
-            type="p"
-            text="Hi, This is Thrillers Travels AI Guide"
-            weight={600}
-            size={23}
-          />
-          <Text
-            type="p"
-            text="Tell us what you have in mind about travels and we will be glad to help you out."
-            width={"50%"}
-          />
-        </Section>
+      {outputMessages.length ? (
         <Flex
-          background="white"
-          height="56px"
-          width="56px"
-          borderRadius="50%"
-          align="center"
-          justify="center"
-          cursor="pointer"
-          styles={{
-            userSelect: "none",
-          }}
-          onClick={suggestions}
+          direction="column"
+          overflowY="auto"
+          height="90%"
+          className="messages"
         >
-          {aiSuggestions?.loading ? (
-            <Spinner size="30px" />
-          ) : (
-            <GrRefresh size={24} />
-          )}
-        </Flex>
-      </Flex>
-
-      <Flex wrap="wrap" justify="space-between" gap=".1rem" margin="10vh 0 0">
-        {aiSuggestions?.loading ? (
-          <Center>
-            <Spinner size="40px" />
-          </Center>
-        ) : (
-          aiSuggestions?.suggestions.slice(0, 9).map((_, i) => (
-            <Sugestion
+          {outputMessages.map((output, i) => (
+            <Message
               key={i}
-              onClick={() => {
-                setMessage(_);
-                if (!inputRef.current) return;
-                inputRef.current.autofocus = true;
-                inputRef.current.focus();
+              message={output.message}
+              response={output.response}
+            />
+          ))}
+        </Flex>
+      ) : (
+        <>
+          <Flex justify="space-between">
+            <Section>
+              <Text
+                type="p"
+                text="Hi, This is Thrillers Travels AI Guide"
+                weight={600}
+                size={23}
+              />
+              <Text
+                type="p"
+                text="Tell us what you have in mind about travels and we will be glad to help you out."
+                width={"50%"}
+              />
+            </Section>
+            <Flex
+              background="white"
+              height="56px"
+              width="56px"
+              borderRadius="50%"
+              align="center"
+              justify="center"
+              cursor="pointer"
+              styles={{
+                userSelect: "none",
               }}
+              onClick={suggestions}
             >
-              <Text type="p" text={_.split("-")[0]} weight={500} />
-              <Text type="p" text={_.split("-")[1]} weight={300} />
-            </Sugestion>
-          ))
-        )}
-      </Flex>
-
+              {aiSuggestions?.loading ? (
+                <Spinner size="30px" />
+              ) : (
+                <GrRefresh size={24} />
+              )}
+            </Flex>
+          </Flex>
+          <Flex
+            wrap="wrap"
+            justify="space-between"
+            gap=".1rem"
+            margin="10vh 0 0"
+          >
+            {aiSuggestions?.loading ? (
+              <Center>
+                <Spinner size="40px" />
+              </Center>
+            ) : (
+              aiSuggestions?.suggestions.slice(0, 9).map((_, i) => (
+                <Sugestion
+                  key={i}
+                  onClick={() => {
+                    setMessage(_);
+                    if (!inputRef.current) return;
+                    inputRef.current.autofocus = true;
+                    inputRef.current.focus();
+                  }}
+                >
+                  <Text type="p" text={_.split("-")[0]} weight={500} />
+                  <Text type="p" text={_.split("-")[1]} weight={300} />
+                </Sugestion>
+              ))
+            )}
+          </Flex>
+        </>
+      )}
       <InputContainer>
         <Input
           ref={inputRef}
