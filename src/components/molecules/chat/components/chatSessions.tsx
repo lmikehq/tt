@@ -48,12 +48,13 @@ function ChatSessions() {
               <Spinner size="30px" />
             </Center>
           ) : (
-            initialAiChats?.chats.map((chat) => (
+            initialAiChats?.chats.map((chat, i) => (
               <Flex
                 align="center"
                 gap="1rem"
                 margin="1.2rem 0"
                 cursor="pointer"
+                key={i}
               >
                 <MessageIcon size="40" />
                 <Text
