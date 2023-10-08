@@ -1,4 +1,4 @@
-import Chat from "src/components/molecules/chatTabs/components/chat";
+import Chat from "@/components/molecules/chat/components/chat";
 
 export default function Home() {
   return <Chat />;
