@@ -32,7 +32,7 @@ export class FlightBookingService {
   };
   static checkFlights = async ({ query }: { query: CheckFlightsQuery }) => {
     const queryString = constructQueryFromParams(query);
-
+    console.log(queryString);
     return await kiwiClient
       .get<any, any>(`/booking/check_flights${queryString}`)
       .then((response) => response.data)

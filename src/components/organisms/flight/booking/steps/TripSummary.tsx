@@ -10,48 +10,58 @@ import { Box } from "@mui/material";
 import { useEffect } from "react";
 
 const TripSummary = () => {
-  const { checkFlights, sessionId } = useFlightBookingStore((state) => state);
+  const { checkFlights } = useFlightBookingStore((state) => state);
   const searchParams = extractSearchParamsFromUrl({
     url: window.location.href,
   });
 
-  const checkFlightsThreeSecondsInterval = () => {
+  const params = new URLSearchParams(window.location.search);
+
+  const checkFlightsThreeSecondsInterval = (sessionId: string) => {
+    console.log(sessionId);
     checkFlights({
       query: {
         bnum: 0,
         ...searchParams,
-        session_id: sessionId ?? "",
+        session_id: sessionId,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         if (
           response.flights_checked == true &&
           response.price_change == false &&
           response.flights_invalid == false
         )
-          return checkFlightsFifteenSecondsInterval();
-        sleep(3000);
-        checkFlightsThreeSecondsInterval();
+          return checkFlightsFifteenSecondsInterval(sessionId);
+        await sleep(3000);
+        return checkFlightsThreeSecondsInterval(sessionId);
       })
       .catch(() => {});
   };
 
-  const checkFlightsFifteenSecondsInterval = () => {
+  const checkFlightsFifteenSecondsInterval = (sessionId: string) => {
     checkFlights({
       query: {
         bnum: 0,
         ...searchParams,
-        session_id: sessionId ?? "",
+        session_id: sessionId,
       },
     })
-      .then(() => {
-        sleep(15000);
-        checkFlightsFifteenSecondsInterval();
+      .then(async () => {
+        await sleep(15000);
+        return checkFlightsFifteenSecondsInterval(sessionId);
       })
       .catch(() => {});
   };
   useEffect(() => {
-    checkFlightsThreeSecondsInterval();
+    checkFlights({
+      query: {
+        bnum: 0,
+        ...searchParams,
+      },
+    }).then((response) =>
+      checkFlightsThreeSecondsInterval(response.session_id)
+    );
   }, []);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", rowGap: "1rem" }}>

@@ -19,7 +19,7 @@ interface PaymentDetails {
   };
 }
 
-interface Passenger {
+export interface Passenger {
   name: string;
   surname: string;
   phone: string;
@@ -27,12 +27,12 @@ interface Passenger {
   cardno: string;
   birthday: string; // YYYY-MM-DD format
   nationality: string; // ISO 3166-1 alpha-2 format (2 letter format)
-  title: "Mr" | "Mrs"; // Can only be "Mr" or "Mrs"
+  title: string;
   expiration: string; // expiration of passport, YYYY-MM-DD format
-  category: "adult";
+  category: string;
 }
 
-interface CombinationPrice {
+export interface CombinationPrice {
   currency: string;
   amount: number;
   base: number;
@@ -41,17 +41,17 @@ interface CombinationPrice {
   merchant: number;
 }
 
-interface CombinationConditions {
+export interface CombinationConditions {
   passenger_groups: string[];
 }
-interface Combination {
+export interface Combination {
   indices: number[];
   category: string;
   conditions: CombinationConditions;
   price: CombinationPrice;
 }
 
-interface Baggage {
+export interface Baggage {
   combination: Combination;
   passengers: number[];
 }

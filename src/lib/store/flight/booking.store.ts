@@ -40,7 +40,7 @@ interface Actions {
 export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
     step: 2,
-    highestStep: 2,
+    highestStep: 5,
 
     mode: Mode.init,
     searchFlightsMode: Mode.init,
@@ -85,15 +85,17 @@ export const useFlightBookingStore = create<State & Actions>(
     },
     checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
       set({ mode: Mode.loading });
+      console.log("query", query);
+
       return await FlightBookingService.checkFlights({
         query,
       })
         .then((response) => {
           console.log(response);
-          set((state) => ({
+          set({
             mode: Mode.loaded,
             sessionId: response.session_id,
-          }));
+          });
           return response;
         })
         .catch((error) => {
