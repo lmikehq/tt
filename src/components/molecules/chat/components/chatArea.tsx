@@ -146,7 +146,10 @@ const Message = ({ message, response }: any) => {
   );
 };
 
-function ChatArea() {
+function ChatArea({setMessage, message}: {
+  setMessage: (message: string) => void
+  message: string
+}) {
   const defaultSuggestion = [
     {
       title: "What documents do I need",
@@ -185,7 +188,7 @@ function ChatArea() {
       subtitle: "an itinerary for a two-week trip",
     },
   ];
-  const [message, setMessage] = useState("");
+ 
   const { sendMessage, suggestions, initialSuggestions } = useSocket();
   const { user, geoInfo } = useUserStore();
   useEffect(() => {
