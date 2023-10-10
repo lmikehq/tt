@@ -15,13 +15,19 @@ import { IoSendSharp } from "react-icons/io5";
 import { styled } from "styled-components";
 import Spinner from "../../icons/spinner";
 import Section from "../../section";
-import { RxAvatar } from "react-icons/rx";
+import { RxAvatar, RxHamburgerMenu } from "react-icons/rx";
 import Image from "@/components/atoms/image";
 import { PiCopySimple } from "react-icons/pi";
 import { HiOutlineHandThumbDown, HiOutlineHandThumbUp } from "react-icons/hi2";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import MicIcon from "public/assets/icons/mic";
 import useTextToSpeech from "@/lib/extensions/hook/useTextToSpeech";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { ButtonBase } from "@mui/material";
+import { ttColors } from "@/lib/theme/colors";
+import { AiOutlinePlus } from "react-icons/ai";
+import CustomDrawer from "../../drawers/customDrawer";
+import ChatSessions from "./chatSessions";
 
 const ChatAreaWrapper = styled.div`
   background: #f3f3ff;
@@ -40,6 +46,14 @@ const ChatAreaWrapper = styled.div`
     }
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+    height: 100vh;
+    background: #fff;
+    justify-content: flex-start;
+    gap: 0.5rem;
   }
 `;
 
@@ -63,8 +77,24 @@ const InputContainer = styled.div`
   & button {
     padding-right: 15px;
   }
-`;
 
+  @media (max-width: 768px) {
+    width: 92%;
+    margin: 0 auto;
+  }
+
+}
+`;
+const InputAndText = styled.div`
+@media (max-width: 768px) {
+  position: fixed;
+  bottom: 0;
+  height:150px;
+  padding-top: 1.4rem;
+  background: #F5F5FF;
+  z-index: 100000000;
+
+`;
 const Sugestion = styled.div`
   background: #fff;
   padding: 1rem;
@@ -73,14 +103,24 @@ const Sugestion = styled.div`
   width: 32%;
   border: 1px solid #d4d4d4;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    margin: 0.2rem auto;
+  }
 `;
 
 const Message = ({ message, response }: any) => {
   const { copyToClipboard } = useClipboard();
   const { play, pause, stop, isPlaying } = useTextToSpeech(response);
+  const { isMobile } = useScreenResolution();
   return (
     <Section margin="1rem 0">
-      <Flex gap="1rem">
+      <Flex
+        gap="1rem"
+        width={isMobile ? "90%" : "100%"}
+        margin={isMobile ? "0 auto" : "0"}
+      >
         <RxAvatar size={34} />
         <Text type="p" text={message} weight={500} />
       </Flex>
@@ -124,7 +164,7 @@ const Message = ({ message, response }: any) => {
             </Flex>
           )}
         </Section>
-        {response !== "thinking..." && (
+        {!isMobile && response !== "thinking..." && (
           <Section
             width="fit-content"
             styles={{
@@ -146,57 +186,26 @@ const Message = ({ message, response }: any) => {
   );
 };
 
-function ChatArea({setMessage, message}: {
-  setMessage: (message: string) => void
-  message: string
+function ChatArea({
+  setMessage,
+  message,
+}: {
+  setMessage: (message: string) => void;
+  message: string;
 }) {
-  const defaultSuggestion = [
-    {
-      title: "What documents do I need",
-      subtitle: "to prepare my Visa Application",
-    },
-    {
-      title: "Help me generate a list of",
-      subtitle: "fun places in the world",
-    },
-    {
-      title: "Can you suggest",
-      subtitle: "an itinerary for a two-week trip",
-    },
-    {
-      title: "What documents do I need",
-      subtitle: "to prepare my Visa Application",
-    },
-    {
-      title: "Help me generate a list of",
-      subtitle: "fun places in the world",
-    },
-    {
-      title: "Can you suggest",
-      subtitle: "an itinerary for a two-week trip",
-    },
-    {
-      title: "What documents do I need",
-      subtitle: "to prepare my Visa Application",
-    },
-    {
-      title: "Help me generate a list of",
-      subtitle: "fun places in the world",
-    },
-    {
-      title: "Can you suggest",
-      subtitle: "an itinerary for a two-week trip",
-    },
-  ];
- 
   const { sendMessage, suggestions, initialSuggestions } = useSocket();
   const { user, geoInfo } = useUserStore();
   useEffect(() => {
     initialSuggestions;
     return () => {};
   }, []);
-  const { chatSessionId, aiSuggestions, outputMessages, aiThinking } =
-    useAiChatStore();
+  const {
+    chatSessionId,
+    aiSuggestions,
+    outputMessages,
+    aiThinking,
+    setOutputMessages,
+  } = useAiChatStore();
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
@@ -225,13 +234,62 @@ function ChatArea({setMessage, message}: {
     },
     []
   );
+  const { isMobile } = useScreenResolution();
+  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <ChatAreaWrapper>
+      <CustomDrawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        zIndex={10000000000}
+        // background="#06062A"
+      >
+        <Section>
+          <ChatSessions
+            setMessage={setMessage}
+            closeDrawer={() => setDrawerOpen(false)}
+          />
+        </Section>
+      </CustomDrawer>
+      {isMobile && (
+        <Flex align="center" justify="space-between" padding="1rem">
+          <ButtonBase
+            onClick={() => {
+              setDrawerOpen(!drawerOpen);
+            }}
+          >
+            <RxHamburgerMenu size={30} />
+          </ButtonBase>
+          <Text type="p" text="NEW CHAT" weight={600} />
+
+          <Flex align="center" gap="1rem" width="fit-content">
+            <AiOutlinePlus size={20} onClick={() => setOutputMessages([])} />
+            <Flex
+              align="center"
+              justify="center"
+              width="28px"
+              height="28px"
+              background="#0065AE"
+              borderRadius="50%"
+              styles={{ flex: "none" }}
+            >
+              <Text
+                type="h5"
+                color={ttColors.light}
+                weight={400}
+                size={17}
+                text={user?.firstName?.charAt(0) ?? "T"}
+              />
+            </Flex>
+          </Flex>
+        </Flex>
+      )}
       {outputMessages.length ? (
         <Flex
           direction="column"
           overflowY="auto"
-          height="90%"
+          height={isMobile ? "75%" : "90%"}
           className="messages"
           id="messages"
           ref={chatContainerRef}
@@ -246,7 +304,11 @@ function ChatArea({setMessage, message}: {
         </Flex>
       ) : (
         <>
-          <Flex justify="space-between">
+          <Flex
+            justify="space-between"
+            margin={isMobile ? "2rem 0 0" : "0"}
+            padding={isMobile ? "1rem" : "0"}
+          >
             <Section>
               <Text
                 type="p"
@@ -257,7 +319,7 @@ function ChatArea({setMessage, message}: {
               <Text
                 type="p"
                 text="Tell us what you have in mind about travels and we will be glad to help you out."
-                width={"50%"}
+                width={isMobile ? "100%" : "50%"}
               />
             </Section>
             <Flex
@@ -285,61 +347,76 @@ function ChatArea({setMessage, message}: {
             justify="space-between"
             gap=".1rem"
             margin="10vh 0 0"
+            direction={isMobile ? "column" : "row"}
           >
             {aiSuggestions?.loading ? (
               <Center>
                 <Spinner size="40px" />
               </Center>
             ) : (
-              aiSuggestions?.suggestions.slice(0, 9).map((_, i) => (
-                <Sugestion
-                  key={i}
-                  onClick={() => {
-                    setMessage(_);
-                    if (!inputRef.current) return;
-                    inputRef.current.autofocus = true;
-                    inputRef.current.focus();
-                  }}
-                >
-                  <Text type="p" text={_.split("-")[0]} weight={500} />
-                  <Text type="p" text={_.split("-")[1]} weight={300} />
-                </Sugestion>
-              ))
+              aiSuggestions?.suggestions
+                .slice(0, isMobile ? 3 : 9)
+                .map((_, i) => (
+                  <Sugestion
+                    key={i}
+                    onClick={() => {
+                      setMessage(_);
+                      if (!inputRef.current) return;
+                      inputRef.current.autofocus = true;
+                      inputRef.current.focus();
+                    }}
+                  >
+                    <Text type="p" text={_.split("-")[0]} weight={500} />
+                    <Text type="p" text={_.split("-")[1]} weight={300} />
+                  </Sugestion>
+                ))
             )}
           </Flex>
         </>
       )}
-      <InputContainer>
-        <Input
-          ref={inputRef}
-          border="none"
-          width="97%"
-          readOnly={aiThinking}
-          type="text"
-          autoFocus
-          placeholder="Enter a message"
-          value={message}
-          onChange={handleChange}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSubmitOrClick();
-          }}
-          parentWidth="100%"
-        />
-        {!aiThinking && (
-          <>
-            {/* <Button background="transparent" width="50px">
+      <InputAndText>
+        <InputContainer>
+          <Input
+            ref={inputRef}
+            border="none"
+            width="97%"
+            readOnly={aiThinking}
+            type="text"
+            autoFocus
+            placeholder="Enter a message"
+            value={message}
+            onChange={handleChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSubmitOrClick();
+            }}
+            parentWidth="100%"
+          />
+          {!aiThinking && (
+            <>
+              {/* <Button background="transparent" width="50px">
               <BsMicFill size="1.1rem" color={`#606060`} />
             </Button> */}
-            <Button background="transparent" width="50px">
-              <IoSendSharp
-                size="1.1rem"
-                color={`#606060`}
-                onClick={handleSubmitOrClick}
-              />
-            </Button>
-          </>
+              <Button background="transparent" width="50px">
+                <IoSendSharp
+                  size="1.1rem"
+                  color={`#606060`}
+                  onClick={handleSubmitOrClick}
+                />
+              </Button>
+            </>
+          )}
+        </InputContainer>
+        {isMobile && (
+          <Text
+            type="p"
+            text="The AI Guide may display inaccurate or offensive information that doesn’t represent Thrillers Travels"
+            weight={500}
+            textAlign="center"
+            size={13}
+            margin=".5rem 0 0 0"
+          />
         )}
-      </InputContainer>
+      </InputAndText>
     </ChatAreaWrapper>
   );
 }

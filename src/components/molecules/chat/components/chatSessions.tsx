@@ -38,7 +38,13 @@ const RecentChats = styled.div`
 
 // `;
 
-function ChatSessions({ setMessage }: { setMessage: (e: string) => void }) {
+function ChatSessions({
+  setMessage,
+  closeDrawer,
+}: {
+  setMessage: (e: string) => void;
+  closeDrawer?: () => void;
+}) {
   // const { initialAiChats } = useAiChatStore();
   const initialAiChats = [
     "How long does Canada Visa take",
@@ -77,7 +83,10 @@ function ChatSessions({ setMessage }: { setMessage: (e: string) => void }) {
                   margin="1.2rem 0"
                   cursor="pointer"
                   key={i}
-                  onClick={() => setMessage(chat)}
+                  onClick={() => {
+                    setMessage(chat);
+                    closeDrawer && closeDrawer();
+                  }}
                 >
                   <Text type="p" text={chat} />
                   <IoSendSharp size="20" />
