@@ -379,7 +379,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                   type="p"
                   size={16}
                   weight={400}
-                  text={user?.email ?? "jonathanadah@gmail.com"}
+                  text={user?.email ?? "your mail"}
                   className="truncate"
                 />
               </Section>

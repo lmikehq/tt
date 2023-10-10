@@ -196,3 +196,8 @@ textarea:hover {
 .go2072408551 {
   max-width: max-content;
 }
+
+
+  .MuiDrawer-root.MuiDrawer-modal.MuiModal-root {
+    z-index: 1000000000!important;
+  }
