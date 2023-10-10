@@ -4,19 +4,23 @@ import { Grid } from "@/components/templates/grid";
 import ChatArea from "./components/chatArea";
 import ChatSessions from "./components/chatSessions";
 import Section from "../section";
+import { useState } from "react";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 function AIChat() {
+  const [message, setMessage] = useState("");
+  const { isMobile } = useScreenResolution();
   return (
-    <Section >
+    <Section>
       <Grid
         columns=""
         gap="0"
         style={{
-          gridTemplateColumns: "1fr 4fr",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 4fr",
         }}
       >
-        <ChatSessions />
-        <ChatArea />
+        {!isMobile && <ChatSessions setMessage={setMessage} />}
+        <ChatArea setMessage={setMessage} message={message} />
       </Grid>
     </Section>
   );
