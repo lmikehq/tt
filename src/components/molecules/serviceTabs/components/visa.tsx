@@ -1,19 +1,19 @@
 "use client";
+import { useUserStore } from "@/lib/store/useStore";
 import Button from "@atom/button";
+import Text from "@atom/text";
 import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
-import SearchInput, { SearchInputAsString } from "@organism/searchInput";
-import Text from "@atom/text";
-import Spinner from "@molecule/icons/spinner";
-import sleep from "@lib/extensions/helpers/sleep";
-import Section from "src/components/molecules/section";
-import { getIpDetails } from "@organism/form/visaApis";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import sleep from "@lib/extensions/helpers/sleep";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { ttColors } from "@lib/theme/colors";
+import Spinner from "@molecule/icons/spinner";
+import SearchInput, { SearchInputAsString } from "@organism/searchInput";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { ttColors } from "@lib/theme/colors";
+import Section from "src/components/molecules/section";
 export interface CountryType {
   name: string;
   flag: string;
@@ -26,20 +26,12 @@ export interface LabelType {
 }
 
 function Visa() {
+  const { geoInfo } = useUserStore();
   const [home, setHome] = useState<CountryType>({
-    name: "Nigeria",
-    flag: "🇳🇬",
-    code: "NG",
+    name: geoInfo?.country || "Nigeria",
+    flag: COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
+    code: geoInfo?.country_code || "NG",
   });
-  useEffect(() => {
-    getIpDetails().then((x: any) =>
-      setHome({
-        name: x.country || "Nigeria",
-        flag: COUNTRY_FLAGS.find((y) => y.code === x.countryCode)?.flag ?? "",
-        code: x.country_code || "NG",
-      })
-    );
-  }, []);
   const [destination, setDestination] = useState<CountryType>({
     name: "Canada",
     flag: "🇨🇦",
@@ -72,7 +64,7 @@ function Visa() {
               type="p"
               text={`${home?.name} - ${home?.code}`}
               color="#1C1B1F"
-              weight={100}
+              weight={300}
             />
             <IoIosArrowDown size={20} />
           </Flex>
@@ -92,7 +84,7 @@ function Visa() {
               type="p"
               text={`${destination?.name} - ${destination?.code}`}
               color="#1C1B1F"
-              weight={100}
+              weight={300}
             />
             <IoIosArrowDown size={20} />
           </Flex>
@@ -113,7 +105,7 @@ function Visa() {
           onChange={(value: string) => setType(value)}
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer">
-            <Text type="p" text={`${type}`} color="#1C1B1F" weight={100} />
+            <Text type="p" text={`${type}`} color="#1C1B1F" weight={300} />
             <IoIosArrowDown size={20} />
           </Flex>
         </SearchInputAsString>

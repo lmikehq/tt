@@ -13,7 +13,7 @@ import {
 import { getSteps } from "src/lib/application/steps";
 import Section from "src/components/molecules/section";
 import SectionTitle from "src/components/molecules/sectionTitle";
-import VisaProgress from "src/components/molecules/visaProgress";
+import VisaProgress from "@/components/molecules/FormProgress/VisaProgress";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";

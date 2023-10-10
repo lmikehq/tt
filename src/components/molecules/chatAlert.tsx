@@ -9,10 +9,10 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 function ChatAlert() {
   const { isMobile } = useScreenResolution();
   return (
-    <Link href="/chat">
+    <Link href="/ai-guide">
       <Flex
         justify="center"
-        padding="1.1rem 0"
+        padding="1rem 0"
         gap={isMobile ? ".4rem" : "1rem"}
         align="center"
         background="#132128"
@@ -21,14 +21,14 @@ function ChatAlert() {
         <Text
           type="p"
           text="Introducing Thrillers Travels AI guide "
-          size="1.2rem"
-          weight={600}
+          size="1rem"
+          weight={400}
           cursor="pointer"
           color="white"
         />
         <Text
           type="p"
-          text="Learn more "
+          text="Learn more"
           weight={600}
           cursor="pointer"
           size="1.2rem"

@@ -8,6 +8,7 @@ import { Siteconfig } from "@lib/extensions/config/site";
 import { Poppins } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
+import React from "react";
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
@@ -79,11 +80,11 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" sizes="any" />
       </head>
       <body>
-        <Toaster position="top-center" />
-        <PaymentConfirmationModal />
-        <StyledComponentsRegistry>
-          <LoaderLayout>{children}</LoaderLayout>
-        </StyledComponentsRegistry>
+          <Toaster position="top-center" />
+          <PaymentConfirmationModal />
+          <StyledComponentsRegistry>
+            <LoaderLayout>{children}</LoaderLayout>
+          </StyledComponentsRegistry>
       </body>
     </html>
   );
