@@ -15,7 +15,7 @@ import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
-import { flightContext } from "@lib/extensions/context";
+import { useFlightContext } from "@lib/extensions/context";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface flightProps {
@@ -48,7 +48,7 @@ function FlightModule({
   handleDeleteFlight,
   length,
 }: flightProps) {
-  const context = flightContext();
+  const context = useFlightContext();
 
   if (!context) {
     throw new Error("flightContext must be used within a FlightProvider");

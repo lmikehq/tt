@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export function get100Years(before: boolean = false) {
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -29,10 +31,13 @@ export function safelyConvertToNumber(value?: string | number): number {
   return isNaN(numValue) ? 0 : numValue;
 }
 
-
 export function checkIfFieldHasError(obj: any, field: string) {
   const error: { constraints: string } = obj.find((err: any) =>
     err.property.includes(field)
   );
   if (error) return error.constraints;
+}
+
+export function formatDate(day: Dayjs) {
+  return day.format("MM-DD-YYYY");
 }
