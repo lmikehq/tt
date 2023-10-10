@@ -106,7 +106,7 @@ function RegisterPage() {
       return alert("Please agree to the terms and conditions");
     }
 
-    if (registerData.password !== confirmPassword) {
+    if (registerData.password === confirmPassword) {
       setSubmissionState({
         ...submissionState,
         error: [
