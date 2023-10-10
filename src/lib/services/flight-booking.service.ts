@@ -1,4 +1,5 @@
 import {
+  CardInfo,
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
@@ -72,6 +73,19 @@ export class FlightBookingService {
   }) => {
     return await axiosClient
       .post<any, any>("/flight/bookings/tokenize-data", data)
+      .then((response) => response.data)
+      .catch((error) => {
+        toast.error(error.response.errorMessage);
+        throw error;
+      });
+  };
+  static cardDetails = async ({
+    data,
+  }: {
+    data: CardInfo;
+  }) => {
+    return await axiosClient
+      .post<any, any>("/flight/bookings/confirm-payment-zooz", data)
       .then((response) => response.data)
       .catch((error) => {
         toast.error(error.response.errorMessage);

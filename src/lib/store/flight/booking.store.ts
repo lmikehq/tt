@@ -1,5 +1,6 @@
 import { FlightBookingService } from "@/lib/services/flight-booking.service";
 import {
+  CardInfo,
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
@@ -28,6 +29,7 @@ interface Actions {
   checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
   saveBooking: (params: { data: SaveBookingRequestInput }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
+  cardDetails: (params: { data: CardInfo }) => Promise<void>;
   confirmPaymentZooz: (params: {
     data: ConfirmPaymentZoozRequestInput;
   }) => Promise<void>;
@@ -35,8 +37,8 @@ interface Actions {
 
 export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
-    step: 2,
-    highestStep: 2,
+    step: 5,
+    highestStep: 5,
 
     mode: Mode.init,
     searchFlightsMode: Mode.init,
@@ -142,6 +144,23 @@ export const useFlightBookingStore = create<State & Actions>(
           });
           throw error;
         });
+    },
+    cardDetails:async ({ data }: { data: CardInfo }) => {
+      set({ mode: Mode.loading })
+      return await FlightBookingService.cardDetails({
+        data,
+      })
+      .then(() => {
+        set((state) => ({
+          mode: Mode.loaded,
+        }));
+      })
+      .catch((error) => {
+        set({
+          mode: Mode.error,
+        });
+        throw error;
+      });
     },
     confirmPaymentZooz: async ({
       data,

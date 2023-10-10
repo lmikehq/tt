@@ -56,12 +56,11 @@ interface Baggage {
   passengers: number[];
 }
 
-interface CardInfo {
-  number: string;
+export interface CardInfo {
+  cardNumber: string;
   cvv: string;
-  expirationMonth: string;
-  expirationYear: string;
-  holder: string;
+  expirationDate: string;
+  holderName: string;
 }
 
 export interface SearchFlightsRequestQuery {
