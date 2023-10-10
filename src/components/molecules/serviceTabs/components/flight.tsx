@@ -123,9 +123,13 @@ function Flights() {
           />
         )}
       </Flex>
-      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
+      <Flex
+        justify={"center"}
+        margin="2rem 0 0"
+        styles={{ position: "absolute", top: "165px" }}
+      >
         <Button
-          width={isMobile ? "100%" : "fit-content"}
+          width={isMobile ? "100%" : "300px"}
           padding={"0 1.5rem"}
           cursor="pointer"
           borderRadius="4px"
@@ -140,7 +144,7 @@ function Flights() {
           {loading ? (
             <Spinner fill={ttColors.primary} size={"45px"} />
           ) : (
-            <Text type="p" text="Search Flight" size={18} weight={500} />
+            <Text type="p" text="Search Flight" weight={500} />
           )}
         </Button>
       </Flex>
