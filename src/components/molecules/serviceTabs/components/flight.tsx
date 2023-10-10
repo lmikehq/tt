@@ -12,6 +12,9 @@ import sleep from "@lib/extensions/helpers/sleep";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useFlightContext } from "@/lib/extensions/context";
+import { formatDate } from "@/lib/utilFns";
+import { Dayjs } from "dayjs";
 
 const options = [
   { value: "round", label: "Round Trip" },
@@ -42,6 +45,8 @@ function Flights() {
     []
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const flightContext = useFlightContext();
+  const flightState = flightContext?.state;
   const router = useRouter();
 
   const handleAddMultiCityFlight = () => {
@@ -135,10 +140,14 @@ function Flights() {
           borderRadius="4px"
           background="#06062A"
           onClick={async () => {
-            if (loading) return;
-            setLoading(true);
-            await sleep(200);
-            router.push(`https://www.booking.com/`);
+            const dateFrom = formatDate(
+              flightState?.departureDate || new Dayjs()
+            );
+            const dateTo = formatDate(flightState?.returnDate || new Dayjs());
+
+            router.push(
+              `/flight/listings?fly_from=${flightState?.departureCountry}&fly_to=${flightState?.arrivalCountry}&date_from=${dateFrom}&date_to=${dateTo}`
+            );
           }}
         >
           {loading ? (

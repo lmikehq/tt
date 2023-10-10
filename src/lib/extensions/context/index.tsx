@@ -35,7 +35,7 @@ interface FlightProps {
 
 const FlightContext = createContext<FlightProps | undefined>(undefined);
 
-export function flightContext() {
+export function useFlightContext() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return useContext(FlightContext);
 }
