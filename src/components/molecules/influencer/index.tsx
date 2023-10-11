@@ -14,6 +14,10 @@ import { IoBed } from "react-icons/io5";
 import { RiPlaneLine } from "react-icons/ri";
 import styled from "styled-components";
 
+import Umbrella from "/public/assets/images/influencer/Icon/umbrella.svg";
+import Location from "/public/assets/images/influencer/Icon/location.svg";
+import Book from "/public/assets/images/influencer/Icon/book.svg";
+
 const HeroImg = styled.div`
   position: relative;
   object-fit: cover;
@@ -220,12 +224,12 @@ const OfferCardTwo = styled.div`
 
 const InfluencerImage = styled.div`
   height: 430px;
-  borderRadius: 16px;
+  borderradius: 16px;
   display: none;
-  
-  & img{
+
+  & img {
     height: 100%;
-    objectFit: "cover";
+    objectfit: "cover";
     width: 100%;
     border-radius: 16px;
   }
@@ -426,7 +430,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/public/assets/images/influencer/Icon/book.svg"
+                src={Book}
                 alt=""
                 width={isMobile ? 46.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -455,7 +459,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/public/assets/images/influencer/Icon/location.svg"
+                src={Location}
                 alt=""
                 width={isMobile ? 46.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -484,7 +488,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/public/assets/images/influencer/Icon/umbrella.svg"
+                src={Umbrella}
                 alt=""
                 width={isMobile ? 68.01 : 60.01}
                 height={isMobile ? 46 : 60}
