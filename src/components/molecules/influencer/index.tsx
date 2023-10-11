@@ -296,7 +296,10 @@ const InfluencerPage = () => {
           />
         </HeroImg>
         <InfluencerImage>
-          <Image src="/assets/images/influencer/influencerImg.png" alt="influencer picture" />
+          <Image
+            src="/assets/images/influencer/influencerImg.png"
+            alt="influencer picture"
+          />
         </InfluencerImage>
         <HeroCard>
           <Flex gap="1rem" margin={isMobile ? "0 auto 1.5rem" : "0 auto 1rem"}>
@@ -423,7 +426,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/book.svg"
+                src="/public/assets/images/influencer/Icon/book.svg"
                 alt=""
                 width={isMobile ? 46.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -452,7 +455,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/location.svg"
+                src="/public/assets/images/influencer/Icon/location.svg"
                 alt=""
                 width={isMobile ? 46.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -481,7 +484,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/umbrella.svg"
+                src="/public/assets/images/influencer/Icon/umbrella.svg"
                 alt=""
                 width={isMobile ? 68.01 : 60.01}
                 height={isMobile ? 46 : 60}
