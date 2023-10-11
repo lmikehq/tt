@@ -10,6 +10,8 @@ interface CustomDrawerProps {
   top?: string;
   height?: string;
   borderRadius?: string;
+  zIndex?: number;
+  background?: string;
 }
 const CustomDrawer = ({
   anchor,
@@ -19,7 +21,9 @@ const CustomDrawer = ({
   variant = "temporary",
   top,
   height,
-  borderRadius
+  zIndex,
+  borderRadius,
+  background
 }: CustomDrawerProps) => {
   return (
     <>
@@ -33,6 +37,8 @@ const CustomDrawer = ({
             height: height,
             top: top,
             borderRadius: borderRadius,
+            zIndex: zIndex || 12000,
+            background: background
           },
         }}
       >

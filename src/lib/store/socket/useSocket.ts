@@ -49,18 +49,18 @@ export default function useSocket() {
     // FIRST TIME USER GETS TO CHATS PAGE
 
     // refreshing suggestions
-    const getSuggestions = () => {
+    const getSuggestionsAi = () => {
       socket.emit("ai-suggestions-and-initial-chats", {
         getSuggestions: true,
       });
     };
-    setSuggestions(() => getSuggestions);
+    setSuggestions(() => getSuggestionsAi);
 
     // first time loading chats
     setInitialSuggestions(() => {
       socket.emit("ai-suggestions-and-initial-chats", {
         ipOrUserId: user?._id || geoInfo?.ip,
-        getSuggestions: apiCallCount <= 1,
+        getSuggestions: apiCallCount <= 2,
       });
       setApiCallCount((prev) => prev + 1);
     });
@@ -72,9 +72,9 @@ export default function useSocket() {
       setChatSuggestions(res);
     });
 
-    socket.on("initial-chats-processed", (res) => {
-      setInitialAiChats(res);
-    });
+    // socket.on("initial-chats-processed", (res) => {
+    //   setInitialAiChats(res);
+    // });
 
     return () => {
       socket.disconnect();
