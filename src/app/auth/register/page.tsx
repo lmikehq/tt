@@ -25,6 +25,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { ttColors } from "@lib/theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
+import { validateEmail } from "@/lib/utilFns";
 
 const settings = {
   infinite: true,
@@ -105,8 +106,20 @@ function RegisterPage() {
       });
       return alert("Please agree to the terms and conditions");
     }
-
-    if (registerData.password === confirmPassword) {
+if(!validateEmail(registerData.email)){
+  setSubmissionState({
+    ...submissionState,
+    error: [
+      {
+        constraints: "Not a valid email",
+        property: "email",
+      },
+    ],
+    loading: false,
+  });
+  return;
+}
+    if (registerData.password !== registerData.confirmPassword) {
       setSubmissionState({
         ...submissionState,
         error: [
@@ -360,12 +373,22 @@ function RegisterPage() {
                   <Input
                     placeholder="Enter you email"
                     type="email"
-                    onChange={(e) =>
+                    onChange={(e) => {
                       setRegisterData({
                         ...registerData,
                         email: e.target.value,
                       })
-                    }
+                      setSubmissionState({
+                        ...submissionState,
+                        error: [
+                          {
+                            constraints: "",
+                            property: "email",
+                          },
+                        ],
+                        loading: false,
+                      });
+                    }}
                     value={registerData.email}
                     border={
                       checkIfFieldHasError("email") ? "1px solid #FF8682" : ""
@@ -498,12 +521,26 @@ function RegisterPage() {
                 <Input
                   type="password"
                   placeholder="Confirm Password"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setRegisterData({
                       ...registerData,
                       confirmPassword: e.target.value,
-                    })
-                  }
+                    });
+                    setSubmissionState({
+                      ...submissionState,
+                      error: [
+                        {
+                          constraints: "",
+                          property: "confirmPassword",
+                        },
+                        {
+                          constraints: "",
+                          property: "password",
+                        },
+                        ...submissionState.error,
+                      ],
+                    });
+                  }}
                   border={
                     checkIfFieldHasError("confirmPassword")
                       ? "1px solid #FF8682"
