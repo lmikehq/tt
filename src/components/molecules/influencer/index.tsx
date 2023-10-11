@@ -296,7 +296,7 @@ const InfluencerPage = () => {
           />
         </HeroImg>
         <InfluencerImage>
-          <Image src="/assets/images/influencer/influencerImg.png" alt="" />
+          <Image src="/assets/images/influencer/influencerImg.png" alt="influencer picture" />
         </InfluencerImage>
         <HeroCard>
           <Flex gap="1rem" margin={isMobile ? "0 auto 1.5rem" : "0 auto 1rem"}>
