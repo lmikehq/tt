@@ -1,20 +1,29 @@
 import Button from "@/components/atoms/button";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
-import MainPassenger from "@/components/organisms/flights/MainPassenger";
+import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import sleep from "@/lib/extensions/helpers/sleep";
+import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
+import {
+  Combination,
+  PassengerAndBaggageCombinationInterface,
+  passengerAndBaggageDetails,
+} from "@/lib/types/request-models/flight/booking.type";
 import { Box } from "@mui/material";
+import { FieldArray, FormikProvider, useFormik } from "formik";
 import { useEffect } from "react";
 
 const TripSummary = () => {
-  const { checkFlights } = useFlightBookingStore((state) => state);
+  const { checkFlights, saveBookingForm, checkFlightsResponse } =
+    useFlightBookingStore((state) => state);
   const searchParams = extractSearchParamsFromUrl({
     url: window.location.href,
   });
 
+  const { adults, children, infants } = searchParams;
   const params = new URLSearchParams(window.location.search);
 
   const checkFlightsThreeSecondsInterval = (sessionId: string) => {
@@ -53,6 +62,72 @@ const TripSummary = () => {
       })
       .catch(() => {});
   };
+  //getDefaultBagTypeCombinationForCategory Returns the default combination for bag type.
+  const getDefaultBagTypeCombinationForCategory = ({
+    category,
+    bagType,
+  }: {
+    category: string;
+    bagType: "hand_bag" | "hold_bag";
+  }): Combination =>
+    (() =>
+      bagType == "hand_bag"
+        ? checkFlightsResponse?.baggage.combinations.hand_bag
+        : checkFlightsResponse?.baggage.combinations.hold_bag)()?.find(
+      (el) =>
+        el.conditions.passenger_groups.includes(category) &&
+        el.price.amount == 0
+    )!;
+
+  const generateFormsForCategory = ({
+    size,
+    category,
+  }: {
+    size: number;
+    category: string;
+  }): PassengerAndBaggageCombinationInterface[] => {
+    return Array.from(
+      { length: size },
+      (_, index): PassengerAndBaggageCombinationInterface => ({
+        ...passengerAndBaggageDetails,
+        category,
+        combinations: [
+          getDefaultBagTypeCombinationForCategory({
+            category,
+            bagType: "hold_bag",
+          }),
+          getDefaultBagTypeCombinationForCategory({
+            category,
+            bagType: "hand_bag",
+          }),
+        ],
+      })
+    );
+  };
+  const formik = useFormik({
+    initialValues: {
+      passengers: [
+        ...generateFormsForCategory({
+          size: parseInt(adults),
+          category: "adult",
+        }),
+        ...generateFormsForCategory({
+          size: parseInt(children),
+          category: "child",
+        }),
+        ...generateFormsForCategory({
+          size: parseInt(infants),
+          category: "infant",
+        }),
+      ],
+    },
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: manyPassengersAndBaggageDetailsSchema,
+    onSubmit: (values) => {},
+    validateOnChange: false,
+  });
+
   useEffect(() => {
     checkFlights({
       query: {
@@ -66,13 +141,32 @@ const TripSummary = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", rowGap: "1rem" }}>
       <TripSummaryCard />
-      <ContactDetails />
-      <MainPassenger />
-      <Box sx={{ marginY: "3rem" }}>
-        <Button background={ttColors.dark} width="100%">
-          Continue
-        </Button>
-      </Box>
+      <FormikProvider value={formik}>
+        <form onSubmit={formik.handleSubmit}>
+          {/* <ContactDetails formik={formik} /> */}
+          <FieldArray
+            name="passengers"
+            render={(arrayHelpers) => (
+              <div>
+                {formik.values.passengers.map((passenger, index) => (
+                  <div key={index}>
+                    <PassengerDetails
+                      formik={formik}
+                      values={passenger}
+                      count={index}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          />
+          <Box sx={{ marginY: "3rem" }}>
+            <Button background={ttColors.dark} width="100%">
+              Continue
+            </Button>
+          </Box>
+        </form>
+      </FormikProvider>
     </Box>
   );
 };

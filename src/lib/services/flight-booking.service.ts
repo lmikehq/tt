@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 import { kiwiClient } from "../axios/axios-client";
 import { constructQueryFromParams } from "../extensions/helpers/constructQuery";
 import { SearchFlightsResponse } from "../types/response-models/flight/booking.type";
+import { CheckFlightResponse } from "../types/response-models/flight/check_flight.type";
 
 export class FlightBookingService {
   static searchFlights = async ({
@@ -30,7 +31,11 @@ export class FlightBookingService {
         throw error;
       });
   };
-  static checkFlights = async ({ query }: { query: CheckFlightsQuery }) => {
+  static checkFlights = async ({
+    query,
+  }: {
+    query: CheckFlightsQuery;
+  }): Promise<CheckFlightResponse> => {
     const queryString = constructQueryFromParams(query);
     console.log(queryString);
     return await kiwiClient

@@ -10,6 +10,8 @@ import { styled } from "@mui/material/styles";
 import { ttColors } from "@/lib/theme/colors";
 import Box from "@mui/material/Box";
 import TripSummaryDetails from "./TripSummaryDetails";
+import { FormikProps } from "formik";
+import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booking.type";
 
 const StyledAccordion = styled((props: AccordionProps) => (
   <Accordion disableGutters elevation={0} {...props} />

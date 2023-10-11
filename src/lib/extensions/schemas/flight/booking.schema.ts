@@ -4,6 +4,7 @@ import {
   CombinationConditions,
   CombinationPrice,
   Passenger,
+  PassengerAndBaggageCombinationInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
 import * as yup from "yup";
@@ -59,16 +60,34 @@ const baggageSchema: yup.ObjectSchema<Baggage> = yup.object().shape({
   passengers: yup.array().of(yup.number().required()).defined(),
 });
 
-const saveBookingSchema: yup.ObjectSchema<SaveBookingRequestInput> = yup
-  .object()
-  .shape({
-    health_declaration_checked: yup.boolean().required("Required"),
-    lang: yup.string().required("Required"),
-    payment_gateway: yup.string().required("Required"),
-    passengers: yup.array().of(passengerSchema).defined().min(1, "Required"),
-    booking_token: yup.string().required("Required"),
-    session_id: yup.string().required("Required"),
-    baggage: yup.array().of(baggageSchema).defined().min(1, "Required"),
+const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerAndBaggageCombinationInterface> =
+  yup.object().shape({
+    name: yup.string().required("Required"),
+    surname: yup.string().required("Required"),
+    phone: yup.string().required("Required"),
+    email: yup.string().email("Invalid email").required("Required"),
+    cardno: yup.string().required("Required"),
+    birthday: yup
+      .string()
+      .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
+      .required("Required"),
+    nationality: yup
+      .string()
+      .matches(/^[A-Z]{2}$/, "Invalid nationality format (ISO 3166-1 alpha-2)")
+      .required("Required"),
+    title: yup.string().required("Required"),
+    expiration: yup
+      .string()
+      .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
+      .required("Required"),
+    category: yup.string().required("Required"),
+    combinations: yup.array().of(combinationSchema).defined(),
   });
 
-export default saveBookingSchema;
+export const passengersAndBaggageDetailsArraySchema = yup
+  .array()
+  .of(passengerAndBaggageDetailsSchema);
+
+export const manyPassengersAndBaggageDetailsSchema = yup
+  .object()
+  .shape({ passengers: passengerAndBaggageDetailsSchema });

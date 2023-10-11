@@ -1,3 +1,6 @@
+import { CountryType } from "@/components/molecules/serviceTabs/components/visa";
+import { mockCountry } from "../../schema";
+
 interface PaymentDetails {
   status: string;
   token: string;
@@ -26,7 +29,7 @@ export interface Passenger {
   email: string;
   cardno: string;
   birthday: string; // YYYY-MM-DD format
-  nationality: string; // ISO 3166-1 alpha-2 format (2 letter format)
+  nationality: CountryType; // ISO 3166-1 alpha-2 format (2 letter format)
   title: string;
   expiration: string; // expiration of passport, YYYY-MM-DD format
   category: string;
@@ -109,6 +112,7 @@ export interface CheckSeatingRequestInput {
 export interface SaveBookingRequestInput {
   health_declaration_checked: boolean;
   lang: string;
+  locale: string;
   payment_gateway: string;
   passengers: Passenger[];
   booking_token: string;
@@ -133,3 +137,31 @@ export interface ConfirmPaymentZoozRequestInput {
   sandbox: boolean;
   language: string;
 }
+export interface PassengerAndBaggageCombinationInterface extends Passenger {
+  combinations: Combination[];
+}
+export const passengerAndBaggageDetails: PassengerAndBaggageCombinationInterface =
+  {
+    name: "",
+    surname: "",
+    phone: "",
+    email: "",
+    cardno: "",
+    birthday: "",
+    nationality: mockCountry,
+    title: "",
+    expiration: "",
+    category: "",
+    combinations: [],
+  };
+
+export const saveBookingDetails: SaveBookingRequestInput = {
+  health_declaration_checked: true,
+  lang: "en",
+  passengers: [],
+  locale: "en",
+  payment_gateway: "payu",
+  booking_token: "",
+  session_id: "",
+  baggage: [],
+};

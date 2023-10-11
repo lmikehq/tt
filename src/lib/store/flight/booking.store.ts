@@ -4,24 +4,32 @@ import {
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
+  PassengerAndBaggageCombinationInterface,
   SaveBookingRequestInput,
   SearchFlightsRequestQuery,
   TokenizeDataRequestInput,
+  passengerAndBaggageDetails,
+  saveBookingDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 
 interface State {
   highestStep: number;
+  saveBookingForm: SaveBookingRequestInput;
   step: number;
   searchFlightsMode: Mode;
   searchFlightsResults: FlightInfo[];
   searchQuery: SearchFlightsRequestQuery;
+  checkFlightsResponse: CheckFlightResponse | null;
 
   bookingToken?: string;
   sessionId: string | null;
   mode: Mode;
+
+  passengerAndBaggageDetails: PassengerAndBaggageCombinationInterface;
 }
 interface Actions {
   prevStep: () => void;
@@ -41,12 +49,16 @@ export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
     step: 2,
     highestStep: 5,
+    saveBookingForm: saveBookingDetails,
 
     mode: Mode.init,
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],
     searchQuery: {},
     sessionId: null,
+    passengerAndBaggageDetails,
+
+    checkFlightsResponse: null,
 
     prevStep: () => {
       set((state) => ({
@@ -95,6 +107,7 @@ export const useFlightBookingStore = create<State & Actions>(
           set({
             mode: Mode.loaded,
             sessionId: response.session_id,
+            checkFlightsResponse: response,
           });
           return response;
         })

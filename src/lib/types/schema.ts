@@ -17,7 +17,7 @@ const countrySchema: yup.ObjectSchema<CountryType> = yup.object().shape({
   code: yup.string().required("Required"),
 });
 
-const mockCountry: CountryType = {
+export const mockCountry: CountryType = {
   name: "",
   flag: "",
   code: "",
