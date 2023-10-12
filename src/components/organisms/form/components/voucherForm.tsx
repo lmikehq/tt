@@ -6,6 +6,7 @@ import Section from "@/components/molecules/section";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useVoucherStore } from "@/lib/store/voucher.store";
+import { ttColors } from "@/lib/theme/colors";
 import { Mode } from "@lib/types";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -71,6 +72,7 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
             disabled={!promoCode}
             width={isMobile ? "100%" : "25%"}
             borderRadius="4px"
+            background={ttColors.dark}
           >
             <Text
               type="p"
