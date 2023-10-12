@@ -162,14 +162,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           intent: "",
         };
         break;
-      case "APPLICATION IN PROGRESS":
-        visaInformation = {
-          text: "...",
-          fn: () => {},
-          disabled: false,
-          intent: "",
-        };
-        break;
       case "FORM FEE REQUESTED":
         visaInformation = {
           text: "Submit Application",

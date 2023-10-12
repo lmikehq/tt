@@ -36,7 +36,9 @@ const CountryPage: React.FC<pageProps> = ({ params }) => {
           showButton={false}
         />
 
-        <Grid columns={isMobile ? "1fr" : "60% 40%"} gap="0">
+        <Grid columns={isMobile ? "1fr" : "60% 40%"} gap="0" style={{
+          gridTemplateColumns: isMobile ? "1fr" : "60% 40%",
+        }}>
           <CountryDetails details={SAMPLE_COUNTRY_INFO} />
           <CountryRequirementDetails details={SAMPLE_COUNTRY_REQUIREMENT} />
         </Grid>
