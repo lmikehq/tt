@@ -1,3 +1,6 @@
+import { CountryType } from "@/components/molecules/serviceTabs/components/visa";
+import { mockCountry } from "../../schema";
+
 interface PaymentDetails {
   status: string;
   token: string;
@@ -19,20 +22,20 @@ interface PaymentDetails {
   };
 }
 
-interface Passenger {
+export interface Passenger {
   name: string;
   surname: string;
   phone: string;
   email: string;
   cardno: string;
   birthday: string; // YYYY-MM-DD format
-  nationality: string; // ISO 3166-1 alpha-2 format (2 letter format)
-  title: "Mr" | "Mrs"; // Can only be "Mr" or "Mrs"
+  nationality: CountryType; // ISO 3166-1 alpha-2 format (2 letter format)
+  title: string;
   expiration: string; // expiration of passport, YYYY-MM-DD format
-  category: "adult";
+  category: string;
 }
 
-interface CombinationPrice {
+export interface CombinationPrice {
   currency: string;
   amount: number;
   base: number;
@@ -41,17 +44,17 @@ interface CombinationPrice {
   merchant: number;
 }
 
-interface CombinationConditions {
+export interface CombinationConditions {
   passenger_groups: string[];
 }
-interface Combination {
+export interface Combination {
   indices: number[];
   category: string;
   conditions: CombinationConditions;
   price: CombinationPrice;
 }
 
-interface Baggage {
+export interface Baggage {
   combination: Combination;
   passengers: number[];
 }
@@ -111,6 +114,7 @@ export interface CheckSeatingRequestInput {
 export interface SaveBookingRequestInput {
   health_declaration_checked: boolean;
   lang: string;
+  locale: string;
   payment_gateway: string;
   passengers: Passenger[];
   booking_token: string;
@@ -135,3 +139,75 @@ export interface ConfirmPaymentZoozRequestInput {
   sandbox: boolean;
   language: string;
 }
+export interface PassengerAndBaggageCombinationInterface extends Passenger {
+  combinations: {
+    hand_bag: Combination | null;
+    hold_bag: Combination | null;
+    [key: string]: any;
+  };
+}
+
+export const detachCombinationsFieldFromPassengers = (
+  passengers: PassengerAndBaggageCombinationInterface[]
+): Passenger[] => {
+  return passengers.map((passengerAndBaggageCombination: any) => {
+    delete passengerAndBaggageCombination.combinations;
+    return passengerAndBaggageCombination;
+  });
+};
+export const arrangeBaggageDataForOrdering = (
+  passengers: PassengerAndBaggageCombinationInterface[]
+): Baggage[] => {
+  const baggageData: Baggage[] = [];
+
+  for (let i = 0; i < passengers.length; i++) {
+    const passenger = passengers[i];
+    for (const category in passenger.combinations) {
+      const combination = passenger.combinations[category];
+      const index = baggageData.findIndex((data) => {
+        return (
+          data.combination.category === combination.category &&
+          JSON.stringify(
+            data.combination.conditions.passenger_groups.sort()
+          ) === JSON.stringify(combination.conditions.passenger_groups.sort())
+        );
+      });
+
+      if (index === -1) {
+        baggageData.push({
+          combination: { ...combination },
+          passengers: [i],
+        });
+      } else {
+        baggageData[index].passengers.push(i);
+      }
+    }
+  }
+
+  return baggageData;
+};
+export const passengerAndBaggageDetails: PassengerAndBaggageCombinationInterface =
+  {
+    name: "Abd",
+    surname: "a",
+    phone: "+2349088990012",
+    email: "oallere@hjdsaol.com",
+    cardno: "D25845822",
+    birthday: "1998-12-10",
+    nationality: { code: "NG", name: "Nigeria", flag: "s" },
+    title: "Mr",
+    expiration: "2030-12-10",
+    category: "",
+    combinations: { hand_bag: null, hold_bag: null },
+  };
+
+export const saveBookingDetails: SaveBookingRequestInput = {
+  health_declaration_checked: true,
+  lang: "en",
+  passengers: [],
+  locale: "en",
+  payment_gateway: "payu",
+  booking_token: "",
+  session_id: "",
+  baggage: [],
+};

@@ -5,24 +5,34 @@ import {
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
+  PassengerAndBaggageCombinationInterface,
   SaveBookingRequestInput,
   SearchFlightsRequestQuery,
   TokenizeDataRequestInput,
+  arrangeBaggageDataForOrdering,
+  detachCombinationsFieldFromPassengers,
+  passengerAndBaggageDetails,
+  saveBookingDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 
 interface State {
   highestStep: number;
+  saveBookingForm: SaveBookingRequestInput;
   step: number;
   searchFlightsMode: Mode;
   searchFlightsResults: FlightInfo[];
   searchQuery: SearchFlightsRequestQuery;
+  checkFlightsResponse: CheckFlightResponse | null;
 
   bookingToken?: string;
   sessionId: string | null;
   mode: Mode;
+
+  passengerAndBaggageDetails: PassengerAndBaggageCombinationInterface;
 }
 interface Actions {
   prevStep: () => void;
@@ -30,7 +40,11 @@ interface Actions {
   searchFlights: (params: { data: SearchFlightsRequestQuery }) => Promise<void>;
   checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
   checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
-  saveBooking: (params: { data: SaveBookingRequestInput }) => Promise<void>;
+  saveBooking: (params: {
+    data: PassengerAndBaggageCombinationInterface[];
+    sessionId: string;
+    bookingToken: string;
+  }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
   cardDetails: (params: { data: CardInfo }) => Promise<void>;
   updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
@@ -41,14 +55,19 @@ interface Actions {
 
 export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
-    step: 5,
+    step: 2,
     highestStep: 5,
+    saveBookingForm: saveBookingDetails,
+
 
     mode: Mode.init,
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],
     searchQuery: {},
     sessionId: null,
+    passengerAndBaggageDetails,
+
+    checkFlightsResponse: null,
 
     prevStep: () => {
       set((state) => ({
@@ -87,15 +106,18 @@ export const useFlightBookingStore = create<State & Actions>(
     },
     checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
       set({ mode: Mode.loading });
+      console.log("query", query);
+
       return await FlightBookingService.checkFlights({
         query,
       })
         .then((response) => {
           console.log(response);
-          set((state) => ({
+          set({
             mode: Mode.loaded,
             sessionId: response.session_id,
-          }));
+            checkFlightsResponse: response,
+          });
           return response;
         })
         .catch((error) => {
@@ -123,10 +145,30 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
-    saveBooking: async ({ data }: { data: SaveBookingRequestInput }) => {
+    saveBooking: async ({
+      data,
+      sessionId,
+      bookingToken,
+    }: {
+      data: PassengerAndBaggageCombinationInterface[];
+      sessionId: string;
+      bookingToken: string;
+    }) => {
       set({ mode: Mode.loading });
+      console.log("baggeage", data);
+      const saveBookingRequestInput: SaveBookingRequestInput = {
+        health_declaration_checked: true,
+        lang: "en",
+        locale: "en",
+        payment_gateway: "payu",
+        passengers: detachCombinationsFieldFromPassengers(data),
+        booking_token: bookingToken,
+        session_id: sessionId,
+        baggage: arrangeBaggageDataForOrdering(data),
+      };
+
       return await FlightBookingService.saveBooking({
-        data,
+        data: saveBookingRequestInput,
       })
         .then((response) => {
           set((state) => ({
