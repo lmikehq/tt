@@ -138,21 +138,65 @@ export interface ConfirmPaymentZoozRequestInput {
   language: string;
 }
 export interface PassengerAndBaggageCombinationInterface extends Passenger {
-  combinations: Combination[];
+  combinations: {
+    hand_bag: Combination | null;
+    hold_bag: Combination | null;
+    [key: string]: any;
+  };
 }
+
+export const detachCombinationsFieldFromPassengers = (
+  passengers: PassengerAndBaggageCombinationInterface[]
+): Passenger[] => {
+  return passengers.map((passengerAndBaggageCombination: any) => {
+    delete passengerAndBaggageCombination.combinations;
+    return passengerAndBaggageCombination;
+  });
+};
+export const arrangeBaggageDataForOrdering = (
+  passengers: PassengerAndBaggageCombinationInterface[]
+): Baggage[] => {
+  const baggageData: Baggage[] = [];
+
+  for (let i = 0; i < passengers.length; i++) {
+    const passenger = passengers[i];
+    for (const category in passenger.combinations) {
+      const combination = passenger.combinations[category];
+      const index = baggageData.findIndex((data) => {
+        return (
+          data.combination.category === combination.category &&
+          JSON.stringify(
+            data.combination.conditions.passenger_groups.sort()
+          ) === JSON.stringify(combination.conditions.passenger_groups.sort())
+        );
+      });
+
+      if (index === -1) {
+        baggageData.push({
+          combination: { ...combination },
+          passengers: [i],
+        });
+      } else {
+        baggageData[index].passengers.push(i);
+      }
+    }
+  }
+
+  return baggageData;
+};
 export const passengerAndBaggageDetails: PassengerAndBaggageCombinationInterface =
   {
-    name: "",
-    surname: "",
-    phone: "",
-    email: "",
-    cardno: "",
-    birthday: "",
-    nationality: mockCountry,
-    title: "",
-    expiration: "",
+    name: "Abd",
+    surname: "a",
+    phone: "+2349088990012",
+    email: "oallere@hjdsaol.com",
+    cardno: "D25845822",
+    birthday: "1998-12-10",
+    nationality: { code: "NG", name: "Nigeria", flag: "s" },
+    title: "Mr",
+    expiration: "2030-12-10",
     category: "",
-    combinations: [],
+    combinations: { hand_bag: null, hold_bag: null },
   };
 
 export const saveBookingDetails: SaveBookingRequestInput = {

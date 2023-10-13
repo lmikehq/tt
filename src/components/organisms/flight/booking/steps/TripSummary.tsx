@@ -12,12 +12,13 @@ import {
   PassengerAndBaggageCombinationInterface,
   passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
+import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { useEffect } from "react";
 
 const TripSummary = () => {
-  const { checkFlights, saveBookingForm, checkFlightsResponse } =
+  const { checkFlights, saveBooking, checkFlightsResponse } =
     useFlightBookingStore((state) => state);
   const searchParams = extractSearchParamsFromUrl({
     url: window.location.href,
@@ -62,6 +63,7 @@ const TripSummary = () => {
       })
       .catch(() => {});
   };
+
   //getDefaultBagTypeCombinationForCategory Returns the default combination for bag type.
   const getDefaultBagTypeCombinationForCategory = ({
     category,
@@ -78,7 +80,24 @@ const TripSummary = () => {
         el.conditions.passenger_groups.includes(category) &&
         el.price.amount == 0
     )!;
-
+  const getPassengerBagCombinationOptions = ({
+    category,
+  }: {
+    category: string;
+  }): Combinations => {
+    const hand_bag = checkFlightsResponse?.baggage.combinations.hand_bag;
+    const hold_bag = checkFlightsResponse?.baggage.combinations.hold_bag;
+    return {
+      hand_bag:
+        hand_bag?.filter((el) =>
+          el.conditions.passenger_groups.includes(category)
+        ) ?? [],
+      hold_bag:
+        hold_bag?.filter((el) =>
+          el.conditions.passenger_groups.includes(category)
+        ) ?? [],
+    };
+  };
   const generateFormsForCategory = ({
     size,
     category,
@@ -91,16 +110,16 @@ const TripSummary = () => {
       (_, index): PassengerAndBaggageCombinationInterface => ({
         ...passengerAndBaggageDetails,
         category,
-        combinations: [
-          getDefaultBagTypeCombinationForCategory({
+        combinations: {
+          hold_bag: getDefaultBagTypeCombinationForCategory({
             category,
             bagType: "hold_bag",
           }),
-          getDefaultBagTypeCombinationForCategory({
+          hand_bag: getDefaultBagTypeCombinationForCategory({
             category,
             bagType: "hand_bag",
           }),
-        ],
+        },
       })
     );
   };
@@ -124,7 +143,13 @@ const TripSummary = () => {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: manyPassengersAndBaggageDetailsSchema,
-    onSubmit: (values) => {},
+    onSubmit: (values) => {
+      saveBooking({
+        data: values.passengers,
+        sessionId: checkFlightsResponse?.session_id ?? "",
+        bookingToken: checkFlightsResponse?.booking_token ?? "",
+      });
+    },
     validateOnChange: false,
   });
 
@@ -154,6 +179,9 @@ const TripSummary = () => {
                       formik={formik}
                       values={passenger}
                       count={index}
+                      combinationOptions={getPassengerBagCombinationOptions({
+                        category: passenger.category,
+                      })}
                     />
                   </div>
                 ))}
@@ -161,7 +189,14 @@ const TripSummary = () => {
             )}
           />
           <Box sx={{ marginY: "3rem" }}>
-            <Button background={ttColors.dark} width="100%">
+            <Button
+              type="submit"
+              background={ttColors.dark}
+              width="100%"
+              onClick={() => {
+                console.log(formik);
+              }}
+            >
               Continue
             </Button>
           </Box>

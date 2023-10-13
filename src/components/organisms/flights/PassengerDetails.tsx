@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { FormEvent, useState } from "react";
 import Alert from "../Alert";
-import PassengerCard from "./PassengerCard";
+import PassengerCard from "./PassengerBaggagePane";
 import {
   FieldAsDate,
   FieldAsString,
@@ -21,6 +21,8 @@ import {
   PassengerAndBaggageCombinationInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
+import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
+import PassengerBaggagePane from "./PassengerBaggagePane";
 
 interface TripSummaryCardProps {
   formik: FormikProps<{
@@ -28,12 +30,14 @@ interface TripSummaryCardProps {
   }>;
   values: PassengerAndBaggageCombinationInterface;
   count: number;
+  combinationOptions: Combinations;
 }
 
 export default function MainPassenger({
   formik,
   count,
   values,
+  combinationOptions,
 }: TripSummaryCardProps) {
   return (
     <>
@@ -42,19 +46,9 @@ export default function MainPassenger({
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <FieldString
-            options={[
-              "International Passport",
-              "National ID Card",
-              "Driver's License",
-              "Social Security Card",
-              "Birth Certificate",
-              "Voter ID Card",
-              "Military ID Card",
-              "Resident Permit/Visa",
-              "Health Insurance Card",
-            ]}
-            placeholder="Select your means of ID"
-            name="category"
+            options={["adult", "child", "infant"]}
+            placeholder="Select category"
+            name={`passengers.${count}.category`}
             formik={formik}
           />
         </FormControl>
@@ -173,8 +167,12 @@ export default function MainPassenger({
           />
 
           <Box sx={{ marginY: "1rem" }}>
-            <PassengerCard />
-            <PassengerCard />
+            <PassengerBaggagePane
+              combinationOptions={combinationOptions}
+              formik={formik}
+              count={count}
+            />
+            {/* <PassengerCard /> */}
           </Box>
         </Box>
       </Box>

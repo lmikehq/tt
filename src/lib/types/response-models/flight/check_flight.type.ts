@@ -221,7 +221,7 @@ interface Baggage {
   hand_bag: Definitions[];
 }
 
-interface Combinations {
+export interface Combinations {
   hold_bag: Combination[];
   hand_bag: Combination[];
 }
@@ -238,7 +238,7 @@ interface PriceConversion {
 }
 
 interface Luggage {
-  definitions: Definitions;
+  definitions: Baggage;
   combinations: Combinations;
   notices: Record<string, unknown>;
 }

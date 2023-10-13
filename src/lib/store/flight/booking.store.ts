@@ -8,6 +8,8 @@ import {
   SaveBookingRequestInput,
   SearchFlightsRequestQuery,
   TokenizeDataRequestInput,
+  arrangeBaggageDataForOrdering,
+  detachCombinationsFieldFromPassengers,
   passengerAndBaggageDetails,
   saveBookingDetails,
 } from "@/lib/types/request-models/flight/booking.type";
@@ -37,7 +39,11 @@ interface Actions {
   searchFlights: (params: { data: SearchFlightsRequestQuery }) => Promise<void>;
   checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
   checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
-  saveBooking: (params: { data: SaveBookingRequestInput }) => Promise<void>;
+  saveBooking: (params: {
+    data: PassengerAndBaggageCombinationInterface[];
+    sessionId: string;
+    bookingToken: string;
+  }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
   updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
   confirmPaymentZooz: (params: {
@@ -136,10 +142,30 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
-    saveBooking: async ({ data }: { data: SaveBookingRequestInput }) => {
+    saveBooking: async ({
+      data,
+      sessionId,
+      bookingToken,
+    }: {
+      data: PassengerAndBaggageCombinationInterface[];
+      sessionId: string;
+      bookingToken: string;
+    }) => {
       set({ mode: Mode.loading });
+      console.log("baggeage", data);
+      const saveBookingRequestInput: SaveBookingRequestInput = {
+        health_declaration_checked: true,
+        lang: "en",
+        locale: "en",
+        payment_gateway: "payu",
+        passengers: detachCombinationsFieldFromPassengers(data),
+        booking_token: bookingToken,
+        session_id: sessionId,
+        baggage: arrangeBaggageDataForOrdering(data),
+      };
+
       return await FlightBookingService.saveBooking({
-        data,
+        data: saveBookingRequestInput,
       })
         .then((response) => {
           set((state) => ({
