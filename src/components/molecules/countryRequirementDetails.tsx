@@ -3,6 +3,10 @@
 import React from "react";
 import styled from "styled-components";
 import CountryRequirement from "./countryRequirement";
+import Button from "../atoms/button";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import Link from "../atoms/link";
+import { ttColors } from "@/lib/theme/colors";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -55,14 +59,30 @@ const Wrapper = styled.div`
     @media screen and (max-width: 900px) {
       font-size: 18px !important;
     }
-
-    
   }
 `;
 
-function CountryRequirementDetails({ details }: { details: string }) {
+function CountryRequirementDetails({
+  details,
+  country,
+}: {
+  details: string;
+  country: string;
+}) {
+  const { isMobile } = useScreenResolution();
   return (
     <Wrapper>
+     {!isMobile &&  <Link href={`/visa/apply/?destination=${country}`}>
+        <Button
+          width={isMobile ? "100%" : "289px"}
+          padding="10px 20px"
+          margin={isMobile ? "1rem auto 2.5rem" : "0 0 3rem"}
+          fontSize="1rem"
+          background={ttColors.dark}
+        >
+          Apply Now
+        </Button> 
+      </Link> }
       <CountryRequirement article={{ body: details }} />
     </Wrapper>
   );

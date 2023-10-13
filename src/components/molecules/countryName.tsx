@@ -1,17 +1,18 @@
 "use client";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
-import React from "react";
+import React, { useEffect } from "react";
 import { Qparams } from "@lib/types";
 import { unUrlString } from "@lib/extensions/helpers/url";
 import SectionLayout from "@components/templates/SectionLayout";
 import CountryDetails from "./countryDetails";
-import { SAMPLE_COUNTRY_INFO } from "@lib/extensions/data/countryInfo";
+import { afga } from "@lib/extensions/data/countryInfo";
 import { Grid } from "@components/templates/grid";
 import CountryRequirementDetails from "./countryRequirementDetails";
 import { SAMPLE_COUNTRY_REQUIREMENT } from "@lib/extensions/data/countryRequirement";
 import HelpfulOrNot from "@molecule/helpfulOrNot";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionTitle from "./sectionTitle";
+import { fetchHTMLContent } from "@/lib/utilFns";
 
 interface pageProps {
   params: Qparams["params"];
@@ -19,10 +20,34 @@ interface pageProps {
 
 const CountryPage: React.FC<pageProps> = ({ params }) => {
   const { isMobile } = useScreenResolution();
+  const [html, setHtml] = React.useState("");
+
+  useEffect(() => {
+    fetchHTMLContent(params.countryName || "canada").then((HTML) =>
+      setHtml(HTML)
+    );
+  }, []);
+  console.log("html: ", html);
   const coverImage = isMobile
     ? "/assets/images/visaPageCover.jpg"
     : "/assets/images/visaDesktopCover.jpg";
-
+  const countryInfo = `
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href='@styles/countries.css' />
+    <title>Albania</title>
+  </head>
+  <body>
+  <div class="prose prose-slate mx-auto mt-8 lg:prose-lg">
+  ${html}
+  <h1>Heading 1</h1>
+  </div>
+  </body>
+</html>
+  `;
   return (
     <div>
       <AllCountryHead
@@ -31,16 +56,26 @@ const CountryPage: React.FC<pageProps> = ({ params }) => {
       />
       <SectionLayout>
         <SectionTitle
-          title="NIGERIA - Get your Nigeria Visa now!"
-          description="Explore our popular destinations with blah blah bluhsd sdrkh dgvkj ihs dflkjqb ihsdlkjsdf"
+          title={`${params?.countryName?.toLocaleUpperCase()} - Apply for your Visa now!`}
+          description="We can help you to process the visa, and provide all the necessary documents."
           showButton={false}
         />
 
-        <Grid columns={isMobile ? "1fr" : "60% 40%"} gap="0" style={{
-          gridTemplateColumns: isMobile ? "1fr" : "60% 40%",
-        }}>
-          <CountryDetails details={SAMPLE_COUNTRY_INFO} />
-          <CountryRequirementDetails details={SAMPLE_COUNTRY_REQUIREMENT} />
+        <Grid
+          columns={isMobile ? "1fr" : "60% 40%"}
+          gap="0"
+          style={{
+            gridTemplateColumns: isMobile ? "1fr" : "65% 35%",
+          }}
+        >
+          <CountryDetails
+            details={countryInfo}
+            country={params?.countryName || ""}
+          />
+          <CountryRequirementDetails
+            details={SAMPLE_COUNTRY_REQUIREMENT}
+            country={params.countryName || ""}
+          />
         </Grid>
         <HelpfulOrNot />
       </SectionLayout>

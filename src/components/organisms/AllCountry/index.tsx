@@ -299,7 +299,7 @@ const CountriesList = () => {
               <Flex background="#fff" align="center" gap="2rem" padding="15px" borderRadius="12px">
                 <Image src={country.flag} alt={country.name} width={50} />
                 <Text
-                  text={country.name.split(" ").slice(0, 2).join("+")}
+                  text={country.name.split(" ").slice(0, 2).join(" ")}
                   type="p"
                 />
               </Flex>

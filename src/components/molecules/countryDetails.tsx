@@ -5,6 +5,8 @@ import styled from "styled-components";
 import CountryArticle from "./countryArticle";
 import Button from "@atom/button";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Link from "../atoms/link";
+import { ttColors } from "@/lib/theme/colors";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -68,20 +70,29 @@ const Wrapper = styled.div`
   }
 `;
 
-function CountryDetails({ details }: { details: string }) {
+function CountryDetails({
+  details,
+  country,
+}: {
+  details: string;
+  country: string;
+}) {
   const { isMobile } = useScreenResolution();
 
   return (
     <Wrapper>
       <CountryArticle article={{ body: details }} />
-      <Button
-        width={isMobile ? "100%" : "289px"}
-        padding="10px 20px"
-        margin={isMobile ? "1rem auto 2.5rem" : "4rem auto"}
-        fontSize="1rem"
-      >
-        Apply Now
-      </Button>
+      <Link href={`/visa/apply/?destination=${country}`}>
+        <Button
+          width={isMobile ? "100%" : "289px"}
+          padding="10px 20px"
+          margin={isMobile ? "1rem auto 2.5rem" : "4rem auto"}
+          fontSize="1rem"
+          background={ttColors.dark}
+        >
+          Apply Now
+        </Button>
+      </Link>
     </Wrapper>
   );
 }
