@@ -13,6 +13,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import Image from "@atom/image";
 import Section from "@molecule/section";
+import { useUserStore } from "@/lib/store/useStore";
 
 const DestinationWrapper = styled.div`
   // margin: 5rem 0;
@@ -136,7 +137,7 @@ const PopularDestinations = ({
 
   const { isMobile } = useScreenResolution();
 
-  const router = useRouter();
+  const { geoInfo } = useUserStore();
 
   return (
     <DestinationWrapper>
@@ -157,7 +158,7 @@ const PopularDestinations = ({
             .map((destination) => (
               <Link
                 key={destination.id}
-                href={`/visa/apply?destination=${destination.name}`}
+                href={`/visa/apply?destination=${destination.name}&home=${geoInfo?.country}`}
               >
                 <Card>
                   <Flex justify="space-between" gap="1rem">
