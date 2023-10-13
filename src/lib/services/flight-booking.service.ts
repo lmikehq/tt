@@ -10,7 +10,7 @@ import {
 } from "../types/request-models/flight/booking.type";
 import { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
-import { kiwiClient } from "../axios/axios-client";
+import { axiosClient, kiwiClient } from "../axios/axios-client";
 import { constructQueryFromParams } from "../extensions/helpers/constructQuery";
 import { SearchFlightsResponse } from "../types/response-models/flight/booking.type";
 
