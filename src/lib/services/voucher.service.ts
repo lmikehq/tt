@@ -1,16 +1,15 @@
-import axiosClient from "@lib/axios/axios-client";
-import { ApplicationFormRequestInput } from "@lib/types/request-models/application-form.type";
-import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
+import { axiosClient } from "@lib/axios/axios-client";
 import { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
 
 export class VoucherService {
   static checkVoucher = async ({ promoCode }: { promoCode: string }) => {
     return await axiosClient
-      .get<any, AxiosResponse<any>>(`/voucher/${promoCode}`)
+      .get<any, AxiosResponse<any> & { message: string }>(
+        `/voucher/${promoCode}`
+      )
       .then((response) => {
-        console.log(response);
-        return response.data;
+        return response;
       })
       .catch((error) => {
         toast.error(error.response.data.message);

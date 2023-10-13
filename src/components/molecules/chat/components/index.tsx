@@ -231,6 +231,7 @@ const Chat = () => {
   ];
 
   const [chatItems, setChatItems] = useState(chatItem);
+  
   return (
     <ChatContainer>
       <LeftSide>
