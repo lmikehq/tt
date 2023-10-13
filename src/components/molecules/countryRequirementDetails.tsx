@@ -7,10 +7,11 @@ import Button from "../atoms/button";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Link from "../atoms/link";
 import { ttColors } from "@/lib/theme/colors";
+import { useUserStore } from "@/lib/store/useStore";
 
 const Wrapper = styled.div`
   width: 100%;
-  padding-right: 5rem;
+  // padding-right: 5rem;
 
   @media screen and (max-width: 900px) {
     padding-right: 0 !important;
@@ -70,9 +71,11 @@ function CountryRequirementDetails({
   country: string;
 }) {
   const { isMobile } = useScreenResolution();
+  const { geoInfo } = useUserStore();
+
   return (
     <Wrapper>
-     {!isMobile &&  <Link href={`/visa/apply/?destination=${country}`}>
+     {!isMobile &&  <Link href={`/visa/apply/?destination=${country}&home=${geoInfo?.country}`}>
         <Button
           width={isMobile ? "100%" : "289px"}
           padding="10px 20px"

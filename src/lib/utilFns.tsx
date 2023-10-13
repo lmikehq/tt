@@ -41,7 +41,7 @@ export function checkIfFieldHasError(obj: any, field: string) {
 export async function fetchHTMLContent(country: string) {
   try {
     const res = await axios.get(
-      `https://d3boyruitvg65k.cloudfront.net/countries/${country}.html`
+      `https://ttravels-assets.s3.eu-west-2.amazonaws.com/countries/${country}.html`
     );
     return res.data;
   } catch (err) {

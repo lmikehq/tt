@@ -7,6 +7,7 @@ import Button from "@atom/button";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Link from "../atoms/link";
 import { ttColors } from "@/lib/theme/colors";
+import { useUserStore } from "@/lib/store/useStore";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -17,7 +18,7 @@ const Wrapper = styled.div`
   }
 
   & .prose {
-    max-width: unset;
+    max-width: 100%;
   }
 
   & .prose p,
@@ -53,8 +54,7 @@ const Wrapper = styled.div`
   }
 
   & a {
-    color: #000000;
-    // text-decoration: none;
+    // color: #bdcee7;
   }
   & h1 {
     font-size: 24px !important;
@@ -66,7 +66,7 @@ const Wrapper = styled.div`
     }
   }
   & img {
-    width: 100%;
+    max-width: 100%;
   }
 `;
 
@@ -78,11 +78,12 @@ function CountryDetails({
   country: string;
 }) {
   const { isMobile } = useScreenResolution();
+  const { geoInfo } = useUserStore();
 
   return (
     <Wrapper>
       <CountryArticle article={{ body: details }} />
-      <Link href={`/visa/apply/?destination=${country}`}>
+      <Link href={`/visa/apply/?destination=${country}&home=${geoInfo?.country}`}>
         <Button
           width={isMobile ? "100%" : "289px"}
           padding="10px 20px"

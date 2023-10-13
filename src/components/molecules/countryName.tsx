@@ -1,19 +1,18 @@
 "use client";
+import { fetchHTMLContent } from "@/lib/utilFns";
+import SectionLayout from "@components/templates/SectionLayout";
+import { Grid } from "@components/templates/grid";
+import { SAMPLE_COUNTRY_REQUIREMENT } from "@lib/extensions/data/countryRequirement";
+import { unUrlString } from "@lib/extensions/helpers/url";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { Qparams } from "@lib/types";
+import HelpfulOrNot from "@molecule/helpfulOrNot";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import React, { useEffect } from "react";
-import { Qparams } from "@lib/types";
-import { unUrlString } from "@lib/extensions/helpers/url";
-import SectionLayout from "@components/templates/SectionLayout";
 import CountryDetails from "./countryDetails";
-import { afga } from "@lib/extensions/data/countryInfo";
-import { Grid } from "@components/templates/grid";
 import CountryRequirementDetails from "./countryRequirementDetails";
-import { SAMPLE_COUNTRY_REQUIREMENT } from "@lib/extensions/data/countryRequirement";
-import HelpfulOrNot from "@molecule/helpfulOrNot";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionTitle from "./sectionTitle";
-import { fetchHTMLContent } from "@/lib/utilFns";
-
+// import '@style/countries.css'
 interface pageProps {
   params: Qparams["params"];
 }
@@ -32,21 +31,9 @@ const CountryPage: React.FC<pageProps> = ({ params }) => {
     ? "/assets/images/visaPageCover.jpg"
     : "/assets/images/visaDesktopCover.jpg";
   const countryInfo = `
-  <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href='@styles/countries.css' />
-    <title>Albania</title>
-  </head>
-  <body>
   <div class="prose prose-slate mx-auto mt-8 lg:prose-lg">
   ${html}
-  <h1>Heading 1</h1>
-  </div>
-  </body>
-</html>
+
   `;
   return (
     <div>
