@@ -27,6 +27,7 @@ function FlightList() {
         <AvailableFlights />
       </Section>
     </Box>
+    </Flex>
   );
 }
 
