@@ -50,6 +50,13 @@ export const CloseMark = styled(HiOutlineXMark)`
   cursor: pointer;
 `;
 
+const StyledInput = styled.input`
+  border: none;
+  font-family: Poppins;
+  font-size: 16px;
+  width: 100%;
+`
+
 function PaymentModal({
   open,
   handleClose,
@@ -59,8 +66,6 @@ function PaymentModal({
 }) {
   const {
     getCardNumberProps,
-    getExpiryDateProps,
-    getCVCProps,
     getCardImageProps,
     meta: { erroredInputs },
   } = useCreditCardValidator();
@@ -83,10 +88,6 @@ function PaymentModal({
       setCvv(formattedNumber || "");
     }
   };
-
-  let isValid = validator.isCreditCard(cardNumber);
-  console.log(isValid);
-  console.log(validateCardType(cardNumber));
 
   return (
     <Modal open={open} handleClose={handleClose}>
@@ -128,8 +129,13 @@ function PaymentModal({
                 }}
                 width="100%"
               >
-                <input {...getCardNumberProps()} />
-                <svg {...getCardImageProps({ images })} />
+                <Flex
+                  justify="space-between"
+                  padding=".5rem 1rem"
+                >
+                  <StyledInput {...getCardNumberProps()} />
+                  <svg {...getCardImageProps({ images })} />
+                </Flex>
               </Section>
             </Flex>
             <Flex
@@ -137,13 +143,13 @@ function PaymentModal({
               gap="2rem"
               align="center"
             >
-              <Flex direction="column" gap=".5rem">
+              <Flex direction="column" gap=".75rem">
                 <Text type="p" text="Expiry Date" />
                 <DatePicker
                   placeholder="MM/YY"
                   minDate={dayjs()}
                   views={["month", "year"]}
-                  height="30px"
+                  height="40px"
                   format="MM/YY"
                 />
               </Flex>

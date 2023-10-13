@@ -6,11 +6,13 @@ import Section from "../molecules/section";
 const MultiStepWithSideMenu = ({
   sideMenu,
   children,
-  header
+  header,
+  direction
 }: {
   sideMenu: ReactNode;
   children: ReactNode;
   header: ReactNode;
+  direction: "column-reverse" | "column"
 }) => {
   const { isMobile } = useScreenResolution();
 
@@ -28,7 +30,7 @@ const MultiStepWithSideMenu = ({
         height="auto"
         padding={isMobile ? "0px" : "2.5rem"}
         gap="2.25rem"
-        direction={isMobile ? "column-reverse" : "row"}
+        direction={isMobile ? direction : "row"}
       >
         <Section
           height="unset"

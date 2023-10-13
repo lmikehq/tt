@@ -35,6 +35,10 @@ export const ButtonBox = styled.div<{ active: boolean }>`
     color: ${({ active }) => (active ? "white" : ttColors.primary)};
   }
 
+  &:hover {
+    background: ${({ active }) => (active ? "" : "#F3F3FF")};
+  }
+
   @media only screen and (max-width: 992px) {
     svg {
       display: ${({ active }) => (active ? "inline-flex" : "none")};
@@ -68,7 +72,11 @@ function SortedFlightsTab(props: sortProps) {
               justify={isMobile ? "center" : "flex-start"}
               padding=".5rem 1.25rem"
             >
-              <Flex gap="1rem" align="center" justify={isMobile ? "center" : "flex-start"}>
+              <Flex
+                gap="1rem"
+                align="center"
+                justify={isMobile ? "center" : "flex-start"}
+              >
                 <Text type="p" text="Best" />
                 <BsInfoCircle size={20} />
               </Flex>
@@ -85,7 +93,7 @@ function SortedFlightsTab(props: sortProps) {
                   weight={600}
                 />
                 {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m"  whiteSpace="nowrap" />
+                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
               </Flex>
             </Flex>
           </ButtonBox>
@@ -93,8 +101,17 @@ function SortedFlightsTab(props: sortProps) {
             active={props.sortType === "cheap"}
             onClick={() => props.setSortType("cheap")}
           >
-            <Flex direction="column" justify={isMobile ? "center" : "flex-start"} gap=".5rem" padding=".5rem 1.25rem">
-              <Flex gap="1rem" align="center" justify={isMobile ? "center" : "flex-start"}>
+            <Flex
+              direction="column"
+              justify={isMobile ? "center" : "flex-start"}
+              gap=".5rem"
+              padding=".5rem 1.25rem"
+            >
+              <Flex
+                gap="1rem"
+                align="center"
+                justify={isMobile ? "center" : "flex-start"}
+              >
                 <Text type="p" text="Cheapest" />
                 <BsInfoCircle size={20} />
               </Flex>
@@ -111,38 +128,42 @@ function SortedFlightsTab(props: sortProps) {
                   weight={600}
                 />
                 {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m"  whiteSpace="nowrap" />
+                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
               </Flex>
             </Flex>
           </ButtonBox>
-          {isMobile && (
-            <ButtonBox
-              active={props.sortType === "fast"}
-              onClick={() => props.setSortType("fast")}
+
+          <ButtonBox
+            active={props.sortType === "fast"}
+            onClick={() => props.setSortType("fast")}
+          >
+            <Flex
+              direction="column"
+              justify={isMobile ? "center" : "flex-start"}
+              gap=".5rem"
+              padding=".5rem 1.25rem"
             >
-              <Flex direction="column" justify="center" gap=".5rem" padding=".5rem 1.25rem">
-                <Flex gap="1rem" align="center" justify="center">
-                  <Text type="p" text="Fastest" />
-                  <BsInfoCircle size={20} />
-                </Flex>
-                <Flex
-                  direction={isMobile ? "column" : "row"}
-                  gap=".5rem"
-                  align="center"
-                >
-                  <Text
-                    type={isMobile ? "h1" : "p"}
-                    text={`$${Number(
-                      props.fastPrice?.toFixed(0)
-                    ).toLocaleString()}`}
-                    weight={600}
-                  />
-                  {!isMobile && <GoDotFill size={15} />}
-                  <Text type="p" text="20 h 32 m"  whiteSpace="nowrap" />
-                </Flex>
+              <Flex gap="1rem" align="center" justify={isMobile ? "center" : "flex-start"}>
+                <Text type="p" text="Fastest" />
+                <BsInfoCircle size={20} />
               </Flex>
-            </ButtonBox>
-          )}
+              <Flex
+                direction={isMobile ? "column" : "row"}
+                gap=".5rem"
+                align="center"
+              >
+                <Text
+                  type={isMobile ? "h1" : "p"}
+                  text={`$${Number(
+                    props.fastPrice?.toFixed(0)
+                  ).toLocaleString()}`}
+                  weight={600}
+                />
+                {!isMobile && <GoDotFill size={15} />}
+                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
+              </Flex>
+            </Flex>
+          </ButtonBox>
         </Flex>
         {!isMobile && (
           <Flex justify="flex-end" gap=".75rem">
