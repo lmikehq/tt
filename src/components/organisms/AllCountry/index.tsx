@@ -12,7 +12,10 @@ import { ttColors } from "@lib/theme/colors";
 import { useState } from "react";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import styled from "styled-components";
-import { COUNTRY_FLAGS } from "../../../lib/extensions/data/data";
+import {
+  COUNTRY_FLAGS,
+  availableCountries,
+} from "../../../lib/extensions/data/data";
 import AllCountryHead from "./allCountryHead";
 
 // const CountryWrapper = styled.section`
@@ -235,39 +238,39 @@ const CountriesList = () => {
   const { isMobile } = useScreenResolution();
   const [showAll, setShowAll] = useState(false);
   const countriesPerPage = 48;
-  const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
-  const [displayedCountries, setDisplayedCountries] = useState(
-    countries.slice(0, countriesPerPage)
-  );
+  // const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
+  // const [displayedCountries, setDisplayedCountries] = useState(
+  //   countries.slice(0, countriesPerPage)
+  // );
 
-  const handleSeeMore = (e: any) => {
-    e.preventDefault();
-    if (showAll) {
-      setDisplayedCountries(countries.slice(0, countriesPerPage));
-      setShowAll(false);
-    } else {
-      const remainingCountries = countries.slice(
-        displayedCountries.length,
-        displayedCountries.length + 24
-      );
+  // const handleSeeMore = (e: any) => {
+  //   e.preventDefault();
+  //   if (showAll) {
+  //     setDisplayedCountries(countries.slice(0, countriesPerPage));
+  //     setShowAll(false);
+  //   } else {
+  //     const remainingCountries = countries.slice(
+  //       displayedCountries.length,
+  //       displayedCountries.length + 24
+  //     );
 
-      if (remainingCountries.length > 0) {
-        setDisplayedCountries((prevCountries) => [
-          ...prevCountries,
-          ...remainingCountries,
-        ]);
-        if (
-          displayedCountries.length + remainingCountries.length ===
-          countries.length
-        ) {
-          setShowAll(true);
-        }
-      } else {
-        setDisplayedCountries(countries.slice(0, countriesPerPage));
-        setShowAll(true);
-      }
-    }
-  };
+  //     if (remainingCountries.length > 0) {
+  //       setDisplayedCountries((prevCountries) => [
+  //         ...prevCountries,
+  //         ...remainingCountries,
+  //       ]);
+  //       if (
+  //         displayedCountries.length + remainingCountries.length ===
+  //         countries.length
+  //       ) {
+  //         setShowAll(true);
+  //       }
+  //     } else {
+  //       setDisplayedCountries(countries.slice(0, countriesPerPage));
+  //       setShowAll(true);
+  //     }
+  //   }
+  // };
 
   const coverImage = isMobile
     ? "/assets/images/visaPageCover.jpg"
@@ -291,15 +294,28 @@ const CountriesList = () => {
           gap={isMobile ? ".8rem" : "1.5rem"}
           margin="2rem 0 0"
         >
-          {displayedCountries.map((country, index) => (
-            <Link
-              href={`/visa/countries/${urlString(country.name)}`}
-              key={index}
-            >
-              <Flex background="#fff" align="center" gap="2rem" padding="15px" borderRadius="12px">
-                <Image src={country.flag} alt={country.name} width={50} />
+          {availableCountries.map((country, index) => (
+            <Link href={`/visa/countries/${urlString(country)}`} key={index}>
+              <Flex
+                background="#fff"
+                align="center"
+                gap="2rem"
+                padding="15px"
+                borderRadius="12px"
+              >
+                <Image
+                  src={
+                    COUNTRY_FLAGS.find(
+                      (item) => item.name.toLocaleLowerCase() == country
+                    )?.flag || COUNTRY_FLAGS[0].flag
+                  }
+                  alt={country}
+                  width={50}
+                />
                 <Text
-                  text={country.name.split(" ").slice(0, 2).join("+")}
+                  text={
+                    country.charAt(0).toLocaleUpperCase() + country.slice(1)
+                  }
                   type="p"
                 />
               </Flex>
@@ -310,11 +326,12 @@ const CountriesList = () => {
           {COUNTRY_FLAGS.length > countriesPerPage && (
             <Button
               background="transparent"
-              onClick={handleSeeMore}
-              color={ttColors.dark}
-              border={`1px solid ${ttColors.primary}`}
+              // onClick={handleSeeMore}
+              color={ttColors.ghostWhite}
+              // border={`1px solid ${ttColors.primary}`}
               width="240px"
               fontSize="1rem"
+              disabled
             >
               {showAll ? "See Less" : "See More"}
             </Button>

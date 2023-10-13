@@ -1251,6 +1251,29 @@ export const COUNTRY_FLAGS = [
   },
 ];
 
+export const availableCountries = [
+  "afghanistan",
+  "albania",
+  "algeria",
+  "american-samoa",
+  "andorra",
+  "angola",
+  "anguilla",
+  "antilles",
+  "argentina",
+  "armenia",
+  "aruba",
+  "australia",
+  "austria",
+  "azerbaijan",
+  "bahamas",
+  "bahrain",
+  "bangladesh",
+  "barbados",
+  "barbuda",
+  "belarus",
+  'canada'
+];
 export const sorted = COUNTRY_FLAGS.sort((a, b) =>
   a.name.localeCompare(b.name)
 );

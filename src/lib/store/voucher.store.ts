@@ -1,6 +1,4 @@
-import {
-  Mode
-} from "@lib/types";
+import { Mode } from "@lib/types";
 import { create } from "zustand";
 import { VoucherService } from "../services/voucher.service";
 
@@ -35,7 +33,7 @@ export const useVoucherStore = create<State & Actions>(
       }
 
       set({ mode: Mode.loading });
-      return await VoucherService.checkVoucher({ promoCode })
+      await VoucherService.checkVoucher({ promoCode })
         .then((response) => {
           set({ voucher: promoCode, applied: true, mode: Mode.loaded });
           return response;
@@ -43,11 +41,12 @@ export const useVoucherStore = create<State & Actions>(
         .catch((error) => {
           set({
             applied: false,
-            errorMessage: error.response.data.message,
+            errorMessage: error?.response?.data?.message,
             mode: Mode.error,
           });
           throw error;
         });
+      return set({ mode: Mode.loaded });
     },
     useVoucher: async ({
       promoCode,
