@@ -8,23 +8,37 @@ import {
   Dispatch,
 } from "react";
 
+type CountryDetails = {
+  name: string;
+  flag: string;
+  code: string;
+};
+
 type ContextType = {
-  departureCountry: string;
-  arrivalCountry: string;
+  departureCountry: CountryDetails;
+  arrivalCountry: CountryDetails;
   departureDate: dayjs.Dayjs;
   returnDate: dayjs.Dayjs;
 };
 
 const initialValues: ContextType = {
-  departureCountry: "Nigeria",
-  arrivalCountry: "Canada",
+  departureCountry: {
+    name: "Nigeria",
+    flag: "",
+    code: "NG",
+  },
+  arrivalCountry: {
+    name: "Canada",
+    flag: "",
+    code: "CA",
+  },
   departureDate: dayjs(new Date()),
   returnDate: dayjs().add(1, "day"),
 };
 
 type Action =
-  | { type: "SET_DEPARTURE"; payload: string }
-  | { type: "SET_ARRIVAL"; payload: string }
+  | { type: "SET_DEPARTURE"; payload: CountryDetails }
+  | { type: "SET_ARRIVAL"; payload: CountryDetails }
   | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
   | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs };
 

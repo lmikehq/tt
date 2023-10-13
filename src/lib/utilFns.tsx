@@ -39,5 +39,5 @@ export function checkIfFieldHasError(obj: any, field: string) {
 }
 
 export function formatDate(day: Dayjs) {
-  return day.format("MM-DD-YYYY");
+  return day.format("DD/MM/YYYY");
 }

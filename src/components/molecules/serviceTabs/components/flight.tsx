@@ -146,7 +146,7 @@ function Flights() {
             const dateTo = formatDate(flightState?.returnDate || new Dayjs());
 
             router.push(
-              `/flight/listings?fly_from=${flightState?.departureCountry}&fly_to=${flightState?.arrivalCountry}&date_from=${dateFrom}&date_to=${dateTo}`
+              `/flight/listings?fly_from=${flightState?.departureCountry.code}&fly_to=${flightState?.arrivalCountry.code}&date_from=${dateFrom}&date_to=${dateTo}`
             );
           }}
         >

@@ -71,7 +71,9 @@ export interface SearchFlightsRequestQuery {
   fly_days_type?: string;
   fly_days?: string;
   curr?: string;
-  adults?: string;
+  adults?: number;
+  children?: number;
+  infants?: number;
   selected_cabins?: string;
   atime_from?: string;
   atime_to?: string;
@@ -82,6 +84,7 @@ export interface SearchFlightsRequestQuery {
   adult_hold_bag?: string;
   price_from?: string;
   price_to?: string;
+  select_airlines?: string[];
   vehicle_type?: string;
   max_stopovers?: string;
 }
