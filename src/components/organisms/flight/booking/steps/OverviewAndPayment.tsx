@@ -1,7 +1,7 @@
 import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import TripOverviewCard from "@/components/organisms/flights/TripOverviewCard";
-import PaymentModal from "@/components/organisms/modal/components/paymentModal";
+import PaymentModal from "@/components/organisms/flight/booking/modals/paymentModal";
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";

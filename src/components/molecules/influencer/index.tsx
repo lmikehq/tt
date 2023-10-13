@@ -6,12 +6,17 @@ import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { Grid } from "@/components/templates/grid";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { ttColors } from "@/lib/theme/colors";
 import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { GiPassport } from "react-icons/gi";
 import { IoBed } from "react-icons/io5";
 import { RiPlaneLine } from "react-icons/ri";
 import styled from "styled-components";
+
+import Umbrella from "/public/assets/images/influencer/Icon/umbrella.svg";
+import Location from "/public/assets/images/influencer/Icon/location.svg";
+import Book from "/public/assets/images/influencer/Icon/book.svg";
 
 const HeroImg = styled.div`
   position: relative;
@@ -217,6 +222,24 @@ const OfferCardTwo = styled.div`
   }
 `;
 
+const InfluencerImage = styled.div`
+  height: 430px;
+  borderradius: 16px;
+  display: none;
+
+  & img {
+    height: 100%;
+    objectfit: "cover";
+    width: 100%;
+    border-radius: 16px;
+  }
+
+  @media (max-width: 900px) {
+    display: flex;
+    margin-bottom: 30px;
+  }
+`;
+
 const InfluencerPage = () => {
   const { isMobile } = useScreenResolution();
   const [activeIcon, setActiveIcon] = useState<string>("Passport");
@@ -276,7 +299,12 @@ const InfluencerPage = () => {
             height={806}
           />
         </HeroImg>
-
+        <InfluencerImage>
+          <Image
+            src="/assets/images/influencer/influencerImg.png"
+            alt="influencer picture"
+          />
+        </InfluencerImage>
         <HeroCard>
           <Flex gap="1rem" margin={isMobile ? "0 auto 1.5rem" : "0 auto 1rem"}>
             <InfluencerIcon>
@@ -350,7 +378,7 @@ const InfluencerPage = () => {
             </Flex>
           </Flex>
 
-          <Button width="100%">
+          <Button width="100%" background={ttColors.dark}>
             <Text type="h3" text="Get Started" weight={500} size={16} />
           </Button>
         </HeroCard>
@@ -402,7 +430,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/book.svg"
+                src={Book}
                 alt=""
                 width={isMobile ? 46.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -431,7 +459,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/location.svg"
+                src={Location}
                 alt=""
                 width={isMobile ? 46.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -460,7 +488,7 @@ const InfluencerPage = () => {
               margin="0 0 1.5rem"
             >
               <Image
-                src="/assets/images/influencer/icon/umbrella.svg"
+                src={Umbrella}
                 alt=""
                 width={isMobile ? 68.01 : 60.01}
                 height={isMobile ? 46 : 60}
@@ -929,7 +957,11 @@ const InfluencerPage = () => {
               weight={400}
               styles={{ textAlign: "left" }}
             />
-            <Button width={isMobile ? "70%" : "50%"} margin="2rem 0 0">
+            <Button
+              width={isMobile ? "100%" : "50%"}
+              margin="2rem 0 0"
+              background={ttColors.dark}
+            >
               <Text type="h3" text="Get Started" weight={500} size={16} />
             </Button>
           </Flex>

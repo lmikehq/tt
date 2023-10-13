@@ -7,6 +7,7 @@ import Section from "@/components/molecules/section";
 import CustomConfirmationModal from "@/components/organisms/visaApplicationModal";
 import Flex from "@/components/templates/flex";
 import { capitalized } from "@/lib/extensions/helpers/capitalize";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import {
   SeatInterface,
@@ -14,6 +15,7 @@ import {
 } from "@/lib/types/response-models/flight/booking.type";
 import { useState } from "react";
 import { styled } from "styled-components";
+import { SeatHeader } from "../headers";
 
 const Wrapper = styled.div`
   background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -21,6 +23,7 @@ const Wrapper = styled.div`
   background-size: 200%;
 `;
 const SeatSelection = () => {
+  const { isMobile } = useScreenResolution()
   const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
   const [selectionModalContent, setSelectionModalContent] = useState({
     seatDescription: <></>,
@@ -115,12 +118,9 @@ const SeatSelection = () => {
         }
       />
       <Section>
-        <Section padding="0 0 4rem 0">
-          <FormTitleAndSubtitle
-            title={"Seat Selection"}
-            subTitle={"Select a seat of your choice"}
-          />
-        </Section>
+        {!isMobile && <Section padding="0 0 4rem 0">
+          <SeatHeader/>
+        </Section>}
         <Wrapper>
           <Section
             width="fit-content"
