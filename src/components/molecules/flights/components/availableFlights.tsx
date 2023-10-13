@@ -37,7 +37,7 @@ function AvailableFlights() {
     });
     updateSearchQuery({ data: searchParams });
     searchFlights({ data: searchParams });
-  }, []);
+  }, [window.location.href]);
 
   function setSortType(value: SetStateAction<string>): void {
     throw new Error("Function not implemented.");
