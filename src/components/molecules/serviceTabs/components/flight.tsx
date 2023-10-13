@@ -12,6 +12,9 @@ import sleep from "@lib/extensions/helpers/sleep";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useFlightContext } from "@/lib/extensions/context";
+import { formatDate } from "@/lib/utilFns";
+import { Dayjs } from "dayjs";
 
 const options = [
   { value: "round", label: "Round Trip" },
@@ -42,6 +45,8 @@ function Flights() {
     []
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const flightContext = useFlightContext();
+  const flightState = flightContext?.state;
   const router = useRouter();
 
   const handleAddMultiCityFlight = () => {
@@ -123,24 +128,32 @@ function Flights() {
           />
         )}
       </Flex>
-      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
+      <Flex
+        justify={"center"}
+        margin="2rem 0 0"
+        styles={{ position: "absolute", top: "165px" }}
+      >
         <Button
-          width={isMobile ? "100%" : "fit-content"}
+          width={isMobile ? "100%" : "300px"}
           padding={"0 1.5rem"}
           cursor="pointer"
           borderRadius="4px"
           background="#06062A"
           onClick={async () => {
-            if (loading) return;
-            setLoading(true);
-            await sleep(200);
-            router.push(`https://www.booking.com/`);
+            const dateFrom = formatDate(
+              flightState?.departureDate || new Dayjs()
+            );
+            const dateTo = formatDate(flightState?.returnDate || new Dayjs());
+
+            router.push(
+              `/flight/listings?fly_from=${flightState?.departureCountry.code}&fly_to=${flightState?.arrivalCountry.code}&date_from=${dateFrom}&date_to=${dateTo}`
+            );
           }}
         >
           {loading ? (
             <Spinner fill={ttColors.primary} size={"45px"} />
           ) : (
-            <Text type="p" text="Search Flight" size={18} weight={500} />
+            <Text type="p" text="Search Flight" weight={500} />
           )}
         </Button>
       </Flex>

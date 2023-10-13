@@ -8,6 +8,8 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import SearchInput from "../searchInput";
 import { IoIosArrowDown } from "react-icons/io";
 import { useState } from "react";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { OverviewHeader } from "../flight/booking/headers";
 
 type PaymentProps = {
     countryCode: string,
@@ -16,6 +18,8 @@ type PaymentProps = {
 }
 
 function TripOverviewCard() {
+  const { isMobile } = useScreenResolution()
+
   const [payment, setPayment] = useState({
     countryCode: "NG",
     code: "NGN",
@@ -34,15 +38,7 @@ function TripOverviewCard() {
 
   return (
     <Section>
-      <Flex direction="column" gap=".75rem">
-        <Text text="Trip Overview & Payment" type="h2" weight={700} />
-        <Text
-          text="Make payment for your flight booking"
-          type="p"
-          color="#606060"
-        />
-      </Flex>
-
+      {!isMobile && <OverviewHeader/>}
       <Flex direction="column" gap="1rem" padding="3rem 0">
         <Text text="Select Payment" type="h3" />
         <SearchInput

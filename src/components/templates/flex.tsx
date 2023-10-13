@@ -84,6 +84,7 @@ export const Flex: React.FC<flexProps> = ({
 }) => {
   return (
     <FlexWrapper
+      className={className}
       ref={ref}
       id={id}
       style={{

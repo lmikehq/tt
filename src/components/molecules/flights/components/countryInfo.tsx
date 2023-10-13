@@ -3,7 +3,7 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
-import { flightContext } from "@lib/extensions/context";
+import { useFlightContext } from "@lib/extensions/context";
 import { styled } from "styled-components";
 import { canadianCities } from "./country";
 import { useState, useEffect } from "react";
@@ -28,7 +28,7 @@ const CountryBox = styled.div<{ backgroundImage: string; isHovered: boolean }>`
 `;
 
 function CountryInfo() {
-  const context = flightContext();
+  const context = useFlightContext();
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const [prices, setPrices] = useState<number[]>([]);
 

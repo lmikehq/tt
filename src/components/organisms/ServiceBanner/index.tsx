@@ -28,7 +28,7 @@ function ServiceBanner({ page }: { page?: string }) {
       style={{
         backgroundColor: "var(--default-color)",
         borderRadius: "1rem",
-        boxShadow: "0px 3px 24px #00000014",
+        boxShadow: "0px 4px 16px 0px #8DD3BB26",
       }}
     >
       <ServiceTabs page={page} />

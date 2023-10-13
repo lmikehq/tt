@@ -59,12 +59,11 @@ export interface Baggage {
   passengers: number[];
 }
 
-interface CardInfo {
-  number: string;
+export interface CardInfo {
+  cardNumber: string;
   cvv: string;
-  expirationMonth: string;
-  expirationYear: string;
-  holder: string;
+  expirationDate: string;
+  holderName: string;
 }
 
 export interface SearchFlightsRequestQuery {
@@ -75,7 +74,9 @@ export interface SearchFlightsRequestQuery {
   fly_days_type?: string;
   fly_days?: string;
   curr?: string;
-  adults?: string;
+  adults?: number;
+  children?: number;
+  infants?: number;
   selected_cabins?: string;
   atime_from?: string;
   atime_to?: string;
@@ -86,6 +87,7 @@ export interface SearchFlightsRequestQuery {
   adult_hold_bag?: string;
   price_from?: string;
   price_to?: string;
+  select_airlines?: string[];
   vehicle_type?: string;
   max_stopovers?: string;
 }

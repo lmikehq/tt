@@ -15,7 +15,7 @@ import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
-import { flightContext } from "@lib/extensions/context";
+import { useFlightContext } from "@lib/extensions/context";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 
 interface flightProps {
@@ -48,7 +48,7 @@ function FlightModule({
   handleDeleteFlight,
   length,
 }: flightProps) {
-  const context = flightContext();
+  const context = useFlightContext();
 
   if (!context) {
     throw new Error("flightContext must be used within a FlightProvider");
@@ -95,7 +95,7 @@ function FlightModule({
               code: x.code,
             }))}
             onChange={(x: CountryType) => {
-              dispatch({ type: "SET_DEPARTURE", payload: x.name });
+              dispatch({ type: "SET_DEPARTURE", payload: x });
             }}
             value={state.departureCountry}
             placeholder="Current Location"
@@ -105,7 +105,7 @@ function FlightModule({
               <Text
                 type="p"
                 size={isMobile ? 16 : 18}
-                text={state.departureCountry}
+                text={state.departureCountry.name}
                 color="black"
               />
             </Flex>
@@ -130,7 +130,7 @@ function FlightModule({
             }))}
             value={state.arrivalCountry}
             onChange={(x: CountryType) => {
-              dispatch({ type: "SET_ARRIVAL", payload: x.name });
+              dispatch({ type: "SET_ARRIVAL", payload: x });
             }}
             placeholder="Where to?"
           >
@@ -139,7 +139,7 @@ function FlightModule({
               <Text
                 type="p"
                 size={isMobile ? 16 : 18}
-                text={state.arrivalCountry}
+                text={state.arrivalCountry.name}
                 color="black"
               />
             </Flex>

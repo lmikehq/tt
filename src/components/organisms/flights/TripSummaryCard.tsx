@@ -10,8 +10,13 @@ import { styled } from "@mui/material/styles";
 import { ttColors } from "@/lib/theme/colors";
 import Box from "@mui/material/Box";
 import TripSummaryDetails from "./TripSummaryDetails";
+
 import { FormikProps } from "formik";
 import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booking.type";
+
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { TripHeader } from "../flight/booking/headers";
+
 
 const StyledAccordion = styled((props: AccordionProps) => (
   <Accordion disableGutters elevation={0} {...props} />
@@ -25,29 +30,17 @@ const StyledAccordion = styled((props: AccordionProps) => (
 }));
 
 export default function TripSummaryCard() {
+  const { isMobile } = useScreenResolution();
+
   return (
     <>
-      <Flex gap="1rem" margin="1rem 0" align="center" justify="space-between">
-        <Flex gap="1rem" align="center">
-          <Text text="Your Trip Summary" type="h2" />
-          <Box
-            sx={{
-              background: ttColors.primary100,
-              padding: "5px",
-              borderRadius: "100px",
-              width: "40px",
-              height: "40px",
-              display: "flex",
-            }}
-          >
-            <img src="/assets/icons/airplane.svg" alt="airplane" />
-          </Box>
+      {!isMobile && (
+        <Flex gap="1rem" margin="1rem 0" align="center" justify="space-between">
+          <Button width="200px" color={ttColors.dark} variant="outline">
+            Change Flight
+          </Button>
         </Flex>
-
-        <Button width="200px" color={ttColors.dark} variant="outline">
-          Change Flight
-        </Button>
-      </Flex>
+      )}
 
       <Flex margin="1rem 0" align="center" justify="space-between">
         <Box
