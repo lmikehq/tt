@@ -4,14 +4,13 @@ import {
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
-  PassengerAndBaggageCombinationInterface,
+  Passenger,
+  PassengerBaggageCombinationInterface,
   SaveBookingRequestInput,
   SearchFlightsRequestQuery,
   TokenizeDataRequestInput,
   arrangeBaggageDataForOrdering,
-  detachCombinationsFieldFromPassengers,
   passengerAndBaggageDetails,
-  saveBookingDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
@@ -20,7 +19,6 @@ import { create } from "zustand";
 
 interface State {
   highestStep: number;
-  saveBookingForm: SaveBookingRequestInput;
   step: number;
   searchFlightsMode: Mode;
   searchFlightsResults: FlightInfo[];
@@ -30,8 +28,6 @@ interface State {
   bookingToken?: string;
   sessionId: string | null;
   mode: Mode;
-
-  passengerAndBaggageDetails: PassengerAndBaggageCombinationInterface;
 }
 interface Actions {
   prevStep: () => void;
@@ -40,7 +36,8 @@ interface Actions {
   checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
   checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
   saveBooking: (params: {
-    data: PassengerAndBaggageCombinationInterface[];
+    combinations: PassengerBaggageCombinationInterface[];
+    passengers: Passenger[];
     sessionId: string;
     bookingToken: string;
   }) => Promise<void>;
@@ -55,14 +52,12 @@ export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
     step: 2,
     highestStep: 5,
-    saveBookingForm: saveBookingDetails,
 
     mode: Mode.init,
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],
     searchQuery: {},
     sessionId: null,
-    passengerAndBaggageDetails,
 
     checkFlightsResponse: null,
 
@@ -143,25 +138,27 @@ export const useFlightBookingStore = create<State & Actions>(
         });
     },
     saveBooking: async ({
-      data,
       sessionId,
       bookingToken,
+      combinations,
+      passengers,
     }: {
-      data: PassengerAndBaggageCombinationInterface[];
+      combinations: PassengerBaggageCombinationInterface[];
+      passengers: Passenger[];
       sessionId: string;
       bookingToken: string;
     }) => {
       set({ mode: Mode.loading });
-      console.log("baggeage", data);
+      console.log("baggeage", combinations);
       const saveBookingRequestInput: SaveBookingRequestInput = {
         health_declaration_checked: true,
         lang: "en",
         locale: "en",
         payment_gateway: "payu",
-        passengers: detachCombinationsFieldFromPassengers(data),
+        passengers,
         booking_token: bookingToken,
         session_id: sessionId,
-        baggage: arrangeBaggageDataForOrdering(data),
+        baggage: arrangeBaggageDataForOrdering(combinations),
       };
 
       return await FlightBookingService.saveBooking({

@@ -15,20 +15,27 @@ import {
   Select,
 } from "@mui/material";
 import { FormikProps } from "formik";
-import { PassengerAndBaggageCombinationInterface } from "@/lib/types/request-models/flight/booking.type";
+import {
+  Combination,
+  PassengerBaggageCombinationInterface,
+} from "@/lib/types/request-models/flight/booking.type";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 
 interface PassengerBaggagePaneProps {
   combinationOptions: Combinations;
-  formik: FormikProps<{
-    passengers: PassengerAndBaggageCombinationInterface[];
-  }>;
+
   count: number;
+  passengerBagCombination: PassengerBaggageCombinationInterface;
+  handleUpdatePassengersBagCombination(params: {
+    index: number;
+    combination: Combination;
+    category: string;
+  }): void;
 }
 export default function PassengerBaggagePane({
   combinationOptions,
-  formik,
   count,
+  handleUpdatePassengersBagCombination,
 }: PassengerBaggagePaneProps) {
   const { checkFlightsResponse } = useFlightBookingStore((state) => state);
   const bagDefinitions = checkFlightsResponse?.baggage.definitions;
@@ -92,10 +99,15 @@ export default function PassengerBaggagePane({
             <MenuItem
               key={"hand-" + index}
               onClick={() => {
-                formik.setFieldValue(
-                  `passengers.${count}.combinations.hand_bag`,
-                  el
-                );
+                handleUpdatePassengersBagCombination({
+                  index: count,
+                  combination: el,
+                  category: "hand_bag",
+                });
+                // formik.setFieldValue(
+                //   `passengers.${count}.combinations.hand_bag`,
+                //   el
+                // );
               }}
             >
               {el.indices.map((definitionIndex, index) => (
@@ -124,10 +136,15 @@ export default function PassengerBaggagePane({
             <MenuItem
               key={"hold-" + index}
               onClick={() => {
-                formik.setFieldValue(
-                  `passengers.${count}.combinations.hold_bag`,
-                  el
-                );
+                handleUpdatePassengersBagCombination({
+                  index: count,
+                  combination: el,
+                  category: "hold_bag",
+                });
+                // formik.setFieldValue(
+                //   `passengers.${count}.combinations.hold_bag`,
+                //   el
+                // );
               }}
             >
               {(() => {

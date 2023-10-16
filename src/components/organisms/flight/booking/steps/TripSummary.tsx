@@ -9,13 +9,14 @@ import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
 import {
   Combination,
-  PassengerAndBaggageCombinationInterface,
+  Passenger,
+  PassengerBaggageCombinationInterface,
   passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const TripSummary = () => {
   const { checkFlights, saveBooking, checkFlightsResponse } =
@@ -24,6 +25,28 @@ const TripSummary = () => {
     url: window.location.href,
   });
 
+  const [passengersBagCombination, setPassengersBagCombination] = useState<
+    PassengerBaggageCombinationInterface[]
+  >([]);
+
+  const handleUpdatePassengersBagCombination = ({
+    index,
+    combination,
+    category,
+  }: {
+    index: number;
+    combination: Combination;
+    category: string;
+  }) => {
+    const combinations = passengersBagCombination;
+
+    combinations[index] = {
+      ...combinations[index],
+      [category]: combination,
+    };
+
+    setPassengersBagCombination(combinations);
+  };
   const { adults, children, infants } = searchParams;
   const params = new URLSearchParams(window.location.search);
 
@@ -41,8 +64,23 @@ const TripSummary = () => {
           response.flights_checked == true &&
           response.price_change == false &&
           response.flights_invalid == false
-        )
+        ) {
+          setPassengersBagCombination([
+            ...generateCombinationsForCategory({
+              size: parseInt(adults),
+              category: "adult",
+            }),
+            ...generateCombinationsForCategory({
+              size: parseInt(children),
+              category: "child",
+            }),
+            ...generateCombinationsForCategory({
+              size: parseInt(infants),
+              category: "infant",
+            }),
+          ]);
           return checkFlightsFifteenSecondsInterval(sessionId);
+        }
         await sleep(3000);
         return checkFlightsThreeSecondsInterval(sessionId);
       })
@@ -80,6 +118,7 @@ const TripSummary = () => {
         el.conditions.passenger_groups.includes(category) &&
         el.price.amount == 0
     )!;
+
   const getPassengerBagCombinationOptions = ({
     category,
   }: {
@@ -104,23 +143,38 @@ const TripSummary = () => {
   }: {
     size: number;
     category: string;
-  }): PassengerAndBaggageCombinationInterface[] => {
-    return Array.from(
-      { length: size },
-      (_, index): PassengerAndBaggageCombinationInterface => ({
+  }): Passenger[] => {
+    return Array.from({ length: size }, (_, index): Passenger => {
+      return {
         ...passengerAndBaggageDetails,
         category,
-        combinations: {
-          hold_bag: getDefaultBagTypeCombinationForCategory({
-            category,
-            bagType: "hold_bag",
-          }),
-          hand_bag: getDefaultBagTypeCombinationForCategory({
-            category,
-            bagType: "hand_bag",
-          }),
-        },
-      })
+      };
+    });
+  };
+  const generateCombinationsForCategory = ({
+    size,
+    category,
+  }: {
+    size: number;
+    category: string;
+  }): PassengerBaggageCombinationInterface[] => {
+    return Array.from(
+      { length: size },
+      (_, index): PassengerBaggageCombinationInterface => {
+        const holdBagCombination = getDefaultBagTypeCombinationForCategory({
+          category,
+          bagType: "hold_bag",
+        });
+        const handBagCombination = getDefaultBagTypeCombinationForCategory({
+          category,
+          bagType: "hand_bag",
+        });
+
+        return {
+          hold_bag: holdBagCombination,
+          hand_bag: handBagCombination,
+        };
+      }
     );
   };
   const formik = useFormik({
@@ -144,8 +198,10 @@ const TripSummary = () => {
     validateOnMount: true,
     validationSchema: manyPassengersAndBaggageDetailsSchema,
     onSubmit: (values) => {
+      console.log(passengersBagCombination, "passengers");
       saveBooking({
-        data: values.passengers,
+        passengers: values.passengers,
+        combinations: passengersBagCombination,
         sessionId: checkFlightsResponse?.session_id ?? "",
         bookingToken: checkFlightsResponse?.booking_token ?? "",
       });
@@ -182,6 +238,10 @@ const TripSummary = () => {
                       combinationOptions={getPassengerBagCombinationOptions({
                         category: passenger.category,
                       })}
+                      passengerBagCombination={passengersBagCombination[index]}
+                      handleUpdatePassengersBagCombination={
+                        handleUpdatePassengersBagCombination
+                      }
                     />
                   </div>
                 ))}
