@@ -52,14 +52,16 @@ interface Mark {
 interface SliderProps {
   marks: Mark[];
   defaultValue: number[];
+  onChange?: (e: any) => void;
 }
 
-export default function Slider({ marks, defaultValue }: SliderProps) {
+export default function Slider({ marks, defaultValue, onChange }: SliderProps) {
   return (
     <CustomizedSlider
       slots={{ thumb: ThumbComponent }}
       marks={marks}
       defaultValue={defaultValue}
+      onChange={onChange}
     />
   );
 }

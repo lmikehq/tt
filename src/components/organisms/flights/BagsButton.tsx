@@ -32,21 +32,21 @@ export default function BagsButton() {
             overflow: 'hidden'
           }}
         >
-          <Text text="Cabin Baggage" type="p" />
+          <Text text="Cabin Baggage====" type="p" />
         </div>
 
-        <Box sx={{ display: "flex", columnGap: 1.5, alignItems: "center" }}>
+        {/* <Box sx={{ display: "flex", columnGap: 1.5, alignItems: "center" }}>
           <PlusMinusButton onClick={() => setCabinBaggage(cabinBaggage + 1)}>
             +
           </PlusMinusButton>
-          {cabinBaggage.toString()}
+          {cabinBaggage}
           <PlusMinusButton
             isDisabled={cabinBaggage === 0}
             onClick={() => setCabinBaggage(cabinBaggage - 1)}
           >
             -
           </PlusMinusButton>
-        </Box>
+        </Box> */}
       </Box>
 
       <Box
