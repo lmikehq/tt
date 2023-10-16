@@ -18,7 +18,9 @@ import FormLabel from "@/components/atoms/FormLabel";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps } from "formik";
 import {
-  PassengerAndBaggageCombinationInterface,
+  Combination,
+  Passenger,
+  PassengerBaggageCombinationInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
 import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
@@ -26,11 +28,17 @@ import PassengerBaggagePane from "./PassengerBaggagePane";
 
 interface TripSummaryCardProps {
   formik: FormikProps<{
-    passengers: PassengerAndBaggageCombinationInterface[];
+    passengers: Passenger[];
   }>;
-  values: PassengerAndBaggageCombinationInterface;
+  values: Passenger;
   count: number;
   combinationOptions: Combinations;
+  passengerBagCombination: PassengerBaggageCombinationInterface;
+  handleUpdatePassengersBagCombination(params: {
+    index: number;
+    combination: Combination;
+    category: string;
+  }): void;
 }
 
 export default function MainPassenger({
@@ -38,6 +46,8 @@ export default function MainPassenger({
   count,
   values,
   combinationOptions,
+  passengerBagCombination,
+  handleUpdatePassengersBagCombination,
 }: TripSummaryCardProps) {
   return (
     <>
@@ -158,7 +168,7 @@ export default function MainPassenger({
             />
           </FormControl>
         </Box>
-
+        <input type="text" name={`passengers.${count}.combinations`} />
         <Box>
           <Text type="h2" text="Add extra check-in bags" />
           <Text
@@ -169,8 +179,11 @@ export default function MainPassenger({
           <Box sx={{ marginY: "1rem" }}>
             <PassengerBaggagePane
               combinationOptions={combinationOptions}
-              formik={formik}
               count={count}
+              handleUpdatePassengersBagCombination={
+                handleUpdatePassengersBagCombination
+              }
+              passengerBagCombination={passengerBagCombination}
             />
             {/* <PassengerCard /> */}
           </Box>

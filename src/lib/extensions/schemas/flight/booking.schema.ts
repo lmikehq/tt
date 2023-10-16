@@ -4,7 +4,6 @@ import {
   CombinationConditions,
   CombinationPrice,
   Passenger,
-  PassengerAndBaggageCombinationInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
 import { countrySchema } from "@/lib/types/schema";
@@ -39,8 +38,9 @@ const baggageSchema: yup.ObjectSchema<Baggage> = yup.object().shape({
   passengers: yup.array().of(yup.number().required()).defined(),
 });
 
-const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerAndBaggageCombinationInterface> =
-  yup.object().shape({
+const passengerAndBaggageDetailsSchema: yup.ObjectSchema<Passenger> = yup
+  .object()
+  .shape({
     name: yup.string().required("Required"),
     surname: yup.string().required("Required"),
     phone: yup.string().required("Required"),
@@ -57,10 +57,6 @@ const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerAndBaggageComb
       .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
       .required("Required"),
     category: yup.string().required("Required"),
-    combinations: yup.object().shape({
-      hand_bag: combinationSchema,
-      hold_bag: combinationSchema,
-    }),
   });
 
 export const passengersAndBaggageDetailsArraySchema = yup
