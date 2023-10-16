@@ -1,19 +1,12 @@
 "use client";
-import { IoCloudUpload } from "react-icons/io5";
-import React from "react";
-import { styled } from "styled-components";
-import Button from "@atom/button";
+import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import Image from "@atom/image";
 import Text from "@atom/text";
-import { HiPencil } from "react-icons/hi";
-import copyIcon from "@image/dashboard/copyIcon.png";
-import toast from "react-hot-toast";
-import { BsClipboard } from "react-icons/bs";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { BsFillCameraFill } from "react-icons/bs";
-import { ttColors } from "@lib/theme/colors";
-import { useUserStore } from "@lib/store/useStore";
 import Flex from "@components/templates/flex";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
+import { styled } from "styled-components";
 const DashboardCoverPicture = styled.div`
   position: relative;
   width: 100%;
@@ -157,14 +150,8 @@ function UserPicture() {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
 
-  const referralLink =
-    `https://thrillers.travel/register?ref=${user?.firstName.toLocaleLowerCase()}-${user?.lastName.toLocaleLowerCase()}`;
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(referralLink).then(() => {
-      toast.success("Referral link copied to clipboard");
-    });
-  };
+  const referralLink = `https://thrillers.travel/register?ref=${user?.firstName.toLocaleLowerCase()}-${user?.lastName.toLocaleLowerCase()}`;
+  const { copyToClipboard } = useClipboard();
   return (
     <Flex direction="column" gap="1rem" margin="0px">
       <DashboardCoverPicture>
@@ -238,7 +225,9 @@ function UserPicture() {
         <Flex
           gap=".5rem"
           justify="center"
-          onClick={copyToClipboard}
+          onClick={() =>
+            copyToClipboard(referralLink, "Referral link copied to clipboard")
+          }
           cursor="pointer"
           width="max-content"
           align="center"

@@ -14,6 +14,7 @@ import styled from "styled-components";
 const StyledInput = styled.input`
   background-color: transparent;
   border: 1px solid #bdbdbd;
+  outline: none;
   &:hover {
     border: 1px solid ${ttColors.primary};
   }
@@ -93,6 +94,8 @@ export interface InputProps {
   parentWidth?: string;
   styles?: CSSProperties;
   error?: boolean;
+  ref?: any;
+  autoFocus?: boolean;
 }
 
 const Input = ({
@@ -126,6 +129,8 @@ const Input = ({
   step,
   error,
   defaultValue,
+  ref,
+  autoFocus
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
     type === "password" ? "password" : ""
@@ -155,6 +160,8 @@ const Input = ({
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
+        ref={ref}
+        autoFocus={autoFocus}
         onClick={onClick}
         onFocus={onFocus}
         className={`custom-form-input ${error ? "error" : ""}`}

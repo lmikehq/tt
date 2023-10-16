@@ -1,10 +1,18 @@
 "use client";
-import Section from "src/components/molecules/section";
+import Button from "@atom/button";
+import { Divider } from "@atom/divider";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
-import { format } from "date-fns";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useVoucherStore } from "@lib/store/voucher.store";
+import { ttColors } from "@lib/theme/colors";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { format } from "date-fns";
 import { useRef, useState } from "react";
-import { HiClock, HiOutlinePlusSm } from "react-icons/hi";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { GrFormClose } from "react-icons/gr";
+import { HiClock } from "react-icons/hi";
 import { IoCalendar } from "react-icons/io5";
 import {
   MdKeyboardArrowDown,
@@ -17,25 +25,16 @@ import {
   PiEyeLight,
   PiWalletLight,
 } from "react-icons/pi";
-import { useVoucherStore } from "@lib/store/voucher.store";
+import Section from "src/components/molecules/section";
 import styled from "styled-components";
-import { ttColors } from "@lib/theme/colors";
-import Button from "@atom/button";
-import Flex from "@components/templates/flex";
-import Text from "@atom/text";
 import VisaPaymentModal from "../visaPayment";
-import Image from "@atom/image";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import CustomDrawer from "@molecule/drawers/customDrawer";
-import { GrFormClose } from "react-icons/gr";
-import { Divider } from "@atom/divider";
 
-import { AiOutlineCheck } from "react-icons/ai";
-import VisaUploadDocModal from "../visaUploadDoc";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
+import { AiOutlineCheck } from "react-icons/ai";
 import { BiError } from "react-icons/bi";
 import { RxAvatar } from "react-icons/rx";
-import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
+import VisaUploadDocModal from "../visaUploadDoc";
 
 const Logo = styled.div`
   height: 64px;
@@ -157,14 +156,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       case "DECLINED":
         visaInformation = {
           text: "Download Visa",
-          fn: () => {},
-          disabled: false,
-          intent: "",
-        };
-        break;
-      case "APPLICATION IN PROGRESS":
-        visaInformation = {
-          text: "...",
           fn: () => {},
           disabled: false,
           intent: "",

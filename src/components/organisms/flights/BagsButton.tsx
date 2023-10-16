@@ -4,6 +4,12 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import DropdownButton from "./DropdownButton";
 import PlusMinusButton from "./PlusMinusButton";
+import styled from "styled-components";
+
+const StyledText = styled.div`
+  width: 300px;
+  overflow: hidden;
+`
 
 export default function BagsButton() {
   const [cabinBaggage, setCabinBaggage] = useState(0);
@@ -20,7 +26,14 @@ export default function BagsButton() {
           columnGap: "3rem",
         }}
       >
-        <Text text="Cabin Baggage" type="p" />
+        <div
+          style={{
+            width: '300px',
+            overflow: 'hidden'
+          }}
+        >
+          <Text text="Cabin Baggage" type="p" />
+        </div>
 
         <Box sx={{ display: "flex", columnGap: 1.5, alignItems: "center" }}>
           <PlusMinusButton onClick={() => setCabinBaggage(cabinBaggage + 1)}>

@@ -1,21 +1,22 @@
 "use client";
 import Text from "@atom/text";
-import Lottie from "lottie-react";
-import { IoCloseSharp } from "react-icons/io5";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
-import Link from "@atom/link";
-import { AiOutlineWhatsApp } from "react-icons/ai";
-import { BsInstagram } from "react-icons/bs";
-import { FaFacebookF, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { styled } from "styled-components";
-import Modal from "..";
+import Modal from "../../../modal";
 import Input from "@/components/atoms/input";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { ttColors } from "@/lib/theme/colors";
-import { ChangeEvent, useState } from "react";
-import { DatePicker } from "../../datepicker";
+import { ChangeEvent, useRef, useState } from "react";
+import { DatePicker } from "../../../datepicker";
 import dayjs from "dayjs";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import validator from "validator";
+import { validateCardType } from "@/lib/extensions/helpers/validateCard";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { Mode } from "@/lib/types";
+import Section from "@/components/molecules/section";
+import { useCreditCardValidator, images } from "react-creditcard-validator";
 
 const Wrapper = styled.div`
   background: white;
@@ -49,6 +50,13 @@ export const CloseMark = styled(HiOutlineXMark)`
   cursor: pointer;
 `;
 
+const StyledInput = styled.input`
+  border: none;
+  font-family: Poppins;
+  font-size: 16px;
+  width: 100%;
+`
+
 function PaymentModal({
   open,
   handleClose,
@@ -56,14 +64,28 @@ function PaymentModal({
   open: boolean;
   handleClose: () => void;
 }) {
+  const {
+    getCardNumberProps,
+    getCardImageProps,
+    meta: { erroredInputs },
+  } = useCreditCardValidator();
+
+  const { mode } = useFlightBookingStore((state) => state);
+  const isLoading = mode == Mode.loading;
+
+  const [cardName, setCardName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
 
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value.length > 3) {
-      setCvv(value.slice(0, 3));
-    } else {
-      setCvv(value);
+  const { isMobile } = useScreenResolution();
+
+
+  const handleCVV = (event: ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = event.target.value.replace(/\D/g, "");
+    const formattedNumber = formattedValue.match(/.{1,4}/g)?.join(" ");
+
+    if (formattedValue.length <= 3) {
+      setCvv(formattedNumber || "");
     }
   };
 
@@ -91,7 +113,7 @@ function PaymentModal({
             <Flex direction="column" gap=".5rem">
               <Text type="p" text="Card Name" />
               <Input
-                type="email"
+                type="text"
                 border="1px solid #E7E7E7"
                 padding="1rem"
                 placeholder="Enter Card Name"
@@ -99,15 +121,29 @@ function PaymentModal({
             </Flex>
             <Flex direction="column" gap=".5rem">
               <Text type="p" text="Card Number" />
-              <Input
-                type="text"
-                border="1px solid #E7E7E7"
-                padding="1rem"
-                placeholder="Enter Card Number"
-              />
+              <Section
+                styles={{
+                  border: "1px solid #E7E7E7",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+                width="100%"
+              >
+                <Flex
+                  justify="space-between"
+                  padding=".5rem 1rem"
+                >
+                  <StyledInput {...getCardNumberProps()} />
+                  <svg {...getCardImageProps({ images })} />
+                </Flex>
+              </Section>
             </Flex>
-            <Flex gap="2rem">
-              <Flex direction="column" gap=".5rem">
+            <Flex
+              direction={isMobile ? "column" : "row"}
+              gap="2rem"
+              align="center"
+            >
+              <Flex direction="column" gap=".75rem">
                 <Text type="p" text="Expiry Date" />
                 <DatePicker
                   placeholder="MM/YY"
@@ -120,14 +156,13 @@ function PaymentModal({
               <Flex direction="column" gap=".5rem">
                 <Text type="p" text="CVV" />
                 <Input
-                  type="number"
+                  type="text"
                   border="1px solid #E7E7E7"
                   padding="1rem"
                   placeholder="Enter CVV"
-                  min={3}
                   max={3}
                   value={cvv}
-                  onChange={handleInput}
+                  onChange={handleCVV}
                 />
               </Flex>
             </Flex>
@@ -137,7 +172,7 @@ function PaymentModal({
             width="100%"
             background={ttColors.blackishBlue}
           >
-            <Text type="p" text="Add to List" size={16} weight={500} />
+            <Text type="p" text="Pay Now" size={16} weight={500} />
           </Button>
         </Flex>
       </Wrapper>

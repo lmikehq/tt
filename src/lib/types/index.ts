@@ -66,8 +66,6 @@ export interface EmploymentDetailsInterface {
   stillWorking: boolean;
 }
 
-
-
 export interface PersonalInfoInterface {
   firstName: string;
   lastName: string;
@@ -192,7 +190,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
   data: VisaApplicationFormInterface;
   user?: User;
 }) => {
-  console.log('user: ', user)
+  console.log("user: ", user);
   const applicationFormRequest: ApplicationFormRequestInput = {
     applicationType: data.tripDetails.applicationType,
     visaType: data.tripDetails.visaType,
@@ -261,3 +259,14 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
 };
 
 // declare module "@paystack/inline-js";
+
+export enum ChatUserIdentityType {
+  userId = "userId",
+  ipAddress = "ipAddress",
+  anonymous = "anonymous",
+}
+
+export interface ChatUserIdentity {
+  id: string; // userId or IpAddress
+  type: ChatUserIdentityType;
+}

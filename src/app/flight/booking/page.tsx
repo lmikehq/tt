@@ -2,6 +2,7 @@
 
 import FlightBookingProgress from "@/components/molecules/FormProgress/FlightBookingProgress";
 import Section from "@/components/molecules/section";
+import { OverviewHeader, SeatHeader, TripHeader } from "@/components/organisms/flight/booking/headers";
 import OverviewSystem from "@/components/organisms/flight/booking/side-menus/OverviewSystem";
 import PriceSummary from "@/components/organisms/flight/booking/side-menus/PriceSummary";
 import SeatSelectionMenu from "@/components/organisms/flight/booking/side-menus/SeatSelectionMenu";
@@ -28,6 +29,25 @@ const FlightBookingPage = () => {
           />
         </Section>
         <MultiStepWithSideMenu
+          direction={(() => {
+            switch (step) {
+              case 4:
+              case 5:
+                return "column-reverse";
+              default:
+                return "column";
+            }
+          })()}
+          header={(() => {
+            switch (step) {
+              case 2:
+                return <TripHeader/>
+              case 4:
+                return <SeatHeader/>
+              case 5:
+                return <OverviewHeader/>;
+            }
+          })()}
           sideMenu={(() => {
             switch (step) {
               case 2:
