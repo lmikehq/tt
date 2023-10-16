@@ -111,6 +111,43 @@ export interface CheckSeatingRequestInput {
   passengers: Passenger[];
   session_id: string;
 }
+
+interface SeatingOption {
+  segment_code: string;
+  option: string;
+  price: {
+    amount: string;
+    currency: string;
+    base: string;
+    service: string;
+    service_flat: string;
+    merchant: string;
+  };
+}
+
+interface SeatingSeat {
+  seat: string;
+  passenger_idx: number;
+  price: {
+    amount: string;
+    currency: string;
+    base: string;
+    service: string;
+    service_flat: string;
+    merchant: string;
+  };
+}
+
+interface AdditionalServices {
+  seating: (
+    | SeatingOption
+    | {
+        segment_code: string;
+        option: string;
+        seats: SeatingSeat[];
+      }
+  )[];
+}
 export interface SaveBookingRequestInput {
   health_declaration_checked: boolean;
   lang: string;
@@ -120,6 +157,7 @@ export interface SaveBookingRequestInput {
   booking_token: string;
   session_id: string;
   baggage: Baggage[];
+  additional_services: AdditionalServices | null;
 }
 export interface TokenizeDataRequestInput {
   card: CardInfo;
@@ -187,4 +225,15 @@ export const passengerAndBaggageDetails: Passenger = {
   title: "Mr",
   expiration: "2030-12-10",
   category: "adult",
+};
+export const saveBookingDetails: SaveBookingRequestInput = {
+  health_declaration_checked: true,
+  lang: "en",
+  locale: "en",
+  payment_gateway: "payu",
+  passengers: [],
+  booking_token: "",
+  session_id: "",
+  baggage: [],
+  additional_services: null,
 };

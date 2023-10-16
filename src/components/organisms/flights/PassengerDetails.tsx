@@ -168,7 +168,6 @@ export default function MainPassenger({
             />
           </FormControl>
         </Box>
-        <input type="text" name={`passengers.${count}.combinations`} />
         <Box>
           <Text type="h2" text="Add extra check-in bags" />
           <Text
