@@ -108,7 +108,7 @@ export interface CheckSeatingRequestInput {
   ancillaries: string[];
   booking_token: string;
   currency: string;
-  passengers: Passenger[];
+  passengers: Pick<Passenger, "birthday" | "category" | "nationality">[];
   session_id: string;
 }
 

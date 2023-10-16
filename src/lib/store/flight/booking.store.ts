@@ -142,6 +142,7 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
+
     saveBooking: async ({ data }: { data: SaveBookingRequestInput }) => {
       set({ mode: Mode.loading });
 
