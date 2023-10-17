@@ -19,7 +19,7 @@ function AvailableFlights() {
     searchFlightsResults,
     searchFlights,
     updateSearchQuery,
-    searchQuery,
+    searchQuery: { adults, children, infants },
   } = useFlightBookingStore((state) => state);
 
   const [count, setCount] = useState(10);
@@ -57,7 +57,9 @@ function AvailableFlights() {
           key={index}
           selectFlight={({ bookingToken }) => {
             router.push(
-              `/flight/booking?bnum=2&adults=2&children=1&infants=1&booking_token=${bookingToken}`
+              `/flight/booking?bnum=${
+                Object.keys(flight.bags_price).length
+              }&adults=${adults}&children=${children}&infants=${infants}&booking_token=${bookingToken}`
             );
           }}
           bookingToken={flight.booking_token}

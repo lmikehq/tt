@@ -19,6 +19,9 @@ type ContextType = {
   arrivalCountry: CountryDetails;
   departureDate: dayjs.Dayjs;
   returnDate: dayjs.Dayjs;
+  adults: number;
+  children: number;
+  infants: number;
 };
 
 const initialValues: ContextType = {
@@ -34,13 +37,19 @@ const initialValues: ContextType = {
   },
   departureDate: dayjs(new Date()),
   returnDate: dayjs().add(1, "day"),
+  adults: 1,
+  children: 0,
+  infants: 0,
 };
 
 type Action =
   | { type: "SET_DEPARTURE"; payload: CountryDetails }
   | { type: "SET_ARRIVAL"; payload: CountryDetails }
   | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
-  | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs };
+  | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs }
+  | { type: "SET_ADULTS"; payload: number }
+  | { type: "SET_CHILDREN"; payload: number }
+  | { type: "SET_INFANTS"; payload: number };
 
 interface FlightProps {
   state: ContextType;
@@ -68,6 +77,12 @@ const reducer = (state: ContextType, action: Action) => {
       return { ...state, departureDate: action.payload };
     case "SET_RETURN_DATE":
       return { ...state, returnDate: action.payload };
+    case "SET_ADULTS":
+      return { ...state, adults: action.payload };
+    case "SET_CHILDREN":
+      return { ...state, children: action.payload };
+    case "SET_INFANTS":
+      return { ...state, infants: action.payload };
     default:
       return state;
   }

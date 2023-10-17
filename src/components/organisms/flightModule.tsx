@@ -197,7 +197,7 @@ function FlightModule({
                 value={data}
                 styles={{ fontFamily: "poppins" }}
               />
-              {open && <DropdownMenu onDataChange={handleDataChange} />}
+              {open && <DropdownMenu />}
             </div>
           </ClickAwayListener>
         </Flex>
