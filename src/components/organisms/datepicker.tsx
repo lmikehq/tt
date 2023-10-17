@@ -12,6 +12,8 @@ import "react-date-range/dist/theme/default.css";
 import { IoCalendarOutline } from "react-icons/io5";
 import { ttColors } from "@lib/theme/colors";
 
+import "dayjs/locale/en-gb";
+
 interface BlockDatePickerProps {
   value?: Range;
   onChange: (value: RangeKeyDict) => void;
@@ -80,7 +82,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   format,
 }) => {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
       <MuiDatepicker
         label={label}
         value={value}
