@@ -13,9 +13,11 @@ import {
   SeatInterface,
   mockRows,
 } from "@/lib/types/response-models/flight/booking.type";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { SeatHeader } from "../headers";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { CheckSeatingRequestInput } from "@/lib/types/request-models/flight/booking.type";
 
 const Wrapper = styled.div`
   background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -23,7 +25,7 @@ const Wrapper = styled.div`
   background-size: 200%;
 `;
 const SeatSelection = () => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
   const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
   const [selectionModalContent, setSelectionModalContent] = useState({
     seatDescription: <></>,
@@ -77,6 +79,28 @@ const SeatSelection = () => {
     setShowSeatSelectionModal(true);
   };
 
+  const { checkSeating, bookingToken, sessionId, saveBookingDetails } =
+    useFlightBookingStore((state) => state);
+
+  const fetchSeats = async () => {
+    await checkSeating({
+      data: {
+        ancillaries: ["seating"],
+        booking_token: bookingToken ?? "",
+        currency: "EUR",
+        passengers: saveBookingDetails.passengers.map((el) => ({
+          nationality: el.nationality,
+          birthday: el.birthday,
+          category: el.category,
+        })),
+        session_id: sessionId ?? "",
+      },
+    });
+  };
+
+  useEffect(() => {
+    fetchSeats();
+  }, []);
   return (
     <>
       <CustomConfirmationModal
@@ -118,9 +142,11 @@ const SeatSelection = () => {
         }
       />
       <Section>
-        {!isMobile && <Section padding="0 0 4rem 0">
-          <SeatHeader/>
-        </Section>}
+        {!isMobile && (
+          <Section padding="0 0 4rem 0">
+            <SeatHeader />
+          </Section>
+        )}
         <Wrapper>
           <Section
             width="fit-content"

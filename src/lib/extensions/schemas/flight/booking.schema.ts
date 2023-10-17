@@ -3,7 +3,7 @@ import {
   Combination,
   CombinationConditions,
   CombinationPrice,
-  Passenger,
+  PassengerFormInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
 import { countrySchema } from "@/lib/types/schema";
@@ -38,9 +38,8 @@ const baggageSchema: yup.ObjectSchema<Baggage> = yup.object().shape({
   passengers: yup.array().of(yup.number().required()).defined(),
 });
 
-const passengerAndBaggageDetailsSchema: yup.ObjectSchema<Passenger> = yup
-  .object()
-  .shape({
+const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerFormInterface> =
+  yup.object().shape({
     name: yup.string().required("Required"),
     surname: yup.string().required("Required"),
     phone: yup.string().required("Required"),

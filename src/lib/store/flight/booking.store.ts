@@ -6,7 +6,6 @@ import {
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
-  Passenger,
   PassengerBaggageCombinationInterface,
   SaveBookingRequestInput,
   SearchFlightsRequestQuery,
@@ -114,6 +113,7 @@ export const useFlightBookingStore = create<State & Actions>(
             mode: Mode.loaded,
             sessionId: response.session_id,
             checkFlightsResponse: response,
+            bookingToken: response.booking_token,
           });
           return response;
         })

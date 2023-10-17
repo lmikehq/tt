@@ -53,7 +53,7 @@ export class FlightBookingService {
     data: CheckSeatingRequestInput;
   }) => {
     return await kiwiClient
-      .post<any, any>("/flight/bookings/check-seating", data)
+      .post<any, any>("/booking/ancillaries/offers/check", data)
       .then((response) => response.data)
       .catch((error) => {
         toast.error(error.response.errorMessage);
@@ -82,11 +82,7 @@ export class FlightBookingService {
         throw error;
       });
   };
-  static cardDetails = async ({
-    data,
-  }: {
-    data: CardInfo;
-  }) => {
+  static cardDetails = async ({ data }: { data: CardInfo }) => {
     return await axiosClient
       .post<any, any>("/flight/bookings/confirm-payment-zooz", data)
       .then((response) => response.data)

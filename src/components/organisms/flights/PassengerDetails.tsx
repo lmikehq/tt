@@ -19,8 +19,8 @@ import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps } from "formik";
 import {
   Combination,
-  Passenger,
   PassengerBaggageCombinationInterface,
+  PassengerFormInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
 import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
@@ -28,9 +28,9 @@ import PassengerBaggagePane from "./PassengerBaggagePane";
 
 interface TripSummaryCardProps {
   formik: FormikProps<{
-    passengers: Passenger[];
+    passengers: PassengerFormInterface[];
   }>;
-  values: Passenger;
+  values: PassengerFormInterface;
   count: number;
   combinationOptions: Combinations;
   passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -141,6 +141,7 @@ export default function MainPassenger({
               name={`passengers.${count}.birthday`}
               placeholder="Date of Birth"
               formik={formik}
+              format="YYYY-MM-DD"
             />
           </FormControl>
 
@@ -165,6 +166,7 @@ export default function MainPassenger({
               name={`passengers.${count}.expiration`}
               placeholder="Passport or ID Expiry date"
               formik={formik}
+              format="YYYY-MM-DD"
             />
           </FormControl>
         </Box>

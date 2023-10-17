@@ -9,8 +9,8 @@ import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
 import {
   Combination,
-  Passenger,
   PassengerBaggageCombinationInterface,
+  PassengerFormInterface,
   SaveBookingRequestInput,
   arrangeBaggageDataForOrdering,
   passengerAndBaggageDetails,
@@ -69,8 +69,8 @@ const TripSummary = ({
   }: {
     size: number;
     category: string;
-  }): Passenger[] => {
-    return Array.from({ length: size }, (_, index): Passenger => {
+  }): PassengerFormInterface[] => {
+    return Array.from({ length: size }, (_, index): PassengerFormInterface => {
       return {
         ...passengerAndBaggageDetails,
         category,
@@ -104,7 +104,10 @@ const TripSummary = ({
       setSaveBookingDetails({
         data: {
           ...saveBookingDetails,
-          passengers: values.passengers,
+          passengers: values.passengers.map((el) => ({
+            ...el,
+            nationality: el.nationality.code.toLowerCase(),
+          })),
           baggage: arrangeBaggageDataForOrdering(passengersBagCombination),
         },
       });
