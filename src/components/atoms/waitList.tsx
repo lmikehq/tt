@@ -324,6 +324,7 @@ const WaitList = () => {
               <Text
                 text="Join now"
                 type="p"
+                size={14}
                 whiteSpace="nowrap"
                 weight={400}
                 color="#fff"
@@ -435,6 +436,7 @@ const WaitList = () => {
                       <Text
                         text="Join now"
                         type="p"
+                        size={14}
                         whiteSpace="nowrap"
                         weight={400}
                         color="#fff"
@@ -578,6 +580,7 @@ const WaitList = () => {
                       type="p"
                       whiteSpace="nowrap"
                       weight={400}
+                      size={14}
                       color="#fff"
                       transform="uppercase"
                     />

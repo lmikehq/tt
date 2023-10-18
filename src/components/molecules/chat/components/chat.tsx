@@ -270,7 +270,7 @@ const Chat = () => {
             href="https://survey.alchemer.com/s3/7405739/MDN-AI-Help"
             target="_blank"
           >
-            <Text text=" Send feedback" type="p" />
+            <Text text=" Send feedback" size={14} type="p" />
           </Link>
         </Button>
       </FeedBack>

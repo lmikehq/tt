@@ -268,6 +268,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                       text="Sign up"
                       type="p"
                       whiteSpace="nowrap"
+                      size={14}
                       weight={600}
                       color="#fff"
                     />
