@@ -95,6 +95,8 @@ const SeatSelection = () => {
         })),
         session_id: sessionId ?? "",
       },
+    }).then((res) => {
+      if (res.seating.status !== "complete") return fetchSeats();
     });
   };
 

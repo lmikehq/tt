@@ -14,6 +14,7 @@ import { axiosClient, kiwiClient } from "../axios/axios-client";
 import { constructQueryFromParams } from "../extensions/helpers/constructQuery";
 import { SearchFlightsResponse } from "../types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "../types/response-models/flight/check_flight.type";
+import { CheckSeatingResponse } from "../types/response-models/flight/check_seating.type";
 
 export class FlightBookingService {
   static searchFlights = async ({
@@ -47,11 +48,12 @@ export class FlightBookingService {
         throw error;
       });
   };
+
   static checkSeating = async ({
     data,
   }: {
     data: CheckSeatingRequestInput;
-  }) => {
+  }): Promise<CheckSeatingResponse> => {
     return await kiwiClient
       .post<any, any>("/booking/ancillaries/offers/check", data)
       .then((response) => response.data)

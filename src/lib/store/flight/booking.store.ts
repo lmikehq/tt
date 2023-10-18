@@ -15,6 +15,7 @@ import {
 } from "@/lib/types/request-models/flight/booking.type";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
+import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_seating.type";
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 
@@ -35,7 +36,9 @@ interface Actions {
   setStep: (params: { step: number }) => void;
   searchFlights: (params: { data: SearchFlightsRequestQuery }) => Promise<void>;
   checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
-  checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
+  checkSeating: (params: {
+    data: CheckSeatingRequestInput;
+  }) => Promise<CheckSeatingResponse>;
   saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
   cardDetails: (params: { data: CardInfo }) => Promise<void>;
@@ -134,6 +137,7 @@ export const useFlightBookingStore = create<State & Actions>(
           set((state) => ({
             mode: Mode.loaded,
           }));
+          return response;
         })
         .catch((error) => {
           set({
