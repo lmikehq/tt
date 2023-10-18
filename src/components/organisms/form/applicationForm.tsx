@@ -336,6 +336,7 @@ function ApplicationForm() {
         >
           <Text
             type="p"
+            size={14}
             color={ttColors.primary}
             text="View Important Documents Required"
           />

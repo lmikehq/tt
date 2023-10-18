@@ -63,7 +63,7 @@ function ChatSessions({
           <Center>
             <Button background="#F3F3FF" width="100%" borderRadius="40px">
               <AiOutlinePlus size={20} color={ttColors.dark} /> &nbsp;
-              <Text type="p" text="New Chat" color={ttColors.dark} />
+              <Text type="p" text="New Chat" size={14} color={ttColors.dark} />
             </Button>
           </Center>
 
@@ -111,7 +111,7 @@ function ChatSessions({
             size="1.2rem"
             style={{ marginRight: "5px" }}
           />
-          <Text type="p" text="Send feedback" size={15} />
+          <Text type="p" text="Send feedback" size={14} />
         </Button>
       </Flex>
     </ChatSessionsWrapper>

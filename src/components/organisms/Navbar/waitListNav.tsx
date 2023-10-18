@@ -88,6 +88,7 @@ const WaitlistNavbar: React.FC = () => {
                   type="p"
                   whiteSpace="nowrap"
                   weight={400}
+                  size={14}
                   color="#fff"
                 />
               </Button>

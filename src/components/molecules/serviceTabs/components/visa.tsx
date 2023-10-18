@@ -29,7 +29,8 @@ function Visa() {
   const { geoInfo } = useUserStore();
   const [home, setHome] = useState<CountryType>({
     name: geoInfo?.country || "Nigeria",
-    flag: COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
+    flag:
+      COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
     code: geoInfo?.country_code || "NG",
   });
   const [destination, setDestination] = useState<CountryType>({
@@ -130,6 +131,7 @@ function Visa() {
             <Text
               text="Get Started"
               type="p"
+              size={14}
               whiteSpace="nowrap"
               weight={500}
             />
