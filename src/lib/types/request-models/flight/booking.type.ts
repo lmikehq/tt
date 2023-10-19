@@ -22,6 +22,12 @@ interface PaymentDetails {
   };
 }
 
+export enum Category {
+  ADULT = "Adult (Over 11 years)",
+  CHILD = "Child (2 - 11 years)",
+  INFANT = "Infant (Under 2 years)"
+}
+
 export interface Passenger {
   name: string;
   surname: string;
@@ -31,8 +37,9 @@ export interface Passenger {
   birthday: string; // YYYY-MM-DD format
   nationality: CountryType; // ISO 3166-1 alpha-2 format (2 letter format)
   title: string;
+  issuingdate: string; // YYYY-MM-DD format
   expiration: string; // expiration of passport, YYYY-MM-DD format
-  category: string;
+  category: Category;
 }
 
 export interface CombinationPrice {
@@ -176,6 +183,7 @@ export const arrangeBaggageDataForOrdering = (
 
   return baggageData;
 };
+
 export const passengerAndBaggageDetails: Passenger = {
   name: "Abd",
   surname: "a",
@@ -185,6 +193,7 @@ export const passengerAndBaggageDetails: Passenger = {
   birthday: "1998-12-10",
   nationality: { code: "NG", name: "Nigeria", flag: "s" },
   title: "Mr",
+  issuingdate: "2023-12-10",
   expiration: "2030-12-10",
-  category: "adult",
+  category: Category.ADULT,
 };

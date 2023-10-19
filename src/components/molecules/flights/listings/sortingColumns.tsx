@@ -291,7 +291,7 @@ function SortingColumns() {
             <Flex align="center" justify="space-between">
               <Text
                 type="p"
-                text="Cabin Babbage"
+                text="Cabin Baggage"
                 size={14.5}
                 whiteSpace="nowrap"
               />
