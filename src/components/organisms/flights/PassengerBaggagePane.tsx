@@ -28,6 +28,7 @@ import { useState } from "react";
 import CheckBox from "@/components/molecules/checkbox";
 import { ToastInfo } from "../flight/booking/toast";
 import { PiWarningCircleBold } from "react-icons/pi";
+import { GoTrash } from "react-icons/go";
 
 interface PassengerBaggagePaneProps {
   values: Passenger;
@@ -276,6 +277,14 @@ export default function PassengerBaggagePane({
           <Text type="p" text="No baggage" />
         </CheckBox>
       )}
+      <Flex justify="flex-end">
+        <Button background="#F3FAFD" border="1px solid #DAF0F9" color="black">
+          <Flex align="center" gap="1.5rem">
+            <GoTrash size={30} />
+            <Text type="p" text="Remove Traveler" weight={600} />
+          </Flex>
+        </Button>
+      </Flex>
       {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
         <InputLabel id="demo-simple-select-autowidth-label">
           Add Baggage
