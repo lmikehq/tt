@@ -17,8 +17,8 @@ type CountryDetails = {
 type ContextType = {
   departureCountry: CountryDetails;
   arrivalCountry: CountryDetails;
-  departureDate: Date;
-  returnDate: Date;
+  departureDate: dayjs.Dayjs;
+  returnDate: dayjs.Dayjs;
 };
 
 const initialValues: ContextType = {
@@ -32,15 +32,15 @@ const initialValues: ContextType = {
     flag: "",
     code: "CA",
   },
-  departureDate: dayjs(new Date()).toDate(),
-  returnDate: dayjs().add(1, "day").toDate(),
+  departureDate: dayjs(new Date()),
+  returnDate: dayjs().add(1, "day"),
 };
 
 type Action =
   | { type: "SET_DEPARTURE"; payload: CountryDetails }
   | { type: "SET_ARRIVAL"; payload: CountryDetails }
-  | { type: "SET_DEPARTURE_DATE"; payload: Date }
-  | { type: "SET_RETURN_DATE"; payload: Date };
+  | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
+  | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs };
 
 interface FlightProps {
   state: ContextType;
