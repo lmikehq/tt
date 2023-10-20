@@ -1,12 +1,11 @@
 "use client";
 import Section from "src/components/molecules/section";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SearchInput from "./searchInput";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { IoLocationOutline } from "react-icons/io5";
-import { GoArrowSwitch } from "react-icons/go";
 import { ttColors } from "@lib/theme/colors";
 import { DatePicker } from "./datepicker";
 import { ClickAwayListener } from "@mui/material";
@@ -17,6 +16,7 @@ import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
 import { flightContext } from "@lib/extensions/context";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import dayjs from "dayjs";
 
 interface flightProps {
   value: string;
@@ -42,40 +42,49 @@ const FlightCircle = styled.div<{ value: string }>`
   justify-items: center;
 `;
 
+const TravellersDropdownContainer = styled.div`
+    position: relative;
+    z-index: 2;
+`;
+
 function FlightModule({
   value,
   index,
   handleDeleteFlight,
   length,
 }: flightProps) {
-  const context = flightContext();
+    const context = flightContext();
+    const { isMobile } = useScreenResolution();
 
-  if (!context) {
-    throw new Error("flightContext must be used within a FlightProvider");
-  }
+    if (!context) {
+        throw new Error("flightContext must be used within a FlightProvider");
+    }
 
-  const { state, dispatch } = context;
+    const { state, dispatch } = context;
 
-  const [data, setData] = useState("");
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [data, setData] = useState("1 Adult, Economy");
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const today = dayjs().toDate()
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    const open = Boolean(anchorEl);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-  const handleDataChange = (data: any) => {
-    setData(
-      `${data.count.adults} Adult, ${data.count.children} Children, ${data.class}`
-    );
-  };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-  const open = Boolean(anchorEl);
-  const { isMobile } = useScreenResolution();
-  return (
+    const handleDataChange = (data: any) => {
+        const kids = data.children + data.infants
+        setData(
+            `${data.adults} Adult, ${kids > 0 ? `${kids} ${kids === 1 ? 'Child' : 'Children'}, ` : ''}${data.class}`
+        );
+    };
+
+
+return (
     <Section padding="2rem 0 0 0 " height="unset">
       <Flex
         direction={isMobile ? "column" : "row"}
@@ -100,11 +109,11 @@ function FlightModule({
             value={state.departureCountry}
             placeholder="Current Location"
           >
-            <Flex gap="1rem" cursor="pointer">
-              <IoLocationOutline size={isMobile ? 20 : 25} />
+            <Flex gap={isMobile ? "0.7rem" : "1rem"} cursor="pointer">
+              <IoLocationOutline size={isMobile ? 20 : 22} />
               <Text
                 type="p"
-                size={isMobile ? 16 : 18}
+                size={16}
                 text={state.departureCountry}
                 color="black"
               />
@@ -134,11 +143,11 @@ function FlightModule({
             }}
             placeholder="Where to?"
           >
-            <Flex gap="1rem" cursor="pointer">
-              <IoLocationOutline size={isMobile ? 20 : 25} />
+            <Flex gap={isMobile ? "0.7rem" : "1rem"} cursor="pointer">
+              <IoLocationOutline size={isMobile ? 20 : 22} />
               <Text
                 type="p"
-                size={isMobile ? 16 : 18}
+                size={16}
                 text={state.arrivalCountry}
                 color="black"
               />
@@ -155,7 +164,7 @@ function FlightModule({
             placeholder="Select Date"
             position="start"
             value={state.departureDate}
-            minDate={state.departureDate}
+            minDate={today}
             onChange={(e) => {
               dispatch({ type: "SET_DEPARTURE_DATE", payload: e });
             }}
@@ -184,22 +193,27 @@ function FlightModule({
           gap=".75rem"
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
-          <Text
-            type="label"
-            size={isMobile ? 16 : 18}
-            text="Cabin & Travelers"
-          />
-          <ClickAwayListener onClickAway={handleClose}>
-            <div>
-              <Input
-                onClick={handleClick}
-                placeholder="Click me to open dropdown"
-                value={data}
-                styles={{ fontFamily: "poppins" }}
-              />
-              {open && <DropdownMenu onDataChange={handleDataChange} />}
-            </div>
-          </ClickAwayListener>
+            <Text
+                type="label"
+                size={isMobile ? 16 : 18}
+                text="Cabin & Travelers"
+            />
+            <ClickAwayListener onClickAway={handleClose}>
+                <TravellersDropdownContainer>
+                    <Input
+                        onClick={handleClick}
+                        placeholder="Click me to open dropdown"
+                        value={data}
+                        styles={{ fontFamily: "poppins", cursor: "pointer" }}
+                    />
+                    {open &&
+                        <DropdownMenu
+                            onDataChange={handleDataChange}
+                            isMobile={isMobile}
+                        />
+                    }
+                </TravellersDropdownContainer>
+            </ClickAwayListener>
         </Flex>
         {length >= 1 && (
           <Section width="0" padding="2rem 0 0 0">

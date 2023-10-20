@@ -10,7 +10,7 @@ import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "@atom/image";
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
@@ -81,30 +81,31 @@ export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
 }));
 
 interface SearchProps {
-  legend?: string;
-  children?: React.ReactNode;
-  placeholder?: string;
-  height?: string;
-  padding?: string;
-  options: any[];
-  value?: any;
-  border?: string;
-  disabled?: boolean;
-  error?: boolean;
-  onChange: (x: any) => void;
+    legend?: string;
+    children?: React.ReactNode;
+    placeholder?: string;
+    height?: string;
+    padding?: string;
+    options: any[];
+    value?: any;
+    border?: string;
+    disabled?: boolean;
+    error?: boolean;
+    onChange: (x: any) => void;
+    cursor?: CSSProperties['cursor']
 }
 
 export default function SearchInput({
-  placeholder,
-  children,
-  options,
-  legend,
-  value,
-  height,
-  padding,
-  error,
-  onChange,
-  disabled = false,
+    placeholder,
+    children,
+    options,
+    legend,
+    value,
+    height,
+    padding,
+    error,
+    onChange,
+    disabled = false
 }: // anchorEl,
 // setAnchorEl,
 SearchProps) {
@@ -263,7 +264,8 @@ export function SearchInputAsString({
   onChange,
   height,
   padding,
-  border,
+    border,
+  cursor
 }: SearchProps) {
   const [inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -293,7 +295,7 @@ export function SearchInputAsString({
         sx={{
           border: 0,
         }}
-      >
+    >
         <TextField
           sx={{
             width: "100%",
@@ -339,9 +341,9 @@ export function SearchInputAsString({
               padding: padding || "0px",
             },
           }}
-          onClick={handleClick}
-          label={legend}
-          InputProps={{
+            onClick={handleClick}
+            label={legend}
+            InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>

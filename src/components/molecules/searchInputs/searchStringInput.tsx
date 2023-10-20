@@ -6,32 +6,35 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import { error } from "console";
 interface SearchStringInputProps {
-  value?: string;
-  placeholder: string;
-  onChange: (x: any) => void;
-  options: any[];
-  size?: CSSProperties["fontSize"];
-  border?: string;
-  error?: boolean;
+    value?: string;
+    placeholder: string;
+    onChange: (x: any) => void;
+    options: any[];
+    size?: CSSProperties["fontSize"];
+    border?: string;
+    error?: boolean;
+    cursor?: CSSProperties['cursor']
 }
 
 const SearchStringInput = ({
-  value,
-  placeholder,
-  onChange,
-  options,
-  size,
-  error,
-  border,
+    value,
+    placeholder,
+    onChange,
+    options,
+    size,
+    error,
+    border,
+    cursor,
 }: SearchStringInputProps) => {
   return (
     <SearchInputAsString
-      value={value}
-      options={options}
-      height="45px"
-      onChange={onChange}
-      border={border}
-      error={error}
+        value={value}
+        options={options}
+        height="45px"
+        onChange={onChange}
+        border={border}
+        error={error}
+        cursor={cursor}
     >
       <Flex justify="space-between">
         <Text

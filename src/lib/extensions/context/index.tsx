@@ -11,22 +11,22 @@ import {
 type ContextType = {
   departureCountry: string;
   arrivalCountry: string;
-  departureDate: dayjs.Dayjs;
-  returnDate: dayjs.Dayjs;
+  departureDate: Date;
+  returnDate: Date;
 };
 
 const initialValues: ContextType = {
   departureCountry: "Nigeria",
   arrivalCountry: "Canada",
-  departureDate: dayjs(new Date()),
-  returnDate: dayjs().add(1, "day"),
+  departureDate: dayjs(new Date()).toDate(),
+  returnDate: dayjs().add(1, "day").toDate(),
 };
 
 type Action =
   | { type: "SET_DEPARTURE"; payload: string }
   | { type: "SET_ARRIVAL"; payload: string }
-  | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
-  | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs };
+  | { type: "SET_DEPARTURE_DATE"; payload: Date }
+  | { type: "SET_RETURN_DATE"; payload: Date };
 
 interface FlightProps {
   state: ContextType;

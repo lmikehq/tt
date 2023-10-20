@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap");
 
+/* 
+    Breakpoints: 
+    Mobile: 390px;
+    Tablet: 768px;
+    Desktop: 1024px;
+    Wide-screen: 1400px;
+*/
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -12,6 +19,10 @@
   --poppins-font: "Poppins", sans-serif;
   --placeholder-color: ##1c1b1f;
   --title-font: "Montserrat", sans-serif;
+  --breakpoint-mobile: 600px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide-screen: 1400px;
 }
 
 * {
