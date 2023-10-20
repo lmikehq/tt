@@ -1,4 +1,7 @@
-import { saveBookingDetails } from "./../../types/request-models/flight/booking.type";
+import {
+  ParticularSeatingOption,
+  saveBookingDetails,
+} from "./../../types/request-models/flight/booking.type";
 import { FlightBookingService } from "@/lib/services/flight-booking.service";
 import {
   CardInfo,
@@ -26,10 +29,13 @@ interface State {
   searchFlightsResults: FlightInfo[];
   searchQuery: SearchFlightsRequestQuery;
   checkFlightsResponse: CheckFlightResponse | null;
+  checkSeatingResponse: CheckSeatingResponse | null;
   saveBookingDetails: SaveBookingRequestInput;
   bookingToken?: string;
   sessionId: string | null;
   mode: Mode;
+  checkSeatingMode: Mode;
+  particularSeats: ParticularSeatingOption[];
 }
 interface Actions {
   prevStep: () => void;
@@ -39,6 +45,7 @@ interface Actions {
   checkSeating: (params: {
     data: CheckSeatingRequestInput;
   }) => Promise<CheckSeatingResponse>;
+
   saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
   cardDetails: (params: { data: CardInfo }) => Promise<void>;
@@ -47,6 +54,7 @@ interface Actions {
     data: ConfirmPaymentZoozRequestInput;
   }) => Promise<void>;
   setSaveBookingDetails: ({ data }: { data: SaveBookingRequestInput }) => void;
+  setParticularSeats: (data: ParticularSeatingOption[]) => void;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -61,7 +69,9 @@ export const useFlightBookingStore = create<State & Actions>(
     sessionId: null,
 
     checkFlightsResponse: null,
-
+    checkSeatingResponse: null,
+    checkSeatingMode: Mode.init,
+    particularSeats: [],
     saveBookingDetails,
 
     prevStep: () => {
@@ -127,15 +137,24 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
-
+    setParticularSeats: (data: ParticularSeatingOption[]) => {
+      set({
+        particularSeats: data,
+      });
+    },
     checkSeating: async ({ data }: { data: CheckSeatingRequestInput }) => {
-      set({ mode: Mode.loading });
+      set({ checkSeatingMode: Mode.loading });
       return await FlightBookingService.checkSeating({
         data,
       })
         .then((response) => {
           set((state) => ({
             mode: Mode.loaded,
+            checkSeatingResponse: response,
+            checkSeatingMode:
+              response.seating.status == "complete"
+                ? Mode.loaded
+                : Mode.loading,
           }));
           return response;
         })

@@ -1,3 +1,5 @@
+import { SeatRowInterface } from "./booking.type";
+
 interface SeatOffer {
   is_final: boolean;
   quick_options: QuickOption[];
@@ -23,13 +25,8 @@ interface SeatMap {
 
 interface SeatSection {
   deck: string;
-  rows: SeatRow[];
+  rows: SeatRowInterface[];
   section_class: string;
-}
-
-interface SeatRow {
-  row_number: number;
-  seat_groups: SeatGroup[];
 }
 
 interface SeatGroup {

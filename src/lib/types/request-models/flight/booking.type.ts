@@ -137,29 +137,27 @@ interface SeatingOption {
     merchant: string;
   };
 }
-
+export interface SeatingSeatPrice {
+  amount: string;
+  currency: string;
+  base: string;
+  service: string;
+  service_flat: string;
+  merchant: string;
+}
 interface SeatingSeat {
   seat: string;
   passenger_idx: number;
-  price: {
-    amount: string;
-    currency: string;
-    base: string;
-    service: string;
-    service_flat: string;
-    merchant: string;
-  };
+  price: SeatingSeatPrice;
 }
 
+export interface ParticularSeatingOption {
+  segment_code: string;
+  option: string;
+  seats: SeatingSeat[];
+}
 interface AdditionalServices {
-  seating: (
-    | SeatingOption
-    | {
-        segment_code: string;
-        option: string;
-        seats: SeatingSeat[];
-      }
-  )[];
+  seating: (SeatingOption | ParticularSeatingOption)[];
 }
 export interface SaveBookingRequestInput {
   health_declaration_checked: boolean;

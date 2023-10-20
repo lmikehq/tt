@@ -34,9 +34,11 @@ const FlightBookingPage = () => {
     checkFlights,
     checkFlightsResponse,
   } = useFlightBookingStore((state) => state);
+
   const searchParams = extractSearchParamsFromUrl({
     url: window.location.href,
   });
+
   const { adults, children, infants } = searchParams;
 
   const [passengersBagCombination, setPassengersBagCombination] = useState<
@@ -156,6 +158,9 @@ const FlightBookingPage = () => {
     )!;
 
   useEffect(() => {
+    const searchParams = extractSearchParamsFromUrl({
+      url: window.location.href,
+    });
     checkFlights({
       query: {
         bnum: 0,

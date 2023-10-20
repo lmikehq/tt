@@ -66,7 +66,7 @@ const SeatGroupPane = ({ seatGroup, selectSeat }: SeatGroupProps) => {
     return "#F17400";
   };
   return (
-    <Grid columns={`${seatGroup.length}`} gap="5px">
+    <Grid columns={`${seatGroup.length}`} width="fit-content" gap="5px">
       <Popper id={id} open={open} anchorEl={anchorEl} transition>
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
@@ -110,7 +110,11 @@ const SeatGroupPane = ({ seatGroup, selectSeat }: SeatGroupProps) => {
       {seatGroup.map((seat) => (
         <SingleSeatBox
           key={"seat-" + seat.name}
-          onClick={() => selectSeat({ seat })}
+          onClick={() =>
+            seat.state == SeatAvailability.unavailable
+              ? null
+              : selectSeat({ seat })
+          }
           onMouseEnter={(event) =>
             handleMouseEnter({
               event,
