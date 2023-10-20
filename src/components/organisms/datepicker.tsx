@@ -19,25 +19,33 @@ import { styled } from "styled-components";
 
 
 interface CustomDatePickerProps {
-  minDate?: Date;
-  maxDate?: Date;
-  monthsShown?: number;
-  endDate?: Date;
-  startDate?: Date;
-  onChange(
-    date: Date | null,
-    event: SyntheticEvent<any, Event> | undefined
-  ): void;
-  selected?: Date;
-  value?: Date;
+    minDate?: Date;
+    maxDate?: Date;
+    monthsShown?: number;
+    endDate?: Date;
+    startDate?: Date;
+    onChange(
+        date: Date | null,
+        event: SyntheticEvent<any, Event> | undefined
+    ): void;
+    selected?: Date;
+    value?: Date;
     placeholder?: string;
     position?: "start";
+    disabled?: boolean;
+    views?: ("day" | "month" | "year")[];
+    error?: any;
+    format?: string;
+    width?: string;
+    height?: string;
 }
-const InputContainer = styled.div<{ width: string}>`
+const InputContainer = styled.div<{ width: string; height?: string }>`
     position: relative;
     display: inline-block;
-   width: ${(props) => props.width ?? '100%'}
+    width: ${(props) => props.width ?? '100%'}
 `;
+// height: ${(props) => props.height}
+
 const DateIcon = styled.span`
   position: absolute;
   top: 50%;
@@ -77,80 +85,84 @@ const DateInput = styled.input<{ width?: string }>`
   }
 `;
 export const DatePicker = ({
-  minDate,
-  maxDate,
+    minDate,
+    maxDate,
     selected,
-  value,
-  endDate,
-  startDate,
-  onChange,
-  monthsShown = 1,
-  placeholder,
+    value,
+    endDate,
+    startDate,
+    onChange,
+    monthsShown = 1,
+    placeholder,
+    disabled,
+    width,
+    height
 }: CustomDatePickerProps) => {
   // const [startDate, setStartDate] = useState(new Date());
   // const [endDate, setEndDate] = useState(new Date());
 
   return (
     <ReactDatePicker
-      selected={value || selected}
-      startDate={startDate}
-      minDate={minDate}
-      maxDate={maxDate}
-      endDate={endDate}
-      onChange={onChange}
-      monthsShown={monthsShown}
-      withPortal={true}
-      placeholderText={placeholder}
-      showIcon={false}
-      disabledKeyboardNavigation={true}
-      customInput={<CustomDatePickerInput />}
-      shouldCloseOnSelect={false}
-      formatWeekDay={(day) => <>{day.substring(0, 3).toUpperCase()}</>}
-      renderCustomHeader={({
-        monthDate,
-        customHeaderCount,
-        decreaseMonth,
-        increaseMonth,
-      }) => (
+        selected={value || selected}
+        startDate={startDate}
+        minDate={minDate}
+        maxDate={maxDate}
+        endDate={endDate}
+        onChange={onChange}
+        monthsShown={monthsShown}
+        disabled={disabled}
+        withPortal={true}
+        placeholderText={placeholder}
+        showIcon={false}
+        disabledKeyboardNavigation={true}
+        customInput={<CustomDatePickerInput width={width} height={height} />}
+        shouldCloseOnSelect={false}
+        formatWeekDay={(day) => <>{day.substring(0, 3).toUpperCase()}</>}
+        renderCustomHeader={({
+            monthDate,
+            customHeaderCount,
+            decreaseMonth,
+            increaseMonth,
+        }) => (
         <Flex align="center" justify="space-between">
-          <Button
-            onClick={decreaseMonth}
-            width="fit-content"
-            background="transparent"
-            styles={
-              monthsShown == 2
-                ? customHeaderCount === 1
-                  ? { visibility: "hidden" }
-                  : {}
-                : {}
-            }
-          >
-            <BiChevronLeft color="#333333" size={24} />
-          </Button>
-          <Text
-            text={monthDate.toLocaleString("en-US", {
-              month: "long",
-              year: "numeric",
-            })}
-            type="p"
-            size={18}
-            weight={700}
-          />
+            <Button
+                onClick={decreaseMonth}
+                width="fit-content"
+                background="transparent"
+                styles={
+                monthsShown == 2
+                    ? customHeaderCount === 1
+                    ? { visibility: "hidden" }
+                    : {}
+                    : {}
+                }
+            >
+                <BiChevronLeft color="#333333" size={24} />
+            </Button>
+            <Text
+                text={monthDate.toLocaleString("en-US", {
+                month: "long",
+                year: "numeric",
+                })}
+                type="p"
+                size={18}
+                weight={700}
+            />
 
-          <Button
-            onClick={increaseMonth}
-            width="fit-content"
-            background="transparent"
-            styles={
-              monthsShown == 2
-                ? customHeaderCount === 0
-                  ? { visibility: "hidden" }
-                  : {}
-                : {}
-            }
-          >
-            <BiChevronRight color="#333333" size={24} />
-          </Button>
+            <Button
+                onClick={increaseMonth}
+                width="fit-content"
+                background="transparent"
+                styles={
+                monthsShown == 2
+                    ? customHeaderCount === 0
+                    ? { visibility: "hidden" }
+                    : {}
+                    : {}
+                }
+            >
+                <BiChevronRight color="#333333" size={24} />
+            </Button>
         </Flex>
         // <div>
         //   <button
@@ -194,15 +206,19 @@ export const DatePicker = ({
 export const CustomDatePickerInput = forwardRef(
     (
     {
-      value,
-      onClick,
+        value,
+        onClick,
+        width,
+        height
     }: {
-      value?: string;
-      onClick?: MouseEventHandler<HTMLInputElement>;
+        value?: string;
+        onClick?: MouseEventHandler<HTMLInputElement>;
+        width?: string;
+        height?: string;
     },
     ref: Ref<HTMLDivElement>
   ) => (
-        <InputContainer ref={ref} width='100%'>
+        <InputContainer ref={ref} width={width ?? '100%'}>
             <DateIcon>
                 <IoCalendarOutline size={24} />
             </DateIcon>
