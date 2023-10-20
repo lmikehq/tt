@@ -43,18 +43,16 @@ function FlightHero() {
   return (
     <>
       <Navbar page="flights" />
-      <HeroWrapper isMobile={isMobile}>
-        <HeroBackground />
-        <Flex
-          height="100%"
-          align="center"
-          justify="flex-end"
-          direction="column"
-          padding={isMobile ? "0 1.187rem" : "0"}
-        >
-          <ServiceBanner page="flights" />
-        </Flex>
-      </HeroWrapper>
+      <Flex
+        height="100%"
+        align="center"
+        justify="flex-end"
+        direction="column"
+        margin="3rem 0 5rem 0"
+        padding={isMobile ? "0 1.187rem" : "0"}
+      >
+        <ServiceBanner page="flights" />
+      </Flex>
     </>
   );
 }

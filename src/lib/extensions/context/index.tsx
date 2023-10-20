@@ -1,5 +1,5 @@
 "use client";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import {
   createContext,
   useContext,
@@ -8,23 +8,37 @@ import {
   Dispatch,
 } from "react";
 
+type CountryDetails = {
+  name: string;
+  flag: string;
+  code: string;
+};
+
 type ContextType = {
-  departureCountry: string;
-  arrivalCountry: string;
+  departureCountry: CountryDetails;
+  arrivalCountry: CountryDetails;
   departureDate: Date;
   returnDate: Date;
 };
 
 const initialValues: ContextType = {
-  departureCountry: "Nigeria",
-  arrivalCountry: "Canada",
+  departureCountry: {
+    name: "Nigeria",
+    flag: "",
+    code: "NG",
+  },
+  arrivalCountry: {
+    name: "Canada",
+    flag: "",
+    code: "CA",
+  },
   departureDate: dayjs(new Date()).toDate(),
   returnDate: dayjs().add(1, "day").toDate(),
 };
 
 type Action =
-  | { type: "SET_DEPARTURE"; payload: string }
-  | { type: "SET_ARRIVAL"; payload: string }
+  | { type: "SET_DEPARTURE"; payload: CountryDetails }
+  | { type: "SET_ARRIVAL"; payload: CountryDetails }
   | { type: "SET_DEPARTURE_DATE"; payload: Date }
   | { type: "SET_RETURN_DATE"; payload: Date };
 
@@ -35,7 +49,7 @@ interface FlightProps {
 
 const FlightContext = createContext<FlightProps | undefined>(undefined);
 
-export function flightContext() {
+export function useFlightContext() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return useContext(FlightContext);
 }

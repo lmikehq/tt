@@ -1,24 +1,17 @@
 "use client";
 import Text from "@/components/atoms/text";
 import FormControl from "@mui/material/FormControl";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 import CheckBox from "@/components/molecules/checkbox";
 import Box from "@mui/material/Box";
 import { FieldInput } from "../fieldInput";
 import FormLabel from "@/components/atoms/FormLabel";
+import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booking.type";
+interface TripSummaryCardProps {
+  formik: FormikProps<SaveBookingRequestInput>;
+}
 
-export default function ContactDetails() {
-  const contactFormik = useFormik({
-    initialValues: {
-      email: "",
-      phone: "",
-      receiveSMSUpdates: false,
-    },
-    onSubmit: (values: any) => {
-      console.log(values);
-    },
-  });
-
+export default function ContactDetails({ formik }: TripSummaryCardProps) {
   return (
     <>
       <Text type="h2" text="Contact Details" />
@@ -37,7 +30,7 @@ export default function ContactDetails() {
           </FormLabel>
 
           <FieldInput
-            formik={contactFormik}
+            formik={formik}
             name="email"
             placeholder="Enter your Email Address"
           />
@@ -49,21 +42,12 @@ export default function ContactDetails() {
           </FormLabel>
 
           <FieldInput
-            formik={contactFormik}
+            formik={formik}
             name="phone"
             placeholder="Enter your Phone Number"
           />
         </FormControl>
       </Box>
-
-      <FormControl>
-        <CheckBox
-          onChange={contactFormik.handleChange}
-          checked={contactFormik.values.receiveSMSUpdates}
-        >
-          I want to receive SMS updates about my trip.
-        </CheckBox>
-      </FormControl>
     </>
   );
 }

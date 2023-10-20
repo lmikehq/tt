@@ -1,4 +1,5 @@
 import {
+  CardInfo,
   CheckFlightsQuery,
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
@@ -9,9 +10,10 @@ import {
 } from "../types/request-models/flight/booking.type";
 import { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
-import { kiwiClient } from "../axios/axios-client";
+import { axiosClient, kiwiClient } from "../axios/axios-client";
 import { constructQueryFromParams } from "../extensions/helpers/constructQuery";
 import { SearchFlightsResponse } from "../types/response-models/flight/booking.type";
+import { CheckFlightResponse } from "../types/response-models/flight/check_flight.type";
 
 export class FlightBookingService {
   static searchFlights = async ({
@@ -30,9 +32,13 @@ export class FlightBookingService {
         throw error;
       });
   };
-  static checkFlights = async ({ query }: { query: CheckFlightsQuery }) => {
+  static checkFlights = async ({
+    query,
+  }: {
+    query: CheckFlightsQuery;
+  }): Promise<CheckFlightResponse> => {
     const queryString = constructQueryFromParams(query);
-
+    console.log(queryString);
     return await kiwiClient
       .get<any, any>(`/booking/check_flights${queryString}`)
       .then((response) => response.data)
@@ -70,6 +76,19 @@ export class FlightBookingService {
   }) => {
     return await kiwiClient
       .post<any, any>("/flight/bookings/tokenize-data", data)
+      .then((response) => response.data)
+      .catch((error) => {
+        toast.error(error.response.errorMessage);
+        throw error;
+      });
+  };
+  static cardDetails = async ({
+    data,
+  }: {
+    data: CardInfo;
+  }) => {
+    return await axiosClient
+      .post<any, any>("/flight/bookings/confirm-payment-zooz", data)
       .then((response) => response.data)
       .catch((error) => {
         toast.error(error.response.errorMessage);

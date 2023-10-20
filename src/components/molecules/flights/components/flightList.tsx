@@ -12,6 +12,7 @@ function FlightList() {
   const [sortType, setSortType] = useState("best");
 
   return (
+    <Flex direction={isMobile ? "column" : "row"} gap="3rem" justify="space-between" padding={isMobile ? "1rem" :"2rem"}>
     <Box
       sx={{
         display: "grid",
@@ -26,6 +27,7 @@ function FlightList() {
         <AvailableFlights />
       </Section>
     </Box>
+    </Flex>
   );
 }
 

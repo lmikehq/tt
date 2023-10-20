@@ -37,7 +37,7 @@ function AvailableFlights() {
     });
     updateSearchQuery({ data: searchParams });
     searchFlights({ data: searchParams });
-  }, []);
+  }, [window.location.href]);
 
   function setSortType(value: SetStateAction<string>): void {
     throw new Error("Function not implemented.");
@@ -57,7 +57,7 @@ function AvailableFlights() {
           key={index}
           selectFlight={({ bookingToken }) => {
             router.push(
-              `/flight/booking?bnum=2&adults=2&children=1&infants=0&booking_token=${bookingToken}`
+              `/flight/booking?bnum=2&adults=2&children=1&infants=1&booking_token=${bookingToken}`
             );
           }}
           bookingToken={flight.booking_token}

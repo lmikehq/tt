@@ -1,14 +1,20 @@
 import { FlightBookingService } from "@/lib/services/flight-booking.service";
 import {
+  CardInfo,
   CheckFlightsQuery,
   CheckFlightsRequestInput,
   CheckSeatingRequestInput,
   ConfirmPaymentZoozRequestInput,
+  Passenger,
+  PassengerBaggageCombinationInterface,
   SaveBookingRequestInput,
   SearchFlightsRequestQuery,
   TokenizeDataRequestInput,
+  arrangeBaggageDataForOrdering,
+  passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 
@@ -18,6 +24,7 @@ interface State {
   searchFlightsMode: Mode;
   searchFlightsResults: FlightInfo[];
   searchQuery: SearchFlightsRequestQuery;
+  checkFlightsResponse: CheckFlightResponse | null;
 
   bookingToken?: string;
   sessionId: string | null;
@@ -29,8 +36,14 @@ interface Actions {
   searchFlights: (params: { data: SearchFlightsRequestQuery }) => Promise<void>;
   checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
   checkSeating: (params: { data: CheckSeatingRequestInput }) => Promise<void>;
-  saveBooking: (params: { data: SaveBookingRequestInput }) => Promise<void>;
+  saveBooking: (params: {
+    combinations: PassengerBaggageCombinationInterface[];
+    passengers: Passenger[];
+    sessionId: string;
+    bookingToken: string;
+  }) => Promise<void>;
   tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
+  cardDetails: (params: { data: CardInfo }) => Promise<void>;
   updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
   confirmPaymentZooz: (params: {
     data: ConfirmPaymentZoozRequestInput;
@@ -40,13 +53,16 @@ interface Actions {
 export const useFlightBookingStore = create<State & Actions>(
   (set): State & Actions => ({
     step: 2,
-    highestStep: 2,
+    highestStep: 5,
+
 
     mode: Mode.init,
     searchFlightsMode: Mode.init,
     searchFlightsResults: [],
     searchQuery: {},
     sessionId: null,
+
+    checkFlightsResponse: null,
 
     prevStep: () => {
       set((state) => ({
@@ -85,15 +101,18 @@ export const useFlightBookingStore = create<State & Actions>(
     },
     checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
       set({ mode: Mode.loading });
+      console.log("query", query);
+
       return await FlightBookingService.checkFlights({
         query,
       })
         .then((response) => {
           console.log(response);
-          set((state) => ({
+          set({
             mode: Mode.loaded,
             sessionId: response.session_id,
-          }));
+            checkFlightsResponse: response,
+          });
           return response;
         })
         .catch((error) => {
@@ -121,10 +140,32 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
-    saveBooking: async ({ data }: { data: SaveBookingRequestInput }) => {
+    saveBooking: async ({
+      sessionId,
+      bookingToken,
+      combinations,
+      passengers,
+    }: {
+      combinations: PassengerBaggageCombinationInterface[];
+      passengers: Passenger[];
+      sessionId: string;
+      bookingToken: string;
+    }) => {
       set({ mode: Mode.loading });
+      console.log("baggeage", combinations);
+      const saveBookingRequestInput: SaveBookingRequestInput = {
+        health_declaration_checked: true,
+        lang: "en",
+        locale: "en",
+        payment_gateway: "payu",
+        passengers,
+        booking_token: bookingToken,
+        session_id: sessionId,
+        baggage: arrangeBaggageDataForOrdering(combinations),
+      };
+
       return await FlightBookingService.saveBooking({
-        data,
+        data: saveBookingRequestInput,
       })
         .then((response) => {
           set((state) => ({
@@ -154,6 +195,23 @@ export const useFlightBookingStore = create<State & Actions>(
           });
           throw error;
         });
+    },
+    cardDetails:async ({ data }: { data: CardInfo }) => {
+      set({ mode: Mode.loading })
+      return await FlightBookingService.cardDetails({
+        data,
+      })
+      .then(() => {
+        set((state) => ({
+          mode: Mode.loaded,
+        }));
+      })
+      .catch((error) => {
+        set({
+          mode: Mode.error,
+        });
+        throw error;
+      });
     },
     confirmPaymentZooz: async ({
       data,

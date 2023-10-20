@@ -14,7 +14,7 @@ import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
-import { flightContext } from "@lib/extensions/context";
+import { useFlightContext } from "@lib/extensions/context";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
 
@@ -53,7 +53,7 @@ function FlightModule({
   handleDeleteFlight,
   length,
 }: flightProps) {
-    const context = flightContext();
+    const context = useFlightContext();
     const { isMobile } = useScreenResolution();
 
     if (!context) {
@@ -104,7 +104,7 @@ return (
               code: x.code,
             }))}
             onChange={(x: CountryType) => {
-              dispatch({ type: "SET_DEPARTURE", payload: x.name });
+              dispatch({ type: "SET_DEPARTURE", payload: x });
             }}
             value={state.departureCountry}
             placeholder="Current Location"
@@ -114,7 +114,7 @@ return (
               <Text
                 type="p"
                 size={16}
-                text={state.departureCountry}
+                text={state.departureCountry.name}
                 color="black"
               />
             </Flex>
@@ -139,7 +139,7 @@ return (
             }))}
             value={state.arrivalCountry}
             onChange={(x: CountryType) => {
-              dispatch({ type: "SET_ARRIVAL", payload: x.name });
+              dispatch({ type: "SET_ARRIVAL", payload: x });
             }}
             placeholder="Where to?"
           >
@@ -148,7 +148,7 @@ return (
               <Text
                 type="p"
                 size={16}
-                text={state.arrivalCountry}
+                text={state.arrivalCountry.name}
                 color="black"
               />
             </Flex>
@@ -163,10 +163,10 @@ return (
           <DatePicker
             placeholder="Select Date"
             position="start"
-            value={state.departureDate}
+            value={state.departureDate.toDate()}
             minDate={today}
             onChange={(e) => {
-              dispatch({ type: "SET_DEPARTURE_DATE", payload: e });
+              dispatch({ type: "SET_DEPARTURE_DATE", payload: dayjs(e) });
             }}
           />
         </Flex>
@@ -180,10 +180,10 @@ return (
             <DatePicker
               placeholder="Select Date"
               position="start"
-              value={state.returnDate}
-              minDate={state.departureDate}
+              value={state.returnDate.toDate()}
+              minDate={state.departureDate.toDate()}
               onChange={(e) => {
-                dispatch({ type: "SET_RETURN_DATE", payload: e });
+                dispatch({ type: "SET_RETURN_DATE", payload: dayjs(e) });
               }}
             />
           </Flex>
