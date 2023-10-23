@@ -20,6 +20,7 @@ import {
   Combination,
   Passenger,
   PassengerBaggageCombinationInterface,
+  PassengerFormInterface,
 } from "@/lib/types/request-models/flight/booking.type";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import styled from "styled-components";
@@ -31,7 +32,7 @@ import { PiWarningCircleBold } from "react-icons/pi";
 import { GoTrash } from "react-icons/go";
 
 interface PassengerBaggagePaneProps {
-  values: Passenger;
+  values: PassengerFormInterface;
   combinationOptions: Combinations;
   count: number;
   passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -187,77 +188,84 @@ export default function PassengerBaggagePane({
           <Text type="h3" text="Checked baggage" weight={500} />
           <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
         </Flex>
-        <Text type="p" text="Select one option:" weight={500} color={ttColors.foundation.gray} />
+        <Text
+          type="p"
+          text="Select one option:"
+          weight={500}
+          color={ttColors.foundation.gray}
+        />
       </Flex>
-      {!isChecked.allowBaggage && (<Flex gap="1rem" align="flex-end" padding="1rem 0">
-        <BaggageBox active={isChecked.cbaggage1}>
-          <Flex direction="column" gap="1rem" align="center" justify="center">
-            <Text type="h3" text="1x checked bags" weight={600} />
-            <Text
-              type="p"
-              text="23kg"
-              color={ttColors.lighterGray}
-              weight={500}
-            />
-            <Flex direction="column" gap=".75rem" align="center">
-              <Image
-                height={150}
-                styles={{
-                  objectFit: "contain",
-                }}
-                src="/assets/images/flights/blackbag.png"
-                alt="Baggage"
-              />
+      {!isChecked.allowBaggage && (
+        <Flex gap="1rem" align="flex-end" padding="1rem 0">
+          <BaggageBox active={isChecked.cbaggage1}>
+            <Flex direction="column" gap="1rem" align="center" justify="center">
+              <Text type="h3" text="1x checked bags" weight={600} />
               <Text
                 type="p"
-                text="20 x 35 x 55 cm"
-                color={ttColors.foundation.gray}
+                text="23kg"
+                color={ttColors.lighterGray}
+                weight={500}
               />
-            </Flex>
+              <Flex direction="column" gap=".75rem" align="center">
+                <Image
+                  height={150}
+                  styles={{
+                    objectFit: "contain",
+                  }}
+                  src="/assets/images/flights/blackbag.png"
+                  alt="Baggage"
+                />
+                <Text
+                  type="p"
+                  text="20 x 35 x 55 cm"
+                  color={ttColors.foundation.gray}
+                />
+              </Flex>
 
-            <Flex align="center" justify="space-between">
-              <Text type="h2" text="$230" weight={600} />
-              <CustomRadioButton
-                checked={isChecked.cbaggage1}
-                onClick={() => toggleState("cbaggage1")}
-              />
+              <Flex align="center" justify="space-between">
+                <Text type="h2" text="$230" weight={600} />
+                <CustomRadioButton
+                  checked={isChecked.cbaggage1}
+                  onClick={() => toggleState("cbaggage1")}
+                />
+              </Flex>
             </Flex>
-          </Flex>
-        </BaggageBox>
-        <BaggageBox active={isChecked.cbaggage2}>
-          <Flex direction="column" gap="1rem" align="center" justify="center">
-            <Text type="h3" text="2x checked bags" weight={600} />
-            <Text
-              type="p"
-              text="23kg"
-              color={ttColors.lighterGray}
-              weight={500}
-            />
-            <Flex direction="column" gap=".75rem" align="center">
-              <Image
-                height={150}
-                styles={{
-                  objectFit: "contain",
-                }}
-                src="/assets/images/flights/blackbag.png"
-                alt="Baggage"
-              />
+          </BaggageBox>
+          <BaggageBox active={isChecked.cbaggage2}>
+            <Flex direction="column" gap="1rem" align="center" justify="center">
+              <Text type="h3" text="2x checked bags" weight={600} />
               <Text
                 type="p"
-                text="20 x 35 x 55 cm"
-                color={ttColors.foundation.gray}
+                text="23kg"
+                color={ttColors.lighterGray}
+                weight={500}
               />
+              <Flex direction="column" gap=".75rem" align="center">
+                <Image
+                  height={150}
+                  styles={{
+                    objectFit: "contain",
+                  }}
+                  src="/assets/images/flights/blackbag.png"
+                  alt="Baggage"
+                />
+                <Text
+                  type="p"
+                  text="20 x 35 x 55 cm"
+                  color={ttColors.foundation.gray}
+                />
+              </Flex>
+              <Flex align="center" justify="space-between">
+                <Text type="h2" text="$230" weight={600} />
+                <CustomRadioButton
+                  checked={isChecked.cbaggage2}
+                  onClick={() => toggleState("cbaggage2")}
+                />
+              </Flex>
             </Flex>
-            <Flex align="center" justify="space-between">
-              <Text type="h2" text="$230" weight={600} />
-              <CustomRadioButton
-                checked={isChecked.cbaggage2}
-                onClick={() => toggleState("cbaggage2")}
-              />
-            </Flex>
-          </Flex>
-        </BaggageBox>
-      </Flex>)}
+          </BaggageBox>
+        </Flex>
+      )}
       {values.category === Category.INFANT || isChecked.allowBaggage ? (
         <ToastInfo
           type={
