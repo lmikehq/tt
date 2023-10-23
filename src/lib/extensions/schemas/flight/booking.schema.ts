@@ -1,5 +1,6 @@
 import {
   Baggage,
+  Category,
   Combination,
   CombinationConditions,
   CombinationPrice,
@@ -52,11 +53,18 @@ const passengerAndBaggageDetailsSchema: yup.ObjectSchema<Passenger> = yup
       .required("Required"),
     nationality: countrySchema.required(),
     title: yup.string().required("Required"),
+    issuingdate: yup
+      .string()
+      .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
+      .required("Required"),
     expiration: yup
       .string()
       .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
       .required("Required"),
-    category: yup.string().required("Required"),
+      category: yup
+      .mixed<Category>()
+      .oneOf(Object.values(Category))
+      .required('Required'),
   });
 
 export const passengersAndBaggageDetailsArraySchema = yup

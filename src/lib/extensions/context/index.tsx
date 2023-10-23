@@ -1,5 +1,5 @@
 "use client";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import {
   createContext,
   useContext,

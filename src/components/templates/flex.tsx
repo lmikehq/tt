@@ -20,6 +20,7 @@ interface flexProps {
   margin?: string;
   padding?: string;
   width?: string;
+  maxWidth?: string;
   styles?: CSSProperties;
   background?: string;
   borderRadius?: string;
@@ -66,6 +67,7 @@ export const Flex: React.FC<flexProps> = ({
   padding,
   background,
   width,
+  maxWidth,
   height,
   borderRadius,
   id,
@@ -97,6 +99,7 @@ export const Flex: React.FC<flexProps> = ({
         flexDirection: direction,
         background: background,
         width: width,
+        maxWidth: maxWidth,
         overflow: overflow || "unset",
         overflowY: overflowY,
         overflowX: overflowX,

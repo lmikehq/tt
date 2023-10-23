@@ -1,7 +1,5 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import Section from "src/components/molecules/section";
-import dayjs, { Dayjs } from "dayjs";
-import { FaPlane } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { FaSpinner } from "react-icons/fa";
@@ -23,7 +21,9 @@ function AvailableFlights() {
     updateSearchQuery,
     searchQuery,
   } = useFlightBookingStore((state) => state);
+
   const [count, setCount] = useState(5);
+  const [sortType, setSortType] = useState("best");
 
   const loadMoreItems = () => {
     setCount(
@@ -40,23 +40,65 @@ function AvailableFlights() {
     searchFlights({ data: searchParams });
   }, [window.location.href]);
 
-  function setSortType(value: SetStateAction<string>): void {
-    throw new Error("Function not implemented.");
-  }
+  const prices: number[] = searchFlightsResults.map((flight) => flight.price);
+  const cheapPrice = Math.min(...prices);
+  const bestPrice =
+    prices.reduce((acc, price) => acc + price, 0) / prices.length;
+  const durationPriceMap: Record<string, number> = {};
+
+  searchFlightsResults.forEach((flight) => {
+    const { duration, price } = flight;
+    if (duration && duration.departure) {
+      durationPriceMap[duration.departure] = price;
+    }
+  });
+
+  const keysAsNumbers: number[] = Object.keys(durationPriceMap).map(Number);
+  const minKey: number = Math.min(...keysAsNumbers);
+  const minPrice: number | undefined = durationPriceMap[minKey.toString()];
+
+  const getLabel = (price: number) => {
+    if (price === cheapPrice) {
+      return "Cheapest";
+    } else if (Math.abs(price - bestPrice) <= 0.05 * bestPrice) {
+      return "Best";
+    } else if (price === minPrice) {
+      return "Fastest";
+    } else {
+      return "";
+    }
+  };
+
+  const sortFlights = (a: FlightInfo, b: FlightInfo) => {
+    if (
+      getLabel(a.price).toLowerCase() === sortType &&
+      getLabel(b.price).toLowerCase() !== sortType
+    ) {
+      return -1;
+    }
+    if (
+      getLabel(b.price).toLowerCase() === sortType &&
+      getLabel(a.price).toLowerCase() !== sortType
+    ) {
+      return 1;
+    }
+    return 0;
+  };
 
   return (
     <Flex direction="column">
       <SortedFlightsTab
-        cheapPrice={1}
-        bestPrice={1}
-        sortType={"s"}
+        cheapPrice={cheapPrice}
+        bestPrice={bestPrice}
+        sortType={sortType}
         setSortType={setSortType}
-        fastPrice={0}
+        fastPrice={minPrice}
       />
       {searchFlightsResults?.length > 0 ? (
         <>
           {searchFlightsResults
             ?.slice(0, count)
+            .sort(sortFlights)
             .map((flight: FlightInfo, index: number) => (
               <FlightBox
                 key={index}
@@ -73,7 +115,7 @@ function AvailableFlights() {
                 departureDate={dayjs()}
                 arrivalDate={dayjs().add(1, "day")}
                 price={flight.price}
-                label={"Cheapest"}
+                label={getLabel(flight.price)}
               />
             ))}
           <Flex justify="center">
@@ -101,3 +143,25 @@ function AvailableFlights() {
 }
 
 export default AvailableFlights;
+
+/**
+ * =======
+      {searchFlightsResults?.sort(sortFlights).map((flight: FlightInfo, index: number) => (
+        <FlightBox
+          key={index}
+          selectFlight={({ bookingToken }) => {
+            router.push(
+              `/flight/booking?bnum=2&adults=2&children=1&infants=1&booking_token=${bookingToken}`
+            );
+          }}
+          bookingToken={flight.booking_token}
+          departureCountryCode="Country Code 1"
+          arrivalCountryCode={flight.cityCodeTo}
+          airportName1="Airport Name 1"
+          airportName2={"Airport 2"}
+          departureDate={dayjs()}
+          arrivalDate={dayjs().add(1, "day")}
+          price={flight.price}
+          label={getLabel(flight.price)}
+>>>>>>> 3abb55d717d2b24c8148f9e73d5c92a87b5d478f
+ */

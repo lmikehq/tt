@@ -1,4 +1,6 @@
 import { Dayjs } from "dayjs";
+import axios from "axios";
+
 
 export function get100Years(before: boolean = false) {
   const currentYear = new Date().getFullYear();
@@ -40,4 +42,15 @@ export function checkIfFieldHasError(obj: any, field: string) {
 
 export function formatDate(day: Dayjs) {
   return day.format("DD/MM/YYYY");
+}
+
+export async function fetchHTMLContent(country: string) {
+  try {
+    const res = await axios.get(
+      `https://ttravels-assets.s3.eu-west-2.amazonaws.com/countries/${country}.html`
+    );
+    return res.data;
+  } catch (err) {
+    console.log(`Error fetching ${country}: `, err);
+  }
 }
