@@ -143,25 +143,3 @@ function AvailableFlights() {
 }
 
 export default AvailableFlights;
-
-/**
- * =======
-      {searchFlightsResults?.sort(sortFlights).map((flight: FlightInfo, index: number) => (
-        <FlightBox
-          key={index}
-          selectFlight={({ bookingToken }) => {
-            router.push(
-              `/flight/booking?bnum=2&adults=2&children=1&infants=1&booking_token=${bookingToken}`
-            );
-          }}
-          bookingToken={flight.booking_token}
-          departureCountryCode="Country Code 1"
-          arrivalCountryCode={flight.cityCodeTo}
-          airportName1="Airport Name 1"
-          airportName2={"Airport 2"}
-          departureDate={dayjs()}
-          arrivalDate={dayjs().add(1, "day")}
-          price={flight.price}
-          label={getLabel(flight.price)}
->>>>>>> 3abb55d717d2b24c8148f9e73d5c92a87b5d478f
- */
