@@ -1,7 +1,5 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import Section from "src/components/molecules/section";
-import dayjs, { Dayjs } from "dayjs";
-import { FaPlane } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import Button from "@atom/button";
@@ -22,6 +20,7 @@ function AvailableFlights() {
     searchQuery,
   } = useFlightBookingStore((state) => state);
 
+  const [sortType, setSortType] = useState("best")
   const [count, setCount] = useState(10);
   const [totalFlights] = useState(
     Math.min(Math.floor(Math.random() * 50) + 1, COUNTRY_FLAGS.length)
@@ -39,20 +38,55 @@ function AvailableFlights() {
     searchFlights({ data: searchParams });
   }, [window.location.href]);
 
-  function setSortType(value: SetStateAction<string>): void {
-    throw new Error("Function not implemented.");
-  }
+  const prices: number[] = searchFlightsResults.map((flight) => flight.price);
+  const cheapPrice = Math.min(...prices);
+  const bestPrice =
+    prices.reduce((acc, price) => acc + price, 0) / prices.length;
+  const durationPriceMap: Record<string, number> = {};
+
+  searchFlightsResults.forEach((flight) => {
+    const { duration, price } = flight;
+    if (duration && duration.departure) {
+      durationPriceMap[duration.departure] = price;
+    }
+  });
+
+  const keysAsNumbers: number[] = Object.keys(durationPriceMap).map(Number);
+  const minKey: number = Math.min(...keysAsNumbers);
+  const minPrice: number | undefined = durationPriceMap[minKey.toString()];
+
+  const getLabel = (price: number) => {
+    if (price === cheapPrice) {
+      return "Cheapest";
+    } else if (Math.abs(price - bestPrice) <= 0.05 * bestPrice) {
+      return "Best";
+    } else if (price === minPrice) {
+      return "Fastest";
+    } else {
+      return "";
+    }
+  };
+
+  const sortFlights = (a: FlightInfo, b: FlightInfo) => {
+    if (getLabel(a.price).toLowerCase() === sortType && getLabel(b.price).toLowerCase() !== sortType) {
+      return -1;
+    }
+    if (getLabel(b.price).toLowerCase() === sortType && getLabel(a.price).toLowerCase() !== sortType) {
+      return 1;
+    }
+    return 0;
+  };  
 
   return (
     <Flex direction="column">
       <SortedFlightsTab
-        cheapPrice={1}
-        bestPrice={1}
-        sortType={"s"}
+        cheapPrice={cheapPrice}
+        bestPrice={bestPrice}
+        sortType={sortType}
         setSortType={setSortType}
-        fastPrice={0}
+        fastPrice={minPrice}
       />
-      {searchFlightsResults?.map((flight: FlightInfo, index: number) => (
+      {searchFlightsResults?.sort(sortFlights).map((flight: FlightInfo, index: number) => (
         <FlightBox
           key={index}
           selectFlight={({ bookingToken }) => {
@@ -68,7 +102,7 @@ function AvailableFlights() {
           departureDate={dayjs()}
           arrivalDate={dayjs().add(1, "day")}
           price={flight.price}
-          label={"Cheapest"}
+          label={getLabel(flight.price)}
         />
       ))}
       <Flex justify="center">

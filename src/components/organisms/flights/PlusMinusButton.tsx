@@ -13,7 +13,8 @@ const RoundedButton = styled(Button)(({ theme }) => ({
   padding: 0,
   color: ttColors.foundation.gray,
   "&:hover": {
-    backgroundColor: alpha("#87CEEB", 0.2),
+    backgroundColor: "#7BBBD6",
+    color: "white"
   },
   "&:active": {
     backgroundColor: alpha("#87CEEB", 0.4),

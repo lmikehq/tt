@@ -8,6 +8,7 @@ import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
 import {
+  Category,
   Combination,
   Passenger,
   PassengerBaggageCombinationInterface,
@@ -68,15 +69,15 @@ const TripSummary = () => {
           setPassengersBagCombination([
             ...generateCombinationsForCategory({
               size: parseInt(adults),
-              category: "adult",
+              category: Category.ADULT,
             }),
             ...generateCombinationsForCategory({
               size: parseInt(children),
-              category: "child",
+              category: Category.CHILD,
             }),
             ...generateCombinationsForCategory({
               size: parseInt(infants),
-              category: "infant",
+              category: Category.INFANT,
             }),
           ]);
           return checkFlightsFifteenSecondsInterval(sessionId);
@@ -107,7 +108,7 @@ const TripSummary = () => {
     category,
     bagType,
   }: {
-    category: string;
+    category: Category;
     bagType: "hand_bag" | "hold_bag";
   }): Combination =>
     (() =>
@@ -122,7 +123,7 @@ const TripSummary = () => {
   const getPassengerBagCombinationOptions = ({
     category,
   }: {
-    category: string;
+    category: Category;
   }): Combinations => {
     const hand_bag = checkFlightsResponse?.baggage.combinations.hand_bag;
     const hold_bag = checkFlightsResponse?.baggage.combinations.hold_bag;
@@ -142,7 +143,7 @@ const TripSummary = () => {
     category,
   }: {
     size: number;
-    category: string;
+    category: Category;
   }): Passenger[] => {
     return Array.from({ length: size }, (_, index): Passenger => {
       return {
@@ -156,7 +157,7 @@ const TripSummary = () => {
     category,
   }: {
     size: number;
-    category: string;
+    category: Category;
   }): PassengerBaggageCombinationInterface[] => {
     return Array.from(
       { length: size },
@@ -182,15 +183,15 @@ const TripSummary = () => {
       passengers: [
         ...generateFormsForCategory({
           size: parseInt(adults),
-          category: "adult",
+          category: Category.ADULT,
         }),
         ...generateFormsForCategory({
           size: parseInt(children),
-          category: "child",
+          category: Category.CHILD,
         }),
         ...generateFormsForCategory({
           size: parseInt(infants),
-          category: "infant",
+          category: Category.INFANT,
         }),
       ],
     },

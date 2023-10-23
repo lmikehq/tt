@@ -93,15 +93,13 @@ function FlightBox(props: flightProps) {
   const price = Number(props.price?.toFixed(0)).toLocaleString();
 
   return (
-    <FlightContainer
-      onClick={() => props.selectFlight({ bookingToken: props.bookingToken })}
-    >
+    <FlightContainer>
       <Box
         sx={{
           display: isMobile ? "flex" : "grid",
           flexDirection: "column",
           width: "100%",
-          gridTemplateColumns: "8fr 1fr 4fr",
+          gridTemplateColumns: "8fr 1fr 6fr",
         }}
       >
         <Flex direction="column" padding="1rem">
@@ -261,7 +259,14 @@ function FlightBox(props: flightProps) {
               />
               <Text type="h1" text={`$ ${price}`} weight={600} size={40} />
             </Flex>
-            <Button background="#7BBBD6" width="100%" padding="2rem 0">
+            <Button
+              background="#7BBBD6"
+              width="100%"
+              padding="2rem 0"
+              onClick={() =>
+                props.selectFlight({ bookingToken: props.bookingToken })
+              }
+            >
               <Text
                 type="h1"
                 text="Select"
