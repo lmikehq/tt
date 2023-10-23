@@ -8,6 +8,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import { useRouter } from "next/navigation";
 import Image from "@atom/image";
+import { useUserStore } from "@/lib/store/useStore";
 
 interface Country {
   id: number;
@@ -210,6 +211,7 @@ const TopCountriesSection: React.FC = () => {
   const { isMobile } = useScreenResolution();
   const [activeImage, setActiveImage] = useState(1);
   const [hoveredImage, setHoveredImage] = useState(1);
+  const { geoInfo } = useUserStore();
 
   const countries: Country[] = [
     {
@@ -350,7 +352,7 @@ const TopCountriesSection: React.FC = () => {
                         router.push(
                           `/visa/apply?destination=${
                             countries[activeImage - 1].name
-                          }`
+                          }&home=${geoInfo?.country}`
                         )
                       }
                     >

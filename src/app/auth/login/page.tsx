@@ -25,7 +25,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import Section from "src/components/molecules/section";
 import { checkIfFieldHasError } from "@/lib/utilFns";
-// import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 
 
 
@@ -46,30 +46,30 @@ function LoginPage() {
     password: "",
     rememberMe: false,
   });
-  // const login = useGoogleLogin({
-  //   onSuccess: async (credentialResponse) => {
-  //     return await apiService("/auth/google", "POST", {
-  //       token: credentialResponse.access_token,
-  //     })
-  //       .then(async (res) => {
-  //         if (res.statusCode === 401) return;
-  //         setSubmissionState({
-  //           ...submissionState,
-  //           loadingGoogleAuth: true,
-  //         });
-  //         setUser(res?.user);
-  //         toast.success("You have successfully logged in!");
-  //         toast.loading("Redirecting to your dashboard...", {
-  //           duration: 3000,
-  //         });
-  //         router.push("/dashboard");
-  //       })
-  //       .catch((error) => {});
-  //   },
-  //   onError: () => {
-  //     console.log("Login Failed");
-  //   },
-  // });
+  const login = useGoogleLogin({
+    onSuccess: async (credentialResponse) => {
+      return await apiService("/auth/google", "POST", {
+        token: credentialResponse.access_token,
+      })
+        .then(async (res) => {
+          if (res.statusCode === 401) return;
+          setSubmissionState({
+            ...submissionState,
+            loadingGoogleAuth: true,
+          });
+          setUser(res?.user);
+          toast.success("You have successfully logged in!");
+          toast.loading("Redirecting to your dashboard...", {
+            duration: 3000,
+          });
+          router.push("/dashboard");
+        })
+        .catch((error) => {});
+    },
+    onError: () => {
+      console.log("Login Failed");
+    },
+  });
   useEffect(() => {
     if (submissionState.error.length > 0) {
       setSubmissionState({
@@ -296,7 +296,9 @@ function LoginPage() {
                 height="3rem"
                 type="password"
                 border={
-                  checkIfFieldHasError(submissionState?.error,"password") ? "1px solid #FF8682" : ""
+                  checkIfFieldHasError(submissionState?.error, "password")
+                    ? "1px solid #FF8682"
+                    : ""
                 }
                 onChange={(e) =>
                   setLoginData({ ...loginData, password: e.target.value })
@@ -392,7 +394,7 @@ function LoginPage() {
               />
             </Flex>
             <Button
-              onClick={() => {}}
+              onClick={login}
               background="transparent"
               border={`1px solid ${ttColors.primary}`}
               width="100%"
