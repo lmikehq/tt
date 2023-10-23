@@ -19,8 +19,8 @@ import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps } from "formik";
 import {
   Combination,
-  Passenger,
   PassengerBaggageCombinationInterface,
+  PassengerFormInterface,
   SaveBookingRequestInput,
 } from "@/lib/types/request-models/flight/booking.type";
 import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
@@ -30,9 +30,9 @@ import { ttColors } from "@/lib/theme/colors";
 
 interface TripSummaryCardProps {
   formik: FormikProps<{
-    passengers: Passenger[];
+    passengers: PassengerFormInterface[];
   }>;
-  values: Passenger;
+  values: PassengerFormInterface;
   count: number;
   combinationOptions: Combinations;
   passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -137,6 +137,7 @@ export default function MainPassenger({
               name={`passengers.${count}.birthday`}
               placeholder="Date of Birth"
               formik={formik}
+              format="YYYY-MM-DD"
             />
           </FormControl>
           <FormControl>
@@ -167,17 +168,13 @@ export default function MainPassenger({
               name={`passengers.${count}.expiration`}
               placeholder="Passport or ID Expiry date"
               formik={formik}
+              format="YYYY-MM-DD"
             />
           </FormControl>
         </Box>
-        {/* <input type="text" name={`passengers.${count}.combinations`} /> */}
         <Box>
           <Flex gap="1rem" align="center" padding="1rem 0">
-            <Text
-              type="h2"
-              text="Add extra check-in bags"
-              weight={600}
-            />
+            <Text type="h2" text="Add extra check-in bags" weight={600} />
             <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
           </Flex>
           <Text

@@ -1,9 +1,32 @@
+import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Section from "@/components/molecules/section";
 import Flex from "@/components/templates/flex";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { BiArrowToRight, BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
 
 const SeatSelectionMenu = () => {
+  const { particularSeats, saveBookingDetails } = useFlightBookingStore();
+  const passengers = saveBookingDetails.passengers.map((el) => ({
+    nationality: el.nationality,
+    birthday: el.birthday,
+    category: el.category,
+  }));
+  const findSeatWithPassengerIndex = ({
+    index,
+  }: {
+    index: number;
+  }): string | null => {
+    for (const segment of particularSeats) {
+      for (const seat of segment.seats) {
+        if (seat.passenger_idx === index) {
+          return "Seat " + seat.seat;
+        }
+      }
+    }
+
+    return null;
+  };
   return (
     <Section>
       <Section>
@@ -76,6 +99,50 @@ const SeatSelectionMenu = () => {
             />
           </Flex>
         </Flex>
+      </Section>
+
+      <Section margin="40px 0 0 0">
+        <Text type="h5" text="Seat Selection" size={20} weight={600} />
+        {passengers.map((el, index) => {
+          const selected = findSeatWithPassengerIndex({ index });
+          return (
+            <Flex
+              key={"passenger" + index}
+              justify="space-between"
+              align="center"
+              margin="0 0 16px 0"
+              styles={{ flexGrow: 1 }}
+            >
+              <Section>
+                <Text
+                  type="p"
+                  color="#101010"
+                  size={16}
+                  weight={400}
+                  text={
+                    index == 0 ? "Main Passenger" : "Passenger " + (index + 1)
+                  }
+                />
+                <Text
+                  type="p"
+                  color="#101010"
+                  size={16}
+                  weight={400}
+                  text={selected ?? "Not Selected"}
+                />
+              </Section>
+              <Button background="transparent" width="fit content">
+                <Text
+                  type="p"
+                  size={16}
+                  weight={400}
+                  text={selected ? "Change" : "Select"}
+                  color="#6092A7"
+                />
+              </Button>
+            </Flex>
+          );
+        })}
       </Section>
     </Section>
   );

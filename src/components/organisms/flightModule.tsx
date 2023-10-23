@@ -43,8 +43,8 @@ const FlightCircle = styled.div<{ value: string }>`
 `;
 
 const TravellersDropdownContainer = styled.div`
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
 `;
 
 function FlightModule({
@@ -53,38 +53,39 @@ function FlightModule({
   handleDeleteFlight,
   length,
 }: flightProps) {
-    const context = useFlightContext();
-    const { isMobile } = useScreenResolution();
+  const context = useFlightContext();
+  const { isMobile } = useScreenResolution();
 
-    if (!context) {
-        throw new Error("flightContext must be used within a FlightProvider");
-    }
+  if (!context) {
+    throw new Error("flightContext must be used within a FlightProvider");
+  }
 
-    const { state, dispatch } = context;
+  const { state, dispatch } = context;
 
-    const [data, setData] = useState("1 Adult, Economy");
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const today = dayjs().toDate()
+  const [data, setData] = useState("1 Adult, Economy");
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const today = dayjs().toDate();
 
-    const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const handleDataChange = (data: any) => {
-        const kids = data.children + data.infants
-        setData(
-            `${data.adults} Adult, ${kids > 0 ? `${kids} ${kids === 1 ? 'Child' : 'Children'}, ` : ''}${data.class}`
-        );
-    };
+  const handleDataChange = (data: any) => {
+    const kids = data.children + data.infants;
+    setData(
+      `${data.adults} Adult, ${
+        kids > 0 ? `${kids} ${kids === 1 ? "Child" : "Children"}, ` : ""
+      }${data.class}`
+    );
+  };
 
-
-return (
+  return (
     <Section padding="2rem 0 0 0 " height="unset">
       <Flex
         direction={isMobile ? "column" : "row"}
@@ -193,27 +194,27 @@ return (
           gap=".75rem"
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
-            <Text
-                type="label"
-                size={isMobile ? 16 : 18}
-                text="Cabin & Travelers"
-            />
-            <ClickAwayListener onClickAway={handleClose}>
-                <TravellersDropdownContainer>
-                    <Input
-                        onClick={handleClick}
-                        placeholder="Click me to open dropdown"
-                        value={data}
-                        styles={{ fontFamily: "poppins", cursor: "pointer" }}
-                    />
-                    {open &&
-                        <DropdownMenu
-                            onDataChange={handleDataChange}
-                            isMobile={isMobile}
-                        />
-                    }
-                </TravellersDropdownContainer>
-            </ClickAwayListener>
+          <Text
+            type="label"
+            size={isMobile ? 16 : 18}
+            text="Cabin & Travelers"
+          />
+          <ClickAwayListener onClickAway={handleClose}>
+            <TravellersDropdownContainer>
+              <Input
+                onClick={handleClick}
+                placeholder="Click me to open dropdown"
+                value={data}
+                styles={{ fontFamily: "poppins", cursor: "pointer" }}
+              />
+              {open && (
+                <DropdownMenu
+                  onDataChange={handleDataChange}
+                  isMobile={isMobile}
+                />
+              )}
+            </TravellersDropdownContainer>
+          </ClickAwayListener>
         </Flex>
         {length >= 1 && (
           <Section width="0" padding="2rem 0 0 0">

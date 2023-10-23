@@ -19,7 +19,7 @@ function AvailableFlights() {
     searchFlightsResults,
     searchFlights,
     updateSearchQuery,
-    searchQuery,
+    searchQuery: { adults, children, infants },
   } = useFlightBookingStore((state) => state);
 
   const [count, setCount] = useState(5);
@@ -104,7 +104,9 @@ function AvailableFlights() {
                 key={index}
                 selectFlight={({ bookingToken }) => {
                   router.push(
-                    `/flight/booking?bnum=2&adults=2&children=1&infants=1&booking_token=${bookingToken}`
+                    `/flight/booking?bnum=${
+                      Object.keys(flight.bags_price).length
+                    }&adults=${adults}&children=${children}&infants=${infants}&booking_token=${bookingToken}`
                   );
                 }}
                 bookingToken={flight.booking_token}
@@ -124,7 +126,8 @@ function AvailableFlights() {
                 width="100%"
                 background="#06062A"
                 padding="2rem 0"
-                onClick={loadMoreItems}>
+                onClick={loadMoreItems}
+              >
                 <Text type="p" text="Load More" weight={500} size={18} />
               </Button>
             )}
