@@ -27,7 +27,7 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
   rectangularHeight,
   rectangularWidth,
 }) => {
-  const tabsToMap = Array.from({ length: tabs });
+  const tabsToMap = Array.from({ length: tabs || 0 });
   return (
     <Container>
       {tabsToMap.map((_, index) => (
