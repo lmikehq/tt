@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<<<<<<< HEAD
+<url><loc>https://thrillers.travel/about-us</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/ai-guide</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/auth/forgot-password</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/auth/login</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/auth/register</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/auth/reset-password</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/blog</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/chat</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/contact</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/dashboard</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/faqs</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/flight/listings</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/flight</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/flight/booking</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/influencer</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/stay/apply</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/privacy-policy</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/stay</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/visa/apply</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/visa/countries</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/visa</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/visa/payment/kora</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://thrillers.travel/waitlist</loc><lastmod>2023-10-23T09:18:53.195Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+=======
 <url><loc>https://example.com/auth/forgot-password</loc><lastmod>2023-10-20T21:33:00.174Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://example.com/auth/reset-password</loc><lastmod>2023-10-20T21:33:00.174Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://example.com/auth/login</loc><lastmod>2023-10-20T21:33:00.174Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -24,4 +50,5 @@
 <url><loc>https://example.com/waitlist</loc><lastmod>2023-10-20T21:33:00.174Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://example.com/dashboard</loc><lastmod>2023-10-20T21:33:00.174Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://example.com/visa/apply</loc><lastmod>2023-10-20T21:33:00.174Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+>>>>>>> 3abb55d717d2b24c8148f9e73d5c92a87b5d478f
 </urlset>
