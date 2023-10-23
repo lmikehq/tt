@@ -139,6 +139,7 @@ function AvailableFlights() {
           textHeight={46}
           textWidth={"60%"}
           rectangularHeight={400}
+          
         />
       )}
     </Flex>
