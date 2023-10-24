@@ -8,9 +8,12 @@ import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
 import {
+  Category,
   Combination,
-  Passenger,
   PassengerBaggageCombinationInterface,
+  PassengerFormInterface,
+  SaveBookingRequestInput,
+  arrangeBaggageDataForOrdering,
   passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
@@ -18,111 +21,35 @@ import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
 
-const TripSummary = () => {
-  const { checkFlights, saveBooking, checkFlightsResponse } =
-    useFlightBookingStore((state) => state);
+interface TripSummaryProps {
+  passengersBagCombination: PassengerBaggageCombinationInterface[];
+  handleUpdatePassengersBagCombination(params: {
+    index: number;
+    combination: Combination;
+    category: string;
+  }): void;
+}
+const TripSummary = ({
+  passengersBagCombination,
+  handleUpdatePassengersBagCombination,
+}: TripSummaryProps) => {
+  const {
+    saveBooking,
+    checkFlightsResponse,
+    saveBookingDetails,
+    setSaveBookingDetails,
+    setStep,
+  } = useFlightBookingStore((state) => state);
   const searchParams = extractSearchParamsFromUrl({
     url: window.location.href,
   });
 
-  const [passengersBagCombination, setPassengersBagCombination] = useState<
-    PassengerBaggageCombinationInterface[]
-  >([]);
-
-  const handleUpdatePassengersBagCombination = ({
-    index,
-    combination,
-    category,
-  }: {
-    index: number;
-    combination: Combination;
-    category: string;
-  }) => {
-    const combinations = passengersBagCombination;
-
-    combinations[index] = {
-      ...combinations[index],
-      [category]: combination,
-    };
-
-    setPassengersBagCombination(combinations);
-  };
   const { adults, children, infants } = searchParams;
-  const params = new URLSearchParams(window.location.search);
-
-  const checkFlightsThreeSecondsInterval = (sessionId: string) => {
-    console.log(sessionId);
-    checkFlights({
-      query: {
-        bnum: 0,
-        ...searchParams,
-        session_id: sessionId,
-      },
-    })
-      .then(async (response) => {
-        if (
-          response.flights_checked == true &&
-          response.price_change == false &&
-          response.flights_invalid == false
-        ) {
-          setPassengersBagCombination([
-            ...generateCombinationsForCategory({
-              size: parseInt(adults),
-              category: "adult",
-            }),
-            ...generateCombinationsForCategory({
-              size: parseInt(children),
-              category: "child",
-            }),
-            ...generateCombinationsForCategory({
-              size: parseInt(infants),
-              category: "infant",
-            }),
-          ]);
-          return checkFlightsFifteenSecondsInterval(sessionId);
-        }
-        await sleep(3000);
-        return checkFlightsThreeSecondsInterval(sessionId);
-      })
-      .catch(() => {});
-  };
-
-  const checkFlightsFifteenSecondsInterval = (sessionId: string) => {
-    checkFlights({
-      query: {
-        bnum: 0,
-        ...searchParams,
-        session_id: sessionId,
-      },
-    })
-      .then(async () => {
-        await sleep(15000);
-        return checkFlightsFifteenSecondsInterval(sessionId);
-      })
-      .catch(() => {});
-  };
-
-  //getDefaultBagTypeCombinationForCategory Returns the default combination for bag type.
-  const getDefaultBagTypeCombinationForCategory = ({
-    category,
-    bagType,
-  }: {
-    category: string;
-    bagType: "hand_bag" | "hold_bag";
-  }): Combination =>
-    (() =>
-      bagType == "hand_bag"
-        ? checkFlightsResponse?.baggage.combinations.hand_bag
-        : checkFlightsResponse?.baggage.combinations.hold_bag)()?.find(
-      (el) =>
-        el.conditions.passenger_groups.includes(category) &&
-        el.price.amount == 0
-    )!;
 
   const getPassengerBagCombinationOptions = ({
     category,
   }: {
-    category: string;
+    category: Category;
   }): Combinations => {
     const hand_bag = checkFlightsResponse?.baggage.combinations.hand_bag;
     const hold_bag = checkFlightsResponse?.baggage.combinations.hold_bag;
@@ -142,55 +69,30 @@ const TripSummary = () => {
     category,
   }: {
     size: number;
-    category: string;
-  }): Passenger[] => {
-    return Array.from({ length: size }, (_, index): Passenger => {
+    category: Category;
+  }): PassengerFormInterface[] => {
+    return Array.from({ length: size }, (_, index): PassengerFormInterface => {
       return {
         ...passengerAndBaggageDetails,
         category,
       };
     });
   };
-  const generateCombinationsForCategory = ({
-    size,
-    category,
-  }: {
-    size: number;
-    category: string;
-  }): PassengerBaggageCombinationInterface[] => {
-    return Array.from(
-      { length: size },
-      (_, index): PassengerBaggageCombinationInterface => {
-        const holdBagCombination = getDefaultBagTypeCombinationForCategory({
-          category,
-          bagType: "hold_bag",
-        });
-        const handBagCombination = getDefaultBagTypeCombinationForCategory({
-          category,
-          bagType: "hand_bag",
-        });
 
-        return {
-          hold_bag: holdBagCombination,
-          hand_bag: handBagCombination,
-        };
-      }
-    );
-  };
   const formik = useFormik({
     initialValues: {
       passengers: [
         ...generateFormsForCategory({
           size: parseInt(adults),
-          category: "adult",
+          category: Category.ADULT,
         }),
         ...generateFormsForCategory({
           size: parseInt(children),
-          category: "child",
+          category: Category.CHILD,
         }),
         ...generateFormsForCategory({
           size: parseInt(infants),
-          category: "infant",
+          category: Category.INFANT,
         }),
       ],
     },
@@ -199,26 +101,22 @@ const TripSummary = () => {
     validationSchema: manyPassengersAndBaggageDetailsSchema,
     onSubmit: (values) => {
       console.log(passengersBagCombination, "passengers");
-      saveBooking({
-        passengers: values.passengers,
-        combinations: passengersBagCombination,
-        sessionId: checkFlightsResponse?.session_id ?? "",
-        bookingToken: checkFlightsResponse?.booking_token ?? "",
+
+      setSaveBookingDetails({
+        data: {
+          ...saveBookingDetails,
+          passengers: values.passengers.map((el) => ({
+            ...el,
+            nationality: el.nationality.code.toLowerCase(),
+          })),
+          baggage: arrangeBaggageDataForOrdering(passengersBagCombination),
+        },
       });
+      setStep({ step: 4 });
     },
     validateOnChange: false,
   });
 
-  useEffect(() => {
-    checkFlights({
-      query: {
-        bnum: 0,
-        ...searchParams,
-      },
-    }).then((response) =>
-      checkFlightsThreeSecondsInterval(response.session_id)
-    );
-  }, []);
   return (
     <Box sx={{ display: "flex", flexDirection: "column", rowGap: "1rem" }}>
       <TripSummaryCard />

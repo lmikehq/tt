@@ -16,7 +16,6 @@ import Flex from "@/components/templates/flex";
 function ServiceTabs({ page }: { page?: string }) {
     const { isMobile } = useScreenResolution();
     const flightContext = useFlightContext();
-
     const flightState = flightContext?.state, dispatch = flightContext?.dispatch
     
     const components = [<Visa />, <Flights />, <Stays />];

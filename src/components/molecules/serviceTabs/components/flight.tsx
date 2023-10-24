@@ -95,34 +95,32 @@ function Flights() {
     const flightContext = useFlightContext();
     const flightState = flightContext?.state, dispatch = flightContext?.dispatch
     
-    const [stops, setStops] = useState("round");
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleAddMultiFlight = () => {
         dispatch && dispatch({ type: "ADD_MULTI_FLIGHT" })
     }
-    const handleUpdateMultiFlight = (flight: OneFlightType, name: keyof OneFlightType, value: any) => {
-        dispatch && dispatch({ type: "UPDATE_MULTI_FLIGHT", payload: { index: flight.index ?? 0, name, value } })
+    const handleUpdateMultiFlight = (flight: OneFlightType, data: Partial<OneFlightType>) => {
+        dispatch && dispatch({ type: "UPDATE_MULTI_FLIGHT", payload: { index: flight.index ?? 0, data } })
     }
     const handleRemoveMultiFlight = (flight: OneFlightType) => {
         dispatch && dispatch({ type: "REMOVE_MULTI_FLIGHT", payload: flight })
     }
-    const handleResetMultiFlight = () => {
-        dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" })
-	}
 
 	const handleChangeStops = (value?: string) => {
-		setStops(value ?? '')
-		handleResetMultiFlight()
+		dispatch && dispatch({ type: "SET_STOPS", payload: value ?? '' })
+		dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" })
 	}
 
 	const formatSearchFlight = (flight?: OneFlightType) => {
-		const dateFrom = formatDate(flightState?.departureDate || new Dayjs());
-		const dateTo = formatDate(flightState?.returnDate || new Dayjs());
-		const departure = flightState?.departureCountry
-		const arrival = flightState?.arrivalCountry
+		const dateFrom = formatDate(flight?.departureDate || new Dayjs());
+		const dateTo = formatDate(flight?.returnDate || new Dayjs());
+		const departure = flight?.departureCountry
+		const arrival = flight?.arrivalCountry
 		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}`
 	}
+
+	useEffect(() => console.log(flightState), [flightState])
 	
 
 	return (
@@ -138,32 +136,32 @@ function Flights() {
 				
 				<FlightStops
 					isMobile={isMobile}
-					value={stops}
+					value={flightState?.stops ?? ''}
 					onChange={handleChangeStops}
-					showLabel={stops === "multi-city" && isMobile}
+					showLabel={flightState?.stops === "multi-city" && isMobile}
 				/>
 			</Flex>
 			
 			<Flex direction="column">
 				{flightState?.fleet.map((e, index, arr) =>
 					<React.Fragment key={'multiflight' + index}>
-						{stops === "multi-city" &&
+						{flightState?.stops === "multi-city" &&
 							<Flex justify={isMobile ? 'flex-end' : 'flex-start'} padding="20px 0px 0px" >
 								<Text type='p' weight={600} size={16} text={`L ${index + 1}`}/>
 							</Flex>
 						}
 						<FlightModule
-							stops={stops}
+							stops={flightState?.stops}
 							flight={e}
 							handleUpdate={handleUpdateMultiFlight}
 							handleDelete={handleRemoveMultiFlight}
-							canDelete={index !== 0 && stops === "multi-city" && arr.length > 1}
+							canDelete={index !== 0 && flightState?.stops === "multi-city" && arr.length > 1}
 						/>
 					</React.Fragment>
 				)}
 			</Flex>
 
-			{stops === "multi-city" && (flightState && flightState?.fleet?.length < 3) &&
+			{flightState?.stops === "multi-city" && (flightState && flightState?.fleet?.length < 3) &&
 				<Flex margin="20px 0px 0px">
 					<Button
 						onClick={handleAddMultiFlight}

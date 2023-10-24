@@ -21,12 +21,12 @@ import { GoArrowSwitch } from "react-icons/go";
 import Button from "../atoms/button";
 
 interface flightProps {
-  stops: string;
-  flight: OneFlightType;
-  length?: number;
-  canDelete?: boolean;
-  handleUpdate?: (flight: OneFlightType, name: keyof OneFlightType, value: any) => void;
-  handleDelete?: (flight: OneFlightType) => void;
+    stops: string;
+    flight: OneFlightType;
+    length?: number;
+    canDelete?: boolean;
+    handleUpdate?: (flight: OneFlightType, data: Partial<OneFlightType>) => void;
+    handleDelete?: (flight: OneFlightType) => void;
 }
 export type FlightCountType = {
     adults: number;
@@ -54,8 +54,7 @@ const FlightCircle = styled.div`
 `;
 
 const TravellersDropdownContainer = styled.div`
-    position: relative;
-    z-index: 2;
+  position: relative;
 `;
 
 function FlightModule({
@@ -67,17 +66,7 @@ function FlightModule({
 }: flightProps) {
     const { isMobile } = useScreenResolution();
 
-    const [data, setData] = useState({
-        displayText: "1 Adult, Economy, 1 Bag",
-        count: {
-            adults: 1,
-            children: 0,
-            infants: 0,
-            cabinBaggage: 1,
-            checkedBaggage: 0,
-            flightClass: 'Economy'
-        }
-    });
+    const [displayText, setDisplayText] = useState("1 Adult, Economy, 1 Bag");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const today = dayjs().toDate()
 
@@ -91,11 +80,15 @@ function FlightModule({
         setAnchorEl(null);
     };
 
-    const handleDataChange = (data: FlightCountType) => {
+    const formatDisplayText = (data: FlightCountType) => {
         const kids = data.children + data.infants
         const bags = data.cabinBaggage + data.checkedBaggage
-        const displayText = `${data.adults} ${data.adults > 1 ? 'Adults' : 'Adult'}${kids > 0 ? `, ${kids} ${kids === 1 ? 'Child' : 'Children'}` : ''}, ${data.flightClass}${bags > 0 ? `, ${bags} ${bags === 1 ? 'Bag' : 'Bags'}` : ''}`
-        setData(prev => ({ ...prev, displayText, count: data }))
+        return `${data.adults} ${data.adults > 1 ? 'Adults' : 'Adult'}${kids > 0 ? `, ${kids} ${kids === 1 ? 'Child' : 'Children'}` : ''}, ${data.flightClass}${bags > 0 ? `, ${bags} ${bags === 1 ? 'Bag' : 'Bags'}` : ''}`
+    }
+
+    const handleDataChange = (data: FlightCountType) => {
+        setDisplayText(formatDisplayText(data))
+        handleUpdate && handleUpdate(flight, data)
     };
 
 return (
@@ -117,7 +110,7 @@ return (
                         flag: x.flag,
                         code: x.code,
                     }))}
-                    onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, 'departureCountry', x)}
+                    onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, { departureCountry: x })}
                     value={flight.departureCountry ?? ""}
                     placeholder="Current Location"
                 >
@@ -152,7 +145,7 @@ return (
                         code: x.code,
                     }))}
                     value={flight.arrivalCountry}
-                    onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, 'arrivalCountry', x)}
+                    onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, { arrivalCountry: x })}
                     placeholder="Where to?"
                 >
                     <Flex gap={isMobile ? "0.7rem" : "1rem"} cursor="pointer" overflowX="hidden">
@@ -177,7 +170,7 @@ return (
                 position="start"
                 value={flight.departureDate.toDate()}
                 minDate={today}
-                onChange={(e) => handleUpdate && handleUpdate(flight, 'departureDate', dayjs(e))}
+                onChange={(e) => handleUpdate && handleUpdate(flight, { departureDate: dayjs(e) })}
             />
             </Flex>
             {stops !== "one-way" && (
@@ -188,11 +181,11 @@ return (
                 >
                     <Text type="label" size={isMobile ? 16 : 16} text="Return" weight={500} />
                     <DatePicker
-                    placeholder="Select Date"
-                    position="start"
-                    value={flight.returnDate.toDate()}
-                    minDate={flight.departureDate.toDate()}
-                    onChange={(e) => handleUpdate && handleUpdate(flight, 'returnDate', dayjs(e))}
+                        placeholder="Select Date"
+                        position="start"
+                        value={flight.returnDate.toDate()}
+                        minDate={flight.departureDate.toDate()}
+                        onChange={(e) => handleUpdate && handleUpdate(flight, { returnDate: dayjs(e) })}
                     />
                 </Flex>
             )}
@@ -212,14 +205,14 @@ return (
                         <Input
                             onClick={handleClick}
                             placeholder="Click me to open dropdown"
-                            value={data.displayText}
+                            value={displayText}
                             styles={{ fontFamily: "poppins", cursor: "pointer", fontSize: '14px' }}
                         />
                         {open &&
                             <DropdownMenu
                                 onDataChange={handleDataChange}
                                 isMobile={isMobile}
-                                data={data.count}
+                                data={flight}
                             />
                         }
                     </TravellersDropdownContainer>

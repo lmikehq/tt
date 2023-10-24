@@ -22,7 +22,26 @@ interface PaymentDetails {
   };
 }
 
+export enum Category {
+  ADULT = "Adult (Over 11 years)",
+  CHILD = "Child (2 - 11 years)",
+  INFANT = "Infant (Under 2 years)",
+}
+
 export interface Passenger {
+  name: string;
+  surname: string;
+  phone: string;
+  email: string;
+  cardno: string;
+  birthday: string; // YYYY-MM-DD format
+  nationality: string; // ISO 3166-1 alpha-2 format (2 letter format)
+  title: string;
+  expiration: string; // expiration of passport, YYYY-MM-DD format
+  category: string;
+}
+
+export interface PassengerFormInterface {
   name: string;
   surname: string;
   phone: string;
@@ -31,8 +50,9 @@ export interface Passenger {
   birthday: string; // YYYY-MM-DD format
   nationality: CountryType; // ISO 3166-1 alpha-2 format (2 letter format)
   title: string;
+  issuingdate: string; // YYYY-MM-DD format
   expiration: string; // expiration of passport, YYYY-MM-DD format
-  category: string;
+  category: Category;
 }
 
 export interface CombinationPrice {
@@ -108,8 +128,43 @@ export interface CheckSeatingRequestInput {
   ancillaries: string[];
   booking_token: string;
   currency: string;
-  passengers: Passenger[];
+  passengers: Pick<Passenger, "birthday" | "category" | "nationality">[];
   session_id: string;
+}
+
+interface SeatingOption {
+  segment_code: string;
+  option: string;
+  price: {
+    amount: string;
+    currency: string;
+    base: string;
+    service: string;
+    service_flat: string;
+    merchant: string;
+  };
+}
+export interface SeatingSeatPrice {
+  amount: string;
+  currency: string;
+  base: string;
+  service: string;
+  service_flat: string;
+  merchant: string;
+}
+interface SeatingSeat {
+  seat: string;
+  passenger_idx: number;
+  price: SeatingSeatPrice;
+}
+
+export interface ParticularSeatingOption {
+  segment_code: string;
+  option: string;
+  seats: SeatingSeat[];
+}
+interface AdditionalServices {
+  seating: (SeatingOption | ParticularSeatingOption)[];
 }
 export interface SaveBookingRequestInput {
   health_declaration_checked: boolean;
@@ -120,6 +175,7 @@ export interface SaveBookingRequestInput {
   booking_token: string;
   session_id: string;
   baggage: Baggage[];
+  additional_services: AdditionalServices | null;
 }
 export interface TokenizeDataRequestInput {
   card: CardInfo;
@@ -176,7 +232,7 @@ export const arrangeBaggageDataForOrdering = (
 
   return baggageData;
 };
-export const passengerAndBaggageDetails: Passenger = {
+export const passengerAndBaggageDetails: PassengerFormInterface = {
   name: "Abd",
   surname: "a",
   phone: "+2349088990012",
@@ -185,6 +241,18 @@ export const passengerAndBaggageDetails: Passenger = {
   birthday: "1998-12-10",
   nationality: { code: "NG", name: "Nigeria", flag: "s" },
   title: "Mr",
+  issuingdate: "2023-12-10",
   expiration: "2030-12-10",
-  category: "adult",
+  category: Category.ADULT,
+};
+export const saveBookingDetails: SaveBookingRequestInput = {
+  health_declaration_checked: true,
+  lang: "en",
+  locale: "en",
+  payment_gateway: "payu",
+  passengers: [],
+  booking_token: "",
+  session_id: "",
+  baggage: [],
+  additional_services: null,
 };

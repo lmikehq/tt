@@ -8,24 +8,26 @@ import { ttColors } from "@lib/theme/colors";
 import { styled } from "styled-components";
 import { PiCaretDownBold } from "react-icons/pi";
 import { FlightCountType } from "./flightModule";
+import { OneFlightType } from "@/lib/extensions/context";
 
 const FlightDropdown = styled.section<{ isMobile: boolean }>`
-    border: 1px solid ${ttColors.gray};
-    border-radius: 8px;
-    background: white;
-    position: absolute;
-    width: ${(props) => (props.isMobile ? '100%' : 'max-content')};
-    right: 0rem;
-    font-family: Poppins;
+  border: 1px solid ${ttColors.gray};
+  border-radius: 8px;
+  background: white;
+  position: absolute;
+  width: ${(props) => (props.isMobile ? "100%" : "max-content")};
+  right: 0rem;
+  font-family: Poppins;
+  z-index: 2;
 `;
 
 interface CounterProps {
-    value: string;
-    onAdd: () => void;
-    onSubtract: () => void;
-    disabledAdd: boolean;
-    disabledSubtract: boolean;
-    isMobile?: boolean;
+  value: string;
+  onAdd: () => void;
+  onSubtract: () => void;
+  disabledAdd: boolean;
+  disabledSubtract: boolean;
+  isMobile?: boolean;
 }
 
 function Counter({ value, onAdd, onSubtract, disabledAdd, disabledSubtract, isMobile }: CounterProps) {
@@ -53,65 +55,65 @@ function Counter({ value, onAdd, onSubtract, disabledAdd, disabledSubtract, isMo
 interface FlightProps {
     onDataChange: (data: FlightCountType) => void;
     isMobile: boolean;
-    data: FlightCountType;
+    data: OneFlightType;
 }
 
 function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
     const [flightClass, setFlightClass] = useState(data.flightClass);
     const [count, setCount] = useState<FlightCountType>({ ...data });
 
-    const setAdults = (type: 'add' | 'subtract') => {
-        if (type === 'subtract') {
+    const setAdults = (type: "add" | "subtract") => {
+        if (type === "subtract") {
             setCount((prev) => {
-                const newValue = prev.adults - 1
-                return ({
+                const newValue = prev.adults - 1;
+                return {
                     ...prev,
                     adults: prev.adults > 1 ? newValue : prev.adults,
-                    children: (newValue < prev.children) ? newValue : prev.children,
-                    infants: (newValue < prev.infants) ? newValue : prev.infants,
-                })
+                    children: newValue < prev.children ? newValue : prev.children,
+                    infants: newValue < prev.infants ? newValue : prev.infants,
+                };
             });
         } else {
             setCount((prev) => ({
                 ...prev,
                 adults: prev.adults < 10 ? prev.adults + 1 : prev.adults,
-            }));
+            }))
         }
-    }
+    };
 
-    const setKids = (type: 'add' | 'subtract', field: 'children' | 'infants') => {
-        if (type === 'subtract') {
+  const setKids = (type: "add" | "subtract", field: "children" | "infants") => {
+        if (type === "subtract") {
             setCount((prev) => ({
                 ...prev,
-                [field]: prev[field] > 0 ? prev[field] - 1 : prev[field]
-            }));
+                [field]: prev[field] > 0 ? prev[field] - 1 : prev[field],
+            }))
         } else {
             setCount((prev) => {
-                const newValue = prev[field] + 1
-                return ({
+                const newValue = prev[field] + 1;
+                return {
                     ...prev,
-                    [field]: (newValue <= prev.adults && newValue < 10) ? newValue : prev[field]
-                })
-            });
+                    [field]: newValue <= prev.adults && newValue < 10 ? newValue : prev[field],
+                };
+            })
         }
     }
 
-    const setBaggage = (type: 'add' | 'subtract', field: 'cabinBaggage' | 'checkedBaggage') => {
-        if (type === 'subtract') {
+    const setBaggage = (type: "add" | "subtract", field: "cabinBaggage" | "checkedBaggage") => {
+        if (type === "subtract") {
             setCount((prev) => ({
                 ...prev,
-                [field]: prev[field] > 0 ? prev[field] - 1 : prev[field]
-            }));
+                [field]: prev[field] > 0 ? prev[field] - 1 : prev[field],
+            }))
         } else {
             setCount((prev) => ({
                 ...prev,
-                [field]: prev[field] < 10 ? prev[field] + 1 : prev[field]
+                [field]: prev[field] < 10 ? prev[field] + 1 : prev[field],
             }))
         }
     }
 
     useEffect(() => {
-        onDataChange({ ...count, flightClass });
+        onDataChange({ ...count, flightClass })
     }, [count, flightClass]);
 
 

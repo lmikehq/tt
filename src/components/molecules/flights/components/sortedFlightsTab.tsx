@@ -11,7 +11,7 @@ export const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   border: 1px solid #e7e7e7;
   background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin: 2rem;
+  margin: 1.5rem;
   padding: 1rem;
   border-radius: 12.5px;
 
@@ -59,7 +59,7 @@ function SortedFlightsTab(props: sortProps) {
 
   return (
     <FlightContainer>
-      <Flex justify="space-between" align="center">
+      <Flex gap="3rem" align="center">
         <Flex justify={isMobile ? "center" : "flex-start"} gap="2rem">
           <ButtonBox
             active={props.sortType === "best"}
@@ -98,8 +98,8 @@ function SortedFlightsTab(props: sortProps) {
             </Flex>
           </ButtonBox>
           <ButtonBox
-            active={props.sortType === "cheap"}
-            onClick={() => props.setSortType("cheap")}
+            active={props.sortType === "cheapest"}
+            onClick={() => props.setSortType("cheapest")}
           >
             <Flex
               direction="column"
@@ -134,8 +134,8 @@ function SortedFlightsTab(props: sortProps) {
           </ButtonBox>
 
           <ButtonBox
-            active={props.sortType === "fast"}
-            onClick={() => props.setSortType("fast")}
+            active={props.sortType === "fastest"}
+            onClick={() => props.setSortType("fastest")}
           >
             <Flex
               direction="column"
@@ -168,7 +168,7 @@ function SortedFlightsTab(props: sortProps) {
         {!isMobile && (
           <Flex justify="flex-end" gap=".75rem">
             <BsSortUp size={30} color="#606060" />
-            <Text type="p" text="Other Sort" color="#606060" />
+            <Text type="p" text="Other Sort" color="#606060" whiteSpace="nowrap" />
           </Flex>
         )}
       </Flex>

@@ -20,10 +20,17 @@ export interface OneFlightType {
     arrivalCountry?: CountryDetails;
     departureDate: dayjs.Dayjs;
     returnDate: dayjs.Dayjs;
+    adults: number;
+    children: number;
+    infants: number;
+    cabinBaggage: number;
+    checkedBaggage: number;
+    flightClass: string;
 }
 
-interface ContextType extends OneFlightType {
+interface ContextType {
     flightType: string;
+    stops: string;
     fleet: OneFlightType[]
 };
 
@@ -32,25 +39,32 @@ const oneFlight: OneFlightType = {
     departureCountry: undefined,
     arrivalCountry: undefined,
     departureDate: dayjs(new Date()),
-    returnDate: dayjs().add(1, "day"),
+    returnDate: dayjs(new Date()).add(1, "day"),
+    adults: 1,
+    children: 0,
+    infants: 0,
+    cabinBaggage: 1,
+    checkedBaggage: 0,
+    flightClass: "Economy",
 }
 
 const initialValues: ContextType = {
-    ...oneFlight,
     flightType: 'international',
+    stops: 'round',
     fleet: [oneFlight]
 };
 
 type Action =
-    | { type: "SET_DEPARTURE"; payload: CountryDetails }
-    | { type: "SET_ARRIVAL"; payload: CountryDetails }
-    | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
-    | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs }
+    // | { type: "SET_DEPARTURE"; payload: CountryDetails }
+    // | { type: "SET_ARRIVAL"; payload: CountryDetails }
+    // | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
+    // | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs }
+    | { type: "SET_STOPS"; payload: ContextType['stops'] }
     | { type: "SET_FLIGHT_TYPE"; payload: ContextType['flightType'] }
     | { type: "LIST_MULTI_FLIGHT"; payload: OneFlightType[] }
     | { type: "SET_MULTI_FLIGHT"; payload: OneFlightType }
     | { type: "ADD_MULTI_FLIGHT"; payload?: undefined }
-    | { type: "UPDATE_MULTI_FLIGHT"; payload: { index: number, name: keyof OneFlightType, value: any } }
+    | { type: "UPDATE_MULTI_FLIGHT"; payload: { index: number, data: Partial<OneFlightType> } }
     | { type: "REMOVE_MULTI_FLIGHT"; payload: OneFlightType }
     | { type: "RESET_MULTI_FLIGHT"; payload?: undefined }
 
@@ -62,8 +76,7 @@ interface FlightProps {
 const FlightContext = createContext<FlightProps | undefined>(undefined);
 
 export function useFlightContext() {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useContext(FlightContext);
+    return useContext(FlightContext);
 }
 
 type Props = {
@@ -72,16 +85,18 @@ type Props = {
 
 const reducer = (state: ContextType, action: Action) => {
   switch (action.type) {
-    case "SET_DEPARTURE":
-      return { ...state, departureCountry: action.payload };
-    case "SET_ARRIVAL":
-      return { ...state, arrivalCountry: action.payload };
-    case "SET_DEPARTURE_DATE":
-      return { ...state, departureDate: action.payload };
-    case "SET_RETURN_DATE":
-      return { ...state, returnDate: action.payload };
+    // case "SET_DEPARTURE":
+    //   return { ...state, departureCountry: action.payload };
+    // case "SET_ARRIVAL":
+    //   return { ...state, arrivalCountry: action.payload };
+    // case "SET_DEPARTURE_DATE":
+    //   return { ...state, departureDate: action.payload };
+    // case "SET_RETURN_DATE":
+    //   return { ...state, returnDate: action.payload };
     case "SET_FLIGHT_TYPE":
       return { ...state, flightType: action.payload };
+    case "SET_STOPS":
+      return { ...state, stops: action.payload };
     case "LIST_MULTI_FLIGHT":
       return { ...state, fleet: action.payload.map((e, index) => ({ ...e, index })) };
     case "SET_MULTI_FLIGHT":
@@ -91,7 +106,7 @@ const reducer = (state: ContextType, action: Action) => {
     case "UPDATE_MULTI_FLIGHT":
         return {
             ...state,
-            fleet: state.fleet.map((e, index) => e.index === action.payload.index ? ({ ...e, [action.payload.name]: action.payload.value }) : e)
+            fleet: state.fleet.map((e, index) => e.index === action.payload.index ? ({ ...e, ...action.payload.data }) : e)
         };
     case "REMOVE_MULTI_FLIGHT":
         return { ...state, fleet: state.fleet.filter(e => e.index !== action.payload.index ).map((e, ind) => ({ ...e, index: ind})) };

@@ -13,7 +13,7 @@ interface SeatRowPaneProps {
 }
 const SeatRowPane = ({ row, selectSeat }: SeatRowPaneProps) => {
   return (
-    <Flex width="fit-content">
+    <Flex width="" justify="space-between">
       {row.seat_groups.map((seatGroup, index) => (
         <>
           <SeatGroupPane seatGroup={seatGroup} selectSeat={selectSeat} />
