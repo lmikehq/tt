@@ -120,8 +120,6 @@ function Flights() {
 		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}`
 	}
 
-	useEffect(() => console.log(flightState), [flightState])
-	
 
 	return (
 		<Section padding="2rem 0 1rem 0" styles={{ position: "relative" }}>
@@ -138,31 +136,25 @@ function Flights() {
 					isMobile={isMobile}
 					value={flightState?.stops ?? ''}
 					onChange={handleChangeStops}
-					showLabel={flightState?.stops === "multi-city" && isMobile}
+					showLabel={isMobile}
 				/>
 			</Flex>
 			
 			<Flex direction="column">
 				{flightState?.fleet.map((e, index, arr) =>
-					<React.Fragment key={'multiflight' + index}>
-						{flightState?.stops === "multi-city" &&
-							<Flex justify={isMobile ? 'flex-end' : 'flex-start'} padding="20px 0px 0px" >
-								<Text type='p' weight={600} size={16} text={`L ${index + 1}`}/>
-							</Flex>
-						}
-						<FlightModule
-							stops={flightState?.stops}
-							flight={e}
-							handleUpdate={handleUpdateMultiFlight}
-							handleDelete={handleRemoveMultiFlight}
-							canDelete={index !== 0 && flightState?.stops === "multi-city" && arr.length > 1}
-						/>
-					</React.Fragment>
+					<FlightModule
+						key={'multiflight' + index}
+						stops={flightState?.stops}
+						flight={e}
+						handleUpdate={handleUpdateMultiFlight}
+						handleDelete={handleRemoveMultiFlight}
+						canDelete={flightState?.stops === "multi-city" && arr.length > 1}
+					/>
 				)}
 			</Flex>
 
 			{flightState?.stops === "multi-city" && (flightState && flightState?.fleet?.length < 3) &&
-				<Flex margin="20px 0px 0px">
+				<Flex margin={isMobile ? "0px" : "30px 0px 0px"}>
 					<Button
 						onClick={handleAddMultiFlight}
 						padding="0rem 1rem"
@@ -171,7 +163,6 @@ function Flights() {
 						border="1px solid #06062A"
 						width="fit-content"
 						cursor="pointer"
-						margin="1.2rem 0 0 0"
 						startIcon={<HiPlus color="#06062A" size={25} />}
 					>
 						<Text
@@ -189,12 +180,11 @@ function Flights() {
 		  
 			<Flex
 				justify="center"
-				margin="2rem 0 0"
 				styles={{ position: "absolute", bottom: "-50px" }}
 			>
 				<Button
 					width={isMobile ? "100%" : "300px"}
-					padding={"0 1.5rem"}
+					padding="0 1.5rem"
 					cursor="pointer"
 					borderRadius="4px"
 					background="#06062A"

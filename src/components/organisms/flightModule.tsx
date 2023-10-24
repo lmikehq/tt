@@ -93,6 +93,23 @@ function FlightModule({
 
 return (
     <Section padding=".75rem 0 0 0 " height="unset">
+        {stops === "multi-city" &&
+            <Flex justify={isMobile ? 'space-between' : 'flex-start'} padding="20px 0px 0px" >
+                <Text type='p' weight={600} size={16} text={`L ${flight.index + 1}`} />
+                {canDelete && isMobile && 
+                    <Flex
+                        width='fit-content'
+                        styles={{ minWidth: '30px'}}
+                        padding="0px 0px 0px"
+                        cursor="pointer"
+                        alignSelf="flex-end"
+                        onClick={() => handleDelete && handleDelete(flight)}
+                    >
+                        <Button padding=".5rem 1rem" height="auto" endIcon={<HiXMark size={26} color={ttColors.ghostWhite} />}>Remove</Button>
+                    </Flex>
+                }
+            </Flex>
+        }
         <Flex
             direction={isMobile ? "column" : "row"}
             align={isMobile ? "flex-start" : "center"}
@@ -218,24 +235,19 @@ return (
                     </TravellersDropdownContainer>
                 </ClickAwayListener>
             </Flex>
-            
-            <Flex
-                width='fit-content'
-                styles={{ minWidth: '30px'}}
-                padding="0px 0px 8px"
-                cursor="pointer"
-                alignSelf="flex-end"
-                onClick={() => handleDelete && handleDelete(flight)}
-            >
-                {canDelete &&
-                    <React.Fragment>
-                        {!isMobile ?
-                            <HiXMark size={30} color={ttColors.gray} /> :
-                            <Button padding="0rem 1rem" endIcon={<HiXMark size={26} color={ttColors.ghostWhite} />}>Remove</Button>
-                        }
-                    </React.Fragment>
-                }
-          </Flex>
+
+            {canDelete && !isMobile && 
+                <Flex
+                    width='fit-content'
+                    styles={{ minWidth: '30px'}}
+                    padding="0px 0px 0px"
+                    cursor="pointer"
+                    alignSelf="flex-end"
+                    onClick={() => handleDelete && handleDelete(flight)}
+                >
+                    <HiXMark size={30} color={ttColors.gray} />
+                </Flex>
+            }
       </Flex>
     </Section>
   );

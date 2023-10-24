@@ -15,7 +15,7 @@ type CountryDetails = {
 };
 
 export interface OneFlightType {
-    index?: number;
+    index: number;
     departureCountry?: CountryDetails;
     arrivalCountry?: CountryDetails;
     departureDate: dayjs.Dayjs;
