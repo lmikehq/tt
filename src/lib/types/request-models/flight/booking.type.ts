@@ -15,11 +15,11 @@ interface PaymentDetails {
   level: string;
   type: string;
   pass_luhn_validation: boolean;
-  risk_assessment: {
-    correlationId: string;
-    version: string;
-    status: string;
-  };
+  // risk_assessment: {
+  //   correlationId: string;
+  //   version: string;
+  //   status: string;
+  // };
 }
 
 export enum Category {
