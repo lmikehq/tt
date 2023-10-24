@@ -14,33 +14,45 @@ type CountryDetails = {
   code: string;
 };
 
-type ContextType = {
-  departureCountry: CountryDetails;
-  arrivalCountry: CountryDetails;
-  departureDate: dayjs.Dayjs;
-  returnDate: dayjs.Dayjs;
+export interface OneFlightType {
+    index?: number;
+    departureCountry?: CountryDetails;
+    arrivalCountry?: CountryDetails;
+    departureDate: dayjs.Dayjs;
+    returnDate: dayjs.Dayjs;
+}
+
+interface ContextType extends OneFlightType {
+    flightType: string;
+    fleet: OneFlightType[]
 };
 
+const oneFlight: OneFlightType = {
+    index: 0,
+    departureCountry: undefined,
+    arrivalCountry: undefined,
+    departureDate: dayjs(new Date()),
+    returnDate: dayjs().add(1, "day"),
+}
+
 const initialValues: ContextType = {
-  departureCountry: {
-    name: "Nigeria",
-    flag: "",
-    code: "NG",
-  },
-  arrivalCountry: {
-    name: "Canada",
-    flag: "",
-    code: "CA",
-  },
-  departureDate: dayjs(new Date()),
-  returnDate: dayjs().add(1, "day"),
+    ...oneFlight,
+    flightType: 'international',
+    fleet: [oneFlight]
 };
 
 type Action =
-  | { type: "SET_DEPARTURE"; payload: CountryDetails }
-  | { type: "SET_ARRIVAL"; payload: CountryDetails }
-  | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
-  | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs };
+    | { type: "SET_DEPARTURE"; payload: CountryDetails }
+    | { type: "SET_ARRIVAL"; payload: CountryDetails }
+    | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
+    | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs }
+    | { type: "SET_FLIGHT_TYPE"; payload: ContextType['flightType'] }
+    | { type: "LIST_MULTI_FLIGHT"; payload: OneFlightType[] }
+    | { type: "SET_MULTI_FLIGHT"; payload: OneFlightType }
+    | { type: "ADD_MULTI_FLIGHT"; payload?: undefined }
+    | { type: "UPDATE_MULTI_FLIGHT"; payload: { index: number, name: keyof OneFlightType, value: any } }
+    | { type: "REMOVE_MULTI_FLIGHT"; payload: OneFlightType }
+    | { type: "RESET_MULTI_FLIGHT"; payload?: undefined }
 
 interface FlightProps {
   state: ContextType;
@@ -68,6 +80,23 @@ const reducer = (state: ContextType, action: Action) => {
       return { ...state, departureDate: action.payload };
     case "SET_RETURN_DATE":
       return { ...state, returnDate: action.payload };
+    case "SET_FLIGHT_TYPE":
+      return { ...state, flightType: action.payload };
+    case "LIST_MULTI_FLIGHT":
+      return { ...state, fleet: action.payload.map((e, index) => ({ ...e, index })) };
+    case "SET_MULTI_FLIGHT":
+      return { ...state, fleet: state.fleet.map((e, index) => e.index === action.payload.index ? action.payload : e ) };
+    case "ADD_MULTI_FLIGHT":
+          return { ...state, fleet: [...state.fleet, { ...oneFlight, index: state.fleet.length }] };
+    case "UPDATE_MULTI_FLIGHT":
+        return {
+            ...state,
+            fleet: state.fleet.map((e, index) => e.index === action.payload.index ? ({ ...e, [action.payload.name]: action.payload.value }) : e)
+        };
+    case "REMOVE_MULTI_FLIGHT":
+        return { ...state, fleet: state.fleet.filter(e => e.index !== action.payload.index ).map((e, ind) => ({ ...e, index: ind})) };
+    case "RESET_MULTI_FLIGHT":
+        return { ...state, fleet: state.fleet.filter(e => e.index === 0 ) };
     default:
       return state;
   }
@@ -76,9 +105,9 @@ const reducer = (state: ContextType, action: Action) => {
 export function FlightProvider({ children }: Props) {
   const [state, dispatch] = useReducer(reducer, initialValues);
 
-  return (
-    <FlightContext.Provider value={{ state, dispatch }}>
-      {children}
-    </FlightContext.Provider>
-  );
+    return (
+        <FlightContext.Provider value={{ state, dispatch }}>
+            {children}
+        </FlightContext.Provider>
+    );
 }

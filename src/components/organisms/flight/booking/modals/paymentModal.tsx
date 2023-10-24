@@ -147,7 +147,7 @@ function PaymentModal({
                 <Text type="p" text="Expiry Date" />
                 <DatePicker
                     placeholder="MM/YY"
-                    minDate={dayjs().toDate()}
+                    minDate={dayjs()}
                     views={["month", "year"]}
                     height="40px"
                     format="MM/YY"

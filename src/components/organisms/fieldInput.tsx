@@ -253,18 +253,18 @@ export const FieldAsDate = (props: FieldProps) => {
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
-      <DatePicker
-        disabled={disabled}
-        views={views}
-        placeholder={placeholder}
-        maxDate={maxDate?.toDate()}
-        minDate={minDate?.toDate()}
-        value={value === "" ? undefined : dayjs(`${value}`).toDate()}
-        onChange={onChange ? onChange : handleChange}
-        error={touched && error}
-        format={format}
-      />
-      {touched && error ? <ErrorText text={error} /> : null}
+        <DatePicker
+            disabled={disabled}
+            views={views}
+            placeholder={placeholder}
+            maxDate={maxDate}
+            minDate={minDate}
+            value={value === "" ? undefined : dayjs(`${value}`)}
+            onChange={onChange ? onChange : handleChange}
+            error={touched && error}
+            format={format}
+        />
+        {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );
 };

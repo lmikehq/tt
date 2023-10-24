@@ -50,7 +50,8 @@ interface flexProps {
   cursor?: string;
   ref?: any;
   onClick?: (e: any) => void;
-  className?: string;
+    className?: string;
+    position?: CSSProperties['position']
 }
 
 const FlexWrapper = styled.div`
@@ -82,40 +83,42 @@ export const Flex: React.FC<flexProps> = ({
   ref,
   styles,
   onClick,
-  className,
+    className,
+  position
 }) => {
-  return (
-    <FlexWrapper
-      className={className}
-      ref={ref}
-      id={id}
-      style={{
-        margin: margin,
-        display: "flex",
-        justifyContent: justify,
-        alignItems: align,
-        gap: gap,
-        cursor,
-        flexDirection: direction,
-        background: background,
-        width: width,
-        maxWidth: maxWidth,
-        overflow: overflow || "unset",
-        overflowY: overflowY,
-        overflowX: overflowX,
-        borderRadius: borderRadius,
-        border: border,
-        padding: padding,
-        flexWrap: wrap,
-        height: height,
-        alignSelf: alignSelf,
-        borderBottom: borderBottom,
-        ...styles,
-      }}
-      onClick={onClick}
-    >
-      {children}
-    </FlexWrapper>
-  );
+    return (
+        <FlexWrapper
+            className={className}
+            ref={ref}
+            id={id}
+            style={{
+                margin: margin,
+                display: "flex",
+                justifyContent: justify,
+                alignItems: align,
+                gap: gap,
+                cursor,
+                flexDirection: direction,
+                background: background,
+                width: width,
+                maxWidth: maxWidth,
+                overflow: overflow || "unset",
+                overflowY: overflowY,
+                overflowX: overflowX,
+                borderRadius: borderRadius,
+                border: border,
+                padding: padding,
+                flexWrap: wrap,
+                height: height,
+                alignSelf: alignSelf,
+                borderBottom: borderBottom,
+                position,
+                ...styles,
+            }}
+            onClick={onClick}
+        >
+            {children}
+        </FlexWrapper>
+    )
 };
 export default Flex;

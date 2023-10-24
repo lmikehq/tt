@@ -6,6 +6,8 @@ import Text from "@atom/text";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { ttColors } from "@lib/theme/colors";
 import { styled } from "styled-components";
+import { PiCaretDownBold } from "react-icons/pi";
+import { FlightCountType } from "./flightModule";
 
 const FlightDropdown = styled.section<{ isMobile: boolean }>`
     border: 1px solid ${ttColors.gray};
@@ -25,18 +27,21 @@ interface CounterProps {
     disabledSubtract: boolean;
     isMobile?: boolean;
 }
+
 function Counter({ value, onAdd, onSubtract, disabledAdd, disabledSubtract, isMobile }: CounterProps) {
     return (
-        <Flex maxWidth="50%" gap="1rem" align="center" justify={isMobile ? "space-between" : "center"}>
+        <Flex maxWidth="40%" gap="1rem" align="center" justify={isMobile ? "space-between" : "flex-end"}>
             <AiOutlineMinusCircle
-                size={30}
+                size={32}
                 onClick={onSubtract}
                 cursor={disabledSubtract ? 'initial' : 'pointer'}
                 color={disabledSubtract ? ttColors.gray : "#606060"}
             />
-            <Text type="p" text={value} />
+            <Flex width='10%' justify="center">
+                <Text type="p" text={value} />
+            </Flex>
             <AiOutlinePlusCircle
-                size={30}
+                size={32}
                 onClick={onAdd}
                 cursor={disabledAdd ? 'initial' : 'pointer'}
                 color={disabledAdd ? ttColors.gray : "#606060"}
@@ -46,19 +51,14 @@ function Counter({ value, onAdd, onSubtract, disabledAdd, disabledSubtract, isMo
 }
 
 interface FlightProps {
-    onDataChange: (data: any) => void;
+    onDataChange: (data: FlightCountType) => void;
     isMobile: boolean;
+    data: FlightCountType;
 }
 
-function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
-    const [value, setValue] = useState("Economy");
-    const [count, setCount] = useState({
-        adults: 1,
-        children: 0,
-        infants: 0,
-        cabinBaggage: 1,
-        checkedBaggage: 0,
-    });
+function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
+    const [flightClass, setFlightClass] = useState(data.flightClass);
+    const [count, setCount] = useState<FlightCountType>({ ...data });
 
     const setAdults = (type: 'add' | 'subtract') => {
         if (type === 'subtract') {
@@ -111,8 +111,8 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
     }
 
     useEffect(() => {
-        onDataChange({ ...count, class: value });
-    }, [count, value]);
+        onDataChange({ ...count, flightClass });
+    }, [count, flightClass]);
 
 
   return (
@@ -121,9 +121,10 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
             <SearchStringInput
                 placeholder=""
                 options={["Economy", "Business", "First"]}
-                onChange={(e: any) => setValue(e)}
-                value={value}
+                onChange={(e: any) => setFlightClass(e)}
+                value={flightClass}
                 border="bottom"
+                icon={<PiCaretDownBold size={22} />}
             />
         </Section>
         <Flex
@@ -133,8 +134,8 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
             padding="1rem 2rem 3rem 2rem"
         >
             <Flex align="center" gap="1rem" justify="space-between">
-                <Flex direction="column" gap=".1rem" width="50%">
-                    <Text type="p" text="Adults" weight={500} />
+                <Flex direction="column" gap=".1rem" width="60%">
+                    <Text type="p" size={15} text="Adults" weight={500} />
                     <Text type="p" text="Ages 12+" size={13} color={ttColors.gray} />
                 </Flex>
                 <Counter
@@ -147,8 +148,8 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
             </Flex>
               
             <Flex align="center" gap="1rem" justify="space-between">
-                <Flex direction="column" gap=".1rem" width="50%">
-                    <Text type="p" text="Children" weight={500} />
+                <Flex direction="column" gap=".1rem" width="60%">
+                    <Text type="p" size={15} text="Children" weight={500} />
                     <Text type="p" text="Ages 2 - 11" size={13} color={ttColors.gray} />
                 </Flex>
                 <Counter
@@ -161,8 +162,8 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
             </Flex>
               
             <Flex align="center" gap="1rem" justify="space-between">
-                <Flex direction="column" gap=".1rem" width="50%">
-                    <Text type="p" text="Infants" weight={500} />
+                <Flex direction="column" gap=".1rem" width="60%">
+                    <Text type="p" size={15} text="Infants" weight={500} />
                     <Text type="p" text="Ages 0 - 2" size={13} color={ttColors.gray} />
                 </Flex>
                 <Counter
@@ -174,17 +175,17 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
                 />
             </Flex>
 
-            <Flex padding="14px 0px" maxWidth="280px">
+            <Flex padding="14px 0px" maxWidth="290px">
                 <Text type="p" text="Your age at time of travel must be valid for the age category booked." size={14} color={ttColors.gray} />
             </Flex>
 
-            <Flex padding="0px 0px 12px">
+            <Flex padding="0px">
                   <Text type="p" text="Bags" size={20} weight={600} />
             </Flex>
 
             <Flex align="center" gap="1rem" justify="space-between">
-                <Flex direction="column" gap=".1rem" width="50%">
-                    <Text type="p" text="Cabin baggage" weight={500} />
+                <Flex direction="column" gap=".1rem" width="60%">
+                    <Text type="p" size={15} text="Cabin baggage" weight={500} />
                 </Flex>
                 <Counter
                     value={count.cabinBaggage.toString()}
@@ -196,8 +197,8 @@ function DropdownMenu({ onDataChange, isMobile }: FlightProps) {
             </Flex>
               
             <Flex align="center" gap="1rem" justify="space-between">
-                <Flex direction="column" gap=".1rem" width="50%">
-                    <Text type="p" text="Checked baggage" weight={500} />
+                <Flex direction="column" gap=".1rem" width="60%">
+                    <Text type="p" size={15} text="Checked baggage" weight={500} />
                 </Flex>
                 <Counter
                     value={count.checkedBaggage.toString()}
