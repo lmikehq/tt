@@ -1,227 +1,124 @@
-"use client";
-
-import Button from "@/components/atoms/button";
-import Text from "@/components/atoms/text";
-import Flex from "@/components/templates/flex";
-import { ttColors } from "@/lib/theme/colors";
-import dayjs from "dayjs";
-import { MouseEventHandler, Ref, SyntheticEvent, forwardRef } from "react";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker as MuiDatepicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { addDays, startOfDay } from "date-fns";
+import { Dayjs } from "dayjs";
+import { useState } from "react";
+import { DateRange, Range, RangeKeyDict } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { ttColors } from "@lib/theme/colors";
 import { IoCalendarOutline } from "react-icons/io5";
-import { styled } from "styled-components";
 
-interface CustomDatePickerProps {
-  minDate?: Date;
-  maxDate?: Date;
-  monthsShown?: number;
-  endDate?: Date;
-  startDate?: Date;
-  onChange(
-    date: Date | null,
-    event: SyntheticEvent<any, Event> | undefined
-  ): void;
-  selected?: Date;
-  value?: Date;
-  placeholder?: string;
-  position?: "start";
-  disabled?: boolean;
-  views?: ("day" | "month" | "year")[];
-  error?: any;
-  format?: string;
-  width?: string;
-  height?: string;
+interface BlockDatePickerProps {
+    value?: Range;
+    onChange: (value: RangeKeyDict) => void;
+    disabledDates?: Date[];
 }
-const InputContainer = styled.div<{ width: string; height?: string }>`
-  position: relative;
-  display: inline-block;
-  width: ${(props) => props.width ?? "100%"};
-`;
-// height: ${(props) => props.height}
 
-const DateIcon = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  font-size: 20px;
-  display: inline-flex;
-`;
-const DateInput = styled.input<{ width?: string }>`
-  height: 45px;
-  width: ${(props) => props.width ?? "100%"};
-  border-radius: 4px;
-  font-size: 16px;
-  padding-left: 40px !important;
-  padding-right: 10px;
-  box-sizing: border-box;
-  background-color: transparent;
-  cursor: pointer;
-  border: 1px solid #bdbdbd;
-  &:hover {
-    border: 1px solid ${ttColors.primary};
-  }
-  &:focus {
-    border: 1px solid ${ttColors.primary};
-  }
-  &:focus-visible {
-    border: 1px solid ${ttColors.primary};
-    outline: none !important;
-  }
-  &.error {
-    border: 0;
-    outline: 1px solid red;
-  }
-  &::placeholder {
-    color: #929292 !important;
-    font-weight: 400 !important;
-  }
-`;
-export const DatePicker = ({
-  minDate,
-  maxDate,
-  selected,
-  value,
-  endDate,
-  startDate,
-  onChange,
-  monthsShown = 1,
-  placeholder,
-  disabled,
-  width,
-  height,
-}: CustomDatePickerProps) => {
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
+export const BlockDatePicker: React.FC<BlockDatePickerProps> = ({
+    value,
+    onChange,
+    disabledDates,
+}) => {
+    const [state, setState] = useState({
+            selection1: {
+            startDate: addDays(new Date(), -6),
+            endDate: new Date(),
+            key: "selection1",
+        },
+            selection2: {
+            startDate: addDays(new Date(), 1),
+            endDate: addDays(new Date(), 7),
+            key: "selection2",
+        },
+    });
+    value = state.selection2;
 
-  return (
-    <ReactDatePicker
-      selected={value || selected}
-      startDate={startDate}
-      minDate={minDate}
-      maxDate={maxDate}
-      endDate={endDate}
-      onChange={onChange}
-      monthsShown={monthsShown}
-      disabled={disabled}
-      withPortal={true}
-      placeholderText={placeholder}
-      showIcon={false}
-      disabledKeyboardNavigation={true}
-      customInput={<CustomDatePickerInput width={width} height={height} />}
-      shouldCloseOnSelect={false}
-      formatWeekDay={(day) => <>{day.substring(0, 3).toUpperCase()}</>}
-      renderCustomHeader={({
-        monthDate,
-        customHeaderCount,
-        decreaseMonth,
-        increaseMonth,
-      }) => (
-        <Flex align="center" justify="space-between">
-          <Button
-            onClick={decreaseMonth}
-            width="fit-content"
-            background="transparent"
-            styles={
-              monthsShown == 2
-                ? customHeaderCount === 1
-                  ? { visibility: "hidden" }
-                  : {}
-                : {}
-            }
-          >
-            <BiChevronLeft color="#333333" size={24} />
-          </Button>
-          <Text
-            text={monthDate.toLocaleString("en-US", {
-              month: "long",
-              year: "numeric",
-            })}
-            type="p"
-            size={18}
-            weight={700}
-          />
-
-          <Button
-            onClick={increaseMonth}
-            width="fit-content"
-            background="transparent"
-            styles={
-              monthsShown == 2
-                ? customHeaderCount === 0
-                  ? { visibility: "hidden" }
-                  : {}
-                : {}
-            }
-          >
-            <BiChevronRight color="#333333" size={24} />
-          </Button>
-        </Flex>
-        // <div>
-        //   <button
-        //     aria-label="Previous Month"
-        //     className={
-        //       "react-datepicker__navigation react-datepicker__navigation--previous"
-        //     }
-        //     style={customHeaderCount === 1 ? { visibility: "hidden" } : {}}
-        //     onClick={decreaseMonth}
-        //   >
-        //     <BiChevronLeft color="#333333" size={24} />
-        //   </button>
-        //   <span className="react-datepicker__current-month">
-        //     <Text
-        //       text={monthDate.toLocaleString("en-US", {
-        //         month: "long",
-        //         year: "numeric",
-        //       })}
-        //       type="p"
-        //       size={18}
-        //       weight={700}
-        //     />
-        //   </span>
-        //   <button
-        //     aria-label="Next Month"
-        //     className={
-        //       "react-datepicker__navigation react-datepicker__navigation--next"
-        //     }
-        //     style={customHeaderCount === 1 ? { visibility: "hidden" } : {}}
-        //     onClick={increaseMonth}
-        //   >
-        //     <BiChevronRight color="#333333" size={24} />
-        //   </button>
-        // </div>
-      )}
-    />
-  );
+    return (
+        <DateRange
+            rangeColors={["#262626"]}
+            ranges={[value]}
+            date={new Date()}
+            onChange={onChange}
+            direction="vertical"
+            showDateDisplay={false}
+            // minDate={new Date()}
+            disabledDates={disabledDates}
+        />
+    );
 };
 
-// eslint-disable-next-line react/display-name
-export const CustomDatePickerInput = forwardRef(
-  (
-    {
-      value,
-      onClick,
-      width,
-      height,
-    }: {
-      value?: string;
-      onClick?: MouseEventHandler<HTMLInputElement>;
-      width?: string;
-      height?: string;
-    },
-    ref: Ref<HTMLDivElement>
-  ) => (
-    <InputContainer ref={ref} width={width ?? "100%"}>
-      <DateIcon>
-        <IoCalendarOutline size={24} />
-      </DateIcon>
-      <DateInput
-        placeholder="dd/mm/yyyy"
-        value={value}
-        onClick={onClick}
-        readOnly
-      />
-    </InputContainer>
-  )
-);
+interface DatePickerProps {
+    value?: Dayjs | null;
+    onChange?: (value: any) => void;
+    views?: ("year" | "month" | "day")[];
+    disabled?: boolean;
+    label?: string;
+    minDate?: Dayjs | null;
+    maxDate?: Dayjs;
+    placeholder?: string;
+    position?: "start";
+    height?: string;
+    error?: boolean;
+    format?: string;
+}
+
+export const DatePicker: React.FC<DatePickerProps> = ({
+    onChange,
+    value,
+    views,
+    disabled,
+    label,
+    minDate,
+    maxDate,
+    height,
+    placeholder,
+    position,
+    error,
+    format,
+}) => {
+    return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <MuiDatepicker
+                label={label}
+                value={value}
+                onChange={onChange}
+                views={views}
+                disabled={disabled}
+                minDate={minDate}
+                maxDate={maxDate}
+                sx={{
+                    width: "100%",
+                    cursor: "pointer",
+                    "& input": {
+                        color: "#1C1B1F",
+                        fontWeight: 400,
+                        padding: " 0 14px",
+                        height: height || "45px",
+                        fontFamily: "'Poppins', sans-serif",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: `${ttColors.primary} !important`,
+                    },
+                    "&:hover .MuiInputBase-root": {
+                        color: `${ttColors.primary} !important`,
+                    },
+                    "& .MuiInputBase-root": {
+                        flexDirection: position === "start" ? "row-reverse" : "row",
+                    },
+                }}
+                slotProps={{
+                    textField: {
+                        placeholder: placeholder,
+                        error: error,
+                    },
+                }}
+                slots={{
+                    openPickerIcon: IoCalendarOutline,
+                }}
+                format={format}
+            />
+        </LocalizationProvider>
+    );
+};

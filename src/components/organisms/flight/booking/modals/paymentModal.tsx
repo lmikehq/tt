@@ -17,6 +17,9 @@ import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { Mode } from "@/lib/types";
 import Section from "@/components/molecules/section";
 import { useCreditCardValidator, images } from "react-creditcard-validator";
+import { FormikProps } from "formik";
+import { CardInfo } from "@/lib/types/request-models/flight/booking.type";
+import { FieldInput } from "@/components/organisms/fieldInput";
 
 const Wrapper = styled.div`
   background: white;
@@ -55,15 +58,14 @@ const StyledInput = styled.input`
   font-family: Poppins;
   font-size: 16px;
   width: 100%;
-`
-
-function PaymentModal({
-  open,
-  handleClose,
-}: {
+`;
+interface PaymentModalProps {
+  formik: FormikProps<CardInfo>;
   open: boolean;
   handleClose: () => void;
-}) {
+}
+
+function PaymentModal({ open, handleClose, formik }: PaymentModalProps) {
   const {
     getCardNumberProps,
     getCardImageProps,
@@ -78,7 +80,6 @@ function PaymentModal({
   const [cvv, setCvv] = useState("");
 
   const { isMobile } = useScreenResolution();
-
 
   const handleCVV = (event: ChangeEvent<HTMLInputElement>) => {
     const formattedValue = event.target.value.replace(/\D/g, "");
@@ -112,11 +113,10 @@ function PaymentModal({
           >
             <Flex direction="column" gap=".5rem">
               <Text type="p" text="Card Name" />
-              <Input
-                type="text"
-                border="1px solid #E7E7E7"
-                padding="1rem"
-                placeholder="Enter Card Name"
+              <FieldInput
+                name={"holder"}
+                placeholder={"Enter Card Name"}
+                formik={formik}
               />
             </Flex>
             <Flex direction="column" gap=".5rem">
@@ -129,11 +129,12 @@ function PaymentModal({
                 }}
                 width="100%"
               >
-                <Flex
-                  justify="space-between"
-                  padding=".5rem 1rem"
-                >
-                  <StyledInput {...getCardNumberProps()} />
+                <Flex justify="space-between" padding=".5rem 1rem">
+                  <StyledInput
+                    {...getCardNumberProps()}
+                    onChange={formik.handleChange}
+                    name="number"
+                  />
                   <svg {...getCardImageProps({ images })} />
                 </Flex>
               </Section>
@@ -147,24 +148,21 @@ function PaymentModal({
                 <Text type="p" text="Expiry Date" />
                 <DatePicker
                     placeholder="MM/YY"
-                    minDate={dayjs().toDate()}
+                    minDate={dayjs()}
                     views={["month", "year"]}
                     height="40px"
                     format="MM/YY"
                     onChange={e => null}
-                />
+        />
               </Flex>
               <Flex direction="column" gap=".5rem">
                 <Text type="p" text="CVV" />
-                    <Input
-                    type="text"
-                    border="1px solid #E7E7E7"
-                    padding="1rem"
-                    placeholder="Enter CVV"
-                    max={3}
-                    value={cvv}
-                    onChange={handleCVV}
-                    />
+                <FieldInput
+                  max={3}
+                  name="cvv"
+                  formik={formik}
+                  placeholder="Enter CVV"
+                />
               </Flex>
             </Flex>
           </Flex>

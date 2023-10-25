@@ -106,6 +106,7 @@ const SeatSelection = () => {
     checkSeatingMode,
     saveBooking,
     particularSeats,
+    setStep,
     setParticularSeats,
   } = useFlightBookingStore((state) => state);
   const passengers = saveBookingDetails.passengers.map((el) => ({
@@ -294,6 +295,7 @@ const SeatSelection = () => {
                 },
               },
             });
+            setStep({ step: 5 });
           }}
         >
           Continue
