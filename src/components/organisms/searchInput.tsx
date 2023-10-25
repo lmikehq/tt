@@ -74,8 +74,8 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
-  width: " 28px",
-  height: "28px",
+  width: " 26px",
+  height: "26px",
   borderRadius: "50%",
   backgroundImage: `url(${flag})`,
 }));
@@ -106,9 +106,7 @@ export default function SearchInput({
     error,
     onChange,
     disabled = false
-}: // anchorEl,
-// setAnchorEl,
-SearchProps) {
+}: SearchProps) {
   const [_inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -223,12 +221,13 @@ SearchProps) {
                 noOptionsText="No matches found"
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
-                    <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
+                    <Flex align="center" gap=".65rem">
                       <RoundFlag flag={option.flag} />
                       <Text
                         type="p"
                         text={`${option.code} - ${option.name}`}
-                        weight={100}
+                        weight={300}
+                        size={14}
                       />
                     </Flex>
                     <br />

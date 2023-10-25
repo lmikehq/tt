@@ -147,13 +147,13 @@ function PaymentModal({ open, handleClose, formik }: PaymentModalProps) {
               <Flex direction="column" gap=".75rem">
                 <Text type="p" text="Expiry Date" />
                 <DatePicker
-                  placeholder="MM/YY"
-                  minDate={dayjs().toDate()}
-                  views={["month", "year"]}
-                  height="40px"
-                  format="MM/YY"
-                  onChange={(e) => null}
-                />
+                    placeholder="MM/YY"
+                    minDate={dayjs()}
+                    views={["month", "year"]}
+                    height="40px"
+                    format="MM/YY"
+                    onChange={e => null}
+        />
               </Flex>
               <Flex direction="column" gap=".5rem">
                 <Text type="p" text="CVV" />

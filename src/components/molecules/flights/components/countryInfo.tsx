@@ -56,7 +56,7 @@ function CountryInfo() {
       <Flex direction="column" gap=".5rem">
         <Text
           type="h1"
-          text={`Explore ${state.arrivalCountry}`}
+          text={`Explore ${state.fleet[0].arrivalCountry}`}
           font="Montserrat"
           size={36}
           weight={700}
