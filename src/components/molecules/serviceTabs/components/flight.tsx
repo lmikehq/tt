@@ -65,7 +65,7 @@ export function FlightType({ isMobile, value, onChange }: { isMobile: boolean; v
     )
 }
 
-function FlightStops({ isMobile, value, onChange, showLabel }: { isMobile: boolean; value: string; onChange: (val?: string) => void; showLabel: boolean; }) {
+function FlightStops({ isMobile, value, onChange, showLabel }: { isMobile: boolean; value: string; onChange: (val: string) => void; showLabel: boolean; }) {
 	return (
 		<Flex direction="column" padding="0px 0px 20px">
 			{showLabel &&
@@ -78,7 +78,7 @@ function FlightStops({ isMobile, value, onChange, showLabel }: { isMobile: boole
 					options={stopOptions}
 					value={value}
 					name="flight"
-					onChange={(e, val) => onChange(val) }
+					onChange={(e, val) => onChange(val ?? '') }
 					justifyContent="flex-end"
 					align="flex-start"
 					direction={isMobile ? "column" : "row"}
