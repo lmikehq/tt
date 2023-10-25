@@ -23,6 +23,7 @@ import {
   Combination,
   PassengerBaggageCombinationInterface,
 } from "@/lib/types/request-models/flight/booking.type";
+import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { useEffect, useState } from "react";
 
 const FlightBookingPage = () => {
@@ -62,41 +63,44 @@ const FlightBookingPage = () => {
 
     setPassengersBagCombination(combinations);
   };
-  const checkFlightsThreeSecondsInterval = (sessionId: string) => {
+  const checkFlightsThreeSecondsInterval = async (
+    sessionId: string
+  ): Promise<any> => {
     console.log(sessionId);
-    checkFlights({
+    const response = await checkFlights({
       query: {
         bnum: 0,
         ...searchParams,
         session_id: sessionId,
       },
-    })
-      .then(async (response) => {
-        if (
-          response.flights_checked == true &&
-          response.price_change == false &&
-          response.flights_invalid == false
-        ) {
-          setPassengersBagCombination([
-            ...generateCombinationsForCategory({
-              size: parseInt(adults),
-              category: "adult",
-            }),
-            ...generateCombinationsForCategory({
-              size: parseInt(children),
-              category: "child",
-            }),
-            ...generateCombinationsForCategory({
-              size: parseInt(infants),
-              category: "infant",
-            }),
-          ]);
-          return checkFlightsFifteenSecondsInterval(sessionId);
-        }
-        await sleep(3000);
-        return checkFlightsThreeSecondsInterval(sessionId);
-      })
-      .catch(() => {});
+    });
+
+    if (
+      response.flights_checked == true &&
+      response.price_change == false &&
+      response.flights_invalid == false
+    ) {
+      setPassengersBagCombination([
+        ...generateCombinationsForCategory({
+          size: parseInt(adults),
+          category: "adult",
+          checkFlightsResponse: response,
+        }),
+        ...generateCombinationsForCategory({
+          size: parseInt(children),
+          category: "child",
+          checkFlightsResponse: response,
+        }),
+        ...generateCombinationsForCategory({
+          size: parseInt(infants),
+          category: "infant",
+          checkFlightsResponse: response,
+        }),
+      ]);
+      return checkFlightsFifteenSecondsInterval(sessionId);
+    }
+    await sleep(3000);
+    return checkFlightsThreeSecondsInterval(sessionId);
   };
 
   const checkFlightsFifteenSecondsInterval = (sessionId: string) => {
@@ -117,9 +121,11 @@ const FlightBookingPage = () => {
   const generateCombinationsForCategory = ({
     size,
     category,
+    checkFlightsResponse,
   }: {
     size: number;
     category: string;
+    checkFlightsResponse: CheckFlightResponse;
   }): PassengerBaggageCombinationInterface[] => {
     return Array.from(
       { length: size },
@@ -127,10 +133,12 @@ const FlightBookingPage = () => {
         const holdBagCombination = getDefaultBagTypeCombinationForCategory({
           category,
           bagType: "hold_bag",
+          checkFlightsResponse,
         });
         const handBagCombination = getDefaultBagTypeCombinationForCategory({
           category,
           bagType: "hand_bag",
+          checkFlightsResponse,
         });
 
         return {
@@ -144,14 +152,16 @@ const FlightBookingPage = () => {
   const getDefaultBagTypeCombinationForCategory = ({
     category,
     bagType,
+    checkFlightsResponse,
   }: {
     category: string;
     bagType: "hand_bag" | "hold_bag";
+    checkFlightsResponse: CheckFlightResponse;
   }): Combination =>
     (() =>
       bagType == "hand_bag"
-        ? checkFlightsResponse?.baggage.combinations.hand_bag
-        : checkFlightsResponse?.baggage.combinations.hold_bag)()?.find(
+        ? checkFlightsResponse.baggage.combinations.hand_bag
+        : checkFlightsResponse.baggage.combinations.hold_bag)()?.find(
       (el) =>
         el.conditions.passenger_groups.includes(category) &&
         el.price.amount == 0
