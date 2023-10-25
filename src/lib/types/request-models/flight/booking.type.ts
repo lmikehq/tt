@@ -22,7 +22,7 @@ interface PaymentDetails {
   // };
 }
 
-export enum Category {
+export enum PassengerCategory {
   ADULT = "adult",
   CHILD = "child",
   INFANT = "infant",
@@ -52,7 +52,7 @@ export interface PassengerFormInterface {
   title: string;
   issuingdate: string; // YYYY-MM-DD format
   expiration: string; // expiration of passport, YYYY-MM-DD format
-  category: Category;
+  category: PassengerCategory;
 }
 
 export interface CombinationPrice {
@@ -204,32 +204,45 @@ export interface PassengerBaggageCombinationInterface {
 export const arrangeBaggageDataForOrdering = (
   passengers: PassengerBaggageCombinationInterface[]
 ): Baggage[] => {
-  const baggageData: Baggage[] = [];
+  let baggageData: Baggage[] = [];
 
-  for (let i = 0; i < passengers.length; i++) {
-    const passenger = passengers[i];
-    for (const category of ["hold_bag", "hand_bag"]) {
-      const combination =
-        category == "hand_bag" ? passenger.hand_bag : passenger.hold_bag;
-      const index = baggageData?.findIndex((data) => {
-        return (
-          data.combination?.category === combination?.category &&
-          JSON.stringify(
-            data.combination?.conditions?.passenger_groups.sort()
-          ) === JSON.stringify(combination?.conditions?.passenger_groups.sort())
-        );
-      });
+  const checkIfBaggageCombinationIsAlreadyRegistered = (indices: number[]) => {
+    return baggageData.findIndex(
+      (baggageGroup) =>
+        baggageGroup.combination.indices.toString() == indices.toString()
+    );
+  };
 
-      if (index === -1) {
-        baggageData.push({
-          combination: { ...combination! },
-          passengers: [i],
-        });
+  const arrangeForBaggageType = ({
+    type,
+  }: {
+    type: "hand_bag" | "hold_bag";
+  }) => {
+    passengers.forEach((passenger, passengerIndex) => {
+      console.log(passenger);
+      console.log("  passenger[type].indices", passenger[type]);
+      const bagCombinationIndex = checkIfBaggageCombinationIsAlreadyRegistered(
+        passenger[type].indices
+      );
+      if (bagCombinationIndex == -1) {
+        baggageData = [
+          ...baggageData,
+          {
+            combination: passenger[type],
+            passengers: [passengerIndex],
+          },
+        ];
       } else {
-        baggageData[index].passengers.push(i);
+        baggageData[bagCombinationIndex].passengers = [
+          ...baggageData[bagCombinationIndex].passengers,
+          passengerIndex,
+        ];
       }
-    }
-  }
+    });
+  };
+
+  arrangeForBaggageType({ type: "hold_bag" });
+  arrangeForBaggageType({ type: "hand_bag" });
 
   return baggageData;
 };
@@ -244,7 +257,7 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
   title: "Mr",
   issuingdate: "2023-12-10",
   expiration: "2030-12-10",
-  category: Category.ADULT,
+  category: PassengerCategory.ADULT,
 };
 export const saveBookingDetails: SaveBookingRequestInput = {
   health_declaration_checked: true,

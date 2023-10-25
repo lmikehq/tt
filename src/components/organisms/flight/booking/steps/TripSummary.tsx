@@ -8,7 +8,7 @@ import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
 import {
-  Category,
+  PassengerCategory,
   Combination,
   PassengerBaggageCombinationInterface,
   PassengerFormInterface,
@@ -49,7 +49,7 @@ const TripSummary = ({
   const getPassengerBagCombinationOptions = ({
     category,
   }: {
-    category: Category;
+    category: PassengerCategory;
   }): Combinations => {
     const hand_bag = checkFlightsResponse?.baggage.combinations.hand_bag;
     const hold_bag = checkFlightsResponse?.baggage.combinations.hold_bag;
@@ -69,7 +69,7 @@ const TripSummary = ({
     category,
   }: {
     size: number;
-    category: Category;
+    category: PassengerCategory;
   }): PassengerFormInterface[] => {
     return Array.from({ length: size }, (_, index): PassengerFormInterface => {
       return {
@@ -84,15 +84,15 @@ const TripSummary = ({
       passengers: [
         ...generateFormsForCategory({
           size: parseInt(adults),
-          category: Category.ADULT,
+          category: PassengerCategory.ADULT,
         }),
         ...generateFormsForCategory({
           size: parseInt(children),
-          category: Category.CHILD,
+          category: PassengerCategory.CHILD,
         }),
         ...generateFormsForCategory({
           size: parseInt(infants),
-          category: Category.INFANT,
+          category: PassengerCategory.INFANT,
         }),
       ],
     },

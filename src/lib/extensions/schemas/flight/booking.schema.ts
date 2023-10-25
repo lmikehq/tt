@@ -1,7 +1,7 @@
 import {
   Baggage,
   CardInfo,
-  Category,
+  PassengerCategory,
   Combination,
   CombinationConditions,
   CombinationPrice,
@@ -62,8 +62,8 @@ const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerFormInterface>
       .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
       .required("Required"),
     category: yup
-      .mixed<Category>()
-      .oneOf(Object.values(Category))
+      .mixed<PassengerCategory>()
+      .oneOf(Object.values(PassengerCategory))
       .required("Required"),
   });
 
