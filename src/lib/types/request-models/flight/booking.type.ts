@@ -22,7 +22,7 @@ interface PaymentDetails {
   // };
 }
 
-export enum Category {
+export enum PassengerCategory {
   ADULT = "adult",
   CHILD = "child",
   INFANT = "infant",
@@ -52,7 +52,7 @@ export interface PassengerFormInterface {
   title: string;
   issuingdate: string; // YYYY-MM-DD format
   expiration: string; // expiration of passport, YYYY-MM-DD format
-  category: Category;
+  category: PassengerCategory;
 }
 
 export interface CombinationPrice {
@@ -244,7 +244,7 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
   title: "Mr",
   issuingdate: "2023-12-10",
   expiration: "2030-12-10",
-  category: Category.ADULT,
+  category: PassengerCategory.ADULT,
 };
 export const saveBookingDetails: SaveBookingRequestInput = {
   health_declaration_checked: true,
