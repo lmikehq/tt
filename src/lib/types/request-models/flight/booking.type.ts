@@ -15,17 +15,17 @@ interface PaymentDetails {
   level: string;
   type: string;
   pass_luhn_validation: boolean;
-  risk_assessment: {
-    correlationId: string;
-    version: string;
-    status: string;
-  };
+  // risk_assessment: {
+  //   correlationId: string;
+  //   version: string;
+  //   status: string;
+  // };
 }
 
 export enum Category {
-  ADULT = "Adult (Over 11 years)",
-  CHILD = "Child (2 - 11 years)",
-  INFANT = "Infant (Under 2 years)",
+  ADULT = "adult",
+  CHILD = "child",
+  INFANT = "infant",
 }
 
 export interface Passenger {
@@ -80,10 +80,11 @@ export interface Baggage {
 }
 
 export interface CardInfo {
-  cardNumber: string;
+  number: string;
   cvv: string;
-  expirationDate: string;
-  holderName: string;
+  expirationMonth: string;
+  expirationYear: string;
+  holder: string;
 }
 
 export interface SearchFlightsRequestQuery {
@@ -255,4 +256,12 @@ export const saveBookingDetails: SaveBookingRequestInput = {
   session_id: "",
   baggage: [],
   additional_services: null,
+};
+
+export const cardDetails: CardInfo = {
+  number: "",
+  cvv: "",
+  expirationMonth: "",
+  expirationYear: "",
+  holder: "",
 };

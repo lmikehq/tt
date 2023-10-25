@@ -1,5 +1,6 @@
 import {
   Baggage,
+  CardInfo,
   Category,
   Combination,
   CombinationConditions,
@@ -60,10 +61,10 @@ const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerFormInterface>
       .string()
       .matches(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
       .required("Required"),
-      category: yup
+    category: yup
       .mixed<Category>()
       .oneOf(Object.values(Category))
-      .required('Required'),
+      .required("Required"),
   });
 
 export const passengersAndBaggageDetailsArraySchema = yup
@@ -73,3 +74,13 @@ export const passengersAndBaggageDetailsArraySchema = yup
 export const manyPassengersAndBaggageDetailsSchema = yup
   .object()
   .shape({ passengers: passengersAndBaggageDetailsArraySchema });
+
+export const cardDetailsSchema: yup.ObjectSchema<CardInfo> = yup
+  .object()
+  .shape({
+    number: yup.string().required("Required"),
+    cvv: yup.string().required("Required"),
+    expirationMonth: yup.string().required("Required"),
+    expirationYear: yup.string().required("Required"),
+    holder: yup.string().required("Required"),
+  });

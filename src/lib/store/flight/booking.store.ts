@@ -1,5 +1,6 @@
 import {
   ParticularSeatingOption,
+  cardDetails,
   saveBookingDetails,
 } from "./../../types/request-models/flight/booking.type";
 import { FlightBookingService } from "@/lib/services/flight-booking.service";
@@ -19,6 +20,7 @@ import {
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_seating.type";
+import { TokenizeDataResponse } from "@/lib/types/response-models/flight/payment.type";
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 
@@ -31,11 +33,14 @@ interface State {
   checkFlightsResponse: CheckFlightResponse | null;
   checkSeatingResponse: CheckSeatingResponse | null;
   saveBookingDetails: SaveBookingRequestInput;
+  saveBookingResponse: { bookingId: string; zoozToken: string } | null;
+  tokenizeDataResponse: TokenizeDataResponse | null;
   bookingToken?: string;
   sessionId: string | null;
   mode: Mode;
   checkSeatingMode: Mode;
   particularSeats: ParticularSeatingOption[];
+  cardDetails: CardInfo;
 }
 interface Actions {
   prevStep: () => void;
@@ -47,8 +52,9 @@ interface Actions {
   }) => Promise<CheckSeatingResponse>;
 
   saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
-  tokenizeData: (params: { data: TokenizeDataRequestInput }) => Promise<void>;
-  cardDetails: (params: { data: CardInfo }) => Promise<void>;
+  tokenizeData: (params: {
+    data: TokenizeDataRequestInput;
+  }) => Promise<TokenizeDataResponse>;
   updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
   confirmPaymentZooz: (params: {
     data: ConfirmPaymentZoozRequestInput;
@@ -73,6 +79,9 @@ export const useFlightBookingStore = create<State & Actions>(
     checkSeatingMode: Mode.init,
     particularSeats: [],
     saveBookingDetails,
+    saveBookingResponse: null,
+    tokenizeDataResponse: null,
+    cardDetails,
 
     prevStep: () => {
       set((state) => ({
@@ -175,6 +184,10 @@ export const useFlightBookingStore = create<State & Actions>(
         .then((response) => {
           set((state) => ({
             mode: Mode.loaded,
+            saveBookingResponse: {
+              bookingId: response.booking_id,
+              zoozToken: response.zooz_token,
+            },
           }));
         })
         .catch((error) => {
@@ -190,10 +203,42 @@ export const useFlightBookingStore = create<State & Actions>(
       return await FlightBookingService.tokenizeData({
         data,
       })
-        .then(() => {
+        .then((response) => {
+          const {
+            status,
+            token,
+            encrypted_cvv,
+            bin_number,
+            last_4_digits,
+            holder_name,
+            expiration,
+            vendor,
+            issuer,
+            country_code,
+            level,
+            type,
+            pass_luhn_validation,
+          } = response;
+          const tokenizeDataResponse: TokenizeDataResponse = {
+            status,
+            token,
+            encrypted_cvv,
+            bin_number,
+            last_4_digits,
+            holder_name,
+            expiration,
+            vendor,
+            issuer,
+            country_code,
+            level,
+            type,
+            pass_luhn_validation,
+          };
           set((state) => ({
             mode: Mode.loaded,
+            tokenizeDataResponse,
           }));
+          return tokenizeDataResponse;
         })
         .catch((error) => {
           set({
@@ -202,23 +247,7 @@ export const useFlightBookingStore = create<State & Actions>(
           throw error;
         });
     },
-    cardDetails: async ({ data }: { data: CardInfo }) => {
-      set({ mode: Mode.loading });
-      return await FlightBookingService.cardDetails({
-        data,
-      })
-        .then(() => {
-          set((state) => ({
-            mode: Mode.loaded,
-          }));
-        })
-        .catch((error) => {
-          set({
-            mode: Mode.error,
-          });
-          throw error;
-        });
-    },
+
     confirmPaymentZooz: async ({
       data,
     }: {
