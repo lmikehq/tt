@@ -27,7 +27,7 @@ export const TripHeader = () => {
     const { isMobile } = useScreenResolution()
 
     return (
-        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-start"} align="center" padding={isMobile ? "0 0 0 1.5rem" : "0"}>
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-start"} align="center" padding={isMobile ? "0" : "0"}>
             <Text text="Trip Summary" size={isMobile ? 20 : 20} type="h2" weight={600} />
             <Flex borderRadius="50%" background={ttColors.primary100} padding="5px" width="max-content">
                 <FaPlane color={ttColors.primary600} size={isMobile ? 30 : 20} />

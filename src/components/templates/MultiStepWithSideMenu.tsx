@@ -44,7 +44,7 @@ const MultiStepWithSideMenu = ({
                 <Section
                     width={isMobile ? "100%" : "32%"}
                     height="unset"
-                    padding={isMobile ? "1rem" : "0 2rem 0 0"}
+                    padding={isMobile ? "1rem 1rem" : "0 2rem 0 0"}
                 >
                     {sideMenu}
                 </Section>

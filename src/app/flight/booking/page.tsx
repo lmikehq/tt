@@ -14,9 +14,10 @@ import MultiStepWithSideMenu from "@/components/templates/MultiStepWithSideMenu"
 import SectionLayout from "@/components/templates/SectionLayout";
 import {extractSearchParamsFromUrl} from "@/lib/extensions/helpers/constructQuery";
 import sleep from "@/lib/extensions/helpers/sleep";
-import {useFlightBookingStore} from "@/lib/store/flight/booking.store";
-import {Combination, PassengerBaggageCombinationInterface} from "@/lib/types/request-models/flight/booking.type";
-import React, {useEffect, useState} from "react";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { Combination, PassengerBaggageCombinationInterface } from "@/lib/types/request-models/flight/booking.type";
+import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
+import React, { useEffect, useState } from "react";
 
 const FlightBookingPage = () => {
     const {
@@ -49,26 +50,25 @@ const FlightBookingPage = () => {
         setPassengersBagCombination(combinations);
     };
 
-    const checkFlightsThreeSecondsInterval = (sessionId : string) => {
+    const checkFlightsThreeSecondsInterval = async (sessionId : string): Promise<any> => {
         console.log(sessionId);
-        checkFlights({
+        const response = await checkFlights({
             query: {
                 bnum: 0,
                 ...searchParams,
                 session_id: sessionId
             }
-        }).then(async(response) => {
-            if (response.flights_checked == true && response.price_change == false && response.flights_invalid == false) {
-                setPassengersBagCombination([
-                    ...generateCombinationsForCategory({size: parseInt(adults), category: "adult"}),
-                    ...generateCombinationsForCategory({size: parseInt(children), category: "child"}),
-                    ...generateCombinationsForCategory({size: parseInt(infants), category: "infant"})
-                ]);
-                return checkFlightsFifteenSecondsInterval(sessionId);
-            }
-            await sleep(3000);
-            return checkFlightsThreeSecondsInterval(sessionId);
-        }).catch(() => {});
+        })
+        if (response.flights_checked == true && response.price_change == false && response.flights_invalid == false) {
+            setPassengersBagCombination([
+                ...generateCombinationsForCategory({ size: parseInt(adults), category: "adult", checkFlightsResponse: response }),
+                ...generateCombinationsForCategory({ size: parseInt(children), category: "child", checkFlightsResponse: response }),
+                ...generateCombinationsForCategory({ size: parseInt(infants), category: "infant", checkFlightsResponse: response })
+            ]);
+            return checkFlightsFifteenSecondsInterval(sessionId);
+        }
+        await sleep(3000);
+        return checkFlightsThreeSecondsInterval(sessionId);
     };
 
     const checkFlightsFifteenSecondsInterval = (sessionId : string) => {
@@ -84,28 +84,39 @@ const FlightBookingPage = () => {
         }).catch(() => {});
     };
 
-    const generateCombinationsForCategory = ({size, category} : {
+    const generateCombinationsForCategory = ({
+        size,
+        category,
+        checkFlightsResponse,
+    }: {
         size: number;
         category: string;
-    }) : PassengerBaggageCombinationInterface[] => {
-        return Array.from({
-            length: size
-        }, (_, index) : PassengerBaggageCombinationInterface => {
-            const holdBagCombination = getDefaultBagTypeCombinationForCategory({category, bagType: "hold_bag"});
-            const handBagCombination = getDefaultBagTypeCombinationForCategory({category, bagType: "hand_bag"});
+        checkFlightsResponse: CheckFlightResponse;
+    }): PassengerBaggageCombinationInterface[] => {
+        return Array.from({ length: size },
+            (_, index): PassengerBaggageCombinationInterface => {
+                const holdBagCombination = getDefaultBagTypeCombinationForCategory({ category, bagType: "hold_bag", checkFlightsResponse });
+                const handBagCombination = getDefaultBagTypeCombinationForCategory({ category, bagType: "hand_bag", checkFlightsResponse });
 
-            return {hold_bag: holdBagCombination, hand_bag: handBagCombination};
-        });
+                return { hold_bag: holdBagCombination, hand_bag: handBagCombination };
+            }
+        );
     };
-    // getDefaultBagTypeCombinationForCategory Returns the default combination for
-    // bag type.
-    const getDefaultBagTypeCombinationForCategory = ({category, bagType} : {
+
+    //getDefaultBagTypeCombinationForCategory Returns the default combination for bag type.
+    const getDefaultBagTypeCombinationForCategory = ({
+        category,
+        bagType,
+        checkFlightsResponse,
+    }: {
         category: string;
         bagType: "hand_bag" | "hold_bag";
-    }) : Combination => (() => bagType == "hand_bag"
-        ? checkFlightsResponse?.baggage.combinations.hand_bag
-            : checkFlightsResponse?.baggage.combinations.hold_bag)()
-                ?.find((el) => el.conditions.passenger_groups.includes(category) && el.price.amount == 0)!;
+        checkFlightsResponse: CheckFlightResponse;
+    }): Combination =>
+        (() => bagType == "hand_bag" ? checkFlightsResponse.baggage.combinations.hand_bag :
+            checkFlightsResponse.baggage.combinations.hold_bag)()?.find((el) =>
+            el.conditions.passenger_groups.includes(category) && el.price.amount == 0
+    )!;
 
     useEffect(() => {
         const searchParams = extractSearchParamsFromUrl({url: window.location.href});

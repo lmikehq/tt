@@ -3,23 +3,21 @@ import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import {extractSearchParamsFromUrl} from "@/lib/extensions/helpers/constructQuery";
-import sleep from "@/lib/extensions/helpers/sleep";
 import {manyPassengersAndBaggageDetailsSchema} from "@/lib/extensions/schemas/flight/booking.schema";
 import {useFlightBookingStore} from "@/lib/store/flight/booking.store";
 import {ttColors} from "@/lib/theme/colors";
 import {
-    Category,
-    Combination,
-    PassengerBaggageCombinationInterface,
-    PassengerFormInterface,
-    SaveBookingRequestInput,
-    arrangeBaggageDataForOrdering,
-    passengerAndBaggageDetails
+  PassengerCategory,
+  Combination,
+  PassengerBaggageCombinationInterface,
+  PassengerFormInterface,
+  SaveBookingRequestInput,
+  arrangeBaggageDataForOrdering,
+  passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {Combinations} from "@/lib/types/response-models/flight/check_flight.type";
 import {Box} from "@mui/material";
 import {FieldArray, FormikProvider, useFormik} from "formik";
-import {useEffect, useState} from "react";
 
 export interface OneFlight {
     time: string;
@@ -60,39 +58,53 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
 
     const {adults, children, infants} = searchParams;
 
-    const getPassengerBagCombinationOptions = ({category} : {
-        category: Category;
-    }) : Combinations => {
+    const getPassengerBagCombinationOptions = ({
+        category,
+    }: {
+        category: PassengerCategory;
+    }): Combinations => {
         const hand_bag = checkFlightsResponse?.baggage.combinations.hand_bag;
         const hold_bag = checkFlightsResponse?.baggage.combinations.hold_bag;
         return {
-            hand_bag: hand_bag
-                ?.filter((el) => el.conditions.passenger_groups.includes(category)) ?? [],
-            hold_bag: hold_bag
-                ?.filter((el) => el.conditions.passenger_groups.includes(category)) ?? []
+            hand_bag:
+                hand_bag?.filter((el) =>
+                el.conditions.passenger_groups.includes(category)
+                ) ?? [],
+            hold_bag:
+                hold_bag?.filter((el) =>
+                el.conditions.passenger_groups.includes(category)
+                ) ?? [],
         };
     };
-    const generateFormsForCategory = ({size, category} : {
+    
+  const generateFormsForCategory = ({
+        size,
+        category,
+    }: {
         size: number;
-        category: Category;
-    }) : PassengerFormInterface[] => {
-        return Array.from({
-            length: size
-        }, (_, index) : PassengerFormInterface => {
-            return {
-                ...passengerAndBaggageDetails,
-                category
-            };
-        });
+        category: PassengerCategory;
+    }): PassengerFormInterface[] => {
+        return Array.from({ length: size },
+            (_, index): PassengerFormInterface => ({ ...passengerAndBaggageDetails, category })
+        )
     };
 
     const formik = useFormik({
         initialValues: {
-            passengers: [
-                ...generateFormsForCategory({size: parseInt(adults), category: Category.ADULT}),
-                ...generateFormsForCategory({size: parseInt(children), category: Category.CHILD}),
-                ...generateFormsForCategory({size: parseInt(infants), category: Category.INFANT})
-            ]
+        passengers: [
+            ...generateFormsForCategory({
+                size: parseInt(adults),
+                category: PassengerCategory.ADULT,
+            }),
+            ...generateFormsForCategory({
+                size: parseInt(children),
+                category: PassengerCategory.CHILD,
+            }),
+            ...generateFormsForCategory({
+                size: parseInt(infants),
+                category: PassengerCategory.INFANT,
+            }),
+        ],
         },
         enableReinitialize: true,
         validateOnMount: true,
@@ -101,20 +113,14 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
             console.log(passengersBagCombination, "passengers");
 
             setSaveBookingDetails({
-                data: {
-                    ...saveBookingDetails,
-                    passengers: values
-                        .passengers
-                        .map((el) => ({
-                            ...el,
-                            nationality: el
-                                .nationality
-                                .code
-                                .toLowerCase()
-                        })),
-                    baggage: arrangeBaggageDataForOrdering(passengersBagCombination)
-                }
-            });
+            data: {
+                ...saveBookingDetails,
+                passengers: values.passengers.map((el) => ({
+                    ...el,
+                    nationality: el.nationality.code.toLowerCase(),
+                })),
+                baggage: arrangeBaggageDataForOrdering(passengersBagCombination),
+            }})
             setStep({step: 4});
         },
         validateOnChange: false

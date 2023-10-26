@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { FormikProps } from "formik";
 import {
-  Category,
+  PassengerCategory,
   Combination,
   Passenger,
   PassengerBaggageCombinationInterface,
@@ -266,10 +266,11 @@ export default function PassengerBaggagePane({
           </BaggageBox>
         </Flex>
       )}
-      {values.category === Category.INFANT || isChecked.allowBaggage ? (
+      {values.category === PassengerCategory.INFANT ||
+      isChecked.allowBaggage ? (
         <ToastInfo
           type={
-            values.category === Category.INFANT
+            values.category === PassengerCategory.INFANT
               ? "warning"
               : isChecked.allowBaggage
               ? "info"
@@ -277,7 +278,7 @@ export default function PassengerBaggagePane({
           }
         />
       ) : null}
-      {values.category !== Category.INFANT && (
+      {values.category !== PassengerCategory.INFANT && (
         <CheckBox
           checked={isChecked.allowBaggage}
           onChange={() => toggleState("allowBaggage")}
