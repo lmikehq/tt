@@ -111,7 +111,7 @@ export const Flex: React.FC<flexProps> = ({
                 flexWrap: wrap,
                 height: height,
                 alignSelf: alignSelf,
-                borderBottom: borderBottom,
+                borderBottom: borderBottom ?? border,
                 position,
                 ...styles,
             }}

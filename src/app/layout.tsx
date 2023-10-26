@@ -76,16 +76,18 @@ export default function RootLayout({
   `}
       </Script>
 
-      <head>
-        <link rel="icon" href="/favicon.svg" sizes="any" />
-      </head>
-      <body>
-          <Toaster position="top-center" />
-          <PaymentConfirmationModal />
-          <StyledComponentsRegistry>
-            <LoaderLayout>{children}</LoaderLayout>
-          </StyledComponentsRegistry>
-      </body>
-    </html>
-  );
+        <head>
+            <link rel="icon" href="/favicon.svg" sizes="any" />
+        </head>
+        <body>
+            <Toaster position="top-center" />
+            <PaymentConfirmationModal />
+            <StyledComponentsRegistry>
+                <LoaderLayout>
+                    {children}
+                </LoaderLayout>
+            </StyledComponentsRegistry>
+        </body>
+        </html>
+    );
 }
