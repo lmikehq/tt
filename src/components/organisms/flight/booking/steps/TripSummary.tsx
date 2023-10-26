@@ -105,6 +105,9 @@ const TripSummary = ({
       setSaveBookingDetails({
         data: {
           ...saveBookingDetails,
+          booking_token: checkFlightsResponse?.booking_token ?? "",
+          session_id: checkFlightsResponse?.session_id ?? "",
+
           passengers: values.passengers.map((el) => ({
             ...el,
             nationality: el.nationality.code.toLowerCase(),

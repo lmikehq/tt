@@ -14,7 +14,7 @@ import { CardInfo } from "@/lib/types/request-models/flight/booking.type";
 
 const OverviewAndPayment = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { saveBookingResponse, cardDetails, tokenizeData, confirmPaymentZooz } =
+  const { saveBookingResponse, cardDetails, confirmPaymentZooz } =
     useFlightBookingStore((state) => state);
   const handleMakepayment = async ({
     cardDetails,
@@ -22,7 +22,7 @@ const OverviewAndPayment = () => {
     cardDetails: CardInfo;
   }) => {
     try {
-      const response = await tokenizeData({
+      const response = await confirmPaymentZooz({
         data: {
           card: cardDetails,
           payment: {
@@ -33,18 +33,6 @@ const OverviewAndPayment = () => {
           },
         },
       });
-
-      await confirmPaymentZooz({
-        data: {
-          payment_details: response,
-          booking_id: saveBookingResponse?.bookingId ?? "",
-          order_id: saveBookingResponse?.bookingId ?? "",
-          paymentToken: saveBookingResponse?.zoozToken ?? "",
-          paymentMethodToken: response.token,
-          sandbox: true,
-          language: "en-GB",
-        },
-      });
     } catch (error) {}
   };
   const formik = useFormik({
@@ -53,6 +41,7 @@ const OverviewAndPayment = () => {
     validateOnMount: true,
     validationSchema: cardDetailsSchema,
     onSubmit: (values) => {
+      console.log(values);
       handleMakepayment({
         cardDetails: values,
       });

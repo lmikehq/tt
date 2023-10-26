@@ -52,13 +52,11 @@ interface Actions {
   }) => Promise<CheckSeatingResponse>;
 
   saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
-  tokenizeData: (params: {
+  confirmPaymentZooz: (params: {
     data: TokenizeDataRequestInput;
   }) => Promise<TokenizeDataResponse>;
   updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
-  confirmPaymentZooz: (params: {
-    data: ConfirmPaymentZoozRequestInput;
-  }) => Promise<void>;
+
   setSaveBookingDetails: ({ data }: { data: SaveBookingRequestInput }) => void;
   setParticularSeats: (data: ParticularSeatingOption[]) => void;
 }
@@ -198,9 +196,13 @@ export const useFlightBookingStore = create<State & Actions>(
         });
     },
 
-    tokenizeData: async ({ data }: { data: TokenizeDataRequestInput }) => {
+    confirmPaymentZooz: async ({
+      data,
+    }: {
+      data: TokenizeDataRequestInput;
+    }) => {
       set({ mode: Mode.loading });
-      return await FlightBookingService.tokenizeData({
+      return await FlightBookingService.confirmPaymentZooz({
         data,
       })
         .then((response) => {
@@ -239,28 +241,6 @@ export const useFlightBookingStore = create<State & Actions>(
             tokenizeDataResponse,
           }));
           return tokenizeDataResponse;
-        })
-        .catch((error) => {
-          set({
-            mode: Mode.error,
-          });
-          throw error;
-        });
-    },
-
-    confirmPaymentZooz: async ({
-      data,
-    }: {
-      data: ConfirmPaymentZoozRequestInput;
-    }) => {
-      set({ mode: Mode.loading });
-      return await FlightBookingService.confirmPaymentZooz({
-        data,
-      })
-        .then((response) => {
-          set((state) => ({
-            mode: Mode.loaded,
-          }));
         })
         .catch((error) => {
           set({

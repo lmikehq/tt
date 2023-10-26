@@ -24,7 +24,7 @@ import {
   PassengerBaggageCombinationInterface,
 } from "@/lib/types/request-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const FlightBookingPage = () => {
   const {
@@ -63,10 +63,13 @@ const FlightBookingPage = () => {
 
     setPassengersBagCombination(combinations);
   };
-  const checkFlightsThreeSecondsInterval = async (
-    sessionId: string
-  ): Promise<any> => {
-    console.log(sessionId);
+  const checkFlightsThreeSecondsInterval = async ({
+    sessionId,
+    searchParams,
+  }: {
+    sessionId: string;
+    searchParams: Record<string, string>;
+  }): Promise<any> => {
     const response = await checkFlights({
       query: {
         bnum: 0,
@@ -97,13 +100,19 @@ const FlightBookingPage = () => {
           checkFlightsResponse: response,
         }),
       ]);
-      return checkFlightsFifteenSecondsInterval(sessionId);
+      return checkFlightsFifteenSecondsInterval({ sessionId, searchParams });
     }
     await sleep(3000);
-    return checkFlightsThreeSecondsInterval(sessionId);
+    return checkFlightsThreeSecondsInterval({ sessionId, searchParams });
   };
 
-  const checkFlightsFifteenSecondsInterval = (sessionId: string) => {
+  const checkFlightsFifteenSecondsInterval = ({
+    sessionId,
+    searchParams,
+  }: {
+    sessionId: string;
+    searchParams: Record<string, string>;
+  }) => {
     checkFlights({
       query: {
         bnum: 0,
@@ -113,7 +122,7 @@ const FlightBookingPage = () => {
     })
       .then(async () => {
         await sleep(15000);
-        return checkFlightsFifteenSecondsInterval(sessionId);
+        return checkFlightsFifteenSecondsInterval({ sessionId, searchParams });
       })
       .catch(() => {});
   };
@@ -177,7 +186,10 @@ const FlightBookingPage = () => {
         ...searchParams,
       },
     }).then((response) =>
-      checkFlightsThreeSecondsInterval(response.session_id)
+      checkFlightsThreeSecondsInterval({
+        sessionId: response.session_id,
+        searchParams,
+      })
     );
   }, []);
 
