@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import FlightBox from "./flightBox";
@@ -9,21 +10,29 @@ import Text from "@atom/text";
 import SortedFlightsTab from "./sortedFlightsTab";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import { useRouter } from "next/navigation";
+import {
+  extractSearchParamsFromUrl,
+  constructQueryFromParams,
+} from "@/lib/extensions/helpers/constructQuery";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
+import { useRouter, usePathname } from "next/navigation";
+import { calculateTime } from "@/utils/convertTime";
 
 function AvailableFlights() {
   const router = useRouter();
+  const pathName = usePathname();
   const {
     searchFlightsResults,
     searchFlights,
     updateSearchQuery,
-    searchQuery: { adults, children, infants },
+    searchQuery,
   } = useFlightBookingStore((state) => state);
 
   const [count, setCount] = useState(5);
   const [sortType, setSortType] = useState("best");
+  const [data, setData] = useState([]);
+  const [airport1, setAirport1] = useState(null);
+  const [airport2, setAirport2] = useState(null);
 
   const loadMoreItems = () => {
     setCount(
@@ -32,12 +41,17 @@ function AvailableFlights() {
     );
   };
 
+  const updateSearchQueryHandler = (updatedParams) => {
+    const updatedQuery = { ...searchQuery, ...updatedParams };
+    updateSearchQuery({ data: updatedQuery });
+    router.push(pathName + constructQueryFromParams(updatedQuery));
+    searchFlights({ data: updatedQuery });
+  };
+
   useEffect(() => {
-    const searchParams = extractSearchParamsFromUrl({
-      url: window.location.href,
-    });
-    updateSearchQuery({ data: searchParams });
-    searchFlights({ data: searchParams });
+    const url = window.location.href;
+    const searchParams = extractSearchParamsFromUrl({ url });
+    updateSearchQueryHandler({...searchParams });
   }, [window.location.href]);
 
   const prices: number[] = searchFlightsResults.map((flight) => flight.price);
@@ -69,6 +83,12 @@ function AvailableFlights() {
     }
   };
 
+  useEffect(() => {
+    if (searchFlightsResults.length > 0) {
+      setData(searchFlightsResults);
+    }
+  }, [searchFlightsResults]);
+
   const sortFlights = (a: FlightInfo, b: FlightInfo) => {
     if (
       getLabel(a.price).toLowerCase() === sortType &&
@@ -86,19 +106,20 @@ function AvailableFlights() {
   };
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" width="100%">
       <SortedFlightsTab
         cheapPrice={cheapPrice}
-        bestPrice={bestPrice}
+        bestPrice={cheapPrice}
         sortType={sortType}
         setSortType={setSortType}
         fastPrice={minPrice}
+        data={data}
+        updateSearchQueryHandler={updateSearchQueryHandler}
       />
       {searchFlightsResults?.length > 0 ? (
         <>
           {searchFlightsResults
             ?.slice(0, count)
-            .sort(sortFlights)
             .map((flight: FlightInfo, index: number) => (
               <FlightBox
                 key={index}
@@ -110,14 +131,20 @@ function AvailableFlights() {
                   );
                 }}
                 bookingToken={flight.booking_token}
-                departureCountryCode="Country Code 1"
+                departureCountryCode={flight.cityCodeFrom}
                 arrivalCountryCode={flight.cityCodeTo}
-                airportName1="Airport Name 1"
+                airportName1={flight.price}
                 airportName2={"Airport 2"}
                 departureDate={dayjs()}
                 arrivalDate={dayjs().add(1, "day")}
+                utc_arrival={flight.utc_arrival}
+                utc_departure={flight.utc_departure}
                 price={flight.price}
                 label={getLabel(flight.price)}
+                stops={flight.route.length}
+                seats={flight.availability.seats}
+                hold={flight.baglimit.hold_weight ? 1 : 0}
+                carryOn={flight.baglimit.hand_weight ? 1 : 0}
               />
             ))}
           <Flex justify="center">
@@ -126,8 +153,7 @@ function AvailableFlights() {
                 width="100%"
                 background="#06062A"
                 padding="2rem 0"
-                onClick={loadMoreItems}
-              >
+                onClick={loadMoreItems}>
                 <Text type="p" text="Load More" weight={500} size={18} />
               </Button>
             )}
@@ -139,7 +165,6 @@ function AvailableFlights() {
           textHeight={46}
           textWidth={"60%"}
           rectangularHeight={400}
-          
         />
       )}
     </Flex>

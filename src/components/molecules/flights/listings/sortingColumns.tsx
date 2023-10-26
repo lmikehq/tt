@@ -257,7 +257,7 @@ function SortingColumns() {
   }, [filterState]);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" maxWidth="310px" margin="1.5rem 0 0">
       <PriceAlerts />
       <Flex direction="column" padding="1rem 0" gap=".5rem">
         {trueValuesCount > 0 && (

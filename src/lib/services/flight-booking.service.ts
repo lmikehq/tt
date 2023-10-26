@@ -25,7 +25,7 @@ export class FlightBookingService {
     const query = constructQueryFromParams(data);
     return await kiwiClient
       .get<any, AxiosResponse<SearchFlightsResponse>>(
-        `/search${query}&limit=10`
+        `/search${query}&limit=50`
       )
       .then((response) => response.data)
       .catch((error) => {

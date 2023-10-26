@@ -13,6 +13,7 @@ import { Box } from "@mui/material";
 import FlightDepartureIcon from "./flightDepartureIcon";
 import StopsPill from "./stopsPill";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { calculateTime } from "@/utils/convertTime";
 
 type flightProps = {
   departureCountryCode: string;
@@ -24,6 +25,10 @@ type flightProps = {
   price: number;
   label: string;
   bookingToken: string;
+  stops: number;
+  seats:number;
+  carryOn:number;
+  hold:number;
   selectFlight(params: { bookingToken: string }): void;
 };
 
@@ -33,6 +38,7 @@ const FlightContainer = styled.div`
   background: linear-gradient(0deg, #ffffff, #ffffff);
   margin: 1rem 0;
   border-radius: 12.5px;
+  width: 100%;
 `;
 
 const IconBorders = styled.div`
@@ -100,8 +106,7 @@ function FlightBox(props: flightProps) {
           flexDirection: "column",
           width: "100%",
           gridTemplateColumns: "8fr 1fr 6fr",
-        }}
-      >
+        }}>
         <Flex direction="column" padding="1rem">
           {props.label !== "" && (
             <LabelBox>
@@ -113,12 +118,10 @@ function FlightBox(props: flightProps) {
             sx={{
               color: ttColors.lighterGray,
               fontWeight: "medium",
-            }}
-          >
+            }}>
             <Flex align="center" gap="5px" margin="1rem 0">
               <Text type="p" text="Depart" />
               <Dot fontSize="5rem" />
-
               <Text type="p" text={formatDate(props.departureDate)} />
             </Flex>
           </Box>
@@ -126,8 +129,7 @@ function FlightBox(props: flightProps) {
             sx={{
               display: "grid",
               gridTemplateColumns: "25px 1fr",
-            }}
-          >
+            }}>
             <FlightDepartureIcon />
 
             <Flex direction="column" gap="1rem" margin="0 1rem">
@@ -142,8 +144,8 @@ function FlightBox(props: flightProps) {
                   <Text type="p" text={props.departureCountryCode} />
                 </Flex>
                 <Flex align={"center"} gap="1rem">
-                  <Text type="p" color={ttColors.lighterGray} text={interval} />
-                  <StopsPill numberOfStops={getRandomNumber()} />
+                  <Text type="p" color={ttColors.lighterGray} text={'ade'} />
+                  <StopsPill numberOfStops={props.stops} />
                 </Flex>
                 <Flex gap="1rem">
                   <Text type="p" weight={"bold"} text={formattedArrivalTime} />
@@ -165,8 +167,7 @@ function FlightBox(props: flightProps) {
               sx={{
                 color: ttColors.lighterGray,
                 fontWeight: "medium",
-              }}
-            >
+              }}>
               <Flex align="center" gap="5px" margin="1rem 0">
                 <Text type="p" text="Return" />
                 <Dot fontSize="5rem" />
@@ -178,8 +179,7 @@ function FlightBox(props: flightProps) {
               sx={{
                 display: "grid",
                 gridTemplateColumns: "25px 1fr",
-              }}
-            >
+              }}>
               <FlightDepartureIcon />
 
               <Flex direction="column" gap="1rem" margin="0 1rem">
@@ -199,7 +199,7 @@ function FlightBox(props: flightProps) {
                       color={ttColors.lighterGray}
                       text={interval}
                     />
-                    <StopsPill numberOfStops={getRandomNumber()} />
+                    <StopsPill numberOfStops={props.stops} />
                   </Flex>
                   <Flex gap="1rem">
                     <Text
@@ -216,13 +216,17 @@ function FlightBox(props: flightProps) {
           </Flex>
         </Flex>
         <Divider direction="vertical" borderStyle="dotted" margin="0" />
-        <Flex direction="column" padding="2rem" justify="space-between">
+        <Flex
+          direction="column"
+          padding="2rem"
+          justify="space-between"
+          height="480px">
           <Flex align="center">
             <Flex gap=".5rem">
               <IconBorders>
                 <Text
                   type="p"
-                  text={getRandomNumber().toString()}
+                  text={props.hold}
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -231,7 +235,7 @@ function FlightBox(props: flightProps) {
               <IconBorders>
                 <Text
                   type="p"
-                  text={getRandomNumber().toString()}
+                  text={props.carryOn}
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -241,41 +245,34 @@ function FlightBox(props: flightProps) {
             {!isMobile && <BsShare size={30} />}
           </Flex>
           <Flex
-            align="center"
-            gap="3rem"
-            direction={isMobile ? "row" : "column"}
-          >
-            <Flex
-              direction={isMobile ? "column-reverse" : "column"}
-              gap=".1rem"
-              padding={isMobile ? "2rem 0" : ""}
-            >
-              <Text
-                type="h1"
-                text={`${getRandomNumber()} seats left at this price`}
-                weight={500}
-                size={18}
-                color="#929292"
-              />
-              <Text type="h1" text={`$ ${price}`} weight={600} size={40} />
-            </Flex>
-            <Button
-              background="#7BBBD6"
-              width="100%"
-              padding="2rem 0"
-              onClick={() =>
-                props.selectFlight({ bookingToken: props.bookingToken })
-              }
-            >
-              <Text
-                type="h1"
-                text="Select"
-                weight={600}
-                size={18}
-                font="Montserrat"
-              />
-            </Button>
+            direction={isMobile ? "column-reverse" : "column"}
+            gap=".1rem"
+            padding={isMobile ? "2rem 0" : ""}>
+            <Text
+              type="h1"
+              text={`${props.seats ? props.seats : 0} seat(s) left at this price`}
+              weight={500}
+              size={18}
+              color="#929292"
+            />
+            <Text type="h1" text={`$ ${price}`} weight={600} size={40} />
           </Flex>
+
+          <Button
+            background="#7BBBD6"
+            width="100%"
+            padding="2rem 0"
+            onClick={() =>
+              props.selectFlight({ bookingToken: props.bookingToken })
+            }>
+            <Text
+              type="h1"
+              text="Select"
+              weight={600}
+              size={18}
+              font="Montserrat"
+            />
+          </Button>
         </Flex>
       </Box>
     </FlightContainer>

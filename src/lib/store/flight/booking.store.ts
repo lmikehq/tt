@@ -105,6 +105,8 @@ export const useFlightBookingStore = create<State & Actions>(
       });
     },
     searchFlights: async ({ data }: { data: SearchFlightsRequestQuery }) => {
+      console.log("data to search", data);
+      
       set({ searchFlightsMode: Mode.loading });
       return await FlightBookingService.searchFlights({
         data,
