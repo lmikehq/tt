@@ -30,7 +30,7 @@ function AvailableFlights() {
 
   const [count, setCount] = useState(5);
   const [sortType, setSortType] = useState("best");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<FlightInfo[]>([]);
   const [airport1, setAirport1] = useState(null);
   const [airport2, setAirport2] = useState(null);
 
@@ -41,7 +41,12 @@ function AvailableFlights() {
     );
   };
 
-  const updateSearchQueryHandler = (updatedParams) => {
+  interface SearchQuery {
+    sortBy: string;
+    filter: string;
+  }
+
+  const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
     const updatedQuery = { ...searchQuery, ...updatedParams };
     updateSearchQuery({ data: updatedQuery });
     router.push(pathName + constructQueryFromParams(updatedQuery));
@@ -52,7 +57,7 @@ function AvailableFlights() {
   useEffect(() => {
     const url = window.location.href;
     const searchParams = extractSearchParamsFromUrl({ url });
-    updateSearchQueryHandler({...searchParams });
+    updateSearchQueryHandler({ ...searchParams });
   }, [window.location.href]);
 
   const prices: number[] = searchFlightsResults.map((flight) => flight.price);
