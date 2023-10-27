@@ -56,6 +56,7 @@ interface flexProps {
 
 const FlexWrapper = styled.div`
   width: 100%;
+ transition: all 300ms ease-out;
 `;
 
 export const Flex: React.FC<flexProps> = ({

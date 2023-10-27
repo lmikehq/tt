@@ -1,75 +1,95 @@
-import CheckBox from "@molecule/checkbox";
-import { Divider } from "@atom/divider";
-import Flex from "@components/templates/flex";
-import { CustomRadioGroup } from "@molecule/radio";
-// import { SearchInputAsString } from "@organism/searchInput";
-import { SearchInputAsString } from "@organism/searchInput";
-import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import React, { useMemo, useState } from "react";
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { BsChevronDown, BsChevronUp } from "react-icons/bs";
-import { LuSearch } from "react-icons/lu";
-import { ButtonBox } from "../components/sortedFlightsTab";
-import { styled } from "styled-components";
+"use client";
+import Filter from "./filters";
+import React from "react";
+import { useState } from "react";
+import { FilterData } from "@/lib/types/request-models/flight/filter";
 import PriceAlerts from "../components/priceAlerts";
+import Flex from "@/components/templates/flex";
+import styled from "styled-components";
+import PlusMinusButton from "@/components/organisms/flights/PlusMinusButton";
+import Text from "@atom/text";
+import { BsChevronDown, BsChevronUp } from "react-icons/bs";
+import CheckBox from "@molecule/checkbox";
+import { CustomRadioGroup } from "@molecule/radio";
+import { SearchInputAsString } from "@organism/searchInput";
+import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import Slider from "../../slider";
-import PlusMinusButton from "@/components/organisms/flights/PlusMinusButton";
-import { HiXMark } from "react-icons/hi2";
-import { Grid } from "@/components/templates/grid";
-import { fileURLToPath } from "url";
+import { ButtonBox } from "../components/sortedFlightsTab";
 import dayjs from "dayjs";
-import { FilterData } from "@/lib/types/request-models/flight/filter";
 
-const Tag = styled.div`
-  background: #87ceeb;
-  border-radius: 4px;
-  color: white;
-  padding: 0.625em 0.875rem;
+const Container = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-
-  svg {
-    font-weight: bold;
-    background: white;
-    color: #87ceeb;
-    border-radius: 50%;
-    padding: 0.25em;
-  }
+  flex-direction: column;
+  max-width: 310px;
+  margin: 1.5rem 0 0;
 `;
 
-function SortingColumns() {
+const Accordion = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+`;
+const SortingColumns = () => {
   const [filterData, setFilterData] = useState<FilterData>({
     bags: {
       cabin: 0,
       checked: 0,
     },
-    stops: '',
+    stops: "",
     airlines: [],
     times: {
       depart: {
         min: "0:00",
-        max: "23:59"
+        max: "23:59",
       },
       arrival: {
         min: "0:00",
-        max: "23:59"
+        max: "23:59",
       },
     },
     alliance: [],
     duration: {
       stops: {
         min: 2,
-        max: 25
+        max: 25,
       },
     },
     price: 0,
     cabin: [],
   });
+
+  const [filterState, setFilterState] = useState({
+    bags: false,
+    stops: false,
+    airlines: false,
+    times: false,
+    alliance: false,
+    duration: false,
+    price: false,
+    cabin: false,
+  });
+
+  const [columnState, setColumnState] = useState({
+    bags: false,
+    stops: false,
+    airlines: false,
+    times: false,
+    alliance: false,
+    duration: false,
+    price: false,
+    cabin: false,
+  });
+
+  type ColumnName = keyof typeof columnState;
+
+  const toggleColumn = (columnName: ColumnName) => {
+    setColumnState((prevState) => ({
+      ...prevState,
+      [columnName]: !prevState[columnName],
+    }));
+  };
 
   const handleBags = (
     bagType: "cabin" | "checked",
@@ -89,6 +109,13 @@ function SortingColumns() {
     });
   };
 
+  const options = [
+    { value: "any", label: "Any" },
+    { value: "non", label: "Nonstop" },
+    { value: "1stop", label: "Up to 1 stop" },
+    { value: "2stop", label: "Up to 2 stops" },
+  ];
+
   const handleStops = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     setFilterData((prev) => {
@@ -98,6 +125,27 @@ function SortingColumns() {
       };
     });
   };
+
+  const airlines = [
+    "Air Canada",
+    "WestJet",
+    "Air Transat",
+    "Porter Airlines",
+    "Sunwing Airlines",
+    "Delta Air Lines",
+    "United Airlines",
+    "American Airlines",
+    "British Airways",
+    "Lufthansa",
+  ];
+
+  const cabin = [
+    "All Cabins",
+    "Economy",
+    "Premium Economy",
+    "Business",
+    "First Class",
+  ];
 
   type checkType = "cabin" | "alliance" | "airlines";
   const handleCheck = (
@@ -120,44 +168,17 @@ function SortingColumns() {
       }
     });
   };
-  
 
-  const convertTime = (value: number) => {
-    const minutes = value * 15;
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    const formattedTime = dayjs().set('hour', hours).set('minute', remainingMinutes).format('HH:mm');
-    switch (value) {
-      case 0:
-        return "0:00";
-      case 96:
-        return "23:59";
-      default:
-        return formattedTime;
-    }
-  };
+  const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
 
-  const handleTimeChange = (newValue: number | number[], time: 'arrival' | 'depart') => {
-    const newMinTime = Array.isArray(newValue) ? convertTime(newValue[0]) : convertTime(newValue);
-    const newMaxTime = Array.isArray(newValue)? convertTime(newValue[1]) : convertTime(newValue);
-    setFilterData((prevFilterData) => ({
-      ...prevFilterData,
-      times: {
-        ...prevFilterData.times,
-        [time]: {
-          min: newMinTime,
-          max: newMaxTime,
-        },
-      },
+  type FilterName = keyof typeof filterState;
+
+  const toggleState = (filterName: FilterName) => {
+    setFilterState((prevState) => ({
+      ...prevState,
+      [filterName]: !prevState[filterName],
     }));
   };
-
-  const options = [
-    { value: "any", label: "Any" },
-    { value: "non", label: "Nonstop" },
-    { value: "1stop", label: "Up to 1 stop" },
-    { value: "2stop", label: "Up to 2 stops" },
-  ];
 
   const marks = [
     {
@@ -170,28 +191,45 @@ function SortingColumns() {
     },
   ];
 
-  const airlines = [
-    "Air Canada",
-    "WestJet",
-    "Air Transat",
-    "Porter Airlines",
-    "Sunwing Airlines",
-    "Delta Air Lines",
-    "United Airlines",
-    "American Airlines",
-    "British Airways",
-    "Lufthansa",
-  ];
+  const convertTime = (value: number) => {
+    const minutes = value * 15;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    const formattedTime = dayjs()
+      .set("hour", hours)
+      .set("minute", remainingMinutes)
+      .format("HH:mm");
+    switch (value) {
+      case 0:
+        return "0:00";
+      case 96:
+        return "23:59";
+      default:
+        return formattedTime;
+    }
+  };
 
-  const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
-
-  const cabin = [
-    "All Cabins",
-    "Economy",
-    "Premium Economy",
-    "Business",
-    "First Class",
-  ];
+  const handleTimeChange = (
+    newValue: number | number[],
+    time: "arrival" | "depart"
+  ) => {
+    const newMinTime = Array.isArray(newValue)
+      ? convertTime(newValue[0])
+      : convertTime(newValue);
+    const newMaxTime = Array.isArray(newValue)
+      ? convertTime(newValue[1])
+      : convertTime(newValue);
+    setFilterData((prevFilterData) => ({
+      ...prevFilterData,
+      times: {
+        ...prevFilterData.times,
+        [time]: {
+          min: newMinTime,
+          max: newMaxTime,
+        },
+      },
+    }));
+  };
 
   const TimeBox = styled.div`
     background: #f3f3ff;
@@ -199,152 +237,61 @@ function SortingColumns() {
     border-radius: 8px;
   `;
 
-  const [columnState, setColumnState] = useState({
-    bags: false,
-    stops: false,
-    airlines: false,
-    times: false,
-    alliance: false,
-    duration: false,
-    price: false,
-    cabin: false,
-  });
-
-  type ColumnName = keyof typeof columnState;
-
-  const toggleColumn = (columnName: ColumnName) => {
-    setColumnState((prevState) => ({
-      ...prevState,
-      [columnName]: !prevState[columnName],
-    }));
-  };
-
-  const [filterState, setFilterState] = useState({
-    bags: false,
-    stops: false,
-    airlines: false,
-    times: false,
-    alliance: false,
-    duration: false,
-    price: false,
-    cabin: false,
-  });
-
-  type FilterName = keyof typeof filterState;
-
-  const toggleState = (filterName: FilterName) => {
-    setFilterState((prevState) => ({
-      ...prevState,
-      [filterName]: !prevState[filterName],
-    }));
-  };
-
-  const filteredTags = useMemo(() => {
-    return Object.entries(filterState).map(([key, value]) => {
-      if (value) {
-        return (
-          <Tag key={key}>
-            {key} <HiXMark size={25} />
-          </Tag>
-        );
-      }
-      return null;
-    });
-  }, [filterState]);
-
-  const trueValuesCount = useMemo(() => {
-    return Object.values(filterState).filter((value) => value === true).length;
-  }, [filterState]);
-
   return (
-    <Flex direction="column" maxWidth="310px" margin="1.5rem 0 0">
+    <Container direction="column" maxWidth="310px" margin="1.5rem 0 0">
       <PriceAlerts />
-      <Flex direction="column" padding="1rem 0" gap=".5rem">
-        {trueValuesCount > 0 && (
-          <Text
-            type="p"
-            text={`${trueValuesCount} Filters Active`}
-            weight={500}
-          />
-        )}
-        <Grid columns="2" gap=".5rem">
-          {filteredTags}
-        </Grid>
-      </Flex>
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("bags")}
-          cursor="pointer"
-        >
-          <Text type="p" text="Bags" weight={500} color="#06062A" />
-          {columnState.bags ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.bags && (
-          <Flex direction="column" justify="center" gap="1rem" padding="1rem 0">
-            <Flex align="center" justify="space-between">
-              <Text
-                type="p"
-                text="Cabin Baggage"
-                size={14.5}
-                whiteSpace="nowrap"
-              />
-              <Flex gap=".75rem" align="center" justify="flex-end">
-                <PlusMinusButton
-                  onClick={() => handleBags("cabin", "subtract")}
-                >
-                  <Text type="p" text="-" />
-                </PlusMinusButton>
-                <Text type="p" text={filterData.bags.cabin.toString()} />
-                <PlusMinusButton onClick={() => handleBags("cabin", "add")}>
-                  <Text type="p" text="+" />
-                </PlusMinusButton>
+      <Accordion>
+        <Filter summary={"Bags"}>
+          <Flex direction="column">
+            <Flex
+              direction="column"
+              justify="center"
+              gap="1rem"
+              padding="1rem 0">
+              <Flex align="center" justify="space-between">
+                <Text
+                  type="p"
+                  text="Cabin Baggage"
+                  size={14.5}
+                  whiteSpace="nowrap"
+                />
+                <Flex gap=".75rem" align="center" justify="flex-end">
+                  <PlusMinusButton
+                    onClick={() => handleBags("cabin", "subtract")}>
+                    <Text type="p" text="-" />
+                  </PlusMinusButton>
+                  <Text type="p" text={filterData.bags.cabin.toString()} />
+                  <PlusMinusButton onClick={() => handleBags("cabin", "add")}>
+                    <Text type="p" text="+" />
+                  </PlusMinusButton>
+                </Flex>
               </Flex>
-            </Flex>
-            <Flex align="center" justify="space-between">
-              <Text
-                type="p"
-                text="Checked Baggage"
-                size={14.5}
-                whiteSpace="nowrap"
-              />
-              <Flex gap=".75rem" align="center" justify="flex-end">
-                <PlusMinusButton
-                  onClick={() => handleBags("checked", "subtract")}
-                >
-                  <Text type="p" text="-" />
-                </PlusMinusButton>
-                <Text type="p" text={filterData.bags.checked.toString()} />
-                <PlusMinusButton onClick={() => handleBags("checked", "add")}>
-                  <Text type="p" text="+" />
-                </PlusMinusButton>
+              <Flex align="center" justify="space-between">
+                <Text
+                  type="p"
+                  text="Checked Baggage"
+                  size={14.5}
+                  whiteSpace="nowrap"
+                />
+                <Flex gap=".75rem" align="center" justify="flex-end">
+                  <PlusMinusButton
+                    onClick={() => handleBags("checked", "subtract")}>
+                    <Text type="p" text="-" />
+                  </PlusMinusButton>
+                  <Text
+                    type="p"
+                    color="#101010"
+                    text={filterData.bags.checked.toString()}
+                  />
+                  <PlusMinusButton onClick={() => handleBags("checked", "add")}>
+                    <Text type="p" text="+" />
+                  </PlusMinusButton>
+                </Flex>
               </Flex>
             </Flex>
           </Flex>
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("stops")}
-        >
-          <Text type="p" text="Stops" weight={500} color="#06062A" />
-          {columnState.stops ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.stops && (
+        </Filter>
+        <Filter summary={"Stops"}>
           <Flex direction="column" align="flex-start" gap=".5rem">
             <CustomRadioGroup
               options={options}
@@ -357,8 +304,7 @@ function SortingColumns() {
             <CheckBox
               name="overnight"
               checked={filterData.stops === "overnight"}
-              onChange={(x) => handleStops(x)}
-            >
+              onChange={(x) => handleStops(x)}>
               <Text
                 type="p"
                 text="Allow overnight stopovers"
@@ -366,76 +312,47 @@ function SortingColumns() {
               />
             </CheckBox>
           </Flex>
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("airlines")}
-          cursor="pointer"
-        >
-          <Text type="p" text="Airlines" weight={500} color="#06062A" />
-          {columnState.airlines ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.airlines && (
+        </Filter>
+        <Filter summary={"Airlines"}>
           <Flex direction="column" gap=".5rem">
             <Flex justify="space-between" align="center" gap=".5rem">
               <SearchInputAsString
                 options={airlines}
-                onChange={(e: any) => console.log(e)}
-                placeholder="Search Airlines"
-              >
+                placeholder="Search Airlines">
                 <LuSearch color="#929292" size={20} />
               </SearchInputAsString>
-
-              <Button
+              {/* <Button
                 variant="link"
                 underlined={false}
-                color={ttColors.primaryLight}
-              >
+                color={ttColors.primaryLight}>
                 Select all
-              </Button>
+              </Button> */}
             </Flex>
             {airlines.map((airline, index) => (
               <CheckBox
                 key={index}
                 checked={filterData.airlines.includes(airline)}
                 name={airline}
-                onChange={(e) => handleCheck(e, "airlines")}
-              >
+                onChange={(e) => handleCheck(e, "airlines")}>
                 <Text type="p" text={airline} size={16} />
               </CheckBox>
             ))}
-            <Button variant="link" padding="1rem 0" underlined={false}>
-              Show less
-            </Button>
           </Flex>
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-      <Flex direction="column" gap=".5rem">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("times")}
-          cursor="pointer"
-        >
-          <Text type="p" text="Times" weight={500} color="#06062A" />
-          {columnState.times ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.times && (
+        </Filter>
+        <Filter summary={"Alliance"}>
+          <div>
+            {alliance.map((alliance, index) => (
+              <CheckBox
+                key={index}
+                checked={filterData.alliance.includes(alliance)}
+                name={alliance}
+                onChange={(e) => handleCheck(e, "alliance")}>
+                <Text type="p" text={alliance} size={16} />
+              </CheckBox>
+            ))}
+          </div>
+        </Filter>
+        <Filter summary={"Times"}>
           <Flex direction="column">
             <TimeBox>
               <Flex gap=".5rem" align="center" justify="center">
@@ -463,7 +380,9 @@ function SortingColumns() {
                   { value: 96, label: filterData.times.depart.max },
                 ]}
                 defaultValue={[0, 96]}
-                onChange={(event, newValue) => handleTimeChange(newValue, 'depart')}
+                onChange={(event, newValue) =>
+                  handleTimeChange(newValue, "depart")
+                }
                 min={0}
                 max={96}
               />
@@ -483,61 +402,16 @@ function SortingColumns() {
                   { value: 96, label: filterData.times.arrival.max },
                 ]}
                 defaultValue={[0, 96]}
-                onChange={(event, newValue) => handleTimeChange(newValue, 'arrival')}
+                onChange={(event, newValue) =>
+                  handleTimeChange(newValue, "arrival")
+                }
                 min={0}
                 max={96}
               />
             </Flex>
           </Flex>
-        )}
-      </Flex>
-      <Divider direction="horizontal" />
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("alliance")}
-        >
-          <Text type="p" text="Alliance" weight={500} color="#06062A" />
-          {columnState.alliance ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.alliance && (
-          <div>
-            {alliance.map((alliance, index) => (
-              <CheckBox
-                key={index}
-                checked={filterData.alliance.includes(alliance)}
-                name={alliance}
-                onChange={(e) => handleCheck(e, "alliance")}
-              >
-                <Text type="p" text={alliance} size={16} />
-              </CheckBox>
-            ))}
-          </div>
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("duration")}
-          cursor="pointer"
-        >
-          <Text type="p" text="Duration" weight={500} color="#06062A" />
-          {columnState.duration ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.duration && (
+        </Filter>
+        <Filter summary={"Duration"}>
           <div>
             <Flex direction="column" gap=".25rem" padding=".5rem 0">
               <Text type="p" text="Max Travel Time" size={18} weight={500} />
@@ -566,7 +440,10 @@ function SortingColumns() {
               <Slider
                 marks={[
                   { value: 2, label: `${filterData.duration.stops.min} Hours` },
-                  { value: 25, label: `${filterData.duration.stops.max} Hours` },
+                  {
+                    value: 25,
+                    label: `${filterData.duration.stops.max} Hours`,
+                  },
                 ]}
                 defaultValue={[2, 25]}
                 onChange={(event, newValue: number | number[]) => {
@@ -577,7 +454,7 @@ function SortingColumns() {
                         stops: {
                           min: newValue[0],
                           max: newValue[1],
-                        }
+                        },
                       },
                     }));
                   }
@@ -587,73 +464,39 @@ function SortingColumns() {
               />
             </Flex>
           </div>
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("price")}
-          cursor="pointer"
-        >
-          <Text type="p" text="Price" weight={500} color="#06062A" />
-          {columnState.price ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        <Text
-          type="p"
-          text="$0 - $40,000"
-          size={16}
-          weight={500}
-          color="#7BBBD6"
-        />
-        {columnState.price && (
-          <Slider
-            defaultValue={[0, 100]}
-            marks={marks}
-            onChange={() => toggleState("price")}
-          />
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-      <Flex direction="column">
-        <Flex
-          align="center"
-          justify="space-between"
-          padding="1rem 0"
-          onClick={() => toggleColumn("cabin")}
-          cursor="pointer"
-        >
-          <Text type="p" text="Cabin" weight={500} color="#06062A" />
-          {columnState.cabin ? (
-            <BsChevronUp color="#06062A" size={20} />
-          ) : (
-            <BsChevronDown color="#06062A" size={20} />
-          )}
-        </Flex>
-        {columnState.cabin && (
+        </Filter>
+        <Filter summary={"Price"}>
+          <div>
+            <Text
+              type="p"
+              text="$0 - $40,000"
+              size={16}
+              weight={500}
+              color="#7BBBD6"
+            />
+            <Slider
+              defaultValue={[0, 100]}
+              marks={marks}
+              onChange={() => toggleState("price")}
+            />
+          </div>
+        </Filter>
+        <Filter summary={"Cabin"}>
           <Flex direction="column" gap=".25rem">
             {cabin.map((cabin, index) => (
               <CheckBox
                 key={index}
                 name={cabin}
                 checked={filterData.cabin.includes(cabin)}
-                onChange={(e) => handleCheck(e, "cabin")}
-              >
+                onChange={(e) => handleCheck(e, "cabin")}>
                 <Text type="p" text={cabin} size={16} />
               </CheckBox>
             ))}
           </Flex>
-        )}
-        <Divider direction="horizontal" />
-      </Flex>
-    </Flex>
+        </Filter>
+      </Accordion>
+    </Container>
   );
-}
+};
 
 export default SortingColumns;

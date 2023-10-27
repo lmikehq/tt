@@ -45,6 +45,7 @@ function AvailableFlights() {
     const updatedQuery = { ...searchQuery, ...updatedParams };
     updateSearchQuery({ data: updatedQuery });
     router.push(pathName + constructQueryFromParams(updatedQuery));
+    console.log(pathName, "ade");
     searchFlights({ data: updatedQuery });
   };
 
