@@ -59,7 +59,7 @@ const FlexWrapper = styled.div`
  transition: all 300ms ease-out;
 `;
 
-export const Flex: React.FC<flexProps> = ({
+const Flex: React.FC<flexProps> = ({
   children,
   justify,
   align,
@@ -112,7 +112,7 @@ export const Flex: React.FC<flexProps> = ({
                 flexWrap: wrap,
                 height: height,
                 alignSelf: alignSelf,
-                borderBottom: borderBottom,
+                borderBottom: borderBottom ?? border,
                 position,
                 ...styles,
             }}

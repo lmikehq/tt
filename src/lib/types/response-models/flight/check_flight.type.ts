@@ -69,7 +69,7 @@ interface Airline {
   hold_note: string;
 }
 
-interface Flight {
+export interface Flight {
   id: string;
   combination_trip_id: string;
   original_trip_id: string;

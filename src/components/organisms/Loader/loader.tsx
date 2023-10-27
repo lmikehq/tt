@@ -13,29 +13,27 @@ const LoaderWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 9999;
   background: "fff";
   flex-direction: column;
 `;
 
 interface LoaderProps {
-  logo: string;
+  logo?: string;
 }
 
 const Loader: React.FC<LoaderProps> = ({ logo }) => {
   return (
     <LoaderWrapper>
-      <>
         <Image
-          src={"/assets/images/airplaneIcon.gif"}
-          alt="logo"
-          width={150}
-          height={150}
+            src={"/assets/images/airplaneIcon.gif"}
+            alt="logo"
+            width={150}
+            height={150}
         />
         <Text type="h3" text="THRILLERS TRAVELS" color={ttColors.primary} />
-      </>
     </LoaderWrapper>
   );
 };

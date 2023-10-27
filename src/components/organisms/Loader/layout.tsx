@@ -28,11 +28,7 @@ const LoaderLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <LayoutWrapper>
-      {isLoading ? (
-        <Loader logo={"/assets/images/brand/favicon.svg"} />
-      ) : (
-        <>{children}</>
-      )}
+        {isLoading ? <Loader /> : children}
     </LayoutWrapper>
   );
 };
