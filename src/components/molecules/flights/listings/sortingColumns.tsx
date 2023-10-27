@@ -237,6 +237,7 @@ const SortingColumns = () => {
     border-radius: 8px;
   `;
 
+  const [activeTab, setActiveTab] = useState("departure");
   return (
     <Container direction="column" maxWidth="310px" margin="1.5rem 0 0">
       <PriceAlerts />
@@ -355,14 +356,18 @@ const SortingColumns = () => {
         <Filter summary={"Times"}>
           <Flex direction="column">
             <TimeBox>
-              <Flex gap=".5rem" align="center" justify="center">
-                <ButtonBox active={true}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <ButtonBox
+                  active={activeTab === "departure" ? true : false}
+                  onClick={() => setActiveTab("departure")}>
                   <Text type="p" text="Departure" weight={500} />
                 </ButtonBox>
-                <ButtonBox active={false}>
+                <ButtonBox
+                  active={activeTab === "return" ? true : false}
+                  onClick={() => setActiveTab("return")}>
                   <Text type="p" text="Return" weight={500} />
                 </ButtonBox>
-              </Flex>
+              </div>
             </TimeBox>
             <Flex direction="column" gap=".25rem" padding="1rem 0">
               <Text type="p" text="Departure" size={18} weight={500} />
