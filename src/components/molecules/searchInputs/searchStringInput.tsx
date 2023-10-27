@@ -39,7 +39,7 @@ const SearchStringInput = ({
             error={error}
             cursor={cursor}
         >
-            <Flex justify="space-between" cursor="pointer">
+            <Flex justify="space-between" cursor="pointer" align="center" width="90%" >
                 <Text
                     type="p"
                     text={value ? value : placeholder}
@@ -48,7 +48,7 @@ const SearchStringInput = ({
                     size={size}
                     styles={{
                         cursor: "pointer",
-                        maxWidth: "80%",
+                        maxWidth: "85%",
                         textOverflow: "clip",
                         overflow: "hidden",
                     }}

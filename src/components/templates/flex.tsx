@@ -58,7 +58,7 @@ const FlexWrapper = styled.div`
   width: 100%;
 `;
 
-export const Flex: React.FC<flexProps> = ({
+const Flex: React.FC<flexProps> = ({
   children,
   justify,
   align,

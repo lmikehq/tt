@@ -14,6 +14,7 @@ import React, { CSSProperties, MouseEvent, useEffect, useRef, useState } from "r
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -107,6 +108,7 @@ export default function SearchInput({
     onChange,
     disabled = false
 }: SearchProps) {
+    const { isMobile } = useScreenResolution()
   const [_inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -181,7 +183,7 @@ export default function SearchInput({
           anchorEl={anchorEl}
           placement="bottom-start"
           sx={{
-            width: getWidth(),
+            width: isMobile ? '70vw' : getWidth(),
           }}
         >
           <ClickAwayListener onClickAway={handleClose}>

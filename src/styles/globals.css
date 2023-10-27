@@ -151,7 +151,7 @@ body {
 
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   height: 45px !important;
-  padding: 0px !important;
+  /* padding: 0px !important; */
 }
 
 .css-vqmohf-MuiButtonBase-root-MuiRadio-root {

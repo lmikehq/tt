@@ -30,6 +30,7 @@ import CheckBox from "@/components/molecules/checkbox";
 import { ToastInfo } from "../flight/booking/toast";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { GoTrash } from "react-icons/go";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 interface PassengerBaggagePaneProps {
   values: PassengerFormInterface;
@@ -44,7 +45,7 @@ interface PassengerBaggagePaneProps {
 }
 
 const BaggageBox = styled.div<{ active: boolean }>`
-  padding: 2rem;
+  padding: 2rem 1rem;
   border: 2px solid
     ${({ active }) => (active ? ttColors.primary : ttColors.lightestGray)};
   border-radius: 10px;
@@ -95,7 +96,8 @@ export default function PassengerBaggagePane({
   handleUpdatePassengersBagCombination,
 }: PassengerBaggagePaneProps) {
   const { checkFlightsResponse } = useFlightBookingStore((state) => state);
-  const bagDefinitions = checkFlightsResponse?.baggage.definitions;
+    const bagDefinitions = checkFlightsResponse?.baggage.definitions;
+    const { isMobile } = useScreenResolution()
 
   const [isChecked, setIsChecked] = useState({
     cabin: true,
@@ -116,7 +118,7 @@ export default function PassengerBaggagePane({
   return (
     <Box>
       <Flex gap="1rem" align="center" padding="2rem 0">
-        <Text type="h3" text="Cabin or carry-on baggage" weight={500} />
+        <Text type="h3" size={isMobile ? 18 : 22} text="Cabin or Carry-On Baggage" weight={600} />
         <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
       </Flex>
       <BaggageBox active={isChecked.cabin}>
@@ -127,15 +129,17 @@ export default function PassengerBaggagePane({
           <Text type="h3" text="Carry-On Bag" weight={600} />
           <Text
             type="p"
-            text="1x personal item (2kg) + 1x cabin bag (10kg)"
+            text="1x Personal Item (2kg) + 1x Cabin Bag (10kg)"
             color={ttColors.lighterGray}
+            size={isMobile ? 14 : 16}
+            padding={isMobile ? "0 1rem" : ""}
           />
           <Flex align="flex-end" justify="center">
             <Flex direction="column" gap=".75rem" align="center">
               <Image
                 height={100}
                 styles={{
-                  objectFit: "contain",
+                    objectFit: "contain",
                 }}
                 src="/assets/images/flights/purplebag.png"
                 alt="Baggage"
@@ -144,6 +148,7 @@ export default function PassengerBaggagePane({
                 type="p"
                 text="15 x 30 x 40 cm"
                 color={ttColors.foundation.gray}
+                size={isMobile ? 14 : 16}
               />
             </Flex>
             <Flex direction="column" gap=".75rem" align="center">
@@ -159,6 +164,7 @@ export default function PassengerBaggagePane({
                 type="p"
                 text="20 x 35 x 55 cm"
                 color={ttColors.foundation.gray}
+                size={isMobile ? 14 : 16}
               />
             </Flex>
           </Flex>
@@ -168,13 +174,13 @@ export default function PassengerBaggagePane({
               justify="center"
               gap=".5rem"
               background="#F4F4F4"
-              width="9.5rem"
+              width={isMobile ? "max-content" : "9.5rem"}
               padding=".5rem .75rem"
               borderRadius="30px"
               border={`1px solid ${ttColors.lightestGray}`}
             >
               <BsCheck2 size={25} color={ttColors.lighterGray} />
-              <Text type="p" text="Included" color={ttColors.lighterGray} />
+              <Text type="p" size={isMobile ? 14 : 16} text="Included" color={ttColors.lighterGray} />
             </Flex>
             <CustomRadioButton
               checked={isChecked.cabin}
@@ -183,23 +189,24 @@ export default function PassengerBaggagePane({
           </Flex>
         </Flex>
       </BaggageBox>
-      <Flex direction="column" gap=".5rem" padding="1.5rem 0">
+      <Flex direction="column" gap=".5rem" padding="3rem 0 1rem">
         <Flex gap="1rem" align="center">
-          <Text type="h3" text="Checked baggage" weight={500} />
+          <Text type="h3" size={isMobile ? 18 : 22} text="Checked Baggage" weight={600} />
           <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
         </Flex>
         <Text
-          type="p"
-          text="Select one option:"
-          weight={500}
-          color={ttColors.foundation.gray}
+            type="p"
+            text="Select one option:"
+            weight={500}
+            color={ttColors.foundation.gray}
+            size={isMobile ? 14 : 16}
         />
       </Flex>
       {!isChecked.allowBaggage && (
-        <Flex gap="1rem" align="flex-end" padding="1rem 0">
-          <BaggageBox active={isChecked.cbaggage1}>
+        <Flex gap="1rem" align="flex-end" wrap="wrap" padding="1rem 0">
+          <BaggageBox active={isChecked.cbaggage1} style={{ width: isMobile ? "100%" : "48%" }}>
             <Flex direction="column" gap="1rem" align="center" justify="center">
-              <Text type="h3" text="1x checked bags" weight={600} />
+              <Text type="h3" text="1x Checked Bags" weight={600} />
               <Text
                 type="p"
                 text="23kg"
@@ -231,7 +238,7 @@ export default function PassengerBaggagePane({
               </Flex>
             </Flex>
           </BaggageBox>
-          <BaggageBox active={isChecked.cbaggage2}>
+          <BaggageBox active={isChecked.cbaggage2} style={{ width: isMobile ? "100%" : "48%" }}>
             <Flex direction="column" gap="1rem" align="center" justify="center">
               <Text type="h3" text="2x checked bags" weight={600} />
               <Text
@@ -286,14 +293,11 @@ export default function PassengerBaggagePane({
           <Text type="p" text="No baggage" />
         </CheckBox>
       )}
-      <Flex justify="flex-end">
-        <Button background="#F3FAFD" border="1px solid #DAF0F9" color="black">
-          <Flex align="center" gap="1.5rem">
-            <GoTrash size={30} />
-            <Text type="p" text="Remove Traveler" weight={600} />
-          </Flex>
-        </Button>
-      </Flex>
+        <Flex justify="flex-end">
+            <Button background="#F3FAFD" padding="0px 20px" border="1px solid #DAF0F9" color="black" startIcon={<GoTrash size={30} />}>
+                <Text type="p" text="Remove Traveler" weight={600} />
+            </Button>
+        </Flex>
       {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
         <InputLabel id="demo-simple-select-autowidth-label">
           Add Baggage

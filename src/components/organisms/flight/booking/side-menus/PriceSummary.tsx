@@ -6,9 +6,10 @@ import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import Image from "@/components/atoms/image";
 import { GoCheckCircleFill } from "react-icons/go";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 
 
-function Detail({ name, value, currency = "$", negative, bold, plain }: { name: string; value: number | string; currency?: string; negative?: boolean; bold?: boolean; plain?: boolean; }) {
+function Detail({ name, value, currency = "USD", negative, bold, plain }: { name: string; value: number | string; currency?: string; negative?: boolean; bold?: boolean; plain?: boolean; }) {
     return (
         <Flex justify="space-between" align="flex-end">
             <Text
@@ -39,40 +40,39 @@ interface PriceSummaryProps {
     countdown?: string;
 }
 
-function PriceSumary({
-    basePrice = 1800.00,
-    taxes = 200.00,
-    serviceCharges = 135.00,
-    discount = 100.00,
-    departureBags = 0,
-    returnBags = 0,
-    countdown = "17h 40m"
-}: PriceSummaryProps) {
+function PriceSummary({ }: PriceSummaryProps) {
     const { isMobile } = useScreenResolution()
-    const totalPrice = (basePrice + taxes + serviceCharges + discount)
+    const { saveBooking, checkFlightsResponse, saveBookingDetails, setSaveBookingDetails, setStep } = useFlightBookingStore((state) => state);
 
-    const bagsDepart = `${departureBags === 0 ? "No" : departureBags} bags`
-    const bagsReturn = `${returnBags === 0 ? "No" : returnBags} bags`
+    const basePrice = checkFlightsResponse?.flights_price ?? 0
+    const taxes = checkFlightsResponse?.extra_fee ?? 0
+    const serviceCharges = checkFlightsResponse?.sp_fee ?? 0
+    const bagsPrice = 0
+    const totalPrice = checkFlightsResponse?.tickets_price ?? 0
+    const currency = checkFlightsResponse?.currency ?? 'USD'
+
+    const departureBags = 0
+    const countdown = `0h 0m`
 
     return (
         <Box>
             <Flex direction="column" gap=".5rem" margin="0 0 2rem">
-                <Text type="h3" weight={500} text="Price Summary" />
+                <Text type="h3" weight={600} text="Price Summary" />
                 <Text type="p" size={14} text="Taxes and service charges included" />
             </Flex>
 
             <Flex direction="column" gap=".6rem" margin="0 0 2rem">
-                <Detail name="Base Fare" value={basePrice} />
-                <Detail name="Taxes and Charges" value={taxes} />
-                <Detail name="Service Charges" value={serviceCharges} />
-                <Detail name="Thrillers Discount" value={discount} negative />
+                <Detail name="Base Fare" value={basePrice} currency={currency} />
+                <Detail name="Service Charges" value={serviceCharges} currency={currency} />
+                <Detail name="Checked Baggage Price" value={bagsPrice} currency={currency} />
+                {/* <Detail name="Taxes and Charges" value={taxes} currency={currency} /> */}
             </Flex>
 
             <Flex margin="0 0 2rem">
-                <Detail name="Total (USD)" value={totalPrice} bold />
+                <Detail name={`Total (${currency})`} value={totalPrice} currency={currency} bold />
             </Flex>
 
-            <Flex
+            {/* <Flex
                 background={ttColors.grayishAsh}
                 border={`1px solid ${ttColors.brown}`}
                 borderRadius="10px"
@@ -82,16 +82,15 @@ function PriceSumary({
             >
                 <GoCheckCircleFill color={ttColors.lighterGray} size={24} />
                 <Text type="p" size={14} weight={500} text="Eligible for Flexible Travel Dates" />
-            </Flex>
+            </Flex> */}
 
             <Flex direction="column" gap=".5rem" margin="0 0 2rem">
-                <Text type="h3" weight={500} text="Check-In Baggage" />
+                <Text type="h3" weight={600} text="Check-In Baggage" />
                 <Text type="p" size={14} text="Details on baggage needed to travel" />
             </Flex>
 
             <Flex direction="column" gap=".6rem" margin="0 0 3rem">
-                <Detail name="Departure" value={bagsDepart} plain />
-                <Detail name="Return" value={bagsReturn} plain />
+                <Detail name="No of Bags" value={departureBags} plain />
             </Flex>
 
             <Flex justify="flex-start" align="center" gap="1rem" margin="0 0 3rem">
@@ -104,10 +103,10 @@ function PriceSumary({
                 height={525}
                 src="/assets/images/flights/baggage.png"
                 alt="Baggage"
-                styles={{ width: "100%" }}
+                styles={{ width: isMobile ? "100%" : "100%" }}
             />
         </Box>
     )
 }
 
-export default PriceSumary
+export default PriceSummary
