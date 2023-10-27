@@ -21,13 +21,12 @@ const LoaderWrapper = styled.div`
 `;
 
 interface LoaderProps {
-  logo: string;
+  logo?: string;
 }
 
 const Loader: React.FC<LoaderProps> = ({ logo }) => {
   return (
     <LoaderWrapper>
-      <>
         <Image
           src={"/assets/images/airplaneIcon.gif"}
           alt="logo"
@@ -35,7 +34,6 @@ const Loader: React.FC<LoaderProps> = ({ logo }) => {
           height={150}
         />
         <Text type="h3" text="THRILLERS TRAVELS" color={ttColors.primary} />
-      </>
     </LoaderWrapper>
   );
 };

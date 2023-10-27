@@ -13,14 +13,14 @@ const FlightTab = styled.div`
 `;
 
 function page() {
-  return (
-    <Container maxWidth="lg">
-      <FlightTab>
-        <Flights />
-      </FlightTab>
-      <FlightList />
-    </Container>
-  );
+    return (
+        <Container maxWidth="lg">
+            <FlightTab>
+                <Flights />
+            </FlightTab>
+            <FlightList />
+        </Container>
+    );
 }
 
 export default page;

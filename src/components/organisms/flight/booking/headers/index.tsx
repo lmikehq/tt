@@ -1,8 +1,9 @@
 import Text from "@/components/atoms/text";
 import FormTitleAndSubtitle from "@/components/molecules/forms/FormTitleAndSubtitle";
 import Flex from "@/components/templates/flex";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
-import { Box } from "@mui/material";
+import { FaPlane } from "react-icons/fa6";
 
 export const OverviewHeader = () => {
   return (
@@ -23,21 +24,14 @@ export const SeatHeader = () => {
 };
 
 export const TripHeader = () => {
-  return (
-    <Flex gap="1rem" justify="space-between" align="center">
-      <Text text="Trip Summary" type="h2" weight={600} />
-      <Box
-        sx={{
-          background: ttColors.primary100,
-          padding: "5px",
-          borderRadius: "100px",
-          width: "40px",
-          height: "40px",
-          display: "flex",
-        }}
-      >
-        <img src="/assets/icons/airplane.svg" alt="airplane" />
-      </Box>
-    </Flex>
-  );
+    const { isMobile } = useScreenResolution()
+
+    return (
+        <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-start"} align="center" padding={isMobile ? "0" : "0"}>
+            <Text text="Trip Summary" size={isMobile ? 20 : 20} type="h2" weight={600} />
+            <Flex borderRadius="50%" background={ttColors.primary100} padding="5px" width="max-content">
+                <FaPlane color={ttColors.primary600} size={isMobile ? 30 : 20} />
+            </Flex>
+        </Flex>
+    );
 };
