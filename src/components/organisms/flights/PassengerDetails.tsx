@@ -27,6 +27,7 @@ import { Combinations } from "@/lib/types/response-models/flight/check_flight.ty
 import PassengerBaggagePane from "./PassengerBaggagePane";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { ttColors } from "@/lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 interface TripSummaryCardProps {
   formik: FormikProps<{
@@ -51,11 +52,12 @@ export default function MainPassenger({
   passengerBagCombination,
   handleUpdatePassengersBagCombination,
 }: TripSummaryCardProps) {
+    const { isMobile } = useScreenResolution()
   return (
     <>
       <Flex justify="space-between" align="center">
-        <Text type="h2" text="Main Passenger" font="Montserrat" weight={600} />
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <Text type="h2" size={isMobile ? 18 : 22} text="Main Passenger" font="Montserrat" weight={600} />
+        <FormControl sx={{ m: 1, width: isMobile ? '45%' : '30%' }}>
           <FieldString
             options={[
               "Adult (Over 11 years)",
@@ -65,6 +67,7 @@ export default function MainPassenger({
             placeholder="Select category"
             name={`passengers.${count}.category`}
             formik={formik}
+            
           />
         </FormControl>
       </Flex>
@@ -85,21 +88,21 @@ export default function MainPassenger({
         >
           <FormControl>
             <FormLabel required htmlFor="surname">
-              Last name
+              Last Name
             </FormLabel>
             <FieldInput
               name={`passengers.${count}.surname`}
-              placeholder="Last name"
+              placeholder="Enter Last name"
               formik={formik}
             />
           </FormControl>
           <FormControl>
             <FormLabel required htmlFor="name">
-              First name
+              First Name
             </FormLabel>
             <FieldInput
               name={`passengers.${count}.name`}
-              placeholder="First name"
+              placeholder="Enter First Name"
               formik={formik}
             />
           </FormControl>
@@ -131,7 +134,7 @@ export default function MainPassenger({
           </FormControl>
           <FormControl>
             <FormLabel required htmlFor="birthday">
-              Date of birth
+              Date of Birth
             </FormLabel>
             <FieldAsDate
               name={`passengers.${count}.birthday`}
@@ -152,21 +155,21 @@ export default function MainPassenger({
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="issuingdate">
-              Passport or ID Issued date
+              Passport or ID Issued Date
             </FormLabel>
             <FieldAsDate
               name={`passengers.${count}.issuingdate`}
-              placeholder="Passport or ID Expiry date"
+              placeholder="Passport or ID Expiry Date"
               formik={formik}
             />
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="expiration">
-              Passport or ID Expiry date
+              Passport or ID Expiry Date
             </FormLabel>
             <FieldAsDate
               name={`passengers.${count}.expiration`}
-              placeholder="Passport or ID Expiry date"
+              placeholder="Passport or ID Expiry Date"
               formik={formik}
               format="YYYY-MM-DD"
             />
@@ -174,13 +177,14 @@ export default function MainPassenger({
         </Box>
         <Box>
           <Flex gap="1rem" align="center" padding="1rem 0">
-            <Text type="h2" text="Add extra check-in bags" weight={600} />
+            <Text type="h2" size={isMobile ? 18 : 22} text="Add extra check-in bags" weight={600} />
             <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
           </Flex>
           <Text
             type="p"
             text="Choose an option. Various airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
             color="#414141"
+            size={isMobile ? 14 : 16}
           />
           <Box sx={{ marginY: "1rem" }}>
             <PassengerBaggagePane

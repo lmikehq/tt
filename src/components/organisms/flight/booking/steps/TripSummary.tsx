@@ -15,7 +15,7 @@ import {
   arrangeBaggageDataForOrdering,
   passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
-import {Combinations} from "@/lib/types/response-models/flight/check_flight.type";
+import {CheckFlightResponse, Combinations} from "@/lib/types/response-models/flight/check_flight.type";
 import {Box} from "@mui/material";
 import {FieldArray, FormikProvider, useFormik} from "formik";
 
@@ -50,7 +50,7 @@ interface TripSummaryProps {
         index: number;
         combination: Combination;
         category: string;
-    }) : void;
+    }): void;
 }
 const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombination } : TripSummaryProps) => {
     const { saveBooking, checkFlightsResponse, saveBookingDetails, setSaveBookingDetails, setStep } = useFlightBookingStore((state) => state);
@@ -126,6 +126,10 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
         validateOnChange: false
     });
 
+    const flights = checkFlightsResponse?.flights ?? []
+    const departure = flights[0]
+    const arrival = flights[flights?.length - 1]
+
     return (
         <Box
             sx={{
@@ -135,8 +139,9 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
             }}
         >
             <TripSummaryCard
-                departure={mockFlightStop}
-                arrival={mockFlightStop}
+                departure={departure}
+                arrival={arrival}
+                flights={flights}
             />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>

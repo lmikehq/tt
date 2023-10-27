@@ -39,7 +39,7 @@ export class FlightBookingService {
     query: CheckFlightsQuery;
   }): Promise<CheckFlightResponse> => {
     const queryString = constructQueryFromParams(query);
-    console.log(queryString);
+    // console.log(queryString);
     return await kiwiClient
       .get<any, any>(`/booking/check_flights${queryString}`)
       .then((response) => response.data)

@@ -119,7 +119,7 @@ const FlightBookingPage = () => {
     )!;
 
     useEffect(() => {
-        const searchParams = extractSearchParamsFromUrl({url: window.location.href});
+        const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
         checkFlights({
             query: {
                 bnum: 0,
@@ -176,7 +176,7 @@ const FlightBookingPage = () => {
                         {(() => {
                             switch (step) {
                                 case 2:
-                                    return <TripSummary passengersBagCombination={passengersBagCombination} handleUpdatePassengersBagCombination={handleUpdatePassengersBagCombination} />;
+                                    return (<TripSummary passengersBagCombination={passengersBagCombination} handleUpdatePassengersBagCombination={handleUpdatePassengersBagCombination} /> );
                                 case 3:
                                     return <ChooseTicketFare/>;
                                 case 4:
