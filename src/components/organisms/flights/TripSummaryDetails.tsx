@@ -4,16 +4,17 @@ import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
-import { Box } from "@mui/material";
 import { BiTransferAlt } from "react-icons/bi";
-import { FlightStopType } from "../flight/booking/steps/TripSummary";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { Flight } from "@/lib/types/response-models/flight/check_flight.type";
+import { formatDate } from "@/lib/utilFns";
+import dayjs from "dayjs";
+import { Box } from "@mui/material";
 
 
 interface TripSummaryDetailsProps {
-    flightStops?: FlightStopType[]
+    flights: Flight[]
 }
-
 
 const Dot = ({ size = 14, color, top, bottom }: { size?: number; color?: string; top?: string; bottom?: string }) => (
     <Box
@@ -36,32 +37,35 @@ function LineText({ text }: { text: string }) {
     )
 }
 
-function TransferDuration({ duration, state, isMobile }: { duration: string; state: string; isMobile: boolean; }) {
+function TransferDuration({ duration, location }: { duration: string; location: string; }) {
+    const { isMobile } = useScreenResolution()
     return (
         <Flex padding={isMobile ? "3rem 0rem 3rem" : "3rem 0rem 3rem"} gap={isMobile ? ".5rem" : "1rem"}>
             <BiTransferAlt size={30} />
             <Flex gap="0.25rem" align="flex-start" direction="column">
                 <Text type="p" weight={600} size={15} text={`Transfer Duration: ${duration}`} />
-                <Text type="p" size={isMobile ? 13 : 15} text={`Transfer in ${state}`} />
+                <Text type="p" size={isMobile ? 13 : 15} text={`Transfer in ${location}`} />
             </Flex>
         </Flex>
     )
 }
 
 function AirportLocation({
-    time,
-    date,
+    datetime,
     airport,
     location,
+    shortLocation,
     order,
-    isMobile
-}: { time: string, date: string; airport: string; location: string; order: number; isMobile: boolean }) {
-    const shortLoc = String(location).slice(0, 3).toUpperCase()
+}: { datetime: string, airport: string; location: string; shortLocation: string; order: number; }) {
+    const { isMobile } = useScreenResolution()
+    const date = formatDate(dayjs(datetime), 'ddd, DD MMM')
+    const time = formatDate(dayjs(datetime), 'HH: mm')
+    
     return (
         <Flex direction="column" gap=".5rem" width={isMobile ? "46%" : "30%"} styles={{ order }}>
             <Flex gap={isMobile ? ".5rem" : "1rem"}>
                 <Text type="p" text={time} size={16} weight={600} />
-                <Text type="p" text={shortLoc} size={16} weight={600} />
+                <Text type="p" text={shortLocation} size={16} weight={600} />
             </Flex>
             <LineText text={date} />
             <LineText text={airport} />
@@ -76,8 +80,9 @@ function TimeOfFlight({
     order,
     width,
     margin,
-    isMobile
-}: { time: string; airline: string; order: number; width: string; margin: string; isMobile: boolean; }) {
+}: { time: string; airline: string; order: number; width: string; margin: string; }) {
+    const { isMobile } = useScreenResolution()
+    
     return (
         <Flex direction="column" styles={{ order, width, margin }}>
             <Flex gap={isMobile ? ".75rem" : "1rem"} align="center" margin="0 0 0.5rem 0">
@@ -103,9 +108,17 @@ function TimeOfFlight({
     )
 }
 
-function OneTrip({ index, chain, last, flight }: { index: number; chain: boolean; last: boolean; flight: FlightStopType }) {
+function OneTrip({ index, chain, last, flight, nextFlight }: { index: number; chain: boolean; last: boolean; flight: Flight; nextFlight?: Flight; }) {
     const { isMobile } = useScreenResolution()
-    
+
+    const arrivalMins = dayjs(flight?.utc_arrival).diff(dayjs(flight?.utc_departure), 'minute')
+    const arrivalHoursLeft = Math.floor(arrivalMins / 60)
+    const arrivalMinsLeft = arrivalMins % 60
+
+    const layoverMins = nextFlight ? dayjs(nextFlight?.utc_departure).diff(dayjs(flight?.utc_arrival), 'minute') : 0
+    const layoverHoursLeft = Math.floor(layoverMins / 60)
+    const layoverMinsLeft = layoverMins % 60
+
     return (
         <Flex height="max-content">
             {chain && (last ? 
@@ -120,7 +133,7 @@ function OneTrip({ index, chain, last, flight }: { index: number; chain: boolean
                 </Box> : 
                 <Box
                     height="100%"
-                    minHeight={isMobile ? "390px" : "270px"}
+                    minHeight={isMobile ? "430px" : "270px"}
                     width="2px"
                     bgcolor={ttColors.lightestGray}
                     marginRight={isMobile ? "35px" : "40px"}
@@ -134,36 +147,32 @@ function OneTrip({ index, chain, last, flight }: { index: number; chain: boolean
             <Box width="100%">
                 <Flex justify="space-between" wrap="wrap">
                     <AirportLocation
-                        time={flight.departure.time}
-                        date={flight.departure.date}
-                        airport={flight.departure.airport}
-                        location={flight.departure.location}
-                        isMobile={isMobile}
+                        datetime={flight?.utc_departure}
+                        shortLocation={flight?.src_country}
+                        airport={flight?.src_station}
+                        location={`${flight?.src_name}, ${flight?.src_country}`}
                         order={1}
                     />
                     <TimeOfFlight
-                        time="6h 35'"
-                        airline="EgyptAir Airlines KL588"
+                        time={`${arrivalHoursLeft}h ${arrivalMinsLeft}m`}
+                        airline={`${flight?.airline.name}, ${flight?.airline.code_public}`}
                         order={isMobile ? 3 : 2}
                         width={isMobile ? "100%" : "30%"}
                         margin={isMobile ? "2.5rem 0 0" : "0"}
-                        isMobile={isMobile}
                     />
                     <AirportLocation
-                        time={flight.arrival.time}
-                        date={flight.arrival.date}
-                        airport={flight.arrival.airport}
-                        location={flight.arrival.location}
-                        isMobile={isMobile}
+                        datetime={flight?.utc_arrival}
+                        shortLocation={flight?.dst_country}
+                        airport={flight?.dst_station}
+                        location={`${flight?.dst_name}, ${flight?.dst_country}`}
                         order={isMobile ? 2 : 3}
                     />
                 </Flex>
 
                 {!last &&
                     <TransferDuration
-                        duration="6h 35'"
-                        state="Amsterdam"
-                        isMobile={isMobile}
+                        duration={`${layoverHoursLeft}h ${layoverMinsLeft}m`}
+                        location={flight?.dst_name}
                     />
                 }
             </Box>
@@ -171,20 +180,23 @@ function OneTrip({ index, chain, last, flight }: { index: number; chain: boolean
     )
 }
 
-export default function TripSummaryDetails({ flightStops = [] }: TripSummaryDetailsProps) {
+function TripSummaryDetails({ flights = [] }: TripSummaryDetailsProps) {
     const { isMobile } = useScreenResolution()
 
     return (
-        <Box bgcolor={ttColors.ghostWhite} padding={isMobile ? "2rem 2rem 2rem 2px" : "2rem"}>
-            {flightStops.map((e, index, arr) => 
+        <Box bgcolor={ttColors.ghostWhite} padding={isMobile ? "3rem 2rem 4rem 2px" : "2rem"}>
+            {flights.map((e, index, arr) => 
                 <OneTrip
                     key={`flight-stop ${index}`}
                     index={index}
-                    chain={flightStops.length > 1}
+                    chain={flights.length > 1}
                     last={(index + 1) === arr.length}
                     flight={e}
+                    nextFlight={arr[index + 1]}
                 />
             )}
         </Box>
     )
 }
+
+export default TripSummaryDetails

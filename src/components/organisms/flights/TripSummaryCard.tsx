@@ -1,4 +1,5 @@
 "use client";
+
 import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Accordion, { AccordionProps } from "@mui/material/Accordion";
@@ -8,15 +9,23 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Flex from "@/components/templates/flex";
 import { styled } from "@mui/material/styles";
 import { ttColors } from "@/lib/theme/colors";
-import Box from "@mui/material/Box";
-import TripSummaryDetails from "./TripSummaryDetails";
 import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booking.type";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { TripHeader } from "../flight/booking/headers";
 import React, { useState } from "react";
 import Image from "@/components/atoms/image";
-import { FlightStopType, mockFlightStops } from "../flight/booking/steps/TripSummary";
+import { Flight } from "@/lib/types/response-models/flight/check_flight.type";
+import { formatDate } from "@/lib/utilFns";
+import { Box } from "@mui/material";
+import dayjs from "dayjs";
+import TripSummaryDetails from "./TripSummaryDetails";
 
+
+interface TripSummaryCardProps {
+    departure: Flight;
+    arrival: Flight;
+    flights: Flight[];
+}
 
 function StopDot() {
     return (
@@ -31,19 +40,21 @@ function LineText({ text }: { text: string }) {
 }
 
 function AirportLocation({
-    time,
-    date,
+    datetime,
     airport,
     location,
+    shortLocation,
     order,
-    isMobile,
-}: { time: string, date: string; airport: string; location: string; order: number; isMobile: boolean; margin?: string }) {
-    const shortLoc = String(location).slice(0, 3).toUpperCase()
+}: { datetime: string, airport: string; location: string; shortLocation: string; order: number; }) {
+    const { isMobile } = useScreenResolution()
+    const date = formatDate(dayjs(datetime), 'ddd, DD MMM')
+    const time = formatDate(dayjs(datetime), 'HH: mm')
+    
     return (
         <Flex direction="column" gap=".5rem" width={isMobile ? "45%" : "25%"} styles={{ order }}>
             <Flex gap="1rem">
                 <Text type="p" text={time} size={16} weight={600} />
-                <Text type="p" text={shortLoc} size={16} weight={600} />
+                <Text type="p" text={shortLocation} size={16} weight={600} />
             </Flex>
             <LineText text={date} />
             <LineText text={airport} />
@@ -68,22 +79,31 @@ const StyledAccordion = styled((props: AccordionProps) => (
 }));
 
 
-export default function TripSummaryCard({ departure, arrival }: FlightStopType) {
+export default function TripSummaryCard({ departure, arrival, flights }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution()
     const [isOpen, setIsOpen] = useState(false)
+
+    const flightStops = flights.length - 1
+    const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(dayjs(departure?.utc_departure), 'minute')
+    const hoursLeft = Math.floor(timeToArrivalMins / 60)
+    const minsLeft = timeToArrivalMins % 60
 
     return (
         <React.Fragment>
             <Flex margin="0rem 0" align="center" justify="space-between">
-                {!isMobile && <TripHeader />}
-                <Button
-                    width="200px"
-                    color={ttColors.dark}
-                    variant="outline"
-                    styles={{ fontSize: isMobile ? "14px" : "14px" }}
-                >
-                    Change Flight
-                </Button>
+                {!isMobile &&
+                    <React.Fragment>
+                        <TripHeader />
+                        <Button
+                            width="200px"
+                            color={ttColors.dark}
+                            variant="outline"
+                            styles={{ fontSize: isMobile ? "14px" : "14px" }}
+                        >
+                            Change Flight
+                        </Button>
+                    </React.Fragment>
+                }
             </Flex>
 
             <Flex margin="0 0 1rem" align="center" justify="space-between">
@@ -114,11 +134,10 @@ export default function TripSummaryCard({ departure, arrival }: FlightStopType) 
                 wrap="wrap"
             >
                 <AirportLocation
-                    time={departure.time}
-                    date={departure.date}
-                    airport={departure.airport}
-                    location={departure.location}
-                    isMobile={isMobile}
+                    datetime={departure?.utc_departure}
+                    airport={`${departure?.airline.name}, ${departure?.airline.code_public}`}
+                    shortLocation={departure?.src}
+                    location={`${departure?.src_name}, ${departure?.src_country}`}
                     order={1}
                 />
 
@@ -131,20 +150,19 @@ export default function TripSummaryCard({ departure, arrival }: FlightStopType) 
                     margin={isMobile ? "2.5rem 0 0" : "0"}
                 >
                     <Image width={110} src="/assets/images/flights/departure-right.png" alt="" />
-                    <Text type="p" size={14} text="2 Stops" />
+                    <Text type="p" size={14} text={`${String(flightStops)} ${flightStops > 1 ? 'stops' : 'stop'}`} />
                 </Flex>
 
                 <AirportLocation
-                    time={arrival.time}
-                    date={arrival.date}
-                    airport={arrival.airport}
-                    location={arrival.location}
-                    isMobile={isMobile}
+                    datetime={arrival?.utc_arrival}
+                    airport={`${arrival?.airline.name}, ${arrival?.airline.code_public}`}
+                    shortLocation={arrival?.dst}
+                    location={`${arrival?.dst_name}, ${arrival?.dst_country}`}
                     order={isMobile ? 2 : 3}
                 />
 
                 <Flex direction="column" gap=".5rem" width={isMobile ? "45%" : "25%"} margin={isMobile ? "2.5rem 0 0" : "0"} styles={{ order: 4 }}>
-                    <Text text={"9h 15'"} type="p" />
+                    <Text text={`${hoursLeft}h ${minsLeft}m`} type="p" />
                     <Text
                         text="Check-in bag included"
                         type="p"
@@ -166,7 +184,7 @@ export default function TripSummaryCard({ departure, arrival }: FlightStopType) 
 
                 <AccordionDetails style={{ padding: "0" }}>
                     <TripSummaryDetails
-                        flightStops={mockFlightStops}
+                        flights={flights}
                     />
                 </AccordionDetails>
             </StyledAccordion>

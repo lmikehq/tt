@@ -12,6 +12,8 @@ import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { useRouter } from "next/navigation";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
+import { useFlightContext } from "@/lib/extensions/context";
+
 
 function AvailableFlights() {
   const router = useRouter();
@@ -20,7 +22,10 @@ function AvailableFlights() {
     searchFlights,
     updateSearchQuery,
     searchQuery: { adults, children, infants },
-  } = useFlightBookingStore((state) => state);
+    } = useFlightBookingStore((state) => state);
+    
+    const flightContext = useFlightContext();
+    const flightState = flightContext?.state
 
   const [count, setCount] = useState(5);
   const [sortType, setSortType] = useState("best");
@@ -105,8 +110,8 @@ function AvailableFlights() {
                 selectFlight={({ bookingToken }) => {
                   router.push(
                     `/flight/booking?bnum=${
-                      Object.keys(flight.bags_price).length
-                    }&adults=${adults}&children=${children}&infants=${infants}&booking_token=${bookingToken}`
+                      3
+                    }&adults=${flightState?.fleet[0].adults}&children=${flightState?.fleet[0].children}&infants=${flightState?.fleet[0].infants}&booking_token=${bookingToken}`
                   );
                 }}
                 bookingToken={flight.booking_token}

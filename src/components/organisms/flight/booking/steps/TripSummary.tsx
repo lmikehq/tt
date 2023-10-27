@@ -15,7 +15,10 @@ import {
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
-import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
+import {
+    CheckFlightResponse,
+    Combinations,
+} from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 
@@ -146,6 +149,10 @@ const TripSummary = ({
         validateOnChange: false,
     });
 
+    const flights = checkFlightsResponse?.flights ?? [];
+    const departure = flights[0];
+    const arrival = flights[flights?.length - 1];
+
     return (
         <Box
             sx={{
@@ -155,8 +162,9 @@ const TripSummary = ({
             }}
         >
             <TripSummaryCard
-                departure={mockFlightStop}
-                arrival={mockFlightStop}
+                departure={departure}
+                arrival={arrival}
+                flights={flights}
             />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>

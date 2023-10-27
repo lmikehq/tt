@@ -38,10 +38,11 @@ export function extractSearchParamsFromUrl({ url }: { url: string }) {
 
   const searchParams = newUrl.searchParams;
 
-  const searchParamsObject: Record<string, string> = {};
-  searchParams.forEach((value, key) => {
-    searchParamsObject[key] = value;
-  });
+    const searchParamsObject: Record<string, string> = {};
+    
+    searchParams.forEach((value, key) => {
+        searchParamsObject[key] = value;
+    })
 
   return searchParamsObject;
 }

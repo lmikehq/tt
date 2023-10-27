@@ -82,67 +82,59 @@ export const useFlightBookingStore = create<State & Actions>(
     cardDetails,
 
     prevStep: () => {
-      set((state) => ({
-        step:
-          state.mode == Mode.loading || state.step == 2
-            ? state.step
-            : state.step - 1,
-      }));
+        set((state) => ({
+            step: state.mode == Mode.loading || state.step == 2
+                ? state.step
+                : state.step - 1,
+        }));
     },
 
     setStep: ({ step }: { step: number }) => {
-      set({ step });
+        set({ step });
     },
 
     setSaveBookingDetails({ data }: { data: SaveBookingRequestInput }) {
-      set({ saveBookingDetails: data });
+        set({ saveBookingDetails: data });
     },
     updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
-      set({
-        searchQuery: data,
-      });
+        set({
+            searchQuery: data,
+        });
     },
     searchFlights: async ({ data }: { data: SearchFlightsRequestQuery }) => {
-      set({ searchFlightsMode: Mode.loading });
-      return await FlightBookingService.searchFlights({
-        data,
-      })
-        .then((response) => {
-          set((state) => ({
-            searchFlightsMode: Mode.loaded,
-            searchFlightsResults: response.data,
-          }));
-        })
-        .catch((error) => {
-          set({
-            searchFlightsMode: Mode.error,
-          });
-          throw error;
+        set({ searchFlightsMode: Mode.loading });
+        return await FlightBookingService.searchFlights({ data })
+            .then((response) => {
+                set((state) => ({
+                    searchFlightsMode: Mode.loaded,
+                    searchFlightsResults: response.data,
+                }));
+            })
+            .catch((error) => {
+                set({
+                    searchFlightsMode: Mode.error,
+                });
+            throw error;
         });
     },
     checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
-      set({ mode: Mode.loading });
-      console.log("query", query);
-
-      return await FlightBookingService.checkFlights({
-        query,
-      })
-        .then((response) => {
-          console.log(response);
-          set({
-            mode: Mode.loaded,
-            sessionId: response.session_id,
-            checkFlightsResponse: response,
-            bookingToken: response.booking_token,
-          });
-          return response;
-        })
-        .catch((error) => {
-          set({
-            mode: Mode.error,
-          });
-          throw error;
-        });
+        set({ mode: Mode.loading });
+        console.log("query", query);
+        return await FlightBookingService.checkFlights({query })
+            .then((response) => {
+                console.log('check-flights-resp', response);
+                set({
+                    mode: Mode.loaded,
+                    sessionId: response.session_id,
+                    checkFlightsResponse: response,
+                    bookingToken: response.booking_token,
+                });
+                return response;
+            })
+            .catch((error) => {
+                set({ mode: Mode.error });
+                throw error;
+            });
     },
     setParticularSeats: (data: ParticularSeatingOption[]) => {
       set({
