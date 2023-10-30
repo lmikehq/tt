@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
@@ -12,20 +12,21 @@ import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { useRouter } from "next/navigation";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
-import { useFlightContext } from "@/lib/extensions/context";
+import { FlightContext } from "@/lib/extensions/context";
 
 
 function AvailableFlights() {
-  const router = useRouter();
-  const {
+    const router = useRouter();
+    const {
     searchFlightsResults,
     searchFlights,
     updateSearchQuery,
     searchQuery: { adults, children, infants },
     } = useFlightBookingStore((state) => state);
     
-    const flightContext = useFlightContext();
+    const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state
+    const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
 
   const [count, setCount] = useState(5);
   const [sortType, setSortType] = useState("best");
@@ -37,13 +38,10 @@ function AvailableFlights() {
     );
   };
 
-  useEffect(() => {
-    const searchParams = extractSearchParamsFromUrl({
-      url: window.location.href,
-    });
-    updateSearchQuery({ data: searchParams });
-    searchFlights({ data: searchParams });
-  }, [window.location.href]);
+    useEffect(() => {
+        updateSearchQuery({ data: searchParams });
+        searchFlights({ data: searchParams });
+    }, [window.location.search]);
 
   const prices: number[] = searchFlightsResults.map((flight) => flight.price);
   const cheapPrice = Math.min(...prices);
@@ -88,7 +86,14 @@ function AvailableFlights() {
       return 1;
     }
     return 0;
-  };
+    };
+    
+    const flightReq = {
+        bags: (flightState?.fleet[0]?.cabinBaggage ?? 0) + (flightState?.fleet[0].checkedBaggage ?? 0),
+        adults: flightState?.fleet[0].adults,
+        children: flightState?.fleet[0].children,
+        infants: flightState?.fleet[0].infants,
+    }
 
   return (
     <Flex direction="column">
@@ -109,9 +114,7 @@ function AvailableFlights() {
                 key={index}
                 selectFlight={({ bookingToken }) => {
                   router.push(
-                    `/flight/booking?bnum=${
-                      3
-                    }&adults=${flightState?.fleet[0].adults}&children=${flightState?.fleet[0].children}&infants=${flightState?.fleet[0].infants}&booking_token=${bookingToken}`
+                    `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}`
                   );
                 }}
                 bookingToken={flight.booking_token}

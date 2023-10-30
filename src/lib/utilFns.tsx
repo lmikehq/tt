@@ -54,3 +54,12 @@ export async function fetchHTMLContent(country: string) {
     console.log(`Error fetching ${country}: `, err);
   }
 }
+
+export function capCase(text = '', splitter = ' ') {
+    let newStr = String(text ?? '').split(splitter)
+    if (!text) {
+        return ''
+    } else {
+        return newStr.map(e => `${String(e[0]).toUpperCase()}${String(e.slice(1)).toLowerCase()}`).join(' ') ?? ''
+    }
+}

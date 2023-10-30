@@ -93,7 +93,7 @@ interface SearchProps {
     disabled?: boolean;
     error?: boolean;
     onChange: (x: any) => void;
-    cursor?: CSSProperties['cursor']
+    cursor?: CSSProperties['cursor'];
 }
 
 export default function SearchInput({
@@ -160,8 +160,8 @@ export default function SearchInput({
               fontSize: "16px!important",
             },
             "& input": {
-              height: height || "45px",
-              padding: padding || "0px",
+                height: height || "45px",
+                padding: padding || "0px",
             },
           }}
           onClick={handleClick}
@@ -256,15 +256,15 @@ export default function SearchInput({
 }
 
 export function SearchInputAsString({
-  placeholder,
-  children,
-  options,
-  legend,
-  value,
-  error,
-  onChange,
-  height,
-  padding,
+    placeholder,
+    children,
+    options,
+    legend,
+    value,
+    error,
+    onChange,
+    height,
+    padding,
     border,
   cursor
 }: SearchProps) {

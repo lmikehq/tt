@@ -15,9 +15,10 @@ import {
   arrangeBaggageDataForOrdering,
   passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
-import {CheckFlightResponse, Combinations} from "@/lib/types/response-models/flight/check_flight.type";
+import {CheckFlightResponse, Combinations, Definitions} from "@/lib/types/response-models/flight/check_flight.type";
 import {Box} from "@mui/material";
 import {FieldArray, FormikProvider, useFormik} from "formik";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
 
 export interface OneFlight {
     time: string;
@@ -46,17 +47,41 @@ export const mockFlightStops = [
 
 interface TripSummaryProps {
     passengersBagCombination : PassengerBaggageCombinationInterface[];
+    shouldUpdateCategory(params : {
+        index: number;
+        combination?: Combination;
+        category: string;
+    }): void;
     handleUpdatePassengersBagCombination(params : {
         index: number;
         combination: Combination;
         category: string;
     }): void;
+    checkedBags: {
+        order: { [key: number]: number[] }; definition?: Definitions
+    };
+    handleCheckedBags: (index: number, value: any, bagDef: Definitions & { index: number }) => void;
 }
-const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombination } : TripSummaryProps) => {
+
+const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombination, shouldUpdateCategory, checkedBags, handleCheckedBags } : TripSummaryProps) => {
     const { saveBooking, checkFlightsResponse, saveBookingDetails, setSaveBookingDetails, setStep } = useFlightBookingStore((state) => state);
     const searchParams = extractSearchParamsFromUrl({url: window.location.href});
 
-    const {adults, children, infants} = searchParams;
+    const { adults, children, infants } = searchParams;
+    
+    const [contactDetails, setContactDetails] = useState({
+        email: '',
+        phone: '',
+        receiveUpdates: false,
+    })
+
+    const handleContactDetails: ChangeEventHandler<HTMLInputElement> = (e) => {
+        const { name, value, type }: { name: string; value: any; type: string } = e.currentTarget
+        setContactDetails(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? !prev[name as keyof typeof contactDetails] : value
+        }))
+    }
 
     const getPassengerBagCombinationOptions = ({
         category,
@@ -126,6 +151,10 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
         validateOnChange: false
     });
 
+    const removePassenger = (index: number) => {
+        formik.setValues(prev => ({ ...prev, passengers: prev.passengers.filter((e, ind) => ind !== index) }))
+    }
+
     const flights = checkFlightsResponse?.flights ?? []
     const departure = flights[0]
     const arrival = flights[flights?.length - 1]
@@ -143,9 +172,12 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
                 arrival={arrival}
                 flights={flights}
             />
+            <ContactDetails
+                contactDetails={contactDetails}
+                handleContactDetails={handleContactDetails}
+            />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
-                    {/* <ContactDetails formik={formik} /> */}
                     <FieldArray
                         name="passengers"
                         render={(arrayHelpers) =>
@@ -153,12 +185,18 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
                                 {formik.values.passengers.map((passenger, index) =>
                                     <div key={index}>
                                         <PassengerDetails
+                                            index={index}
                                             formik={formik}
                                             values={passenger}
                                             count={index}
                                             combinationOptions={getPassengerBagCombinationOptions({category: passenger.category})}
                                             passengerBagCombination={passengersBagCombination[index]}
-                                            handleUpdatePassengersBagCombination={handleUpdatePassengersBagCombination}/>
+                                            handleUpdatePassengersBagCombination={handleUpdatePassengersBagCombination}
+                                            shouldUpdateCategory={shouldUpdateCategory}
+                                            checkedBags={checkedBags}
+                                            handleCheckedBags={handleCheckedBags}
+                                            removePassenger={removePassenger}
+                                        />
                                     </div>
                                 )}
                             </div>

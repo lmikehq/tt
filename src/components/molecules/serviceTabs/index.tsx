@@ -8,14 +8,14 @@ import Stays from "./components/stays";
 import Visa from "./components/visa";
 import Section from "@molecule/section";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useState } from "react";
-import { useFlightContext } from "@/lib/extensions/context";
+import { useContext, useState } from "react";
+import { FlightContext } from "@/lib/extensions/context";
 import Flex from "@/components/templates/flex";
 
 
 function ServiceTabs({ page }: { page?: string }) {
     const { isMobile } = useScreenResolution();
-    const flightContext = useFlightContext();
+    const flightContext = useContext(FlightContext)
     const flightState = flightContext?.state, dispatch = flightContext?.dispatch
     
     const components = [<Visa />, <Flights />, <Stays />];

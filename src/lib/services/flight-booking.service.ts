@@ -29,7 +29,7 @@ export class FlightBookingService {
       )
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.response.errorMessage);
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };
@@ -43,8 +43,8 @@ export class FlightBookingService {
     return await kiwiClient
       .get<any, any>(`/booking/check_flights${queryString}`)
       .then((response) => response.data)
-      .catch((error) => {
-        toast.error(error.response.errorMessage);
+        .catch((error) => {
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };
@@ -58,7 +58,7 @@ export class FlightBookingService {
       .post<any, any>("/booking/ancillaries/offers/check", data)
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.response.errorMessage);
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };
@@ -67,7 +67,7 @@ export class FlightBookingService {
       .post<any, any>("/flight/bookings/save-booking", data)
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.response.errorMessage);
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };
@@ -80,7 +80,7 @@ export class FlightBookingService {
       .post<any, any>("/flight/bookings/tokenize-data", data)
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.response.errorMessage);
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };
@@ -89,7 +89,7 @@ export class FlightBookingService {
       .post<any, any>("/flight/bookings/confirm-payment-zooz", data)
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.response.errorMessage);
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };
@@ -102,7 +102,7 @@ export class FlightBookingService {
       .post<any, any>("/flight/bookings/confirm-payment-zooz", data)
       .then((response) => response.data)
       .catch((error) => {
-        toast.error(error.response.errorMessage);
+        toast.error(error.response?.errorMessage);
         throw error;
       });
   };

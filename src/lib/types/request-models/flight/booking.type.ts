@@ -23,9 +23,14 @@ interface PaymentDetails {
 }
 
 export enum PassengerCategory {
-  ADULT = "adult",
-  CHILD = "child",
-  INFANT = "infant",
+    ADULT = "adult",
+    CHILD = "child",
+    INFANT = "infant",
+}
+export enum PassengerCategoryDesc {
+    adult = "Adult (Over 11 years)",
+    child = "Child (2 - 11 years)",
+    infant = "Infant (Under 2 years)",
 }
 
 export interface Passenger {
@@ -247,17 +252,17 @@ export const arrangeBaggageDataForOrdering = (
   return baggageData;
 };
 export const passengerAndBaggageDetails: PassengerFormInterface = {
-  name: "Abd",
-  surname: "a",
-  phone: "+2349088990012",
-  email: "oallere@hjdsaol.com",
-  cardno: "D25845822",
-  birthday: "1998-12-10",
-  nationality: { code: "NG", name: "Nigeria", flag: "s" },
-  title: "Mr",
-  issuingdate: "2023-12-10",
-  expiration: "2030-12-10",
-  category: PassengerCategory.ADULT,
+    name: "",
+    surname: "",
+    phone: "",
+    email: "",
+    cardno: "",
+    birthday: "",
+    nationality: { code: "NG", name: "Nigeria", flag: "s" },
+    title: "Mr",
+    issuingdate: "",
+    expiration: "",
+    category: PassengerCategory.ADULT,
 };
 export const saveBookingDetails: SaveBookingRequestInput = {
   health_declaration_checked: true,

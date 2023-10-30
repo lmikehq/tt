@@ -27,7 +27,7 @@ const ToastBox = styled.div<{ type: string }>`
   margin: 1rem 0;
 `;
 
-export const ToastInfo = ({ type }: { type: 'warning' | 'info' }) => {
+export const ToastInfo = ({ type, message }: { type: 'warning' | 'info'; message?: string }) => {
   return (
     <ToastBox type={type}>
       <Flex align="center" gap="2rem">
@@ -41,13 +41,12 @@ export const ToastInfo = ({ type }: { type: 'warning' | 'info' }) => {
           </Circle>
         )}
         <Text
-          type="p"
-          text={
-            type === 'warning'
-              ? "Infant passengers are not eligible for checked baggage."
-              : "Save up to 20% on airline fees by purchasing your checked baggage in advance, rather than waiting until after you've completed your booking."
-          }
-          color={type === 'warning' ? '#A0001D' : '#06062A'}
+            type="p"
+            text={type === 'warning'
+                ? "Infant passengers are not eligible for checked baggage."
+                : message ?? "Save up to 20% on airline fees by purchasing your checked baggage in advance, rather than waiting until after you've completed your booking."
+            }
+            color={type === 'warning' ? '#A0001D' : '#06062A'}
         />
       </Flex>
     </ToastBox>
