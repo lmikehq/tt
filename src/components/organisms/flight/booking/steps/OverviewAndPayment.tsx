@@ -13,86 +13,79 @@ import { useFormik } from "formik";
 import { CardInfo } from "@/lib/types/request-models/flight/booking.type";
 
 const OverviewAndPayment = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { saveBookingResponse, cardDetails, tokenizeData, confirmPaymentZooz } =
-    useFlightBookingStore((state) => state);
-  const handleMakepayment = async ({
-    cardDetails,
-  }: {
-    cardDetails: CardInfo;
-  }) => {
-    try {
-      const response = await tokenizeData({
-        data: {
-          card: cardDetails,
-          payment: {
-            order_id: saveBookingResponse?.bookingId ?? "",
-            token: saveBookingResponse?.zoozToken ?? "",
-            gate: "pos",
-            email: "test@kiwi.com",
-          },
-        },
-      });
+    const [isOpen, setIsOpen] = useState(false);
+    const { saveBookingResponse, cardDetails, confirmPaymentZooz } =
+        useFlightBookingStore((state) => state);
+    const handleMakepayment = async ({
+        cardDetails,
+    }: {
+        cardDetails: CardInfo;
+    }) => {
+        try {
+            const response = await confirmPaymentZooz({
+                data: {
+                    card: cardDetails,
+                    payment: {
+                        order_id: saveBookingResponse?.bookingId ?? "",
+                        token: saveBookingResponse?.zoozToken ?? "",
+                        gate: "pos",
+                        email: "test@kiwi.com",
+                    },
+                    order_id: saveBookingResponse?.bookingId ?? "",
+                    booking_id: saveBookingResponse?.bookingId ?? "",
 
-      await confirmPaymentZooz({
-        data: {
-          payment_details: response,
-          booking_id: saveBookingResponse?.bookingId ?? "",
-          order_id: saveBookingResponse?.bookingId ?? "",
-          paymentToken: saveBookingResponse?.zoozToken ?? "",
-          paymentMethodToken: response.token,
-          sandbox: true,
-          language: "en-GB",
+                    paymentToken: saveBookingResponse?.zoozToken ?? "",
+                },
+            });
+        } catch (error) {}
+    };
+    const formik = useFormik({
+        initialValues: cardDetails,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: cardDetailsSchema,
+        onSubmit: (values) => {
+            console.log(values);
+            handleMakepayment({
+                cardDetails: values,
+            });
         },
-      });
-    } catch (error) {}
-  };
-  const formik = useFormik({
-    initialValues: cardDetails,
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: cardDetailsSchema,
-    onSubmit: (values) => {
-      handleMakepayment({
-        cardDetails: values,
-      });
-    },
-    validateOnChange: false,
-  });
+        validateOnChange: false,
+    });
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        rowGap: "1rem",
-        width: "100%",
-      }}
-    >
-      <TripOverviewCard />
-      <Box sx={{ marginY: "3rem" }}>
-        <Button
-          background={ttColors.dark}
-          width="100%"
-          onClick={() => setIsOpen(true)}
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                rowGap: "1rem",
+                width: "100%",
+            }}
         >
-          <Text type="p" text="Make Payment" weight={600} />
-        </Button>
-      </Box>
-      <PaymentModal
-        formik={formik}
-        open={isOpen}
-        handleClose={() => setIsOpen(false)}
-      />
-      <Flex direction="column" gap=".5rem">
-        <Text type="h3" text="Cancellation policy" weight={600} />
-        <Text
-          type="p"
-          text="This flight has a flexible cancellation policy. If you cancel or change your flight up to 30 days before the departure date, you are eligible for a free refund. All flights booked on Thrillers are backed by our satisfaction guarantee, however cancellation policies vary by airline. "
-        />
-      </Flex>
-    </Box>
-  );
+            <TripOverviewCard />
+            <Box sx={{ marginY: "3rem" }}>
+                <Button
+                    background={ttColors.dark}
+                    width="100%"
+                    onClick={() => setIsOpen(true)}
+                >
+                    <Text type="p" text="Make Payment" weight={600} />
+                </Button>
+            </Box>
+            <PaymentModal
+                formik={formik}
+                open={isOpen}
+                handleClose={() => setIsOpen(false)}
+            />
+            <Flex direction="column" gap=".5rem">
+                <Text type="h3" text="Cancellation policy" weight={600} />
+                <Text
+                    type="p"
+                    text="This flight has a flexible cancellation policy. If you cancel or change your flight up to 30 days before the departure date, you are eligible for a free refund. All flights booked on Thrillers are backed by our satisfaction guarantee, however cancellation policies vary by airline. "
+                />
+            </Flex>
+        </Box>
+    );
 };
 
 export default OverviewAndPayment;
