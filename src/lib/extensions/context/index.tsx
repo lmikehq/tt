@@ -1,4 +1,5 @@
 "use client";
+
 import dayjs from "dayjs";
 import {
   createContext,
@@ -55,10 +56,6 @@ const initialValues: ContextType = {
 };
 
 type Action =
-    // | { type: "SET_DEPARTURE"; payload: CountryDetails }
-    // | { type: "SET_ARRIVAL"; payload: CountryDetails }
-    // | { type: "SET_DEPARTURE_DATE"; payload: dayjs.Dayjs }
-    // | { type: "SET_RETURN_DATE"; payload: dayjs.Dayjs }
     | { type: "SET_STOPS"; payload: ContextType['stops'] }
     | { type: "SET_FLIGHT_TYPE"; payload: ContextType['flightType'] }
     | { type: "LIST_MULTI_FLIGHT"; payload: OneFlightType[] }
@@ -73,7 +70,7 @@ interface FlightProps {
   dispatch: Dispatch<Action>;
 }
 
-const FlightContext = createContext<FlightProps | undefined>(undefined);
+export const FlightContext = createContext<FlightProps | undefined>(undefined);
 
 export function useFlightContext() {
     return useContext(FlightContext);
@@ -85,14 +82,6 @@ type Props = {
 
 const reducer = (state: ContextType, action: Action) => {
   switch (action.type) {
-    // case "SET_DEPARTURE":
-    //   return { ...state, departureCountry: action.payload };
-    // case "SET_ARRIVAL":
-    //   return { ...state, arrivalCountry: action.payload };
-    // case "SET_DEPARTURE_DATE":
-    //   return { ...state, departureDate: action.payload };
-    // case "SET_RETURN_DATE":
-    //   return { ...state, returnDate: action.payload };
     case "SET_FLIGHT_TYPE":
       return { ...state, flightType: action.payload };
     case "SET_STOPS":

@@ -2,6 +2,7 @@
 
 import FlightBookingProgress from "@/components/molecules/FormProgress/FlightBookingProgress";
 import Section from "@/components/molecules/section";
+import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import {
     OverviewHeader,
     SeatHeader,
@@ -19,11 +20,15 @@ import SectionLayout from "@/components/templates/SectionLayout";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import sleep from "@/lib/extensions/helpers/sleep";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { Mode } from "@/lib/types";
 import {
     Combination,
     PassengerBaggageCombinationInterface,
 } from "@/lib/types/request-models/flight/booking.type";
-import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
+import {
+    CheckFlightResponse,
+    Definitions,
+} from "@/lib/types/response-models/flight/check_flight.type";
 import React, { useEffect, useState } from "react";
 
 const FlightBookingPage = () => {
@@ -34,6 +39,7 @@ const FlightBookingPage = () => {
         highestStep,
         checkFlights,
         checkFlightsResponse,
+        mode,
     } = useFlightBookingStore((state) => state);
 
     const searchParams = extractSearchParamsFromUrl({
@@ -45,6 +51,50 @@ const FlightBookingPage = () => {
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
     >([]);
+
+    const [checkedBags, setCheckedBags] = useState<{
+        order: { [key: number]: number[] };
+        definition?: Definitions;
+    }>({
+        order: {},
+        definition: undefined,
+    });
+
+    const handleCheckedBags = (
+        index: number,
+        value: any,
+        bagDef: Definitions & { index: number }
+    ) => {
+        setCheckedBags((prev) => ({
+            ...prev,
+            order: { ...prev.order, [index]: Array(value).fill(bagDef?.index) },
+        }));
+    };
+
+    const shouldUpdateCategory = ({
+        index,
+        combination,
+        category,
+    }: {
+        index: number;
+        combination?: Combination;
+        category: string;
+    }) => {
+        const combinations = passengersBagCombination;
+        const comb = checkFlightsResponse
+            ? generateCombinationsForCategory({
+                  size: 1,
+                  category,
+                  checkFlightsResponse,
+              })
+            : [];
+
+        combinations[index] = {
+            ...combinations[index],
+            ...(comb[0] ?? {}),
+        };
+        setPassengersBagCombination(combinations);
+    };
 
     const handleUpdatePassengersBagCombination = ({
         index,
@@ -199,6 +249,18 @@ const FlightBookingPage = () => {
                 searchParams,
             })
         );
+
+        setCheckedBags((prev) => {
+            const newObj: { [key: number]: number[] } = {};
+            const noOfPassengers = Array(adults + children + infants).fill("p");
+            noOfPassengers.forEach((e, index) => {
+                newObj[index] = [];
+            });
+            return {
+                ...prev,
+                order: newObj,
+            };
+        });
     }, []);
 
     return (
@@ -236,7 +298,9 @@ const FlightBookingPage = () => {
                         switch (step) {
                             case 2:
                             case 3:
-                                return <PriceSummary />;
+                                return (
+                                    <PriceSummary checkedBags={checkedBags} />
+                                );
                             case 4:
                                 return <SeatSelectionMenu />;
                             case 5:
@@ -256,6 +320,13 @@ const FlightBookingPage = () => {
                                             handleUpdatePassengersBagCombination={
                                                 handleUpdatePassengersBagCombination
                                             }
+                                            shouldUpdateCategory={
+                                                shouldUpdateCategory
+                                            }
+                                            handleCheckedBags={
+                                                handleCheckedBags
+                                            }
+                                            checkedBags={checkedBags}
                                         />
                                     );
                                 case 3:

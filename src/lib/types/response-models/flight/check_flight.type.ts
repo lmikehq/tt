@@ -193,7 +193,7 @@ interface AdditionalServices {
   [key: string]: unknown;
 }
 
-interface Definitions {
+export interface Definitions {
   price: {
     currency: string;
     amount: number;

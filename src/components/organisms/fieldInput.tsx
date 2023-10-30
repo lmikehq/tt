@@ -30,17 +30,18 @@ interface FieldProps {
   step?: string;
   border?: string;
   placeholder: string;
-  formik: FormikValues;
+  formik?: FormikValues;
   options?: any[];
   addon?: ReactNode;
   views?: ("year" | "month" | "day")[];
   disabled?: boolean;
   onChange?: (x: any) => void;
+  onChanged?: (x?: any) => void;
   minDate?: Dayjs | null;
   maxDate?: Dayjs;
   max?: number;
   min?: number;
-  format?: string;
+    format?: string;
 }
 
 function getNestedValue(obj: any, propertyPath: string) {
@@ -93,10 +94,10 @@ export const FieldInput = (props: FieldProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    formik.setFieldValue(name, value?.trim());
+    formik?.setFieldValue(name, value?.trim());
   };
-  const touched = getNestedValue(formik.touched, name);
-  const error = getNestedValue(formik.errors, name);
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   return (
     <Section>
@@ -113,8 +114,8 @@ export const FieldInput = (props: FieldProps) => {
         placeholder={placeholder}
         padding="0 0 0 14px"
         onChange={onChange ? onChange : handleChange}
-        value={getNestedValue(formik.values, name)}
-        onBlur={() => formik.setTouched({ ...formik.touched, [name]: true })}
+        value={getNestedValue(formik?.values, name)}
+        onBlur={() => formik?.setTouched({ ...formik.touched, [name]: true })}
         error={touched && error}
       />
       {touched && error ? <ErrorText text={error} /> : null}
@@ -141,12 +142,12 @@ export const ArrayInput = (props: FieldProps) => {
       parseFloat(value) > 5 ? (value = "5") : value;
     }
 
-    formik.setFieldValue(name, value);
+    formik?.setFieldValue(name, value);
   };
 
-  const value = getNestedValue(formik.values, name);
-  const touched = getNestedValue(formik.touched, name);
-  const error = getNestedValue(formik.errors, name);
+  const value = getNestedValue(formik?.values, name);
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   return (
     <div>
@@ -162,7 +163,7 @@ export const ArrayInput = (props: FieldProps) => {
         padding="0 0 0 14px"
         onChange={handleChange}
         value={value == 0 ? "" : value}
-        onBlur={formik.handleBlur}
+        onBlur={formik?.handleBlur}
         error={touched && error}
       />
       {touched && error ? <ErrorText text={error} /> : null}
@@ -180,14 +181,14 @@ export const FieldAsString = (props: FieldProps) => {
     onChange,
     disabled,
   } = props;
-  const touched = getNestedValue(formik.touched, name);
-  const error = getNestedValue(formik.errors, name);
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   const handleChange = (e: any) => {
-    formik.setFieldValue(name, e);
+    formik?.setFieldValue(name, e);
   };
 
-  const formikvalue = getNestedValue(formik.values, name);
+  const formikvalue = getNestedValue(formik?.values, name);
 
   return (
     <Section styles={{ position: "relative" }}>
@@ -205,16 +206,17 @@ export const FieldAsString = (props: FieldProps) => {
 };
 
 export const FieldString = (props: FieldProps) => {
-  const { name, options = [], formik, placeholder, onChange, value } = props;
-  const touched = getNestedValue(formik.touched, name);
-  const error = getNestedValue(formik.errors, name);
+  const { name, options = [], formik, placeholder, onChange, value, onChanged } = props;
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
-  const handleChange = (e: any) => {
-    console.log("ee: ", e);
-    formik.setFieldValue(name, e);
-  };
+    const handleChange = (e: any) => {
+        console.log("ee: ", e);
+        onChanged && onChanged(e)
+        formik?.setFieldValue(name, e);
+    };
 
-  const formikvalue = getNestedValue(formik.values, name);
+  const formikvalue = getNestedValue(formik?.values, name);
 
   return (
     <Section styles={{ position: "relative" }}>
@@ -242,14 +244,14 @@ export const FieldAsDate = (props: FieldProps) => {
     placeholder,
     format,
   } = props;
-  const touched = getNestedValue(formik.touched, name);
-  const error = getNestedValue(formik.errors, name);
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   const handleChange = (e: any) => {
-    formik.setFieldValue(name, `${dayjs(e.$d).format(format)}`);
+    formik?.setFieldValue(name, `${dayjs(e.$d).format(format)}`);
   };
 
-  const value = getNestedValue(formik.values, name);
+  const value = getNestedValue(formik?.values, name);
 
   return (
     <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">

@@ -6,14 +6,7 @@ import DropdownButton from "./DropdownButton";
 import { BsArrowRight, BsCheck2 } from "react-icons/bs";
 import LuggageOutlinedIcon from "@mui/icons-material/LuggageOutlined";
 import { ttColors } from "@/lib/theme/colors";
-import { Combinations } from "@/lib/types/response-models/flight/check_flight.type";
-import {
-  FormControl,
-  InputLabel,
-  ListSubheader,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { Combinations, Definitions } from "@/lib/types/response-models/flight/check_flight.type";
 import { FormikProps } from "formik";
 import {
   PassengerCategory,
@@ -25,32 +18,40 @@ import {
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import styled from "styled-components";
 import Image from "@/components/atoms/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckBox from "@/components/molecules/checkbox";
 import { ToastInfo } from "../flight/booking/toast";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { GoTrash } from "react-icons/go";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { capCase } from "@/lib/utilFns";
 
 interface PassengerBaggagePaneProps {
-  values: PassengerFormInterface;
-  combinationOptions: Combinations;
-  count: number;
-  passengerBagCombination: PassengerBaggageCombinationInterface;
-  handleUpdatePassengersBagCombination(params: {
     index: number;
-    combination: Combination;
-    category: string;
-  }): void;
+    values: PassengerFormInterface;
+    combinationOptions: Combinations;
+    count: number;
+    passengerBagCombination: PassengerBaggageCombinationInterface;
+    handleUpdatePassengersBagCombination(params: {
+        index: number;
+        combination: Combination;
+        category: string;
+    }): void;
+    checkedBags: {
+        order: { [key: number]: number[] }; definition?: Definitions
+    };
+    handleCheckedBags: (index: number, value: any, bagDef: Definitions & { index: number }) => void;
+    removePassenger: (index: number) => void; 
 }
 
 const BaggageBox = styled.div<{ active: boolean }>`
-  padding: 2rem 1rem;
-  border: 2px solid
-    ${({ active }) => (active ? ttColors.primary : ttColors.lightestGray)};
-  border-radius: 10px;
-  position: relative;
-  width: 100%;
+    padding: 2rem 1rem;
+    border: 2px solid
+        ${({ active }) => (active ? ttColors.primary : ttColors.lightestGray)};
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
 `;
 
 const BaggageText = styled.div`
@@ -90,214 +91,217 @@ const CustomRadioButton = styled.input.attrs({ type: "radio" })`
 `;
 
 export default function PassengerBaggagePane({
-  values,
-  combinationOptions,
-  count,
-  handleUpdatePassengersBagCombination,
+    index,
+    values,
+    count,
+    combinationOptions,
+    passengerBagCombination,
+    handleUpdatePassengersBagCombination,
+    checkedBags,
+    handleCheckedBags,
+    removePassenger
 }: PassengerBaggagePaneProps) {
-  const { checkFlightsResponse } = useFlightBookingStore((state) => state);
-    const bagDefinitions = checkFlightsResponse?.baggage.definitions;
+    const { checkFlightsResponse } = useFlightBookingStore((state) => state);
     const { isMobile } = useScreenResolution()
+    const bagDefinitions = checkFlightsResponse?.baggage.definitions;
 
-  const [isChecked, setIsChecked] = useState({
-    cabin: true,
-    cbaggage1: false,
-    cbaggage2: false,
-    allowBaggage: false,
-  });
+    const theBags = {
+        handBags: passengerBagCombination?.hand_bag.indices.map(e => ({ index: e, ...bagDefinitions?.hand_bag[e] })) ?? [],
+        holdBags: passengerBagCombination?.hold_bag.indices.map(e => ({ index: e, ...bagDefinitions?.hold_bag[e] })) ?? [],
+    }
 
-  type CheckedName = keyof typeof isChecked;
+    const [state, setState] = useState({
+        holdBags: 0,
+        noHoldBags: false,
+    })
 
-  const toggleState = (checkedName: CheckedName) => {
-    setIsChecked((prevState) => ({
-      ...prevState,
-      [checkedName]: !prevState[checkedName],
-    }));
-  };
+    type CheckedName = keyof typeof state;
 
-  return (
-    <Box>
-      <Flex gap="1rem" align="center" padding="2rem 0">
-        <Text type="h3" size={isMobile ? 18 : 22} text="Cabin or Carry-On Baggage" weight={600} />
-        <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
-      </Flex>
-      <BaggageBox active={isChecked.cabin}>
-        <BaggageText>
-          <Text type="p" text="Popular" size={14} weight={600} />
-        </BaggageText>
-        <Flex direction="column" gap="1rem" align="center" justify="center">
-          <Text type="h3" text="Carry-On Bag" weight={600} />
-          <Text
-            type="p"
-            text="1x Personal Item (2kg) + 1x Cabin Bag (10kg)"
-            color={ttColors.lighterGray}
-            size={isMobile ? 14 : 16}
-            padding={isMobile ? "0 1rem" : ""}
-          />
-          <Flex align="flex-end" justify="center">
-            <Flex direction="column" gap=".75rem" align="center">
-              <Image
-                height={100}
-                styles={{
-                    objectFit: "contain",
-                }}
-                src="/assets/images/flights/purplebag.png"
-                alt="Baggage"
-              />
-              <Text
-                type="p"
-                text="15 x 30 x 40 cm"
-                color={ttColors.foundation.gray}
-                size={isMobile ? 14 : 16}
-              />
+    const toggleState = (checkedName: CheckedName, bag: any) => {
+        setState(prev => {
+            !prev.noHoldBags && handleCheckedBags(index, 0, bag)
+            return ({
+                ...prev,
+                holdBags: prev.noHoldBags ? 0 : prev.holdBags,
+                [checkedName]: !prev[checkedName],
+            })
+        })
+    };
+    
+    const handleChange = (name: CheckedName, value: number, bag: any) => {
+        setState(prev => {
+            handleCheckedBags(index, value, { ...bag, index: 0 })
+            return ({
+                ...prev,
+                [name]: value
+            })
+        })
+    };
+
+    const handBagText = theBags.handBags.filter((e, index, arr) => arr.indexOf(e) === index).map((bag, index, arr) => {
+        const count = theBags.handBags.filter((e, i) => e.index === bag.index).length
+        return (`${count}x ${capCase(bag.category, '_')} (${bag.restrictions?.weight}kg)`)
+    }).join(', ')
+
+    
+    return (
+        <Box>
+            <Flex gap="1rem" align="center" padding="2rem 0">
+                <Text type="h3" size={isMobile ? 18 : 22} text="Cabin or Carry-On Baggage" weight={600} />
+                <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
             </Flex>
-            <Flex direction="column" gap=".75rem" align="center">
-              <Image
-                height={150}
-                styles={{
-                  objectFit: "contain",
-                }}
-                src="/assets/images/flights/greenbag.png"
-                alt="Baggage"
-              />
-              <Text
-                type="p"
-                text="20 x 35 x 55 cm"
-                color={ttColors.foundation.gray}
-                size={isMobile ? 14 : 16}
-              />
-            </Flex>
-          </Flex>
-          <Flex align="center" justify="space-between">
-            <Flex
-              align="center"
-              justify="center"
-              gap=".5rem"
-              background="#F4F4F4"
-              width={isMobile ? "max-content" : "9.5rem"}
-              padding=".5rem .75rem"
-              borderRadius="30px"
-              border={`1px solid ${ttColors.lightestGray}`}
-            >
-              <BsCheck2 size={25} color={ttColors.lighterGray} />
-              <Text type="p" size={isMobile ? 14 : 16} text="Included" color={ttColors.lighterGray} />
-            </Flex>
-            <CustomRadioButton
-              checked={isChecked.cabin}
-              onClick={() => toggleState("cabin")}
-            />
-          </Flex>
-        </Flex>
-      </BaggageBox>
-      <Flex direction="column" gap=".5rem" padding="3rem 0 1rem">
-        <Flex gap="1rem" align="center">
-          <Text type="h3" size={isMobile ? 18 : 22} text="Checked Baggage" weight={600} />
-          <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
-        </Flex>
-        <Text
-            type="p"
-            text="Select one option:"
-            weight={500}
-            color={ttColors.foundation.gray}
-            size={isMobile ? 14 : 16}
-        />
-      </Flex>
-      {!isChecked.allowBaggage && (
-        <Flex gap="1rem" align="flex-end" wrap="wrap" padding="1rem 0">
-          <BaggageBox active={isChecked.cbaggage1} style={{ width: isMobile ? "100%" : "48%" }}>
-            <Flex direction="column" gap="1rem" align="center" justify="center">
-              <Text type="h3" text="1x Checked Bags" weight={600} />
-              <Text
-                type="p"
-                text="23kg"
-                color={ttColors.lighterGray}
-                weight={500}
-              />
-              <Flex direction="column" gap=".75rem" align="center">
-                <Image
-                  height={150}
-                  styles={{
-                    objectFit: "contain",
-                  }}
-                  src="/assets/images/flights/blackbag.png"
-                  alt="Baggage"
+
+            {/* Hand Bags */}
+            {theBags.handBags.length > 0 ? 
+                <BaggageBox active>
+                    <BaggageText>
+                        <Text type="p" text="Popular" size={14} weight={600} />
+                    </BaggageText>
+                    <Flex direction="column" gap="1rem" align="center" justify="center">
+                        <Text type="h3" text="Carry-On Bag" weight={600} />
+                        <Text
+                            type="p"
+                            text={handBagText}
+                            color={ttColors.lighterGray}
+                            size={isMobile ? 14 : 16}
+                            padding={isMobile ? "0 1rem" : ""}
+                        />
+                        <Flex align="flex-end" justify="center">
+                            {theBags.handBags.filter((e, index, arr) => arr.indexOf(e) === index).map((e, index) => 
+                                <Flex direction="column" gap=".75rem" align="center" key={index}>
+                                    <Image
+                                        height={e?.category === 'personal_item' ? 100 : 150}
+                                        styles={{ objectFit: "contain" }}
+                                        src={e?.category === 'personal_item' ? "/assets/images/flights/purplebag.png" : "/assets/images/flights/greenbag.png"}
+                                        alt="Baggage"
+                                    />
+                                    <Text
+                                        type="p"
+                                        text={`${e?.restrictions?.length} x ${e?.restrictions?.width} x ${e?.restrictions?.height} cm`}
+                                        color={ttColors.foundation.gray}
+                                        size={isMobile ? 14 : 16}
+                                    />
+                                </Flex>
+
+                            )}
+                        </Flex>
+                        <Flex align="center" justify="space-between">
+                            <Flex
+                                align="center"
+                                justify="center"
+                                gap=".5rem"
+                                background="#F4F4F4"
+                                width={isMobile ? "max-content" : "9.5rem"}
+                                padding=".5rem .75rem"
+                                borderRadius="30px"
+                                border={`1px solid ${ttColors.lightestGray}`}
+                            >
+                                <BsCheck2 size={25} color={ttColors.lighterGray} />
+                                <Text type="p" size={isMobile ? 14 : 16} text="Included" color={ttColors.lighterGray} />
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                </BaggageBox> :
+                <ToastInfo
+                    type="info"
+                    message={`No cabin baggage allowed for ${values.category}`}
                 />
+            }
+
+            <Flex direction="column" gap=".5rem" padding="3rem 0 0">
+                <Flex gap="1rem" align="center">
+                <Text type="h3" size={isMobile ? 18 : 22} text="Checked Baggage" weight={600} />
+                <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
+                </Flex>
                 <Text
-                  type="p"
-                  text="20 x 35 x 55 cm"
-                  color={ttColors.foundation.gray}
+                    type="p"
+                    text="Select one option:"
+                    weight={500}
+                    color={ttColors.foundation.gray}
+                    size={isMobile ? 14 : 16}
                 />
-              </Flex>
+            </Flex>
 
-              <Flex align="center" justify="space-between">
-                <Text type="h2" text="$230" weight={600} />
-                <CustomRadioButton
-                  checked={isChecked.cbaggage1}
-                  onClick={() => toggleState("cbaggage1")}
+            {/* Hold Bags */}
+            {!state.noHoldBags && (
+                <Flex gap="1rem" align="flex-end" wrap="wrap" padding="1rem 0 0">
+                    {theBags.holdBags.map((bag, index, arr) => {
+                        const number = index + 1
+                        const isActive = state.holdBags === number
+                        return (
+                            <BaggageBox
+                                active={isActive}
+                                onClick={() => isActive ? null : handleChange('holdBags', number, bag)}
+                                style={{ width: isMobile ? "100%" : "48%" }}
+                                key={`baggage-box-${index}`}
+                            >
+                                <Flex direction="column" gap="1rem" align="center" justify="center">
+                                    <Text type="h3" text={`${number}x Checked Bag${(index + 1) > 1 ? 's' : ''}`} weight={600} />
+                                    <Text
+                                        type="p"
+                                        text={`${bag?.restrictions?.weight}kg`}
+                                        color={ttColors.lighterGray}
+                                        weight={500}
+                                    />
+                                    <Flex direction="column" gap=".75rem" align="center">
+                                        <Image
+                                            height={150}
+                                            styles={{ objectFit: "contain" }}
+                                            src="/assets/images/flights/blackbag.png"
+                                            alt="Baggage"
+                                        />
+                                        <Text
+                                            type="p"
+                                            text={`${bag?.restrictions?.length} x ${bag?.restrictions?.width} x ${bag?.restrictions?.height} cm`}
+                                            color={ttColors.foundation.gray}
+                                        />
+                                    </Flex>
+
+                                    <Flex align="center" justify="space-between">
+                                        <Text type="h2" text={`${bag.price?.currency} ${bag.price?.amount}`} weight={600} />
+                                        <CustomRadioButton
+                                            checked={state.holdBags === number}
+                                            onClick={() => isActive ? null : handleChange('holdBags', number, bag)}
+                                        />
+                                    </Flex>
+                                </Flex>
+                            </BaggageBox>
+                        )
+                    })}
+                </Flex>
+            )}
+
+            {(values.category === PassengerCategory.INFANT || state.noHoldBags) &&
+                <ToastInfo
+                    type={values.category === PassengerCategory.INFANT ? "warning" : "info"}
                 />
-              </Flex>
-            </Flex>
-          </BaggageBox>
-          <BaggageBox active={isChecked.cbaggage2} style={{ width: isMobile ? "100%" : "48%" }}>
-            <Flex direction="column" gap="1rem" align="center" justify="center">
-              <Text type="h3" text="2x checked bags" weight={600} />
-              <Text
-                type="p"
-                text="23kg"
-                color={ttColors.lighterGray}
-                weight={500}
-              />
-              <Flex direction="column" gap=".75rem" align="center">
-                <Image
-                  height={150}
-                  styles={{
-                    objectFit: "contain",
-                  }}
-                  src="/assets/images/flights/blackbag.png"
-                  alt="Baggage"
-                />
-                <Text
-                  type="p"
-                  text="20 x 35 x 55 cm"
-                  color={ttColors.foundation.gray}
-                />
-              </Flex>
-              <Flex align="center" justify="space-between">
-                <Text type="h2" text="$230" weight={600} />
-                <CustomRadioButton
-                  checked={isChecked.cbaggage2}
-                  onClick={() => toggleState("cbaggage2")}
-                />
-              </Flex>
-            </Flex>
-          </BaggageBox>
-        </Flex>
-      )}
-      {values.category === PassengerCategory.INFANT ||
-      isChecked.allowBaggage ? (
-        <ToastInfo
-          type={
-            values.category === PassengerCategory.INFANT
-              ? "warning"
-              : isChecked.allowBaggage
-              ? "info"
-              : "info"
-          }
-        />
-      ) : null}
-      {values.category !== PassengerCategory.INFANT && (
-        <CheckBox
-          checked={isChecked.allowBaggage}
-          onChange={() => toggleState("allowBaggage")}
-        >
-          <Text type="p" text="No baggage" />
-        </CheckBox>
-      )}
-        <Flex justify="flex-end">
-            <Button background="#F3FAFD" padding="0px 20px" border="1px solid #DAF0F9" color="black" startIcon={<GoTrash size={30} />}>
-                <Text type="p" text="Remove Traveler" weight={600} />
-            </Button>
-        </Flex>
+            }
+
+            {values.category !== PassengerCategory.INFANT &&
+                <CheckBox
+                    checked={state.noHoldBags}
+                    onChange={() => toggleState("noHoldBags", theBags.holdBags[0])}
+                >
+                    <Text type="p" text="No baggage" />
+                </CheckBox>
+            }
+
+            {index !== 0 &&
+                <Flex justify="flex-end">
+                    <Button
+                        background="#F3FAFD"
+                        width="max-content"
+                        padding="0px 20px"
+                        border="1px solid #DAF0F9"
+                        color="black"
+                        startIcon={<GoTrash size={22} />}
+                        onClick={() => removePassenger(index)}
+                    >
+                        <Text type="p" text="Remove Traveler" weight={600} />
+                    </Button>
+                </Flex>
+            }
+
       {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
         <InputLabel id="demo-simple-select-autowidth-label">
           Add Baggage
@@ -383,6 +387,6 @@ export default function PassengerBaggagePane({
           ))}
         </Select>
       </FormControl> */}
-    </Box>
-  );
+        </Box>
+    );
 }

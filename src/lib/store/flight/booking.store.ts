@@ -130,10 +130,8 @@ export const useFlightBookingStore = create<State & Actions>(
         },
         checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
             set({ mode: Mode.loading });
-            console.log("query", query);
             return await FlightBookingService.checkFlights({ query })
                 .then((response) => {
-                    console.log("check-flights-resp", response);
                     set({
                         mode: Mode.loaded,
                         sessionId: response.session_id,
