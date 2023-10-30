@@ -174,6 +174,8 @@ export interface SaveBookingRequestInput {
     passengers: Passenger[];
     booking_token: string;
     session_id: string;
+    new_user_email?: string;
+    user?: string;
     baggage: Baggage[];
     additional_services: AdditionalServices | null;
 }
@@ -256,7 +258,7 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "Abd",
     surname: "a",
     phone: "+2349088990012",
-    email: "oallere@hjdsaol.com",
+    email: "oallersse@hjdsaol.com",
     cardno: "D25845822",
     birthday: "1998-12-10",
     nationality: { code: "NG", name: "Nigeria", flag: "s" },
@@ -268,7 +270,7 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
 export const saveBookingDetails: SaveBookingRequestInput = {
     health_declaration_checked: true,
     lang: "en",
-
+    new_user_email: "olal1ewsaeth14@gmail.com",
     passengers: [],
     booking_token: "",
     session_id: "",

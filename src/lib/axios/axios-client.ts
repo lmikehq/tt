@@ -1,79 +1,79 @@
 import axios, {
-  AxiosInstance,
-  AxiosResponse,
-  AxiosError,
-  InternalAxiosRequestConfig,
-  AxiosRequestConfig,
+    AxiosInstance,
+    AxiosResponse,
+    AxiosError,
+    InternalAxiosRequestConfig,
+    AxiosRequestConfig,
 } from "axios";
 import { toast } from "react-hot-toast";
 
 interface XAxiosInstance extends AxiosInstance {
-  request<T = any, R = AxiosResponse<T>>(
-    config: AxiosRequestConfig
-  ): Promise<R>;
+    request<T = any, R = AxiosResponse<T>>(
+        config: AxiosRequestConfig
+    ): Promise<R>;
 }
 const axiosClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
-  timeout: 5000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: getAuthToken(),
-  },
+    baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthToken(),
+    },
 });
 
 function getAuthToken(): string | null {
-  const user = localStorage.getItem("user");
-  return user ? `Bearer ${JSON.parse(user)}` : null;
+    const user = localStorage.getItem("user");
+    return user ? `Bearer ${JSON.parse(user)}` : null;
 }
 
 axiosClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data;
-  },
-  (error: AxiosError) => {
-    // toast.error(error.message);
-    return Promise.reject(error);
-  }
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
 );
 
 const kiwiClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER,
-  timeout: 5000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: getAuthToken(),
-    apikey: process.env.NEXT_PUBLIC_KIWI_API_KEY,
-  },
+    baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthToken(),
+        apikey: process.env.NEXT_PUBLIC_KIWI_API_KEY,
+    },
 });
 
 axiosClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data;
-  },
-  (error: AxiosError) => {
-    // toast.error(error.message);
-    return Promise.reject(error);
-  }
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
 );
 const kiwiResourceClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
-  timeout: 5000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+    baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
 });
 
 axiosClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data;
-  },
-  (error: AxiosError) => {
-    // toast.error(error.message);
-    return Promise.reject(error);
-  }
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
 );
 
 export { axiosClient, kiwiClient, kiwiResourceClient };
