@@ -1,8 +1,9 @@
 "use client";
+
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
 import { CustomRadioGroup } from "@molecule/radio";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
 import Text from "@atom/text";
@@ -11,9 +12,9 @@ import { useRouter } from "next/navigation";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { OneFlightType, useFlightContext } from "@/lib/extensions/context";
+import { FlightContext, OneFlightType } from "@/lib/extensions/context";
 import { formatDate } from "@/lib/utilFns";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { HiPlus } from "react-icons/hi";
 
 const stopOptions = [
@@ -92,7 +93,7 @@ function FlightStops({ isMobile, value, onChange, showLabel }: { isMobile: boole
 function Flights() {
     const router = useRouter();
     const { isMobile } = useScreenResolution();
-    const flightContext = useFlightContext();
+    const flightContext = useContext(FlightContext)
     const flightState = flightContext?.state, dispatch = flightContext?.dispatch
     
     const [loading, setLoading] = useState<boolean>(false);
@@ -113,14 +114,14 @@ function Flights() {
 	}
 
 	const formatSearchFlight = (flight?: OneFlightType) => {
-		const dateFrom = formatDate(flight?.departureDate || new Dayjs());
-		const dateTo = formatDate(flight?.returnDate || new Dayjs());
+		const dateFrom = formatDate(flight?.departureDate ?? dayjs());
+		const dateTo = formatDate(flight?.returnDate ?? dayjs());
 		const departure = flight?.departureCountry
 		const arrival = flight?.arrivalCountry
 		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}`
-	}
+    }
 
-
+    
 	return (
 		<Section padding="2rem 0 1rem 0" styles={{ position: "relative" }}>
 			<Flex direction="column">
@@ -134,7 +135,7 @@ function Flights() {
 				
 				<FlightStops
 					isMobile={isMobile}
-					value={flightState?.stops ?? ''}
+					value={flightState?.stops ?? 'round'}
 					onChange={handleChangeStops}
 					showLabel={isMobile}
 				/>
@@ -153,7 +154,7 @@ function Flights() {
 				)}
 			</Flex>
 
-			{flightState?.stops === "multi-city" && (flightState && flightState?.fleet?.length < 3) &&
+			{flightState?.stops === "multi-city" && flightState && flightState?.fleet?.length < 3 &&
 				<Flex margin={isMobile ? "0px" : "30px 0px 0px"}>
 					<Button
 						onClick={handleAddMultiFlight}

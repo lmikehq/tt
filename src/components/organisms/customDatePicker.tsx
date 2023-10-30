@@ -16,7 +16,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { IoCalendarOutline } from "react-icons/io5";
 import { styled } from "styled-components";
-
+import { Poppins } from "next/font/google";
+const poppins = Poppins({
+  weight: "400",
+  style: ["normal"],
+  display: "swap",
+  subsets: ["latin-ext"],
+});
 
 interface CustomDatePickerProps {
     minDate?: Date;
@@ -56,9 +62,11 @@ const DateIcon = styled.span`
 `;
 const DateInput = styled.input<{ width?: string }>`
   height: 45px;
+  font-weight: 500,
+  font-size: 14px;
+  color: ${ttColors.grayishAsh}
   width: ${(props) => props.width ?? '100%'};
   border-radius: 4px;
-  font-size: 16px;
   padding-left: 40px !important;
   padding-right: 10px;
   box-sizing: border-box;
@@ -225,6 +233,7 @@ export const CustomDatePickerInput = forwardRef(
                 value={value}
                 onClick={onClick}
                 readOnly
+                className={poppins.className}
             />
         </InputContainer>
     )

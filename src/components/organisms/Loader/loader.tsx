@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Image from "@atom/image";
 import { ttColors } from "@lib/theme/colors";
 import Text from "@atom/text";
@@ -16,7 +16,7 @@ const LoaderWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 9999;
-  background: "fff";
+  background-color: "white";
   flex-direction: column;
 `;
 

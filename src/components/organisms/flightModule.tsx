@@ -1,4 +1,5 @@
 "use client";
+
 import Section from "src/components/molecules/section";
 import React, { useState } from "react";
 import Flex from "@components/templates/flex";
@@ -65,13 +66,21 @@ function FlightModule({
     canDelete,
 }: flightProps) {
     const { isMobile } = useScreenResolution();
+    
+    const formatDisplayText = (data: FlightCountType) => {
+        const kids = data.children + data.infants
+        const bags = data.cabinBaggage + data.checkedBaggage
+        return `${data.adults} ${data.adults > 1 ? 'Adults' : 'Adult'}${kids > 0 ? `, ${kids} ${kids === 1 ? 'Child' : 'Children'}` : ''}, ${data.flightClass}${bags > 0 ? `, ${bags} ${bags === 1 ? 'Bag' : 'Bags'}` : ''}`
+    }
 
-    const [displayText, setDisplayText] = useState("1 Adult, Economy, 1 Bag");
+    const defText = formatDisplayText(flight)
+    
+    const [displayText, setDisplayText] = useState(defText);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const today = dayjs().toDate()
-
+    
     const open = Boolean(anchorEl);
-
+    
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -79,13 +88,7 @@ function FlightModule({
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    const formatDisplayText = (data: FlightCountType) => {
-        const kids = data.children + data.infants
-        const bags = data.cabinBaggage + data.checkedBaggage
-        return `${data.adults} ${data.adults > 1 ? 'Adults' : 'Adult'}${kids > 0 ? `, ${kids} ${kids === 1 ? 'Child' : 'Children'}` : ''}, ${data.flightClass}${bags > 0 ? `, ${bags} ${bags === 1 ? 'Bag' : 'Bags'}` : ''}`
-    }
-
+    
     const handleDataChange = (data: FlightCountType) => {
         setDisplayText(formatDisplayText(data))
         handleUpdate && handleUpdate(flight, data)
@@ -93,23 +96,6 @@ function FlightModule({
 
 return (
     <Section padding=".75rem 0 0 0 " height="unset">
-        {stops === "multi-city" &&
-            <Flex justify={isMobile ? 'space-between' : 'flex-start'} padding="20px 0px 0px" >
-                <Text type='p' weight={600} size={16} text={`L ${flight.index + 1}`} />
-                {canDelete && isMobile && 
-                    <Flex
-                        width='fit-content'
-                        styles={{ minWidth: '30px'}}
-                        padding="0px 0px 0px"
-                        cursor="pointer"
-                        alignSelf="flex-end"
-                        onClick={() => handleDelete && handleDelete(flight)}
-                    >
-                        <Button padding=".5rem 1rem" height="auto" endIcon={<HiXMark size={26} color={ttColors.ghostWhite} />}>Remove</Button>
-                    </Flex>
-                }
-            </Flex>
-        }
         <Flex
             direction={isMobile ? "column" : "row"}
             align={isMobile ? "flex-start" : "center"}
@@ -131,13 +117,13 @@ return (
                     value={flight.departureCountry ?? ""}
                     placeholder="Current Location"
                 >
-                    <Flex gap={isMobile ? "0.7rem" : "1rem"} cursor="pointer" overflowX="hidden">
+                    <Flex gap={isMobile ? "0.7rem" : ".6rem"} cursor="pointer" overflowX="hidden">
                         <IoLocationOutline size={isMobile ? 20 : 22} />
                         <Text
                             type="p"
                             size={14}
                             text={flight.departureCountry?.name ?? 'Current Location'}
-                            color="gray"
+                            color="black"
                         />
                     </Flex>
                 </SearchInput>
@@ -165,13 +151,13 @@ return (
                     onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, { arrivalCountry: x })}
                     placeholder="Where to?"
                 >
-                    <Flex gap={isMobile ? "0.7rem" : "1rem"} cursor="pointer" overflowX="hidden">
+                    <Flex gap={isMobile ? "0.7rem" : ".6rem"} cursor="pointer" overflowX="hidden">
                     <IoLocationOutline size={isMobile ? 20 : 22} />
                     <Text
                         type="p"
                         size={14}
                         text={flight.arrivalCountry?.name ?? 'Where to?'}
-                        color="gray"
+                        color="black"
                     />
                     </Flex>
                 </SearchInput>
@@ -248,7 +234,24 @@ return (
                     <HiXMark size={30} color={ttColors.gray} />
                 </Flex>
             }
-      </Flex>
+        </Flex>
+
+        {stops === "multi-city" &&
+            <Flex justify={isMobile ? 'flex-end' : 'flex-start'} padding="0px 0px 20px" >
+                {canDelete && isMobile &&
+                    <Flex
+                        width='fit-content'
+                        styles={{ minWidth: '30px'}}
+                        padding="0"
+                        cursor="pointer"
+                        alignSelf="flex-end"
+                        onClick={() => handleDelete && handleDelete(flight)}
+                    >
+                        <Button padding=".5rem 1rem" height="auto" endIcon={<HiXMark size={26} color={ttColors.ghostWhite} />}>Remove</Button>
+                    </Flex>
+                }
+            </Flex>
+        }
     </Section>
   );
 }
