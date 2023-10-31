@@ -251,6 +251,8 @@ export const arrangeBaggageDataForOrdering = (
 
   return baggageData;
 };
+
+
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
     surname: "",
