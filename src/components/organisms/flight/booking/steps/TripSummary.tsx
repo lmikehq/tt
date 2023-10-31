@@ -2,22 +2,26 @@ import Button from "@/components/atoms/button";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
-import {extractSearchParamsFromUrl} from "@/lib/extensions/helpers/constructQuery";
-import {manyPassengersAndBaggageDetailsSchema} from "@/lib/extensions/schemas/flight/booking.schema";
-import {useFlightBookingStore} from "@/lib/store/flight/booking.store";
-import {ttColors} from "@/lib/theme/colors";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { ttColors } from "@/lib/theme/colors";
 import {
-  PassengerCategory,
-  Combination,
-  PassengerBaggageCombinationInterface,
-  PassengerFormInterface,
-  SaveBookingRequestInput,
-  arrangeBaggageDataForOrdering,
-  passengerAndBaggageDetails,
+    PassengerCategory,
+    Combination,
+    PassengerBaggageCombinationInterface,
+    PassengerFormInterface,
+    SaveBookingRequestInput,
+    arrangeBaggageDataForOrdering,
+    passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
-import {CheckFlightResponse, Combinations, Definitions} from "@/lib/types/response-models/flight/check_flight.type";
-import {Box} from "@mui/material";
-import {FieldArray, FormikProvider, useFormik} from "formik";
+import {
+    CheckFlightResponse,
+    Combinations,
+    Definitions,
+} from "@/lib/types/response-models/flight/check_flight.type";
+import { Box } from "@mui/material";
+import { FieldArray, FormikProvider, useFormik } from "formik";
 import { ChangeEvent, ChangeEventHandler, useState } from "react";
 
 export interface OneFlight {
@@ -37,51 +41,77 @@ export const mockFlightStop: OneFlight = {
     date: "Sat, 26 Aug",
     airport: "Murtala Muhammed, TI",
     location: "Lagos (Nigeria)",
-}
+};
 
 export const mockFlightStops = [
     { departure: mockFlightStop, arrival: mockFlightStop },
     { departure: mockFlightStop, arrival: mockFlightStop },
     { departure: mockFlightStop, arrival: mockFlightStop },
-]
+];
 
 interface TripSummaryProps {
-    passengersBagCombination : PassengerBaggageCombinationInterface[];
-    shouldUpdateCategory(params : {
+    passengersBagCombination: PassengerBaggageCombinationInterface[];
+    shouldUpdateCategory(params: {
         index: number;
         combination?: Combination;
         category: string;
     }): void;
-    handleUpdatePassengersBagCombination(params : {
+    handleUpdatePassengersBagCombination(params: {
         index: number;
         combination: Combination;
         category: string;
     }): void;
     checkedBags: {
-        order: { [key: number]: number[] }; definition?: Definitions
+        order: { [key: number]: number[] };
+        definition?: Definitions;
     };
-    handleCheckedBags: (index: number, value: any, bagDef: Definitions & { index: number }) => void;
+    handleCheckedBags: (
+        index: number,
+        value: any,
+        bagDef: Definitions & { index: number }
+    ) => void;
 }
 
-const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombination, shouldUpdateCategory, checkedBags, handleCheckedBags } : TripSummaryProps) => {
-    const { saveBooking, checkFlightsResponse, saveBookingDetails, setSaveBookingDetails, setStep } = useFlightBookingStore((state) => state);
-    const searchParams = extractSearchParamsFromUrl({url: window.location.href});
+const TripSummary = ({
+    passengersBagCombination,
+    handleUpdatePassengersBagCombination,
+    shouldUpdateCategory,
+    checkedBags,
+    handleCheckedBags,
+}: TripSummaryProps) => {
+    const {
+        saveBooking,
+        checkFlightsResponse,
+        saveBookingDetails,
+        setSaveBookingDetails,
+        setStep,
+    } = useFlightBookingStore((state) => state);
+    const searchParams = extractSearchParamsFromUrl({
+        url: window.location.href,
+    });
 
     const { adults, children, infants } = searchParams;
-    
+
     const [contactDetails, setContactDetails] = useState({
-        email: '',
-        phone: '',
+        email: "",
+        phone: "",
         receiveUpdates: false,
-    })
+    });
 
     const handleContactDetails: ChangeEventHandler<HTMLInputElement> = (e) => {
-        const { name, value, type }: { name: string; value: any; type: string } = e.currentTarget
-        setContactDetails(prev => ({
+        const {
+            name,
+            value,
+            type,
+        }: { name: string; value: any; type: string } = e.currentTarget;
+        setContactDetails((prev) => ({
             ...prev,
-            [name]: type === 'checkbox' ? !prev[name as keyof typeof contactDetails] : value
-        }))
-    }
+            [name]:
+                type === "checkbox"
+                    ? !prev[name as keyof typeof contactDetails]
+                    : value,
+        }));
+    };
 
     const getPassengerBagCombinationOptions = ({
         category,
@@ -93,43 +123,47 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
         return {
             hand_bag:
                 hand_bag?.filter((el) =>
-                el.conditions.passenger_groups.includes(category)
+                    el.conditions.passenger_groups.includes(category)
                 ) ?? [],
             hold_bag:
                 hold_bag?.filter((el) =>
-                el.conditions.passenger_groups.includes(category)
+                    el.conditions.passenger_groups.includes(category)
                 ) ?? [],
         };
     };
-    
-  const generateFormsForCategory = ({
+
+    const generateFormsForCategory = ({
         size,
         category,
     }: {
         size: number;
         category: PassengerCategory;
     }): PassengerFormInterface[] => {
-        return Array.from({ length: size },
-            (_, index): PassengerFormInterface => ({ ...passengerAndBaggageDetails, category })
-        )
+        return Array.from(
+            { length: size },
+            (_, index): PassengerFormInterface => ({
+                ...passengerAndBaggageDetails,
+                category,
+            })
+        );
     };
 
     const formik = useFormik({
         initialValues: {
-        passengers: [
-            ...generateFormsForCategory({
-                size: parseInt(adults),
-                category: PassengerCategory.ADULT,
-            }),
-            ...generateFormsForCategory({
-                size: parseInt(children),
-                category: PassengerCategory.CHILD,
-            }),
-            ...generateFormsForCategory({
-                size: parseInt(infants),
-                category: PassengerCategory.INFANT,
-            }),
-        ],
+            passengers: [
+                ...generateFormsForCategory({
+                    size: parseInt(adults),
+                    category: PassengerCategory.ADULT,
+                }),
+                ...generateFormsForCategory({
+                    size: parseInt(children),
+                    category: PassengerCategory.CHILD,
+                }),
+                ...generateFormsForCategory({
+                    size: parseInt(infants),
+                    category: PassengerCategory.INFANT,
+                }),
+            ],
         },
         enableReinitialize: true,
         validateOnMount: true,
@@ -138,26 +172,34 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
             console.log(passengersBagCombination, "passengers");
 
             setSaveBookingDetails({
-            data: {
-                ...saveBookingDetails,
-                passengers: values.passengers.map((el) => ({
-                    ...el,
-                    nationality: el.nationality.code.toLowerCase(),
-                })),
-                baggage: arrangeBaggageDataForOrdering(passengersBagCombination),
-            }})
-            setStep({step: 4});
+                data: {
+                    ...saveBookingDetails,
+                    booking_token: checkFlightsResponse?.booking_token ?? "",
+                    session_id: checkFlightsResponse?.session_id ?? "",
+                    passengers: values.passengers.map((el) => ({
+                        ...el,
+                        nationality: el.nationality.code.toLowerCase(),
+                    })),
+                    baggage: arrangeBaggageDataForOrdering(
+                        passengersBagCombination
+                    ),
+                },
+            });
+            setStep({ step: 4 });
         },
-        validateOnChange: false
+        validateOnChange: false,
     });
 
     const removePassenger = (index: number) => {
-        formik.setValues(prev => ({ ...prev, passengers: prev.passengers.filter((e, ind) => ind !== index) }))
-    }
+        formik.setValues((prev) => ({
+            ...prev,
+            passengers: prev.passengers.filter((e, ind) => ind !== index),
+        }));
+    };
 
-    const flights = checkFlightsResponse?.flights ?? []
-    const departure = flights[0]
-    const arrival = flights[flights?.length - 1]
+    const flights = checkFlightsResponse?.flights ?? [];
+    const departure = flights[0];
+    const arrival = flights[flights?.length - 1];
 
     return (
         <Box
@@ -180,27 +222,46 @@ const TripSummary = ({ passengersBagCombination, handleUpdatePassengersBagCombin
                 <form onSubmit={formik.handleSubmit}>
                     <FieldArray
                         name="passengers"
-                        render={(arrayHelpers) =>
+                        render={(arrayHelpers) => (
                             <div>
-                                {formik.values.passengers.map((passenger, index) =>
-                                    <div key={index}>
-                                        <PassengerDetails
-                                            index={index}
-                                            formik={formik}
-                                            values={passenger}
-                                            count={index}
-                                            combinationOptions={getPassengerBagCombinationOptions({category: passenger.category})}
-                                            passengerBagCombination={passengersBagCombination[index]}
-                                            handleUpdatePassengersBagCombination={handleUpdatePassengersBagCombination}
-                                            shouldUpdateCategory={shouldUpdateCategory}
-                                            checkedBags={checkedBags}
-                                            handleCheckedBags={handleCheckedBags}
-                                            removePassenger={removePassenger}
-                                        />
-                                    </div>
+                                {formik.values.passengers.map(
+                                    (passenger, index) => (
+                                        <div key={index}>
+                                            <PassengerDetails
+                                                index={index}
+                                                formik={formik}
+                                                values={passenger}
+                                                count={index}
+                                                combinationOptions={getPassengerBagCombinationOptions(
+                                                    {
+                                                        category:
+                                                            passenger.category,
+                                                    }
+                                                )}
+                                                passengerBagCombination={
+                                                    passengersBagCombination[
+                                                        index
+                                                    ]
+                                                }
+                                                handleUpdatePassengersBagCombination={
+                                                    handleUpdatePassengersBagCombination
+                                                }
+                                                shouldUpdateCategory={
+                                                    shouldUpdateCategory
+                                                }
+                                                checkedBags={checkedBags}
+                                                handleCheckedBags={
+                                                    handleCheckedBags
+                                                }
+                                                removePassenger={
+                                                    removePassenger
+                                                }
+                                            />
+                                        </div>
+                                    )
                                 )}
                             </div>
-                        }
+                        )}
                     />
                     <Box sx={{ marginY: "3rem" }}>
                         <Button

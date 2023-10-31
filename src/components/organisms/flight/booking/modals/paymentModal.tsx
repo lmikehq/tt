@@ -19,7 +19,7 @@ import Section from "@/components/molecules/section";
 import { useCreditCardValidator, images } from "react-creditcard-validator";
 import { FormikProps } from "formik";
 import { CardInfo } from "@/lib/types/request-models/flight/booking.type";
-import { FieldInput } from "@/components/organisms/fieldInput";
+import { FieldAsDate, FieldInput } from "@/components/organisms/fieldInput";
 
 const Wrapper = styled.div`
   background: white;
@@ -94,85 +94,107 @@ function PaymentModal({ open, handleClose, formik }: PaymentModalProps) {
     <Modal open={open} handleClose={handleClose}>
       <Wrapper>
         <Flex direction="column" align="center">
-          <Flex justify="flex-end">
+          <Flex
+            justify="flex-end"
+            styles={{ position: "absolute", right: "1rem", top: "1rem" }}
+          >
             <CloseMark fontSize={40} onClick={handleClose} />
           </Flex>
-          <Flex direction="column" gap=".2rem" justify="center" align="center">
-            <Text type="h2" text="Insert Card" size={30} weight={600} />
-            <Text
-              type="p"
-              text="Enter the your card detail for payment."
-              color="#929292"
-            />
-          </Flex>
-          <Flex
-            direction="column"
-            align="flex-start"
-            gap="1.5rem"
-            padding="2rem 0"
-          >
-            <Flex direction="column" gap=".5rem">
-              <Text type="p" text="Card Name" />
-              <FieldInput
-                name={"holder"}
-                placeholder={"Enter Card Name"}
-                formik={formik}
-              />
-            </Flex>
-            <Flex direction="column" gap=".5rem">
-              <Text type="p" text="Card Number" />
-              <Section
-                styles={{
-                  border: "1px solid #E7E7E7",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-                width="100%"
-              >
-                <Flex justify="space-between" padding=".5rem 1rem">
-                  <StyledInput
-                    {...getCardNumberProps()}
-                    onChange={formik.handleChange}
-                    name="number"
-                  />
-                  <svg {...getCardImageProps({ images })} />
-                </Flex>
-              </Section>
-            </Flex>
+          <form onSubmit={formik.handleSubmit}>
             <Flex
-              direction={isMobile ? "column" : "row"}
-              gap="2rem"
+              direction="column"
+              gap=".2rem"
+              justify="center"
               align="center"
             >
-              <Flex direction="column" gap=".75rem">
-                <Text type="p" text="Expiry Date" />
-                <DatePicker
+              <Text type="h2" text="Insert Card" size={30} weight={600} />
+              <Text
+                type="p"
+                text="Enter the your card detail for payment."
+                color="#929292"
+              />
+            </Flex>
+            <Flex
+              direction="column"
+              align="flex-start"
+              gap="1.5rem"
+              padding="2rem 0"
+            >
+              <Flex direction="column" gap=".5rem">
+                <Text type="p" text="Card Name" />
+                <FieldInput
+                  name={"holder"}
+                  placeholder={"Enter Card Name"}
+                  formik={formik}
+                />
+              </Flex>
+              <Flex direction="column" gap=".5rem">
+                <Text type="p" text="Card Number" />
+                <Section
+                  styles={{
+                    border: "1px solid #E7E7E7",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                  }}
+                  width="100%"
+                >
+                  <Flex justify="space-between" padding=".5rem 1rem">
+                    <StyledInput
+                      {...getCardNumberProps()}
+                      onChange={formik.handleChange}
+                      name="number"
+                    />
+                    <svg {...getCardImageProps({ images })} />
+                  </Flex>
+                </Section>
+              </Flex>
+              <Flex
+                direction={isMobile ? "column" : "row"}
+                gap="2rem"
+                align="flex-start"
+              >
+                <Flex direction="column" gap=".5rem">
+                  <Text type="p" text="Expiry Date" />
+                  <FieldAsDate
                     placeholder="MM/YY"
                     minDate={dayjs()}
                     views={["month", "year"]}
-                    height="40px"
+                    name="expiryDate"
                     format="MM/YY"
-                    onChange={e => null}
-        />
-              </Flex>
-              <Flex direction="column" gap=".5rem">
-                <Text type="p" text="CVV" />
-                <FieldInput
-                  max={3}
-                  name="cvv"
-                  formik={formik}
-                  placeholder="Enter CVV"
-                />
+                    formik={formik}
+                    onChange={(e) => {
+                      formik.setFieldValue(
+                        "expirationMonth",
+                        `${dayjs(e.$d).format("MM/YY").split("/")[0]}`
+                      );
+                      formik.setFieldValue(
+                        "expirationYear",
+                        `${dayjs(e.$d).format("MM/YY").split("/")[1]}`
+                      );
+                    }}
+                  />
+                </Flex>
+                <Flex direction="column" gap=".5rem">
+                  <Text type="p" text="CVV" />
+                  <FieldInput
+                    max={3}
+                    name="cvv"
+                    formik={formik}
+                    placeholder="Enter CVV"
+                  />
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
-          <Button
-            padding="2rem"
-            width="100%"
-            background={ttColors.blackishBlue}
-          >
-            <Text type="p" text="Pay Now" size={16} weight={500} />
-          </Button>
+            <Button
+              padding="2rem"
+              width="100%"
+              background={ttColors.blackishBlue}
+              type="submit"
+              onClick={() => console.log(formik)}
+            >
+              <Text type="p" text="Pay Now" size={16} weight={500} />
+            </Button>
+          </form>
         </Flex>
       </Wrapper>
     </Modal>
