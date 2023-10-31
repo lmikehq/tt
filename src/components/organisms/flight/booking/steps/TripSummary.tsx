@@ -5,6 +5,7 @@ import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
 import {
     PassengerCategory,
@@ -86,6 +87,7 @@ const TripSummary = ({
         setSaveBookingDetails,
         setStep,
     } = useFlightBookingStore((state) => state);
+    const { user } = useUserStore((state) => state);
     const searchParams = extractSearchParamsFromUrl({
         url: window.location.href,
     });
@@ -174,6 +176,8 @@ const TripSummary = ({
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
+                    new_user_email: contactDetails.email,
+                    user: user?.id,
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
                     passengers: values.passengers.map((el) => ({
@@ -209,11 +213,13 @@ const TripSummary = ({
                 rowGap: "1rem",
             }}
         >
-            <TripSummaryCard
-                departure={departure}
-                arrival={arrival}
-                flights={flights}
-            />
+            {!user && (
+                <TripSummaryCard
+                    departure={departure}
+                    arrival={arrival}
+                    flights={flights}
+                />
+            )}
             <ContactDetails
                 contactDetails={contactDetails}
                 handleContactDetails={handleContactDetails}
