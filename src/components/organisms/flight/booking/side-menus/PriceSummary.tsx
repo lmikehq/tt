@@ -1,13 +1,16 @@
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import Image from "@/components/atoms/image";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { useEffect, useState } from "react";
 import { Definitions } from "@/lib/types/response-models/flight/check_flight.type";
+import Modal from "@/components/organisms/modal";
+import Button from "@/components/atoms/button";
+import { BsCursor } from "react-icons/bs";
 
 
 function Detail({ name, value, currency = "USD", negative, bold, plain }: { name: string; value: number | string; currency?: string; negative?: boolean; bold?: boolean; plain?: boolean; }) {
@@ -35,13 +38,34 @@ interface PriceSummaryProps {
     checkedBags: { order: { [key: number]: number[] }; definition?: Definitions }
 }
 
+
+function StillBookingModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFunction; to?: string; }) {
+    const { isMobile } = useScreenResolution()
+
+    return (
+        <Modal open={isOpen} handleClose={onClose}>
+            <Stack direction='column' spacing={5} bgcolor='white' padding={6} width={isMobile ? '90vw' : '30vw'} borderRadius='16px'>
+                <Text type='h2' text="Flight Booking" weight={600} size={22} />
+                <Text type='h2' text="Prices and arrangements available in trips change periodically.
+                Try to complete your booking within the next 15 minutes." size={15} />
+
+                <Stack width='100%' alignItems='center' spacing={2}>
+                    <Button width="100%" startIcon={<BsCursor color='white'/>} onClick={onClose}>Continue Booking</Button>
+                </Stack>
+            </Stack>
+        </Modal>
+    )
+}
+
 function PriceSummary({ checkedBags }: PriceSummaryProps) {
     const { isMobile } = useScreenResolution()
     const { saveBooking, checkFlightsResponse, saveBookingDetails, setSaveBookingDetails, setStep } = useFlightBookingStore((state) => state);
     const [countdown, setCountdown] = useState(30 * 60)
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    
     const countMins = Math.floor(countdown / 60)
     const countSecs = (countdown % 60).toFixed(0)
-
+    
     const basePrice = Number(checkFlightsResponse?.flights_price).toFixed(2) ?? 0
     const serviceCharges = Number(checkFlightsResponse?.sp_fee).toFixed(2) ?? 0
     const countofBags = Object.values(checkedBags.order).flat()
@@ -49,12 +73,18 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
     const bagsPrice = Number(countofBagsPrices.reduce((prev, curr) => Number(prev ?? 0) + Number(curr ?? 0), 0)).toFixed(2)
     const totalPrice = Number(checkFlightsResponse?.tickets_price).toFixed(2) ?? 0
     const currency = checkFlightsResponse?.currency ?? 'USD'
-
-    const departureBags = 0
-
+    
+    const departureBags = countofBags.length
+    
+    
     useEffect(() => { 
         const interval = setInterval(() => { 
-            setCountdown(prev => prev === 0 ? (30 * 60) : prev - 1); 
+            setCountdown(prev => {
+                if (prev === (15 * 60)) {
+                    setIsOpenModal(true)
+                }
+                return prev === 0 ? (30 * 60) : prev - 1
+            }); 
         }, 1000); 
         return () => clearInterval(interval); 
     }, []);
@@ -97,7 +127,7 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
             </Flex>
 
             <Flex direction="column" gap=".6rem" margin="0 0 3rem">
-                <Detail name="No of Bags" value={departureBags} plain />
+                <Detail name="Bags" value={departureBags} plain />
             </Flex>
 
             <Flex justify="flex-start" align="center" gap="1rem" margin="0 0 3rem">
@@ -111,6 +141,11 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
                 src="/assets/images/flights/baggage.png"
                 alt="Baggage"
                 styles={{ width: isMobile ? "100%" : "100%" }}
+            />
+
+            <StillBookingModal
+                isOpen={isOpenModal}
+                onClose={() => setIsOpenModal(false)}
             />
         </Box>
     )

@@ -138,8 +138,8 @@ export default function PassengerBaggagePane({
         })
     };
 
-    const handBagText = theBags.handBags.filter((e, index, arr) => arr.indexOf(e) === index).map((bag, index, arr) => {
-        const count = theBags.handBags.filter((e, i) => e.index === bag.index).length
+    const handBagText = theBags.handBags.filter((e, index, arr) => (arr.indexOf(e) === index) && !!e).map((bag, index, arr) => {
+        const count = arr.filter((e, i) => e.index === bag.index).length
         return (`${count}x ${capCase(bag.category, '_')} (${bag.restrictions?.weight}kg)`)
     }).join(', ')
 
@@ -225,7 +225,12 @@ export default function PassengerBaggagePane({
             {/* Hold Bags */}
             {!state.noHoldBags && (
                 <Flex gap="1rem" align="flex-end" wrap="wrap" padding="1rem 0 0">
-                    {theBags.holdBags.map((bag, index, arr) => {
+                    {(theBags.holdBags.length === 0 && values.category !== PassengerCategory.INFANT) ? (
+                        <ToastInfo
+                            type="info"
+                            message="No provision for checked baggage"
+                        />
+                    ) : theBags.holdBags.map((bag, index, arr) => {
                         const number = index + 1
                         const isActive = state.holdBags === number
                         return (
@@ -277,7 +282,7 @@ export default function PassengerBaggagePane({
                 />
             }
 
-            {values.category !== PassengerCategory.INFANT &&
+            {values.category !== PassengerCategory.INFANT && theBags.holdBags.length !== 0 && 
                 <CheckBox
                     checked={state.noHoldBags}
                     onChange={() => toggleState("noHoldBags", theBags.holdBags[0])}
