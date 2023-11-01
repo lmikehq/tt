@@ -2,6 +2,9 @@ import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Section from "@/components/molecules/section";
 import Flex from "@/components/templates/flex";
+import { formatDate } from "@/lib/utilFns";
+import dayjs from "dayjs";
+
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import {
     SeatInterface,
@@ -10,8 +13,12 @@ import {
 import { BiArrowToRight, BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
 
 const SeatSelectionMenu = () => {
-    const { particularSeats, saveBookingDetails, seatRows } =
-        useFlightBookingStore();
+    const {
+        particularSeats,
+        saveBookingDetails,
+        seatRows,
+        checkFlightsResponse,
+    } = useFlightBookingStore();
     const passengers = saveBookingDetails.passengers.map((el) => ({
         nationality: el.nationality,
         birthday: el.birthday,
@@ -93,7 +100,10 @@ const SeatSelectionMenu = () => {
                             size={16}
                             weight={500}
                             type="h1"
-                            text="Lagos, Murtala Mohammed Airport (LOS)"
+                            text={
+                                checkFlightsResponse?.flights[0].src_station +
+                                " Airport"
+                            }
                         />
                     </Section>
                     <Section width="fit-content" padding={"1.5rem"}>
@@ -104,7 +114,10 @@ const SeatSelectionMenu = () => {
                             size={16}
                             weight={500}
                             type="h1"
-                            text="Lagos, Murtala Mohammed Airport (LOS)"
+                            text={
+                                checkFlightsResponse?.flights[0].dst_station +
+                                " Airport"
+                            }
                         />
                     </Section>
                 </Flex>
@@ -112,7 +125,10 @@ const SeatSelectionMenu = () => {
             <Section margin="20px 0 48px 0">
                 <Text
                     type="p"
-                    text="Saturday, 26 August 2023"
+                    text={formatDate(
+                        dayjs(checkFlightsResponse?.flights[0].utc_departure),
+                        "ddd, DD MMM"
+                    )}
                     color="#606060"
                     weight={400}
                 />
@@ -160,6 +176,7 @@ const SeatSelectionMenu = () => {
                             type="p"
                             size={16}
                             weight={400}
+                            textAlign="right"
                             text={
                                 countAvailableSeats({
                                     seatClass: seatClass.standard.name,
@@ -211,6 +228,7 @@ const SeatSelectionMenu = () => {
                             type="p"
                             size={16}
                             weight={400}
+                            textAlign="right"
                             text={
                                 countAvailableSeats({
                                     seatClass:
