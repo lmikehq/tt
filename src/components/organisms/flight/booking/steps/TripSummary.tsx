@@ -180,8 +180,10 @@ const TripSummary = ({
                     user: user?.id,
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
-                    passengers: values.passengers.map((el) => ({
+                    passengers: values.passengers.map((el, index) => ({
                         ...el,
+                        email: index == 0 ? contactDetails.email : "",
+                        phone: index == 0 ? contactDetails.phone : "",
                         nationality: el.nationality.code.toLowerCase(),
                     })),
                     baggage: arrangeBaggageDataForOrdering(
@@ -213,17 +215,17 @@ const TripSummary = ({
                 rowGap: "1rem",
             }}
         >
-            {!user && (
-                <TripSummaryCard
-                    departure={departure}
-                    arrival={arrival}
-                    flights={flights}
+            <TripSummaryCard
+                departure={departure}
+                arrival={arrival}
+                flights={flights}
+            />
+            {!user?.id && (
+                <ContactDetails
+                    contactDetails={contactDetails}
+                    handleContactDetails={handleContactDetails}
                 />
             )}
-            <ContactDetails
-                contactDetails={contactDetails}
-                handleContactDetails={handleContactDetails}
-            />
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     <FieldArray

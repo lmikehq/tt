@@ -45,8 +45,7 @@ const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerFormInterface>
         name: yup.string().required("Required"),
         surname: yup.string().required("Required"),
         currency: yup.string().required("Required"),
-        phone: yup.string().required("Required"),
-        email: yup.string().email("Invalid email").required("Required"),
+
         cardno: yup.string().required("Required"),
         birthday: yup
             .string()
