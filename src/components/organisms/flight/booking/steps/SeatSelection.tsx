@@ -103,9 +103,7 @@ const SeatSelection = () => {
         setShowSeatSelectionModal(true);
     };
     const [currentPassenger, setCurrentPassenger] = useState("Main Passenger");
-    const [seatRows, setSeatRows] = useState<SeatRowWithSegmentCodeInterface[]>(
-        []
-    );
+
     const {
         checkSeating,
         checkSeatingResponse,
@@ -118,6 +116,8 @@ const SeatSelection = () => {
         particularSeats,
         setStep,
         setParticularSeats,
+        seatRows,
+        setSeatRows,
     } = useFlightBookingStore((state) => state);
     const passengers = saveBookingDetails.passengers.map((el) => ({
         nationality: el.nationality,

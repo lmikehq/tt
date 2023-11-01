@@ -128,6 +128,15 @@ export enum SeatAvailability {
     available = "available",
     unavailable = "unavailable",
 }
+
+export interface SeatClassCategory {
+    name: string;
+    color: string;
+}
+export interface SeatClassInterface {
+    standard: SeatClassCategory;
+    extra_legroom_seat: SeatClassCategory;
+}
 export interface SeatInterface {
     column: string;
     features: string[];
@@ -154,6 +163,11 @@ export interface SeatRowWithSegmentCodeInterface {
     seat_groups: SeatInterface[][];
     segmentCode: string;
 }
+
+export const seatClass: SeatClassInterface = {
+    standard: { name: "standard", color: "#ffff" },
+    extra_legroom_seat: { name: "Extra legroom seat", color: "#ffff" },
+};
 
 export const mockRows = [
     {

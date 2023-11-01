@@ -17,7 +17,10 @@ import {
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
-import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import {
+    FlightInfo,
+    SeatRowWithSegmentCodeInterface,
+} from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_seating.type";
 import { TokenizeDataResponse } from "@/lib/types/response-models/flight/payment.type";
@@ -41,6 +44,7 @@ interface State {
     checkSeatingMode: Mode;
     particularSeats: ParticularSeatingOption[];
     cardDetails: CardInfo;
+    seatRows: SeatRowWithSegmentCodeInterface[];
 }
 interface Actions {
     prevStep: () => void;
@@ -65,6 +69,7 @@ interface Actions {
         data: SaveBookingRequestInput;
     }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
+    setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -77,6 +82,7 @@ export const useFlightBookingStore = create<State & Actions>(
         searchFlightsResults: [],
         searchQuery: {},
         sessionId: null,
+        seatRows: [],
 
         checkFlightsResponse: null,
         checkSeatingResponse: null,
@@ -148,6 +154,11 @@ export const useFlightBookingStore = create<State & Actions>(
         setParticularSeats: (data: ParticularSeatingOption[]) => {
             set({
                 particularSeats: data,
+            });
+        },
+        setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => {
+            set({
+                seatRows: data,
             });
         },
         checkSeating: async ({ data }: { data: CheckSeatingRequestInput }) => {
