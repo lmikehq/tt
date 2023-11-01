@@ -18,13 +18,14 @@ const Circle = styled.div<{ color: string }>`
 `;
 
 const ToastBox = styled.div<{ type: string }>`
-  background: ${({ type }) => (type === 'warning' ? 'white' : '#F3FAFD')};
-  border-width: ${({ type }) => (type === 'warning' ? '1px 1px 1px 6px' : '0 0 0 6px')};
-  border-style: solid;
-  border-color: ${({ type }) => (type === 'warning' ? '#A0001D' : '#6092A7')};
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin: 1rem 0;
+    width: 100%;
+    background: ${({ type }) => (type === 'warning' ? 'white' : '#F3FAFD')};
+    border-width: ${({ type }) => (type === 'warning' ? '1px 1px 1px 6px' : '0 0 0 6px')};
+    border-style: solid;
+    border-color: ${({ type }) => (type === 'warning' ? '#A0001D' : '#6092A7')};
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0;
 `;
 
 export const ToastInfo = ({ type, message }: { type: 'warning' | 'info'; message?: string }) => {

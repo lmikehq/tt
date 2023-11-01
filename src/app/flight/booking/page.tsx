@@ -38,15 +38,16 @@ const FlightBookingPage = () => {
         prevStep,
         highestStep,
         checkFlights,
+        initCheckFlightsMode,
         checkFlightsResponse,
-        mode,
+        setInitCheckFlightsMode,
     } = useFlightBookingStore((state) => state);
 
     const searchParams = extractSearchParamsFromUrl({
         url: window.location.href,
     });
 
-    const { adults, children, infants } = searchParams;
+    const { adults = '0', children = '0', infants = '0' } = searchParams;
 
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
@@ -238,21 +239,23 @@ const FlightBookingPage = () => {
         const searchParams = extractSearchParamsFromUrl({
             url: window.location.href,
         });
+        setInitCheckFlightsMode(Mode.loading)
         checkFlights({
             query: {
                 bnum: 0,
                 ...searchParams,
             },
-        }).then((response) =>
+        }).then((response) => {
+            setInitCheckFlightsMode(Mode.loaded)
             checkFlightsThreeSecondsInterval({
                 sessionId: response.session_id,
                 searchParams,
             })
-        );
+        });
 
         setCheckedBags((prev) => {
             const newObj: { [key: number]: number[] } = {};
-            const noOfPassengers = Array(adults + children + infants).fill("p");
+            const noOfPassengers = Array(parseInt(adults) + parseInt(children) + parseInt(infants)).fill("p");
             noOfPassengers.forEach((e, index) => {
                 newObj[index] = [];
             });
@@ -274,71 +277,80 @@ const FlightBookingPage = () => {
                     />
                 </Section>
 
-                <MultiStepWithSideMenu
-                    direction={(() => {
-                        switch (step) {
-                            case 4:
-                            case 5:
-                                return "column-reverse";
-                            default:
-                                return "column";
-                        }
-                    })()}
-                    header={(() => {
-                        switch (step) {
-                            case 2:
-                                return <TripHeader />;
-                            case 4:
-                                return <SeatHeader />;
-                            case 5:
-                                return <OverviewHeader />;
-                        }
-                    })()}
-                    sideMenu={(() => {
-                        switch (step) {
-                            case 2:
-                            case 3:
-                                return (
-                                    <PriceSummary checkedBags={checkedBags} />
-                                );
-                            case 4:
-                                return <SeatSelectionMenu />;
-                            case 5:
-                                return <OverviewSystem />;
-                        }
-                    })()}
-                >
-                    <React.Fragment>
-                        {(() => {
+                {initCheckFlightsMode === Mode.loading ? (
+                    <SkeletonLoader
+                        tabs={2}
+                        textWidth='100%'
+                        textHeight='30px'
+                        rectangularWidth='100%'
+                        rectangularHeight='50px'
+                    />
+                ) : (
+                    <MultiStepWithSideMenu
+                        direction={(() => {
                             switch (step) {
-                                case 2:
-                                    return (
-                                        <TripSummary
-                                            passengersBagCombination={
-                                                passengersBagCombination
-                                            }
-                                            handleUpdatePassengersBagCombination={
-                                                handleUpdatePassengersBagCombination
-                                            }
-                                            shouldUpdateCategory={
-                                                shouldUpdateCategory
-                                            }
-                                            handleCheckedBags={
-                                                handleCheckedBags
-                                            }
-                                            checkedBags={checkedBags}
-                                        />
-                                    );
-                                case 3:
-                                    return <ChooseTicketFare />;
                                 case 4:
-                                    return <SeatSelection />;
                                 case 5:
-                                    return <OverviewAndPayment />;
+                                    return "column-reverse";
+                                default:
+                                    return "column";
                             }
                         })()}
-                    </React.Fragment>
-                </MultiStepWithSideMenu>
+                        header={(() => {
+                            switch (step) {
+                                case 2:
+                                    return <TripHeader />;
+                                case 4:
+                                    return <SeatHeader />;
+                                case 5:
+                                    return <OverviewHeader />;
+                            }
+                        })()}
+                        sideMenu={(() => {
+                            switch (step) {
+                                case 2:
+                                case 3:
+                                    return <PriceSummary checkedBags={checkedBags} />;
+                                case 4:
+                                    return <SeatSelectionMenu />;
+                                case 5:
+                                    return <OverviewSystem />;
+                            }
+                        })()}
+                    >
+                        <React.Fragment>
+                            {(() => {
+                                switch (step) {
+                                    case 2:
+                                        return (
+                                            <TripSummary
+                                                passengersBagCombination={
+                                                    passengersBagCombination
+                                                }
+                                                handleUpdatePassengersBagCombination={
+                                                    handleUpdatePassengersBagCombination
+                                                }
+                                                shouldUpdateCategory={
+                                                    shouldUpdateCategory
+                                                }
+                                                handleCheckedBags={
+                                                    handleCheckedBags
+                                                }
+                                                checkedBags={checkedBags}
+                                            />
+                                        );
+                                    case 3:
+                                        return <ChooseTicketFare />;
+                                    case 4:
+                                        return <SeatSelection />;
+                                    case 5:
+                                        return <OverviewAndPayment />;
+                                }
+                            })()}
+                        </React.Fragment>
+                    </MultiStepWithSideMenu>
+                )}
+
             </SectionLayout>
         </Section>
     );
