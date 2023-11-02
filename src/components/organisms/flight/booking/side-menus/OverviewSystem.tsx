@@ -44,7 +44,7 @@ function OverviewSystem() {
                     borderRadius: "12px",
                 }}
             >
-                <Flex gap="1rem" align="flex-start" padding="1rem">
+                <Flex gap="1rem" align="flex-start">
                     <Box
                         style={{
                             backgroundSize: "cover",
