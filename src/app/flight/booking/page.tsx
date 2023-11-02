@@ -63,12 +63,12 @@ const FlightBookingPage = () => {
 
     const handleCheckedBags = (
         index: number,
-        value: any,
-        bagDef: Definitions & { index: number }
+        value: number[],
+        bagDef?: Definitions
     ) => {
         setCheckedBags((prev) => ({
             ...prev,
-            order: { ...prev.order, [index]: Array(value).fill(bagDef?.index) },
+            order: { ...prev.order, [index]: value },
         }));
     };
 

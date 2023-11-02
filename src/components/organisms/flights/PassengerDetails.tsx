@@ -57,12 +57,10 @@ interface TripSummaryCardProps {
         order: { [key: number]: number[] };
         definition?: Definitions;
     };
-    handleCheckedBags: (
-        index: number,
-        value: any,
-        bagDef: Definitions & { index: number }
-    ) => void;
-    removePassenger: (index: number) => void;
+
+    handleCheckedBags: (index: number, value: number[], bagDef?: Definitions) => void;
+    removePassenger: (index: number) => void; 
+
 }
 
 export default function MainPassenger({
