@@ -191,7 +191,7 @@ const TripSummary = ({
                     ),
                 },
             });
-            setStep({ step: 4 });
+            setStep({ step: 3 });
         },
         validateOnChange: false,
     });
