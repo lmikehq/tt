@@ -35,7 +35,7 @@ export const extApiService = (url: string, method?: string, data?: any) => {
       data,
     })
       .then((res) => resolve(res.data))
-      .catch((err) => resolve(err.response.data));
+      .catch((err) => resolve(err.response?.data));
   });
 };
 

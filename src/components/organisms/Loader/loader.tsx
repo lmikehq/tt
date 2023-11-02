@@ -16,7 +16,7 @@ const LoaderWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 9999;
-  background-color: "white";
+  background: "white";
   flex-direction: column;
 `;
 

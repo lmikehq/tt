@@ -33,6 +33,7 @@ interface State {
     searchFlightsMode: Mode;
     searchFlightsResults: FlightInfo[];
     searchQuery: SearchFlightsRequestQuery;
+    initCheckFlightsMode: Mode;
     checkFlightsResponse: CheckFlightResponse | null;
     checkSeatingResponse: CheckSeatingResponse | null;
     saveBookingDetails: SaveBookingRequestInput;
@@ -53,6 +54,7 @@ interface Actions {
         data: SearchFlightsRequestQuery;
     }) => Promise<void>;
     checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
+    setInitCheckFlightsMode: (mode: Mode) => void;
     checkSeating: (params: {
         data: CheckSeatingRequestInput;
     }) => Promise<CheckSeatingResponse>;
@@ -83,6 +85,7 @@ export const useFlightBookingStore = create<State & Actions>(
         searchQuery: {},
         sessionId: null,
         seatRows: [],
+        initCheckFlightsMode: Mode.init,
 
         checkFlightsResponse: null,
         checkSeatingResponse: null,
@@ -150,6 +153,11 @@ export const useFlightBookingStore = create<State & Actions>(
                     set({ mode: Mode.error });
                     throw error;
                 });
+        },
+        setInitCheckFlightsMode: (mode: Mode) => {
+            set({
+                initCheckFlightsMode: mode,
+            });
         },
         setParticularSeats: (data: ParticularSeatingOption[]) => {
             set({
