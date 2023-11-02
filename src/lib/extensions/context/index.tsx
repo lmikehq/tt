@@ -56,6 +56,7 @@ const initialValues: ContextType = {
 };
 
 type Action =
+    | { type: "UPDATE_STATE"; payload: ContextType }
     | { type: "SET_STOPS"; payload: ContextType['stops'] }
     | { type: "SET_FLIGHT_TYPE"; payload: ContextType['flightType'] }
     | { type: "LIST_MULTI_FLIGHT"; payload: OneFlightType[] }

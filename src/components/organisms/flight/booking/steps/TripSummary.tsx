@@ -1,4 +1,5 @@
 import Button from "@/components/atoms/button";
+import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
@@ -7,6 +8,7 @@ import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
+import { Mode } from "@/lib/types";
 import {
     PassengerCategory,
     Combination,
@@ -23,7 +25,7 @@ import {
 } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
 
 export interface OneFlight {
     time: string;
@@ -37,18 +39,6 @@ export interface FlightStopType {
     arrival: OneFlight;
 }
 
-export const mockFlightStop: OneFlight = {
-    time: "22:00",
-    date: "Sat, 26 Aug",
-    airport: "Murtala Muhammed, TI",
-    location: "Lagos (Nigeria)",
-};
-
-export const mockFlightStops = [
-    { departure: mockFlightStop, arrival: mockFlightStop },
-    { departure: mockFlightStop, arrival: mockFlightStop },
-    { departure: mockFlightStop, arrival: mockFlightStop },
-];
 
 interface TripSummaryProps {
     passengersBagCombination: PassengerBaggageCombinationInterface[];
@@ -150,6 +140,13 @@ const TripSummary = ({
         );
     };
 
+    const insertSelectedCheckedBags = (pBags: PassengerBaggageCombinationInterface[]) => {
+        return pBags.map((comb, index) => ({
+            ...comb,
+            hold_bag: { ...comb.hold_bag, indices: checkedBags.order[index] }
+        }))
+    }
+
     const formik = useFormik({
         initialValues: {
             passengers: [
@@ -187,7 +184,7 @@ const TripSummary = ({
                         nationality: el.nationality.code.toLowerCase(),
                     })),
                     baggage: arrangeBaggageDataForOrdering(
-                        passengersBagCombination
+                        insertSelectedCheckedBags(passengersBagCombination)
                     ),
                 },
             });
@@ -206,6 +203,7 @@ const TripSummary = ({
     const flights = checkFlightsResponse?.flights ?? [];
     const departure = flights[0];
     const arrival = flights[flights?.length - 1];
+
 
     return (
         <Box
@@ -283,7 +281,7 @@ const TripSummary = ({
                     </Box>
                 </form>
             </FormikProvider>
-        </Box>
+        </Box>    
     );
 };
 
