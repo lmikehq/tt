@@ -20,31 +20,29 @@ interface TabPanelProps {
 
 const TabWrapper = styled.div<{
   isMobile?: boolean;
-  shadowShow?: boolean;
-  addBackgroundColor?: boolean;
   addColor?: boolean;
+  width?: boolean;
 }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
-    height: 4px;
+    height: 2px;
   }
   .MuiTabs-root {
     padding: 0px;
-    box-shadow: ${({ shadowShow }) =>
-      shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
-    box-shadow: ;
 
-    border-radius: 6px;
+    // border-radius: 6px;
     height: 48px;
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
-    background: ${({ addBackgroundColor }) =>
-      addBackgroundColor ? "#87CEEB" : "#fff"};
-    color: ${({ addColor }) => (addColor ? "#fff" : "#000000")};
+    color: ${({ addColor }) => (addColor ? "#fff" : `${ttColors.primary}`)};
   }
   .css-1gsv261 {
     // border-bottom: 1px solid transparent;
   }
+
+//   .css-1dbprjl-MuiButtonBase-root-MuiTab-root{
+//     padding: 0px;
+//   }
 
   .MuiTabs-indicator .css-1aquho2-MuiTabs-indicator {
     width: 100% !important;
@@ -102,19 +100,17 @@ function a11yProps(index: number) {
 export default function BlogTab({
   tabItems,
   defaultIcons = false,
-  page = "home",
-  shadowShow = false,
-  addBackgroundColor = false,
+  page = "blog",
   addColor = false,
+  width = false,
   activeTab,
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
-  page?: "home" | "dashboard";
-  shadowShow?: boolean;
-  addBackgroundColor?: boolean;
+  page?: "home" | "blog";
   addColor?: boolean;
   activeTab?: string;
+  width?: boolean;
 }) {
   const [value, setValue] = useState(0);
 
@@ -132,8 +128,7 @@ export default function BlogTab({
   return (
     <TabWrapper
       isMobile={isMobile}
-      shadowShow={shadowShow}
-      addBackgroundColor={addBackgroundColor}
+      width={width}
     >
       <Box>
         <Tabs
@@ -153,11 +148,11 @@ export default function BlogTab({
               borderLeft: "none",
             };
 
-            if (i % 4 === 0) {
-              borderStyle.borderRight = "1px solid #ccc";
-            } else if (i % 4 === 2) {
-              borderStyle.borderLeft = "1px solid #ccc";
-            }
+            // if (i % 4 === 0) {
+            //   borderStyle.borderRight = "1px solid #ccc";
+            // } else if (i % 4 === 2) {
+            //   borderStyle.borderLeft = "1px solid #ccc";
+            // }
             return (
               <Tab
                 key={tabItem.value}

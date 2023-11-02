@@ -14,7 +14,7 @@ import { RelatedTopic } from "./relatedTopic";
 import CustomTab from "@/components/atoms/tabs";
 import BlogTab from "@/components/atoms/blogTab";
 
-export const AdminPost = () => {
+export const SearchResult = () => {
   const tabItems = [
     {
       label: "For You",
@@ -53,19 +53,19 @@ export const AdminPost = () => {
   return (
     <>
       <Flex gap="50px">
-        <Flex direction="column" width="65%" gap="30px">
+        <Flex direction="column" width="65%" gap="1rem">
           <Flex justify="space-between" gap="2rem" margin="0 0 1rem">
             <div style={{ width: "70%" }}>
               <BlogTab tabItems={tabItems} addColor width={true} />
             </div>
           </Flex>
-          <Image
+          {/* <Image
             src={AdminPostImg}
             alt=""
             height={374}
             styles={{ borderRadius: "8px" }}
-          />
-          <Flex justify="space-between">
+          /> */}
+          {/* <Flex justify="space-between">
             <Flex justify="flex-start" gap="10px">
               <Image src={User} width={54} height={54} alt="" />
               <Flex justify="flex-start" direction="column" gap="5px">
@@ -95,8 +95,8 @@ export const AdminPost = () => {
               </Flex>
             </Flex>
             <BiDotsHorizontalRounded size="24px" />
-          </Flex>
-          <Flex justify="space-between">
+          </Flex> */}
+          {/* <Flex justify="space-between">
             <Text
               type="h1"
               text="The North American airports that travelers find the most satisfying"
@@ -104,9 +104,9 @@ export const AdminPost = () => {
               weight="600"
             />
             <div style={{ width: "10%" }}></div>
-          </Flex>
+          </Flex> */}
 
-          <Flex justify="space-between">
+          {/* <Flex justify="space-between">
             <Flex justify="flex-start" align="center" gap="10px">
               <Text
                 type="h3"
@@ -123,9 +123,8 @@ export const AdminPost = () => {
               <LiaThumbsDown color="#929292" size="19.25px" />
               <BsBoxArrowUp color="#929292" size="18px" />
             </Flex>
-          </Flex>
-          <br />
-          <br />
+          </Flex> */}
+          
           <BlogArticleMini />
           <br />
 
@@ -145,8 +144,8 @@ export const AdminPost = () => {
           <Flex direction="column" gap="3rem">
             <Text
               type="h2"
-              text="Recommend Articles"
-              size="28px"
+              text="Similar Blog Post"
+              size="20px"
               weight={600}
               styles={{
                 justifyContent: "flex-start",
@@ -154,7 +153,13 @@ export const AdminPost = () => {
             />
 
             <BlogArticle />
+
+            <BlogArticle />
+            <BlogArticle />
+            <BlogArticle />
+            <BlogArticle />
           </Flex>
+          <RelatedTopic />
         </Flex>
       </Flex>
     </>
