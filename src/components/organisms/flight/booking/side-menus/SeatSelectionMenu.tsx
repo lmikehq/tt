@@ -11,6 +11,7 @@ import {
     seatClass,
 } from "@/lib/types/response-models/flight/booking.type";
 import { BiArrowToRight, BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
+import { PassengerCategory } from "@/lib/types/request-models/flight/booking.type";
 
 const SeatSelectionMenu = () => {
     const {
@@ -19,11 +20,13 @@ const SeatSelectionMenu = () => {
         seatRows,
         checkFlightsResponse,
     } = useFlightBookingStore();
-    const passengers = saveBookingDetails.passengers.map((el) => ({
-        nationality: el.nationality,
-        birthday: el.birthday,
-        category: el.category,
-    }));
+    const passengers = saveBookingDetails.passengers
+        .filter((el) => el.category !== PassengerCategory.INFANT)
+        .map((el) => ({
+            nationality: el.nationality,
+            birthday: el.birthday,
+            category: el.category,
+        }));
     const findSeatWithPassengerIndex = ({
         index,
     }: {

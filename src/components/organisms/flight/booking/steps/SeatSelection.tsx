@@ -21,6 +21,7 @@ import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import {
     CheckSeatingRequestInput,
     ParticularSeatingOption,
+    PassengerCategory,
     SaveBookingRequestInput,
     SeatingSeatPrice,
 } from "@/lib/types/request-models/flight/booking.type";
@@ -119,11 +120,13 @@ const SeatSelection = () => {
         seatRows,
         setSeatRows,
     } = useFlightBookingStore((state) => state);
-    const passengers = saveBookingDetails.passengers.map((el) => ({
-        nationality: el.nationality,
-        birthday: el.birthday,
-        category: el.category,
-    }));
+    const passengers = saveBookingDetails.passengers
+        .filter((el) => el.category !== PassengerCategory.INFANT)
+        .map((el) => ({
+            nationality: el.nationality,
+            birthday: el.birthday,
+            category: el.category,
+        }));
     const offers = checkSeatingResponse?.seating.offers;
 
     const selectParticularSeat = ({
