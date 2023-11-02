@@ -40,7 +40,7 @@ interface PassengerBaggagePaneProps {
     checkedBags: {
         order: { [key: number]: number[] }; definition?: Definitions
     };
-    handleCheckedBags: (index: number, value: any, bagDef: Definitions & { index: number }) => void;
+    handleCheckedBags: (index: number, value: number[], bagDef?: Definitions) => void;
     removePassenger: (index: number) => void; 
 }
 
@@ -104,45 +104,53 @@ export default function PassengerBaggagePane({
     const { checkFlightsResponse } = useFlightBookingStore((state) => state);
     const { isMobile } = useScreenResolution()
     const bagDefinitions = checkFlightsResponse?.baggage.definitions;
-
-    const theBags = {
+    
+    const newBags = {
+        // handBags: checkFlightsResponse?.baggage?.combinations?.hand_bag.filter(e => e.conditions?.passenger_groups.includes(values.category)) ?? [],
         handBags: passengerBagCombination?.hand_bag.indices.map(e => ({ index: e, ...bagDefinitions?.hand_bag[e] })) ?? [],
-        holdBags: passengerBagCombination?.hold_bag.indices.map(e => ({ index: e, ...bagDefinitions?.hold_bag[e] })) ?? [],
+        holdBags: checkFlightsResponse?.baggage?.combinations?.hold_bag.filter(e => e.conditions?.passenger_groups.includes(values.category)) ?? [],
     }
 
     const [state, setState] = useState({
-        holdBags: 0,
+        holdBags: [],
         noHoldBags: false,
     })
 
     type CheckedName = keyof typeof state;
 
-    const toggleState = (checkedName: CheckedName, bag: any) => {
+    const toggleState = (checkedName: CheckedName, indices: number[]) => {
         setState(prev => {
-            !prev.noHoldBags && handleCheckedBags(index, 0, bag)
+            !prev.noHoldBags && handleCheckedBags(index, [])
             return ({
                 ...prev,
-                holdBags: prev.noHoldBags ? 0 : prev.holdBags,
+                holdBags: !prev.noHoldBags ? [] : prev.holdBags,
                 [checkedName]: !prev[checkedName],
             })
         })
     };
     
-    const handleChange = (name: CheckedName, value: number, bag: any) => {
+    const handleChange = (name: CheckedName, comb: Combination, bagDef?: Definitions) => {
         setState(prev => {
-            handleCheckedBags(index, value, { ...bag, index: 0 })
+            handleCheckedBags(index, comb.indices, bagDef)
             return ({
                 ...prev,
-                [name]: value
+                [name]: comb.indices
             })
         })
     };
 
-    const handBagText = theBags.handBags.filter((e, index, arr) => (arr.indexOf(e) === index) && !!e).map((bag, index, arr) => {
+    const handBagText = newBags.handBags.filter((e, index, arr) => (arr.indexOf(e) === index) && !!e).map((bag, index, arr) => {
         const count = arr.filter((e, i) => e.index === bag.index).length
         return (`${count}x ${capCase(bag.category, '_')} (${bag.restrictions?.weight}kg)`)
     }).join(', ')
 
+
+    useEffect(() => {
+        if (index === 2) {
+            console.log('ssss', index,  state)
+            console.log('nuuu', index, newBags)
+        }
+    }, [state, newBags])
     
     return (
         <Box>
@@ -152,7 +160,7 @@ export default function PassengerBaggagePane({
             </Flex>
 
             {/* Hand Bags */}
-            {theBags.handBags.length > 0 ? 
+            {newBags.handBags.length > 0 ? (
                 <BaggageBox active>
                     <BaggageText>
                         <Text type="p" text="Popular" size={14} weight={600} />
@@ -167,7 +175,7 @@ export default function PassengerBaggagePane({
                             padding={isMobile ? "0 1rem" : ""}
                         />
                         <Flex align="flex-end" justify="center">
-                            {theBags.handBags.filter((e, index, arr) => arr.indexOf(e) === index).map((e, index) => 
+                            {newBags.handBags.filter((e, index, arr) => arr.indexOf(e) === index).map((e, index) => 
                                 <Flex direction="column" gap=".75rem" align="center" key={index}>
                                     <Image
                                         height={e?.category === 'personal_item' ? 100 : 150}
@@ -201,12 +209,13 @@ export default function PassengerBaggagePane({
                             </Flex>
                         </Flex>
                     </Flex>
-                </BaggageBox> :
+                </BaggageBox>
+            ) : (
                 <ToastInfo
                     type="info"
                     message={`No cabin baggage allowed for ${values.category}`}
                 />
-            }
+            )}
 
             <Flex direction="column" gap=".5rem" padding="3rem 0 0">
                 <Flex gap="1rem" align="center">
@@ -225,71 +234,113 @@ export default function PassengerBaggagePane({
             {/* Hold Bags */}
             {!state.noHoldBags && (
                 <Flex gap="1rem" align="flex-end" wrap="wrap" padding="1rem 0 0">
-                    {(theBags.holdBags.length === 0 && values.category !== PassengerCategory.INFANT) ? (
+                    {(newBags.holdBags.length === 0 && values.category !== PassengerCategory.INFANT) ? (
                         <ToastInfo
                             type="info"
                             message="No provision for checked baggage"
                         />
-                    ) : theBags.holdBags.map((bag, index, arr) => {
-                        const number = index + 1
-                        const isActive = state.holdBags === number
+                    ) : newBags.holdBags.filter(e => e.indices.length > 0).map((comb, index, arr) => {
+                        const count = comb.indices.length
+                        const isActive = JSON.stringify(state.holdBags) === JSON.stringify(comb.indices)
+                        const bagDefinition = bagDefinitions?.hold_bag[comb.indices[0]]
+                        const sameBags = comb.indices.every((e, i, indArr) => e === indArr[0])
                         return (
                             <BaggageBox
                                 active={isActive}
-                                onClick={() => isActive ? null : handleChange('holdBags', number, bag)}
+                                onClick={() => isActive ? null : handleChange('holdBags', comb, bagDefinition)}
                                 style={{ width: isMobile ? "100%" : "48%" }}
                                 key={`baggage-box-${index}`}
                             >
-                                <Flex direction="column" gap="1rem" align="center" justify="center">
-                                    <Text type="h3" text={`${number}x Checked Bag${(index + 1) > 1 ? 's' : ''}`} weight={600} />
-                                    <Text
-                                        type="p"
-                                        text={`${bag?.restrictions?.weight}kg`}
-                                        color={ttColors.lighterGray}
-                                        weight={500}
-                                    />
-                                    <Flex direction="column" gap=".75rem" align="center">
-                                        <Image
-                                            height={150}
-                                            styles={{ objectFit: "contain" }}
-                                            src="/assets/images/flights/blackbag.png"
-                                            alt="Baggage"
-                                        />
+                                {sameBags ? (
+                                    <Flex direction="column" gap="1rem" align="center" justify="center">
+                                        <Text type="h3" text={`${count}x Checked Bag${count > 1 ? 's' : ''}`} weight={600} />
                                         <Text
                                             type="p"
-                                            text={`${bag?.restrictions?.length} x ${bag?.restrictions?.width} x ${bag?.restrictions?.height} cm`}
-                                            color={ttColors.foundation.gray}
+                                            text={`${bagDefinition?.restrictions?.weight}kg`}
+                                            color={ttColors.lighterGray}
+                                            weight={500}
                                         />
-                                    </Flex>
+                                        <Flex direction="column" gap=".75rem" align="center">
+                                            <Image
+                                                height={150}
+                                                styles={{ objectFit: "contain" }}
+                                                src="/assets/images/flights/blackbag.png"
+                                                alt="Baggage"
+                                            />
+                                            <Text
+                                                type="p"
+                                                text={`${bagDefinition?.restrictions?.length} x ${bagDefinition?.restrictions?.width} x ${bagDefinition?.restrictions?.height} cm`}
+                                                color={ttColors.foundation.gray}
+                                            />
+                                        </Flex>
 
-                                    <Flex align="center" justify="space-between">
-                                        <Text type="h2" text={`${bag.price?.currency} ${bag.price?.amount}`} weight={600} />
-                                        <CustomRadioButton
-                                            checked={state.holdBags === number}
-                                            onClick={() => isActive ? null : handleChange('holdBags', number, bag)}
-                                        />
+                                        <Flex align="center" justify="space-between">
+                                            <Text type="h2" size={isMobile ? 18: 20} text={`${comb.price?.currency} ${comb.price?.amount}`} weight={600} />
+                                            <CustomRadioButton
+                                                checked={isActive}
+                                                onClick={() => isActive ? null : handleChange('holdBags', comb, bagDefinition)}
+                                            />
+                                        </Flex>
                                     </Flex>
-                                </Flex>
+                                ) : (
+                                    <Flex gap="1rem" align="center" justify="center">
+                                        {comb.indices.map((indica, ind, arr) => {
+                                            const count = arr.filter(e => indica).length
+                                            const bagDefinition = bagDefinitions?.hold_bag[indica]
+                                            return (
+                                                <Flex direction="column" gap="1rem" align="center" justify="center" key={ind}>
+                                                    <Text type="h3" text={`${count}x Checked Bag${count > 1 ? 's' : ''}`} weight={600} />
+                                                    <Text
+                                                        type="p"
+                                                        text={`${bagDefinition?.restrictions?.weight}kg`}
+                                                        color={ttColors.lighterGray}
+                                                        weight={500}
+                                                    />
+                                                    <Flex direction="column" gap=".75rem" align="center">
+                                                        <Image
+                                                            height={150}
+                                                            styles={{ objectFit: "contain" }}
+                                                            src="/assets/images/flights/blackbag.png"
+                                                            alt="Baggage"
+                                                        />
+                                                        <Text
+                                                            type="p"
+                                                            text={`${bagDefinition?.restrictions?.length} x ${bagDefinition?.restrictions?.width} x ${bagDefinition?.restrictions?.height} cm`}
+                                                            color={ttColors.foundation.gray}
+                                                        />
+                                                    </Flex>
+                                                    <Text type="h2" size={isMobile ? 18: 20} text={`${comb.price?.currency} ${comb.price?.amount}`} weight={600} />
+                                                </Flex>
+                                            )
+                                        }
+                                        )}
+                                    </Flex>
+                                        
+                                )}
                             </BaggageBox>
                         )
                     })}
                 </Flex>
             )}
 
-            {(values.category === PassengerCategory.INFANT || state.noHoldBags) &&
+            {(newBags.holdBags.length === 0 && values.category === PassengerCategory.INFANT && !state.noHoldBags) &&
                 <ToastInfo
-                    type={values.category === PassengerCategory.INFANT ? "warning" : "info"}
+                    type="warning"
                 />
             }
 
-            {values.category !== PassengerCategory.INFANT && theBags.holdBags.length !== 0 && 
-                <CheckBox
-                    checked={state.noHoldBags}
-                    onChange={() => toggleState("noHoldBags", theBags.holdBags[0])}
-                >
-                    <Text type="p" text="No baggage" />
-                </CheckBox>
+            {state.noHoldBags &&
+                <ToastInfo
+                    type="info"
+                />
             }
+
+            <CheckBox
+                checked={state.noHoldBags}
+                onChange={() => toggleState("noHoldBags", newBags.holdBags[0]?.indices)}
+            >
+                <Text type="p" text="No baggage" />
+            </CheckBox>
 
             {index !== 0 &&
                 <Flex justify="flex-end">
