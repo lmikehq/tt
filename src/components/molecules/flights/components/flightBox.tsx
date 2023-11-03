@@ -214,7 +214,7 @@ return (
           </Flex>
           <Flex
             direction={isMobile ? "column-reverse" : "column"}
-            gap=".5rem"
+            gap=".6rem"
             padding={isMobile ? "2rem 0" : ""}>
             <Text
               type="h1"

@@ -169,7 +169,7 @@ function SortingColumns() {
     setFilterData((prevState) => {
       const currentValue = prevState.bags[bagType];
       const newValue =
-        actionType === "add" ? currentValue + 1 : Math.max(currentValue - 1, 0);
+        actionType === "add" ? Math.min(currentValue + 1, 10) : Math.max(currentValue - 1, 0);
       return {
         ...prevState,
         bags: {
@@ -267,24 +267,25 @@ function SortingColumns() {
         }))
     }
     
-    const handleSlider = (newValue: number[] | number, group: string, name: string) => {
-        if (!!group) {
+    const handleSlider = (newValue: number | number[], group: 'duration' | 'price', name: string) => {
+        const theValue = Array.isArray(newValue) ? newValue : [0, 0]
+        if (group === 'price') {
             setFilterData((prevFilterData) => ({
                 ...prevFilterData,
-                [group]: {
-                    ...prevFilterData[group],
-                    [name]: {
-                        min: newValue[0],
-                        max: newValue[1],
-                    },
+                [name]: {
+                    min: theValue[0],
+                    max: theValue[1],
                 },
             }));
         } else {
             setFilterData((prevFilterData) => ({
                 ...prevFilterData,
-                [name]: {
-                    min: newValue[0],
-                    max: newValue[1],
+                [group]: {
+                    ...prevFilterData[group],
+                    [name]: {
+                        min: theValue[0],
+                        max: theValue[1],
+                    },
                 },
             }));
         }
@@ -307,6 +308,10 @@ function SortingColumns() {
   const trueValuesCount = useMemo(() => {
     return Object.values(filterState).filter((value) => value === true).length;
   }, [filterState]);
+    
+    const filterResults = () => {
+
+    }
 
     
   return (
@@ -340,14 +345,12 @@ function SortingColumns() {
                     whiteSpace="nowrap"
                 />
                 <Flex gap=".75rem" align="center" justify="flex-end">
-                    <PlusMinusButton
-                    onClick={() => handleBags("cabin", "subtract")}
-                    >
-                    <Text type="p" text="-" />
+                    <PlusMinusButton onClick={() => handleBags("cabin", "subtract")}>
+                        <Text type="p" text="-"/>
                     </PlusMinusButton>
-                    <Text type="p" text={filterData.bags.cabin.toString()} />
+                    <Text type="p" text={filterData.bags.cabin.toString()} width="1.5rem" />
                     <PlusMinusButton onClick={() => handleBags("cabin", "add")}>
-                    <Text type="p" text="+" />
+                        <Text type="p" text="+"/>
                     </PlusMinusButton>
                 </Flex>
                 </Flex>
@@ -359,14 +362,12 @@ function SortingColumns() {
                     whiteSpace="nowrap"
                 />
                 <Flex gap=".75rem" align="center" justify="flex-end">
-                    <PlusMinusButton
-                    onClick={() => handleBags("checked", "subtract")}
-                    >
-                    <Text type="p" text="-" />
+                    <PlusMinusButton onClick={() => handleBags("checked", "subtract")}>
+                        <Text type="p" text="-" />
                     </PlusMinusButton>
-                    <Text type="p" text={filterData.bags.checked.toString()} />
+                    <Text type="p" text={filterData.bags.checked.toString()} width="1.5rem" />
                     <PlusMinusButton onClick={() => handleBags("checked", "add")}>
-                    <Text type="p" text="+" />
+                        <Text type="p" text="+" />
                     </PlusMinusButton>
                 </Flex>
                 </Flex>
@@ -593,7 +594,7 @@ function SortingColumns() {
                     { value: 40000, label: `$${filterData.price.max}` },
                 ]}
                 defaultValue={[0, 40000]}
-                onChange={(event, newValue) => handleSlider(newValue, '', "price")}
+                onChange={(event, newValue) => handleSlider(newValue, 'price', "price")}
             />
         </Panel>
           
@@ -616,7 +617,11 @@ function SortingColumns() {
                 ))}
             </Flex>
               
-        </Panel>
+          </Panel>
+          
+          <Button onClick={filterResults}>
+              <Text type="p" text="Apply"/>
+          </Button>
     </Flex>
   );
 };

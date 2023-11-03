@@ -54,9 +54,9 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
           )}
           <Skeleton
             variant="rectangular"
-            height={rectangularHeight || "auto"}
+            height={rectangularHeight ?? "auto"}
             width={rectangularWidth}
-            maxWidth={rectangularWidth || 800}
+            // maxWidth={rectangularWidth ?? 800}
           />
         </Parent>
       ))}
