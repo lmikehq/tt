@@ -105,12 +105,17 @@ const TicketFareTable = () => {
             feature: "",
             icon: "",
             basic: (
-                <Button variant="outline" color={ttColors.dark}>
+                <Button
+                    variant="outline"
+                    height={"3.5rem"}
+                    color={ttColors.dark}
+                >
                     Select
                 </Button>
             ),
             flex: (
                 <Button
+                    height={"3.5rem"}
                     variant="solid"
                     background={ttColors.dark}
                     onClick={() => {
@@ -126,7 +131,11 @@ const TicketFareTable = () => {
                 </Button>
             ),
             superFlex: (
-                <Button variant="outline" color={ttColors.dark}>
+                <Button
+                    height={"3.5rem"}
+                    variant="outline"
+                    color={ttColors.dark}
+                >
                     {" "}
                     Select
                 </Button>

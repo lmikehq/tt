@@ -275,6 +275,7 @@ const TripSummary = ({
                         <Button
                             type="submit"
                             background={ttColors.dark}
+                            height={"3.5rem"}
                             width="100%"
                             onClick={() => console.log(formik)}
                         >
