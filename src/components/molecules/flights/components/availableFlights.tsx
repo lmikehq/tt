@@ -186,6 +186,10 @@ function AvailableFlights() {
         return () => clearInterval(interval); 
     }, []);
 
+    useEffect(() => {
+        console.log(searchFlightsResults)
+    }, [searchFlightsResults])
+
 
   return (
     <Flex direction="column">
@@ -205,36 +209,36 @@ function AvailableFlights() {
             />
         ) : (
             <>
-            {searchFlightsResults
+                {searchFlightsResults
                 ?.slice(0, count)
                 .sort(sortFlights)
                 .map((flight: FlightInfo, index: number) => (
-                <FlightBox
-                    key={index}
-                    selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
-                    bookingToken={flight.booking_token}
-                    departureCountryCode="Country Code 1"
-                    arrivalCountryCode={flight.cityCodeTo}
-                    airportName1="Airport Name 1"
-                    airportName2={"Airport 2"}
-                    departureDate={dayjs()}
-                    arrivalDate={dayjs().add(1, "day")}
-                    price={flight.price}
-                    label={getLabel(flight.price)}
-                />
+                    <FlightBox
+                        key={`flight-${index}`}
+                        selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
+                        bookingToken={flight.booking_token}
+                        departureCountryCode="Country Code 1"
+                        arrivalCountryCode={flight.cityCodeTo}
+                        airportName1="Airport Name 1"
+                        airportName2={"Airport 2"}
+                        departureDate={dayjs()}
+                        arrivalDate={dayjs().add(1, "day")}
+                        price={flight.price}
+                        label={getLabel(flight.price)}
+                    />
                 ))}
-            <Flex justify="center">
-                {count < searchFlightsResults?.length && (
-                <Button
-                    width="100%"
-                    background="#06062A"
-                    padding="2rem 0"
-                    onClick={loadMoreItems}
-                >
-                    <Text type="p" text="Load More" weight={500} size={18} />
-                </Button>
-                )}
-            </Flex>
+                <Flex justify="center">
+                    {count < searchFlightsResults?.length && (
+                        <Button
+                            width="100%"
+                            background="#06062A"
+                            padding="2rem 0"
+                            onClick={loadMoreItems}
+                        >
+                            <Text type="p" text="Load More" weight={500} size={18} />
+                        </Button>
+                    )}
+                </Flex>
             </>
           )}
           

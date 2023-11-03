@@ -4,8 +4,6 @@ import SortedColumn from "./sortedColumn";
 import Section from "src/components/molecules/section";
 import AvailableFlights from "./availableFlights";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import Box from "@mui/material/Box";
-import { Grid } from "@mui/material";
 
 function FlightList() {
   const { isMobile } = useScreenResolution();
