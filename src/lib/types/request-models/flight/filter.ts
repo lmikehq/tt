@@ -17,7 +17,11 @@ export interface FilterData {
   };
   alliance: string[];
   duration: {
-    stops: {
+    stopOver: {
+      min: number;
+      max: number;
+    };
+    travelTime: {
       min: number;
       max: number;
     };

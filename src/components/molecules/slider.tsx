@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 const CustomizedSlider = styled(MuiSlider)(({ theme }) => ({
   color: '#7BBBD6',
   height: 3,
-  padding: '13px 0',
+    padding: '13px 0',
   "& .MuiSlider-thumb": {
     height: 20,
     width: 20,
@@ -24,6 +24,14 @@ const CustomizedSlider = styled(MuiSlider)(({ theme }) => ({
   "& .MuiSlider-track": {
     color: '#7BBBD6',
     height: 10,
+  },
+  "& .MuiSlider-markLabel[data-index='0']": {
+      left: '14px !important',
+      fontSize: '14px'
+  },
+  "& .MuiSlider-markLabel[data-index='1']": {
+      left: '96% !important',
+      fontSize: '14px'
   },
   "& .MuiSlider-rail": {
     color: theme.palette.mode === 'dark' ? '#7BBBD6' : '#DAF0F9',

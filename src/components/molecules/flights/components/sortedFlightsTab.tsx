@@ -9,9 +9,8 @@ import { ttColors } from "@/lib/theme/colors";
 
 export const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
-  border: 1px solid #e7e7e7;
+  border: 1px solid #8dd3bb1a;
   background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin: 1.5rem;
   padding: 1rem;
   border-radius: 12.5px;
 
@@ -28,8 +27,11 @@ export const ButtonBox = styled.div<{ active: boolean }>`
   background: ${({ active }) => (active ? "#06062A" : "transparent")};
   color: ${({ active }) => (active ? "white" : "#606060")};
   padding: 1rem;
-  border-radius: 12.5px;
+  border-radius: 12px;
   cursor: pointer;
+  width: 35%;
+  display: flex;
+  justify-content: center;
 
   h1 {
     color: ${({ active }) => (active ? "white" : ttColors.primary)};
@@ -59,8 +61,8 @@ function SortedFlightsTab(props: sortProps) {
 
   return (
     <FlightContainer>
-      <Flex gap="3rem" align="center">
-        <Flex justify={isMobile ? "center" : "flex-start"} gap="2rem">
+      <Flex align="center">
+        <Flex justify={isMobile ? "center" : "flex-start"}>
           <ButtonBox
             active={props.sortType === "best"}
             onClick={() => props.setSortType("best")}
@@ -96,7 +98,8 @@ function SortedFlightsTab(props: sortProps) {
                 <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
               </Flex>
             </Flex>
-          </ButtonBox>
+        </ButtonBox>
+                  
           <ButtonBox
             active={props.sortType === "cheapest"}
             onClick={() => props.setSortType("cheapest")}
@@ -165,8 +168,10 @@ function SortedFlightsTab(props: sortProps) {
             </Flex>
           </ButtonBox>
         </Flex>
+              
+
         {!isMobile && (
-          <Flex justify="flex-end" gap=".75rem">
+          <Flex justify="flex-end" gap=".75rem" padding="0 0rem 0 0">
             <BsSortUp size={30} color="#606060" />
             <Text type="p" text="Other Sort" color="#606060" whiteSpace="nowrap" />
           </Flex>

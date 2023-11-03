@@ -5,12 +5,13 @@ import { ttColors } from "@lib/theme/colors";
 import { alpha } from "@mui/material";
 
 const RoundedButton = styled(Button)(({ theme }) => ({
-  borderRadius: "50%",
-  width: "36px",
-  height: "36px",
-  fontSize: "20px",
-  minWidth: 0,
-  padding: 0,
+    borderRadius: "50%",
+    width: "36px",
+    height: "36px",
+    fontSize: "20px",
+    minWidth: 0,
+    padding: 0,
+    transition: "0.2s all ease-in-out",
   color: ttColors.foundation.gray,
   "&:hover": {
     backgroundColor: "#7BBBD6",
