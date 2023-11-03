@@ -6,6 +6,7 @@ import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
 import { Mode } from "@/lib/types";
 import {
@@ -76,6 +77,7 @@ const TripSummary = ({
         setSaveBookingDetails,
         setStep,
     } = useFlightBookingStore((state) => state);
+    const { user } = useUserStore((state) => state);
     const searchParams = extractSearchParamsFromUrl({
         url: window.location.href,
     });
@@ -174,10 +176,14 @@ const TripSummary = ({
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
+                    new_user_email: contactDetails.email,
+                    user: user?.id,
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
-                    passengers: values.passengers.map((el) => ({
+                    passengers: values.passengers.map((el, index) => ({
                         ...el,
+                        email: index == 0 ? contactDetails.email : "",
+                        phone: index == 0 ? contactDetails.phone : "",
                         nationality: el.nationality.code.toLowerCase(),
                     })),
                     baggage: arrangeBaggageDataForOrdering(
@@ -185,7 +191,7 @@ const TripSummary = ({
                     ),
                 },
             });
-            setStep({ step: 4 });
+            setStep({ step: 3 });
         },
         validateOnChange: false,
     });
@@ -215,10 +221,12 @@ const TripSummary = ({
                 arrival={arrival}
                 flights={flights}
             />
-            <ContactDetails
-                contactDetails={contactDetails}
-                handleContactDetails={handleContactDetails}
-            />
+            {!user?.id && (
+                <ContactDetails
+                    contactDetails={contactDetails}
+                    handleContactDetails={handleContactDetails}
+                />
+            )}
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
                     <FieldArray

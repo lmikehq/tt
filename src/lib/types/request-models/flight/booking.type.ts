@@ -36,8 +36,8 @@ export enum PassengerCategoryDesc {
 export interface Passenger {
     name: string;
     surname: string;
-    phone: string;
-    email: string;
+    phone?: string;
+    email?: string;
     cardno: string;
     birthday: string; // YYYY-MM-DD format
     nationality: string; // ISO 3166-1 alpha-2 format (2 letter format)
@@ -50,8 +50,7 @@ export interface Passenger {
 export interface PassengerFormInterface {
     name: string;
     surname: string;
-    phone: string;
-    email: string;
+
     cardno: string;
     birthday: string; // YYYY-MM-DD format
     nationality: CountryType; // ISO 3166-1 alpha-2 format (2 letter format)
@@ -264,8 +263,7 @@ export const arrangeBaggageDataForOrdering = (
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
     surname: "",
-    phone: "",
-    email: "",
+
     cardno: "",
     birthday: "",
     nationality: { code: "NG", name: "Nigeria", flag: "s" },

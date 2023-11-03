@@ -7,18 +7,18 @@ import {
     SaveBookingRequestInput,
     SearchFlightsRequestQuery,
     TokenizeDataRequestInput,
-} from "../types/request-models/flight/booking.type";
+} from "../../types/request-models/flight/booking.type";
 import { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
 import {
     axiosClient,
     kiwiClient,
     kiwiResourceClient,
-} from "../axios/axios-client";
-import { constructQueryFromParams } from "../extensions/helpers/constructQuery";
-import { SearchFlightsResponse } from "../types/response-models/flight/booking.type";
-import { CheckFlightResponse } from "../types/response-models/flight/check_flight.type";
-import { CheckSeatingResponse } from "../types/response-models/flight/check_seating.type";
+} from "../../axios/axios-client";
+import { constructQueryFromParams } from "../../extensions/helpers/constructQuery";
+import { SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
+import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
+import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
 
 export class FlightBookingService {
   static searchFlights = async ({

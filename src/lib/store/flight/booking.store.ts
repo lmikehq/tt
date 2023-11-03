@@ -3,7 +3,7 @@ import {
     cardDetails,
     saveBookingDetails,
 } from "./../../types/request-models/flight/booking.type";
-import { FlightBookingService } from "@/lib/services/flight-booking.service";
+import { FlightBookingService } from "@/lib/services/flight/booking.service";
 import {
     CardInfo,
     CheckFlightsQuery,
@@ -17,7 +17,10 @@ import {
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
-import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import {
+    FlightInfo,
+    SeatRowWithSegmentCodeInterface,
+} from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_seating.type";
 import { TokenizeDataResponse } from "@/lib/types/response-models/flight/payment.type";
@@ -34,7 +37,12 @@ interface State {
     checkFlightsResponse: CheckFlightResponse | null;
     checkSeatingResponse: CheckSeatingResponse | null;
     saveBookingDetails: SaveBookingRequestInput;
-    saveBookingResponse: { bookingId: string; zoozToken: string } | null;
+    saveBookingResponse: {
+        bookingId: string;
+        zoozToken: string;
+        ticketPrice: number;
+        total: number;
+    } | null;
     tokenizeDataResponse: TokenizeDataResponse | null;
     bookingToken?: string;
     sessionId: string | null;
@@ -42,6 +50,7 @@ interface State {
     checkSeatingMode: Mode;
     particularSeats: ParticularSeatingOption[];
     cardDetails: CardInfo;
+    seatRows: SeatRowWithSegmentCodeInterface[];
 }
 interface Actions {
     prevStep: () => void;
@@ -67,6 +76,7 @@ interface Actions {
         data: SaveBookingRequestInput;
     }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
+    setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -79,8 +89,9 @@ export const useFlightBookingStore = create<State & Actions>(
         searchFlightsResults: [],
         searchQuery: {},
         sessionId: null,
-        
+        seatRows: [],
         initCheckFlightsMode: Mode.init,
+
         checkFlightsResponse: null,
         checkSeatingResponse: null,
         checkSeatingMode: Mode.init,
@@ -158,6 +169,11 @@ export const useFlightBookingStore = create<State & Actions>(
                 particularSeats: data,
             });
         },
+        setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => {
+            set({
+                seatRows: data,
+            });
+        },
         checkSeating: async ({ data }: { data: CheckSeatingRequestInput }) => {
             set({ checkSeatingMode: Mode.loading });
             return await FlightBookingService.checkSeating({
@@ -194,6 +210,8 @@ export const useFlightBookingStore = create<State & Actions>(
                         saveBookingResponse: {
                             bookingId: `${response.data.booking_id}`,
                             zoozToken: response.data.payu_token,
+                            ticketPrice: response.data.tickets_price,
+                            total: response.data.total,
                         },
                     }));
                 })
