@@ -23,7 +23,11 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 function getAuthToken(): string | null {
-    const user = localStorage.getItem("user");
+    let user = null;
+    if (typeof window !== "undefined") {
+        // Access localStorage here
+        user = window.localStorage.getItem("user");
+    }
     return user ? `Bearer ${JSON.parse(user)}` : null;
 }
 
@@ -43,7 +47,6 @@ const kiwiClientV1: AxiosInstance = axios.create({
     //   withCredentials: true,
     headers: {
         "Content-Type": "application/json",
-        Authorization: getAuthToken(),
         apikey: process.env.NEXT_PUBLIC_KIWI_API_KEY,
     },
 });
@@ -63,7 +66,6 @@ const kiwiClient: AxiosInstance = axios.create({
     //   withCredentials: true,
     headers: {
         "Content-Type": "application/json",
-        Authorization: getAuthToken(),
         apikey: process.env.NEXT_PUBLIC_KIWI_API_KEY,
     },
 });
