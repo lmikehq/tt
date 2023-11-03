@@ -14,22 +14,26 @@ import FlightDepartureIcon from "./flightDepartureIcon";
 import StopsPill from "./stopsPill";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { calculateTime } from "@/utils/convertTime";
+import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import React from "react";
 
 type flightProps = {
-  departureCountryCode: string;
-  arrivalCountryCode: string;
-  airportName1: string;
-  airportName2: string;
-  departureDate: dayjs.Dayjs;
-  arrivalDate: dayjs.Dayjs;
-  price: number;
-  label: string;
-  bookingToken: string;
-  stops: number;
-  seats:number;
-  carryOn:number;
-  hold:number;
-  selectFlight(params: { bookingToken: string }): void;
+    departureCountryCode: string;
+    arrivalCountryCode: string;
+    airportName1: string;
+    airportName2: string;
+    departureDate: dayjs.Dayjs;
+    arrivalDate: dayjs.Dayjs;
+    price: number;
+    label: string;
+    bookingToken: string;
+    stops: number;
+    seats: number;
+    carryOn: number;
+    hold: number;
+    flight: FlightInfo;
+    selectFlight(params: { bookingToken: string }): void;
+    flightStop: string;
 };
 
 const FlightContainer = styled.div`
@@ -42,9 +46,8 @@ const FlightContainer = styled.div`
 `;
 
 const IconBorders = styled.div`
-  padding: 0.75rem;
-  height: 4em;
-  border: 2px solid ${ttColors.primary};
+  padding: 0.5rem 0.6rem;
+  border: 1px solid ${ttColors.primary};
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
@@ -53,9 +56,9 @@ const IconBorders = styled.div`
 `;
 
 const LabelBox = styled.div`
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   background: #f3fafd;
-  width: 20%;
+  width: auto;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -63,170 +66,132 @@ const LabelBox = styled.div`
 `;
 
 function FlightBox(props: flightProps) {
-  const { isMobile } = useScreenResolution();
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 5) + 1;
-  }
+    const { isMobile } = useScreenResolution();
 
-  function formatDate(day: Dayjs) {
-    return day.format("dddd, MMMM D");
-  }
+    function formatDate(day: Dayjs) {
+        return day.format("dddd, MMMM D");
+    }
 
-  const randomHourDeparture = Math.floor(Math.random() * 24);
-  const randomMinuteDeparture = Math.floor(Math.random() * 60);
+    const timeDifference = (utcDeparture: string, utcArrival: string) => {
+        const differenceMins = dayjs(utcArrival).diff(dayjs(utcDeparture), 'minute')
+        const hoursLeft = Math.floor(differenceMins / 60)
+        const minsLeft = differenceMins % 60
+        return `${hoursLeft}h ${minsLeft}m`
+    }
 
-  const randomHourArrival = Math.floor(Math.random() * 24);
-  const randomMinuteArrival = Math.floor(Math.random() * 60);
+    const startRoute = props.flight.route[0]
+    const endRoute = props.flight.route[props.flight.route.length - 1]
 
-  const departureTime = dayjs()
-    .add(randomHourDeparture, "hour")
-    .add(randomMinuteDeparture, "minute");
-  const arrivalTime = dayjs()
-    .add(1, "day")
-    .add(randomHourDeparture + randomHourArrival, "hour")
-    .add(randomMinuteDeparture + randomMinuteArrival, "minute");
+    const price = Number(props.price?.toFixed(0)).toLocaleString();
 
-  const diffInMinutes = arrivalTime.diff(departureTime, "minute");
-
-  const hours = Math.floor(diffInMinutes / 60);
-  const minutes = diffInMinutes % 60;
-
-  const interval = `${hours} hr ${minutes} mins`;
-
-  const formattedDepartureTime = departureTime.format("HH:mm");
-  const formattedArrivalTime = arrivalTime.format("HH:mm");
-
-  const price = Number(props.price?.toFixed(0)).toLocaleString();
-
-  return (
+return (
     <FlightContainer>
       <Box
         sx={{
-          display: isMobile ? "flex" : "grid",
-          flexDirection: "column",
-          width: "100%",
-          gridTemplateColumns: "8fr 1fr 6fr",
+            display: isMobile ? "flex" : "grid",
+            flexDirection: "column",
+            width: "100%",
+            gridTemplateColumns: "9fr 1fr 5fr",
         }}>
-        <Flex direction="column" padding="1rem">
-          {props.label !== "" && (
+
+        {/* Left */}      
+        <Flex direction="column" gap=".5rem" padding="1rem 1rem 2rem 1.5rem" height="100%" justify="center">
+          {!!props.label && (
             <LabelBox>
               <Text type="p" text={props.label} color="#4A7181" />
             </LabelBox>
           )}
-
-          <Box
-            sx={{
-              color: ttColors.lighterGray,
-              fontWeight: "medium",
-            }}>
-            <Flex align="center" gap="5px" margin="1rem 0">
-              <Text type="p" text="Depart" />
-              <Dot fontSize="5rem" />
-              <Text type="p" text={formatDate(props.departureDate)} />
-            </Flex>
-          </Box>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "25px 1fr",
-            }}>
-            <FlightDepartureIcon />
-
-            <Flex direction="column" gap="1rem" margin="0 1rem">
-              <Flex direction="column" gap="1rem">
-                <Flex gap="1rem">
-                  <Text
-                    type="p"
-                    weight={"bold"}
-                    text={formattedDepartureTime}
-                  />
-                  <Text type="p" text={props.airportName1} />
-                  <Text type="p" text={props.departureCountryCode} />
-                </Flex>
-                <Flex align={"center"} gap="1rem">
-                  <Text type="p" color={ttColors.lighterGray} text={'ade'} />
-                  <StopsPill numberOfStops={props.stops} />
-                </Flex>
-                <Flex gap="1rem">
-                  <Text type="p" weight={"bold"} text={formattedArrivalTime} />
-                  <Text type="p" text={props.airportName2} />
-                  <Text type="p" text={props.arrivalCountryCode} />
-                </Flex>
-              </Flex>
-            </Flex>
-          </Box>
-
-          <Divider
-            direction="horizontal"
-            borderStyle="dotted"
-            margin="1rem 0"
-          />
-
-          <Flex direction="column">
+                  
             <Box
-              sx={{
-                color: ttColors.lighterGray,
-                fontWeight: "medium",
-              }}>
-              <Flex align="center" gap="5px" margin="1rem 0">
-                <Text type="p" text="Return" />
-                <Dot fontSize="5rem" />
-                <Text type="p" text={formatDate(props.arrivalDate)} />
-              </Flex>
-            </Box>
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "40px 1fr",
+                    alignItems: 'center'
+                }}>
+                <FlightDepartureIcon reverse />
 
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "25px 1fr",
-              }}>
-              <FlightDepartureIcon />
-
-              <Flex direction="column" gap="1rem" margin="0 1rem">
-                <Flex direction="column" gap="1rem">
-                  <Flex gap="1rem">
-                    <Text
-                      type="p"
-                      weight={"bold"}
-                      text={formattedDepartureTime}
-                    />
-                    <Text type="p" text={props.airportName1} />
-                    <Text type="p" text={props.departureCountryCode} />
-                  </Flex>
-                  <Flex align={"center"} gap="1rem">
-                    <Text
-                      type="p"
-                      color={ttColors.lighterGray}
-                      text={interval}
-                    />
+                <Flex direction="column" gap="1rem" margin="0 1rem">
+                    <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray, fontWeight: "medium" }}>
+                        <Text type="p" text="Depart" />
+                        <Dot fontSize="5rem" />
+                        <Text type="p" text={formatDate(props.departureDate)} />
+                    </Flex>
+                    <Flex gap="1.4rem">
+                    <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_departure).format("HH: mm")} />
+                    <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} />
+                    <Text type="p" text={startRoute.cityFrom} />
+                    </Flex>
+                    <Flex align={"center"} gap="1rem">
+                    <Text type="p" color={ttColors.lighterGray} text={timeDifference(startRoute.utc_departure, startRoute.utc_arrival)} />
                     <StopsPill numberOfStops={props.stops} />
-                  </Flex>
-                  <Flex gap="1rem">
-                    <Text
-                      type="p"
-                      weight={"bold"}
-                      text={formattedArrivalTime}
-                    />
-                    <Text type="p" text={props.airportName2} />
-                    <Text type="p" text={props.arrivalCountryCode} />
-                  </Flex>
+                    </Flex>
+                    <Flex gap="1.4rem">
+                    <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_arrival).format("HH: mm")} />
+                    <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} />
+                    <Text type="p" text={startRoute.cityTo} />
+                    </Flex>
                 </Flex>
-              </Flex>
             </Box>
-          </Flex>
+
+            {props.flightStop === 'round' &&
+                <React.Fragment>
+                    <Divider
+                      direction="horizontal"
+                      borderStyle="dotted"
+                      margin="1rem 0"
+                    />
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "25px 1fr",
+                            alignItems: 'center'
+                        }}
+                    >
+                    <FlightDepartureIcon />
+
+                    <Flex direction="column" gap="1rem" margin="0 1rem">
+                        <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray, fontWeight: "medium" }}>
+                            <Text type="p" text="Return" />
+                            <Dot fontSize="5rem" />
+                            <Text type="p" text={formatDate(props.arrivalDate)} />
+                        </Flex>
+                        <Flex gap="1.4rem">
+                            <Text type="p" weight={"bold"} text={dayjs(endRoute.utc_departure).format("HH: mm")} />
+                            <Text type="p" text={`${endRoute.operating_carrier}-${endRoute.operating_flight_no}`} />
+                            <Text type="p" text={endRoute.cityFrom} />
+                        </Flex>
+                        <Flex align={"center"} gap="1rem">
+                            <Text type="p" color={ttColors.lighterGray} text={timeDifference(endRoute.utc_departure, endRoute.utc_arrival)}/>
+                            <StopsPill numberOfStops={props.stops} />
+                        </Flex>
+                        <Flex gap="1.4rem">
+                            <Text type="p" weight={"bold"} text={dayjs(endRoute.utc_arrival).format("HH: mm")} />
+                            <Text type="p" text={`${endRoute.operating_carrier}-${endRoute.operating_flight_no}`} />
+                            <Text type="p" text={endRoute.cityTo} />
+                        </Flex>
+                        </Flex>
+                    </Box>
+                </React.Fragment>    
+            }
         </Flex>
-        <Divider direction="vertical" borderStyle="dotted" margin="0" />
+              
+
+        <Divider direction="vertical" borderStyle="dotted" margin="0" style={{ width: 'max-content' }} />
+              
+        {/* Right */}
         <Flex
           direction="column"
-          padding="2rem"
+          padding="2rem 2rem 2rem 0"
           justify="space-between"
-          height="480px">
+            height="100%"
+            gap="2rem"
+        >
           <Flex align="center">
             <Flex gap=".5rem">
               <IconBorders>
                 <Text
                   type="p"
-                  text={props.hold}
+                  text={props.hold.toString()}
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
@@ -235,27 +200,27 @@ function FlightBox(props: flightProps) {
               <IconBorders>
                 <Text
                   type="p"
-                  text={props.carryOn}
+                  text={props.carryOn.toString()}
                   weight={500}
                   size={isMobile ? 16 : 18}
                 />
                 <AiOutlineShopping size={isMobile ? 25 : 30} color="#929292" />
               </IconBorders>
             </Flex>
-            {!isMobile && <BsShare size={30} />}
+            {!isMobile && <BsShare size={23} />}
           </Flex>
           <Flex
             direction={isMobile ? "column-reverse" : "column"}
-            gap=".1rem"
+            gap=".5rem"
             padding={isMobile ? "2rem 0" : ""}>
             <Text
               type="h1"
-              text={`${props.seats ? props.seats : 0} seat(s) left at this price`}
+              text={`${props.seats ?? 0} seat(s) left at this price`}
               weight={500}
-              size={18}
+              size={16}
               color="#929292"
             />
-            <Text type="h1" text={`$ ${price}`} weight={600} size={40} />
+            <Text type="h1" text={`$ ${price}`} weight={600} size={36} />
           </Flex>
 
           <Button
@@ -274,6 +239,7 @@ function FlightBox(props: flightProps) {
             />
           </Button>
         </Flex>
+              
       </Box>
     </FlightContainer>
   );

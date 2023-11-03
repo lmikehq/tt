@@ -13,7 +13,7 @@ export default function StopsPill({
       padding={"0.5rem 1rem"}
       bgcolor={ttColors.grayishAsh}
     >
-      <Text type="p" text={`${numberOfStops} Stops`} />
+      <Text type="p" text={`${numberOfStops} ${numberOfStops > 1 ? 'Stops' : 'Stop'}`} />
     </Box>
   );
 }

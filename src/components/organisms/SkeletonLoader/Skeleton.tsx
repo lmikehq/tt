@@ -23,8 +23,8 @@ const Parent = styled.div`
 
 interface SkeletonLoader {
   tabs?: number | 1;
-  textWidth: number | string;
-  textHeight: number | string;
+  textWidth?: number | string;
+  textHeight?: number | string;
   rectangularWidth?: number | string;
   rectangularHeight: number | string;
   text?: boolean | true;

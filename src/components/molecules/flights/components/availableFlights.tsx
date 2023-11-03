@@ -117,7 +117,8 @@ function AvailableFlights() {
         );
     };
 
-    const prices: number[] = searchFlightsResults.map((flight) => flight.price);
+    const prices: number[] = searchFlightsResults?.map((flight) => flight.price) ?? [];
+
     const cheapPrice = Math.min(...prices);
     const bestPrice =
         prices.reduce((acc, price) => acc + price, 0) / prices.length;
@@ -220,12 +221,12 @@ function AvailableFlights() {
     }, []);
 
     useEffect(() => {
-        console.log('ff', searchFlightsResults)
-    }, [searchFlightsResults])
+        console.log('ff', flightState?.stops)
+    }, [flightState?.stops])
 
 
-  return (
-    <Flex direction="column" width="100%">
+    return (
+        <Flex direction="column" width="100%">
             <SortedFlightsTab
                 cheapPrice={cheapPrice}
                 bestPrice={cheapPrice}
@@ -235,21 +236,23 @@ function AvailableFlights() {
                 data={searchFlightsResults}
                 updateSearchQueryHandler={updateSearchQueryHandler}
             />
-          
+            
             {(searchFlightsMode === Mode.loading || searchFlightsResults?.length === 0) ? (
                 <SkeletonLoader
                     tabs={4}
                     textHeight={46}
-                    textWidth={"60%"}
+                    textWidth="60%"
                     rectangularHeight={400}
+                    rectangularWidth="100%"
                 />
             ) : (
-                 <React.Fragment>
+                    <React.Fragment>
                     {searchFlightsResults
                         ?.slice(0, count)
                         .map((flight: FlightInfo, index: number) => (
                             <FlightBox
                                 key={index}
+                                flight={flight}
                                 selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
                                 bookingToken={flight.booking_token}
                                 departureCountryCode={flight.cityCodeFrom}
@@ -257,16 +260,17 @@ function AvailableFlights() {
                                 airportName1={flight.airlines[0]}
                                 airportName2={flight.airlines[0]}
                                 departureDate={dayjs(flight.utc_departure)}
-                                arrivalDate={dayjs(flight.utc_departure)}
+                                arrivalDate={dayjs(flight.utc_arrival)}
                                 price={flight.price}
                                 label={getLabel(flight.price)}
                                 stops={flight.route.length - 1}
                                 seats={flight.availability.seats}
                                 hold={flight.baglimit.hold_weight ? 1 : 0}
                                 carryOn={flight.baglimit.hand_weight ? 1 : 0}
+                                flightStop={'one-way'}
                             />
                     ))}
-                      
+                        
                     <Flex justify="center">
                         {count < searchFlightsResults?.length && (
                             <Button
@@ -285,13 +289,13 @@ function AvailableFlights() {
                     </Flex>
                 </React.Fragment>
             )}
-    
+
             <LoginModal
                 isOpen={modal.isOpenLogin}
                 onClose={() => setModal(prev => ({ ...prev, isOpenLogin: false }))}
                 to={modal.route}
             />
-          
+            
             <StillSearchingModal
                 isOpen={modal.isOpenStillSearching}
                 onClose={() => setModal(prev => ({ ...prev, isOpenStillSearching: false }))}

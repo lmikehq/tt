@@ -83,6 +83,42 @@ const prices = {
   fastest_price: "",
 };
 
+function SortOption({ label, price, flightTime }: { label: string; price: number; flightTime: string; }) {
+    const { isMobile } = useScreenResolution()
+
+    return (
+        <Flex
+              direction="column"
+              gap=".5rem"
+              align="center"
+              justify={isMobile ? "center" : "flex-start"}
+              padding=".5rem 1.25rem"
+            >
+            <Flex
+                gap="1rem"
+                align="center"
+                justify={isMobile ? "center" : "flex-start"}
+            >
+                <Text type="p" text={label} />
+                <BsInfoCircle size={20} />
+            </Flex>
+            <Flex
+                direction={isMobile ? "column" : "row"}
+                gap=".5rem"
+                align="center"
+            >
+                <Text
+                    type={isMobile ? "h1" : "p"}
+                    text={`$${Number(price?.toFixed(0)).toLocaleString()}`}
+                    weight={600}
+                />
+                {!isMobile && <GoDotFill size={15} />}
+                <Text type="p" text={flightTime} whiteSpace="nowrap" />
+            </Flex>
+        </Flex>
+    )
+}
+
 function SortedFlightsTab(props: sortProps) {
   const { isMobile } = useScreenResolution();
   const [durations, setDurations] = useState(initialDurations);
@@ -129,9 +165,6 @@ function SortedFlightsTab(props: sortProps) {
 //     }
 //   }, []);
 
-  useEffect(() => {
-    getDuration();
-  }, [getDuration]);
 
   // calculate the flight duration by using it's utc_departure and utc_arrival values
   const calculateDuration = (depature: string, arrival: string) => {
@@ -163,6 +196,10 @@ function SortedFlightsTab(props: sortProps) {
     return `${hours}hr ${remainingMinutes}mins`;
   };
 
+    useEffect(() => {
+        getDuration();
+    }, [getDuration]);
+    
   useEffect(() => {
     const cheapFlights = props.data?.filter(
       (flight) => flight.price === props.cheapPrice
@@ -178,138 +215,60 @@ function SortedFlightsTab(props: sortProps) {
     setShortestDuration(shortestDuration);
   }, [props.data, props.cheapPrice, bestFlights]);
 
-  return (props.data.length > 0 ? (
-    <FlightContainer>
-      {/* <Flex align="center"> */}
-        <Flex justify={isMobile ? "center" : "flex-start"}>
-          <ButtonBox
-            active={props.sortType === "best"}
-            onClick={() => {
-                props.setSortType("best")
-                props.updateSearchQueryHandler({ sort: "" });
-            }}
-          >
-            <Flex
-              direction="column"
-              gap=".5rem"
-              align="center"
-              justify={isMobile ? "center" : "flex-start"}
-              padding=".5rem 1.25rem"
-            >
-              <Flex
-                gap="1rem"
-                align="center"
-                justify={isMobile ? "center" : "flex-start"}
-              >
-                <Text type="p" text="Best" />
-                <BsInfoCircle size={20} />
-              </Flex>
-              <Flex
-                direction={isMobile ? "column" : "row"}
-                gap=".5rem"
-                align="center"
-              >
-                <Text
-                  type={isMobile ? "h1" : "p"}
-                  text={`$${Number(props.bestPrice?.toFixed(0)).toLocaleString()}`}
-                  weight={600}
-                />
-                {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
-              </Flex>
-            </Flex>
-        </ButtonBox>
-                  
-          <ButtonBox
-            active={props.sortType === "cheapest"}
-            onClick={() => {
-                props.setSortType("cheapest") 
-                props.updateSearchQueryHandler({ sort: "price" });
-            }}
-          >
-            <Flex
-              direction="column"
-              justify={isMobile ? "center" : "flex-start"}
-              gap=".5rem"
-              padding=".5rem 1.25rem"
-            >
-              <Flex
-                gap="1rem"
-                align="center"
-                justify={isMobile ? "center" : "flex-start"}
-              >
-                <Text type="p" text="Cheapest" />
-                <BsInfoCircle size={20} />
-              </Flex>
-              <Flex
-                direction={isMobile ? "column" : "row"}
-                gap=".5rem"
-                align="center"
-              >
-                <Text
-                  type={isMobile ? "h1" : "p"}
-                  text={`$${Number(props.cheapPrice?.toFixed(0)).toLocaleString()}`}
-                  weight={600}
-                />
-                {!isMobile && <GoDotFill size={15} />}
-                <Text
-                    type="p"
-                    text={calculateDuration(cheapest_depature, cheapest_arrival)}
-                    whiteSpace="nowrap"
-                />
-              </Flex>
-            </Flex>
-          </ButtonBox>
+    
+    return (props.data.length > 0 ? (
+        <FlightContainer>
+            <Flex justify={isMobile ? "center" : "flex-start"}>
+                <ButtonBox
+                    active={props.sortType === "best"}
+                    onClick={() => {
+                        props.setSortType("best")
+                        props.updateSearchQueryHandler({ sort: "" });
+                    }}
+                >
+                    <SortOption
+                        label="Best"
+                        price={props.bestPrice}
+                        flightTime={calculateDuration(best_depature, best_arrival)}
+                    />
+                </ButtonBox>
+                        
+                <ButtonBox
+                    active={props.sortType === "cheapest"}
+                    onClick={() => {
+                        props.setSortType("cheapest") 
+                        props.updateSearchQueryHandler({ sort: "price" });
+                    }}
+                >
+                    <SortOption
+                        label="Cheapest"
+                        price={props.cheapPrice}
+                        flightTime={calculateDuration(cheapest_depature, cheapest_arrival)}
+                    />
+                </ButtonBox>
 
-              <ButtonBox
-                active={props.sortType === "fastest"}
-                onClick={() => {
-                  props.setSortType("fastest");
-                  props.updateSearchQueryHandler({ sort: "duration" });
+                <ButtonBox
+                    active={props.sortType === "fastest"}
+                    onClick={() => {
+                    props.setSortType("fastest");
+                    props.updateSearchQueryHandler({ sort: "duration" });
                 }}>
-                <Flex
-                  direction="column"
-                  justify={isMobile ? "center" : "flex-start"}
-                  gap=".5rem"
-                  padding=".5rem 1.25rem">
-                  <Flex
-                    gap="1rem"
-                    align="center"
-                    justify={isMobile ? "center" : "flex-start"}>
-                    <Text type="p" text="Fastest" />
-                    <BsInfoCircle size={20} />
-                  </Flex>
-                  <Flex
-                    direction={isMobile ? "column" : "row"}
-                    gap=".5rem"
-                    align="center">
-                    <Text
-                      type={isMobile ? "h1" : "p"}
-                      text={`$${Number(
-                        props.fastPrice?.toFixed(0)
-                      ).toLocaleString()}`}
-                      weight={600}
+                    
+                    <SortOption
+                        label="Fastest"
+                        price={props.fastPrice}
+                        flightTime={calculateDuration(fastest_depature, fastest_arrival)}
                     />
-                    {!isMobile && <GoDotFill size={15} />}
-                    <Text
-                      type="p"
-                      text={calculateDuration(
-                        fastest_depature,
-                        fastest_arrival
-                      )}
-                      whiteSpace="nowrap"
-                    />
-                  </Flex>
-                </Flex>
-              </ButtonBox>
+                </ButtonBox>
+
+                {!isMobile &&
+                    <Flex direction="column" justify="center" align="center" gap=".2rem" padding="0 0rem 0 0">
+                        <BsSortUp size={30} color="#606060" />
+                        <Text type="p" text="Other Sort" color="#606060" whiteSpace="nowrap" />
+                    </Flex>
+                }
             </Flex>
                 
-            {!isMobile &&
-                <Flex justify="flex-end" gap=".75rem" padding="0 0rem 0 0">
-                    <BsSortUp size={30} color="#606060" />
-                    <Text type="p" text="Other Sort" color="#606060" whiteSpace="nowrap" />
-                </Flex>
-            }
 
         </FlightContainer>
         ) : (

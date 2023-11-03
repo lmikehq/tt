@@ -26,6 +26,9 @@ export interface FilterData {
       max: number;
     };
   };
-  price: number;
+    price: {
+        min: 0,
+        max: 40000
+    };
   cabin: string[];
 }
