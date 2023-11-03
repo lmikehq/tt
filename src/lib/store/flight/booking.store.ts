@@ -3,7 +3,7 @@ import {
     cardDetails,
     saveBookingDetails,
 } from "./../../types/request-models/flight/booking.type";
-import { FlightBookingService } from "@/lib/services/flight-booking.service";
+import { FlightBookingService } from "@/lib/services/flight/booking.service";
 import {
     CardInfo,
     CheckFlightsQuery,

@@ -1,24 +1,25 @@
 "use client";
 
+import Location from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
 import {
-  createContext,
-  useContext,
-  ReactNode,
-  useReducer,
-  Dispatch,
+    createContext,
+    useContext,
+    ReactNode,
+    useReducer,
+    Dispatch,
 } from "react";
 
 type CountryDetails = {
-  name: string;
-  flag: string;
-  code: string;
+    name: string;
+    flag: string;
+    code: string;
 };
 
 export interface OneFlightType {
     index: number;
-    departureCountry?: CountryDetails;
-    arrivalCountry?: CountryDetails;
+    departureCountry?: Location;
+    arrivalCountry?: Location;
     departureDate: dayjs.Dayjs;
     returnDate: dayjs.Dayjs;
     adults: number;
@@ -32,8 +33,8 @@ export interface OneFlightType {
 interface ContextType {
     flightType: string;
     stops: string;
-    fleet: OneFlightType[]
-};
+    fleet: OneFlightType[];
+}
 
 const oneFlight: OneFlightType = {
     index: 0,
@@ -47,28 +48,31 @@ const oneFlight: OneFlightType = {
     cabinBaggage: 1,
     checkedBaggage: 0,
     flightClass: "Economy",
-}
+};
 
 const initialValues: ContextType = {
-    flightType: 'international',
-    stops: 'round',
-    fleet: [oneFlight]
+    flightType: "international",
+    stops: "round",
+    fleet: [oneFlight],
 };
 
 type Action =
     | { type: "UPDATE_STATE"; payload: ContextType }
-    | { type: "SET_STOPS"; payload: ContextType['stops'] }
-    | { type: "SET_FLIGHT_TYPE"; payload: ContextType['flightType'] }
+    | { type: "SET_STOPS"; payload: ContextType["stops"] }
+    | { type: "SET_FLIGHT_TYPE"; payload: ContextType["flightType"] }
     | { type: "LIST_MULTI_FLIGHT"; payload: OneFlightType[] }
     | { type: "SET_MULTI_FLIGHT"; payload: OneFlightType }
     | { type: "ADD_MULTI_FLIGHT"; payload?: undefined }
-    | { type: "UPDATE_MULTI_FLIGHT"; payload: { index: number, data: Partial<OneFlightType> } }
+    | {
+          type: "UPDATE_MULTI_FLIGHT";
+          payload: { index: number; data: Partial<OneFlightType> };
+      }
     | { type: "REMOVE_MULTI_FLIGHT"; payload: OneFlightType }
-    | { type: "RESET_MULTI_FLIGHT"; payload?: undefined }
+    | { type: "RESET_MULTI_FLIGHT"; payload?: undefined };
 
 interface FlightProps {
-  state: ContextType;
-  dispatch: Dispatch<Action>;
+    state: ContextType;
+    dispatch: Dispatch<Action>;
 }
 
 export const FlightContext = createContext<FlightProps | undefined>(undefined);
@@ -78,37 +82,63 @@ export function useFlightContext() {
 }
 
 type Props = {
-  children: ReactNode;
+    children: ReactNode;
 };
 
 const reducer = (state: ContextType, action: Action) => {
-  switch (action.type) {
-    case "SET_FLIGHT_TYPE":
-      return { ...state, flightType: action.payload };
-    case "SET_STOPS":
-      return { ...state, stops: action.payload };
-    case "LIST_MULTI_FLIGHT":
-      return { ...state, fleet: action.payload.map((e, index) => ({ ...e, index })) };
-    case "SET_MULTI_FLIGHT":
-      return { ...state, fleet: state.fleet.map((e, index) => e.index === action.payload.index ? action.payload : e ) };
-    case "ADD_MULTI_FLIGHT":
-          return { ...state, fleet: [...state.fleet, { ...oneFlight, index: state.fleet.length }] };
-    case "UPDATE_MULTI_FLIGHT":
-        return {
-            ...state,
-            fleet: state.fleet.map((e, index) => e.index === action.payload.index ? ({ ...e, ...action.payload.data }) : e)
-        };
-    case "REMOVE_MULTI_FLIGHT":
-        return { ...state, fleet: state.fleet.filter(e => e.index !== action.payload.index ).map((e, ind) => ({ ...e, index: ind})) };
-    case "RESET_MULTI_FLIGHT":
-        return { ...state, fleet: state.fleet.filter(e => e.index === 0 ) };
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case "SET_FLIGHT_TYPE":
+            return { ...state, flightType: action.payload };
+        case "SET_STOPS":
+            return { ...state, stops: action.payload };
+        case "LIST_MULTI_FLIGHT":
+            return {
+                ...state,
+                fleet: action.payload.map((e, index) => ({ ...e, index })),
+            };
+        case "SET_MULTI_FLIGHT":
+            return {
+                ...state,
+                fleet: state.fleet.map((e, index) =>
+                    e.index === action.payload.index ? action.payload : e
+                ),
+            };
+        case "ADD_MULTI_FLIGHT":
+            return {
+                ...state,
+                fleet: [
+                    ...state.fleet,
+                    { ...oneFlight, index: state.fleet.length },
+                ],
+            };
+        case "UPDATE_MULTI_FLIGHT":
+            return {
+                ...state,
+                fleet: state.fleet.map((e, index) =>
+                    e.index === action.payload.index
+                        ? { ...e, ...action.payload.data }
+                        : e
+                ),
+            };
+        case "REMOVE_MULTI_FLIGHT":
+            return {
+                ...state,
+                fleet: state.fleet
+                    .filter((e) => e.index !== action.payload.index)
+                    .map((e, ind) => ({ ...e, index: ind })),
+            };
+        case "RESET_MULTI_FLIGHT":
+            return {
+                ...state,
+                fleet: state.fleet.filter((e) => e.index === 0),
+            };
+        default:
+            return state;
+    }
 };
 
 export function FlightProvider({ children }: Props) {
-  const [state, dispatch] = useReducer(reducer, initialValues);
+    const [state, dispatch] = useReducer(reducer, initialValues);
 
     return (
         <FlightContext.Provider value={{ state, dispatch }}>

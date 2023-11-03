@@ -37,6 +37,26 @@ axiosClient.interceptors.response.use(
     }
 );
 
+const kiwiClientV1: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER_V1,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthToken(),
+        apikey: process.env.NEXT_PUBLIC_KIWI_API_KEY,
+    },
+});
+
+kiwiClientV1.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
+);
 const kiwiClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER,
     timeout: 15000,
@@ -48,7 +68,7 @@ const kiwiClient: AxiosInstance = axios.create({
     },
 });
 
-axiosClient.interceptors.response.use(
+kiwiClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response.data;
     },
@@ -66,7 +86,7 @@ const kiwiResourceClient: AxiosInstance = axios.create({
     },
 });
 
-axiosClient.interceptors.response.use(
+kiwiResourceClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response.data;
     },
@@ -76,4 +96,4 @@ axiosClient.interceptors.response.use(
     }
 );
 
-export { axiosClient, kiwiClient, kiwiResourceClient };
+export { axiosClient, kiwiClientV1, kiwiClient, kiwiResourceClient };
