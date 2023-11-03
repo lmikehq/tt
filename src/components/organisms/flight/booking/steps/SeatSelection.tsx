@@ -35,6 +35,7 @@ import SeatLoadingSkeleton from "./SeatLoadingSkeleton";
 import { BiSolidXCircle } from "react-icons/bi";
 import Spinner from "@/components/molecules/icons/spinner";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -43,6 +44,7 @@ const Wrapper = styled.div``;
 const SeatSelection = () => {
     const { isMobile } = useScreenResolution();
     const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
+    const router = useRouter();
     const [selectionModalContent, setSelectionModalContent] = useState<{
         seatDescription: ReactNode;
         seatName: string;
@@ -148,7 +150,7 @@ const SeatSelection = () => {
                         <Section margin="0 0  24px" height="unset">
                             <Text
                                 type="h3"
-                                text="Payment Failed"
+                                text="No seat available"
                                 size={32}
                                 weight={700}
                                 color={ttColors.dark}
@@ -157,47 +159,24 @@ const SeatSelection = () => {
                         <Section margin="0 0  57.5px" height="unset">
                             <Text
                                 type="p"
-                                text=" Ouch!!."
-                                size={18}
-                                weight={400}
-                                color="#929292"
-                            />
-                            <br />
-                            <Text
-                                type="p"
-                                text="Sorry, your application payment was not
-          successful."
+                                text="There are no seat available for the flight filters selected. Kindly select other days or change airline."
                                 weight={400}
                                 size={18}
                                 color="#929292"
                             />
                         </Section>
                         <Section>
-                            <Flex width="100%" gap="8px" direction="column">
-                                <Button
-                                    width="100%"
-                                    background={ttColors.dark}
-                                    color={ttColors.light}
-                                    onClick={() => {
-                                        setEmptySeatsModalOpen(false);
-                                        // router.push("/dashboard");
-                                    }}
-                                >
-                                    Try payment again
-                                </Button>
-                                <Button
-                                    width="100%"
-                                    background="transparent"
-                                    color={ttColors.dark}
-                                    border="1px solid #19013b"
-                                    onClick={() => {
-                                        setEmptySeatsModalOpen(false);
-                                        // router.push("/dashboard");
-                                    }}
-                                >
-                                    Back to dashboard
-                                </Button>
-                            </Flex>
+                            <Button
+                                width="100%"
+                                background="transparent"
+                                color={ttColors.dark}
+                                border="1px solid #19013b"
+                                onClick={() => {
+                                    router.push("/");
+                                }}
+                            >
+                                Change Search
+                            </Button>
                         </Section>
                     </Flex>
                 </Section>
@@ -304,7 +283,6 @@ const SeatSelection = () => {
         }
     };
     useEffect(() => {
-        handleDisplayEmptySeatModal();
         fetchSeats().then((response) => {
             computeSeatRows(response);
         });
