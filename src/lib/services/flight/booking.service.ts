@@ -28,10 +28,8 @@ export class FlightBookingService {
     }) => {
         const query = constructQueryFromParams(data);
         return await kiwiClient
-            .get<any, AxiosResponse<SearchFlightsResponse>>(
-                `/search${query}&limit=10`
-            )
-            .then((response) => response.data)
+            .get<any, SearchFlightsResponse>(`/search${query}&limit=10`)
+            .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
                 throw error;
@@ -46,7 +44,7 @@ export class FlightBookingService {
         // console.log(queryString);
         return await kiwiClient
             .get<any, any>(`/booking/check_flights${queryString}`)
-            .then((response) => response.data)
+            .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
                 throw error;
@@ -60,7 +58,7 @@ export class FlightBookingService {
     }): Promise<CheckSeatingResponse> => {
         return await kiwiClient
             .post<any, any>("/booking/ancillaries/offers/check", data)
-            .then((response) => response.data)
+            .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
                 throw error;
@@ -73,7 +71,7 @@ export class FlightBookingService {
     }) => {
         return await kiwiResourceClient
             .post<any, any>("/flight/bookings/save", data)
-            .then((response) => response.data)
+            .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
                 throw error;
@@ -86,7 +84,7 @@ export class FlightBookingService {
     }) => {
         return await kiwiResourceClient
             .post<any, any>("/flight/bookings/tokenize-confirm-payment", data)
-            .then((response) => response.data)
+            .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
                 throw error;
