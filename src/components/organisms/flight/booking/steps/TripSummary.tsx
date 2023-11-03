@@ -58,8 +58,8 @@ interface TripSummaryProps {
     };
     handleCheckedBags: (
         index: number,
-        value: any,
-        bagDef: Definitions & { index: number }
+        value: number[],
+        bagDef?: Definitions
     ) => void;
 }
 
@@ -141,10 +141,13 @@ const TripSummary = ({
     };
 
     const insertSelectedCheckedBags = (pBags: PassengerBaggageCombinationInterface[]) => {
-        return pBags.map((comb, index) => ({
-            ...comb,
-            hold_bag: { ...comb.hold_bag, indices: checkedBags.order[index] }
-        }))
+        return pBags.map((comb, index) => {
+            const combination = checkFlightsResponse?.baggage?.combinations.hold_bag.find((e, ind) => JSON.stringify(e.indices) === JSON.stringify(checkedBags.order[index]) )
+            return ({
+                ...comb,
+                hold_bag: { ...comb.hold_bag, ...combination }
+            })
+        })
     }
 
     const formik = useFormik({
