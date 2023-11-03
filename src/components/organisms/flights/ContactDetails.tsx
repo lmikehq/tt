@@ -6,32 +6,35 @@ import CheckBox from "@/components/molecules/checkbox";
 import Box from "@mui/material/Box";
 import { FieldInput } from "../fieldInput";
 import FormLabel from "@/components/atoms/FormLabel";
-import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booking.type";
+import {
+    ContactDetailsInterface,
+    SaveBookingRequestInput,
+} from "@/lib/types/request-models/flight/booking.type";
 import { ChangeEvent } from "react";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 interface TripSummaryCardProps {
-    formik?: FormikProps<SaveBookingRequestInput>;
-    contactDetails: {
-        email: string;
-        phone: string;
-        receiveUpdates: boolean;
-    };
-    handleContactDetails: (e: ChangeEvent<HTMLInputElement>) => void;
+    formik: FormikProps<ContactDetailsInterface>;
 }
 
-export default function ContactDetails({ contactDetails, handleContactDetails }: TripSummaryCardProps) {
-    const { isMobile } = useScreenResolution()
+export default function ContactDetails({ formik }: TripSummaryCardProps) {
+    const { isMobile } = useScreenResolution();
     return (
         <>
-            <Text type="h2" size={isMobile ? 18 : 22} text="Contact Details" font="Montserrat" weight={600} />
+            <Text
+                type="h2"
+                size={isMobile ? 18 : 22}
+                text="Contact Details"
+                font="Montserrat"
+                weight={600}
+            />
 
             <Box
                 sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gridGap: "1rem",
-                marginY: "1rem",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gridGap: "1rem",
+                    marginY: "1rem",
                 }}
             >
                 <FormControl>
@@ -41,8 +44,7 @@ export default function ContactDetails({ contactDetails, handleContactDetails }:
                     <FieldInput
                         name="email"
                         placeholder="Enter your Email Address"
-                        onChange={handleContactDetails}
-                        value={contactDetails.email}
+                        formik={formik}
                     />
                 </FormControl>
 
@@ -54,18 +56,17 @@ export default function ContactDetails({ contactDetails, handleContactDetails }:
                         name="phone"
                         type="number"
                         placeholder="Enter your Phone Number"
-                        onChange={handleContactDetails}
-                        value={contactDetails.email}
+                        formik={formik}
                     />
                 </FormControl>
-                    
+
                 <FormControl>
-                    <CheckBox
-                        name="receiveUpdates"
-                        onChange={handleContactDetails}
-                        checked={contactDetails.receiveUpdates}
-                    >
-                        <Text type="p" size={isMobile ? 14 : 16} text="I want to receive SMS updates about my trip." />
+                    <CheckBox name="receiveUpdates" onChange={() => {}} checked>
+                        <Text
+                            type="p"
+                            size={isMobile ? 14 : 16}
+                            text="I want to receive SMS updates about my trip."
+                        />
                     </CheckBox>
                 </FormControl>
             </Box>

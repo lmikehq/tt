@@ -7,6 +7,7 @@ import {
     CombinationPrice,
     PassengerFormInterface,
     SaveBookingRequestInput,
+    ContactDetailsInterface,
 } from "@/lib/types/request-models/flight/booking.type";
 import { countrySchema } from "@/lib/types/schema";
 import * as yup from "yup";
@@ -61,6 +62,12 @@ const passengerAndBaggageDetailsSchema: yup.ObjectSchema<PassengerFormInterface>
             .mixed<PassengerCategory>()
             .oneOf(Object.values(PassengerCategory))
             .required("Required"),
+    });
+
+export const contactDetailsSchema: yup.ObjectSchema<ContactDetailsInterface> =
+    yup.object().shape({
+        email: yup.string().required("Required"),
+        phone: yup.string().required("Required"),
     });
 
 export const passengersAndBaggageDetailsArraySchema = yup

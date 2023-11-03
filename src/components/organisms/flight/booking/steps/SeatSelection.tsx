@@ -205,7 +205,7 @@ const SeatSelection = () => {
         const offers = checkSeatingResponse.seating.offers;
         for (let i = offers.length - 1; i >= 0; i--) {
             const offer = offers[i];
-            offer.seatmap.sections.forEach((section) => {
+            (offer.seatmap?.sections ?? []).forEach((section) => {
                 rows = [
                     ...section.rows.map((el) => ({
                         ...el,
@@ -330,6 +330,11 @@ const SeatSelection = () => {
                             },
                         });
                         setStep({ step: 5 });
+                        window.scrollTo({
+                            top: 0,
+                            left: 0,
+                            behavior: "smooth",
+                        });
                     }}
                 >
                     Continue
