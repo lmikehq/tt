@@ -3,7 +3,9 @@ import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import PlaneSeatsComponent from "@/components/molecules/flights/booking/PlaneSeatsComponent";
 import Section from "@/components/molecules/section";
-import CustomConfirmationModal from "@/components/organisms/visaApplicationModal";
+import CustomConfirmationModal, {
+    CustomConfirmationModalProps,
+} from "@/components/organisms/visaApplicationModal";
 import Flex from "@/components/templates/flex";
 import { capitalized } from "@/lib/extensions/helpers/capitalize";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
@@ -30,6 +32,7 @@ import { Mode } from "@/lib/types";
 import SearchStringInput from "@/components/molecules/searchInputs/searchStringInput";
 import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_seating.type";
 import SeatLoadingSkeleton from "./SeatLoadingSkeleton";
+import { BiSolidXCircle } from "react-icons/bi";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -120,6 +123,86 @@ const SeatSelection = () => {
         seatRows,
         setSeatRows,
     } = useFlightBookingStore((state) => state);
+    const [emptySeatsModalOpen, setEmptySeatsModalOpen] = useState(false);
+    const [emptySeatsModalContent, setEmptySeatsModalContent] = useState<
+        Omit<CustomConfirmationModalProps, "open" | "handleClose">
+    >({
+        icon: <></>,
+        title: "",
+        description: "",
+        subTitle: "",
+        buttons: <></>,
+    });
+
+    const handleDisplayEmptySeatModal = () => {
+        setEmptySeatsModalContent({
+            child: (
+                <Section padding="3rem 6rem" height="unset">
+                    <Flex direction="column" justify="center">
+                        <Section margin="0 0  14px" height="unset">
+                            <BiSolidXCircle size={79.58} color={ttColors.red} />
+                        </Section>
+                        <Section margin="0 0  24px" height="unset">
+                            <Text
+                                type="h3"
+                                text="Payment Failed"
+                                size={32}
+                                weight={700}
+                                color={ttColors.dark}
+                            />
+                        </Section>
+                        <Section margin="0 0  57.5px" height="unset">
+                            <Text
+                                type="p"
+                                text=" Ouch!!."
+                                size={18}
+                                weight={400}
+                                color="#929292"
+                            />
+                            <br />
+                            <Text
+                                type="p"
+                                text="Sorry, your application payment was not
+          successful."
+                                weight={400}
+                                size={18}
+                                color="#929292"
+                            />
+                        </Section>
+                        <Section>
+                            <Flex width="100%" gap="8px" direction="column">
+                                <Button
+                                    width="100%"
+                                    background={ttColors.dark}
+                                    color={ttColors.light}
+                                    onClick={() => {
+                                        setEmptySeatsModalOpen(false);
+                                        // router.push("/dashboard");
+                                    }}
+                                >
+                                    Try payment again
+                                </Button>
+                                <Button
+                                    width="100%"
+                                    background="transparent"
+                                    color={ttColors.dark}
+                                    border="1px solid #19013b"
+                                    onClick={() => {
+                                        setEmptySeatsModalOpen(false);
+                                        // router.push("/dashboard");
+                                    }}
+                                >
+                                    Back to dashboard
+                                </Button>
+                            </Flex>
+                        </Section>
+                    </Flex>
+                </Section>
+            ),
+        });
+        setEmptySeatsModalOpen(true);
+    };
+
     const passengers = saveBookingDetails.passengers
         .filter((el) => el.category !== PassengerCategory.INFANT)
         .map((el) => ({
@@ -213,10 +296,12 @@ const SeatSelection = () => {
                     })),
                 ];
             });
+            if (rows.length == 0) handleDisplayEmptySeatModal();
             setSeatRows(rows);
         }
     };
     useEffect(() => {
+        handleDisplayEmptySeatModal();
         fetchSeats().then((response) => {
             computeSeatRows(response);
         });
@@ -340,6 +425,11 @@ const SeatSelection = () => {
                     Continue
                 </Button>
             </Section>
+            <CustomConfirmationModal
+                open={emptySeatsModalOpen}
+                handleClose={() => setEmptySeatsModalOpen(false)}
+                {...emptySeatsModalContent}
+            />
         </>
     );
 };
