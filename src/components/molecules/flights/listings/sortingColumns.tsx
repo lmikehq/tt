@@ -308,10 +308,6 @@ function SortingColumns() {
     return Object.values(filterState).filter((value) => value === true).length;
   }, [filterState]);
 
-    useEffect(() => {
-        console.log('fff', filterData)
-    }, [filterData])
-
     
   return (
     <Flex direction="column">

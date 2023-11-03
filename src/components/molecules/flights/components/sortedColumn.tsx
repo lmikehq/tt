@@ -1,5 +1,5 @@
 import Section from "src/components/molecules/section";
-import SortingColumns from "../listings/SortingColumns";
+import SortingColumns from "../listings/sortingColumns";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";

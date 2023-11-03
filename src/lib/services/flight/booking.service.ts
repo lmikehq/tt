@@ -16,7 +16,7 @@ import {
     kiwiResourceClient,
 } from "../../axios/axios-client";
 import { constructQueryFromParams } from "../../extensions/helpers/constructQuery";
-import { SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
+import { FlightInfo, SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
 
@@ -27,15 +27,16 @@ export class FlightBookingService {
     data: SearchFlightsRequestQuery;
   }) => {
     const query = constructQueryFromParams(data);
-    return await kiwiClient
-      .get<any, AxiosResponse<SearchFlightsResponse>>(
+    return await kiwiClient.get<any, SearchFlightsResponse>(
         `/search${query}&limit=50`
-      )
-      .then((response) => response.data)
-      .catch((error) => {
-        toast.error(error.response.errorMessage);
-        throw error;
-      });
+    )
+        .then((response) => {
+            return response
+        })
+        .catch((error) => {
+            toast.error(error.response.errorMessage);
+            throw error;
+        });
   };
   static checkFlights = async ({
     query,

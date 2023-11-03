@@ -40,7 +40,7 @@ const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   border: 1px solid #e7e7e7;
   background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin: 1rem 0;
+  margin: 0 0 1rem 0;
   border-radius: 12.5px;
   width: 100%;
 `;
@@ -56,8 +56,8 @@ const IconBorders = styled.div`
 `;
 
 const LabelBox = styled.div`
-  padding: 0.5rem 1rem;
-  background: #f3fafd;
+  padding: 1rem 1rem;
+  background: ${ttColors.grayishAsh};
   width: auto;
   border-radius: 8px;
   display: flex;
@@ -84,6 +84,8 @@ function FlightBox(props: flightProps) {
 
     const price = Number(props.price?.toFixed(0)).toLocaleString();
 
+    const isRoundTrip = props.flightStop === 'round'
+
 return (
     <FlightContainer>
       <Box
@@ -95,7 +97,7 @@ return (
         }}>
 
         {/* Left */}      
-        <Flex direction="column" gap=".5rem" padding="1rem 1rem 2rem 1.5rem" height="100%" justify="center">
+        <Flex direction="column" gap=".8rem" padding="1rem 1rem 2rem 1.5rem" height="100%" justify="center">
           {!!props.label && (
             <LabelBox>
               <Text type="p" text={props.label} color="#4A7181" />
@@ -117,29 +119,30 @@ return (
                         <Text type="p" text={formatDate(props.departureDate)} />
                     </Flex>
                     <Flex gap="1.4rem">
-                    <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_departure).format("HH: mm")} />
-                    <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} />
-                    <Text type="p" text={startRoute.cityFrom} />
+                        <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_departure).format("HH: mm")} />
+                        <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} />
+                        <Text type="p" text={startRoute.cityFrom} />
                     </Flex>
                     <Flex align={"center"} gap="1rem">
-                    <Text type="p" color={ttColors.lighterGray} text={timeDifference(startRoute.utc_departure, startRoute.utc_arrival)} />
-                    <StopsPill numberOfStops={props.stops} />
+                        <Text type="p" color={ttColors.lighterGray} text={timeDifference(startRoute.utc_departure, isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival)} />
+                        {props.stops > 0 && <StopsPill numberOfStops={props.stops} />}
                     </Flex>
                     <Flex gap="1.4rem">
-                    <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_arrival).format("HH: mm")} />
-                    <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} />
-                    <Text type="p" text={startRoute.cityTo} />
+                        <Text type="p" weight={"bold"} text={dayjs(isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival).format("HH: mm")} />
+                        <Text type="p" text={`${isRoundTrip ? startRoute.operating_carrier : endRoute.operating_carrier}-${isRoundTrip ? startRoute.operating_flight_no : endRoute.operating_flight_no}`} />
+                        <Text type="p" text={isRoundTrip ? startRoute.cityTo : props.flight.cityTo} />
                     </Flex>
                 </Flex>
             </Box>
 
-            {props.flightStop === 'round' &&
+            {isRoundTrip &&
                 <React.Fragment>
                     <Divider
                       direction="horizontal"
                       borderStyle="dotted"
                       margin="1rem 0"
                     />
+                        
                     <Box
                         sx={{
                             display: "grid",
@@ -180,11 +183,11 @@ return (
               
         {/* Right */}
         <Flex
-          direction="column"
-          padding="2rem 2rem 2rem 0"
-          justify="space-between"
+            direction="column"
+            padding="2rem 2rem 2rem 0"
+            justify="space-between"
             height="100%"
-            gap="2rem"
+            gap="3rem"
         >
           <Flex align="center">
             <Flex gap=".5rem">

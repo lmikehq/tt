@@ -220,13 +220,9 @@ function AvailableFlights() {
         return () => clearInterval(interval); 
     }, []);
 
-    useEffect(() => {
-        console.log('ff', flightState?.stops)
-    }, [flightState?.stops])
-
 
     return (
-        <Flex direction="column" width="100%">
+        <Flex direction="column" width="100%" gap="1.5rem">
             <SortedFlightsTab
                 cheapPrice={cheapPrice}
                 bestPrice={cheapPrice}
@@ -246,7 +242,7 @@ function AvailableFlights() {
                     rectangularWidth="100%"
                 />
             ) : (
-                    <React.Fragment>
+                <React.Fragment>
                     {searchFlightsResults
                         ?.slice(0, count)
                         .map((flight: FlightInfo, index: number) => (

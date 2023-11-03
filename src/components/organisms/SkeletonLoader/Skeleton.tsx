@@ -10,7 +10,7 @@ const Container = styled.div`
   }
 
   @media (min-width: 800px) {
-    width: 800px;
+    width: 100%;
   }
 `;
 

@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import SortingColumns from "./sortingColumns";
 import styled from "styled-components";
 import Flex from "@/components/templates/flex";
