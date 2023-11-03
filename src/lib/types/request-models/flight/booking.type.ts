@@ -59,7 +59,10 @@ export interface PassengerFormInterface {
     category: PassengerCategory;
     currency: string;
 }
-
+export interface ContactDetailsInterface {
+    email: string;
+    phone: string;
+}
 export interface CombinationPrice {
     currency: string;
     amount: number;
@@ -259,7 +262,6 @@ export const arrangeBaggageDataForOrdering = (
     return baggageData;
 };
 
-
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
     surname: "",
@@ -289,4 +291,9 @@ export const cardDetails: CardInfo = {
     expirationMonth: "",
     expirationYear: "",
     holder: "",
+};
+
+export const contactDetails: ContactDetailsInterface = {
+    email: "",
+    phone: "",
 };

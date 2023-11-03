@@ -57,6 +57,7 @@ const SeatSelectionMenu = () => {
     }): SeatInterface | null {
         let leastAmount: number | null = null;
         let leastSeat: SeatInterface | null = null;
+        if (seatRows.length == 0) return null;
 
         for (const row of seatRows) {
             for (const group of row.seat_groups) {
@@ -168,10 +169,12 @@ const SeatSelectionMenu = () => {
                                 size={16}
                                 weight={400}
                                 text={
-                                    "From " +
-                                    leastStandardSeat?.price.currency +
-                                    " " +
-                                    leastStandardSeat?.price.amount
+                                    leastStandardSeat
+                                        ? "From " +
+                                          leastStandardSeat?.price?.currency +
+                                          " " +
+                                          leastStandardSeat?.price.amount
+                                        : "From - -"
                                 }
                             />
                         </Section>
@@ -220,10 +223,13 @@ const SeatSelectionMenu = () => {
                                 size={16}
                                 weight={400}
                                 text={
-                                    "From " +
-                                    leastExtraLegRoomSeat?.price.currency +
-                                    " " +
-                                    leastExtraLegRoomSeat?.price.amount
+                                    leastExtraLegRoomSeat
+                                        ? "From " +
+                                          leastExtraLegRoomSeat?.price
+                                              .currency +
+                                          " " +
+                                          leastExtraLegRoomSeat?.price.amount
+                                        : "From - -"
                                 }
                             />
                         </Section>

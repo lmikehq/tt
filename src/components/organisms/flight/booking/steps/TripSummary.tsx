@@ -4,7 +4,10 @@ import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import { manyPassengersAndBaggageDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
+import {
+    contactDetailsSchema,
+    manyPassengersAndBaggageDetailsSchema,
+} from "@/lib/extensions/schemas/flight/booking.schema";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
@@ -17,6 +20,7 @@ import {
     SaveBookingRequestInput,
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
+    contactDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
     CheckFlightResponse,
@@ -38,7 +42,6 @@ export interface FlightStopType {
     departure: OneFlight;
     arrival: OneFlight;
 }
-
 
 interface TripSummaryProps {
     passengersBagCombination: PassengerBaggageCombinationInterface[];
@@ -84,27 +87,6 @@ const TripSummary = ({
 
     const { adults, children, infants } = searchParams;
 
-    const [contactDetails, setContactDetails] = useState({
-        email: "",
-        phone: "",
-        receiveUpdates: false,
-    });
-
-    const handleContactDetails: ChangeEventHandler<HTMLInputElement> = (e) => {
-        const {
-            name,
-            value,
-            type,
-        }: { name: string; value: any; type: string } = e.currentTarget;
-        setContactDetails((prev) => ({
-            ...prev,
-            [name]:
-                type === "checkbox"
-                    ? !prev[name as keyof typeof contactDetails]
-                    : value,
-        }));
-    };
-
     const getPassengerBagCombinationOptions = ({
         category,
     }: {
@@ -140,15 +122,29 @@ const TripSummary = ({
         );
     };
 
-    const insertSelectedCheckedBags = (pBags: PassengerBaggageCombinationInterface[]) => {
+    const insertSelectedCheckedBags = (
+        pBags: PassengerBaggageCombinationInterface[]
+    ) => {
         return pBags.map((comb, index) => {
-            const combination = checkFlightsResponse?.baggage?.combinations.hold_bag.find((e, ind) => JSON.stringify(e.indices) === JSON.stringify(checkedBags.order[index]) )
-            return ({
+            const combination =
+                checkFlightsResponse?.baggage?.combinations.hold_bag.find(
+                    (e, ind) =>
+                        JSON.stringify(e.indices) ===
+                        JSON.stringify(checkedBags.order[index])
+                );
+            return {
                 ...comb,
-                hold_bag: { ...comb.hold_bag, ...combination }
-            })
-        })
-    }
+                hold_bag: { ...comb.hold_bag, ...combination },
+            };
+        });
+    };
+    const contactDetailsFormik = useFormik({
+        initialValues: contactDetails,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: contactDetailsSchema,
+        onSubmit: (values) => {},
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -171,19 +167,23 @@ const TripSummary = ({
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
         onSubmit: (values) => {
-            console.log(passengersBagCombination, "passengers");
+            console.log(contactDetailsFormik.values, "passengers");
+            contactDetailsFormik.validateForm();
+            if (!contactDetailsFormik.isValid) return;
 
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
-                    new_user_email: contactDetails.email,
+                    new_user_email: contactDetailsFormik.values.email,
                     user: user?.id,
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
                     passengers: values.passengers.map((el, index) => ({
                         ...el,
-                        email: index == 0 ? contactDetails.email : "",
-                        phone: index == 0 ? contactDetails.phone : "",
+                        email:
+                            index == 0 ? contactDetailsFormik.values.email : "",
+                        phone:
+                            index == 0 ? contactDetailsFormik.values.phone : "",
                         nationality: el.nationality.code.toLowerCase(),
                     })),
                     baggage: arrangeBaggageDataForOrdering(
@@ -192,6 +192,7 @@ const TripSummary = ({
                 },
             });
             setStep({ step: 3 });
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         },
         validateOnChange: false,
     });
@@ -207,7 +208,6 @@ const TripSummary = ({
     const departure = flights[0];
     const arrival = flights[flights?.length - 1];
 
-
     return (
         <Box
             sx={{
@@ -222,10 +222,9 @@ const TripSummary = ({
                 flights={flights}
             />
             {!user?.id && (
-                <ContactDetails
-                    contactDetails={contactDetails}
-                    handleContactDetails={handleContactDetails}
-                />
+                <form onSubmit={contactDetailsFormik.handleSubmit}>
+                    <ContactDetails formik={contactDetailsFormik} />
+                </form>
             )}
             <FormikProvider value={formik}>
                 <form onSubmit={formik.handleSubmit}>
@@ -284,7 +283,7 @@ const TripSummary = ({
                     </Box>
                 </form>
             </FormikProvider>
-        </Box>    
+        </Box>
     );
 };
 
