@@ -51,6 +51,8 @@ interface State {
     particularSeats: ParticularSeatingOption[];
     cardDetails: CardInfo;
     seatRows: SeatRowWithSegmentCodeInterface[];
+    saveBookingMode: Mode;
+    confirmPaymentMode: Mode;
 }
 interface Actions {
     prevStep: () => void;
@@ -91,6 +93,8 @@ export const useFlightBookingStore = create<State & Actions>(
         sessionId: null,
         seatRows: [],
         initCheckFlightsMode: Mode.init,
+        saveBookingMode: Mode.init,
+        confirmPaymentMode: Mode.init,
 
         checkFlightsResponse: null,
         checkSeatingResponse: null,
@@ -199,14 +203,14 @@ export const useFlightBookingStore = create<State & Actions>(
         },
 
         saveBooking: async ({ data }: { data: SaveBookingRequestInput }) => {
-            set({ mode: Mode.loading });
+            set({ saveBookingMode: Mode.loading });
 
             return await FlightBookingService.saveBooking({
                 data,
             })
                 .then((response) => {
                     set((state) => ({
-                        mode: Mode.loaded,
+                        saveBookingMode: Mode.loaded,
                         saveBookingResponse: {
                             bookingId: `${response.data.booking_id}`,
                             zoozToken: response.data.payu_token,
@@ -219,7 +223,7 @@ export const useFlightBookingStore = create<State & Actions>(
                     set({
                         mode: Mode.error,
                     });
-                    throw error;
+                    throw "Unable to save booking";
                 });
         },
 
@@ -228,7 +232,7 @@ export const useFlightBookingStore = create<State & Actions>(
         }: {
             data: TokenizeDataRequestInput;
         }) => {
-            set({ mode: Mode.loading });
+            set({ confirmPaymentMode: Mode.loading });
             return await FlightBookingService.confirmPaymentZooz({
                 data,
             })
@@ -264,7 +268,7 @@ export const useFlightBookingStore = create<State & Actions>(
                         pass_luhn_validation,
                     };
                     set((state) => ({
-                        mode: Mode.loaded,
+                        confirmPaymentMode: Mode.loaded,
                         tokenizeDataResponse,
                     }));
                     return tokenizeDataResponse;

@@ -33,6 +33,8 @@ import SearchStringInput from "@/components/molecules/searchInputs/searchStringI
 import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_seating.type";
 import SeatLoadingSkeleton from "./SeatLoadingSkeleton";
 import { BiSolidXCircle } from "react-icons/bi";
+import Spinner from "@/components/molecules/icons/spinner";
+import toast from "react-hot-toast";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -122,6 +124,7 @@ const SeatSelection = () => {
         setParticularSeats,
         seatRows,
         setSeatRows,
+        saveBookingMode,
     } = useFlightBookingStore((state) => state);
     const [emptySeatsModalOpen, setEmptySeatsModalOpen] = useState(false);
     const [emptySeatsModalContent, setEmptySeatsModalContent] = useState<
@@ -404,6 +407,7 @@ const SeatSelection = () => {
                 <Button
                     type="submit"
                     background={ttColors.dark}
+                    height={"3.5rem"}
                     width="100%"
                     onClick={() => {
                         saveBooking({
@@ -413,16 +417,34 @@ const SeatSelection = () => {
                                     seating: [...particularSeats],
                                 },
                             },
-                        });
-                        setStep({ step: 5 });
-                        window.scrollTo({
-                            top: 0,
-                            left: 0,
-                            behavior: "smooth",
-                        });
+                        })
+                            .then((_) => {
+                                toast.success(
+                                    "Flight booking successful. Proceed to make Payment"
+                                );
+                                setStep({ step: 5 });
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: "smooth",
+                                });
+                            })
+                            .catch((error) => {
+                                toast.error("Unable to save booking");
+                            });
                     }}
                 >
-                    Continue
+                    {saveBookingMode == Mode.loading ? (
+                        <Spinner size="40px" fill={ttColors.primary} />
+                    ) : (
+                        <Text
+                            type="span"
+                            text={"Continue"}
+                            weight={600}
+                            size={16}
+                            color={ttColors.light}
+                        />
+                    )}
                 </Button>
             </Section>
             <CustomConfirmationModal

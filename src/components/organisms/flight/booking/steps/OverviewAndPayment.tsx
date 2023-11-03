@@ -11,6 +11,7 @@ import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { cardDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
 import { useFormik } from "formik";
 import { CardInfo } from "@/lib/types/request-models/flight/booking.type";
+import toast from "react-hot-toast";
 
 const OverviewAndPayment = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +38,10 @@ const OverviewAndPayment = () => {
                     paymentToken: saveBookingResponse?.zoozToken ?? "",
                 },
             });
-        } catch (error) {}
+            toast.success("Payment complete");
+        } catch (error) {
+            toast.error("Payment Failed");
+        }
     };
     const formik = useFormik({
         initialValues: cardDetails,
