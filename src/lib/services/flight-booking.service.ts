@@ -21,37 +21,37 @@ import { CheckFlightResponse } from "../types/response-models/flight/check_fligh
 import { CheckSeatingResponse } from "../types/response-models/flight/check_seating.type";
 
 export class FlightBookingService {
-    static searchFlights = async ({
-        data,
-    }: {
-        data: SearchFlightsRequestQuery;
-    }) => {
-        const query = constructQueryFromParams(data);
-        return await kiwiClient
-            .get<any, AxiosResponse<SearchFlightsResponse>>(
-                `/search${query}&limit=10`
-            )
-            .then((response) => response.data)
-            .catch((error) => {
-                toast.error(error.response?.errorMessage);
-                throw error;
-            });
-    };
-    static checkFlights = async ({
-        query,
-    }: {
-        query: CheckFlightsQuery;
-    }): Promise<CheckFlightResponse> => {
-        const queryString = constructQueryFromParams(query);
-        // console.log(queryString);
-        return await kiwiClient
-            .get<any, any>(`/booking/check_flights${queryString}`)
-            .then((response) => response.data)
-            .catch((error) => {
-                toast.error(error.response?.errorMessage);
-                throw error;
-            });
-    };
+  static searchFlights = async ({
+    data,
+  }: {
+    data: SearchFlightsRequestQuery;
+  }) => {
+    const query = constructQueryFromParams(data);
+    return await kiwiClient
+      .get<any, AxiosResponse<SearchFlightsResponse>>(
+        `/search${query}&limit=50`
+      )
+      .then((response) => response.data)
+      .catch((error) => {
+        toast.error(error.response.errorMessage);
+        throw error;
+      });
+  };
+  static checkFlights = async ({
+    query,
+  }: {
+    query: CheckFlightsQuery;
+  }): Promise<CheckFlightResponse> => {
+    const queryString = constructQueryFromParams(query);
+    // console.log(queryString);
+    return await kiwiClient
+      .get<any, any>(`/booking/check_flights${queryString}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        toast.error(error.response.errorMessage);
+        throw error;
+      });
+  };
 
     static checkSeating = async ({
         data,

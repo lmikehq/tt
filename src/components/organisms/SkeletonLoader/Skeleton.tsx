@@ -5,12 +5,20 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  @media (min-width: 200px) {
+    width: 100%;
+  }
+
+  @media (min-width: 800px) {
+    width: 800px;
+  }
 `;
 
 const Parent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 `;
 
 interface SkeletonLoader {
@@ -19,9 +27,11 @@ interface SkeletonLoader {
   textHeight: number | string;
   rectangularWidth?: number | string;
   rectangularHeight: number | string;
+  text?: boolean | true;
 }
 const SkeletonLoader: React.FC<SkeletonLoader> = ({
   tabs,
+  text,
   textWidth,
   textHeight,
   rectangularHeight,
@@ -32,16 +42,21 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
     <Container>
       {tabsToMap.map((_, index) => (
         <Parent key={index}>
-          <Skeleton
-            variant="text"
-            sx={{ fontSize: "1rem" }}
-            height={textHeight}
-            width={textWidth}
-          />
+          {text ? (
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "1rem" }}
+              height={textHeight || "auto"}
+              width={textWidth || "auto"}
+            />
+          ) : (
+            ""
+          )}
           <Skeleton
             variant="rectangular"
-            height={rectangularHeight}
+            height={rectangularHeight || "auto"}
             width={rectangularWidth}
+            maxWidth={rectangularWidth || 800}
           />
         </Parent>
       ))}

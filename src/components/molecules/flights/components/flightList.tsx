@@ -11,15 +11,13 @@ function FlightList() {
   const [sortType, setSortType] = useState("best");
 
   return (
-        <Flex direction={isMobile ? "column" : "row"} gap="3rem" justify="space-between" padding={isMobile ? "1rem" : ""}>
-            <Flex gap='2rem' direction={isMobile ? "column" : "row"}>
-                <Section width={isMobile ? "100%" : "25%"}>
-                    <SortedColumn results={results} sortType={sortType} />
-                </Section>
-                <Section width={isMobile ? "100%" : "75%"}>
-                    <AvailableFlights />
-                </Section>
-            </Flex>
+        <Flex direction={isMobile ? "column" : "row"} gap="2rem" justify="space-between" padding={isMobile ? "1rem" : ""}>
+            <Section width={isMobile ? "100%" : "25%"}>
+                <SortedColumn results={results} sortType={sortType} />
+            </Section>
+            <Section width={isMobile ? "100%" : "75%"}>
+                <AvailableFlights />
+            </Section>
         </Flex>
     );
 }
