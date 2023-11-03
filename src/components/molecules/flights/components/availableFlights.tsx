@@ -55,7 +55,7 @@ function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFun
                             styles={{ textDecoration: "underline" }}
                             cursor="pointer"
                         />
-                    </Link>
+                    </Link> 
                 </Stack>
             </Stack>
         </Modal>
@@ -100,7 +100,6 @@ function AvailableFlights() {
 
     const [count, setCount] = useState(5);
     const [sortType, setSortType] = useState("best");
-    const [data, setData] = useState<FlightInfo[]>([]);
     
     const [countdown, setCountdown] = useState(30 * 60)
     const [modal, setModal] = useState({

@@ -36,14 +36,14 @@ export const FlightContainer = styled.div`
   }
 `;
 
-export const ButtonBox = styled.div<{ active: boolean }>`
+export const ButtonBox = styled.div<{ active: boolean; width?: string }>`
   background: ${({ active }) => (active ? "#06062A" : "transparent")};
   color: ${({ active }) => (active ? "white" : "#606060")};
   padding: 1rem;
   border-radius: 12px;
   cursor: pointer;
-  width: 28%;
-  min-width: 28%;
+  width: ${props => props.width ?? '28%'};
+  min-width: ${props => props.width ?? '28%'};
   display: flex;
   justify-content: center;
 

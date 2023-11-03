@@ -348,7 +348,7 @@ function SortingColumns() {
                     <PlusMinusButton onClick={() => handleBags("cabin", "subtract")}>
                         <Text type="p" text="-"/>
                     </PlusMinusButton>
-                    <Text type="p" text={filterData.bags.cabin.toString()} width="1.5rem" />
+                    <Text type="p" text={filterData.bags.cabin.toString()} width="1.5rem" textAlign="center" />
                     <PlusMinusButton onClick={() => handleBags("cabin", "add")}>
                         <Text type="p" text="+"/>
                     </PlusMinusButton>
@@ -365,7 +365,7 @@ function SortingColumns() {
                     <PlusMinusButton onClick={() => handleBags("checked", "subtract")}>
                         <Text type="p" text="-" />
                     </PlusMinusButton>
-                    <Text type="p" text={filterData.bags.checked.toString()} width="1.5rem" />
+                    <Text type="p" text={filterData.bags.checked.toString()} width="1.5rem" textAlign="center" />
                     <PlusMinusButton onClick={() => handleBags("checked", "add")}>
                         <Text type="p" text="+" />
                     </PlusMinusButton>
@@ -453,11 +453,11 @@ function SortingColumns() {
             isActive={columnState.times}
         >
             <Flex direction="column">
-                <Flex gap=".5rem" align="center" justify="space-between" borderRadius="8px" background={ttColors.grayishAsh}>
-                    <ButtonBox active={true}>
+                <Flex gap=".5rem" align="center" padding="1rem" justify="space-between" borderRadius="8px" background={ttColors.grayishAsh}>
+                    <ButtonBox active={true} width="50%">
                         <Text type="p" text="Departure" weight={500} size={14} />
                     </ButtonBox>
-                    <ButtonBox active={false}>
+                    <ButtonBox active={false} width="50%">
                         <Text type="p" text="Return" weight={500} size={14} />
                     </ButtonBox>
                 </Flex>
@@ -595,6 +595,8 @@ function SortingColumns() {
                 ]}
                 defaultValue={[0, 40000]}
                 onChange={(event, newValue) => handleSlider(newValue, 'price', "price")}
+                min={0}
+                max={40000}
             />
         </Panel>
           
