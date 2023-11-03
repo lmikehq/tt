@@ -57,7 +57,8 @@ export function CustomRadioGroup({
                             ".MuiFormControlLabel-label": {
                                 fontFamily: "Poppins",
                                 fontWeight: "400 !important",
-                                fontSize: isMobile ? "1rem" : "1rem",
+                                fontSize: isMobile ? ".9rem !important" : ".9rem !important" ,
+                                marginLeft: "2px",
                             }
                         }}
                     />

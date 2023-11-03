@@ -16,7 +16,7 @@ import {
     kiwiResourceClient,
 } from "../../axios/axios-client";
 import { constructQueryFromParams } from "../../extensions/helpers/constructQuery";
-import { SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
+import { FlightInfo, SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
 

@@ -17,11 +17,18 @@ export interface FilterData {
   };
   alliance: string[];
   duration: {
-    stops: {
+    stopOver: {
+      min: number;
+      max: number;
+    };
+    travelTime: {
       min: number;
       max: number;
     };
   };
-  price: number;
+    price: {
+        min: 0,
+        max: 40000
+    };
   cabin: string[];
 }

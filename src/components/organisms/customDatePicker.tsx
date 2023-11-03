@@ -234,6 +234,7 @@ export const CustomDatePickerInput = forwardRef(
                 onClick={onClick}
                 readOnly
                 className={poppins.className}
+                style={{ width: '100%' }}
             />
         </InputContainer>
     )
