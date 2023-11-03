@@ -1,4 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+"use client";
+
+import React, { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
@@ -9,8 +11,10 @@ import Text from "@atom/text";
 import SortedFlightsTab from "./sortedFlightsTab";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import { useRouter } from "next/navigation";
+import {
+    extractSearchParamsFromUrl,
+    constructQueryFromParams,
+} from "@/lib/extensions/helpers/constructQuery";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import { FlightContext } from "@/lib/extensions/context";
 import { Mode } from "@/lib/types";
@@ -21,7 +25,13 @@ import { HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { BsCursor } from "react-icons/bs";
+import { usePathname, useRouter } from "next/navigation";
 
+
+interface SearchQuery {
+    sortBy: string;
+    filter: string;
+}
 
 function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFunction; to: string; }) {
     const { push } = useRouter()
@@ -53,7 +63,6 @@ function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFun
 }
 
 
-
 function StillSearchingModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFunction; to?: string; }) {
     const { isMobile } = useScreenResolution()
 
@@ -74,6 +83,7 @@ function StillSearchingModal({ isOpen, onClose, to }: { isOpen: boolean; onClose
 
 function AvailableFlights() {
     const router = useRouter();
+    const pathName = usePathname();
     const { user } = useUserStore((state) => state)
     const {
     searchFlightsResults,
@@ -81,6 +91,7 @@ function AvailableFlights() {
     searchFlightsMode,
     updateSearchQuery,
     searchQuery: { adults, children, infants },
+    searchQuery,
     } = useFlightBookingStore((state) => state);
     
     const flightContext = useContext(FlightContext);
@@ -89,6 +100,7 @@ function AvailableFlights() {
 
     const [count, setCount] = useState(5);
     const [sortType, setSortType] = useState("best");
+    const [data, setData] = useState<FlightInfo[]>([]);
     
     const [countdown, setCountdown] = useState(30 * 60)
     const [modal, setModal] = useState({
@@ -97,56 +109,58 @@ function AvailableFlights() {
         route: ''
     });
 
-  const loadMoreItems = () => {
-    setCount(
-      (prevCount) =>
-        prevCount + Math.min(count, searchFlightsResults?.length - prevCount)
-    );
-  };
+    const loadMoreItems = () => {
+        setCount(
+            (prevCount) =>
+                prevCount +
+                Math.min(count, searchFlightsResults?.length - prevCount)
+        );
+    };
 
-  const prices: number[] = searchFlightsResults.map((flight) => flight.price);
-  const cheapPrice = Math.min(...prices);
-  const bestPrice =
-    prices.reduce((acc, price) => acc + price, 0) / prices.length;
-  const durationPriceMap: Record<string, number> = {};
+    const prices: number[] = searchFlightsResults?.map((flight) => flight.price) ?? [];
 
-  searchFlightsResults.forEach((flight) => {
-    const { duration, price } = flight;
-    if (duration && duration.departure) {
-      durationPriceMap[duration.departure] = price;
-    }
-  });
+    const cheapPrice = Math.min(...prices);
+    const bestPrice =
+        prices.reduce((acc, price) => acc + price, 0) / prices.length;
+    const durationPriceMap: Record<string, number> = {};
 
-  const keysAsNumbers: number[] = Object.keys(durationPriceMap).map(Number);
-  const minKey: number = Math.min(...keysAsNumbers);
-  const minPrice: number | undefined = durationPriceMap[minKey.toString()];
+    searchFlightsResults.forEach((flight) => {
+        const { duration, price } = flight;
+        if (duration && duration.departure) {
+            durationPriceMap[duration.departure] = price;
+        }
+    });
 
-  const getLabel = (price: number) => {
-    if (price === cheapPrice) {
-      return "Cheapest";
-    } else if (Math.abs(price - bestPrice) <= 0.05 * bestPrice) {
-      return "Best";
-    } else if (price === minPrice) {
-      return "Fastest";
-    } else {
-      return "";
-    }
-  };
+    const keysAsNumbers: number[] = Object.keys(durationPriceMap).map(Number);
+    const minKey: number = Math.min(...keysAsNumbers);
+    const minPrice: number | undefined = durationPriceMap[minKey.toString()];
 
-  const sortFlights = (a: FlightInfo, b: FlightInfo) => {
-    if (
-      getLabel(a.price).toLowerCase() === sortType &&
-      getLabel(b.price).toLowerCase() !== sortType
-    ) {
-      return -1;
-    }
-    if (
-      getLabel(b.price).toLowerCase() === sortType &&
-      getLabel(a.price).toLowerCase() !== sortType
-    ) {
-      return 1;
-    }
-    return 0;
+    const getLabel = (price: number) => {
+        if (price === cheapPrice) {
+            return "Cheapest";
+        } else if (Math.abs(price - bestPrice) <= 0.05 * bestPrice) {
+            return "Best";
+        } else if (price === minPrice) {
+            return "Fastest";
+        } else {
+            return "";
+        }
+    };
+
+    const sortFlights = (a: FlightInfo, b: FlightInfo) => {
+        if (
+            getLabel(a.price).toLowerCase() === sortType &&
+            getLabel(b.price).toLowerCase() !== sortType
+        ) {
+            return -1;
+        }
+        if (
+            getLabel(b.price).toLowerCase() === sortType &&
+            getLabel(a.price).toLowerCase() !== sortType
+        ) {
+            return 1;
+        }
+        return 0;
     };
     
     const flightReq = {
@@ -169,6 +183,26 @@ function AvailableFlights() {
         }
     }
 
+    const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
+        const updatedQuery = { ...searchQuery, ...updatedParams };
+        updateSearchQuery({ data: updatedQuery });
+        router.push(pathName + constructQueryFromParams(updatedQuery));
+        searchFlights({ data: updatedQuery });
+    };
+
+    
+    // useEffect(() => {
+    //     if (searchFlightsResults.length > 0) {
+    //         setData(searchFlightsResults);
+    //     }
+    // }, [searchFlightsResults]);
+
+    // useEffect(() => {
+    //     const url = window.location.href;
+    //     const searchParams = extractSearchParamsFromUrl({ url });
+    //     updateSearchQueryHandler({ ...searchParams });
+    // }, [window.location.search]);
+
     useEffect(() => {
         updateSearchQuery({ data: searchParams });
         searchFlights({ data: searchParams });
@@ -187,68 +221,82 @@ function AvailableFlights() {
     }, []);
 
 
-  return (
-    <Flex direction="column">
-        <SortedFlightsTab
-            cheapPrice={cheapPrice}
-            bestPrice={bestPrice}
-            sortType={sortType}
-            setSortType={setSortType}
-            fastPrice={minPrice}
-        />
-        {searchFlightsMode === Mode.loading ? (
-            <SkeletonLoader
-                tabs={4}
-                textHeight={46}
-                textWidth={"60%"}
-                rectangularHeight={400}
+    return (
+        <Flex direction="column" width="100%" gap="1.5rem">
+            <SortedFlightsTab
+                cheapPrice={cheapPrice}
+                bestPrice={cheapPrice}
+                sortType={sortType}
+                setSortType={setSortType}
+                fastPrice={minPrice}
+                data={searchFlightsResults}
+                updateSearchQueryHandler={updateSearchQueryHandler}
             />
-        ) : (
-            <>
-            {searchFlightsResults
-                ?.slice(0, count)
-                .sort(sortFlights)
-                .map((flight: FlightInfo, index: number) => (
-                <FlightBox
-                    key={index}
-                    selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
-                    bookingToken={flight.booking_token}
-                    departureCountryCode="Country Code 1"
-                    arrivalCountryCode={flight.cityCodeTo}
-                    airportName1="Airport Name 1"
-                    airportName2={"Airport 2"}
-                    departureDate={dayjs()}
-                    arrivalDate={dayjs().add(1, "day")}
-                    price={flight.price}
-                    label={getLabel(flight.price)}
+            
+            {(searchFlightsMode === Mode.loading || searchFlightsResults?.length === 0) ? (
+                <SkeletonLoader
+                    tabs={4}
+                    textHeight={46}
+                    textWidth="60%"
+                    rectangularHeight={400}
+                    rectangularWidth="100%"
                 />
-                ))}
-            <Flex justify="center">
-                {count < searchFlightsResults?.length && (
-                <Button
-                    width="100%"
-                    background="#06062A"
-                    padding="2rem 0"
-                    onClick={loadMoreItems}
-                >
-                    <Text type="p" text="Load More" weight={500} size={18} />
-                </Button>
-                )}
-            </Flex>
-            </>
-          )}
-          
+            ) : (
+                <React.Fragment>
+                    {searchFlightsResults
+                        ?.slice(0, count)
+                        .map((flight: FlightInfo, index: number) => (
+                            <FlightBox
+                                key={index}
+                                flight={flight}
+                                selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
+                                bookingToken={flight.booking_token}
+                                departureCountryCode={flight.cityCodeFrom}
+                                arrivalCountryCode={flight.cityCodeTo}
+                                airportName1={flight.airlines[0]}
+                                airportName2={flight.airlines[0]}
+                                departureDate={dayjs(flight.utc_departure)}
+                                arrivalDate={dayjs(flight.utc_arrival)}
+                                price={flight.price}
+                                label={getLabel(flight.price)}
+                                stops={flight.route.length - 1}
+                                seats={flight.availability.seats}
+                                hold={flight.baglimit.hold_weight ? 1 : 0}
+                                carryOn={flight.baglimit.hand_weight ? 1 : 0}
+                                flightStop={'one-way'}
+                            />
+                    ))}
+                        
+                    <Flex justify="center">
+                        {count < searchFlightsResults?.length && (
+                            <Button
+                                width="100%"
+                                background="#06062A"
+                                padding="2rem 0"
+                                onClick={loadMoreItems}>
+                                <Text
+                                    type="p"
+                                    text="Load More"
+                                    weight={500}
+                                    size={18}
+                                />
+                            </Button>
+                        )}
+                    </Flex>
+                </React.Fragment>
+            )}
+
             <LoginModal
                 isOpen={modal.isOpenLogin}
                 onClose={() => setModal(prev => ({ ...prev, isOpenLogin: false }))}
                 to={modal.route}
             />
-          
+            
             <StillSearchingModal
                 isOpen={modal.isOpenStillSearching}
                 onClose={() => setModal(prev => ({ ...prev, isOpenStillSearching: false }))}
             />
-    </Flex>
+        </Flex>
   );
 }
 

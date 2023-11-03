@@ -123,7 +123,7 @@ function Flights() {
 
     
 	return (
-		<Section padding="2rem 0 1rem 0" styles={{ position: "relative" }}>
+		<Section padding="1.5rem 0 2rem 0" styles={{ position: "relative" }}>
 			<Flex direction="column">
 				{isMobile &&
 					<FlightType
@@ -181,7 +181,7 @@ function Flights() {
 		  
 			<Flex
 				justify="center"
-				styles={{ position: "absolute", bottom: "-50px" }}
+				styles={{ position: "absolute", bottom: "-40px" }}
 			>
 				<Button
 					width={isMobile ? "100%" : "300px"}

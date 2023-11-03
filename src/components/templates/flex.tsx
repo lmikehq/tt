@@ -12,7 +12,7 @@ interface flexProps {
     | "space-evenly"
     | "flex-start"
     | "flex-end";
-  align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+  align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline" | "space-between";
   gap?: string;
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
@@ -56,6 +56,7 @@ interface flexProps {
 
 const FlexWrapper = styled.div`
   width: 100%;
+ transition: all 300ms ease-out;
 `;
 
 const Flex: React.FC<flexProps> = ({
