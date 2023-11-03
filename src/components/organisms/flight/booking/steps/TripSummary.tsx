@@ -192,6 +192,7 @@ const TripSummary = ({
                 },
             });
             setStep({ step: 3 });
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         },
         validateOnChange: false,
     });
