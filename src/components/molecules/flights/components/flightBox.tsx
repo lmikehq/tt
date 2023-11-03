@@ -184,10 +184,10 @@ return (
         {/* Right */}
         <Flex
             direction="column"
-            padding="2rem 2rem 2rem 0"
+            padding={isMobile ? "2rem 2rem 2rem 3rem" : "2rem 2rem 2rem 0"}
             justify="space-between"
             height="100%"
-            gap="3rem"
+            gap={isMobile ? "1rem" : "3rem"}
         >
           <Flex align="center">
             <Flex gap=".5rem">
