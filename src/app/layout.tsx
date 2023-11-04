@@ -21,9 +21,15 @@ export const generateMetadata = () => {
     title: { default: Siteconfig.name, template: `%s - ${Siteconfig.name}` },
     description: `Today - ${Siteconfig.description}`,
     keywords: Siteconfig.keywords,
-    themeColor: [{ media: "(prefers-color-scheme: light)", color: "white" }],
-    viewport: "width=device-width, initial-scale=1",
   };
+};
+
+export const generateViewport = () => {
+  return "width=device-width, initial-scale=1";
+};
+
+export const generateThemeColor = () => {
+  return [{ media: "(prefers-color-scheme: light)", color: "white" }];
 };
 
 export default function RootLayout({
