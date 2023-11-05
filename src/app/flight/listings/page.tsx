@@ -2,7 +2,8 @@
 import Flights from "src/components/molecules/serviceTabs/components/flight";
 import FlightList from "src/components/molecules/flights/components/flightList";
 import { styled } from "styled-components";
-import { Container } from "@mui/material";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import SectionLayout from "@components/templates/SectionLayout";
 
 const FlightTab = styled.div`
   background: white;
@@ -12,15 +13,16 @@ const FlightTab = styled.div`
   padding: 1rem;
 `;
 
-function page() {
+function Page() {
+  const { isMobile } = useScreenResolution();
   return (
-    <Container maxWidth="lg">
+    <SectionLayout style={{ padding: isMobile ? "0 1rem" : "" }}>
       <FlightTab>
         <Flights />
       </FlightTab>
       <FlightList />
-    </Container>
+    </SectionLayout>
   );
 }
 
-export default page;
+export default Page;

@@ -8,7 +8,14 @@ import Section from "../../section";
 export default function PriceAlerts() {
   return (
     <Section>
-      <Box width={"100%"} bgcolor={ttColors.grayishAsh} padding={"1rem"}>
+      <Box
+        width={"100%"}
+        bgcolor={ttColors.grayishAsh}
+        padding={"1rem"}
+        border={"1px solid var(--color-border)"}
+        marginBottom={"20px"}
+        borderRadius={"10px"}
+      >
         <Flex>
           <Switch
             label={<Text type="h4" weight={"bold"} text="Set up price alert" />}
