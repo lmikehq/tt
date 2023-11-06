@@ -12,7 +12,7 @@ interface flexProps {
     | "space-evenly"
     | "flex-start"
     | "flex-end";
-  align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+  align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline" | "space-between";
   gap?: string;
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
@@ -20,6 +20,7 @@ interface flexProps {
   margin?: string;
   padding?: string;
   width?: string;
+  maxWidth?: string;
   styles?: CSSProperties;
   background?: string;
   borderRadius?: string;
@@ -49,14 +50,16 @@ interface flexProps {
   cursor?: string;
   ref?: any;
   onClick?: (e: any) => void;
-  className?: string;
+    className?: string;
+    position?: CSSProperties['position']
 }
 
 const FlexWrapper = styled.div`
   width: 100%;
+ transition: all 300ms ease-out;
 `;
 
-export const Flex: React.FC<flexProps> = ({
+const Flex: React.FC<flexProps> = ({
   children,
   justify,
   align,
@@ -66,6 +69,7 @@ export const Flex: React.FC<flexProps> = ({
   padding,
   background,
   width,
+  maxWidth,
   height,
   borderRadius,
   id,
@@ -80,39 +84,42 @@ export const Flex: React.FC<flexProps> = ({
   ref,
   styles,
   onClick,
-  className,
+    className,
+  position
 }) => {
-  return (
-    <FlexWrapper
-      className={className}
-      ref={ref}
-      id={id}
-      style={{
-        margin: margin,
-        display: "flex",
-        justifyContent: justify,
-        alignItems: align,
-        gap: gap,
-        cursor,
-        flexDirection: direction,
-        background: background,
-        width: width,
-        overflow: overflow || "unset",
-        overflowY: overflowY,
-        overflowX: overflowX,
-        borderRadius: borderRadius,
-        border: border,
-        padding: padding,
-        flexWrap: wrap,
-        height: height,
-        alignSelf: alignSelf,
-        borderBottom: borderBottom,
-        ...styles,
-      }}
-      onClick={onClick}
-    >
-      {children}
-    </FlexWrapper>
-  );
+    return (
+        <FlexWrapper
+            className={className}
+            ref={ref}
+            id={id}
+            style={{
+                margin: margin,
+                display: "flex",
+                justifyContent: justify,
+                alignItems: align,
+                gap: gap,
+                cursor,
+                flexDirection: direction,
+                background: background,
+                width: width,
+                maxWidth: maxWidth,
+                overflow: overflow || "unset",
+                overflowY: overflowY,
+                overflowX: overflowX,
+                borderRadius: borderRadius,
+                border: border,
+                padding: padding,
+                flexWrap: wrap,
+                height: height,
+                alignSelf: alignSelf,
+                borderBottom: borderBottom ?? border,
+                position,
+                ...styles,
+            }}
+            onClick={onClick}
+        >
+            {children}
+        </FlexWrapper>
+    )
 };
 export default Flex;

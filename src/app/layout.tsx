@@ -5,10 +5,11 @@ import "@style/globals.css";
 import "react-phone-input-2/lib/style.css";
 
 import { Siteconfig } from "@lib/extensions/config/site";
-import { Poppins } from "next/font/google";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import React from "react";
+import Providers from "./providers";
+import { Poppins } from "next/font/google";
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
@@ -82,16 +83,20 @@ export default function RootLayout({
   `}
       </Script>
 
-      <head>
-        <link rel="icon" href="/favicon.svg" sizes="any" />
-      </head>
-      <body>
-          <Toaster position="top-center" />
-          <PaymentConfirmationModal />
-          <StyledComponentsRegistry>
-            <LoaderLayout>{children}</LoaderLayout>
-          </StyledComponentsRegistry>
-      </body>
-    </html>
-  );
+        <head>
+            <link rel="icon" href="/favicon.svg" sizes="any" />
+        </head>
+        <body>
+            <Toaster position="top-center" />
+            <PaymentConfirmationModal />
+            <StyledComponentsRegistry>
+                <LoaderLayout>
+                    <Providers>
+                        {children}
+                    </Providers>
+                </LoaderLayout>
+            </StyledComponentsRegistry>
+        </body>
+        </html>
+    );
 }

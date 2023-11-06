@@ -1,4 +1,3 @@
-import { FlightProvider } from "@lib/extensions/context";
 
 interface layoutProps {
   children: React.ReactNode;
@@ -10,5 +9,5 @@ export const metadata = {
 };
 
 export default function FlightLayout({ children }: layoutProps) {
-  return <FlightProvider>{children}</FlightProvider>;
+  return children;
 }

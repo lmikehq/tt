@@ -69,7 +69,7 @@ function Stays() {
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
           <Text type="label" size={isMobile ? 16 : 18} text="Check In" />
-          <DatePicker placeholder="Select Date" position="start" />
+          <DatePicker placeholder="Select Date" position="start" onChange={(e) => null} />
         </Flex>
 
         <Flex
@@ -78,7 +78,7 @@ function Stays() {
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
           <Text type="label" size={isMobile ? 16 : 18} text="Return" />
-          <DatePicker placeholder="Select Date" position="start" />
+          <DatePicker placeholder="Select Date" position="start" onChange={(e) => null} />
         </Flex>
 
         <Flex

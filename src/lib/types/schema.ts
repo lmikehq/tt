@@ -11,13 +11,13 @@ import * as yup from "yup";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 
-const countrySchema: yup.ObjectSchema<CountryType> = yup.object().shape({
+export const countrySchema: yup.ObjectSchema<CountryType> = yup.object().shape({
   name: yup.string().required("Required"),
   flag: yup.string().required("Required"),
   code: yup.string().required("Required"),
 });
 
-const mockCountry: CountryType = {
+export const mockCountry: CountryType = {
   name: "",
   flag: "",
   code: "",

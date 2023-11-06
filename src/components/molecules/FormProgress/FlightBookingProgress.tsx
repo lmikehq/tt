@@ -19,15 +19,15 @@ const HorizontalLine = styled.div<{
 `;
 
 function FlightBookingProgress({
-  phase,
-  highestPhase,
-  setStep,
+    phase,
+    highestPhase,
+    setStep,
 }: ComponentProps) {
   const { isMobile } = useScreenResolution();
   return (
     <Flex
-      padding={isMobile ? "0" : "0 1.5rem"}
-      margin={isMobile ? "0" : "0 0 5rem 0"}
+      padding={isMobile ? "0" : "0 0rem"}
+      margin={isMobile ? "0" : "0 0 2.5rem 0"}
     >
       <Grid columns="4" gap="0">
         <Flex align="center">
