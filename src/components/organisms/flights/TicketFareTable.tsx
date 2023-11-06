@@ -156,7 +156,11 @@ const TicketFareTable = () => {
                         </StyledTableCell>
                         <StyledTableCell isHeader isRecommended>
                             <Text weight={"600"} text="Flex" type="p" />
-                            <Text text="€ 50" type="p" />
+                            <Text
+                                text="€ 50"
+                                type="p"
+                                decoration={"line-through"}
+                            />
                             <Text
                                 size={10}
                                 text="100% discount applied"
