@@ -190,7 +190,7 @@ export interface SaveBookingRequestInput {
     new_user_email?: string;
     user?: string;
     baggage: Baggage[];
-    additional_services: AdditionalServices | null;
+    additional_services?: AdditionalServices | null;
 }
 export interface TokenizeDataRequestInput {
     card: CardInfo;
@@ -342,7 +342,7 @@ export const saveBookingDetails: SaveBookingRequestInput = {
     booking_token: "",
     session_id: "",
     baggage: [],
-    additional_services: null,
+    // additional_services: null,
 };
 
 export const cardDetails: CardInfo = {
