@@ -11,7 +11,7 @@ function FlightList() {
   const [sortType, setSortType] = useState("best");
 
   return (
-        <Flex direction={isMobile ? "column" : "row"} gap="2rem" justify="space-between" padding={isMobile ? "1rem" : ""}>
+      <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? "0rem" : "2rem"} justify="space-between" padding={isMobile ? "1rem" : ""}>
             <Section width={isMobile ? "100%" : "25%"}>
                 <SortedColumn results={results} sortType={sortType} />
             </Section>

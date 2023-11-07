@@ -60,6 +60,7 @@ interface Mark {
 interface SliderProps {
   marks: Mark[];
   defaultValue: number[];
+  value?: number[];
   onChange?: (event: Event, newValue: number | number[]) => void;
   min?: number;
   max?: number;
@@ -69,13 +70,13 @@ interface SliderProps {
 export default function CustomSlider({ marks, defaultValue, onChange, min, max, step }: SliderProps) {
   return (
     <CustomizedSlider
-      components={{ Thumb: ThumbComponent }}
-      marks={marks}
-      defaultValue={defaultValue}
-      onChange={onChange}
-      min={min}
-      max={max}
-      step={step}
+        components={{ Thumb: ThumbComponent }}
+        marks={marks}
+        defaultValue={defaultValue}
+        onChange={onChange}
+        min={min}
+        max={max}
+        step={step}
     />
   );
 }

@@ -32,6 +32,10 @@ interface State {
     step: number;
     searchFlightsMode: Mode;
     searchFlightsResults: FlightInfo[];
+    flightsResults: {
+        currency: string;
+        total: number;
+    };
     searchQuery: SearchFlightsRequestQuery;
     initCheckFlightsMode: Mode;
     checkFlightsResponse: CheckFlightResponse | null;
@@ -89,6 +93,10 @@ export const useFlightBookingStore = create<State & Actions>(
         mode: Mode.init,
         searchFlightsMode: Mode.init,
         searchFlightsResults: [],
+        flightsResults: {
+            currency: 'USD',
+            total: 0
+        },
         searchQuery: {},
         sessionId: null,
         seatRows: [],
@@ -132,11 +140,16 @@ export const useFlightBookingStore = create<State & Actions>(
             data: SearchFlightsRequestQuery;
         }) => {
             set({ searchFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data })
+            return await FlightBookingService.searchFlights({ data: { ...data, curr: 'USD' } })
                 .then((response) => {
                     set((state) => ({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
+                        flightsResults: {
+                            currency: response.currency,
+                            total: response._results
+                        },
+                        totalSearchFlightsResults: response._results,
                     }));
                 })
                 .catch((error) => {

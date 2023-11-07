@@ -2,6 +2,13 @@
 
 import Location from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
+import airportsDB from '@/constants/airports'
+const sortedAirports: { [k: string]: AirportInterface } = {}
+airportsDB.forEach(e => {
+    sortedAirports[e.iata] = e
+})
+// console.log('dbbbb', airportsDB)
+
 import {
     createContext,
     useContext,
@@ -30,10 +37,15 @@ export interface OneFlightType {
     flightClass: string;
 }
 
+export interface AirportInterface {
+    [k: string]: string;
+}
+
 interface ContextType {
     flightType: string;
     stops: string;
     fleet: OneFlightType[];
+    airports: typeof sortedAirports
 }
 
 const oneFlight: OneFlightType = {
@@ -54,6 +66,7 @@ const initialValues: ContextType = {
     flightType: "international",
     stops: "round",
     fleet: [oneFlight],
+    airports: sortedAirports
 };
 
 type Action =
