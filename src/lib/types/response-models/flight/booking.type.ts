@@ -136,6 +136,8 @@ export interface SeatClassCategory {
 export interface SeatClassInterface {
     standard: SeatClassCategory;
     extra_legroom_seat: SeatClassCategory;
+    premium: SeatClassCategory;
+    [key: string]: any;
 }
 export interface SeatInterface {
     column: string;
@@ -152,6 +154,7 @@ export interface SeatInterface {
     seat_class: string;
     state: string;
     type: string;
+    selected?: boolean;
 }
 
 export interface SeatRowInterface {
@@ -165,8 +168,9 @@ export interface SeatRowWithSegmentCodeInterface {
 }
 
 export const seatClass: SeatClassInterface = {
-    standard: { name: "standard", color: "#ffff" },
-    extra_legroom_seat: { name: "Extra legroom seat", color: "#ffff" },
+    standard: { name: "standard", color: "#F17400" },
+    extra_legroom_seat: { name: "Extra legroom seat", color: "#7BBBD6" },
+    premium: { name: "premium", color: "#5DB955" },
 };
 
 export const mockRows = [

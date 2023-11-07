@@ -2,6 +2,7 @@ import {
     ParticularSeatingOption,
     cardDetails,
     saveBookingDetails,
+    updateSeatAvailability,
 } from "./../../types/request-models/flight/booking.type";
 import { FlightBookingService } from "@/lib/services/flight/booking.service";
 import {
@@ -65,6 +66,10 @@ interface Actions {
     checkSeating: (params: {
         data: CheckSeatingRequestInput;
     }) => Promise<CheckSeatingResponse>;
+    updateSeatAvailablity: (params: {
+        previousSeat: string | null;
+        newSeat: string;
+    }) => void;
 
     saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
     confirmPaymentZooz: (params: {
@@ -177,6 +182,23 @@ export const useFlightBookingStore = create<State & Actions>(
             set({
                 seatRows: data,
             });
+        },
+        updateSeatAvailablity: ({ previousSeat, newSeat }) => {
+            console.log(previousSeat);
+            console.log(newSeat);
+            set((state) => ({
+                seatRows: updateSeatAvailability({
+                    seatName: newSeat,
+                    selected: true,
+                    rows: previousSeat
+                        ? updateSeatAvailability({
+                              seatName: previousSeat,
+                              selected: false,
+                              rows: state.seatRows,
+                          })
+                        : state.seatRows,
+                }),
+            }));
         },
         checkSeating: async ({ data }: { data: CheckSeatingRequestInput }) => {
             set({ checkSeatingMode: Mode.loading });
