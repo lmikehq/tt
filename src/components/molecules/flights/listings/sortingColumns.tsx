@@ -381,6 +381,7 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
   return (
     <Flex direction="column">
         <PriceAlerts />
+          
         {activeFilters.list.length > 0 &&
             <Flex direction="column" padding="1rem 0" gap=".5rem">
                 <Flex justify="space-between">
@@ -684,14 +685,14 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
               
         </Panel>
           
-            <LoadingButton
-                onClick={() => handleFilterResults(filterData)}
-                variant="contained"
-                style={{ backgroundColor: ttColors.primary, boxShadow: 'none', padding: ".9rem 0" }}
-                loading={searchFlightsMode === Mode.loading}
-            >
-              <Text type="p" text="Apply"/>
-          </LoadingButton>
+        <LoadingButton
+            onClick={() => handleFilterResults(filterData)}
+            variant="contained"
+            style={{ backgroundColor: ttColors.primary, boxShadow: 'none', padding: ".9rem 0" }}
+            loading={searchFlightsMode === Mode.loading}
+        >
+            <Text type="p" text="Apply"/>
+        </LoadingButton>
     </Flex>
   );
 };

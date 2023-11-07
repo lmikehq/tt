@@ -67,12 +67,13 @@ interface SliderProps {
   step?: number;
 }
 
-export default function CustomSlider({ marks, defaultValue, onChange, min, max, step }: SliderProps) {
+export default function CustomSlider({ marks, defaultValue, value, onChange, min, max, step }: SliderProps) {
   return (
     <CustomizedSlider
         components={{ Thumb: ThumbComponent }}
         marks={marks}
         defaultValue={defaultValue}
+        value={value}
         onChange={onChange}
         min={min}
         max={max}

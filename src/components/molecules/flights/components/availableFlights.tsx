@@ -39,38 +39,41 @@ interface SearchQuery {
 
 function FlightBoxSkeleton() {
     const arr = Array(4).fill(0)
-    return (arr.map((e, index) => 
-            <Flex width="100%" justify="space-between" background={ttColors.light} borderRadius="10px" key={index}>
-                <Flex width="63%">
-                    <SkeletonLoader
-                        text
-                        tabs={1}
-                        textHeight={60}
-                        textWidth="70%"
-                        rectangularHeight={200}
-                        rectangularWidth="100%"
-                    />
+    return (
+        <React.Fragment>
+            {arr.map((e, index) => 
+                <Flex width="100%" justify="space-between" background={ttColors.light} borderRadius="10px" key={index}>
+                    <Flex width="63%">
+                        <SkeletonLoader
+                            text
+                            tabs={1}
+                            textHeight={60}
+                            textWidth="70%"
+                            rectangularHeight={200}
+                            rectangularWidth="100%"
+                        />
+                    </Flex>
+                    <Flex width="33%" direction="column">
+                        <SkeletonLoader
+                            text
+                            tabs={1}
+                            textHeight={60}
+                            textWidth="50%"
+                            rectangularHeight={60}
+                            rectangularWidth="100%"
+                        />
+                        <SkeletonLoader
+                            text
+                            tabs={1}
+                            textHeight={60}
+                            textWidth="50%"
+                            rectangularHeight={60}
+                            rectangularWidth="100%"
+                        />
+                    </Flex>
                 </Flex>
-                <Flex width="33%" direction="column">
-                    <SkeletonLoader
-                        text
-                        tabs={1}
-                        textHeight={60}
-                        textWidth="50%"
-                        rectangularHeight={60}
-                        rectangularWidth="100%"
-                    />
-                    <SkeletonLoader
-                        text
-                        tabs={1}
-                        textHeight={60}
-                        textWidth="50%"
-                        rectangularHeight={60}
-                        rectangularWidth="100%"
-                    />
-                </Flex>
-            </Flex>
-        )
+            )}
+        </React.Fragment>
     )
 }
 
