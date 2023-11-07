@@ -1,9 +1,12 @@
 import Button from "@/components/atoms/button";
+import Text from "@/components/atoms/text";
+import Spinner from "@/components/molecules/icons/spinner";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import sleep from "@/lib/extensions/helpers/sleep";
 import {
     contactDetailsSchema,
     manyPassengersAndBaggageDetailsSchema,
@@ -87,6 +90,8 @@ const TripSummary = ({
 
     const { adults, children, infants } = searchParams;
 
+    const [loading, setLoading] = useState(false);
+
     const getPassengerBagCombinationOptions = ({
         category,
     }: {
@@ -166,11 +171,12 @@ const TripSummary = ({
         enableReinitialize: true,
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
-        onSubmit: (values) => {
+        onSubmit: async (values) => {
             console.log(contactDetailsFormik.values, "passengers");
             contactDetailsFormik.validateForm();
             if (!contactDetailsFormik.isValid) return;
 
+            setLoading(true);
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
@@ -191,6 +197,7 @@ const TripSummary = ({
                     ),
                 },
             });
+            await sleep(500);
             setStep({ step: 3 });
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         },
@@ -279,7 +286,19 @@ const TripSummary = ({
                             width="100%"
                             onClick={() => console.log(formik)}
                         >
-                            Continue
+                            {loading ? (
+                                <Spinner
+                                    fill={ttColors.primary}
+                                    size={"45px"}
+                                />
+                            ) : (
+                                <Text
+                                    type="p"
+                                    size={16}
+                                    text="Continue"
+                                    weight={500}
+                                />
+                            )}
                         </Button>
                     </Box>
                 </form>

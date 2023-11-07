@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Table as MuiTable,
     TableBody,
@@ -16,6 +16,8 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import CheckIcon from "@mui/icons-material/Check";
 import Flex from "@/components/templates/flex";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import sleep from "@/lib/extensions/helpers/sleep";
+import Spinner from "@/components/molecules/icons/spinner";
 
 interface StyledTableCellProps extends TableCellProps {
     textAlign?: "center" | "left" | "right";
@@ -71,6 +73,7 @@ const Table = styled(MuiTable)(() => ({
 
 const TicketFareTable = () => {
     const { setStep } = useFlightBookingStore((state) => state);
+    const [loading, setLoading] = useState(false);
 
     const data = [
         {
@@ -118,7 +121,9 @@ const TicketFareTable = () => {
                     height={"3.5rem"}
                     variant="solid"
                     background={ttColors.dark}
-                    onClick={() => {
+                    onClick={async () => {
+                        setLoading(true);
+                        await sleep(500);
                         setStep({ step: 4 });
                         window.scrollTo({
                             top: 0,
@@ -127,7 +132,11 @@ const TicketFareTable = () => {
                         });
                     }}
                 >
-                    Select
+                    {loading ? (
+                        <Spinner fill={ttColors.primary} size={"45px"} />
+                    ) : (
+                        <Text type="p" size={16} text="Select" weight={500} />
+                    )}
                 </Button>
             ),
             superFlex: (

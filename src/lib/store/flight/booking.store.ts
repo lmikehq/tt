@@ -218,7 +218,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 })
                 .catch((error) => {
                     set({
-                        mode: Mode.error,
+                        checkSeatingMode: Mode.error,
                     });
                     throw error;
                 });
@@ -243,7 +243,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 })
                 .catch((error) => {
                     set({
-                        mode: Mode.error,
+                        saveBookingMode: Mode.error,
                     });
                     throw "Unable to save booking";
                 });
@@ -297,7 +297,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 })
                 .catch((error) => {
                     set({
-                        mode: Mode.error,
+                        confirmPaymentMode: Mode.error,
                     });
                     throw error;
                 });
