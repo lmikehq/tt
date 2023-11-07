@@ -1,6 +1,7 @@
 "use client";
 
 import Filter from "./filters";
+import LoadingButton from '@mui/lab/LoadingButton';
 import React, { ReactNode, useEffect, useMemo } from "react";
 import { useState } from "react";
 import { FilterData } from "@/lib/types/request-models/flight/filter";
@@ -22,17 +23,27 @@ import dayjs from "dayjs";
 import { HiXMark } from "react-icons/hi2";
 import { Grid } from "@/components/templates/grid";
 import { Divider } from "@/components/atoms/divider";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { Mode } from "@/lib/types";
 
 const TimeBox = styled.div`
     background: #f3f3ff;
     border-radius: 8px;
 `;
 
-const options = [
+const stopOptions = [
     { value: "any", label: "Any" },
-    { value: "non", label: "Non-Stop" },
-    { value: "1stop", label: "Up to 1 stop" },
-    { value: "2stop", label: "Up to 2 stops" },
+    { value: 0, label: "Non-Stop" },
+    { value: 1, label: "Up to 1 stop" },
+    { value: 2, label: "Up to 2 stops" },
+];
+
+const cabinOptions = [
+    { value: "M", label: "Economy" },
+    { value: "W", label: "Economy Premium" },
+    { value: "C", label: "Business" },
+    { value: "F", label: "First Class" },
 ];
 
 const airlines = [
@@ -50,13 +61,40 @@ const airlines = [
 
 const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
 
-const cabin = [
-    "All Cabins",
-    "Economy",
-    "Premium Economy",
-    "Business",
-    "First Class",
-];
+const initFilterData = {
+    bags: {
+        cabin: 0,
+        checked: 0,
+    },
+    stops: "any",
+    airlines: airlines,
+    times: {
+        depart: {
+            min: "0:00",
+            max: "23:59",
+        },
+        arrival: {
+            min: "0:00",
+            max: "23:59",
+        },
+    },
+    alliance: [],
+    duration: {
+        stopOver: {
+            min: 2,
+            max: 48
+        },
+        travelTime: {
+            min: 2,
+            max: 48,
+        },
+    },
+    price: {
+        min: 0,
+        max: 40000
+    },
+    cabin: "",
+}
 
 const Tag = styled.div`
   background: #87ceeb;
@@ -64,9 +102,8 @@ const Tag = styled.div`
   color: white;
   padding: 0.625em 0.875rem;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   max-width: 310px;
-  margin: 1.5rem 0 0;
 `;
 
 
@@ -89,108 +126,127 @@ function Panel({ title, toggle, isActive, children }: { title: string; toggle: (
                 )}
             </Flex>
             {isActive && children}
-            <Divider direction="horizontal" />
+            <Divider direction="horizontal" px="1px" />
         </Flex>
     )
 }
 
-function SortingColumns() {
-  const [filterData, setFilterData] = useState<FilterData>({
+function SortingColumns({ onClose }: { onClose?: () => void; }) {
+    const {
+        searchFlights,
+        searchFlightsMode,
+        updateSearchQuery,
+        searchQuery,
+    } = useFlightBookingStore((state) => state);
+    const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
+
+    const [filterData, setFilterData] = useState<FilterData>({
+        ...initFilterData,
         bags: {
-            cabin: 0,
-            checked: 0,
-        },
-        stops: "",
-        airlines: airlines,
-        times: {
-            depart: {
-                min: "0:00",
-                max: "23:59",
-            },
-            arrival: {
-                min: "0:00",
-                max: "23:59",
-            },
-        },
-        alliance: [],
-        duration: {
-            stopOver: {
-                min: 2,
-                max: 25
-            },
-            travelTime: {
-                min: 2,
-                max: 25,
-            },
+            cabin: Number(searchParams?.adult_hold_bag ?? initFilterData.bags.cabin),
+            checked: Number(searchParams?.adult_hand_bag ?? initFilterData.bags.checked),
         },
         price: {
-            min: 0,
-            max: 40000
+            min: Number(searchParams?.price_from ?? initFilterData.price.min),
+            max: Number(searchParams?.price_to ?? initFilterData.price.max),
         },
-        cabin: [],
+        times: {
+            arrival: {
+                min: searchParams?.atime_from ?? initFilterData.times.arrival.min,
+                max: searchParams?.atime_to ?? initFilterData.times.depart.max,
+            },
+            depart: {
+                min: searchParams?.dtime_from ?? initFilterData.times.depart.min,
+                max: searchParams?.dtime_to ?? initFilterData.times.depart.max,
+            }
+        },
+        duration: {
+            stopOver: {
+                min: initFilterData.duration.stopOver.min,
+                max: Number(searchParams?.max_stopovers ?? initFilterData.duration.stopOver.max),
+            },
+            travelTime: {
+                min: initFilterData.duration.travelTime.min,
+                max: Number(searchParams?.max_fly_duration ?? initFilterData.duration.travelTime.max),
+            }
+        },
+        cabin: searchParams?.selected_cabins ?? initFilterData?.cabin,
+        stops: searchParams?.stops ?? initFilterData?.stops,
     });
 
-  const [filterState, setFilterState] = useState({
-    bags: false,
-    stops: false,
-    airlines: false,
-    times: false,
-    alliance: false,
-    duration: false,
-    price: false,
-    cabin: false,
-  });
+    const [filterState, setFilterState] = useState({
+        bags: false,
+        stops: false,
+        airlines: false,
+        times: false,
+        alliance: false,
+        duration: false,
+        price: false,
+        cabin: false,
+    });
+  
+  type FilterName = keyof typeof filterState;
+  
+    const [activeFilters, setActiveFilters] = useState<{ list: string[]; active: boolean; }>({
+        list: [],
+        active: false,
+    })
 
-  const [columnState, setColumnState] = useState({
-    bags: false,
-    stops: false,
-    airlines: false,
-    times: false,
-    alliance: false,
-    duration: false,
-    price: false,
-    cabin: false,
-  });
+    const setFilter = (value: string) => {
+        setActiveFilters(prev => ({
+            ...prev,
+            list: prev.list.includes(value) ? prev.list : [...prev.list, value]
+        }))
+    }
 
-  type ColumnName = keyof typeof columnState;
+    const resetFilters = () => {
+        setFilterData(initFilterData)
+        setActiveFilters(prev => ({
+            ...prev,
+            list: [],
+            active: false,
+        }))
+        handleFilterResults(initFilterData)
+    }
 
-  const toggleColumn = (columnName: ColumnName) => {
-    setColumnState((prevState) => ({
-      ...prevState,
-      [columnName]: !prevState[columnName],
-    }));
+  const toggleFilter = (columnName: FilterName) => {
+        setFilterState((prevState) => ({
+            ...prevState,
+            [columnName]: !prevState[columnName],
+        }));
     };
-    
 
-  const handleBags = (
-    bagType: "cabin" | "checked",
-    actionType: "add" | "subtract"
-  ) => {
-    setFilterData((prevState) => {
-      const currentValue = prevState.bags[bagType];
-      const newValue =
-        actionType === "add" ? Math.min(currentValue + 1, 10) : Math.max(currentValue - 1, 0);
-      return {
-        ...prevState,
-        bags: {
-          ...prevState.bags,
-          [bagType]: newValue,
-        },
-      };
-    });
-  };
+    const handleBags = (
+        bagType: "cabin" | "checked",
+        actionType: "add" | "subtract"
+    ) => {
+        setFilterData((prevState) => {
+        const currentValue = prevState.bags[bagType];
+        const newValue =
+            actionType === "add" ? Math.min(currentValue + 1, 10) : Math.max(currentValue - 1, 0);
+        return {
+            ...prevState,
+            bags: {
+            ...prevState.bags,
+            [bagType]: newValue,
+            },
+        };
+        });
+        setFilter('bags')
+    };
 
-  const handleStops = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
     setFilterData((prev) => {
       return {
         ...prev,
-        stops: value === "on" ? name : value,
+        [name]: value === "on" ? name : value,
       };
     });
+      setFilter('stops')
   };
 
-    type checkType = "cabin" | "alliance" | "airlines";
+    type checkType = "alliance" | "airlines";
     
   const handleCheck = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -211,6 +267,7 @@ function SortingColumns() {
         };
       }
     });
+      setFilter(checkType)
     };
     
     const handleCheckAll = (
@@ -223,6 +280,7 @@ function SortingColumns() {
             [checkType]: allOptions,
         })
         )
+        setFilter(checkType)
     }
 
     const convertTime = (value: number) => {
@@ -256,16 +314,8 @@ function SortingColumns() {
                 },
             },
         }));
+        setFilter(group)
     };
-    
-  type FilterName = keyof typeof filterState;
-
-    const toggleState = (filterName: FilterName) => {
-        setFilterState((prevState) => ({
-            ...prevState,
-            [filterName]: !prevState[filterName],
-        }))
-    }
     
     const handleSlider = (newValue: number | number[], group: 'duration' | 'price', name: string) => {
         const theValue = Array.isArray(newValue) ? newValue : [0, 0]
@@ -289,52 +339,78 @@ function SortingColumns() {
                 },
             }));
         }
+        setFilter(group)
     };
 
-
-  const filteredTags = useMemo(() => {
-    return Object.entries(filterState).map(([key, value]) => {
-      if (value) {
-        return (
-          <Tag key={key}>
-            {key} <HiXMark size={25} />
-          </Tag>
-        );
-      }
-      return null;
-    });
-  }, [filterState]);
-
-  const trueValuesCount = useMemo(() => {
-    return Object.values(filterState).filter((value) => value === true).length;
-  }, [filterState]);
+    const filteredTags = useMemo(() =>
+        activeFilters.list.map((e, index) =>
+            <Tag key={index}>
+                {e} <HiXMark size={25} />
+            </Tag>
+        )
+    , [activeFilters]);
     
-    const filterResults = () => {
-
+    const handleFilterResults = (data: FilterData) => {
+        const newParams = {
+            ...searchParams,
+            adult_hold_bag: String(data.bags.cabin),
+            adult_hand_bag: String(data.bags.checked),
+            max_sector_stopovers: data.stops === 'any' ? '' : data.stops,
+            dtime_from: data.times.depart.min,
+            dtime_to: data.times.depart.max,
+            atime_from: data.times.arrival.min,
+            atime_to: data.times.arrival.max,
+            max_fly_duration: data.duration.travelTime.max,
+            stopover_from: `${data.duration.stopOver.min}:00`,
+            stopover_to: `${data.duration.stopOver.max}:00`,
+            price_from: data.price.min,
+            price_to: data.price.max,
+            selected_cabins: data.cabin,
+        }
+        updateSearchQuery({ data: newParams });
+        searchFlights({ data: newParams })
+            .then(res => {
+                setActiveFilters(prev => ({ ...prev, active: true }))
+            })
+        
+        onClose && onClose()
     }
+
 
     
   return (
     <Flex direction="column">
         <PriceAlerts />
-        <Flex direction="column" padding="1rem 0" gap=".5rem">
-            {trueValuesCount > 0 && (
-                <Text
-                    type="p"
-                    text={`${trueValuesCount} Filters Active`}
-                    weight={500}
-                />
-            )}
-            <Grid columns="2" gap=".5rem">
-                {filteredTags}
-            </Grid>
-        </Flex>
+          
+        {activeFilters.list.length > 0 &&
+            <Flex direction="column" padding="1rem 0" gap=".5rem">
+                <Flex justify="space-between">
+                    <Text
+                        type="p"
+                        color="#06062A"
+                        text={`${activeFilters.list.length} Filters Active`}
+                        weight={500}
+                    />
+                    <Text
+                        type="p"
+                        color={ttColors.primary}
+                        text="Clear"
+                        styles={{ textDecoration: 'underline' }}
+                        weight={500}
+                        onClick={resetFilters}
+                    />
+                </Flex>
+                <Grid columns="2" gap=".5rem">
+                    {filteredTags}
+                </Grid>
+            </Flex>
+        }
           
         {/* Number of Bags */}
         <Panel
             title="Bags"
-            toggle={() => toggleColumn("bags")}
-            isActive={columnState.bags}
+            toggle={() => toggleFilter("bags")}
+            isActive={filterState.bags}
         >
             <Flex direction="column" justify="center" gap="1rem" padding="1rem 0">
                 <Flex align="center" justify="space-between">
@@ -377,22 +453,23 @@ function SortingColumns() {
         {/* Number of Stops */}
         <Panel
             title="Stops"
-            toggle={() => toggleColumn("stops")}
-            isActive={columnState.stops}
+            toggle={() => toggleFilter("stops")}
+            isActive={filterState.stops}
         >
             <Flex direction="column" align="flex-start" gap=".5rem">
                 <CustomRadioGroup
-                options={options}
-                name="flight"
-                onChange={(x) => handleStops(x)}
-                justifyContent="flex-end"
-                align="flex-start"
-                direction="column"
+                    options={stopOptions}
+                    name="stops"
+                    value={filterData.stops}
+                    onChange={(x) => handleRadio(x)}
+                    justifyContent="flex-end"
+                    align="flex-start"
+                    direction="column"
                 />
-                <CheckBox
+                {/* <CheckBox
                     name="overnight"
                     checked={filterData.stops === "overnight"}
-                    onChange={(x) => handleStops(x)}
+                    onChange={(x) => handleRadio(x)}
                     style={{ paddingLeft: '5px', fontSize: '14px' }}
                 >
                 <Text
@@ -401,15 +478,15 @@ function SortingColumns() {
                     whiteSpace="nowrap"
                     size={14}
                 />
-                </CheckBox>
+                </CheckBox> */}
             </Flex>
         </Panel>
           
         {/* Airlines */}
         <Panel
             title="Airlines"
-            toggle={() => toggleColumn("airlines")}
-            isActive={columnState.airlines}
+            toggle={() => toggleFilter("airlines")}
+            isActive={filterState.airlines}
         >
             <Flex direction="column" gap=".5rem">
                 <Flex direction="column" align="space-between" gap=".5rem">
@@ -449,16 +526,16 @@ function SortingColumns() {
         {/* Times */}
         <Panel
             title="Times"
-            toggle={() => toggleColumn("times")}
-            isActive={columnState.times}
+            toggle={() => toggleFilter("times")}
+            isActive={filterState.times}
         >
             <Flex direction="column">
                 <Flex gap=".5rem" align="center" padding="1rem" justify="space-between" borderRadius="8px" background={ttColors.grayishAsh}>
                     <ButtonBox active={true} width="50%">
-                        <Text type="p" text="Departure" weight={500} size={14} />
+                        <Text type="p" text="Departure" weight={500} size={16} />
                     </ButtonBox>
                     <ButtonBox active={false} width="50%">
-                        <Text type="p" text="Return" weight={500} size={14} />
+                        <Text type="p" text="Return" weight={500} size={16} />
                     </ButtonBox>
                 </Flex>
                 <Flex direction="column" gap=".25rem" padding="1rem 0">
@@ -470,7 +547,6 @@ function SortingColumns() {
                         weight={500}
                         color="#7BBBD6"
                     /> */}
-
                     <Slider
                         marks={[
                             { value: 0, label: filterData.times.depart.min },
@@ -481,26 +557,19 @@ function SortingColumns() {
                         min={0}
                         max={96}
                     />
-                </Flex>
+                </Flex> 
                 <Flex direction="column" gap=".25rem" padding="1rem 0">
-                <Text type="p" text="Arrival" weight={500} />
-                {/* <Text
-                    type="p"
-                    text="All Day"
-                    size={16}
-                    weight={500}
-                    color="#7BBBD6"
-                /> */}
-                <Slider
-                    marks={[
-                        { value: 0, label: filterData.times.arrival.min },
-                        { value: 96, label: filterData.times.arrival.max },
-                    ]}
-                    defaultValue={[0, 96]}
-                    onChange={(event, newValue) => handleTimeChange(newValue, 'arrival')}
-                    min={0}
-                    max={96}
-                />
+                    <Text type="p" text="Arrival" weight={500} />
+                    <Slider
+                        marks={[
+                            { value: 0, label: filterData.times.arrival.min },
+                            { value: 96, label: filterData.times.arrival.max },
+                        ]}
+                        defaultValue={[0, 96]}
+                        onChange={(event, newValue) => handleTimeChange(newValue, 'arrival')}
+                        min={0}
+                        max={96}
+                    />
                 </Flex>
             </Flex>
         </Panel>
@@ -508,8 +577,8 @@ function SortingColumns() {
         {/* Alliance */}
         <Panel
             title="Alliance"
-            toggle={() => toggleColumn("alliance")}
-            isActive={columnState.alliance}
+            toggle={() => toggleFilter("alliance")}
+            isActive={filterState.alliance}
         >
             <div>
                 {alliance.map((alliance, index) => (
@@ -528,49 +597,35 @@ function SortingColumns() {
         {/* Duration */}
         <Panel
             title="Duration"
-            toggle={() => toggleColumn("duration")}
-            isActive={columnState.duration}
+            toggle={() => toggleFilter("duration")}
+            isActive={filterState.duration}
         >
             <div>
                 <Flex direction="column" gap=".25rem" padding=".5rem 0">
-                <Text type="p" text="Max Travel Time" size={18} weight={500} />
-                {/* <Text
-                    type="p"
-                    text="Any"
-                    size={16}
-                    weight={500}
-                    color="#7BBBD6"
-                /> */}
-                <Slider
-                    marks={[
-                        { value: 2, label: `${filterData.duration.travelTime.min} Hours` },
-                        { value: 25, label: `${filterData.duration.travelTime.max} Hours` },
-                    ]}
-                    defaultValue={[2, 25]}
-                    onChange={(event, newValue) => handleSlider(newValue, 'duration', "travelTime")}
-                    min={2}
-                    max={25}
-                />
+                    <Text type="p" text="Max Travel Time" size={16} weight={500} />
+                    <Slider
+                        marks={[
+                            { value: 2, label: `${filterData.duration.travelTime.min} Hours` },
+                            { value: 48, label: `${filterData.duration.travelTime.max} Hours` },
+                        ]}
+                        defaultValue={[filterData.duration.travelTime.min, filterData.duration.travelTime.max]}
+                        onChange={(event, newValue) => handleSlider(newValue, 'duration', "travelTime")}
+                        min={2}
+                        max={48}
+                    />
                 </Flex>
                 <Flex direction="column" gap=".25rem" padding=".5rem 0">
-                <Text type="p" text="Stop Overs" size={18} weight={500} />
-                {/* <Text
-                    type="p"
-                    text="2 - 25 Hours"
-                    size={16}
-                    weight={500}
-                    color="#7BBBD6"
-                /> */}
-                <Slider
-                    marks={[
-                        { value: 2, label: `${filterData.duration.stopOver.min} Hours` },
-                        { value: 25, label: `${filterData.duration.stopOver.max} Hours` },
-                    ]}
-                    defaultValue={[2, 25]}
-                    onChange={(event, newValue) => handleSlider(newValue, 'duration', "stopOver")}
-                    min={2}
-                    max={25}
-                />
+                    <Text type="p" text="Stop Overs" size={16} weight={500} />
+                    <Slider
+                        marks={[
+                            { value: 2, label: `${filterData.duration.stopOver.min} Hours` },
+                            { value: 48, label: `${filterData.duration.stopOver.max} Hours` },
+                        ]}
+                        defaultValue={[filterData.duration.stopOver.min, filterData.duration.stopOver.max]}
+                        onChange={(event, newValue) => handleSlider(newValue, 'duration', "stopOver")}
+                        min={2}
+                        max={48}
+                    />
                 </Flex>
             </div>
         </Panel>
@@ -578,8 +633,8 @@ function SortingColumns() {
         {/* Price */}
         <Panel
             title="Price"
-            toggle={() => toggleColumn("price")}
-            isActive={columnState.price}
+            toggle={() => toggleFilter("price")}
+            isActive={filterState.price}
         >
             <Text
                 type="p"
@@ -593,21 +648,30 @@ function SortingColumns() {
                     { value: 0, label: `$${filterData.price.min}` },
                     { value: 40000, label: `$${filterData.price.max}` },
                 ]}
-                defaultValue={[0, 40000]}
+                defaultValue={[filterData.price.min, filterData.price.max]}
                 onChange={(event, newValue) => handleSlider(newValue, 'price', "price")}
                 min={0}
                 max={40000}
+                step={250}
             />
         </Panel>
           
         {/* Cabin */}
         <Panel
             title="Cabin"
-            toggle={() => toggleColumn("cabin")}
-            isActive={columnState.cabin}
+            toggle={() => toggleFilter("cabin")}
+            isActive={filterState.cabin}
         >
-            <Flex direction="column" gap=".25rem">
-                {cabin.map((cabin, index) => (
+              <Flex direction="column" gap=".25rem">
+                  <CustomRadioGroup
+                    options={cabinOptions}
+                    name="cabin"
+                    onChange={(x) => handleRadio(x)}
+                    justifyContent="flex-end"
+                    align="flex-start"
+                    direction="column"
+                />
+                {/* {cabin.map((cabin, index) => (
                 <CheckBox
                     key={index}
                     name={cabin}
@@ -616,14 +680,19 @@ function SortingColumns() {
                 >
                     <Text type="p" text={cabin} size={14} />
                 </CheckBox>
-                ))}
+                ))} */}
             </Flex>
               
-          </Panel>
+        </Panel>
           
-          <Button onClick={filterResults}>
-              <Text type="p" text="Apply"/>
-          </Button>
+        <LoadingButton
+            onClick={() => handleFilterResults(filterData)}
+            variant="contained"
+            style={{ backgroundColor: ttColors.primary, boxShadow: 'none', padding: ".9rem 0" }}
+            loading={searchFlightsMode === Mode.loading}
+        >
+            <Text type="p" text="Apply"/>
+        </LoadingButton>
     </Flex>
   );
 };

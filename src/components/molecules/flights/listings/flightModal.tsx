@@ -37,7 +37,7 @@ export const FilterModal = ({
             </Button>
           </Flex>
           <Section padding="2rem">
-            <SortingColumns />
+            <SortingColumns onClose={handleClose} />
           </Section>
         </ModalWrapper>
       </Section>
