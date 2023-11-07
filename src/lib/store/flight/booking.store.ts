@@ -63,6 +63,7 @@ interface State {
 interface Actions {
     prevStep: () => void;
     setStep: (params: { step: number }) => void;
+    nextStep: () => void;
     searchFlights: (params: {
         data: SearchFlightsRequestQuery;
     }) => Promise<void>;
@@ -97,15 +98,15 @@ interface Actions {
 export const useFlightBookingStore = create<State & Actions>(
     (set): State & Actions => ({
         step: 2,
-        highestStep: 5,
+        highestStep: 2,
 
         mode: Mode.init,
         searchFlightsMode: Mode.init,
         searchMoreFlightsMode: Mode.init,
         searchFlightsResults: [],
         flightsResults: {
-            currency: 'USD',
-            total: 0
+            currency: "USD",
+            total: 0,
         },
         searchQuery: {},
         sessionId: null,
@@ -131,6 +132,16 @@ export const useFlightBookingStore = create<State & Actions>(
                         : state.step - 1,
             }));
         },
+        nextStep: () => {
+            set((state) => ({
+                mode: Mode.loaded,
+                step: state.step + 1,
+                highestStep:
+                    state.step + 1 > state.highestStep
+                        ? state.step + 1
+                        : state.highestStep,
+            }));
+        },
 
         setStep: ({ step }: { step: number }) => {
             set({ step });
@@ -151,14 +162,14 @@ export const useFlightBookingStore = create<State & Actions>(
         }) => {
             const isMoreSearch = (data?.limit && Number(data?.limit) > 10)   
             set({ searchFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data })
+            return await FlightBookingService.searchFlights({ data: { ...data, curr: "USD" } })
                 .then((response) => {
                     set((state) => ({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
                         flightsResults: {
                             currency: response.currency,
-                            total: response._results
+                            total: response._results,
                         },
                         totalSearchFlightsResults: response._results,
                     }));
@@ -253,7 +264,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 })
                 .catch((error) => {
                     set({
-                        mode: Mode.error,
+                        checkSeatingMode: Mode.error,
                     });
                     throw error;
                 });
@@ -278,7 +289,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 })
                 .catch((error) => {
                     set({
-                        mode: Mode.error,
+                        saveBookingMode: Mode.error,
                     });
                     throw "Unable to save booking";
                 });
@@ -332,7 +343,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 })
                 .catch((error) => {
                     set({
-                        mode: Mode.error,
+                        confirmPaymentMode: Mode.error,
                     });
                     throw error;
                 });

@@ -129,7 +129,7 @@ const SeatSelection = () => {
         checkSeatingMode,
         saveBooking,
         particularSeats,
-        setStep,
+        nextStep,
         setParticularSeats,
         seatRows,
         setSeatRows,
@@ -153,7 +153,12 @@ const SeatSelection = () => {
                 <Section padding="3rem 6rem" height="unset">
                     <Flex direction="column" justify="center">
                         <Section margin="0 0  14px" height="unset">
-                            <BiSolidXCircle size={79.58} color={ttColors.red} />
+                            <Image
+                                src={"/assets/icons/empty_icon.svg"}
+                                alt="delete-icon"
+                                width={95.5}
+                                height={95.5}
+                            />
                         </Section>
                         <Section margin="0 0  24px" height="unset">
                             <Text
@@ -167,25 +172,51 @@ const SeatSelection = () => {
                         <Section margin="0 0  57.5px" height="unset">
                             <Text
                                 type="p"
-                                text="There are no seat available for the flight filters selected. Kindly select other days or change airline."
+                                text="There are no seat available for the flight filters selected."
                                 weight={400}
                                 size={18}
                                 color="#929292"
                             />
                         </Section>
-                        <Section>
+                        <Flex gap="1rem">
                             <Button
                                 width="100%"
-                                background="transparent"
                                 color={ttColors.dark}
+                                background={ttColors.light}
                                 border="1px solid #19013b"
-                                onClick={() => {
-                                    router.push("/");
-                                }}
+                                onClick={() => router.push("/")}
                             >
-                                Change Search
+                                <Text
+                                    type="span"
+                                    text={"Change Search"}
+                                    weight={600}
+                                    size={16}
+                                    color={ttColors.dark}
+                                />
                             </Button>
-                        </Section>
+                            <Button
+                                width="100%"
+                                background={ttColors.dark}
+                                color={ttColors.light}
+                                // border="1px solid #19013b"
+                                onClick={handleSaveBooking}
+                            >
+                                {saveBookingMode == Mode.loading ? (
+                                    <Spinner
+                                        size="40px"
+                                        fill={ttColors.primary}
+                                    />
+                                ) : (
+                                    <Text
+                                        type="span"
+                                        text={"Continue"}
+                                        weight={600}
+                                        size={16}
+                                        color={ttColors.light}
+                                    />
+                                )}
+                            </Button>
+                        </Flex>
                     </Flex>
                 </Section>
             ),
@@ -352,6 +383,36 @@ const SeatSelection = () => {
             setSeatRows(rows);
         }
     };
+    const handleSaveBooking = () => {
+        let data: SaveBookingRequestInput;
+        data =
+            particularSeats.length == 0
+                ? saveBookingDetails
+                : {
+                      ...saveBookingDetails,
+                      additional_services: {
+                          seating: [...particularSeats],
+                      },
+                  };
+        saveBooking({
+            data,
+        })
+            .then((_) => {
+                toast.success(
+                    "Flight booking successful. Proceed to make Payment"
+                );
+                nextStep();
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth",
+                });
+            })
+            .catch((error) => {
+                toast.error("Unable to save booking");
+            });
+    };
+
     useEffect(() => {
         fetchSeats().then((response) => {
             computeSeatRows(response);
@@ -470,30 +531,7 @@ const SeatSelection = () => {
                     background={ttColors.dark}
                     height={"3.5rem"}
                     width="100%"
-                    onClick={() => {
-                        saveBooking({
-                            data: {
-                                ...saveBookingDetails,
-                                additional_services: {
-                                    seating: [...particularSeats],
-                                },
-                            },
-                        })
-                            .then((_) => {
-                                toast.success(
-                                    "Flight booking successful. Proceed to make Payment"
-                                );
-                                setStep({ step: 5 });
-                                window.scrollTo({
-                                    top: 0,
-                                    left: 0,
-                                    behavior: "smooth",
-                                });
-                            })
-                            .catch((error) => {
-                                toast.error("Unable to save booking");
-                            });
-                    }}
+                    onClick={handleSaveBooking}
                 >
                     {saveBookingMode == Mode.loading ? (
                         <Spinner size="40px" fill={ttColors.primary} />
