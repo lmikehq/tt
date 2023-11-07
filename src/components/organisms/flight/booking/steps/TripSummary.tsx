@@ -81,7 +81,7 @@ const TripSummary = ({
         checkFlightsResponse,
         saveBookingDetails,
         setSaveBookingDetails,
-        setStep,
+        nextStep,
     } = useFlightBookingStore((state) => state);
     const { user } = useUserStore((state) => state);
     const searchParams = extractSearchParamsFromUrl({
@@ -198,7 +198,7 @@ const TripSummary = ({
                 },
             });
             await sleep(500);
-            setStep({ step: 3 });
+            nextStep();
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         },
         validateOnChange: false,

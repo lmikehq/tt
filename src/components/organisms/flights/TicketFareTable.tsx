@@ -72,7 +72,7 @@ const Table = styled(MuiTable)(() => ({
 }));
 
 const TicketFareTable = () => {
-    const { setStep } = useFlightBookingStore((state) => state);
+    const { nextStep } = useFlightBookingStore((state) => state);
     const [loading, setLoading] = useState(false);
 
     const data = [
@@ -124,7 +124,7 @@ const TicketFareTable = () => {
                     onClick={async () => {
                         setLoading(true);
                         await sleep(500);
-                        setStep({ step: 4 });
+                        nextStep();
                         window.scrollTo({
                             top: 0,
                             left: 0,

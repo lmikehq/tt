@@ -129,7 +129,7 @@ const SeatSelection = () => {
         checkSeatingMode,
         saveBooking,
         particularSeats,
-        setStep,
+        nextStep,
         setParticularSeats,
         seatRows,
         setSeatRows,
@@ -401,7 +401,7 @@ const SeatSelection = () => {
                 toast.success(
                     "Flight booking successful. Proceed to make Payment"
                 );
-                setStep({ step: 5 });
+                nextStep();
                 window.scrollTo({
                     top: 0,
                     left: 0,
