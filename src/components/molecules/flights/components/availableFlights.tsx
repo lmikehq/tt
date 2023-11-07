@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
+import LoadingButton from '@mui/lab/LoadingButton';
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import Button from "@atom/button";
@@ -19,7 +20,7 @@ import { FlightContext } from "@/lib/extensions/context";
 import { Mode } from "@/lib/types";
 import { useUserStore } from "@/lib/store/useStore";
 import Modal from "@/components/organisms/modal";
-import { Stack } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
@@ -29,12 +30,14 @@ import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
 import { FaQuestion, FaSpinner } from "react-icons/fa";
+import Spinner from "../../icons/spinner";
 
 
 interface SearchQuery {
     sortBy: string;
     filter: string;
     page: number;
+    limit: number;
 }
 
 function FlightBoxSkeleton() {
@@ -164,9 +167,12 @@ function AvailableFlights() {
     const pathName = usePathname();
     const { user } = useUserStore((state) => state)
     const {
+        flightsResults,
         searchFlightsResults,
         searchFlights,
         searchFlightsMode,
+        searchMoreFlights,
+        searchMoreFlightsMode,
         updateSearchQuery,
         searchQuery,
     } = useFlightBookingStore((state) => state);
@@ -175,7 +181,7 @@ function AvailableFlights() {
     const flightState = flightContext?.state
     const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
 
-    const [count, setCount] = useState(5);
+    const [count, setCount] = useState(10);
     const [sortType, setSortType] = useState("best");
     
     const [modal, setModal] = useState({
@@ -231,15 +237,20 @@ function AvailableFlights() {
 
     const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
         const updatedQuery = { ...searchQuery, ...updatedParams };
-        router.push(pathName + constructQueryFromParams(updatedQuery));
+        // router.push(pathName + constructQueryFromParams(updatedQuery));
         updateSearchQuery({ data: updatedQuery });
         searchFlights({ data: updatedQuery });
         console.log(updatedQuery)
     };
 
     const loadMoreItems = () => {
-        // updateSearchQueryHandler({ page: 3 })
-        setCount(prev => prev + 5);
+        const newCount = flightsResults.total > count ? count + 10 : count
+        if (newCount !== count) {
+            searchMoreFlights({ data: { ...searchParams, limit: newCount } })
+                .then(res => {
+                    setCount(prev => newCount);
+            })
+        }
     };
 
     useEffect(() => {
@@ -248,21 +259,23 @@ function AvailableFlights() {
             if (duration && duration.departure) {
                 durationPriceMap[duration.departure] = price;
             }
-        });
+        })
     }, [searchFlightsResults])
 
-    const handleSearchResults = () => {
-        updateSearchQuery({ data: searchParams });
-        searchFlights({ data: searchParams });
+    const handleSearchResults = (params: Record<string, string>) => {
+        updateSearchQuery({ data: params });
+        searchFlights({ data: params })
+            .then(res => {
+                setCount(10)
+            })
     }
 
     useEffect(() => {
-        updateSearchQuery({ data: searchParams });
-        searchFlights({ data: searchParams });
+        handleSearchResults(searchParams)
     }, [window.location.search]);
 
     useEffect(() => {
-        const interval = setTimeout(() => { 
+        const interval = setTimeout(() => {
             setModal(prev => ({ ...prev, isOpenStillSearching: true }))
         }, 900000);
         return () => clearInterval(interval); 
@@ -311,22 +324,27 @@ function AvailableFlights() {
                         />
                     )}
 
-                    <Flex justify="center">
-                        {count < searchFlightsResults?.length && (
+                    {count < flightsResults.total &&
+                        <Flex justify="center">
                             <Button
                                 width="100%"
                                 background="#06062A"
                                 padding="2rem 0"
-                                onClick={loadMoreItems}>
-                                <Text
-                                    type="p"
-                                    text="Load More"
-                                    weight={500}
-                                    size={18}
-                                />
+                                onClick={loadMoreItems}
+                            >
+                                {searchMoreFlightsMode === Mode.loading ? (
+                                    <Spinner fill={ttColors.primary} size={"25px"} />
+                                ) : (
+                                    <Text
+                                        type="p"
+                                        text="Load More"
+                                        weight={500}
+                                        size={18}
+                                    />
+                                )}
                             </Button>
-                        )}
-                    </Flex>
+                        </Flex>
+                    }
                 </React.Fragment>
             )}
 
@@ -339,7 +357,7 @@ function AvailableFlights() {
             <StillSearchingModal
                 isOpen={modal.isOpenStillSearching}
                 onClose={() => setModal(prev => ({ ...prev, isOpenStillSearching: false }))}
-                refresh={handleSearchResults}
+                refresh={() => handleSearchResults(searchParams)}
             />
         </Flex>
   );

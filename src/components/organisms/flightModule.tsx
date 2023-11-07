@@ -84,7 +84,6 @@ function FlightModule({
 
     const defText = formatDisplayText(flight);
 
-    const [displayText, setDisplayText] = useState(defText);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const today = dayjs().toDate();
 
@@ -99,7 +98,6 @@ function FlightModule({
     };
 
     const handleDataChange = (data: FlightCountType) => {
-        setDisplayText(formatDisplayText(data));
         handleUpdate && handleUpdate(flight, data);
     };
 
@@ -239,7 +237,7 @@ function FlightModule({
                             <Input
                                 onClick={handleClick}
                                 placeholder="Click me to open dropdown"
-                                value={displayText}
+                                value={defText}
                                 styles={{
                                     fontFamily: "poppins",
                                     cursor: "pointer",

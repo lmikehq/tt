@@ -26,9 +26,9 @@ export class FlightBookingService {
     }: {
         data: SearchFlightsRequestQuery;
     }) => {
-        const query = constructQueryFromParams(data);
+        const query = constructQueryFromParams({ limit: 10, curr: 'USD', ...data });
         return await kiwiClient
-            .get<any, SearchFlightsResponse>(`/search${query}&limit=10`)
+            .get<any, SearchFlightsResponse>(`/search${query}`)
             .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);

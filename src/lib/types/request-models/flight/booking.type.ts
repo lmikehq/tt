@@ -104,6 +104,7 @@ export interface SearchFlightsRequestQuery {
     fly_days_type?: string;
     fly_days?: string;
     curr?: string;
+    stops?: string;
     adults?: number;
     children?: number;
     infants?: number;
@@ -125,6 +126,7 @@ export interface SearchFlightsRequestQuery {
     max_stopovers?: number;
     max_fly_duration?: number;
     page?: number;
+    limit?: number;
 }
 
 export interface CheckFlightsRequestInput {

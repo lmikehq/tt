@@ -7,7 +7,6 @@ const sortedAirports: { [k: string]: AirportInterface } = {}
 airportsDB.forEach(e => {
     sortedAirports[e.iata] = e
 })
-// console.log('dbbbb', airportsDB)
 
 import {
     createContext,
@@ -64,7 +63,7 @@ const oneFlight: OneFlightType = {
 
 const initialValues: ContextType = {
     flightType: "international",
-    stops: "round",
+    stops: "one-way",
     fleet: [oneFlight],
     airports: sortedAirports
 };

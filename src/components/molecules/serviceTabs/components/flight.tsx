@@ -16,6 +16,7 @@ import { FlightContext, OneFlightType } from "@/lib/extensions/context";
 import { formatDate } from "@/lib/utilFns";
 import dayjs, { Dayjs } from "dayjs";
 import { HiPlus } from "react-icons/hi";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -118,10 +119,10 @@ function FlightStops({
 function Flights() {
     const router = useRouter();
     const { isMobile } = useScreenResolution();
-    const flightContext = useContext(FlightContext);
-    const flightState = flightContext?.state,
-        dispatch = flightContext?.dispatch;
-
+    const flightContext = useContext(FlightContext)
+    const flightState = flightContext?.state, dispatch = flightContext?.dispatch
+    const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
+    
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleAddMultiFlight = () => {
@@ -146,30 +147,34 @@ function Flights() {
         dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
     };
 
-    const formatSearchFlight = (flight?: OneFlightType) => {
-        const dateFrom = formatDate(flight?.departureDate ?? dayjs());
-        const dateTo = formatDate(flight?.returnDate ?? dayjs());
-        const departure = flight?.departureCountry;
-        const arrival = flight?.arrivalCountry;
-        return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}`;
-    };
+	const formatSearchFlight = (flight?: OneFlightType) => {
+		const dateFrom = formatDate(flight?.departureDate ?? dayjs());
+		const dateTo = formatDate(flight?.returnDate ?? dayjs());
+		const departure = flight?.departureCountry
+		const arrival = flight?.arrivalCountry
+		const adults = flight?.adults
+		const children = flight?.children
+        const infants = flight?.infants
+        const bags = Number(flight?.cabinBaggage) + Number(flight?.checkedBaggage)
+        
+		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}&bnum=${bags}&adults=${adults}&children=${children}&infants=${infants}`
+    }
 
-    return (
-        <Section padding="1.5rem 0 2rem 0" styles={{ position: "relative" }}>
-            <Flex direction="column">
-                {isMobile && (
-                    <FlightType
-                        isMobile={isMobile}
-                        value={flightState?.flightType ?? ""}
-                        onChange={(x) =>
-                            dispatch &&
-                            dispatch({
-                                type: "SET_FLIGHT_TYPE",
-                                payload: x ?? "",
-                            })
-                        }
-                    />
-                )}
+    useEffect(() => {
+        dispatch && dispatch({ type: "UPDATE_MULTI_FLIGHT", payload: { index: 0, data: { ...searchParams, adults: Number(searchParams?.adults ?? 0), children: Number(searchParams?.children ?? 0), infants: Number(searchParams?.infants ?? 0),  } } })
+    }, [window.location.search])
+
+    
+	return (
+		<Section padding="1.5rem 0 2rem 0" styles={{ position: "relative" }}>
+			<Flex direction="column">
+				{isMobile &&
+					<FlightType
+						isMobile={isMobile}
+						value={flightState?.flightType ?? ''}
+						onChange={(x) => dispatch && dispatch({ type: "SET_FLIGHT_TYPE", payload: x ?? '' })}
+					/>
+				}
 
                 <FlightStops
                     isMobile={isMobile}
@@ -187,16 +192,12 @@ function Flights() {
                         flight={e}
                         handleUpdate={handleUpdateMultiFlight}
                         handleDelete={handleRemoveMultiFlight}
-                        canDelete={
-                            flightState?.stops === "multi-city" &&
-                            arr.length > 1
-                        }
+                        canDelete={flightState?.stops === "multi-city" && arr.length > 1}
                     />
                 ))}
             </Flex>
 
-            {flightState?.stops === "multi-city" &&
-                flightState &&
+            {flightState && flightState?.stops === "multi-city" &&
                 flightState?.fleet?.length < 3 && (
                     <Flex margin={isMobile ? "0px" : "30px 0px 0px"}>
                         <Button

@@ -63,3 +63,13 @@ export function capCase(text = '', splitter = ' ') {
         return newStr.map(e => `${String(e[0]).toUpperCase()}${String(e.slice(1)).toLowerCase()}`).join(' ') ?? ''
     }
 }
+
+export function cleanObject(obj: { [k: string]: any }) {
+    const newObj: any = {}
+    Object.keys(obj).forEach(e => {
+        if (!!obj[e] && obj[e] !== 'undefined' && obj[e] !== 'null') {
+            newObj[e] = obj[e]
+        }
+    })
+    return newObj
+}
