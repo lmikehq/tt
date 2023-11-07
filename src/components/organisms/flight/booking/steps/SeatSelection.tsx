@@ -15,6 +15,7 @@ import {
     SeatRowInterface,
     SeatRowWithSegmentCodeInterface,
     mockRows,
+    seatClass,
 } from "@/lib/types/response-models/flight/booking.type";
 import { ReactNode, useEffect, useState } from "react";
 import { styled } from "styled-components";
@@ -26,6 +27,7 @@ import {
     PassengerCategory,
     SaveBookingRequestInput,
     SeatingSeatPrice,
+    findSeatWithPassengerIndex,
 } from "@/lib/types/request-models/flight/booking.type";
 import { SearchInputAsString } from "@/components/organisms/searchInput";
 import { Mode } from "@/lib/types";
@@ -77,7 +79,12 @@ const SeatSelection = () => {
                         height="48px"
                         width="48px"
                         styles={{
-                            backgroundColor: "#F17400",
+                            backgroundColor:
+                                seatClass[
+                                    seat_class
+                                        .toLowerCase()
+                                        .replaceAll(" ", "_")
+                                ].color,
                             flex: "none",
                             borderRadius: "6px",
                         }}
@@ -127,6 +134,7 @@ const SeatSelection = () => {
         seatRows,
         setSeatRows,
         saveBookingMode,
+        updateSeatAvailablity,
     } = useFlightBookingStore((state) => state);
     const [emptySeatsModalOpen, setEmptySeatsModalOpen] = useState(false);
     const [emptySeatsModalContent, setEmptySeatsModalContent] = useState<
@@ -203,11 +211,23 @@ const SeatSelection = () => {
         price: SeatingSeatPrice;
         segmentCode: string;
     }) => {
-        const findIndex = particularSeats.findIndex(
-            (el, index) => el.segment_code == segmentCode
-        );
+        const passengerIdx =
+            currentPassenger == "Main Passenger"
+                ? 0
+                : parseInt(currentPassenger.split("Passenger ")[1]) - 1;
 
-        if (findIndex == -1)
+        const searchIndices = (() => {
+            for (let i = 0; i < particularSeats.length; i++) {
+                const particular = particularSeats[i];
+                const index = particular.seats.findIndex(
+                    (el) => el.passenger_idx == passengerIdx
+                );
+                if (index !== -1) return [i, index];
+            }
+            return null;
+        })();
+
+        if (!searchIndices)
             return setParticularSeats([
                 ...particularSeats,
                 {
@@ -216,14 +236,7 @@ const SeatSelection = () => {
                     seats: [
                         {
                             seat: name,
-                            passenger_idx:
-                                currentPassenger == "Main Passenger"
-                                    ? 0
-                                    : parseInt(
-                                          currentPassenger.split(
-                                              "Passenger "
-                                          )[1]
-                                      ) - 1,
+                            passenger_idx: passengerIdx,
                             price: price,
                         },
                     ],
@@ -231,19 +244,76 @@ const SeatSelection = () => {
             ]);
 
         const seats = particularSeats;
-        seats[findIndex].seats = [
-            ...seats[findIndex].seats,
-            {
+        if (segmentCode == seats[searchIndices[0]].segment_code) {
+            seats[searchIndices[0]].seats[searchIndices[1]] = {
                 seat: name,
-                passenger_idx:
-                    currentPassenger == "Main Passenger"
-                        ? 0
-                        : parseInt(currentPassenger.split("Passenger ")[1]) - 1,
+                passenger_idx: passengerIdx,
                 price: price,
-            },
-        ];
+            };
 
-        setParticularSeats(seats);
+            return setParticularSeats(seats);
+        } else {
+            seats[searchIndices[0]].seats.splice(searchIndices[1], 1);
+            if (seats[searchIndices[0]].seats.length == 0)
+                seats.splice(searchIndices[0]);
+            return setParticularSeats([
+                ...particularSeats,
+                {
+                    segment_code: segmentCode,
+                    option: "particular_seat",
+                    seats: [
+                        {
+                            seat: name,
+                            passenger_idx: passengerIdx,
+                            price: price,
+                        },
+                    ],
+                },
+            ]);
+        }
+        // const findIndex = particularSeats.findIndex(
+        //     (el, index) => el.segment_code == segmentCode
+        // );
+
+        // if (findIndex == -1) {
+        //     return setParticularSeats([
+        //         ...particularSeats,
+        //         {
+        //             segment_code: segmentCode,
+        //             option: "particular_seat",
+        //             seats: [
+        //                 {
+        //                     seat: name,
+        //                     passenger_idx:
+        //                         currentPassenger == "Main Passenger"
+        //                             ? 0
+        //                             : parseInt(
+        //                                   currentPassenger.split(
+        //                                       "Passenger "
+        //                                   )[1]
+        //                               ) - 1,
+        //                     price: price,
+        //                 },
+        //             ],
+        //         },
+        //     ]);
+        // }
+
+        // const seats = particularSeats;
+
+        // const seatFindIndex = seats[findIndex].seats.findIndex(
+        //     (el) => el.passenger_idx == passengerIdx
+        // );
+        // seats[findIndex].seats[seatFindIndex] = {
+        //     seat: name,
+        //     passenger_idx:
+        //         currentPassenger == "Main Passenger"
+        //             ? 0
+        //             : parseInt(currentPassenger.split("Passenger ")[1]) - 1,
+        //     price: price,
+        // };
+
+        // setParticularSeats(seats);
     };
     const computePassengerOptions = () => {
         return passengers.map((el, index) =>
@@ -322,12 +392,30 @@ const SeatSelection = () => {
                             background={ttColors.blackishBlue}
                             color="#fff"
                             onClick={() => {
+                                updateSeatAvailablity({
+                                    previousSeat:
+                                        findSeatWithPassengerIndex({
+                                            index:
+                                                currentPassenger ==
+                                                "Main Passenger"
+                                                    ? 0
+                                                    : parseInt(
+                                                          currentPassenger.split(
+                                                              "Passenger "
+                                                          )[1]
+                                                      ) - 1,
+                                            particularSeats,
+                                        })?.split("Seat ")[1] ?? null,
+                                    newSeat: selectionModalContent.seatName,
+                                });
+
                                 selectParticularSeat({
                                     name: selectionModalContent.seatName,
                                     segmentCode:
                                         selectionModalContent.segmentCode,
                                     price: selectionModalContent.price!,
                                 });
+
                                 setShowSeatSelectionModal(false);
                             }}
                         >
@@ -369,12 +457,7 @@ const SeatSelection = () => {
                         >
                             <PlaneSeatsComponent
                                 rows={seatRows}
-                                selectSeat={({ seat, segmentCode }) =>
-                                    selectSeat({
-                                        seat,
-                                        segmentCode,
-                                    })
-                                }
+                                selectSeat={selectSeat}
                             />
                         </Flex>
                     </Wrapper>

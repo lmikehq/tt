@@ -6,27 +6,21 @@ import { Box } from "@mui/material";
 import Section from "../../section";
 
 export default function PriceAlerts() {
-    return (
-        <Section>
-            <Box
-                width={"100%"}
-                bgcolor={ttColors.grayishAsh}
-                padding={"1rem"}
-                border={"1px solid var(--color-border)"}
-                marginBottom={"20px"}
-                borderRadius={"10px"}
-            >
-                <Flex>
-                <Switch
-                    label={<Text type="h4" weight={"bold"} text="Set up price alert" />}
-                />
-                </Flex>
+  return (
 
-                <Text
-                    type="p"
-                    size={14}
-                text="Receive alerts when the prices for this route change."
+    <Section margin="0 0 1rem 0">
+      <Box width={"100%"} bgcolor={ttColors.grayishAsh} padding="1rem" borderRadius="10px">
+            <Flex>
+                <Switch
+                    label={<Text type="h4" weight="bold" text="Set up price alert" />}
                 />
+            </Flex>
+
+            <Text
+                type="p"
+                size={14}
+                text="Receive alerts when the prices for this route change."
+            />
             </Box>
         </Section>
     );
