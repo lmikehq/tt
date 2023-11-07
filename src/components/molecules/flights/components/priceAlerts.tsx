@@ -7,6 +7,7 @@ import Section from "../../section";
 
 export default function PriceAlerts() {
   return (
+
     <Section margin="0 0 1rem 0">
       <Box width={"100%"} bgcolor={ttColors.grayishAsh} padding={"1rem"}>
         <Flex>

@@ -1,5 +1,6 @@
 import { CountryType } from "@/components/molecules/serviceTabs/components/visa";
 import { mockCountry } from "../../schema";
+import { SeatRowWithSegmentCodeInterface } from "../../response-models/flight/booking.type";
 
 interface PaymentDetails {
     status: string;
@@ -266,6 +267,48 @@ export const arrangeBaggageDataForOrdering = (
 
     return baggageData;
 };
+export const findSeatWithPassengerIndex = ({
+    index,
+    particularSeats,
+}: {
+    index: number;
+    particularSeats: ParticularSeatingOption[];
+}): string | null => {
+    for (const segment of particularSeats) {
+        for (const seat of segment.seats) {
+            if (seat.passenger_idx === index) {
+                return "Seat " + seat.seat;
+            }
+        }
+    }
+
+    return null;
+};
+
+export const updateSeatAvailability = ({
+    rows,
+    seatName,
+    selected,
+}: {
+    rows: SeatRowWithSegmentCodeInterface[];
+    seatName: string;
+    selected: boolean;
+}) => {
+    return rows.map((row) => {
+        const updatedSeatGroups = row.seat_groups.map((seatGroup) => {
+            return seatGroup.map((seat) => {
+                if (seat.name === seatName) {
+                    // Update the state of the seat
+                    return { ...seat, selected };
+                }
+                return seat;
+            });
+        });
+
+        // Return the updated row with modified seat groups
+        return { ...row, seat_groups: updatedSeatGroups };
+    });
+};
 
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
@@ -279,6 +322,18 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
     category: PassengerCategory.ADULT,
     currency: "usd",
 };
+// export const passengerAndBaggageDetails: PassengerFormInterface = {
+//     name: "a",
+//     surname: "a",
+
+//     cardno: "q",
+//     birthday: "1965-09-09",
+//     nationality: { code: "NG", name: "Nigeria", flag: "s" },
+//     title: "Mr",
+//     expiration: "2026-08-09",
+//     category: PassengerCategory.ADULT,
+//     currency: "usd",
+// };
 export const saveBookingDetails: SaveBookingRequestInput = {
     health_declaration_checked: true,
     lang: "en",
@@ -302,3 +357,7 @@ export const contactDetails: ContactDetailsInterface = {
     email: "",
     phone: "",
 };
+// export const contactDetails: ContactDetailsInterface = {
+//     email: "olallere@gmail.com",
+//     phone: "0908909889",
+// };

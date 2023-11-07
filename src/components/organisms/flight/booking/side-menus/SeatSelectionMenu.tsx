@@ -11,7 +11,10 @@ import {
     seatClass,
 } from "@/lib/types/response-models/flight/booking.type";
 import { BiArrowToRight, BiRightArrow, BiRightArrowAlt } from "react-icons/bi";
-import { PassengerCategory } from "@/lib/types/request-models/flight/booking.type";
+import {
+    PassengerCategory,
+    findSeatWithPassengerIndex,
+} from "@/lib/types/request-models/flight/booking.type";
 
 const SeatSelectionMenu = () => {
     const {
@@ -27,24 +30,12 @@ const SeatSelectionMenu = () => {
             birthday: el.birthday,
             category: el.category,
         }));
-    const findSeatWithPassengerIndex = ({
-        index,
-    }: {
-        index: number;
-    }): string | null => {
-        for (const segment of particularSeats) {
-            for (const seat of segment.seats) {
-                if (seat.passenger_idx === index) {
-                    return "Seat " + seat.seat;
-                }
-            }
-        }
-
-        return null;
-    };
 
     const leastStandardSeat = findSeatWithLeastAmount({
         seatClass: seatClass.standard.name,
+    });
+    const leastPremiumSeat = findSeatWithLeastAmount({
+        seatClass: seatClass.premium.name,
     });
     const leastExtraLegRoomSeat = findSeatWithLeastAmount({
         seatClass: seatClass.standard.name,
@@ -143,7 +134,7 @@ const SeatSelectionMenu = () => {
                         height="48px"
                         width="48px"
                         styles={{
-                            backgroundColor: "#8E4400",
+                            backgroundColor: seatClass.standard.color,
                             flex: "none",
                             borderRadius: "6px",
                         }}
@@ -197,7 +188,61 @@ const SeatSelectionMenu = () => {
                         height="48px"
                         width="48px"
                         styles={{
-                            backgroundColor: "#8E4400",
+                            backgroundColor: seatClass.premium.color,
+                            flex: "none",
+                            borderRadius: "6px",
+                        }}
+                    >
+                        <></>
+                    </Section>
+                    <Flex
+                        justify="space-between"
+                        align="center"
+                        styles={{ flexGrow: 1 }}
+                    >
+                        <Section>
+                            <Text
+                                type="p"
+                                color="#101010"
+                                size={16}
+                                weight={400}
+                                text="Premium"
+                            />
+                            <Text
+                                type="p"
+                                color={"#101010"}
+                                size={16}
+                                weight={400}
+                                text={
+                                    leastPremiumSeat
+                                        ? "From " +
+                                          leastPremiumSeat?.price?.currency +
+                                          " " +
+                                          leastPremiumSeat?.price.amount
+                                        : "From - -"
+                                }
+                            />
+                        </Section>
+                        <Text
+                            type="p"
+                            size={16}
+                            weight={400}
+                            textAlign="right"
+                            text={
+                                countAvailableSeats({
+                                    seatClass: seatClass.premium.name,
+                                }) + " seats left"
+                            }
+                            color="#6092A7"
+                        />
+                    </Flex>{" "}
+                </Flex>
+                <Flex align="center" gap="19px">
+                    <Section
+                        height="48px"
+                        width="48px"
+                        styles={{
+                            backgroundColor: seatClass.extra_legroom_seat.color,
                             flex: "none",
                             borderRadius: "6px",
                         }}
@@ -253,7 +298,10 @@ const SeatSelectionMenu = () => {
             <Section margin="40px 0 0 0">
                 <Text type="h5" text="Seat Selection" size={20} weight={600} />
                 {passengers.map((el, index) => {
-                    const selected = findSeatWithPassengerIndex({ index });
+                    const selected = findSeatWithPassengerIndex({
+                        index,
+                        particularSeats,
+                    });
                     return (
                         <Flex
                             key={"passenger" + index}

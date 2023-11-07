@@ -8,7 +8,7 @@ interface pageProps {}
 
 const page: React.FC<pageProps> = ({}) => {
   return (
-    <div>
+    <div >
       <StayHero />
       <StaySection />
       <FooterSection />

@@ -27,8 +27,8 @@ export interface OneFlightType {
     index: number;
     departureCountry?: Location;
     arrivalCountry?: Location;
-    departureDate: dayjs.Dayjs;
-    returnDate: dayjs.Dayjs;
+    departureDate?: dayjs.Dayjs;
+    returnDate?: dayjs.Dayjs;
     adults: number;
     children: number;
     infants: number;
@@ -50,10 +50,10 @@ interface ContextType {
 
 const oneFlight: OneFlightType = {
     index: 0,
-    departureCountry: undefined,
-    arrivalCountry: undefined,
-    departureDate: dayjs(new Date()),
-    returnDate: dayjs(new Date()).add(1, "day"),
+    // departureCountry: undefined,
+    // arrivalCountry: undefined,
+    // departureDate: dayjs(new Date()),
+    // returnDate: dayjs(new Date()).add(1, "day"),
     adults: 1,
     children: 0,
     infants: 0,
