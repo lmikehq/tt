@@ -72,40 +72,40 @@ export const Button: React.FC<buttonProps> = ({
     ...styles,
   };
 
-  if (variant === "outline") {
-    buttonStyles.background = "transparent";
-    buttonStyles.border = `2px solid ${color || "#FFFFFF"}`;
-    buttonStyles.color = color || "#FFFFFF";
-  } else if (variant === "link") {
-    buttonStyles.background = "transparent";
-    buttonStyles.border = "none";
-    buttonStyles.color = color || ttColors.primaryLight;
-    buttonStyles.textDecoration = underlined ? "underline" : "none";
-  } else {
-    buttonStyles.background = disabled
-      ? "#585870"
-      : background || ttColors.primary;
-  }
+    if (variant === "outline") {
+        buttonStyles.background = "transparent";
+        buttonStyles.border = `2px solid ${color || "#FFFFFF"}`;
+        buttonStyles.color = color || "#FFFFFF";
+    } else if (variant === "link") {
+        buttonStyles.background = "transparent";
+        buttonStyles.border = "none";
+        buttonStyles.color = color || ttColors.primaryLight;
+        buttonStyles.textDecoration = underlined ? "underline" : "none";
+    } else {
+        buttonStyles.background = disabled
+        ? "#585870"
+        : background || ttColors.primary;
+    }
 
   return (
     <ButtonBase
-      id={id}
-      style={buttonStyles}
-      type={type}
-      onClick={!disabled ? onClick : undefined}
+        id={id}
+        style={buttonStyles}
+        type={type}
+        onClick={!disabled ? onClick : undefined}
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          columnGap: "5px",
-        }}
-      >
-        {startIcon}
-        {children}
-        {endIcon}
-      </Box>
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                columnGap: "5px",
+            }}
+        >
+            {startIcon}
+            {children}
+            {endIcon}
+        </Box>
     </ButtonBase>
   );
 };

@@ -40,7 +40,7 @@ const FlightContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   border: 1px solid #e7e7e7;
   background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin: 0 0 1rem 0;
+  margin: 0;
   border-radius: 12.5px;
   width: 100%;
 `;
@@ -120,8 +120,9 @@ return (
                     </Flex>
                     <Flex gap="1.4rem">
                         <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_departure).format("HH: mm")} />
-                        <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} />
-                        <Text type="p" text={startRoute.cityFrom} />
+                        <Text type="p" text={props.airportName1} />
+                        {/* <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} /> */}
+                        <Text type="p" text={startRoute.cityCodeFrom} />
                     </Flex>
                     <Flex align={"center"} gap="1rem">
                         <Text type="p" color={ttColors.lighterGray} text={timeDifference(startRoute.utc_departure, isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival)} />
@@ -129,8 +130,9 @@ return (
                     </Flex>
                     <Flex gap="1.4rem">
                         <Text type="p" weight={"bold"} text={dayjs(isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival).format("HH: mm")} />
-                        <Text type="p" text={`${isRoundTrip ? startRoute.operating_carrier : endRoute.operating_carrier}-${isRoundTrip ? startRoute.operating_flight_no : endRoute.operating_flight_no}`} />
-                        <Text type="p" text={isRoundTrip ? startRoute.cityTo : props.flight.cityTo} />
+                        <Text type="p" text={props.airportName2} />
+                        {/* <Text type="p" text={`${isRoundTrip ? startRoute.operating_carrier : endRoute.operating_carrier}-${isRoundTrip ? startRoute.operating_flight_no : endRoute.operating_flight_no}`} /> */}
+                        <Text type="p" text={isRoundTrip ? startRoute.cityCodeTo : props.flight.cityTo} />
                     </Flex>
                 </Flex>
             </Box>

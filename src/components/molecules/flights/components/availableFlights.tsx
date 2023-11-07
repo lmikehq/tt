@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext } from "react";
 import dayjs from "dayjs";
 import FlightBox from "./flightBox";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
-import { FaSpinner } from "react-icons/fa";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
@@ -21,19 +20,65 @@ import { Mode } from "@/lib/types";
 import { useUserStore } from "@/lib/store/useStore";
 import Modal from "@/components/organisms/modal";
 import { Stack } from "@mui/material";
-import { HiUserCircle } from "react-icons/hi2";
+import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { BsCursor } from "react-icons/bs";
 import { usePathname, useRouter } from "next/navigation";
+import { ttColors } from "@/lib/theme/colors";
+import { PiCaretRightBold } from "react-icons/pi";
+import { Divider } from "@/components/atoms/divider";
+import { FaQuestion, FaSpinner } from "react-icons/fa";
 
 
 interface SearchQuery {
     sortBy: string;
     filter: string;
+    page: number;
+}
+
+function FlightBoxSkeleton() {
+    const arr = Array(4).fill(0)
+    return (
+        <React.Fragment>
+            {arr.map((e, index) => 
+                <Flex width="100%" justify="space-between" background={ttColors.light} borderRadius="10px" key={index}>
+                    <Flex width="63%">
+                        <SkeletonLoader
+                            text
+                            tabs={1}
+                            textHeight={60}
+                            textWidth="70%"
+                            rectangularHeight={200}
+                            rectangularWidth="100%"
+                        />
+                    </Flex>
+                    <Flex width="33%" direction="column">
+                        <SkeletonLoader
+                            text
+                            tabs={1}
+                            textHeight={60}
+                            textWidth="50%"
+                            rectangularHeight={60}
+                            rectangularWidth="100%"
+                        />
+                        <SkeletonLoader
+                            text
+                            tabs={1}
+                            textHeight={60}
+                            textWidth="50%"
+                            rectangularHeight={60}
+                            rectangularWidth="100%"
+                        />
+                    </Flex>
+                </Flex>
+            )}
+        </React.Fragment>
+    )
 }
 
 function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFunction; to: string; }) {
+    const { isMobile } = useScreenResolution()
     const { push } = useRouter()
     const goToLogin = () => {
         push('/auth/login')
@@ -41,20 +86,40 @@ function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFun
     
     return (
         <Modal open={isOpen} handleClose={onClose}>
-            <Stack direction='column' spacing={3} bgcolor='white' padding={6} borderRadius='16px'>
-                <Text type='h2' text="Sign In First ?" weight={600} size={22} />
-                <Text type='h2' text="You can book and save trips for later." size={15} />
+            <Stack direction='column' alignItems="center" spacing={3} bgcolor='white' padding={6} borderRadius='16px' width={isMobile ? '90vw' : '30vw'}>
+                <Flex width="100%" justify="center">
+                    <Flex width="max-content" padding="1rem" borderRadius="50%" background={ttColors.primary100}>
+                        <HiLockClosed size={28} color={ttColors.primary600} />
+                    </Flex>
+                </Flex>
+
+                <Text type='h2' text="Would you like to Login?" weight={600} size={28} textAlign="center" />
+                <Text
+                    type='h2'
+                    text="You can check your bookings, establish price notifications, and access all your travel itineraries from a single location."
+                    size={14}
+                    color={ttColors.lighterGray}
+                    textAlign="center"
+                />
 
                 <Stack width='100%' alignItems='center' spacing={2}>
-                    <Button width="100%" startIcon={<HiUserCircle color='white'/>} onClick={goToLogin}>Sign In</Button>
-                    <Link href={to} style={{ color: 'black' }}>
+                    <Button width="100%" padding="1.8rem 0" startIcon={<HiUserCircle color='white' size={20} />} onClick={goToLogin} background={ttColors.dark}>
+                        Sign In
+                    </Button>
+                    <Flex justify="space-between" align="center">
+                        <Divider direction="horizontal" px="1px" style={{ width: '45%' }} />
+                        <Text type='p' text="Or" size={14} />
+                        <Divider direction="horizontal" px="1px" style={{ width: '45%' }} />
+                    </Flex>
+                    <Link href={to} style={{ display: 'flex', alignItems: 'center',  color: ttColors.primary, textDecoration: 'none' }} >
                         <Text
                             type='h2'
                             text="Continue as guest"
                             size={15}
-                            styles={{ textDecoration: "underline" }}
+                            weight={500}
                             cursor="pointer"
                         />
+                        <PiCaretRightBold size={20} color={ttColors.primary} />
                     </Link> 
                 </Stack>
             </Stack>
@@ -63,18 +128,31 @@ function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFun
 }
 
 
-function StillSearchingModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFunction; to?: string; }) {
+function StillSearchingModal({ isOpen, onClose, to, refresh }: { isOpen: boolean; onClose: VoidFunction; to?: string; refresh: () => void; }) {
     const { isMobile } = useScreenResolution()
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
-            <Stack direction='column' spacing={5} bgcolor='white' padding={6} width={isMobile ? '90vw' : '30vw'} borderRadius='16px'>
-                <Text type='h2' text="Still Searching?" weight={600} size={22} />
-                <Text type='h2' text="Prices and arrangements available in trips change periodically.
-                Try to complete your search quickly to get the best value." size={15} />
+            <Stack direction='column' alignItems="center" spacing={3} bgcolor='white' padding={6} width={isMobile ? '90vw' : '30vw'} borderRadius='16px'>
+                <Flex width="100%" justify="center">
+                    <Flex width="max-content" padding="1rem" borderRadius="50%" background={ttColors.primary100}>
+                        <FaQuestion size={28} color={ttColors.primary600} />
+                    </Flex>
+                </Flex>
+
+                <Text type='h2' text="Still Searching?" weight={600} size={30} textAlign="center" />
+                <Text
+                    type='h2'
+                    text="The availability of these results could have changed. To access the most up-to-date prices, kindly refresh your search."
+                    size={14}
+                    color={ttColors.lighterGray}
+                    textAlign="center"
+                />
 
                 <Stack width='100%' alignItems='center' spacing={2}>
-                    <Button width="100%" startIcon={<BsCursor color='white'/>} onClick={onClose}>Continue Looking</Button>
+                    <Button width="100%" padding="1.8rem 0" startIcon={<FaSpinner color='white' size={20} />} onClick={() => { onClose(); refresh() }} background={ttColors.dark}>
+                        Refresh Search
+                    </Button>
                 </Stack>
             </Stack>
         </Modal>
@@ -86,12 +164,11 @@ function AvailableFlights() {
     const pathName = usePathname();
     const { user } = useUserStore((state) => state)
     const {
-    searchFlightsResults,
-    searchFlights,
-    searchFlightsMode,
-    updateSearchQuery,
-    searchQuery: { adults, children, infants },
-    searchQuery,
+        searchFlightsResults,
+        searchFlights,
+        searchFlightsMode,
+        updateSearchQuery,
+        searchQuery,
     } = useFlightBookingStore((state) => state);
     
     const flightContext = useContext(FlightContext);
@@ -101,34 +178,20 @@ function AvailableFlights() {
     const [count, setCount] = useState(5);
     const [sortType, setSortType] = useState("best");
     
-    const [countdown, setCountdown] = useState(30 * 60)
     const [modal, setModal] = useState({
         isOpenLogin: false,
         isOpenStillSearching: false,
         route: ''
     });
 
-    const loadMoreItems = () => {
-        setCount(
-            (prevCount) =>
-                prevCount +
-                Math.min(count, searchFlightsResults?.length - prevCount)
-        );
-    };
-
     const prices: number[] = searchFlightsResults?.map((flight) => flight.price) ?? [];
 
-    const cheapPrice = Math.min(...prices);
-    const bestPrice =
-        prices.reduce((acc, price) => acc + price, 0) / prices.length;
+    const cheapPrice = prices.length > 0 ? Math.min(...prices) : 0;
+
+    const bestPrice = prices.reduce((acc, price) => acc + price, 0) / prices.length;
+    
     const durationPriceMap: Record<string, number> = {};
 
-    searchFlightsResults.forEach((flight) => {
-        const { duration, price } = flight;
-        if (duration && duration.departure) {
-            durationPriceMap[duration.departure] = price;
-        }
-    });
 
     const keysAsNumbers: number[] = Object.keys(durationPriceMap).map(Number);
     const minKey: number = Math.min(...keysAsNumbers);
@@ -144,22 +207,6 @@ function AvailableFlights() {
         } else {
             return "";
         }
-    };
-
-    const sortFlights = (a: FlightInfo, b: FlightInfo) => {
-        if (
-            getLabel(a.price).toLowerCase() === sortType &&
-            getLabel(b.price).toLowerCase() !== sortType
-        ) {
-            return -1;
-        }
-        if (
-            getLabel(b.price).toLowerCase() === sortType &&
-            getLabel(a.price).toLowerCase() !== sortType
-        ) {
-            return 1;
-        }
-        return 0;
     };
     
     const flightReq = {
@@ -184,44 +231,46 @@ function AvailableFlights() {
 
     const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
         const updatedQuery = { ...searchQuery, ...updatedParams };
-        updateSearchQuery({ data: updatedQuery });
         router.push(pathName + constructQueryFromParams(updatedQuery));
+        updateSearchQuery({ data: updatedQuery });
         searchFlights({ data: updatedQuery });
+        console.log(updatedQuery)
     };
 
-    
-    // useEffect(() => {
-    //     if (searchFlightsResults.length > 0) {
-    //         setData(searchFlightsResults);
-    //     }
-    // }, [searchFlightsResults]);
+    const loadMoreItems = () => {
+        // updateSearchQueryHandler({ page: 3 })
+        setCount(prev => prev + 5);
+    };
 
-    // useEffect(() => {
-    //     const url = window.location.href;
-    //     const searchParams = extractSearchParamsFromUrl({ url });
-    //     updateSearchQueryHandler({ ...searchParams });
-    // }, [window.location.search]);
+    useEffect(() => {
+        searchFlightsResults.forEach((flight) => {
+            const { duration, price } = flight;
+            if (duration && duration.departure) {
+                durationPriceMap[duration.departure] = price;
+            }
+        });
+    }, [searchFlightsResults])
+
+    const handleSearchResults = () => {
+        updateSearchQuery({ data: searchParams });
+        searchFlights({ data: searchParams });
+    }
 
     useEffect(() => {
         updateSearchQuery({ data: searchParams });
         searchFlights({ data: searchParams });
     }, [window.location.search]);
 
-    useEffect(() => { 
-        const interval = setInterval(() => { 
-            setCountdown(prev => {
-                if (prev === (15 * 60)) {
-                    setModal(prev => ({ ...prev, isOpenStillSearching: true }))
-                }
-                return prev === 0 ? (30 * 60) : prev - 1
-            }); 
-        }, 1000); 
+    useEffect(() => {
+        const interval = setTimeout(() => { 
+            setModal(prev => ({ ...prev, isOpenStillSearching: true }))
+        }, 900000);
         return () => clearInterval(interval); 
     }, []);
 
 
     return (
-        <Flex direction="column" width="100%" gap="1.5rem">
+        <Flex direction="column" width="100%" gap=".5rem" >
             <SortedFlightsTab
                 cheapPrice={cheapPrice}
                 bestPrice={cheapPrice}
@@ -231,41 +280,37 @@ function AvailableFlights() {
                 data={searchFlightsResults}
                 updateSearchQueryHandler={updateSearchQueryHandler}
             />
-            
-            {(searchFlightsMode === Mode.loading || searchFlightsResults?.length === 0) ? (
-                <SkeletonLoader
-                    tabs={4}
-                    textHeight={46}
-                    textWidth="60%"
-                    rectangularHeight={400}
-                    rectangularWidth="100%"
-                />
+
+            {searchFlightsMode === Mode.loading ? (
+                <FlightBoxSkeleton/>
+            ) : searchFlightsResults.length === 0 ? (
+                <Flex width="100%" justify="center" padding="9rem 0">
+                    <Text type="p" text="Sorry, no flights found" weight={600} size={20} />
+                </Flex>
             ) : (
                 <React.Fragment>
-                    {searchFlightsResults
-                        ?.slice(0, count)
-                        .map((flight: FlightInfo, index: number) => (
-                            <FlightBox
-                                key={index}
-                                flight={flight}
-                                selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
-                                bookingToken={flight.booking_token}
-                                departureCountryCode={flight.cityCodeFrom}
-                                arrivalCountryCode={flight.cityCodeTo}
-                                airportName1={flight.airlines[0]}
-                                airportName2={flight.airlines[0]}
-                                departureDate={dayjs(flight.utc_departure)}
-                                arrivalDate={dayjs(flight.utc_arrival)}
-                                price={flight.price}
-                                label={getLabel(flight.price)}
-                                stops={flight.route.length - 1}
-                                seats={flight.availability.seats}
-                                hold={flight.baglimit.hold_weight ? 1 : 0}
-                                carryOn={flight.baglimit.hand_weight ? 1 : 0}
-                                flightStop={'one-way'}
-                            />
-                    ))}
-                        
+                    {searchFlightsResults.slice(0, count).map((flight: FlightInfo, index: number) =>
+                        <FlightBox
+                            key={index}
+                            flight={flight}
+                            selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
+                            bookingToken={flight.booking_token}
+                            departureCountryCode={flight.cityCodeFrom}
+                            arrivalCountryCode={flight.cityCodeTo}
+                            airportName1={flightState?.airports[flight.flyFrom]?.name ?? flight.flyFrom}
+                            airportName2={flightState?.airports[flight.flyTo]?.name ?? flight.flyTo}
+                            departureDate={dayjs(flight.utc_departure)}
+                            arrivalDate={dayjs(flight.utc_arrival)}
+                            price={flight.price}
+                            label={getLabel(flight.price)}
+                            stops={flight.route.length - 1}
+                            seats={flight.availability.seats}
+                            hold={flight.baglimit.hold_weight ? 1 : 0}
+                            carryOn={flight.baglimit.hand_weight ? 1 : 0}
+                            flightStop={'one-way'}
+                        />
+                    )}
+
                     <Flex justify="center">
                         {count < searchFlightsResults?.length && (
                             <Button
@@ -294,6 +339,7 @@ function AvailableFlights() {
             <StillSearchingModal
                 isOpen={modal.isOpenStillSearching}
                 onClose={() => setModal(prev => ({ ...prev, isOpenStillSearching: false }))}
+                refresh={handleSearchResults}
             />
         </Flex>
   );

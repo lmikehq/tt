@@ -110,16 +110,21 @@ export interface SearchFlightsRequestQuery {
     selected_cabins?: string;
     atime_from?: string;
     atime_to?: string;
+    dtime_from?: string;
+    dtime_to?: string;
     return_from?: string;
     return_to?: string;
     ret_dtime_from?: string;
     ret_dtime_to?: string;
     adult_hold_bag?: string;
-    price_from?: string;
-    price_to?: string;
+    adult_hand_bag?: string;
+    price_from?: number;
+    price_to?: number;
     select_airlines?: string[];
     vehicle_type?: string;
-    max_stopovers?: string;
+    max_stopovers?: number;
+    max_fly_duration?: number;
+    page?: number;
 }
 
 export interface CheckFlightsRequestInput {
