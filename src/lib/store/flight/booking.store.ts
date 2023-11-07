@@ -31,6 +31,7 @@ interface State {
     highestStep: number;
     step: number;
     searchFlightsMode: Mode;
+    searchMoreFlightsMode: Mode;
     searchFlightsResults: FlightInfo[];
     flightsResults: {
         currency: string;
@@ -64,6 +65,9 @@ interface Actions {
     searchFlights: (params: {
         data: SearchFlightsRequestQuery;
     }) => Promise<void>;
+    searchMoreFlights: (params: {
+        data: SearchFlightsRequestQuery;
+    }) => Promise<void>;
     checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
     setInitCheckFlightsMode: (mode: Mode) => void;
     checkSeating: (params: {
@@ -92,6 +96,7 @@ export const useFlightBookingStore = create<State & Actions>(
 
         mode: Mode.init,
         searchFlightsMode: Mode.init,
+        searchMoreFlightsMode: Mode.init,
         searchFlightsResults: [],
         flightsResults: {
             currency: 'USD',
@@ -139,8 +144,9 @@ export const useFlightBookingStore = create<State & Actions>(
         }: {
             data: SearchFlightsRequestQuery;
         }) => {
+            const isMoreSearch = (data?.limit && Number(data?.limit) > 10)   
             set({ searchFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data: { ...data, curr: 'USD' } })
+            return await FlightBookingService.searchFlights({ data })
                 .then((response) => {
                     set((state) => ({
                         searchFlightsMode: Mode.loaded,
@@ -153,9 +159,25 @@ export const useFlightBookingStore = create<State & Actions>(
                     }));
                 })
                 .catch((error) => {
-                    set({
-                        searchFlightsMode: Mode.error,
-                    });
+                    set({ searchFlightsMode: Mode.error });
+                    throw error;
+                });
+        },
+        searchMoreFlights: async ({
+            data,
+        }: {
+            data: SearchFlightsRequestQuery;
+        }) => {
+            set({ searchMoreFlightsMode: Mode.loading });
+            return await FlightBookingService.searchFlights({ data })
+                .then((response) => {
+                    set((state) => ({
+                        searchMoreFlightsMode: Mode.loaded,
+                        searchFlightsResults: response.data,
+                    }));
+                })
+                .catch((error) => {
+                    set({ searchMoreFlightsMode: Mode.error });
                     throw error;
                 });
         },

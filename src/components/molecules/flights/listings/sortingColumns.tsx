@@ -2,7 +2,7 @@
 
 import Filter from "./filters";
 import LoadingButton from '@mui/lab/LoadingButton';
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { ReactNode, useContext, useEffect, useMemo } from "react";
 import { useState } from "react";
 import { FilterData } from "@/lib/types/request-models/flight/filter";
 import PriceAlerts from "../components/priceAlerts";
@@ -26,6 +26,8 @@ import { Divider } from "@/components/atoms/divider";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { Mode } from "@/lib/types";
+import { FlightContext } from "@/lib/extensions/context";
+import { cleanObject } from "@/lib/utilFns";
 
 const TimeBox = styled.div`
     background: #f3f3ff;
@@ -138,40 +140,43 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
         updateSearchQuery,
         searchQuery,
     } = useFlightBookingStore((state) => state);
+
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state
     const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
 
     const [filterData, setFilterData] = useState<FilterData>({
         ...initFilterData,
         bags: {
-            cabin: Number(searchParams?.adult_hold_bag ?? initFilterData.bags.cabin),
-            checked: Number(searchParams?.adult_hand_bag ?? initFilterData.bags.checked),
+            cabin: Number(searchQuery?.adult_hold_bag ?? initFilterData.bags.cabin),
+            checked: Number(searchQuery?.adult_hand_bag ?? initFilterData.bags.checked),
         },
         price: {
-            min: Number(searchParams?.price_from ?? initFilterData.price.min),
-            max: Number(searchParams?.price_to ?? initFilterData.price.max),
+            min: Number(searchQuery?.price_from ?? initFilterData.price.min),
+            max: Number(searchQuery?.price_to ?? initFilterData.price.max),
         },
         times: {
             arrival: {
-                min: searchParams?.atime_from ?? initFilterData.times.arrival.min,
-                max: searchParams?.atime_to ?? initFilterData.times.depart.max,
+                min: searchQuery?.atime_from ?? initFilterData.times.arrival.min,
+                max: searchQuery?.atime_to ?? initFilterData.times.depart.max,
             },
             depart: {
-                min: searchParams?.dtime_from ?? initFilterData.times.depart.min,
-                max: searchParams?.dtime_to ?? initFilterData.times.depart.max,
+                min: searchQuery?.dtime_from ?? initFilterData.times.depart.min,
+                max: searchQuery?.dtime_to ?? initFilterData.times.depart.max,
             }
         },
         duration: {
             stopOver: {
                 min: initFilterData.duration.stopOver.min,
-                max: Number(searchParams?.max_stopovers ?? initFilterData.duration.stopOver.max),
+                max: Number(searchQuery?.max_stopovers ?? initFilterData.duration.stopOver.max),
             },
             travelTime: {
                 min: initFilterData.duration.travelTime.min,
-                max: Number(searchParams?.max_fly_duration ?? initFilterData.duration.travelTime.max),
+                max: Number(searchQuery?.max_fly_duration ?? initFilterData.duration.travelTime.max),
             }
         },
-        cabin: searchParams?.selected_cabins ?? initFilterData?.cabin,
-        stops: searchParams?.stops ?? initFilterData?.stops,
+        cabin: searchQuery?.selected_cabins ?? initFilterData?.cabin,
+        stops: searchQuery?.stops ?? initFilterData?.stops,
     });
 
     const [filterState, setFilterState] = useState({
@@ -221,16 +226,15 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
         actionType: "add" | "subtract"
     ) => {
         setFilterData((prevState) => {
-        const currentValue = prevState.bags[bagType];
-        const newValue =
-            actionType === "add" ? Math.min(currentValue + 1, 10) : Math.max(currentValue - 1, 0);
-        return {
-            ...prevState,
-            bags: {
-            ...prevState.bags,
-            [bagType]: newValue,
-            },
-        };
+            const currentValue = prevState.bags[bagType];
+            const newValue = actionType === 'add' ? Math.min(currentValue + 1, bagType === 'cabin' ? 1 : 2) : Math.max(currentValue - 1, 0)
+            return {
+                ...prevState,
+                bags: {
+                    ...prevState.bags,
+                    [bagType]: newValue,
+                },
+            };
         });
         setFilter('bags')
     };
@@ -351,10 +355,23 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
     , [activeFilters]);
     
     const handleFilterResults = (data: FilterData) => {
+        const flight = flightState?.fleet[0]
+        const adults = Number(flight?.adults)
+        const children = Number(flight?.children)
+        const infants = Number(flight?.infants)
+        const adultHandBags = adults > 0 ? data.bags.cabin : undefined
+        const adultHoldBags = adults > 0 ? data.bags.checked : undefined
+        const childHandBags = children > 0 ? data.bags.cabin : undefined
+        const childHoldBags = children > 0 ? data.bags.checked : undefined
         const newParams = {
             ...searchParams,
-            adult_hold_bag: String(data.bags.cabin),
-            adult_hand_bag: String(data.bags.checked),
+            adults,
+            children,
+            infants,
+            adult_hand_bag: String(adultHandBags),
+            adult_hold_bag: String(adultHoldBags),
+            child_hand_bag: String(childHandBags),
+            child_hold_bag: String(childHoldBags),
             max_sector_stopovers: data.stops === 'any' ? '' : data.stops,
             dtime_from: data.times.depart.min,
             dtime_to: data.times.depart.max,
@@ -367,8 +384,8 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
             price_to: data.price.max,
             selected_cabins: data.cabin,
         }
-        updateSearchQuery({ data: newParams });
-        searchFlights({ data: newParams })
+        updateSearchQuery({ data: cleanObject(newParams) });
+        searchFlights({ data: cleanObject(newParams) })
             .then(res => {
                 setActiveFilters(prev => ({ ...prev, active: true }))
             })

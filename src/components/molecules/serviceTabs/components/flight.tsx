@@ -16,6 +16,7 @@ import { FlightContext, OneFlightType } from "@/lib/extensions/context";
 import { formatDate } from "@/lib/utilFns";
 import dayjs, { Dayjs } from "dayjs";
 import { HiPlus } from "react-icons/hi";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -95,6 +96,7 @@ function Flights() {
     const { isMobile } = useScreenResolution();
     const flightContext = useContext(FlightContext)
     const flightState = flightContext?.state, dispatch = flightContext?.dispatch
+    const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
     
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -118,8 +120,17 @@ function Flights() {
 		const dateTo = formatDate(flight?.returnDate ?? dayjs());
 		const departure = flight?.departureCountry
 		const arrival = flight?.arrivalCountry
-		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}`
+		const adults = flight?.adults
+		const children = flight?.children
+        const infants = flight?.infants
+        const bags = Number(flight?.cabinBaggage) + Number(flight?.checkedBaggage)
+        
+		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}&bnum=${bags}&adults=${adults}&children=${children}&infants=${infants}`
     }
+
+    useEffect(() => {
+        dispatch && dispatch({ type: "UPDATE_MULTI_FLIGHT", payload: { index: 0, data: { ...searchParams, adults: Number(searchParams?.adults ?? 0), children: Number(searchParams?.children ?? 0), infants: Number(searchParams?.infants ?? 0),  } } })
+    }, [window.location.search])
 
     
 	return (
@@ -135,7 +146,7 @@ function Flights() {
 				
 				<FlightStops
 					isMobile={isMobile}
-					value={flightState?.stops ?? 'round'}
+					value={flightState?.stops ?? ''}
 					onChange={handleChangeStops}
 					showLabel={isMobile}
 				/>
