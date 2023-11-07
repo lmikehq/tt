@@ -5,11 +5,11 @@ import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 import Section from "../../section";
 
+
 export default function PriceAlerts() {
   return (
-
     <Section margin="0 0 1rem 0">
-      <Box width={"100%"} bgcolor={ttColors.grayishAsh} padding="1rem" borderRadius="10px">
+        <Box width={"100%"} bgcolor={ttColors.grayishAsh} padding="1rem" borderRadius="10px">
             <Flex>
                 <Switch
                     label={<Text type="h4" weight="bold" text="Set up price alert" />}
