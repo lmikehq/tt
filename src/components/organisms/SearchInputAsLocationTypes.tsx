@@ -13,6 +13,7 @@ import { debounce } from "debounce";
 import { InputAdornment, Popper } from "@mui/material";
 import { IoLocationOutline } from "react-icons/io5";
 import { ttColors } from "@/lib/theme/colors";
+import Spinner from "../molecules/icons/spinner";
 
 interface SearchInputAsLocationTypesProps {
     locations: Location[];
@@ -20,6 +21,7 @@ interface SearchInputAsLocationTypesProps {
     onChange: (value: Location) => void;
     value?: Location;
     placeholder: string;
+    loading: boolean;
 }
 
 const PopperMy = function (props: any) {
@@ -37,6 +39,7 @@ export default function SearchInputAsLocationTypes({
     onChange,
     value,
     placeholder,
+    loading,
 }: SearchInputAsLocationTypesProps) {
     const handleSetSearchTextDebounce = debounce((value: string) => {
         handleSetSearchText({ text: value });
@@ -82,7 +85,7 @@ export default function SearchInputAsLocationTypes({
                         <Text
                             type="p"
                             size={16}
-                            color="#929292"
+                            color={ttColors.dark}
                             className="truncate"
                             text={`${option.name} (${option.code})`}
                         />
@@ -91,7 +94,7 @@ export default function SearchInputAsLocationTypes({
                             size={12}
                             weight={300}
                             className="truncate"
-                            color="#929292"
+                            color={ttColors.dark}
                             text={
                                 option.city?.country?.name ??
                                 option.country?.name ??
@@ -159,7 +162,7 @@ export default function SearchInputAsLocationTypes({
                                 <IoLocationOutline size={20} />
                             </InputAdornment>
                         ),
-                        endAdornment: <></>,
+                        endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : <></>,
                         autoComplete: "new-password",
                         placeholder: placeholder,
                     }}

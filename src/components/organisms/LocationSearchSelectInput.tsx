@@ -18,7 +18,8 @@ const LocationSearchSelectInput = ({
     const [locations, setLocations] = useState<Location[]>([]);
     const [searchText, setSearchText] = useState<string>("");
     const [defaultLocations, setDefaultLocations] = useState<Location[]>([]);
-
+    const [loading, setLoading] = useState<boolean>(false);
+    
     const mountedRef = useRef(false);
 
     const fetchLocations = async ({
@@ -29,15 +30,18 @@ const LocationSearchSelectInput = ({
         longitude?: number;
     }) => {
         try {
+            setLoading(true)
             const data = await FlightLocationService.fetchLocations({
                 data: { term: searchText },
                 latitude,
                 longitude,
             });
-            console.log(data?.locations, "data");
+            // console.log(data?.locations, "data");
+            setLoading(false)
             setLocations(data.locations ?? []);
             return locations;
         } catch (error) {
+            setLoading(false)
             setLocations([]);
         }
     };
@@ -79,6 +83,7 @@ const LocationSearchSelectInput = ({
             onChange={onChange}
             value={value}
             placeholder={placeholder}
+            loading={loading}
         />
     );
 };

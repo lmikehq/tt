@@ -73,6 +73,7 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
     const bagsPrice = Number(countofBagsPrices.reduce((prev, curr) => Number(prev ?? 0) + Number(curr ?? 0), 0)).toFixed(2)
     const totalPrice = Number(checkFlightsResponse?.tickets_price).toFixed(2) ?? 0
     const currency = checkFlightsResponse?.currency ?? 'USD'
+    const discount = Number(0).toFixed(2)
     
     const departureBags = countofBags.length
     
@@ -100,6 +101,7 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
             <Flex direction="column" gap=".6rem" margin="0 0 2rem">
                 <Detail name="Base Fare" value={basePrice} currency={currency} />
                 <Detail name="Service Charges" value={serviceCharges} currency={currency} />
+                <Detail name="Thrillers Discount" value={discount} currency={currency} negative />
                 {countofBags.length > 0 &&
                     <Detail name={`${countofBags.length}x Checked Baggage`} value={bagsPrice} currency={currency} />
                 }

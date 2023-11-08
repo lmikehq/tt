@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import dayjs from "dayjs";
 import LoadingButton from '@mui/lab/LoadingButton';
 import FlightBox from "./flightBox";
@@ -31,6 +31,9 @@ import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
 import { FaQuestion, FaSpinner } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
+import { dateSort, numSort } from "@/lib/utilFns";
+import { useQueryParams } from "@/hooks/useNext";
+import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
 
 
 interface SearchQuery {
@@ -153,7 +156,7 @@ function StillSearchingModal({ isOpen, onClose, to, refresh }: { isOpen: boolean
                 />
 
                 <Stack width='100%' alignItems='center' spacing={2}>
-                    <Button width="100%" padding="1.8rem 0" startIcon={<FaSpinner color='white' size={20} />} onClick={() => { onClose(); refresh() }} background={ttColors.dark}>
+                    <Button width="100%" padding="1.8rem 0" onClick={() => { onClose(); refresh() }} background={ttColors.dark}>
                         Refresh Search
                     </Button>
                 </Stack>
@@ -178,11 +181,11 @@ function AvailableFlights() {
     } = useFlightBookingStore((state) => state);
     
     const flightContext = useContext(FlightContext);
-    const flightState = flightContext?.state
-    const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
+    const flightState = flightContext?.state;
+    const { queryParams } = useQueryParams()
 
-    const [count, setCount] = useState(10);
-    const [sortType, setSortType] = useState("best");
+    // const [count, setCount] = useState(10);
+    const [sortType, setSortType] = useState("");
     
     const [modal, setModal] = useState({
         isOpenLogin: false,
@@ -190,26 +193,61 @@ function AvailableFlights() {
         route: ''
     });
 
-    const prices: number[] = searchFlightsResults?.map((flight) => flight.price) ?? [];
+    const calculateDuration = (departure?: string, arrival?: string) => {
+        const departureTime = dayjs(departure);
+        const arrivalTime = dayjs(arrival);
 
-    const cheapPrice = prices.length > 0 ? Math.min(...prices) : 0;
+        const duration = arrivalTime.diff(departureTime, "minute");
+        const hours = Math.floor(duration / 60);
+        const minutes = duration % 60;
+        const formattedDuration = (isNaN(hours) || isNaN(hours)) ? '' : `${hours}hr ${minutes}mins`;
 
-    const bestPrice = prices.reduce((acc, price) => acc + price, 0) / prices.length;
+        return formattedDuration;
+    };
+
+    const best = useMemo(() => {
+        const pick = numSort(searchFlightsResults, 'quality', 'asc')[0]
+        return {
+            price: pick?.price ?? 0,
+            duration: calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? '',
+        }
+    }, [searchFlightsResults])
     
-    const durationPriceMap: Record<string, number> = {};
+    const cheapest = useMemo(() => {
+        const pick = numSort(searchFlightsResults, 'price', 'asc')[0]
+        return {
+            price: pick?.price ?? 0,
+            duration: calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? '',
+        }
+    }, [searchFlightsResults])
 
-
-    const keysAsNumbers: number[] = Object.keys(durationPriceMap).map(Number);
-    const minKey: number = Math.min(...keysAsNumbers);
-    const minPrice: number | undefined = durationPriceMap[minKey.toString()];
+    const fastest = useMemo(() => {
+        const arr = searchFlightsResults.map(e => ({ ...e, travelTime: e.duration.departure }))
+        const pick = numSort(arr, 'travelTime', 'asc')[0]
+        return {
+            price: pick?.price ?? 0,
+            duration: calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? '',
+            flights: numSort(arr, 'travelTime', 'asc'),
+        }
+    }, [searchFlightsResults])
+    
+    const earliest = useMemo(() => {
+        const pick = dateSort(searchFlightsResults, 'utc_departure', 'asc')[0]
+        return {
+            price: pick?.price ?? 0,
+            duration: calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? '',
+        }
+    }, [searchFlightsResults])
 
     const getLabel = (price: number) => {
-        if (price === cheapPrice) {
+        if (price === cheapest.price) {
             return "Cheapest";
-        } else if (Math.abs(price - bestPrice) <= 0.05 * bestPrice) {
+        } else if (price === best.price) {
             return "Best";
-        } else if (price === minPrice) {
+        } else if (price === fastest.price) {
             return "Fastest";
+        } else if (price === earliest.price) {
+            return "Earliest";
         } else {
             return "";
         }
@@ -236,43 +274,35 @@ function AvailableFlights() {
     }
 
     const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
-        const updatedQuery = { ...searchQuery, ...updatedParams };
         // router.push(pathName + constructQueryFromParams(updatedQuery));
+        const updatedQuery = { ...searchQuery, ...updatedParams };
         updateSearchQuery({ data: updatedQuery });
         searchFlights({ data: updatedQuery });
-        console.log(updatedQuery)
     };
 
     const loadMoreItems = () => {
-        const newCount = flightsResults.total > count ? count + 10 : count
-        if (newCount !== count) {
-            searchMoreFlights({ data: { ...searchParams, limit: newCount } })
-                .then(res => {
-                    setCount(prev => newCount);
-            })
+        const limit = searchQuery?.limit ?? 10
+        const newCount = flightsResults.total > limit ? limit + 10 : limit
+        if (newCount !== limit) {
+            searchMoreFlights({ data: { ...searchQuery, limit: newCount } })
         }
     };
 
-    useEffect(() => {
-        searchFlightsResults.forEach((flight) => {
-            const { duration, price } = flight;
-            if (duration && duration.departure) {
-                durationPriceMap[duration.departure] = price;
-            }
-        })
-    }, [searchFlightsResults])
-
-    const handleSearchResults = (params: Record<string, string>) => {
+    const handleSearchResults = (params: SearchFlightsRequestQuery ) => {
         updateSearchQuery({ data: params });
         searchFlights({ data: params })
-            .then(res => {
-                setCount(10)
-            })
     }
 
+    const flight = flightState?.fleet[0]
+    const formComplete = flight?.departureCountry && flight?.arrivalCountry && flight?.departureDate
+
     useEffect(() => {
-        handleSearchResults(searchParams)
-    }, [window.location.search]);
+        handleSearchResults({ ...searchQuery, ...queryParams })
+    }, [queryParams]);
+
+    useEffect(() => {
+        console.log('qqq', searchQuery)
+    }, [searchQuery]);
 
     useEffect(() => {
         const interval = setTimeout(() => {
@@ -283,26 +313,29 @@ function AvailableFlights() {
 
 
     return (
-        <Flex direction="column" width="100%" gap=".5rem" >
-            <SortedFlightsTab
-                cheapPrice={cheapPrice}
-                bestPrice={cheapPrice}
-                sortType={sortType}
-                setSortType={setSortType}
-                fastPrice={minPrice}
-                data={searchFlightsResults}
-                updateSearchQueryHandler={updateSearchQueryHandler}
-            />
+        <Flex direction="column" width="100%" gap=".5rem">
+            {formComplete &&
+                <SortedFlightsTab
+                    best={best}
+                    cheapest={cheapest}
+                    fastest={fastest}
+                    earliest={earliest}
+                    sortType={sortType}
+                    setSortType={setSortType}
+                    data={searchFlightsResults}
+                    updateSearchQueryHandler={updateSearchQueryHandler}
+                />
+            }
 
             {searchFlightsMode === Mode.loading ? (
                 <FlightBoxSkeleton/>
-            ) : searchFlightsResults.length === 0 ? (
+            ) : (searchFlightsResults.length === 0) ? (
                 <Flex width="100%" justify="center" padding="9rem 0">
                     <Text type="p" text="Sorry, no flights found" weight={600} size={20} />
                 </Flex>
             ) : (
                 <React.Fragment>
-                    {searchFlightsResults.slice(0, count).map((flight: FlightInfo, index: number) =>
+                    {searchFlightsResults.map((flight: FlightInfo, index: number) =>
                         <FlightBox
                             key={index}
                             flight={flight}
@@ -310,8 +343,6 @@ function AvailableFlights() {
                             bookingToken={flight.booking_token}
                             departureCountryCode={flight.cityCodeFrom}
                             arrivalCountryCode={flight.cityCodeTo}
-                            airportName1={flightState?.airports[flight.flyFrom]?.name ?? flight.flyFrom}
-                            airportName2={flightState?.airports[flight.flyTo]?.name ?? flight.flyTo}
                             departureDate={dayjs(flight.utc_departure)}
                             arrivalDate={dayjs(flight.utc_arrival)}
                             price={flight.price}
@@ -324,7 +355,7 @@ function AvailableFlights() {
                         />
                     )}
 
-                    {count < flightsResults.total &&
+                    {(searchQuery?.limit ?? 10) < flightsResults.total &&
                         <Flex justify="center">
                             <Button
                                 width="100%"
@@ -357,10 +388,10 @@ function AvailableFlights() {
             <StillSearchingModal
                 isOpen={modal.isOpenStillSearching}
                 onClose={() => setModal(prev => ({ ...prev, isOpenStillSearching: false }))}
-                refresh={() => handleSearchResults(searchParams)}
+                refresh={() => handleSearchResults(searchQuery)}
             />
         </Flex>
-  );
+    );
 }
 
 export default AvailableFlights;

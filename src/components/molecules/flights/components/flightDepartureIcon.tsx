@@ -4,7 +4,7 @@ export default function FlightDepartureIcon({ reverse }: { reverse?: boolean }) 
         src={"/assets/images/flights/departure.png"}
         alt="flight departure"
         width="18px"
-        height="80%"
+        height="70%"
         style={{ transform: reverse ? "rotateZ(180deg)" : "" }}
     />
   );

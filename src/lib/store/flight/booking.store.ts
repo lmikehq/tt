@@ -108,7 +108,7 @@ export const useFlightBookingStore = create<State & Actions>(
             currency: "USD",
             total: 0,
         },
-        searchQuery: {},
+        searchQuery: { limit: 10 },
         sessionId: null,
         seatRows: [],
         initCheckFlightsMode: Mode.init,
@@ -142,37 +142,32 @@ export const useFlightBookingStore = create<State & Actions>(
                         : state.highestStep,
             }));
         },
-
         setStep: ({ step }: { step: number }) => {
             set({ step });
         },
-
         setSaveBookingDetails({ data }: { data: SaveBookingRequestInput }) {
             set({ saveBookingDetails: data });
         },
         updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
-            set({
-                searchQuery: data,
-            });
+            set({ searchQuery: data });
         },
         searchFlights: async ({
             data,
         }: {
             data: SearchFlightsRequestQuery;
         }) => {
-            const isMoreSearch = (data?.limit && Number(data?.limit) > 10)   
             set({ searchFlightsMode: Mode.loading });
             return await FlightBookingService.searchFlights({ data: { ...data, curr: "USD" } })
                 .then((response) => {
-                    set((state) => ({
+                    console.log('rrrr', response.data)
+                    set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
                         flightsResults: {
                             currency: response.currency,
                             total: response._results,
-                        },
-                        totalSearchFlightsResults: response._results,
-                    }));
+                        }
+                    });
                 })
                 .catch((error) => {
                     set({ searchFlightsMode: Mode.error });
@@ -187,10 +182,10 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ searchMoreFlightsMode: Mode.loading });
             return await FlightBookingService.searchFlights({ data })
                 .then((response) => {
-                    set((state) => ({
+                    set({
                         searchMoreFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
-                    }));
+                    });
                 })
                 .catch((error) => {
                     set({ searchMoreFlightsMode: Mode.error });
