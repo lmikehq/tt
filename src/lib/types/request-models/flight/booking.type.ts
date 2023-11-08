@@ -121,7 +121,7 @@ export interface SearchFlightsRequestQuery {
     adult_hand_bag?: string;
     price_from?: number;
     price_to?: number;
-    select_airlines?: string[];
+    select_airlines?: string;
     vehicle_type?: string;
     max_stopovers?: number;
     max_fly_duration?: number;

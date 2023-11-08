@@ -15,13 +15,13 @@ import StopsPill from "./stopsPill";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { calculateTime } from "@/utils/convertTime";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
-import React from "react";
+import React, { useContext } from "react";
+import { isMonday } from "date-fns";
+import { FlightContext } from "@/lib/extensions/context";
 
 type flightProps = {
     departureCountryCode: string;
     arrivalCountryCode: string;
-    airportName1: string;
-    airportName2: string;
     departureDate: dayjs.Dayjs;
     arrivalDate: dayjs.Dayjs;
     price: number;
@@ -58,18 +58,41 @@ const IconBorders = styled.div`
 const LabelBox = styled.div`
   padding: 1rem 1rem;
   background: ${ttColors.grayishAsh};
-  width: auto;
+  width: min-content;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
+function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state
+    const { isMobile } = useScreenResolution()
+
+    return (
+        <Flex width="auto" gap='.4rem'>
+            {airlines.map((e, index) =>
+                <img
+                    key={`airline-${index}`}
+                    src={flightState?.airlines[e]?.logo}
+                    alt={`airline-${flightState?.airlines[e]?.Airline}`}
+                    width={isMobile ? "50px" : "60px"}
+                    height={isMobile ? "50px" : "60px"}
+                    style={{ borderRadius: '50%', border: `1px solid ${ttColors.lightestGray}` }}
+                />
+            )}
+        </Flex>
+    )
+}
+
 function FlightBox(props: flightProps) {
     const { isMobile } = useScreenResolution();
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state
 
-    function formatDate(day: Dayjs) {
-        return day.format("dddd, MMMM D");
+    function formatDate(day: Dayjs, short?: boolean) {
+        return day.format(short ? "ddd, MMMM D" : "dddd, MMMM D");
     }
 
     const timeDifference = (utcDeparture: string, utcArrival: string) => {
@@ -91,48 +114,54 @@ return (
       <Box
         sx={{
             display: isMobile ? "flex" : "grid",
+            flexWrap: 'wrap',
             flexDirection: "column",
             width: "100%",
             gridTemplateColumns: "9fr 1fr 5fr",
         }}>
 
         {/* Left */}      
-        <Flex direction="column" gap=".8rem" padding="1rem 1rem 2rem 1.5rem" height="100%" justify="center">
-          {!!props.label && (
-            <LabelBox>
-              <Text type="p" text={props.label} color="#4A7181" />
-            </LabelBox>
-          )}
+        <Flex direction="column" gap=".8rem" padding={isMobile ? "1rem" : "1rem 2rem 2rem 1.5rem"} height="100%" justify="center">
+            {!!props.label && (
+                <LabelBox>
+                    <Text type="p" text={props.label} color="#4A7181" />
+                </LabelBox>
+            )}
                   
             <Box
                 sx={{
+                    width: '100%',
                     display: "grid",
-                    gridTemplateColumns: "40px 1fr",
-                    alignItems: 'center'
-                }}>
+                    gridTemplateColumns: isMobile ? "30px 1fr" : "40px 1fr",
+                    alignItems: 'center',
+                }}
+            >
                 <FlightDepartureIcon reverse />
 
-                <Flex direction="column" gap="1rem" margin="0 1rem">
-                    <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray, fontWeight: "medium" }}>
-                        <Text type="p" text="Depart" />
+                <Flex width="100%" direction="column" gap="1rem">
+                    <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray }}>
+                        <Text type="p" size={isMobile ? 15 : 16} text="Depart" weight={500} />
                         <Dot fontSize="5rem" />
-                        <Text type="p" text={formatDate(props.departureDate)} />
+                        <Text type="p" size={isMobile ? 15 : 16} text={formatDate(props.departureDate, isMobile ? true : false)} weight={500} />
                     </Flex>
-                    <Flex gap="1.4rem">
-                        <Text type="p" weight={"bold"} text={dayjs(startRoute.utc_departure).format("HH: mm")} />
-                        <Text type="p" text={props.airportName1} />
-                        {/* <Text type="p" text={`${startRoute.operating_carrier}-${startRoute.operating_flight_no}`} /> */}
-                        <Text type="p" text={startRoute.cityCodeFrom} />
+                    <Flex gap={isMobile ? "1rem" : "0"} justify="space-between">
+                        <Text type="p" size={isMobile ? 15 : 18} weight={"bold"} text={dayjs(startRoute.utc_departure).format("HH: mm")} styles={{ minWidth: 'max-content'}} />
+                        <Flex wrap="wrap" width="67%" justify="flex-start">
+                            <Text type="p" size={isMobile ? 14 : 16} text={flightState?.airports[startRoute.flyFrom]?.name ?? props.flight.flyFrom} />
+                        </Flex>
+                        <Text type="p" size={isMobile ? 15 : 16} text={startRoute.cityCodeFrom} weight={500} color={ttColors.lighterGray} />
                     </Flex>
                     <Flex align={"center"} gap="1rem">
-                        <Text type="p" color={ttColors.lighterGray} text={timeDifference(startRoute.utc_departure, isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival)} />
-                        {props.stops > 0 && <StopsPill numberOfStops={props.stops} />}
+                        <Text type="p" size={isMobile ? 14 : 15} color={ttColors.lighterGray} text={timeDifference(startRoute.utc_departure, isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival)} />
+                        <AirlineIcons airlines={props.flight.airlines}/>
+                            {props.stops > 0 && <StopsPill numberOfStops={props.stops} isMobile={isMobile} />}
                     </Flex>
-                    <Flex gap="1.4rem">
-                        <Text type="p" weight={"bold"} text={dayjs(isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival).format("HH: mm")} />
-                        <Text type="p" text={props.airportName2} />
-                        {/* <Text type="p" text={`${isRoundTrip ? startRoute.operating_carrier : endRoute.operating_carrier}-${isRoundTrip ? startRoute.operating_flight_no : endRoute.operating_flight_no}`} /> */}
-                        <Text type="p" text={isRoundTrip ? startRoute.cityCodeTo : props.flight.cityTo} />
+                    <Flex gap={isMobile ? "1rem" : "1.4rem"} justify="space-between">
+                        <Text type="p" size={isMobile ? 15 : 18} weight={"bold"} text={dayjs(isRoundTrip ? startRoute.utc_arrival : props.flight.utc_arrival).format("HH: mm")} styles={{ minWidth: 'max-content'}} />
+                        <Flex wrap="wrap" width="67%" justify="flex-start">
+                            <Text type="p" size={isMobile ? 14 : 16} text={flightState?.airports[endRoute.flyTo]?.name ?? props.flight.flyTo} />
+                        </Flex>
+                        <Text type="p" size={isMobile ? 15 : 16} text={isRoundTrip ? startRoute.cityCodeTo : endRoute.cityCodeTo} weight={500} color={ttColors.lighterGray} />
                     </Flex>
                 </Flex>
             </Box>
@@ -155,41 +184,41 @@ return (
                     <FlightDepartureIcon />
 
                     <Flex direction="column" gap="1rem" margin="0 1rem">
-                        <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray, fontWeight: "medium" }}>
-                            <Text type="p" text="Return" />
+                        <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray }}>
+                            <Text type="p" size={isMobile ? 15 : 16} text="Return" weight={500} />
                             <Dot fontSize="5rem" />
-                            <Text type="p" text={formatDate(props.arrivalDate)} />
+                            <Text type="p" size={isMobile ? 15 : 16} text={formatDate(props.arrivalDate)} weight={500} />
                         </Flex>
-                        <Flex gap="1.4rem">
-                            <Text type="p" weight={"bold"} text={dayjs(endRoute.utc_departure).format("HH: mm")} />
-                            <Text type="p" text={`${endRoute.operating_carrier}-${endRoute.operating_flight_no}`} />
-                            <Text type="p" text={endRoute.cityFrom} />
+                        <Flex gap={isMobile ? "1rem" : "0"} justify="space-between">
+                            <Text type="p" size={isMobile ? 15 : 16} weight={"bold"} text={dayjs(endRoute.utc_departure).format("HH: mm")} />
+                            <Text type="p" size={isMobile ? 14 : 16} text={flightState?.airports[endRoute.flyFrom]?.name ?? ""} />
+                            <Text type="p" size={isMobile ? 15 : 16} text={endRoute.cityCodeFrom} />
                         </Flex>
                         <Flex align={"center"} gap="1rem">
-                            <Text type="p" color={ttColors.lighterGray} text={timeDifference(endRoute.utc_departure, endRoute.utc_arrival)}/>
-                            <StopsPill numberOfStops={props.stops} />
+                            <Text type="p" size={isMobile ? 14 : 16} color={ttColors.lighterGray} text={timeDifference(endRoute.utc_departure, endRoute.utc_arrival)}/>
+                            <AirlineIcons airlines={props.flight.airlines}/>
+                            {props.stops > 0 && <StopsPill numberOfStops={props.stops} isMobile={isMobile} />}
                         </Flex>
-                        <Flex gap="1.4rem">
-                            <Text type="p" weight={"bold"} text={dayjs(endRoute.utc_arrival).format("HH: mm")} />
-                            <Text type="p" text={`${endRoute.operating_carrier}-${endRoute.operating_flight_no}`} />
-                            <Text type="p" text={endRoute.cityTo} />
+                        <Flex gap={isMobile ? "1rem" : "1.4rem"} justify="space-between">
+                            <Text type="p" size={isMobile ? 15 : 16} weight={"bold"} text={dayjs(endRoute.utc_arrival).format("HH: mm")} />
+                            <Text type="p" size={isMobile ? 14 : 16} text={flightState?.airports[endRoute.flyTo]?.name ?? ""} />
+                            <Text type="p" size={isMobile ? 15 : 16} text={endRoute.cityCodeTo} />
                         </Flex>
                         </Flex>
                     </Box>
                 </React.Fragment>    
             }
-        </Flex>
-              
+        </Flex>   
 
         <Divider direction="vertical" borderStyle="dotted" margin="0" style={{ width: 'max-content' }} />
               
         {/* Right */}
         <Flex
             direction="column"
-            padding={isMobile ? "2rem 2rem 2rem 3rem" : "2rem 2rem 2rem 0"}
+            padding={isMobile ? "1rem 1.5rem 2rem" : "2rem 2rem 2rem 0"}
             justify="space-between"
             height="100%"
-            gap={isMobile ? "1rem" : "3rem"}
+            gap={isMobile ? "2rem" : "1.5rem"}
         >
           <Flex align="center">
             <Flex gap=".5rem">
@@ -213,36 +242,41 @@ return (
               </IconBorders>
             </Flex>
             {!isMobile && <BsShare size={23} />}
-          </Flex>
-          <Flex
-            direction={isMobile ? "column-reverse" : "column"}
-            gap=".6rem"
-            padding={isMobile ? "2rem 0" : ""}>
-            <Text
-              type="h1"
-              text={`${props.seats ?? 0} seat(s) left at this price`}
-              weight={500}
-              size={16}
-              color="#929292"
-            />
-            <Text type="h1" text={`$ ${price}`} weight={600} size={36} />
-          </Flex>
+            </Flex>
+            <Flex direction={isMobile ? "row" : "column"} align={isMobile ? "flex-end" : "space-between"} gap={isMobile ? "0" : "1rem"}>
+                <Flex
+                    direction={isMobile ? "column-reverse" : "column"}
+                    justify={isMobile ? "flex-start" : "center"}
+                        gap={isMobile ? "0" : ".6rem"}
+                        width={isMobile ? "90%" : "100%"}
+                >
+                    <Text
+                        type="h1"
+                        text={`${props.seats ?? 0} seat(s) left at this price`}
+                        weight={500}
+                        size={isMobile ? 12 : 15}
+                        color="#929292"
+                    />
+                    <Text type="h1" text={`$ ${price}`} weight={600} size={isMobile ? 24 : 32} />
+                </Flex>
 
-          <Button
-            background="#7BBBD6"
-            width="100%"
-            padding="2rem 0"
-            onClick={() =>
-              props.selectFlight({ bookingToken: props.bookingToken })
-            }>
-            <Text
-              type="h1"
-              text="Select"
-              weight={600}
-              size={18}
-              font="Montserrat"
-            />
-          </Button>
+                <Button
+                    background="#7BBBD6"
+                    width="100%"
+                    padding="2rem 0"
+                    onClick={() =>
+                        props.selectFlight({ bookingToken: props.bookingToken })
+                    }>
+                    <Text
+                    type="h1"
+                    text="Select"
+                    weight={600}
+                    size={isMobile ? 16 : 18}
+                    font="Montserrat"
+                    />
+                </Button>
+
+            </Flex>
         </Flex>
               
       </Box>

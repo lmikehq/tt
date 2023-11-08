@@ -93,6 +93,8 @@ interface SearchProps {
     disabled?: boolean;
     error?: boolean;
     onChange: (x: any) => void;
+    onFocus?: (x: any) => void;
+    onBlur?: (x: any) => void;
     cursor?: CSSProperties['cursor'];
 }
 
@@ -263,6 +265,8 @@ export function SearchInputAsString({
     value,
     error,
     onChange,
+    onFocus,
+    onBlur,
     height,
     padding,
     border,
@@ -343,6 +347,8 @@ export function SearchInputAsString({
             },
           }}
             onClick={handleClick}
+            onFocus={onFocus}
+            onBlur={onBlur}
             label={legend}
             InputProps={{
             startAdornment: (

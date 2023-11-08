@@ -17,6 +17,9 @@ import { formatDate } from "@/lib/utilFns";
 import dayjs, { Dayjs } from "dayjs";
 import { HiPlus } from "react-icons/hi";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { Mode } from "@/lib/types";
+import { useQueryParams } from "@/hooks/useNext";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -121,10 +124,11 @@ function Flights() {
     const { isMobile } = useScreenResolution();
     const flightContext = useContext(FlightContext)
     const flightState = flightContext?.state, dispatch = flightContext?.dispatch
-    const searchParams = extractSearchParamsFromUrl({ url: window.location.href });
-    
-    const [loading, setLoading] = useState<boolean>(false);
 
+    const { searchFlightsMode } = useFlightBookingStore((state) => state);
+
+    const { queryParams } = useQueryParams()
+    
     const handleAddMultiFlight = () => {
         dispatch && dispatch({ type: "ADD_MULTI_FLIGHT" });
     };
@@ -147,6 +151,34 @@ function Flights() {
         dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
     };
 
+    const translateCabin = (x?: string) => {
+        switch (x) {
+            case 'Economy': return 'M';
+                break;
+            case 'Economy Premium': return 'W';
+                break;
+            case 'Business': return 'C';
+                break;
+            case 'First': return 'F';
+                break;
+            default: return ''
+        }
+    }
+
+    const reverseCabin = (x?: string) => {
+        switch (x) {
+            case 'M': return 'Economy';
+                break;
+            case 'W': return 'Economy Premium';
+                break;
+            case 'C': return 'Business';
+                break;
+            case 'F': return 'First';
+                break;
+            default: return ''
+        }
+    }
+
 	const formatSearchFlight = (flight?: OneFlightType) => {
 		const dateFrom = formatDate(flight?.departureDate ?? dayjs());
 		const dateTo = formatDate(flight?.returnDate ?? dayjs());
@@ -155,18 +187,44 @@ function Flights() {
 		const adults = flight?.adults
 		const children = flight?.children
         const infants = flight?.infants
+        const cabin = translateCabin(flight?.flightClass)
         const bags = Number(flight?.cabinBaggage) + Number(flight?.checkedBaggage)
         
-		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}&bnum=${bags}&adults=${adults}&children=${children}&infants=${infants}`
+		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}`
+    }
+
+    const flight = flightState?.fleet[0]
+
+    const formComplete = flight?.departureCountry && flight?.arrivalCountry && flight?.departureDate
+
+    const handleSearchFlights = () => {
+        if (formComplete) {
+            router.push(formatSearchFlight(flight))
+        }
     }
 
     useEffect(() => {
-        dispatch && dispatch({ type: "UPDATE_MULTI_FLIGHT", payload: { index: 0, data: { ...searchParams, adults: Number(searchParams?.adults ?? 0), children: Number(searchParams?.children ?? 0), infants: Number(searchParams?.infants ?? 0),  } } })
-    }, [window.location.search])
+        dispatch && dispatch({
+            type: "UPDATE_MULTI_FLIGHT",
+            payload: {
+                index: 0,
+                data: {
+                    // ...queryParams,
+                    // departureCountry: queryParams?.fly_from,
+                    // arrivalCountry: queryParams?.fly_to,
+                    // departureDate: dayjs(queryParams?.date_from),
+                    flightClass: reverseCabin(queryParams?.cabin),
+                    adults: Number(queryParams?.adults ?? 1),
+                    children: Number(queryParams?.children ?? 0),
+                    infants: Number(queryParams?.infants ?? 0),
+                }
+            }
+        })
+    }, [])
 
-    
+
 	return (
-		<Section padding="1.5rem 0 2rem 0" styles={{ position: "relative" }}>
+		<Section padding="1.5rem .5rem 0" styles={{ position: "relative" }}>
 			<Flex direction="column">
 				{isMobile &&
 					<FlightType
@@ -224,8 +282,9 @@ function Flights() {
                 )}
 
             <Flex
-                justify="center"
-                styles={{ position: "absolute", bottom: "-40px" }}
+                justify="flex-end"
+                margin="1.5rem 0 0 0"
+                // styles={{ position: "absolute", bottom: "-40px" }}
             >
                 <Button
                     width={isMobile ? "100%" : "300px"}
@@ -233,13 +292,11 @@ function Flights() {
                     cursor="pointer"
                     borderRadius="4px"
                     background="#06062A"
-                    onClick={() => {
-                        setLoading(true);
-                        router.push(formatSearchFlight(flightState?.fleet[0]));
-                    }}
+                    onClick={handleSearchFlights}
+                    disabled={!formComplete}
                 >
-                    {loading ? (
-                        <Spinner fill={ttColors.primary} size={"45px"} />
+                    {searchFlightsMode === Mode.loading ? (
+                        <Spinner fill={ttColors.primary} size="36px" />
                     ) : (
                         <Text type="p" text="Search Flight" weight={500} />
                     )}

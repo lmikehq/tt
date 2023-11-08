@@ -2,10 +2,15 @@
 
 import Location from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
-import airportsDB from '@/constants/airports'
+const airports = require('airport-iata-codes')
+const airlines = require('airline-iata-code')
 const sortedAirports: { [k: string]: AirportInterface } = {}
-airportsDB.forEach(e => {
-    sortedAirports[e.iata] = e
+const sortedAirlines: { [k: string]: AirlineInterface } = {}
+airports().forEach((e: AirportInterface) => {
+    sortedAirports[e.iata_code] = e
+})
+airlines().forEach((e: AirlineInterface) => {
+    sortedAirlines[e.IATACode] = e
 })
 
 import {
@@ -37,14 +42,34 @@ export interface OneFlightType {
 }
 
 export interface AirportInterface {
-    [k: string]: string;
+    iata_code: string;
+    time_zone_id: string;
+    name: string;
+    city_code: string;
+    country_id: string;
+    location: string;
+    elevation: number;
+    url: string;
+    icao: string;
+    city: string;
+    county: string;
+    municipality: string;
+    id: number;
+}
+
+export interface AirlineInterface {
+    Airline: string;
+    IATACode: string;
+    is_lowcost: boolean;
+    logo: string;
 }
 
 interface ContextType {
     flightType: string;
     stops: string;
     fleet: OneFlightType[];
-    airports: typeof sortedAirports
+    airports: typeof sortedAirports;
+    airlines: typeof sortedAirlines
 }
 
 const oneFlight: OneFlightType = {
@@ -65,7 +90,8 @@ const initialValues: ContextType = {
     flightType: "international",
     stops: "one-way",
     fleet: [oneFlight],
-    airports: sortedAirports
+    airports: sortedAirports,
+    airlines: sortedAirlines
 };
 
 type Action =
