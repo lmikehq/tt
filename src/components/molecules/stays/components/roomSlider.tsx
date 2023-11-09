@@ -112,7 +112,7 @@ function RoomSlider(props: RoomSliderProps) {
                         alt={room.name}
                       />
                     </SliderImgBox>
-                    <FavoriteBoxMobile>
+                    <FavoriteSliderBox>
                       <Checkbox
                         {...label}
                         icon={<FavoriteBorder />}
@@ -131,7 +131,7 @@ function RoomSlider(props: RoomSliderProps) {
                         onChange={handleCheckboxChange}
                         id="favorite-hotels-checkbox"
                       />
-                    </FavoriteBoxMobile>
+                    </FavoriteSliderB>
                     <Link href="">
                       <Text type="h2" text={room.name}></Text>
                     </Link>

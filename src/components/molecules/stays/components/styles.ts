@@ -209,6 +209,7 @@ export const SlideList = styled.div`
 export const SlideCard = styled.div``;
 export const SliderImgBox = styled.div`
   border-radius: 12px;
-
   overflow: hidden;
 `;
+
+export const FavoriteSliderBox = styled.div``;
