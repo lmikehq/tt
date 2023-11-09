@@ -9,12 +9,14 @@ import { formatDate } from "@/lib/utilFns";
 import dayjs from "dayjs";
 import { Box } from "@mui/material";
 import React from "react";
+import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 function OverviewSystem() {
     const { isMobile } = useScreenResolution();
-    const { checkFlightsResponse, saveBookingResponse } = useFlightBookingStore(
-        (state) => state
-    );
+    const { checkFlightsResponse, saveBookingResponse, conversionRate } =
+        useFlightBookingStore((state) => state);
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
     const flights = checkFlightsResponse?.flights ?? [];
     const departure = flights[0];
     const arrival = flights[flights?.length - 1];
@@ -208,7 +210,13 @@ function OverviewSystem() {
                     <Text type="p" text="Base Fare" />
                     <Text
                         type="p"
-                        text={`EUR ${saveBookingResponse?.ticketPrice}`}
+                        text={`${formatPrice({
+                            total:
+                                (saveBookingResponse?.ticketPrice ?? 0) *
+                                conversionRate,
+                            currency: preFerredCurrency,
+                            numberOfDecimalDigits: 2,
+                        })}`}
                         color="#606060"
                     />
                 </Flex>
@@ -230,7 +238,13 @@ function OverviewSystem() {
                     <Text type="p" text="Total" />
                     <Text
                         type="p"
-                        text={`EUR ${saveBookingResponse?.total}`}
+                        text={`${formatPrice({
+                            total:
+                                (saveBookingResponse?.total ?? 0) *
+                                conversionRate,
+                            currency: preFerredCurrency,
+                            numberOfDecimalDigits: 2,
+                        })}`}
                         color="#606060"
                     />
                 </Flex>

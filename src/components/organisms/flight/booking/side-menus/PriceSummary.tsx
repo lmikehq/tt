@@ -11,9 +11,24 @@ import { Definitions } from "@/lib/types/response-models/flight/check_flight.typ
 import Modal from "@/components/organisms/modal";
 import Button from "@/components/atoms/button";
 import { BsCursor } from "react-icons/bs";
+import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
-
-function Detail({ name, value, currency = "USD", negative, bold, plain }: { name: string; value: number | string; currency?: string; negative?: boolean; bold?: boolean; plain?: boolean; }) {
+function Detail({
+    name,
+    value,
+    currency = "USD",
+    negative,
+    bold,
+    plain,
+}: {
+    name: string;
+    value: number | string;
+    currency?: string;
+    negative?: boolean;
+    bold?: boolean;
+    plain?: boolean;
+}) {
     return (
         <Flex justify="space-between" align="flex-end">
             <Text
@@ -21,94 +36,190 @@ function Detail({ name, value, currency = "USD", negative, bold, plain }: { name
                 size={14}
                 text={name}
                 weight={bold ? 500 : 400}
-                color={(bold || plain) ? ttColors.dark : ttColors.lighterGray}
+                color={bold || plain ? ttColors.dark : ttColors.lighterGray}
             />
             <Text
                 type="p"
                 size={bold ? 22 : 14}
-                text={`${negative ? "- " : ""}${plain ? "" : currency} ${value}`}
+                text={`${negative ? "- " : ""}${
+                    plain ? "" : currency
+                } ${value}`}
                 weight={bold ? 600 : 400}
                 color={bold ? ttColors.dark : ttColors.lighterGray}
             />
         </Flex>
-    )
+    );
 }
 
 interface PriceSummaryProps {
-    checkedBags: { order: { [key: number]: number[] }; definition?: Definitions }
+    checkedBags: {
+        order: { [key: number]: number[] };
+        definition?: Definitions;
+    };
 }
 
-
-function StillBookingModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFunction; to?: string; }) {
-    const { isMobile } = useScreenResolution()
+function StillBookingModal({
+    isOpen,
+    onClose,
+    to,
+}: {
+    isOpen: boolean;
+    onClose: VoidFunction;
+    to?: string;
+}) {
+    const { isMobile } = useScreenResolution();
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
-            <Stack direction='column' spacing={5} bgcolor='white' padding={6} width={isMobile ? '90vw' : '30vw'} borderRadius='16px'>
-                <Text type='h2' text="Flight Booking" weight={600} size={22} />
-                <Text type='h2' text="Prices and arrangements available in trips change periodically.
-                Try to complete your booking within the next 15 minutes." size={15} />
+            <Stack
+                direction="column"
+                spacing={5}
+                bgcolor="white"
+                padding={6}
+                width={isMobile ? "90vw" : "30vw"}
+                borderRadius="16px"
+            >
+                <Text type="h2" text="Flight Booking" weight={600} size={22} />
+                <Text
+                    type="h2"
+                    text="Prices and arrangements available in trips change periodically.
+                Try to complete your booking within the next 15 minutes."
+                    size={15}
+                />
 
-                <Stack width='100%' alignItems='center' spacing={2}>
-                    <Button width="100%" startIcon={<BsCursor color='white'/>} onClick={onClose}>Continue Booking</Button>
+                <Stack width="100%" alignItems="center" spacing={2}>
+                    <Button
+                        width="100%"
+                        startIcon={<BsCursor color="white" />}
+                        onClick={onClose}
+                    >
+                        Continue Booking
+                    </Button>
                 </Stack>
             </Stack>
         </Modal>
-    )
+    );
 }
 
 function PriceSummary({ checkedBags }: PriceSummaryProps) {
-    const { isMobile } = useScreenResolution()
-    const { saveBooking, checkFlightsResponse, saveBookingDetails, setSaveBookingDetails, setStep } = useFlightBookingStore((state) => state);
-    const [countdown, setCountdown] = useState(30 * 60)
+    const { isMobile } = useScreenResolution();
+    const {
+        saveBooking,
+        checkFlightsResponse,
+        saveBookingDetails,
+        setSaveBookingDetails,
+        setStep,
+        conversionRate,
+    } = useFlightBookingStore((state) => state);
+    const [countdown, setCountdown] = useState(30 * 60);
     const [isOpenModal, setIsOpenModal] = useState(false);
-    
-    const countMins = Math.floor(countdown / 60)
-    const countSecs = (countdown % 60).toFixed(0)
-    
-    const basePrice = Number(checkFlightsResponse?.flights_price).toFixed(2) ?? 0
-    const serviceCharges = Number(checkFlightsResponse?.sp_fee).toFixed(2) ?? 0
-    const countofBags = Object.values(checkedBags.order).flat()
-    const countofBagsPrices = Object.values(checkedBags.order).flat().map(e => checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price?.amount)
-    const bagsPrice = Number(countofBagsPrices.reduce((prev, curr) => Number(prev ?? 0) + Number(curr ?? 0), 0)).toFixed(2)
-    const totalPrice = Number(checkFlightsResponse?.tickets_price).toFixed(2) ?? 0
-    const currency = checkFlightsResponse?.currency ?? 'USD'
-    const discount = Number(0).toFixed(2)
-    
-    const departureBags = countofBags.length
-    
-    
-    useEffect(() => { 
-        const interval = setInterval(() => { 
-            setCountdown(prev => {
-                if (prev === (15 * 60)) {
-                    setIsOpenModal(true)
-                }
-                return prev === 0 ? (30 * 60) : prev - 1
-            }); 
-        }, 1000); 
-        return () => clearInterval(interval); 
-    }, []);
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
+    const countMins = Math.floor(countdown / 60);
+    const countSecs = (countdown % 60).toFixed(0);
+
+    const basePrice = formatPrice({
+        total: (checkFlightsResponse?.flights_price ?? 0) * conversionRate,
+        currency: preFerredCurrency,
+        numberOfDecimalDigits: 2,
+    });
+    const serviceCharges = formatPrice({
+        total: (checkFlightsResponse?.sp_fee ?? 0) * conversionRate,
+        currency: preFerredCurrency,
+        numberOfDecimalDigits: 2,
+    });
+    const countofBags = Object.values(checkedBags.order).flat();
+    const countofBagsPrices = Object.values(checkedBags.order)
+        .flat()
+        .map(
+            (e) =>
+                checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price
+                    ?.amount
+        );
+
+    const bagsPrice = formatPrice({
+        total:
+            Number(
+                countofBagsPrices.reduce(
+                    (prev, curr) => Number(prev ?? 0) + Number(curr ?? 0),
+                    0
+                )
+            ) * conversionRate,
+        currency: preFerredCurrency,
+        numberOfDecimalDigits: 2,
+    });
+
+    const totalPrice = formatPrice({
+        total: (checkFlightsResponse?.tickets_price ?? 0) * conversionRate,
+        currency: preFerredCurrency,
+        numberOfDecimalDigits: 2,
+    });
+    const currency = preFerredCurrency;
+    const discount = Number(0).toFixed(2);
+
+    const departureBags = countofBags.length;
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCountdown((prev) => {
+                if (prev === 15 * 60) {
+                    setIsOpenModal(true);
+                }
+                return prev === 0 ? 30 * 60 : prev - 1;
+            });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <Box>
             <Flex direction="column" gap=".5rem" margin="0 0 2rem">
                 <Text type="h3" weight={600} text="Price Summary" />
-                <Text type="p" size={14} text="Taxes and service charges included" />
+                <Text
+                    type="p"
+                    size={14}
+                    text="Taxes and service charges included"
+                />
             </Flex>
 
             <Flex direction="column" gap=".6rem" margin="0 0 2rem">
-                <Detail name="Base Fare" value={basePrice} currency={currency} />
-                <Detail name="Service Charges" value={serviceCharges} currency={currency} />
-                <Detail name="Thrillers Discount" value={discount} currency={currency} negative />
-                {countofBags.length > 0 &&
-                    <Detail name={`${countofBags.length}x Checked Baggage`} value={bagsPrice} currency={currency} />
-                }
+                <Detail
+                    name="Base Fare"
+                    value={basePrice}
+                    currency={currency}
+                    plain={true}
+                />
+                <Detail
+                    name="Service Charges"
+                    value={serviceCharges}
+                    currency={currency}
+                    plain={true}
+                />
+                <Detail
+                    name="Thrillers Discount"
+                    value={discount}
+                    currency={currency}
+                    plain={true}
+                    negative
+                />
+                {countofBags.length > 0 && (
+                    <Detail
+                        name={`${countofBags.length}x Checked Baggage`}
+                        value={bagsPrice}
+                        currency={currency}
+                        plain={true}
+                    />
+                )}
             </Flex>
 
             <Flex margin="0 0 2rem">
-                <Detail name='Total Fee' value={totalPrice} currency={currency} bold />
+                <Detail
+                    name="Total Fee"
+                    value={totalPrice}
+                    currency={currency}
+                    plain={true}
+                    bold
+                />
             </Flex>
 
             {/* <Flex
@@ -125,16 +236,30 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
 
             <Flex direction="column" gap=".5rem" margin="0 0 2rem">
                 <Text type="h3" weight={600} text="Check-In Baggage" />
-                <Text type="p" size={14} text="Details on baggage needed to travel" />
+                <Text
+                    type="p"
+                    size={14}
+                    text="Details on baggage needed to travel"
+                />
             </Flex>
 
             <Flex direction="column" gap=".6rem" margin="0 0 3rem">
                 <Detail name="Bags" value={departureBags} plain />
             </Flex>
 
-            <Flex justify="flex-start" align="center" gap="1rem" margin="0 0 3rem">
+            <Flex
+                justify="flex-start"
+                align="center"
+                gap="1rem"
+                margin="0 0 3rem"
+            >
                 <TimerOutlinedIcon />
-                <Text type="p" size={15} weight={600} text={`This booking will be unavailable in ${countMins}m ${countSecs}s`} />
+                <Text
+                    type="p"
+                    size={15}
+                    weight={600}
+                    text={`This booking will be unavailable in ${countMins}m ${countSecs}s`}
+                />
             </Flex>
 
             <Image
@@ -150,7 +275,7 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
                 onClose={() => setIsOpenModal(false)}
             />
         </Box>
-    )
+    );
 }
 
-export default PriceSummary
+export default PriceSummary;
