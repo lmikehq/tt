@@ -192,7 +192,7 @@ function SortingColumns() {
   return (
     <Flex
       direction="column"
-      styles={{ minWidth: "300px", position: "sticky", top: "0", zIndex: 10 }}
+      styles={{ minWidth: "300px", position: "sticky", top: "0", zIndex: 1000 }}
     >
       <PriceAlerts />
       <FavoriteHotels />
