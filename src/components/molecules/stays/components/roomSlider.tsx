@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Checkbox } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -14,6 +14,8 @@ import {
   SliderImgBox,
   SmallImg,
   SmallSlideImg,
+  FavoriteBox,
+  FavoriteBoxMobile,
 } from "./styles";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
@@ -21,6 +23,10 @@ import { Rating } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import Link from "@/components/atoms/link";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 interface Room {
   name: string;
@@ -53,6 +59,9 @@ function RoomSlider(props: RoomSliderProps) {
     arrow: true,
   };
 
+  //=================
+  //SLIDER BOX TOGGLE
+  //=================
   const [showSliderBox, setShowSliderBox] = useState(false);
   // Load the Slider when the component mounts
   useEffect(() => {
@@ -61,6 +70,15 @@ function RoomSlider(props: RoomSliderProps) {
 
   const handleCloseSliderBox = () => {
     setShowSliderBox(false);
+  };
+
+  //========
+  //FAVORITE
+  //========
+  const [checked, setChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setChecked(!checked);
   };
 
   return (
@@ -94,6 +112,26 @@ function RoomSlider(props: RoomSliderProps) {
                         alt={room.name}
                       />
                     </SliderImgBox>
+                    <FavoriteBoxMobile>
+                      <Checkbox
+                        {...label}
+                        icon={<FavoriteBorder />}
+                        checkedIcon={
+                          <Favorite
+                            style={{ color: "var(--color-favorite)" }}
+                          />
+                        }
+                        disableRipple
+                        disableTouchRipple
+                        disableFocusRipple
+                        sx={{
+                          "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
+                        }}
+                        checked={checked}
+                        onChange={handleCheckboxChange}
+                        id="favorite-hotels-checkbox"
+                      />
+                    </FavoriteBoxMobile>
                     <Link href="">
                       <Text type="h2" text={room.name}></Text>
                     </Link>

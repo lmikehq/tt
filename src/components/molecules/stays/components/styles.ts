@@ -187,6 +187,7 @@ export const SliderContainer = styled.div`
   box-shadow: var(--box-shadow);
   border: 1px solid var(--color-border);
   padding: 20px;
+
   border-radius: 12.5px;
   margin-bottom: 20px;
   width: auto;
@@ -197,13 +198,13 @@ export const SliderContainer = styled.div`
 `;
 export const SlideContent = styled.div`
   margin: 5px;
-  margin-bottom: 5px;
+
   width: 890px !important;
 `;
 export const SlideList = styled.div`
   border-radius: 20px;
   margin: 10px;
- 
+  margin-bottom: 25px;
 `;
 export const SlideCard = styled.div``;
 export const SliderImgBox = styled.div`
