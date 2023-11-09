@@ -3,6 +3,7 @@ import SearchInputAsLocationTypes from "./SearchInputAsLocationTypes";
 import { useEffect, useRef, useState } from "react";
 import { da } from "date-fns/locale";
 import Location from "@/lib/types/response-models/flight/location.type";
+import { useUserStore } from "@/lib/store/useStore";
 
 interface LocationSearchSelectInputProps {
     onChange: (value: Location) => void;
@@ -19,53 +20,41 @@ const LocationSearchSelectInput = ({
     const [searchText, setSearchText] = useState<string>("");
     const [defaultLocations, setDefaultLocations] = useState<Location[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    
+    const { geoInfo } = useUserStore((state) => state);
+
     const mountedRef = useRef(false);
 
     const fetchLocations = async ({
         latitude,
         longitude,
     }: {
-        latitude?: number;
-        longitude?: number;
+        latitude?: string;
+        longitude?: string;
     }) => {
         try {
-            setLoading(true)
+            setLoading(true);
             const data = await FlightLocationService.fetchLocations({
                 data: { term: searchText },
                 latitude,
                 longitude,
             });
             // console.log(data?.locations, "data");
-            setLoading(false)
+            setLoading(false);
             setLocations(data.locations ?? []);
             return locations;
         } catch (error) {
-            setLoading(false)
-            setLocations([]);
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (!mountedRef.current) {
-            if (navigator.geolocation) {
-                // Ask for permission to access the user's location
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        // Get the latitude and longitude from the position object
-                        const { latitude, longitude } = position.coords;
+            const { latitude, longitude } = geoInfo ?? {};
 
-                        fetchLocations({ latitude, longitude }).then((data) =>
-                            setDefaultLocations(data ?? [])
-                        );
-                    },
-                    (error) => {
-                        console.error("Error getting location:", error);
-                    }
-                );
-            } else {
-                console.error("Geolocation is not supported by your browser.");
-            }
+            fetchLocations({ latitude, longitude }).then((data) =>
+                setDefaultLocations(data ?? [])
+            );
+
             mountedRef.current = true;
         }
 
