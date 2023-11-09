@@ -77,8 +77,10 @@ const OverViewTabContent = () => {
                         </Flex>
                     </Flex>
                     <Text type="h1" text="The Ritz London" />
-                    <Grid></Grid>
-                    <Text />
+                    <Grid columns="2">
+                        <></>
+                    </Grid>
+                    {/* <Text /> */}
                 </Section>
                 <Section width="38%">
                     <Section>
