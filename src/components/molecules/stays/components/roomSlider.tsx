@@ -68,7 +68,7 @@ function RoomSlider(props: RoomSliderProps) {
       {showSliderBox && (
         <SliderContainer>
           <SlideContent>
-            <Flex justify="space-between">
+            <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
               <Text
                 type="h3"
                 text="Hotels with the most positive reviews"
