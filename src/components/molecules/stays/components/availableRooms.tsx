@@ -140,7 +140,7 @@ function AvailableRooms() {
         prices={1}
         setSortType={setSortType}
       />
-      <RoomSlider rooms={rooms} />
+      {/* <RoomSlider rooms={rooms} /> */}
       {rooms?.slice(4).map((room, index) => (
         <RoomBox room={room} index={index} key={index} />
       ))}

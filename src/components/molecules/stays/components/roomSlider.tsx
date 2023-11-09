@@ -72,10 +72,14 @@ function RoomSlider(props: RoomSliderProps) {
   //========
   //FAVORITE
   //========
-  const [checked, setChecked] = useState(false);
+  const [checkedRooms, setCheckedRooms] = useState(
+    Array(rooms.length).fill(false)
+  );
 
-  const handleCheckboxChange = () => {
-    setChecked(!checked);
+  const handleCheckboxChange = (index: number) => {
+    const newCheckedRooms = [...checkedRooms];
+    newCheckedRooms[index] = !newCheckedRooms[index];
+    setCheckedRooms(newCheckedRooms);
   };
 
   return (
@@ -124,8 +128,8 @@ function RoomSlider(props: RoomSliderProps) {
                         sx={{
                           "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
                         }}
-                        checked={checked}
-                        onChange={handleCheckboxChange}
+                        checked={checkedRooms[index]}
+                        onChange={() => handleCheckboxChange(index)}
                         id="favorite-hotels-checkbox"
                       />
                     </FavoriteSliderBox>
