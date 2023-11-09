@@ -132,7 +132,6 @@ function SortingColumns() {
     bed: boolean;
   }
 
-  // Define the columnState object with an index signature
   const [columnState, setColumnState] = useState<ColumnState>({
     popular: false,
     property: false,
@@ -191,7 +190,10 @@ function SortingColumns() {
     }
   };
   return (
-    <Flex direction="column" styles={{ minWidth: "300px" }}>
+    <Flex
+      direction="column"
+      styles={{ minWidth: "300px", position: "sticky", top: "0", zIndex: 10 }}
+    >
       <PriceAlerts />
       <FavoriteHotels />
       <div style={{ marginBottom: "10px" }}>
@@ -250,9 +252,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedPopularItems === threshold
-                  ? "See more"
-                  : "See less"}
+                {displayedPopularItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
@@ -306,9 +306,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedPropertyItems === threshold
-                  ? "See more"
-                  : "See less"}
+                {displayedPropertyItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
@@ -470,9 +468,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedPoliciesItems === threshold
-                  ? "See more"
-                  : "See less"}
+                {displayedPoliciesItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
@@ -530,9 +526,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedServicesItems === threshold
-                  ? "See more"
-                  : "See less"}
+                {displayedServicesItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
@@ -686,9 +680,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedBedTypeItems === threshold
-                  ? "See more"
-                  : "See less"}
+                {displayedBedTypeItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
