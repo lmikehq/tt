@@ -155,7 +155,7 @@ const SeatSelection = () => {
                         <Section margin="0 0  14px" height="unset">
                             <Image
                                 src={"/assets/icons/empty_icon.svg"}
-                                alt="delete-icon"
+                                alt="empty-icon"
                                 width={95.5}
                                 height={95.5}
                             />
