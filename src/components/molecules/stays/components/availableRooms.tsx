@@ -1,5 +1,4 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FaPlane } from "react-icons/fa";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
@@ -7,62 +6,180 @@ import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
-import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { useRouter } from "next/navigation";
 import SortedRoomsTab from "./sortedRoomsTab";
 import RoomBox from "./roomsBox";
 import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import RoomSlider from "./roomSlider";
+import styled from "styled-components";
+import MidListFilter from "./midListFilter";
+import { PaginationItem, Rating } from "@mui/material";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import Link from "@/components/atoms/link";
 
-function AvailableRooms() {
+interface Room {
+  name: string;
+  location: string;
+  distance: string;
+  reviews: number;
+  rating: number;
+  price: number;
+  image: string;
+  images: string[]; // An array of image paths for the room
+}
+const rooms: Room[] = [
+  {
+    name: "The Ritz London",
+    location: "City Center",
+    distance: "0.5 miles",
+    reviews: 10,
+    rating: 3,
+    price: 81000,
+    image: "/assets/images/stays/image1.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+  },
+  {
+    name: "The Ritz London",
+    location: "Suburb Area",
+    distance: "1 mile",
+    reviews: 15,
+    rating: 4.8,
+    price: 81000,
+    image: "/assets/images/stays/room2.jpeg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+  },
+  {
+    name: "The Ritz London",
+    location: "Downtown",
+    distance: "0.3 miles",
+    reviews: 8,
+    rating: 4.2,
+    price: 81000,
+    image: "/assets/images/stays/room3.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+  },
+  {
+    name: "The Ritz London",
+    location: "Downtown",
+    distance: "0.3 miles",
+    reviews: 8,
+    rating: 4.2,
+    price: 81000,
+    image: "/assets/images/stays/room3.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+  },
+  {
+    name: "The Ritz London",
+    location: "Downtown",
+    distance: "0.3 miles",
+    reviews: 8,
+    rating: 4.2,
+    price: 81000,
+    image: "/assets/images/stays/room3.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+  },
+  {
+    name: "The Ritz London",
+    location: "Downtown",
+    distance: "0.3 miles",
+    reviews: 8,
+    rating: 4.2,
+    price: 81000,
+    image: "/assets/images/stays/room3.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+  },
+];
+function AvailableRooms(props: any) {
+  const { isMobile } = useScreenResolution();
+
   const router = useRouter();
-  const {
-    searchFlightsResults,
-    searchFlights,
-    updateSearchQuery,
-    searchQuery,
-  } = useFlightBookingStore((state) => state);
-
-  const [count, setCount] = useState(10);
-  const [totalFlights] = useState(
-    Math.min(Math.floor(Math.random() * 50) + 1, COUNTRY_FLAGS.length)
-  );
+  // const { page } = router.query;
+  // const currentPage = parseInt(page as string, 10) || 1;
 
   const [sortType, setSortType] = useState("best");
 
-  const loadMoreItems = () => {
-    setCount((prevCount) => prevCount + Math.min(5, totalFlights - prevCount));
-  };
-
-  useEffect(() => {
-    const searchParams = extractSearchParamsFromUrl({
-      url: window.location.href,
-    });
-    updateSearchQuery({ data: searchParams });
-    searchFlights({ data: searchParams });
-  }, []);
-
   return (
-    <Flex direction="column">
-      <SortedRoomsTab
-        bestPrice={1}
-        topReviews={1}
-        lowestPrice={1}
-        starRatings={1}
-        distance={"s"}
+    <div>
+      {!isMobile && (
+        <SortedRoomsTab
+          bestPrice={1}
+          topReviews={1}
+          lowestPrice={1}
+          starRatings={1}
+          distance={"s"}
+          sortType={sortType}
+          setSortType={setSortType}
+        />
+      )}
+      {rooms?.slice(0, 4).map((room, index) => (
+        <RoomBox room={room} index={index} key={index} />
+      ))}
+      <MidListFilter
         sortType={sortType}
+        ratings={1}
+        prices={1}
         setSortType={setSortType}
       />
-      {searchFlightsResults?.map((flight: FlightInfo, index: number) => (
-        <RoomBox key={index} />
+      <RoomSlider rooms={rooms} />
+      {rooms?.slice(4).map((room, index) => (
+        <RoomBox room={room} index={index} key={index} />
       ))}
       <Flex justify="center">
-        {/* {count < totalFlights && ( */}
-        <Pagination count={10} variant="outlined" shape="rounded" />
-        {/* )} */}
+        <span className="pagination">
+          <Pagination
+            // page={1}
+            count={10}
+            // defaultPage={1}
+            shape="rounded"
+            variant="outlined"
+            renderItem={(item) => (
+              <PaginationItem
+                key={item}
+                className={`${
+                  item.page
+                    ? "paginationItemStyle"
+                    : "paginationItemStyle active"
+                }`}
+                component={Link}
+                href={`/stay/listings/?page=${item.page}`}
+                {...item}
+              />
+            )}
+          />
+        </span>
       </Flex>
-    </Flex>
+    </div>
   );
 }
 

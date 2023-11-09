@@ -14,6 +14,7 @@ export const RoomContainer = styled.div`
   margin-bottom: 2rem;
   padding: 0.5rem;
   border-radius: 12.5px;
+  width: 100%;
 
   @media only screen and (max-width: 992px) {
     background: none;
@@ -71,8 +72,12 @@ function SortedRoomsTab(props: sortProps) {
         <BsInfoCircle size={20} style={{ color: "var(--primary-color)" }} />
       </Flex>
       <RoomContainer>
-        <Flex justify="space-between" align="center">
-          <Flex justify={isMobile ? "center" : "flex-start"} gap="2rem">
+        <Flex justify="space-between" align="center" styles={{ width: "100%" }}>
+          <Flex
+            justify={isMobile ? "center" : "flex-start"}
+            gap="2rem"
+            styles={{ width: "100%", flexWrap: "wrap" }}
+          >
             <ButtonBox
               active={props.sortType === "best"}
               onClick={() => props.setSortType("best")}
