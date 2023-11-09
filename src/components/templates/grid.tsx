@@ -17,7 +17,7 @@ interface gridProps {
 }
 
 const GridWrapper = styled.div<{
-  columns: string;
+  columns: string | number;
   gap: string;
   position: string;
   justify?: string;
