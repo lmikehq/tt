@@ -140,6 +140,7 @@ export interface CheckFlightsQuery {
     adults?: number;
     children?: number;
     infants?: number;
+    currency?: string;
 }
 export interface CheckSeatingRequestInput {
     ancillaries: string[];
