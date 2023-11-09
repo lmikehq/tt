@@ -57,6 +57,9 @@ export async function fetchHTMLContent(country: string) {
   }
 }
 
+export function allCaps(text: string | number) {
+    return String(text ?? '').toUpperCase()
+}
 export function capCase(text = '', splitter = ' ') {
     let newStr = String(text ?? '').split(splitter)
     if (!text) {
@@ -76,17 +79,21 @@ export function cleanObject(obj: { [k: string]: any }) {
     return newObj
 }
 
-export const numSort = (arr: any[] = [], keyToCompare: string, order?: 'asc' | 'desc') => {
+export function numSort (arr: any[] = [], keyToCompare: string, order?: 'asc' | 'desc') {
     if (order === 'asc') {
         return arr.sort((a, b) => ((keyToCompare ? a[keyToCompare] : a) - (keyToCompare ? b[keyToCompare] : b)))
     } else {
         return arr.sort((a, b) => ((keyToCompare ? b[keyToCompare] : b) - (keyToCompare ? a[keyToCompare] : a)))
     }
 }
-export const dateSort = (arr: any[] = [], key: string, order?: 'asc' | 'desc') => {
+export function dateSort (arr: any[] = [], key: string, order?: 'asc' | 'desc') {
     if (order === 'asc') {
         return arr.sort((a, b) => Number(dayjs(a[key]).format('X')) - Number(dayjs(b[key]).format('X')))
     } else {
         return arr.sort((a, b) => Number(dayjs(b[key]).format('X')) - Number(dayjs(a[key]).format('X')))
     }
 }
+
+export function moneyFormat(val: string | number) {
+    return Number(val).toFixed(2)
+} 

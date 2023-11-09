@@ -121,7 +121,7 @@ return (
         }}>
 
         {/* Left */}      
-        <Flex direction="column" gap=".8rem" padding={isMobile ? "1rem" : "1rem 2rem 2rem 1.5rem"} height="100%" justify="center">
+        <Flex direction="column" gap="1rem" padding={isMobile ? "1rem" : "1rem 2rem 2rem 1.5rem"} height="100%" justify="center">
             {!!props.label && (
                 <LabelBox>
                     <Text type="p" text={props.label} color="#4A7181" />
@@ -139,7 +139,7 @@ return (
                 <FlightDepartureIcon reverse />
 
                 <Flex width="100%" direction="column" gap="1rem">
-                    <Flex align="center" gap="5px" margin="1rem 0" styles={{ color: ttColors.lighterGray }}>
+                    <Flex align="center" gap="5px" margin="0" styles={{ color: ttColors.lighterGray }}>
                         <Text type="p" size={isMobile ? 15 : 16} text="Depart" weight={500} />
                         <Dot fontSize="5rem" />
                         <Text type="p" size={isMobile ? 15 : 16} text={formatDate(props.departureDate, isMobile ? true : false)} weight={500} />

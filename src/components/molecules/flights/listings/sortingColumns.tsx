@@ -307,7 +307,6 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
         }
     };
 
-
   const handleTimeChange = (newValue: number | number[], time: 'arrival' | 'depart' | 'travelTime' | 'stopOver') => {
     const newMinTime = Array.isArray(newValue) ? convertTime(newValue[0]) : convertTime(newValue);
       const newMaxTime = Array.isArray(newValue) ? convertTime(newValue[1]) : convertTime(newValue);
@@ -351,13 +350,6 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
         setFilter(group)
     };
 
-    const handleAirlines = (value: string) => {
-        setFilterData(prev => ({
-                ...prev,
-                airlines: prev.airlines.some(e => e === value) ? prev.airlines.filter(e => e !== value) : [...prev.airlines, value],
-            }));
-    }
-
     const filteredTags = useMemo(() =>
         activeFilters.list.map((e, index) =>
             <Tag key={index}>
@@ -397,8 +389,8 @@ function SortingColumns({ onClose }: { onClose?: () => void; }) {
             price_from: data.price.min,
             price_to: data.price.max,
             selected_cabins: data.cabin,
+            sort: searchQuery?.sort,
         }
-
         return newParams
     }
 

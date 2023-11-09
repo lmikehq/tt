@@ -19,6 +19,7 @@ import {
     passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
+    BookingDetailsInterface,
     FlightInfo,
     SeatRowWithSegmentCodeInterface,
 } from "@/lib/types/response-models/flight/booking.type";
@@ -59,6 +60,8 @@ interface State {
     seatRows: SeatRowWithSegmentCodeInterface[];
     saveBookingMode: Mode;
     confirmPaymentMode: Mode;
+    bookingDetailsMode: Mode;
+    bookingDetailsResponse: BookingDetailsInterface | null;
 }
 interface Actions {
     prevStep: () => void;
@@ -79,13 +82,11 @@ interface Actions {
         previousSeat: string | null;
         newSeat: string;
     }) => void;
-
     saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
     confirmPaymentZooz: (params: {
         data: TokenizeDataRequestInput;
     }) => Promise<TokenizeDataResponse>;
     updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
-
     setSaveBookingDetails: ({
         data,
     }: {
@@ -93,6 +94,7 @@ interface Actions {
     }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
+    checkBookingDetails: ({ bookingId }: { bookingId: string } ) => Promise<void>;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -123,6 +125,9 @@ export const useFlightBookingStore = create<State & Actions>(
         saveBookingResponse: null,
         tokenizeDataResponse: null,
         cardDetails,
+
+        bookingDetailsMode: Mode.init,
+        bookingDetailsResponse: null,
 
         prevStep: () => {
             set((state) => ({
@@ -157,9 +162,8 @@ export const useFlightBookingStore = create<State & Actions>(
             data: SearchFlightsRequestQuery;
         }) => {
             set({ searchFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data: { ...data, curr: "USD" } })
-                .then((response) => {
-                    console.log('rrrr', response.data)
+            return await FlightBookingService.searchFlights({ data: { limit: 10, ...data, curr: "USD" }})
+                .then((response) => { 
                     set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
@@ -342,6 +346,24 @@ export const useFlightBookingStore = create<State & Actions>(
                     });
                     throw error;
                 });
+        },
+        checkBookingDetails: async ({
+            bookingId,
+        }: {
+            bookingId: string;
+        }) => {
+            set({ bookingDetailsMode: Mode.loading });
+            return await FlightBookingService.checkBookingDetails({ bookingId })
+                .then(response => {
+                    set({
+                        bookingDetailsMode: Mode.loaded,
+                        bookingDetailsResponse: response
+                    })
+                })
+                .catch((error) => {
+                    set({ bookingDetailsMode: Mode.error });
+                    throw error;
+                })
         },
     })
 );

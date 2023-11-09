@@ -16,20 +16,23 @@ import {
     kiwiResourceClient,
 } from "../../axios/axios-client";
 import { constructQueryFromParams } from "../../extensions/helpers/constructQuery";
-import { FlightInfo, SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
+import { BookingDetailsInterface, SearchFlightsResponse } from "../../types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
 
 export class FlightBookingService {
     static searchFlights = async ({
-        data,
+        data
     }: {
         data: SearchFlightsRequestQuery;
     }) => {
-        const query = constructQueryFromParams({ limit: 10, curr: 'USD', ...data });
+        const query = constructQueryFromParams(data);
         return await kiwiClient
-            .get<any, SearchFlightsResponse>(`/search${query}`)
-            .then((response) => response)
+        .get<any, SearchFlightsResponse>(`/search${query}`)
+        .then((response) => {
+                console.log('nuuu-req', response)
+                return response
+            })
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
                 throw error;
@@ -83,6 +86,19 @@ export class FlightBookingService {
     }) => {
         return await kiwiResourceClient
             .post<any, any>("/flight/bookings/tokenize-confirm-payment", data)
+            .then((response) => response)
+            .catch((error) => {
+                toast.error(error.response?.errorMessage);
+                throw error;
+            });
+    };
+    static checkBookingDetails = async ({
+        bookingId,
+    }: {
+        bookingId: string;
+    }) => {
+        return await kiwiResourceClient
+            .post<any, any>(`/flight/bookings/${bookingId}`, {})
             .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
