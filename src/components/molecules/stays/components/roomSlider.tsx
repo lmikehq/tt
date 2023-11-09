@@ -11,6 +11,7 @@ import {
   SlideList,
   SlideCard,
   SliderContainer,
+  SliderWidth,
   SliderImgBox,
   FavoriteSliderBox,
 } from "./styles";
@@ -46,11 +47,33 @@ const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 function RoomSlider(props: RoomSliderProps) {
   const { rooms } = props;
 
+  //===========
+  //REACT SLICK
+  //===========
+  const [slidesToShow, setSlidesToShow] = useState(1);
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1200) {
+        setSlidesToShow(Math.min(3, rooms.length));
+      } else if (screenWidth >= 600) {
+        setSlidesToShow(Math.min(2, rooms.length));
+      } else {
+        setSlidesToShow(Math.min(1, rooms.length));
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [rooms.length]);
+
   const SliderSettings = {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: slidesToShow,
     slidesToScroll: 1,
     autoplay: false,
     arrow: true,
@@ -83,125 +106,127 @@ function RoomSlider(props: RoomSliderProps) {
   };
 
   return (
-    <Box>
+    <div>
       {showSliderBox && (
         <SliderContainer>
+          <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
+            <Text
+              type="h3"
+              text="Hotels with the most positive reviews"
+              weight={"bold"}
+            />
+            <CloseOutlinedIcon
+              style={{ cursor: "pointer" }}
+              onClick={handleCloseSliderBox}
+            />
+          </Flex>
           <SlideContent>
-            <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
-              <Text
-                type="h3"
-                text="Hotels with the most positive reviews"
-                weight={"bold"}
-              />
-              <CloseOutlinedIcon
-                style={{ cursor: "pointer" }}
-                onClick={handleCloseSliderBox}
-              />
-            </Flex>
-            <Slider {...SliderSettings} className="">
-              {rooms.map((room, index) => (
-                <SlideCard key={index}>
-                  <SlideList>
-                    <SliderImgBox>
-                      <img
-                        style={{
-                          width: "100%",
-                          height: "200px",
-                          objectFit: "cover",
-                        }}
-                        src={room.image}
-                        alt={room.name}
-                      />
-                    </SliderImgBox>
-                    <FavoriteSliderBox>
-                      <Checkbox
-                        {...label}
-                        icon={<FavoriteBorder />}
-                        checkedIcon={
-                          <Favorite
-                            style={{ color: "var(--color-favorite)" }}
-                          />
-                        }
-                        disableRipple
-                        disableTouchRipple
-                        disableFocusRipple
-                        sx={{
-                          "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
-                        }}
-                        checked={checkedRooms[index]}
-                        onChange={() => handleCheckboxChange(index)}
-                        id="favorite-hotels-checkbox"
-                      />
-                    </FavoriteSliderBox>
-                    <Link href="">
-                      <Text type="h2" text={room.name}></Text>
-                    </Link>
-                    <Flex gap="10px" margin="10px 0px">
-                      <Text type="p" text={room.location}></Text>
-                      <Rating
-                        name="rating"
-                        readOnly
-                        defaultValue={room.rating}
-                        style={{ color: "var()" }}
-                      />
-                    </Flex>
-                    <Flex justify="space-between">
-                      <Text
-                        type="h2"
-                        text={`${formatPrice(room.price)}`}
-                        weight={"bold"}
-                        color="var(--text-dull-color)"
-                      ></Text>
-                      <ReviewsText>
-                        <Icon></Icon>
-                        <Flex direction="column">
-                          <Flex gap={"5px"}>
-                            <CircleIcon
-                              style={{
-                                fontSize: "18px",
-                                color: "var(--color-green)",
-                              }}
+            <SliderWidth>
+              <Slider {...SliderSettings} className="">
+                {rooms.map((room, index) => (
+                  <SlideCard key={index}>
+                    <SlideList>
+                      <SliderImgBox>
+                        <img
+                          style={{
+                            width: "100%",
+                            height: "200px",
+                            objectFit: "cover",
+                          }}
+                          src={room.image}
+                          alt={room.name}
+                        />
+                      </SliderImgBox>
+                      <FavoriteSliderBox>
+                        <Checkbox
+                          {...label}
+                          icon={<FavoriteBorder />}
+                          checkedIcon={
+                            <Favorite
+                              style={{ color: "var(--color-favorite)" }}
                             />
-                            <CircleIcon
-                              style={{
-                                fontSize: "18px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "18px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "18px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "18px",
-                                color: "var(--color-green)",
-                              }}
-                            />
+                          }
+                          disableRipple
+                          disableTouchRipple
+                          disableFocusRipple
+                          sx={{
+                            "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
+                          }}
+                          checked={checkedRooms[index]}
+                          onChange={() => handleCheckboxChange(index)}
+                          id="favorite-hotels-checkbox"
+                        />
+                      </FavoriteSliderBox>
+                      <Link href="">
+                        <Text type="h2" text={room.name}></Text>
+                      </Link>
+                      <Flex gap="10px" margin="10px 0px">
+                        <Text type="p" text={room.location}></Text>
+                        <Rating
+                          name="rating"
+                          readOnly
+                          defaultValue={room.rating}
+                          style={{ color: "var()" }}
+                        />
+                      </Flex>
+                      <Flex justify="space-between">
+                        <Text
+                          type="h2"
+                          text={`${formatPrice(room.price)}`}
+                          weight={"bold"}
+                          color="var(--text-dull-color)"
+                        ></Text>
+                        <ReviewsText>
+                          <Icon></Icon>
+                          <Flex direction="column">
+                            <Flex gap={"5px"}>
+                              <CircleIcon
+                                style={{
+                                  fontSize: "18px",
+                                  color: "var(--color-green)",
+                                }}
+                              />
+                              <CircleIcon
+                                style={{
+                                  fontSize: "18px",
+                                  color: "var(--color-green)",
+                                }}
+                              />
+                              <CircleIcon
+                                style={{
+                                  fontSize: "18px",
+                                  color: "var(--color-green)",
+                                }}
+                              />
+                              <CircleIcon
+                                style={{
+                                  fontSize: "18px",
+                                  color: "var(--color-green)",
+                                }}
+                              />
+                              <CircleIcon
+                                style={{
+                                  fontSize: "18px",
+                                  color: "var(--color-green)",
+                                }}
+                              />
+                            </Flex>
+                            <Text
+                              type="p"
+                              text={`${room.reviews} reviews`}
+                            ></Text>
                           </Flex>
-                          <Text
-                            type="p"
-                            text={`${room.reviews} reviews`}
-                          ></Text>
-                        </Flex>
-                      </ReviewsText>
-                    </Flex>
-                  </SlideList>
-                </SlideCard>
-              ))}
-            </Slider>
+                        </ReviewsText>
+                      </Flex>
+                    </SlideList>
+                  </SlideCard>
+                ))}
+              </Slider>
+            </SliderWidth>
           </SlideContent>
         </SliderContainer>
       )}
-    </Box>
+    </div>
   );
 }
 

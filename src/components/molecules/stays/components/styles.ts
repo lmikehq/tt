@@ -190,17 +190,19 @@ export const SliderContainer = styled.div`
 
   border-radius: 12.5px;
   margin-bottom: 20px;
-  width: auto;
-  max-height: 400px !important;
+  width: 100%;
   background-color: var(--default-color);
   overflow: hidden;
   position: relative;
 `;
 export const SlideContent = styled.div`
   margin: 5px;
-
-  width: 890px !important;
+  // width: 890px;
 `;
+export const SliderWidth = styled.div`
+  // overflow-x: scroll;
+`;
+
 export const SlideList = styled.div`
   border-radius: 20px;
   margin: 10px;

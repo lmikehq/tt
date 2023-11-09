@@ -17,7 +17,7 @@ function RoomList() {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: isMobile ? "100%" : "300px auto",
+        gridTemplateColumns: isMobile ? "100%" : "300px 74%",
         gap: "2rem",
         marginTop: "20px",
       }}
