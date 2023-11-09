@@ -1,219 +1,308 @@
 "use client";
+
 import Section from "src/components/molecules/section";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SearchInput from "./searchInput";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { IoLocationOutline } from "react-icons/io5";
-import { GoArrowSwitch } from "react-icons/go";
 import { ttColors } from "@lib/theme/colors";
-import { DatePicker } from "./datepicker";
+import { DatePicker } from "./customDatePicker";
 import { ClickAwayListener } from "@mui/material";
 import Input from "@atom/input";
 import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
-import { flightContext } from "@lib/extensions/context";
+import { OneFlightType } from "@lib/extensions/context";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import dayjs from "dayjs";
+import { GoArrowSwitch } from "react-icons/go";
+import Button from "../atoms/button";
+import LocationSearchSelectInput from "./LocationSearchSelectInput";
+import Location from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
-  value: string;
-  index: number;
-  length: number;
-  handleDeleteFlight: (index: number) => void;
+    stops: string;
+    flight: OneFlightType;
+    length?: number;
+    canDelete?: boolean;
+    handleUpdate?: (
+        flight: OneFlightType,
+        data: Partial<OneFlightType>
+    ) => void;
+    handleDelete?: (flight: OneFlightType) => void;
 }
+export type FlightCountType = {
+    adults: number;
+    children: number;
+    infants: number;
+    cabinBaggage: number;
+    checkedBaggage: number;
+    flightClass: string;
+};
 
-const FlightCircle = styled.div<{ value: string }>`
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-top: 2.5rem;
-  background: white;
-  border: 1px solid #b6b6b6;
-  width: 2rem;
-  height: 2rem;
-  padding: 0.25rem;
-  border-radius: 100%;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-items: center;
+const FlightCircle = styled.div`
+    border: 1px solid #b6b6b6;
+    position: absolute;
+    top: 2px;
+    right: -12px;
+    background: white;
+    width: 1.65rem;
+    height: 1.65rem;
+    padding: 0.25rem;
+    border-radius: 100%;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+`;
+
+const TravellersDropdownContainer = styled.div`
+    position: relative;
 `;
 
 function FlightModule({
-  value,
-  index,
-  handleDeleteFlight,
-  length,
+    stops,
+    flight,
+    handleUpdate,
+    handleDelete,
+    canDelete,
 }: flightProps) {
-  const context = flightContext();
+    const { isMobile } = useScreenResolution();
 
-  if (!context) {
-    throw new Error("flightContext must be used within a FlightProvider");
-  }
+    const formatDisplayText = (data: FlightCountType) => {
+        const kids = data.children + data.infants;
+        const bags = data.cabinBaggage + data.checkedBaggage;
+        return `${data.adults} ${data.adults > 1 ? "Adults" : "Adult"}${
+            kids > 0 ? `, ${kids} ${kids === 1 ? "Child" : "Children"}` : ""
+        }, ${data.flightClass}${
+            bags > 0 ? `, ${bags} ${bags === 1 ? "Bag" : "Bags"}` : ""
+        }`;
+    };
 
-  const { state, dispatch } = context;
+    const defText = formatDisplayText(flight);
 
-  const [data, setData] = useState("");
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [displayText, setDisplayText] = useState(defText);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const today = dayjs().toDate();
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    const open = Boolean(anchorEl);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-  const handleDataChange = (data: any) => {
-    setData(
-      `${data.count.adults} Adult, ${data.count.children} Children, ${data.class}`
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDataChange = (data: FlightCountType) => {
+        setDisplayText(formatDisplayText(data));
+        handleUpdate && handleUpdate(flight, data);
+    };
+
+    return (
+        <Section padding=".75rem 0 0 0 " height="unset">
+            <Flex
+                direction={isMobile ? "column" : "row"}
+                align={isMobile ? "flex-start" : "center"}
+                gap=".5rem"
+            >
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 16}
+                        text="From"
+                        weight={500}
+                    />
+                    {/* <SearchInput
+                    options={COUNTRY_FLAGS.map((x) => ({
+                        name: x.name,
+                        flag: x.flag,
+                        code: x.code,
+                    }))}
+                    onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, { departureCountry: x })}
+                    value={flight.departureCountry ?? ""}
+                    placeholder="Current Location"
+                >
+                    <Flex gap={isMobile ? "0.7rem" : ".6rem"} cursor="pointer" overflowX="hidden">
+                        <IoLocationOutline size={isMobile ? 20 : 22} />
+                        <Text
+                            type="p"
+                            size={14}
+                            text={flight.departureCountry?.name ?? 'Current Location'}
+                            color="black"
+                        />
+                    </Flex>
+                </SearchInput> */}
+                    <LocationSearchSelectInput
+                        onChange={(x: Location) =>
+                            handleUpdate &&
+                            handleUpdate(flight, { departureCountry: x })
+                        }
+                        value={flight.departureCountry}
+                        placeholder="Current location"
+                    />
+                </Flex>
+                {!isMobile && (
+                    <Flex styles={{ position: "relative" }} width="fit-content">
+                        <FlightCircle>
+                            <GoArrowSwitch color={ttColors.primary} size={24} />
+                        </FlightCircle>
+                    </Flex>
+                )}
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 16}
+                        text="To"
+                        weight={500}
+                    />
+                    <LocationSearchSelectInput
+                        value={flight.arrivalCountry}
+                        onChange={(x: Location) =>
+                            handleUpdate &&
+                            handleUpdate(flight, { arrivalCountry: x })
+                        }
+                        placeholder="Where to?"
+                    />
+                </Flex>
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 16}
+                        text="Depart"
+                        weight={500}
+                    />
+                    <DatePicker
+                        placeholder="Select Date"
+                        position="start"
+                        value={flight.departureDate.toDate()}
+                        minDate={today}
+                        onChange={(e) =>
+                            handleUpdate &&
+                            handleUpdate(flight, { departureDate: dayjs(e) })
+                        }
+                    />
+                </Flex>
+                {stops !== "one-way" && (
+                    <Flex
+                        direction="column"
+                        gap=".5rem"
+                        styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                    >
+                        <Text
+                            type="label"
+                            size={isMobile ? 16 : 16}
+                            text="Return"
+                            weight={500}
+                        />
+                        <DatePicker
+                            placeholder="Select Date"
+                            position="start"
+                            value={flight.returnDate.toDate()}
+                            minDate={flight.departureDate.toDate()}
+                            onChange={(e) =>
+                                handleUpdate &&
+                                handleUpdate(flight, { returnDate: dayjs(e) })
+                            }
+                        />
+                    </Flex>
+                )}
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 16}
+                        text="Cabin & Travelers"
+                        weight={500}
+                    />
+                    <ClickAwayListener onClickAway={handleClose}>
+                        <TravellersDropdownContainer>
+                            <Input
+                                onClick={handleClick}
+                                placeholder="Click me to open dropdown"
+                                value={displayText}
+                                styles={{
+                                    fontFamily: "poppins",
+                                    cursor: "pointer",
+                                    fontSize: "14px",
+                                }}
+                            />
+                            {open && (
+                                <DropdownMenu
+                                    onDataChange={handleDataChange}
+                                    isMobile={isMobile}
+                                    data={flight}
+                                />
+                            )}
+                        </TravellersDropdownContainer>
+                    </ClickAwayListener>
+                </Flex>
+
+                {canDelete && !isMobile && (
+                    <Flex
+                        width="fit-content"
+                        styles={{ minWidth: "30px" }}
+                        padding="0px 0px 0px"
+                        cursor="pointer"
+                        alignSelf="flex-end"
+                        onClick={() => handleDelete && handleDelete(flight)}
+                    >
+                        <HiXMark size={30} color={ttColors.gray} />
+                    </Flex>
+                )}
+            </Flex>
+
+            {stops === "multi-city" && (
+                <Flex
+                    justify={isMobile ? "flex-end" : "flex-start"}
+                    padding="0px 0px 20px"
+                >
+                    {canDelete && isMobile && (
+                        <Flex
+                            width="fit-content"
+                            styles={{ minWidth: "30px" }}
+                            padding="0"
+                            cursor="pointer"
+                            alignSelf="flex-end"
+                            onClick={() => handleDelete && handleDelete(flight)}
+                        >
+                            <Button
+                                padding=".5rem 1rem"
+                                height="auto"
+                                endIcon={
+                                    <HiXMark
+                                        size={26}
+                                        color={ttColors.ghostWhite}
+                                    />
+                                }
+                            >
+                                Remove
+                            </Button>
+                        </Flex>
+                    )}
+                </Flex>
+            )}
+        </Section>
     );
-  };
-
-  const open = Boolean(anchorEl);
-  const { isMobile } = useScreenResolution();
-  return (
-    <Section padding="2rem 0 0 0 " height="unset">
-      <Flex
-        direction={isMobile ? "column" : "row"}
-        align={isMobile ? "flex-start" : "center"}
-        gap=".5rem"
-      >
-        <Flex
-          direction="column"
-          gap=".75rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text type="label" size={isMobile ? 16 : 18} text="From" />
-          <SearchInput
-            options={COUNTRY_FLAGS.map((x) => ({
-              name: x.name,
-              flag: x.flag,
-              code: x.code,
-            }))}
-            onChange={(x: CountryType) => {
-              dispatch({ type: "SET_DEPARTURE", payload: x.name });
-            }}
-            value={state.departureCountry}
-            placeholder="Current Location"
-          >
-            <Flex gap="1rem" cursor="pointer">
-              <IoLocationOutline size={isMobile ? 20 : 25} />
-              <Text
-                type="p"
-                size={isMobile ? 16 : 18}
-                text={state.departureCountry}
-                color="black"
-              />
-            </Flex>
-          </SearchInput>
-        </Flex>
-        {/* <Section styles={{ position: "relative" }} width="fit-content">
-          <FlightCircle value={value}>
-            <GoArrowSwitch color={ttColors.primary} size={30} />
-          </FlightCircle>
-        </Section> */}
-        <Flex
-          direction="column"
-          gap=".75rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text type="label" size={isMobile ? 16 : 18} text="To" />
-          <SearchInput
-            options={COUNTRY_FLAGS.map((x) => ({
-              name: x.name,
-              flag: x.flag,
-              code: x.code,
-            }))}
-            value={state.arrivalCountry}
-            onChange={(x: CountryType) => {
-              dispatch({ type: "SET_ARRIVAL", payload: x.name });
-            }}
-            placeholder="Where to?"
-          >
-            <Flex gap="1rem" cursor="pointer">
-              <IoLocationOutline size={isMobile ? 20 : 25} />
-              <Text
-                type="p"
-                size={isMobile ? 16 : 18}
-                text={state.arrivalCountry}
-                color="black"
-              />
-            </Flex>
-          </SearchInput>
-        </Flex>
-        <Flex
-          direction="column"
-          gap=".75rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text type="label" size={isMobile ? 16 : 18} text="Depart" />
-          <DatePicker
-            placeholder="Select Date"
-            position="start"
-            value={state.departureDate}
-            minDate={state.departureDate}
-            onChange={(e) => {
-              dispatch({ type: "SET_DEPARTURE_DATE", payload: e });
-            }}
-          />
-        </Flex>
-        {value !== "one-way" && (
-          <Flex
-            direction="column"
-            gap=".75rem"
-            styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-          >
-            <Text type="label" size={isMobile ? 16 : 18} text="Return" />
-            <DatePicker
-              placeholder="Select Date"
-              position="start"
-              value={state.returnDate}
-              minDate={state.departureDate}
-              onChange={(e) => {
-                dispatch({ type: "SET_RETURN_DATE", payload: e });
-              }}
-            />
-          </Flex>
-        )}
-        <Flex
-          direction="column"
-          gap=".75rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text
-            type="label"
-            size={isMobile ? 16 : 18}
-            text="Cabin & Travelers"
-          />
-          <ClickAwayListener onClickAway={handleClose}>
-            <div>
-              <Input
-                onClick={handleClick}
-                placeholder="Click me to open dropdown"
-                value={data}
-                styles={{ fontFamily: "poppins" }}
-              />
-              {open && <DropdownMenu onDataChange={handleDataChange} />}
-            </div>
-          </ClickAwayListener>
-        </Flex>
-        {length >= 1 && (
-          <Section width="0" padding="2rem 0 0 0">
-            <HiXMark
-              size={30}
-              color={ttColors.gray}
-              onClick={() => handleDeleteFlight(index)}
-              cursor="pointer"
-            />
-          </Section>
-        )}
-      </Flex>
-    </Section>
-  );
 }
 
 export default FlightModule;

@@ -23,7 +23,8 @@ export default function PriceAlerts() {
         </Flex>
 
         <Text
-          type="p"
+            type="p"
+            size={14}
           text="Receive alerts when the prices for this route change."
         />
       </Box>
