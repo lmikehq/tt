@@ -12,10 +12,7 @@ import {
   SlideCard,
   SliderContainer,
   SliderImgBox,
-  SmallImg,
-  SmallSlideImg,
-  FavoriteBox,
-  FavoriteBoxMobile,
+  FavoriteSliderBox,
 } from "./styles";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
@@ -131,7 +128,7 @@ function RoomSlider(props: RoomSliderProps) {
                         onChange={handleCheckboxChange}
                         id="favorite-hotels-checkbox"
                       />
-                    </FavoriteSliderB>
+                    </FavoriteSliderBox>
                     <Link href="">
                       <Text type="h2" text={room.name}></Text>
                     </Link>

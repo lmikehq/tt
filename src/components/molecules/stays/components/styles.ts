@@ -212,4 +212,17 @@ export const SliderImgBox = styled.div`
   overflow: hidden;
 `;
 
-export const FavoriteSliderBox = styled.div``;
+export const FavoriteSliderBox = styled.div`
+  position: relative;
+  margin-top: -30px;
+  top: -156px;
+  right: 20px;
+  float: right;
+  background-color: var(--default-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
