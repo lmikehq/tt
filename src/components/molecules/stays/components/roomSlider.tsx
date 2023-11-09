@@ -1,9 +1,7 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import {
   Icon,
   ReviewsText,
@@ -42,40 +40,6 @@ const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
 function RoomSlider(props: RoomSliderProps) {
   const { rooms } = props;
-
-  //===========
-  //REACT SLICK
-  //===========
-  const [slidesToShow, setSlidesToShow] = useState(1);
-  useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1200) {
-        setSlidesToShow(Math.min(4, rooms.length));
-      } else if (screenWidth >= 992) {
-        setSlidesToShow(Math.min(3, rooms.length));
-      } else if (screenWidth >= 600) {
-        setSlidesToShow(Math.min(2, rooms.length));
-      } else {
-        setSlidesToShow(Math.min(1, rooms.length));
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [rooms.length]);
-
-  const SliderSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: slidesToShow,
-    slidesToScroll: 1,
-    autoplay: false,
-    arrow: true,
-  };
 
   const [showSliderBox, setShowSliderBox] = useState(false);
   // Load the Slider when the component mounts

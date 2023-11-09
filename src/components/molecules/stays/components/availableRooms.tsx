@@ -1,22 +1,14 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { FaPlane } from "react-icons/fa";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
-import Text from "@atom/text";
-import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { useRouter } from "next/navigation";
 import SortedRoomsTab from "./sortedRoomsTab";
 import RoomBox from "./roomsBox";
 import Pagination from "@mui/material/Pagination";
 import RoomSlider from "./roomSlider";
-import styled from "styled-components";
 import MidListFilter from "./midListFilter";
-import { PaginationItem, Rating } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import Link from "@/components/atoms/link";
+import Slider from "react-slick";
 
 interface Room {
   name: string;
@@ -120,14 +112,46 @@ const rooms: Room[] = [
     ],
   },
 ];
-function AvailableRooms(props: any) {
+function AvailableRooms() {
   const { isMobile } = useScreenResolution();
 
   const router = useRouter();
-  // const { page } = router.query;
-  // const currentPage = parseInt(page as string, 10) || 1;
 
   const [sortType, setSortType] = useState("best");
+
+  //===========
+  //REACT SLICK
+  //===========
+  const [slidesToShow, setSlidesToShow] = useState(1);
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1200) {
+        setSlidesToShow(Math.min(4, rooms.length));
+      } else if (screenWidth >= 992) {
+        setSlidesToShow(Math.min(3, rooms.length));
+      } else if (screenWidth >= 600) {
+        setSlidesToShow(Math.min(2, rooms.length));
+      } else {
+        setSlidesToShow(Math.min(1, rooms.length));
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [rooms.length]);
+
+  const SliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: slidesToShow,
+    slidesToScroll: 1,
+    autoplay: false,
+    arrow: true,
+  };
 
   return (
     <div>
@@ -151,31 +175,22 @@ function AvailableRooms(props: any) {
         prices={1}
         setSortType={setSortType}
       />
-      <RoomSlider rooms={rooms} />
+      <Slider {...SliderSettings} className="">
+        {rooms.map((room, index) => (
+          <RoomSlider rooms={room} key={index} />
+        ))}
+      </Slider>
       {rooms?.slice(4).map((room, index) => (
         <RoomBox room={room} index={index} key={index} />
       ))}
       <Flex justify="center">
         <span className="pagination">
           <Pagination
-            // page={1}
+            className="paginationItemStyle"
             count={10}
-            // defaultPage={1}
-            shape="rounded"
+            color="primary"
             variant="outlined"
-            renderItem={(item) => (
-              <PaginationItem
-                key={item}
-                className={`${
-                  item.page
-                    ? "paginationItemStyle"
-                    : "paginationItemStyle active"
-                }`}
-                component={Link}
-                href={`/stay/listings/?page=${item.page}`}
-                {...item}
-              />
-            )}
+            shape="rounded"
           />
         </span>
       </Flex>
