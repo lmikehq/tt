@@ -196,17 +196,18 @@ export const SliderContainer = styled.div`
   position: relative;
 `;
 export const SlideContent = styled.div`
-  // margin: 5px;
-  // margin-bottom: 5px;
-  // width: auto !important;
+  margin: 5px;
+  margin-bottom: 5px;
+  width: 890px !important;
 `;
 export const SlideList = styled.div`
-  // border-radius: 20px;
-  // margin: 10px;
+  border-radius: 20px;
+  margin: 10px;
+ 
 `;
 export const SlideCard = styled.div``;
 export const SliderImgBox = styled.div`
-  // border-radius: 12px;
+  border-radius: 12px;
 
-  // overflow: hidden;
+  overflow: hidden;
 `;

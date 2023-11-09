@@ -1,7 +1,9 @@
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+
 import {
   Icon,
   ReviewsText,
@@ -41,6 +43,16 @@ const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 function RoomSlider(props: RoomSliderProps) {
   const { rooms } = props;
 
+  const SliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: false,
+    arrow: true,
+  };
+
   const [showSliderBox, setShowSliderBox] = useState(false);
   // Load the Slider when the component mounts
   useEffect(() => {
@@ -67,81 +79,86 @@ function RoomSlider(props: RoomSliderProps) {
                 onClick={handleCloseSliderBox}
               />
             </Flex>
-            {/* <Slider {...SliderSettings} className="">
+            <Slider {...SliderSettings} className="">
               {rooms.map((room, index) => (
-                <SlideList key={index}>
-                  <SliderImgBox>
-                    <img
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      src={room.image}
-                      alt={room.name}
-                    />
-                  </SliderImgBox>
-                  <Link href="">
-                    <Text type="h2" text={room.name}></Text>
-                  </Link>
-                  <Flex gap="10px" margin="10px 0px">
-                    <Text type="p" text={room.location}></Text>
-                    <Rating
-                      name="rating"
-                      readOnly
-                      defaultValue={room.rating}
-                      style={{ color: "var()" }}
-                    />
-                  </Flex>
-                  <Flex justify="space-between">
-                    <Text
-                      type="h2"
-                      text={`${formatPrice(room.price)}`}
-                      weight={"bold"}
-                      color="var(--text-dull-color)"
-                    ></Text>
-                    <ReviewsText>
-                      <Icon></Icon>
-                      <Flex direction="column">
-                        <Flex gap={"5px"}>
-                          <CircleIcon
-                            style={{
-                              fontSize: "18px",
-                              color: "var(--color-green)",
-                            }}
-                          />
-                          <CircleIcon
-                            style={{
-                              fontSize: "18px",
-                              color: "var(--color-green)",
-                            }}
-                          />
-                          <CircleIcon
-                            style={{
-                              fontSize: "18px",
-                              color: "var(--color-green)",
-                            }}
-                          />
-                          <CircleIcon
-                            style={{
-                              fontSize: "18px",
-                              color: "var(--color-green)",
-                            }}
-                          />
-                          <CircleIcon
-                            style={{
-                              fontSize: "18px",
-                              color: "var(--color-green)",
-                            }}
-                          />
+                <SlideCard key={index}>
+                  <SlideList>
+                    <SliderImgBox>
+                      <img
+                        style={{
+                          width: "100%",
+                          height: "200px",
+                          objectFit: "cover",
+                        }}
+                        src={room.image}
+                        alt={room.name}
+                      />
+                    </SliderImgBox>
+                    <Link href="">
+                      <Text type="h2" text={room.name}></Text>
+                    </Link>
+                    <Flex gap="10px" margin="10px 0px">
+                      <Text type="p" text={room.location}></Text>
+                      <Rating
+                        name="rating"
+                        readOnly
+                        defaultValue={room.rating}
+                        style={{ color: "var()" }}
+                      />
+                    </Flex>
+                    <Flex justify="space-between">
+                      <Text
+                        type="h2"
+                        text={`${formatPrice(room.price)}`}
+                        weight={"bold"}
+                        color="var(--text-dull-color)"
+                      ></Text>
+                      <ReviewsText>
+                        <Icon></Icon>
+                        <Flex direction="column">
+                          <Flex gap={"5px"}>
+                            <CircleIcon
+                              style={{
+                                fontSize: "18px",
+                                color: "var(--color-green)",
+                              }}
+                            />
+                            <CircleIcon
+                              style={{
+                                fontSize: "18px",
+                                color: "var(--color-green)",
+                              }}
+                            />
+                            <CircleIcon
+                              style={{
+                                fontSize: "18px",
+                                color: "var(--color-green)",
+                              }}
+                            />
+                            <CircleIcon
+                              style={{
+                                fontSize: "18px",
+                                color: "var(--color-green)",
+                              }}
+                            />
+                            <CircleIcon
+                              style={{
+                                fontSize: "18px",
+                                color: "var(--color-green)",
+                              }}
+                            />
+                          </Flex>
+                          <Text
+                            type="p"
+                            text={`${room.reviews} reviews`}
+                          ></Text>
                         </Flex>
-                        <Text type="p" text={`${room.reviews} reviews`}></Text>
-                      </Flex>
-                    </ReviewsText>
-                  </Flex>
-                </SlideList>
+                      </ReviewsText>
+                    </Flex>
+                  </SlideList>
+                </SlideCard>
               ))}
-            </Slider> */}
+            </Slider>
           </SlideContent>
         </SliderContainer>
       )}

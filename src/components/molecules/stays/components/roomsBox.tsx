@@ -49,6 +49,7 @@ import {
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
+//MOBILE SETTINGS
 const SliderSettings = {
   dots: false,
   infinite: false,
@@ -57,6 +58,7 @@ const SliderSettings = {
   slidesToScroll: 1,
   autoplay: false,
 };
+//MOBILE SETTINGS
 const MobileSliderSettings = {
   dots: true,
   infinite: false,
@@ -69,6 +71,16 @@ const MobileSliderSettings = {
 // PRICE FORMAT
 const formatPrice = (price: number) => `₦ ${price.toLocaleString()}`;
 
+interface Room {
+  name: string;
+  location: string;
+  distance: string;
+  reviews: number;
+  rating: number;
+  price: number;
+  image: string;
+  images: string[];
+}
 interface RoomBoxProps {
   room: Room;
   index: number;

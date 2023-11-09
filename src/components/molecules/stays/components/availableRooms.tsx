@@ -8,7 +8,6 @@ import Pagination from "@mui/material/Pagination";
 import RoomSlider from "./roomSlider";
 import MidListFilter from "./midListFilter";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import Slider from "react-slick";
 
 interface Room {
   name: string;
@@ -119,40 +118,6 @@ function AvailableRooms() {
 
   const [sortType, setSortType] = useState("best");
 
-  //===========
-  //REACT SLICK
-  //===========
-  const [slidesToShow, setSlidesToShow] = useState(1);
-  useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1200) {
-        setSlidesToShow(Math.min(4, rooms.length));
-      } else if (screenWidth >= 992) {
-        setSlidesToShow(Math.min(3, rooms.length));
-      } else if (screenWidth >= 600) {
-        setSlidesToShow(Math.min(2, rooms.length));
-      } else {
-        setSlidesToShow(Math.min(1, rooms.length));
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [rooms.length]);
-
-  const SliderSettings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: slidesToShow,
-    slidesToScroll: 1,
-    autoplay: false,
-    arrow: true,
-  };
-
   return (
     <div>
       {!isMobile && (
@@ -175,11 +140,7 @@ function AvailableRooms() {
         prices={1}
         setSortType={setSortType}
       />
-      <Slider {...SliderSettings} className="">
-        {rooms.map((room, index) => (
-          <RoomSlider rooms={room} key={index} />
-        ))}
-      </Slider>
+      <RoomSlider rooms={rooms} />
       {rooms?.slice(4).map((room, index) => (
         <RoomBox room={room} index={index} key={index} />
       ))}
