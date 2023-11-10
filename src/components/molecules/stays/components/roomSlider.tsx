@@ -23,6 +23,7 @@ import Link from "@/components/atoms/link";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
+import { ttColors } from "@/lib/theme/colors";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -55,7 +56,7 @@ function RoomSlider(props: RoomSliderProps) {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1200) {
-        setSlidesToShow(Math.min(3, rooms.length));
+        setSlidesToShow(Math.min(2, rooms.length));
       } else if (screenWidth >= 600) {
         setSlidesToShow(Math.min(2, rooms.length));
       } else {
@@ -70,7 +71,7 @@ function RoomSlider(props: RoomSliderProps) {
   }, [rooms.length]);
 
   const SliderSettings = {
-    dots: true,
+    dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: slidesToShow,
@@ -158,55 +159,78 @@ function RoomSlider(props: RoomSliderProps) {
                         />
                       </FavoriteSliderBox>
                       <Link href="">
-                        <Text type="h2" text={room.name}></Text>
+                        <Text
+                          type="h2"
+                          text={room.name}
+                          weight={"bold"}
+                          styles={{ fontSize: "22px" }}
+                        ></Text>
                       </Link>
-                      <Flex gap="10px" margin="10px 0px">
+                      <Flex
+                        gap="10px"
+                        margin="10px 0px"
+                        align="center"
+                        styles={{ fontSize: "15px" }}
+                      >
                         <Text type="p" text={room.location}></Text>
                         <Rating
                           name="rating"
                           readOnly
                           defaultValue={room.rating}
-                          style={{ color: "var()" }}
+                          style={{
+                            color: "var(--color-rating)",
+                            fontSize: "16px",
+                          }}
                         />
                       </Flex>
                       <Flex justify="space-between">
-                        <Text
-                          type="h2"
-                          text={`${formatPrice(room.price)}`}
-                          weight={"bold"}
-                          color="var(--text-dull-color)"
-                        ></Text>
+                        <Flex align="center" gap="10px" styles={{ flexWrap: "wrap" }}>
+                          <Text
+                            type="h3"
+                            text={`${formatPrice(room.price)}`}
+                            weight={"bold"}
+                            color="var(--text-dull-color)"
+                          ></Text>
+                          <Text
+                            type="p"
+                            text="Per night"
+                            styles={{ fontSize: "14px" }}
+                          ></Text>
+                        </Flex>
                         <ReviewsText>
                           <Icon></Icon>
-                          <Flex direction="column">
+                          <Flex
+                            direction="column"
+                            styles={{ fontSize: "15px" }}
+                          >
                             <Flex gap={"5px"}>
                               <CircleIcon
                                 style={{
-                                  fontSize: "18px",
+                                  fontSize: "15px",
                                   color: "var(--color-green)",
                                 }}
                               />
                               <CircleIcon
                                 style={{
-                                  fontSize: "18px",
+                                  fontSize: "15px",
                                   color: "var(--color-green)",
                                 }}
                               />
                               <CircleIcon
                                 style={{
-                                  fontSize: "18px",
+                                  fontSize: "15px",
                                   color: "var(--color-green)",
                                 }}
                               />
                               <CircleIcon
                                 style={{
-                                  fontSize: "18px",
+                                  fontSize: "15px",
                                   color: "var(--color-green)",
                                 }}
                               />
                               <CircleIcon
                                 style={{
-                                  fontSize: "18px",
+                                  fontSize: "15px",
                                   color: "var(--color-green)",
                                 }}
                               />
