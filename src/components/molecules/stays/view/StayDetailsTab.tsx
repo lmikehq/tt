@@ -5,6 +5,7 @@ import Text from "@/components/atoms/text";
 import Image from "@/components/atoms/image";
 import { Grid } from "@/components/templates/grid";
 import {
+    BiChevronRight,
     BiCurrentLocation,
     BiSolidCircle,
     BiSolidEditLocation,
@@ -12,7 +13,11 @@ import {
     BiSolidStar,
 } from "react-icons/bi";
 import { ttColors } from "@/lib/theme/colors";
-import { formatPriceWithoutCurrency } from "@/lib/extensions/helpers/formatPrice";
+import {
+    formatPriceWithoutCurrency,
+    getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
+import Button from "@/components/atoms/button";
 
 const StayDetailsTab = () => {
     return (
@@ -60,8 +65,8 @@ export default StayDetailsTab;
 const OverViewTabContent = () => {
     return (
         <Section>
-            <Flex gap="2.25rem">
-                <Section width="62%">
+            <Flex gap="1rem">
+                <Section width="65%">
                     <Text
                         type="h1"
                         size={32}
@@ -107,16 +112,33 @@ const OverViewTabContent = () => {
                             />
                         </Flex>
                     </Flex>
-                    <Flex gap="2rem">
-                        <Flex>
-                            <Text type="p" text={} />
+                    <Flex gap="1rem" align="center" wrap="wrap">
+                        <Flex gap="0.5rem" align="center">
                             <Text
                                 type="p"
+                                size={24}
+                                weight={600}
+                                text={getCurrency()}
+                            />
+                            <Text
+                                type="p"
+                                size={30}
+                                weight={600}
                                 text={formatPriceWithoutCurrency(81500)}
                             />
                         </Flex>
-                        <Flex gap="0.875rem">
-                            <Text type="p" text="4.0" />
+                        <Flex
+                            margin={"0 0 3rem 0"}
+                            align="center"
+                            gap="0.875rem"
+                        >
+                            <Text
+                                type="p"
+                                text="4.0"
+                                size={30}
+                                weight={600}
+                                styles={{ flex: "none" }}
+                            />
                             <Flex gap="0.6rem">
                                 <Image
                                     alt="location"
@@ -132,6 +154,18 @@ const OverViewTabContent = () => {
                                             size={14}
                                             color={ttColors.successGreen}
                                         />
+                                        <BiSolidCircle
+                                            size={14}
+                                            color={ttColors.successGreen}
+                                        />
+                                        <BiSolidCircle
+                                            size={14}
+                                            color={ttColors.successGreen}
+                                        />
+                                        <BiSolidCircle
+                                            size={14}
+                                            color={ttColors.successGreen}
+                                        />
                                     </Flex>
                                     <Text type="p" text="1000 reviews" />
                                 </Flex>
@@ -140,16 +174,98 @@ const OverViewTabContent = () => {
                     </Flex>
                     <Text
                         type="h1"
-                        margin={"0 0 3rem 0"}
-                        text="The Ritz London"
+                        size={20}
+                        weight={500}
+                        margin={"0 0 2rem 0"}
+                        text="Popular Amenities"
                     />
-                    <Grid columns="2">
-                        <></>
+                    <Grid columns="2" style={{ rowGap: "1.5rem" }}>
+                        <Flex gap="0.875rem" align="center">
+                            <Image
+                                alt="location"
+                                src={"/assets/icons/stay/view/coffee_icon.svg"}
+                                width={32}
+                                height={32}
+                            />
+                            <Text
+                                type="h1"
+                                size={16}
+                                weight={400}
+                                text="Breakfast Available"
+                            />
+                        </Flex>
+                        <Flex gap="0.875rem" align="center">
+                            <Image
+                                alt="location"
+                                src={"/assets/icons/stay/view/spa_icon.svg"}
+                                width={32}
+                                height={32}
+                            />
+                            <Text type="h1" size={16} weight={400} text="Spa" />
+                        </Flex>{" "}
+                        <Flex gap="0.875rem" align="center">
+                            <Image
+                                alt="location"
+                                src={
+                                    "/assets/icons/stay/view/solid_wifi_icon.svg"
+                                }
+                                width={32}
+                                height={32}
+                            />
+                            <Text
+                                type="h1"
+                                size={16}
+                                weight={400}
+                                text="Free WiFi"
+                            />
+                        </Flex>{" "}
+                        <Flex gap="0.875rem" align="center">
+                            <Image
+                                alt="location"
+                                src={"/assets/icons/stay/view/pet_icon.svg"}
+                                width={32}
+                                height={32}
+                            />
+                            <Text
+                                type="h1"
+                                size={16}
+                                weight={400}
+                                text="Pet Friendly"
+                            />
+                        </Flex>{" "}
+                        <Flex gap="0.875rem" align="center">
+                            <Image
+                                alt="location"
+                                src={"/assets/icons/stay/view/parking_icon.svg"}
+                                width={32}
+                                height={32}
+                            />
+                            <Text
+                                type="h1"
+                                size={16}
+                                weight={400}
+                                text="Parking available"
+                            />
+                        </Flex>
+                        <Flex gap="0.875rem" align="center">
+                            <Image
+                                alt="location"
+                                src={"/assets/icons/stay/view/ac_unit_icon.svg"}
+                                width={32}
+                                height={32}
+                            />
+                            <Text
+                                type="h1"
+                                size={16}
+                                weight={400}
+                                text="Air conditioning"
+                            />
+                        </Flex>
                     </Grid>
                     {/* <Text /> */}
                 </Section>
-                <Section width="38%">
-                    <Section>
+                <Section width="35%">
+                    <Section margin="0 0 10px 0">
                         <Image
                             alt="stay"
                             src={"/assets/images/topCountries/Canada.jpeg"}
@@ -160,6 +276,29 @@ const OverViewTabContent = () => {
                             }}
                         />
                     </Section>
+                    <Text
+                        type="p"
+                        text="22 Portman Square, London, England, W1H 6LW"
+                        size={16}
+                        weight={500}
+                    />
+                    <Button
+                        background="transparent"
+                        width="fit-content"
+                        padding="0"
+                    >
+                        <Flex align="center" justify="flex-start">
+                            <Text
+                                type="p"
+                                text="Show in map"
+                                color={ttColors.primary}
+                            />
+                            <BiChevronRight
+                                color={ttColors.primary}
+                                size={24}
+                            />
+                        </Flex>
+                    </Button>
                 </Section>
             </Flex>
         </Section>
