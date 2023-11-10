@@ -104,7 +104,7 @@ function FlightModule({
             <Flex
                 direction={isMobile ? "column" : "row"}
                 align={isMobile ? "flex-start" : "center"}
-                gap=".5rem"
+                gap={isMobile ? "0rem" : ".5rem"}
             >
                 <Flex
                     direction="column"

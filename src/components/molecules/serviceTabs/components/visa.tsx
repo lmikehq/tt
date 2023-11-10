@@ -40,7 +40,8 @@ function Visa() {
   const [type, setType] = useState<string>("Work");
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset" padding={"2rem 0 1rem 0"}>
       <Grid
@@ -112,9 +113,9 @@ function Visa() {
       </Grid>
       <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
-          width={isMobile ? "100%" : "240px"}
-          background="#06062A"
+          width={isMobile ? "100%" : "300px"}
           borderRadius="4px"
+          background={ttColors.dark}
           onClick={async () => {
             if (loading) return;
             setLoading(true);
@@ -125,7 +126,7 @@ function Visa() {
           }}
         >
           {loading ? (
-            <Spinner fill={ttColors.primary} size={"45px"} />
+            <Spinner fill={ttColors.primary} size={"36px"} />
           ) : (
             <Text
               text="Get Started"

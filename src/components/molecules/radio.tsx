@@ -23,6 +23,7 @@ interface CustomRadioGroupProps {
     direction?: "row" | "column";
     align?: "center" | "flex-start" | "flex-end";
     value?: any;
+    scroll?: boolean;
 }
 
 export function CustomRadioGroup({
@@ -33,7 +34,8 @@ export function CustomRadioGroup({
   justifyContent,
   align = "center",
   direction = "row",
-  value,
+    value,
+    scroll
 }: CustomRadioGroupProps) {
   const { isMobile } = useScreenResolution();
   return (
@@ -45,7 +47,7 @@ export function CustomRadioGroup({
             onBlur={onBlur}
             style={{ justifyContent: justifyContent }}
         >
-            <Flex align={align} gap="1rem" direction={direction}>
+              <Flex align={align} gap="1rem" direction={direction} className={scroll ? "scroll-custom" : ""} overflowX={scroll ? "auto" : "initial"}>
                 {options.map((option) =>
                     <FormControlLabel
                         key={option.label}
@@ -54,12 +56,14 @@ export function CustomRadioGroup({
                         label={option.label}
                         sx={{
                             marginLeft: "0px",
+                            
                             ".MuiFormControlLabel-label": {
+                                width: scroll ? 'max-content' : '',
                                 fontFamily: "Poppins",
                                 fontWeight: "400 !important",
-                                fontSize: isMobile ? ".9rem !important" : ".9rem !important" ,
+                                fontSize: isMobile ? ".9rem !important" : ".9rem !important",
                                 marginLeft: "2px",
-                            }
+                            },
                         }}
                     />
                 )}
