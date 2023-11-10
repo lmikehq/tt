@@ -6,10 +6,13 @@ import Image from "@/components/atoms/image";
 import { Grid } from "@/components/templates/grid";
 import {
     BiCurrentLocation,
+    BiSolidCircle,
     BiSolidEditLocation,
     BiSolidLocationPlus,
     BiSolidStar,
 } from "react-icons/bi";
+import { ttColors } from "@/lib/theme/colors";
+import { formatPriceWithoutCurrency } from "@/lib/extensions/helpers/formatPrice";
 
 const StayDetailsTab = () => {
     return (
@@ -59,24 +62,87 @@ const OverViewTabContent = () => {
         <Section>
             <Flex gap="2.25rem">
                 <Section width="62%">
-                    <Text type="h1" text="The Ritz London" />
+                    <Text
+                        type="h1"
+                        size={32}
+                        weight={600}
+                        text="The Ritz London"
+                        margin={"0 0 0.75rem 0"}
+                    />
                     <Text
                         type="p"
+                        size={16}
+                        weight={400}
                         text="Black Prince Interchange, London, DA5 1ND, United Kingdom"
+                        margin={"0 0 1.5rem 0"}
                     />
-                    <Flex gap="1rem">
-                        <Flex width="fit-content">
-                            <BiCurrentLocation />
+                    <Flex gap="0rem" margin="0 0 1.5rem 0" align="center">
+                        <Flex>
+                            <Image
+                                alt="location"
+                                src={
+                                    "/assets/icons/stay/view/location_radius_icon.svg"
+                                }
+                                width={24}
+                                height={24}
+                            />
                             <Text type="p" text="4.3km away" />
                         </Flex>
                         <Flex>
-                            <BiSolidStar />
-                            <BiSolidStar />
-                            <BiSolidStar />
-                            <BiSolidStar />
+                            <BiSolidStar
+                                color={ttColors.sunsetYellow}
+                                size={20}
+                            />
+                            <BiSolidStar
+                                color={ttColors.sunsetYellow}
+                                size={20}
+                            />
+                            <BiSolidStar
+                                color={ttColors.sunsetYellow}
+                                size={20}
+                            />
+                            <BiSolidStar
+                                color={ttColors.sunsetYellow}
+                                size={20}
+                            />
                         </Flex>
                     </Flex>
-                    <Text type="h1" text="The Ritz London" />
+                    <Flex gap="2rem">
+                        <Flex>
+                            <Text type="p" text={} />
+                            <Text
+                                type="p"
+                                text={formatPriceWithoutCurrency(81500)}
+                            />
+                        </Flex>
+                        <Flex gap="0.875rem">
+                            <Text type="p" text="4.0" />
+                            <Flex gap="0.6rem">
+                                <Image
+                                    alt="location"
+                                    src={
+                                        "/assets/icons/stay/view/view_camera_icon.svg"
+                                    }
+                                    width={24}
+                                    height={24}
+                                />
+                                <Flex direction="column">
+                                    <Flex>
+                                        <BiSolidCircle
+                                            size={14}
+                                            color={ttColors.successGreen}
+                                        />
+                                    </Flex>
+                                    <Text type="p" text="1000 reviews" />
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                    </Flex>
+                    <Text
+                        type="h1"
+                        margin={"0 0 3rem 0"}
+                        text="The Ritz London"
+                    />
                     <Grid columns="2">
                         <></>
                     </Grid>
