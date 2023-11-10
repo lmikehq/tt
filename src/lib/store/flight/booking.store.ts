@@ -19,6 +19,7 @@ import {
     passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
+    BookingDetailsInterface,
     FlightInfo,
     SeatRowWithSegmentCodeInterface,
 } from "@/lib/types/response-models/flight/booking.type";
@@ -27,6 +28,7 @@ import { CheckSeatingResponse } from "@/lib/types/response-models/flight/check_s
 import { TokenizeDataResponse } from "@/lib/types/response-models/flight/payment.type";
 import { Mode } from "@lib/types";
 import { create } from "zustand";
+import { useUserPreferencesStore } from "../preferences.store";
 
 interface State {
     highestStep: number;
@@ -59,6 +61,9 @@ interface State {
     seatRows: SeatRowWithSegmentCodeInterface[];
     saveBookingMode: Mode;
     confirmPaymentMode: Mode;
+    bookingDetailsMode: Mode;
+    bookingDetailsResponse: BookingDetailsInterface | null;
+    conversionRate: number;
 }
 interface Actions {
     prevStep: () => void;
@@ -79,13 +84,11 @@ interface Actions {
         previousSeat: string | null;
         newSeat: string;
     }) => void;
-
     saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
     confirmPaymentZooz: (params: {
         data: TokenizeDataRequestInput;
     }) => Promise<TokenizeDataResponse>;
     updateSearchQuery: (params: { data: SearchFlightsRequestQuery }) => void;
-
     setSaveBookingDetails: ({
         data,
     }: {
@@ -93,6 +96,7 @@ interface Actions {
     }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
+    checkBookingDetails: ({ bookingId }: { bookingId: string } ) => Promise<void>;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -108,7 +112,8 @@ export const useFlightBookingStore = create<State & Actions>(
             currency: "USD",
             total: 0,
         },
-        searchQuery: {},
+        conversionRate: 0,
+        searchQuery: { limit: 10 },
         sessionId: null,
         seatRows: [],
         initCheckFlightsMode: Mode.init,
@@ -123,6 +128,9 @@ export const useFlightBookingStore = create<State & Actions>(
         saveBookingResponse: null,
         tokenizeDataResponse: null,
         cardDetails,
+
+        bookingDetailsMode: Mode.init,
+        bookingDetailsResponse: null,
 
         prevStep: () => {
             set((state) => ({
@@ -142,37 +150,37 @@ export const useFlightBookingStore = create<State & Actions>(
                         : state.highestStep,
             }));
         },
-
         setStep: ({ step }: { step: number }) => {
             set({ step });
         },
-
         setSaveBookingDetails({ data }: { data: SaveBookingRequestInput }) {
             set({ saveBookingDetails: data });
         },
         updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
-            set({
-                searchQuery: data,
-            });
+            set({ searchQuery: data });
         },
         searchFlights: async ({
             data,
         }: {
             data: SearchFlightsRequestQuery;
         }) => {
-            const isMoreSearch = (data?.limit && Number(data?.limit) > 10)   
             set({ searchFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data: { ...data, curr: "USD" } })
+            return await FlightBookingService.searchFlights({
+                data: {
+                    ...data,
+                    curr: useUserPreferencesStore.getState().preFerredCurrency,
+                },
+            })
                 .then((response) => {
-                    set((state) => ({
+                    console.log("rrrr", response.data);
+                    set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
                         flightsResults: {
                             currency: response.currency,
                             total: response._results,
                         },
-                        totalSearchFlightsResults: response._results,
-                    }));
+                    });
                 })
                 .catch((error) => {
                     set({ searchFlightsMode: Mode.error });
@@ -187,10 +195,10 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ searchMoreFlightsMode: Mode.loading });
             return await FlightBookingService.searchFlights({ data })
                 .then((response) => {
-                    set((state) => ({
+                    set({
                         searchMoreFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
-                    }));
+                    });
                 })
                 .catch((error) => {
                     set({ searchMoreFlightsMode: Mode.error });
@@ -199,10 +207,26 @@ export const useFlightBookingStore = create<State & Actions>(
         },
         checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
             set({ mode: Mode.loading });
-            return await FlightBookingService.checkFlights({ query })
+            return await FlightBookingService.checkFlights({
+                query: {
+                    ...query,
+                    currency:
+                        useUserPreferencesStore.getState().preFerredCurrency,
+                },
+            })
                 .then((response) => {
+                    const {
+                        adults_price = 0,
+                        children_price = 0,
+                        infants_price = 0,
+                    } = response.conversion;
+                    const ticketPriceInPreferredCurrency =
+                        adults_price + children_price + infants_price;
+                    const conversionRate =
+                        ticketPriceInPreferredCurrency / response.tickets_price;
                     set({
                         mode: Mode.loaded,
+                        conversionRate,
                         sessionId: response.session_id,
                         checkFlightsResponse: response,
                         bookingToken: response.booking_token,
@@ -347,6 +371,24 @@ export const useFlightBookingStore = create<State & Actions>(
                     });
                     throw error;
                 });
+        },
+        checkBookingDetails: async ({
+            bookingId,
+        }: {
+            bookingId: string;
+        }) => {
+            set({ bookingDetailsMode: Mode.loading });
+            return await FlightBookingService.checkBookingDetails({ bookingId })
+                .then(response => {
+                    set({
+                        bookingDetailsMode: Mode.loaded,
+                        bookingDetailsResponse: response
+                    })
+                })
+                .catch((error) => {
+                    set({ bookingDetailsMode: Mode.error });
+                    throw error;
+                })
         },
     })
 );

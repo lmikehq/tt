@@ -319,3 +319,24 @@ textarea:hover {
     font-weight: 600 !important;
     color: #fff !important;
 }
+
+
+/* Custom Scrollbar */
+.scroll-custom::-webkit-scrollbar {
+    background-color: transparent;
+    width: 9px;
+    height: 9px;
+}
+
+.scroll-custom::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar::-webkit-scrollbar-thumb {
+    display: none;
+}

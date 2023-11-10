@@ -12,13 +12,14 @@ import { ttColors } from "@/lib/theme/colors";
 import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booking.type";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { TripHeader } from "../flight/booking/headers";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Image from "@/components/atoms/image";
 import { Flight } from "@/lib/types/response-models/flight/check_flight.type";
 import { formatDate } from "@/lib/utilFns";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import TripSummaryDetails from "./TripSummaryDetails";
+import { FlightContext } from "@/lib/extensions/context";
 
 interface TripSummaryCardProps {
     departure: Flight;
@@ -91,14 +92,14 @@ export default function TripSummaryCard({
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
     const [isOpen, setIsOpen] = useState(false);
+    const flightContext = useContext(FlightContext)
+    const flightState = flightContext?.state
 
     const flightStops = flights.length - 1;
-    const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(
-        dayjs(departure?.utc_departure),
-        "minute"
-    );
+    const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(dayjs(departure?.utc_departure), "minute");
     const hoursLeft = Math.floor(timeToArrivalMins / 60);
     const minsLeft = timeToArrivalMins % 60;
+
 
     return (
         <React.Fragment>
@@ -134,8 +135,7 @@ export default function TripSummaryCard({
                             border: `1px solid ${ttColors.lightestGray}`,
                             width: isMobile ? "40px" : "60px",
                             height: isMobile ? "40px" : "60px",
-                            backgroundImage:
-                                "url('/assets/images/flights/EgyptAirLogo.jpg')",
+                            backgroundImage: `url(${flightState?.airlines[departure?.airline?.iata_code]?.logo})`,
                         }}
                     />
                     <Flex
@@ -143,10 +143,10 @@ export default function TripSummaryCard({
                         gap={isMobile ? ".5rem" : "1rem"}
                     >
                         <Text text={"Departure"} type="p" weight={600} />
-                        <Text text={"EgyptAir"} type="p" size={14} />
+                        <Text text={departure?.airline?.name} type="p" size={14} />
                     </Flex>
                 </Box>
-                <Text text={"24 Aug 2023"} type="p" size={isMobile ? 14 : 16} />
+                <Text text={dayjs(departure?.utc_departure).format("D MMM, YYYY")} type="p" size={isMobile ? 14 : 16} />
             </Flex>
 
             <Flex
@@ -157,9 +157,9 @@ export default function TripSummaryCard({
             >
                 <AirportLocation
                     datetime={departure?.utc_departure}
-                    airport={`${departure?.airline.name}, ${departure?.airline.code_public}`}
+                    airport={departure?.src_station}
                     shortLocation={departure?.src}
-                    location={`${departure?.src_name}, ${departure?.src_country}`}
+                    location={`${departure?.src_name} (${departure?.src_country})`}
                     order={1}
                 />
 
@@ -179,17 +179,15 @@ export default function TripSummaryCard({
                     <Text
                         type="p"
                         size={14}
-                        text={`${String(flightStops)} ${
-                            flightStops > 1 ? "stops" : "stop"
-                        }`}
+                        text={`${String(flightStops)} ${flightStops > 1 ? "stops" : "stop"}`}
                     />
                 </Flex>
 
                 <AirportLocation
                     datetime={arrival?.utc_arrival}
-                    airport={`${arrival?.airline.name}, ${arrival?.airline.code_public}`}
+                    airport={arrival?.dst_station}
                     shortLocation={arrival?.dst}
-                    location={`${arrival?.dst_name}, ${arrival?.dst_country}`}
+                    location={`${arrival?.dst_name} (${arrival?.dst_country})`}
                     order={isMobile ? 2 : 3}
                 />
 
@@ -229,7 +227,9 @@ export default function TripSummaryCard({
                 </AccordionSummary>
 
                 <AccordionDetails style={{ padding: "0" }}>
-                    <TripSummaryDetails flights={flights} />
+                    <TripSummaryDetails
+                        flights={flights}
+                    />
                 </AccordionDetails>
             </StyledAccordion>
         </React.Fragment>

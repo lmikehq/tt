@@ -10,6 +10,8 @@ import { Flight } from "@/lib/types/response-models/flight/check_flight.type";
 import { formatDate } from "@/lib/utilFns";
 import dayjs from "dayjs";
 import { Box } from "@mui/material";
+import { FlightContext } from "@/lib/extensions/context";
+import { useContext } from "react";
 
 
 interface TripSummaryDetailsProps {
@@ -33,7 +35,7 @@ const Dot = ({ size = 14, color, top, bottom }: { size?: number; color?: string;
 function LineText({ text }: { text: string }) {
     const { isMobile } = useScreenResolution()
     return (
-        <Text text={text} type="p" size={isMobile ? 13 : 14} />
+        <Text text={text} type="p" size={isMobile ? 13 : 13} />
     )
 }
 
@@ -77,10 +79,11 @@ function AirportLocation({
 function TimeOfFlight({
     time,
     airline,
+    logo,
     order,
     width,
     margin,
-}: { time: string; airline: string; order: number; width: string; margin: string; }) {
+}: { time: string; airline: string; logo: string; order: number; width: string; margin: string; }) {
     const { isMobile } = useScreenResolution()
     
     return (
@@ -95,11 +98,11 @@ function TimeOfFlight({
                     style={{
                         backgroundSize: "cover",
                         backgroundPosition: "center",
-                        width: "30px",
-                        height: "30px",
+                        width: "55px",
+                        height: "50px",
                         border: `1px solid ${ttColors.lightestGray}`,
                         borderRadius: "50px",
-                        backgroundImage: "url('/assets/images/flights/EgyptAirLogo.jpg')",
+                        backgroundImage: `url(${logo})`,
                     }}
                 />
                 <LineText text={airline} />
@@ -110,6 +113,8 @@ function TimeOfFlight({
 
 function OneTrip({ index, chain, last, flight, nextFlight }: { index: number; chain: boolean; last: boolean; flight: Flight; nextFlight?: Flight; }) {
     const { isMobile } = useScreenResolution()
+    const flightContext = useContext(FlightContext)
+    const flightState = flightContext?.state
 
     const arrivalMins = dayjs(flight?.utc_arrival).diff(dayjs(flight?.utc_departure), 'minute')
     const arrivalHoursLeft = Math.floor(arrivalMins / 60)
@@ -150,12 +155,13 @@ function OneTrip({ index, chain, last, flight, nextFlight }: { index: number; ch
                         datetime={flight?.utc_departure}
                         shortLocation={flight?.src_country}
                         airport={flight?.src_station}
-                        location={`${flight?.src_name}, ${flight?.src_country}`}
+                        location={`${flight?.src_name} (${flight?.src_country})`}
                         order={1}
                     />
                     <TimeOfFlight
                         time={`${arrivalHoursLeft}h ${arrivalMinsLeft}m`}
-                        airline={`${flight?.airline.name}, ${flight?.airline.code_public}`}
+                        airline={`${flight?.airline.name}, ${flight?.airline.code_public}${flight?.flight_no}`}
+                        logo={flightState?.airlines[flight?.airline.iata_code]?.logo ?? ""}
                         order={isMobile ? 3 : 2}
                         width={isMobile ? "100%" : "30%"}
                         margin={isMobile ? "2.5rem 0 0" : "0"}
@@ -164,7 +170,7 @@ function OneTrip({ index, chain, last, flight, nextFlight }: { index: number; ch
                         datetime={flight?.utc_arrival}
                         shortLocation={flight?.dst_country}
                         airport={flight?.dst_station}
-                        location={`${flight?.dst_name}, ${flight?.dst_country}`}
+                        location={`${flight?.dst_name} (${flight?.dst_country})`}
                         order={isMobile ? 2 : 3}
                     />
                 </Flex>

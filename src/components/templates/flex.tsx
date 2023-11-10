@@ -4,7 +4,7 @@ import React, { CSSProperties } from "react";
 import styled from "styled-components";
 
 interface flexProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   justify?:
     | "center"
     | "space-between"

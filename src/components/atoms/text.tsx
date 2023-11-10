@@ -59,6 +59,8 @@ export const Text: React.FC<TextProps> = ({
         fontFamily: font || "Poppins",
         textDecoration: decoration,
         textTransform: transform,
+        overflow: 'clip',
+        textOverflow: 'ellipsis',
         margin,
         padding,
         opacity,
