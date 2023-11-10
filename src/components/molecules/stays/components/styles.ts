@@ -229,7 +229,7 @@ export const SliderContainer = styled.div`
   box-shadow: var(--box-shadow);
   border: 1px solid var(--color-border);
   padding: 20px;
-
+  padding-bottom: 50px;
   border-radius: 12.5px;
   margin-bottom: 20px;
   width: 100%;
@@ -239,11 +239,8 @@ export const SliderContainer = styled.div`
 `;
 export const SlideContent = styled.div`
   margin: 5px;
-  // width: 890px;
 `;
-export const SliderWidth = styled.div`
-  // overflow-x: scroll;
-`;
+export const SliderWidth = styled.div``;
 
 export const SlideList = styled.div`
   border-radius: 20px;

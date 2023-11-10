@@ -24,6 +24,8 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { ttColors } from "@/lib/theme/colors";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -41,6 +43,29 @@ interface Room {
 interface RoomSliderProps {
   rooms: Room[];
 }
+
+// REACT SLICK BUTTON
+const PrevArrow = (props: any) => {
+  const { onClick } = props;
+  return (
+    <div className="control_btn l_flex" onClick={onClick}>
+      <button className="prev l_flex">
+        <KeyboardArrowLeftIcon className="icon" />
+      </button>
+    </div>
+  );
+};
+
+const NextArrow = (props: any) => {
+  const { onClick } = props;
+  return (
+    <div className="control_btn" onClick={onClick}>
+      <button className="next l_flex">
+        <KeyboardArrowRightIcon className="icon" />
+      </button>
+    </div>
+  );
+};
 
 // PRICE FORMAT
 const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
@@ -77,7 +102,9 @@ function RoomSlider(props: RoomSliderProps) {
     slidesToShow: slidesToShow,
     slidesToScroll: 1,
     autoplay: false,
-    arrow: true,
+    arrows: true,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
   };
 
   //=================
@@ -184,7 +211,11 @@ function RoomSlider(props: RoomSliderProps) {
                         />
                       </Flex>
                       <Flex justify="space-between">
-                        <Flex align="center" gap="10px" styles={{ flexWrap: "wrap" }}>
+                        <Flex
+                          align="center"
+                          gap="10px"
+                          styles={{ flexWrap: "wrap" }}
+                        >
                           <Text
                             type="h3"
                             text={`${formatPrice(room.price)}`}
