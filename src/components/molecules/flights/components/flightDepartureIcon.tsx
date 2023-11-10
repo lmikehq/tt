@@ -8,10 +8,10 @@ export default function FlightDepartureIcon({
 }) {
     return (
         <Section
-            styles={{ height: "70%", flex: "none", alignSelf: "flex-end" }}
+            styles={{ height: "60%", width: '30px', flex: "none", alignSelf: "flex-end" }}
         >
             <Image
-                src={"/assets/images/flights/departure.png"}
+                src="/assets/images/flights/departure.png"
                 alt="flight departure"
                 styles={{
                     transform: reverse ? "rotateZ(180deg)" : "",

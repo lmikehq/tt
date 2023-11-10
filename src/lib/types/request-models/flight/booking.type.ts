@@ -127,6 +127,7 @@ export interface SearchFlightsRequestQuery {
     max_fly_duration?: number;
     page?: number;
     limit?: number;
+    sort?: string;
 }
 
 export interface CheckFlightsRequestInput {

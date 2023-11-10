@@ -135,8 +135,8 @@ function FlightBox(props: flightProps) {
                 {/* Left */}
                 <Flex
                     direction="column"
-                    gap=".8rem"
-                    padding={isMobile ? "1rem" : "1rem 2rem 2rem 1.5rem"}
+                    gap=".6rem"
+                    padding={isMobile ? "1rem" : "1rem 2rem 2rem 1rem"}
                     height="100%"
                     justify="center"
                 >
@@ -150,9 +150,7 @@ function FlightBox(props: flightProps) {
                         sx={{
                             width: "100%",
                             display: "grid",
-                            gridTemplateColumns: isMobile
-                                ? "30px 1fr"
-                                : "40px 1fr",
+                            gridTemplateColumns: isMobile ? "30px 1fr" : "50px 1fr",
                             alignItems: "center",
                         }}
                     >
@@ -296,7 +294,7 @@ function FlightBox(props: flightProps) {
                             <Box
                                 sx={{
                                     display: "grid",
-                                    gridTemplateColumns: "25px 1fr",
+                                    gridTemplateColumns: isMobile ? "30px 1fr" : "40px 1fr",
                                     alignItems: "center",
                                 }}
                             >

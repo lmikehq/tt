@@ -274,8 +274,8 @@ function AvailableFlights() {
     }
 
     const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
-        // router.push(pathName + constructQueryFromParams(updatedQuery));
         const updatedQuery = { ...searchQuery, ...updatedParams };
+        router.push(pathName + constructQueryFromParams(updatedQuery));
         updateSearchQuery({ data: updatedQuery });
         searchFlights({ data: updatedQuery });
     };
@@ -297,12 +297,25 @@ function AvailableFlights() {
     const formComplete = flight?.departureCountry && flight?.arrivalCountry && flight?.departureDate
 
     useEffect(() => {
-        handleSearchResults({ ...searchQuery, ...queryParams })
-    }, [queryParams]);
+        const sanitizedQuery = {
+            fly_from: queryParams?.fly_from,
+            fly_to: queryParams?.fly_to,
+            date_from: queryParams?.date_from,
+            cabin: queryParams?.cabin,
+            adults: Number(queryParams?.adults),
+            children: Number(queryParams?.children),
+            infants: Number(queryParams?.infants),
+        }
+        handleSearchResults({ ...searchQuery, ...sanitizedQuery })
+    }, [queryParams])
 
     useEffect(() => {
         console.log('qqq', searchQuery)
     }, [searchQuery]);
+
+    useEffect(() => {
+        console.log('ressss', searchFlightsResults)
+    }, [searchFlightsResults]);
 
     useEffect(() => {
         const interval = setTimeout(() => {

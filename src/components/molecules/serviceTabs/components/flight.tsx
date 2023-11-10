@@ -175,7 +175,7 @@ function Flights() {
                 break;
             case 'F': return 'First';
                 break;
-            default: return ''
+            default: return 'Economy'
         }
     }
 
@@ -221,6 +221,10 @@ function Flights() {
             }
         })
     }, [])
+
+    useEffect(() => {
+        console.log(flightState)
+    }, [flightState])
 
 
 	return (
@@ -284,7 +288,6 @@ function Flights() {
             <Flex
                 justify="flex-end"
                 margin="1.5rem 0 0 0"
-                // styles={{ position: "absolute", bottom: "-40px" }}
             >
                 <Button
                     width={isMobile ? "100%" : "300px"}
