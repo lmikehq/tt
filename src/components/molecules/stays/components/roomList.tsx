@@ -5,7 +5,9 @@ import Box from "@mui/material/Box";
 import AvailableRooms from "./availableRooms";
 import SortedColumn from "./sortedColumn";
 import { useState } from "react";
+import styled from "styled-components";
 
+const SectionLayout = styled.div``;
 function RoomList() {
   const { isMobile } = useScreenResolution();
   const [results, setResults] = useState(0);
@@ -15,17 +17,17 @@ function RoomList() {
     <Box
       sx={{
         display: "grid",
-        columnGap: "2rem",
-        gridTemplateColumns: { xs: "1fr", sm: "3fr 7fr" },
-        marginTop: "30px",
+        gridTemplateColumns: isMobile ? "100%" : "300px 74%",
+        gap: "2rem",
+        marginTop: "20px",
       }}
     >
-      <Section>
+      <SectionLayout>
         <SortedColumn results={results} sortType={sortType} />
-      </Section>
-      <Section>
+      </SectionLayout>
+      <SectionLayout>
         <AvailableRooms />
-      </Section>
+      </SectionLayout>
     </Box>
   );
 }

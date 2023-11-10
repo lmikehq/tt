@@ -53,11 +53,13 @@ export const SortModal = ({
   handleClose: () => void;
 }) => {
   const options = [
-    { value: "best", label: "Best Flight" },
-    { value: "cheap", label: "Cheapest Flight" },
-    { value: "fast", label: "Fastest Flight" },
-    { value: "depart", label: "Depart: Early - Late" },
-    { value: "return", label: "Return: Early - Late" },
+    { value: "favorite", label: "My Favourite Hotels" },
+    { value: "best", label: "Best" },
+    { value: "expensive", label: "Price (High to Low)" },
+    { value: "cheap", label: "Price (Low to High)" },
+    { value: "guest", label: "Guest Ratings" },
+    { value: "lowestRatings", label: "Star Ratings (5 to 1)" },
+    { value: "highestRatings", label: "Star Ratings (1 to 5)" },
   ];
 
   return (

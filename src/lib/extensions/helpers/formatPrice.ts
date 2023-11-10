@@ -12,5 +12,6 @@ export const formatPrice = ({
         currency: currency ?? "NGN",
         minimumFractionDigits: numberOfDecimalDigits,
         maximumFractionDigits: numberOfDecimalDigits,
+
     }).format(total);
 };
