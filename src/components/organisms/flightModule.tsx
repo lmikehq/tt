@@ -5,8 +5,6 @@ import React, { useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SearchInput from "./searchInput";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
-import { IoLocationOutline } from "react-icons/io5";
 import { ttColors } from "@lib/theme/colors";
 import { DatePicker } from "./customDatePicker";
 import { ClickAwayListener } from "@mui/material";

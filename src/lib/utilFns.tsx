@@ -1,4 +1,6 @@
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+var advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
 import axios from "axios";
 
 
@@ -55,6 +57,9 @@ export async function fetchHTMLContent(country: string) {
   }
 }
 
+export function allCaps(text: string | number) {
+    return String(text ?? '').toUpperCase()
+}
 export function capCase(text = '', splitter = ' ') {
     let newStr = String(text ?? '').split(splitter)
     if (!text) {
@@ -67,9 +72,28 @@ export function capCase(text = '', splitter = ' ') {
 export function cleanObject(obj: { [k: string]: any }) {
     const newObj: any = {}
     Object.keys(obj).forEach(e => {
-        if (!!obj[e] && obj[e] !== 'undefined' && obj[e] !== 'null') {
+        if (obj[e] != undefined && obj[e] != null) {
             newObj[e] = obj[e]
         }
     })
     return newObj
 }
+
+export function numSort (arr: any[] = [], keyToCompare: string, order?: 'asc' | 'desc') {
+    if (order === 'asc') {
+        return arr.sort((a, b) => ((keyToCompare ? a[keyToCompare] : a) - (keyToCompare ? b[keyToCompare] : b)))
+    } else {
+        return arr.sort((a, b) => ((keyToCompare ? b[keyToCompare] : b) - (keyToCompare ? a[keyToCompare] : a)))
+    }
+}
+export function dateSort (arr: any[] = [], key: string, order?: 'asc' | 'desc') {
+    if (order === 'asc') {
+        return arr.sort((a, b) => Number(dayjs(a[key]).format('X')) - Number(dayjs(b[key]).format('X')))
+    } else {
+        return arr.sort((a, b) => Number(dayjs(b[key]).format('X')) - Number(dayjs(a[key]).format('X')))
+    }
+}
+
+export function moneyFormat(val: string | number) {
+    return Number(val).toFixed(2)
+} 

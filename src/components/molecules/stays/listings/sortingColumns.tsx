@@ -1,19 +1,14 @@
-import CheckBox from "@molecule/checkbox";
 import { Divider } from "@atom/divider";
 import Flex from "@components/templates/flex";
 import { CustomRadioGroup } from "@molecule/radio";
 import { SearchInputAsString } from "@organism/searchInput";
 import Text from "@atom/text";
-import Section from "src/components/molecules/section";
 import React, { useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
-import { styled } from "styled-components";
 
 import Button from "@/components/atoms/button";
-import { ttColors } from "@/lib/theme/colors";
 import Slider from "../../slider";
-import { ButtonBox } from "../components/sortedRoomsTab";
 import FavoriteHotels from "../components/favoriteHotels";
 import PriceAlerts from "../components/priceAlerts";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -256,8 +251,8 @@ function SortingColumns() {
                 }
               >
                 {displayedPopularItems === threshold
-                  ? "Show more"
-                  : "Show less"}
+                  ? "See more"
+                  : "See less"}
               </Button>
             )}
           </>
@@ -312,8 +307,8 @@ function SortingColumns() {
                 }
               >
                 {displayedPropertyItems === threshold
-                  ? "Show more"
-                  : "Show less"}
+                  ? "See more"
+                  : "See less"}
               </Button>
             )}
           </>
@@ -476,8 +471,8 @@ function SortingColumns() {
                 }
               >
                 {displayedPoliciesItems === threshold
-                  ? "Show more"
-                  : "Show less"}
+                  ? "See more"
+                  : "See less"}
               </Button>
             )}
           </>
@@ -536,8 +531,8 @@ function SortingColumns() {
                 }
               >
                 {displayedServicesItems === threshold
-                  ? "Show more"
-                  : "Show less"}
+                  ? "See more"
+                  : "See less"}
               </Button>
             )}
           </>
@@ -589,7 +584,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedMealItems === threshold ? "Show more" : "Show less"}
+                {displayedMealItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
@@ -640,7 +635,7 @@ function SortingColumns() {
                   )
                 }
               >
-                {displayedRoomsItems === threshold ? "Show more" : "Show less"}
+                {displayedRoomsItems === threshold ? "See more" : "See less"}
               </Button>
             )}
           </>
@@ -692,8 +687,8 @@ function SortingColumns() {
                 }
               >
                 {displayedBedTypeItems === threshold
-                  ? "Show more"
-                  : "Show less"}
+                  ? "See more"
+                  : "See less"}
               </Button>
             )}
           </>

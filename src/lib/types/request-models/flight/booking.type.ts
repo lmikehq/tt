@@ -121,12 +121,13 @@ export interface SearchFlightsRequestQuery {
     adult_hand_bag?: string;
     price_from?: number;
     price_to?: number;
-    select_airlines?: string[];
+    select_airlines?: string;
     vehicle_type?: string;
     max_stopovers?: number;
     max_fly_duration?: number;
     page?: number;
     limit?: number;
+    sort?: string;
 }
 
 export interface CheckFlightsRequestInput {
@@ -140,6 +141,7 @@ export interface CheckFlightsQuery {
     adults?: number;
     children?: number;
     infants?: number;
+    currency?: string;
 }
 export interface CheckSeatingRequestInput {
     ancillaries: string[];

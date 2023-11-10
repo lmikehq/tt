@@ -60,7 +60,7 @@ interface FlightProps {
 
 function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
     const [flightClass, setFlightClass] = useState(data.flightClass);
-    const [count, setCount] = useState<FlightCountType>({ ...data });
+    const [count, setCount] = useState<FlightCountType>({ ...data })
 
     const setAdults = (type: "add" | "subtract") => {
         if (type === "subtract") {
@@ -122,7 +122,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
         <Section padding="1rem 1rem 0 1rem">
             <SearchStringInput
                 placeholder=""
-                options={["Economy", "Business", "First"]}
+                options={["Economy", "Economy Premium", "Business", "First"]}
                 onChange={(e: any) => setFlightClass(e)}
                 value={flightClass}
                 border="bottom"
