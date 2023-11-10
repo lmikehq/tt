@@ -31,7 +31,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
         opacity: 1,
         backgroundColor:
           theme.palette.mode === "dark"
-            ? "var(--text-color)"
+            ? "var(--color-light-gray)"
             : "var(--primary-color)",
       },
     },
@@ -49,7 +49,9 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 12, // Match the radius to half the switchBase width
     opacity: 1,
     backgroundColor:
-      theme.palette.mode === "dark" ? "var(--text-color)" : "var(--text-color)",
+      theme.palette.mode === "dark"
+        ? "var(--color-light-gray)"
+        : "var(--color-light-gray)",
     boxSizing: "border-box",
   },
 }));
