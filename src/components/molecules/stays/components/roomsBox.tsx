@@ -28,6 +28,7 @@ import {
   ItemList,
   GridLayout,
   FlexBox,
+  FlexText,
   ImgBox,
   LargeImg,
   SmallImg,
@@ -45,6 +46,8 @@ import {
   RowThree,
   RowFour,
   RowFive,
+  ButtonBtn,
+  BtnText,
 } from "./styles";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -209,15 +212,17 @@ function RoomBox({ room, index }: RoomBoxProps) {
                       position: "relative",
                     }}
                   >
-                    <img
-                      src={x}
-                      alt=""
-                      className="slick_slider_room_img_img"
-                      style={{
-                        width: "100%",
-                        borderRadius: "12.5px",
-                      }}
-                    />
+                    <Link href="">
+                      <img
+                        src={x}
+                        alt=""
+                        className="slick_slider_room_img_img"
+                        style={{
+                          width: "100%",
+                          borderRadius: "12.5px",
+                        }}
+                      />
+                    </Link>
                     <FavoriteBoxMobile>
                       <Checkbox
                         {...label}
@@ -249,7 +254,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
           <TextBox>
             <Flex direction="column">
               <RowOne>
-                <Flex justify="space-between">
+                <FlexBox>
                   <TextLocation>
                     <Link href="">
                       <Text
@@ -259,21 +264,25 @@ function RoomBox({ room, index }: RoomBoxProps) {
                         weight={"500"}
                       ></Text>
                     </Link>
-                    <Flex gap="30px" styles={{ color: "var(--primary-color)" }}>
-                      <Text type="p" text={room.location}></Text>
-                      <Link href="">
-                        <ul
-                          style={{
-                            color: "var(--primary-color)",
-                            listStyle: "disc",
-                          }}
-                        >
-                          <li>
+
+                    <ul
+                      style={{
+                        color: "var(--primary-color)",
+                        listStyle: "disc",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <FlexBox style={{ gap: "30px" }}>
+                        <li style={{ listStyle: "none" }}>
+                          <Text type="p" text={room.location}></Text>
+                        </li>
+                        <li>
+                          <Link href="">
                             <Text type="p" text="Show in map"></Text>
-                          </li>
-                        </ul>
-                      </Link>
-                    </Flex>
+                          </Link>
+                        </li>
+                      </FlexBox>
+                    </ul>
                   </TextLocation>
                   <ReviewsText>
                     <Icon></Icon>
@@ -313,18 +322,32 @@ function RoomBox({ room, index }: RoomBoxProps) {
                       <Text type="p" text={`${room.reviews} reviews`}></Text>
                     </Flex>
                   </ReviewsText>
-                </Flex>
+                </FlexBox>
               </RowOne>
               <RowTwo>
-                <Flex gap={"10px"}>
-                  <Rating name="rating" readOnly defaultValue={room.rating} />
-                  <Text type="p" text="3.3 km from the New York center"></Text>
+                <Flex gap={"10px"} styles={{ flexWrap: "wrap" }}>
+                  <Rating
+                    style={{ marginLeft: "-4px" }}
+                    name="rating"
+                    readOnly
+                    defaultValue={room.rating}
+                  />
+                  <Text
+                    styles={{ whiteSpace: "nowrap" }}
+                    type="p"
+                    text="3.3 km from the New York center"
+                  ></Text>
                 </Flex>
               </RowTwo>
               <RowThree>
-                <Flex justify="space-between">
+                <FlexBox className="row_two_wrap">
                   <Flex direction="column">
-                    <Text type="h2" text="Classic Double room"></Text>
+                    <Text
+                      type="h3"
+                      weight={"bold"}
+                      text="Classic Double room"
+                      styles={{ whiteSpace: "nowrap" }}
+                    ></Text>
                     <Text type="p" text="full double bed"></Text>
                   </Flex>
                   <span>
@@ -343,28 +366,28 @@ function RoomBox({ room, index }: RoomBoxProps) {
                       <AccessibleForwardOutlinedIcon />
                     </Grid>
                   </span>
-                </Flex>
+                </FlexBox>
               </RowThree>
               <RowFour>
                 <FlexBox>
-                  <Flex>
+                  <FlexText>
                     <CurrencyExchangeOutlinedIcon
                       style={{ marginRight: "8px" }}
                     />
                     <Text type="p" text="Free Cancellation"></Text>
-                  </Flex>
-                  <Flex justify="flex-end">
+                  </FlexText>
+                  <FlexText>
                     <CreditCardOutlinedIcon style={{ marginRight: "8px" }} />
                     <Text type="p" text="Pay Online"></Text>
-                  </Flex>
-                  <Flex justify="flex-end">
+                  </FlexText>
+                  <FlexText>
                     <RestaurantOutlinedIcon style={{ marginRight: "8px" }} />
                     <Text type="p" text="Meal"></Text>
-                  </Flex>
+                  </FlexText>
                 </FlexBox>
               </RowFour>
               <RowFive>
-                <Flex justify="space-evenly" align="center">
+                <FlexBox>
                   <Flex direction="column">
                     <Text
                       type="h2"
@@ -372,23 +395,16 @@ function RoomBox({ room, index }: RoomBoxProps) {
                       weight={"bold"}
                       color="var(--text-dull-color)"
                     ></Text>
-                    <Text type="p" text={`for a night (${2} guest)`}></Text>
-                  </Flex>
-                  <Button
-                    background="var(--secondary-color)"
-                    padding="10px 20px"
-                    width="auto"
-                  >
                     <Text
-                      type="h3"
-                      text="Check Availability"
-                      weight={600}
-                      size={18}
+                      type="p"
+                      text={`for a night (${2} guest)`}
                       styles={{ whiteSpace: "nowrap" }}
-                      font="Montserrat"
-                    />
-                  </Button>
-                </Flex>
+                    ></Text>
+                  </Flex>
+                  <ButtonBtn>
+                    <BtnText>Check Availability</BtnText>
+                  </ButtonBtn>
+                </FlexBox>
               </RowFive>
             </Flex>
           </TextBox>

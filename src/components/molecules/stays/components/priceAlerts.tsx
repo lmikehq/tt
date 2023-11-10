@@ -71,13 +71,8 @@ export default function PriceAlerts() {
         borderRadius={"10px"}
       >
         <Flex align="center" justify="space-between">
-          <label htmlFor="favorite-price-checkbox">
-            <Text
-              type="h4"
-              weight="bold"
-              text="Set up price alert"
-              styles={{ cursor: "pointer" }}
-            />
+          <label>
+            <Text type="h4" weight="bold" text="Set up price alert" />
           </label>{" "}
           <AntSwitch
             inputProps={{ "aria-label": "ant design" }}

@@ -8,9 +8,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { useState } from "react";
 
-
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
 
 export default function FavoriteHotels() {
   const [checked, setChecked] = useState(false);
@@ -46,12 +44,12 @@ export default function FavoriteHotels() {
           />
 
           <Box>
-            <label htmlFor="favorite-hotels-checkbox">
+            <label>
               <Text
                 weight={"bold"}
                 type="h4"
                 text="My Favourite Hotels"
-                styles={{ marginBottom: "5px", cursor: "pointer" }}
+                styles={{ marginBottom: "5px" }}
               />
             </label>
             <Text type="p" text="Click to find your liked hotels faster.." />
