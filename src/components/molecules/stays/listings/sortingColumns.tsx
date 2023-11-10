@@ -197,6 +197,7 @@ function SortingColumns() {
       setDisplayedItems(threshold);
     }
   };
+
   return (
     <ScrollBox>
       <Flex
@@ -379,7 +380,38 @@ function SortingColumns() {
           </Flex>
           <div style={{ padding: "0px 14px" }}>
             {columnState.price && (
-              <Slider defaultValue={[0, 100]} marks={marks} />
+              <>
+                <Slider defaultValue={[0, 100]} marks={marks} />
+                <Flex gap="20px" align="center">
+                  <input
+                    type="number"
+                    defaultValue={0}
+                    style={{
+                      width: "100%",
+                      padding: "11px",
+                      border: `1px solid ${ttColors.gray}`,
+                      borderRadius: "15px",
+                      outline: "none",
+                      fontSize: "16px",
+                      background: "transparent",
+                    }}
+                  />
+                  -
+                  <input
+                    type="number"
+                    defaultValue={100}
+                    style={{
+                      width: "100%",
+                      padding: "11px",
+                      border: `1px solid ${ttColors.gray}`,
+                      borderRadius: "15px",
+                      outline: "none",
+                      fontSize: "16px",
+                      background: "transparent",
+                    }}
+                  />
+                </Flex>
+              </>
             )}
           </div>
         </Flex>

@@ -21,7 +21,7 @@ export default function FavoriteHotels() {
     <Section>
       <Box
         width={"100%"}
-        bgcolor={ttColors.grayishAsh}
+        bgcolor={checked ? ttColors.dark : ttColors.grayishAsh}
         padding={"1rem"}
         border={"1px solid var(--color-border)"}
         marginBottom={"20px"}
@@ -32,7 +32,11 @@ export default function FavoriteHotels() {
             {...label}
             icon={<FavoriteBorder />}
             checkedIcon={
-              <Favorite style={{ color: "var(--secondary-color)" }} />
+              <Favorite
+                style={{
+                  color: checked ? ttColors.defaultColor : ttColors.dark,
+                }}
+              />
             }
             disableRipple
             disableTouchRipple
@@ -43,7 +47,9 @@ export default function FavoriteHotels() {
             id="favorite-hotels-checkbox"
           />
 
-          <Box>
+          <Box
+            style={{ color: checked ? ttColors.defaultColor : ttColors.dark }}
+          >
             <label>
               <Text
                 weight={"bold"}
@@ -52,7 +58,14 @@ export default function FavoriteHotels() {
                 styles={{ marginBottom: "5px" }}
               />
             </label>
-            <Text type="p" text="Click to find your liked hotels faster.." />
+            <Text
+              type="p"
+              text={
+                checked
+                  ? "Click to Cancel Filter"
+                  : "Click to find your liked hotels faster."
+              }
+            />
           </Box>
         </Flex>
       </Box>
