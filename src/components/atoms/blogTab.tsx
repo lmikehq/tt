@@ -5,8 +5,6 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
 import { SyntheticEvent, useState } from "react";
-import { GiPassport } from "react-icons/gi";
-import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import Text from "./text";
 import Flex from "@components/templates/flex";
 import { styled } from "styled-components";
@@ -29,20 +27,11 @@ const TabWrapper = styled.div<{
   }
   .MuiTabs-root {
     padding: 0px;
-
-    // border-radius: 6px;
     height: 48px;
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
-    color: ${({ addColor }) => (addColor ? "#fff" : `${ttColors.primary}`)};
+    color: ${({ addColor }) => (addColor ? "#929292" : `${ttColors.primary}`)};
   }
-  .css-1gsv261 {
-    // border-bottom: 1px solid transparent;
-  }
-
-//   .css-1dbprjl-MuiButtonBase-root-MuiTab-root{
-//     padding: 0px;
-//   }
 
   .MuiTabs-indicator .css-1aquho2-MuiTabs-indicator {
     width: 100% !important;
@@ -66,6 +55,7 @@ const TabWrapper = styled.div<{
       width: 100%;
       display: flex;
       justify-content: space-between;
+      gap: 1.5rem;
     }
   }
 `;
@@ -119,17 +109,14 @@ export default function BlogTab({
   };
   const { isMobile } = useScreenResolution();
 
-  const icons = [
-    <GiPassport size={21} color="var(--secondary-color)" />,
-    <IoAirplaneSharp size={21} color="var(--secondary-color)" />,
-    <IoBedSharp size={21} color="var(--secondary-color)" />,
-  ];
+  // const icons = [
+  //   <GiPassport size={21} color="var(--secondary-color)" />,
+  //   <IoAirplaneSharp size={21} color="var(--secondary-color)" />,
+  //   <IoBedSharp size={21} color="var(--secondary-color)" />,
+  // ];
 
   return (
-    <TabWrapper
-      isMobile={isMobile}
-      width={width}
-    >
+    <TabWrapper isMobile={isMobile} width={width}>
       <Box>
         <Tabs
           value={value}
@@ -157,21 +144,19 @@ export default function BlogTab({
               <Tab
                 key={tabItem.value}
                 label={
-                  <Flex align="center" justify="center" gap=".5rem">
-                    {defaultIcons && icons[tabItem.value]}
                     <Text
-                      font="Montserrat"
+                      font="Poppins"
                       type="p"
                       text={tabItem.label}
-                      size={isMobile ? "1rem" : "1rem"}
+                      size={isMobile ? "14px" : "16px"}
                       weight={600}
                       // color="var(--secondary-color)"
                     />
-                  </Flex>
+                  
                 }
                 sx={{
                   ...borderStyle,
-                  ...(!isMobile && { padding: "0 2rem" }),
+                  ...(!isMobile && { padding: "0 1rem" }),
                   ...(isMobile && { padding: "0 0rem" }),
                   ...(isMobile && {
                     borderBottom: `0px solid ${ttColors.dark}`,
