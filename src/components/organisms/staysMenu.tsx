@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
-import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
