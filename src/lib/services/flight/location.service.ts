@@ -30,8 +30,8 @@ export class FlightLocationService {
         longitude,
     }: {
         data: FetchLocationsRequestQuery;
-        latitude?: number;
-        longitude?: number;
+        latitude?: string;
+        longitude?: string;
     }) => {
         const query = constructQueryFromParams(data);
         return await kiwiClientV1

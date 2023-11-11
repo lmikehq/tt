@@ -5,8 +5,6 @@ import React, { useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import SearchInput from "./searchInput";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
-import { IoLocationOutline } from "react-icons/io5";
 import { ttColors } from "@lib/theme/colors";
 import { DatePicker } from "./customDatePicker";
 import { ClickAwayListener } from "@mui/material";
@@ -84,7 +82,6 @@ function FlightModule({
 
     const defText = formatDisplayText(flight);
 
-    const [displayText, setDisplayText] = useState(defText);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const today = dayjs().toDate();
 
@@ -99,7 +96,6 @@ function FlightModule({
     };
 
     const handleDataChange = (data: FlightCountType) => {
-        setDisplayText(formatDisplayText(data));
         handleUpdate && handleUpdate(flight, data);
     };
 
@@ -191,7 +187,7 @@ function FlightModule({
                     <DatePicker
                         placeholder="Select Date"
                         position="start"
-                        value={flight.departureDate.toDate()}
+                        value={flight.departureDate?.toDate()}
                         minDate={today}
                         onChange={(e) =>
                             handleUpdate &&
@@ -214,8 +210,8 @@ function FlightModule({
                         <DatePicker
                             placeholder="Select Date"
                             position="start"
-                            value={flight.returnDate.toDate()}
-                            minDate={flight.departureDate.toDate()}
+                            value={flight.returnDate?.toDate()}
+                            minDate={flight.departureDate?.toDate()}
                             onChange={(e) =>
                                 handleUpdate &&
                                 handleUpdate(flight, { returnDate: dayjs(e) })
@@ -239,7 +235,7 @@ function FlightModule({
                             <Input
                                 onClick={handleClick}
                                 placeholder="Click me to open dropdown"
-                                value={displayText}
+                                value={defText}
                                 styles={{
                                     fontFamily: "poppins",
                                     cursor: "pointer",

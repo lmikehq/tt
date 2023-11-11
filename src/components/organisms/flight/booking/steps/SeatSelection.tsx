@@ -15,6 +15,7 @@ import {
     SeatRowInterface,
     SeatRowWithSegmentCodeInterface,
     mockRows,
+    seatClass,
 } from "@/lib/types/response-models/flight/booking.type";
 import { ReactNode, useEffect, useState } from "react";
 import { styled } from "styled-components";
@@ -26,6 +27,7 @@ import {
     PassengerCategory,
     SaveBookingRequestInput,
     SeatingSeatPrice,
+    findSeatWithPassengerIndex,
 } from "@/lib/types/request-models/flight/booking.type";
 import { SearchInputAsString } from "@/components/organisms/searchInput";
 import { Mode } from "@/lib/types";
@@ -77,7 +79,12 @@ const SeatSelection = () => {
                         height="48px"
                         width="48px"
                         styles={{
-                            backgroundColor: "#F17400",
+                            backgroundColor:
+                                seatClass[
+                                    seat_class
+                                        .toLowerCase()
+                                        .replaceAll(" ", "_")
+                                ].color,
                             flex: "none",
                             borderRadius: "6px",
                         }}
@@ -122,11 +129,12 @@ const SeatSelection = () => {
         checkSeatingMode,
         saveBooking,
         particularSeats,
-        setStep,
+        nextStep,
         setParticularSeats,
         seatRows,
         setSeatRows,
         saveBookingMode,
+        updateSeatAvailablity,
     } = useFlightBookingStore((state) => state);
     const [emptySeatsModalOpen, setEmptySeatsModalOpen] = useState(false);
     const [emptySeatsModalContent, setEmptySeatsModalContent] = useState<
@@ -145,7 +153,12 @@ const SeatSelection = () => {
                 <Section padding="3rem 6rem" height="unset">
                     <Flex direction="column" justify="center">
                         <Section margin="0 0  14px" height="unset">
-                            <BiSolidXCircle size={79.58} color={ttColors.red} />
+                            <Image
+                                src={"/assets/icons/empty_icon.svg"}
+                                alt="empty-icon"
+                                width={95.5}
+                                height={95.5}
+                            />
                         </Section>
                         <Section margin="0 0  24px" height="unset">
                             <Text
@@ -159,25 +172,51 @@ const SeatSelection = () => {
                         <Section margin="0 0  57.5px" height="unset">
                             <Text
                                 type="p"
-                                text="There are no seat available for the flight filters selected. Kindly select other days or change airline."
+                                text="There are no seat available for the flight filters selected."
                                 weight={400}
                                 size={18}
                                 color="#929292"
                             />
                         </Section>
-                        <Section>
+                        <Flex gap="1rem">
                             <Button
                                 width="100%"
-                                background="transparent"
                                 color={ttColors.dark}
+                                background={ttColors.light}
                                 border="1px solid #19013b"
-                                onClick={() => {
-                                    router.push("/");
-                                }}
+                                onClick={() => router.push("/")}
                             >
-                                Change Search
+                                <Text
+                                    type="span"
+                                    text={"Change Search"}
+                                    weight={600}
+                                    size={16}
+                                    color={ttColors.dark}
+                                />
                             </Button>
-                        </Section>
+                            <Button
+                                width="100%"
+                                background={ttColors.dark}
+                                color={ttColors.light}
+                                // border="1px solid #19013b"
+                                onClick={handleSaveBooking}
+                            >
+                                {saveBookingMode == Mode.loading ? (
+                                    <Spinner
+                                        size="40px"
+                                        fill={ttColors.primary}
+                                    />
+                                ) : (
+                                    <Text
+                                        type="span"
+                                        text={"Continue"}
+                                        weight={600}
+                                        size={16}
+                                        color={ttColors.light}
+                                    />
+                                )}
+                            </Button>
+                        </Flex>
                     </Flex>
                 </Section>
             ),
@@ -203,11 +242,23 @@ const SeatSelection = () => {
         price: SeatingSeatPrice;
         segmentCode: string;
     }) => {
-        const findIndex = particularSeats.findIndex(
-            (el, index) => el.segment_code == segmentCode
-        );
+        const passengerIdx =
+            currentPassenger == "Main Passenger"
+                ? 0
+                : parseInt(currentPassenger.split("Passenger ")[1]) - 1;
 
-        if (findIndex == -1)
+        const searchIndices = (() => {
+            for (let i = 0; i < particularSeats.length; i++) {
+                const particular = particularSeats[i];
+                const index = particular.seats.findIndex(
+                    (el) => el.passenger_idx == passengerIdx
+                );
+                if (index !== -1) return [i, index];
+            }
+            return null;
+        })();
+
+        if (!searchIndices)
             return setParticularSeats([
                 ...particularSeats,
                 {
@@ -216,14 +267,7 @@ const SeatSelection = () => {
                     seats: [
                         {
                             seat: name,
-                            passenger_idx:
-                                currentPassenger == "Main Passenger"
-                                    ? 0
-                                    : parseInt(
-                                          currentPassenger.split(
-                                              "Passenger "
-                                          )[1]
-                                      ) - 1,
+                            passenger_idx: passengerIdx,
                             price: price,
                         },
                     ],
@@ -231,19 +275,76 @@ const SeatSelection = () => {
             ]);
 
         const seats = particularSeats;
-        seats[findIndex].seats = [
-            ...seats[findIndex].seats,
-            {
+        if (segmentCode == seats[searchIndices[0]].segment_code) {
+            seats[searchIndices[0]].seats[searchIndices[1]] = {
                 seat: name,
-                passenger_idx:
-                    currentPassenger == "Main Passenger"
-                        ? 0
-                        : parseInt(currentPassenger.split("Passenger ")[1]) - 1,
+                passenger_idx: passengerIdx,
                 price: price,
-            },
-        ];
+            };
 
-        setParticularSeats(seats);
+            return setParticularSeats(seats);
+        } else {
+            seats[searchIndices[0]].seats.splice(searchIndices[1], 1);
+            if (seats[searchIndices[0]].seats.length == 0)
+                seats.splice(searchIndices[0]);
+            return setParticularSeats([
+                ...particularSeats,
+                {
+                    segment_code: segmentCode,
+                    option: "particular_seat",
+                    seats: [
+                        {
+                            seat: name,
+                            passenger_idx: passengerIdx,
+                            price: price,
+                        },
+                    ],
+                },
+            ]);
+        }
+        // const findIndex = particularSeats.findIndex(
+        //     (el, index) => el.segment_code == segmentCode
+        // );
+
+        // if (findIndex == -1) {
+        //     return setParticularSeats([
+        //         ...particularSeats,
+        //         {
+        //             segment_code: segmentCode,
+        //             option: "particular_seat",
+        //             seats: [
+        //                 {
+        //                     seat: name,
+        //                     passenger_idx:
+        //                         currentPassenger == "Main Passenger"
+        //                             ? 0
+        //                             : parseInt(
+        //                                   currentPassenger.split(
+        //                                       "Passenger "
+        //                                   )[1]
+        //                               ) - 1,
+        //                     price: price,
+        //                 },
+        //             ],
+        //         },
+        //     ]);
+        // }
+
+        // const seats = particularSeats;
+
+        // const seatFindIndex = seats[findIndex].seats.findIndex(
+        //     (el) => el.passenger_idx == passengerIdx
+        // );
+        // seats[findIndex].seats[seatFindIndex] = {
+        //     seat: name,
+        //     passenger_idx:
+        //         currentPassenger == "Main Passenger"
+        //             ? 0
+        //             : parseInt(currentPassenger.split("Passenger ")[1]) - 1,
+        //     price: price,
+        // };
+
+        // setParticularSeats(seats);
     };
     const computePassengerOptions = () => {
         return passengers.map((el, index) =>
@@ -282,6 +383,36 @@ const SeatSelection = () => {
             setSeatRows(rows);
         }
     };
+    const handleSaveBooking = () => {
+        let data: SaveBookingRequestInput;
+        data =
+            particularSeats.length == 0
+                ? saveBookingDetails
+                : {
+                      ...saveBookingDetails,
+                      additional_services: {
+                          seating: [...particularSeats],
+                      },
+                  };
+        saveBooking({
+            data,
+        })
+            .then((_) => {
+                toast.success(
+                    "Flight booking successful. Proceed to make Payment"
+                );
+                nextStep();
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: "smooth",
+                });
+            })
+            .catch((error) => {
+                toast.error("Unable to save booking");
+            });
+    };
+
     useEffect(() => {
         fetchSeats().then((response) => {
             computeSeatRows(response);
@@ -322,12 +453,30 @@ const SeatSelection = () => {
                             background={ttColors.blackishBlue}
                             color="#fff"
                             onClick={() => {
+                                updateSeatAvailablity({
+                                    previousSeat:
+                                        findSeatWithPassengerIndex({
+                                            index:
+                                                currentPassenger ==
+                                                "Main Passenger"
+                                                    ? 0
+                                                    : parseInt(
+                                                          currentPassenger.split(
+                                                              "Passenger "
+                                                          )[1]
+                                                      ) - 1,
+                                            particularSeats,
+                                        })?.split("Seat ")[1] ?? null,
+                                    newSeat: selectionModalContent.seatName,
+                                });
+
                                 selectParticularSeat({
                                     name: selectionModalContent.seatName,
                                     segmentCode:
                                         selectionModalContent.segmentCode,
                                     price: selectionModalContent.price!,
                                 });
+
                                 setShowSeatSelectionModal(false);
                             }}
                         >
@@ -369,12 +518,7 @@ const SeatSelection = () => {
                         >
                             <PlaneSeatsComponent
                                 rows={seatRows}
-                                selectSeat={({ seat, segmentCode }) =>
-                                    selectSeat({
-                                        seat,
-                                        segmentCode,
-                                    })
-                                }
+                                selectSeat={selectSeat}
                             />
                         </Flex>
                     </Wrapper>
@@ -387,30 +531,7 @@ const SeatSelection = () => {
                     background={ttColors.dark}
                     height={"3.5rem"}
                     width="100%"
-                    onClick={() => {
-                        saveBooking({
-                            data: {
-                                ...saveBookingDetails,
-                                additional_services: {
-                                    seating: [...particularSeats],
-                                },
-                            },
-                        })
-                            .then((_) => {
-                                toast.success(
-                                    "Flight booking successful. Proceed to make Payment"
-                                );
-                                setStep({ step: 5 });
-                                window.scrollTo({
-                                    top: 0,
-                                    left: 0,
-                                    behavior: "smooth",
-                                });
-                            })
-                            .catch((error) => {
-                                toast.error("Unable to save booking");
-                            });
-                    }}
+                    onClick={handleSaveBooking}
                 >
                     {saveBookingMode == Mode.loading ? (
                         <Spinner size="40px" fill={ttColors.primary} />

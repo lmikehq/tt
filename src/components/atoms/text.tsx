@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, MouseEventHandler } from "react";
 import styled from "styled-components";
 
 interface TextProps {
@@ -27,6 +27,7 @@ interface TextProps {
     cursor?: CSSProperties["cursor"];
     textAlign?: CSSProperties["textAlign"];
     width?: CSSProperties["width"];
+    onClick?: MouseEventHandler<HTMLParagraphElement | HTMLHeadingElement | HTMLLabelElement>
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -48,6 +49,7 @@ export const Text: React.FC<TextProps> = ({
     className,
     textAlign,
     styles = {},
+    onClick,
 }) => {
     const updatedStyles: CSSProperties = {
         color,
@@ -57,6 +59,8 @@ export const Text: React.FC<TextProps> = ({
         fontFamily: font || "Poppins",
         textDecoration: decoration,
         textTransform: transform,
+        overflow: 'clip',
+        textOverflow: 'ellipsis',
         margin,
         padding,
         opacity,
@@ -69,55 +73,55 @@ export const Text: React.FC<TextProps> = ({
 
     if (type === "p")
         return (
-            <p style={updatedStyles} className={className}>
+            <p style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </p>
         );
     if (type === "span")
         return (
-            <span style={updatedStyles} className={className}>
+            <span style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </span>
         );
     if (type === "label")
         return (
-            <label style={updatedStyles} className={className}>
+            <label style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </label>
         );
     if (type === "h1")
         return (
-            <h1 style={updatedStyles} className={className}>
+            <h1 style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </h1>
         );
     if (type === "h2")
         return (
-            <h2 style={updatedStyles} className={className}>
+            <h2 style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </h2>
         );
     if (type === "h3")
         return (
-            <h3 style={updatedStyles} className={className}>
+            <h3 style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </h3>
         );
     if (type === "h4")
         return (
-            <h4 style={updatedStyles} className={className}>
+            <h4 style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </h4>
         );
     if (type === "h5")
         return (
-            <h5 style={updatedStyles} className={className}>
+            <h5 style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </h5>
         );
     if (type === "h6")
         return (
-            <h6 style={updatedStyles} className={className}>
+            <h6 style={updatedStyles} className={className} onClick={onClick}>
                 {text}
             </h6>
         );

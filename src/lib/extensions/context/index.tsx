@@ -2,6 +2,17 @@
 
 import Location from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
+const airports = require('airport-iata-codes')
+const airlines = require('airline-iata-code')
+const sortedAirports: { [k: string]: AirportInterface } = {}
+const sortedAirlines: { [k: string]: AirlineInterface } = {}
+airports().forEach((e: AirportInterface) => {
+    sortedAirports[e.iata_code] = e
+})
+airlines().forEach((e: AirlineInterface) => {
+    sortedAirlines[e.IATACode] = e
+})
+
 import {
     createContext,
     useContext,
@@ -20,8 +31,8 @@ export interface OneFlightType {
     index: number;
     departureCountry?: Location;
     arrivalCountry?: Location;
-    departureDate: dayjs.Dayjs;
-    returnDate: dayjs.Dayjs;
+    departureDate?: dayjs.Dayjs;
+    returnDate?: dayjs.Dayjs;
     adults: number;
     children: number;
     infants: number;
@@ -30,18 +41,43 @@ export interface OneFlightType {
     flightClass: string;
 }
 
+export interface AirportInterface {
+    iata_code: string;
+    time_zone_id: string;
+    name: string;
+    city_code: string;
+    country_id: string;
+    location: string;
+    elevation: number;
+    url: string;
+    icao: string;
+    city: string;
+    county: string;
+    municipality: string;
+    id: number;
+}
+
+export interface AirlineInterface {
+    Airline: string;
+    IATACode: string;
+    is_lowcost: boolean;
+    logo: string;
+}
+
 interface ContextType {
     flightType: string;
     stops: string;
     fleet: OneFlightType[];
+    airports: typeof sortedAirports;
+    airlines: typeof sortedAirlines
 }
 
 const oneFlight: OneFlightType = {
     index: 0,
-    departureCountry: undefined,
-    arrivalCountry: undefined,
-    departureDate: dayjs(new Date()),
-    returnDate: dayjs(new Date()).add(1, "day"),
+    // departureCountry: undefined,
+    // arrivalCountry: undefined,
+    // departureDate: dayjs(new Date()),
+    // returnDate: dayjs(new Date()).add(1, "day"),
     adults: 1,
     children: 0,
     infants: 0,
@@ -52,8 +88,10 @@ const oneFlight: OneFlightType = {
 
 const initialValues: ContextType = {
     flightType: "international",
-    stops: "round",
+    stops: "one-way",
     fleet: [oneFlight],
+    airports: sortedAirports,
+    airlines: sortedAirlines
 };
 
 type Action =

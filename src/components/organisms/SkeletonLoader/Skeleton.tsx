@@ -1,4 +1,5 @@
 import Skeleton from "@mui/material/Skeleton";
+import { CSSProperties } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -27,7 +28,8 @@ interface SkeletonLoader {
   textHeight?: number | string;
   rectangularWidth?: number | string;
   rectangularHeight: number | string;
-  text?: boolean | true;
+    text?: boolean | true;
+    containerProps?: CSSProperties
 }
 const SkeletonLoader: React.FC<SkeletonLoader> = ({
   tabs,
@@ -35,11 +37,12 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
   textWidth,
   textHeight,
   rectangularHeight,
-  rectangularWidth,
+    rectangularWidth,
+  containerProps
 }) => {
   const tabsToMap = Array.from({ length: tabs || 0 });
   return (
-    <Container>
+    <Container style={containerProps}>
       {tabsToMap.map((_, index) => (
         <Parent key={index}>
           {text ? (

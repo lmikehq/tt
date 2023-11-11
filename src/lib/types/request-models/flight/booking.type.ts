@@ -1,5 +1,6 @@
 import { CountryType } from "@/components/molecules/serviceTabs/components/visa";
 import { mockCountry } from "../../schema";
+import { SeatRowWithSegmentCodeInterface } from "../../response-models/flight/booking.type";
 
 interface PaymentDetails {
     status: string;
@@ -103,22 +104,30 @@ export interface SearchFlightsRequestQuery {
     fly_days_type?: string;
     fly_days?: string;
     curr?: string;
+    stops?: string;
     adults?: number;
     children?: number;
     infants?: number;
     selected_cabins?: string;
     atime_from?: string;
     atime_to?: string;
+    dtime_from?: string;
+    dtime_to?: string;
     return_from?: string;
     return_to?: string;
     ret_dtime_from?: string;
     ret_dtime_to?: string;
     adult_hold_bag?: string;
-    price_from?: string;
-    price_to?: string;
-    select_airlines?: string[];
+    adult_hand_bag?: string;
+    price_from?: number;
+    price_to?: number;
+    select_airlines?: string;
     vehicle_type?: string;
-    max_stopovers?: string;
+    max_stopovers?: number;
+    max_fly_duration?: number;
+    page?: number;
+    limit?: number;
+    sort?: string;
 }
 
 export interface CheckFlightsRequestInput {
@@ -132,6 +141,7 @@ export interface CheckFlightsQuery {
     adults?: number;
     children?: number;
     infants?: number;
+    currency?: string;
 }
 export interface CheckSeatingRequestInput {
     ancillaries: string[];
@@ -184,7 +194,7 @@ export interface SaveBookingRequestInput {
     new_user_email?: string;
     user?: string;
     baggage: Baggage[];
-    additional_services: AdditionalServices | null;
+    additional_services?: AdditionalServices | null;
 }
 export interface TokenizeDataRequestInput {
     card: CardInfo;
@@ -261,6 +271,48 @@ export const arrangeBaggageDataForOrdering = (
 
     return baggageData;
 };
+export const findSeatWithPassengerIndex = ({
+    index,
+    particularSeats,
+}: {
+    index: number;
+    particularSeats: ParticularSeatingOption[];
+}): string | null => {
+    for (const segment of particularSeats) {
+        for (const seat of segment.seats) {
+            if (seat.passenger_idx === index) {
+                return "Seat " + seat.seat;
+            }
+        }
+    }
+
+    return null;
+};
+
+export const updateSeatAvailability = ({
+    rows,
+    seatName,
+    selected,
+}: {
+    rows: SeatRowWithSegmentCodeInterface[];
+    seatName: string;
+    selected: boolean;
+}) => {
+    return rows.map((row) => {
+        const updatedSeatGroups = row.seat_groups.map((seatGroup) => {
+            return seatGroup.map((seat) => {
+                if (seat.name === seatName) {
+                    // Update the state of the seat
+                    return { ...seat, selected };
+                }
+                return seat;
+            });
+        });
+
+        // Return the updated row with modified seat groups
+        return { ...row, seat_groups: updatedSeatGroups };
+    });
+};
 
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
@@ -274,6 +326,18 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
     category: PassengerCategory.ADULT,
     currency: "usd",
 };
+// export const passengerAndBaggageDetails: PassengerFormInterface = {
+//     name: "a",
+//     surname: "a",
+
+//     cardno: "q",
+//     birthday: "1965-09-09",
+//     nationality: { code: "NG", name: "Nigeria", flag: "s" },
+//     title: "Mr",
+//     expiration: "2026-08-09",
+//     category: PassengerCategory.ADULT,
+//     currency: "usd",
+// };
 export const saveBookingDetails: SaveBookingRequestInput = {
     health_declaration_checked: true,
     lang: "en",
@@ -282,7 +346,7 @@ export const saveBookingDetails: SaveBookingRequestInput = {
     booking_token: "",
     session_id: "",
     baggage: [],
-    additional_services: null,
+    // additional_services: null,
 };
 
 export const cardDetails: CardInfo = {
@@ -297,3 +361,7 @@ export const contactDetails: ContactDetailsInterface = {
     email: "",
     phone: "",
 };
+// export const contactDetails: ContactDetailsInterface = {
+//     email: "olallere@gmail.com",
+//     phone: "0908909889",
+// };

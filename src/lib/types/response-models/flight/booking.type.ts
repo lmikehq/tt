@@ -136,6 +136,8 @@ export interface SeatClassCategory {
 export interface SeatClassInterface {
     standard: SeatClassCategory;
     extra_legroom_seat: SeatClassCategory;
+    premium: SeatClassCategory;
+    [key: string]: any;
 }
 export interface SeatInterface {
     column: string;
@@ -152,6 +154,7 @@ export interface SeatInterface {
     seat_class: string;
     state: string;
     type: string;
+    selected?: boolean;
 }
 
 export interface SeatRowInterface {
@@ -164,9 +167,263 @@ export interface SeatRowWithSegmentCodeInterface {
     segmentCode: string;
 }
 
+
+export interface DocumentOptions {
+    document_need:         number;
+    checkin_date:          number;
+    airport_checkin_price: number;
+}
+export interface PromoCodeInterface {
+    used:     boolean;
+    discount: number;
+}
+export interface PassengerInterface {
+    title:          string;
+    name:           string;
+    surname:        string;
+    cardno:         string;
+    expiration:     number;
+    nationality:    string;
+    birthday:       string;
+    category:       string;
+    bid:            number;
+    created_at:     string;
+    updated_at:     string;
+    pk:             number;
+    insurance_sent: null;
+    checkin:        string;
+    visa:           null;
+    issuer:         string;
+}
+export interface PriceInterface {
+    currency:     string;
+    amount:       string;
+    base:         string;
+    service:      string;
+    service_flat: string;
+    merchant:     string;
+}
+export interface BagInterface {
+    dimensions_sum: number;
+    weight:         number;
+    length:         number;
+    height:         number;
+    width:          number;
+    category:       string;
+    id:             number;
+}
+
+export interface Baggage {
+    id:                    null;
+    booking_id:            null;
+    passenger_id:          number;
+    flight_id:             null;
+    segment_code:          string;
+    additional_booking_id: null;
+    bag:                   BagInterface;
+    index:                 null;
+    is_hold:               boolean;
+    price:                 PriceInterface;
+    universal_id:          string;
+    deleted_at:            null;
+}
+export interface SegmentPricing {
+    adult:  PriceInterface;
+    child:  PriceInterface;
+    infant: PriceInterface;
+}
+export interface Vehicle {
+    type: string;
+}
+export interface CombinationPrice {
+    segment_included_bags: SegmentIncludedBag[];
+    price:                 number;
+}
+export interface SegmentIncludedBag {
+    amount:  number;
+    concept: string;
+}
+export interface InfantsConditions {
+    trolley:     boolean;
+    hand_weight: number;
+}
+export interface OperatingAirline {
+    iata:        string;
+    name:        string;
+    public_code: string;
+    hide_name:   boolean;
+}
+export interface PassengersFlightCheck {
+    eur:          number;
+    invalid:      boolean;
+    last_checked: number;
+}
+export interface AirlineInterface {
+    id:                                    number;
+    code:                                  string;
+    iata_code:                             string;
+    icao_code:                             string;
+    code_public:                           string;
+    name:                                  string;
+    alliance:                              null;
+    url:                                   string;
+    checkin:                               number;
+    close_booking_hours:                   number;
+    booking_doc_needed:                    number;
+    airport_checkin:                       number;
+    passengers_in_search:                  number;
+    doing_online_checkin:                  number;
+    maximum_passengers:                    number;
+    grade:                                 string;
+    virtual_card_req:                      boolean;
+    country:                               string;
+    carrier_type:                          string;
+    parent_carrier:                        null;
+    checkin_closure:                       number;
+    shorter_stopovers_allowed:             number;
+    allowed_booking_window:                null;
+    deprecated:                            boolean;
+    book_fee:                              number;
+    fee_airline:                           number;
+    search_priority:                       number;
+    fee_instead:                           number;
+    fee_percent:                           number;
+    flight_change_fee:                     number;
+    fee_reason:                            string;
+    threshold_child:                       number;
+    threshold_teen:                        number;
+    threshold_adult:                       number;
+    fees_per_source:                       any;
+    affil_url:                             null;
+    temporary_disabled:                    null;
+    non_active_reason:                     string;
+    lcc:                                   null;
+    active:                                number;
+    iatacode:                              string;
+    is_passenger_cardholder:               null;
+    is_private_fares_allowed:              null;
+    luggage_only_during_checkin_airlines:  null;
+    luggage_only_on_web:                   null;
+    mmb_link:                              string;
+    payment_card_copy_eticket_requirement: boolean;
+    skip_subairline_merge:                 null;
+    Name:                                  string;
+    iata:                                  string;
+    hide_name:                             boolean;
+}
+export interface FlightInterface {
+    id:                       string;
+    combination_trip_id:      string;
+    original_trip_id:         string;
+    dst:                      string;
+    src:                      string;
+    flight_no:                string;
+    operating_flight_no:      string;
+    carrier_segment_code:     string;
+    airline:                  AirlineInterface;
+    operating_airline:        OperatingAirline;
+    scraping_start:           number;
+    extras:                   string;
+    vehicle:                  Vehicle;
+    src_terminal:             null;
+    dst_terminal:             null;
+    passengers_flight_check:  { [key: string]: PassengersFlightCheck };
+    price:                    number;
+    eur_children:             number;
+    eur_infants:              number;
+    eur:                      number;
+    found_on:                 string;
+    invalid:                  number;
+    timestamp:                string;
+    refreshed:                string;
+    refresh_ttl:              number;
+    refresh_period:           number;
+    fare_basis:               string;
+    fare_category:            string;
+    fare_restriction:         null;
+    fare_class:               null;
+    baggage_fare:             string;
+    source:                   string;
+    combination_prices:       CombinationPrice[];
+    price_id:                 string;
+    seats:                    number;
+    source_name:              string;
+    source_url:               string;
+    checkin:                  string;
+    src_country:              string;
+    dst_country:              string;
+    src_station:              string;
+    dst_station:              string;
+    infants_conditions:       InfantsConditions;
+    max_passengers_for_price: number;
+    src_name:                 string;
+    dst_name:                 string;
+    hiding_reason:            null;
+    return:                   number;
+    is_self_transfer:         boolean;
+    bags_recheck_required:    boolean;
+    bags_recheck_disclaimer:  string;
+    segment_pricing:          SegmentPricing;
+    local_arrival:            string;
+    utc_arrival:              string;
+    local_departure:          string;
+    utc_departure:            string;
+}
+export interface BookingDetailsInterface {
+    server_time:               number;
+    pnum:                      number;
+    flights:                   FlightInterface[];
+    flights_checked:           boolean;
+    flights_to_check:          boolean;
+    flights_real_checked:      boolean;
+    flights_invalid:           boolean;
+    max_passengers:            number;
+    document_options:          DocumentOptions;
+    visas_agreement_requiered: boolean;
+    transfers:                 any[];
+    route:                     string[];
+    book_fee:                  number;
+    fee_airline:               number;
+    extra_fee:                 number;
+    flights_price:             number;
+    passenger_change:          boolean;
+    price_change:              boolean;
+    total:                     number;
+    orig_price_usage:          boolean;
+    sp_fee:                    number;
+    flight_real_price:         number;
+    one_passenger:             number;
+    credits_price:             number;
+    tickets_price:             number;
+    orig_price:                number;
+    adults_price:              number;
+    children_price:            number;
+    infants_price:             number;
+    infants_conditions:        InfantsConditions;
+    sandbox:                   boolean;
+    status:                    string;
+    passengers:                PassengerInterface[];
+    baggage:                   Baggage[];
+    auth_token:                string;
+    booking_id:                number;
+    promocode:                 PromoCodeInterface;
+    transaction_id:            string;
+    status_code:               number;
+    zooz_token:                null;
+    eur_payment_price:         number;
+}
+
+export const FlightCabins: { [k: string]: string } = {
+    M: "Economy",
+    W: "Economy Premium",
+    C: "Business",
+    F: "First",
+}
+
 export const seatClass: SeatClassInterface = {
-    standard: { name: "standard", color: "#ffff" },
-    extra_legroom_seat: { name: "Extra legroom seat", color: "#ffff" },
+    standard: { name: "standard", color: "#F17400" },
+    extra_legroom_seat: { name: "Extra legroom seat", color: "#7BBBD6" },
+    premium: { name: "premium", color: "#5DB955" },
 };
 
 export const mockRows = [
