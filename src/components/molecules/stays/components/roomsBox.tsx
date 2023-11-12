@@ -267,7 +267,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
 
                     <ul
                       style={{
-                        color: "var(--primary-color) !important",
+                        color: "var(--primary-color)",
                         listStyle: "disc",
                         flexWrap: "wrap",
                       }}
@@ -278,7 +278,11 @@ function RoomBox({ room, index }: RoomBoxProps) {
                         </li>
                         <li>
                           <Link href="">
-                            <Text type="p" text="Show in map"></Text>
+                            <Text
+                              type="p"
+                              color="var(--primary-color)"
+                              text="Show in map"
+                            ></Text>
                           </Link>
                         </li>
                       </FlexBox>
