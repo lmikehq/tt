@@ -38,12 +38,14 @@ export const ImageBox = styled.div`
   overflow: hidden;
 `;
 
-export const FlexBox = styled.div`
-  display: flex;
-  // justify-content: space-between;
+export const GridBox = styled.div`
+  display: grid;
+  grid-template-columns: 30% auto;
+  // display: flex;
   align-items: center;
+  gap: 20px;
   .LineProgressBar {
-    width: 220px;
+    width: 100%;
   }
 `;
 

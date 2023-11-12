@@ -2,7 +2,7 @@ import Flex from "@/components/templates/flex";
 import {
   Container,
   Content,
-  FlexBox,
+  GridBox,
   Header,
   ProgressBars,
   ReviewHeader,
@@ -171,10 +171,27 @@ const HotelReviews = () => {
     <>
       <Container>
         <Header style={{ width: "100%", marginBottom: "30px" }}>
-          <Flex justify="space-between" width="100%">
-            <Text type="h4" text="Hotel Reviews" weight={600}></Text>
-            <FlexBox style={{ gap: "10px" }}>
-              <Text type="p" text="Sort by" size={14}></Text>
+          <Flex justify="space-between" align="center">
+            <Text
+              type="h4"
+              text="Hotel Reviews"
+              weight={600}
+              styles={{
+                whiteSpace: "nowrap",
+                textOverflow: "unset",
+                width: "100%",
+              }}
+            ></Text>
+            <Flex styles={{ gap: "10px" }} justify="flex-end" align="center">
+              <Text
+                type="p"
+                text="Sort by"
+                size={14}
+                styles={{
+                  whiteSpace: "nowrap",
+                  textOverflow: "unset",
+                }}
+              ></Text>
               <select
                 name="filter"
                 style={{
@@ -189,10 +206,10 @@ const HotelReviews = () => {
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
               </select>
-            </FlexBox>
+            </Flex>
           </Flex>
         </Header>
-        <FlexBox>
+        <GridBox>
           <Flex direction="column">
             <Text
               type="h5"
@@ -206,6 +223,10 @@ const HotelReviews = () => {
                 text={`${displayRating}`}
                 weight={"bold"}
                 size={35}
+                styles={{
+                  whiteSpace: "nowrap",
+                  textOverflow: "unset",
+                }}
               ></Text>
               <ReviewsText>
                 <Flex align="center" gap="10px">
@@ -372,7 +393,7 @@ const HotelReviews = () => {
               />
             </Flex>
           </ProgressBars>
-        </FlexBox>
+        </GridBox>
         <ReviewList>
           {reviews?.map((review, index) => {
             // Format commentDate
