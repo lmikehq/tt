@@ -3,6 +3,7 @@ import Section from "@/components/molecules/section";
 import BreadCrumbPane from "@/components/molecules/stays/view/BreadCrumbPane";
 import CompareSimilarHotels from "@/components/molecules/stays/view/CompareSimilarHotels";
 import HeroImageGrid from "@/components/molecules/stays/view/HeroImageGrid";
+import HotelReviews from "@/components/molecules/stays/view/HotelReviews";
 import RecentlyViewed from "@/components/molecules/stays/view/RecentlyViewed";
 import StayDetailsTab from "@/components/molecules/stays/view/StayDetailsTab";
 import SectionLayout from "@/components/templates/SectionLayout";
@@ -16,6 +17,7 @@ const StayViewPage = () => {
       <Flex gap="2.25rem">
         <Section width="62%">
           <StayDetailsTab />
+          <HotelReviews />
           <CompareSimilarHotels />
         </Section>
 

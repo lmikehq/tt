@@ -1,5 +1,5 @@
 import Flex from "@/components/templates/flex";
-import { CompareContainer, List, Header, GridLayout, ImageBox } from "./styles";
+import { Container, List, Header, GridLayout, ImageBox } from "./styles";
 import Text from "@/components/atoms/text";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Box, Rating } from "@mui/material";
@@ -74,7 +74,7 @@ const CompareSimilarHotels = () => {
   return (
     <>
       {showCompareBox && (
-        <CompareContainer>
+        <Container>
           <Header>
             <Flex justify="space-between">
               <Text weight={600} type="h4" text="Compare Similar Hotels"></Text>
@@ -133,7 +133,7 @@ const CompareSimilarHotels = () => {
               </List>
             ))}
           </GridLayout>
-        </CompareContainer>
+        </Container>
       )}
     </>
   );
