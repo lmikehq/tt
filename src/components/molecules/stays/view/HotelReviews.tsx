@@ -195,7 +195,7 @@ const HotelReviews = () => {
               <select
                 name="filter"
                 style={{
-                  padding: "8px",
+                  padding: "9px",
                   borderRadius: "6px",
                   width: "200px",
                   borderColor: ttColors.gray,

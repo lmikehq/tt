@@ -115,7 +115,7 @@ const CompareSimilarHotels = () => {
                         style={{
                           marginLeft: "-4px",
                           marginBottom: "5px",
-                          fontSize: "16px",
+                          fontSize: "17px",
                         }}
                         name="rating"
                         readOnly
