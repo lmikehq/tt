@@ -267,7 +267,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
 
                     <ul
                       style={{
-                        color: "var(--primary-color)",
+                        color: "var(--primary-color) !important",
                         listStyle: "disc",
                         flexWrap: "wrap",
                       }}
