@@ -124,7 +124,7 @@ const HotelReviews = () => {
   const displayRating =
     averageRating > 5 ? averageRating.toFixed(2) : averageRating.toFixed(1);
 
-  // Calculate the average percentage for each category
+  //PERCENTAGE
   const averageCleanliness =
     reviews.length > 0
       ? (reviews.reduce((sum, review) => sum + review.cleanliness, 0) /
