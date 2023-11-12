@@ -18,7 +18,7 @@ export const Header = styled.div`
 
 export const List = styled.div`
   border: 1px solid var(--color-border);
-  padding: 8px;
+  padding: 10px;
   border-radius: 6px;
 `;
 
@@ -32,8 +32,8 @@ export const GridLayout = styled.div`
 `;
 
 export const ImageBox = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 6px;
   overflow: hidden;
 `;
