@@ -1,14 +1,14 @@
 export enum Theme {
-  MaxWidth = "1100px",
-  BorderRadius = "12px",
-  DefaultColor = "#FFFFFF",
-  PrimaryColor = "#87CEEB",
-  SecondaryColor = "#06062A",
-  SemiBgColor = "#87cfeb74",
-  BgColor = "#FAFBFC",
-  TextColor = "#000000",
-  SansFont = "sans-serif",
-  PlaceholderColor = "#1C1B1F",
+    MaxWidth = "1100px",
+    BorderRadius = "12px",
+    DefaultColor = "#FFFFFF",
+    PrimaryColor = "#87CEEB",
+    SecondaryColor = "#06062A",
+    SemiBgColor = "#87cfeb74",
+    BgColor = "#FAFBFC",
+    TextColor = "#000000",
+    SansFont = "sans-serif",
+    PlaceholderColor = "#1C1B1F",
 }
 
 export const ttColors = {
@@ -24,6 +24,8 @@ export const ttColors = {
     gray: "#B6B6B6",
     red: "#A0001D",
     brown: "#B2B2BD",
+    sunsetYellow: "#F48400",
+    successGreen: "#00D115",
     placeholderColor: "#1C1B1F",
     blackishBlue: "#06062A",
     grayishAsh: "#F3F3FF",

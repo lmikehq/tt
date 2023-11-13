@@ -10,6 +10,7 @@ import RecentlyViewed from "@/components/molecules/stays/view/RecentlyViewed";
 import StayDetailsTab from "@/components/molecules/stays/view/StayDetailsTab";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Flex from "@/components/templates/flex";
+import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom";
 
 const StayViewPage = () => {
   return (
