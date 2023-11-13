@@ -1,20 +1,9 @@
-import { Box, Checkbox } from "@mui/material";
+import { Box, Checkbox, Icon } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  Icon,
-  ReviewsText,
-  SlideContent,
-  SlideList,
-  SlideCard,
-  SliderContainer,
-  SliderWidth,
-  SliderImgBox,
-  FavoriteSliderBox,
-} from "./styles";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { Rating } from "@mui/material";
@@ -26,6 +15,18 @@ import Favorite from "@mui/icons-material/Favorite";
 import { ttColors } from "@/lib/theme/colors";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  FavoriteSliderBox,
+  SlideCard,
+  SlideContent,
+  SlideList,
+  SliderContainer,
+  SliderImgBox,
+  SliderWidth,
+} from "../components/styles";
+import { ReviewsText, Span } from "./styles";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -37,12 +38,85 @@ interface Room {
   rating: number;
   price: number;
   image: string;
-  images: string[]; // An array of image paths for the room
+  images: string[];
+  parking: boolean;
+  freeWifi: boolean;
+  petFriendly: boolean;
 }
-
-interface RoomSliderProps {
-  rooms: Room[];
-}
+const rooms: Room[] = [
+  {
+    name: "The Ritz London",
+    location: "City Center",
+    distance: "0.5 miles",
+    reviews: 10,
+    rating: 3,
+    price: 81000,
+    image: "/assets/images/stays/image1.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+    parking: true,
+    freeWifi: true,
+    petFriendly: true,
+  },
+  {
+    name: "The Ritz London",
+    location: "Suburb Area",
+    distance: "1 mile",
+    reviews: 15,
+    rating: 4.8,
+    price: 81000,
+    image: "/assets/images/stays/room2.jpeg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+    parking: true,
+    freeWifi: true,
+    petFriendly: false,
+  },
+  {
+    name: "The Ritz London",
+    location: "Downtown",
+    distance: "0.3 miles",
+    reviews: 8,
+    rating: 4.2,
+    price: 81000,
+    image: "/assets/images/stays/room3.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+    parking: false,
+    freeWifi: false,
+    petFriendly: true,
+  },
+  {
+    name: "The Ritz London",
+    location: "Downtown",
+    distance: "0.3 miles",
+    reviews: 8,
+    rating: 4.2,
+    price: 81000,
+    image: "/assets/images/stays/room3.jpg",
+    images: [
+      "/assets/images/stays/room1.jpeg",
+      "/assets/images/stays/image2.jpg",
+      "/assets/images/stays/image3.png",
+      "/assets/images/stays/room4.jpg",
+    ],
+    parking: false,
+    freeWifi: false,
+    petFriendly: false,
+  },
+];
 
 // REACT SLICK BUTTON
 const PrevArrow = (props: any) => {
@@ -55,7 +129,6 @@ const PrevArrow = (props: any) => {
     </div>
   );
 };
-
 const NextArrow = (props: any) => {
   const { onClick } = props;
   return (
@@ -70,9 +143,7 @@ const NextArrow = (props: any) => {
 // PRICE FORMAT
 const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
-function RoomSlider(props: RoomSliderProps) {
-  const { rooms } = props;
-
+function CompareSlider() {
   //===========
   //REACT SLICK
   //===========
@@ -111,11 +182,9 @@ function RoomSlider(props: RoomSliderProps) {
   //SLIDER BOX TOGGLE
   //=================
   const [showSliderBox, setShowSliderBox] = useState(false);
-  // Load the Slider when the component mounts
   useEffect(() => {
     setShowSliderBox(true);
-  }, [props]);
-
+  }, []);
   const handleCloseSliderBox = () => {
     setShowSliderBox(false);
   };
@@ -136,13 +205,9 @@ function RoomSlider(props: RoomSliderProps) {
   return (
     <div>
       {showSliderBox && (
-        <SliderContainer>
+        <SliderContainer style={{ marginTop: "20px" }}>
           <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
-            <Text
-              type="h3"
-              text="Hotels with the most positive reviews"
-              weight={"bold"}
-            />
+            <Text type="h3" text="Compare Similar Hotels" weight={"bold"} />
             <CloseOutlinedIcon
               style={{ cursor: "pointer" }}
               onClick={handleCloseSliderBox}
@@ -193,11 +258,12 @@ function RoomSlider(props: RoomSliderProps) {
                           styles={{ fontSize: "22px" }}
                         ></Text>
                       </Link>
+
                       <Flex
                         gap="10px"
                         margin="10px 0px"
                         align="center"
-                        styles={{ fontSize: "15px" }}
+                        styles={{ fontSize: "15px", position: "relative" }}
                       >
                         <Text type="p" text={room.location}></Text>
                         <Rating
@@ -206,10 +272,51 @@ function RoomSlider(props: RoomSliderProps) {
                           defaultValue={room.rating}
                           style={{
                             color: "var(--color-rating)",
-                            fontSize: "16px",
+                            fontSize: "17px",
                           }}
                         />
                       </Flex>
+                      <Span>
+                        <ul
+                          style={{
+                            listStyle: "none",
+                            position: "relative",
+                            fontSize: "14px",
+                            marginLeft: "-10px",
+                          }}
+                        >
+                          <li>
+                            <Flex align="center" gap="8px">
+                              {room.parking ? (
+                                <CheckIcon style={{ fontSize: "14px" }} />
+                              ) : (
+                                <CloseIcon style={{ fontSize: "14px" }} />
+                              )}
+                              <Text type="p" text="Parking"></Text>
+                            </Flex>
+                          </li>
+                          <li>
+                            <Flex align="center" gap="8px">
+                              {room.freeWifi ? (
+                                <CheckIcon style={{ fontSize: "14px" }} />
+                              ) : (
+                                <CloseIcon style={{ fontSize: "14px" }} />
+                              )}
+                              <Text type="p" text="Free Wifi"></Text>
+                            </Flex>
+                          </li>
+                          <li>
+                            <Flex align="center" gap="8px">
+                              {room.petFriendly ? (
+                                <CheckIcon style={{ fontSize: "14px" }} />
+                              ) : (
+                                <CloseIcon style={{ fontSize: "14px" }} />
+                              )}
+                              <Text type="p" text="Pet Friendly"></Text>
+                            </Flex>
+                          </li>
+                        </ul>
+                      </Span>
                       <Flex justify="space-between">
                         <Flex
                           align="center"
@@ -298,4 +405,4 @@ function RoomSlider(props: RoomSliderProps) {
   );
 }
 
-export default RoomSlider;
+export default CompareSlider;

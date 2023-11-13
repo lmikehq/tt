@@ -55,7 +55,11 @@ export const ProgressBars = styled.div`
   gap: 25px;
 `;
 
-export const ReviewsText = styled.div``;
+export const ReviewsText = styled.div`
+  display: flex;
+  align: center;
+  gap: 8px;
+`;
 
 export const ReviewList = styled.div`
   margin: 10px 0px;
@@ -68,4 +72,6 @@ export const Content = styled.div`
   padding: 15px;
 `;
 
-export const Span = styled.div``;
+export const Span = styled.div`
+  position: relative;
+`;
