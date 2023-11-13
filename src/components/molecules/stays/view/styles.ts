@@ -83,6 +83,29 @@ export const ReviewHeader = styled.div`
 `;
 export const Content = styled.div`
   padding: 15px;
+  .fade_text {
+    position: relative;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1.5em; /* Height of each line (adjust based on your font size and line height) */
+      background: linear-gradient(
+        transparent,
+        white
+      ); /* Adjust the gradient color as needed */
+      mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    }
+  }
 `;
 
 export const Span = styled.div`

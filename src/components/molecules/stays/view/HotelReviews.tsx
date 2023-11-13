@@ -457,7 +457,7 @@ const HotelReviews = () => {
                           text={review.title}
                           styles={{ margin: "10px 0px" }}
                         ></Text>
-                        <Text type="p" size={15} text={review.comment}></Text>
+                        <Text className="fade_text" type="p" size={15} text={review.comment}></Text>
                         <ul style={{ fontSize: "13px", margin: "15px 0px" }}>
                           <Flex gap="30px">
                             <li style={{ listStyle: "none" }}>
