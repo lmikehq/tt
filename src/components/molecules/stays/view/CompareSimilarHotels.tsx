@@ -119,7 +119,7 @@ const CompareSimilarHotels = () => {
                         }}
                         name="rating"
                         readOnly
-                        max={4}
+                        max={5}
                         defaultValue={room.rating}
                       />
                       <Text

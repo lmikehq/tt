@@ -8,6 +8,8 @@ import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { Rating } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+
 import Link from "@/components/atoms/link";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
@@ -27,6 +29,16 @@ import {
   SliderWidth,
 } from "../components/styles";
 import { ReviewsText, Span } from "./styles";
+import { styled } from "@mui/material/styles";
+
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "var(--color-green)",
+  },
+  "& .MuiRating-iconHover": {
+    color: "var(--color-green)",
+  },
+});
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -205,7 +217,13 @@ function CompareSlider() {
   return (
     <div>
       {showSliderBox && (
-        <SliderContainer style={{ marginTop: "25px" }}>
+        <SliderContainer
+          style={{
+            marginTop: "25px",
+            padding: "25px",
+            paddingBottom: "60px",
+          }}
+        >
           <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
             <Text type="h4" text="Compare Similar Hotels" weight={"bold"} />
             <CloseOutlinedIcon
@@ -354,38 +372,22 @@ function CompareSlider() {
                             direction="column"
                             styles={{ fontSize: "15px" }}
                           >
-                            <Flex gap={"5px"}>
-                              <CircleIcon
-                                style={{
-                                  fontSize: "15px",
-                                  color: "var(--color-green)",
-                                }}
-                              />
-                              <CircleIcon
-                                style={{
-                                  fontSize: "15px",
-                                  color: "var(--color-green)",
-                                }}
-                              />
-                              <CircleIcon
-                                style={{
-                                  fontSize: "15px",
-                                  color: "var(--color-green)",
-                                }}
-                              />
-                              <CircleIcon
-                                style={{
-                                  fontSize: "15px",
-                                  color: "var(--color-green)",
-                                }}
-                              />
-                              <CircleIcon
-                                style={{
-                                  fontSize: "15px",
-                                  color: "var(--color-green)",
-                                }}
-                              />
-                            </Flex>
+                            <StyledRating
+                              name="customized-color"
+                              defaultValue={room.rating}
+                              getLabelText={(value: number) =>
+                                `${value} Heart${value !== 1 ? "s" : ""}`
+                              }
+                              readOnly
+                              precision={0.5}
+                              icon={<CircleIcon fontSize="inherit" />}
+                              emptyIcon={
+                                <CircleOutlinedIcon fontSize="inherit" />
+                              }
+                              style={{
+                                fontSize: "15px",
+                              }}
+                            />
                             <Text
                               type="p"
                               text={`${room.reviews} reviews`}

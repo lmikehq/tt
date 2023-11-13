@@ -3,17 +3,19 @@ import { Container, GridLayout, Header, Span } from "./styles";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import Flex from "@/components/templates/flex";
+import PetsIcon from "@mui/icons-material/Pets";
 import { ttColors } from "@/lib/theme/colors";
+import { PiBabyFill } from "react-icons/pi";
 
 const Policies = () => {
   return (
     <>
-      <Container>
+      <Container style={{ padding: "25px" }}>
         <Span>
           <Header>
             <Text type="h4" weight={"bold"} text="Policies"></Text>
           </Header>
-          <GridLayout>
+          <GridLayout style={{ justifyContent: "space-between" }}>
             <ul>
               <Text type="h5" text="Check-In" weight={"bold"}></Text>
               <Flex
@@ -106,7 +108,7 @@ const Policies = () => {
                 align="flex-start"
                 styles={{ marginTop: "10px", color: "var(--text-gray-color)" }}
               >
-                <WatchLaterIcon
+                <PetsIcon
                   style={{ fontSize: "16px", position: "relative", top: "5px" }}
                 />
                 <Span>
@@ -141,8 +143,8 @@ const Policies = () => {
                 align="flex-start"
                 styles={{ marginTop: "10px", color: "var(--text-gray-color)" }}
               >
-                <WatchLaterIcon
-                  style={{ fontSize: "16px", position: "relative", top: "5px" }}
+                <PiBabyFill
+                  style={{ fontSize: "20px", position: "relative", top: "5px" }}
                 />
                 <Span>
                   <li>

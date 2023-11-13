@@ -238,7 +238,8 @@ export const SliderContainer = styled.div`
   position: relative;
 `;
 export const SlideContent = styled.div`
-  margin: 5px;
+  margin: 0px -5px;
+  margin-left: -8px;
 `;
 export const SliderWidth = styled.div``;
 

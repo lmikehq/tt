@@ -12,6 +12,7 @@ import {
 } from "./styles";
 import Text from "@/components/atoms/text";
 import CircleIcon from "@mui/icons-material/Circle";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { ttColors } from "@/lib/theme/colors";
 import { LineProgressBar } from "@frogress/line";
 import Radio from "@mui/material/Radio";
@@ -20,7 +21,18 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { styled } from "@mui/material/styles";
+import { Rating } from "@mui/material";
+
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "var(--color-green)",
+  },
+  "& .MuiRating-iconHover": {
+    color: "var(--color-green)",
+  },
+});
 
 interface Reviews {
   name: string;
@@ -123,6 +135,7 @@ const HotelReviews = () => {
       : 0;
   const displayRating =
     averageRating > 5 ? averageRating.toFixed(2) : averageRating.toFixed(1);
+  const displayRatingNumber: number = parseFloat(displayRating);
 
   //PERCENTAGE
   const averageCleanliness =
@@ -244,41 +257,20 @@ const HotelReviews = () => {
                       />
                     </svg>
                   </Flex>
-                  <Flex direction="column" styles={{ fontSize: "14px" }}>
-                    <Flex gap={"5px"}>
-                      <CircleIcon
-                        style={{
-                          fontSize: "14px",
-                          color: "var(--color-green)",
-                        }}
-                      />
-                      <CircleIcon
-                        style={{
-                          fontSize: "14px",
-                          color: "var(--color-green)",
-                        }}
-                      />
-                      <CircleIcon
-                        style={{
-                          fontSize: "14px",
-                          color: "var(--color-green)",
-                        }}
-                      />
-                      <CircleIcon
-                        style={{
-                          fontSize: "14px",
-                          color: "var(--color-green)",
-                        }}
-                      />
-                      <CircleIcon
-                        style={{
-                          fontSize: "14px",
-                          color: "var(--color-green)",
-                        }}
-                      />
-                    </Flex>
-                    <Text type="p" text={`${reviews.length} reviews`}></Text>
-                  </Flex>
+                  <StyledRating
+                    name="customized-color"
+                    defaultValue={displayRatingNumber}
+                    getLabelText={(value: number) =>
+                      `${value} Heart${value !== 1 ? "s" : ""}`
+                    }
+                    readOnly
+                    precision={0.5}
+                    icon={<CircleIcon fontSize="inherit" />}
+                    emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
+                    style={{
+                      fontSize: "15px",
+                    }}
+                  />
                 </Flex>
               </ReviewsText>
             </Flex>
@@ -430,38 +422,22 @@ const HotelReviews = () => {
                           </svg>
                         </Flex>
                         <Flex direction="column" styles={{ fontSize: "14px" }}>
-                          <Flex gap={"5px"}>
-                            <CircleIcon
-                              style={{
-                                fontSize: "14px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "14px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "14px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "14px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                            <CircleIcon
-                              style={{
-                                fontSize: "14px",
-                                color: "var(--color-green)",
-                              }}
-                            />
-                          </Flex>
+                          <StyledRating
+                            name="customized-color"
+                            defaultValue={review.rating}
+                            getLabelText={(value: number) =>
+                              `${value} Heart${value !== 1 ? "s" : ""}`
+                            }
+                            readOnly
+                            precision={0.5}
+                            icon={<CircleIcon fontSize="inherit" />}
+                            emptyIcon={
+                              <CircleOutlinedIcon fontSize="inherit" />
+                            }
+                            style={{
+                              fontSize: "15px",
+                            }}
+                          />
                         </Flex>
                       </Flex>
                     </ReviewsText>
