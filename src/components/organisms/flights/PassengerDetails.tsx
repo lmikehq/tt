@@ -33,6 +33,7 @@ import PassengerBaggagePane from "./PassengerBaggagePane";
 import { PiWarningCircleBold } from "react-icons/pi";
 import { ttColors } from "@/lib/theme/colors";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { ToastInfo } from "../flight/booking/toast";
 
 interface TripSummaryCardProps {
     index: number;
@@ -79,11 +80,11 @@ export default function MainPassenger({
     const { isMobile } = useScreenResolution();
     return (
         <Box
-            mt="30px"
+            // mt="30px"
             pt="30px"
             borderTop={index === 0 ? "" : "1px solid lightgrey"}
         >
-            <Flex justify="space-between" align="center">
+            <Flex direction={isMobile ? "column" : "row"} justify="space-between" align="center">
                 <Text
                     type="h2"
                     size={isMobile ? 18 : 22}
@@ -94,8 +95,9 @@ export default function MainPassenger({
                     }
                     font="Montserrat"
                     weight={600}
+                    width={isMobile ? "100%" : "auto"}
                 />
-                <FormControl sx={{ m: 1, width: isMobile ? "45%" : "30%" }}>
+                <FormControl sx={{ m: 1, width: isMobile ? "100%" : "30%" }}>
                     <FieldString
                         options={[
                             PassengerCategory.ADULT,
@@ -113,16 +115,17 @@ export default function MainPassenger({
             </Flex>
             <Box>
                 <Box sx={{ marginY: "2rem" }}>
-                    <Alert>
-                        To avoid boarding complications, enter all names and
-                        surnames exactly as they appear in your passport/ID.
-                    </Alert>
+                    <ToastInfo
+                        type="info"
+                        message="To avoid boarding complications, enter all names and
+                        surnames exactly as they appear in your passport/ID."
+                    />
                 </Box>
                 <Box
                     sx={{
                         marginY: "2rem",
                         display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
+                        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
                         gridGap: "1rem",
                     }}
                 >
@@ -183,6 +186,7 @@ export default function MainPassenger({
                             placeholder="Date of Birth"
                             formik={formik}
                             format="YYYY-MM-DD"
+                            styles={{ padding: 0 }}
                         />
                     </FormControl>
                     {values.category !== "infant" && (

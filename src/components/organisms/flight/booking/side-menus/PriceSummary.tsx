@@ -234,7 +234,7 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
                 <Text type="p" size={14} weight={500} text="Eligible for Flexible Travel Dates" />
             </Flex> */}
 
-            <Flex direction="column" gap=".5rem" margin="0 0 2rem">
+            <Flex direction="column" gap=".5rem" margin="0 0 1rem">
                 <Text type="h3" weight={600} text="Check-In Baggage" />
                 <Text
                     type="p"
@@ -243,20 +243,20 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
                 />
             </Flex>
 
-            <Flex direction="column" gap=".6rem" margin="0 0 3rem">
+            <Flex direction="column" margin="0 0 3rem">
                 <Detail name="Bags" value={departureBags} plain />
             </Flex>
 
             <Flex
                 justify="flex-start"
                 align="center"
-                gap="1rem"
+                gap=".6rem"
                 margin="0 0 3rem"
             >
                 <TimerOutlinedIcon />
                 <Text
                     type="p"
-                    size={15}
+                    size={14}
                     weight={600}
                     text={`This booking will be unavailable in ${countMins}m ${countSecs}s`}
                 />

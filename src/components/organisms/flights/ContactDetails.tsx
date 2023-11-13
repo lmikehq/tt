@@ -32,9 +32,10 @@ export default function ContactDetails({ formik }: TripSummaryCardProps) {
             <Box
                 sx={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
+                    gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
                     gridGap: "1rem",
                     marginY: "1rem",
+                    padding: '1rem 0 0'
                 }}
             >
                 <FormControl>
@@ -59,17 +60,16 @@ export default function ContactDetails({ formik }: TripSummaryCardProps) {
                         formik={formik}
                     />
                 </FormControl>
-
-                <FormControl>
-                    <CheckBox name="receiveUpdates" onChange={() => {}} checked>
-                        <Text
-                            type="p"
-                            size={isMobile ? 14 : 16}
-                            text="I want to receive SMS updates about my trip."
-                        />
-                    </CheckBox>
-                </FormControl>
             </Box>
+            <FormControl>
+                <CheckBox name="receiveUpdates" onChange={() => {}} checked>
+                    <Text
+                        type="p"
+                        size={isMobile ? 13 : 14}
+                        text="I want to receive SMS updates about my trip."
+                    />
+                </CheckBox>
+            </FormControl>
         </>
     );
 }

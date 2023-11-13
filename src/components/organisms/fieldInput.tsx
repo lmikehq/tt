@@ -3,7 +3,7 @@ import { FormikProvider, FormikValues, useField } from "formik";
 import Input from "@atom/input";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { DatePicker } from "@organism/datepicker";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
@@ -14,7 +14,8 @@ import InputLabel from "@mui/material/InputLabel";
 interface FieldProps {
   id?: string;
   value?: any;
-  defaultValue?: string;
+    defaultValue?: string;
+    styles?: CSSProperties;
 
   name: string;
   type?:
@@ -243,6 +244,7 @@ export const FieldAsDate = (props: FieldProps) => {
     maxDate,
     placeholder,
     format,
+    styles,
   } = props;
   const touched = getNestedValue(formik?.touched, name);
   const error = getNestedValue(formik?.errors, name);
@@ -254,7 +256,7 @@ export const FieldAsDate = (props: FieldProps) => {
   const value = getNestedValue(formik?.values, name);
 
   return (
-    <Section styles={{ position: "relative" }} padding="0 0 1.2rem 0">
+    <Section styles={{ position: "relative", ...styles }} padding="0 0 1.2rem 0">
         <DatePicker
             disabled={disabled}
             views={views}

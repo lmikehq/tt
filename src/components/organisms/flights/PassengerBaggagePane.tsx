@@ -174,13 +174,6 @@ export default function PassengerBaggagePane({
         })
         .join(", ");
 
-    useEffect(() => {
-        if (index === 2) {
-            console.log("ssss", index, state);
-            console.log("nuuu", index, newBags);
-        }
-    }, [state, newBags]);
-
     return (
         <Box>
             <Flex gap="1rem" align="center" padding="2rem 0">
@@ -226,11 +219,7 @@ export default function PassengerBaggagePane({
                                         key={index}
                                     >
                                         <Image
-                                            height={
-                                                e?.category === "personal_item"
-                                                    ? 100
-                                                    : 150
-                                            }
+                                            height={e?.category === "personal_item" ? (isMobile ? 70 : 100) : (isMobile ? 110 : 150)}
                                             styles={{ objectFit: "contain" }}
                                             src={
                                                 e?.category === "personal_item"
@@ -396,9 +385,7 @@ export default function PassengerBaggagePane({
                                                 >
                                                     <Text
                                                         type="h2"
-                                                        size={
-                                                            isMobile ? 18 : 20
-                                                        }
+                                                        size={isMobile ? 18 : 20}
                                                         // ${
                                                         //     comb.price?.currency
                                                         // }

@@ -185,7 +185,7 @@ const mockBooking = {
             "utc_arrival": "2022-08-16T13:50:00.000Z",
             "local_departure": "2022-08-16T14:30:00.000Z",
             "utc_departure": "2022-08-16T12:30:00.000Z"
-        }
+        },
     ],
     "flights_checked": true,
     "flights_to_check": false,

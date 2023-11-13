@@ -30,6 +30,7 @@ const PopperMy = function (props: any) {
             {...props}
             style={{ width: "300px" }}
             placement="bottom-start"
+            className="scroll-custom"
         />
     );
 };
@@ -47,6 +48,7 @@ export default function SearchInputAsLocationTypes({
     return (
         <Autocomplete
             id="country-select-demo"
+            className="scroll-custom"
             sx={{
                 width: "auto",
                 outline: "none !important",
@@ -85,7 +87,7 @@ export default function SearchInputAsLocationTypes({
                         <Text
                             type="p"
                             size={16}
-                            color={ttColors.dark}
+                            color={ttColors.foundation.black}
                             className="truncate"
                             text={`${option.name} (${option.code})`}
                         />
@@ -94,7 +96,7 @@ export default function SearchInputAsLocationTypes({
                             size={12}
                             weight={300}
                             className="truncate"
-                            color={ttColors.dark}
+                            color={ttColors.foundation.black}
                             text={
                                 option.city?.country?.name ??
                                 option.country?.name ??
@@ -128,7 +130,7 @@ export default function SearchInputAsLocationTypes({
                         "& .MuiOutlinedInput-root": {
                             outline: "none !important",
 
-                            padding: "0  .875rem !important",
+                            padding: "0  .6rem !important",
                         },
                         "&:hover .MuiInputBase-root": {
                             color: `${ttColors.primary} !important`,
@@ -162,7 +164,7 @@ export default function SearchInputAsLocationTypes({
                                 <IoLocationOutline size={20} />
                             </InputAdornment>
                         ),
-                        endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : <></>,
+                        endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : null,
                         autoComplete: "new-password",
                         placeholder: placeholder,
                     }}

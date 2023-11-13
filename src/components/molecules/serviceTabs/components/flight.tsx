@@ -222,10 +222,6 @@ function Flights() {
         })
     }, [])
 
-    useEffect(() => {
-        console.log(flightState)
-    }, [flightState])
-
 
 	return (
 		<Section padding="1.5rem 0rem 0" styles={{ position: "relative" }}>

@@ -47,7 +47,7 @@ export function CustomRadioGroup({
             onBlur={onBlur}
             style={{ justifyContent: justifyContent }}
         >
-              <Flex align={align} gap="1rem" direction={direction} className={scroll ? "scroll-custom" : ""} overflowX={scroll ? "auto" : "initial"}>
+              <Flex align={align} gap="1rem" direction={direction} className={scroll ? "no-scrollbar" : ""} overflowX={scroll ? "auto" : "initial"}>
                 {options.map((option) =>
                     <FormControlLabel
                         key={option.label}

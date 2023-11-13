@@ -25,27 +25,28 @@ export interface LabelType {
   code: string;
 }
 
+
 function Visa() {
-  const { geoInfo } = useUserStore();
-  const [home, setHome] = useState<CountryType>({
-    name: geoInfo?.country || "Nigeria",
-    flag: COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
-    code: geoInfo?.country_code || "NG",
-  });
-  const [destination, setDestination] = useState<CountryType>({
-    name: "Canada",
-    flag: "🇨🇦",
-    code: "CA",
-  });
-  const [type, setType] = useState<string>("Work");
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
+    const { geoInfo } = useUserStore();
+    const [home, setHome] = useState<CountryType>({
+        name: geoInfo?.country || "Nigeria",
+        flag: COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
+        code: geoInfo?.country_code || "NG",
+    });
+    const [destination, setDestination] = useState<CountryType>({
+        name: "Canada",
+        flag: "🇨🇦",
+        code: "CA",
+    });
+    const [type, setType] = useState<string>("Work");
+    const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
     const { isMobile } = useScreenResolution();
     
   return (
     <Section height="unset" padding={"2rem 0 1rem 0"}>
       <Grid
-        gap="2rem"
+        gap="3rem"
         justify="space-between"
         columns={isMobile ? "1" : "3"}
         margin={"0"}
