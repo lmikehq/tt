@@ -155,6 +155,11 @@ body {
 }
 /* ROOM STAY MOBILE SLICK SLIDER ROOT CSS*/
 
+/* MUI CHECKBOX */
+.mui-checked.Mui-checked {
+  color: var(--primary-color) !important;
+}
+
 /* PAGINATION */
 .pagination .paginationItemStyle.active {
   background-color: var(--primary-color);

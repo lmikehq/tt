@@ -527,7 +527,7 @@ const HotelReviews = () => {
                                   "&.Mui-checked": {
                                     color: ttColors.primary,
                                   },
-                                  "& .MuiSvgIcon-root": {
+                                  "&.MuiSvgIcon-root": {
                                     fontSize: 20,
                                   },
                                 }}

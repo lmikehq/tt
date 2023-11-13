@@ -268,7 +268,13 @@ function SortingColumns() {
                   (item, index) => (
                     <FormControlLabel
                       key={index}
-                      control={<Checkbox disableFocusRipple disableRipple />}
+                      control={
+                        <Checkbox
+                          className="mui-checked"
+                          disableFocusRipple
+                          disableRipple
+                        />
+                      }
                       label={
                         <Text
                           type="p"
@@ -327,7 +333,13 @@ function SortingColumns() {
                   (item, index) => (
                     <FormControlLabel
                       key={index}
-                      control={<Checkbox disableFocusRipple disableRipple />}
+                      control={
+                        <Checkbox
+                          className="mui-checked"
+                          disableFocusRipple
+                          disableRipple
+                        />
+                      }
                       label={
                         <Text
                           type="p"
@@ -439,7 +451,13 @@ function SortingColumns() {
               {ratings.map((item, index) => (
                 <FormControlLabel
                   key={index}
-                  control={<Checkbox disableFocusRipple disableRipple />}
+                  control={
+                    <Checkbox
+                      className="mui-checked"
+                      disableFocusRipple
+                      disableRipple
+                    />
+                  }
                   label={
                     <Flex gap="50px">
                       <Text
@@ -484,7 +502,13 @@ function SortingColumns() {
               {ratings.map((item, index) => (
                 <FormControlLabel
                   key={index}
-                  control={<Checkbox disableFocusRipple disableRipple />}
+                  control={
+                    <Checkbox
+                      className="mui-checked"
+                      disableFocusRipple
+                      disableRipple
+                    />
+                  }
                   label={
                     <Flex gap="50px">
                       <Text
@@ -536,7 +560,13 @@ function SortingColumns() {
                   (item, index) => (
                     <FormControlLabel
                       key={index}
-                      control={<Checkbox disableFocusRipple disableRipple />}
+                      control={
+                        <Checkbox
+                          className="mui-checked"
+                          disableFocusRipple
+                          disableRipple
+                        />
+                      }
                       label={
                         <Text
                           type="p"
@@ -599,7 +629,13 @@ function SortingColumns() {
                   (item, index) => (
                     <FormControlLabel
                       key={index}
-                      control={<Checkbox disableFocusRipple disableRipple />}
+                      control={
+                        <Checkbox
+                          className="mui-checked"
+                          disableFocusRipple
+                          disableRipple
+                        />
+                      }
                       label={
                         <Text
                           type="p"
@@ -657,7 +693,13 @@ function SortingColumns() {
                 {Meal.slice(0, displayedMealItems).map((item, index) => (
                   <FormControlLabel
                     key={index}
-                    control={<Checkbox disableFocusRipple disableRipple />}
+                    control={
+                      <Checkbox
+                        className="mui-checked"
+                        disableFocusRipple
+                        disableRipple
+                      />
+                    }
                     label={
                       <Text
                         type="p"
@@ -716,7 +758,13 @@ function SortingColumns() {
                 {Rooms.slice(0, displayedRoomsItems).map((item, index) => (
                   <FormControlLabel
                     key={index}
-                    control={<Checkbox disableFocusRipple disableRipple />}
+                    control={
+                      <Checkbox
+                        className="mui-checked"
+                        disableFocusRipple
+                        disableRipple
+                      />
+                    }
                     label={
                       <Text
                         type="p"
@@ -770,7 +818,13 @@ function SortingColumns() {
                 {BedType.slice(0, displayedBedTypeItems).map((item, index) => (
                   <FormControlLabel
                     key={index}
-                    control={<Checkbox disableFocusRipple disableRipple />}
+                    control={
+                      <Checkbox
+                        className="mui-checked"
+                        disableFocusRipple
+                        disableRipple
+                      />
+                    }
                     label={
                       <Text
                         type="p"

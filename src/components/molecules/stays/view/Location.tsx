@@ -13,7 +13,7 @@ const Location = () => {
           <Flex direction="column">
             <Text
               type="h4"
-              text="Description of the Hotel"
+              text="Location"
               weight={600}
               styles={{
                 whiteSpace: "nowrap",
@@ -26,7 +26,7 @@ const Location = () => {
               type="p"
               size={14}
               color="var(--text-gray-color)"
-              text="Discover all you need to know about the hotel"
+              text="Black Prince Interchange, London, DA5 1ND, United Kingdom"
             ></Text>
           </Flex>
         </Header>
