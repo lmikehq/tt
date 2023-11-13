@@ -6,11 +6,10 @@ import CompareSlider from "@/components/molecules/stays/view/CompareSlider";
 import HeroImageGrid from "@/components/molecules/stays/view/HeroImageGrid";
 import HotelReviews from "@/components/molecules/stays/view/HotelReviews";
 import Policies from "@/components/molecules/stays/view/Policies";
-import RecentlyViewed from "@/components/molecules/stays/view/RecentlyViewed";
 import StayDetailsTab from "@/components/molecules/stays/view/StayDetailsTab";
+import RecentlyViewedList from "@/components/molecules/stays/view/recently-viewed/RecentlyViewedList";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Flex from "@/components/templates/flex";
-import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom";
 
 const StayViewPage = () => {
   return (
@@ -27,7 +26,7 @@ const StayViewPage = () => {
         </Section>
 
         <Section width="38%">
-          <RecentlyViewed />
+          <RecentlyViewedList />
         </Section>
       </Flex>
     </SectionLayout>
