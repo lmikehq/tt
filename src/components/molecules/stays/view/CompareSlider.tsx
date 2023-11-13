@@ -238,15 +238,17 @@ function CompareSlider() {
                   <SlideCard key={index}>
                     <SlideList>
                       <SliderImgBox>
-                        <img
-                          style={{
-                            width: "100%",
-                            height: "200px",
-                            objectFit: "cover",
-                          }}
-                          src={room.image}
-                          alt={room.name}
-                        />
+                        <Link href="">
+                          <img
+                            style={{
+                              width: "100%",
+                              height: "200px",
+                              objectFit: "cover",
+                            }}
+                            src={room.image}
+                            alt={room.name}
+                          />
+                        </Link>
                       </SliderImgBox>
                       <FavoriteSliderBox>
                         <Checkbox
@@ -268,14 +270,16 @@ function CompareSlider() {
                           id="favorite-hotels-checkbox"
                         />
                       </FavoriteSliderBox>
-                      <Link href="">
-                        <Text
-                          type="h2"
-                          text={room.name}
-                          weight={"bold"}
-                          styles={{ fontSize: "22px" }}
-                        ></Text>
-                      </Link>
+                      <Span style={{ width: "fit-content" }}>
+                        <Link href="">
+                          <Text
+                            type="h2"
+                            text={room.name}
+                            weight={"bold"}
+                            styles={{ fontSize: "22px" }}
+                          ></Text>
+                        </Link>
+                      </Span>
 
                       <Flex
                         gap="10px"

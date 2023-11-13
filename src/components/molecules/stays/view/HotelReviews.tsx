@@ -438,6 +438,10 @@ const HotelReviews = () => {
                               fontSize: "15px",
                             }}
                           />
+                          <Text
+                            type="p"
+                            text={`${reviews.length} reviews`}
+                          ></Text>
                         </Flex>
                       </Flex>
                     </ReviewsText>

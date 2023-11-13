@@ -146,7 +146,7 @@ function RoomSlider(props: RoomSliderProps) {
   return (
     <div>
       {showSliderBox && (
-        <SliderContainer>
+        <SliderContainer style={{ paddingBottom: "60px" }}>
           <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
             <Text
               type="h3"
@@ -165,15 +165,17 @@ function RoomSlider(props: RoomSliderProps) {
                   <SlideCard key={index}>
                     <SlideList>
                       <SliderImgBox>
-                        <img
-                          style={{
-                            width: "100%",
-                            height: "200px",
-                            objectFit: "cover",
-                          }}
-                          src={room.image}
-                          alt={room.name}
-                        />
+                        <Link href="">
+                          <img
+                            style={{
+                              width: "100%",
+                              height: "200px",
+                              objectFit: "cover",
+                            }}
+                            src={room.image}
+                            alt={room.name}
+                          />
+                        </Link>
                       </SliderImgBox>
                       <FavoriteSliderBox>
                         <Checkbox
