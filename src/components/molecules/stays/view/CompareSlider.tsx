@@ -205,9 +205,9 @@ function CompareSlider() {
   return (
     <div>
       {showSliderBox && (
-        <SliderContainer style={{ marginTop: "20px" }}>
+        <SliderContainer style={{ marginTop: "25px" }}>
           <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
-            <Text type="h3" text="Compare Similar Hotels" weight={"bold"} />
+            <Text type="h4" text="Compare Similar Hotels" weight={"bold"} />
             <CloseOutlinedIcon
               style={{ cursor: "pointer" }}
               onClick={handleCloseSliderBox}

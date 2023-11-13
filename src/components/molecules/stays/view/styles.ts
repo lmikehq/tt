@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 //========
-// COMPARE
+// STYLES
 //========
 export const Container = styled.div`
   box-shadow: var(--box-shadow);

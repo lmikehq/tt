@@ -5,6 +5,7 @@ import CompareSimilarHotels from "@/components/molecules/stays/view/CompareSimil
 import CompareSlider from "@/components/molecules/stays/view/CompareSlider";
 import HeroImageGrid from "@/components/molecules/stays/view/HeroImageGrid";
 import HotelReviews from "@/components/molecules/stays/view/HotelReviews";
+import Policies from "@/components/molecules/stays/view/Policies";
 import RecentlyViewed from "@/components/molecules/stays/view/RecentlyViewed";
 import StayDetailsTab from "@/components/molecules/stays/view/StayDetailsTab";
 import SectionLayout from "@/components/templates/SectionLayout";
@@ -18,7 +19,8 @@ const StayViewPage = () => {
       <Flex gap="2.25rem">
         <Section width="62%">
           <StayDetailsTab />
-          <CompareSlider/>
+          <CompareSlider />
+          <Policies />
           <HotelReviews />
           <CompareSimilarHotels />
         </Section>
