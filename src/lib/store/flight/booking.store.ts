@@ -96,7 +96,11 @@ interface Actions {
     }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
-    checkBookingDetails: ({ bookingId }: { bookingId: string } ) => Promise<void>;
+    checkBookingDetails: ({
+        bookingId,
+    }: {
+        bookingId: string;
+    }) => Promise<void>;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -193,7 +197,12 @@ export const useFlightBookingStore = create<State & Actions>(
             data: SearchFlightsRequestQuery;
         }) => {
             set({ searchMoreFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data })
+            return await FlightBookingService.searchFlights({
+                data: {
+                    ...data,
+                    curr: useUserPreferencesStore.getState().preFerredCurrency,
+                },
+            })
                 .then((response) => {
                     set({
                         searchMoreFlightsMode: Mode.loaded,
@@ -372,23 +381,19 @@ export const useFlightBookingStore = create<State & Actions>(
                     throw error;
                 });
         },
-        checkBookingDetails: async ({
-            bookingId,
-        }: {
-            bookingId: string;
-        }) => {
+        checkBookingDetails: async ({ bookingId }: { bookingId: string }) => {
             set({ bookingDetailsMode: Mode.loading });
             return await FlightBookingService.checkBookingDetails({ bookingId })
-                .then(response => {
+                .then((response) => {
                     set({
                         bookingDetailsMode: Mode.loaded,
-                        bookingDetailsResponse: response
-                    })
+                        bookingDetailsResponse: response,
+                    });
                 })
                 .catch((error) => {
                     set({ bookingDetailsMode: Mode.error });
                     throw error;
-                })
+                });
         },
     })
 );
