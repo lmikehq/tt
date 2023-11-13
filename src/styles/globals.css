@@ -17,11 +17,13 @@
   --color-border: #e7e7e7;
   --bg-color: #fafbfc;
   --color-light-gray: #b6b6b6;
+  --text-gray-color: #6c6c6c;
   --color-rating: #ff5c00;
   --color-favorite: #e5002a;
   --color-green: #00d115;
   --text-color: #000000;
   --text-dull-color: #4a7181;
+
   --box-shadow: 0px 4px 16px 0px #8dd3bb1a;
   --poppins-font: "Poppins", sans-serif;
   --placeholder-color: #1c1b1f;
@@ -364,23 +366,22 @@ textarea:hover {
   color: #fff !important;
 }
 
-
 /* Custom Scrollbar */
 .scroll-custom::-webkit-scrollbar {
-    background-color: transparent;
-    width: 9px;
-    height: 9px;
+  background-color: transparent;
+  width: 9px;
+  height: 9px;
 }
 
 .scroll-custom::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.25);
-    border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
 }
 
 .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .no-scrollbar::-webkit-scrollbar-thumb {
-    display: none;
+  display: none;
 }

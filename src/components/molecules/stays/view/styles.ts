@@ -22,6 +22,8 @@ export const List = styled.div`
   border-radius: 6px;
 `;
 
+
+
 export const GridLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
