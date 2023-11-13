@@ -257,20 +257,23 @@ const HotelReviews = () => {
                       />
                     </svg>
                   </Flex>
-                  <StyledRating
-                    name="customized-color"
-                    defaultValue={displayRatingNumber}
-                    getLabelText={(value: number) =>
-                      `${value} Heart${value !== 1 ? "s" : ""}`
-                    }
-                    readOnly
-                    precision={0.5}
-                    icon={<CircleIcon fontSize="inherit" />}
-                    emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
-                    style={{
-                      fontSize: "15px",
-                    }}
-                  />
+                  <Flex direction="column">
+                    <StyledRating
+                      name="customized-color"
+                      defaultValue={displayRatingNumber}
+                      getLabelText={(value: number) =>
+                        `${value} Heart${value !== 1 ? "s" : ""}`
+                      }
+                      readOnly
+                      precision={0.5}
+                      icon={<CircleIcon fontSize="inherit" />}
+                      emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
+                      style={{
+                        fontSize: "15px",
+                      }}
+                    />
+                    <Text type="p" text={`${reviews.length} reviews`}></Text>
+                  </Flex>
                 </Flex>
               </ReviewsText>
             </Flex>
@@ -438,10 +441,6 @@ const HotelReviews = () => {
                               fontSize: "15px",
                             }}
                           />
-                          <Text
-                            type="p"
-                            text={`${reviews.length} reviews`}
-                          ></Text>
                         </Flex>
                       </Flex>
                     </ReviewsText>
