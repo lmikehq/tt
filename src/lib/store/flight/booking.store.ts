@@ -180,6 +180,8 @@ export const useFlightBookingStore = create<State & Actions>(
                     set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
+                        conversionRate: response.fx_rate,
+
                         flightsResults: {
                             currency: response.currency,
                             total: response._results,
@@ -207,6 +209,7 @@ export const useFlightBookingStore = create<State & Actions>(
                     set({
                         searchMoreFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
+                        conversionRate: response.fx_rate,
                     });
                 })
                 .catch((error) => {
@@ -224,18 +227,8 @@ export const useFlightBookingStore = create<State & Actions>(
                 },
             })
                 .then((response) => {
-                    const {
-                        adults_price = 0,
-                        children_price = 0,
-                        infants_price = 0,
-                    } = response.conversion;
-                    const ticketPriceInPreferredCurrency =
-                        adults_price + children_price + infants_price;
-                    const conversionRate =
-                        ticketPriceInPreferredCurrency / response.tickets_price;
                     set({
                         mode: Mode.loaded,
-                        conversionRate,
                         sessionId: response.session_id,
                         checkFlightsResponse: response,
                         bookingToken: response.booking_token,
