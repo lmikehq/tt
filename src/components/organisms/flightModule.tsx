@@ -4,7 +4,6 @@ import Section from "src/components/molecules/section";
 import React, { useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import SearchInput from "./searchInput";
 import { ttColors } from "@lib/theme/colors";
 import { DatePicker } from "./customDatePicker";
 import { ClickAwayListener } from "@mui/material";
@@ -12,7 +11,6 @@ import Input from "@atom/input";
 import DropdownMenu from "./dropdownMenu";
 import { styled } from "styled-components";
 import { HiXMark } from "react-icons/hi2";
-import { CountryType } from "src/components/molecules/serviceTabs/components/visa";
 import { OneFlightType } from "@lib/extensions/context";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
@@ -104,7 +102,7 @@ function FlightModule({
             <Flex
                 direction={isMobile ? "column" : "row"}
                 align={isMobile ? "flex-start" : "center"}
-                gap=".5rem"
+                gap={isMobile ? "0rem" : ".5rem"}
             >
                 <Flex
                     direction="column"

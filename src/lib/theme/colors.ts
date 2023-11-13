@@ -33,6 +33,7 @@ export const ttColors = {
     primaryLight: "#6092A7",
     blackLight: '#414141',
     foundation: {
+        black: "#0D0D0D",
         gray: "#606060",
     },
 };

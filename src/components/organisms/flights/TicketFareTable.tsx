@@ -33,7 +33,7 @@ const StyledTableCell = styled(TableCell)<StyledTableCellProps>(
             ? `3px solid ${ttColors.primary600}`
             : "";
         return {
-            textAlign: textAlign ? textAlign : "center",
+            textAlign: textAlign ?? "center",
             border: hideBorder ? "none" : `1px solid ${ttColors.gray}`,
             borderLeft: recommendedColors,
             borderRight: recommendedColors,
@@ -44,7 +44,7 @@ const StyledTableCell = styled(TableCell)<StyledTableCellProps>(
                 content: isHeader ? '"Recommended"' : '""',
                 display: isHeader ? "block" : "none",
                 position: "absolute",
-                bottom: "70%",
+                bottom: "80%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
                 backgroundColor: "#7BBBD6",
@@ -66,7 +66,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 const Table = styled(MuiTable)(() => ({
-    borderSpacing: "5px 1px",
+    borderSpacing: "6px 0px",
     borderCollapse: "separate",
     paddingTop: "45px",
 }));
@@ -74,6 +74,19 @@ const Table = styled(MuiTable)(() => ({
 const TicketFareTable = () => {
     const { nextStep } = useFlightBookingStore((state) => state);
     const [loading, setLoading] = useState(false);
+    const [active, setActive] = useState("");
+
+    const proceed = async (x: string) => {
+        setActive(x)
+        setLoading(true);
+        await sleep(500);
+        nextStep();
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth",
+        });
+    }
 
     const data = [
         {
@@ -109,28 +122,26 @@ const TicketFareTable = () => {
             icon: "",
             basic: (
                 <Button
-                    variant="outline"
-                    height={"3.5rem"}
-                    color={ttColors.dark}
-                >
-                    Select
+                    height="3.5rem"
+                    variant={active === 'basic' ? "solid" : "outline"}
+                        background={active === 'basic' ? ttColors.dark : "white"}
+                        color={active === 'basic' ? "white" : ttColors.dark}
+                        onClick={() => proceed('basic')}
+                    >
+                        {loading ? (
+                            <Spinner fill={ttColors.primary} size={"45px"} />
+                        ) : (
+                            <Text type="p" size={16} text="Select" weight={500} />
+                        )}
                 </Button>
             ),
             flex: (
                 <Button
-                    height={"3.5rem"}
-                    variant="solid"
-                    background={ttColors.dark}
-                    onClick={async () => {
-                        setLoading(true);
-                        await sleep(500);
-                        nextStep();
-                        window.scrollTo({
-                            top: 0,
-                            left: 0,
-                            behavior: "smooth",
-                        });
-                    }}
+                    height="3.5rem"
+                    variant={active === 'flex' ? "solid" : "outline"}
+                    background={active === 'flex' ? ttColors.dark : "white"}
+                    color={active === 'flex' ? "white" : ttColors.dark}
+                    onClick={() => proceed('flex')}
                 >
                     {loading ? (
                         <Spinner fill={ttColors.primary} size={"45px"} />
@@ -141,12 +152,17 @@ const TicketFareTable = () => {
             ),
             superFlex: (
                 <Button
-                    height={"3.5rem"}
-                    variant="outline"
-                    color={ttColors.dark}
+                    height="3.5rem"
+                    variant={active === 'super-flex' ? "solid" : "outline"}
+                    background={active === 'super-flex' ? ttColors.dark : "white"}
+                    color={active === 'super-flex' ? "white" : ttColors.dark}
+                    onClick={() => proceed('super-flex')}
                 >
-                    {" "}
-                    Select
+                    {loading ? (
+                        <Spinner fill={ttColors.primary} size={"45px"} />
+                    ) : (
+                        <Text type="p" size={16} text="Select" weight={500} />
+                    )}
                 </Button>
             ),
             isButtonRow: true,
@@ -189,7 +205,7 @@ const TicketFareTable = () => {
                         row.isButtonRow ? (
                             <TableRow key={row.feature}>
                                 <TableCell></TableCell>
-                                <TableCell>{row.basic}</TableCell>
+                                <TableCell style={{ display: 'flex', justifyContent: 'center' }}>{row.basic}</TableCell>
                                 <TableCell>{row.flex}</TableCell>
                                 <TableCell>{row.superFlex}</TableCell>
                             </TableRow>

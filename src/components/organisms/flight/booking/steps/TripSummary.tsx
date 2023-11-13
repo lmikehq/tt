@@ -1,7 +1,6 @@
 import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Spinner from "@/components/molecules/icons/spinner";
-import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
@@ -33,6 +32,7 @@ import {
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export interface OneFlight {
     time: string;
@@ -172,9 +172,12 @@ const TripSummary = ({
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
         onSubmit: async (values) => {
-            console.log(contactDetailsFormik.values, "passengers");
-            contactDetailsFormik.validateForm();
-            if (!contactDetailsFormik.isValid) return;
+            console.log(contactDetailsFormik.values, "passengers")
+            contactDetailsFormik.validateForm()
+            if (!contactDetailsFormik.isValid) {
+                toast.error('Missing fields')
+                return
+            }
 
             setLoading(true);
             setSaveBookingDetails({
@@ -208,8 +211,8 @@ const TripSummary = ({
         formik.setValues((prev) => ({
             ...prev,
             passengers: prev.passengers.filter((e, ind) => ind !== index),
-        }));
-    };
+        }))
+    }
 
     const flights = checkFlightsResponse?.flights ?? [];
     const departure = flights[0];
@@ -229,7 +232,7 @@ const TripSummary = ({
                 flights={flights}
             />
             {!user?.id && (
-                <form onSubmit={contactDetailsFormik.handleSubmit}>
+                <form onSubmit={contactDetailsFormik.handleSubmit} style={{ padding: '2rem 0 0' }}>
                     <ContactDetails formik={contactDetailsFormik} />
                 </form>
             )}

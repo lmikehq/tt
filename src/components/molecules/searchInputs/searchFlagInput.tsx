@@ -34,7 +34,7 @@ const SearchFlagInput = ({
         disabled={disabled}
         error={error}
     >
-      <Flex justify="space-between" cursor="pointer" align="center" width="90%">
+      <Flex justify="space-between" cursor="pointer" align="center" width="100%">
         <Text
           type="p"
           text={value.name ? value.name : placeholder}
@@ -45,7 +45,7 @@ const SearchFlagInput = ({
                 cursor: "pointer",
                 maxWidth: "85%",
                 textOverflow: "clip",
-                overflow: "hidden",
+              overflow: "hidden",
           }}
         />
         {value.name ? (

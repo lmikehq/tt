@@ -184,8 +184,9 @@ export default function SearchInput({
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
-          sx={{
-            width: isMobile ? '70vw' : getWidth(),
+            sx={{
+                zIndex: 2,
+                width: getWidth(),
           }}
         >
           <ClickAwayListener onClickAway={handleClose}>

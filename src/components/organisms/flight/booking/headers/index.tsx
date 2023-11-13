@@ -51,7 +51,7 @@ export const TripHeader = () => {
                     <FaPlane color={ttColors.primary600} size={isMobile ? 30 : 20} />
                 </Flex>
             </Flex>
-            {isMobile &&
+            {/* {isMobile &&
                 <Button
                     width="200px"
                     color={ttColors.dark}
@@ -61,7 +61,7 @@ export const TripHeader = () => {
                 >
                     Change Flight
                 </Button>
-            }
+            } */}
         </Flex>
     );
 };

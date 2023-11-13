@@ -102,6 +102,7 @@ function TimeOfFlight({
                         height: "50px",
                         border: `1px solid ${ttColors.lightestGray}`,
                         borderRadius: "50px",
+                        backgroundColor: 'white',
                         backgroundImage: `url(${logo})`,
                     }}
                 />

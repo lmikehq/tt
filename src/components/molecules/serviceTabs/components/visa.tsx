@@ -25,26 +25,28 @@ export interface LabelType {
   code: string;
 }
 
+
 function Visa() {
-  const { geoInfo } = useUserStore();
-  const [home, setHome] = useState<CountryType>({
-    name: geoInfo?.country || "Nigeria",
-    flag: COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
-    code: geoInfo?.country_code || "NG",
-  });
-  const [destination, setDestination] = useState<CountryType>({
-    name: "Canada",
-    flag: "🇨🇦",
-    code: "CA",
-  });
-  const [type, setType] = useState<string>("Work");
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
-  const { isMobile } = useScreenResolution();
+    const { geoInfo } = useUserStore();
+    const [home, setHome] = useState<CountryType>({
+        name: geoInfo?.country || "Nigeria",
+        flag: COUNTRY_FLAGS.find((y) => y.code === geoInfo?.country_code)?.flag || "",
+        code: geoInfo?.country_code || "NG",
+    });
+    const [destination, setDestination] = useState<CountryType>({
+        name: "Canada",
+        flag: "🇨🇦",
+        code: "CA",
+    });
+    const [type, setType] = useState<string>("Work");
+    const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset" padding={"2rem 0 1rem 0"}>
       <Grid
-        gap="2rem"
+        gap="3rem"
         justify="space-between"
         columns={isMobile ? "1" : "3"}
         margin={"0"}
@@ -112,9 +114,9 @@ function Visa() {
       </Grid>
       <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
         <Button
-          width={isMobile ? "100%" : "240px"}
-          background="#06062A"
+          width={isMobile ? "100%" : "300px"}
           borderRadius="4px"
+          background={ttColors.dark}
           onClick={async () => {
             if (loading) return;
             setLoading(true);
@@ -125,7 +127,7 @@ function Visa() {
           }}
         >
           {loading ? (
-            <Spinner fill={ttColors.primary} size={"45px"} />
+            <Spinner fill={ttColors.primary} size={"36px"} />
           ) : (
             <Text
               text="Get Started"

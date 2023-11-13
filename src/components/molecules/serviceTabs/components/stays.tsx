@@ -1,29 +1,30 @@
 "use client";
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
-import { CustomRadioGroup } from "@molecule/radio";
-import { useEffect, useState } from "react";
-import FlightModule from "@organism/flightModule";
+import { useState } from "react";
 import Button from "@atom/button";
 import Text from "@atom/text";
-import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
 import sleep from "@lib/extensions/helpers/sleep";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import Input from "@atom/input";
-import { DatePicker } from "@organism/datepicker";
+import { DatePicker } from "@/components/organisms/customDatePicker";
 import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
 import { ButtonWrapper } from "./flight";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import dayjs from "dayjs";
+
 
 function Stays() {
-  const [data, setData] = useState("");
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
-  const { isMobile } = useScreenResolution();
+    const [data, setData] = useState("");
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
+    const { isMobile } = useScreenResolution();
+    
+    const today = dayjs().toDate();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -50,35 +51,53 @@ function Stays() {
       <Flex align="center" direction={isMobile ? "column" : "row"} gap=".5rem">
         <Flex
           direction="column"
-          gap=".75rem"
+          gap=".5rem"
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
-          <Text
-            type="label"
-            size={isMobile ? 16 : 18}
-            text="Your stay preference?"
-          />
-          <Input
-            placeholder="Enter Destination or Hotel Name"
-            styles={{ fontFamily: "poppins" }}
-          />
+            <Text
+                type="label"
+                size={isMobile ? 16 : 16}
+                text="Your stay preference?"
+            />
+            <Input
+                placeholder="Enter Destination or Hotel Name"
+                styles={{ fontFamily: "poppins" }}
+            />
         </Flex>
         <Flex
           direction="column"
-          gap=".75rem"
+          gap=".5rem"
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
-          <Text type="label" size={isMobile ? 16 : 18} text="Check In" />
-          <DatePicker placeholder="Select Date" position="start" onChange={(e) => null} />
+            <Text
+                type="label"
+                size={isMobile ? 16 : 16}
+                text="Check In"
+            />
+            <DatePicker
+                placeholder="Select Date"
+                position="start"
+                minDate={today}
+                onChange={(e) => null}
+            />
         </Flex>
 
         <Flex
           direction="column"
-          gap=".75rem"
+          gap=".5rem"
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
-          <Text type="label" size={isMobile ? 16 : 18} text="Return" />
-          <DatePicker placeholder="Select Date" position="start" onChange={(e) => null} />
+            <Text
+                type="label"
+                size={isMobile ? 16 : 16}
+                text="Return"
+            />
+            <DatePicker
+                placeholder="Select Date"
+                position="start"
+                minDate={today}
+                onChange={(e) => null}
+            />
         </Flex>
 
         <Flex
@@ -103,14 +122,14 @@ function Stays() {
             </div>
           </ClickAwayListener>
         </Flex>
-      </Flex>
-      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
+          </Flex>
+          
+      <Flex justify="flex-end" margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}>
         <Button
-          width={isMobile ? "100%" : "fit-content"}
-          padding={"0 1.5rem"}
-          background="#06062A"
+          width={isMobile ? "100%" : "300px"}
+          padding="0 1.5rem"
           borderRadius="4px"
-          cursor="pointer"
+          background={ttColors.dark}
           onClick={async () => {
             if (loading) return;
             setLoading(true);
@@ -119,9 +138,9 @@ function Stays() {
           }}
         >
           {loading ? (
-            <Spinner fill={ttColors.primary} size={"45px"} />
+            <Spinner fill={ttColors.primary} size={"36px"} />
           ) : (
-            <Text type="p" text="Search for Hotels" size={18} weight={500} />
+            <Text type="p" text="Search for Hotels" weight={500} />
           )}
         </Button>
       </Flex>
