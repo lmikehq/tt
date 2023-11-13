@@ -14,9 +14,12 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 function OverviewSystem() {
     const { isMobile } = useScreenResolution();
-    const { checkFlightsResponse, saveBookingResponse, conversionRate } =
-        useFlightBookingStore((state) => state);
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { checkFlightsResponse, saveBookingResponse } = useFlightBookingStore(
+        (state) => state
+    );
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
     const flights = checkFlightsResponse?.flights ?? [];
     const departure = flights[0];
     const arrival = flights[flights?.length - 1];

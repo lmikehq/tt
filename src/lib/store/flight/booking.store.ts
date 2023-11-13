@@ -29,6 +29,7 @@ import { TokenizeDataResponse } from "@/lib/types/response-models/flight/payment
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 import { useUserPreferencesStore } from "../preferences.store";
+import { CONVERSION_RATE_KEY } from "@/lib/extensions/constants";
 
 interface State {
     highestStep: number;
@@ -63,7 +64,6 @@ interface State {
     confirmPaymentMode: Mode;
     bookingDetailsMode: Mode;
     bookingDetailsResponse: BookingDetailsInterface | null;
-    conversionRate: number;
 }
 interface Actions {
     prevStep: () => void;
@@ -116,7 +116,6 @@ export const useFlightBookingStore = create<State & Actions>(
             currency: "USD",
             total: 0,
         },
-        conversionRate: 0,
         searchQuery: { limit: 10 },
         sessionId: null,
         seatRows: [],
@@ -177,10 +176,16 @@ export const useFlightBookingStore = create<State & Actions>(
             })
                 .then((response) => {
                     console.log("rrrr", response.data);
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
+                    useUserPreferencesStore.setState({
+                        conversionRate: response.fx_rate,
+                    });
                     set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
-                        conversionRate: response.fx_rate,
 
                         flightsResults: {
                             currency: response.currency,
@@ -206,10 +211,16 @@ export const useFlightBookingStore = create<State & Actions>(
                 },
             })
                 .then((response) => {
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
+                    useUserPreferencesStore.setState({
+                        conversionRate: response.fx_rate,
+                    });
                     set({
                         searchMoreFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
-                        conversionRate: response.fx_rate,
                     });
                 })
                 .catch((error) => {

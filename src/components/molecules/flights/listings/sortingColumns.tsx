@@ -121,14 +121,11 @@ function Panel({
 }
 
 function SortingColumns({ onClose }: { onClose?: () => void }) {
-    const {
-        searchFlights,
-        searchFlightsMode,
-        updateSearchQuery,
-        searchQuery,
-        conversionRate,
-    } = useFlightBookingStore((state) => state);
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { searchFlights, searchFlightsMode, updateSearchQuery, searchQuery } =
+        useFlightBookingStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
 
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
