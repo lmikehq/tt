@@ -1,10 +1,15 @@
 "use client";
 import Section from "@/components/molecules/section";
 import BreadCrumbPane from "@/components/molecules/stays/view/BreadCrumbPane";
+import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom";
 import CompareSimilarHotels from "@/components/molecules/stays/view/CompareSimilarHotels";
 import CompareSlider from "@/components/molecules/stays/view/CompareSlider";
+import DescriptionOfHotel from "@/components/molecules/stays/view/DescriptionOfHotel";
 import HeroImageGrid from "@/components/molecules/stays/view/HeroImageGrid";
+import HotelAmenities from "@/components/molecules/stays/view/HotelAmenities";
 import HotelReviews from "@/components/molecules/stays/view/HotelReviews";
+import LikeSimilarHotels from "@/components/molecules/stays/view/LikeSimilarHotels";
+import Location from "@/components/molecules/stays/view/Location";
 import Policies from "@/components/molecules/stays/view/Policies";
 import StayDetailsTab from "@/components/molecules/stays/view/StayDetailsTab";
 import RecentlyViewedList from "@/components/molecules/stays/view/recently-viewed/RecentlyViewedList";
@@ -19,6 +24,11 @@ const StayViewPage = () => {
       <Flex gap="2.25rem">
         <Section width="62%">
           <StayDetailsTab />
+          <ChooseYourRoom />
+          <LikeSimilarHotels />
+          <Location />
+          <DescriptionOfHotel />
+          <HotelAmenities />
           <CompareSlider />
           <Policies />
           <HotelReviews />

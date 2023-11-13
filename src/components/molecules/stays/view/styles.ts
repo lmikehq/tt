@@ -22,12 +22,24 @@ export const List = styled.div`
   border-radius: 6px;
 `;
 
-
-
 export const GridLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  &.amenities_grid {
+    width: 100% !important;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between !important;
+    grid-column-gap: 10%;
+  }
+  &.description_grid {
+    grid-template-columns: 65% 30%;
+    justify-items: space-between !important;
+    grid-column-gap: 40px;
+  }
+  &.location_grid {
+    grid-column-gap: 0px !important;
+  }
   @media screen and (max-width: 900px) {
     grid-template-columns: 1fr;
   }
@@ -43,7 +55,6 @@ export const ImageBox = styled.div`
 export const GridBox = styled.div`
   display: grid;
   grid-template-columns: 30% auto;
-  // display: flex;
   align-items: center;
   gap: 20px;
   .LineProgressBar {
@@ -76,4 +87,12 @@ export const Content = styled.div`
 
 export const Span = styled.div`
   position: relative;
+`;
+
+export const MapBox = styled.div`
+  width: 100%;
+  height: 300px;
+  background-color: var(--color-light-gray);
+  border-radius: 20px;
+  margin-bottom: 25px;
 `;
