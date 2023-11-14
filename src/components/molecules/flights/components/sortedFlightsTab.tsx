@@ -121,13 +121,13 @@ function SortedFlightsTab(props: sortProps) {
     return (
         <FlightContainer>
             {isLoading ? (
-                <Flex padding=".5rem .5rem" direction="column" gap=".8rem">
+                <Flex padding={isMobile ? ".5rem 1.5rem" : ".5rem 1rem"} direction="column" gap=".8rem">
                     <Text type="h3" text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`} weight={600} size={20} />
                     <Text type="p" size={14} text="for selected dates" color={ttColors.lighterGray} />
                     <ProgressLoader />
                 </Flex>
             ) : (
-                <Flex justify={isMobile ? "space-between" : "flex-start"} overflowX="auto" className="scroll-custom">
+                <Flex justify={isMobile ? "space-between" : "flex-start"} margin="0 1rem" overflowX="auto" className="scroll-custom">
                     <ButtonBox
                         isMobile={isMobile}
                         active={props.sortType === "best"}

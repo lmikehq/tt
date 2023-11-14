@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import TripSummaryDetails from "./TripSummaryDetails";
 import { FlightContext } from "@/lib/extensions/context";
 import FlightDepartureIcon from "@/components/molecules/flights/components/flightDepartureIcon";
+import { useRouter } from "next/navigation";
 
 interface TripSummaryCardProps {
     departure: Flight;
@@ -88,6 +89,7 @@ export default function TripSummaryCard({
     flights,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
+    const { push } = useRouter()
     const [isOpen, setIsOpen] = useState(false);
     const flightContext = useContext(FlightContext)
     const flightState = flightContext?.state
@@ -109,6 +111,7 @@ export default function TripSummaryCard({
                             color={ttColors.dark}
                             variant="outline"
                             styles={{ fontSize: isMobile ? "14px" : "14px" }}
+                            onClick={() => push('/flight/listings')}
                         >
                             Change Flight
                         </Button>

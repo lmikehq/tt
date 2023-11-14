@@ -1,7 +1,9 @@
 "use client";
 
+import Text from "@/components/atoms/text";
 import FlightBookingProgress from "@/components/molecules/FormProgress/FlightBookingProgress";
 import Section from "@/components/molecules/section";
+import ProgressLoader from "@/components/organisms/Loader/ProgressLoader";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import {
     OverviewHeader,
@@ -17,9 +19,13 @@ import SeatSelection from "@/components/organisms/flight/booking/steps/SeatSelec
 import TripSummary from "@/components/organisms/flight/booking/steps/TripSummary";
 import MultiStepWithSideMenu from "@/components/templates/MultiStepWithSideMenu";
 import SectionLayout from "@/components/templates/SectionLayout";
+import Flex from "@/components/templates/flex";
+import { useQueryParams } from "@/hooks/useNext";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import sleep from "@/lib/extensions/helpers/sleep";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { ttColors } from "@/lib/theme/colors";
 import { Mode } from "@/lib/types";
 import {
     Combination,
@@ -29,7 +35,39 @@ import {
     CheckFlightResponse,
     Definitions,
 } from "@/lib/types/response-models/flight/check_flight.type";
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
+import { BiTransferAlt } from "react-icons/bi";
+import { BsDot } from "react-icons/bs";
+var advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
+
+
+function BookingLoader() {
+    const { isMobile } = useScreenResolution()
+    const { searchQuery } = useFlightBookingStore((state) => state);
+    const flight = {
+        departure: searchQuery?.fly_from ?? "",
+        arrival: searchQuery?.fly_to ?? "",
+        departureDate: searchQuery?.date_from ?? dayjs(),
+    }
+
+    return (
+        <Flex direction="column" align="center" gap="1rem" padding={isMobile ? "8rem 0rem 12rem" : "6rem 1rem 12rem"}>
+            <Text type="h3" text="Hold on your trip is loading" weight={600} size={isMobile ? 20 : 24} />
+            <Flex width={isMobile ? "70%" : "max-content"} gap="1rem" align="center" margin="0 0 1.5rem 0">
+                <Flex gap=".5rem">
+                    <Text type="p" size={15} text={flight.departure} color={ttColors.foundation.black} />
+                    <BiTransferAlt color={ttColors.foundation.black} size={24} />
+                    <Text type="p" size={16} text={flight.arrival} color={ttColors.foundation.black} />
+                </Flex>
+                <Flex background={ttColors.lightestGray} borderRadius="50%" width="28px" height="13px" />
+                <Text styles={{ minWidth: "max-content" }} type="p" size={14} text={dayjs().format("ddd, Do MMM")} color={ttColors.foundation.black} />
+            </Flex>
+            <ProgressLoader width={isMobile ? "90%" : "50%"} />
+        </Flex>
+    )
+}
 
 const FlightBookingPage = () => {
     const {
@@ -278,13 +316,7 @@ const FlightBookingPage = () => {
                 </Section>
 
                 {initCheckFlightsMode === Mode.loading ? (
-                    <SkeletonLoader
-                        tabs={2}
-                        textWidth='100%'
-                        textHeight='30px'
-                        rectangularWidth='100%'
-                        rectangularHeight='50px'
-                    />
+                    <BookingLoader />
                 ) : (
                     <MultiStepWithSideMenu
                         direction={(() => {

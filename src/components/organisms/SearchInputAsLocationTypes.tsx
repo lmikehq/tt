@@ -14,6 +14,7 @@ import { InputAdornment, Popper } from "@mui/material";
 import { IoLocationOutline } from "react-icons/io5";
 import { ttColors } from "@/lib/theme/colors";
 import Spinner from "../molecules/icons/spinner";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 interface SearchInputAsLocationTypesProps {
     locations: Location[];
@@ -24,11 +25,12 @@ interface SearchInputAsLocationTypesProps {
     loading: boolean;
 }
 
-const PopperMy = function (props: any) {
+function PopperMy(props: any) {
+    const { isMobile } = useScreenResolution()
     return (
         <Popper
             {...props}
-            style={{ width: "300px" }}
+            style={{ width: isMobile ? "340px" : "320px" }}
             placement="bottom-start"
             className="scroll-custom"
         />
@@ -161,7 +163,7 @@ export default function SearchInputAsLocationTypes({
 
                         startAdornment: (
                             <InputAdornment position="start">
-                                <IoLocationOutline size={20} />
+                                <IoLocationOutline size={22} />
                             </InputAdornment>
                         ),
                         endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : null,

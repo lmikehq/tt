@@ -224,7 +224,7 @@ function Flights() {
 
 
 	return (
-		<Section padding="1.5rem 0rem 0" styles={{ position: "relative" }}>
+        <Section padding={isMobile ? ".5rem 0 0" : "1.5rem 0 0"} styles={{ position: "relative" }}>
 			<Flex direction="column">
 				{isMobile &&
 					<FlightType

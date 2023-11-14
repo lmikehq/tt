@@ -92,7 +92,7 @@ function LoginModal({ isOpen, onClose, to }: { isOpen: boolean; onClose: VoidFun
     
     return (
         <Modal open={isOpen} handleClose={onClose}>
-            <Stack direction='column' alignItems="center" spacing={3} bgcolor='white' padding={6} borderRadius='16px' width={isMobile ? '90vw' : '30vw'}>
+            <Stack direction='column' alignItems="center" spacing={3} bgcolor='white' paddingX={5} paddingY={5} borderRadius='16px' width={isMobile ? '90vw' : '30vw'}>
                 <Flex width="100%" justify="center">
                     <Flex width="max-content" padding="1rem" borderRadius="50%" background={ttColors.primary100}>
                         <HiLockClosed size={28} color={ttColors.primary600} />
@@ -179,6 +179,8 @@ function AvailableFlights() {
         updateSearchQuery,
         searchQuery,
     } = useFlightBookingStore((state) => state);
+
+    const { isMobile } = useScreenResolution()
     
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
@@ -298,24 +300,26 @@ function AvailableFlights() {
 
     useEffect(() => {
         const sanitizedQuery = {
-            fly_from: queryParams?.fly_from,
-            fly_to: queryParams?.fly_to,
-            date_from: queryParams?.date_from,
-            cabin: queryParams?.cabin,
-            adults: Number(queryParams?.adults),
-            children: Number(queryParams?.children),
-            infants: Number(queryParams?.infants),
+            fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
+            fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
+            date_from: queryParams?.date_from ?? searchQuery?.date_from,
+            cabin: queryParams?.cabin ?? searchQuery?.selected_cabins,
+            adults: Number(queryParams?.adults) ?? searchQuery?.adults,
+            children: Number(queryParams?.children) ?? searchQuery?.children,
+            infants: Number(queryParams?.infants) ?? searchQuery?.infants,
         }
-        handleSearchResults({ ...searchQuery, ...sanitizedQuery })
+        if (sanitizedQuery?.fly_from && sanitizedQuery?.fly_to && sanitizedQuery?.date_from && sanitizedQuery?.adults) {
+            handleSearchResults({ ...searchQuery, ...sanitizedQuery })
+        }
     }, [queryParams])
 
-    useEffect(() => {
-        console.log('qqq', searchQuery)
-    }, [searchQuery]);
+    // useEffect(() => {
+    //     console.log('qqq', searchQuery)
+    // }, [searchQuery]);
 
-    useEffect(() => {
-        console.log('ressss', searchFlightsResults)
-    }, [searchFlightsResults]);
+    // useEffect(() => {
+    //     console.log('ressss', searchFlightsResults)
+    // }, [searchFlightsResults]);
 
     useEffect(() => {
         const interval = setTimeout(() => {
@@ -326,7 +330,7 @@ function AvailableFlights() {
 
 
     return (
-        <Flex direction="column" width="100%" gap=".5rem">
+        <Flex direction="column" width="100%" gap=".5rem" padding={isMobile ? "0 1.5rem" : "0"}>
             {formComplete &&
                 <SortedFlightsTab
                     best={best}
