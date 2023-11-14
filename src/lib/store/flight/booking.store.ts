@@ -75,6 +75,9 @@ interface Actions {
     searchMoreFlights: (params: {
         data: SearchFlightsRequestQuery;
     }) => Promise<void>;
+    searchFlightToGetKiwiConversionRate: (params: {
+        dateFrom: string;
+    }) => Promise<void>;
     checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
     setInitCheckFlightsMode: (mode: Mode) => void;
     checkSeating: (params: {
@@ -161,6 +164,40 @@ export const useFlightBookingStore = create<State & Actions>(
         },
         updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
             set({ searchQuery: data });
+        },
+        searchFlightToGetKiwiConversionRate: async ({
+            dateFrom,
+        }: {
+            dateFrom: string;
+        }) => {
+            useUserPreferencesStore.setState({
+                showBackDropLoader: true,
+            });
+            return await FlightBookingService.searchFlights({
+                data: {
+                    limit: 10,
+                    fly_from: "LOS",
+                    fly_to: "LAX",
+                    date_from: dateFrom,
+                    adults: 1,
+                    children: 0,
+                    infants: 0,
+                    curr: useUserPreferencesStore.getState().preFerredCurrency,
+                },
+            })
+                .then((response) => {
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
+                    useUserPreferencesStore.setState({
+                        conversionRate: response.fx_rate,
+                        showBackDropLoader: false,
+                    });
+                })
+                .catch((error) => {
+                    throw error;
+                });
         },
         searchFlights: async ({
             data,

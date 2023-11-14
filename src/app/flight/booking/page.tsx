@@ -20,6 +20,7 @@ import SectionLayout from "@/components/templates/SectionLayout";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import sleep from "@/lib/extensions/helpers/sleep";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Mode } from "@/lib/types";
 import {
     Combination,
@@ -29,7 +30,8 @@ import {
     CheckFlightResponse,
     Definitions,
 } from "@/lib/types/response-models/flight/check_flight.type";
-import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import React, { useEffect, useRef, useState } from "react";
 
 const FlightBookingPage = () => {
     const {
@@ -41,17 +43,20 @@ const FlightBookingPage = () => {
         initCheckFlightsMode,
         checkFlightsResponse,
         setInitCheckFlightsMode,
+        searchFlightToGetKiwiConversionRate,
     } = useFlightBookingStore((state) => state);
 
     const searchParams = extractSearchParamsFromUrl({
         url: window.location.href,
     });
 
-    const { adults = '0', children = '0', infants = '0' } = searchParams;
+    const isMounted = useRef(false);
+    const { adults = "0", children = "0", infants = "0" } = searchParams;
 
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
     >([]);
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
     const [checkedBags, setCheckedBags] = useState<{
         order: { [key: number]: number[] };
@@ -236,26 +241,39 @@ const FlightBookingPage = () => {
         )!;
 
     useEffect(() => {
+        if (isMounted.current) {
+            const currentDate = dayjs();
+            const futureDate = currentDate.add(3, "day");
+
+            const dateFrom = futureDate.format("DD/MM/YYYY");
+            searchFlightToGetKiwiConversionRate({ dateFrom });
+        } else {
+            isMounted.current = true;
+        }
+    }, [preFerredCurrency]);
+    useEffect(() => {
         const searchParams = extractSearchParamsFromUrl({
             url: window.location.href,
         });
-        setInitCheckFlightsMode(Mode.loading)
+        setInitCheckFlightsMode(Mode.loading);
         checkFlights({
             query: {
                 bnum: 0,
                 ...searchParams,
             },
         }).then((response) => {
-            setInitCheckFlightsMode(Mode.loaded)
+            setInitCheckFlightsMode(Mode.loaded);
             checkFlightsThreeSecondsInterval({
                 sessionId: response.session_id,
                 searchParams,
-            })
+            });
         });
 
         setCheckedBags((prev) => {
             const newObj: { [key: number]: number[] } = {};
-            const noOfPassengers = Array(parseInt(adults) + parseInt(children) + parseInt(infants)).fill("p");
+            const noOfPassengers = Array(
+                parseInt(adults) + parseInt(children) + parseInt(infants)
+            ).fill("p");
             noOfPassengers.forEach((e, index) => {
                 newObj[index] = [];
             });
@@ -280,10 +298,10 @@ const FlightBookingPage = () => {
                 {initCheckFlightsMode === Mode.loading ? (
                     <SkeletonLoader
                         tabs={2}
-                        textWidth='100%'
-                        textHeight='30px'
-                        rectangularWidth='100%'
-                        rectangularHeight='50px'
+                        textWidth="100%"
+                        textHeight="30px"
+                        rectangularWidth="100%"
+                        rectangularHeight="50px"
                     />
                 ) : (
                     <MultiStepWithSideMenu
@@ -310,7 +328,11 @@ const FlightBookingPage = () => {
                             switch (step) {
                                 case 2:
                                 case 3:
-                                    return <PriceSummary checkedBags={checkedBags} />;
+                                    return (
+                                        <PriceSummary
+                                            checkedBags={checkedBags}
+                                        />
+                                    );
                                 case 4:
                                     return <SeatSelectionMenu />;
                                 case 5:
@@ -350,7 +372,6 @@ const FlightBookingPage = () => {
                         </React.Fragment>
                     </MultiStepWithSideMenu>
                 )}
-
             </SectionLayout>
         </Section>
     );
