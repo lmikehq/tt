@@ -12,11 +12,20 @@ import { cardDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schem
 import { useFormik } from "formik";
 import { CardInfo } from "@/lib/types/request-models/flight/booking.type";
 import toast from "react-hot-toast";
+import Spinner from "@/components/molecules/icons/spinner";
+import { usePaymentStore } from "@/lib/store/payment.store";
+import { Mode } from "@/lib/types";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 const OverviewAndPayment = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { saveBookingResponse, cardDetails, confirmPaymentZooz } =
         useFlightBookingStore((state) => state);
+    const { createFlutterWavePayment, mode } = usePaymentStore(
+        (state) => state
+    );
+
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
     const handleMakepayment = async ({
         cardDetails,
     }: {
@@ -71,9 +80,28 @@ const OverviewAndPayment = () => {
                 <Button
                     background={ttColors.dark}
                     width="100%"
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => {
+                        createFlutterWavePayment({
+                            gateway: "flutterwave",
+                            currency: preFerredCurrency,
+                            service: "FLIGHT",
+                            serviceID: saveBookingResponse?.flightId ?? "",
+                            paymentIntent: "FLIGHT FEE",
+                            user: saveBookingResponse?.userId ?? "",
+                            amount: saveBookingResponse?.total ?? 0,
+                        });
+                    }}
                 >
-                    <Text type="p" text="Make Payment" weight={600} />
+                    {mode == Mode.loading ? (
+                        <Spinner size="40px" fill={ttColors.primary} />
+                    ) : (
+                        <Text
+                            type="p"
+                            text="Make Payment"
+                            size={16}
+                            weight={500}
+                        />
+                    )}
                 </Button>
             </Box>
             <PaymentModal
