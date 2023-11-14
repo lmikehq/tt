@@ -1,6 +1,7 @@
 import Flex from "@/components/templates/flex";
 
-import User from "../../../../../public/assets/images/blog/user.png";
+import User from "/public/assets/images/blog/user.png";
+import BlogMiniImg from "/public/assets/images/blog/blogImgMini.png";
 import BlogCardMini from "./blogArticle";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
@@ -15,7 +16,7 @@ export const BlogArticleMini = () => {
         gap="1.5rem"
       >
         <BlogCardMini
-          imageSrc="../../../../../public/assets/images/blog/blogImgMini.png"
+          imageSrc={BlogMiniImg.src}
           userImageSrc={User}
           authorName="Seun Adebayo"
           authorRole="Admin Thrillers"
@@ -29,7 +30,7 @@ export const BlogArticleMini = () => {
           upvote="..."
         />
         <BlogCardMini
-          imageSrc="../../../../../public/assets/images/blog/blogImgMini.png"
+          imageSrc={BlogMiniImg.src}
           userImageSrc={User}
           authorName="Seun Adebayo"
           authorRole="Admin Thrillers"
