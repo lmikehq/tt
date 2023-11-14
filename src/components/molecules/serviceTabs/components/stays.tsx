@@ -1,7 +1,7 @@
 "use client";
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Button from "@atom/button";
 import Text from "@atom/text";
 import { styled } from "styled-components";
@@ -17,8 +17,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Location from "@/lib/types/response-models/flight/location.type";
 import LocationSearchSelectInput from "@/components/organisms/LocationSearchSelectInput";
-import dayjs from "dayjs";
-import { DatePicker } from "@/components/organisms/customDatePicker";
+import { DatePicker } from "@organism/datepicker";
 
 // STYLES
 const FlexBox = styled.div`
@@ -105,7 +104,7 @@ function Stays() {
       active: true,
       code: "IBD",
       icao: "ABC123",
-      name: "Ibadan",
+      name: "",
       slug: "ibadan",
       slug_en: "ibadan-en",
       alternative_names: [],
@@ -169,13 +168,7 @@ function Stays() {
     setStay({ ...selectedStay, ...updatedData });
   };
 
-  // DTAE PICKER
-  const today = dayjs();
-
-  // DATE PICKER
-  const handleDateChange = (selectedDate: Date | null) => {
-    console.log("Selected Date:", selectedDate);
-  };
+ 
 
   const open = Boolean(anchorEl);
 
@@ -273,9 +266,7 @@ function Stays() {
           <DatePicker
             placeholder="Select Date"
             position="start"
-            value={today.toDate()}
-            minDate={today.toDate()}
-            onChange={handleDateChange}
+            onChange={(e) => null}
           />
         </Flex>
 
@@ -288,9 +279,7 @@ function Stays() {
           <DatePicker
             placeholder="Select Date"
             position="start"
-            value={today.toDate()}
-            minDate={today.toDate()}
-            onChange={handleDateChange}
+            onChange={(e) => null}
           />
         </Flex>
 

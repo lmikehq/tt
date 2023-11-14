@@ -83,26 +83,6 @@ export const ReviewHeader = styled.div`
 `;
 export const Content = styled.div`
   padding: 15px;
-  .fade_text {
-    position: relative;
-    font-size: 15px;
-    line-height: 1.5;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-
-    &:after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1.5em;
-      background: linear-gradient(transparent, white);
-      mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-    }
-  }
 `;
 
 export const Span = styled.div`
@@ -114,5 +94,5 @@ export const MapBox = styled.div`
   height: 300px;
   background-color: var(--color-light-gray);
   border-radius: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 `;

@@ -22,10 +22,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Pagination } from "@mui/material";
 import { useState } from "react";
-import { styled } from "@mui/material/styles";
+import { styled as muiStyled } from "@mui/material/styles";
 import { Rating } from "@mui/material";
+import styled from "styled-components";
 
-const StyledRating = styled(Rating)({
+const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
     color: "var(--color-green)",
   },
@@ -33,6 +34,48 @@ const StyledRating = styled(Rating)({
     color: "var(--color-green)",
   },
 });
+
+// Function to count the number of lines in a text
+const getLineCount = (text: string): number => {
+  // Split the text into lines
+  const lines = text.split("\n");
+  // Filter out empty lines
+  const nonEmptyLines = lines.filter((line) => line.trim() !== "");
+  // Return the number of lines
+  return nonEmptyLines.length;
+};
+
+// STYLES
+const FadedText = styled.p.attrs<{ showAll: boolean; lineCount: number }>(
+  (props) => ({
+    showAll: props.showAll || false,
+    lineCount: props.lineCount || 0,
+  })
+)`
+  position: relative;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: ${({ showAll }) => (showAll ? "unset" : 3)};
+  -webkit-box-orient: vertical;
+
+  &:after {
+    content: ${({ showAll, lineCount }) =>
+      showAll && lineCount > 3 ? '""' : "none"};
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3em; /* Adjust the height according to your design */
+    background: linear-gradient(transparent, white);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+
+  &.hidden {
+    -webkit-line-clamp: unset; /* Show all lines when hidden */
+  }
+`;
 
 interface Reviews {
   name: string;
@@ -63,7 +106,7 @@ const reviews: Reviews[] = [
     commentDate: "2023-11-12T14:18:31.520+00:00",
     stayedIn: "2023-11-12T14:18:31.520+00:00",
     comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
+      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
   },
   {
     name: "Kenneth Angela",
@@ -92,8 +135,7 @@ const reviews: Reviews[] = [
     rooms: 2,
     commentDate: "2023-11-12T14:18:31.520+00:00",
     stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
+    comment: "This hotel would have been a 5 if only there were tea/coffee",
   },
   {
     name: "Kenneth Angela",
@@ -403,6 +445,9 @@ const HotelReviews = () => {
               month: "long",
               year: "numeric",
             }).format(new Date(review.stayedIn));
+
+            console.log(`COUNT: ${getLineCount(review.comment)}`);
+
             return (
               <Span key={index}>
                 <ReviewHeader style={{ backgroundColor: ttColors.grayishAsh }}>
@@ -448,34 +493,40 @@ const HotelReviews = () => {
                 </ReviewHeader>
                 <Content>
                   <Flex direction="column">
-                    {!hiddenReviews.includes(index) && (
-                      <Flex direction="column" className="main_content">
-                        <Text
-                          weight={"bold"}
-                          type="h4"
-                          size={16}
-                          text={review.title}
-                          styles={{ margin: "10px 0px" }}
-                        ></Text>
-                        <Text className="fade_text" type="p" size={15} text={review.comment}></Text>
-                        <ul style={{ fontSize: "13px", margin: "15px 0px" }}>
-                          <Flex gap="30px">
-                            <li style={{ listStyle: "none" }}>
-                              <Text
-                                type="p"
-                                text={`Comment: ${commentDate}`}
-                              ></Text>
-                            </li>
-                            <li style={{ listStyle: "" }}>
-                              <Text
-                                type="p"
-                                text={`Stayed in: ${stayedIn}`}
-                              ></Text>
-                            </li>
-                          </Flex>
-                        </ul>
-                      </Flex>
-                    )}
+                    <Flex direction="column" className="main_content">
+                      <Text
+                        weight={"bold"}
+                        type="h4"
+                        size={16}
+                        text={review.title}
+                        styles={{ margin: "10px 0px" }}
+                      ></Text>
+                      <FadedText
+                        showAll={hiddenReviews.includes(index)}
+                        onClick={() => toggleReviewVisibility(index)}
+                        lineCount={getLineCount(review.comment)}
+                      >
+                        {review.comment}
+                      </FadedText>
+
+                      <ul style={{ fontSize: "13px", margin: "15px 0px" }}>
+                        <Flex gap="30px">
+                          <li style={{ listStyle: "none" }}>
+                            <Text
+                              type="p"
+                              text={`Comment: ${commentDate}`}
+                            ></Text>
+                          </li>
+                          <li style={{ listStyle: "" }}>
+                            <Text
+                              type="p"
+                              text={`Stayed in: ${stayedIn}`}
+                            ></Text>
+                          </li>
+                        </Flex>
+                      </ul>
+                    </Flex>
+
                     <Span>
                       <Flex
                         className="hide_btn"
@@ -488,7 +539,7 @@ const HotelReviews = () => {
                         }}
                         onClick={() => toggleReviewVisibility(index)}
                       >
-                        {hiddenReviews.includes(index) ? (
+                        {!hiddenReviews.includes(index) ? (
                           <KeyboardArrowDownIcon />
                         ) : (
                           <KeyboardArrowUpIcon />
@@ -497,7 +548,7 @@ const HotelReviews = () => {
                           type="p"
                           size={13}
                           text={
-                            hiddenReviews.includes(index)
+                            !hiddenReviews.includes(index)
                               ? "Show Review"
                               : "Hide Review"
                           }
@@ -528,7 +579,7 @@ const HotelReviews = () => {
                                     color: ttColors.primary,
                                   },
                                   "&.MuiSvgIcon-root": {
-                                    fontSize: 20,
+                                    // fontSize: 20,
                                   },
                                 }}
                               />
@@ -553,7 +604,7 @@ const HotelReviews = () => {
                                     color: ttColors.primary,
                                   },
                                   "& .MuiSvgIcon-root": {
-                                    fontSize: 20,
+                                    // fontSize: 20,
                                   },
                                 }}
                               />
