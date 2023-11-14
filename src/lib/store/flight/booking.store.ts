@@ -326,6 +326,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 data,
             })
                 .then((response) => {
+                    console.log(response.seating.status, "k");
                     set((state) => ({
                         mode: Mode.loaded,
                         checkSeatingResponse: response,

@@ -231,7 +231,6 @@ const SeatSelection = () => {
             birthday: el.birthday,
             category: el.category,
         }));
-    const offers = checkSeatingResponse?.seating.offers;
 
     const selectParticularSeat = ({
         name,
@@ -369,6 +368,7 @@ const SeatSelection = () => {
     const computeSeatRows = (checkSeatingResponse: CheckSeatingResponse) => {
         let rows: SeatRowWithSegmentCodeInterface[] = [];
         const offers = checkSeatingResponse.seating.offers;
+        if (offers.length == 0) return handleDisplayEmptySeatModal();
         for (let i = offers.length - 1; i >= 0; i--) {
             const offer = offers[i];
             (offer.seatmap?.sections ?? []).forEach((section) => {
