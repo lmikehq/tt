@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox } from "@mui/material";
 import Section from "../../section";
 import Flex from "@/components/templates/flex";
@@ -15,7 +15,7 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import Button from "@/components/atoms/button";
-import { Container, Header } from "./styles";
+import { Container, Header, Tab } from "./styles";
 import { styled } from "@mui/material/styles";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -31,12 +31,44 @@ const StyledRating = styled(Rating)({
   },
 });
 
+interface TabProps {
+  id: string;
+  label: string;
+}
+
+const tabs: TabProps[] = [
+  { id: "overview", label: "Overview" },
+  { id: "rooms", label: "Rooms" },
+  { id: "location", label: "Location" },
+  { id: "descriptions", label: "Descriptions" },
+  { id: "policies", label: "Policies" },
+];
+
 function StayDetails() {
+
+   const [activeTab, setActiveTab] = useState("overview");
+
+   const handleTabClick = (id: string) => {
+     setActiveTab(id);
+   };
   return (
     <Container>
-      <Header>
-				<a href=""></a>
-			</Header>
+      <Header id="overview">
+        <Tab>
+          <Flex gap="20px">
+            {tabs.map((tab) => (
+              <a
+                key={tab.id}
+                className={`anchor ${tab.id === activeTab ? "active" : ""}`}
+                href={`#${tab.id}`}
+                onClick={() => handleTabClick(tab.id)}
+              >
+                <Text size={18} type="p" text={tab.label} weight={600}></Text>
+              </a>
+            ))}
+          </Flex>
+        </Tab>
+      </Header>
       <Flex gap="20px">
         <Section width="65%">
           <Flex align="center" justify="space-between">
@@ -82,6 +114,7 @@ function StayDetails() {
                   fontSize: "20px",
                 }}
                 name="rating"
+                precision={0.5}
                 readOnly
                 max={5}
                 defaultValue={4}

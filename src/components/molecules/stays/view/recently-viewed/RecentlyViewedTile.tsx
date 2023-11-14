@@ -98,6 +98,7 @@ const RecentlyViewedTile = () => {
                     }}
                     name="rating"
                     readOnly
+                    precision={0.5}
                     max={5}
                     defaultValue={room.rating}
                   />

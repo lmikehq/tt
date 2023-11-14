@@ -19,7 +19,6 @@ import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import AccessibleForwardOutlinedIcon from "@mui/icons-material/AccessibleForwardOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
-import Button from "@/components/atoms/button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Slider from "react-slick";
@@ -342,6 +341,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                     style={{ marginLeft: "-4px" }}
                     name="rating"
                     readOnly
+                    precision={0.5}
                     defaultValue={room.rating}
                   />
                   <Text

@@ -12,7 +12,7 @@ const Policies = () => {
     <>
       <Container style={{ padding: "25px" }}>
         <Span>
-          <Header>
+          <Header id="policies">
             <Text type="h4" weight={"bold"} text="Policies"></Text>
           </Header>
           <GridLayout style={{ justifyContent: "space-between" }}>

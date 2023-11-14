@@ -12,7 +12,7 @@ import ChooseYourRoomList from "./ChooseYourRoomList";
 const ChooseYourRoom = () => {
   return (
     <Container>
-      <Header>
+      <Header id="rooms">
         <Flex justify="space-between">
           <Text type="h1" size={24} weight={600} text="Choose Your Room" />
           <Button

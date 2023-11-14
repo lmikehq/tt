@@ -16,6 +16,17 @@ export const Header = styled.div`
   margin-bottom: 20px;
 `;
 
+export const Tab = styled.div`
+  .anchor {
+    color: var(--color-light-gray);
+    text-decoration: none;
+  }
+  .active {
+    border-bottom: 3px solid var(--primary-color);
+    color: var(--primary-color);
+  }
+`;
+
 export const List = styled.div`
   border: 1px solid var(--color-border);
   padding: 10px;

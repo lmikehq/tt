@@ -291,6 +291,7 @@ function CompareSlider() {
                         <Rating
                           name="rating"
                           readOnly
+                          precision={0.5}
                           defaultValue={room.rating}
                           style={{
                             color: "var(--color-rating)",

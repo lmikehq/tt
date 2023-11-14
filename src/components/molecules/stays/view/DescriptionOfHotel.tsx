@@ -9,7 +9,10 @@ const DescriptionOfHotel = () => {
   return (
     <>
       <Container style={{ width: "100%" }}>
-        <Header style={{ width: "100%", marginBottom: "30px" }}>
+        <Header
+          id="descriptions"
+          style={{ width: "100%", marginBottom: "30px" }}
+        >
           <Flex direction="column">
             <Text
               type="h4"
