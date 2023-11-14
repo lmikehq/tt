@@ -26,6 +26,7 @@ import sleep from "@/lib/extensions/helpers/sleep";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Mode } from "@/lib/types";
 import {
     Combination,
@@ -36,7 +37,7 @@ import {
     Definitions,
 } from "@/lib/types/response-models/flight/check_flight.type";
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiTransferAlt } from "react-icons/bi";
 import { BsDot } from "react-icons/bs";
 var advancedFormat = require('dayjs/plugin/advancedFormat')
@@ -85,7 +86,7 @@ const FlightBookingPage = () => {
         url: window.location.href,
     });
 
-    const { adults = '0', children = '0', infants = '0' } = searchParams;
+    const { adults = "0", children = "0", infants = "0" } = searchParams;
 
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
@@ -277,23 +278,25 @@ const FlightBookingPage = () => {
         const searchParams = extractSearchParamsFromUrl({
             url: window.location.href,
         });
-        setInitCheckFlightsMode(Mode.loading)
+        setInitCheckFlightsMode(Mode.loading);
         checkFlights({
             query: {
                 bnum: 0,
                 ...searchParams,
             },
         }).then((response) => {
-            setInitCheckFlightsMode(Mode.loaded)
+            setInitCheckFlightsMode(Mode.loaded);
             checkFlightsThreeSecondsInterval({
                 sessionId: response.session_id,
                 searchParams,
-            })
+            });
         });
 
         setCheckedBags((prev) => {
             const newObj: { [key: number]: number[] } = {};
-            const noOfPassengers = Array(parseInt(adults) + parseInt(children) + parseInt(infants)).fill("p");
+            const noOfPassengers = Array(
+                parseInt(adults) + parseInt(children) + parseInt(infants)
+            ).fill("p");
             noOfPassengers.forEach((e, index) => {
                 newObj[index] = [];
             });
@@ -342,7 +345,11 @@ const FlightBookingPage = () => {
                             switch (step) {
                                 case 2:
                                 case 3:
-                                    return <PriceSummary checkedBags={checkedBags} />;
+                                    return (
+                                        <PriceSummary
+                                            checkedBags={checkedBags}
+                                        />
+                                    );
                                 case 4:
                                     return <SeatSelectionMenu />;
                                 case 5:
@@ -382,7 +389,6 @@ const FlightBookingPage = () => {
                         </React.Fragment>
                     </MultiStepWithSideMenu>
                 )}
-
             </SectionLayout>
         </Section>
     );

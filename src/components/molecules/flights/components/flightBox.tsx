@@ -184,13 +184,14 @@ function FlightBox(props: flightProps) {
                                 />
                             </Flex>
                             <Flex
-                                gap={isMobile ? "1rem" : "1.4rem"}
+                                gap={isMobile ? "1rem" : "1.2rem"}
                                 justify="space-between"
                             >
                                 <Text
+                                    width="16%"
                                     type="p"
                                     size={isMobile ? 15 : 18}
-                                    weight={"bold"}
+                                    weight={700}
                                     text={dayjs(
                                         startRoute.utc_departure
                                     ).format("HH: mm")}
@@ -247,9 +248,10 @@ function FlightBox(props: flightProps) {
                                 justify="space-between"
                             >
                                 <Text
+                                    width="16%"
                                     type="p"
                                     size={isMobile ? 15 : 18}
-                                    weight={"bold"}
+                                    weight={700}
                                     text={dayjs(
                                         isRoundTrip
                                             ? startRoute.utc_arrival
@@ -481,7 +483,7 @@ function FlightBox(props: flightProps) {
                                 type="h1"
                                 text={`${price}`}
                                 weight={600}
-                                size={isMobile ? 24 : 32}
+                                size={isMobile ? 24 : 30}
                             />
                         </Flex>
 

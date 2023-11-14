@@ -12,7 +12,6 @@ import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 import { useUserPreferencesStore } from '@/lib/store/preferences.store'
 import { ttColors } from '@/lib/theme/colors'
 import { Baggage, BookingDetailsInterface, FlightCabins, FlightInterface } from '@/lib/types/response-models/flight/booking.type'
-import { Flight } from '@/lib/types/response-models/flight/check_flight.type'
 import { allCaps, capCase, moneyFormat } from '@/lib/utilFns'
 import { Box, Stack } from '@mui/material'
 import dayjs from 'dayjs'
@@ -139,7 +138,7 @@ function BookingHeader({ booking } : { booking: BookingDetailsInterface }) {
                 />
             </Stack>
 
-            <Flex justify='center' gap="1rem">
+            <Flex direction={isMobile ? "column": "row"} justify='center' align="center" gap="1rem">
                 <Flex
                     width='max-content'
                     border={`2px dotted ${ttColors.primary600}`}
@@ -252,7 +251,7 @@ function PassengerDetails({ booking }: { booking: BookingDetailsInterface }) {
 
 function PriceDetails({ booking }: { booking: BookingDetailsInterface }) {
     const { isMobile } = useScreenResolution()
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
 
     const adultsCount = booking.passengers.filter(e => e?.category === 'adult').length
     const childrenCount = booking.passengers.filter(e => e?.category === 'child').length
@@ -261,7 +260,7 @@ function PriceDetails({ booking }: { booking: BookingDetailsInterface }) {
 
     const calcPrice = (price: number) => {
         return formatPrice({
-            total: price,
+            total: price * conversionRate,
             currency: preFerredCurrency,
         })
     }    

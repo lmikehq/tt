@@ -26,7 +26,7 @@ function SortedColumn({ results, sortType }: sortProps) {
   return (
     <Section>
       {isMobile ? (
-        <Flex justify="space-between" align="center" padding="2rem 1.5rem">
+        <Flex justify="space-between" align="center" padding="0 1.5rem 2rem">
           <Flex direction="column">
             <Text type="h1" text="Flights" weight={500} size={20} />
             {!!sorted &&

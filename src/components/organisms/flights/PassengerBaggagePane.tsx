@@ -111,10 +111,10 @@ export default function PassengerBaggagePane({
     handleCheckedBags,
     removePassenger,
 }: PassengerBaggagePaneProps) {
-    const { checkFlightsResponse, conversionRate } = useFlightBookingStore(
+    const { checkFlightsResponse } = useFlightBookingStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
         (state) => state
     );
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
     const { isMobile } = useScreenResolution();
     const bagDefinitions = checkFlightsResponse?.baggage.definitions;
@@ -219,7 +219,15 @@ export default function PassengerBaggagePane({
                                         key={index}
                                     >
                                         <Image
-                                            height={e?.category === "personal_item" ? (isMobile ? 70 : 100) : (isMobile ? 110 : 150)}
+                                            height={
+                                                e?.category === "personal_item"
+                                                    ? isMobile
+                                                        ? 70
+                                                        : 100
+                                                    : isMobile
+                                                    ? 110
+                                                    : 150
+                                            }
                                             styles={{ objectFit: "contain" }}
                                             src={
                                                 e?.category === "personal_item"
@@ -385,7 +393,9 @@ export default function PassengerBaggagePane({
                                                 >
                                                     <Text
                                                         type="h2"
-                                                        size={isMobile ? 18 : 20}
+                                                        size={
+                                                            isMobile ? 18 : 20
+                                                        }
                                                         // ${
                                                         //     comb.price?.currency
                                                         // }

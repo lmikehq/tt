@@ -109,11 +109,12 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
         saveBookingDetails,
         setSaveBookingDetails,
         setStep,
-        conversionRate,
     } = useFlightBookingStore((state) => state);
     const [countdown, setCountdown] = useState(30 * 60);
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
 
     const countMins = Math.floor(countdown / 60);
     const countSecs = (countdown % 60).toFixed(0);

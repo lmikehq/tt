@@ -534,7 +534,7 @@ export default function ViewBooking({ params } : {
     params: { bookingId: string }
 }) {
     const { isMobile } = useScreenResolution()
-    const {checkBookingDetails, bookingDetailsMode, bookingDetailsResponse} = useFlightBookingStore((state) => state);
+    const { checkBookingDetails, bookingDetailsMode } = useFlightBookingStore((state) => state);
 
     useEffect(() => {
         // checkBookingDetails({ bookingId: params.bookingId })
