@@ -1,0 +1,252 @@
+import React from "react";
+import { Checkbox } from "@mui/material";
+import Section from "../../section";
+import Flex from "@/components/templates/flex";
+import Text from "@/components/atoms/text";
+import Image from "@/components/atoms/image";
+import { Grid } from "@/components/templates/grid";
+import { BiChevronRight } from "react-icons/bi";
+import { ttColors } from "@/lib/theme/colors";
+import { Rating } from "@mui/material";
+import CircleIcon from "@mui/icons-material/Circle";
+import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
+import Button from "@/components/atoms/button";
+import { Container, Header } from "./styles";
+import { styled } from "@mui/material/styles";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+const StyledRating = styled(Rating)({
+  "& .MuiRating-iconFilled": {
+    color: "var(--color-green)",
+  },
+  "& .MuiRating-iconHover": {
+    color: "var(--color-green)",
+  },
+});
+
+function StayDetails() {
+  return (
+    <Container>
+      <Header>
+				<a href=""></a>
+			</Header>
+      <Flex gap="20px">
+        <Section width="65%">
+          <Flex align="center" justify="space-between">
+            <Text type="h1" size={32} weight={600} text="The Ritz London" />
+            <Checkbox
+              {...label}
+              icon={<FavoriteBorder />}
+              checkedIcon={
+                <Favorite style={{ color: "var(--color-favorite)" }} />
+              }
+              disableRipple
+              disableTouchRipple
+              disableFocusRipple
+              sx={{
+                "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
+              }}
+              id="favorite-hotels-checkbox"
+            />
+          </Flex>
+          <Text
+            type="p"
+            size={15}
+            weight={400}
+            color="var(--text-gray-color)"
+            text="Black Prince Interchange, London, DA5 1ND, United Kingdom"
+            margin={"0 0 1.5rem 0"}
+          />
+          <Flex align="center">
+            <Flex>
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/location_radius_icon.svg"}
+                width={24}
+                height={24}
+              />
+              <Text type="p" text="4.3km away" />
+            </Flex>
+            <Flex>
+              <Rating
+                style={{
+                  marginLeft: "-4px",
+                  marginBottom: "5px",
+                  fontSize: "20px",
+                }}
+                name="rating"
+                readOnly
+                max={5}
+                defaultValue={4}
+              />
+            </Flex>
+          </Flex>
+          <Flex justify="flex-start" align="center" gap="5px" margin="15px 0px">
+            <Flex gap="5px" align="center">
+              <Text type="p" size={24} weight={600} text={getCurrency()} />
+              <Text
+                type="p"
+                size={30}
+                weight={600}
+                text={formatPriceWithoutCurrency(81500)}
+              />
+            </Flex>
+            <Flex align="center" gap="8px">
+              <Text
+                type="p"
+                text="4.0"
+                size={30}
+                weight={600}
+                styles={{ flex: "none" }}
+              />
+              <Flex gap="8px" align="center">
+                <Image
+                  alt="location"
+                  src={"/assets/icons/stay/view/view_camera_icon.svg"}
+                  width={24}
+                  height={24}
+                />
+                <Flex direction="column">
+                  <Flex>
+                    <StyledRating
+                      name="customized-color"
+                      defaultValue={4}
+                      getLabelText={(value: number) =>
+                        `${value} Heart${value !== 1 ? "s" : ""}`
+                      }
+                      readOnly
+                      precision={0.5}
+                      icon={<CircleIcon fontSize="inherit" />}
+                      emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
+                      style={{
+                        fontSize: "15px",
+                      }}
+                    />
+                  </Flex>
+                  <Text type="p" text="1000 reviews" />
+                </Flex>
+              </Flex>
+            </Flex>
+          </Flex>
+          <Text
+            type="h1"
+            size={20}
+            weight={500}
+            margin={"0 0 2rem 0"}
+            text="Popular Amenities"
+          />
+          <Grid columns="2" style={{ rowGap: "1.5rem" }}>
+            <Flex gap="0.875rem" align="center">
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/coffee_icon.svg"}
+                width={32}
+                height={32}
+              />
+              <Text
+                type="h1"
+                size={16}
+                weight={400}
+                text="Breakfast Available"
+              />
+            </Flex>
+            <Flex gap="0.875rem" align="center">
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/spa_icon.svg"}
+                width={32}
+                height={32}
+              />
+              <Text type="h1" size={16} weight={400} text="Spa" />
+            </Flex>{" "}
+            <Flex gap="0.875rem" align="center">
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/solid_wifi_icon.svg"}
+                width={32}
+                height={32}
+              />
+              <Text type="h1" size={16} weight={400} text="Free WiFi" />
+            </Flex>{" "}
+            <Flex gap="0.875rem" align="center">
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/pet_icon.svg"}
+                width={32}
+                height={32}
+              />
+              <Text type="h1" size={16} weight={400} text="Pet Friendly" />
+            </Flex>{" "}
+            <Flex gap="0.875rem" align="center">
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/parking_icon.svg"}
+                width={32}
+                height={32}
+              />
+              <Text type="h1" size={16} weight={400} text="Parking available" />
+            </Flex>
+            <Flex gap="0.875rem" align="center">
+              <Image
+                alt="location"
+                src={"/assets/icons/stay/view/ac_unit_icon.svg"}
+                width={32}
+                height={32}
+              />
+              <Text type="h1" size={16} weight={400} text="Air conditioning" />
+            </Flex>
+          </Grid>
+          <Button background="transparent" width="fit-content" padding="0">
+            <Flex align="center" justify="flex-start">
+              <Text
+                type="p"
+                weight={500}
+                text="see more"
+                color={ttColors.primary}
+              />
+            </Flex>
+          </Button>
+        </Section>
+        <Section width="35%">
+          <Section margin="0 0 10px 0">
+            <Image
+              alt="stay"
+              src={"/assets/images/topCountries/Canada.jpeg"}
+              styles={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+          </Section>
+          <Text
+            type="p"
+            text="22 Portman Square, London, England, W1H 6LW"
+            size={16}
+            weight={500}
+          />
+          <Button background="transparent" width="fit-content" padding="0">
+            <Flex align="center" justify="flex-start">
+              <Text
+                type="p"
+                weight={500}
+                text="Show in map"
+                color={ttColors.primary}
+              />
+              <BiChevronRight color={ttColors.primary} size={24} />
+            </Flex>
+          </Button>
+        </Section>
+      </Flex>
+    </Container>
+  );
+}
+
+export default StayDetails;

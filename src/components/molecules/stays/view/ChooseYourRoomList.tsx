@@ -1,0 +1,501 @@
+import React from "react";
+import {
+  BtnDetails,
+  BtnText,
+  ButtonBtn,
+  ChooseRoomImg,
+  GridLayout,
+  Span,
+} from "./styles";
+import Flex from "@/components/templates/flex";
+import Text from "@/components/atoms/text";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { ttColors } from "@/lib/theme/colors";
+import WifiIcon from "@mui/icons-material/Wifi";
+import CropFreeIcon from "@mui/icons-material/CropFree";
+import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
+import BedIcon from "@mui/icons-material/Bed";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+import Link from "@/components/atoms/link";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
+interface Room {
+  name: string;
+  image: string;
+
+  price: number;
+}
+
+const rooms: Room[] = [
+  {
+    name: "The Ritz London, 1 King Bed",
+    image: "/assets/images/stays/image1.jpg",
+    price: 105000,
+  },
+  {
+    name: "Get Eden Life Hotel",
+    image: "/assets/images/stays/image1.jpg",
+    price: 105000,
+  },
+  {
+    name: "Get Eden Life Hotel",
+    image: "/assets/images/stays/image1.jpg",
+    price: 105000,
+  },
+  {
+    name: "Get Eden Life Hotel",
+    image: "/assets/images/stays/image1.jpg",
+
+    price: 105000,
+  },
+  {
+    name: "Get Eden Life Hotel",
+    image: "/assets/images/stays/image1.jpg",
+
+    price: 105000,
+  },
+  {
+    name: "Get Eden Life Hotel",
+    image: "/assets/images/stays/image1.jpg",
+
+    price: 105000,
+  },
+];
+function ChooseYourRoomList() {
+  return (
+    <>
+      <Span style={{ marginTop: "60px" }}>
+        {rooms.map((room, index) => (
+          <GridLayout key={index} className="choose_room_list">
+            <Span>
+              <Flex direction="column" gap="10px">
+                <ChooseRoomImg>
+                  <img
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                    src={room.image}
+                    alt={room.name}
+                  />
+                </ChooseRoomImg>
+                <Span>
+                  <Flex gap="5px" align="center">
+                    <Text
+                      type="p"
+                      size={24}
+                      weight={600}
+                      text={getCurrency()}
+                    />
+                    <Flex align="center">
+                      <Text
+                        type="p"
+                        size={30}
+                        weight={600}
+                        text={formatPriceWithoutCurrency(81500)}
+                      />
+                      <Text
+                        type="p"
+                        color="var(--text-gray-color)"
+                        text="/Per night"
+                      ></Text>
+                    </Flex>
+                  </Flex>
+                </Span>
+                <Span>
+                  <Flex gap="5px" align="center">
+                    <Text
+                      type="p"
+                      size={20}
+                      weight={600}
+                      text={getCurrency()}
+                    />
+                    <Flex align="center">
+                      <Text
+                        type="p"
+                        size={20}
+                        weight={600}
+                        text={formatPriceWithoutCurrency(815000)}
+                      />
+                      <Text
+                        type="p"
+                        color="var(--text-gray-color)"
+                        text="/total"
+                      ></Text>
+                    </Flex>
+                  </Flex>
+                </Span>
+                <Text type="p" text="2 travellers"></Text>
+                <Text type="p" text="Including taxes and fees"></Text>
+
+                <Span style={{ marginTop: "20px" }}>
+                  <ButtonBtn>
+                    <BtnText>Reserve Room</BtnText>
+                  </ButtonBtn>
+                </Span>
+              </Flex>
+            </Span>
+            <Span>
+              <Flex direction="column">
+                <Text type="h2" weight={600} text={room.name}></Text>
+                <Span style={{ margin: "15px 0px" }}>
+                  <Flex wrap="wrap" gap="8px">
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <CropFreeIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="300sq feet"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <WifiIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="Free Wifi"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <BathtubOutlinedIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="Bathroom"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <BedIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="1 King Bed OR 2 Twin Beds"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <BathtubOutlinedIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="Bathroom"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <PeopleAltIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="2 persons"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <ApartmentIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="City View"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <BtnDetails
+                      style={{ backgroundColor: ttColors.grayishAsh }}
+                    >
+                      <Flex align="center" gap="5px">
+                        <PeopleAltIcon style={{ fontSize: "17px" }} />
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="2 persons"
+                        ></Text>
+                      </Flex>
+                    </BtnDetails>
+                    <Link href="" style={{ width: "fit-content" }}>
+                      <Flex
+                        align="center"
+                        gap="8px"
+                        styles={{ color: ttColors.primary }}
+                      >
+                        <Text size={15} type="p" text="More Details"></Text>
+                        <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
+                      </Flex>
+                    </Link>
+                  </Flex>
+                </Span>
+                <Span>
+                  <Flex direction="column" styles={{ margin: "10px 0px" }}>
+                    <Text
+                      type="h5"
+                      weight={"bold"}
+                      size={16}
+                      styles={{ marginTop: "10px" }}
+                      text="Cancellation Policy"
+                    ></Text>
+                    <Flex
+                      align="center"
+                      gap="8px"
+                      styles={{ marginBottom: "5px" }}
+                    >
+                      <Text
+                        type="p"
+                        size={14}
+                        color="var(--text-gray-color)"
+                        text="All privacy policy details"
+                      ></Text>
+                      <ErrorOutlineOutlinedIcon
+                        style={{
+                          fontSize: "19px",
+                          color: "var(--text-gray-color)",
+                        }}
+                      />
+                    </Flex>
+                  </Flex>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="radio-buttons-group"
+                  >
+                    <Flex direction="column">
+                      <Flex justify="space-between" align="center">
+                        <FormControlLabel
+                          value="non-refundable"
+                          control={
+                            <Radio
+                              disableFocusRipple
+                              disableRipple
+                              sx={{
+                                color: ttColors.gray,
+                                "&.Mui-checked": {
+                                  color: ttColors.primary,
+                                },
+                                "&.MuiSvgIcon-root": {
+                                  // fontSize: 20,
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Text
+                              size={14}
+                              weight={500}
+                              type="p"
+                              text="Non-Refundable"
+                            ></Text>
+                          }
+                        />
+                        <Text type="h4" weight={"bold"} text="+$0"></Text>
+                      </Flex>
+                      <Flex justify="space-between" align="center">
+                        <FormControlLabel
+                          value="refundable"
+                          control={
+                            <Radio
+                              disableFocusRipple
+                              disableRipple
+                              sx={{
+                                color: ttColors.gray,
+                                "&.Mui-checked": {
+                                  color: ttColors.primary,
+                                },
+                                "&.MuiSvgIcon-root": {
+                                  // fontSize: 20,
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Flex direction="column">
+                              <Text
+                                size={14}
+                                weight={500}
+                                type="p"
+                                text="Fully refundable before Oct 19"
+                              ></Text>
+                              <Text
+                                size={12}
+                                type="p"
+                                text="Reserve now, pay later"
+                              ></Text>
+                            </Flex>
+                          }
+                        />
+                        <Text type="h4" weight={"bold"} text="+$140"></Text>
+                      </Flex>
+                    </Flex>
+                  </RadioGroup>
+                </Span>
+                <Span>
+                  <Flex direction="column" styles={{ margin: "10px 0px" }}>
+                    <Text
+                      type="h5"
+                      weight={"bold"}
+                      size={16}
+                      styles={{ marginTop: "10px" }}
+                      text="Extras"
+                    ></Text>
+                    <Flex
+                      align="center"
+                      gap="8px"
+                      styles={{ marginBottom: "5px" }}
+                    >
+                      <Text
+                        type="p"
+                        size={14}
+                        color="var(--text-gray-color)"
+                        text="All privacy policy details"
+                      ></Text>
+                      <ErrorOutlineOutlinedIcon
+                        style={{
+                          fontSize: "19px",
+                          color: "var(--text-gray-color)",
+                        }}
+                      />
+                    </Flex>
+                  </Flex>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="radio-buttons-group"
+                  >
+                    <Flex direction="column">
+                      <Flex justify="space-between" align="center">
+                        <FormControlLabel
+                          value="no-extras"
+                          control={
+                            <Radio
+                              disableFocusRipple
+                              disableRipple
+                              sx={{
+                                color: ttColors.gray,
+                                "&.Mui-checked": {
+                                  color: ttColors.primary,
+                                },
+                                "&.MuiSvgIcon-root": {
+                                  // fontSize: 20,
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Text
+                              size={14}
+                              type="p"
+                              weight={500}
+                              text="No Extras"
+                            ></Text>
+                          }
+                        />
+                        <Text type="h4" weight={"bold"} text="+$0"></Text>
+                      </Flex>
+                      <Flex justify="space-between" align="center">
+                        <FormControlLabel
+                          value="parking"
+                          control={
+                            <Radio
+                              disableFocusRipple
+                              disableRipple
+                              sx={{
+                                color: ttColors.gray,
+                                "&.Mui-checked": {
+                                  color: ttColors.primary,
+                                },
+                                "&.MuiSvgIcon-root": {
+                                  // fontSize: 20,
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Text
+                              size={14}
+                              weight={500}
+                              type="p"
+                              text="Parking"
+                            ></Text>
+                          }
+                        />
+                        <Text type="h4" weight={"bold"} text="+$0"></Text>
+                      </Flex>
+                      <Flex justify="space-between" align="center">
+                        <FormControlLabel
+                          value="breakfast"
+                          control={
+                            <Radio
+                              disableFocusRipple
+                              disableRipple
+                              sx={{
+                                color: ttColors.gray,
+                                "&.Mui-checked": {
+                                  color: ttColors.primary,
+                                },
+                                "&.MuiSvgIcon-root": {
+                                  // fontSize: 20,
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Text
+                              size={14}
+                              weight={500}
+                              type="p"
+                              text="Breakfast"
+                            ></Text>
+                          }
+                        />
+                        <Text type="h4" weight={"bold"} text="+$140"></Text>
+                      </Flex>
+                    </Flex>
+                  </RadioGroup>
+                </Span>
+              </Flex>
+            </Span>
+          </GridLayout>
+        ))}
+      </Span>
+    </>
+  );
+}
+
+export default ChooseYourRoomList;

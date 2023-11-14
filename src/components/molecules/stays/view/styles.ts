@@ -26,6 +26,11 @@ export const GridLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  &.choose_room_list {
+    grid-template-columns: 40% auto;
+    grid-column-gap: 20px;
+    margin-bottom: 60px;
+  }
   &.amenities_grid {
     width: 100% !important;
     grid-template-columns: repeat(3, 1fr);
@@ -50,6 +55,13 @@ export const ImageBox = styled.div`
   height: 110px;
   border-radius: 6px;
   overflow: hidden;
+`;
+
+export const ChooseRoomImg = styled.span`
+  height: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  grid-column-gap: 20px;
 `;
 
 export const GridBox = styled.div`
@@ -91,8 +103,35 @@ export const Span = styled.div`
 
 export const MapBox = styled.div`
   width: 100%;
-  height: 300px;
+  height: 350px;
   background-color: var(--color-light-gray);
   border-radius: 20px;
   margin-bottom: 35px;
+`;
+
+export const ButtonBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
+  padding: 8px 20px;
+  height: 48px;
+  width: 100%;
+  color: var(--default-color);
+  border-radius: 6px;
+  cursor: pointer;
+`;
+export const BtnText = styled.div`
+  white-space: nowrap;
+  font-size: 17px;
+  @media screen and (max-width: 545px) {
+    font-size: 16px;
+  }
+`;
+
+export const BtnDetails = styled.div`
+  border: 2px solid var(--color-border);
+  border-radius: 6px;
+  width: fit-content;
+  padding: 7px 10px;
 `;
