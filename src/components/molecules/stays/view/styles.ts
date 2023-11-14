@@ -89,7 +89,7 @@ export const Content = styled.div`
     line-height: 1.5;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 
     &:after {
@@ -98,11 +98,8 @@ export const Content = styled.div`
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 1.5em; /* Height of each line (adjust based on your font size and line height) */
-      background: linear-gradient(
-        transparent,
-        white
-      ); /* Adjust the gradient color as needed */
+      height: 1.5em;
+      background: linear-gradient(transparent, white);
       mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
     }
   }
