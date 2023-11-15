@@ -35,7 +35,7 @@ const MultiStepWithSideMenu = ({
                     padding={isMobile ? "1rem 1.5rem" : "2rem 2rem 8rem"}
                     styles={{ position: "relative",
                         boxShadow: isMobile ? "none" : "0px 0px 16px 0px rgba(0, 0, 0, 0.03), 0px 0px 16px 0px rgba(0, 0, 0, 0.03)",
-                        background: "white",
+                        background: isMobile ? "white" : "white",
                         borderRadius: "12px"
                     }}
                 >

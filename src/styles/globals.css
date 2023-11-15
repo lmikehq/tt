@@ -340,3 +340,7 @@ textarea:hover {
 .no-scrollbar::-webkit-scrollbar-thumb {
     display: none;
 }
+
+.w-full {
+    max-width: 100%;
+}

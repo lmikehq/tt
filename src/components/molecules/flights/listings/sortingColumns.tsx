@@ -165,7 +165,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         },
         price: {
             min: 0,
-            max: 40000 * conversionRate,
+            max: parseInt((20000 * conversionRate).toFixed(0)),
         },
         cabin: "",
     };
@@ -376,8 +376,8 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             setFilterData((prevFilterData) => ({
                 ...prevFilterData,
                 [name]: {
-                    min: theValue[0],
-                    max: theValue[1],
+                    min: Number(theValue[0]).toFixed(0),
+                    max: Number(theValue[1]).toFixed(0),
                 },
             }));
         } else {
@@ -481,9 +481,9 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         }));
     }, [queryParams]);
 
-    useEffect(() => {
-        console.log("ffff", filterData);
-    }, [filterData]);
+    // useEffect(() => {
+    //     console.log("ffff", filterData);
+    // }, [filterData]);
 
     return (
         <Flex direction="column">
@@ -821,9 +821,11 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                     text={`${formatPrice({
                         total: filterData.price.min,
                         currency: preFerredCurrency,
+                        numberOfDecimalDigits: 0
                     })} - ${formatPrice({
                         total: filterData.price.max,
                         currency: preFerredCurrency,
+                        numberOfDecimalDigits: 0
                     })}`}
                     size={16}
                     weight={500}
@@ -836,13 +838,15 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             label: formatPrice({
                                 total: filterData.price.min,
                                 currency: preFerredCurrency,
+                                numberOfDecimalDigits: 0
                             }),
                         },
                         {
-                            value: 40000 * conversionRate,
+                            value: 20000 * conversionRate,
                             label: formatPrice({
                                 total: filterData.price.max,
                                 currency: preFerredCurrency,
+                                numberOfDecimalDigits: 0
                             }),
                         },
                     ]}
@@ -851,7 +855,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         handleSlider(newValue, "price", "price")
                     }
                     min={0}
-                    max={40000 * conversionRate}
+                    max={20000 * conversionRate}
                     step={250}
                 />
             </Panel>

@@ -2,9 +2,7 @@
 
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import dayjs from "dayjs";
-import LoadingButton from "@mui/lab/LoadingButton";
 import FlightBox from "./flightBox";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
@@ -29,7 +27,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
-import { FaQuestion, FaSpinner } from "react-icons/fa";
+import { FaQuestion } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
 import { dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
@@ -111,9 +109,9 @@ function LoginModal({
                 alignItems="center"
                 spacing={3}
                 bgcolor="white"
-                padding={6}
+                padding={5}
                 borderRadius="16px"
-                width={isMobile ? "90vw" : "30vw"}
+                width={isMobile ? "95vw" : "30vw"}
             >
                 <Flex width="100%" justify="center">
                     <Flex
@@ -149,7 +147,7 @@ function LoginModal({
                         onClick={goToLogin}
                         background={ttColors.dark}
                     >
-                        Sign In
+                        <Text type="p" text="Sign In" />
                     </Button>
                     <Flex justify="space-between" align="center">
                         <Divider
@@ -208,8 +206,9 @@ function StillSearchingModal({
                 alignItems="center"
                 spacing={3}
                 bgcolor="white"
-                padding={6}
-                width={isMobile ? "90vw" : "30vw"}
+                paddingX={6}
+                paddingY={4}
+                width={isMobile ? "95vw" : "30vw"}
                 borderRadius="16px"
             >
                 <Flex width="100%" justify="center">
@@ -227,7 +226,7 @@ function StillSearchingModal({
                     type="h2"
                     text="Still Searching?"
                     weight={600}
-                    size={30}
+                    size={26}
                     textAlign="center"
                 />
                 <Text
@@ -260,7 +259,6 @@ function AvailableFlights() {
     const router = useRouter();
     const pathName = usePathname();
     const { user } = useUserStore((state) => state);
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
     const {
         flightsResults,
         searchFlightsResults,
@@ -272,6 +270,8 @@ function AvailableFlights() {
         searchQuery,
     } = useFlightBookingStore((state) => state);
 
+    const { isMobile } = useScreenResolution()
+    
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const { queryParams } = useQueryParams();
@@ -313,6 +313,7 @@ function AvailableFlights() {
             price: pick?.price ?? 0,
             duration:
                 calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
+            pick
         };
     }, [searchFlightsResults]);
 
@@ -403,23 +404,25 @@ function AvailableFlights() {
 
     useEffect(() => {
         const sanitizedQuery = {
-            fly_from: queryParams?.fly_from,
-            fly_to: queryParams?.fly_to,
-            date_from: queryParams?.date_from,
-            cabin: queryParams?.cabin,
-            adults: Number(queryParams?.adults),
-            children: Number(queryParams?.children),
-            infants: Number(queryParams?.infants),
-        };
-        handleSearchResults({ ...searchQuery, ...sanitizedQuery });
-    }, [queryParams, preFerredCurrency]);
+            fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
+            fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
+            date_from: queryParams?.date_from ?? searchQuery?.date_from,
+            selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
+            adults: Number(queryParams?.adults ?? searchQuery?.adults),
+            children: Number(queryParams?.children ?? searchQuery?.children),
+            infants: Number(queryParams?.infants ?? searchQuery?.infants),
+        }
+        if (sanitizedQuery?.fly_from && sanitizedQuery?.fly_to && sanitizedQuery?.date_from && sanitizedQuery?.adults) {
+            handleSearchResults({ ...searchQuery, ...sanitizedQuery })
+        }
+    }, [queryParams])
+
+    // useEffect(() => {
+    //     console.log('qqq', searchQuery)
+    // }, [searchQuery]);
 
     useEffect(() => {
-        console.log("qqq", searchQuery);
-    }, [searchQuery]);
-
-    useEffect(() => {
-        console.log("ressss", searchFlightsResults);
+        console.log('ressss', searchFlightsResults)
     }, [searchFlightsResults]);
 
     useEffect(() => {
@@ -427,11 +430,12 @@ function AvailableFlights() {
             setModal((prev) => ({ ...prev, isOpenStillSearching: true }));
         }, 900000);
         return () => clearInterval(interval);
-    }, []);
+    }, [])
+
 
     return (
-        <Flex direction="column" width="100%" gap=".5rem">
-            {formComplete && (
+        <Flex direction="column" width="100%" gap=".5rem" padding={isMobile ? "0 1.5rem" : "0"}>
+            {formComplete &&
                 <SortedFlightsTab
                     best={best}
                     cheapest={cheapest}
@@ -442,7 +446,7 @@ function AvailableFlights() {
                     data={searchFlightsResults}
                     updateSearchQueryHandler={updateSearchQueryHandler}
                 />
-            )}
+            }
 
             {searchFlightsMode === Mode.loading ? (
                 <FlightBoxSkeleton />

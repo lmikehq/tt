@@ -77,7 +77,7 @@ function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
             {airlines.map((e, index) => (
                 <img
                     key={`airline-${index}`}
-                    src={flightState?.airlines[e]?.logo}
+                    src={flightState?.airlines[e]?.logo ?? "/public/assets/icons/magnifier.svg"}
                     alt={`airline-${flightState?.airlines[e]?.Airline}`}
                     width={isMobile ? "50px" : "60px"}
                     height={isMobile ? "50px" : "60px"}
@@ -184,13 +184,14 @@ function FlightBox(props: flightProps) {
                                 />
                             </Flex>
                             <Flex
-                                gap={isMobile ? "1rem" : "1.4rem"}
+                                gap={isMobile ? "1rem" : "1.2rem"}
                                 justify="space-between"
                             >
                                 <Text
+                                    width="16%"
                                     type="p"
                                     size={isMobile ? 15 : 18}
-                                    weight={"bold"}
+                                    weight={700}
                                     text={dayjs(
                                         startRoute.utc_departure
                                     ).format("HH: mm")}
@@ -247,9 +248,10 @@ function FlightBox(props: flightProps) {
                                 justify="space-between"
                             >
                                 <Text
+                                    width="16%"
                                     type="p"
                                     size={isMobile ? 15 : 18}
-                                    weight={"bold"}
+                                    weight={700}
                                     text={dayjs(
                                         isRoundTrip
                                             ? startRoute.utc_arrival
@@ -460,7 +462,7 @@ function FlightBox(props: flightProps) {
                     <Flex
                         direction={isMobile ? "row" : "column"}
                         align={isMobile ? "flex-end" : "space-between"}
-                        gap={isMobile ? "0" : "1rem"}
+                        gap={isMobile ? "1rem" : "1rem"}
                     >
                         <Flex
                             direction={isMobile ? "column-reverse" : "column"}
@@ -481,7 +483,7 @@ function FlightBox(props: flightProps) {
                                 type="h1"
                                 text={`${price}`}
                                 weight={600}
-                                size={isMobile ? 24 : 32}
+                                size={isMobile ? 24 : 30}
                             />
                         </Flex>
 

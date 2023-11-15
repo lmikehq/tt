@@ -186,6 +186,173 @@ const mockBooking = {
             "local_departure": "2022-08-16T14:30:00.000Z",
             "utc_departure": "2022-08-16T12:30:00.000Z"
         },
+        {
+            "id": "19ef25584b140000425e072f_0",
+            "combination_trip_id": "19ef25584b140000425e072f",
+            "original_trip_id": "19ef25584b140000425e072f",
+            "dst": "BGY",
+            "src": "VIE",
+            "flight_no": "7360",
+            "operating_flight_no": "7360",
+            "carrier_segment_code": "7360",
+            "airline": {
+                "id": 11,
+                "code": "FR",
+                "iata_code": "FR",
+                "icao_code": "RYR",
+                "code_public": "FR",
+                "name": "Ryanair",
+                "alliance": null,
+                "url": "",
+                "checkin": 1,
+                "close_booking_hours": 6,
+                "booking_doc_needed": 1,
+                "airport_checkin": 55,
+                "passengers_in_search": 1,
+                "doing_online_checkin": 1,
+                "maximum_passengers": 9,
+                "grade": "A",
+                "virtual_card_req": false,
+                "country": "IE",
+                "carrier_type": "airline",
+                "parent_carrier": null,
+                "checkin_closure": 2,
+                "shorter_stopovers_allowed": 1,
+                "allowed_booking_window": null,
+                "deprecated": false,
+                "book_fee": 0,
+                "fee_airline": 0,
+                "search_priority": 0,
+                "fee_instead": 0,
+                "fee_percent": 0,
+                "flight_change_fee": 50,
+                "fee_reason": "",
+                "threshold_child": 2,
+                "threshold_teen": 12,
+                "threshold_adult": 16,
+                "fees_per_source": {},
+                "affil_url": null,
+                "temporary_disabled": null,
+                "non_active_reason": "",
+                "lcc": null,
+                "active": 1,
+                "iatacode": "FR",
+                "is_passenger_cardholder": null,
+                "is_private_fares_allowed": null,
+                "luggage_only_during_checkin_airlines": null,
+                "luggage_only_on_web": null,
+                "mmb_link": "https://www.ryanair.com/gb/en/check-in?cmpid=itineraryrmail_gb_reservation_check" +
+                    "in_button",
+                "payment_card_copy_eticket_requirement": false,
+                "skip_subairline_merge": null,
+                "Name": "Ryanair",
+                "iata": "FR",
+                "hide_name": false
+            },
+            "operating_airline": {
+                "iata": "FR",
+                "name": "Ryanair",
+                "public_code": "FR",
+                "hide_name": false
+            },
+            "scraping_start": 0,
+            "extras": "FR",
+            "vehicle": {
+                "type": "aircraft"
+            },
+            "src_terminal": null,
+            "dst_terminal": null,
+            "passengers_flight_check": {
+                "1": {
+                    "eur": 39.19,
+                    "invalid": false,
+                    "last_checked": 1659013714
+                },
+                "2": {
+                    "eur": 39.19,
+                    "invalid": false,
+                    "last_checked": 1659013714
+                }
+            },
+            "price": 39.19,
+            "eur_children": 39.19,
+            "eur_infants": 24.16,
+            "eur": 39.19,
+            "found_on": "",
+            "invalid": 0,
+            "timestamp": "2022-07-28T13:08:34.000Z",
+            "refreshed": "1970-01-01T00:00:00.000Z",
+            "refresh_ttl": 120,
+            "refresh_period": 5,
+            "fare_basis": "",
+            "fare_category": "M",
+            "fare_restriction": null,
+            "fare_class": null,
+            "baggage_fare": "",
+            "source": "",
+            "combination_prices": [
+                {
+                    "segment_included_bags": [
+                        {
+                            "amount": 0,
+                            "concept": "pcs"
+                        }
+                    ],
+                    "price": 39.19
+                }
+            ],
+            "price_id": "FPGe8lWEsUAABCXgcvAgAAAAe7AAEAAAAA",
+            "seats": 4,
+            "source_name": "",
+            "source_url": "",
+            "checkin": "2022-08-15T14:30:00.000Z",
+            "src_country": "AT",
+            "dst_country": "IT",
+            "src_station": "Vienna International Airport",
+            "dst_station": "Milan Bergamo International Airport",
+            "infants_conditions": {
+                "trolley": false,
+                "hand_weight": 0
+            },
+            "max_passengers_for_price": 1,
+            "src_name": "Vienna",
+            "dst_name": "Milan",
+            "hiding_reason": null,
+            "return": 0,
+            "is_self_transfer": false,
+            "bags_recheck_required": false,
+            "bags_recheck_disclaimer": "",
+            "segment_pricing": {
+                "adult": {
+                    "currency": "EUR",
+                    "amount": "45.735",
+                    "base": "39.19",
+                    "service": "0",
+                    "service_flat": "6.545",
+                    "merchant": "0"
+                },
+                "child": {
+                    "currency": "EUR",
+                    "amount": "45.735",
+                    "base": "39.19",
+                    "service": "0",
+                    "service_flat": "6.545",
+                    "merchant": "0"
+                },
+                "infant": {
+                    "currency": "EUR",
+                    "amount": "30.705",
+                    "base": "24.16",
+                    "service": "0",
+                    "service_flat": "6.545",
+                    "merchant": "0"
+                }
+            },
+            "local_arrival": "2022-08-16T15:50:00.000Z",
+            "utc_arrival": "2022-08-16T13:50:00.000Z",
+            "local_departure": "2022-08-16T14:30:00.000Z",
+            "utc_departure": "2022-08-16T12:30:00.000Z"
+        },
     ],
     "flights_checked": true,
     "flights_to_check": false,
@@ -363,11 +530,11 @@ const mockBooking = {
     "eur_payment_price": 91.47
 }
 
-export default function ViewBooking({params} : {
+export default function ViewBooking({ params } : {
     params: { bookingId: string }
 }) {
     const { isMobile } = useScreenResolution()
-    const {checkBookingDetails, bookingDetailsMode, bookingDetailsResponse} = useFlightBookingStore((state) => state);
+    const { checkBookingDetails, bookingDetailsMode } = useFlightBookingStore((state) => state);
 
     useEffect(() => {
         // checkBookingDetails({ bookingId: params.bookingId })

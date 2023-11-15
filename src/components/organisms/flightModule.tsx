@@ -49,7 +49,7 @@ const FlightCircle = styled.div`
     height: 1.65rem;
     padding: 0.25rem;
     border-radius: 100%;
-    z-index: 3;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-items: center;
@@ -115,26 +115,6 @@ function FlightModule({
                         text="From"
                         weight={500}
                     />
-                    {/* <SearchInput
-                    options={COUNTRY_FLAGS.map((x) => ({
-                        name: x.name,
-                        flag: x.flag,
-                        code: x.code,
-                    }))}
-                    onChange={(x: CountryType) => handleUpdate && handleUpdate(flight, { departureCountry: x })}
-                    value={flight.departureCountry ?? ""}
-                    placeholder="Current Location"
-                >
-                    <Flex gap={isMobile ? "0.7rem" : ".6rem"} cursor="pointer" overflowX="hidden">
-                        <IoLocationOutline size={isMobile ? 20 : 22} />
-                        <Text
-                            type="p"
-                            size={14}
-                            text={flight.departureCountry?.name ?? 'Current Location'}
-                            color="black"
-                        />
-                    </Flex>
-                </SearchInput> */}
                     <LocationSearchSelectInput
                         onChange={(x: Location) =>
                             handleUpdate &&
@@ -184,7 +164,6 @@ function FlightModule({
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        position="start"
                         value={flight.departureDate?.toDate()}
                         minDate={today}
                         onChange={(e) =>
@@ -197,7 +176,7 @@ function FlightModule({
                     <Flex
                         direction="column"
                         gap=".5rem"
-                        styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                        styles={{ marginBottom: isMobile ? "1.2rem" : "0", position: 'relative' }}
                     >
                         <Text
                             type="label"
@@ -207,7 +186,6 @@ function FlightModule({
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            position="start"
                             value={flight.returnDate?.toDate()}
                             minDate={flight.departureDate?.toDate()}
                             onChange={(e) =>
