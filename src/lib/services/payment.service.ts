@@ -1,4 +1,4 @@
-import { axiosClient } from "@lib/axios/axios-client";
+import { axiosClient, kiwiResourceClient } from "@lib/axios/axios-client";
 import { ApplicationFormRequestInput } from "@lib/types/request-models/application-form.type";
 import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
 import { AxiosResponse } from "axios";
@@ -11,8 +11,8 @@ export class PaymentService {
     }: {
         payload: FlutterWavePaymentRequestInput;
     }) => {
-        return await axiosClient
-            .post<any, any>("/payment/flutterwave", payload)
+        return await kiwiResourceClient
+            .post<any, any>("/flight/bookings/checkout", payload)
             .then((response) => response.data)
             .catch((error) => {
                 toast.error(error.response.errorMessage);

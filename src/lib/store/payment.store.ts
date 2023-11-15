@@ -9,7 +9,7 @@ interface State {
 interface Actions {
     createFlutterWavePayment: (
         params: FlutterWavePaymentRequestInput
-    ) => Promise<void>;
+    ) => Promise<any>;
 }
 
 export const usePaymentStore = create<State & Actions>(

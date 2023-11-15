@@ -5,7 +5,7 @@ import PaymentModal from "@/components/organisms/flight/booking/modals/paymentMo
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useApplicationFormStore } from "@/lib/store/application-form.store";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { cardDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
@@ -16,16 +16,32 @@ import Spinner from "@/components/molecules/icons/spinner";
 import { usePaymentStore } from "@/lib/store/payment.store";
 import { Mode } from "@/lib/types";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { useSearchParams } from "next/navigation";
 
 const OverviewAndPayment = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { saveBookingResponse, cardDetails, confirmPaymentZooz } =
-        useFlightBookingStore((state) => state);
+    const {
+        saveBookingResponse,
+        cardDetails,
+        confirmPaymentZooz,
+        checkBookingDetails,
+        getBookingByIdResponse,
+    } = useFlightBookingStore((state) => state);
     const { createFlutterWavePayment, mode } = usePaymentStore(
         (state) => state
     );
+    const searchParams = useSearchParams();
 
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
+
+    const flightId = searchParams.get("id");
+    const userId =
+        saveBookingResponse?.userId ?? getBookingByIdResponse?.userID ?? "";
+    const total =
+        saveBookingResponse?.total ?? getBookingByIdResponse?.totalAmount ?? 0;
     const handleMakepayment = async ({
         cardDetails,
     }: {
@@ -66,6 +82,14 @@ const OverviewAndPayment = () => {
         validateOnChange: false,
     });
 
+    useEffect(() => {
+        const params = extractSearchParamsFromUrl({
+            url: window.location.href,
+        });
+        const bookingId = params.id;
+        if (bookingId) checkBookingDetails({ bookingId });
+    }, []);
+
     return (
         <Box
             sx={{
@@ -85,10 +109,12 @@ const OverviewAndPayment = () => {
                             gateway: "flutterwave",
                             currency: preFerredCurrency,
                             service: "FLIGHT",
-                            serviceID: saveBookingResponse?.flightId ?? "",
+                            serviceID: flightId,
                             paymentIntent: "FLIGHT FEE",
-                            user: saveBookingResponse?.userId ?? "",
-                            amount: saveBookingResponse?.total ?? 0,
+                            user: userId,
+                            amount: total * conversionRate,
+                        }).then((res) => {
+                            window.open(res.data.link, "_blank");
                         });
                     }}
                 >
