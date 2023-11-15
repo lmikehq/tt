@@ -429,6 +429,7 @@ export interface GetFlightBookingByIdResponse {
     _id: string;
     bookingId: number;
     totalAmount: number;
+    ticketPrice: string;
     paymentToken: string;
     takeOffAirport: string;
     takeOffLocation: string;
@@ -455,6 +456,8 @@ export interface GetFlightBookingByIdResponse {
     userID: string;
     createdAt: string;
     updatedAt: string;
+    passengerInfo: PassengerInterface[];
+    baggageInfo: Baggage[];
 }
 
 export const mockRows = [
