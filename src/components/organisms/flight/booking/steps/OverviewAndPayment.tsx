@@ -37,7 +37,7 @@ const OverviewAndPayment = () => {
         (state) => state
     );
 
-    const flightId = searchParams.get("id");
+    const flightId = searchParams.get("id") ?? "";
     const userId =
         saveBookingResponse?.userId ?? getBookingByIdResponse?.userID ?? "";
     const total =
@@ -109,7 +109,7 @@ const OverviewAndPayment = () => {
                             gateway: "flutterwave",
                             currency: preFerredCurrency,
                             service: "FLIGHT",
-                            serviceID: flightId,
+                            serviceID: flightId ?? "",
                             paymentIntent: "FLIGHT FEE",
                             user: userId,
                             amount: total * conversionRate,
