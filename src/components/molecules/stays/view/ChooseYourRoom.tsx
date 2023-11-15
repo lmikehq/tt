@@ -8,8 +8,11 @@ import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { Container, Header, Span } from "./styles";
 import ChooseYourRoomList from "./ChooseYourRoomList";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 const ChooseYourRoom = () => {
+  const { isMobile } = useScreenResolution();
+
   return (
     <Container>
       <Header id="rooms">
@@ -27,7 +30,7 @@ const ChooseYourRoom = () => {
         </Flex>
       </Header>
       <Section margin="0 0 2rem 0">
-        <Grid columns={3} gap="1rem">
+        <Grid columns={!isMobile ? "3" : "1"} gap="1rem">
           <Flex
             direction="column"
             gap=".5rem"
@@ -74,84 +77,86 @@ const ChooseYourRoom = () => {
           text="Available Rooms"
           margin={"0 0 1.75rem 0"}
         />
-        <Grid columns={4} gap="1rem">
-          <Flex
-            direction="column"
-            gap=".5rem"
-            styles={{ marginBottom: "1.2rem" }}
-          >
-            <Text type="label" size={16} text="Beds" weight={400} />
-            <select
-              name="filter"
-              style={{
-                padding: "10px",
-                borderRadius: "6px",
-                width: "100%",
-                borderColor: ttColors.gray,
-                outline: "none",
-              }}
+        {!isMobile && (
+          <Grid columns={4} gap="1rem">
+            <Flex
+              direction="column"
+              gap=".5rem"
+              styles={{ marginBottom: "1.2rem" }}
             >
-              <option value="option">All Option</option>
-            </select>
-          </Flex>
-          <Flex
-            direction="column"
-            gap=".5rem"
-            styles={{ marginBottom: "1.2rem" }}
-          >
-            <Text type="label" size={16} text="Meals" weight={400} />
-            <select
-              name="filter"
-              style={{
-                padding: "10px",
-                borderRadius: "6px",
-                width: "100%",
-                borderColor: ttColors.gray,
-                outline: "none",
-              }}
+              <Text type="label" size={16} text="Beds" weight={400} />
+              <select
+                name="filter"
+                style={{
+                  padding: "10px",
+                  borderRadius: "6px",
+                  width: "100%",
+                  borderColor: ttColors.gray,
+                  outline: "none",
+                }}
+              >
+                <option value="option">All Option</option>
+              </select>
+            </Flex>
+            <Flex
+              direction="column"
+              gap=".5rem"
+              styles={{ marginBottom: "1.2rem" }}
             >
-              <option value="option">All Option</option>
-            </select>
-          </Flex>{" "}
-          <Flex
-            direction="column"
-            gap=".5rem"
-            styles={{ marginBottom: "1.2rem" }}
-          >
-            <Text type="label" size={16} text="Cancellation" weight={400} />
-            <select
-              name="filter"
-              style={{
-                padding: "10px",
-                borderRadius: "6px",
-                width: "100%",
-                borderColor: ttColors.gray,
-                outline: "none",
-              }}
+              <Text type="label" size={16} text="Meals" weight={400} />
+              <select
+                name="filter"
+                style={{
+                  padding: "10px",
+                  borderRadius: "6px",
+                  width: "100%",
+                  borderColor: ttColors.gray,
+                  outline: "none",
+                }}
+              >
+                <option value="option">All Option</option>
+              </select>
+            </Flex>{" "}
+            <Flex
+              direction="column"
+              gap=".5rem"
+              styles={{ marginBottom: "1.2rem" }}
             >
-              <option value="option">All Option</option>
-            </select>
-          </Flex>
-          <Flex
-            direction="column"
-            gap=".5rem"
-            styles={{ marginBottom: "1.2rem" }}
-          >
-            <Text type="label" size={16} text="Payment" weight={400} />
-            <select
-              name="filter"
-              style={{
-                padding: "10px",
-                borderRadius: "6px",
-                width: "100%",
-                borderColor: ttColors.gray,
-                outline: "none",
-              }}
+              <Text type="label" size={16} text="Cancellation" weight={400} />
+              <select
+                name="filter"
+                style={{
+                  padding: "10px",
+                  borderRadius: "6px",
+                  width: "100%",
+                  borderColor: ttColors.gray,
+                  outline: "none",
+                }}
+              >
+                <option value="option">All Option</option>
+              </select>
+            </Flex>
+            <Flex
+              direction="column"
+              gap=".5rem"
+              styles={{ marginBottom: "1.2rem" }}
             >
-              <option value="option">All Option</option>
-            </select>
-          </Flex>
-        </Grid>
+              <Text type="label" size={16} text="Payment" weight={400} />
+              <select
+                name="filter"
+                style={{
+                  padding: "10px",
+                  borderRadius: "6px",
+                  width: "100%",
+                  borderColor: ttColors.gray,
+                  outline: "none",
+                }}
+              >
+                <option value="option">All Option</option>
+              </select>
+            </Flex>
+          </Grid>
+        )}
       </Section>
       <Section>
         <Button background={ttColors.dark} width="100%" height="45px">

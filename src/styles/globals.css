@@ -104,6 +104,9 @@ body {
   margin: auto;
 }
 
+.scroll {
+}
+
 .slick_slider_room_img_img {
   position: relative;
   height: 350px !important;

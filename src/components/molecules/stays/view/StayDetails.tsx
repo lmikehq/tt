@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Checkbox } from "@mui/material";
+import { Box, Checkbox } from "@mui/material";
 import Section from "../../section";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
@@ -15,10 +15,18 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import Button from "@/components/atoms/button";
-import { Container, Header, Tab } from "./styles";
+import { Container, GridLayout, Header, Tab } from "./styles";
 import { styled } from "@mui/material/styles";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
+import WifiIcon from "@mui/icons-material/Wifi";
+import LocalParkingIcon from "@mui/icons-material/LocalParking";
+import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
+import PetsIcon from "@mui/icons-material/Pets";
+import SpaIcon from "@mui/icons-material/Spa";
+import { FlexBox } from "../components/styles";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -45,12 +53,13 @@ const tabs: TabProps[] = [
 ];
 
 function StayDetails() {
+  const { isMobile } = useScreenResolution();
 
-   const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("overview");
 
-   const handleTabClick = (id: string) => {
-     setActiveTab(id);
-   };
+  const handleTabClick = (id: string) => {
+    setActiveTab(id);
+  };
   return (
     <Container>
       <Header id="overview">
@@ -69,10 +78,22 @@ function StayDetails() {
           </Flex>
         </Tab>
       </Header>
-      <Flex gap="20px">
-        <Section width="65%">
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "100%" : "65% auto",
+          gap: "30px",
+        }}
+      >
+        <Section>
           <Flex align="center" justify="space-between">
-            <Text type="h1" size={32} weight={600} text="The Ritz London" />
+            <Text
+              whiteSpace="nowrap"
+              type="h1"
+              size={32}
+              weight={600}
+              text="The Ritz London"
+            />
             <Checkbox
               {...label}
               icon={<FavoriteBorder />}
@@ -121,7 +142,7 @@ function StayDetails() {
               />
             </Flex>
           </Flex>
-          <Flex justify="flex-start" align="center" gap="5px" margin="15px 0px">
+          <FlexBox className="stay_wrap" style={{ margin: "15px 0px" }}>
             <Flex gap="5px" align="center">
               <Text type="p" size={24} weight={600} text={getCurrency()} />
               <Text
@@ -163,11 +184,11 @@ function StayDetails() {
                       }}
                     />
                   </Flex>
-                  <Text type="p" text="1000 reviews" />
+                  <Text whiteSpace="nowrap" type="p" text="1000 reviews" />
                 </Flex>
               </Flex>
             </Flex>
-          </Flex>
+          </FlexBox>
           <Text
             type="h1"
             size={20}
@@ -175,67 +196,68 @@ function StayDetails() {
             margin={"0 0 2rem 0"}
             text="Popular Amenities"
           />
-          <Grid columns="2" style={{ rowGap: "1.5rem" }}>
-            <Flex gap="0.875rem" align="center">
-              <Image
-                alt="location"
-                src={"/assets/icons/stay/view/coffee_icon.svg"}
-                width={32}
-                height={32}
-              />
+          <GridLayout className="stay_details_grid">
+            <Flex gap="8px" align="center">
+              <FreeBreakfastIcon style={{ fontSize: "28px" }} />
               <Text
+                whiteSpace="nowrap"
                 type="h1"
                 size={16}
                 weight={400}
                 text="Breakfast Available"
               />
             </Flex>
-            <Flex gap="0.875rem" align="center">
-              <Image
-                alt="location"
-                src={"/assets/icons/stay/view/spa_icon.svg"}
-                width={32}
-                height={32}
+            <Flex gap="8px" align="center">
+              <SpaIcon style={{ fontSize: "28px" }} />
+              <Text
+                whiteSpace="nowrap"
+                type="h1"
+                size={16}
+                weight={400}
+                text="Spa"
               />
-              <Text type="h1" size={16} weight={400} text="Spa" />
             </Flex>{" "}
-            <Flex gap="0.875rem" align="center">
-              <Image
-                alt="location"
-                src={"/assets/icons/stay/view/solid_wifi_icon.svg"}
-                width={32}
-                height={32}
+            <Flex gap="8px" align="center">
+              <WifiIcon style={{ fontSize: "28px" }} />
+              <Text
+                whiteSpace="nowrap"
+                type="h1"
+                size={16}
+                weight={400}
+                text="Free WiFi"
               />
-              <Text type="h1" size={16} weight={400} text="Free WiFi" />
             </Flex>{" "}
-            <Flex gap="0.875rem" align="center">
-              <Image
-                alt="location"
-                src={"/assets/icons/stay/view/pet_icon.svg"}
-                width={32}
-                height={32}
+            <Flex gap="8px" align="center">
+              <PetsIcon style={{ fontSize: "28px" }} />
+              <Text
+                whiteSpace="nowrap"
+                type="h1"
+                size={16}
+                weight={400}
+                text="Pet Friendly"
               />
-              <Text type="h1" size={16} weight={400} text="Pet Friendly" />
             </Flex>{" "}
-            <Flex gap="0.875rem" align="center">
-              <Image
-                alt="location"
-                src={"/assets/icons/stay/view/parking_icon.svg"}
-                width={32}
-                height={32}
+            <Flex gap="8px" align="center">
+              <LocalParkingIcon style={{ fontSize: "28px" }} />
+              <Text
+                whiteSpace="nowrap"
+                type="h1"
+                size={16}
+                weight={400}
+                text="Parking available"
               />
-              <Text type="h1" size={16} weight={400} text="Parking available" />
             </Flex>
-            <Flex gap="0.875rem" align="center">
-              <Image
-                alt="location"
-                src={"/assets/icons/stay/view/ac_unit_icon.svg"}
-                width={32}
-                height={32}
+            <Flex gap="8px" align="center">
+              <AcUnitIcon style={{ fontSize: "28px" }} />
+              <Text
+                whiteSpace="nowrap"
+                type="h1"
+                size={16}
+                weight={400}
+                text="Air conditioning"
               />
-              <Text type="h1" size={16} weight={400} text="Air conditioning" />
             </Flex>
-          </Grid>
+          </GridLayout>
           <Button background="transparent" width="fit-content" padding="0">
             <Flex align="center" justify="flex-start">
               <Text
@@ -247,7 +269,7 @@ function StayDetails() {
             </Flex>
           </Button>
         </Section>
-        <Section width="35%">
+        <Section>
           <Section margin="0 0 10px 0">
             <Image
               alt="stay"
@@ -277,7 +299,7 @@ function StayDetails() {
             </Flex>
           </Button>
         </Section>
-      </Flex>
+      </Box>
     </Container>
   );
 }

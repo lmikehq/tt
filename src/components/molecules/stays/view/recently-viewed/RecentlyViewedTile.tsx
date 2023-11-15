@@ -7,6 +7,7 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import { Rating } from "@mui/material";
+import { Span } from "../styles";
 
 interface Room {
   name: string;
@@ -45,76 +46,100 @@ const RecentlyViewedTile = () => {
       {rooms.map((room, index) => (
         <Section
           key={index}
-          padding={"1rem"}
+          padding={"10px"}
           styles={{
             borderRadius: "12px",
             border: "1px solid #EAEAEA",
             background: "#FFF",
+            overflow: "hidden",
           }}
         >
-          <Flex gap="1rem">
-            <Section
-              height="121px"
-              borderRadius="8px"
-              styles={{ overflow: "hidden" }}
-            >
-              <Image
-                alt="stay"
-                src={room.image}
+          <Span>
+            <Flex className="recently" gap="1rem">
+              <Section
+                borderRadius="8px"
                 styles={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
+                  overflow: "hidden",
+                  maxHeight: "121px",
+                  minWidth: "121px",
                 }}
-              />
-            </Section>
-            <Flex direction="column" justify="space-between">
-              <Section>
-                <Text
-                  type="p"
-                  size={18}
-                  weight={500}
-                  className="truncate"
-                  text={room.name}
+              >
+                <Image
+                  alt="stay"
+                  src={room.image}
+                  styles={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
                 />
-                <Flex gap="0.1rem">
-                  <Image
-                    alt="location"
-                    src={"/assets/icons/stay/view/location_radius_icon.svg"}
-                    width={24}
-                    height={24}
-                  />
-                  <Text type="p" size={16} text="4.3km away" />
-                </Flex>
               </Section>
+              <Flex
+                direction="column"
+                justify="space-between"
+                overflow="hidden"
+              >
+                <Flex direction="column">
+                  <Flex>
+                    <Text
+                      type="p"
+                      size={18}
+                      weight={500}
+                      styles={{ width: "auto" }}
+                      className="truncate"
+                      text={room.name}
+                    />
+                  </Flex>
 
-              <Section>
-                <Flex>
-                  <Rating
-                    style={{
-                      marginLeft: "-4px",
-                      marginBottom: "5px",
-                      fontSize: "17px",
-                    }}
-                    name="rating"
-                    readOnly
-                    precision={0.5}
-                    max={5}
-                    defaultValue={room.rating}
-                  />
+                  <Flex gap="0.1rem">
+                    <Image
+                      alt="location"
+                      src={"/assets/icons/stay/view/location_radius_icon.svg"}
+                      width={24}
+                      height={24}
+                    />
+                    <Text
+                      className="truncate"
+                      type="p"
+                      size={16}
+                      text="4.3km away"
+                    />
+                  </Flex>
                 </Flex>
-                <Flex gap="0.5rem" align="center" margin="1rem 0 0 0">
-                  <Text type="p" size={16} weight={600} text={getCurrency()} />
-                  <Text
-                    type="p"
-                    size={18}
-                    weight={600}
-                    text={formatPriceWithoutCurrency(81500)}
-                  />
-                </Flex>
-              </Section>
+
+                <Section>
+                  <Flex>
+                    <Rating
+                      style={{
+                        marginLeft: "-4px",
+                        marginBottom: "5px",
+                        fontSize: "17px",
+                      }}
+                      name="rating"
+                      readOnly
+                      precision={0.5}
+                      max={5}
+                      defaultValue={room.rating}
+                    />
+                  </Flex>
+                  <Flex gap="0.5rem" align="center" margin="1rem 0 0 0">
+                    <Text
+                      type="p"
+                      size={16}
+                      weight={600}
+                      text={getCurrency()}
+                    />
+                    <Text
+                      type="p"
+                      size={18}
+                      weight={600}
+                      text={formatPriceWithoutCurrency(81500)}
+                    />
+                  </Flex>
+                </Section>
+              </Flex>
             </Flex>
-          </Flex>
+          </Span>
         </Section>
       ))}
     </>

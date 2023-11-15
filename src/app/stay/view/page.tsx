@@ -15,14 +15,23 @@ import StayDetails from "@/components/molecules/stays/view/StayDetails";
 import RecentlyViewedList from "@/components/molecules/stays/view/recently-viewed/RecentlyViewedList";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Flex from "@/components/templates/flex";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { Box } from "@mui/material";
 
 const StayViewPage = () => {
+  const { isMobile } = useScreenResolution();
   return (
     <SectionLayout>
       <BreadCrumbPane />
       <HeroImageGrid />
-      <Flex gap="2.25rem" align="flex-start">
-        <Section width="62%">
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
+          gap: "30px",
+        }}
+      >
+        <Section>
           <StayDetails />
           <ChooseYourRoom />
           <LikeSimilarHotels />
@@ -35,10 +44,10 @@ const StayViewPage = () => {
           <CompareSimilarHotels />
         </Section>
 
-        <Section width="38%">
+        <Section>
           <RecentlyViewedList />
         </Section>
-      </Flex>
+      </Box>
     </SectionLayout>
   );
 };

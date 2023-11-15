@@ -29,11 +29,26 @@ export const FlexBox = styled.div`
   justify-content: space-between;
   width: 100%;
 
+  @media screen and (max-width: 990px) {
+    &.stay_wrap {
+      flex-wrap: wrap;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    &.stay_wrap {
+      flex-wrap: nowrap;
+    }
+  }
   @media screen and (max-width: 545px) {
     flex-wrap: wrap;
     gap: 20px;
     &.row_two_wrap {
       flex-wrap: nowrap;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    &.stay_wrap {
+      flex-wrap: wrap;
     }
   }
   @media screen and (max-width: 370px) {
@@ -64,6 +79,9 @@ export const MobileImageBox = styled.div`
   border-radius: 12px;
   position: relative;
   z-index: 1;
+  &.stay_page_slider {
+    max-height: 600px;
+  }
 `;
 
 export const LargeImg = styled.div`

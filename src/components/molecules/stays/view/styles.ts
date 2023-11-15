@@ -17,6 +17,10 @@ export const Header = styled.div`
 `;
 
 export const Tab = styled.div`
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .anchor {
     color: var(--color-light-gray);
     text-decoration: none;
@@ -40,7 +44,10 @@ export const GridLayout = styled.div`
   &.choose_room_list {
     grid-template-columns: 40% auto;
     grid-column-gap: 20px;
-    margin-bottom: 60px;
+
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 100%;
+    }
   }
   &.amenities_grid {
     width: 100% !important;
@@ -58,6 +65,14 @@ export const GridLayout = styled.div`
   }
   @media screen and (max-width: 900px) {
     grid-template-columns: 1fr;
+    &.stay_details_grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media screen and (max-width: 443px) {
+    &.stay_details_grid {
+      grid-template-columns: 1fr;
+    }
   }
 `;
 
@@ -69,10 +84,17 @@ export const ImageBox = styled.div`
 `;
 
 export const ChooseRoomImg = styled.span`
-  height: 250px;
+  max-height: 250px;
   border-radius: 12px;
   overflow: hidden;
   grid-column-gap: 20px;
+  @media screen and (max-width: 900px) {
+    max-width: 60%;
+  }
+  @media screen and (max-width: 480px) {
+    max-width: 100%;
+    width: 100%;
+  }
 `;
 
 export const GridBox = styled.div`
@@ -110,6 +132,22 @@ export const Content = styled.div`
 
 export const Span = styled.div`
   position: relative;
+  @media screen and (max-width: 1120px) {
+    .recently {
+      flex-direction: column;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    .recently {
+      flex-direction: row;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .choose_img_text {
+      flex-direction: column !important;
+      width: 100%;
+    }
+  }
 `;
 
 export const MapBox = styled.div`
