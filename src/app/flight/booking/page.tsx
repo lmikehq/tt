@@ -40,34 +40,72 @@ import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTransferAlt } from "react-icons/bi";
 import { BsDot } from "react-icons/bs";
-var advancedFormat = require('dayjs/plugin/advancedFormat')
-dayjs.extend(advancedFormat)
-
+var advancedFormat = require("dayjs/plugin/advancedFormat");
+dayjs.extend(advancedFormat);
 
 function BookingLoader() {
-    const { isMobile } = useScreenResolution()
+    const { isMobile } = useScreenResolution();
     const { searchQuery } = useFlightBookingStore((state) => state);
     const flight = {
         departure: searchQuery?.fly_from ?? "",
         arrival: searchQuery?.fly_to ?? "",
         departureDate: searchQuery?.date_from ?? dayjs(),
-    }
+    };
 
     return (
-        <Flex direction="column" align="center" gap="1rem" padding={isMobile ? "8rem 0rem 12rem" : "6rem 1rem 12rem"}>
-            <Text type="h3" text="Hold on your trip is loading" weight={600} size={isMobile ? 20 : 24} />
-            <Flex width={isMobile ? "70%" : "max-content"} gap="1rem" align="center" margin="0 0 1.5rem 0">
+        <Flex
+            direction="column"
+            align="center"
+            gap="1rem"
+            padding={isMobile ? "8rem 0rem 12rem" : "6rem 1rem 12rem"}
+        >
+            <Text
+                type="h3"
+                text="Hold on your trip is loading"
+                weight={600}
+                size={isMobile ? 20 : 24}
+            />
+            <Flex
+                width={isMobile ? "70%" : "max-content"}
+                gap="1rem"
+                align="center"
+                margin="0 0 1.5rem 0"
+            >
                 <Flex gap=".5rem">
-                    <Text type="p" size={15} text={flight.departure} color={ttColors.foundation.black} />
-                    <BiTransferAlt color={ttColors.foundation.black} size={24} />
-                    <Text type="p" size={16} text={flight.arrival} color={ttColors.foundation.black} />
+                    <Text
+                        type="p"
+                        size={15}
+                        text={flight.departure}
+                        color={ttColors.foundation.black}
+                    />
+                    <BiTransferAlt
+                        color={ttColors.foundation.black}
+                        size={24}
+                    />
+                    <Text
+                        type="p"
+                        size={16}
+                        text={flight.arrival}
+                        color={ttColors.foundation.black}
+                    />
                 </Flex>
-                <Flex background={ttColors.lightestGray} borderRadius="50%" width="28px" height="13px" />
-                <Text styles={{ minWidth: "max-content" }} type="p" size={14} text={dayjs().format("ddd, Do MMM")} color={ttColors.foundation.black} />
+                <Flex
+                    background={ttColors.lightestGray}
+                    borderRadius="50%"
+                    width="28px"
+                    height="13px"
+                />
+                <Text
+                    styles={{ minWidth: "max-content" }}
+                    type="p"
+                    size={14}
+                    text={dayjs().format("ddd, Do MMM")}
+                    color={ttColors.foundation.black}
+                />
             </Flex>
             <ProgressLoader width={isMobile ? "90%" : "50%"} />
         </Flex>
-    )
+    );
 }
 
 const FlightBookingPage = () => {
@@ -287,6 +325,7 @@ const FlightBookingPage = () => {
         }).then((response) => {
             setInitCheckFlightsMode(Mode.loaded);
             if (searchParams.step == "5") return setStep({ step: 5 });
+            if (!step) setStep({ step: 2 });
             checkFlightsThreeSecondsInterval({
                 sessionId: response.session_id,
                 searchParams,

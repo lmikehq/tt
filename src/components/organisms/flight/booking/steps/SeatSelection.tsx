@@ -143,90 +143,8 @@ const SeatSelection = () => {
         updateSeatAvailablity,
     } = useFlightBookingStore((state) => state);
     const [emptySeatsModalOpen, setEmptySeatsModalOpen] = useState(false);
-    const [emptySeatsModalContent, setEmptySeatsModalContent] = useState<
-        Omit<CustomConfirmationModalProps, "open" | "handleClose">
-    >({
-        icon: <></>,
-        title: "",
-        description: "",
-        subTitle: "",
-        buttons: <></>,
-    });
 
     const handleDisplayEmptySeatModal = () => {
-        setEmptySeatsModalContent({
-            child: (
-                <Section padding="3rem 6rem" height="unset">
-                    <Flex direction="column" justify="center">
-                        <Section margin="0 0  14px" height="unset">
-                            <Image
-                                src={"/assets/icons/empty_icon.svg"}
-                                alt="empty-icon"
-                                width={95.5}
-                                height={95.5}
-                            />
-                        </Section>
-                        <Section margin="0 0  24px" height="unset">
-                            <Text
-                                type="h3"
-                                text="No seat available"
-                                size={32}
-                                weight={700}
-                                color={ttColors.dark}
-                            />
-                        </Section>
-                        <Section margin="0 0  57.5px" height="unset">
-                            <Text
-                                type="p"
-                                text="There are no seat available for the flight filters selected."
-                                weight={400}
-                                size={18}
-                                color="#929292"
-                            />
-                        </Section>
-                        <Flex gap="1rem">
-                            <Button
-                                width="100%"
-                                color={ttColors.dark}
-                                background={ttColors.light}
-                                border="1px solid #19013b"
-                                onClick={() => router.push("/")}
-                            >
-                                <Text
-                                    type="span"
-                                    text={"Change Search"}
-                                    weight={600}
-                                    size={16}
-                                    color={ttColors.dark}
-                                />
-                            </Button>
-                            <Button
-                                width="100%"
-                                background={ttColors.dark}
-                                color={ttColors.light}
-                                // border="1px solid #19013b"
-                                onClick={handleSaveBooking}
-                            >
-                                {saveBookingMode == Mode.loading ? (
-                                    <Spinner
-                                        size="40px"
-                                        fill={ttColors.primary}
-                                    />
-                                ) : (
-                                    <Text
-                                        type="span"
-                                        text={"Continue"}
-                                        weight={600}
-                                        size={16}
-                                        color={ttColors.light}
-                                    />
-                                )}
-                            </Button>
-                        </Flex>
-                    </Flex>
-                </Section>
-            ),
-        });
         setEmptySeatsModalOpen(true);
     };
 
@@ -582,7 +500,77 @@ const SeatSelection = () => {
             <CustomConfirmationModal
                 open={emptySeatsModalOpen}
                 handleClose={() => setEmptySeatsModalOpen(false)}
-                {...emptySeatsModalContent}
+                child={
+                    <Section padding="3rem 6rem" height="unset">
+                        <Flex direction="column" justify="center">
+                            <Section margin="0 0  14px" height="unset">
+                                <Image
+                                    src={"/assets/icons/empty_icon.svg"}
+                                    alt="empty-icon"
+                                    width={95.5}
+                                    height={95.5}
+                                />
+                            </Section>
+                            <Section margin="0 0  24px" height="unset">
+                                <Text
+                                    type="h3"
+                                    text="No seat available"
+                                    size={32}
+                                    weight={700}
+                                    color={ttColors.dark}
+                                />
+                            </Section>
+                            <Section margin="0 0  57.5px" height="unset">
+                                <Text
+                                    type="p"
+                                    text="There are no seat available for the flight filters selected."
+                                    weight={400}
+                                    size={18}
+                                    color="#929292"
+                                />
+                            </Section>
+                            <Flex gap="1rem">
+                                <Button
+                                    width="100%"
+                                    color={ttColors.dark}
+                                    background={ttColors.light}
+                                    border="1px solid #19013b"
+                                    onClick={() => router.push("/")}
+                                >
+                                    <Text
+                                        type="span"
+                                        text={"Change Search"}
+                                        weight={600}
+                                        size={16}
+                                        color={ttColors.dark}
+                                    />
+                                </Button>
+                                <Button
+                                    width="100%"
+                                    background={ttColors.dark}
+                                    color={ttColors.light}
+                                    // border="1px solid #19013b"
+                                    onClick={handleSaveBooking}
+                                >
+                                    {saveBookingMode == Mode.loading ? (
+                                        <Spinner
+                                            size="40px"
+                                            fill={ttColors.primary}
+                                        />
+                                    ) : (
+                                        <Text
+                                            type="span"
+                                            text={"Continue"}
+                                            weight={600}
+                                            size={16}
+                                            color={ttColors.light}
+                                        />
+                                    )}
+                                </Button>
+                            </Flex>
+                        </Flex>
+                    </Section>
+                }
             />
         </>
     );
