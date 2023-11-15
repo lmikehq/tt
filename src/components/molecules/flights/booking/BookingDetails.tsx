@@ -31,7 +31,7 @@ function HeaderDetail({ name, value }: { name: string; value: string | number; }
     return (
         <Stack direction="column" alignItems="flex-start" spacing=".4rem">
             <Text type="p" text={name} size={13} color='white' styles={{ textTransform: 'uppercase' }} />
-            <Text type="p" text={String(value)} size={isMobile ? 14 : 16} color='white' weight={600} styles={{ textTransform: 'uppercase' }} />
+            <Text type="p" text={String(value ?? '')} size={isMobile ? 14 : 16} color='white' weight={600} styles={{ textTransform: 'uppercase' }} />
         </Stack>
     )
 }
@@ -185,7 +185,7 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
                 <HeaderDetail name="PNR" value={booking?.pnrStatus} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
                 <HeaderDetail name="FLIGHT NUMBER" value={booking?.flightNum} />
-                <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0]} />
+                <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0] ?? ''} />
                 <HeaderDetail name="BOOKING STATUS:" value={capCase(booking?.status, '_')} />
             </Grid>
         </Stack>
@@ -290,7 +290,7 @@ function PassengerDetails({ booking }: { booking: GetFlightBookingByIdResponse }
                     />
                     <FieldDetail name="Email" value={""} />
                     <FieldDetail name="Phone Number" value={""} />
-                    <FieldDetail name="Seat Details" value={""} last />
+                    <FieldDetail name="Seat Details" value={booking?.seatId[index]} last />
                     {/* <FieldDetail name="Extra Baggage" value={""} last/> */}
                 </Flex>    
             )}
