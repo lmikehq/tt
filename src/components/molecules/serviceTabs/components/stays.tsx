@@ -76,7 +76,6 @@ function Stays() {
             />
             <DatePicker
                 placeholder="Select Date"
-                position="start"
                 minDate={today}
                 onChange={(e) => null}
             />
@@ -94,7 +93,6 @@ function Stays() {
             />
             <DatePicker
                 placeholder="Select Date"
-                position="start"
                 minDate={today}
                 onChange={(e) => null}
             />

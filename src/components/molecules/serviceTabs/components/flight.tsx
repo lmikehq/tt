@@ -63,11 +63,11 @@ export function FlightType({
             align={isMobile ? "flex-start" : "flex-end"}
             justify="center"
         >
-            {/* {isMobile && (
+            {isMobile && (
                 <Flex padding="0px 0px 16px">
-                    <Text type="p" size={16} weight={500} text="Flight Type" />
+                    <Text type="p" size={16} weight={500} text="Type" />
                 </Flex>
-            )} */}
+            )}
             <Flex width={isMobile ? "100%" : "max-content"}>
                 <CustomRadioGroup
                     options={flightTypeOptions}
@@ -224,21 +224,21 @@ function Flights() {
 
 
 	return (
-		<Section padding="1.5rem 0rem 0" styles={{ position: "relative" }}>
+        <Section padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"} styles={{ position: "relative" }}>
 			<Flex direction="column">
-				{isMobile &&
+				{/* {isMobile &&
 					<FlightType
 						isMobile={isMobile}
 						value={flightState?.flightType ?? ''}
 						onChange={(x) => dispatch && dispatch({ type: "SET_FLIGHT_TYPE", payload: x ?? '' })}
 					/>
-				}
+				} */}
 
                 <FlightStops
                     isMobile={isMobile}
                     value={flightState?.stops ?? "round"}
                     onChange={handleChangeStops}
-                    showLabel={isMobile}
+                    showLabel={false}
                 />
             </Flex>
 

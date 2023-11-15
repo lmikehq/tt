@@ -26,14 +26,16 @@ function SortedColumn({ results, sortType }: sortProps) {
   return (
     <Section>
       {isMobile ? (
-        <Flex justify="space-between" align="center" padding="2rem .5rem">
+        <Flex justify="space-between" align="center" padding="0 1.5rem 2rem">
           <Flex direction="column">
             <Text type="h1" text="Flights" weight={500} size={20} />
-            <Text
-              type="p"
-              text={`${searchFlightsResults.length} results sorted by ${sorted}`}
-              size={14}
-            />
+            {!!sorted &&
+                <Text
+                    type="p"
+                    text={`${searchFlightsResults.length} results sorted by ${sorted}`}
+                    size={14}
+                />
+            }
           </Flex>
           <Flex align="center" justify="flex-end" gap="2rem">
             <Button

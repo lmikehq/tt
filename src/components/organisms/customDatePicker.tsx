@@ -4,14 +4,16 @@ import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
-import dayjs from "dayjs";
-import { MouseEventHandler, Ref, SyntheticEvent, forwardRef } from "react";
+import { MouseEventHandler, Ref, SyntheticEvent, forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { IoCalendarOutline } from "react-icons/io5";
 import { styled } from "styled-components";
 import { Poppins } from "next/font/google";
+import { Box, PopperPlacementType, Stack } from "@mui/material";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { PiCaretDoubleLeftBold, PiCaretDoubleRightBold } from "react-icons/pi";
 const poppins = Poppins({
     weight: "400",
     style: ["normal"],
@@ -32,7 +34,7 @@ interface CustomDatePickerProps {
     selected?: Date;
     value?: Date;
     placeholder?: string;
-    position?: "start";
+    position?: PopperPlacementType;
     disabled?: boolean;
     views?: ("day" | "month" | "year")[];
     error?: any;
@@ -57,9 +59,8 @@ const DateIcon = styled.span`
 `;
 const DateInput = styled.input<{ width?: string }>`
   height: 45px;
-//   font-weight: 500,
-//   font-size: 14px;
-  font:inherit;
+  font-size: 15px;
+  font-family: Poppins;
   color: ${ttColors.grayishAsh}
   width: ${(props) => props.width ?? "100%"};
   border-radius: 4px;
@@ -88,6 +89,7 @@ const DateInput = styled.input<{ width?: string }>`
     font-weight: 400 !important;
   }
 `;
+
 export const DatePicker = ({
     minDate,
     maxDate,
@@ -101,111 +103,150 @@ export const DatePicker = ({
     disabled,
     width,
     height,
+    position
 }: CustomDatePickerProps) => {
-    return (
-        <ReactDatePicker
-            selected={value || selected}
-            startDate={startDate}
-            minDate={minDate}
-            maxDate={maxDate}
-            endDate={endDate}
-            onChange={onChange}
-            monthsShown={monthsShown}
-            disabled={disabled}
-            withPortal={true}
-            placeholderText={placeholder}
-            showIcon={false}
-            disabledKeyboardNavigation={true}
-            customInput={
-                <CustomDatePickerInput
-                    width={width}
-                    height={height}
-                    placeholder={placeholder}
-                />
-            }
-            shouldCloseOnSelect={false}
-            formatWeekDay={(day) => <>{day.substring(0, 3).toUpperCase()}</>}
-            renderCustomHeader={({
-                monthDate,
-                customHeaderCount,
-                decreaseMonth,
-                increaseMonth,
-            }) => (
-                <Flex align="center" justify="space-between">
-                    <Button
-                        onClick={decreaseMonth}
-                        width="fit-content"
-                        background="transparent"
-                        styles={
-                            monthsShown == 2
-                                ? customHeaderCount === 1
-                                    ? { visibility: "hidden" }
-                                    : {}
-                                : {}
-                        }
-                    >
-                        <BiChevronLeft color="#333333" size={24} />
-                    </Button>
-                    <Text
-                        text={monthDate.toLocaleString("en-US", {
-                            month: "long",
-                            year: "numeric",
-                        })}
-                        type="p"
-                        size={18}
-                        weight={700}
-                    />
+    const { isMobile } = useScreenResolution()
+    const fieldRef = useRef<HTMLDivElement>(null)
+    const [fieldWidth, setFieldWidth] = useState('300px')
 
-                    <Button
-                        onClick={increaseMonth}
-                        width="fit-content"
-                        background="transparent"
-                        styles={
-                            monthsShown == 2
-                                ? customHeaderCount === 0
-                                    ? { visibility: "hidden" }
-                                    : {}
-                                : {}
-                        }
+    useEffect(() => setFieldWidth(`${fieldRef?.current?.clientWidth}px`), [fieldRef?.current])
+
+    return (
+        <Flex direction='column' width="100%">
+            <ReactDatePicker
+                popperContainer={({ children }) =>
+                    <Box
+                        ref={fieldRef}
+                        sx={{
+                            "& .react-datepicker__month-container": {
+                                width: `${isMobile ? fieldWidth : '320px'} !important`,
+                                padding: '14px 20px 20px !important',
+                            },
+                            "& .react-datepicker__day-names": {
+                                marginTop: '10px !important',
+                                fontFamily: 'Poppins',
+                            },
+                            "& .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name": {
+                                width: 'calc(100%/7) !important',
+                                fontFamily: 'Poppins',
+                            },
+                            "& .react-datepicker__month": {
+                                margin: '0 !important',
+                            },
+                        }}
+                        width="100%"
+                        position="relative"
                     >
-                        <BiChevronRight color="#333333" size={24} />
-                    </Button>
-                </Flex>
-                // <div>
-                //   <button
-                //     aria-label="Previous Month"
-                //     className={
-                //       "react-datepicker__navigation react-datepicker__navigation--previous"
-                //     }
-                //     style={customHeaderCount === 1 ? { visibility: "hidden" } : {}}
-                //     onClick={decreaseMonth}
-                //   >
-                //     <BiChevronLeft color="#333333" size={24} />
-                //   </button>
-                //   <span className="react-datepicker__current-month">
-                //     <Text
-                //       text={monthDate.toLocaleString("en-US", {
-                //         month: "long",
-                //         year: "numeric",
-                //       })}
-                //       type="p"
-                //       size={18}
-                //       weight={700}
-                //     />
-                //   </span>
-                //   <button
-                //     aria-label="Next Month"
-                //     className={
-                //       "react-datepicker__navigation react-datepicker__navigation--next"
-                //     }
-                //     style={customHeaderCount === 1 ? { visibility: "hidden" } : {}}
-                //     onClick={increaseMonth}
-                //   >
-                //     <BiChevronRight color="#333333" size={24} />
-                //   </button>
-                // </div>
-            )}
-        />
+                        {children}
+                    </Box>
+                }
+                wrapperClassName="w-full"
+                selected={value || selected}
+                startDate={startDate}
+                minDate={minDate}
+                maxDate={maxDate}
+                endDate={endDate}
+                onChange={onChange}
+                monthsShown={monthsShown}
+                disabled={disabled}
+                popperPlacement={position ?? "bottom-start"}
+                popperProps={{ width: '20px' }}
+                placeholderText={placeholder}
+                withPortal={false}
+                showIcon={false}
+                useWeekdaysShort={true}
+                disabledKeyboardNavigation={true}
+                customInput={
+                    <CustomDatePickerInput
+                        width={width}
+                        height={height}
+                        placeholder={placeholder}
+                    />
+                }
+                shouldCloseOnSelect={true}
+                formatWeekDay={(day) => <>{day.substring(0, 3).toUpperCase()}</>}
+                renderCustomHeader={({
+                    monthDate,
+                    customHeaderCount,
+                    decreaseMonth,
+                    increaseMonth,
+                }) => (
+                    <Flex align="center" justify="space-between">
+                        <Button
+                            onClick={decreaseMonth}
+                            width="fit-content"
+                            background="transparent"
+                            styles={
+                                monthsShown == 2
+                                    ? customHeaderCount === 1
+                                        ? { visibility: "hidden" }
+                                        : {}
+                                    : {}
+                            }
+                        >
+                            <PiCaretDoubleLeftBold color="#333333" size={16} />
+                        </Button>
+                        <Text
+                            text={monthDate.toLocaleString("en-US", {
+                                month: "long",
+                                year: "numeric",
+                            })}
+                            type="p"
+                            size={16}
+                            weight={700}
+                        />
+    
+                        <Button
+                            onClick={increaseMonth}
+                            width="fit-content"
+                            background="transparent"
+                            styles={
+                                monthsShown == 2
+                                    ? customHeaderCount === 0
+                                        ? { visibility: "hidden" }
+                                        : {}
+                                    : {}
+                            }
+                        >
+                            <PiCaretDoubleRightBold color="#333333" size={16} />
+                        </Button>
+                    </Flex>
+                    // <div>
+                    //   <button
+                    //     aria-label="Previous Month"
+                    //     className={
+                    //       "react-datepicker__navigation react-datepicker__navigation--previous"
+                    //     }
+                    //     style={customHeaderCount === 1 ? { visibility: "hidden" } : {}}
+                    //     onClick={decreaseMonth}
+                    //   >
+                    //     <BiChevronLeft color="#333333" size={24} />
+                    //   </button>
+                    //   <span className="react-datepicker__current-month">
+                    //     <Text
+                    //       text={monthDate.toLocaleString("en-US", {
+                    //         month: "long",
+                    //         year: "numeric",
+                    //       })}
+                    //       type="p"
+                    //       size={18}
+                    //       weight={700}
+                    //     />
+                    //   </span>
+                    //   <button
+                    //     aria-label="Next Month"
+                    //     className={
+                    //       "react-datepicker__navigation react-datepicker__navigation--next"
+                    //     }
+                    //     style={customHeaderCount === 1 ? { visibility: "hidden" } : {}}
+                    //     onClick={increaseMonth}
+                    //   >
+                    //     <BiChevronRight color="#333333" size={24} />
+                    //   </button>
+                    // </div>
+                )}
+            />
+        </Flex>
     );
 };
 
@@ -229,7 +270,7 @@ export const CustomDatePickerInput = forwardRef(
     ) => (
         <InputContainer ref={ref} width={width ?? "100%"}>
             <DateIcon>
-                <IoCalendarOutline size={24} />
+                <IoCalendarOutline size={22} color={ttColors.lighterGray} />
             </DateIcon>
             <DateInput
                 placeholder={placeholder ?? "dd/mm/yyyy"}

@@ -4,7 +4,7 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 import { ttColors } from '@/lib/theme/colors';
 
 
-export default function ProgressLoader({ duration, color }: { duration?: number; color?: LinearProgressProps['color'] }) {
+export default function ProgressLoader({ duration, color, width }: { duration?: number; color?: LinearProgressProps['color']; width?: string }) {
     const [progress, setProgress] = React.useState(0);
 
     React.useEffect(() => {
@@ -13,7 +13,7 @@ export default function ProgressLoader({ duration, color }: { duration?: number;
                 if (prev === 100) {
                     return 0;
                 }
-                const diff = Math.random() * 10;
+                const diff = Math.random() * 20;
                 return Math.min(prev + diff, 100);
             });
         }, 1000);
@@ -23,7 +23,7 @@ export default function ProgressLoader({ duration, color }: { duration?: number;
 
     return (
         <Box
-            width="100%"
+            width={width ?? "100%"}
             sx={{
                 ".MuiLinearProgress-root": {
                     bgcolor: ttColors.lightestGray
