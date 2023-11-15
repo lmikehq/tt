@@ -58,6 +58,7 @@ const RecentlyViewedTile = () => {
             <Flex className="recently" gap="1rem">
               <Section
                 borderRadius="8px"
+                className="compare_recently"
                 styles={{
                   overflow: "hidden",
                   maxHeight: "121px",

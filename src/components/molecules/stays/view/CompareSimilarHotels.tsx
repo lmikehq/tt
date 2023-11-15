@@ -77,7 +77,12 @@ const CompareSimilarHotels = () => {
         <Container>
           <Header>
             <Flex justify="space-between">
-              <Text weight={600} type="h4" text="Compare Similar Hotels"></Text>
+              <Text
+                weight={600}
+                size={17}
+                type="h4"
+                text="Compare Similar Hotels"
+              ></Text>
               <CloseOutlinedIcon
                 style={{ cursor: "pointer" }}
                 onClick={handleCloseCompareBox}
@@ -88,7 +93,7 @@ const CompareSimilarHotels = () => {
           <GridLayout>
             {rooms.map((room, index) => (
               <List key={index}>
-                <Flex gap="15px">
+                <Flex gap="15px" className="compare_recently">
                   <ImageBox>
                     <Link href="">
                       <img

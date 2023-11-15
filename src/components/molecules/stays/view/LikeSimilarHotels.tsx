@@ -210,7 +210,12 @@ function LikeSimilarHotels() {
           }}
         >
           <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
-            <Text type="h4" text="You may also like" weight={"bold"} />
+            <Text
+              type="h4"
+              size={17}
+              text="You may also like"
+              weight={"bold"}
+            />
             <CloseOutlinedIcon
               style={{ cursor: "pointer" }}
               onClick={handleCloseSliderBox}

@@ -167,29 +167,29 @@ const Policies = () => {
             <Text type="h4" size={15} weight={"bold"} text="Payment"></Text>
           </Header>
           <Span style={{ marginBottom: "20px" }}>
-            <Flex gap="20px" align="center">
+            <Flex gap="20px" align="center" wrap="wrap">
               <img
-                style={{ width: "40px", height: "40px" }}
+                style={{ maxWidth: "40px", maxHeight: "40px" }}
                 src="/assets/images/stays/express.png"
                 alt=""
               />
               <img
-                style={{ height: "40px" }}
+                style={{ maxHeight: "40px" }}
                 src="/assets/images/stays/dinners.png"
                 alt=""
               />
               <img
-                style={{ width: "40px", height: "40px" }}
+                style={{ maxWidth: "40px", maxHeight: "40px" }}
                 src="/assets/images/stays/jcb.jpeg"
                 alt=""
               />
               <img
-                style={{ height: "40px" }}
+                style={{ maxHeight: "40px" }}
                 src="/assets/images/stays/master.png"
                 alt=""
               />
               <img
-                style={{ height: "65px" }}
+                style={{ maxHeight: "40px" }}
                 src="/assets/images/stays/visa.png"
                 alt=""
               />

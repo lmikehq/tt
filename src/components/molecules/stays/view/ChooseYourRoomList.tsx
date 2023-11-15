@@ -169,7 +169,7 @@ function ChooseYourRoomList() {
                     <Text type="h2" weight={600} text={room.name}></Text>
                   )}
                   <Span style={{ margin: "15px 0px" }}>
-                    <Flex wrap="wrap" gap="8px">
+                    <Flex wrap="wrap" gap="8px" align="center">
                       <BtnDetails
                         style={{ backgroundColor: ttColors.grayishAsh }}
                       >
@@ -348,7 +348,12 @@ function ChooseYourRoomList() {
                               ></Text>
                             }
                           />
-                          <Text type="h4" weight={"bold"} text="+$0"></Text>
+                          <Text
+                            type="h4"
+                            weight={"bold"}
+                            whiteSpace="nowrap"
+                            text="+$0"
+                          ></Text>
                         </Flex>
                         <Flex justify="space-between" align="center">
                           <FormControlLabel
@@ -384,7 +389,12 @@ function ChooseYourRoomList() {
                               </Flex>
                             }
                           />
-                          <Text type="h4" weight={"bold"} text="+$140"></Text>
+                          <Text
+                            type="h4"
+                            weight={"bold"}
+                            whiteSpace="nowrap"
+                            text="+$140"
+                          ></Text>
                         </Flex>
                       </Flex>
                     </RadioGroup>
@@ -449,7 +459,12 @@ function ChooseYourRoomList() {
                               ></Text>
                             }
                           />
-                          <Text type="h4" weight={"bold"} text="+$0"></Text>
+                          <Text
+                            type="h4"
+                            weight={"bold"}
+                            whiteSpace="nowrap"
+                            text="+$0"
+                          ></Text>
                         </Flex>
                         <Flex justify="space-between" align="center">
                           <FormControlLabel
@@ -478,7 +493,12 @@ function ChooseYourRoomList() {
                               ></Text>
                             }
                           />
-                          <Text type="h4" weight={"bold"} text="+$0"></Text>
+                          <Text
+                            type="h4"
+                            weight={"bold"}
+                            whiteSpace="nowrap"
+                            text="+$0"
+                          ></Text>
                         </Flex>
                         <Flex justify="space-between" align="center">
                           <FormControlLabel
@@ -507,7 +527,12 @@ function ChooseYourRoomList() {
                               ></Text>
                             }
                           />
-                          <Text type="h4" weight={"bold"} text="+$140"></Text>
+                          <Text
+                            type="h4"
+                            weight={"bold"}
+                            whiteSpace="nowrap"
+                            text="+$140"
+                          ></Text>
                         </Flex>
                       </Flex>
                     </RadioGroup>

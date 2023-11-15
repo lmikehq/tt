@@ -4,8 +4,11 @@ import Text from "@/components/atoms/text";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import BedIcon from "@mui/icons-material/Bed";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 const DescriptionOfHotel = () => {
+  const { isMobile } = useScreenResolution();
+
   return (
     <>
       <Container style={{ width: "100%" }}>
@@ -16,6 +19,7 @@ const DescriptionOfHotel = () => {
           <Flex direction="column">
             <Text
               type="h4"
+              size={17}
               text="Description of the Hotel"
               weight={600}
               styles={{

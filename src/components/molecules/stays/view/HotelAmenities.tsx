@@ -11,8 +11,21 @@ import WifiIcon from "@mui/icons-material/Wifi";
 import TranslateIcon from "@mui/icons-material/Translate";
 import PetsIcon from "@mui/icons-material/Pets";
 import LocalHospitalOutlinedIcon from "@mui/icons-material/LocalHospitalOutlined";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { useState } from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const HotelAmenities = () => {
+  const { isMobile } = useScreenResolution();
+  //============
+  //TOGGLE BOX
+  //============
+  const [openBox, setOpenBox] = useState<number>();
+  const toggleBox = (index: number) => {
+    setOpenBox((prevIndex) => (prevIndex === index ? undefined : index));
+  };
+
   return (
     <>
       <Container style={{ width: "100%" }}>
@@ -20,6 +33,7 @@ const HotelAmenities = () => {
           <Flex direction="column">
             <Text
               type="h4"
+              size={17}
               text="Hotel Amenities"
               weight={600}
               styles={{
@@ -39,103 +53,134 @@ const HotelAmenities = () => {
         </Header>
         <Span style={{ width: "100%" }}>
           <GridLayout className="amenities_grid">
-            <ul style={{ listStyle: "none" }}>
-              <Flex gap="10px" align="center">
-                <PinDropIcon style={{ fontSize: "18px" }} />
-                <Text type="h5" text="General" weight={"bold"}></Text>
-              </Flex>
-              <Flex
-                gap="30px"
-                align="flex-start"
-                styles={{ marginTop: "10px" }}
-              >
-                <Span></Span>
-                <Span style={{ lineHeight: "27px" }}>
-                  <li>
-                    <Text type="p" size={14} text="Air conditioning"></Text>
-                  </li>
-                  <li>
-                    <Text
-                      type="p"
-                      size={14}
-                      text="All Spaces Non-Smoking "
-                    ></Text>{" "}
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Express check"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Garden"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Heating"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Newspapers"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Reception desk"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Security guard"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Smoke-free property"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Television in lobby"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Terrace"></Text>
-                  </li>
-                </Span>
-              </Flex>
-            </ul>
-            <ul style={{ listStyle: "none" }}>
-              <Flex gap="10px" align="center">
-                <BedIcon style={{ fontSize: "18px" }} />
-                <Text type="h5" text="Rooms" weight={"bold"}></Text>
-              </Flex>
-              <Flex
-                gap="30px"
-                align="flex-start"
-                styles={{ marginTop: "10px" }}
-              >
-                <Span></Span>
-                <Span style={{ lineHeight: "27px" }}>
-                  <li>
-                    <Text type="p" size={14} text="Cable TV"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Family room"></Text>{" "}
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Non-smoking rooms"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Room service"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Shower"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Shower/Bathtub"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="TV"></Text>
-                  </li>
-                  <li>
-                    <Text type="p" size={14} text="Wardrobe/Closet"></Text>
-                  </li>
-                </Span>
-              </Flex>
-            </ul>
-            <ul style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
-                  <GiMeal style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Meals" weight={"bold"}></Text>
+            <ul style={{ listStyle: "none" }} className="mobile_box">
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(0)}>
+                  <PinDropIcon style={{ fontSize: "18px" }} />
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="General"
+                    weight={"bold"}
+                  ></Text>
                 </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 0 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 0 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Air conditioning"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="All Spaces Non-Smoking "
+                          ></Text>{" "}
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Express check"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Garden"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Heating"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Newspapers"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Reception desk"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Security guard"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Smoke-free property"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Television in lobby"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Terrace"
+                          ></Text>
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -144,59 +189,540 @@ const HotelAmenities = () => {
                   <Span></Span>
                   <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text type="p" size={14} text="Breakfast"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Air conditioning"
+                      ></Text>
                     </li>
                     <li>
                       <Text
                         type="p"
                         size={14}
-                        text="Breakfast/lunch to go"
+                        text="All Spaces Non-Smoking "
                       ></Text>{" "}
                     </li>
                     <li>
-                      <Text type="p" size={14} text="Restaurant"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Express check"
+                      ></Text>
                     </li>
                     <li>
-                      <Text type="p" size={14} text="Vending machine"></Text>
-                    </li>
-                  </Span>
-                </Flex>
-              </Span>
-              <Span>
-                <Flex gap="10px" align="center">
-                  <TranslateIcon style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Language" weight={"bold"}></Text>
-                </Flex>
-                <Flex
-                  gap="30px"
-                  align="flex-start"
-                  styles={{ marginTop: "10px" }}
-                >
-                  <Span></Span>
-                  <Span style={{ lineHeight: "27px" }}>
-                    <li>
-                      <Text type="p" size={14} text="English"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Garden"
+                      ></Text>
                     </li>
                     <li>
-                      <Text type="p" size={14} text="French"></Text>{" "}
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Heating"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Newspapers"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Reception desk"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Security guard"
+                      ></Text>
                     </li>
                     <li>
                       <Text
                         type="p"
                         size={14}
-                        text="Multi-language staff"
+                        text="Smoke-free property"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        size={14}
+                        text="Television in lobby"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Terrace"
                       ></Text>
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
+            </ul>
+            <ul style={{ listStyle: "none" }} className="mobile_box">
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(1)}>
+                  <BedIcon style={{ fontSize: "18px" }} />
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="Rooms"
+                    weight={"bold"}
+                  ></Text>
+                </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 1 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 1 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Cable TV"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Family room"
+                          ></Text>{" "}
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Non-smoking rooms"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Room service"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Shower"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Shower/Bathtub"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="TV"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Wardrobe/Closet"
+                          ></Text>
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
+                <Flex
+                  gap="30px"
+                  align="flex-start"
+                  styles={{ marginTop: "10px" }}
+                >
+                  <Span></Span>
+                  <Span style={{ lineHeight: "27px" }}>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Cable TV"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Family room"
+                      ></Text>{" "}
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Non-smoking rooms"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Room service"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Shower"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Shower/Bathtub"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="TV"
+                      ></Text>
+                    </li>
+                    <li>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Wardrobe/Closet"
+                      ></Text>
+                    </li>
+                  </Span>
+                </Flex>
+              )}
             </ul>
             <ul style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
-                  <FaWheelchair style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Accessibility" weight={"bold"}></Text>
+              <Span style={{ marginBottom: "20px" }} className="mobile_box">
+                <Flex justify="space-between">
+                  <Flex gap="10px" align="center" onClick={() => toggleBox(2)}>
+                    <GiMeal style={{ fontSize: "18px" }} />
+                    <Text
+                      type="h5"
+                      size={16}
+                      whiteSpace="nowrap"
+                      text="Meals"
+                      weight={"bold"}
+                    ></Text>
+                  </Flex>
+                  {isMobile ? (
+                    <>
+                      {openBox === 2 ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </Flex>
+                {isMobile && (
+                  <>
+                    {openBox === 2 && (
+                      <Flex
+                        gap="30px"
+                        align="flex-start"
+                        styles={{ marginTop: "10px" }}
+                      >
+                        <Span></Span>
+                        <Span style={{ lineHeight: "27px" }}>
+                          <li>
+                            <Text
+                              type="p"
+                              whiteSpace="nowrap"
+                              size={14}
+                              text="Breakfast"
+                            ></Text>
+                          </li>
+                          <li>
+                            <Text
+                              type="p"
+                              size={14}
+                              text="Breakfast/lunch to go"
+                            ></Text>{" "}
+                          </li>
+                          <li>
+                            <Text
+                              type="p"
+                              whiteSpace="nowrap"
+                              size={14}
+                              text="Restaurant"
+                            ></Text>
+                          </li>
+                          <li>
+                            <Text
+                              type="p"
+                              size={14}
+                              text="Vending machine"
+                            ></Text>
+                          </li>
+                        </Span>
+                      </Flex>
+                    )}
+                  </>
+                )}
+                {!isMobile && (
+                  <Flex
+                    gap="30px"
+                    align="flex-start"
+                    styles={{ marginTop: "10px" }}
+                  >
+                    <Span></Span>
+                    <Span style={{ lineHeight: "27px" }}>
+                      <li>
+                        <Text
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={14}
+                          text="Breakfast"
+                        ></Text>
+                      </li>
+                      <li>
+                        <Text
+                          type="p"
+                          size={14}
+                          text="Breakfast/lunch to go"
+                        ></Text>{" "}
+                      </li>
+                      <li>
+                        <Text
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={14}
+                          text="Restaurant"
+                        ></Text>
+                      </li>
+                      <li>
+                        <Text
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={14}
+                          text="Vending machine"
+                        ></Text>
+                      </li>
+                    </Span>
+                  </Flex>
+                )}
+              </Span>
+              <Span className="mobile_box">
+                <Flex justify="space-between">
+                  <Flex gap="10px" align="center" onClick={() => toggleBox(3)}>
+                    <TranslateIcon style={{ fontSize: "18px" }} />
+                    <Text
+                      type="h5"
+                      size={16}
+                      whiteSpace="nowrap"
+                      text="Language"
+                      weight={"bold"}
+                    ></Text>
+                  </Flex>
+                  {isMobile ? (
+                    <>
+                      {openBox === 3 ? (
+                        <KeyboardArrowUpIcon />
+                      ) : (
+                        <KeyboardArrowDownIcon />
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </Flex>
+                {isMobile && (
+                  <>
+                    {openBox === 3 && (
+                      <Flex
+                        gap="30px"
+                        align="flex-start"
+                        styles={{ marginTop: "10px" }}
+                      >
+                        <Span></Span>
+                        <Span style={{ lineHeight: "27px" }}>
+                          <li>
+                            <Text
+                              type="p"
+                              whiteSpace="nowrap"
+                              size={14}
+                              text="English"
+                            ></Text>
+                          </li>
+                          <li>
+                            <Text
+                              type="p"
+                              whiteSpace="nowrap"
+                              size={14}
+                              text="French"
+                            ></Text>{" "}
+                          </li>
+                          <li>
+                            <Text
+                              type="p"
+                              size={14}
+                              text="Multi-language staff"
+                            ></Text>
+                          </li>
+                        </Span>
+                      </Flex>
+                    )}
+                  </>
+                )}
+                {!isMobile && (
+                  <Flex
+                    gap="30px"
+                    align="flex-start"
+                    styles={{ marginTop: "10px" }}
+                  >
+                    <Span></Span>
+                    <Span style={{ lineHeight: "27px" }}>
+                      <li>
+                        <Text
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={14}
+                          text="English"
+                        ></Text>
+                      </li>
+                      <li>
+                        <Text
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={14}
+                          text="French"
+                        ></Text>{" "}
+                      </li>
+                      <li>
+                        <Text
+                          type="p"
+                          size={14}
+                          text="Multi-language staff"
+                        ></Text>
+                      </li>
+                    </Span>
+                  </Flex>
+                )}
+              </Span>
+            </ul>
+            <ul style={{ listStyle: "none" }} className="mobile_box">
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(4)}>
+                  <FaWheelchair style={{ fontSize: "18px" }} />
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="Accessibility"
+                    weight={"bold"}
+                  ></Text>
+                </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 4 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 4 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Accessibility features"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Wheelchair Accessible"
+                          ></Text>{" "}
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -220,14 +746,64 @@ const HotelAmenities = () => {
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
             </ul>
-            <ul className="listFive" style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
+            <ul className="listFive mobile_box" style={{ listStyle: "none" }}>
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(5)}>
                   <PiBabyFill style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Kids" weight={"bold"}></Text>
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="Kids"
+                    weight={"bold"}
+                  ></Text>
                 </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 5 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 5 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Children's playground"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Family/Kid Friendly"
+                          ></Text>{" "}
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -251,14 +827,64 @@ const HotelAmenities = () => {
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
             </ul>
-            <ul className="listSix" style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
+            <ul className="listSix mobile_box" style={{ listStyle: "none" }}>
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(6)}>
                   <LuParkingSquare style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Parking" weight={"bold"}></Text>
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="Parking"
+                    weight={"bold"}
+                  ></Text>
                 </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 6 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 6 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Free parking"
+                          ></Text>
+                        </li>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Parking nearby"
+                          ></Text>{" "}
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -267,25 +893,72 @@ const HotelAmenities = () => {
                   <Span></Span>
                   <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text type="p" size={14} text="Free parking"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Free parking"
+                      ></Text>
                     </li>
                     <li>
-                      <Text type="p" size={14} text="Parking nearby"></Text>{" "}
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Parking nearby"
+                      ></Text>{" "}
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
             </ul>
-            <ul style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
+            <ul style={{ listStyle: "none" }} className="mobile_box">
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(7)}>
                   <LocalHospitalOutlinedIcon style={{ fontSize: "18px" }} />
                   <Text
                     type="h5"
+                    size={16}
                     text="Beauty and Wellness"
                     weight={"bold"}
                   ></Text>
                 </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 7 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 7 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="First Aid Kit"
+                          ></Text>
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -294,18 +967,65 @@ const HotelAmenities = () => {
                   <Span></Span>
                   <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text type="p" size={14} text="First Aid Kit"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="First Aid Kit"
+                      ></Text>
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
             </ul>
-            <ul className="listEight" style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
+            <ul className="listEight mobile_box" style={{ listStyle: "none" }}>
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(8)}>
                   <WifiIcon style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Internet" weight={"bold"}></Text>
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="Internet"
+                    weight={"bold"}
+                  ></Text>
                 </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 8 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 8 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Free Wifi"
+                          ></Text>
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -314,18 +1034,65 @@ const HotelAmenities = () => {
                   <Span></Span>
                   <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text type="p" size={14} text="Free Wifi"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Free Wifi"
+                      ></Text>
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
             </ul>{" "}
-            <ul className="listNine" style={{ listStyle: "none" }}>
-              <Span style={{ marginBottom: "20px" }}>
-                <Flex gap="10px" align="center">
+            <ul className="listNine mobile_box" style={{ listStyle: "none" }}>
+              <Flex justify="space-between">
+                <Flex gap="10px" align="center" onClick={() => toggleBox(9)}>
                   <PetsIcon style={{ fontSize: "18px" }} />
-                  <Text type="h5" text="Pets" weight={"bold"}></Text>
+                  <Text
+                    type="h5"
+                    size={16}
+                    whiteSpace="nowrap"
+                    text="Pets"
+                    weight={"bold"}
+                  ></Text>
                 </Flex>
+                {isMobile ? (
+                  <>
+                    {openBox === 9 ? (
+                      <KeyboardArrowUpIcon />
+                    ) : (
+                      <KeyboardArrowDownIcon />
+                    )}
+                  </>
+                ) : (
+                  ""
+                )}
+              </Flex>
+              {isMobile && (
+                <>
+                  {openBox === 9 && (
+                    <Flex
+                      gap="30px"
+                      align="flex-start"
+                      styles={{ marginTop: "10px" }}
+                    >
+                      <Span></Span>
+                      <Span style={{ lineHeight: "27px" }}>
+                        <li>
+                          <Text
+                            type="p"
+                            whiteSpace="nowrap"
+                            size={14}
+                            text="Pets allowed"
+                          ></Text>
+                        </li>
+                      </Span>
+                    </Flex>
+                  )}
+                </>
+              )}
+              {!isMobile && (
                 <Flex
                   gap="30px"
                   align="flex-start"
@@ -334,11 +1101,16 @@ const HotelAmenities = () => {
                   <Span></Span>
                   <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text type="p" size={14} text="Pets allowed"></Text>
+                      <Text
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={14}
+                        text="Pets allowed"
+                      ></Text>
                     </li>
                   </Span>
                 </Flex>
-              </Span>
+              )}
             </ul>
           </GridLayout>
         </Span>

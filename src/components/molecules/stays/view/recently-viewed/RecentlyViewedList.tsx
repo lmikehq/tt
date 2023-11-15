@@ -3,11 +3,16 @@ import Section from "../../../section";
 import Flex from "@/components/templates/flex";
 import RecentlyViewedTile from "./RecentlyViewedTile";
 import { Span } from "../styles";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 const RecentlyViewedList = () => {
+  const { isMobile } = useScreenResolution();
+
   return (
     <Span>
-      <Section styles={{ marginTop: "20px", marginBottom: "10px" }}>
+      <Section
+        styles={{ marginTop: isMobile ? "-20px" : "20px", marginBottom: "20px" }}
+      >
         <Text type="h1" size={24} weight={600} text="Recently viewed" />
       </Section>
       <Section>

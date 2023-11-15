@@ -14,6 +14,20 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   margin-bottom: 20px;
+
+  @media screen and (max-width: 470px) {
+    .review_header {
+      flex-direction: column !important;
+      gap: 8px;
+      align-items: flex-start !important;
+      .flex_start {
+        justify-content: flex-start !important;
+        .select {
+          width: auto !important;
+        }
+      }
+    }
+  }
 `;
 
 export const Tab = styled.div`
@@ -35,6 +49,12 @@ export const List = styled.div`
   border: 1px solid var(--color-border);
   padding: 10px;
   border-radius: 6px;
+
+  @media screen and (max-width: 395px) {
+    .compare_recently {
+      flex-direction: column;
+    }
+  }
 `;
 
 export const GridLayout = styled.div`
@@ -54,14 +74,35 @@ export const GridLayout = styled.div`
     grid-template-columns: repeat(3, 1fr);
     justify-content: space-between !important;
     grid-column-gap: 10%;
+    @media screen and (max-width: 1095px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+      .mobile_box {
+        border: 1px solid var(--color-border);
+        padding: 12px;
+      }
+    }
   }
   &.description_grid {
     grid-template-columns: 65% 30%;
     justify-items: space-between !important;
     grid-column-gap: 40px;
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 100%;
+      gap: 20px;
+    }
   }
   &.location_grid {
     grid-column-gap: 0px !important;
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+      .mobile_box {
+        border: 1px solid var(--color-border);
+        padding: 12px;
+      }
+    }
   }
   @media screen and (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -81,6 +122,9 @@ export const ImageBox = styled.div`
   height: 110px;
   border-radius: 6px;
   overflow: hidden;
+  @media screen and (max-width: 395px) {
+    width: 100%;
+  }
 `;
 
 export const ChooseRoomImg = styled.span`
@@ -102,8 +146,19 @@ export const GridBox = styled.div`
   grid-template-columns: 30% auto;
   align-items: center;
   gap: 20px;
-  .LineProgressBar {
-    width: 100%;
+
+  @media screen and (max-width: 1254px) {
+    .rating_flex_wrap {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 100%;
+    .rating_flex_wrap {
+      flex-direction: row;
+      align-items: center !important;
+    }
   }
 `;
 
@@ -111,6 +166,12 @@ export const ProgressBars = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 25px;
+  .LineProgressBar {
+    width: 100%;
+  }
+  @media screen and (max-width: 420px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ReviewsText = styled.div`
@@ -128,6 +189,18 @@ export const ReviewHeader = styled.div`
 `;
 export const Content = styled.div`
   padding: 15px;
+  @media screen and (max-width: 510px) {
+    .date_wrap {
+      flex-wrap: wrap;
+      gap: 10px !important;
+      li:nth-child(2) {
+        list-style: none;
+      }
+    }
+    .radio_wrap {
+      gap: 0px !important;
+    }
+  }
 `;
 
 export const Span = styled.div`
@@ -145,6 +218,14 @@ export const Span = styled.div`
   @media screen and (max-width: 480px) {
     .choose_img_text {
       flex-direction: column !important;
+      width: 100%;
+    }
+  }
+  @media screen and (max-width: 395px) {
+    .recently {
+      flex-direction: column;
+    }
+    .compare_recently {
       width: 100%;
     }
   }
@@ -169,6 +250,11 @@ export const ButtonBtn = styled.div`
   color: var(--default-color);
   border-radius: 6px;
   cursor: pointer;
+  &.btn_disable {
+    background-color: var(--color-light-gray) !important;
+    color: var(--text-gray-color) !important;
+    cursor: not-allowed;
+  }
 `;
 export const BtnText = styled.div`
   white-space: nowrap;
