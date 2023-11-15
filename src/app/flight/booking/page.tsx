@@ -286,6 +286,7 @@ const FlightBookingPage = () => {
             },
         }).then((response) => {
             setInitCheckFlightsMode(Mode.loaded);
+            if (searchParams.step == "5") return setStep({ step: 5 });
             checkFlightsThreeSecondsInterval({
                 sessionId: response.session_id,
                 searchParams,

@@ -14,9 +14,11 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 function OverviewSystem() {
     const { isMobile } = useScreenResolution();
-    const { checkFlightsResponse, saveBookingResponse } = useFlightBookingStore(
-        (state) => state
-    );
+    const {
+        checkFlightsResponse,
+        saveBookingResponse,
+        getBookingByIdResponse,
+    } = useFlightBookingStore((state) => state);
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
         (state) => state
     );
@@ -39,6 +41,8 @@ function OverviewSystem() {
     const arrivalFlightDurationHours = Math.floor(arrivalFlightDuration / 60);
     const arrivalFlightDurationMinutes = arrivalFlightDuration % 60;
 
+    const total =
+        saveBookingResponse?.total ?? getBookingByIdResponse?.totalAmount ?? 0;
     return (
         <Section>
             <Box
@@ -214,9 +218,7 @@ function OverviewSystem() {
                     <Text
                         type="p"
                         text={`${formatPrice({
-                            total:
-                                (saveBookingResponse?.ticketPrice ?? 0) *
-                                conversionRate,
+                            total: (total ?? 0) * conversionRate,
                             currency: preFerredCurrency,
                             numberOfDecimalDigits: 2,
                         })}`}
@@ -242,9 +244,7 @@ function OverviewSystem() {
                     <Text
                         type="p"
                         text={`${formatPrice({
-                            total:
-                                (saveBookingResponse?.total ?? 0) *
-                                conversionRate,
+                            total: (total ?? 0) * conversionRate,
                             currency: preFerredCurrency,
                             numberOfDecimalDigits: 2,
                         })}`}

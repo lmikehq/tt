@@ -17,7 +17,7 @@ import {
     mockRows,
     seatClass,
 } from "@/lib/types/response-models/flight/booking.type";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { SeatHeader } from "../headers";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
@@ -37,7 +37,12 @@ import SeatLoadingSkeleton from "./SeatLoadingSkeleton";
 import { BiSolidXCircle } from "react-icons/bi";
 import Spinner from "@/components/molecules/icons/spinner";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import {
+    constructParamsFromQuery,
+    constructQueryFromParams,
+    extractSearchParamsFromUrl,
+} from "@/lib/extensions/helpers/constructQuery";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -47,6 +52,7 @@ const SeatSelection = () => {
     const { isMobile } = useScreenResolution();
     const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
     const [selectionModalContent, setSelectionModalContent] = useState<{
         seatDescription: ReactNode;
         seatName: string;
@@ -383,6 +389,7 @@ const SeatSelection = () => {
             setSeatRows(rows);
         }
     };
+
     const handleSaveBooking = () => {
         let data: SaveBookingRequestInput;
         data =
@@ -397,9 +404,21 @@ const SeatSelection = () => {
         saveBooking({
             data,
         })
-            .then((_) => {
+            .then((res) => {
                 toast.success(
                     "Flight booking successful. Proceed to make Payment"
+                );
+
+                const searchParams = extractSearchParamsFromUrl({
+                    url: window.location.href,
+                });
+                router.push(
+                    pathname +
+                        constructQueryFromParams({
+                            ...searchParams,
+                            id: res.flightId,
+                            step: 5,
+                        })
                 );
                 nextStep();
                 window.scrollTo({
