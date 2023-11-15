@@ -389,6 +389,19 @@ const SeatSelection = () => {
             setSeatRows(rows);
         }
     };
+    const collectSeatNames = (
+        seatDetails: ParticularSeatingOption[]
+    ): string[] => {
+        const seatNames: string[] = [];
+
+        seatDetails.forEach((option) => {
+            option.seats.forEach((seat) => {
+                seatNames.push(seat.seat);
+            });
+        });
+
+        return seatNames;
+    };
 
     const handleSaveBooking = () => {
         let data: SaveBookingRequestInput;
@@ -397,6 +410,7 @@ const SeatSelection = () => {
                 ? saveBookingDetails
                 : {
                       ...saveBookingDetails,
+                      seatId: collectSeatNames(particularSeats),
                       additional_services: {
                           seating: [...particularSeats],
                       },
