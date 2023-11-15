@@ -21,6 +21,7 @@ import {
 import {
     BookingDetailsInterface,
     FlightInfo,
+    GetFlightBookingByIdResponse,
     SeatRowWithSegmentCodeInterface,
 } from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
@@ -48,6 +49,8 @@ interface State {
     saveBookingDetails: SaveBookingRequestInput;
     saveBookingResponse: {
         bookingId: string;
+        flightId: string;
+        userId: string;
         zoozToken: string;
         ticketPrice: number;
         total: number;
@@ -64,6 +67,7 @@ interface State {
     confirmPaymentMode: Mode;
     bookingDetailsMode: Mode;
     bookingDetailsResponse: BookingDetailsInterface | null;
+    getBookingByIdResponse: GetFlightBookingByIdResponse | null;
 }
 interface Actions {
     prevStep: () => void;
@@ -87,7 +91,7 @@ interface Actions {
         previousSeat: string | null;
         newSeat: string;
     }) => void;
-    saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
+    saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<any>;
     confirmPaymentZooz: (params: {
         data: TokenizeDataRequestInput;
     }) => Promise<TokenizeDataResponse>;
@@ -137,6 +141,7 @@ export const useFlightBookingStore = create<State & Actions>(
 
         bookingDetailsMode: Mode.init,
         bookingDetailsResponse: null,
+        getBookingByIdResponse: null,
 
         prevStep: () => {
             set((state) => ({
@@ -361,8 +366,11 @@ export const useFlightBookingStore = create<State & Actions>(
                             zoozToken: response.data.payu_token,
                             ticketPrice: response.data.tickets_price,
                             total: response.data.total,
+                            userId: response.userId,
+                            flightId: response.flightId,
                         },
                     }));
+                    return response;
                 })
                 .catch((error) => {
                     set({
@@ -429,9 +437,10 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ bookingDetailsMode: Mode.loading });
             return await FlightBookingService.checkBookingDetails({ bookingId })
                 .then((response) => {
+                    console.log(response, "sdsdf");
                     set({
                         bookingDetailsMode: Mode.loaded,
-                        bookingDetailsResponse: response,
+                        getBookingByIdResponse: response,
                     });
                 })
                 .catch((error) => {
