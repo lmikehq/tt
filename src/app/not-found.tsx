@@ -15,29 +15,31 @@ function NotFoundPage() {
     <div>
       <Navbar page="not-found" />
       <SectionLayout>
-        <Center margin="5rem 0">
+        <Center margin="3rem 0">
           <Flex direction="column" align="center">
-            <Text
+            {/* <Text
               type="p"
               text="Oopss!!"
               size={30}
               weight={700}
               color="#000000"
-            />
+            /> */}
             <Image
-              src={"/assets/images/not-found.svg"}
-              alt="not found"
+                src={"/assets/images/not-found.svg"}
+                alt="not found"
+                width={isMobile ? 350 : 600}
+                height={isMobile? 300 : 350}
               styles={{
-                height: isMobile ? "120px" : "200px",
-                marginTop: isMobile ? "2rem" : "4rem",
+                width: isMobile ? "120px" : "100px",
+                marginTop: isMobile ? "2rem" : "0rem",
               }}
             />
 
             <Text
               type="p"
-              text="THE PAGE YOUR ARE LOOKING FOR COULD NOT BE FOUND"
-              size={21}
-              weight={500}
+              text="OOPS! THE PAGE YOUR ARE LOOKING FOR COULD NOT BE FOUND"
+              size={isMobile ? 16 : 18}
+              weight={600}
               color="#888888"
               textAlign="center"
             />
