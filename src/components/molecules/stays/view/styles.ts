@@ -89,7 +89,7 @@ export const ChooseRoomImg = styled.span`
   overflow: hidden;
   grid-column-gap: 20px;
   @media screen and (max-width: 900px) {
-    max-width: 60%;
+    max-width: 70%;
   }
   @media screen and (max-width: 480px) {
     max-width: 100%;
