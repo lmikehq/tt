@@ -175,17 +175,17 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
                     </Flex>
                     <IoCopy color={ttColors.primaryLight} size={20} />
                 </Flex>
-                <Button background={ttColors.dark} padding='0 1.5rem' width='max-content'>
+                <Button background={ttColors.dark} padding='0 1.5rem' width='max-content' onClick={() => window.print()}>
                     <Text type="p" text='Print Itinerary' />
                 </Button>
             </Flex>
 
-            <Grid columns={isMobile ? 2 : 6} gap={isMobile ? "1.5rem" : "1rem"} padding='1.5rem 2rem' style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
+            <Grid columns={isMobile ? 2 : 5} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
                 <HeaderDetail name="BOOKING ID" value={booking?.bookingId} />
-                <HeaderDetail name="PNR" value={booking?.pnrAvailabilityDate ? 'AVAILABLE' : ''} />
+                <HeaderDetail name="PNR" value={(Boolean(booking?.pnrAvailabilityDate) || booking?.pnrAvailabilityDate === 'false') ? 'UNAVAILABLE' : 'AVAILABLE'} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
                 <HeaderDetail name="FLIGHT NUMBER" value={""} />
-                <HeaderDetail name="SEAT NUMBER" value={""} />
+                {/* <HeaderDetail name="SEAT NUMBER" value={""} /> */}
                 <HeaderDetail name="BOOKING STATUS:" value={capCase(booking?.status, '_')} />
             </Grid>
         </Stack>
@@ -282,8 +282,8 @@ function PassengerDetails({ booking }: { booking: GetFlightBookingByIdResponse }
                     />
                     <FieldDetail name="Email" value={""} />
                     <FieldDetail name="Phone Number" value={""} />
-                    <FieldDetail name="Seat Details" value={""} />
-                    <FieldDetail name="Extra Baggage" value={""} last/>
+                    <FieldDetail name="Seat Details" value={""} last />
+                    {/* <FieldDetail name="Extra Baggage" value={""} last/> */}
                 </Flex>    
             )}
         </Stack>
