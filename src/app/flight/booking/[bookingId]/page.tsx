@@ -534,10 +534,10 @@ export default function ViewBooking({ params } : {
     params: { bookingId: string }
 }) {
     const { isMobile } = useScreenResolution()
-    const { checkBookingDetails, bookingDetailsMode } = useFlightBookingStore((state) => state);
+    const { checkBookingDetails, bookingDetailsMode, getBookingByIdResponse } = useFlightBookingStore((state) => state);
 
     useEffect(() => {
-        // checkBookingDetails({ bookingId: params.bookingId })
+        checkBookingDetails({ bookingId: params.bookingId })
     }, [params.bookingId])
 
     return (
@@ -553,7 +553,7 @@ export default function ViewBooking({ params } : {
                             </Link>
                         </ErrorPage>
                 ) : (
-                    <BookingDetails booking={mockBooking} />
+                    <BookingDetails booking={getBookingByIdResponse!} />
                 )}
             </SectionLayout>
         </Box>
