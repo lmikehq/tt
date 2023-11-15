@@ -546,7 +546,7 @@ export default function ViewBooking({ params } : {
                 {bookingDetailsMode === Mode.loading ? (
                     <Spinner size="60px" />
                 ) : bookingDetailsMode === Mode.error ? (
-                        <ErrorPage text="Sorry, No booking found">
+                        <ErrorPage text="Sorry, booking not found">
                             <Link href="/contact" style={{ display: 'flex' }}>
                                 <Text type="p" size={isMobile ? 14 : 16} text="Try contacting us for help" styles={{ textDecoration: 'underline' }} />
                                 <BsArrowRightShort size={24} />

@@ -97,7 +97,7 @@ export class FlightBookingService {
         bookingId: string;
     }) => {
         return await kiwiResourceClient
-            .post<any, any>(`/flight/bookings/${bookingId}`, {})
+            .get<any, any>(`/flight/bookings/${bookingId}`, {})
             .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
