@@ -437,7 +437,7 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ bookingDetailsMode: Mode.loading });
             return await FlightBookingService.checkBookingDetails({ bookingId })
                 .then((response) => {
-                    console.log(response, "sdsdf");
+                    // console.log(response, "sdsdf");
                     set({
                         bookingDetailsMode: Mode.loaded,
                         getBookingByIdResponse: response,

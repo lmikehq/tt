@@ -425,6 +425,14 @@ export const seatClass: SeatClassInterface = {
     premium: { name: "premium", color: "#5DB955" },
 };
 
+
+interface StopOverArrayInterface {
+    flightNum:          string;
+    airport:            string;
+    takeOffAirport:     string;
+    destinationAirport: string;
+    departureTime:      string;
+}
 export interface GetFlightBookingByIdResponse {
     _id: string;
     bookingId: number;
@@ -452,12 +460,19 @@ export interface GetFlightBookingByIdResponse {
     hasErrors: boolean;
     errorsActionRequired: boolean;
     errorObject: any[];
+    pnrStatus: string;
     pnrAvailabilityDate: string;
     userID: string;
     createdAt: string;
     updatedAt: string;
+    flightNum: string;
+    airlineIata: string;
+    numOfStopovers: number;
+    stopOverArray: StopOverArrayInterface[];
+    seatId: string[];
     passengerInfo: PassengerInterface[];
     baggageInfo: Baggage[];
+    pricing: SegmentPricing;
 }
 
 export const mockRows = [

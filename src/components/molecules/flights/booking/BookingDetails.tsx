@@ -180,12 +180,12 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
                 </Button>
             </Flex>
 
-            <Grid columns={isMobile ? 2 : 5} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
+            <Grid columns={isMobile ? 2 : 6} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
                 <HeaderDetail name="BOOKING ID" value={booking?.bookingId} />
-                <HeaderDetail name="PNR" value={(Boolean(booking?.pnrAvailabilityDate) || booking?.pnrAvailabilityDate === 'false') ? 'UNAVAILABLE' : 'AVAILABLE'} />
+                <HeaderDetail name="PNR" value={booking?.pnrStatus} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
-                <HeaderDetail name="FLIGHT NUMBER" value={""} />
-                {/* <HeaderDetail name="SEAT NUMBER" value={""} /> */}
+                <HeaderDetail name="FLIGHT NUMBER" value={booking?.flightNum} />
+                <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0]} />
                 <HeaderDetail name="BOOKING STATUS:" value={capCase(booking?.status, '_')} />
             </Grid>
         </Stack>
@@ -211,8 +211,12 @@ function FlightDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
         }
     }, {} as { [k: number]: string[] }), [booking?.baggageInfo])
 
-    const handBaggageText = Object.keys(sortedHandBaggage ?? {}).map(e => `${e}kg(${sortedHandBaggage[Number(e)].length})`).join(', ')
-    const holdBaggageText = Object.keys(sortedHoldBaggage ?? {}).map(e => `${e}kg(${sortedHoldBaggage[Number(e)].length})`).join(', ')
+    const handBagCount = Object.values(sortedHandBaggage ?? {}).length
+    const holdBagCount = Object.values(sortedHoldBaggage ?? {}).length
+
+    const handBaggageText = Object.values(sortedHandBaggage ?? {}).length === 0 ? 'No Hand Baggage' : Object.keys(sortedHandBaggage ?? {}).map(e => `${e}kg(${sortedHandBaggage[Number(e)].length})`).join(', ')
+    const holdBaggageText = Object.values(sortedHoldBaggage ?? {}).length === 0 ? 'No Hold Baggage' : Object.keys(sortedHoldBaggage ?? {}).map(e => `${e}kg(${sortedHoldBaggage[Number(e)].length})`).join(', ')
+
 
     return (
         <Stack direction="column" margin="0 0 3rem 0" spacing="1rem">
@@ -236,7 +240,7 @@ function FlightDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
                                 src: String(booking?.takeOffLocation).split(', ')[0],
                                 src_name: booking?.takeOffLocation,
                                 src_station: booking?.takeOffAirport,
-                                airlineIata: ''
+                                airlineIata: booking?.airlineIata
                             }}
                             arrival={{
                                 cabin: '',
@@ -244,14 +248,18 @@ function FlightDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
                                 dst: String(booking?.destinationLocation).split(', ')[0],
                                 dst_name: booking?.destinationLocation,
                                 dst_station: booking?.destinationAirport,
-                                airlineIata: ''
+                                airlineIata: booking?.airlineIata
                             }}
                             stops={10}
                             last
                         />
                         <Flex padding=".8rem 1rem" gap=".8rem" borderRadius='4px' background={ttColors.primary300} justify='flex-start' align="center">
                             <BsFillHandbagFill size={18} />
-                            <Text type="p" text={`Hand Baggage: ${handBaggageText} . Hold Baggage: ${holdBaggageText}`} size={isMobile ? 14 : 15} />
+                            <Text
+                                type="p"
+                                text={`${handBagCount > 0 ? `Hand Baggage ${handBaggageText}` : handBaggageText} . ${holdBagCount > 0 ? `Hold Baggage ${holdBaggageText}` : holdBaggageText}`}
+                                size={isMobile ? 14 : 15}
+                            />
                         </Flex>
                     </Flex>
                 </Flex>
@@ -317,9 +325,9 @@ function PriceDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
 
             <Flex direction='column'>
                 <Text type="p" text="Ticket Details" size={isMobile ? 16 : 18} weight={500} margin="0 0 1rem" />
-                {adultsCount > 0 && <FieldDetail name={`Adults x${adultsCount}`} value={calcPrice(0)} />}
-                {childrenCount > 0 && <FieldDetail name={`Children x${childrenCount}`} value={calcPrice(0)} />}
-                {infantsCount > 0 && <FieldDetail name={`Infants x${infantsCount}`} value={calcPrice(0)} />}
+                {adultsCount > 0 && <FieldDetail name={`Adults x${adultsCount}`} value={calcPrice(Number(booking?.pricing?.adult?.amount) ?? 0)} />}
+                {childrenCount > 0 && <FieldDetail name={`Children x${childrenCount}`} value={calcPrice(Number(booking?.pricing?.child?.amount) ?? 0)} />}
+                {infantsCount > 0 && <FieldDetail name={`Infants x${infantsCount}`} value={calcPrice(Number(booking?.pricing?.infant?.amount) ?? 0)} />}
                 <FieldDetail name="Total Fare" value={calcPrice(Number(booking?.ticketPrice))} />
                 <FieldDetail name="Service Charge" value={calcPrice(0)} />
             </Flex>
