@@ -534,10 +534,10 @@ export default function ViewBooking({ params } : {
     params: { bookingId: string }
 }) {
     const { isMobile } = useScreenResolution()
-    const { checkBookingDetails, bookingDetailsMode } = useFlightBookingStore((state) => state);
+    const { checkBookingDetails, bookingDetailsMode, getBookingByIdResponse } = useFlightBookingStore((state) => state);
 
     useEffect(() => {
-        // checkBookingDetails({ bookingId: params.bookingId })
+        checkBookingDetails({ bookingId: params.bookingId })
     }, [params.bookingId])
 
     return (
@@ -546,14 +546,14 @@ export default function ViewBooking({ params } : {
                 {bookingDetailsMode === Mode.loading ? (
                     <Spinner size="60px" />
                 ) : bookingDetailsMode === Mode.error ? (
-                        <ErrorPage text="Sorry, No booking found">
+                        <ErrorPage text="Sorry, booking not found">
                             <Link href="/contact" style={{ display: 'flex' }}>
                                 <Text type="p" size={isMobile ? 14 : 16} text="Try contacting us for help" styles={{ textDecoration: 'underline' }} />
                                 <BsArrowRightShort size={24} />
                             </Link>
                         </ErrorPage>
                 ) : (
-                    <BookingDetails booking={mockBooking} />
+                    <BookingDetails booking={getBookingByIdResponse!} />
                 )}
             </SectionLayout>
         </Box>

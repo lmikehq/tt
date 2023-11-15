@@ -4,7 +4,6 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
 } from "@mui/material";
 import Flex from "@components/templates/flex";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
@@ -39,13 +38,13 @@ export function CustomRadioGroup({
 }: CustomRadioGroupProps) {
   const { isMobile } = useScreenResolution();
   return (
-    <FormControl>
+    <FormControl style={{ width: '100%' }}>
         <RadioGroup
             name={name}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
-            style={{ justifyContent: justifyContent }}
+            style={{ justifyContent: justifyContent, width: '100%' }}
         >
               <Flex align={align} gap="1rem" direction={direction} className={scroll ? "no-scrollbar" : ""} overflowX={scroll ? "auto" : "initial"}>
                 {options.map((option) =>
@@ -58,7 +57,7 @@ export function CustomRadioGroup({
                             marginLeft: "0px",
                             
                             ".MuiFormControlLabel-label": {
-                                width: scroll ? 'max-content' : '',
+                                width: scroll ? 'max-content' : '100%',
                                 fontFamily: "Poppins",
                                 fontWeight: "400 !important",
                                 fontSize: isMobile ? ".9rem !important" : ".9rem !important",

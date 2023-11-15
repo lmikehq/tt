@@ -27,7 +27,6 @@ import styled from "styled-components";
 import { getIpDetails } from "../form/visaApis";
 import MobileNavigationDrawer from "./modals/mobileNav";
 import currencyCodes from "currency-codes";
-import { SearchInputAsString } from "../searchInput";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
@@ -102,7 +101,6 @@ const Navbar = ({ page }: { page: string }) => {
     let path = usePathname();
     let pathArray = path.split("/")[1];
     const { setGeoInfo } = useUserStore((state) => state);
-    const [currencyCode, setCurrencyCode] = useState("NGN");
     useEffect(() => {
         getIpDetails().then((res) => setGeoInfo(res));
     }, []);
@@ -278,7 +276,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                                     sx: {
                                         "& .MuiPaper-root": {
                                             maxHeight: '50vh',
-                                            top: '114px !important',
+                                            top: '55px !important',
                                             boxShadow: '0px 0px 1px rgba(0,0,0,0.3)'
                                         },
                                         "& .MuiPaper-root::-webkit-scrollbar": {

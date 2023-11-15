@@ -533,7 +533,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             size={14}
                             whiteSpace="nowrap"
                         />
-                        <Flex gap=".5rem" align="center" justify="flex-end">
+                        <Flex width="50%" gap=".5rem" align="center" justify="flex-end">
                             <PlusMinusButton
                                 onClick={() => handleBags("cabin", "subtract")}
                             >
@@ -559,7 +559,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             size={14}
                             whiteSpace="nowrap"
                         />
-                        <Flex gap=".5rem" align="center" justify="flex-end">
+                        <Flex width="50%" gap=".5rem" align="center" justify="flex-end">
                             <PlusMinusButton
                                 onClick={() =>
                                     handleBags("checked", "subtract")

@@ -103,10 +103,7 @@ export class FlightBookingService {
         bookingId: string;
     }) => {
         return await kiwiResourceClient
-            .get<any, GetFlightBookingByIdResponse>(
-                `/flight/bookings/get/${bookingId}`,
-                {}
-            )
+            .get<any, GetFlightBookingByIdResponse>(`/flight/bookings/get/${bookingId}`, {})
             .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
