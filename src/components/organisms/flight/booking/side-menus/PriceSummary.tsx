@@ -41,9 +41,7 @@ function Detail({
             <Text
                 type="p"
                 size={bold ? 22 : 14}
-                text={`${negative ? "- " : ""}${
-                    plain ? "" : currency
-                } ${value}`}
+                text={`${negative ? "- " : ""}${plain ? "" : currency} ${value}`}
                 weight={bold ? 600 : 400}
                 color={bold ? ttColors.dark : ttColors.lighterGray}
             />
@@ -73,10 +71,11 @@ function StillBookingModal({
         <Modal open={isOpen} handleClose={onClose}>
             <Stack
                 direction="column"
+                alignItems="center"
                 spacing={5}
                 bgcolor="white"
                 padding={6}
-                width={isMobile ? "90vw" : "30vw"}
+                width={isMobile ? "95vw" : "30vw"}
                 borderRadius="16px"
             >
                 <Text type="h2" text="Flight Booking" weight={600} size={22} />
@@ -149,14 +148,17 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });
-
     const totalPrice = formatPrice({
         total: (checkFlightsResponse?.tickets_price ?? 0) * conversionRate,
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });
+    const discount = formatPrice({
+        total: 0,
+        currency: preFerredCurrency,
+        numberOfDecimalDigits: 2,
+    });
     const currency = preFerredCurrency;
-    const discount = Number(0).toFixed(2);
 
     const departureBags = countofBags.length;
 
