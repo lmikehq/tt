@@ -1,6 +1,5 @@
 import Image from "@/components/atoms/image";
 import Flex from "@/components/templates/flex";
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 
 export default function FlightDepartureIcon({
@@ -18,7 +17,6 @@ export default function FlightDepartureIcon({
     height?: number;
     stops?: number;
 }) {
-    // const theStops = stops === 0 ? 0 : 0
     const stopDots = Array.from({ length: (stops > 3 ? 3 : stops)})
     
     return (

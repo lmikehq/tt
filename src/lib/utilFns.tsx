@@ -81,9 +81,9 @@ export function cleanObject(obj: { [k: string]: any }) {
 
 export function numSort (arr: any[] = [], keyToCompare: string, order?: 'asc' | 'desc') {
     if (order === 'asc') {
-        return arr.sort((a, b) => ((keyToCompare ? a[keyToCompare] : a) - (keyToCompare ? b[keyToCompare] : b)))
+        return arr.sort((a, b) => (parseFloat(keyToCompare ? a[keyToCompare] : a) - parseFloat(keyToCompare ? b[keyToCompare] : b)))
     } else {
-        return arr.sort((a, b) => ((keyToCompare ? b[keyToCompare] : b) - (keyToCompare ? a[keyToCompare] : a)))
+        return arr.sort((a, b) => (parseFloat(keyToCompare ? b[keyToCompare] : b) - parseFloat(keyToCompare ? a[keyToCompare] : a)))
     }
 }
 export function dateSort (arr: any[] = [], key: string, order?: 'asc' | 'desc') {

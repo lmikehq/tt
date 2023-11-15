@@ -8,7 +8,6 @@ import {
     SearchFlightsRequestQuery,
     TokenizeDataRequestInput,
 } from "../../types/request-models/flight/booking.type";
-import { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
 import {
     axiosClient,
@@ -21,8 +20,10 @@ import {
     GetFlightBookingByIdResponse,
     SearchFlightsResponse,
 } from "../../types/response-models/flight/booking.type";
+
 import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
+
 
 export class FlightBookingService {
     static searchFlights = async ({
@@ -32,10 +33,10 @@ export class FlightBookingService {
     }) => {
         const query = constructQueryFromParams(data);
         return await kiwiClient
-            .get<any, SearchFlightsResponse>(`/search${query}`)
-            .then((response) => {
-                console.log("nuuu-req", response);
-                return response;
+        .get<any, SearchFlightsResponse>(`/search${query}`)
+        .then((response) => {
+                return response
+
             })
             .catch((error) => {
                 toast.error(error.response?.errorMessage);

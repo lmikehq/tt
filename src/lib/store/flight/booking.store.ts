@@ -212,6 +212,7 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ searchFlightsMode: Mode.loading });
             return await FlightBookingService.searchFlights({
                 data: {
+                    limit: 10,
                     ...data,
                     curr: useUserPreferencesStore.getState().preFerredCurrency,
                 },
@@ -248,6 +249,7 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ searchMoreFlightsMode: Mode.loading });
             return await FlightBookingService.searchFlights({
                 data: {
+                    limit: 10,
                     ...data,
                     curr: useUserPreferencesStore.getState().preFerredCurrency,
                 },

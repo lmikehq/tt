@@ -98,8 +98,8 @@ function TimeOfFlight({
                     style={{
                         backgroundSize: "cover",
                         backgroundPosition: "center",
-                        width: "55px",
-                        height: "50px",
+                        width: isMobile ? "45px" : "55px",
+                        height: isMobile ? "45px" : "50px",
                         border: `1px solid ${ttColors.lightestGray}`,
                         borderRadius: "50px",
                         backgroundColor: 'white',

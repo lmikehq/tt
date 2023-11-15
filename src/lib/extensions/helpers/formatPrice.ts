@@ -1,7 +1,7 @@
 export const formatPrice = ({
     total = 0,
     currency,
-    numberOfDecimalDigits = 0,
+    numberOfDecimalDigits,
 }: {
     total?: number;
     currency?: string;
@@ -10,8 +10,8 @@ export const formatPrice = ({
     return Intl.NumberFormat("en-NG", {
         style: "currency",
         currency: currency ?? "NGN",
-        minimumFractionDigits: numberOfDecimalDigits,
-        maximumFractionDigits: numberOfDecimalDigits,
+        minimumFractionDigits: numberOfDecimalDigits ?? 2,
+        maximumFractionDigits: numberOfDecimalDigits ?? 2,
 
     }).format(total);
 };

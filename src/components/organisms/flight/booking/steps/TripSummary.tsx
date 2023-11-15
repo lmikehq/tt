@@ -31,7 +31,7 @@ import {
 } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, FormEventHandler, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export interface OneFlight {
@@ -143,6 +143,7 @@ const TripSummary = ({
             };
         });
     };
+
     const contactDetailsFormik = useFormik({
         initialValues: contactDetails,
         enableReinitialize: true,
@@ -171,14 +172,8 @@ const TripSummary = ({
         enableReinitialize: true,
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
-        onSubmit: async (values) => {
+        onSubmit: async (values, helpers) => {
             console.log(contactDetailsFormik.values, "passengers")
-            contactDetailsFormik.validateForm()
-            if (!contactDetailsFormik.isValid) {
-                toast.error('Missing fields')
-                return
-            }
-
             setLoading(true);
             setSaveBookingDetails({
                 data: {
@@ -206,6 +201,18 @@ const TripSummary = ({
         },
         validateOnChange: false,
     });
+
+    const checkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        formik.validateForm()
+        contactDetailsFormik.validateForm()
+        // if (!formik.isValid) {
+        //     toast.error('Missing passenger details')
+        // }
+        if (!contactDetailsFormik.isValid) {
+            toast.error('Missing contact details')
+        }
+        formik.handleSubmit(e)
+    }
 
     const removePassenger = (index: number) => {
         formik.setValues((prev) => ({
@@ -237,7 +244,7 @@ const TripSummary = ({
                 </form>
             )}
             <FormikProvider value={formik}>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={checkSubmit}>
                     <FieldArray
                         name="passengers"
                         render={(arrayHelpers) => (
@@ -287,7 +294,7 @@ const TripSummary = ({
                             background={ttColors.dark}
                             height={"3.5rem"}
                             width="100%"
-                            onClick={() => console.log(formik)}
+                            // onClick={() => console.log(formik)}
                         >
                             {loading ? (
                                 <Spinner
