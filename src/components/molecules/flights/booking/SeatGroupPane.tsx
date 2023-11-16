@@ -12,6 +12,8 @@ import Text from "@/components/atoms/text";
 import { BiCheck } from "react-icons/bi";
 import { ttColors } from "@/lib/theme/colors";
 import { seatClass as seatCategory } from "@/lib/types/response-models/flight/booking.type";
+import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 const SingleSeatBox = styled.div<{ bgColor?: string }>`
     background-color: ${({ bgColor }) => bgColor};
@@ -30,6 +32,9 @@ interface SeatGroupProps {
 const SeatGroupPane = ({ seatGroup, selectSeat }: SeatGroupProps) => {
     const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
     const [open, setOpen] = React.useState(false);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
     const [popperDetails, setPopperDetails] = useState({
         seatName: "",
         seatClass: "",
@@ -124,11 +129,13 @@ const SeatGroupPane = ({ seatGroup, selectSeat }: SeatGroupProps) => {
                                             size={14}
                                             weight={500}
                                             color="white"
-                                            text={
-                                                popperDetails.currency +
-                                                " " +
-                                                popperDetails.amount
-                                            }
+                                            text={formatPrice({
+                                                total:
+                                                    parseInt(
+                                                        popperDetails.amount
+                                                    ) * conversionRate,
+                                                currency: preFerredCurrency,
+                                            })}
                                             type="p"
                                         />
                                     </Section>

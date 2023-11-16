@@ -125,6 +125,7 @@ const FlightBookingPage = () => {
     });
 
     const { adults = "0", children = "0", infants = "0" } = searchParams;
+    const intervalIds = useRef<any[]>([]);
 
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
@@ -191,50 +192,55 @@ const FlightBookingPage = () => {
 
         setPassengersBagCombination(combinations);
     };
-    const checkFlightsThreeSecondsInterval = async ({
+    const checkFlightsThreeSecondsInterval = ({
         sessionId,
         searchParams,
     }: {
         sessionId: string;
         searchParams: Record<string, string>;
-    }): Promise<any> => {
-        const response = await checkFlights({
-            query: {
-                bnum: 0,
-                ...searchParams,
-                session_id: sessionId,
-            },
-        });
-
-        if (
-            response.flights_checked == true &&
-            response.price_change == false &&
-            response.flights_invalid == false
-        ) {
-            setPassengersBagCombination([
-                ...generateCombinationsForCategory({
-                    size: parseInt(adults),
-                    category: "adult",
-                    checkFlightsResponse: response,
-                }),
-                ...generateCombinationsForCategory({
-                    size: parseInt(children),
-                    category: "child",
-                    checkFlightsResponse: response,
-                }),
-                ...generateCombinationsForCategory({
-                    size: parseInt(infants),
-                    category: "infant",
-                    checkFlightsResponse: response,
-                }),
-            ]);
-            return checkFlightsFifteenSecondsInterval({
-                sessionId,
-                searchParams,
+    }) => {
+        const intervalId = setInterval(async () => {
+            const response = await checkFlights({
+                query: {
+                    bnum: 0,
+                    ...searchParams,
+                    session_id: sessionId,
+                },
             });
-        }
-        await sleep(3000);
-        return checkFlightsThreeSecondsInterval({ sessionId, searchParams });
+
+            if (
+                response.flights_checked == true &&
+                response.price_change == false &&
+                response.flights_invalid == false
+            ) {
+                clearInterval(intervalId);
+                setInitCheckFlightsMode(Mode.loaded);
+
+                setPassengersBagCombination([
+                    ...generateCombinationsForCategory({
+                        size: parseInt(adults),
+                        category: "adult",
+                        checkFlightsResponse: response,
+                    }),
+                    ...generateCombinationsForCategory({
+                        size: parseInt(children),
+                        category: "child",
+                        checkFlightsResponse: response,
+                    }),
+                    ...generateCombinationsForCategory({
+                        size: parseInt(infants),
+                        category: "infant",
+                        checkFlightsResponse: response,
+                    }),
+                ]);
+                return checkFlightsFifteenSecondsInterval({
+                    sessionId,
+                    searchParams,
+                });
+            }
+        }, 3000);
+
+        intervalIds.current = [...intervalIds.current, intervalId];
     };
 
     const checkFlightsFifteenSecondsInterval = ({
@@ -244,21 +250,16 @@ const FlightBookingPage = () => {
         sessionId: string;
         searchParams: Record<string, string>;
     }) => {
-        checkFlights({
-            query: {
-                bnum: 0,
-                ...searchParams,
-                session_id: sessionId,
-            },
-        })
-            .then(async () => {
-                await sleep(15000);
-                return checkFlightsFifteenSecondsInterval({
-                    sessionId,
-                    searchParams,
-                });
-            })
-            .catch(() => {});
+        const intervalId = setInterval(async () => {
+            checkFlights({
+                query: {
+                    bnum: 0,
+                    ...searchParams,
+                    session_id: sessionId,
+                },
+            });
+        }, 15000);
+        intervalIds.current = [...intervalIds.current, intervalId];
     };
 
     const generateCombinationsForCategory = ({
@@ -317,15 +318,14 @@ const FlightBookingPage = () => {
             url: window.location.href,
         });
         setInitCheckFlightsMode(Mode.loading);
+        if (searchParams.step == "5") return setStep({ step: 5 });
+        if (!searchParams.step) setStep({ step: 2 });
         checkFlights({
             query: {
                 bnum: 0,
                 ...searchParams,
             },
         }).then((response) => {
-            setInitCheckFlightsMode(Mode.loaded);
-            if (searchParams.step == "5") return setStep({ step: 5 });
-            if (!searchParams.step) setStep({ step: 2 });
             checkFlightsThreeSecondsInterval({
                 sessionId: response.session_id,
                 searchParams,
@@ -345,6 +345,10 @@ const FlightBookingPage = () => {
                 order: newObj,
             };
         });
+
+        return () => {
+            intervalIds.current.forEach(clearInterval);
+        };
     }, []);
 
     return (
