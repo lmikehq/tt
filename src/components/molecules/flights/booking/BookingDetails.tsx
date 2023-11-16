@@ -21,6 +21,7 @@ import { BsCreditCardFill, BsFillHandbagFill } from 'react-icons/bs'
 import { GoCheckCircleFill } from 'react-icons/go'
 import { HiMiniUser } from 'react-icons/hi2'
 import { IoCopy } from 'react-icons/io5'
+import { PiDotsThreeCircle } from 'react-icons/pi'
 var advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 
@@ -31,7 +32,7 @@ function HeaderDetail({ name, value }: { name: string; value: string | number; }
     return (
         <Stack direction="column" alignItems="flex-start" spacing=".4rem">
             <Text type="p" text={name} size={13} color='white' styles={{ textTransform: 'uppercase' }} />
-            <Text type="p" text={String(value)} size={isMobile ? 14 : 16} color='white' weight={600} styles={{ textTransform: 'uppercase' }} />
+            <Text type="p" text={String(value ?? '')} size={isMobile ? 14 : 16} color='white' weight={600} styles={{ textTransform: 'uppercase' }} />
         </Stack>
     )
 }
@@ -42,7 +43,7 @@ function FieldDetail({ name, value, last }: { name: string; value?: string | num
     return (
         <Flex justify="space-between" borderBottom={last ? '' : `1px solid ${ttColors.lightestGray}`} padding='1.7rem 0'>
             <Text type="p" text={name} size={isMobile ? 14 : 14} color={ttColors.blackLight} styles={{ minWidth: isMobile ? "25%" : ''}} />
-            <Text type="p" text={String(value) ?? 'N/A'} size={isMobile ? 14 : 14} weight={600} />
+            <Text type="p" text={String(value ?? '')} size={isMobile ? 14 : 14} weight={600} />
         </Flex>
     )
 }
@@ -144,10 +145,13 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
     const { isMobile } = useScreenResolution()
     const { copyToClipboard } = useClipboard()
 
+    // const bookingComplete = booking?.status !== 'IN_PROGRESS'
+    const paymentComplete = booking?.hasCompletedPayment
+
     return (
         <Stack direction="column" alignItems="center" bgcolor='white' borderRadius="8px" spacing="2.8rem" padding="4rem 1.7rem 2rem" margin="0 0 3rem 0">
             <Stack direction="column" alignItems="center" spacing="1.2rem">
-                <GoCheckCircleFill size={60} color={ttColors.primaryLight} />
+                {paymentComplete ? <GoCheckCircleFill size={60} color={ttColors.primaryLight} />  : <PiDotsThreeCircle size={60} color={ttColors.primaryLight} />}
                 <Text type='h1' text='Booking Flight Successful' weight={700} size={isMobile ? 20 : 28} />
                 <Text
                     width={isMobile ? "80%" : "60%"}
@@ -180,13 +184,13 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
                 </Button>
             </Flex>
 
-            <Grid columns={isMobile ? 2 : 6} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
+            <Grid columns={isMobile ? 2 : 5} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
                 <HeaderDetail name="BOOKING ID" value={booking?.bookingId} />
-                <HeaderDetail name="PNR" value={booking?.pnrStatus} />
+                <HeaderDetail name="PNR STATUS" value={booking?.pnrStatus} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
                 <HeaderDetail name="FLIGHT NUMBER" value={booking?.flightNum} />
-                <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0]} />
-                <HeaderDetail name="BOOKING STATUS:" value={capCase(booking?.status, '_')} />
+                {/* <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0] ?? ''} /> */}
+                <HeaderDetail name="PAYMENT STATUS:" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
             </Grid>
         </Stack>
     )
@@ -225,7 +229,7 @@ function FlightDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
                 <Flex direction='column'>
                     <Flex padding='.7rem 0 .7rem' gap=".8rem">
                         <BiSolidPlaneTakeOff color={ttColors.primaryLight} size={24} />
-                        <Text type="p" text={`Depart: ${String(booking?.takeOffLocation).split(', ')[0]} - ${String(booking?.destinationLocation).split(', ')[0]}`} size={isMobile ? 16 : 18} color={ttColors.primaryLight} weight={500} />
+                        <Text type="p" text={`Depart: ${booking?.src} - ${booking?.dst}`} size={isMobile ? 16 : 18} color={ttColors.primaryLight} weight={500} />
                     </Flex>
                     <Divider direction='horizontal' px="1px" color={ttColors.lightestGray} />
                 </Flex>
@@ -235,22 +239,22 @@ function FlightDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
                     <Flex direction='column' gap="1rem">
                         <FlightDetail
                             departure={{
-                                cabin: '',
+                                cabin: booking?.flightCategory,
                                 utc_departure: booking?.departureTime,
-                                src: String(booking?.takeOffLocation).split(', ')[0],
+                                src: booking?.src,
                                 src_name: booking?.takeOffLocation,
                                 src_station: booking?.takeOffAirport,
                                 airlineIata: booking?.airlineIata
                             }}
                             arrival={{
-                                cabin: '',
+                                cabin: booking?.flightCategory,
                                 utc_arrival: booking?.arrivalTime,
-                                dst: String(booking?.destinationLocation).split(', ')[0],
+                                dst: booking?.dst,
                                 dst_name: booking?.destinationLocation,
                                 dst_station: booking?.destinationAirport,
                                 airlineIata: booking?.airlineIata
                             }}
-                            stops={10}
+                            stops={booking?.numOfStopovers}
                             last
                         />
                         <Flex padding=".8rem 1rem" gap=".8rem" borderRadius='4px' background={ttColors.primary300} justify='flex-start' align="center">
@@ -288,9 +292,9 @@ function PassengerDetails({ booking }: { booking: GetFlightBookingByIdResponse }
                         size={isMobile ? 16 : 18}
                         weight={500}
                     />
-                    <FieldDetail name="Email" value={""} />
-                    <FieldDetail name="Phone Number" value={""} />
-                    <FieldDetail name="Seat Details" value={""} last />
+                    <FieldDetail name="Email" value={booking?.passengerDetails[index]?.email} />
+                    <FieldDetail name="Phone Number" value={booking?.passengerDetails[index]?.phoneNumber} />
+                    <FieldDetail name="Seat Details" value={booking?.seatId[index]} last />
                     {/* <FieldDetail name="Extra Baggage" value={""} last/> */}
                 </Flex>    
             )}
@@ -306,9 +310,9 @@ function PriceDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
     const childrenCount = booking?.passengerInfo?.filter(e => e?.category === 'child').length
     const infantsCount = booking?.passengerInfo?.filter(e => e?.category === 'infant').length
 
-    const calcPrice = (price: number = 0) => {
+    const calcPrice = (price: string | number = 0) => {
         return formatPrice({
-            total: price * conversionRate,
+            total: Number(price) * conversionRate,
             currency: preFerredCurrency,
         })
     }    
@@ -325,11 +329,11 @@ function PriceDetails({ booking }: { booking: GetFlightBookingByIdResponse }) {
 
             <Flex direction='column'>
                 <Text type="p" text="Ticket Details" size={isMobile ? 16 : 18} weight={500} margin="0 0 1rem" />
-                {adultsCount > 0 && <FieldDetail name={`Adults x${adultsCount}`} value={calcPrice(Number(booking?.pricing?.adult?.amount) ?? 0)} />}
-                {childrenCount > 0 && <FieldDetail name={`Children x${childrenCount}`} value={calcPrice(Number(booking?.pricing?.child?.amount) ?? 0)} />}
-                {infantsCount > 0 && <FieldDetail name={`Infants x${infantsCount}`} value={calcPrice(Number(booking?.pricing?.infant?.amount) ?? 0)} />}
-                <FieldDetail name="Total Fare" value={calcPrice(Number(booking?.ticketPrice))} />
-                <FieldDetail name="Service Charge" value={calcPrice(0)} />
+                {adultsCount > 0 && <FieldDetail name={`Adults x${adultsCount}`} value={calcPrice(booking?.pricing?.adult?.amount ?? 0)} />}
+                {childrenCount > 0 && <FieldDetail name={`Children x${childrenCount}`} value={calcPrice(booking?.pricing?.child?.amount ?? 0)} />}
+                {infantsCount > 0 && <FieldDetail name={`Infants x${infantsCount}`} value={calcPrice(booking?.pricing?.infant?.amount ?? 0)} />}
+                <FieldDetail name="Total Fare" value={calcPrice(booking?.ticketPrice)} />
+                <FieldDetail name="Service Charge" value={calcPrice(booking?.sp_fee)} />
             </Flex>
 
             <Flex direction='column'>

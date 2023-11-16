@@ -470,8 +470,13 @@ export interface GetFlightBookingByIdResponse {
     numOfStopovers: number;
     stopOverArray: StopOverArrayInterface[];
     seatId: string[];
+    flightCategory: string;
+    sp_fee: string;
+    src: string;
+    dst: string;
     passengerInfo: PassengerInterface[];
     baggageInfo: Baggage[];
+    passengerDetails: { email: string; phoneNumber: string; }[];
     pricing: SegmentPricing;
 }
 

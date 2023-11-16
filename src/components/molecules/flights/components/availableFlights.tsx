@@ -32,7 +32,8 @@ import Spinner from "../../icons/spinner";
 import { dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
 import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
-import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+var advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
 
 interface SearchQuery {
     sortBy: string;
@@ -111,7 +112,7 @@ function LoginModal({
                 bgcolor="white"
                 padding={5}
                 borderRadius="16px"
-                width={isMobile ? "95vw" : "30vw"}
+                width={isMobile ? "95vw" : "40vw"}
             >
                 <Flex width="100%" justify="center">
                     <Flex
@@ -208,7 +209,7 @@ function StillSearchingModal({
                 bgcolor="white"
                 paddingX={6}
                 paddingY={4}
-                width={isMobile ? "95vw" : "30vw"}
+                width={isMobile ? "95vw" : "40vw"}
                 borderRadius="16px"
             >
                 <Flex width="100%" justify="center">
@@ -327,7 +328,6 @@ function AvailableFlights() {
             price: pick?.price ?? 0,
             duration:
                 calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-            flights: numSort(arr, "travelTime", "asc"),
         };
     }, [searchFlightsResults]);
 
@@ -337,6 +337,7 @@ function AvailableFlights() {
             price: pick?.price ?? 0,
             duration:
                 calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
+            date: dayjs(pick?.utc_departure).format('Do MMM YY'),
         };
     }, [searchFlightsResults]);
 
@@ -421,9 +422,9 @@ function AvailableFlights() {
     //     console.log('qqq', searchQuery)
     // }, [searchQuery]);
 
-    useEffect(() => {
-        console.log('ressss', searchFlightsResults)
-    }, [searchFlightsResults]);
+    // useEffect(() => {
+    //     console.log('ressss', searchFlightsResults)
+    // }, [searchFlightsResults]);
 
     useEffect(() => {
         const interval = setTimeout(() => {
