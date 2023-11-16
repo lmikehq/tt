@@ -74,19 +74,39 @@ function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
 
     return (
         <Flex width="auto" gap=".4rem">
-            {airlines.map((e, index) => (
-                <img
-                    key={`airline-${index}`}
-                    src={flightState?.airlines[e]?.logo ?? "/public/assets/icons/magnifier.svg"}
-                    alt={`airline-${flightState?.airlines[e]?.Airline}`}
-                    width={isMobile ? "50px" : "60px"}
-                    height={isMobile ? "50px" : "60px"}
-                    style={{
-                        borderRadius: "50%",
-                        border: `1px solid ${ttColors.lightestGray}`,
-                    }}
-                />
-            ))}
+            {airlines.map((e, index) =>
+                flightState?.airlines[e]?.logo ? (
+                    <img
+                        key={`airline-${index}`}
+                        src={flightState?.airlines[e]?.logo}
+                        alt={`airline-${flightState?.airlines[e]?.Airline}`}
+                        width={isMobile ? "50px" : "60px"}
+                        height={isMobile ? "50px" : "60px"}
+                        style={{
+                            borderRadius: "50%",
+                            border: `1px solid ${ttColors.lightestGray}`,
+                        }}
+                    />
+                ) : (
+                    <Flex
+                        key={`airline-${index}`}
+                        height={isMobile ? "50px" : "60px"}
+                        width={isMobile ? "50px" : "60px"}
+                        align="center"
+                        justify="center"
+                        borderRadius="50%"
+                        background={ttColors.primary}
+                    >
+                        <Text
+                            type="p"
+                            size={20}
+                            weight={500}
+                            color={ttColors.light}
+                            text={e.charAt(0)}
+                        />
+                    </Flex>
+                )
+            )}
         </Flex>
     );
 }
@@ -136,14 +156,20 @@ function FlightBox(props: flightProps) {
                 <Flex
                     direction="column"
                     gap=".6rem"
-                    padding={isMobile ? "1rem 1rem 1rem 0" : "1.5rem 2rem 3rem 1rem"}
+                    padding={
+                        isMobile ? "1rem 1rem 1rem 0" : "1.5rem 2rem 3rem 1rem"
+                    }
                     height="100%"
                     justify="center"
                 >
                     {!!props.label && (
                         <Flex padding="0 0 0 1rem">
                             <LabelBox>
-                                <Text type="p" text={props.label} color="#4A7181" />
+                                <Text
+                                    type="p"
+                                    text={props.label}
+                                    color="#4A7181"
+                                />
                             </LabelBox>
                         </Flex>
                     )}
@@ -152,9 +178,11 @@ function FlightBox(props: flightProps) {
                         sx={{
                             width: "100%",
                             display: "grid",
-                            gridTemplateColumns: isMobile ? "40px 1fr" : "50px 1fr",
+                            gridTemplateColumns: isMobile
+                                ? "40px 1fr"
+                                : "50px 1fr",
                             alignItems: "center",
-                            padding: "0 0 0 .4rem"
+                            padding: "0 0 0 .4rem",
                         }}
                     >
                         <FlightDepartureIcon reverse stops={props.stops} />
@@ -217,7 +245,7 @@ function FlightBox(props: flightProps) {
                                     size={isMobile ? 15 : 16}
                                     text={startRoute.cityCodeFrom}
                                     weight={500}
-                                    styles={{ minWidth: 'max-content' }}
+                                    styles={{ minWidth: "max-content" }}
                                     color={ttColors.lighterGray}
                                 />
                             </Flex>
@@ -301,9 +329,11 @@ function FlightBox(props: flightProps) {
                             <Box
                                 sx={{
                                     display: "grid",
-                                    gridTemplateColumns: isMobile ? "40px 1fr" : "40px 1fr",
+                                    gridTemplateColumns: isMobile
+                                        ? "40px 1fr"
+                                        : "40px 1fr",
                                     alignItems: "center",
-                                    padding: "0 0 0 .4rem"
+                                    padding: "0 0 0 .4rem",
                                 }}
                             >
                                 <FlightDepartureIcon stops={props.stops} />
