@@ -497,11 +497,16 @@ const SeatSelection = () => {
                     )}
                 </Button>
             </Section>
+
             <CustomConfirmationModal
                 open={emptySeatsModalOpen}
                 handleClose={() => setEmptySeatsModalOpen(false)}
                 child={
-                    <Section padding="3rem 6rem" height="unset">
+                    <Section
+                        padding="4.43rem 5.5rem"
+                        height="unset"
+                        maxWidth="40.44rem"
+                    >
                         <Flex direction="column" justify="center">
                             <Section margin="0 0  14px" height="unset">
                                 <Image
@@ -514,7 +519,7 @@ const SeatSelection = () => {
                             <Section margin="0 0  24px" height="unset">
                                 <Text
                                     type="h3"
-                                    text="No seat available"
+                                    text="Empty seat offer"
                                     size={32}
                                     weight={700}
                                     color={ttColors.dark}
@@ -523,7 +528,7 @@ const SeatSelection = () => {
                             <Section margin="0 0  57.5px" height="unset">
                                 <Text
                                     type="p"
-                                    text="There are no seat available for the flight filters selected."
+                                    text="There is currently no seat offer for the flight filters selected. Don't worry, you can still proceed to save booking"
                                     weight={400}
                                     size={18}
                                     color="#929292"
