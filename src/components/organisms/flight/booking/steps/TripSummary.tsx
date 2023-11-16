@@ -237,11 +237,11 @@ const TripSummary = ({
                 return { min: dayjs().subtract(adult, "year") };
             case PassengerCategory.CHILD:
                 return {
-                    min: dayjs().subtract(adult, "year"),
-                    max: dayjs().subtract(child, "year"),
+                    max: dayjs().subtract(adult, "year"),
+                    min: dayjs().subtract(child, "year"),
                 };
             case PassengerCategory.INFANT:
-                return { min: dayjs().subtract(child, "year") };
+                return { max: dayjs().subtract(child, "year") };
             default:
                 return {};
         }
