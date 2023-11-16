@@ -31,7 +31,13 @@ import {
 } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import { ChangeEvent, ChangeEventHandler, FormEventHandler, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    ChangeEventHandler,
+    FormEventHandler,
+    useEffect,
+    useState,
+} from "react";
 import toast from "react-hot-toast";
 
 export interface OneFlight {
@@ -173,7 +179,7 @@ const TripSummary = ({
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
         onSubmit: async (values, helpers) => {
-            console.log(contactDetailsFormik.values, "passengers")
+            console.log(contactDetailsFormik.values, "passengers");
             setLoading(true);
             setSaveBookingDetails({
                 data: {
@@ -203,23 +209,23 @@ const TripSummary = ({
     });
 
     const checkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-        formik.validateForm()
-        contactDetailsFormik.validateForm()
+        formik.validateForm();
+        contactDetailsFormik.validateForm();
         // if (!formik.isValid) {
         //     toast.error('Missing passenger details')
         // }
         if (!contactDetailsFormik.isValid) {
-            toast.error('Missing contact details')
+            toast.error("Missing contact details");
         }
-        formik.handleSubmit(e)
-    }
+        formik.handleSubmit(e);
+    };
 
     const removePassenger = (index: number) => {
         formik.setValues((prev) => ({
             ...prev,
             passengers: prev.passengers.filter((e, ind) => ind !== index),
-        }))
-    }
+        }));
+    };
 
     const flights = checkFlightsResponse?.flights ?? [];
     const departure = flights[0];
@@ -239,7 +245,10 @@ const TripSummary = ({
                 flights={flights}
             />
             {!user?.id && (
-                <form onSubmit={contactDetailsFormik.handleSubmit} style={{ padding: '2rem 0 0' }}>
+                <form
+                    onSubmit={contactDetailsFormik.handleSubmit}
+                    style={{ padding: "2rem 0 0" }}
+                >
                     <ContactDetails formik={contactDetailsFormik} />
                 </form>
             )}
@@ -257,6 +266,12 @@ const TripSummary = ({
                                                 formik={formik}
                                                 values={passenger}
                                                 count={index}
+                                                maxBirthDate={
+                                                    computeBirthDateRange().min
+                                                }
+                                                minBirthDate={
+                                                    computeBirthDateRange().max
+                                                }
                                                 combinationOptions={getPassengerBagCombinationOptions(
                                                     {
                                                         category:
