@@ -43,6 +43,8 @@ import {
     constructQueryFromParams,
     extractSearchParamsFromUrl,
 } from "@/lib/extensions/helpers/constructQuery";
+import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -53,6 +55,9 @@ const SeatSelection = () => {
     const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
     const [selectionModalContent, setSelectionModalContent] = useState<{
         seatDescription: ReactNode;
         seatName: string;
@@ -112,7 +117,13 @@ const SeatSelection = () => {
                             size={16}
                             weight={400}
                             textAlign="left"
-                            text={"From " + currency + " " + amount}
+                            text={
+                                "From " +
+                                formatPrice({
+                                    total: parseInt(amount) * conversionRate,
+                                    currency: preFerredCurrency,
+                                })
+                            }
                         />
                     </Section>
                 </Flex>
