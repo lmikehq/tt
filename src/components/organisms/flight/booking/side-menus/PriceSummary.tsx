@@ -129,27 +129,23 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
         numberOfDecimalDigits: 2,
     });
     const countofBags = Object.values(checkedBags.order).flat();
+
     const countofBagsPrices = Object.values(checkedBags.order)
         .flat()
-        .map(
-            (e) =>
-                checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price
-                    ?.amount
-        );
+        .map((e) => checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price?.amount
+    );
+
+    const totalBagsPrices = Number(
+        countofBagsPrices.reduce((prev, curr) => Number(prev ?? 0) + Number(curr ?? 0), 0)
+    )
 
     const bagsPrice = formatPrice({
-        total:
-            Number(
-                countofBagsPrices.reduce(
-                    (prev, curr) => Number(prev ?? 0) + Number(curr ?? 0),
-                    0
-                )
-            ) * conversionRate,
+        total: totalBagsPrices * conversionRate,
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });
     const totalPrice = formatPrice({
-        total: (checkFlightsResponse?.tickets_price ?? 0) * conversionRate,
+        total: (totalBagsPrices + (checkFlightsResponse?.tickets_price ?? 0)) * conversionRate,
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });

@@ -34,7 +34,15 @@ import { PiWarningCircleBold } from "react-icons/pi";
 import { ttColors } from "@/lib/theme/colors";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ToastInfo } from "../flight/booking/toast";
+import { capCase } from "@/lib/utilFns";
 
+function CategoryTag({ category, isMobile }: { category: string; isMobile: boolean; }) {
+    return (
+        <Flex width={isMobile ? "30%" : "max-content"} padding=".3rem 1rem" justify="center" borderRadius="20px" background={ttColors.dark}>
+            <Text type="p" text={capCase(category)} color="white" />
+        </Flex>
+    )
+}
 interface TripSummaryCardProps {
     index: number;
     formik: FormikProps<{
@@ -61,7 +69,6 @@ interface TripSummaryCardProps {
 
     handleCheckedBags: (index: number, value: number[], bagDef?: Definitions) => void;
     removePassenger: (index: number) => void; 
-
 }
 
 export default function MainPassenger({
@@ -84,7 +91,7 @@ export default function MainPassenger({
             pt="30px"
             borderTop={index === 0 ? "" : "1px solid lightgrey"}
         >
-            <Flex direction={isMobile ? "column" : "row"} justify="space-between" align="center">
+            <Flex direction={isMobile ? "row" : "row"} justify="space-between" align="center">
                 <Text
                     type="h2"
                     size={isMobile ? 18 : 22}
@@ -97,7 +104,11 @@ export default function MainPassenger({
                     weight={600}
                     width={isMobile ? "100%" : "auto"}
                 />
-                <FormControl sx={{ m: 1, width: isMobile ? "100%" : "30%" }}>
+                <CategoryTag
+                    category={values.category}
+                    isMobile={isMobile}
+                />
+                {/* <FormControl sx={{ m: 1, width: isMobile ? "100%" : "30%" }}>
                     <FieldString
                         options={[
                             PassengerCategory.ADULT,
@@ -111,7 +122,7 @@ export default function MainPassenger({
                             shouldUpdateCategory({ index, category: value })
                         }
                     />
-                </FormControl>
+                </FormControl> */}
             </Flex>
             <Box>
                 <Box sx={{ marginY: "2rem" }}>

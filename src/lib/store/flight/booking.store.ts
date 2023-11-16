@@ -218,7 +218,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 },
             })
                 .then((response) => {
-                    console.log("rrrr", response.data);
+                    console.log("rrrr", response);
                     localStorage.setItem(
                         CONVERSION_RATE_KEY,
                         `${response.fx_rate}`
@@ -229,11 +229,13 @@ export const useFlightBookingStore = create<State & Actions>(
                     set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
-
                         flightsResults: {
                             currency: response.currency,
                             total: response._results,
                         },
+                    });
+                    set({
+                        searchFlightsResults: response.data,
                     });
                 })
                 .catch((error) => {

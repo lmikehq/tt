@@ -1,9 +1,7 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import dayjs from "dayjs";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { BsInfoCircle, BsSortUp } from "react-icons/bs";
-import { GoDotFill } from "react-icons/go";
+import React, { Dispatch, SetStateAction } from "react";
 import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
@@ -69,7 +67,7 @@ type sortProps = {
     best: { price: number; duration: string };
     cheapest: { price: number; duration: string };
     fastest: { price: number; duration: string };
-    earliest: { price: number; duration: string };
+    earliest: { price: number; duration: string; date: string; };
     sortType: string;
     data: FlightInfo[];
     setSortType: Dispatch<SetStateAction<string>>;
@@ -78,14 +76,17 @@ type sortProps = {
 
 function SortOption({
     label,
-    price = 0,
+    price,
     flightTime,
+    flightDate,
     isLoading,
 }: {
     label: string;
-    price: number;
-    flightTime: string;
+    price?: number;
+    flightTime?: string;
+    flightDate?: string;
     isLoading: boolean;
+    
 }) {
     const { isMobile } = useScreenResolution();
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
@@ -106,32 +107,37 @@ function SortOption({
                 justify={isMobile ? "center" : "flex-start"}
             >
                 <Text type="p" text={label} />
-                {/* <BsInfoCircle size={18} /> */}
             </Flex>
             <Flex
                 direction={isMobile ? "column" : "row"}
                 gap=".5rem"
                 align="center"
             >
-                <Text
-                    type={isMobile ? "h1" : "p"}
-                    text={
-                        isLoading
-                            ? "-"
-                            : `${formatPrice({
-                                  total: price,
-                                  currency: preFerredCurrency,
-                              })}`
-                    }
-                    weight={600}
-                />
-                {!isMobile && <GoDotFill size={15} />}
-                <Text
-                    type="p"
-                    text={isLoading ? "-" : flightTime}
-                    whiteSpace="nowrap"
-                    size={14}
-                />
+                {price &&
+                    <Text
+                        type={isMobile ? "h1" : "p"}
+                        text={
+                            isLoading ? "-" : `${formatPrice({ total: price, currency: preFerredCurrency })}`
+                        }
+                        weight={600}
+                    />
+                }
+                {flightTime &&
+                    <Text
+                        type="p"
+                        text={isLoading ? "-" : flightTime}
+                        whiteSpace="nowrap"
+                        weight={600}
+                    />
+                }
+                {flightDate &&
+                    <Text
+                        type="p"
+                        text={isLoading ? "-" : flightDate}
+                        whiteSpace="nowrap"
+                        weight={600}
+                    />
+                }
             </Flex>
         </Flex>
     );
@@ -151,7 +157,7 @@ function SortedFlightsTab(props: sortProps) {
                     <ProgressLoader />
                 </Flex>
             ) : (
-                <Flex justify={isMobile ? "space-between" : "flex-start"} gap="1rem" margin="0 1rem" overflowX="auto" className="scroll-custom">
+                <Flex justify={isMobile ? "space-between" : "flex-start"} gap={isMobile ? "1rem" : "0"} margin="0 1rem" overflowX="auto" className="scroll-custom">
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "quality"}
@@ -163,7 +169,7 @@ function SortedFlightsTab(props: sortProps) {
                         <SortOption
                             label="Best"
                             price={props.best.price}
-                            flightTime={props.best.duration}
+                            // flightTime={props.best.duration}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
@@ -179,7 +185,7 @@ function SortedFlightsTab(props: sortProps) {
                         <SortOption
                             label="Cheapest"
                             price={props.cheapest.price}
-                            flightTime={props.cheapest.duration}
+                            // flightTime={props.cheapest.duration}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
@@ -196,7 +202,7 @@ function SortedFlightsTab(props: sortProps) {
                     >
                         <SortOption
                             label="Fastest"
-                            price={props.fastest.price}
+                            // price={props.fastest.price}
                             flightTime={props.fastest.duration}
                             isLoading={isLoading}
                         />
@@ -209,11 +215,11 @@ function SortedFlightsTab(props: sortProps) {
                             props.setSortType("earliest");
                             props.updateSearchQueryHandler({ sort: "date" });
                         }}
-                    >
+                        >
                         <SortOption
                             label="Earliest"
-                            price={props.earliest.price}
-                            flightTime={props.earliest.duration}
+                            // price={props.earliest.price}
+                            flightDate={props.earliest.date}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
