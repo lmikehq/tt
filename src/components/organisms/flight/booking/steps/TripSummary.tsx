@@ -30,6 +30,7 @@ import {
     Definitions,
 } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
+import dayjs from "dayjs";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import {
     ChangeEvent,
@@ -220,6 +221,32 @@ const TripSummary = ({
         formik.handleSubmit(e);
     };
 
+    const computeBirthDateRange = ({
+        category,
+    }: {
+        category: string;
+    }): { min?: dayjs.Dayjs; max?: dayjs.Dayjs } => {
+        const adult =
+            checkFlightsResponse?.adult_threshold ??
+            checkFlightsResponse?.age_category_thresholds.adult ??
+            12;
+        const child = checkFlightsResponse?.age_category_thresholds.child ?? 2;
+
+        switch (category) {
+            case PassengerCategory.ADULT:
+                return { min: dayjs().subtract(adult, "year") };
+            case PassengerCategory.CHILD:
+                return {
+                    min: dayjs().subtract(adult, "year"),
+                    max: dayjs().subtract(child, "year"),
+                };
+            case PassengerCategory.INFANT:
+                return { min: dayjs().subtract(child, "year") };
+            default:
+                return {};
+        }
+    };
+
     const removePassenger = (index: number) => {
         formik.setValues((prev) => ({
             ...prev,
@@ -267,10 +294,16 @@ const TripSummary = ({
                                                 values={passenger}
                                                 count={index}
                                                 maxBirthDate={
-                                                    computeBirthDateRange().min
+                                                    computeBirthDateRange({
+                                                        category:
+                                                            passenger.category,
+                                                    }).min
                                                 }
                                                 minBirthDate={
-                                                    computeBirthDateRange().max
+                                                    computeBirthDateRange({
+                                                        category:
+                                                            passenger.category,
+                                                    }).max
                                                 }
                                                 combinationOptions={getPassengerBagCombinationOptions(
                                                     {
