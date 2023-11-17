@@ -270,7 +270,7 @@ function Stays() {
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        position="start"
+                        minDate={today}
                         onChange={(e) => null}
                     />
                 </Flex>
@@ -287,7 +287,7 @@ function Stays() {
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        position="start"
+                        minDate={today}
                         onChange={(e) => null}
                     />
                 </Flex>
