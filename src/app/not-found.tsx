@@ -46,7 +46,7 @@ function NotFoundPage() {
 
             <a href="/">
               <Button width="20rem" margin="3rem 0 0">
-                <Text type="p" text="Return to Home Page" />
+                <Text type="p" text="Return to Home Page" size={14} />
               </Button>
             </a>
           </Flex>

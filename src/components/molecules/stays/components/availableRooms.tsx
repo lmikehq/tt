@@ -144,7 +144,7 @@ function AvailableRooms() {
       {rooms?.slice(4).map((room, index) => (
         <RoomBox room={room} index={index} key={index} />
       ))}
-      <Flex justify="center">
+      <Flex justify="center" styles={{ marginTop: "40px" }}>
         <span className="pagination">
           <Pagination
             className="paginationItemStyle"

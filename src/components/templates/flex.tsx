@@ -4,88 +4,94 @@ import React, { CSSProperties } from "react";
 import styled from "styled-components";
 
 interface flexProps {
-  children?: React.ReactNode;
-  justify?:
-    | "center"
-    | "space-between"
-    | "space-around"
-    | "space-evenly"
-    | "flex-start"
-    | "flex-end";
-  align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline" | "space-between";
-  gap?: string;
-  direction?: "row" | "column" | "row-reverse" | "column-reverse";
-  alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
-  borderBottom?: string;
-  margin?: string;
-  padding?: string;
-  width?: string;
-  maxWidth?: string;
-  styles?: CSSProperties;
-  background?: string;
-  borderRadius?: string;
-  id?: string;
-  overflow?: string;
-  overflowY?:
-    | "auto"
-    | "clip"
-    | "hidden"
-    | "scroll"
-    | "visible"
-    | "inherit"
-    | "initial"
-    | "unset";
-  overflowX?:
-    | "auto"
-    | "clip"
-    | "hidden"
-    | "scroll"
-    | "visible"
-    | "inherit"
-    | "initial"
-    | "unset";
-  wrap?: "wrap" | "nowrap" | "unset";
-  border?: string;
-  height?: string;
-  cursor?: string;
-  ref?: any;
-  onClick?: (e: any) => void;
+    children?: React.ReactNode;
+    justify?:
+        | "center"
+        | "space-between"
+        | "space-around"
+        | "space-evenly"
+        | "flex-start"
+        | "flex-end";
+    align?:
+        | "center"
+        | "flex-start"
+        | "flex-end"
+        | "stretch"
+        | "baseline"
+        | "space-between";
+    gap?: string;
+    direction?: "row" | "column" | "row-reverse" | "column-reverse";
+    alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+    borderBottom?: string;
+    margin?: string;
+    padding?: string;
+    width?: string;
+    maxWidth?: string;
+    styles?: CSSProperties;
+    background?: string;
+    borderRadius?: string;
+    id?: string;
+    overflow?: string;
+    overflowY?:
+        | "auto"
+        | "clip"
+        | "hidden"
+        | "scroll"
+        | "visible"
+        | "inherit"
+        | "initial"
+        | "unset";
+    overflowX?:
+        | "auto"
+        | "clip"
+        | "hidden"
+        | "scroll"
+        | "visible"
+        | "inherit"
+        | "initial"
+        | "unset";
+    wrap?: "wrap" | "nowrap" | "unset";
+    border?: string;
+    height?: string;
+    cursor?: string;
+    ref?: any;
+    onClick?: (e: any) => void;
     className?: string;
-    position?: CSSProperties['position']
+    position?: CSSProperties["position"];
 }
 
 const FlexWrapper = styled.div`
-  width: 100%;
- transition: all 300ms ease-out;
+    width: 100%;
+    transition: all 300ms ease-out;
 `;
 
 const Flex: React.FC<flexProps> = ({
-  children,
-  justify,
-  align,
-  gap,
-  direction,
-  margin,
-  padding,
-  background,
-  width,
-  maxWidth,
-  height,
-  borderRadius,
-  id,
-  overflow,
-  overflowY,
-  overflowX,
-  wrap,
-  border,
-  borderBottom,
-  alignSelf,
-  cursor,
-  ref,
-  styles,
-  onClick,
+    children,
+    justify,
+    align,
+    gap,
+    direction,
+    margin,
+    padding,
+    background,
+    width,
+    maxWidth,
+    height,
+    borderRadius,
+    id,
+    overflow,
+    overflowY,
+    overflowX,
+    wrap,
+    border,
+    borderBottom,
+    alignSelf,
+    cursor,
+    ref,
+    styles,
+    onClick,
     className,
-  position
+    position,
 }) => {
     return (
         <FlexWrapper
@@ -120,6 +126,6 @@ const Flex: React.FC<flexProps> = ({
         >
             {children}
         </FlexWrapper>
-    )
+    );
 };
 export default Flex;

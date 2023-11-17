@@ -8,24 +8,26 @@
     Wide-screen: 1400px;
 */
 :root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --default-color: #ffffff;
-  --primary-color: #87ceeb;
-  --secondary-color: #06062a;
-  --semi-bg-color: #87cfeb74;
-  --color-border: #e7e7e7;
-  --bg-color: #fafbfc;
-  --color-light-gray: #bcbcbc;
-  --color-rating: #ff5c00;
-  --color-favorite: #e5002a;
-  --color-green: #00d115;
-  --text-color: #000000;
-  --text-dull-color: #4a7181;
-  --box-shadow: 0px 4px 16px 0px #8dd3bb1a;
-  --poppins-font: "Poppins", sans-serif;
-  --placeholder-color: #1c1b1f;
-  --title-font: "Montserrat", sans-serif;
+    --max-width: 1100px;
+    --border-radius: 12px;
+    --default-color: #ffffff;
+    --primary-color: #87ceeb;
+    --secondary-color: #06062a;
+    --semi-bg-color: #87cfeb74;
+    --color-border: #e7e7e7;
+    --bg-color: #fafbfc;
+    --color-light-gray: #b6b6b6;
+    --text-gray-color: #6c6c6c;
+    --color-rating: #ff5c00;
+    --color-favorite: #e5002a;
+    --color-green: #00d115;
+    --text-color: #000000;
+    --text-dull-color: #4a7181;
+
+    --box-shadow: 0px 4px 16px 0px #8dd3bb1a;
+    --poppins-font: "Poppins", sans-serif;
+    --placeholder-color: #1c1b1f;
+    --title-font: "Montserrat", sans-serif;
 }
 
 * {
@@ -71,52 +73,104 @@ body {
     text-overflow: ellipsis;
 }
 .selected_room_img {
-  border: 2px solid var(--primary-color) !important;
+    border: 2px solid var(--primary-color) !important;
 }
 
 /* ROOM STAY MOBILE SLICK SLIDER ROOT CSS*/
 .slick-slider {
-  position: relative;
-  outline: none;
+    position: relative;
+    outline: none;
 }
 .slick-slider ul {
-  position: absolute;
-  bottom: 6%;
-  z-index: 5;
-  outline: none;
+    position: absolute;
+    bottom: 6%;
+    z-index: 5;
+    outline: none;
 }
 .slick-slider ul li {
-  border-radius: 50%;
-  padding: 10px;
+    border-radius: 50%;
+    padding: 10px;
 }
 .slick-slider ul li button {
-  background: transparent !important;
-  color: var(--default-color) !important;
+    background: transparent !important;
+    color: var(--default-color) !important;
 }
 .slick-slider ul li button::before {
-  font-size: 13px !important;
-  color: var(--default-color) !important;
-  position: absolute;
+    font-size: 13px !important;
+    color: var(--default-color) !important;
+    position: absolute;
 
-  left: 0;
-  margin: auto;
+    left: 0;
+    margin: auto;
 }
+
+.scroll {
+}
+
 .slick_slider_room_img_img {
-  position: relative;
-  height: 350px !important;
-  object-fit: cover !important;
-  
+    position: relative;
+    height: 350px !important;
+    object-fit: cover !important;
+}
+
+/* CONTROLS */
+/*----- control btn -------*/
+.control_btn .next,
+.control_btn .prev {
+    position: absolute;
+
+    bottom: -40px !important;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: 0.5s;
+    z-index: 5;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.control_btn button {
+    background-color: var(--color-border);
+    backdrop-filter: blur(5px);
+    right: 10px;
+}
+.control_btn .prev {
+    right: 75px;
+    bottom: 0;
+}
+.control_btn .next {
+    bottom: 0;
+}
+
+.control_btn .icon {
+    font-size: 30px;
+}
+
+.control_btn .prev:hover,
+.control_btn .next:hover {
+    transition: var(--transition);
+    background: var(--primary-color);
+    color: var(--default-color) !important;
+    cursor: pointer;
 }
 /* ROOM STAY MOBILE SLICK SLIDER ROOT CSS*/
 
+/* MUI CHECKBOX */
+.mui-checked.Mui-checked {
+    color: var(--primary-color) !important;
+}
+
 /* PAGINATION */
 .pagination .paginationItemStyle.active {
-  background-color: var(--primary-color);
-  color: var(--default-color);
+    background-color: var(--primary-color);
+    color: var(--default-color);
 }
 .pagination .paginationItemStyle.active:hover {
-  background-color: var(--primary-color);
-  color: var(--default-color);
+    background-color: var(--primary-color);
+    color: var(--default-color);
 }
 /* PAGINATION */
 
@@ -319,7 +373,6 @@ textarea:hover {
     font-weight: 600 !important;
     color: #fff !important;
 }
-
 
 /* Custom Scrollbar */
 .scroll-custom::-webkit-scrollbar {

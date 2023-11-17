@@ -35,13 +35,26 @@ import { ttColors } from "@/lib/theme/colors";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ToastInfo } from "../flight/booking/toast";
 import { capCase } from "@/lib/utilFns";
+import dayjs from "dayjs";
 
-function CategoryTag({ category, isMobile }: { category: string; isMobile: boolean; }) {
+function CategoryTag({
+    category,
+    isMobile,
+}: {
+    category: string;
+    isMobile: boolean;
+}) {
     return (
-        <Flex width={isMobile ? "30%" : "max-content"} padding=".3rem 1rem" justify="center" borderRadius="20px" background={ttColors.dark}>
+        <Flex
+            width={isMobile ? "30%" : "max-content"}
+            padding=".3rem 1rem"
+            justify="center"
+            borderRadius="20px"
+            background={ttColors.dark}
+        >
             <Text type="p" text={capCase(category)} color="white" />
         </Flex>
-    )
+    );
 }
 interface TripSummaryCardProps {
     index: number;
@@ -52,6 +65,8 @@ interface TripSummaryCardProps {
     count: number;
     combinationOptions: Combinations;
     passengerBagCombination: PassengerBaggageCombinationInterface;
+    minBirthDate?: dayjs.Dayjs;
+    maxBirthDate?: dayjs.Dayjs;
     shouldUpdateCategory(params: {
         index: number;
         combination?: Combination;
@@ -67,8 +82,12 @@ interface TripSummaryCardProps {
         definition?: Definitions;
     };
 
-    handleCheckedBags: (index: number, value: number[], bagDef?: Definitions) => void;
-    removePassenger: (index: number) => void; 
+    handleCheckedBags: (
+        index: number,
+        value: number[],
+        bagDef?: Definitions
+    ) => void;
+    removePassenger: (index: number) => void;
 }
 
 export default function MainPassenger({
@@ -83,6 +102,8 @@ export default function MainPassenger({
     checkedBags,
     handleCheckedBags,
     removePassenger,
+    maxBirthDate,
+    minBirthDate,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
     return (
@@ -91,7 +112,11 @@ export default function MainPassenger({
             pt="30px"
             borderTop={index === 0 ? "" : "1px solid lightgrey"}
         >
-            <Flex direction={isMobile ? "row" : "row"} justify="space-between" align="center">
+            <Flex
+                direction={isMobile ? "row" : "row"}
+                justify="space-between"
+                align="center"
+            >
                 <Text
                     type="h2"
                     size={isMobile ? 18 : 22}
@@ -104,10 +129,7 @@ export default function MainPassenger({
                     weight={600}
                     width={isMobile ? "100%" : "auto"}
                 />
-                <CategoryTag
-                    category={values.category}
-                    isMobile={isMobile}
-                />
+                <CategoryTag category={values.category} isMobile={isMobile} />
                 {/* <FormControl sx={{ m: 1, width: isMobile ? "100%" : "30%" }}>
                     <FieldString
                         options={[
@@ -175,19 +197,17 @@ export default function MainPassenger({
                             placeholder="Nationality"
                         />
                     </FormControl>
-                    {values.category !== "infant" && (
-                        <FormControl>
-                            <FormLabel required htmlFor="title">
-                                Title
-                            </FormLabel>
-                            <FieldString
-                                formik={formik}
-                                name={`passengers.${count}.title`}
-                                placeholder="Select your title"
-                                options={["Mr", "Mrs"]}
-                            />
-                        </FormControl>
-                    )}
+                    <FormControl>
+                        <FormLabel required htmlFor="title">
+                            Title
+                        </FormLabel>
+                        <FieldString
+                            formik={formik}
+                            name={`passengers.${count}.title`}
+                            placeholder="Select your title"
+                            options={["Mr", "Mrs"]}
+                        />
+                    </FormControl>
                     <FormControl>
                         <FormLabel required htmlFor="birthday">
                             Date of Birth
@@ -198,34 +218,35 @@ export default function MainPassenger({
                             formik={formik}
                             format="YYYY-MM-DD"
                             styles={{ padding: 0 }}
+                            minDate={minBirthDate}
+                            maxDate={maxBirthDate}
                         />
                     </FormControl>
-                    {values.category !== "infant" && (
-                        <React.Fragment>
-                            <FormControl>
-                                <FormLabel required htmlFor="cardno">
-                                    Passport or ID number
-                                </FormLabel>
-                                <FieldInput
-                                    name={`passengers.${count}.cardno`}
-                                    placeholder="Passport or ID number"
-                                    formik={formik}
-                                />
-                            </FormControl>
 
-                            <FormControl>
-                                <FormLabel htmlFor="expiration">
-                                    Passport or ID Expiry Date
-                                </FormLabel>
-                                <FieldAsDate
-                                    name={`passengers.${count}.expiration`}
-                                    placeholder="Passport or ID Expiry Date"
-                                    formik={formik}
-                                    format="YYYY-MM-DD"
-                                />
-                            </FormControl>
-                        </React.Fragment>
-                    )}
+                    <React.Fragment>
+                        <FormControl>
+                            <FormLabel required htmlFor="cardno">
+                                Passport or ID number
+                            </FormLabel>
+                            <FieldInput
+                                name={`passengers.${count}.cardno`}
+                                placeholder="Passport or ID number"
+                                formik={formik}
+                            />
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel htmlFor="expiration">
+                                Passport or ID Expiry Date
+                            </FormLabel>
+                            <FieldAsDate
+                                name={`passengers.${count}.expiration`}
+                                placeholder="Passport or ID Expiry Date"
+                                formik={formik}
+                                format="YYYY-MM-DD"
+                            />
+                        </FormControl>
+                    </React.Fragment>
                 </Box>
                 <Box>
                     <Flex gap="1rem" align="center" padding="1rem 0">

@@ -355,7 +355,7 @@ const ContactPage = () => {
                           border="1px solid #fff"
                           height="35px"
                         >
-                          <Text type="p" text="Get Direction" />
+                          <Text type="p" size={14} text="Get Direction" />
                         </Button>
                       </Link>
                       <Link href={address.appointment} target="_blank">
@@ -368,6 +368,7 @@ const ContactPage = () => {
                             type="p"
                             text="Book appointment"
                             color="#6092A7"
+                            size={14}
                             whiteSpace={isMobile ? "normal" : "nowrap"}
                           />
                         </Button>

@@ -16,13 +16,6 @@ export const RoomContainer = styled.div`
   border-radius: 12.5px;
   width: 100%;
   overflow: hidden;
-  @media only screen and (max-width: 992px) {
-    background: none;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
-  }
 `;
 
 export const ButtonBox = styled.div<{ active: boolean }>`
@@ -40,6 +33,13 @@ export const ButtonBox = styled.div<{ active: boolean }>`
     svg {
       display: ${({ active }) => (active ? "inline-flex" : "none")};
     }
+  }
+`;
+
+const DivTag = styled.div`
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -72,10 +72,9 @@ function SortedRoomsTab(props: sortProps) {
         <BsInfoCircle size={20} style={{ color: "var(--primary-color)" }} />
       </Flex>
       <RoomContainer>
-        <Flex styles={{ overflowX: "scroll" }}>
+        <DivTag>
           <Flex
-            justify={isMobile ? "center" : "flex-start"}
-            gap="2rem"
+            justify={isMobile ? "center" : "space-between"}
             styles={{ width: "100%" }}
           >
             <ButtonBox
@@ -220,7 +219,7 @@ function SortedRoomsTab(props: sortProps) {
               </ButtonBox>
             )}
           </Flex>
-        </Flex>
+        </DivTag>
       </RoomContainer>
     </>
   );
