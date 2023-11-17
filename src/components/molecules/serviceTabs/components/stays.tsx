@@ -9,11 +9,50 @@ import sleep from "@lib/extensions/helpers/sleep";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import Input from "@atom/input";
+import { styled } from "styled-components";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Location from "@/lib/types/response-models/flight/location.type";
+import LocationSearchSelectInput from "@/components/organisms/LocationSearchSelectInput";
 import { DatePicker } from "@/components/organisms/customDatePicker";
 import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
+// STYLES
+const FlexBox = styled.div`
+    display: flex;
+    align-items: center;
+    max-width: 50%;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+`;
+const FlexItems = styled.div``;
+
+const Span = styled.div`
+    position: relative;
+`;
+
+export type RoomCountType = {
+    adults: number;
+    children: number;
+    infants: number;
+    rooms: number;
+};
+
+const room: RoomCountType = {
+    adults: 2,
+    children: 1,
+    infants: 0,
+    rooms: 1,
+};
+
+export interface RoomStay {
+    roomCount: RoomCountType;
+    data: string;
+    destinationHotel: Location;
+}
 
 function Stays() {
     const [data, setData] = useState("");
