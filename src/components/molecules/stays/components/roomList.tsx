@@ -4,7 +4,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import styled from "styled-components";
-import SortedColumn from "./sortedColumn";
+import SortedColumn from "./SortedColumn";
 import AvailableRooms from "./availableRooms";
 
 const SectionLayout = styled.div``;

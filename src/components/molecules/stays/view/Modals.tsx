@@ -21,12 +21,23 @@ const ModalCenter = styled.div`
   width: 100%;
   height: 100%;
 `;
-const ModalWrapper = styled.div`
+const ModalScroll = styled.div`
   width: 900px;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 20px;
+
+  @media screen and (max-width: 900px) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+  }
+`;
+const ModalWrapper = styled.div`
   height: 500px;
   overflow-y: auto;
   background: white;
-  border-radius: 10px;
+
   @media screen and (max-width: 900px) {
     width: 100%;
     height: 100%;
@@ -43,22 +54,24 @@ export const MapModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
-        <ModalWrapper>
-          <Flex padding="1rem" align="center" gap="20px">
-            <CloseIcon
-              style={{ fontSize: "19px", cursor: "pointer" }}
-              onClick={handleClose}
-            />
-            <Text
-              type="h4"
-              text="The Ritz London, United Kingdom"
-              weight={600}
-            />
-          </Flex>
-          <Span style={{ padding: "15px" }}>
-            <MapBox />
-          </Span>
-        </ModalWrapper>
+        <ModalScroll>
+          <ModalWrapper>
+            <Flex padding="1rem" align="center" gap="20px">
+              <CloseIcon
+                style={{ fontSize: "19px", cursor: "pointer" }}
+                onClick={handleClose}
+              />
+              <Text
+                type="h4"
+                text="The Ritz London, United Kingdom"
+                weight={600}
+              />
+            </Flex>
+            <Span style={{ padding: "15px" }}>
+              <MapBox />
+            </Span>
+          </ModalWrapper>
+        </ModalScroll>
       </ModalCenter>
     </Modal>
   );
@@ -73,23 +86,26 @@ export const AmenitiesModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
-        <ModalWrapper>
-          <Flex
-            padding="1rem"
-            align="center"
-            justify="space-between"
-            gap="20px"
-          >
-            <Text type="h4" text="Hotel Amenities" weight={600} />
-            <CloseIcon
-              style={{ fontSize: "19px", cursor: "pointer" }}
-              onClick={handleClose}
-            />
-          </Flex>
-          <Span style={{ padding: "15px" }}>
-            <AmenitiesBox />
-          </Span>
-        </ModalWrapper>
+        <ModalScroll>
+          <ModalWrapper>
+            <Flex
+              padding="10px 35px"
+              align="center"
+              justify="space-between"
+              gap="20px"
+              styles={{ marginTop: "20px" }}
+            >
+              <Text type="h1" size={25} text="Hotel Amenities" weight={600} />
+              <CloseIcon
+                style={{ fontSize: "29px", cursor: "pointer" }}
+                onClick={handleClose}
+              />
+            </Flex>
+            <Span style={{ padding: "15px" }}>
+              <AmenitiesBox />
+            </Span>
+          </ModalWrapper>
+        </ModalScroll>
       </ModalCenter>
     </Modal>
   );

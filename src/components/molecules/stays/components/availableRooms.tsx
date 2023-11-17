@@ -2,13 +2,11 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import { useRouter } from "next/navigation";
-
 import Pagination from "@mui/material/Pagination";
-
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import MidListFilter from "./MidListFilter";
 import SortedRoomsTab from "./sortedRoomsTab";
 import RoomBox from "./roomsBox";
-import MidListFilter from "./midListFilter";
 import RoomSlider from "./roomSlider";
 
 interface Room {

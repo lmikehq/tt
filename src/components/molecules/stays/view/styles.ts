@@ -10,6 +10,9 @@ export const Container = styled.div`
   border-radius: 12.5px;
   background-color: var(--default-color);
   margin: 25px 0px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const Header = styled.div`

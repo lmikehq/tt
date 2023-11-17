@@ -129,7 +129,14 @@ export const SelectedImage = styled.span`
   border: 2px solid rgba(135, 206, 235, 0);
 `;
 
-export const SmallSpan = styled.div``;
+export const SmallSpan = styled.div`
+  &.scroll_filter_container {
+    overflow-x: scroll;
+  }
+  &.scroll_filter_container::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export const TextBox = styled.div`
   padding: 10px;
@@ -227,6 +234,9 @@ export const FilterBox = styled.div`
   margin-bottom: 20px;
   background-color: var(--default-color);
   overflow: hidden;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const FilterFlexBox = styled.div`
