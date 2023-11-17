@@ -181,7 +181,7 @@ const SeatSelection = () => {
                 ? 0
                 : parseInt(currentPassenger.split("Passenger ")[1]) - 1;
 
-        const searchIndices = (() => {
+        const formerSeatSearchIndices: number[] | null = (() => {
             for (let i = 0; i < particularSeats.length; i++) {
                 const particular = particularSeats[i];
                 const index = particular.seats.findIndex(
@@ -192,25 +192,46 @@ const SeatSelection = () => {
             return null;
         })();
 
-        if (!searchIndices)
-            return setParticularSeats([
-                ...particularSeats,
-                {
-                    segment_code: segmentCode,
-                    option: "particular_seat",
-                    seats: [
-                        {
-                            seat: name,
-                            passenger_idx: passengerIdx,
-                            price: price,
-                        },
-                    ],
-                },
-            ]);
-
+        const checkIfSegmentHasBeenCreated = particularSeats.findIndex(
+            (el) => el.segment_code == segmentCode
+        );
         const seats = particularSeats;
-        if (segmentCode == seats[searchIndices[0]].segment_code) {
-            seats[searchIndices[0]].seats[searchIndices[1]] = {
+
+        if (!formerSeatSearchIndices) {
+            //This condition means passenger has not selected a seat before
+            if (checkIfSegmentHasBeenCreated == -1)
+                return setParticularSeats([
+                    ...particularSeats,
+                    {
+                        segment_code: segmentCode,
+                        option: "particular_seat",
+                        seats: [
+                            {
+                                seat: name,
+                                passenger_idx: passengerIdx,
+                                price: price,
+                            },
+                        ],
+                    },
+                ]);
+
+            seats[checkIfSegmentHasBeenCreated].seats = [
+                ...seats[checkIfSegmentHasBeenCreated].seats,
+                {
+                    seat: name,
+                    passenger_idx: passengerIdx,
+                    price: price,
+                },
+            ];
+
+            return setParticularSeats(seats);
+        }
+
+        if (segmentCode == seats[formerSeatSearchIndices[0]].segment_code) {
+            //This condition means passenger's newly selected seat is in the same segment as passenger's formerly selected seat
+            seats[formerSeatSearchIndices[0]].seats[
+                formerSeatSearchIndices[1]
+            ] = {
                 seat: name,
                 passenger_idx: passengerIdx,
                 price: price,
@@ -218,67 +239,46 @@ const SeatSelection = () => {
 
             return setParticularSeats(seats);
         } else {
-            seats[searchIndices[0]].seats.splice(searchIndices[1], 1);
-            if (seats[searchIndices[0]].seats.length == 0)
-                seats.splice(searchIndices[0]);
-            return setParticularSeats([
-                ...particularSeats,
+            //This condition means passenger's newly selected seat is not in the same segment as passenger's formerly selected seat
+
+            //This is to delete the passenger's formerly assigned seat before assigning new seat
+            seats[formerSeatSearchIndices[0]].seats.splice(
+                formerSeatSearchIndices[1],
+                1
+            );
+            if (seats[formerSeatSearchIndices[0]].seats.length == 0)
+                seats.splice(formerSeatSearchIndices[0]);
+
+            if (checkIfSegmentHasBeenCreated == -1)
+                //This code runs if a segment has not been created the above else condition
+                return setParticularSeats([
+                    ...particularSeats,
+                    {
+                        segment_code: segmentCode,
+                        option: "particular_seat",
+                        seats: [
+                            {
+                                seat: name,
+                                passenger_idx: passengerIdx,
+                                price: price,
+                            },
+                        ],
+                    },
+                ]);
+
+            // This code runs otherwise
+
+            seats[checkIfSegmentHasBeenCreated].seats = [
+                ...seats[checkIfSegmentHasBeenCreated].seats,
                 {
-                    segment_code: segmentCode,
-                    option: "particular_seat",
-                    seats: [
-                        {
-                            seat: name,
-                            passenger_idx: passengerIdx,
-                            price: price,
-                        },
-                    ],
+                    seat: name,
+                    passenger_idx: passengerIdx,
+                    price: price,
                 },
-            ]);
+            ];
+
+            return setParticularSeats(seats);
         }
-        // const findIndex = particularSeats.findIndex(
-        //     (el, index) => el.segment_code == segmentCode
-        // );
-
-        // if (findIndex == -1) {
-        //     return setParticularSeats([
-        //         ...particularSeats,
-        //         {
-        //             segment_code: segmentCode,
-        //             option: "particular_seat",
-        //             seats: [
-        //                 {
-        //                     seat: name,
-        //                     passenger_idx:
-        //                         currentPassenger == "Main Passenger"
-        //                             ? 0
-        //                             : parseInt(
-        //                                   currentPassenger.split(
-        //                                       "Passenger "
-        //                                   )[1]
-        //                               ) - 1,
-        //                     price: price,
-        //                 },
-        //             ],
-        //         },
-        //     ]);
-        // }
-
-        // const seats = particularSeats;
-
-        // const seatFindIndex = seats[findIndex].seats.findIndex(
-        //     (el) => el.passenger_idx == passengerIdx
-        // );
-        // seats[findIndex].seats[seatFindIndex] = {
-        //     seat: name,
-        //     passenger_idx:
-        //         currentPassenger == "Main Passenger"
-        //             ? 0
-        //             : parseInt(currentPassenger.split("Passenger ")[1]) - 1,
-        //     price: price,
-        // };
-
-        // setParticularSeats(seats);
     };
     const computePassengerOptions = () => {
         return passengers.map((el, index) =>
