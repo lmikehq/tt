@@ -1,6 +1,7 @@
 interface sectionProps {
   children: React.ReactNode;
   width?: string;
+  maxWidth?: string;
   margin?: string;
   height?: string;
   padding?: React.CSSProperties["padding"];
@@ -13,6 +14,7 @@ interface sectionProps {
 const Section: React.FC<sectionProps> = ({
   children,
   width,
+  maxWidth,
   margin,
   height,
   padding,
@@ -25,6 +27,7 @@ const Section: React.FC<sectionProps> = ({
     <section
       style={{
         width: width ? width : "100%",
+        maxWidth: maxWidth,
         margin: margin || "0",
         padding: padding || "0",
         height: height || "unset",

@@ -1,4 +1,8 @@
+import dayjs, { Dayjs } from "dayjs";
+var advancedFormat = require('dayjs/plugin/advancedFormat')
+dayjs.extend(advancedFormat)
 import axios from "axios";
+
 
 export function get100Years(before: boolean = false) {
   const currentYear = new Date().getFullYear();
@@ -38,6 +42,10 @@ export function checkIfFieldHasError(obj: any, field: string) {
   if (error) return error.constraints;
 }
 
+export function formatDate(day: Dayjs, format?: string) {
+  return day.format(format ?? "DD/MM/YYYY");
+}
+
 export async function fetchHTMLContent(country: string) {
   try {
     const res = await axios.get(
@@ -48,3 +56,44 @@ export async function fetchHTMLContent(country: string) {
     console.log(`Error fetching ${country}: `, err);
   }
 }
+
+export function allCaps(text: string | number) {
+    return String(text ?? '').toUpperCase()
+}
+export function capCase(text = '', splitter = ' ') {
+    let newStr = String(text ?? '').split(splitter)
+    if (!text) {
+        return ''
+    } else {
+        return newStr.map(e => `${String(e[0]).toUpperCase()}${String(e.slice(1)).toLowerCase()}`).join(' ') ?? ''
+    }
+}
+
+export function cleanObject(obj: { [k: string]: any }) {
+    const newObj: any = {}
+    Object.keys(obj).forEach(e => {
+        if (obj[e] != undefined && obj[e] != null) {
+            newObj[e] = obj[e]
+        }
+    })
+    return newObj
+}
+
+export function numSort (arr: any[] = [], keyToCompare: string, order?: 'asc' | 'desc') {
+    if (order === 'asc') {
+        return arr.sort((a, b) => (parseFloat(keyToCompare ? a[keyToCompare] : a) - parseFloat(keyToCompare ? b[keyToCompare] : b)))
+    } else {
+        return arr.sort((a, b) => (parseFloat(keyToCompare ? b[keyToCompare] : b) - parseFloat(keyToCompare ? a[keyToCompare] : a)))
+    }
+}
+export function dateSort (arr: any[] = [], key: string, order?: 'asc' | 'desc') {
+    if (order === 'asc') {
+        return arr.sort((a, b) => Number(dayjs(a[key]).format('X')) - Number(dayjs(b[key]).format('X')))
+    } else {
+        return arr.sort((a, b) => Number(dayjs(b[key]).format('X')) - Number(dayjs(a[key]).format('X')))
+    }
+}
+
+export function moneyFormat(val: string | number) {
+    return Number(val).toFixed(2)
+} 

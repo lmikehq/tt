@@ -3,9 +3,11 @@ import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 
 export default function StopsPill({
-  numberOfStops,
+    numberOfStops,
+    isMobile
 }: {
   numberOfStops: number;
+  isMobile?: boolean;
 }) {
   return (
     <Box
@@ -13,7 +15,7 @@ export default function StopsPill({
       padding={"0.5rem 1rem"}
       bgcolor={ttColors.grayishAsh}
     >
-      <Text type="p" text={`${numberOfStops} Stops`} />
+      <Text type="p" size={isMobile ? 14 : 15} text={`${numberOfStops} ${numberOfStops > 1 ? 'Stops' : 'Stop'}`} weight={500} />
     </Box>
   );
 }

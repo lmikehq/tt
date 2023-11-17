@@ -1,176 +1,239 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
+import dayjs from "dayjs";
 import React, { Dispatch, SetStateAction } from "react";
-import { BsInfoCircle, BsSortUp } from "react-icons/bs";
-import { GoDotFill } from "react-icons/go";
 import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
+import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { Mode } from "@/lib/types";
+import ProgressLoader from "@/components/organisms/Loader/ProgressLoader";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 
 export const FlightContainer = styled.div`
-  box-shadow: 0px 4px 16px 0px #8dd3bb1a;
-  border: 1px solid #e7e7e7;
-  background: linear-gradient(0deg, #ffffff, #ffffff);
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 12.5px;
+    box-shadow: 0px 4px 16px 0px #8dd3bb1a;
+    border: 1px solid #8dd3bb1a;
+    background: linear-gradient(0deg, #ffffff, #ffffff);
+    display: flex;
+    padding: 1rem;
+    margin: 0 0 0.5rem 0;
+    align-items: center;
+    border-radius: 12.5px;
+    width: 100%;
 
-  @media only screen and (max-width: 992px) {
-    background: none;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
-  }
+    @media only screen and (max-width: 992px) {
+        background: none;
+        border: none;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
 `;
 
-export const ButtonBox = styled.div<{ active: boolean }>`
-  background: ${({ active }) => (active ? "#06062A" : "transparent")};
-  color: ${({ active }) => (active ? "white" : "#606060")};
-  padding: 1rem;
-  border-radius: 12.5px;
-  cursor: pointer;
+export const ButtonBox = styled.div<{
+    active: boolean;
+    width?: string;
+    isMobile?: boolean;
+}>`
+    background: ${({ active }) => (active ? "#06062A" : "transparent")};
+    color: ${({ active }) => (active ? "white" : "#606060")};
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    width: ${(props) =>
+        props.width || props.isMobile ? "max-content" : "25%"};
+    min-width: ${(props) => (props.width || props.isMobile ? "45%" : "25%")};
+    display: flex;
+    justify-content: center;
 
-  h1 {
-    color: ${({ active }) => (active ? "white" : ttColors.primary)};
-  }
-
-  @media only screen and (max-width: 992px) {
-    svg {
-      display: ${({ active }) => (active ? "inline-flex" : "none")};
+    h1 {
+        color: ${({ active }) => (active ? "white" : ttColors.primary)};
     }
-  }
+
+    &:hover {
+        background: ${({ active }) => (active ? "" : "#F3F3FF")};
+    }
+
+    @media only screen and (max-width: 992px) {
+        svg {
+            display: ${({ active }) => (active ? "inline-flex" : "none")};
+        }
+    }
 `;
 
 type sortProps = {
-  cheapPrice: number;
-  bestPrice: number;
-  fastPrice: number;
-  sortType: string;
-  setSortType: Dispatch<SetStateAction<string>>;
+    best: { price: number; duration: string };
+    cheapest: { price: number; duration: string };
+    fastest: { price: number; duration: string };
+    earliest: { price: number; duration: string; date: string; };
+    sortType: string;
+    data: FlightInfo[];
+    setSortType: Dispatch<SetStateAction<string>>;
+    updateSearchQueryHandler: (updatedParams: Record<string, any>) => void;
 };
 
-function SortedFlightsTab(props: sortProps) {
-  const { isMobile } = useScreenResolution();
+function SortOption({
+    label,
+    price,
+    flightTime,
+    flightDate,
+    isLoading,
+}: {
+    label: string;
+    price?: number;
+    flightTime?: string;
+    flightDate?: string;
+    isLoading: boolean;
+    
+}) {
+    const { isMobile } = useScreenResolution();
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
 
-  return (
-    <FlightContainer>
-      <Flex justify="space-between" align="center">
-        <Flex justify={isMobile ? "center" : "flex-start"} gap="2rem">
-          <ButtonBox
-            active={props.sortType === "best"}
-            onClick={() => props.setSortType("best")}
-          >
+    return (
+        <Flex
+            direction="column"
+            gap=".5rem"
+            align="center"
+            justify={isMobile ? "center" : "flex-start"}
+            padding=".5rem 0"
+            width="100%"
+            styles={{ minWidth: "100%" }}
+        >
             <Flex
-              direction="column"
-              gap=".5rem"
-              align="center"
-              justify={isMobile ? "center" : "flex-start"}
-              padding=".5rem 1.25rem"
-            >
-              <Flex
                 gap="1rem"
                 align="center"
                 justify={isMobile ? "center" : "flex-start"}
-              >
-                <Text type="p" text="Best" />
-                <BsInfoCircle size={20} />
-              </Flex>
-              <Flex
-                direction={isMobile ? "column" : "row"}
-                gap=".5rem"
-                align="center"
-              >
-                <Text
-                  type={isMobile ? "h1" : "p"}
-                  text={`$${Number(
-                    props.bestPrice?.toFixed(0)
-                  ).toLocaleString()}`}
-                  weight={600}
-                />
-                {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
-              </Flex>
+            >
+                <Text type="p" text={label} />
             </Flex>
-          </ButtonBox>
-          <ButtonBox
-            active={props.sortType === "cheap"}
-            onClick={() => props.setSortType("cheap")}
-          >
             <Flex
-              direction="column"
-              justify={isMobile ? "center" : "flex-start"}
-              gap=".5rem"
-              padding=".5rem 1.25rem"
-            >
-              <Flex
-                gap="1rem"
-                align="center"
-                justify={isMobile ? "center" : "flex-start"}
-              >
-                <Text type="p" text="Cheapest" />
-                <BsInfoCircle size={20} />
-              </Flex>
-              <Flex
                 direction={isMobile ? "column" : "row"}
                 gap=".5rem"
                 align="center"
-              >
-                <Text
-                  type={isMobile ? "h1" : "p"}
-                  text={`$${Number(
-                    props.cheapPrice?.toFixed(0)
-                  ).toLocaleString()}`}
-                  weight={600}
-                />
-                {!isMobile && <GoDotFill size={15} />}
-                <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
-              </Flex>
-            </Flex>
-          </ButtonBox>
-          {isMobile && (
-            <ButtonBox
-              active={props.sortType === "fast"}
-              onClick={() => props.setSortType("fast")}
             >
-              <Flex
-                direction="column"
-                justify="center"
-                gap=".5rem"
-                padding=".5rem 1.25rem"
-              >
-                <Flex gap="1rem" align="center" justify="center">
-                  <Text type="p" text="Fastest" />
-                  <BsInfoCircle size={20} />
-                </Flex>
-                <Flex
-                  direction={isMobile ? "column" : "row"}
-                  gap=".5rem"
-                  align="center"
-                >
-                  <Text
-                    type={isMobile ? "h1" : "p"}
-                    text={`$${Number(
-                      props.fastPrice?.toFixed(0)
-                    ).toLocaleString()}`}
-                    weight={600}
-                  />
-                  {!isMobile && <GoDotFill size={15} />}
-                  <Text type="p" text="20 h 32 m" whiteSpace="nowrap" />
-                </Flex>
-              </Flex>
-            </ButtonBox>
-          )}
+                {price &&
+                    <Text
+                        type={isMobile ? "h1" : "p"}
+                        text={
+                            isLoading ? "-" : `${formatPrice({ total: price, currency: preFerredCurrency })}`
+                        }
+                        weight={600}
+                    />
+                }
+                {flightTime &&
+                    <Text
+                        type="p"
+                        text={isLoading ? "-" : flightTime}
+                        whiteSpace="nowrap"
+                        weight={600}
+                    />
+                }
+                {flightDate &&
+                    <Text
+                        type="p"
+                        text={isLoading ? "-" : flightDate}
+                        whiteSpace="nowrap"
+                        weight={600}
+                    />
+                }
+            </Flex>
         </Flex>
-        {!isMobile && (
-          <Flex justify="flex-end" gap=".75rem">
-            <BsSortUp size={30} color="#606060" />
-            <Text type="p" text="Other Sort" color="#606060" />
-          </Flex>
-        )}
-      </Flex>
-    </FlightContainer>
-  );
+    );
+}
+
+function SortedFlightsTab(props: sortProps) {
+    const { isMobile } = useScreenResolution();
+    const { searchFlightsMode, searchQuery } = useFlightBookingStore((state) => state);
+    const isLoading = searchFlightsMode === Mode.loading;
+
+    return (
+        <FlightContainer>
+            {isLoading ? (
+                <Flex padding={isMobile ? ".5rem 1.5rem" : ".5rem 1rem"} direction="column" gap=".8rem">
+                    <Text type="h3" text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`} weight={600} size={20} />
+                    <Text type="p" size={14} text="for selected dates" color={ttColors.lighterGray} />
+                    <ProgressLoader />
+                </Flex>
+            ) : (
+                <Flex justify={isMobile ? "space-between" : "flex-start"} gap={isMobile ? "1rem" : "0"} margin="0 1rem" overflowX="auto" className="scroll-custom">
+                    <ButtonBox
+                        isMobile={isMobile}
+                        active={searchQuery?.sort === "quality"}
+                        onClick={() => {
+                            props.setSortType("best");
+                            props.updateSearchQueryHandler({ sort: "quality" });
+                        }}
+                    >
+                        <SortOption
+                            label="Best"
+                            price={props.best.price}
+                            // flightTime={props.best.duration}
+                            isLoading={isLoading}
+                        />
+                    </ButtonBox>
+
+                    <ButtonBox
+                        isMobile={isMobile}
+                        active={searchQuery?.sort === "price"}
+                        onClick={() => {
+                            props.setSortType("cheapest");
+                            props.updateSearchQueryHandler({ sort: "price" });
+                        }}
+                    >
+                        <SortOption
+                            label="Cheapest"
+                            price={props.cheapest.price}
+                            // flightTime={props.cheapest.duration}
+                            isLoading={isLoading}
+                        />
+                    </ButtonBox>
+
+                    <ButtonBox
+                        isMobile={isMobile}
+                        active={searchQuery?.sort === "duration"}
+                        onClick={() => {
+                            props.setSortType("fastest");
+                            props.updateSearchQueryHandler({
+                                sort: "duration",
+                            });
+                        }}
+                    >
+                        <SortOption
+                            label="Fastest"
+                            // price={props.fastest.price}
+                            flightTime={props.fastest.duration}
+                            isLoading={isLoading}
+                        />
+                    </ButtonBox>
+
+                    <ButtonBox
+                        isMobile={isMobile}
+                        active={searchQuery?.sort === "date"}
+                        onClick={() => {
+                            props.setSortType("earliest");
+                            props.updateSearchQueryHandler({ sort: "date" });
+                        }}
+                        >
+                        <SortOption
+                            label="Earliest"
+                            // price={props.earliest.price}
+                            flightDate={props.earliest.date}
+                            isLoading={isLoading}
+                        />
+                    </ButtonBox>
+
+                    {/* {!isMobile &&
+                        <Flex direction="column" justify="center" align="center" gap=".2rem" padding="0 0rem 0 0">
+                            <Text type="p" text="Sort" color="#606060" whiteSpace="nowrap" />
+                            <BsSortUp size={30} color="#606060" />
+                        </Flex>
+                    } */}
+                </Flex>
+            )}
+        </FlightContainer>
+    );
 }
 
 export default SortedFlightsTab;
