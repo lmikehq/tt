@@ -4,7 +4,6 @@ import Section from "../../section";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import Image from "@/components/atoms/image";
-import { Grid } from "@/components/templates/grid";
 import { BiChevronRight } from "react-icons/bi";
 import { ttColors } from "@/lib/theme/colors";
 import { Rating } from "@mui/material";

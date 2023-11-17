@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { MapBoxTag } from "./styles";
 
 function MapBox() {
-	return (
-		<div>MapBox</div>
-	)
+  return (
+    <>
+      <MapBoxTag></MapBoxTag>
+    </>
+  );
 }
 
-export default MapBox
+export default MapBox;

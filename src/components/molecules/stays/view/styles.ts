@@ -238,12 +238,15 @@ export const Span = styled.div`
   }
 `;
 
-export const MapBox = styled.div`
+export const MapBoxTag = styled.div`
   width: 100%;
   height: 350px;
   background-color: var(--color-light-gray);
   border-radius: 20px;
   margin-bottom: 35px;
+  @media screen and (max-width: 900px) {
+    height: 100%;
+  }
 `;
 
 export const ButtonBtn = styled.div`
