@@ -339,7 +339,7 @@ function Stays() {
                         if (loading) return;
                         setLoading(true);
                         await sleep(200);
-                        router.push(`https://www.booking.com/`);
+                        router.push("/stay/listings");
                     }}
                 >
                     {loading ? (
