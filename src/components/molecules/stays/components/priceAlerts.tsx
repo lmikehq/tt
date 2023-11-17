@@ -31,7 +31,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
         opacity: 1,
         backgroundColor:
           theme.palette.mode === "dark"
-            ? "var(--text-color)"
+            ? "var(--color-light-gray)"
             : "var(--primary-color)",
       },
     },
@@ -49,7 +49,9 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 12, // Match the radius to half the switchBase width
     opacity: 1,
     backgroundColor:
-      theme.palette.mode === "dark" ? "var(--text-color)" : "var(--text-color)",
+      theme.palette.mode === "dark"
+        ? "var(--color-light-gray)"
+        : "var(--color-light-gray)",
     boxSizing: "border-box",
   },
 }));
@@ -71,13 +73,8 @@ export default function PriceAlerts() {
         borderRadius={"10px"}
       >
         <Flex align="center" justify="space-between">
-          <label htmlFor="favorite-price-checkbox">
-            <Text
-              type="h4"
-              weight="bold"
-              text="Set up price alert"
-              styles={{ cursor: "pointer" }}
-            />
+          <label>
+            <Text type="h4" weight="bold" text="Set up price alert" />
           </label>{" "}
           <AntSwitch
             inputProps={{ "aria-label": "ant design" }}

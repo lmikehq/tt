@@ -8,9 +8,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { useState } from "react";
 
-
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
 
 export default function FavoriteHotels() {
   const [checked, setChecked] = useState(false);
@@ -23,7 +21,7 @@ export default function FavoriteHotels() {
     <Section>
       <Box
         width={"100%"}
-        bgcolor={ttColors.grayishAsh}
+        bgcolor={checked ? ttColors.dark : ttColors.grayishAsh}
         padding={"1rem"}
         border={"1px solid var(--color-border)"}
         marginBottom={"20px"}
@@ -34,7 +32,11 @@ export default function FavoriteHotels() {
             {...label}
             icon={<FavoriteBorder />}
             checkedIcon={
-              <Favorite style={{ color: "var(--secondary-color)" }} />
+              <Favorite
+                style={{
+                  color: checked ? ttColors.defaultColor : ttColors.dark,
+                }}
+              />
             }
             disableRipple
             disableTouchRipple
@@ -45,16 +47,25 @@ export default function FavoriteHotels() {
             id="favorite-hotels-checkbox"
           />
 
-          <Box>
-            <label htmlFor="favorite-hotels-checkbox">
+          <Box
+            style={{ color: checked ? ttColors.defaultColor : ttColors.dark }}
+          >
+            <label>
               <Text
                 weight={"bold"}
                 type="h4"
                 text="My Favourite Hotels"
-                styles={{ marginBottom: "5px", cursor: "pointer" }}
+                styles={{ marginBottom: "5px" }}
               />
             </label>
-            <Text type="p" text="Click to find your liked hotels faster.." />
+            <Text
+              type="p"
+              text={
+                checked
+                  ? "Click to Cancel Filter"
+                  : "Click to find your liked hotels faster."
+              }
+            />
           </Box>
         </Flex>
       </Box>

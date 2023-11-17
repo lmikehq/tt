@@ -12,10 +12,8 @@ import Input from "@atom/input";
 import { DatePicker } from "@/components/organisms/customDatePicker";
 import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
-import { ButtonWrapper } from "./flight";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
-
 
 function Stays() {
     const [data, setData] = useState("");
@@ -23,127 +21,297 @@ function Stays() {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const { isMobile } = useScreenResolution();
-    
+
     const today = dayjs().toDate();
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    // FORMAT TEXT
+    const formatDisplayText = (data: RoomCountType) => {
+        const kids = data.children + data.infants;
+        return `${data.adults} ${data.adults > 1 ? "Adults" : "Adult"}${
+            kids > 0 ? `, ${kids} ${kids === 1 ? "Child" : "Children"}` : ""
+        }
+    `;
+    };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    const defText = formatDisplayText(room);
 
-  const handleDataChange = (data: any) => {
-    setData(
-      `${data.count.adults} Adult, ${data.count.children} Children, ${data.count.rooms} Rooms`
+    const [displayText, setDisplayText] = useState(defText);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDataChange = (data: any) => {
+        setData(
+            `${data.count.adults} Adult, ${data.count.children} Children, ${data.count.rooms} Rooms`
+        );
+    };
+
+    // LOCATION SEARCH
+    const [stay, setStay] = useState<RoomStay>({
+        roomCount: {
+            adults: 2,
+            children: 1,
+            infants: 0,
+            rooms: 1,
+        },
+        data: "",
+        destinationHotel: {
+            id: "ibadan-id",
+            int_id: 123,
+            airport_int_id: 456,
+            active: true,
+            code: "IBD",
+            icao: "ABC123",
+            name: "",
+            slug: "ibadan",
+            slug_en: "ibadan-en",
+            alternative_names: [],
+            rank: 1,
+            global_rank_dst: 1,
+            dst_popularity_score: 0.8,
+            timezone: "Africa/Lagos",
+            country: {
+                id: "nigeria-id",
+                name: "Nigeria",
+                slug: "nigeria",
+                code: "NG",
+            },
+            city: {
+                id: "ibadan-city-id",
+                name: "Ibadan",
+                code: "IBD",
+                nearby_country: null,
+                slug: "ibadan",
+                subdivision: null,
+                autonomous_territory: null,
+                country: {
+                    id: "nigeria-id",
+                    name: "Nigeria",
+                    slug: "nigeria",
+                    code: "NG",
+                },
+                region: {
+                    id: "ibadan-region-id",
+                    name: "Ibadan Region",
+                    slug: "ibadan-region",
+                },
+                continent: {
+                    id: "africa-id",
+                    name: "Africa",
+                    slug: "africa",
+                    code: "AF",
+                },
+            },
+            location: {
+                lon: "7.4951",
+                lat: "4.3517",
+            },
+            alternative_departure_points: [],
+            tags: [],
+            providers: [],
+            special: [],
+            tourist_region: [],
+            car_rentals: [],
+            new_ground: false,
+            example: false,
+            routing_priority: 1,
+            type: "city",
+        },
+    });
+
+    const handleUpdate = (
+        selectedStay: RoomStay,
+        updatedData: { destinationHotel: Location }
+    ) => {
+        setStay({ ...selectedStay, ...updatedData });
+    };
+
+    const open = Boolean(anchorEl);
+
+    return (
+        <Section
+            padding={"2rem 0 1rem 0"}
+            height="unset"
+            styles={{ position: "relative" }}
+        >
+            <FlexBox>
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                            />
+                        }
+                        label="Free Cancellation"
+                    />
+                </FlexItems>
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                            />
+                        }
+                        label="4 stars"
+                    />
+                </FlexItems>
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                            />
+                        }
+                        label="3 stars"
+                    />
+                </FlexItems>
+            </FlexBox>
+            <Flex
+                align="center"
+                direction={isMobile ? "column" : "row"}
+                gap=".5rem"
+                styles={{ paddingBottom: "20px" }}
+            >
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Your stay preference?"
+                    />
+                    <Span>
+                        <LocationSearchSelectInput
+                            onChange={(x: Location) =>
+                                handleUpdate &&
+                                handleUpdate(stay, { destinationHotel: x })
+                            }
+                            value={stay.destinationHotel}
+                            placeholder="Enter Destination or Hotel Name"
+                        />
+                    </Span>
+                </Flex>
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Check In"
+                    />
+                    <DatePicker
+                        placeholder="Select Date"
+                        position="start"
+                        onChange={(e) => null}
+                    />
+                </Flex>
+
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Return"
+                    />
+                    <DatePicker
+                        placeholder="Select Date"
+                        position="start"
+                        onChange={(e) => null}
+                    />
+                </Flex>
+
+                <Flex
+                    direction="column"
+                    gap=".75rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Guests and Rooms"
+                    />
+                    <ClickAwayListener onClickAway={handleClose}>
+                        <div>
+                            <Input
+                                onClick={handleClick}
+                                placeholder="Click me to open dropdown"
+                                value={displayText}
+                                styles={{
+                                    fontFamily: "poppins",
+                                    cursor: "pointer",
+                                    fontSize: "14px",
+                                }}
+                            />
+                            {open && (
+                                <StaysMenu
+                                    onDataChange={handleDataChange}
+                                    isMobile={isMobile}
+                                    data={room}
+                                />
+                            )}
+                        </div>
+                    </ClickAwayListener>
+                </Flex>
+            </Flex>
+
+            <Flex
+                justify="flex-end"
+                margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}
+            >
+                <Button
+                    width={isMobile ? "100%" : "300px"}
+                    padding="0 1.5rem"
+                    borderRadius="4px"
+                    background={ttColors.dark}
+                    onClick={async () => {
+                        if (loading) return;
+                        setLoading(true);
+                        await sleep(200);
+                        router.push(`https://www.booking.com/`);
+                    }}
+                >
+                    {loading ? (
+                        <Spinner fill={ttColors.primary} size={"36px"} />
+                    ) : (
+                        <Text type="p" text="Search for Hotels" weight={500} />
+                    )}
+                </Button>
+            </Flex>
+        </Section>
     );
-  };
-
-  const open = Boolean(anchorEl);
-
-  return (
-    <Section
-      padding={"2rem 0 1rem 0"}
-      height="unset"
-      styles={{ position: "relative" }}
-    >
-      <Flex align="center" direction={isMobile ? "column" : "row"} gap=".5rem">
-        <Flex
-          direction="column"
-          gap=".5rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-            <Text
-                type="label"
-                size={isMobile ? 16 : 16}
-                text="Your stay preference?"
-            />
-            <Input
-                placeholder="Enter Destination or Hotel Name"
-                styles={{ fontFamily: "poppins" }}
-            />
-        </Flex>
-        <Flex
-          direction="column"
-          gap=".5rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-            <Text
-                type="label"
-                size={isMobile ? 16 : 16}
-                text="Check In"
-            />
-            <DatePicker
-                placeholder="Select Date"
-                minDate={today}
-                onChange={(e) => null}
-            />
-        </Flex>
-
-        <Flex
-          direction="column"
-          gap=".5rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-            <Text
-                type="label"
-                size={isMobile ? 16 : 16}
-                text="Return"
-            />
-            <DatePicker
-                placeholder="Select Date"
-                minDate={today}
-                onChange={(e) => null}
-            />
-        </Flex>
-
-        <Flex
-          direction="column"
-          gap=".75rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text
-            type="label"
-            size={isMobile ? 16 : 18}
-            text="Guests and Rooms"
-          />
-          <ClickAwayListener onClickAway={handleClose}>
-            <div>
-              <Input
-                onClick={handleClick}
-                placeholder="Click me to open dropdown"
-                value={data}
-                styles={{ fontFamily: "poppins" }}
-              />
-              {open && <StaysMenu onDataChange={handleDataChange} />}
-            </div>
-          </ClickAwayListener>
-        </Flex>
-          </Flex>
-          
-      <Flex justify="flex-end" margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}>
-        <Button
-          width={isMobile ? "100%" : "300px"}
-          padding="0 1.5rem"
-          borderRadius="4px"
-          background={ttColors.dark}
-          onClick={async () => {
-            if (loading) return;
-            setLoading(true);
-            await sleep(200);
-            router.push(`https://www.booking.com/`);
-          }}
-        >
-          {loading ? (
-            <Spinner fill={ttColors.primary} size={"36px"} />
-          ) : (
-            <Text type="p" text="Search for Hotels" weight={500} />
-          )}
-        </Button>
-      </Flex>
-    </Section>
-  );
 }
 
 export default Stays;
