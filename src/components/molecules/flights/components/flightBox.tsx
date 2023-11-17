@@ -13,10 +13,8 @@ import { Box } from "@mui/material";
 import FlightDepartureIcon from "./flightDepartureIcon";
 import StopsPill from "./stopsPill";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { calculateTime } from "@/utils/convertTime";
-import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
+import { FlightInfo, FlightInterface } from "@/lib/types/response-models/flight/booking.type";
 import React, { useContext } from "react";
-import { isMonday } from "date-fns";
 import { FlightContext } from "@/lib/extensions/context";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
@@ -36,6 +34,7 @@ type flightProps = {
     flight: FlightInfo;
     selectFlight(params: { bookingToken: string }): void;
     flightStop: string;
+    openShareModal: (flight: FlightInfo) => void;
 };
 
 const FlightContainer = styled.div`
@@ -487,7 +486,7 @@ function FlightBox(props: flightProps) {
                                 />
                             </IconBorders>
                         </Flex>
-                        {!isMobile && <BsShare size={23} />}
+                        {!isMobile && <BsShare size={23} onClick={() => props.openShareModal(props.flight) }/>}
                     </Flex>
                     <Flex
                         direction={isMobile ? "row" : "column"}

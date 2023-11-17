@@ -390,9 +390,7 @@ const FlightBookingPage = () => {
                                 case 2:
                                 case 3:
                                     return (
-                                        <PriceSummary
-                                            checkedBags={checkedBags}
-                                        />
+                                        <PriceSummary checkedBags={checkedBags} />
                                     );
                                 case 4:
                                     return <SeatSelectionMenu />;

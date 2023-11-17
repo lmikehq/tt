@@ -385,66 +385,71 @@ const SeatSelection = () => {
             <CustomConfirmationModal
                 open={showSeatSelectionModal}
                 handleClose={() => setShowSeatSelectionModal(false)}
-                icon={
-                    <Image
-                        src={"/assets/icons/favourite_icon.svg"}
-                        alt="delete-icon"
-                        width={95.5}
-                        height={95.5}
-                    />
-                }
-                title={"Fancy this seat?"}
-                description={selectionModalContent.seatDescription}
-                subTitle={
-                    "Would you like to pick seat " +
-                    selectionModalContent.seatName +
-                    " for " +
-                    currentPassenger
-                }
-                buttons={
-                    <>
-                        <Button
-                            background="transparent"
-                            color={ttColors.dark}
-                            border="1px solid #19013b"
-                            onClick={() => setShowSeatSelectionModal(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            background={ttColors.blackishBlue}
-                            color="#fff"
-                            onClick={() => {
-                                updateSeatAvailablity({
-                                    previousSeat:
-                                        findSeatWithPassengerIndex({
-                                            index:
-                                                currentPassenger ==
-                                                "Main Passenger"
-                                                    ? 0
-                                                    : parseInt(
-                                                          currentPassenger.split(
-                                                              "Passenger "
-                                                          )[1]
-                                                      ) - 1,
-                                            particularSeats,
-                                        })?.split("Seat ")[1] ?? null,
-                                    newSeat: selectionModalContent.seatName,
-                                });
+                child={
+                    <Flex
+                        direction="column"
+                        align="center"
+                        gap="2rem"
+                        padding="3rem 3rem"
+                    >
+                        <Image
+                            src={"/assets/icons/favourite_icon.svg"}
+                            alt="delete-icon"
+                            width={70}
+                            height={70}
+                        />
+                        <Text type="h2" text="Fancy this seat?" weight={600} size={28} />
+                        
+                        {selectionModalContent.seatDescription}
+                        
+                        <Text type="p" text={"Would you like to pick seat " + selectionModalContent.seatName + " for " + currentPassenger} weight={500} size={16} />
+                        
+                        <Flex gap="1rem" direction={isMobile ? "column" : "row"}>
+                            <Button
+                                background="transparent"
+                                color={ttColors.dark}
+                                border="1px solid #19013b"
+                                onClick={() => setShowSeatSelectionModal(false)}
+                                width={isMobile ? "100%" : "50%"}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                background={ttColors.blackishBlue}
+                                color="#fff"
+                                width={isMobile ? "100%" : "50%"}
+                                onClick={() => {
+                                    updateSeatAvailablity({
+                                        previousSeat:
+                                            findSeatWithPassengerIndex({
+                                                index:
+                                                    currentPassenger ==
+                                                    "Main Passenger"
+                                                        ? 0
+                                                        : parseInt(
+                                                            currentPassenger.split(
+                                                                "Passenger "
+                                                            )[1]
+                                                        ) - 1,
+                                                particularSeats,
+                                            })?.split("Seat ")[1] ?? null,
+                                        newSeat: selectionModalContent.seatName,
+                                    });
 
-                                selectParticularSeat({
-                                    name: selectionModalContent.seatName,
-                                    segmentCode:
-                                        selectionModalContent.segmentCode,
-                                    price: selectionModalContent.price!,
-                                });
+                                    selectParticularSeat({
+                                        name: selectionModalContent.seatName,
+                                        segmentCode:
+                                            selectionModalContent.segmentCode,
+                                        price: selectionModalContent.price!,
+                                    });
 
-                                setShowSeatSelectionModal(false);
-                            }}
-                        >
-                            Continue
-                        </Button>
-                    </>
+                                    setShowSeatSelectionModal(false);
+                                }}
+                            >
+                                Continue
+                            </Button>
+                        </Flex>
+                    </Flex>
                 }
             />
             <Section>
@@ -514,9 +519,8 @@ const SeatSelection = () => {
                 handleClose={() => setEmptySeatsModalOpen(false)}
                 child={
                     <Section
-                        padding="4.43rem 5.5rem"
+                        padding="3rem 3.5rem"
                         height="unset"
-                        maxWidth="40.44rem"
                     >
                         <Flex direction="column" justify="center">
                             <Section margin="0 0  14px" height="unset">
@@ -531,7 +535,7 @@ const SeatSelection = () => {
                                 <Text
                                     type="h3"
                                     text="Empty seat offer"
-                                    size={32}
+                                    size={28}
                                     weight={700}
                                     color={ttColors.dark}
                                 />
@@ -541,13 +545,13 @@ const SeatSelection = () => {
                                     type="p"
                                     text="There is currently no seat offer for the flight filters selected. Don't worry, you can still proceed to save booking"
                                     weight={400}
-                                    size={18}
+                                    size={15}
                                     color="#929292"
                                 />
                             </Section>
-                            <Flex gap="1rem">
+                            <Flex gap="1rem" direction={isMobile ? "column" : "row"}>
                                 <Button
-                                    width="100%"
+                                    width={isMobile ? "100%" : "50%"}
                                     color={ttColors.dark}
                                     background={ttColors.light}
                                     border="1px solid #19013b"
@@ -562,7 +566,7 @@ const SeatSelection = () => {
                                     />
                                 </Button>
                                 <Button
-                                    width="100%"
+                                    width={isMobile ? "100%" : "50%"}
                                     background={ttColors.dark}
                                     color={ttColors.light}
                                     // border="1px solid #19013b"

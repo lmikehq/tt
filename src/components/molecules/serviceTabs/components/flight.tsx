@@ -181,16 +181,17 @@ function Flights() {
 
 	const formatSearchFlight = (flight?: OneFlightType) => {
 		const dateFrom = formatDate(flight?.departureDate ?? dayjs());
-		const dateTo = formatDate(flight?.returnDate ?? dayjs());
+		// const dateTo = formatDate(flight?.returnDate ?? dayjs());
 		const departure = flight?.departureCountry
 		const arrival = flight?.arrivalCountry
 		const adults = flight?.adults
 		const children = flight?.children
         const infants = flight?.infants
         const cabin = translateCabin(flight?.flightClass)
-        const bags = Number(flight?.cabinBaggage) + Number(flight?.checkedBaggage)
+        const cabinBags = flight?.cabinBaggage
+        const checkedBags = flight?.checkedBaggage
         
-		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}`
+		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`
     }
 
     const flight = flightState?.fleet[0]

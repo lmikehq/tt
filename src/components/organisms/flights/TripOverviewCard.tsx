@@ -37,18 +37,19 @@ function TripOverviewCard() {
   }
 
   return (
-    <Section>
+    <Section padding="1rem 0 0 0">
       {!isMobile && <OverviewHeader/>}
-      <Flex direction="column" gap="1rem" padding="3rem 0">
-        <Text text="Select Payment" type="h3" />
+      <Flex direction="column" gap="2rem" padding="3rem 0">
+        <Text text="Select Currency" type="h3" size={16} />
         <SearchInput
-          options={COUNTRY_FLAGS.map((x) => ({
-            name: x.currency,
-            flag: x.flag,
-            code: x.currencyCode,
-            countryCode: x.code
-          }))}
-          onChange={(x) => handlePayment(x)}
+            options={COUNTRY_FLAGS.map((x) => ({
+                name: x.currency,
+                flag: x.flag,
+                code: x.currencyCode,
+                countryCode: x.code
+            }))}
+            onChange={(x) => handlePayment(x)}
+            disabled
         >
           <Flex gap=".6rem" justify="space-between" cursor="pointer" align="center">
             <Flex gap="2rem" align="center">
@@ -74,9 +75,9 @@ function TripOverviewCard() {
           </Flex>
         </SearchInput>
         <Flex gap="1rem">
-          <AiFillInfoCircle color={ttColors.primary} size="2.5rem" />
+          <AiFillInfoCircle color={ttColors.primary} size="2rem" />
           <Text
-            text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
+            text="Only the Nigerian currency (Naira) is active for now. Other currencies will be made available soon."
             type="p"
             color="#606060"
           />

@@ -90,6 +90,8 @@ const OverviewAndPayment = () => {
         if (bookingId) checkBookingDetails({ bookingId });
     }, []);
 
+    console.log(total * conversionRate)
+
     return (
         <Box
             sx={{
