@@ -189,14 +189,21 @@ const TripSummary = ({
                     user: user?.id,
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
-                    passengers: values.passengers.map((el, index) => ({
-                        ...el,
-                        email:
-                            index == 0 ? contactDetailsFormik.values.email : "",
-                        phone:
-                            index == 0 ? contactDetailsFormik.values.phone : "",
-                        nationality: el.nationality.code.toLowerCase(),
-                    })),
+                    passengers: values.passengers.map((el, index) =>
+                        index != 0
+                            ? {
+                                  ...el,
+                                  nationality:
+                                      el.nationality.code.toLowerCase(),
+                              }
+                            : {
+                                  ...el,
+                                  email: contactDetailsFormik.values.email,
+                                  phone: contactDetailsFormik.values.phone,
+                                  nationality:
+                                      el.nationality.code.toLowerCase(),
+                              }
+                    ),
                     baggage: arrangeBaggageDataForOrdering(
                         insertSelectedCheckedBags(passengersBagCombination)
                     ),
@@ -226,10 +233,8 @@ const TripSummary = ({
     }: {
         category: string;
     }): { min?: dayjs.Dayjs; max?: dayjs.Dayjs } => {
-        const adult =
-            checkFlightsResponse?.adult_threshold ??
-            checkFlightsResponse?.age_category_thresholds.adult ??
-            12;
+        const adult = checkFlightsResponse?.age_category_thresholds.adult ?? 12;
+        // checkFlightsResponse?.adult_threshold ??
         const child = checkFlightsResponse?.age_category_thresholds.child ?? 2;
 
         switch (category) {

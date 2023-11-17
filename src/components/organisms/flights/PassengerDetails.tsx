@@ -197,19 +197,17 @@ export default function MainPassenger({
                             placeholder="Nationality"
                         />
                     </FormControl>
-                    {values.category !== "infant" && (
-                        <FormControl>
-                            <FormLabel required htmlFor="title">
-                                Title
-                            </FormLabel>
-                            <FieldString
-                                formik={formik}
-                                name={`passengers.${count}.title`}
-                                placeholder="Select your title"
-                                options={["Mr", "Mrs"]}
-                            />
-                        </FormControl>
-                    )}
+                    <FormControl>
+                        <FormLabel required htmlFor="title">
+                            Title
+                        </FormLabel>
+                        <FieldString
+                            formik={formik}
+                            name={`passengers.${count}.title`}
+                            placeholder="Select your title"
+                            options={["Mr", "Mrs"]}
+                        />
+                    </FormControl>
                     <FormControl>
                         <FormLabel required htmlFor="birthday">
                             Date of Birth
@@ -224,32 +222,31 @@ export default function MainPassenger({
                             maxDate={maxBirthDate}
                         />
                     </FormControl>
-                    {values.category !== "infant" && (
-                        <React.Fragment>
-                            <FormControl>
-                                <FormLabel required htmlFor="cardno">
-                                    Passport or ID number
-                                </FormLabel>
-                                <FieldInput
-                                    name={`passengers.${count}.cardno`}
-                                    placeholder="Passport or ID number"
-                                    formik={formik}
-                                />
-                            </FormControl>
 
-                            <FormControl>
-                                <FormLabel htmlFor="expiration">
-                                    Passport or ID Expiry Date
-                                </FormLabel>
-                                <FieldAsDate
-                                    name={`passengers.${count}.expiration`}
-                                    placeholder="Passport or ID Expiry Date"
-                                    formik={formik}
-                                    format="YYYY-MM-DD"
-                                />
-                            </FormControl>
-                        </React.Fragment>
-                    )}
+                    <React.Fragment>
+                        <FormControl>
+                            <FormLabel required htmlFor="cardno">
+                                Passport or ID number
+                            </FormLabel>
+                            <FieldInput
+                                name={`passengers.${count}.cardno`}
+                                placeholder="Passport or ID number"
+                                formik={formik}
+                            />
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel htmlFor="expiration">
+                                Passport or ID Expiry Date
+                            </FormLabel>
+                            <FieldAsDate
+                                name={`passengers.${count}.expiration`}
+                                placeholder="Passport or ID Expiry Date"
+                                formik={formik}
+                                format="YYYY-MM-DD"
+                            />
+                        </FormControl>
+                    </React.Fragment>
                 </Box>
                 <Box>
                     <Flex gap="1rem" align="center" padding="1rem 0">

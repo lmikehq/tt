@@ -118,6 +118,7 @@ const FlightBookingPage = () => {
         initCheckFlightsMode,
         checkFlightsResponse,
         setInitCheckFlightsMode,
+        setParticularSeats,
     } = useFlightBookingStore((state) => state);
 
     const searchParams = extractSearchParamsFromUrl({
@@ -348,6 +349,7 @@ const FlightBookingPage = () => {
 
         return () => {
             intervalIds.current.forEach(clearInterval);
+            setParticularSeats([]);
         };
     }, []);
 
