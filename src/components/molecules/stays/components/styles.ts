@@ -42,6 +42,12 @@ export const FlexBox = styled.div`
   @media screen and (max-width: 545px) {
     flex-wrap: wrap;
     gap: 20px;
+    &.filter_btn {
+      flex-wrap: nowrap;
+      width: 100%;
+      gap: auto;
+      justify-content: space-between !important;
+    }
     &.row_two_wrap {
       flex-wrap: nowrap;
     }

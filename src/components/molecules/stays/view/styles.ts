@@ -118,8 +118,8 @@ export const GridLayout = styled.div`
 `;
 
 export const ImageBox = styled.div`
-  width: 110px;
-  height: 110px;
+  max-width: 110px;
+  max-height: 110px;
   border-radius: 6px;
   overflow: hidden;
   @media screen and (max-width: 395px) {
@@ -205,6 +205,13 @@ export const Content = styled.div`
 
 export const Span = styled.div`
   position: relative;
+  .badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: var(--default-color);
+    background-color: var(--secondary-color);
+  }
   @media screen and (max-width: 1120px) {
     .recently {
       flex-direction: column;
@@ -250,6 +257,12 @@ export const ButtonBtn = styled.div`
   color: var(--default-color);
   border-radius: 6px;
   cursor: pointer;
+  &.filter_button {
+    justify-content: space-between;
+    background-color: transparent;
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+  }
   &.btn_disable {
     background-color: var(--color-light-gray) !important;
     color: var(--text-gray-color) !important;
@@ -269,4 +282,16 @@ export const BtnDetails = styled.div`
   border-radius: 6px;
   width: fit-content;
   padding: 7px 10px;
+  &.reset_filters {
+    border: 2px solid var(--color-red-border);
+    background-color: var(--color-red-bg);
+    color: var(--color-favorite);
+    cursor: pointer;
+  }
+  &.chosen_filter {
+    background: transparent;
+    width: 100%;
+    padding: 10px 10px;
+    color: var(--secondary-color);
+  }
 `;

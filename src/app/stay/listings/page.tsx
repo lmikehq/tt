@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import SectionLayout from "@components/templates/SectionLayout";
-import RoomList from "@/components/molecules/stays/components/roomList";
+import RoomList from "@/components/molecules/stays/components/RoomList";
 
 function Page() {
   return (

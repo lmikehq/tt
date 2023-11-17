@@ -6,7 +6,7 @@ import { FaPlaneArrival } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { ImPriceTag } from "react-icons/im";
 import { styled } from "styled-components";
-import FAQ from "./components/faq";
+import FAQ from "./components/Faq";
 import Map from "@molecule/map";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";

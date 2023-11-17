@@ -2,10 +2,10 @@ import Flex from "@components/templates/flex";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Box from "@mui/material/Box";
-import AvailableRooms from "./availableRooms";
-import SortedColumn from "./sortedColumn";
 import { useState } from "react";
 import styled from "styled-components";
+import SortedColumn from "./sortedColumn";
+import AvailableRooms from "./availableRooms";
 
 const SectionLayout = styled.div``;
 function RoomList() {

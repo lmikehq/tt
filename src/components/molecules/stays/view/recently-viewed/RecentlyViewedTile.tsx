@@ -87,7 +87,7 @@ const RecentlyViewedTile = () => {
                       size={18}
                       weight={500}
                       styles={{ width: "auto" }}
-                      className="truncate"
+                      // className="truncate"
                       text={room.name}
                     />
                   </Flex>

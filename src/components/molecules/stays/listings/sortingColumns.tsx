@@ -8,14 +8,14 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
 import Slider from "../../slider";
-import FavoriteHotels from "../components/favoriteHotels";
-import PriceAlerts from "../components/priceAlerts";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Rating } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import styled from "styled-components";
+import PriceAlerts from "../components/priceAlerts";
+import FavoriteHotels from "../components/favoriteHotels";
 
 const marks = [
   {

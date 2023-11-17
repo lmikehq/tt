@@ -91,6 +91,7 @@ function ChooseYourRoomList() {
                         style={{
                           width: "100%",
                           height: "100%",
+                          minWidth: "260px",
                           objectFit: "cover",
                           borderRadius: "12px",
                         }}
@@ -389,12 +390,14 @@ function ChooseYourRoomList() {
                               </Flex>
                             }
                           />
-                          <Text
+                          {/* <Text
                             type="h4"
                             weight={"bold"}
                             whiteSpace="nowrap"
-                            text="+$140"
-                          ></Text>
+                            styles={{ marginLeft: "3px" }}
+                            text={`+$${140}`}
+                          ></Text> */}
+                          <h4 style={{ fontWeight: "bold" }}>+$140</h4>
                         </Flex>
                       </Flex>
                     </RadioGroup>
@@ -531,7 +534,7 @@ function ChooseYourRoomList() {
                             type="h4"
                             weight={"bold"}
                             whiteSpace="nowrap"
-                            text="+$140"
+                            text={`+$${140}`}
                           ></Text>
                         </Flex>
                       </Flex>
