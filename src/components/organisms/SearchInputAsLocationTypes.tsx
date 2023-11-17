@@ -24,15 +24,7 @@ interface SearchInputAsLocationTypesProps {
     loading: boolean;
 }
 
-const PopperMy = function (props: any) {
-    return (
-        <Popper
-            {...props}
-            style={{ width: "300px" }}
-            placement="bottom-start"
-        />
-    );
-};
+
 export default function SearchInputAsLocationTypes({
     locations,
     handleSetSearchText,
@@ -41,9 +33,32 @@ export default function SearchInputAsLocationTypes({
     placeholder,
     loading,
 }: SearchInputAsLocationTypesProps) {
+    const fieldRef = React.useRef<HTMLDivElement | null>(null)
+    const fieldWidth = fieldRef?.current ? fieldRef.current.clientWidth : "300px"
+
     const handleSetSearchTextDebounce = debounce((value: string) => {
         handleSetSearchText({ text: value });
     }, 800);
+
+    const PopperMy = (props: any) => (
+        <Popper
+            {...props}
+            sx={{
+                width: fieldWidth,
+                "& div > ul::-webkit-scrollbar": {
+                    backgroundColor: 'transparent',
+                    width: '9px',
+                    height: '9px',
+                },
+                "& div > ul::-webkit-scrollbar-thumb": {
+                    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                    borderRadius: '6px',
+                }
+            }}
+            placement="bottom-start"
+        />
+    )
+
     return (
         <Autocomplete
             id="country-select-demo"
@@ -76,16 +91,16 @@ export default function SearchInputAsLocationTypes({
                         styles={{ flexShrink: 0, marginRight: "1.125rem" }}
                     >
                         {option.type == LocationType.airport ? (
-                            <BiSolidPlane size={20} color="#929292" />
+                            <BiSolidPlane size={20} color={ttColors.foundation.black600} />
                         ) : (
-                            <BiSolidCity size={20} color="#929292" />
+                            <BiSolidCity size={20} color={ttColors.foundation.black600} />
                         )}
                     </Section>
                     <Section styles={{ flexGrow: 1, minWidth: 0 }}>
                         <Text
                             type="p"
-                            size={16}
-                            color={ttColors.dark}
+                            size={15}
+                            color={ttColors.foundation.black600}
                             className="truncate"
                             text={`${option.name} (${option.code})`}
                         />
@@ -94,7 +109,7 @@ export default function SearchInputAsLocationTypes({
                             size={12}
                             weight={300}
                             className="truncate"
-                            color={ttColors.dark}
+                            color={ttColors.foundation.black600}
                             text={
                                 option.city?.country?.name ??
                                 option.country?.name ??
@@ -108,6 +123,7 @@ export default function SearchInputAsLocationTypes({
             )}
             renderInput={(params) => (
                 <TextField
+                    ref={fieldRef}
                     sx={{
                         "&:hover .MuiOutlinedInput-notchedOutline": {
                             borderColor: `${ttColors.primary} !important`,
@@ -120,19 +136,21 @@ export default function SearchInputAsLocationTypes({
                         },
                         "& .MuiOutlinedInput-notchedOutline": {
                             outline: "none !important",
-                            // borderColor: "red",
                         },
                         "& .MuiFormControl-root": {
                             outline: "none !important",
+                            
                         },
                         "& .MuiOutlinedInput-root": {
                             outline: "none !important",
-
-                            padding: "0  .875rem !important",
+                            padding: "0  .6rem !important",
+                            fontFamily: 'Poppins',
+                            fontSize: '15px',
+                            color: ttColors.foundation.black,
                         },
-                        "&:hover .MuiInputBase-root": {
-                            color: `${ttColors.primary} !important`,
-                        },
+                        // "&:hover .MuiInputBase-root": {
+                        //     color: `${ttColors.primary} !important`,
+                        // },
                         "& .css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root":
                             {
                                 display: "block!important",
@@ -148,6 +166,7 @@ export default function SearchInputAsLocationTypes({
                         "& input": {
                             height: "45px",
                             padding: "0px !important",
+                            cursor: 'pointer !important',
                         },
                         "& svg": {
                             // display: "none",
@@ -156,13 +175,12 @@ export default function SearchInputAsLocationTypes({
                     {...params}
                     InputProps={{
                         ...params.InputProps,
-
                         startAdornment: (
                             <InputAdornment position="start">
-                                <IoLocationOutline size={20} />
+                                <IoLocationOutline size={22} />
                             </InputAdornment>
                         ),
-                        endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : <></>,
+                        endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : null,
                         autoComplete: "new-password",
                         placeholder: placeholder,
                     }}

@@ -10,14 +10,14 @@ const FlightTab = styled.div`
     box-shadow: 0px 4px 16px 0px #8dd3bb26;
     margin: 4rem 0;
     border-radius: 12.5px;
-    padding: 1rem;
+    padding: 1.5rem;
 `;
 
 function Page() {
     const { isMobile } = useScreenResolution();
     
     return (
-        <SectionLayout style={{ padding: isMobile ? "0 1rem" : "" }}>
+        <SectionLayout style={{ padding: isMobile ? "0 0rem" : "" }}>
             <FlightTab>
                 <Flights />
             </FlightTab>

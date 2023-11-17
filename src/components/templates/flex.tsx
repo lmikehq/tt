@@ -114,11 +114,11 @@ const Flex: React.FC<flexProps> = ({
                 overflowX: overflowX,
                 borderRadius: borderRadius,
                 border: border,
+                borderBottom: borderBottom ?? border,
                 padding: padding,
                 flexWrap: wrap,
                 height: height,
                 alignSelf: alignSelf,
-                borderBottom: borderBottom ?? border,
                 position,
                 ...styles,
             }}

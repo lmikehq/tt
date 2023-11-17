@@ -10,6 +10,7 @@ import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../radio";
 import CheckBox from "../../checkbox";
+import { PiCaretLeftBold } from "react-icons/pi";
 
 const ModalWrapper = styled.div`
   width: 100%;
@@ -30,13 +31,13 @@ export const FilterModal = ({
       <Section>
         <ModalWrapper>
           <Flex padding="1rem" align="center" justify="space-between">
-            <BsChevronBarLeft onClick={handleClose} />
-            <Text type="h1" text="Filter" weight={600} />
+            <PiCaretLeftBold onClick={handleClose} size={22} />
+            <Text type="h1" text="Filter" weight={600} size={20} />
             <Button width="max-content" background="none" onClick={handleClose}>
-              <Text type="h3" text="Done" color={ttColors.primary} />
+              <Text type="h3" text="Done" color={ttColors.primary} weight={500} />
             </Button>
           </Flex>
-          <Section padding="2rem">
+          <Section padding="0 2rem 2.5rem">
             <SortingColumns onClose={handleClose} />
           </Section>
         </ModalWrapper>

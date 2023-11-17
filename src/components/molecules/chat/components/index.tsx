@@ -231,7 +231,7 @@ const Chat = () => {
   ];
 
   const [chatItems, setChatItems] = useState(chatItem);
-  
+
   return (
     <ChatContainer>
       <LeftSide>
@@ -276,7 +276,7 @@ const Chat = () => {
                       padding="0 0 .1rem"
                       color={active ? "#ffffff" : ttColors.dark}
                     />
-                    <Text type="p" text={item.description} />
+                    <Text type="p" size={14} text={item.description} />
                   </BtnContent>
                 </Flex>
               </Button>

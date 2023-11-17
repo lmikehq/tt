@@ -41,9 +41,7 @@ function Detail({
             <Text
                 type="p"
                 size={bold ? 22 : 14}
-                text={`${negative ? "- " : ""}${
-                    plain ? "" : currency
-                } ${value}`}
+                text={`${negative ? "- " : ""}${plain ? "" : currency} ${value}`}
                 weight={bold ? 600 : 400}
                 color={bold ? ttColors.dark : ttColors.lighterGray}
             />
@@ -73,10 +71,11 @@ function StillBookingModal({
         <Modal open={isOpen} handleClose={onClose}>
             <Stack
                 direction="column"
+                alignItems="center"
                 spacing={5}
                 bgcolor="white"
                 padding={6}
-                width={isMobile ? "90vw" : "30vw"}
+                width={isMobile ? "95vw" : "30vw"}
                 borderRadius="16px"
             >
                 <Text type="h2" text="Flight Booking" weight={600} size={22} />
@@ -109,11 +108,12 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
         saveBookingDetails,
         setSaveBookingDetails,
         setStep,
-        conversionRate,
     } = useFlightBookingStore((state) => state);
     const [countdown, setCountdown] = useState(30 * 60);
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
 
     const countMins = Math.floor(countdown / 60);
     const countSecs = (countdown % 60).toFixed(0);
@@ -129,33 +129,32 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
         numberOfDecimalDigits: 2,
     });
     const countofBags = Object.values(checkedBags.order).flat();
+
     const countofBagsPrices = Object.values(checkedBags.order)
         .flat()
-        .map(
-            (e) =>
-                checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price
-                    ?.amount
-        );
+        .map((e) => checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price?.amount
+    );
+
+    const totalBagsPrices = Number(
+        countofBagsPrices.reduce((prev, curr) => Number(prev ?? 0) + Number(curr ?? 0), 0)
+    )
 
     const bagsPrice = formatPrice({
-        total:
-            Number(
-                countofBagsPrices.reduce(
-                    (prev, curr) => Number(prev ?? 0) + Number(curr ?? 0),
-                    0
-                )
-            ) * conversionRate,
+        total: totalBagsPrices * conversionRate,
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });
-
     const totalPrice = formatPrice({
-        total: (checkFlightsResponse?.tickets_price ?? 0) * conversionRate,
+        total: (totalBagsPrices + (checkFlightsResponse?.tickets_price ?? 0)) * conversionRate,
+        currency: preFerredCurrency,
+        numberOfDecimalDigits: 2,
+    });
+    const discount = formatPrice({
+        total: 0,
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });
     const currency = preFerredCurrency;
-    const discount = Number(0).toFixed(2);
 
     const departureBags = countofBags.length;
 
@@ -234,7 +233,7 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
                 <Text type="p" size={14} weight={500} text="Eligible for Flexible Travel Dates" />
             </Flex> */}
 
-            <Flex direction="column" gap=".5rem" margin="0 0 2rem">
+            <Flex direction="column" gap=".5rem" margin="0 0 1rem">
                 <Text type="h3" weight={600} text="Check-In Baggage" />
                 <Text
                     type="p"
@@ -243,20 +242,20 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
                 />
             </Flex>
 
-            <Flex direction="column" gap=".6rem" margin="0 0 3rem">
+            <Flex direction="column" margin="0 0 3rem">
                 <Detail name="Bags" value={departureBags} plain />
             </Flex>
 
             <Flex
                 justify="flex-start"
                 align="center"
-                gap="1rem"
+                gap=".6rem"
                 margin="0 0 3rem"
             >
                 <TimerOutlinedIcon />
                 <Text
                     type="p"
-                    size={15}
+                    size={14}
                     weight={600}
                     text={`This booking will be unavailable in ${countMins}m ${countSecs}s`}
                 />
