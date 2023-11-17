@@ -9,20 +9,15 @@ import Text from "@atom/text";
 import SortedFlightsTab from "./sortedFlightsTab";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
-import {
-    extractSearchParamsFromUrl,
-    constructQueryFromParams,
-} from "@/lib/extensions/helpers/constructQuery";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import { FlightContext } from "@/lib/extensions/context";
 import { Mode } from "@/lib/types";
 import { useUserStore } from "@/lib/store/useStore";
 import Modal from "@/components/organisms/modal";
-import { CircularProgress, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { BsCursor } from "react-icons/bs";
 import { usePathname, useRouter } from "next/navigation";
 import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
@@ -32,6 +27,9 @@ import Spinner from "../../icons/spinner";
 import { dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
 import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
+import { IoShareSocial } from "react-icons/io5";
+import Image from "next/image";
+import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 var advancedFormat = require('dayjs/plugin/advancedFormat')
 dayjs.extend(advancedFormat)
 
@@ -40,6 +38,28 @@ interface SearchQuery {
     filter: string;
     page: number;
     limit: number;
+}
+
+
+function localSortFlights({ sort, results }: { sort: string; results: FlightInfo[] }) {
+    switch (sort) {
+        case 'quality': {
+            return numSort(results, "quality", "asc")
+        };
+        case 'price': {
+            return numSort(results, "price", "asc")
+        };
+        case 'duration': {
+            const arr = results.map(e => ({ ...e, travelTime: e.duration.total }));
+            return numSort(arr, "travelTime", "asc")
+        };
+        case 'date': {
+            return dateSort(results, "utc_departure", "asc")
+        };
+        default: {
+            return numSort(results, "quality", "asc")
+        };
+    }
 }
 
 function FlightBoxSkeleton() {
@@ -256,6 +276,100 @@ function StillSearchingModal({
     );
 }
 
+function ShareFlightModal({
+    isOpen,
+    onClose,
+    flight
+}: {
+    isOpen: boolean;
+    onClose: VoidFunction;
+    flight: FlightInfo | null;
+}) {
+    const { isMobile } = useScreenResolution();
+    const { copyToClipboard } = useClipboard()
+
+    return (
+        <Modal open={isOpen} handleClose={onClose}>
+            <Stack
+                direction="column"
+                alignItems="start"
+                spacing={3}
+                bgcolor="white"
+                paddingX={isMobile ? 5 : 6}
+                paddingY={isMobile ? 4 : 4}
+                width={isMobile ? "96vw" : "40vw"}
+                borderRadius="16px"
+            >
+                <Flex
+                    width="max-content"
+                    padding="1rem"
+                    borderRadius="50%"
+                    background={ttColors.primary100}
+                >
+                    <IoShareSocial size={34} color={ttColors.primary600} />
+                </Flex>
+
+                <Text
+                    type="h2"
+                    text="Share your Flight to Family & Friends"
+                    weight={600}
+                    size={isMobile ? 24 : 26}
+                />
+                <Text
+                    type="h2"
+                    text="You can easily share your flight details to family and friends."
+                    size={14}
+                    color={ttColors.lighterGray}
+                />
+
+                <Flex gap="1rem" align="center">
+                    {!isMobile &&
+                        <Flex
+                            width="76%"
+                            border={`1px solid ${ttColors.primaryLight}`}
+                            background={ttColors.primary100}
+                            borderRadius="4px"
+                            padding="1rem 1rem"
+                            overflowX="hidden"
+                            wrap="nowrap"
+                            styles={{ boxSizing: 'border-box' }}
+                        >
+                            <Text type="p" text={`${''}${window.location.href}`} styles={{ minWidth: 'max-content' }} size={14} />
+                        </Flex>
+                    }
+                    <Button padding="1rem 0" height="100%" width={isMobile ? "100%" : "24%"} borderRadius="6px" onClick={() => copyToClipboard(window.location.href, "Link copied")}>
+                        <Text type="p" text="Copy Link" />
+                    </Button>
+                </Flex>
+
+                <Stack width="100%" alignItems="flex-start" spacing={2}>
+                    <Flex padding=".75rem 0" gap="1rem" borderBottom={`1px solid ${ttColors.lightestGray}`}>
+                        <Image src="/assets/icons/whatsapp.svg" width={30} height={30} alt="whatsapp-icon" />
+                        <Text type="p" text="WhatsApp" size={15} />
+                    </Flex>
+                    <Flex padding=".75rem 0" gap="1rem" borderBottom={`1px solid ${ttColors.lightestGray}`}>
+                        <Image src="/assets/icons/facebook.svg" width={30} height={30} alt="facebook-icon"/>
+                        <Text type="p" text="Facebook" size={15} />
+                    </Flex>
+                    <Flex padding=".75rem 0" gap="1rem" borderBottom={`1px solid ${ttColors.lightestGray}`}>
+                        <Image src="/assets/icons/instagram.svg" width={30} height={30} alt="instagram-icon"/>
+                        <Text type="p" text="Instagram" size={15} />
+                    </Flex>
+                    <Flex padding=".75rem 0" gap="1rem" borderBottom={`1px solid ${ttColors.lightestGray}`}>
+                        <Image src="/assets/icons/twitter.svg" width={30} height={30} alt="twitter-icon"/>
+                        <Text type="p" text="Twitter" size={15} />
+                    </Flex>
+                    <Flex padding=".75rem 0" gap="1rem" borderBottom={`1px solid ${ttColors.lightestGray}`}>
+                        <Image src="/assets/icons/gmail.svg" width={30} height={30} alt="gmail-icon"/>
+                        <Text type="p" text="Gmail" size={15} />
+                    </Flex>
+                    
+                </Stack>
+            </Stack>
+        </Modal>
+    );
+}
+
 function AvailableFlights() {
     const router = useRouter();
     const pathName = usePathname();
@@ -277,12 +391,17 @@ function AvailableFlights() {
     const flightState = flightContext?.state;
     const { queryParams } = useQueryParams();
 
-    // const [count, setCount] = useState(10);
-    const [sortType, setSortType] = useState("");
-
-    const [modal, setModal] = useState({
+    const [modal, setModal] = useState<{
+        isOpenLogin: boolean,
+        isOpenStillSearching: boolean,
+        isOpenShare: boolean,
+        share: FlightInfo | null,
+        route: string,
+    }>({
         isOpenLogin: false,
         isOpenStillSearching: false,
+        isOpenShare: false,
+        share: null,
         route: "",
     });
 
@@ -321,7 +440,7 @@ function AvailableFlights() {
     const fastest = useMemo(() => {
         const arr = searchFlightsResults.map((e) => ({
             ...e,
-            travelTime: e.duration.departure,
+            travelTime: e.duration.total,
         }));
         const pick = numSort(arr, "travelTime", "asc")[0];
         return {
@@ -377,17 +496,23 @@ function AvailableFlights() {
         }
     };
 
+    const openShareModal = (flight: FlightInfo) => {
+        setModal(prev => ({ ...prev, isOpenShare: true, share: flight }))
+    }
+
     const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
-        const updatedQuery = { ...searchQuery, ...updatedParams };
-        router.push(pathName + constructQueryFromParams(updatedQuery));
-        updateSearchQuery({ data: updatedQuery });
-        searchFlights({ data: updatedQuery });
+        const data = { ...searchQuery, ...updatedParams }
+        // router.push(pathName + constructQueryFromParams(updatedQuery));
+        updateSearchQuery({ data });
+        searchFlights({ data });
     };
 
     const loadMoreItems = () => {
-        const limit = searchQuery?.limit ?? 10;
+        const limit = Number(searchQuery?.limit ?? 10);
+        console.log(searchQuery?.limit, limit)
         const newCount = flightsResults.total > limit ? limit + 10 : limit;
         if (newCount !== limit) {
+            updateSearchQuery({ data: { ...searchQuery, limit: newCount } });
             searchMoreFlights({ data: { ...searchQuery, limit: newCount } });
         }
     };
@@ -398,12 +523,15 @@ function AvailableFlights() {
     };
 
     const flight = flightState?.fleet[0];
+
     const formComplete =
         flight?.departureCountry &&
         flight?.arrivalCountry &&
         flight?.departureDate;
 
     useEffect(() => {
+        const bags = (num: number, bags: string) => num > 0 ? Array(num).fill(bags).join(",") : undefined;
+            
         const sanitizedQuery = {
             fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
             fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
@@ -412,19 +540,13 @@ function AvailableFlights() {
             adults: Number(queryParams?.adults ?? searchQuery?.adults),
             children: Number(queryParams?.children ?? searchQuery?.children),
             infants: Number(queryParams?.infants ?? searchQuery?.infants),
+            adult_hand_bag: bags(Number(queryParams?.adults), queryParams?.cabinBags),
+            adult_hold_bag: bags(Number(queryParams?.adults), queryParams?.checkedBags),
         }
         if (sanitizedQuery?.fly_from && sanitizedQuery?.fly_to && sanitizedQuery?.date_from && sanitizedQuery?.adults) {
             handleSearchResults({ ...searchQuery, ...sanitizedQuery })
         }
     }, [queryParams])
-
-    // useEffect(() => {
-    //     console.log('qqq', searchQuery)
-    // }, [searchQuery]);
-
-    // useEffect(() => {
-    //     console.log('ressss', searchFlightsResults)
-    // }, [searchFlightsResults]);
 
     useEffect(() => {
         const interval = setTimeout(() => {
@@ -442,8 +564,6 @@ function AvailableFlights() {
                     cheapest={cheapest}
                     fastest={fastest}
                     earliest={earliest}
-                    sortType={sortType}
-                    setSortType={setSortType}
                     data={searchFlightsResults}
                     updateSearchQueryHandler={updateSearchQueryHandler}
                 />
@@ -462,14 +582,12 @@ function AvailableFlights() {
                 </Flex>
             ) : (
                 <React.Fragment>
-                    {searchFlightsResults.map(
+                    {localSortFlights({ sort: searchQuery?.sort ?? 'quality', results: searchFlightsResults }).map(
                         (flight: FlightInfo, index: number) => (
                             <FlightBox
                                 key={index}
                                 flight={flight}
-                                selectFlight={({ bookingToken }) =>
-                                    goToFlight(bookingToken)
-                                }
+                                selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
                                 bookingToken={flight.booking_token}
                                 departureCountryCode={flight.cityCodeFrom}
                                 arrivalCountryCode={flight.cityCodeTo}
@@ -482,6 +600,7 @@ function AvailableFlights() {
                                 hold={flight.baglimit.hold_weight ? 1 : 0}
                                 carryOn={flight.baglimit.hand_weight ? 1 : 0}
                                 flightStop={"one-way"}
+                                openShareModal={openShareModal}
                             />
                         )
                     )}
@@ -515,9 +634,7 @@ function AvailableFlights() {
 
             <LoginModal
                 isOpen={modal.isOpenLogin}
-                onClose={() =>
-                    setModal((prev) => ({ ...prev, isOpenLogin: false }))
-                }
+                onClose={() => setModal((prev) => ({ ...prev, isOpenLogin: false }))}
                 to={modal.route}
             />
 
@@ -530,6 +647,12 @@ function AvailableFlights() {
                     }))
                 }
                 refresh={() => handleSearchResults(searchQuery)}
+            />
+
+            <ShareFlightModal
+                isOpen={modal.isOpenShare}
+                onClose={() => setModal((prev) => ({ ...prev, isOpenShare: false }))}
+                flight={modal.share}
             />
         </Flex>
     );

@@ -2,13 +2,12 @@ import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import FormTitleAndSubtitle from "@/components/molecules/forms/FormTitleAndSubtitle";
 import Flex from "@/components/templates/flex";
-import { FlightContext, OneFlightType } from "@/lib/extensions/context";
+import { OneFlightType } from "@/lib/extensions/context";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import { formatDate } from "@/lib/utilFns";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import { FaPlane } from "react-icons/fa6";
 
 export const OverviewHeader = () => {
@@ -32,14 +31,13 @@ export const SeatHeader = () => {
 export const TripHeader = () => {
     const { isMobile } = useScreenResolution()
     const { push } = useRouter()
-    const flightContext = useContext(FlightContext)
-    const flightState = flightContext?.state
 
     const formatSearchFlight = (flight?: OneFlightType) => {
 		const dateFrom = formatDate(flight?.departureDate ?? dayjs());
 		const dateTo = formatDate(flight?.returnDate ?? dayjs());
 		const departure = flight?.departureCountry
-		const arrival = flight?.arrivalCountry
+        const arrival = flight?.arrivalCountry
+        
 		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&date_to=${dateTo}`
     }
 

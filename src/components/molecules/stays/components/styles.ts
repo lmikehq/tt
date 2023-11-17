@@ -15,11 +15,11 @@ export const ItemList = styled.div`
 
 export const GridLayout = styled.div`
   display: grid;
-  grid-template-columns: 32% auto;
+  grid-template-columns: 38% auto;
   gap: 10px;
   position: relative;
   padding: 0;
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1300px) {
     grid-template-columns: 100%;
   }
 `;
@@ -28,11 +28,48 @@ export const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  @media screen and (max-width: 990px) {
+    &.stay_wrap {
+      flex-wrap: wrap;
+    }
+  }
+  @media screen and (max-width: 900px) {
+    &.stay_wrap {
+      flex-wrap: nowrap;
+    }
+  }
+  @media screen and (max-width: 545px) {
+    flex-wrap: wrap;
+    gap: 20px;
+    &.row_two_wrap {
+      flex-wrap: nowrap;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    &.stay_wrap {
+      flex-wrap: wrap;
+    }
+  }
+  @media screen and (max-width: 370px) {
+    &.row_two_wrap {
+      flex-wrap: wrap;
+    }
+  }
+`;
+export const FlexText = styled.div`
+  display: flex;
+  white-space: nowrap;
+  &:nth-child(2) {
+    justify-content: flex-end;
+  }
 `;
 
 export const ImgBox = styled.div`
   width: 100%;
   position: relative;
+  overflow: hidden;
+  border-radius: 12px;
 `;
 
 export const MobileImageBox = styled.div`
@@ -42,13 +79,16 @@ export const MobileImageBox = styled.div`
   border-radius: 12px;
   position: relative;
   z-index: 1;
+  &.stay_page_slider {
+    max-height: 600px;
+  }
 `;
 
 export const LargeImg = styled.div`
   width: 100%;
   height: 100%;
-  border-top-left-radius: 12.5px;
-  border-bottom-left-radius: 12.5px;
+  // border-top-left-radius: 12.5px;
+  // border-bottom-left-radius: 12.5px;
   overflow: hidden;
   position: relative;
   padding: -10px 0px;
@@ -149,6 +189,26 @@ export const RowFive = styled.div`
   margin: 10px 0px;
 `;
 
+export const ButtonBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary-color);
+  padding: 8px 20px;
+  height: 48px;
+  width: 100%;
+  color: var(--default-color);
+  border-radius: 6px;
+  cursor: pointer;
+`;
+export const BtnText = styled.div`
+  white-space: nowrap;
+  font-size: 18px;
+  @media screen and (max-width: 545px) {
+    font-size: 16px;
+  }
+`;
+
 //================
 // MID LIST FILTER
 //================
@@ -187,7 +247,7 @@ export const SliderContainer = styled.div`
   box-shadow: var(--box-shadow);
   border: 1px solid var(--color-border);
   padding: 20px;
-
+  padding-bottom: 50px;
   border-radius: 12.5px;
   margin-bottom: 20px;
   width: 100%;
@@ -196,12 +256,10 @@ export const SliderContainer = styled.div`
   position: relative;
 `;
 export const SlideContent = styled.div`
-  margin: 5px;
-  // width: 890px;
+  margin: 0px -5px;
+  margin-left: -8px;
 `;
-export const SliderWidth = styled.div`
-  // overflow-x: scroll;
-`;
+export const SliderWidth = styled.div``;
 
 export const SlideList = styled.div`
   border-radius: 20px;

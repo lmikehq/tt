@@ -42,9 +42,8 @@ export const ButtonBox = styled.div<{
     padding: 1rem 1.5rem;
     border-radius: 12px;
     cursor: pointer;
-    width: ${(props) =>
-        props.width || props.isMobile ? "max-content" : "25%"};
-    min-width: ${(props) => (props.width || props.isMobile ? "45%" : "25%")};
+    width: ${(props) => props.width || props.isMobile ? "max-content" : "24.6%"};
+    min-width: ${(props) => (props.width || props.isMobile ? "49%" : "24.6%")};
     display: flex;
     justify-content: center;
 
@@ -68,9 +67,7 @@ type sortProps = {
     cheapest: { price: number; duration: string };
     fastest: { price: number; duration: string };
     earliest: { price: number; duration: string; date: string; };
-    sortType: string;
     data: FlightInfo[];
-    setSortType: Dispatch<SetStateAction<string>>;
     updateSearchQueryHandler: (updatedParams: Record<string, any>) => void;
 };
 
@@ -157,19 +154,15 @@ function SortedFlightsTab(props: sortProps) {
                     <ProgressLoader />
                 </Flex>
             ) : (
-                <Flex justify={isMobile ? "space-between" : "flex-start"} gap={isMobile ? "1rem" : "0"} margin="0 1rem" overflowX="auto" className="scroll-custom">
+                <Flex justify={isMobile ? "space-between" : "flex-start"} gap={isMobile ? "1rem" : "0.2rem"} margin="0 0" overflowX="auto" className="scroll-custom">
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "quality"}
-                        onClick={() => {
-                            props.setSortType("best");
-                            props.updateSearchQueryHandler({ sort: "quality" });
-                        }}
+                        onClick={() => props.updateSearchQueryHandler({ sort: "quality" })}
                     >
                         <SortOption
                             label="Best"
                             price={props.best.price}
-                            // flightTime={props.best.duration}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
@@ -177,15 +170,11 @@ function SortedFlightsTab(props: sortProps) {
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "price"}
-                        onClick={() => {
-                            props.setSortType("cheapest");
-                            props.updateSearchQueryHandler({ sort: "price" });
-                        }}
+                        onClick={() => props.updateSearchQueryHandler({ sort: "price" })}
                     >
                         <SortOption
                             label="Cheapest"
                             price={props.cheapest.price}
-                            // flightTime={props.cheapest.duration}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
@@ -193,16 +182,10 @@ function SortedFlightsTab(props: sortProps) {
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "duration"}
-                        onClick={() => {
-                            props.setSortType("fastest");
-                            props.updateSearchQueryHandler({
-                                sort: "duration",
-                            });
-                        }}
+                        onClick={() => props.updateSearchQueryHandler({ sort: "duration" })}
                     >
                         <SortOption
                             label="Fastest"
-                            // price={props.fastest.price}
                             flightTime={props.fastest.duration}
                             isLoading={isLoading}
                         />
@@ -211,14 +194,10 @@ function SortedFlightsTab(props: sortProps) {
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "date"}
-                        onClick={() => {
-                            props.setSortType("earliest");
-                            props.updateSearchQueryHandler({ sort: "date" });
-                        }}
+                        onClick={() => props.updateSearchQueryHandler({ sort: "date" })}
                         >
                         <SortOption
                             label="Earliest"
-                            // price={props.earliest.price}
                             flightDate={props.earliest.date}
                             isLoading={isLoading}
                         />

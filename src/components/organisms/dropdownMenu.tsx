@@ -107,7 +107,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
         } else {
             setCount((prev) => ({
                 ...prev,
-                [field]: prev[field] < 10 ? prev[field] + 1 : prev[field],
+                [field]: prev[field] < (field === 'cabinBaggage' ? 1 : 2) ? prev[field] + 1 : prev[field],
             }))
         }
     }

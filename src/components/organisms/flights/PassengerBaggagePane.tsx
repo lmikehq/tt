@@ -55,7 +55,7 @@ interface PassengerBaggagePaneProps {
 }
 
 const BaggageBox = styled.div<{ active: boolean }>`
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 1.1rem;
     border: 2px solid
         ${({ active }) => (active ? ttColors.primary : ttColors.lightestGray)};
     border-radius: 10px;
@@ -187,7 +187,7 @@ export default function PassengerBaggagePane({
                     text="Cabin or Carry-On Baggage"
                     weight={600}
                 />
-                <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
+                {/* <PiWarningCircleBold size={30} color={ttColors.primaryLight} /> */}
             </Flex>
 
             {/* Hand Bags */}
@@ -210,7 +210,7 @@ export default function PassengerBaggagePane({
                             size={isMobile ? 14 : 16}
                             padding={isMobile ? "0 1rem" : ""}
                         />
-                        <Flex align="flex-end" justify="center">
+                        <Flex align="flex-end" justify="center" padding="0 0 1rem">
                             {newBags.handBags
                                 .filter(
                                     (e, index, arr) => arr.indexOf(e) === index
@@ -256,7 +256,7 @@ export default function PassengerBaggagePane({
                                 gap=".5rem"
                                 background="#F4F4F4"
                                 width={isMobile ? "max-content" : "9.5rem"}
-                                padding=".5rem .75rem"
+                                padding=".5rem .75rem .5rem 0rem"
                                 borderRadius="30px"
                                 border={`1px solid ${ttColors.lightestGray}`}
                             >
@@ -289,10 +289,7 @@ export default function PassengerBaggagePane({
                         text="Checked Baggage"
                         weight={600}
                     />
-                    <PiWarningCircleBold
-                        size={30}
-                        color={ttColors.primaryLight}
-                    />
+                    {/* <PiWarningCircleBold size={30} color={ttColors.primaryLight} /> */}
                 </Flex>
                 <Text
                     type="p"
@@ -370,7 +367,7 @@ export default function PassengerBaggagePane({
                                                     align="center"
                                                 >
                                                     <Image
-                                                        height={150}
+                                                        height={140}
                                                         styles={{
                                                             objectFit: "contain",
                                                         }}
@@ -469,9 +466,7 @@ export default function PassengerBaggagePane({
                                                                     align="center"
                                                                 >
                                                                     <Image
-                                                                        height={
-                                                                            150
-                                                                        }
+                                                                        height={140}
                                                                         styles={{
                                                                             objectFit:
                                                                                 "contain",

@@ -12,10 +12,10 @@ function FlightList() {
 
   return (
       <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? "0rem" : "2rem"} justify="space-between">
-            <Section width={isMobile ? "100%" : "28%"}>
+            <Section width={isMobile ? "100%" : "26%"}>
                 <SortedColumn results={results} sortType={sortType} />
             </Section>
-            <Section width={isMobile ? "100%" : "72%"}>
+            <Section width={isMobile ? "100%" : "74%"}>
                 <AvailableFlights />
             </Section>
         </Flex>
