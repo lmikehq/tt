@@ -65,7 +65,7 @@ export function FlightType({
         >
             {isMobile && (
                 <Flex padding="0px 0px 16px">
-                    <Text type="p" size={18} weight={600} text="Flight Type" />
+                    <Text type="p" size={16} weight={500} text="Type" />
                 </Flex>
             )}
             <Flex width={isMobile ? "100%" : "max-content"}>
@@ -76,7 +76,7 @@ export function FlightType({
                     onChange={(e, val) => onChange(val)}
                     justifyContent="flex-end"
                     align="flex-start"
-                    direction={isMobile ? "column" : "row"}
+                    scroll
                 />
             </Flex>
         </Flex>
@@ -101,7 +101,7 @@ function FlightStops({
                     padding="0px 0px 10px"
                     margin={isMobile ? "12px 0px 0px" : "0px"}
                 >
-                    <Text type="p" size={18} weight={600} text="Stops" />
+                    <Text type="p" size={16} weight={500} text="Stops" />
                 </Flex>
             )}
             <Flex align="center">
@@ -112,7 +112,7 @@ function FlightStops({
                     onChange={(e, val) => onChange(val ?? "")}
                     justifyContent="flex-end"
                     align="flex-start"
-                    direction={isMobile ? "column" : "row"}
+                    scroll
                 />
             </Flex>
         </Flex>
@@ -222,27 +222,23 @@ function Flights() {
         })
     }, [])
 
-    useEffect(() => {
-        console.log(flightState)
-    }, [flightState])
-
 
 	return (
-		<Section padding="1.5rem .5rem 0" styles={{ position: "relative" }}>
+        <Section padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"} styles={{ position: "relative" }}>
 			<Flex direction="column">
-				{isMobile &&
+				{/* {isMobile &&
 					<FlightType
 						isMobile={isMobile}
 						value={flightState?.flightType ?? ''}
 						onChange={(x) => dispatch && dispatch({ type: "SET_FLIGHT_TYPE", payload: x ?? '' })}
 					/>
-				}
+				} */}
 
                 <FlightStops
                     isMobile={isMobile}
                     value={flightState?.stops ?? "round"}
                     onChange={handleChangeStops}
-                    showLabel={isMobile}
+                    showLabel={false}
                 />
             </Flex>
 
@@ -287,14 +283,13 @@ function Flights() {
 
             <Flex
                 justify="flex-end"
-                margin="1.5rem 0 0 0"
+                margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}
             >
                 <Button
                     width={isMobile ? "100%" : "300px"}
                     padding="0 1.5rem"
-                    cursor="pointer"
                     borderRadius="4px"
-                    background="#06062A"
+                    background={ttColors.dark}
                     onClick={handleSearchFlights}
                     disabled={!formComplete}
                 >

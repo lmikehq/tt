@@ -20,15 +20,13 @@ import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import TripSummaryDetails from "./TripSummaryDetails";
 import { FlightContext } from "@/lib/extensions/context";
+import FlightDepartureIcon from "@/components/molecules/flights/components/flightDepartureIcon";
+import { useRouter } from "next/navigation";
 
 interface TripSummaryCardProps {
     departure: Flight;
     arrival: Flight;
     flights: Flight[];
-}
-
-function StopDot() {
-    return <Box width="20px" height="20px" bgcolor={ttColors.red} />;
 }
 
 function LineText({ text }: { text: string }) {
@@ -91,11 +89,12 @@ export default function TripSummaryCard({
     flights,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
+    const { push } = useRouter()
     const [isOpen, setIsOpen] = useState(false);
     const flightContext = useContext(FlightContext)
     const flightState = flightContext?.state
 
-    const flightStops = flights.length - 1;
+    const flightStops = (flights.length - 1) ?? 0;
     const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(dayjs(departure?.utc_departure), "minute");
     const hoursLeft = Math.floor(timeToArrivalMins / 60);
     const minsLeft = timeToArrivalMins % 60;
@@ -112,6 +111,7 @@ export default function TripSummaryCard({
                             color={ttColors.dark}
                             variant="outline"
                             styles={{ fontSize: isMobile ? "14px" : "14px" }}
+                            onClick={() => push('/flight/listings')}
                         >
                             Change Flight
                         </Button>
@@ -166,20 +166,20 @@ export default function TripSummaryCard({
                 <Flex
                     direction="column"
                     align="center"
-                    padding="0 2rem 0 0"
+                    padding="0"
                     styles={{ alignSelf: "center", order: isMobile ? 3 : 2 }}
                     width={isMobile ? "45%" : "25%"}
-                    margin={isMobile ? "2.5rem 0 0" : "0"}
                 >
-                    <Image
-                        width={110}
-                        src="/assets/images/flights/departure-right.png"
-                        alt=""
+                    <FlightDepartureIcon
+                        width={120}
+                        height={30}
+                        horizontal
+                        stops={flightStops}
                     />
                     <Text
                         type="p"
                         size={14}
-                        text={`${String(flightStops)} ${flightStops > 1 ? "stops" : "stop"}`}
+                        text={`${flightStops} ${flightStops > 1 ? "stops" : "stop"}`}
                     />
                 </Flex>
 
@@ -195,7 +195,7 @@ export default function TripSummaryCard({
                     direction="column"
                     gap=".5rem"
                     width={isMobile ? "45%" : "25%"}
-                    margin={isMobile ? "2.5rem 0 0" : "0"}
+                    margin={isMobile ? "1.5rem 0 0" : "0"}
                     styles={{ order: 4 }}
                 >
                     <Text text={`${hoursLeft}h ${minsLeft}m`} type="p" />

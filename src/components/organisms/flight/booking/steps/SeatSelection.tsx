@@ -17,7 +17,7 @@ import {
     mockRows,
     seatClass,
 } from "@/lib/types/response-models/flight/booking.type";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { SeatHeader } from "../headers";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
@@ -37,7 +37,14 @@ import SeatLoadingSkeleton from "./SeatLoadingSkeleton";
 import { BiSolidXCircle } from "react-icons/bi";
 import Spinner from "@/components/molecules/icons/spinner";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import {
+    constructParamsFromQuery,
+    constructQueryFromParams,
+    extractSearchParamsFromUrl,
+} from "@/lib/extensions/helpers/constructQuery";
+import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -47,6 +54,10 @@ const SeatSelection = () => {
     const { isMobile } = useScreenResolution();
     const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
     const [selectionModalContent, setSelectionModalContent] = useState<{
         seatDescription: ReactNode;
         seatName: string;
@@ -106,7 +117,13 @@ const SeatSelection = () => {
                             size={16}
                             weight={400}
                             textAlign="left"
-                            text={"From " + currency + " " + amount}
+                            text={
+                                "From " +
+                                formatPrice({
+                                    total: parseInt(amount) * conversionRate,
+                                    currency: preFerredCurrency,
+                                })
+                            }
                         />
                     </Section>
                 </Flex>
@@ -137,90 +154,8 @@ const SeatSelection = () => {
         updateSeatAvailablity,
     } = useFlightBookingStore((state) => state);
     const [emptySeatsModalOpen, setEmptySeatsModalOpen] = useState(false);
-    const [emptySeatsModalContent, setEmptySeatsModalContent] = useState<
-        Omit<CustomConfirmationModalProps, "open" | "handleClose">
-    >({
-        icon: <></>,
-        title: "",
-        description: "",
-        subTitle: "",
-        buttons: <></>,
-    });
 
     const handleDisplayEmptySeatModal = () => {
-        setEmptySeatsModalContent({
-            child: (
-                <Section padding="3rem 6rem" height="unset">
-                    <Flex direction="column" justify="center">
-                        <Section margin="0 0  14px" height="unset">
-                            <Image
-                                src={"/assets/icons/empty_icon.svg"}
-                                alt="empty-icon"
-                                width={95.5}
-                                height={95.5}
-                            />
-                        </Section>
-                        <Section margin="0 0  24px" height="unset">
-                            <Text
-                                type="h3"
-                                text="No seat available"
-                                size={32}
-                                weight={700}
-                                color={ttColors.dark}
-                            />
-                        </Section>
-                        <Section margin="0 0  57.5px" height="unset">
-                            <Text
-                                type="p"
-                                text="There are no seat available for the flight filters selected."
-                                weight={400}
-                                size={18}
-                                color="#929292"
-                            />
-                        </Section>
-                        <Flex gap="1rem">
-                            <Button
-                                width="100%"
-                                color={ttColors.dark}
-                                background={ttColors.light}
-                                border="1px solid #19013b"
-                                onClick={() => router.push("/")}
-                            >
-                                <Text
-                                    type="span"
-                                    text={"Change Search"}
-                                    weight={600}
-                                    size={16}
-                                    color={ttColors.dark}
-                                />
-                            </Button>
-                            <Button
-                                width="100%"
-                                background={ttColors.dark}
-                                color={ttColors.light}
-                                // border="1px solid #19013b"
-                                onClick={handleSaveBooking}
-                            >
-                                {saveBookingMode == Mode.loading ? (
-                                    <Spinner
-                                        size="40px"
-                                        fill={ttColors.primary}
-                                    />
-                                ) : (
-                                    <Text
-                                        type="span"
-                                        text={"Continue"}
-                                        weight={600}
-                                        size={16}
-                                        color={ttColors.light}
-                                    />
-                                )}
-                            </Button>
-                        </Flex>
-                    </Flex>
-                </Section>
-            ),
-        });
         setEmptySeatsModalOpen(true);
     };
 
@@ -231,7 +166,6 @@ const SeatSelection = () => {
             birthday: el.birthday,
             category: el.category,
         }));
-    const offers = checkSeatingResponse?.seating.offers;
 
     const selectParticularSeat = ({
         name,
@@ -247,7 +181,7 @@ const SeatSelection = () => {
                 ? 0
                 : parseInt(currentPassenger.split("Passenger ")[1]) - 1;
 
-        const searchIndices = (() => {
+        const formerSeatSearchIndices: number[] | null = (() => {
             for (let i = 0; i < particularSeats.length; i++) {
                 const particular = particularSeats[i];
                 const index = particular.seats.findIndex(
@@ -258,25 +192,46 @@ const SeatSelection = () => {
             return null;
         })();
 
-        if (!searchIndices)
-            return setParticularSeats([
-                ...particularSeats,
-                {
-                    segment_code: segmentCode,
-                    option: "particular_seat",
-                    seats: [
-                        {
-                            seat: name,
-                            passenger_idx: passengerIdx,
-                            price: price,
-                        },
-                    ],
-                },
-            ]);
-
+        const checkIfSegmentHasBeenCreated = particularSeats.findIndex(
+            (el) => el.segment_code == segmentCode
+        );
         const seats = particularSeats;
-        if (segmentCode == seats[searchIndices[0]].segment_code) {
-            seats[searchIndices[0]].seats[searchIndices[1]] = {
+
+        if (!formerSeatSearchIndices) {
+            //This condition means passenger has not selected a seat before
+            if (checkIfSegmentHasBeenCreated == -1)
+                return setParticularSeats([
+                    ...particularSeats,
+                    {
+                        segment_code: segmentCode,
+                        option: "particular_seat",
+                        seats: [
+                            {
+                                seat: name,
+                                passenger_idx: passengerIdx,
+                                price: price,
+                            },
+                        ],
+                    },
+                ]);
+
+            seats[checkIfSegmentHasBeenCreated].seats = [
+                ...seats[checkIfSegmentHasBeenCreated].seats,
+                {
+                    seat: name,
+                    passenger_idx: passengerIdx,
+                    price: price,
+                },
+            ];
+
+            return setParticularSeats(seats);
+        }
+
+        if (segmentCode == seats[formerSeatSearchIndices[0]].segment_code) {
+            //This condition means passenger's newly selected seat is in the same segment as passenger's formerly selected seat
+            seats[formerSeatSearchIndices[0]].seats[
+                formerSeatSearchIndices[1]
+            ] = {
                 seat: name,
                 passenger_idx: passengerIdx,
                 price: price,
@@ -284,67 +239,46 @@ const SeatSelection = () => {
 
             return setParticularSeats(seats);
         } else {
-            seats[searchIndices[0]].seats.splice(searchIndices[1], 1);
-            if (seats[searchIndices[0]].seats.length == 0)
-                seats.splice(searchIndices[0]);
-            return setParticularSeats([
-                ...particularSeats,
+            //This condition means passenger's newly selected seat is not in the same segment as passenger's formerly selected seat
+
+            //This is to delete the passenger's formerly assigned seat before assigning new seat
+            seats[formerSeatSearchIndices[0]].seats.splice(
+                formerSeatSearchIndices[1],
+                1
+            );
+            if (seats[formerSeatSearchIndices[0]].seats.length == 0)
+                seats.splice(formerSeatSearchIndices[0]);
+
+            if (checkIfSegmentHasBeenCreated == -1)
+                //This code runs if a segment has not been created the above else condition
+                return setParticularSeats([
+                    ...particularSeats,
+                    {
+                        segment_code: segmentCode,
+                        option: "particular_seat",
+                        seats: [
+                            {
+                                seat: name,
+                                passenger_idx: passengerIdx,
+                                price: price,
+                            },
+                        ],
+                    },
+                ]);
+
+            // This code runs otherwise
+
+            seats[checkIfSegmentHasBeenCreated].seats = [
+                ...seats[checkIfSegmentHasBeenCreated].seats,
                 {
-                    segment_code: segmentCode,
-                    option: "particular_seat",
-                    seats: [
-                        {
-                            seat: name,
-                            passenger_idx: passengerIdx,
-                            price: price,
-                        },
-                    ],
+                    seat: name,
+                    passenger_idx: passengerIdx,
+                    price: price,
                 },
-            ]);
+            ];
+
+            return setParticularSeats(seats);
         }
-        // const findIndex = particularSeats.findIndex(
-        //     (el, index) => el.segment_code == segmentCode
-        // );
-
-        // if (findIndex == -1) {
-        //     return setParticularSeats([
-        //         ...particularSeats,
-        //         {
-        //             segment_code: segmentCode,
-        //             option: "particular_seat",
-        //             seats: [
-        //                 {
-        //                     seat: name,
-        //                     passenger_idx:
-        //                         currentPassenger == "Main Passenger"
-        //                             ? 0
-        //                             : parseInt(
-        //                                   currentPassenger.split(
-        //                                       "Passenger "
-        //                                   )[1]
-        //                               ) - 1,
-        //                     price: price,
-        //                 },
-        //             ],
-        //         },
-        //     ]);
-        // }
-
-        // const seats = particularSeats;
-
-        // const seatFindIndex = seats[findIndex].seats.findIndex(
-        //     (el) => el.passenger_idx == passengerIdx
-        // );
-        // seats[findIndex].seats[seatFindIndex] = {
-        //     seat: name,
-        //     passenger_idx:
-        //         currentPassenger == "Main Passenger"
-        //             ? 0
-        //             : parseInt(currentPassenger.split("Passenger ")[1]) - 1,
-        //     price: price,
-        // };
-
-        // setParticularSeats(seats);
     };
     const computePassengerOptions = () => {
         return passengers.map((el, index) =>
@@ -369,6 +303,7 @@ const SeatSelection = () => {
     const computeSeatRows = (checkSeatingResponse: CheckSeatingResponse) => {
         let rows: SeatRowWithSegmentCodeInterface[] = [];
         const offers = checkSeatingResponse.seating.offers;
+        if (offers.length == 0) return handleDisplayEmptySeatModal();
         for (let i = offers.length - 1; i >= 0; i--) {
             const offer = offers[i];
             (offer.seatmap?.sections ?? []).forEach((section) => {
@@ -383,6 +318,20 @@ const SeatSelection = () => {
             setSeatRows(rows);
         }
     };
+    const collectSeatNames = (
+        seatDetails: ParticularSeatingOption[]
+    ): string[] => {
+        const seatNames: string[] = [];
+
+        seatDetails.forEach((option) => {
+            option.seats.forEach((seat) => {
+                seatNames.push(seat.seat);
+            });
+        });
+
+        return seatNames;
+    };
+
     const handleSaveBooking = () => {
         let data: SaveBookingRequestInput;
         data =
@@ -390,6 +339,7 @@ const SeatSelection = () => {
                 ? saveBookingDetails
                 : {
                       ...saveBookingDetails,
+                      seatId: collectSeatNames(particularSeats),
                       additional_services: {
                           seating: [...particularSeats],
                       },
@@ -397,9 +347,21 @@ const SeatSelection = () => {
         saveBooking({
             data,
         })
-            .then((_) => {
+            .then((res) => {
                 toast.success(
                     "Flight booking successful. Proceed to make Payment"
+                );
+
+                const searchParams = extractSearchParamsFromUrl({
+                    url: window.location.href,
+                });
+                router.push(
+                    pathname +
+                        constructQueryFromParams({
+                            ...searchParams,
+                            id: res.flightId,
+                            step: 5,
+                        })
                 );
                 nextStep();
                 window.scrollTo({
@@ -546,10 +508,85 @@ const SeatSelection = () => {
                     )}
                 </Button>
             </Section>
+
             <CustomConfirmationModal
                 open={emptySeatsModalOpen}
                 handleClose={() => setEmptySeatsModalOpen(false)}
-                {...emptySeatsModalContent}
+                child={
+                    <Section
+                        padding="4.43rem 5.5rem"
+                        height="unset"
+                        maxWidth="40.44rem"
+                    >
+                        <Flex direction="column" justify="center">
+                            <Section margin="0 0  14px" height="unset">
+                                <Image
+                                    src={"/assets/icons/empty_icon.svg"}
+                                    alt="empty-icon"
+                                    width={95.5}
+                                    height={95.5}
+                                />
+                            </Section>
+                            <Section margin="0 0  24px" height="unset">
+                                <Text
+                                    type="h3"
+                                    text="Empty seat offer"
+                                    size={32}
+                                    weight={700}
+                                    color={ttColors.dark}
+                                />
+                            </Section>
+                            <Section margin="0 0  57.5px" height="unset">
+                                <Text
+                                    type="p"
+                                    text="There is currently no seat offer for the flight filters selected. Don't worry, you can still proceed to save booking"
+                                    weight={400}
+                                    size={18}
+                                    color="#929292"
+                                />
+                            </Section>
+                            <Flex gap="1rem">
+                                <Button
+                                    width="100%"
+                                    color={ttColors.dark}
+                                    background={ttColors.light}
+                                    border="1px solid #19013b"
+                                    onClick={() => router.push("/")}
+                                >
+                                    <Text
+                                        type="span"
+                                        text={"Change Search"}
+                                        weight={600}
+                                        size={16}
+                                        color={ttColors.dark}
+                                    />
+                                </Button>
+                                <Button
+                                    width="100%"
+                                    background={ttColors.dark}
+                                    color={ttColors.light}
+                                    // border="1px solid #19013b"
+                                    onClick={handleSaveBooking}
+                                >
+                                    {saveBookingMode == Mode.loading ? (
+                                        <Spinner
+                                            size="40px"
+                                            fill={ttColors.primary}
+                                        />
+                                    ) : (
+                                        <Text
+                                            type="span"
+                                            text={"Continue"}
+                                            weight={600}
+                                            size={16}
+                                            color={ttColors.light}
+                                        />
+                                    )}
+                                </Button>
+                            </Flex>
+                        </Flex>
+                    </Section>
+                }
             />
         </>
     );

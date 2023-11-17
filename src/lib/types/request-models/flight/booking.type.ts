@@ -193,6 +193,7 @@ export interface SaveBookingRequestInput {
     session_id: string;
     new_user_email?: string;
     user?: string;
+    seatId: string[];
     baggage: Baggage[];
     additional_services?: AdditionalServices | null;
 }
@@ -346,6 +347,7 @@ export const saveBookingDetails: SaveBookingRequestInput = {
     booking_token: "",
     session_id: "",
     baggage: [],
+    seatId: [],
     // additional_services: null,
 };
 

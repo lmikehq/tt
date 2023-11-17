@@ -62,6 +62,8 @@ const BaggageBox = styled.div<{ active: boolean }>`
     position: relative;
     width: 100%;
     cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 const BaggageText = styled.div`
@@ -111,10 +113,10 @@ export default function PassengerBaggagePane({
     handleCheckedBags,
     removePassenger,
 }: PassengerBaggagePaneProps) {
-    const { checkFlightsResponse, conversionRate } = useFlightBookingStore(
+    const { checkFlightsResponse } = useFlightBookingStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
         (state) => state
     );
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
     const { isMobile } = useScreenResolution();
     const bagDefinitions = checkFlightsResponse?.baggage.definitions;
@@ -128,7 +130,7 @@ export default function PassengerBaggagePane({
             })) ?? [],
         holdBags:
             checkFlightsResponse?.baggage?.combinations?.hold_bag.filter((e) =>
-                e.conditions?.passenger_groups.includes(values.category)
+                e.conditions?.passenger_groups.includes(values.category) && e.indices.length > 0
             ) ?? [],
     };
 
@@ -173,13 +175,8 @@ export default function PassengerBaggagePane({
             }kg)`;
         })
         .join(", ");
-
-    useEffect(() => {
-        if (index === 2) {
-            console.log("ssss", index, state);
-            console.log("nuuu", index, newBags);
-        }
-    }, [state, newBags]);
+    
+    useEffect(() => console.log('nnnn', newBags), [newBags])
 
     return (
         <Box>
@@ -228,7 +225,11 @@ export default function PassengerBaggagePane({
                                         <Image
                                             height={
                                                 e?.category === "personal_item"
-                                                    ? 100
+                                                    ? isMobile
+                                                        ? 70
+                                                        : 100
+                                                    : isMobile
+                                                    ? 110
                                                     : 150
                                             }
                                             styles={{ objectFit: "contain" }}
@@ -306,12 +307,11 @@ export default function PassengerBaggagePane({
             {!state.noHoldBags && (
                 <Flex
                     gap="1rem"
-                    align="flex-end"
+                    align="flex-start"
                     wrap="wrap"
                     padding="1rem 0 0"
                 >
-                    {newBags.holdBags.length === 0 &&
-                    values.category !== PassengerCategory.INFANT ? (
+                    {(newBags.holdBags.length === 0 && values.category !== PassengerCategory.INFANT) ? (
                         <ToastInfo
                             type="info"
                             message="No provision for checked baggage"
@@ -336,14 +336,12 @@ export default function PassengerBaggagePane({
                                             isActive
                                                 ? null
                                                 : handleChange(
-                                                      "holdBags",
-                                                      comb,
-                                                      bagDefinition
-                                                  )
+                                                    "holdBags",
+                                                    comb,
+                                                    bagDefinition
+                                                )
                                         }
-                                        style={{
-                                            width: isMobile ? "100%" : "48%",
-                                        }}
+                                        style={{ width: isMobile ? "100%" : "48%" }}
                                         key={`baggage-box-${index}`}
                                     >
                                         {sameBags ? (
@@ -374,8 +372,7 @@ export default function PassengerBaggagePane({
                                                     <Image
                                                         height={150}
                                                         styles={{
-                                                            objectFit:
-                                                                "contain",
+                                                            objectFit: "contain",
                                                         }}
                                                         src="/assets/images/flights/blackbag.png"
                                                         alt="Baggage"
@@ -383,10 +380,7 @@ export default function PassengerBaggagePane({
                                                     <Text
                                                         type="p"
                                                         text={`${bagDefinition?.restrictions?.length} x ${bagDefinition?.restrictions?.width} x ${bagDefinition?.restrictions?.height} cm`}
-                                                        color={
-                                                            ttColors.foundation
-                                                                .gray
-                                                        }
+                                                        color={ttColors.foundation.gray}
                                                     />
                                                 </Flex>
 
@@ -433,13 +427,11 @@ export default function PassengerBaggagePane({
                                                 gap="1rem"
                                                 align="center"
                                                 justify="center"
+                                                direction="column"
                                             >
                                                 {comb.indices.map(
                                                     (indica, ind, arr) => {
-                                                        const count =
-                                                            arr.filter(
-                                                                (e) => indica
-                                                            ).length;
+                                                        const count = arr.filter((e) => e === indica).length;
                                                         const bagDefinition =
                                                             bagDefinitions
                                                                 ?.hold_bag[
@@ -497,32 +489,49 @@ export default function PassengerBaggagePane({
                                                                         }
                                                                     />
                                                                 </Flex>
-                                                                <Text
-                                                                    type="h2"
-                                                                    size={
-                                                                        isMobile
-                                                                            ? 18
-                                                                            : 20
-                                                                    }
-                                                                    text={`${formatPrice(
-                                                                        {
-                                                                            total:
-                                                                                (comb
-                                                                                    .price
-                                                                                    ?.amount ??
-                                                                                    0) *
-                                                                                conversionRate,
-                                                                            currency:
-                                                                                preFerredCurrency,
-                                                                            // numberOfDecimalDigits: 2,
-                                                                        }
-                                                                    )}`}
-                                                                    weight={600}
-                                                                />
                                                             </Flex>
                                                         );
                                                     }
                                                 )}
+                                                <Flex
+                                                    align="center"
+                                                    justify="space-between"
+                                                >
+                                                    <Text
+                                                        type="h2"
+                                                        size={
+                                                            isMobile
+                                                                ? 18
+                                                                : 20
+                                                        }
+                                                        text={`${formatPrice(
+                                                            {
+                                                                total:
+                                                                    (comb
+                                                                        .price
+                                                                        ?.amount ??
+                                                                        0) *
+                                                                    conversionRate,
+                                                                currency:
+                                                                    preFerredCurrency,
+                                                                // numberOfDecimalDigits: 2,
+                                                            }
+                                                        )}`}
+                                                        weight={600}
+                                                    />
+                                                    <CustomRadioButton
+                                                        checked={isActive}
+                                                        onClick={() =>
+                                                            isActive
+                                                                ? null
+                                                                : handleChange(
+                                                                      "holdBags",
+                                                                      comb,
+                                                                      bagDefinition
+                                                                  )
+                                                        }
+                                                    />
+                                                </Flex>
                                             </Flex>
                                         )}
                                     </BaggageBox>
@@ -538,14 +547,16 @@ export default function PassengerBaggagePane({
 
             {state.noHoldBags && <ToastInfo type="info" />}
 
-            <CheckBox
-                checked={state.noHoldBags}
-                onChange={() =>
-                    toggleState("noHoldBags", newBags.holdBags[0]?.indices)
-                }
-            >
-                <Text type="p" text="No baggage" />
-            </CheckBox>
+            {newBags.holdBags.length > 0 &&
+                <CheckBox
+                    checked={state.noHoldBags}
+                    onChange={() =>
+                        toggleState("noHoldBags", newBags.holdBags[0]?.indices)
+                    }
+                >
+                    <Text type="p" text="No baggage" />
+                </CheckBox>
+            }
 
             {index !== 0 && (
                 <Flex justify="flex-end">
@@ -562,92 +573,95 @@ export default function PassengerBaggagePane({
                     </Button>
                 </Flex>
             )}
-
-            {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
-        <InputLabel id="demo-simple-select-autowidth-label">
-          Add Baggage
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"
-          autoWidth
-          label="Age"
-        >
-          <ListSubheader>Hand Bag</ListSubheader>
-          {combinationOptions.hand_bag.map((el, index) => (
-            <MenuItem
-              key={"hand-" + index}
-              onClick={() => {
-                handleUpdatePassengersBagCombination({
-                  index: count,
-                  combination: el,
-                  category: "hand_bag",
-                });
-                // formik.setFieldValue(
-                //   `passengers.${count}.combinations.hand_bag`,
-                //   el
-                // );
-              }}
-            >
-              {el.indices.map((definitionIndex, index) => (
-                <Flex key={"hand-category-" + index}>
-                  <Text
-                    type="p"
-                    text={
-                      "1x" +
-                      bagDefinitions?.hand_bag[definitionIndex].category +
-                      "(" +
-                      bagDefinitions?.hand_bag[definitionIndex].restrictions
-                        .weight +
-                      " kg)"
-                    }
-                  />
-                  {index == el.indices.length - 1 ? null : (
-                    <Text type="p" text={"+"} margin={"0 1rem"} />
-                  )}
-                </Flex>
-              ))}
-            </MenuItem>
-          ))}
-
-          <ListSubheader>Hold bag</ListSubheader>
-          {combinationOptions.hold_bag.map((el, index) => (
-            <MenuItem
-              key={"hold-" + index}
-              onClick={() => {
-                handleUpdatePassengersBagCombination({
-                  index: count,
-                  combination: el,
-                  category: "hold_bag",
-                });
-                // formik.setFieldValue(
-                //   `passengers.${count}.combinations.hold_bag`,
-                //   el
-                // );
-              }}
-            >
-              {(() => {
-                if (el.indices.length == 0) return "No Check bag (Default)";
-                return (
-                  <Flex>
-                    <Text
-                      type="p"
-                      text={
-                        el.indices.length +
-                        "x" +
-                        "Check bags (" +
-                        bagDefinitions?.hold_bag[0].restrictions.weight +
-                        " kg" +
-                        ")"
-                      }
-                    />
-                  </Flex>
-                );
-              })()}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl> */}
         </Box>
     );
 }
+
+
+
+{/* <FormControl sx={{ m: 1, minWidth: 80 }}>
+    <InputLabel id="demo-simple-select-autowidth-label">
+        Add Baggage
+    </InputLabel>
+    <Select
+        labelId="demo-simple-select-autowidth-label"
+        id="demo-simple-select-autowidth"
+        autoWidth
+        label="Age"
+    >
+        <ListSubheader>Hand Bag</ListSubheader>
+        {combinationOptions.hand_bag.map((el, index) => (
+        <MenuItem
+            key={"hand-" + index}
+            onClick={() => {
+            handleUpdatePassengersBagCombination({
+                index: count,
+                combination: el,
+                category: "hand_bag",
+            });
+            // formik.setFieldValue(
+            //   `passengers.${count}.combinations.hand_bag`,
+            //   el
+            // );
+            }}
+        >
+            {el.indices.map((definitionIndex, index) => (
+            <Flex key={"hand-category-" + index}>
+                <Text
+                type="p"
+                text={
+                    "1x" +
+                    bagDefinitions?.hand_bag[definitionIndex].category +
+                    "(" +
+                    bagDefinitions?.hand_bag[definitionIndex].restrictions
+                    .weight +
+                    " kg)"
+                }
+                />
+                {index == el.indices.length - 1 ? null : (
+                <Text type="p" text={"+"} margin={"0 1rem"} />
+                )}
+            </Flex>
+            ))}
+        </MenuItem>
+        ))}
+
+        <ListSubheader>Hold bag</ListSubheader>
+        {combinationOptions.hold_bag.map((el, index) => (
+        <MenuItem
+            key={"hold-" + index}
+            onClick={() => {
+            handleUpdatePassengersBagCombination({
+                index: count,
+                combination: el,
+                category: "hold_bag",
+            });
+            // formik.setFieldValue(
+            //   `passengers.${count}.combinations.hold_bag`,
+            //   el
+            // );
+            }}
+        >
+            {(() => {
+            if (el.indices.length == 0) return "No Check bag (Default)";
+            return (
+                <Flex>
+                <Text
+                    type="p"
+                    text={
+                    el.indices.length +
+                    "x" +
+                    "Check bags (" +
+                    bagDefinitions?.hold_bag[0].restrictions.weight +
+                    " kg" +
+                    ")"
+                    }
+                />
+                </Flex>
+            );
+            })()}
+        </MenuItem>
+        ))}
+    </Select>
+    </FormControl> 
+*/}

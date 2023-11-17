@@ -356,7 +356,7 @@ const Referrals = () => {
         </Flex> */}
 
         <Button width="503px" height="60px" styles={{ margin: "1.5rem 0px" }}>
-          <Text type="p" text="Claim 5 Referrals" />
+          <Text type="p" size={14} text="Claim 5 Referrals" />
         </Button>
       </ReferralWrapper>
     </Section>
@@ -364,4 +364,3 @@ const Referrals = () => {
 };
 
 export default Referrals;
-

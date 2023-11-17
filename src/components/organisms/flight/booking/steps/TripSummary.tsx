@@ -1,7 +1,6 @@
 import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Spinner from "@/components/molecules/icons/spinner";
-import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
@@ -31,8 +30,16 @@ import {
     Definitions,
 } from "@/lib/types/response-models/flight/check_flight.type";
 import { Box } from "@mui/material";
+import dayjs from "dayjs";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    ChangeEventHandler,
+    FormEventHandler,
+    useEffect,
+    useState,
+} from "react";
+import toast from "react-hot-toast";
 
 export interface OneFlight {
     time: string;
@@ -143,6 +150,7 @@ const TripSummary = ({
             };
         });
     };
+
     const contactDetailsFormik = useFormik({
         initialValues: contactDetails,
         enableReinitialize: true,
@@ -171,11 +179,8 @@ const TripSummary = ({
         enableReinitialize: true,
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
-        onSubmit: async (values) => {
+        onSubmit: async (values, helpers) => {
             console.log(contactDetailsFormik.values, "passengers");
-            contactDetailsFormik.validateForm();
-            if (!contactDetailsFormik.isValid) return;
-
             setLoading(true);
             setSaveBookingDetails({
                 data: {
@@ -184,14 +189,21 @@ const TripSummary = ({
                     user: user?.id,
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
-                    passengers: values.passengers.map((el, index) => ({
-                        ...el,
-                        email:
-                            index == 0 ? contactDetailsFormik.values.email : "",
-                        phone:
-                            index == 0 ? contactDetailsFormik.values.phone : "",
-                        nationality: el.nationality.code.toLowerCase(),
-                    })),
+                    passengers: values.passengers.map((el, index) =>
+                        index != 0
+                            ? {
+                                  ...el,
+                                  nationality:
+                                      el.nationality.code.toLowerCase(),
+                              }
+                            : {
+                                  ...el,
+                                  email: contactDetailsFormik.values.email,
+                                  phone: contactDetailsFormik.values.phone,
+                                  nationality:
+                                      el.nationality.code.toLowerCase(),
+                              }
+                    ),
                     baggage: arrangeBaggageDataForOrdering(
                         insertSelectedCheckedBags(passengersBagCombination)
                     ),
@@ -203,6 +215,42 @@ const TripSummary = ({
         },
         validateOnChange: false,
     });
+
+    const checkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        formik.validateForm();
+        contactDetailsFormik.validateForm();
+        // if (!formik.isValid) {
+        //     toast.error('Missing passenger details')
+        // }
+        if (!contactDetailsFormik.isValid) {
+            toast.error("Missing contact details");
+        }
+        formik.handleSubmit(e);
+    };
+
+    const computeBirthDateRange = ({
+        category,
+    }: {
+        category: string;
+    }): { min?: dayjs.Dayjs; max?: dayjs.Dayjs } => {
+        const adult = checkFlightsResponse?.age_category_thresholds.adult ?? 12;
+        // checkFlightsResponse?.adult_threshold ??
+        const child = checkFlightsResponse?.age_category_thresholds.child ?? 2;
+
+        switch (category) {
+            case PassengerCategory.ADULT:
+                return { min: dayjs().subtract(adult, "year") };
+            case PassengerCategory.CHILD:
+                return {
+                    max: dayjs().subtract(adult, "year"),
+                    min: dayjs().subtract(child, "year"),
+                };
+            case PassengerCategory.INFANT:
+                return { max: dayjs().subtract(child, "year"), min: dayjs() };
+            default:
+                return {};
+        }
+    };
 
     const removePassenger = (index: number) => {
         formik.setValues((prev) => ({
@@ -229,12 +277,15 @@ const TripSummary = ({
                 flights={flights}
             />
             {!user?.id && (
-                <form onSubmit={contactDetailsFormik.handleSubmit}>
+                <form
+                    onSubmit={contactDetailsFormik.handleSubmit}
+                    style={{ padding: "2rem 0 0" }}
+                >
                     <ContactDetails formik={contactDetailsFormik} />
                 </form>
             )}
             <FormikProvider value={formik}>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={checkSubmit}>
                     <FieldArray
                         name="passengers"
                         render={(arrayHelpers) => (
@@ -247,6 +298,18 @@ const TripSummary = ({
                                                 formik={formik}
                                                 values={passenger}
                                                 count={index}
+                                                maxBirthDate={
+                                                    computeBirthDateRange({
+                                                        category:
+                                                            passenger.category,
+                                                    }).min
+                                                }
+                                                minBirthDate={
+                                                    computeBirthDateRange({
+                                                        category:
+                                                            passenger.category,
+                                                    }).max
+                                                }
                                                 combinationOptions={getPassengerBagCombinationOptions(
                                                     {
                                                         category:
@@ -284,7 +347,7 @@ const TripSummary = ({
                             background={ttColors.dark}
                             height={"3.5rem"}
                             width="100%"
-                            onClick={() => console.log(formik)}
+                            // onClick={() => console.log(formik)}
                         >
                             {loading ? (
                                 <Spinner

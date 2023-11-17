@@ -21,6 +21,7 @@ import {
 import {
     BookingDetailsInterface,
     FlightInfo,
+    GetFlightBookingByIdResponse,
     SeatRowWithSegmentCodeInterface,
 } from "@/lib/types/response-models/flight/booking.type";
 import { CheckFlightResponse } from "@/lib/types/response-models/flight/check_flight.type";
@@ -29,6 +30,7 @@ import { TokenizeDataResponse } from "@/lib/types/response-models/flight/payment
 import { Mode } from "@lib/types";
 import { create } from "zustand";
 import { useUserPreferencesStore } from "../preferences.store";
+import { CONVERSION_RATE_KEY } from "@/lib/extensions/constants";
 
 interface State {
     highestStep: number;
@@ -47,6 +49,8 @@ interface State {
     saveBookingDetails: SaveBookingRequestInput;
     saveBookingResponse: {
         bookingId: string;
+        flightId: string;
+        userId: string;
         zoozToken: string;
         ticketPrice: number;
         total: number;
@@ -63,7 +67,7 @@ interface State {
     confirmPaymentMode: Mode;
     bookingDetailsMode: Mode;
     bookingDetailsResponse: BookingDetailsInterface | null;
-    conversionRate: number;
+    getBookingByIdResponse: GetFlightBookingByIdResponse | null;
 }
 interface Actions {
     prevStep: () => void;
@@ -75,6 +79,9 @@ interface Actions {
     searchMoreFlights: (params: {
         data: SearchFlightsRequestQuery;
     }) => Promise<void>;
+    searchFlightToGetKiwiConversionRate: (params: {
+        dateFrom: string;
+    }) => Promise<void>;
     checkFlights: (params: { query: CheckFlightsQuery }) => Promise<any>;
     setInitCheckFlightsMode: (mode: Mode) => void;
     checkSeating: (params: {
@@ -84,7 +91,7 @@ interface Actions {
         previousSeat: string | null;
         newSeat: string;
     }) => void;
-    saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<void>;
+    saveBooking: ({ data }: { data: SaveBookingRequestInput }) => Promise<any>;
     confirmPaymentZooz: (params: {
         data: TokenizeDataRequestInput;
     }) => Promise<TokenizeDataResponse>;
@@ -96,7 +103,11 @@ interface Actions {
     }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
-    checkBookingDetails: ({ bookingId }: { bookingId: string } ) => Promise<void>;
+    checkBookingDetails: ({
+        bookingId,
+    }: {
+        bookingId: string;
+    }) => Promise<void>;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
@@ -112,7 +123,6 @@ export const useFlightBookingStore = create<State & Actions>(
             currency: "USD",
             total: 0,
         },
-        conversionRate: 0,
         searchQuery: { limit: 10 },
         sessionId: null,
         seatRows: [],
@@ -131,6 +141,7 @@ export const useFlightBookingStore = create<State & Actions>(
 
         bookingDetailsMode: Mode.init,
         bookingDetailsResponse: null,
+        getBookingByIdResponse: null,
 
         prevStep: () => {
             set((state) => ({
@@ -159,6 +170,40 @@ export const useFlightBookingStore = create<State & Actions>(
         updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
             set({ searchQuery: data });
         },
+        searchFlightToGetKiwiConversionRate: async ({
+            dateFrom,
+        }: {
+            dateFrom: string;
+        }) => {
+            useUserPreferencesStore.setState({
+                showBackDropLoader: true,
+            });
+            return await FlightBookingService.searchFlights({
+                data: {
+                    limit: 10,
+                    fly_from: "LOS",
+                    fly_to: "LAX",
+                    date_from: dateFrom,
+                    adults: 1,
+                    children: 0,
+                    infants: 0,
+                    curr: useUserPreferencesStore.getState().preFerredCurrency,
+                },
+            })
+                .then((response) => {
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
+                    useUserPreferencesStore.setState({
+                        conversionRate: response.fx_rate,
+                        showBackDropLoader: false,
+                    });
+                })
+                .catch((error) => {
+                    throw error;
+                });
+        },
         searchFlights: async ({
             data,
         }: {
@@ -167,12 +212,20 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ searchFlightsMode: Mode.loading });
             return await FlightBookingService.searchFlights({
                 data: {
+                    limit: 10,
                     ...data,
                     curr: useUserPreferencesStore.getState().preFerredCurrency,
                 },
             })
                 .then((response) => {
-                    console.log("rrrr", response.data);
+                    console.log("rrrr", response);
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
+                    useUserPreferencesStore.setState({
+                        conversionRate: response.fx_rate,
+                    });
                     set({
                         searchFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
@@ -180,6 +233,9 @@ export const useFlightBookingStore = create<State & Actions>(
                             currency: response.currency,
                             total: response._results,
                         },
+                    });
+                    set({
+                        searchFlightsResults: response.data,
                     });
                 })
                 .catch((error) => {
@@ -193,8 +249,21 @@ export const useFlightBookingStore = create<State & Actions>(
             data: SearchFlightsRequestQuery;
         }) => {
             set({ searchMoreFlightsMode: Mode.loading });
-            return await FlightBookingService.searchFlights({ data })
+            return await FlightBookingService.searchFlights({
+                data: {
+                    limit: 10,
+                    ...data,
+                    curr: useUserPreferencesStore.getState().preFerredCurrency,
+                },
+            })
                 .then((response) => {
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
+                    useUserPreferencesStore.setState({
+                        conversionRate: response.fx_rate,
+                    });
                     set({
                         searchMoreFlightsMode: Mode.loaded,
                         searchFlightsResults: response.data,
@@ -215,18 +284,8 @@ export const useFlightBookingStore = create<State & Actions>(
                 },
             })
                 .then((response) => {
-                    const {
-                        adults_price = 0,
-                        children_price = 0,
-                        infants_price = 0,
-                    } = response.conversion;
-                    const ticketPriceInPreferredCurrency =
-                        adults_price + children_price + infants_price;
-                    const conversionRate =
-                        ticketPriceInPreferredCurrency / response.tickets_price;
                     set({
                         mode: Mode.loaded,
-                        conversionRate,
                         sessionId: response.session_id,
                         checkFlightsResponse: response,
                         bookingToken: response.booking_token,
@@ -276,6 +335,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 data,
             })
                 .then((response) => {
+                    console.log(response.seating.status, "k");
                     set((state) => ({
                         mode: Mode.loaded,
                         checkSeatingResponse: response,
@@ -308,8 +368,11 @@ export const useFlightBookingStore = create<State & Actions>(
                             zoozToken: response.data.payu_token,
                             ticketPrice: response.data.tickets_price,
                             total: response.data.total,
+                            userId: response.userId,
+                            flightId: response.flightId,
                         },
                     }));
+                    return response;
                 })
                 .catch((error) => {
                     set({
@@ -372,23 +435,20 @@ export const useFlightBookingStore = create<State & Actions>(
                     throw error;
                 });
         },
-        checkBookingDetails: async ({
-            bookingId,
-        }: {
-            bookingId: string;
-        }) => {
+        checkBookingDetails: async ({ bookingId }: { bookingId: string }) => {
             set({ bookingDetailsMode: Mode.loading });
             return await FlightBookingService.checkBookingDetails({ bookingId })
-                .then(response => {
+                .then((response) => {
+                    // console.log(response, "sdsdf");
                     set({
                         bookingDetailsMode: Mode.loaded,
-                        bookingDetailsResponse: response
-                    })
+                        getBookingByIdResponse: response,
+                    });
                 })
                 .catch((error) => {
                     set({ bookingDetailsMode: Mode.error });
                     throw error;
-                })
+                });
         },
     })
 );

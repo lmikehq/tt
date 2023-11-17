@@ -92,7 +92,7 @@ export default function DropdownButton({
         background={backgroundColor}
         borderRadius="6px"
       >
-        <Text text={title} type="p" weight="medium" />
+        <Text text={title} type="p" size={14} weight="medium" />
       </Button>
       <StyledMenu
         id="dropdown-menu"
