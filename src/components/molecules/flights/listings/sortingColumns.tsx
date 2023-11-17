@@ -13,7 +13,6 @@ import Text from "@atom/text";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import CheckBox from "@molecule/checkbox";
 import { CustomRadioGroup } from "@molecule/radio";
-import { SearchInputAsString } from "@organism/searchInput";
 import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
@@ -58,19 +57,6 @@ const cabinOptions = [
     { value: "C", label: "Business" },
     { value: "F", label: "First Class" },
 ];
-
-// const airlines = [
-//     "Air Canada",
-//     "WestJet",
-//     "Air Transat",
-//     "Porter Airlines",
-//     "Sunwing Airlines",
-//     "Delta Air Lines",
-//     "United Airlines",
-//     "American Airlines",
-//     "British Airways",
-//     "Lufthansa",
-// ];
 
 const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
 
@@ -167,17 +153,17 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             min: 0,
             max: parseInt((20000 * conversionRate).toFixed(0)),
         },
-        cabin: "",
+        cabin: "M",
     };
 
     const [filterData, setFilterData] = useState<FilterData>({
         ...initFilterData,
         bags: {
             cabin: Number(
-                searchQuery?.adult_hold_bag ?? initFilterData.bags.cabin
+                Number(queryParams?.cabinBags) ?? initFilterData.bags.cabin
             ),
             checked: Number(
-                searchQuery?.adult_hand_bag ?? initFilterData.bags.checked
+                Number(queryParams?.checkedBags) ?? initFilterData.bags.checked
             ),
         },
         price: {
@@ -228,11 +214,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
 
     type FilterName = keyof typeof filterState;
 
-    const [airlinePortal, setAirlinePortal] = useState({
-        isOpen: false,
-        search: "",
-    });
-
     const [activeFilters, setActiveFilters] = useState<{
         list: string[];
         active: boolean;
@@ -246,6 +227,18 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             ...prev,
             list: prev.list.includes(value) ? prev.list : [...prev.list, value],
         }));
+    };
+
+    const removeFilter = (value: string) => {
+        setActiveFilters((prev) => ({
+            ...prev,
+            list: prev.list.includes(value) ? prev.list.filter(e => e !== value) : prev.list,
+        }));
+        setFilterData(prev => {
+            const newFilter = { ...prev, [value]: initFilterData[value as FilterName] }
+            handleFilterResults(newFilter);
+            return ({ ...newFilter })
+        })
     };
 
     const resetFilters = () => {
@@ -405,7 +398,9 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         text={capCase(e)}
                         margin="0 .5rem 0 0"
                     />{" "}
-                    <MdCancel size={25} color="white" />
+                    <Flex width='min-content' onClick={() => removeFilter(e)}>
+                        <MdCancel size={25} color="white" />
+                    </Flex>
                 </Tag>
             )),
         [activeFilters]
@@ -466,24 +461,18 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         updateSearchQuery({ data: cleanObject(parsed) });
         searchFlights({ data: cleanObject(parsed) }).then((res) => {
             setActiveFilters((prev) => ({ ...prev, active: true }));
-        });
+        })
 
         onClose && onClose();
     };
 
     useEffect(() => {
-        const parsed = parseQuery(initFilterData);
-        updateSearchQuery({ data: parsed });
         setActiveFilters((prev) => ({
             ...prev,
             list: [],
             active: false,
         }));
     }, [queryParams]);
-
-    // useEffect(() => {
-    //     console.log("ffff", filterData);
-    // }, [filterData]);
 
     return (
         <Flex direction="column">
@@ -599,19 +588,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         align="flex-start"
                         direction="column"
                     />
-                    {/* <CheckBox
-                    name="overnight"
-                    checked={filterData.stops === "overnight"}
-                    onChange={(x) => handleRadio(x)}
-                    style={{ paddingLeft: '5px', fontSize: '14px' }}
-                >
-                <Text
-                    type="p"
-                    text="Allow overnight stopovers"
-                    whiteSpace="nowrap"
-                    size={14}
-                />
-                </CheckBox> */}
                 </Flex>
             </Panel>
 
@@ -631,7 +607,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         />
                     </Flex>
                     {filterData.airlines.map((airline, index) => (
-                        <CheckBox key={index} checked={true} name={airline}>
+                        <CheckBox key={index} checked={true} name={airline} onChange={() => handleCheck(airline, 'airlines')}>
                             <Text type="p" text={airline} size={16} />
                         </CheckBox>
                     ))}
@@ -872,6 +848,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         options={cabinOptions}
                         name="cabin"
                         onChange={(x) => handleRadio(x)}
+                        value={filterData.cabin}
                         justifyContent="flex-end"
                         align="flex-start"
                         direction="column"

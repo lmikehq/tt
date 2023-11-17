@@ -261,12 +261,16 @@ export default function MainPassenger({
                             color={ttColors.primaryLight}
                         />
                     </Flex>
-                    <Text
+                    <ToastInfo
+                        type="info"
+                        message="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
+                    />
+                    {/* <Text
                         type="p"
                         text="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
                         color="#414141"
                         size={isMobile ? 14 : 16}
-                    />
+                    /> */}
                     <Box sx={{ marginY: "1rem" }}>
                         <PassengerBaggagePane
                             index={index}
