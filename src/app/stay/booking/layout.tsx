@@ -1,4 +1,3 @@
-import FooterSection from "@organism/Footer";
 import Navbar from "@organism/Navbar";
 
 interface layoutProps {
@@ -10,7 +9,6 @@ export default function ApplyLayout({ children }: layoutProps) {
     <>
       <Navbar page="stay/booking" />
       {children}
-      <FooterSection />
     </>
   );
 }

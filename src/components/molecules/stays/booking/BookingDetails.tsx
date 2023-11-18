@@ -8,7 +8,7 @@ function BookingDetails() {
     <Container>
       <Header>
         <Flex direction="column" gap="10px">
-          <Text type="h2" text="Booking Details"></Text>
+          <Text weight={600} type="h3" text="Booking Details"></Text>
           <Text
             type="p"
             text="Enter your booking details for reservation"

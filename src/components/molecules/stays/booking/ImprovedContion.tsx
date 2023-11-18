@@ -8,7 +8,7 @@ function ImprovedCondition() {
     <Container>
       <Header>
         <Flex direction="column" gap="10px">
-          <Text type="h2" text="Improved conditions"></Text>
+          <Text weight={600} type="h3" text="Improved conditions"></Text>
           <Text
             type="p"
             text="We'll make the request for extra services and inform you once they've been approved"

@@ -8,7 +8,7 @@ function Payment() {
     <Container>
       <Header>
         <Flex direction="column" gap="10px">
-          <Text type="h2" text="Payment Details"></Text>
+          <Text weight={600} type="h3" text="Payment Details"></Text>
           <Text
             type="p"
             text="Your personal information secured with us."
