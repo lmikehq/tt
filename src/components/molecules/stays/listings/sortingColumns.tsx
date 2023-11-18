@@ -1,7 +1,5 @@
 import { Divider } from "@atom/divider";
 import Flex from "@components/templates/flex";
-import { CustomRadioGroup } from "@molecule/radio";
-import { SearchInputAsString } from "@organism/searchInput";
 import Text from "@atom/text";
 import React, { useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";

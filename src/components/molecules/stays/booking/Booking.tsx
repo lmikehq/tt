@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header, Span } from "../view/styles";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
@@ -12,23 +12,34 @@ import ImprovedCondition from "./ImprovedContion";
 import FreeCancellation from "./FreeCancellation";
 import HotelDetail from "./HotelDetail";
 import PriceDetail from "./PriceDetail";
+import Button from "@/components/atoms/button";
+import Spinner from "../../icons/spinner";
+import { ttColors } from "@/lib/theme/colors";
 
 function Booking() {
   const { isMobile } = useScreenResolution();
 
+  const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    //properties needed
+  });
+
+  const handleSubmit = () => {};
+
   return (
     <Span>
-      <Header>
+      <Header style={{ margin: "10px 0px", marginTop: "25px" }}>
         <Flex align="center" gap="10px">
-          <ArrowBackIosNewIcon />
-          <Text type="h3" text="Secure your booking"></Text>
+          <ArrowBackIosNewIcon style={{ fontSize: "18px" }} />
+          <Text weight={600} type="h3" text="Secure your booking" />
         </Flex>
       </Header>
       <Box
         sx={{
-          display: "grid",
+          display: isMobile ? "flex" : "grid",
           gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
           gap: "30px",
+          flexDirection: isMobile ? "column-reverse" : "",
         }}
       >
         <Span>
@@ -36,6 +47,28 @@ function Booking() {
           <ImprovedCondition />
           <BookingDetails />
           <Payment />
+          <Span>
+            <Button
+              width="100%"
+              margin=".5rem 0"
+              color="white"
+              background={
+                submissionState.loading ? ttColors.dark : ttColors.dark
+              }
+              onClick={handleSubmit}
+            >
+              {submissionState.loading ? (
+                <Spinner size="40px" fill={"white"} />
+              ) : (
+                <Text
+                  type="p"
+                  text="Complete Booking"
+                  color={"white"}
+                  size={isMobile ? "16px" : "20px"}
+                />
+              )}
+            </Button>
+          </Span>
         </Span>
         <Span>
           <HotelDetail />

@@ -1,31 +1,64 @@
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
 
-function Dropdown() {
-  const [age, setAge] = React.useState("");
+interface DropdownProps {
+  label?: string;
+  options: { value: string; displayValue: string }[];
+  selectedValue: string;
+  setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+  padding?: string | number;
+  color?: string;
+  border?: string;
+  borderColor?: string;
+}
 
+const Dropdown: React.FC<DropdownProps> = ({
+  label,
+  options,
+  selectedValue,
+  setSelectedValue,
+  className,
+  width,
+  height,
+  padding,
+  color,
+  border,
+  borderColor,
+}) => {
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    setSelectedValue(String(event.target.value));
   };
 
   return (
     <div>
-      <div>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={age}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </div>
+      <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={selectedValue}
+        label={label}
+        onChange={handleChange}
+        className={className}
+        sx={{
+          width: width,
+          height: height,
+          padding: padding,
+          border: border,
+          color: color,
+          borderColor: borderColor,
+        }}
+      >
+        {options.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.displayValue}
+          </MenuItem>
+        ))}
+      </Select>
     </div>
   );
-}
+};
 
 export default Dropdown;

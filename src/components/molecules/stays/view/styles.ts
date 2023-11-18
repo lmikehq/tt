@@ -10,6 +10,10 @@ export const Container = styled.div`
   border-radius: 12.5px;
   background-color: var(--default-color);
   margin: 25px 0px;
+  &.hotel_details_container {
+    padding: 0px;
+    overflow: hidden;
+  }
   ::-webkit-scrollbar {
     display: none;
   }
@@ -214,6 +218,17 @@ export const Span = styled.div`
     border-radius: 50%;
     color: var(--default-color);
     background-color: var(--secondary-color);
+  }
+  &.border::before {
+    content: "";
+    display: block;
+    height: 60px;
+    border-left: 1px solid #000; 
+    margin-right: 10px;
+  }
+  .mui_select {
+    // overflow: hidden;
+    outline-color: var(--primary-color) !important;
   }
   @media screen and (max-width: 1120px) {
     .recently {

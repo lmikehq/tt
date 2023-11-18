@@ -28,9 +28,23 @@ export const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-
+  &.booking_improve_box {
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    padding: 30px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    @media screen and (max-width: 900px) {
+      flex-direction: column;
+      align-items: flex-start;
+      .mui_select {
+        width: 100% ;
+      }
+    }
+  }
   @media screen and (max-width: 990px) {
-    &.stay_wrap {
+    &.sty_wrap {
       flex-wrap: wrap;
     }
   }

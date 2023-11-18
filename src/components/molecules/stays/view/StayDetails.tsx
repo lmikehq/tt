@@ -156,6 +156,14 @@ function StayDetails() {
                 weight={600}
                 text={formatPriceWithoutCurrency(81500)}
               />
+            </Flex><Flex gap="5px" align="center">
+              <Text type="p" size={24} weight={600} text={getCurrency()} />
+              <Text
+                type="p"
+                size={30}
+                weight={600}
+                text={formatPriceWithoutCurrency(81500)}
+              />
             </Flex>
             <Flex align="center" gap="8px">
               <Text
