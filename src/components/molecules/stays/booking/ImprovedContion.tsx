@@ -10,11 +10,12 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 function ImprovedCondition() {
   const { isMobile } = useScreenResolution();
 
-  const [age, setAge] = useState("");
+  const [meal, setMeal] = useState("meal");
   const options = [
-    { value: "10", displayValue: "Ten" },
-    { value: "20", displayValue: "Twenty" },
-    { value: "30", displayValue: "Thirty" },
+    { value: "meal", displayValue: "Select Meal" },
+    { value: "half board", displayValue: "Half Board" },
+    { value: "full board", displayValue: "Full Board" },
+    { value: "all inclusive", displayValue: "All Inclusive" },
   ];
   return (
     <Container>
@@ -82,15 +83,19 @@ function ImprovedCondition() {
                 className="mui_select"
                 width="100%"
                 height="40px"
-                selectedValue={age}
-                setSelectedValue={setAge}
+                selectedValue={meal}
+                setSelectedValue={setMeal}
               />
-              <Text
-                type="p"
-                whiteSpace="nowrap"
-                text="On request"
-                styles={{ fontSize: "15px", float: "right" }}
-              />
+              <Flex justify={isMobile ? "flex-start" : "flex-end"}>
+                <Text
+                  type="p"
+                  whiteSpace="nowrap"
+                  text="On request"
+                  styles={{
+                    fontSize: "15px",
+                  }}
+                />
+              </Flex>
             </Flex>
           </Span>
         </FlexBox>
@@ -148,15 +153,19 @@ function ImprovedCondition() {
                 className="mui_select"
                 width="100%"
                 height="40px"
-                selectedValue={age}
-                setSelectedValue={setAge}
+                selectedValue={meal}
+                setSelectedValue={setMeal}
               />
-              <Text
-                type="p"
-                whiteSpace="nowrap"
-                text="On request"
-                styles={{ fontSize: "15px", float: "right" }}
-              />
+              <Flex justify={isMobile ? "flex-start" : "flex-end"}>
+                <Text
+                  type="p"
+                  whiteSpace="nowrap"
+                  text="On request"
+                  styles={{
+                    fontSize: "15px",
+                  }}
+                />
+              </Flex>
             </Flex>
           </Span>
         </FlexBox>{" "}
@@ -214,15 +223,19 @@ function ImprovedCondition() {
                 className="mui_select"
                 width="100%"
                 height="40px"
-                selectedValue={age}
-                setSelectedValue={setAge}
+                selectedValue={meal}
+                setSelectedValue={setMeal}
               />
-              <Text
-                type="p"
-                whiteSpace="nowrap"
-                text="On request"
-                styles={{ fontSize: "15px", float: "right" }}
-              />
+              <Flex justify={isMobile ? "flex-start" : "flex-end"}>
+                <Text
+                  type="p"
+                  whiteSpace="nowrap"
+                  text="On request"
+                  styles={{
+                    fontSize: "15px",
+                  }}
+                />
+              </Flex>
             </Flex>
           </Span>
         </FlexBox>

@@ -1,5 +1,12 @@
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import React from "react";
+import styled from "styled-components";
+
+const SelectBox = styled.div`
+  #demo-simple-select {
+    outline-color: var(--primary-color) !important;
+  }
+`;
 
 interface DropdownProps {
   label?: string;
@@ -33,7 +40,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   };
 
   return (
-    <div>
+    <SelectBox>
       <InputLabel id="demo-simple-select-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-label"
@@ -57,7 +64,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           </MenuItem>
         ))}
       </Select>
-    </div>
+    </SelectBox>
   );
 };
 

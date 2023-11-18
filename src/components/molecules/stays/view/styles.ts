@@ -223,7 +223,14 @@ export const Span = styled.div`
     content: "";
     display: block;
     height: 60px;
-    border-left: 1px solid #000; 
+    border-left: 1px solid var(--secondary-color);
+    margin-right: 10px;
+  }
+  &.horizontal_border::after {
+    content: "";
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #000;
     margin-right: 10px;
   }
   .mui_select {

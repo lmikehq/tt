@@ -15,6 +15,7 @@ import PriceDetail from "./PriceDetail";
 import Button from "@/components/atoms/button";
 import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
+import Link from "@/components/atoms/link";
 
 function Booking() {
   const { isMobile } = useScreenResolution();
@@ -29,10 +30,14 @@ function Booking() {
   return (
     <Span>
       <Header style={{ margin: "10px 0px", marginTop: "25px" }}>
-        <Flex align="center" gap="10px">
-          <ArrowBackIosNewIcon style={{ fontSize: "18px" }} />
-          <Text weight={600} type="h3" text="Secure your booking" />
-        </Flex>
+        <Span style={{ width: "fit-content" }}>
+          <Link href="/stay/view">
+            <Flex align="center" gap="10px">
+              <ArrowBackIosNewIcon style={{ fontSize: "18px" }} />
+              <Text weight={600} type="h3" text="Secure your booking" />
+            </Flex>
+          </Link>
+        </Span>
       </Header>
       <Box
         sx={{

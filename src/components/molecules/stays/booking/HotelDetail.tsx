@@ -8,18 +8,36 @@ import PetsIcon from "@mui/icons-material/Pets";
 import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
 import BedIcon from "@mui/icons-material/Bed";
 import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
+import CollectionsIcon from "@mui/icons-material/Collections";
 
 function HotelDetail() {
   return (
     <Container className="hotel_details_container">
       <Span style={{ marginBottom: "15px" }}>
         <Flex direction="column">
-          <Span>
+          <Span style={{ position: "relative" }}>
             <img
               src="/assets/images/stays/image1.jpg"
               alt=""
               style={{ width: "100%", height: "auto" }}
             />
+            <Span
+              style={{
+                position: "absolute",
+                right: "10px",
+                color: "var(--default-color)",
+                bottom: "20px",
+                backgroundColor: "var(--secondary-color)",
+                padding: "8px",
+                borderRadius: "20px",
+                cursor: "pointer",
+              }}
+            >
+              <Flex align="center" gap="5px">
+                <CollectionsIcon />
+                <Text type="p" text="1/35"></Text>
+              </Flex>
+            </Span>
           </Span>
         </Flex>
         <Span style={{ padding: "10px 25px" }}>
