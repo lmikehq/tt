@@ -271,7 +271,7 @@ export const Span = styled.div`
 
 export const MapBoxTag = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
   background-color: var(--color-light-gray);
   border-radius: 20px;
   margin-bottom: 35px;
