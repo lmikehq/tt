@@ -1,5 +1,5 @@
 import React from "react";
-import { GridLayout, Span } from "./styles";
+import { GridLayout, Span } from "../../styles";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import AcUnitIcon from "@mui/icons-material/AcUnit";

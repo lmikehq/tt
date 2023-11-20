@@ -219,6 +219,12 @@ export const Span = styled.div`
     color: var(--default-color);
     background-color: var(--secondary-color);
   }
+
+  @media screen and (max-width: 1070px) {
+    .wrap_text {
+      white-space: wrap !important;
+    }
+  }
   &.border::before {
     content: "";
     display: block;

@@ -1,5 +1,5 @@
 import React from "react";
-import { MapBoxTag } from "./styles";
+import { MapBoxTag } from "../../styles";
 
 function MapBox() {
   return (

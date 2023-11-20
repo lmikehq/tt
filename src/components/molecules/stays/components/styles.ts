@@ -39,7 +39,7 @@ export const FlexBox = styled.div`
       flex-direction: column;
       align-items: flex-start;
       .mui_select {
-        width: 100% ;
+        width: 100%;
       }
     }
   }
@@ -112,11 +112,20 @@ export const LargeImg = styled.div`
   overflow: hidden;
   position: relative;
   padding: -10px 0px;
-
+  &.img_large_gallery {
+    width: 100%;
+    // height: 650px;
+    overflow: hidden !important;
+    border-radius: 12.5px !important;
+    margin-bottom: 20px;
+  }
   z-index: 1;
   @media screen and (max-width: 900px) {
     border-radius: 12.5px;
   }
+`;
+export const ImgWidth = styled.div`
+  width: 80%;
 `;
 
 export const SmallImg = styled.div`
@@ -126,15 +135,24 @@ export const SmallImg = styled.div`
   z-index: 10;
   margin: 5px 8px;
   margin-bottom: 5px;
+  &.img_small_gallery {
+    height: 250px;
+    bottom: 0px;
+  }
 `;
 export const SmallSlideImg = styled.div`
   width: 60px;
   height: 60px;
-  // padding: 2px;
+
   overflow: hidden;
   border: 2px solid rgba(135, 206, 235, 0);
   transition: background-color 0.3s, border-color 0.3s;
+  &.selected_room_gallery {
+    width: 230px;
+    height: 100%;
 
+    // margin: 0px -10px;
+  }
   &:hover {
     border: 2px solid rgba(135, 206, 235, 0.5);
   }
@@ -195,6 +213,9 @@ export const ControlBtn = styled.div`
   padding: 0px 10px;
   transform: translateY(-55%);
   color: var(--default-color);
+  &.control_gallery {
+    z-index: 10;
+  }
 `;
 export const TextLocation = styled.div``;
 export const ReviewsText = styled.div``;

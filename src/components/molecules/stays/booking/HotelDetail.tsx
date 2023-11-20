@@ -30,7 +30,6 @@ function HotelDetail() {
                 backgroundColor: "var(--secondary-color)",
                 padding: "8px",
                 borderRadius: "20px",
-                cursor: "pointer",
               }}
             >
               <Flex align="center" gap="5px">

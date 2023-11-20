@@ -63,7 +63,7 @@ const StyledRating = styled(Rating)({
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-//MOBILE SETTINGS
+//SLIDER SETTINGS
 const SliderSettings = {
   dots: false,
   infinite: false,

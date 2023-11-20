@@ -13,9 +13,16 @@ import TuneIcon from "@mui/icons-material/Tune";
 import CachedIcon from "@mui/icons-material/Cached";
 import CloseIcon from "@mui/icons-material/Close";
 import { FlexBox } from "../components/styles";
+import Filter from "./modals/components/FilterBox";
+import { useState } from "react";
+import { ChangeSearchModal } from "./modals/Modals";
 
 const ChooseYourRoom = () => {
   const { isMobile } = useScreenResolution();
+
+  const [open, setOpen] = useState({
+    search: false,
+  });
   return (
     <Container>
       <Header id="rooms">
@@ -27,10 +34,27 @@ const ChooseYourRoom = () => {
             border={`1px solid ${ttColors.dark}`}
             padding="7px 10px"
             styles={{ background: "transparent !important" }}
+            onClick={() =>
+              setOpen((prev) => ({
+                ...prev,
+                search: true,
+              }))
+            }
           >
             <Text type="p" weight={"bold"} size={15} text="Change"></Text>
           </Button>
         </Flex>
+
+        {/* SEARCH MODAL*/}
+        <ChangeSearchModal
+          open={open.search}
+          handleClose={() =>
+            setOpen((prev) => ({
+              ...prev,
+              search: false,
+            }))
+          }
+        />
       </Header>
       <Section margin="0 0 2rem 0">
         <Grid columns={!isMobile ? "3" : "1"} gap="1rem">
@@ -80,88 +104,9 @@ const ChooseYourRoom = () => {
           text="Available Rooms"
           margin={"0 0 1.75rem 0"}
         />
-        {!isMobile && (
-          <Grid columns={4} gap="1rem">
-            <Flex
-              direction="column"
-              gap=".5rem"
-              styles={{ marginBottom: "1.2rem" }}
-            >
-              <Text type="label" size={16} text="Beds" weight={400} />
-              <select
-                name="filter"
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  width: "100%",
-                  borderColor: ttColors.gray,
-                  outline: "none",
-                }}
-              >
-                <option value="option">All Option</option>
-                <option value="option">Double bed</option>
-                <option value="option">Separate bed</option>
-              </select>
-            </Flex>
-            <Flex
-              direction="column"
-              gap=".5rem"
-              styles={{ marginBottom: "1.2rem" }}
-            >
-              <Text type="label" size={16} text="Meals" weight={400} />
-              <select
-                name="filter"
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  width: "100%",
-                  borderColor: ttColors.gray,
-                  outline: "none",
-                }}
-              >
-                <option value="option">All Option</option>
-              </select>
-            </Flex>{" "}
-            <Flex
-              direction="column"
-              gap=".5rem"
-              styles={{ marginBottom: "1.2rem" }}
-            >
-              <Text type="label" size={16} text="Cancellation" weight={400} />
-              <select
-                name="filter"
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  width: "100%",
-                  borderColor: ttColors.gray,
-                  outline: "none",
-                }}
-              >
-                <option value="option">All Option</option>
-              </select>
-            </Flex>
-            <Flex
-              direction="column"
-              gap=".5rem"
-              styles={{ marginBottom: "1.2rem" }}
-            >
-              <Text type="label" size={16} text="Payment" weight={400} />
-              <select
-                name="filter"
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  width: "100%",
-                  borderColor: ttColors.gray,
-                  outline: "none",
-                }}
-              >
-                <option value="option">All Option</option>
-              </select>
-            </Flex>
-          </Grid>
-        )}
+        <Span>
+          <Filter />
+        </Span>
         {isMobile && (
           <>
             <Span>

@@ -26,7 +26,7 @@ import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
 import { FlexBox } from "../components/styles";
-import { AmenitiesModal, MapModal } from "./Modals";
+import { AmenitiesModal, MapModal } from "./modals/Modals";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -149,14 +149,6 @@ function StayDetails() {
           </Flex>
           <FlexBox className="stay_wrap" style={{ margin: "15px 0px" }}>
             <Flex gap="5px" align="center">
-              <Text type="p" size={24} weight={600} text={getCurrency()} />
-              <Text
-                type="p"
-                size={30}
-                weight={600}
-                text={formatPriceWithoutCurrency(81500)}
-              />
-            </Flex><Flex gap="5px" align="center">
               <Text type="p" size={24} weight={600} text={getCurrency()} />
               <Text
                 type="p"
