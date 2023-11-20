@@ -30,10 +30,14 @@ const ModalScroll = styled.div`
   height: 500px;
   overflow: hidden;
   border-radius: 20px;
+  &.map_scroll,
   &.gallery {
     width: 100%;
     height: 100%;
     border-radius: 0px;
+  }
+  &.amenities_scroll {
+    height: 600px !important;
   }
   &.search_box {
     width: 600px;
@@ -48,8 +52,12 @@ const ModalWrapper = styled.div`
   height: 500px;
   overflow-y: auto;
   background: white;
+  &.map_wrapper,
   &.gallery_modal {
     height: 100%;
+  }
+  &.amenities_modal {
+    height: 600px !important;
   }
   @media screen and (max-width: 900px) {
     width: 100%;
@@ -110,8 +118,8 @@ export const MapModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
-        <ModalScroll>
-          <ModalWrapper>
+        <ModalScroll className="map_scroll">
+          <ModalWrapper className="map_wrapper">
             <Flex padding="1rem" align="center" gap="20px">
               <CloseIcon
                 style={{ fontSize: "19px", cursor: "pointer" }}
@@ -142,8 +150,8 @@ export const AmenitiesModal = ({
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
-        <ModalScroll>
-          <ModalWrapper>
+        <ModalScroll className="amenities_scroll">
+          <ModalWrapper className="amenities_modal">
             <Flex
               padding="10px 35px"
               align="center"
@@ -243,8 +251,6 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
   reviews,
   hiddenReviews,
   toggleReviewVisibility,
-  // displayedReviews,
-  // setDisplayedReviews,
 }) => {
   return (
     <Modal open={open} onClose={handleClose}>
@@ -262,11 +268,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
               />
             </Flex>
             <Span style={{ padding: "15px" }}>
-              <ReviewListBox
-                reviews={reviews}
-                hiddenReviews={hiddenReviews}
-                toggleReviewVisibility={toggleReviewVisibility}
-              />
+              <ReviewListBox reviews={reviews} />
             </Span>
           </ModalWrapper>
         </ModalScroll>

@@ -22,10 +22,8 @@ const Location = () => {
       const isOpen = prevOpenBoxes.includes(index);
 
       if (isOpen) {
-        
         return prevOpenBoxes.filter((boxIndex) => boxIndex !== index);
       } else {
-        
         return [...prevOpenBoxes, index];
       }
     });
@@ -54,7 +52,9 @@ const Location = () => {
           </Flex>
         </Header>
         {/* MAP */}
-        <MapBox />
+        <Span style={{ maxHeight: "350px" }}>
+          <MapBox />
+        </Span>
         {/*  */}
         <GridLayout className="amenities_grid location_grid">
           <ul style={{ listStyle: "none" }} className="mobile_box">
