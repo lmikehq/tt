@@ -28,9 +28,23 @@ export const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-
+  &.booking_improve_box {
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    padding: 30px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    @media screen and (max-width: 900px) {
+      flex-direction: column;
+      align-items: flex-start;
+      .mui_select {
+        width: 100%;
+      }
+    }
+  }
   @media screen and (max-width: 990px) {
-    &.stay_wrap {
+    &.sty_wrap {
       flex-wrap: wrap;
     }
   }
@@ -42,6 +56,12 @@ export const FlexBox = styled.div`
   @media screen and (max-width: 545px) {
     flex-wrap: wrap;
     gap: 20px;
+    &.filter_btn {
+      flex-wrap: nowrap;
+      width: 100%;
+      gap: auto;
+      justify-content: space-between !important;
+    }
     &.row_two_wrap {
       flex-wrap: nowrap;
     }
@@ -92,11 +112,20 @@ export const LargeImg = styled.div`
   overflow: hidden;
   position: relative;
   padding: -10px 0px;
-
+  &.img_large_gallery {
+    width: 100%;
+    // height: 650px;
+    overflow: hidden !important;
+    border-radius: 12.5px !important;
+    margin-bottom: 20px;
+  }
   z-index: 1;
   @media screen and (max-width: 900px) {
     border-radius: 12.5px;
   }
+`;
+export const ImgWidth = styled.div`
+  width: 80%;
 `;
 
 export const SmallImg = styled.div`
@@ -106,15 +135,24 @@ export const SmallImg = styled.div`
   z-index: 10;
   margin: 5px 8px;
   margin-bottom: 5px;
+  &.img_small_gallery {
+    height: 250px;
+    bottom: 0px;
+  }
 `;
 export const SmallSlideImg = styled.div`
   width: 60px;
   height: 60px;
-  // padding: 2px;
+
   overflow: hidden;
   border: 2px solid rgba(135, 206, 235, 0);
   transition: background-color 0.3s, border-color 0.3s;
+  &.selected_room_gallery {
+    width: 230px;
+    height: 100%;
 
+    // margin: 0px -10px;
+  }
   &:hover {
     border: 2px solid rgba(135, 206, 235, 0.5);
   }
@@ -123,7 +161,14 @@ export const SelectedImage = styled.span`
   border: 2px solid rgba(135, 206, 235, 0);
 `;
 
-export const SmallSpan = styled.div``;
+export const SmallSpan = styled.div`
+  &.scroll_filter_container {
+    overflow-x: scroll;
+  }
+  &.scroll_filter_container::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export const TextBox = styled.div`
   padding: 10px;
@@ -168,6 +213,9 @@ export const ControlBtn = styled.div`
   padding: 0px 10px;
   transform: translateY(-55%);
   color: var(--default-color);
+  &.control_gallery {
+    z-index: 10;
+  }
 `;
 export const TextLocation = styled.div``;
 export const ReviewsText = styled.div``;
@@ -221,6 +269,9 @@ export const FilterBox = styled.div`
   margin-bottom: 20px;
   background-color: var(--default-color);
   overflow: hidden;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const FilterFlexBox = styled.div`

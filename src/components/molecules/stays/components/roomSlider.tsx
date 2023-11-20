@@ -165,7 +165,7 @@ function RoomSlider(props: RoomSliderProps) {
                   <SlideCard key={index}>
                     <SlideList>
                       <SliderImgBox>
-                        <Link href="">
+                        <Link href="/stay/view">
                           <img
                             style={{
                               width: "100%",
@@ -197,7 +197,7 @@ function RoomSlider(props: RoomSliderProps) {
                           id="favorite-hotels-checkbox"
                         />
                       </FavoriteSliderBox>
-                      <Link href="">
+                      <Link href="/stay/view">
                         <Text
                           type="h2"
                           text={room.name}

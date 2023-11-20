@@ -1,5 +1,5 @@
 import Flex from "@/components/templates/flex";
-import { Container, GridLayout, Header, MapBox, Span } from "./styles";
+import { Container, GridLayout, Header, Span } from "./styles";
 import Text from "@/components/atoms/text";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
@@ -8,15 +8,25 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import MapBox from "./modals/components/MapBox";
 
 const Location = () => {
   const { isMobile } = useScreenResolution();
   //============
   //TOGGLE BOX
   //============
-  const [openBox, setOpenBox] = useState<number>();
+  const [openBoxes, setOpenBoxes] = useState<number[]>([]);
+
   const toggleBox = (index: number) => {
-    setOpenBox((prevIndex) => (prevIndex === index ? undefined : index));
+    setOpenBoxes((prevOpenBoxes) => {
+      const isOpen = prevOpenBoxes.includes(index);
+
+      if (isOpen) {
+        return prevOpenBoxes.filter((boxIndex) => boxIndex !== index);
+      } else {
+        return [...prevOpenBoxes, index];
+      }
+    });
   };
 
   return (
@@ -41,11 +51,15 @@ const Location = () => {
             ></Text>
           </Flex>
         </Header>
-        <MapBox></MapBox>
+        {/* MAP */}
+        <Span style={{ maxHeight: "350px" }}>
+          <MapBox />
+        </Span>
+        {/*  */}
         <GridLayout className="amenities_grid location_grid">
           <ul style={{ listStyle: "none" }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
-              <Flex justify="space-between">
+              <Flex justify="space-between" cursor="pointer">
                 <Flex
                   gap="10px"
                   align="center"
@@ -62,7 +76,7 @@ const Location = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 0 ? (
+                    {openBoxes.includes(0) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -74,7 +88,7 @@ const Location = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 0 && (
+                  {openBoxes.includes(0) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -174,7 +188,7 @@ const Location = () => {
           </ul>
           <ul style={{ listStyle: "none" }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
-              <Flex justify="space-between">
+              <Flex justify="space-between" cursor="pointer">
                 <Flex
                   gap="10px"
                   align="center"
@@ -191,7 +205,7 @@ const Location = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 1 ? (
+                    {openBoxes.includes(1) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -203,7 +217,7 @@ const Location = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 1 && (
+                  {openBoxes.includes(1) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -287,7 +301,7 @@ const Location = () => {
           </ul>
           <ul style={{ listStyle: "none" }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
-              <Flex justify="space-between">
+              <Flex justify="space-between" cursor="pointer">
                 <Flex
                   gap="10px"
                   align="center"
@@ -304,7 +318,7 @@ const Location = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 2 ? (
+                    {openBoxes.includes(2) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -316,7 +330,7 @@ const Location = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 2 && (
+                  {openBoxes.includes(2) && (
                     <Flex
                       gap="30px"
                       align="flex-start"

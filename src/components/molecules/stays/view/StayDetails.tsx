@@ -4,7 +4,6 @@ import Section from "../../section";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import Image from "@/components/atoms/image";
-import { Grid } from "@/components/templates/grid";
 import { BiChevronRight } from "react-icons/bi";
 import { ttColors } from "@/lib/theme/colors";
 import { Rating } from "@mui/material";
@@ -27,6 +26,7 @@ import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
 import { FlexBox } from "../components/styles";
+import { AmenitiesModal, MapModal } from "./modals/Modals";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -60,6 +60,11 @@ function StayDetails() {
   const handleTabClick = (id: string) => {
     setActiveTab(id);
   };
+
+  const [open, setOpen] = useState({
+    map: false,
+    amenities: false,
+  });
   return (
     <Container>
       <Header id="overview">
@@ -265,8 +270,24 @@ function StayDetails() {
                 weight={500}
                 text="see more"
                 color={ttColors.primary}
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    amenities: true,
+                  }))
+                }
               />
             </Flex>
+            {/* AMENITIES MODAL */}
+            <AmenitiesModal
+              open={open.amenities}
+              handleClose={() =>
+                setOpen((prev) => ({
+                  ...prev,
+                  amenities: false,
+                }))
+              }
+            />
           </Button>
         </Section>
         <Section>
@@ -292,8 +313,24 @@ function StayDetails() {
               <Text
                 type="p"
                 weight={500}
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    map: true,
+                  }))
+                }
                 text="Show in map"
                 color={ttColors.primary}
+              />
+              {/* MAP MODAL */}
+              <MapModal
+                open={open.map}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    map: false,
+                  }))
+                }
               />
               <BiChevronRight color={ttColors.primary} size={24} />
             </Flex>
