@@ -125,7 +125,7 @@ const RecentlyViewedTile = () => {
                       defaultValue={room.rating}
                     />
                   </Flex>
-                  <Flex gap="0.5rem" align="center" margin="1rem 0 0 0">
+                  <Flex gap="5px" align="center" margin="1rem 0 0 0">
                     <Text
                       type="p"
                       size={16}

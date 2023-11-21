@@ -6,6 +6,10 @@ import { Box, Rating } from "@mui/material";
 import Link from "@/components/atoms/link";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import { useEffect, useState } from "react";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
 interface Room {
   name: string;
   image: string;
@@ -128,11 +132,19 @@ const CompareSimilarHotels = () => {
                         max={5}
                         defaultValue={room.rating}
                       />
-                      <Text
+                      {/* <Text
                         weight={600}
                         type="h4"
                         text={`${formatPrice(room.price)}`}
-                      ></Text>
+                      ></Text> */}
+                      <Flex gap="5px" align="center">
+                        <Text type="h4" weight={"bold"} text={getCurrency()} />
+                        <Text
+                          type="h4"
+                          weight={"bold"}
+                          text={formatPriceWithoutCurrency(room.price)}
+                        />
+                      </Flex>
                     </Flex>
                   </Box>
                 </Flex>

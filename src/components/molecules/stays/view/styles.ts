@@ -68,6 +68,16 @@ export const GridLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  &.grid_select {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
   &.choose_room_list {
     grid-template-columns: 40% auto;
     grid-column-gap: 20px;
