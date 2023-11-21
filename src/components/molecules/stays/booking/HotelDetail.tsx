@@ -117,7 +117,12 @@ function HotelDetail() {
                   text="40 m²"
                 />
               </Flex>
-              <Flex gap="8px" align="center" justify="flex-end">
+              <Flex
+                gap="8px"
+                align="center"
+                className="flex-end"
+                justify="flex-end"
+              >
                 <PetsIcon style={{ fontSize: "20px" }} />
                 <Text
                   whiteSpace="nowrap"
@@ -137,7 +142,12 @@ function HotelDetail() {
                   text="Meals not included"
                 />
               </Flex>
-              <Flex gap="8px" align="center" justify="flex-end">
+              <Flex
+                gap="8px"
+                align="center"
+                className="flex-end"
+                justify="flex-end"
+              >
                 <BedIcon style={{ fontSize: "20px" }} />
                 <Text
                   whiteSpace="nowrap"
@@ -157,7 +167,12 @@ function HotelDetail() {
                   text="WiFi"
                 />
               </Flex>{" "}
-              <Flex gap="8px" align="center" justify="flex-end">
+              <Flex
+                gap="8px"
+                align="center"
+                className="flex-end"
+                justify="flex-end"
+              >
                 <SmokeFreeIcon style={{ fontSize: "20px" }} />
                 <Text
                   whiteSpace="nowrap"

@@ -120,6 +120,9 @@ export const GridLayout = styled.div`
   @media screen and (max-width: 443px) {
     &.stay_details_grid {
       grid-template-columns: 1fr;
+      .flex-end {
+        justify-content: flex-start !important;
+      }
     }
   }
 `;
@@ -278,7 +281,6 @@ export const MapBoxTag = styled.div`
   background-color: var(--color-light-gray);
   border-radius: 20px;
   margin-bottom: 35px;
-  
 `;
 
 export const ButtonBtn = styled.div`

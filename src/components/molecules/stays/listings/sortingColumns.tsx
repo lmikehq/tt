@@ -14,6 +14,7 @@ import { ttColors } from "@/lib/theme/colors";
 import styled from "styled-components";
 import PriceAlerts from "../components/priceAlerts";
 import FavoriteHotels from "../components/favoriteHotels";
+import Input from "@/components/atoms/input";
 
 const marks = [
   {
@@ -218,19 +219,7 @@ function SortingColumns() {
           <LuSearch color="#929292" size={20} />
         </SearchInputAsString> */}
           <span style={{ position: "relative" }}>
-            <input
-              type="text"
-              placeholder="Search for hotels"
-              style={{
-                width: "100%",
-                padding: "11px",
-                border: `1px solid ${ttColors.gray}`,
-                borderRadius: "5px",
-                outline: "none",
-                fontSize: "16px",
-                background: "transparent",
-              }}
-            />
+            <Input placeholder="Search for hotels" />
             <LuSearch
               color="#929292"
               size={20}
@@ -238,7 +227,7 @@ function SortingColumns() {
                 float: "right",
                 position: "absolute",
                 right: "10px",
-                top: "2px",
+                top: "12px",
               }}
             />
           </span>

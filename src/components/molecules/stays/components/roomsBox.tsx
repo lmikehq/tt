@@ -87,8 +87,7 @@ const MobileSliderSettings = {
   autoplay: false,
 };
 
-// PRICE FORMAT
-const formatPrice = (price: number) => `₦ ${price.toLocaleString()}`;
+
 
 interface Room {
   name: string;

@@ -249,7 +249,7 @@ function GalleryBox() {
                     <img
                       style={{
                         width: "100%",
-                        // maxHeight: "550px",
+                        maxHeight: "550px",
                         objectFit: "cover",
                         borderRadius: "12px",
                       }}
