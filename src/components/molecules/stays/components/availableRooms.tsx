@@ -113,6 +113,7 @@ const rooms: Room[] = [
         ],
     },
 ];
+
 function AvailableRooms() {
     const { isMobile } = useScreenResolution();
 
