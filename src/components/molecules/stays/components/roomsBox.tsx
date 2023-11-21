@@ -51,6 +51,11 @@ import {
   BtnText,
 } from "./styles";
 import { styled } from "@mui/material/styles";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
+import { Span } from "../view/styles";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -145,7 +150,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
         <GridLayout>
           {!isMobile ? (
             <ImgBox>
-              <LargeImg>
+              <LargeImg className="img_img">
                 <img
                   style={{
                     width: "100%",
@@ -181,26 +186,27 @@ function RoomBox({ room, index }: RoomBoxProps) {
                     id="favorite-hotels-checkbox"
                   />
                 </FavoriteBox>
-                <ControlBtn>
-                  <Flex justify="space-between">
-                    <ArrowBackIosIcon
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const previousImage = getPreviousImage(selectedImage);
-                        handleImageChange(previousImage);
-                      }}
-                    />
-                    <ArrowForwardIosIcon
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const nextImage = getNextImage(selectedImage);
-                        handleImageChange(nextImage);
-                      }}
-                    />
-                  </Flex>
-                </ControlBtn>
               </LargeImg>
-              <SmallImg className="img_small">
+              <ControlBtn className="control_gallery room_img">
+                <Flex justify="space-between">
+                  <ArrowBackIosIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      const previousImage = getPreviousImage(selectedImage);
+                      handleImageChange(previousImage);
+                    }}
+                  />
+                  <ArrowForwardIosIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      const nextImage = getNextImage(selectedImage);
+                      handleImageChange(nextImage);
+                    }}
+                  />
+                </Flex>
+              </ControlBtn>
+
+              <SmallImg className="img_small img_img_small">
                 <Slider {...SliderSettings} className="">
                   {[room.image, ...room.images].map((x) => (
                     <SmallSlideImg
@@ -425,12 +431,20 @@ function RoomBox({ room, index }: RoomBoxProps) {
               <RowFive>
                 <FlexBox>
                   <Flex direction="column">
-                    <Text
-                      type="h2"
-                      text={`${formatPrice(room.price)}`}
-                      weight={"bold"}
-                      color="var(--text-dull-color)"
-                    ></Text>
+                    <Flex gap="5px" align="center">
+                      <Text
+                        color="var(--text-dull-color)"
+                        type="h2"
+                        weight={"bold"}
+                        text={getCurrency()}
+                      />
+                      <Text
+                        color="var(--text-dull-color)"
+                        type="h2"
+                        weight={"bold"}
+                        text={formatPriceWithoutCurrency(room.price)}
+                      />
+                    </Flex>
                     <Text
                       type="p"
                       text={`for a night (${2} guest)`}
