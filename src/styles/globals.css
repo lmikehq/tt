@@ -177,7 +177,11 @@ body {
   width: 100% !important;
 }
 #mui_simple_select {
-  max-width: 100px !important;
+  max-width: 100px;
+}
+.mui_select {
+  max-width: auto !important;
+  width: 100%;
 }
 @media screen and (max-width: 900px) {
   #mui_simple_select {
