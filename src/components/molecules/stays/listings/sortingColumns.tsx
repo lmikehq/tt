@@ -12,8 +12,8 @@ import { Rating } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import styled from "styled-components";
-import PriceAlerts from "../components/PriceAlerts";
-import FavoriteHotels from "../components/FavoriteHotels";
+import PriceAlerts from "../components/priceAlerts";
+import FavoriteHotels from "../components/favoriteHotels";
 
 const marks = [
   {
