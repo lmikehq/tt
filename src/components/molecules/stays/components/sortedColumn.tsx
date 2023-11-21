@@ -10,7 +10,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MapIcon from "@mui/icons-material/Map";
 import { SmallSpan } from "./styles";
 import { FilterModal, SortModal } from "../listings/stayModal";
-import SortingColumns from "../listings/SortingColumns";
+import SortingColumns from "../listings/sortingColumns";
 
 type sortProps = {
   results: number;

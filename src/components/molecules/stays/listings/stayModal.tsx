@@ -9,7 +9,7 @@ import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../radio";
 import CheckBox from "../../checkbox";
-import SortingColumns from "./SortingColumns";
+import SortingColumns from "./sortingColumns";
 
 const ModalWrapper = styled.div`
   width: 100%;
