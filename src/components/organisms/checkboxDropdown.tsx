@@ -11,7 +11,11 @@ import styled from "styled-components";
 const CheckBoxSelect = styled.div`
   .MuiSelect-root {
     width: 100% !important;
+    position: relative;
     outline-color: var(--primary-color) !important;
+  }
+  .MuiSelect-select {
+    position: relative;
   }
 `;
 
@@ -33,7 +37,6 @@ interface CheckboxDropdownProps {
   border?: string;
   borderColor?: string;
 }
-
 
 const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({
   label,
@@ -57,16 +60,25 @@ const CheckboxDropdown: React.FC<CheckboxDropdownProps> = ({
 
   return (
     <CheckBoxSelect>
-      <FormControl style={{ height: "20px", width: "100%" }}>
-        <InputLabel id="demo-multiple-checkbox-label">{label}</InputLabel>
+      <FormControl className="formControl_width">
+        <InputLabel id="mui_simple_select">{label}</InputLabel>
         <Select
-          labelId="demo-multiple-checkbox-label"
+          labelId="mui_simple_select"
+          id="mui_simple_select"
           multiple
           value={selectedValues}
           onChange={handleChange}
           input={<OutlinedInput label={label} />}
           renderValue={(selected) => selected.join(", ")}
           className={className}
+          sx={{
+            width: width,
+            height: height,
+            padding: padding,
+            border: border,
+            color: color,
+            borderColor: borderColor,
+          }}
         >
           {options.map((option) => (
             <MenuItem key={option.value} value={option.value}>

@@ -33,8 +33,13 @@ function Booking() {
         <Span style={{ width: "fit-content" }}>
           <Link href="/stay/view">
             <Flex align="center" gap="10px">
-              <ArrowBackIosNewIcon style={{ fontSize: "18px" }} />
-              <Text weight={600} type="h3" text="Secure your booking" />
+              <ArrowBackIosNewIcon style={{ fontSize: "19px" }} />
+              <Text
+                weight={600}
+                size={20}
+                type="h3"
+                text="Secure your booking"
+              />
             </Flex>
           </Link>
         </Span>
@@ -57,6 +62,7 @@ function Booking() {
               width="100%"
               margin=".5rem 0"
               color="white"
+              padding="10px"
               background={
                 submissionState.loading ? ttColors.dark : ttColors.dark
               }
@@ -69,7 +75,7 @@ function Booking() {
                   type="p"
                   text="Complete Booking"
                   color={"white"}
-                  size={isMobile ? "16px" : "20px"}
+                  size="16px"
                 />
               )}
             </Button>

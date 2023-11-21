@@ -143,6 +143,12 @@ const HeroImageGrid = () => {
                   }}
                 />
                 <Span
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      gallery: true,
+                    }))
+                  }
                   style={{
                     position: "absolute",
                     right: "20px",
@@ -208,7 +214,7 @@ const HeroImageGrid = () => {
           </Span>
         </MobileImageBox>
       )}
-      {/* SEARCH MODAL*/}
+      {/* GALLERY MODAL*/}
       <GalleryModal
         open={open.gallery}
         handleClose={() =>

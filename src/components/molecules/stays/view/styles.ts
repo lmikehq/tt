@@ -252,6 +252,9 @@ export const Span = styled.div`
     .recently {
       flex-direction: row;
     }
+    .wrap_text {
+      white-space: nowrap !important;
+    }
   }
   @media screen and (max-width: 480px) {
     .choose_img_text {
@@ -271,13 +274,11 @@ export const Span = styled.div`
 
 export const MapBoxTag = styled.div`
   width: 100%;
-  height: auto;
+  height: 350px;
   background-color: var(--color-light-gray);
   border-radius: 20px;
   margin-bottom: 35px;
-  @media screen and (max-width: 900px) {
-    height: 100%;
-  }
+  
 `;
 
 export const ButtonBtn = styled.div`
@@ -305,10 +306,7 @@ export const ButtonBtn = styled.div`
 `;
 export const BtnText = styled.div`
   white-space: nowrap;
-  font-size: 17px;
-  @media screen and (max-width: 545px) {
-    font-size: 16px;
-  }
+  font-size: 16px;
 `;
 
 export const BtnDetails = styled.div`

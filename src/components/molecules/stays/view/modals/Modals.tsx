@@ -17,6 +17,7 @@ import SearchBox from "./components/SearchBox";
 import GalleryBox from "./components/GalleryBox";
 import SectionLayout from "@/components/templates/SectionLayout";
 import ReviewListBox from "./components/ReviewListBox";
+import FilterBox from "./components/FilterBox";
 
 const ModalCenter = styled.div`
   display: flex;
@@ -28,7 +29,8 @@ const ModalCenter = styled.div`
 const ModalScroll = styled.div`
   width: 900px;
   height: 500px;
-  overflow: hidden;
+  // overflow: hidden;
+  background: white;
   border-radius: 20px;
   &.map_scroll,
   &.gallery {
@@ -37,6 +39,7 @@ const ModalScroll = styled.div`
     border-radius: 0px;
   }
   &.amenities_scroll {
+    overflow: hidden;
     height: 600px !important;
   }
   &.search_box {
@@ -50,13 +53,19 @@ const ModalScroll = styled.div`
 `;
 const ModalWrapper = styled.div`
   height: 500px;
-  overflow-y: auto;
-  background: white;
+  // overflow-y: auto;
+  // overflow-x: hidden;
+
   &.map_wrapper,
   &.gallery_modal {
     height: 100%;
   }
+  &.review_wrapper,
+  &.gallery_modal {
+    overflow-y: auto;
+  }
   &.amenities_modal {
+    overflow-y: auto;
     height: 600px !important;
   }
   @media screen and (max-width: 900px) {
@@ -175,6 +184,50 @@ export const AmenitiesModal = ({
   );
 };
 
+// FILTER MODAL
+export const FilterModal = ({
+  open,
+  handleClose,
+}: {
+  open: boolean;
+  handleClose: () => void;
+}) => {
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <ModalCenter>
+        <ModalScroll className="map_scroll">
+          <ModalWrapper className="map_wrapper">
+            <Flex
+              padding="1rem"
+              align="center"
+              gap="20px"
+              justify="space-between"
+            >
+              <Text type="h3" text="Filters" weight={600} />{" "}
+              <CloseIcon
+                style={{ fontSize: "20px", cursor: "pointer" }}
+                onClick={handleClose}
+              />
+            </Flex>
+            <Span style={{ padding: "15px" }}>
+              <FilterBox />
+            </Span>
+          </ModalWrapper>
+        </ModalScroll>
+      </ModalCenter>
+    </Modal>
+  );
+};
+
+// TEXT TRUNCATE
+function truncateText(text: string, maxWords: number): string {
+  const words: string[] = text.split(" ");
+  if (words.length <= maxWords) {
+    return text;
+  }
+  return words.slice(0, maxWords).join(" ") + " ...";
+}
+
 export const ChangeSearchModal = ({
   open,
   handleClose,
@@ -182,6 +235,8 @@ export const ChangeSearchModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  let HotelName = "Hotels available in New York from 24 - 25 October 2023";
+
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -197,7 +252,7 @@ export const ChangeSearchModal = ({
               <Text
                 type="h1"
                 size={23}
-                text="Hotels available in New York from 24 - 25 October 2023"
+                text={`${truncateText(HotelName, 5)}`}
                 weight={600}
               />
               <CloseIcon
@@ -249,14 +304,12 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
   open,
   handleClose,
   reviews,
-  hiddenReviews,
-  toggleReviewVisibility,
 }) => {
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
-        <ModalScroll>
-          <ModalWrapper>
+        <ModalScroll className="review_scroll">
+          <ModalWrapper className="review_wrapper">
             <Flex padding="1rem" align="center" gap="20px">
               <Flex direction="column">
                 <Text type="h4" text="Reviews" weight={600} />

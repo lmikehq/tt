@@ -6,8 +6,8 @@ import Pagination from "@mui/material/Pagination";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import MidListFilter from "./MidListFilter";
 import SortedRoomsTab from "./SortedRoomsTab";
-import RoomBox from "./RoomsBox";
-import RoomSlider from "./RoomSlider";
+import RoomBox from "./roomsBox";
+import RoomSlider from "./roomSlider";
 
 
 interface Room {

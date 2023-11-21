@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, GridLayout, Span } from "../view/styles";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
@@ -9,8 +9,12 @@ import ZoomInMapIcon from "@mui/icons-material/ZoomInMap";
 import BedIcon from "@mui/icons-material/Bed";
 import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
 import CollectionsIcon from "@mui/icons-material/Collections";
+import { GalleryModal } from "../view/modals/Modals";
 
 function HotelDetail() {
+  const [open, setOpen] = useState({
+    gallery: false,
+  });
   return (
     <Container className="hotel_details_container">
       <Span style={{ marginBottom: "15px" }}>
@@ -22,6 +26,12 @@ function HotelDetail() {
               style={{ width: "100%", height: "auto" }}
             />
             <Span
+              onClick={() =>
+                setOpen((prev) => ({
+                  ...prev,
+                  gallery: true,
+                }))
+              }
               style={{
                 position: "absolute",
                 right: "10px",
@@ -30,6 +40,7 @@ function HotelDetail() {
                 backgroundColor: "var(--secondary-color)",
                 padding: "8px",
                 borderRadius: "20px",
+                cursor: "pointer",
               }}
             >
               <Flex align="center" gap="5px">
@@ -39,6 +50,17 @@ function HotelDetail() {
             </Span>
           </Span>
         </Flex>
+
+        {/* GALLERY MODAL*/}
+        <GalleryModal
+          open={open.gallery}
+          handleClose={() =>
+            setOpen((prev) => ({
+              ...prev,
+              gallery: false,
+            }))
+          }
+        />
         <Span style={{ padding: "10px 25px" }}>
           <Flex direction="column" styles={{ marginBottom: "10px" }}>
             <Text type="h2" weight={600} text="The Ritz London Hotel"></Text>

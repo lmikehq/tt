@@ -152,6 +152,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                     height: "100%",
                     objectFit: "cover",
                   }}
+                  className="img"
                   src={selectedImage || room.image}
                   alt={room.name}
                 />

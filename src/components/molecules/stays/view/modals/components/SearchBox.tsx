@@ -53,7 +53,9 @@ function SearchBox() {
           <Flex
             direction="column"
             gap=".5rem"
-            styles={{ marginBottom: "1.2rem" }}
+            styles={{
+              marginBottom: "1.2rem",
+            }}
           >
             <Text type="label" size={16} text="Check-Out" weight={400} />
             <DatePicker placeholder="Select Date" onChange={(e) => {}} />
@@ -87,12 +89,7 @@ function SearchBox() {
             {submissionState.loading ? (
               <Spinner size="40px" fill={"white"} />
             ) : (
-              <Text
-                type="p"
-                text="Search Again"
-                color={"white"}
-                size={isMobile ? "16px" : "20px"}
-              />
+              <Text type="p" text="Search Again" color={"white"} size="16px" />
             )}
           </Button>
         </Flex>

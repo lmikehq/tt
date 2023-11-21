@@ -112,9 +112,15 @@ export const LargeImg = styled.div`
   overflow: hidden;
   position: relative;
   padding: -10px 0px;
+  @media screen and (max-width: 1300px) {
+    .img {
+      maxheight: "250px !important";
+    }
+  }
   &.img_large_gallery {
     width: 100%;
     // height: 650px;
+    position: relative;
     overflow: hidden !important;
     border-radius: 12.5px !important;
     margin-bottom: 20px;
@@ -122,6 +128,9 @@ export const LargeImg = styled.div`
   z-index: 1;
   @media screen and (max-width: 900px) {
     border-radius: 12.5px;
+    .img {
+      height: 100%;
+    }
   }
 `;
 export const ImgWidth = styled.div`
