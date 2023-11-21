@@ -8,12 +8,12 @@ import { BsBoxArrowUp } from "react-icons/bs";
 import AdminPostImg from "../../../../../public/assets/images/blog/adminPost.png";
 import User from "../../../../../public/assets/images/blog/user.png";
 import BlogImg from "../../../../../public/assets/images/blog/blogImg.png";
-import { BlogArticle } from "./blogArticle";
-import { BlogArticleMini } from "./blogArticleMini";
-import { RelatedTopic } from "./relatedTopic";
 import CustomTab from "@/components/atoms/tabs";
 import BlogTab from "@/components/atoms/blogTab";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { BlogArticleMini } from "@/components/molecules/blog/component/blogArticleMini";
+import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
+import { RelatedTopic } from "@/components/molecules/blog/component/relatedTopic";
 
 export const SearchResult = () => {
   const { isMobile } = useScreenResolution();
@@ -51,9 +51,9 @@ export const SearchResult = () => {
   return (
     <>
       <Flex gap="50px" direction={isMobile ? "column" : "row"}>
-        <Flex direction="column" width="65%" gap="1rem">
-            <BlogTab tabItems={tabItems} addColor width={true} />
-         
+        <Flex direction="column" width="65%" gap="2rem">
+          <BlogTab tabItems={tabItems} addColor width={true} />
+
           <BlogArticleMini />
           <br />
 
@@ -77,12 +77,12 @@ export const SearchResult = () => {
               size="20px"
               weight={600}
               styles={{
-                justifyContent: "flex-start",
+                justifyContent: "center",
+                alignContent: "center",
               }}
             />
 
             <BlogArticle />
-
             <BlogArticle />
             <BlogArticle />
             <BlogArticle />

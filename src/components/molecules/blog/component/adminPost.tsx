@@ -181,7 +181,7 @@ export const AdminPost = () => {
         </Flex>
 
         <Flex width={isMobile ? "100%" : "40%"} direction="column" justify="flex-start" gap="3.5rem">
-          <Flex direction="column" gap="3rem">
+          <Flex direction="column" gap={isMobile ? "2rem" : "3rem"}>
             <Text
               type="h2"
               text="Recommend Articles"

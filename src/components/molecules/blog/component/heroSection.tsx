@@ -4,13 +4,17 @@ import Flex from "@/components/templates/flex";
 import { CiSearch } from "react-icons/ci";
 import styled from "styled-components";
 import { AdminPost } from "./adminPost";
-import { SearchResult } from "./searchResult";
 import { useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { LiaTimesSolid } from "react-icons/lia";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { SearchResult } from "@/app/blog/searchResult/page";
 
 const Box = styled.div`
   width: 886px;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const SearchArea = styled.div`
@@ -18,7 +22,6 @@ const SearchArea = styled.div`
   width: 652px;
   border: 1px solid #b6b6b6;
   border-radius: 8px;
-  margin-top: 1rem;
   background-color: #ffffff;
   top: 30px;
   height: 72px;
@@ -26,9 +29,16 @@ const SearchArea = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0px 23px;
-  margin: 4rem 0rem;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+  margin: 3rem 0rem 6rem;
+
+  &:focus-within {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  @media (max-width: 900px) {
+    width: 384px;
+  }
 `;
 
 const SearchResultsContainer = styled.div`
@@ -46,6 +56,10 @@ const SearchResultsContainer = styled.div`
   border-top-left-radius: 0;
   z-index: 999;
   padding: 0px 23px;
+
+  @media (min-width: 900px){
+    width: 100%;
+  }
 `;
 
 const SearchResultItem = styled.div`
@@ -58,17 +72,22 @@ const SearchResultItem = styled.div`
 `;
 
 export const BlogHeroSection = () => {
+  const { isMobile } = useScreenResolution();
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchTriggered, setSearchTriggered] = useState(false);
   const [searchResultText, setSearchResultText] = useState("");
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [isSearchResultsVisible, setSearchResultsVisible] = useState(false);
+
+  // const handleToggleSearchResults = () => {
+  //   setSearchResultsVisible(!isSearchResultsVisible);
+  // };
 
   const handleSearch = () => {
     setSearchTriggered(true);
     setSearchResultText(
-      `Search Results for ${
-        searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)
-      }.`
+      searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)
     );
 
     if (searchTerm && !recentSearches.includes(searchTerm)) {
@@ -79,12 +98,23 @@ export const BlogHeroSection = () => {
   const handleRecentSearch = (term: string) => {
     setSearchTerm(term);
     handleSearch();
+    setSearchResultsVisible(false);
   };
 
   const handleClearRecentSearch = (index: number) => {
     const updatedSearches = [...recentSearches];
     updatedSearches.splice(index, 1);
     setRecentSearches(updatedSearches);
+
+    setSearchResultsVisible(updatedSearches.length > 0);
+  };
+
+  const handleInputFocus = () => {
+    setSearchResultsVisible(true);
+  };
+
+  const handleInputBlur = () => {
+    setSearchResultsVisible(false);
   };
 
   const renderContent = () => {
@@ -102,7 +132,7 @@ export const BlogHeroSection = () => {
           type="p"
           text="Blog Stories"
           weight={400}
-          size={24}
+          size={isMobile ? 16 : 24}
           color="#06062A"
           styles={{ lineHeight: "36px" }}
         />
@@ -112,17 +142,18 @@ export const BlogHeroSection = () => {
             type="h1"
             text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY"
             weight={700}
-            size={64}
-            styles={{ lineHeight: "96px", textAlign: "center" }}
+            size={isMobile ? 28 : 64}
+            styles={{ lineHeight: isMobile ? "42px" : "96px", textAlign: "center" }}
+            width={isMobile ? "384px" : "886px"}
           />
         </Box>
 
-        <SearchArea>
+        <SearchArea onFocus={handleInputFocus} onBlur={handleInputBlur}>
           <Input
             placeholder="Search for Blog Stories"
             styles={{ border: "none", padding: "0px" }}
             color="#929292"
-            width="575px"
+            width={isMobile ? "300px" : "575px"}
             size="18px"
             weight="400px"
             value={searchTerm}
@@ -133,7 +164,7 @@ export const BlogHeroSection = () => {
               }
             }}
           />
-          {recentSearches.length > 0 && (
+          {isSearchResultsVisible && recentSearches.length > 0 && (
             <SearchResultsContainer>
               {recentSearches.map((term, index) => (
                 <SearchResultItem
@@ -144,9 +175,9 @@ export const BlogHeroSection = () => {
                     <AiOutlineClockCircle />
                     <span>{term}</span>
                   </Flex>
-                    <LiaTimesSolid
-                      onClick={() => handleClearRecentSearch(index)}
-                    />
+                  <LiaTimesSolid
+                    onClick={() => handleClearRecentSearch(index)}
+                  />
                 </SearchResultItem>
               ))}
             </SearchResultsContainer>
@@ -159,9 +190,15 @@ export const BlogHeroSection = () => {
             style={{ cursor: "pointer" }}
           />
         </SearchArea>
-        {/* </Flex> */}
       </Flex>
-      <Text type="h2" text={searchResultText} color="#929292" size="40px" />
+      {searchResultText && (
+        <h2
+          style={{ fontSize: "40px", fontWeight: "600", marginBottom: "4rem" }}
+        >
+          <span style={{ color: "#929292" }}>Search Results for </span>
+          <strong style={{ color: "#121212" }}>{searchResultText}.</strong>
+        </h2>
+      )}
       {renderContent()}
     </Flex>
   );

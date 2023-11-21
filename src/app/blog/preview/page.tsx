@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "@/components/atoms/image";
 import PreviewImg from "../../../../public/assets/images/blog/preview.png";
 import Text from "@/components/atoms/text";
@@ -9,54 +11,138 @@ import User from "../../../../public/assets/images/blog/user.png";
 import ReviewUser from "../../../../public/assets/images/blog/reviewUser.png";
 import ReviewOne from "../../../../public/assets/images/blog/review1.png";
 import ReviewTwo from "../../../../public/assets/images/blog/review2.png";
-import BlogTab from "@/components/atoms/blogTab";
-import Link from "@/components/atoms/link";
-import { BlogArticleMini } from "@/components/molecules/blog/component/blogArticleMini";
-import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
 import { GoDotFill } from "react-icons/go";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import SectionLayout from "@/components/templates/SectionLayout";
+import styled from "styled-components";
 
-export const Preview = () => {
+const Box = styled.div`
+  width: 886px;
+
+  @media (max-width: 768px) {
+    width: 384px;
+  }
+`;
+
+const Preview = () => {
   const { isMobile } = useScreenResolution();
 
   return (
-    <>
+    <SectionLayout>
+      <Flex
+        direction="column"
+        justify="flex-start"
+        align="center"
+        padding="2rem 0px"
+        margin={isMobile ? "0px 0px 2rem" : "3rem 0px 4rem"}
+      >
+        <Text
+          type="p"
+          text="Blog Stories"
+          weight={400}
+          size={isMobile ? 16 : 24}
+          color="#06062A"
+          styles={{ lineHeight: "36px" }}
+        />
+
+        <Box>
+          <Text
+            type="h1"
+            text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY"
+            weight={700}
+            size={isMobile ? 32 : 64}
+            styles={{
+              lineHeight: isMobile ? "48px" : "96px",
+              textAlign: "center",
+            }}
+          />
+        </Box>
+      </Flex>
       <Flex direction="column" gap="30px">
         <Image
           src={PreviewImg}
           alt=""
-          height={431}
+          height={isMobile ? 268 : 431}
           styles={{ borderRadius: "8px" }}
         />
 
         <Text
           type="h1"
           text="How much money would you need to retire, travel and live comfortably?"
-          size="45px"
+          size={isMobile ? "20px" : "45px"}
           weight="700"
         />
 
         <Flex justify="space-between">
           <Flex justify="flex-start" align="center" gap="10px">
-            <Image src={ReviewUser} width={78} height={78} alt="" />
-            <Flex justify="flex-start" direction="column" gap="5px">
-              <Text
-                type="h3"
-                text="Seun Adebayo"
-                weight={600}
-                size="20px"
-                color="#000000"
-              />
-              <Flex justify="flex-start" align="center" gap="10px">
+            <Image
+              src={ReviewUser}
+              width={isMobile ? 54 : 78}
+              height={isMobile ? 54 : 78}
+              alt=""
+            />
+            <Flex justify="flex-start" direction="column" gap="10px">
+              <Flex justify="flex-start" direction="column" gap="5px">
+                <Text
+                  type="h3"
+                  text="Seun Adebayo"
+                  weight={600}
+                  size={isMobile ? "18px" : "20px"}
+                  color="#000000"
+                />
                 <Flex justify="flex-start" align="center" gap="10px">
-                  <Text
-                    type="p"
-                    text="Thrillers Travels Admin"
-                    weight={400}
-                    size="16px"
-                    color="#929292"
-                  />
-                  <GoDotFill color="#929292" size="6px" />
+                  <Flex justify="flex-start" align="center" gap="10px">
+                    <Text
+                      type="p"
+                      text="Thrillers Travels Admin"
+                      weight={400}
+                      size="16px"
+                      color="#929292"
+                    />
+                    <GoDotFill color="#929292" size="6px" />
+                    <Text
+                      type="p"
+                      text="5mins read"
+                      weight={400}
+                      size="16px"
+                      color="#929292"
+                      styles={{ display: isMobile ? "none" : "flex" }}
+                    />
+                    <GoDotFill
+                      color="#929292"
+                      size="6px"
+                      style={{ display: isMobile ? "none" : "flex" }}
+                    />
+                    <Text
+                      type="p"
+                      text="Sept 25"
+                      weight={400}
+                      size="16px"
+                      color="#929292"
+                    />
+                  </Flex>
+
+                  <Flex
+                    justify="flex-end"
+                    align="center"
+                    gap="10px"
+                    styles={{ display: isMobile ? "none" : "flex" }}
+                  >
+                    <LiaThumbsUpSolid color="#929292" size="24px" />
+                    <Text type="p" text="1.3k" color="#929292" />
+                    <LiaThumbsDown color="#929292" size="24px" />
+                    <BsBoxArrowUp color="#929292" size="20px" />
+                  </Flex>
+                </Flex>
+                <Text
+                  type="h3"
+                  text="Entertainment"
+                  size="18px"
+                  weight={400}
+                  color="#0D00A0"
+                  styles={{ display: isMobile ? "none" : "flex" }}
+                />
+                <Flex gap="5px" align="center" styles={{display: isMobile  ? "flex" : "none"}}>
                   <Text
                     type="p"
                     text="5mins read"
@@ -66,27 +152,25 @@ export const Preview = () => {
                   />
                   <GoDotFill color="#929292" size="6px" />
                   <Text
-                    type="p"
-                    text="Sept 25"
+                    type="h3"
+                    text="Entertainment"
+                    size="18px"
                     weight={400}
-                    size="16px"
-                    color="#929292"
+                    color="#0D00A0"
                   />
                 </Flex>
-                <Flex justify="flex-end" align="center" gap="10px">
-                  <LiaThumbsUpSolid color="#929292" size="24px" />
-                  <Text type="p" text="1.3k" color="#929292" />
-                  <LiaThumbsDown color="#929292" size="24px" />
-                  <BsBoxArrowUp color="#929292" size="20px" />
-                </Flex>
               </Flex>
-              <Text
-                type="h3"
-                text="Entertainment"
-                size="18px"
-                weight={400}
-                color="#0D00A0"
-              />
+              <Flex
+                justify="flex-start"
+                align="flex-start"
+                gap="10px"
+                styles={{ display: isMobile ? "flex" : "none" }}
+              >
+                <LiaThumbsUpSolid color="#929292" size="24px" />
+                <Text type="p" text="1.3k" color="#929292" />
+                <LiaThumbsDown color="#929292" size="24px" />
+                <BsBoxArrowUp color="#929292" size="20px" />
+              </Flex>
             </Flex>
           </Flex>
         </Flex>
@@ -103,109 +187,97 @@ export const Preview = () => {
             <Text
               type="h3"
               text="Determining Your Retirement Goals"
-              size="22px"
+              size={isMobile ? "20px" : "22px"}
               color="#000000"
               weight={600}
             />
             <Text
               type="p"
               text="Before diving into the financial details, it's crucial to define your retirement goals. What kind of lifestyle do you envision during retirement? Here are a few questions to consider:"
-              size="18px"
+              size={isMobile ? "16.5px" : "18px"}
               color="#000000"
               weight={400}
             />
             <ol
-              style={{ display: "flex", gap: "20px", flexDirection: "column" }}
+              style={{
+                display: "flex",
+                gap: "20px",
+                flexDirection: "column",
+                padding: "0px .9rem",
+              }}
             >
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Travel Plans:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Do you want to travel extensively, exploring new destinations each year?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Travel Plans:</span>
+                  &nbsp;Do you want to travel extensively, exploring new
+                  destinations each year?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Hobbies and Interests:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;What hobbies or interests do you plan to pursue, and how much will they cost?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>
+                    Hobbies and Interests:
+                  </span>
+                  &nbsp;What hobbies or interests do you plan to pursue, and how
+                  much will they cost?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Living Arrangements:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Will you downsize, move to a different location, or stay in your current home?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>
+                    Living Arrangements:
+                  </span>
+                  &nbsp;Will you downsize, move to a different location, or stay
+                  in your current home?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Healthcare:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;How will you cover healthcare costs during retirement?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Healthcare:</span>
+                  &nbsp;How will you cover healthcare costs during retirement?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Timeline:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;At what age do you plan to retire, and how many years do you expect to live in retirement?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Timeline:</span>
+                  &nbsp;At what age do you plan to retire, and how many years do
+                  you expect to live in retirement?
+                </p>
               </li>
             </ol>
           </Flex>
@@ -214,91 +286,86 @@ export const Preview = () => {
             <Text
               type="h3"
               text="Estimating Your Retirement Expenses"
-              size="22px"
+              size={isMobile ? "20px" : "22px"}
               color="#000000"
               weight={600}
             />
             <Text
               type="p"
               text="To determine how much money you'll need, you must estimate your retirement expenses. These expenses can be broadly categorized into:"
-              size="18px"
+              size={isMobile ? "16.5px" : "18px"}
               color="#000000"
               weight={400}
             />
             <ol
-              style={{ display: "flex", gap: "20px", flexDirection: "column" }}
+              style={{
+                display: "flex",
+                gap: "20px",
+                flexDirection: "column",
+                padding: "0px .9rem",
+              }}
             >
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Basic Living Expenses:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;This includes housing, utilities, groceries, transportation, and insurance. Consider inflation when projecting these costs."
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>
+                    Basic Living Expenses:
+                  </span>
+                  &nbsp;This includes housing, utilities, groceries,
+                  transportation, and insurance. Consider inflation when
+                  projecting these costs.
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Travel and Leisure Expenses:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Calculate an annual budget for travel, hobbies, dining out, and entertainment."
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>
+                    Travel and Leisure Expenses:
+                  </span>
+                  &nbsp;Calculate an annual budget for travel, hobbies, dining
+                  out, and entertainment.
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Healthcare Costs:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Estimate healthcare expenses, including insurance premiums, deductibles, and potential long-term care costs."
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Healthcare Costs:</span>
+                  &nbsp;Estimate healthcare expenses, including insurance
+                  premiums, deductibles, and potential long-term care costs.
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Taxes:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Understand how taxes will impact your retirement income, as it may vary based on your income sources (e.g., Social Security, pensions, investments)."
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Taxes:</span>
+                  &nbsp;Understand how taxes will impact your retirement income,
+                  as it may vary based on your income sources (e.g., Social
+                  Security, pensions, investments).
+                </p>
               </li>
             </ol>
           </Flex>
@@ -307,125 +374,113 @@ export const Preview = () => {
             <Text
               type="h3"
               text="Determining Your Retirement Goals"
-              size="22px"
+              size={isMobile ? "20px" : "22px"}
               color="#000000"
               weight={600}
             />
             <Text
               type="p"
               text="Before diving into the financial details, it's crucial to define your retirement goals. What kind of lifestyle do you envision during retirement? Here are a few questions to consider:"
-              size="18px"
+              size={isMobile ? "16.5px" : "18px"}
               color="#000000"
               weight={400}
             />
             <ol
-              style={{ display: "flex", gap: "20px", flexDirection: "column" }}
+              style={{
+                display: "flex",
+                gap: "20px",
+                flexDirection: "column",
+                padding: "0px .9rem",
+              }}
             >
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Travel Plans:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Do you want to travel extensively, exploring new destinations each year?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Travel Plans:</span>
+                  &nbsp;Do you want to travel extensively, exploring new
+                  destinations each year?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Hobbies and Interests:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;What hobbies or interests do you plan to pursue, and how much will they cost?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>
+                    Hobbies and Interests:
+                  </span>
+                  &nbsp;What hobbies or interests do you plan to pursue, and how
+                  much will they cost?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Living Arrangements:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;Will you downsize, move to a different location, or stay in your current home?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>
+                    Living Arrangements:
+                  </span>
+                  &nbsp;Will you downsize, move to a different location, or stay
+                  in your current home?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Healthcare:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;How will you cover healthcare costs during retirement?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Healthcare:</span>
+                  &nbsp;How will you cover healthcare costs during retirement?
+                </p>
               </li>
               <li>
-                <Flex align="center" justify="flex-start">
-                  <Text
-                    type="h5"
-                    text="Timeline:"
-                    size="16px"
-                    color="#000000"
-                    weight={600}
-                  />
-                  <Text
-                    type="p"
-                    text="&nbsp;At what age do you plan to retire, and how many years do you expect to live in retirement?"
-                    size="16px"
-                    color="#000000"
-                    weight={400}
-                  />
-                </Flex>
+                <p
+                  style={{
+                    color: "#000000",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "25px",
+                  }}
+                >
+                  <span style={{ fontWeight: "600" }}>Timeline:</span>
+                  &nbsp;At what age do you plan to retire, and how many years do
+                  you expect to live in retirement?
+                </p>
               </li>
             </ol>
           </Flex>
         </Flex>
 
-        <Flex direction="column" gap="88px">
+        <Flex direction="column" gap={isMobile ? "30" : "88px"}>
           <Flex
             justify="space-between"
             direction={isMobile ? "column" : "row"}
-            gap="24px"
+            gap={isMobile ? "30px" : "24px"}
           >
             <Flex direction="column" gap="1.2rem">
               <Image
                 src={ReviewOne}
                 alt=""
-                height={398}
+                height={isMobile ? 287 : 398}
                 styles={{ borderRadius: "8px", objectFit: "cover" }}
               />
               <Flex justify="space-between" align="center">
@@ -449,19 +504,18 @@ export const Preview = () => {
                     />
                   </Flex>
                 </Flex>
-                <BiDotsHorizontalRounded size="28px" color="#040404" />
               </Flex>
               <Flex direction="column" gap="1rem">
                 <Text
                   type="h1"
                   text="Adventures in the Amazon Rainforest: Exploring Nature's Wonderland"
-                  size="26px"
+                  size={isMobile ? "20px" : "26px"}
                   weight="600"
                 />
                 <Text
                   type="p"
                   text="Delve into the heart of the Amazon rainforest, where all living biodiversity thrives. Trek through lush jungles, spot large exotic wildlife, and connect with indigenous cultures in this ultimate ..."
-                  size="18px"
+                  size={isMobile ? "16px" : "18px"}
                   weight="400"
                   color="#121212"
                 />
@@ -497,7 +551,7 @@ export const Preview = () => {
               <Image
                 src={ReviewTwo}
                 alt=""
-                height={398}
+                height={isMobile ? 287 : 398}
                 styles={{ borderRadius: "8px", objectFit: "cover" }}
               />
               <Flex justify="space-between" align="center">
@@ -527,13 +581,13 @@ export const Preview = () => {
                 <Text
                   type="h1"
                   text="Chasing Waterfalls: A Bucket List of World's Most Spectacular Falls"
-                  size="26px"
+                  size={isMobile ? "20px" : "26px"}
                   weight="600"
                 />
                 <Text
                   type="p"
                   text="Get inspired by nature's beauty as we take you on a journey to witness some of the world's most stunning waterfalls. From Angel Falls in Venezuela to Victoria Falls in Africa, these ..."
-                  size="18px"
+                  size={isMobile ? "16px" : "18px"}
                   weight="400"
                   color="#121212"
                 />
@@ -568,13 +622,13 @@ export const Preview = () => {
           <Flex
             justify="space-between"
             direction={isMobile ? "column" : "row"}
-            gap="24px"
+            gap={isMobile ? "30px" : "24px"}
           >
             <Flex direction="column" gap="1.2rem">
               <Image
                 src={ReviewOne}
                 alt=""
-                height={398}
+                height={isMobile ? 287 : 398}
                 styles={{ borderRadius: "8px", objectFit: "cover" }}
               />
               <Flex justify="space-between" align="center">
@@ -598,7 +652,6 @@ export const Preview = () => {
                     />
                   </Flex>
                 </Flex>
-                <BiDotsHorizontalRounded size="28px" color="#040404" />
               </Flex>
               <Flex direction="column" gap="1rem">
                 <Text
@@ -646,7 +699,7 @@ export const Preview = () => {
               <Image
                 src={ReviewTwo}
                 alt=""
-                height={398}
+                height={isMobile ? 287 : 398}
                 styles={{ borderRadius: "8px", objectFit: "cover" }}
               />
               <Flex justify="space-between" align="center">
@@ -670,19 +723,18 @@ export const Preview = () => {
                     />
                   </Flex>
                 </Flex>
-                <BiDotsHorizontalRounded color="#040404" size="28px" />
               </Flex>
               <Flex direction="column" gap="1rem">
                 <Text
                   type="h1"
                   text="Chasing Waterfalls: A Bucket List of World's Most Spectacular Falls"
-                  size="26px"
+                  size={isMobile ? "20px" : "26px"}
                   weight="600"
                 />
                 <Text
                   type="p"
                   text="Get inspired by nature's beauty as we take you on a journey to witness some of the world's most stunning waterfalls. From Angel Falls in Venezuela to Victoria Falls in Africa, these ..."
-                  size="18px"
+                  size={isMobile ? "16px" : "18px"}
                   weight="400"
                   color="#121212"
                 />
@@ -715,6 +767,8 @@ export const Preview = () => {
           </Flex>
         </Flex>
       </Flex>
-    </>
+    </SectionLayout>
   );
 };
+
+export default Preview;
