@@ -9,8 +9,8 @@ import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MapIcon from "@mui/icons-material/Map";
 import { SmallSpan } from "./styles";
-import { FilterModal, SortModal } from "../listings/stayModal";
 import SortingColumns from "../listings/SortingColumns";
+import { FilterModal, SortModal } from "../listings/StayModal";
 
 type sortProps = {
   results: number;

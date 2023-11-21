@@ -1,9 +1,35 @@
-import React from 'react'
+import Flex from "@components/templates/flex";
+import Section from "src/components/molecules/section";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import Box from "@mui/material/Box";
+import { useState } from "react";
+import styled from "styled-components";
+import SortedColumn from "./SortedColumn";
+import AvailableRooms from "./AvailableRooms";
 
+const SectionLayout = styled.div``;
 function RoomList() {
-	return (
-		<div>RoomList</div>
-	)
+    const { isMobile } = useScreenResolution();
+    const [results, setResults] = useState(0);
+    const [sortType, setSortType] = useState("best");
+
+    return (
+        <Box
+            sx={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "100%" : "30% 67.3%",
+                gap: "30px",
+                marginTop: "20px",
+            }}
+        >
+            <SectionLayout>
+                <SortedColumn results={results} sortType={sortType} />
+            </SectionLayout>
+            <SectionLayout>
+                <AvailableRooms />
+            </SectionLayout>
+        </Box>
+    );
 }
 
-export default RoomList
+export default RoomList;
