@@ -6,6 +6,14 @@ const SelectBox = styled.div`
   #demo-simple-select {
     outline-color: var(--primary-color) !important;
   }
+  .MuiSelect-root {
+    width: 100% !important;
+    position: relative;
+    outline-color: var(--primary-color) !important;
+  }
+  .MuiSelect-select {
+    position: relative;
+  }
 `;
 
 interface DropdownProps {
@@ -15,7 +23,9 @@ interface DropdownProps {
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
   width?: string | number;
+  minWidth?: string | number;
   height?: string | number;
+  minHeight?: string | number;
   padding?: string | number;
   color?: string;
   border?: string;
@@ -29,7 +39,9 @@ const Dropdown: React.FC<DropdownProps> = ({
   setSelectedValue,
   className,
   width,
+  minWidth,
   height,
+  minHeight,
   padding,
   color,
   border,
@@ -41,17 +53,19 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <SelectBox>
-      <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+      <InputLabel id="mui_simple_select">{label}</InputLabel>
       <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
+        labelId="mui_simple_select"
+        id="mui_simple_select"
         value={selectedValue}
         label={label}
         onChange={handleChange}
         className={className}
         sx={{
           width: width,
+          minWidth: minWidth,
           height: height,
+          minHeight: minHeight,
           padding: padding,
           border: border,
           color: color,

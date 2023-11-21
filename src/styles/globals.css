@@ -108,7 +108,6 @@ body {
 }
 
 .scroll {
- 
 }
 
 .slick_slider_room_img_img {
@@ -118,6 +117,9 @@ body {
 }
 
 /* CONTROLS */
+.MuiSelect-root {
+  position: absolute !important;
+}
 /*----- control btn -------*/
 .control_btn .next,
 .control_btn .prev {
@@ -165,6 +167,24 @@ body {
 .mui-checked.Mui-checked {
   color: var(--primary-color) !important;
 }
+
+/* MUI SELECT */
+.formControl_width {
+  width: 100% !important;
+}
+#mui_simple_select {
+  max-width: 100px !important;
+}
+@media screen and (max-width: 900px) {
+  #mui_simple_select {
+    max-width: 90% !important;
+  }
+}
+.Mui-focused {
+  outline-color: var(--primary-color);
+}
+
+/* MUI SELECT */
 
 /* PAGINATION */
 .pagination .paginationItemStyle.active {

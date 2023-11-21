@@ -29,7 +29,7 @@ const rooms: Room[] = [
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/room2.jpeg",
-      "/assets/images/topCountries/Canada.jpeg",
+      "/assets/images/stays/room3.jpg",
       "/assets/images/stays/image3.png",
       "/assets/images/stays/image2.jpg",
     ],
@@ -241,14 +241,14 @@ function GalleryBox() {
       {activeView === "slide_show" && (
         <Span className="slide_show">
           <ImgBox>
-            <Span>
+            <Span style={{ height: "100%" }}>
               <LargeImg className="img_large_gallery">
                 <Flex justify="center" width="100%">
-                  <ImgWidth>
+                  <ImgWidth style={{}}>
                     <img
                       style={{
                         width: "100%",
-                        maxHeight: "650px",
+                        maxHeight: "550px",
                         objectFit: "cover",
                         borderRadius: "12px",
                       }}

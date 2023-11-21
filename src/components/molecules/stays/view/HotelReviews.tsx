@@ -30,6 +30,7 @@ import styled from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Image from "@/components/atoms/image";
 import { ReviewModal } from "./modals/Modals";
+import Dropdown from "@/components/organisms/dropdown";
 
 const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -344,6 +345,14 @@ const reviews: Reviews[] = [
 const HotelReviews = () => {
   const { isMobile } = useScreenResolution();
 
+  // FILTERS
+  const [filters, setFilters] = useState("recommended");
+  const filtersOptions = [
+    { value: "recommended", displayValue: "Recommended" },
+    { value: "oldest", displayValue: "Oldest" },
+    { value: "newest", displayValue: "Newest" },
+  ];
+
   //=====================
   // HIDE AND SHOW REVIEW
   //=====================
@@ -407,21 +416,15 @@ const HotelReviews = () => {
                   textOverflow: "unset",
                 }}
               ></Text>
-              <select
-                name="filter"
-                className="select"
-                style={{
-                  padding: "9px",
-                  borderRadius: "6px",
-                  width: "200px",
-                  borderColor: ttColors.gray,
-                  outline: "none",
-                }}
-              >
-                <option value="recommended">Recommended</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-              </select>
+              <Dropdown
+                options={filtersOptions}
+                className="mui_select"
+                width="100%"
+                minWidth="200px"
+                height="45px"
+                selectedValue={filters}
+                setSelectedValue={setFilters}
+              />
             </Flex>
           </Flex>
         </Header>
@@ -739,7 +742,7 @@ const HotelReviews = () => {
                     }))
                   }
                 />
-                <Span style={{ marginTop: "20px" }}>
+                <Span style={{ marginTop: "0px" }}>
                   <ButtonBtn
                     onClick={() =>
                       setOpen((prev) => ({

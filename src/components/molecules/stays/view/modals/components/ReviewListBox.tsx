@@ -15,13 +15,12 @@ import { Rating } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ExpandableText } from "../../HotelReviews";
+import { Pagination } from "@mui/material";
 
 const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -192,6 +191,17 @@ const ReviewListBox: React.FC<ReviewListBoxProps> = ({ reviews }) => {
           </Span>
         );
       })}
+      <Flex justify="center" styles={{ marginTop: "40px" }}>
+        <span className="pagination">
+          <Pagination
+            className="paginationItemStyle"
+            count={10}
+            color="primary"
+            variant="outlined"
+            shape="rounded"
+          />
+        </span>
+      </Flex>
       <Span style={{ marginTop: "20px" }}>
         <ButtonBtn
           className={remainingReviews === 0 ? "btn_disable" : ""}
@@ -200,7 +210,7 @@ const ReviewListBox: React.FC<ReviewListBoxProps> = ({ reviews }) => {
             setDisplayedReviews(Math.min(reviews.length, newDisplayedReviews));
           }}
         >
-          <BtnText>Read Review ({remainingReviews})</BtnText>
+          <BtnText>Show {reviews.length} Options</BtnText>
         </ButtonBtn>
       </Span>
     </Span>

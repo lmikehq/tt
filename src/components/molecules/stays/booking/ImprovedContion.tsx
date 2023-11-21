@@ -82,7 +82,7 @@ function ImprovedCondition() {
                 options={options}
                 className="mui_select"
                 width="100%"
-                height="40px"
+                height="45px"
                 selectedValue={meal}
                 setSelectedValue={setMeal}
               />
@@ -152,7 +152,7 @@ function ImprovedCondition() {
                 options={options}
                 className="mui_select"
                 width="100%"
-                height="40px"
+                height="45px"
                 selectedValue={meal}
                 setSelectedValue={setMeal}
               />
@@ -222,7 +222,7 @@ function ImprovedCondition() {
                 options={options}
                 className="mui_select"
                 width="100%"
-                height="40px"
+                height="45px"
                 selectedValue={meal}
                 setSelectedValue={setMeal}
               />
