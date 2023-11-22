@@ -4,10 +4,10 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import styled from "styled-components";
-import AvailableRooms from "./availableRooms";
 import SortedColumn from "./sortedColumn";
 import { useSearchStays } from "@/lib/hooks/stay/search.hook";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import AvailableRooms from "./availableRooms";
 
 const SectionLayout = styled.div``;
 function RoomList() {

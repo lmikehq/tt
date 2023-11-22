@@ -15,13 +15,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import { FlexBox } from "../components/styles";
 import Filter from "./modals/components/FilterBox";
 import { useState } from "react";
-import { ChangeSearchModal } from "./modals/Modals";
+import { ChangeSearchModal, FilterModal } from "./modals/Modals";
 
 const ChooseYourRoom = () => {
   const { isMobile } = useScreenResolution();
 
   const [open, setOpen] = useState({
     search: false,
+    filter: false,
   });
   return (
     <Container>
@@ -104,15 +105,39 @@ const ChooseYourRoom = () => {
           text="Available Rooms"
           margin={"0 0 1.75rem 0"}
         />
+
+        {/* FILTER */}
         <Span>
-          <Filter />
+          {!isMobile && <Filter />}
+          {isMobile && (
+            <Span>
+              {/* FILTER MODAL*/}
+              <FilterModal
+                open={open.filter}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    filter: false,
+                  }))
+                }
+              />
+            </Span>
+          )}
         </Span>
         {isMobile && (
           <>
             <Span>
               <Flex direction="column">
                 <Span>
-                  <ButtonBtn className="filter_button">
+                  <ButtonBtn
+                    className="filter_button"
+                    onClick={() =>
+                      setOpen((prev) => ({
+                        ...prev,
+                        filter: true,
+                      }))
+                    }
+                  >
                     <Flex align="center" gap="5px">
                       <TuneIcon />
                       <Text

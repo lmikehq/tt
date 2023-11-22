@@ -1,16 +1,16 @@
 import Section from "src/components/molecules/section";
-import SortingColumns from "../listings/sortingColumns";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import { useState } from "react";
 import Button from "@/components/atoms/button";
-import { FilterModal, SortModal } from "../listings/stayModal";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MapIcon from "@mui/icons-material/Map";
 import { SmallSpan } from "./styles";
+import { FilterModal, SortModal } from "../listings/stayModal";
+import SortingColumns from "../listings/sortingColumns";
 
 type sortProps = {
   results: number;

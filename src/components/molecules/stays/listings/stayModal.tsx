@@ -1,6 +1,5 @@
 import Modal from "@mui/material/Modal";
 import React, { Dispatch, SetStateAction } from "react";
-import SortingColumns from "./sortingColumns";
 import styled from "styled-components";
 import Flex from "@/components/templates/flex";
 import Section from "../../section";
@@ -10,6 +9,7 @@ import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../radio";
 import CheckBox from "../../checkbox";
+import SortingColumns from "./sortingColumns";
 
 const ModalWrapper = styled.div`
   width: 100%;

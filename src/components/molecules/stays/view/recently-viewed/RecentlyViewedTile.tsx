@@ -63,6 +63,7 @@ const RecentlyViewedTile = () => {
                   overflow: "hidden",
                   maxHeight: "121px",
                   minWidth: "121px",
+                  maxWidth: "200px",
                 }}
               >
                 <Image
@@ -71,6 +72,7 @@ const RecentlyViewedTile = () => {
                   styles={{
                     width: "100%",
                     height: "100%",
+
                     objectFit: "cover",
                   }}
                 />

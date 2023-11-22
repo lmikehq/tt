@@ -1,5 +1,5 @@
 import Flex from "@/components/templates/flex";
-import { Container, GridLayout, Header, Span } from "./styles";
+import { Container, GridLayout, Header, MapBoxTag, Span } from "./styles";
 import Text from "@/components/atoms/text";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
@@ -8,7 +8,6 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import MapBox from "./modals/components/MapBox";
 
 const Location = () => {
   const { isMobile } = useScreenResolution();
@@ -53,9 +52,9 @@ const Location = () => {
         </Header>
         {/* MAP */}
         <Span style={{ maxHeight: "350px" }}>
-          <MapBox />
+          <MapBoxTag></MapBoxTag>
         </Span>
-        {/*  */}
+        {/* MAP */}
         <GridLayout className="amenities_grid location_grid">
           <ul style={{ listStyle: "none" }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
