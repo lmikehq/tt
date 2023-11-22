@@ -9,3 +9,10 @@ export const useSearchStays = (params: SearchStayRequestRequestQuery) => {
         queryFn: () => StaySearchService.searchStays(params),
     });
 };
+
+export const useSearchLocation = (params: SearchStayRequestRequestQuery) => {
+    return useQuery({
+        queryKey: ["user-posts", params.price],
+        queryFn: () => StaySearchService.searchStays(params),
+    });
+};
