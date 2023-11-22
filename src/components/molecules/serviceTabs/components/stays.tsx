@@ -19,6 +19,9 @@ import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
+import { formatDate } from "@/lib/utilFns";
 // STYLES
 const FlexBox = styled.div`
   display: flex;
@@ -302,13 +305,7 @@ function Stays() {
                   fontSize: "14px",
                 }}
               />
-              {open && (
-                <StaysMenu
-                  onDataChange={handleDataChange}
-                  isMobile={isMobile}
-                  data={room}
-                />
-              )}
+              {open && <StaysMenu />}
             </div>
           </ClickAwayListener>
         </Flex>
