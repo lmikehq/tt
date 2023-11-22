@@ -299,6 +299,8 @@ export const BtnText = styled.div`
   }
 `;
 
+export const Span = styled.div``;
+
 //================
 // MID LIST FILTER
 //================

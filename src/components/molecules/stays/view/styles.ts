@@ -47,8 +47,8 @@ export const Tab = styled.div`
     text-decoration: none;
   }
   .active {
-    border-bottom: 3px solid var(--primary-color);
-    color: var(--primary-color);
+    border-bottom: 3px solid #7bbbd6;
+    color: #7bbbd6;
   }
 `;
 

@@ -10,12 +10,17 @@ import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../radio";
 import CheckBox from "../../checkbox";
 import SortingColumns from "./sortingColumns";
+import DeletePriceAlertBox from "../components/DeletePriceAlertBox";
 
 const ModalWrapper = styled.div`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
   background: white;
+  &.price_wrapper {
+    width: 400px;
+    height: 350px;
+  }
 `;
 
 export const FilterModal = ({
@@ -84,6 +89,26 @@ export const SortModal = ({
                 direction="column"
               />
             </Flex>
+          </Section>
+        </ModalWrapper>
+      </Section>
+    </Modal>
+  );
+};
+
+export const PriceAlertModal = ({
+  open,
+  handleClose,
+}: {
+  open: boolean;
+  handleClose: () => void;
+}) => {
+  return (
+    <Modal open={open} onClose={handleClose}>
+      <Section>
+        <ModalWrapper className="price_wrapper">
+          <Section padding="2rem">
+            <DeletePriceAlertBox />
           </Section>
         </ModalWrapper>
       </Section>

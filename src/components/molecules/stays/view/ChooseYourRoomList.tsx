@@ -111,7 +111,7 @@ function ChooseYourRoomList() {
                         <Text type="h2" weight={600} text={room.name}></Text>
                       )}
                       <Span>
-                        <Flex align="center">
+                        <Flex align="center" gap="0">
                           <Flex gap="5px" align="center">
                             <Text
                               type="p"
@@ -126,8 +126,6 @@ function ChooseYourRoomList() {
                               weight={600}
                               text={formatPriceWithoutCurrency(81500)}
                             />
-                          </Flex>
-                          <Flex>
                             <Text
                               type="p"
                               className="truncate"
@@ -293,7 +291,7 @@ function ChooseYourRoomList() {
                         <Flex
                           align="center"
                           gap="8px"
-                          styles={{ color: ttColors.primary }}
+                          styles={{ color: "#7bbbd6" }}
                         >
                           <Text size={15} type="p" text="More Details"></Text>
                           <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
