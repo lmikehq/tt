@@ -1,18 +1,20 @@
 import {
     RoomForGuest,
-    StaySearchFilter,
+    StaySearchFilters,
+    StayTabInitialSearchQuery,
     StayTypeFilter,
 } from "@/lib/types/request-models/stay/search.type";
 import { create } from "zustand";
 
 interface State {
     stayType: StayTypeFilter;
-    staySearchFilter: StaySearchFilter;
+    stayTabInitialSearchQuery: StayTabInitialSearchQuery;
+    staySearchFilters: StaySearchFilters;
 }
 
 interface Actions {
     setStayType: (params: StayTypeFilter) => void;
-    updateStaySearchSearchFilter: (params: StaySearchFilter) => void;
+    updateStaySearchSearchFilter: (params: StayTabInitialSearchQuery) => void;
     updateGuestRoom: (params: {
         index: number;
         roomForGuest: RoomForGuest;
@@ -24,8 +26,9 @@ interface Actions {
 export const useStaySearchStore = create<State & Actions>(
     (set): State & Actions => ({
         stayType: {},
+        staySearchFilters: {},
 
-        staySearchFilter: {
+        stayTabInitialSearchQuery: {
             roomForGuests: [
                 {
                     adults: 2,
@@ -36,16 +39,16 @@ export const useStaySearchStore = create<State & Actions>(
 
         updateStaySearchSearchFilter(params) {
             set({
-                staySearchFilter: params,
+                stayTabInitialSearchQuery: params,
             });
         },
 
         addNewGuestRoom() {
             set((state) => ({
-                staySearchFilter: {
-                    ...state.staySearchFilter,
+                stayTabInitialSearchQuery: {
+                    ...state.stayTabInitialSearchQuery,
                     roomForGuests: [
-                        ...state.staySearchFilter.roomForGuests,
+                        ...state.stayTabInitialSearchQuery.roomForGuests,
                         {
                             adults: 1,
                             children: 0,
@@ -57,11 +60,12 @@ export const useStaySearchStore = create<State & Actions>(
 
         deleteGuestRoom({ index }) {
             let roomForGuests =
-                useStaySearchStore.getState().staySearchFilter.roomForGuests;
+                useStaySearchStore.getState().stayTabInitialSearchQuery
+                    .roomForGuests;
             roomForGuests.splice(index, 1);
             set((state) => ({
-                staySearchFilter: {
-                    ...state.staySearchFilter,
+                stayTabInitialSearchQuery: {
+                    ...state.stayTabInitialSearchQuery,
                     roomForGuests,
                 },
             }));
@@ -69,11 +73,12 @@ export const useStaySearchStore = create<State & Actions>(
 
         updateGuestRoom({ index, roomForGuest }) {
             let roomForGuests =
-                useStaySearchStore.getState().staySearchFilter.roomForGuests;
+                useStaySearchStore.getState().stayTabInitialSearchQuery
+                    .roomForGuests;
             roomForGuests[index] = roomForGuest;
             set((state) => ({
-                staySearchFilter: {
-                    ...state.staySearchFilter,
+                stayTabInitialSearchQuery: {
+                    ...state.stayTabInitialSearchQuery,
                     roomForGuests,
                 },
             }));

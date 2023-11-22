@@ -7,7 +7,7 @@ export interface StayTypeFilter {
     fiveStars?: boolean;
 }
 
-export interface StaySearchFilter {
+export interface StayTabInitialSearchQuery {
     location?: Location;
     checkInDate?: Dayjs;
     checkOutDate?: Dayjs;
@@ -17,4 +17,12 @@ export interface StaySearchFilter {
 export interface RoomForGuest {
     adults: number;
     children: number;
+}
+
+export interface StaySearchFilters {
+    price?: number;
+}
+export interface SearchStayRequestRequestQuery extends StaySearchFilters {
+    limit: number;
+    page: number;
 }

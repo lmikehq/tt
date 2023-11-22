@@ -54,23 +54,27 @@ function Stays() {
     };
 
     const open = Boolean(anchorEl);
-    const { staySearchFilter, updateStaySearchSearchFilter } =
+    const { stayTabInitialSearchQuery, updateStaySearchSearchFilter } =
         useStaySearchStore((state) => state);
 
-    const { roomForGuests } = staySearchFilter;
+    const { roomForGuests } = stayTabInitialSearchQuery;
     const validateStaySearchFilter =
-        staySearchFilter.location &&
-        staySearchFilter.checkInDate &&
-        staySearchFilter.checkOutDate &&
-        staySearchFilter.roomForGuests.length > 0
+        stayTabInitialSearchQuery.location &&
+        stayTabInitialSearchQuery.checkInDate &&
+        stayTabInitialSearchQuery.checkOutDate &&
+        stayTabInitialSearchQuery.roomForGuests.length > 0
             ? true
             : false;
 
     const computeStaySearchQuery = () => {
         const params = {
-            location: staySearchFilter.location?.code,
-            checkIn: formatDate(staySearchFilter.checkInDate ?? dayjs()),
-            checkOut: formatDate(staySearchFilter.checkOutDate ?? dayjs()),
+            location: stayTabInitialSearchQuery.location?.code,
+            checkIn: formatDate(
+                stayTabInitialSearchQuery.checkInDate ?? dayjs()
+            ),
+            checkOut: formatDate(
+                stayTabInitialSearchQuery.checkOutDate ?? dayjs()
+            ),
             guests:
                 roomForGuests.length == 1
                     ? roomForGuests[0].adults + roomForGuests[0].children
@@ -173,11 +177,11 @@ function Stays() {
                         <LocationSearchSelectInput
                             onChange={(x: Location) =>
                                 updateStaySearchSearchFilter({
-                                    ...staySearchFilter,
+                                    ...stayTabInitialSearchQuery,
                                     location: x,
                                 })
                             }
-                            value={staySearchFilter.location}
+                            value={stayTabInitialSearchQuery.location}
                             placeholder="Enter Destination or Hotel Name"
                         />
                     </Span>
@@ -195,10 +199,10 @@ function Stays() {
                     <DatePicker
                         placeholder="Select Date"
                         minDate={today}
-                        value={staySearchFilter.checkInDate?.toDate()}
+                        value={stayTabInitialSearchQuery.checkInDate?.toDate()}
                         onChange={(e) =>
                             updateStaySearchSearchFilter({
-                                ...staySearchFilter,
+                                ...stayTabInitialSearchQuery,
                                 checkInDate: dayjs(e),
                             })
                         }
@@ -218,10 +222,10 @@ function Stays() {
                     <DatePicker
                         placeholder="Select Date"
                         minDate={today}
-                        value={staySearchFilter.checkOutDate?.toDate()}
+                        value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
                         onChange={(e) =>
                             updateStaySearchSearchFilter({
-                                ...staySearchFilter,
+                                ...stayTabInitialSearchQuery,
                                 checkOutDate: dayjs(e),
                             })
                         }

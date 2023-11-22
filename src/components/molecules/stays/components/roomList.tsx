@@ -6,12 +6,21 @@ import { useState } from "react";
 import styled from "styled-components";
 import AvailableRooms from "./availableRooms";
 import SortedColumn from "./sortedColumn";
+import { useSearchStays } from "@/lib/hooks/stay/search.hook";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
 
 const SectionLayout = styled.div``;
 function RoomList() {
     const { isMobile } = useScreenResolution();
     const [results, setResults] = useState(0);
     const [sortType, setSortType] = useState("best");
+    const { staySearchFilters } = useStaySearchStore((state) => state);
+
+    const { isFetching } = useSearchStays({
+        ...staySearchFilters,
+        limit: 20,
+        page: 1,
+    });
 
     return (
         <Box

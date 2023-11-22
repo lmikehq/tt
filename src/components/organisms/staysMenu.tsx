@@ -75,7 +75,7 @@ function StaysMenu() {
     const { isMobile } = useScreenResolution();
 
     const {
-        staySearchFilter: { roomForGuests },
+        stayTabInitialSearchQuery: { roomForGuests },
         addNewGuestRoom,
         deleteGuestRoom,
         updateGuestRoom,
