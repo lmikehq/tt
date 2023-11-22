@@ -63,6 +63,7 @@ const RecentlyViewedTile = () => {
                   overflow: "hidden",
                   maxHeight: "121px",
                   minWidth: "121px",
+                  maxWidth: "200px",
                 }}
               >
                 <Image
@@ -71,6 +72,7 @@ const RecentlyViewedTile = () => {
                   styles={{
                     width: "100%",
                     height: "100%",
+
                     objectFit: "cover",
                   }}
                 />
@@ -87,7 +89,7 @@ const RecentlyViewedTile = () => {
                       size={18}
                       weight={500}
                       styles={{ width: "auto" }}
-                      className="truncate"
+                      // className="truncate"
                       text={room.name}
                     />
                   </Flex>
@@ -123,7 +125,7 @@ const RecentlyViewedTile = () => {
                       defaultValue={room.rating}
                     />
                   </Flex>
-                  <Flex gap="0.5rem" align="center" margin="1rem 0 0 0">
+                  <Flex gap="5px" align="center" margin="1rem 0 0 0">
                     <Text
                       type="p"
                       size={16}
