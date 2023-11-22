@@ -28,9 +28,9 @@ const rooms: Room[] = [
   {
     images: [
       "/assets/images/stays/room1.jpeg",
-      "/assets/images/stays/room2.jpeg",
-      "/assets/images/stays/room3.jpg",
-      "/assets/images/stays/image3.png",
+      "/assets/images/stays/image1.jpg",
+      "/assets/images/stays/room4.jpg",
+      "/assets/images/stays/room5.jpg",
       "/assets/images/stays/image2.jpg",
     ],
   },
@@ -85,7 +85,7 @@ function GalleryBox() {
   return (
     <Span>
       <Header style={{ margin: "20px 0px" }}>
-        <Flex justify="space-between" align="center">
+        <Flex justify="space-between" align="center" className="gallery_switch">
           <Flex>
             <BtnDetails
               onClick={() => setActiveView("grid_view")}
@@ -94,6 +94,7 @@ function GalleryBox() {
                 backgroundColor: ttColors.grayishAsh,
                 padding: "10px ",
               }}
+              className="full_width"
             >
               <Text
                 weight={500}
@@ -104,7 +105,7 @@ function GalleryBox() {
               ></Text>
             </BtnDetails>
           </Flex>
-          <Flex justify="flex-end">
+          <Flex justify="flex-end" width="fit-content" className="flex_end">
             <Button
               margin=".5rem 0"
               color="white"
@@ -258,7 +259,7 @@ function GalleryBox() {
                   </ImgWidth>
                 </Flex>
               </LargeImg>
-              <ControlBtn className="control_gallery">
+              <ControlBtn className="control_gallery ">
                 <Flex justify="space-between">
                   <Flex
                     align="center"
@@ -321,7 +322,7 @@ function GalleryBox() {
                             alt=""
                             style={{
                               width: "100%",
-                              height: "230px",
+                              height: "100%",
                               objectFit: "cover",
                               cursor: "pointer",
                             }}

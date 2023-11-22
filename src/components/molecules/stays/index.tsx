@@ -20,6 +20,7 @@ const BlueBox = styled.div`
 
 const BlueIcon = styled.div`
     border: 2px solid #6092a7;
+
     background: #daf0f9;
     border-radius: 8px;
     width: 20%;

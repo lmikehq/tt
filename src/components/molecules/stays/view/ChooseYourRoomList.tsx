@@ -86,7 +86,7 @@ function ChooseYourRoomList() {
         {rooms.map((room, index) => (
           <Span key={index} style={{ marginBottom: "60px" }}>
             <GridLayout className="choose_room_list">
-              <Span>
+              <Span style={{ overflow: "hidden" }}>
                 <Flex direction="column" gap="10px">
                   <Flex
                     direction={isMobile ? "row" : "column"}
@@ -111,15 +111,15 @@ function ChooseYourRoomList() {
                         <Text type="h2" weight={600} text={room.name}></Text>
                       )}
                       <Span>
-                        <Flex gap="5px" align="center">
-                          <Text
-                            type="p"
-                            size={24}
-                            whiteSpace="nowrap"
-                            weight={600}
-                            text={getCurrency()}
-                          />
-                          <Flex align="center" overflow="hidden">
+                        <Flex align="center" gap="0">
+                          <Flex gap="5px" align="center">
+                            <Text
+                              type="p"
+                              size={24}
+                              whiteSpace="nowrap"
+                              weight={600}
+                              text={getCurrency()}
+                            />{" "}
                             <Text
                               type="p"
                               size={30}
@@ -291,7 +291,7 @@ function ChooseYourRoomList() {
                         <Flex
                           align="center"
                           gap="8px"
-                          styles={{ color: ttColors.primary }}
+                          styles={{ color: "#7bbbd6" }}
                         >
                           <Text size={15} type="p" text="More Details"></Text>
                           <ArrowForwardIosIcon style={{ fontSize: "14px" }} />

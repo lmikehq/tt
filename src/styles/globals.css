@@ -7,6 +7,10 @@
     Desktop: 1024px;
     Wide-screen: 1400px;
 */
+* {
+  scroll-behavior: smooth !important;
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -173,7 +177,11 @@ body {
   width: 100% !important;
 }
 #mui_simple_select {
-  max-width: 100px !important;
+  max-width: 100px;
+}
+.mui_select {
+  max-width: auto !important;
+  width: 100%;
 }
 @media screen and (max-width: 900px) {
   #mui_simple_select {

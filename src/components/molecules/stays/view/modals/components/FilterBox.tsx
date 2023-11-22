@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BtnDetails, Span } from "../../styles";
+import { BtnDetails, GridLayout, Span } from "../../styles";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { Grid } from "@/components/templates/grid";
 import Flex from "@/components/templates/flex";
@@ -62,7 +62,11 @@ function FilterBox() {
 
   return (
     <Span>
-      <Grid columns={isMobile ? 1 : 4} gap={isMobile ? "0.3rem" : "1rem"}>
+      <GridLayout
+        className="grid_select"
+        // columns={isMobile ? 1 : 4}
+        // gap={isMobile ? "0.3rem" : "1rem"}
+      >
         <Flex
           direction="column"
           gap=".5rem"
@@ -124,7 +128,7 @@ function FilterBox() {
             setSelectedValues={setSelectedPaymentCheckboxValues}
           />
         </Flex>
-      </Grid>
+      </GridLayout>
       {isMobile && (
         <Span>
           <Span style={{ width: "100%" }}>

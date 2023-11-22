@@ -47,8 +47,8 @@ export const Tab = styled.div`
     text-decoration: none;
   }
   .active {
-    border-bottom: 3px solid var(--primary-color);
-    color: var(--primary-color);
+    border-bottom: 3px solid #7bbbd6;
+    color: #7bbbd6;
   }
 `;
 
@@ -68,6 +68,16 @@ export const GridLayout = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  &.grid_select {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
   &.choose_room_list {
     grid-template-columns: 40% auto;
     grid-column-gap: 20px;
@@ -120,6 +130,9 @@ export const GridLayout = styled.div`
   @media screen and (max-width: 443px) {
     &.stay_details_grid {
       grid-template-columns: 1fr;
+      .flex-end {
+        justify-content: flex-start !important;
+      }
     }
   }
 `;
@@ -278,7 +291,6 @@ export const MapBoxTag = styled.div`
   background-color: var(--color-light-gray);
   border-radius: 20px;
   margin-bottom: 35px;
-  
 `;
 
 export const ButtonBtn = styled.div`

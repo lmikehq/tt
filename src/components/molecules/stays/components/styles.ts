@@ -112,20 +112,29 @@ export const LargeImg = styled.div`
   overflow: hidden;
   position: relative;
   padding: -10px 0px;
-  @media screen and (max-width: 1300px) {
-    .img {
-      maxheight: "250px !important";
-    }
-  }
+
   &.img_large_gallery {
     width: 100%;
-    // height: 650px;
+    height: 100%;
     position: relative;
     overflow: hidden !important;
     border-radius: 12.5px !important;
     margin-bottom: 20px;
   }
   z-index: 1;
+  @media screen and (max-width: 1300px) {
+    &.img_large_gallery {
+      max-height: 500px;
+      border-radius: 12.5px !important;
+      overflow: hidden !important;
+    }
+    &.img_img {
+      max-height: 380px;
+    }
+    .img {
+      border-radius: 12.5px !important;
+    }
+  }
   @media screen and (max-width: 900px) {
     border-radius: 12.5px;
     .img {
@@ -138,15 +147,24 @@ export const ImgWidth = styled.div`
 `;
 
 export const SmallImg = styled.div`
-  height: 100px;
   position: relative;
   bottom: 70px;
   z-index: 10;
   margin: 5px 8px;
   margin-bottom: 5px;
+
   &.img_small_gallery {
-    height: 250px;
+    // height: 250px;
     bottom: 0px;
+  }
+  @media screen and (max-width: 1300px) {
+    &.img_img_small {
+      margin-top: -110px;
+      bottom: 0px;
+    }
+    &.img_small_gallery {
+      //  height: 200px;
+    }
   }
 `;
 export const SmallSlideImg = styled.div`
@@ -161,6 +179,11 @@ export const SmallSlideImg = styled.div`
     height: 100%;
 
     // margin: 0px -10px;
+  }
+  @media screen and (max-width: 1300px) {
+    height: 100px;
+    &.selected_room_gallery {
+    }
   }
   &:hover {
     border: 2px solid rgba(135, 206, 235, 0.5);
@@ -222,6 +245,16 @@ export const ControlBtn = styled.div`
   padding: 0px 10px;
   transform: translateY(-55%);
   color: var(--default-color);
+  @media screen and (max-width: 1300px) {
+    &.room_img {
+      // transform: translateY(-55%);
+    }
+  }
+  @media screen and (max-width: 800px) {
+    &.control_gallery {
+      transform: translateY(-60%);
+    }
+  }
   &.control_gallery {
     z-index: 10;
   }
@@ -265,6 +298,8 @@ export const BtnText = styled.div`
     font-size: 16px;
   }
 `;
+
+export const Span = styled.div``;
 
 //================
 // MID LIST FILTER

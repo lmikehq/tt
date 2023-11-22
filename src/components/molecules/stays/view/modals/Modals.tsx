@@ -49,12 +49,13 @@ const ModalScroll = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0px;
+    &.search_box {
+      width: 100%;
+    }
   }
 `;
 const ModalWrapper = styled.div`
   height: 500px;
-  // overflow-y: auto;
-  // overflow-x: hidden;
 
   &.map_wrapper,
   &.gallery_modal {
@@ -241,7 +242,7 @@ export const ChangeSearchModal = ({
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
         <ModalScroll className="search_box">
-          <ModalWrapper>
+          <ModalWrapper className="search_wrapper">
             <Flex
               padding="10px 35px"
               align="center"

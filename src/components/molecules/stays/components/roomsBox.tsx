@@ -51,6 +51,11 @@ import {
   BtnText,
 } from "./styles";
 import { styled } from "@mui/material/styles";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
+import { Span } from "../view/styles";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -82,36 +87,32 @@ const MobileSliderSettings = {
   autoplay: false,
 };
 
-// PRICE FORMAT
-const formatPrice = (price: number) => `₦ ${price.toLocaleString()}`;
-
-interface Room {
+interface Hotel {
   name: string;
-  location: string;
+  address: string;
   distance: string;
   reviews: number;
-  rating: number;
+  star_rating: number;
   price: number;
-  image: string;
   images: string[];
 }
 interface RoomBoxProps {
-  room: Room;
+  hotel: Hotel;
   index: number;
 }
-function RoomBox({ room, index }: RoomBoxProps) {
+function RoomBox({ hotel, index }: RoomBoxProps) {
   const { isMobile } = useScreenResolution();
 
   //===============
   //Image Selection
   //===============
-  const [selectedImage, setSelectedImage] = useState(room.image);
+  const [selectedImage, setSelectedImage] = useState(hotel.images[0]);
   const handleImageChange = (newImage: string) => {
     setSelectedImage(newImage);
   };
 
   const getPreviousImage = (currentImage: string) => {
-    const images = room.images;
+    const images = hotel.images;
     const currentIndex = images.indexOf(currentImage);
     if (currentIndex > 0) {
       return images[currentIndex - 1];
@@ -121,7 +122,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
   };
 
   const getNextImage = (currentImage: string) => {
-    const images = room.images;
+    const images = hotel.images;
     const currentIndex = images.indexOf(currentImage);
     if (currentIndex < images.length - 1) {
       return images[currentIndex + 1];
@@ -145,7 +146,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
         <GridLayout>
           {!isMobile ? (
             <ImgBox>
-              <LargeImg>
+              <LargeImg className="img_img">
                 <img
                   style={{
                     width: "100%",
@@ -153,8 +154,8 @@ function RoomBox({ room, index }: RoomBoxProps) {
                     objectFit: "cover",
                   }}
                   className="img"
-                  src={selectedImage || room.image}
-                  alt={room.name}
+                  src={selectedImage || hotel.images[0]}
+                  alt={hotel.name}
                 />
                 <FavoriteBox>
                   <Checkbox
@@ -181,28 +182,29 @@ function RoomBox({ room, index }: RoomBoxProps) {
                     id="favorite-hotels-checkbox"
                   />
                 </FavoriteBox>
-                <ControlBtn>
-                  <Flex justify="space-between">
-                    <ArrowBackIosIcon
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const previousImage = getPreviousImage(selectedImage);
-                        handleImageChange(previousImage);
-                      }}
-                    />
-                    <ArrowForwardIosIcon
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const nextImage = getNextImage(selectedImage);
-                        handleImageChange(nextImage);
-                      }}
-                    />
-                  </Flex>
-                </ControlBtn>
               </LargeImg>
-              <SmallImg className="img_small">
+              <ControlBtn className="control_gallery room_img">
+                <Flex justify="space-between">
+                  <ArrowBackIosIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      const previousImage = getPreviousImage(selectedImage);
+                      handleImageChange(previousImage);
+                    }}
+                  />
+                  <ArrowForwardIosIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      const nextImage = getNextImage(selectedImage);
+                      handleImageChange(nextImage);
+                    }}
+                  />
+                </Flex>
+              </ControlBtn>
+
+              <SmallImg className="img_small img_img_small">
                 <Slider {...SliderSettings} className="">
-                  {[room.image, ...room.images].map((x) => (
+                  {hotel.images.map((x) => (
                     <SmallSlideImg
                       className={`${
                         x === selectedImage ? "selected_room_img" : ""
@@ -229,7 +231,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
           ) : (
             <MobileImageBox>
               <Slider {...MobileSliderSettings} className="slick-slider">
-                {[room.image, ...room.images].map((x) => (
+                {hotel.images.map((x) => (
                   <span
                     key={index}
                     style={{
@@ -290,7 +292,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                           color: "var(--primary-color)",
                         }}
                         type="h2"
-                        text={room.name}
+                        text={hotel.name}
                         weight={"500"}
                       ></Text>
                     </Link>
@@ -308,7 +310,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                             listStyle: "none",
                           }}
                         >
-                          <Text type="p" text={room.location}></Text>
+                          <Text type="p" text={hotel.address}></Text>
                         </li>
                         <li>
                           <Link href="">
@@ -341,7 +343,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                       <Flex direction="column">
                         <StyledRating
                           name="customized-color"
-                          defaultValue={room.rating}
+                          defaultValue={hotel.star_rating}
                           getLabelText={(value: number) =>
                             `${value} Heart${value !== 1 ? "s" : ""}`
                           }
@@ -353,7 +355,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                             fontSize: "15px",
                           }}
                         />
-                        <Text type="p" text={`${room.reviews} reviews`}></Text>
+                        <Text type="p" text={`${hotel.reviews} reviews`}></Text>
                       </Flex>
                     </Flex>
                   </ReviewsText>
@@ -366,7 +368,7 @@ function RoomBox({ room, index }: RoomBoxProps) {
                     name="rating"
                     readOnly
                     precision={0.5}
-                    defaultValue={room.rating}
+                    defaultValue={hotel.star_rating}
                   />
                   <Text
                     styles={{ whiteSpace: "nowrap" }}
@@ -425,12 +427,20 @@ function RoomBox({ room, index }: RoomBoxProps) {
               <RowFive>
                 <FlexBox>
                   <Flex direction="column">
-                    <Text
-                      type="h2"
-                      text={`${formatPrice(room.price)}`}
-                      weight={"bold"}
-                      color="var(--text-dull-color)"
-                    ></Text>
+                    <Flex gap="5px" align="center">
+                      <Text
+                        color="var(--text-dull-color)"
+                        type="h2"
+                        weight={"bold"}
+                        text={getCurrency()}
+                      />
+                      <Text
+                        color="var(--text-dull-color)"
+                        type="h2"
+                        weight={"bold"}
+                        text={formatPriceWithoutCurrency(hotel.price)}
+                      />
+                    </Flex>
                     <Text
                       type="p"
                       text={`for a night (${2} guest)`}

@@ -116,7 +116,7 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
           align="center"
           gap="5px"
           cursor="pointer"
-          styles={{ color: ttColors.primary }}
+          styles={{ color: "#7bbbd6" }}
           onClick={toggleExpansion}
         >
           <KeyboardArrowDownIcon />
@@ -132,7 +132,7 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
               gap="5px"
               align="center"
               cursor="pointer"
-              styles={{ color: ttColors.primary }}
+              styles={{ color: "#7bbbd6" }}
             >
               <KeyboardArrowUpIcon />
               <Text type="p" size={13} text="Hide Review"></Text>

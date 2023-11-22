@@ -27,6 +27,10 @@ import { ttColors } from "@/lib/theme/colors";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { styled } from "@mui/material/styles";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -39,19 +43,18 @@ const StyledRating = styled(Rating)({
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-interface Room {
+interface Hotel {
   name: string;
-  location: string;
+  address: string;
   distance: string;
   reviews: number;
-  rating: number;
+  star_rating: number;
   price: number;
-  image: string;
-  images: string[]; // An array of image paths for the room
+  images: string[];
 }
 
 interface RoomSliderProps {
-  rooms: Room[];
+  hotels: Hotel[];
 }
 
 // REACT SLICK BUTTON
@@ -77,11 +80,8 @@ const NextArrow = (props: any) => {
   );
 };
 
-// PRICE FORMAT
-const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
-
 function RoomSlider(props: RoomSliderProps) {
-  const { rooms } = props;
+  const { hotels } = props;
 
   //===========
   //REACT SLICK
@@ -91,11 +91,11 @@ function RoomSlider(props: RoomSliderProps) {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1200) {
-        setSlidesToShow(Math.min(2, rooms.length));
+        setSlidesToShow(Math.min(2, hotels.length));
       } else if (screenWidth >= 600) {
-        setSlidesToShow(Math.min(2, rooms.length));
+        setSlidesToShow(Math.min(2, hotels.length));
       } else {
-        setSlidesToShow(Math.min(1, rooms.length));
+        setSlidesToShow(Math.min(1, hotels.length));
       }
     };
 
@@ -103,7 +103,7 @@ function RoomSlider(props: RoomSliderProps) {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [rooms.length]);
+  }, [hotels.length]);
 
   const SliderSettings = {
     dots: false,
@@ -134,7 +134,7 @@ function RoomSlider(props: RoomSliderProps) {
   //FAVORITE
   //========
   const [checkedRooms, setCheckedRooms] = useState(
-    Array(rooms.length).fill(false)
+    Array(hotels.length).fill(false)
   );
 
   const handleCheckboxChange = (index: number) => {
@@ -161,7 +161,7 @@ function RoomSlider(props: RoomSliderProps) {
           <SlideContent>
             <SliderWidth>
               <Slider {...SliderSettings} className="">
-                {rooms.map((room, index) => (
+                {hotels.map((hotel, index) => (
                   <SlideCard key={index}>
                     <SlideList>
                       <SliderImgBox>
@@ -172,8 +172,8 @@ function RoomSlider(props: RoomSliderProps) {
                               height: "200px",
                               objectFit: "cover",
                             }}
-                            src={room.image}
-                            alt={room.name}
+                            src={hotel.images[0]}
+                            alt={hotel.name}
                           />
                         </Link>
                       </SliderImgBox>
@@ -200,7 +200,7 @@ function RoomSlider(props: RoomSliderProps) {
                       <Link href="/stay/view">
                         <Text
                           type="h2"
-                          text={room.name}
+                          text={hotel.name}
                           weight={"bold"}
                           styles={{ fontSize: "22px" }}
                         ></Text>
@@ -211,12 +211,12 @@ function RoomSlider(props: RoomSliderProps) {
                         align="center"
                         styles={{ fontSize: "15px" }}
                       >
-                        <Text type="p" text={room.location}></Text>
+                        <Text type="p" text={hotel.address}></Text>
                         <Rating
                           name="rating"
                           readOnly
                           precision={0.5}
-                          defaultValue={room.rating}
+                          defaultValue={hotel.star_rating}
                           style={{
                             color: "var(--color-rating)",
                             fontSize: "17px",
@@ -229,12 +229,20 @@ function RoomSlider(props: RoomSliderProps) {
                           gap="10px"
                           styles={{ flexWrap: "wrap" }}
                         >
-                          <Text
-                            type="h3"
-                            text={`${formatPrice(room.price)}`}
-                            weight={"bold"}
-                            color="var(--text-dull-color)"
-                          ></Text>
+                          <Flex gap="5px" align="center">
+                            <Text
+                              color="var(--text-dull-color)"
+                              type="h3"
+                              weight={"bold"}
+                              text={getCurrency()}
+                            />
+                            <Text
+                              color="var(--text-dull-color)"
+                              type="h3"
+                              weight={"bold"}
+                              text={formatPriceWithoutCurrency(hotel.price)}
+                            />
+                          </Flex>
                           <Text
                             type="p"
                             text="Per night"
@@ -263,7 +271,7 @@ function RoomSlider(props: RoomSliderProps) {
                             >
                               <StyledRating
                                 name="customized-color"
-                                defaultValue={room.rating}
+                                defaultValue={hotel.star_rating}
                                 getLabelText={(value: number) =>
                                   `${value} Heart${value !== 1 ? "s" : ""}`
                                 }
@@ -279,7 +287,7 @@ function RoomSlider(props: RoomSliderProps) {
                               />
                               <Text
                                 type="p"
-                                text={`${room.reviews} reviews`}
+                                text={`${hotel.reviews} reviews`}
                               ></Text>
                             </Flex>
                           </Flex>
