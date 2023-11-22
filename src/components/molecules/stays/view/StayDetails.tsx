@@ -99,20 +99,22 @@ function StayDetails() {
               weight={600}
               text="The Ritz London"
             />
-            <Checkbox
-              {...label}
-              icon={<FavoriteBorder />}
-              checkedIcon={
-                <Favorite style={{ color: "var(--color-favorite)" }} />
-              }
-              disableRipple
-              disableTouchRipple
-              disableFocusRipple
-              sx={{
-                "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
-              }}
-              id="favorite-hotels-checkbox"
-            />
+            {!isMobile && (
+              <Checkbox
+                {...label}
+                icon={<FavoriteBorder />}
+                checkedIcon={
+                  <Favorite style={{ color: "var(--color-favorite)" }} />
+                }
+                disableRipple
+                disableTouchRipple
+                disableFocusRipple
+                sx={{
+                  "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
+                }}
+                id="favorite-hotels-checkbox"
+              />
+            )}
           </Flex>
           <Text
             type="p"

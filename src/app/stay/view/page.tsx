@@ -13,16 +13,58 @@ import Location from "@/components/molecules/stays/view/Location";
 import Policies from "@/components/molecules/stays/view/Policies";
 import StayDetails from "@/components/molecules/stays/view/StayDetails";
 import RecentlyViewedList from "@/components/molecules/stays/view/recently-viewed/RecentlyViewedList";
+import { Span } from "@/components/molecules/stays/view/styles";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { Box } from "@mui/material";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import { Box, Checkbox } from "@mui/material";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import { useRouter } from "next/navigation";
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StayViewPage = () => {
   const { isMobile } = useScreenResolution();
+
+  const router = useRouter();
+
+  const handleGoBack = () => {
+    router.back();
+  };
   return (
     <SectionLayout>
-      <BreadCrumbPane />
+      {!isMobile ? (
+        <BreadCrumbPane />
+      ) : (
+        <Span style={{ margin: "10px 0px" }}>
+          <Flex justify="space-between" align="center">
+            <Span>
+              <ArrowBackIosOutlinedIcon
+                onClick={handleGoBack}
+                style={{ cursor: "pointer", fontSize: "24px" }}
+              />
+            </Span>
+            <Span>
+              <Checkbox
+                {...label}
+                icon={<FavoriteBorder />}
+                checkedIcon={
+                  <Favorite style={{ color: "var(--color-favorite)" }} />
+                }
+                disableRipple
+                disableTouchRipple
+                disableFocusRipple
+                sx={{
+                  "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
+                }}
+                id="favorite-hotels-checkbox"
+              />
+            </Span>
+          </Flex>
+        </Span>
+      )}
       <HeroImageGrid />
       <Box
         sx={{
