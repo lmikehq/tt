@@ -10,6 +10,7 @@ import { useState } from "react";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
+
 export default function FavoriteHotels() {
   const [checked, setChecked] = useState(false);
 
