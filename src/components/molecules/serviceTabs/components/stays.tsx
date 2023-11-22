@@ -19,6 +19,9 @@ import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
+import { formatDate } from "@/lib/utilFns";
 // STYLES
 const FlexBox = styled.div`
     display: flex;
@@ -34,47 +37,13 @@ const Span = styled.div`
     position: relative;
 `;
 
-export type RoomCountType = {
-    adults: number;
-    children: number;
-    infants: number;
-    rooms: number;
-};
-
-const room: RoomCountType = {
-    adults: 2,
-    children: 1,
-    infants: 0,
-    rooms: 1,
-};
-
-export interface RoomStay {
-    roomCount: RoomCountType;
-    data: string;
-    destinationHotel: Location;
-}
-
 function Stays() {
-    const [data, setData] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     const { isMobile } = useScreenResolution();
 
     const today = dayjs().toDate();
-
-    // FORMAT TEXT
-    const formatDisplayText = (data: RoomCountType) => {
-        const kids = data.children + data.infants;
-        return `${data.adults} ${data.adults > 1 ? "Adults" : "Adult"}${
-            kids > 0 ? `, ${kids} ${kids === 1 ? "Child" : "Children"}` : ""
-        }
-    `;
-    };
-
-    const defText = formatDisplayText(room);
-
-    const [displayText, setDisplayText] = useState(defText);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -84,93 +53,50 @@ function Stays() {
         setAnchorEl(null);
     };
 
-    const handleDataChange = (data: any) => {
-        setData(
-            `${data.count.adults} Adult, ${data.count.children} Children, ${data.count.rooms} Rooms`
-        );
-    };
-
-    // LOCATION SEARCH
-    const [stay, setStay] = useState<RoomStay>({
-        roomCount: {
-            adults: 2,
-            children: 1,
-            infants: 0,
-            rooms: 1,
-        },
-        data: "",
-        destinationHotel: {
-            id: "ibadan-id",
-            int_id: 123,
-            airport_int_id: 456,
-            active: true,
-            code: "IBD",
-            icao: "ABC123",
-            name: "",
-            slug: "ibadan",
-            slug_en: "ibadan-en",
-            alternative_names: [],
-            rank: 1,
-            global_rank_dst: 1,
-            dst_popularity_score: 0.8,
-            timezone: "Africa/Lagos",
-            country: {
-                id: "nigeria-id",
-                name: "Nigeria",
-                slug: "nigeria",
-                code: "NG",
-            },
-            city: {
-                id: "ibadan-city-id",
-                name: "Ibadan",
-                code: "IBD",
-                nearby_country: null,
-                slug: "ibadan",
-                subdivision: null,
-                autonomous_territory: null,
-                country: {
-                    id: "nigeria-id",
-                    name: "Nigeria",
-                    slug: "nigeria",
-                    code: "NG",
-                },
-                region: {
-                    id: "ibadan-region-id",
-                    name: "Ibadan Region",
-                    slug: "ibadan-region",
-                },
-                continent: {
-                    id: "africa-id",
-                    name: "Africa",
-                    slug: "africa",
-                    code: "AF",
-                },
-            },
-            location: {
-                lon: "7.4951",
-                lat: "4.3517",
-            },
-            alternative_departure_points: [],
-            tags: [],
-            providers: [],
-            special: [],
-            tourist_region: [],
-            car_rentals: [],
-            new_ground: false,
-            example: false,
-            routing_priority: 1,
-            type: "city",
-        },
-    });
-
-    const handleUpdate = (
-        selectedStay: RoomStay,
-        updatedData: { destinationHotel: Location }
-    ) => {
-        setStay({ ...selectedStay, ...updatedData });
-    };
-
     const open = Boolean(anchorEl);
+    const { stayTabInitialSearchQuery, updateStaySearchSearchFilter } =
+        useStaySearchStore((state) => state);
+
+    const { roomForGuests } = stayTabInitialSearchQuery;
+    const validateStaySearchFilter =
+        stayTabInitialSearchQuery.location &&
+        stayTabInitialSearchQuery.checkInDate &&
+        stayTabInitialSearchQuery.checkOutDate &&
+        stayTabInitialSearchQuery.roomForGuests.length > 0
+            ? true
+            : false;
+
+    const computeStaySearchQuery = () => {
+        const params = {
+            location: stayTabInitialSearchQuery.location?.code,
+            checkIn: formatDate(
+                stayTabInitialSearchQuery.checkInDate ?? dayjs()
+            ),
+            checkOut: formatDate(
+                stayTabInitialSearchQuery.checkOutDate ?? dayjs()
+            ),
+            guests:
+                roomForGuests.length == 1
+                    ? roomForGuests[0].adults + roomForGuests[0].children
+                    : `${roomForGuests.length}-${roomForGuests
+                          .map((el) => el.adults + el.children)
+                          .join(",")}`,
+        };
+
+        return constructQueryFromParams(params);
+    };
+    const computeGuestsAndRoomsString = () => {
+        const rooms = roomForGuests.length;
+        let guests = 0;
+
+        for (let index = 0; index < roomForGuests.length; index++) {
+            const room = roomForGuests[index];
+            guests += room.adults + room.children;
+        }
+        return `${rooms} room${rooms == 1 ? "" : "s"} for ${guests} guest${
+            guests == 1 ? "" : "s"
+        }`;
+    };
 
     return (
         <Section
@@ -250,10 +176,12 @@ function Stays() {
                     <Span>
                         <LocationSearchSelectInput
                             onChange={(x: Location) =>
-                                handleUpdate &&
-                                handleUpdate(stay, { destinationHotel: x })
+                                updateStaySearchSearchFilter({
+                                    ...stayTabInitialSearchQuery,
+                                    location: x,
+                                })
                             }
-                            value={stay.destinationHotel}
+                            value={stayTabInitialSearchQuery.location}
                             placeholder="Enter Destination or Hotel Name"
                         />
                     </Span>
@@ -271,7 +199,13 @@ function Stays() {
                     <DatePicker
                         placeholder="Select Date"
                         minDate={today}
-                        onChange={(e) => null}
+                        value={stayTabInitialSearchQuery.checkInDate?.toDate()}
+                        onChange={(e) =>
+                            updateStaySearchSearchFilter({
+                                ...stayTabInitialSearchQuery,
+                                checkInDate: dayjs(e),
+                            })
+                        }
                     />
                 </Flex>
 
@@ -288,7 +222,13 @@ function Stays() {
                     <DatePicker
                         placeholder="Select Date"
                         minDate={today}
-                        onChange={(e) => null}
+                        value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
+                        onChange={(e) =>
+                            updateStaySearchSearchFilter({
+                                ...stayTabInitialSearchQuery,
+                                checkOutDate: dayjs(e),
+                            })
+                        }
                     />
                 </Flex>
 
@@ -307,20 +247,14 @@ function Stays() {
                             <Input
                                 onClick={handleClick}
                                 placeholder="Click me to open dropdown"
-                                value={displayText}
+                                value={computeGuestsAndRoomsString()}
                                 styles={{
                                     fontFamily: "poppins",
                                     cursor: "pointer",
                                     fontSize: "14px",
                                 }}
                             />
-                            {open && (
-                                <StaysMenu
-                                    onDataChange={handleDataChange}
-                                    isMobile={isMobile}
-                                    data={room}
-                                />
-                            )}
+                            {open && <StaysMenu />}
                         </div>
                     </ClickAwayListener>
                 </Flex>
@@ -335,11 +269,14 @@ function Stays() {
                     padding="0 1.5rem"
                     borderRadius="4px"
                     background={ttColors.dark}
+                    disabled={!validateStaySearchFilter}
                     onClick={async () => {
                         if (loading) return;
                         setLoading(true);
                         await sleep(200);
-                        router.push("/stay/listings");
+                        router.push(
+                            `/stay/listings${computeStaySearchQuery()}`
+                        );
                     }}
                 >
                     {loading ? (
