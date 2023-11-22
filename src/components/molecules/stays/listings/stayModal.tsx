@@ -12,14 +12,22 @@ import CheckBox from "../../checkbox";
 import SortingColumns from "./sortingColumns";
 import DeletePriceAlertBox from "../components/DeletePriceAlertBox";
 
+const ModalCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
 const ModalWrapper = styled.div`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
   background: white;
   &.price_wrapper {
-    width: 400px;
-    height: 350px;
+    width: 500px;
+    height: 380px;
+    border-radius: 10px;
   }
 `;
 
@@ -98,20 +106,22 @@ export const SortModal = ({
 
 export const PriceAlertModal = ({
   open,
+  setOpen,
   handleClose,
 }: {
   open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<{ alert: boolean }>>;
   handleClose: () => void;
 }) => {
   return (
     <Modal open={open} onClose={handleClose}>
-      <Section>
+      <ModalCenter>
         <ModalWrapper className="price_wrapper">
           <Section padding="2rem">
-            <DeletePriceAlertBox />
+            <DeletePriceAlertBox setOpen={setOpen} />
           </Section>
         </ModalWrapper>
-      </Section>
+      </ModalCenter>
     </Modal>
   );
 };

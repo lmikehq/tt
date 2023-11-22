@@ -28,6 +28,11 @@ export const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  &.price_alert {
+    justify-content: center;
+    gap: 60px;
+    margin-top: 25px;
+  }
   &.booking_improve_box {
     justify-content: space-between;
     align-items: center;

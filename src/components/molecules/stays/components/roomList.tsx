@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import { useState } from "react";
 import styled from "styled-components";
 import SortedColumn from "./sortedColumn";
-import { useSearchStays } from "@/lib/hooks/stay/search.hook";
+//import { useSearchStays } from "@/lib/hooks/stay/search.hook";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import AvailableRooms from "./availableRooms";
 
@@ -16,11 +16,11 @@ function RoomList() {
     const [sortType, setSortType] = useState("best");
     const { staySearchFilters } = useStaySearchStore((state) => state);
 
-    const { isFetching } = useSearchStays({
-        ...staySearchFilters,
-        limit: 20,
-        page: 1,
-    });
+    // const { isFetching } = useSearchStays({
+    //     ...staySearchFilters,
+    //     limit: 20,
+    //     page: 1,
+    // });
 
     return (
         <Box
