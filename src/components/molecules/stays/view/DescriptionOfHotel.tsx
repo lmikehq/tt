@@ -11,11 +11,18 @@ import { useEffect, useRef, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import OutletIcon from "@mui/icons-material/Outlet";
 
-
-export const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
+export const BootstrapTooltip = styled(
+  ({ className, ...props }: TooltipProps) => (
+    <Tooltip
+      placement="top-start"
+      {...props}
+      arrow
+      classes={{ popper: className }}
+    />
+  )
+)(({ theme }) => ({
   [`& .${tooltipClasses.arrow}`]: {
     color: theme.palette.common.black,
   },
@@ -208,7 +215,9 @@ const DescriptionOfHotel = () => {
                     color="var(--text-gray-color)"
                     text="Socket Type"
                   ></Text>
-                  <BootstrapTooltip title="Add">
+                  <BootstrapTooltip
+                    title={<OutletIcon style={{ color: "white" }} />}
+                  >
                     <ErrorOutlineOutlinedIcon
                       style={{
                         fontSize: "19px",

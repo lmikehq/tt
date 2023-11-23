@@ -338,6 +338,7 @@ export const BtnDetails = styled.div`
     width: 100%;
     padding: 10px 10px;
     color: var(--secondary-color);
+    cursor: default;
   }
   // @media screen and (max-width: 900px) {
   //   &.reset_filters {

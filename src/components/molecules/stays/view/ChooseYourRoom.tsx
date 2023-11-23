@@ -142,17 +142,6 @@ const ChooseYourRoom = () => {
     setAllMappedOptions((prevOptions) => {
       return prevOptions.filter((option) => option !== optionToRemove);
     });
-
-    // // Recalculate totalSelectedOptions
-    // const updatedTotalSelectedOptions =
-    //   (beds === "" ? 0 : 1) +
-    //   (cancellation === "" ? 0 : 1) +
-    //   selectedMealCheckboxValues.filter((value) => value !== optionToRemove)
-    //     .length +
-    //   selectedPaymentCheckboxValues.filter((value) => value !== optionToRemove)
-    //     .length;
-
-    // setTotalSelectedOptions(updatedTotalSelectedOptions);
   };
 
   // Remove a specific option from the list
@@ -163,7 +152,6 @@ const ChooseYourRoom = () => {
 
     console.log("After removeOption:", allMappedOptions);
 
-    // Assuming the optionToRemove is a string, directly check the values
     if (bedsOptions.some((option) => option.value === optionToRemove)) {
       setBeds("");
     } else if (mealOptions.some((option) => option.value === optionToRemove)) {
@@ -182,8 +170,33 @@ const ChooseYourRoom = () => {
       );
     }
 
-    // Always decrement totalSelectedOptions
     setTotalSelectedOptions((prev) => prev - 1);
+  };
+
+  // Function to get the label for a given option
+  const getLabelForOption = (option: string): string => {
+    if (bedsOptions.some((bedOption) => bedOption.displayValue === option)) {
+      return "Beds:";
+    } else if (
+      mealOptions.some((mealOption) => mealOption.displayValue === option)
+    ) {
+      return "Meals:";
+    } else if (
+      cancellationOptions.some(
+        (cancelOption) => cancelOption.displayValue === option
+      )
+    ) {
+      return "Cancellation:";
+    } else if (
+      paymentOptions.some(
+        (paymentOption) => paymentOption.displayValue === option
+      )
+    ) {
+      return "Payment:";
+    }
+
+    // Default label if the option doesn't match any category
+    return "Options:";
   };
 
   return (
@@ -415,12 +428,7 @@ const ChooseYourRoom = () => {
                         onClick={resetAllFilters}
                         className="reset_filters"
                       >
-                        <Flex
-                          align="center"
-                          gap="5px"
-                          justify="center"
-                          // width="100%"
-                        >
+                        <Flex align="center" gap="5px" justify="center">
                           <Text
                             weight={500}
                             size={15}
@@ -468,26 +476,37 @@ const ChooseYourRoom = () => {
                 ></Text>
               </Flex>
               <Flex direction="column" gap="8px" styles={{ marginTop: "10px" }}>
-                <BtnDetails className="reset_filters chosen_filter">
-                  <Flex align="center" justify="space-between" gap="5px">
-                    <Flex align="center" gap="5px">
-                      <Text weight={500} size={15} type="p" text="Beds:"></Text>
-                      <Text
-                        color={"var(--text-gray-color)"}
-                        size={15}
-                        type="p"
-                        text="Double Beds"
-                      ></Text>
+                {allMappedOptions.map((option, index) => (
+                  <BtnDetails
+                    key={index}
+                    className="reset_filters chosen_filter"
+                  >
+                    <Flex align="center" justify="space-between" gap="5px">
+                      <Flex align="center" gap="5px">
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text={getLabelForOption(option)}
+                        ></Text>
+                        <Text
+                          color={"var(--text-gray-color)"}
+                          size={15}
+                          type="p"
+                          text={option}
+                        ></Text>
+                      </Flex>
+                      <CloseIcon
+                        onClick={() => removeOptionHandler(option)}
+                        style={{
+                          fontSize: "17px",
+                          cursor: "pointer",
+                          color: "var(--color-rating)",
+                        }}
+                      />
                     </Flex>
-                    <CloseIcon
-                      style={{
-                        fontSize: "17px",
-                        cursor: "pointer",
-                        color: "var(--color-rating)",
-                      }}
-                    />
-                  </Flex>
-                </BtnDetails>
+                  </BtnDetails>
+                ))}
               </Flex>
             </Span>
             <Span style={{ marginTop: "10px" }}>
