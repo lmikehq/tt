@@ -143,21 +143,25 @@ const ChooseYourRoom = () => {
       return prevOptions.filter((option) => option !== optionToRemove);
     });
 
-    // Recalculate totalSelectedOptions
-    const updatedTotalSelectedOptions =
-      (beds === "" ? 0 : 1) +
-      (cancellation === "" ? 0 : 1) +
-      selectedMealCheckboxValues.filter((value) => value !== optionToRemove)
-        .length +
-      selectedPaymentCheckboxValues.filter((value) => value !== optionToRemove)
-        .length;
+    // // Recalculate totalSelectedOptions
+    // const updatedTotalSelectedOptions =
+    //   (beds === "" ? 0 : 1) +
+    //   (cancellation === "" ? 0 : 1) +
+    //   selectedMealCheckboxValues.filter((value) => value !== optionToRemove)
+    //     .length +
+    //   selectedPaymentCheckboxValues.filter((value) => value !== optionToRemove)
+    //     .length;
 
-    setTotalSelectedOptions(updatedTotalSelectedOptions);
+    // setTotalSelectedOptions(updatedTotalSelectedOptions);
   };
 
   // Remove a specific option from the list
   const removeOptionHandler = (optionToRemove: string) => {
+    console.log("Before removeOption:", allMappedOptions);
+
     removeOption(optionToRemove);
+
+    console.log("After removeOption:", allMappedOptions);
 
     // Assuming the optionToRemove is a string, directly check the values
     if (bedsOptions.some((option) => option.value === optionToRemove)) {
@@ -177,6 +181,9 @@ const ChooseYourRoom = () => {
         prev.filter((value) => value !== optionToRemove)
       );
     }
+
+    // Always decrement totalSelectedOptions
+    setTotalSelectedOptions((prev) => prev - 1);
   };
 
   return (
@@ -412,7 +419,7 @@ const ChooseYourRoom = () => {
                           align="center"
                           gap="5px"
                           justify="center"
-                          width="100%"
+                          // width="100%"
                         >
                           <Text
                             weight={500}

@@ -5,7 +5,115 @@ import PinDropIcon from "@mui/icons-material/PinDrop";
 import BedIcon from "@mui/icons-material/Bed";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useEffect, useRef, useState } from "react";
+import { styled } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
+
+export const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}));
+
+interface ExpandableTextProps {
+  text: string;
+  maxLines: number;
+}
+
+//=============================
+// EXPANDABLE DESCRIPTION COMPONENT
+//=============================
+export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
+  text,
+  maxLines,
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const isOverflowed = textRef.current
+      ? (textRef.current.scrollHeight ?? 0) >
+        (textRef.current.clientHeight ?? 0)
+      : false;
+
+    const numberOfLines = textRef.current
+      ? Math.floor(
+          textRef.current.clientHeight /
+            parseFloat(getComputedStyle(textRef.current).lineHeight)
+        )
+      : 0;
+
+    if (!isOverflowed || numberOfLines <= maxLines) {
+      setExpanded(true);
+    }
+  }, [text, maxLines]);
+
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
+
+  const hideText = () => {
+    setExpanded(false);
+  };
+
+  const textStyle: React.CSSProperties = {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    whiteSpace: "pre-line",
+    WebkitLineClamp: expanded ? "unset" : maxLines,
+  };
+
+  return (
+    <div>
+      <p style={textStyle} ref={textRef}>
+        {text}
+      </p>
+
+      {!expanded && (
+        <Flex
+          align="center"
+          gap="5px"
+          cursor="pointer"
+          styles={{ color: "#7bbbd6" }}
+          onClick={toggleExpansion}
+        >
+          <KeyboardArrowDownIcon />
+          <Text type="p" size={13} text="Show Description"></Text>
+        </Flex>
+      )}
+      {expanded && (
+        <Flex onClick={hideText}>
+          {(textRef.current?.scrollHeight ?? 0) >
+          (textRef.current?.clientHeight ?? 0) ? (
+            <Flex
+              onClick={hideText}
+              gap="5px"
+              align="center"
+              cursor="pointer"
+              styles={{ color: "#7bbbd6" }}
+            >
+              <KeyboardArrowUpIcon />
+              <Text type="p" size={13} text="Hide Description"></Text>
+            </Flex>
+          ) : (
+            ""
+          )}
+        </Flex>
+      )}
+    </div>
+  );
+};
 const DescriptionOfHotel = () => {
   const { isMobile } = useScreenResolution();
 
@@ -61,12 +169,10 @@ const DescriptionOfHotel = () => {
                 <BedIcon style={{ fontSize: "19px" }} />
                 <Text type="h5" weight={"bold"} size={15} text="Hotel"></Text>
               </Flex>
-              <Text
-                type="p"
-                size={14}
-                color="var(--text-gray-color)"
+              <ExpandableTextTag
                 text="You can stop by the bar. You can stop by the restaurant. Have a cup of coffee in the cafe and, who knows, maybe it’s going to be the best one in the city. Want to be always on-line? Wi-Fi is available. If you travel by car, there’s a paid parking zone at the hotel. The following services are also available for the guests: a massage room, a spa center and a recreation club. Guests who love doing sports will be able to enjoy a fitness center and a gym. To book an excursion, consult the tour assistance desk of the hotel."
-              ></Text>
+                maxLines={4}
+              />
             </Span>
           </Span>
           <Span>
@@ -102,12 +208,14 @@ const DescriptionOfHotel = () => {
                     color="var(--text-gray-color)"
                     text="Socket Type"
                   ></Text>
-                  <ErrorOutlineOutlinedIcon
-                    style={{
-                      fontSize: "19px",
-                      color: "var(--text-gray-color)",
-                    }}
-                  />
+                  <BootstrapTooltip title="Add">
+                    <ErrorOutlineOutlinedIcon
+                      style={{
+                        fontSize: "19px",
+                        color: "var(--text-gray-color)",
+                      }}
+                    />
+                  </BootstrapTooltip>
                 </Flex>
                 <Text
                   type="h5"

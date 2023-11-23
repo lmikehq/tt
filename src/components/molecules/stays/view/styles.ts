@@ -339,10 +339,10 @@ export const BtnDetails = styled.div`
     padding: 10px 10px;
     color: var(--secondary-color);
   }
-  @media screen and (max-width: 900px) {
-    &.reset_filters {
-      width: 100%;
-      text-align: center;
-    }
-  }
+  // @media screen and (max-width: 900px) {
+  //   &.reset_filters {
+  //     width: 100%;
+  //     text-align: center;
+  //   }
+  // }
 `;
