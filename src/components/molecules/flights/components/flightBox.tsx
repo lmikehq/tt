@@ -486,7 +486,7 @@ function FlightBox(props: flightProps) {
                                 />
                             </IconBorders>
                         </Flex>
-                        {!isMobile && <BsShare size={23} onClick={() => props.openShareModal(props.flight) }/>}
+                        {!isMobile && <BsShare size={23} onClick={() => props.openShareModal(props.flight) } cursor="pointer"/>}
                     </Flex>
                     <Flex
                         direction={isMobile ? "row" : "column"}

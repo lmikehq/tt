@@ -46,7 +46,7 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
             name="employment"
             render={(arrayHelpers) => (
               <div>
-                <Flex justify="space-between" padding="0 0 2rem 0">
+                <Flex justify="space-between" padding="0 0 2rem 0" align="flex-start">
                   <FormStepTitle steps={steps} index={index} />
                   <AddButton
                     disabled={formik.values.employment.length === 3}

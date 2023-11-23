@@ -63,7 +63,7 @@ export default function ContinueButton({
                   type="span"
                   text={buttonText ?? "Save & Continue"}
                   weight={600}
-                  size={20}
+                  size={16}
                   color={ttColors.light}
                 />
               )}

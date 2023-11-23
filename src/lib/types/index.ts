@@ -60,6 +60,7 @@ export interface EmploymentDetailsInterface {
   companyName: string;
   jobTitle: string;
   employmentType: string;
+  locationType: string;
   companyLocation: string;
   startYear: number | null;
   endYear?: number | null;
@@ -67,57 +68,89 @@ export interface EmploymentDetailsInterface {
 }
 
 export interface PersonalInfoInterface {
-  firstName: string;
-  lastName: string;
-  middleName?: string;
-  email: string;
-  placeOfBirth: CountryType;
-  phoneNumber: string;
-  stateOfOrigin: string;
-  placeOfOrigin: string;
-  nativeLanguage: string;
-  meansOfId: string;
-  idNumber: string;
-  issueDate: string;
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    email: string;
+    placeOfBirth: CountryType;
+    phoneNumber: string;
+    stateOfOrigin: string;
+    placeOfOrigin: string;
+    nativeLanguage: string;
+    meansOfId: string;
+    idNumber: string;
+    issueDate: string;
+    
+    expiryDate?: string | null;
+    
+    address: string;
+    countryOfCitizen: CountryType;
+    dateOfBirth: string;
+    gender: string;
+    maritalStatus: string;
+    partnersName?: string;
+    passportNumber: string;
+    passportIssuedCountry: CountryType;
+    passportIssuedDate?: string | null;
+    passportExpiryDate?: string | null;
+    tripPurpose: string;
+    tuberculosis: boolean | null;
+    mentalDisorder: boolean | null;
+    mentalDisorderDetails?: string;
+    remainbeyondValidity: boolean | null;
+    refusedBefore: boolean | null;
+    refusedBeforeDetails?: string;
+    arrestedBefore: boolean | null;
+    arrestedBeforeDetails?: string;
+    servedInMilitary: boolean | null;
+    servedInMilitaryDetails?: string;
+    memberOfViolentGroup: boolean | null;
+    participatedInViolentActivities: boolean | null;
 
-  expiryDate?: string | null;
-
-  address: string;
-  countryOfCitizen: CountryType;
-  dateOfBirth: string;
-  gender: string;
-  maritalStatus: string;
-  partnersName?: string;
-  passportNumber: string;
-  passportIssuedCountry: CountryType;
-  passportExpiryDate?: string | null;
-  tripPurpose: string;
-  tuberculosis: boolean | null;
-  mentalDisorder: boolean | null;
-  mentalDisorderDetails?: string;
-  remainbeyondValidity: boolean | null;
-  refusedBefore: boolean | null;
-  refusedBeforeDetails?: string;
-  arrestedBefore: boolean | null;
-  arrestedBeforeDetails?: string;
-  servedInMilitary: boolean | null;
-  servedInMilitaryDetails?: string;
-  memberOfViolentGroup: boolean | null;
-  participatedInViolentActivities: boolean | null;
+    //added-details
+    statusOfResidence: string;
+    startDateOfResidence: string;
+    changeOfName: boolean | null;
+    changedName: string;
+    occupation: string;
+    tripDurationStartDate: string,
+    tripDurationEndDate: string,
+    tripDurationLocation: string,
+    hasContactInLocation: boolean | null;
+    contactInLocationLastName: string,
+    contactInLocationFirstName: string,
+    contactInLocationAddress: string,
+    contactInLocationRelationship: string,
+    contactInLocationPhoneNumber: string,
+    hasGreenCard: boolean | null;
+    greenCardNumber: string,
+    greenCardExpiryDate: string,
+    prevResidence1: CountryType,
+    prevResidence2: CountryType,
+    prevResidence3: CountryType,
+    startDatePrevResidence1: string,
+    startDatePrevResidence2: string,
+    startDatePrevResidence3: string,
+    endDatePrevResidence1: string,
+    endDatePrevResidence2: string,
+    endDatePrevResidence3: string,
 }
 
 export interface FamilyInfoInterface {
-  membersName: string;
-  relationshipToPrimary: string;
-  address: string;
-  membersPhoneNumber: string;
-  membersEmail: string;
-  accompanying: boolean;
-  issueYear?: string | number;
-  passportNumber?: string;
-  expiryYear?: string | number;
-  gender?: string;
-  dateOfBirth?: string;
+    membersName: string;
+    relationshipToPrimary: string;
+    address: string;
+    membersPhoneNumber: string;
+    membersEmail: string;
+    accompanying: boolean;
+    issueDate?: string | number;
+    expiryDate?: string | number;
+    issueCountry?: CountryType;
+    passportNumber?: string;
+    gender?: string;
+    dateOfBirth?: string;
+    section: string;
+    index: number;
 }
 
 export interface DocumentInterface {

@@ -704,7 +704,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 toggle={() => toggleFilter("alliance")}
                 isActive={filterState.alliance}
             >
-                <div>
+                <Flex direction="column" gap="0">
                     {alliance.map((alliance, index) => (
                         <CheckBox
                             key={index}
@@ -715,7 +715,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             <Text type="p" text={alliance} size={16} />
                         </CheckBox>
                     ))}
-                </div>
+                </Flex>
             </Panel>
 
             {/* Duration */}

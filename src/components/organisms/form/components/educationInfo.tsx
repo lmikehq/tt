@@ -16,7 +16,6 @@ import ContinueButton from "@organism/continueButton";
 import { EducationDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { useRouter } from "next/navigation";
 import ToastError from "@molecule/toastError";
 
 interface formProps {
@@ -70,7 +69,7 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                         <RiDeleteBin6Line color={ttColors.red} size={25} />
                         <Text
                           type="p"
-                          text="Delete Experience"
+                          text="Delete Education"
                           color={ttColors.red}
                           weight="500"
                         />

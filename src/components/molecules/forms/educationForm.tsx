@@ -26,8 +26,8 @@ interface formProps {
 }
 
 export default function EducationForm({ formik, count, values }: formProps) {
-  const { isMobile } = useScreenResolution();
-
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset">
       <Section margin="0">

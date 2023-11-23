@@ -47,8 +47,8 @@ export default function SearchInputAsLocationTypes({
                 width: fieldWidth,
                 "& div > ul::-webkit-scrollbar": {
                     backgroundColor: 'transparent',
-                    width: '9px',
-                    height: '9px',
+                    width: '7px',
+                    height: '7px',
                 },
                 "& div > ul::-webkit-scrollbar-thumb": {
                     backgroundColor: 'rgba(0, 0, 0, 0.15)',
