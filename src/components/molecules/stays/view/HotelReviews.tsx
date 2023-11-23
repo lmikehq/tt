@@ -23,12 +23,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Pagination } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled as muiStyled } from "@mui/material/styles";
 import { Rating } from "@mui/material";
 import styled from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Image from "@/components/atoms/image";
+import { ReviewModal } from "./modals/Modals";
+import Dropdown from "@/components/organisms/dropdown";
 
 const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -39,47 +41,110 @@ const StyledRating = muiStyled(Rating)({
   },
 });
 
-// Function to count the number of lines in a text
-const getLineCount = (text: string): number => {
-  // Split the text into lines
-  const lines = text.split("\n");
-  // Filter out empty lines
-  const nonEmptyLines = lines.filter((line) => line.trim() !== "");
-  // Return the number of lines
-  return nonEmptyLines.length;
+interface ExpandableTextProps {
+  text: string;
+  maxLines: number;
+  commentDate: string;
+  stayedIn: string;
+}
+
+//=============================
+// EXPANDABLE COMMENT COMPONENT
+//=============================
+export const ExpandableText: React.FC<ExpandableTextProps> = ({
+  text,
+  maxLines,
+  commentDate,
+  stayedIn,
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const isOverflowed = textRef.current
+      ? (textRef.current.scrollHeight ?? 0) >
+        (textRef.current.clientHeight ?? 0)
+      : false;
+
+    const numberOfLines = textRef.current
+      ? Math.floor(
+          textRef.current.clientHeight /
+            parseFloat(getComputedStyle(textRef.current).lineHeight)
+        )
+      : 0;
+
+    if (!isOverflowed || numberOfLines <= maxLines) {
+      setExpanded(true);
+    }
+  }, [text, maxLines]);
+
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
+
+  const hideText = () => {
+    setExpanded(false);
+  };
+
+  const textStyle: React.CSSProperties = {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    whiteSpace: "pre-line",
+    WebkitLineClamp: expanded ? "unset" : maxLines,
+  };
+
+  return (
+    <div>
+      <p style={textStyle} ref={textRef}>
+        {text}
+      </p>
+
+      <ul style={{ fontSize: "13px", margin: "15px 0px" }}>
+        <Flex gap="30px">
+          <li style={{ listStyle: "none" }}>
+            <Text type="p" text={`Comment: ${commentDate}`}></Text>
+          </li>
+          <li style={{ listStyle: "" }}>
+            <Text type="p" text={`Stayed in: ${stayedIn}`}></Text>
+          </li>
+        </Flex>
+      </ul>
+      {!expanded && (
+        <Flex
+          align="center"
+          gap="5px"
+          cursor="pointer"
+          styles={{ color: "#7bbbd6" }}
+          onClick={toggleExpansion}
+        >
+          <KeyboardArrowDownIcon />
+          <Text type="p" size={13} text="Show Review"></Text>
+        </Flex>
+      )}
+      {expanded && (
+        <Flex onClick={hideText}>
+          {(textRef.current?.scrollHeight ?? 0) >
+          (textRef.current?.clientHeight ?? 0) ? (
+            <Flex
+              onClick={hideText}
+              gap="5px"
+              align="center"
+              cursor="pointer"
+              styles={{ color: "#7bbbd6" }}
+            >
+              <KeyboardArrowUpIcon />
+              <Text type="p" size={13} text="Hide Review"></Text>
+            </Flex>
+          ) : (
+            ""
+          )}
+        </Flex>
+      )}
+    </div>
+  );
 };
-
-// STYLES
-const FadedText = styled.p.attrs<{ showAll: boolean; lineCount: number }>(
-  (props) => ({
-    showAll: props.showAll || false,
-    lineCount: props.lineCount || 0,
-  })
-)`
-  position: relative;
-  font-size: 15px;
-  line-height: 1.5;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: ${({ showAll }) => (showAll ? "unset" : 3)};
-  -webkit-box-orient: vertical;
-
-  &:after {
-    content: ${({ showAll, lineCount }) =>
-      showAll && lineCount > 3 ? '""' : "none"};
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3em; /* Adjust the height according to your design */
-    background: linear-gradient(transparent, white);
-    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  }
-
-  &.hidden {
-    -webkit-line-clamp: unset; /* Show all lines when hidden */
-  }
-`;
 
 interface Reviews {
   name: string;
@@ -280,11 +345,13 @@ const reviews: Reviews[] = [
 const HotelReviews = () => {
   const { isMobile } = useScreenResolution();
 
-  //=======================
-  // SHOW MORE REVIEW METHOD
-  //=======================
-  const [displayedReviews, setDisplayedReviews] = useState(5);
-  const remainingReviews = Math.max(0, reviews.length - displayedReviews);
+  // FILTERS
+  const [filters, setFilters] = useState("recommended");
+  const filtersOptions = [
+    { value: "recommended", displayValue: "Recommended" },
+    { value: "oldest", displayValue: "Oldest" },
+    { value: "newest", displayValue: "Newest" },
+  ];
 
   //=====================
   // HIDE AND SHOW REVIEW
@@ -310,54 +377,19 @@ const HotelReviews = () => {
     averageRating > 5 ? averageRating.toFixed(2) : averageRating.toFixed(1);
   const displayRatingNumber: number = parseFloat(displayRating);
 
-  //PERCENTAGE
-  const averageCleanliness =
-    reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.cleanliness, 0) /
-          (reviews.length * 10)) *
-        100
-      : 0;
-
-  const averageService =
-    reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.service, 0) /
-          (reviews.length * 10)) *
-        100
-      : 0;
-
-  const averageSleepQuality =
-    reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.sleepQuality, 0) /
-          (reviews.length * 10)) *
-        100
-      : 0;
-
-  const averageValue =
-    reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.value, 0) /
-          (reviews.length * 10)) *
-        100
-      : 0;
-
-  const averageLocation =
-    reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.location, 0) /
-          (reviews.length * 10)) *
-        100
-      : 0;
-
-  const averageRooms =
-    reviews.length > 0
-      ? (reviews.reduce((sum, review) => sum + review.rooms, 0) /
-          (reviews.length * 10)) *
-        100
-      : 0;
+  const [open, setOpen] = useState({
+    review: false,
+  });
 
   return (
     <>
       <Container>
         <Header style={{ width: "100%", marginBottom: "30px" }}>
-          <Flex justify="space-between" align="center" className="review_header">
+          <Flex
+            justify="space-between"
+            align="center"
+            className="review_header"
+          >
             <Text
               type="h4"
               text="Hotel Reviews"
@@ -368,7 +400,12 @@ const HotelReviews = () => {
                 width: "100%",
               }}
             ></Text>
-            <Flex styles={{ gap: "10px" }} className="flex_start" justify="flex-end"  align="center">
+            <Flex
+              styles={{ gap: "10px" }}
+              className="flex_start"
+              justify="flex-end"
+              align="center"
+            >
               <Text
                 type="p"
                 text="Sort by"
@@ -379,21 +416,15 @@ const HotelReviews = () => {
                   textOverflow: "unset",
                 }}
               ></Text>
-              <select
-                name="filter"
-                className="select"
-                style={{
-                  padding: "9px",
-                  borderRadius: "6px",
-                  width: "200px",
-                  borderColor: ttColors.gray,
-                  outline: "none",
-                }}
-              >
-                <option value="recommended">Recommended</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-              </select>
+              <Dropdown
+                options={filtersOptions}
+                className="mui_select"
+                width="100%"
+                minWidth="200px"
+                height="45px"
+                selectedValue={filters}
+                setSelectedValue={setFilters}
+              />
             </Flex>
           </Flex>
         </Header>
@@ -453,15 +484,10 @@ const HotelReviews = () => {
             <Flex direction="column">
               <Flex justify="space-between">
                 <Text type="p" text="Cleanliness" size={13}></Text>
-                <Text
-                  type="p"
-                  weight={600}
-                  size={13}
-                  text={`${averageCleanliness.toFixed(0)}%`}
-                ></Text>
+                <Text type="p" weight={600} size={13} text={`${55}%`}></Text>
               </Flex>
               <LineProgressBar
-                percent={averageCleanliness}
+                percent={55}
                 rounded={36}
                 className="LineProgressBar"
                 height={8}
@@ -471,15 +497,10 @@ const HotelReviews = () => {
             <Flex direction="column">
               <Flex justify="space-between">
                 <Text type="p" text="Service" size={13}></Text>
-                <Text
-                  type="p"
-                  weight={600}
-                  size={13}
-                  text={`${averageService.toFixed(0)}%`}
-                ></Text>
+                <Text type="p" weight={600} size={13} text={`${68}%`}></Text>
               </Flex>
               <LineProgressBar
-                percent={averageService}
+                percent={68}
                 rounded={36}
                 className="LineProgressBar"
                 height={8}
@@ -489,15 +510,10 @@ const HotelReviews = () => {
             <Flex direction="column">
               <Flex justify="space-between">
                 <Text type="p" text="Sleep Quality" size={13}></Text>
-                <Text
-                  type="p"
-                  weight={600}
-                  size={13}
-                  text={`${averageSleepQuality.toFixed(0)}%`}
-                ></Text>
+                <Text type="p" weight={600} size={13} text={`${20}%`}></Text>
               </Flex>
               <LineProgressBar
-                percent={averageSleepQuality}
+                percent={20}
                 rounded={36}
                 className="LineProgressBar"
                 height={8}
@@ -507,15 +523,10 @@ const HotelReviews = () => {
             <Flex direction="column">
               <Flex justify="space-between">
                 <Text type="p" text="Value" size={13}></Text>
-                <Text
-                  type="p"
-                  weight={600}
-                  size={13}
-                  text={`${averageValue.toFixed(0)}%`}
-                ></Text>
+                <Text type="p" weight={600} size={13} text={`${35}%`}></Text>
               </Flex>
               <LineProgressBar
-                percent={averageValue}
+                percent={35}
                 rounded={36}
                 className="LineProgressBar"
                 height={8}
@@ -525,15 +536,10 @@ const HotelReviews = () => {
             <Flex direction="column">
               <Flex justify="space-between">
                 <Text type="p" text="Location" size={13}></Text>
-                <Text
-                  type="p"
-                  weight={600}
-                  size={13}
-                  text={`${averageLocation.toFixed(0)}%`}
-                ></Text>
+                <Text type="p" weight={600} size={13} text={`${45}%`}></Text>
               </Flex>
               <LineProgressBar
-                percent={averageLocation}
+                percent={45}
                 rounded={36}
                 className="LineProgressBar"
                 height={8}
@@ -543,15 +549,10 @@ const HotelReviews = () => {
             <Flex direction="column">
               <Flex justify="space-between">
                 <Text type="p" text="Rooms" size={13}></Text>
-                <Text
-                  type="p"
-                  weight={600}
-                  size={13}
-                  text={`${averageRooms.toFixed(0)}%`}
-                ></Text>
+                <Text type="p" weight={600} size={13} text={`${80}%`}></Text>
               </Flex>
               <LineProgressBar
-                percent={averageRooms}
+                percent={80}
                 rounded={36}
                 className="LineProgressBar"
                 height={8}
@@ -577,8 +578,6 @@ const HotelReviews = () => {
                     month: "long",
                     year: "numeric",
                   }).format(new Date(review.stayedIn));
-
-                  console.log(`COUNT: ${getLineCount(review.comment)}`);
 
                   return (
                     <Span key={index}>
@@ -638,62 +637,14 @@ const HotelReviews = () => {
                               text={review.title}
                               styles={{ margin: "10px 0px" }}
                             ></Text>
-                            <FadedText
-                              showAll={hiddenReviews.includes(index)}
-                              onClick={() => toggleReviewVisibility(index)}
-                              lineCount={getLineCount(review.comment)}
-                            >
-                              {review.comment}
-                            </FadedText>
 
-                            <ul
-                              style={{ fontSize: "13px", margin: "15px 0px" }}
-                            >
-                              <Flex gap="30px">
-                                <li style={{ listStyle: "none" }}>
-                                  <Text
-                                    type="p"
-                                    text={`Comment: ${commentDate}`}
-                                  ></Text>
-                                </li>
-                                <li style={{ listStyle: "" }}>
-                                  <Text
-                                    type="p"
-                                    text={`Stayed in: ${stayedIn}`}
-                                  ></Text>
-                                </li>
-                              </Flex>
-                            </ul>
+                            <ExpandableText
+                              text={review.comment}
+                              maxLines={3}
+                              commentDate={commentDate}
+                              stayedIn={stayedIn}
+                            />
                           </Flex>
-
-                          <Span>
-                            <Flex
-                              className="hide_btn"
-                              align="center"
-                              gap="8px"
-                              styles={{
-                                color: ttColors.primary,
-                                cursor: "pointer",
-                                width: "fit-content",
-                              }}
-                              onClick={() => toggleReviewVisibility(index)}
-                            >
-                              {!hiddenReviews.includes(index) ? (
-                                <KeyboardArrowDownIcon />
-                              ) : (
-                                <KeyboardArrowUpIcon />
-                              )}
-                              <Text
-                                type="p"
-                                size={13}
-                                text={
-                                  !hiddenReviews.includes(index)
-                                    ? "Show Review"
-                                    : "Hide Review"
-                                }
-                              ></Text>
-                            </Flex>
-                          </Span>
 
                           <Flex align="center" gap="20px">
                             <Text
@@ -778,221 +729,29 @@ const HotelReviews = () => {
               </Span>
             ) : (
               <>
-                {reviews.slice(0, displayedReviews).map((review, index) => {
-                  // Format commentDate
-                  const commentDate = new Intl.DateTimeFormat("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  }).format(new Date(review.commentDate));
-
-                  // Format stayedIn
-                  const stayedIn = new Intl.DateTimeFormat("en-US", {
-                    month: "long",
-                    year: "numeric",
-                  }).format(new Date(review.stayedIn));
-
-                  console.log(`COUNT: ${getLineCount(review.comment)}`);
-
-                  return (
-                    <Span key={index}>
-                      <ReviewHeader
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex justify="space-between" align="center">
-                          <Text
-                            weight={"bold"}
-                            type="h5"
-                            text={review.name}
-                          ></Text>
-                          <ReviewsText>
-                            <Flex align="center" gap="8px">
-                              <Flex>
-                                <Image
-                                  alt="location"
-                                  src={
-                                    "/assets/icons/stay/view/view_camera_icon.svg"
-                                  }
-                                  width={24}
-                                  height={24}
-                                />
-                              </Flex>
-                              <Flex
-                                direction="column"
-                                styles={{ fontSize: "14px" }}
-                              >
-                                <StyledRating
-                                  name="customized-color"
-                                  defaultValue={review.rating}
-                                  getLabelText={(value: number) =>
-                                    `${value} Heart${value !== 1 ? "s" : ""}`
-                                  }
-                                  readOnly
-                                  precision={0.5}
-                                  icon={<CircleIcon fontSize="inherit" />}
-                                  emptyIcon={
-                                    <CircleOutlinedIcon fontSize="inherit" />
-                                  }
-                                  style={{
-                                    fontSize: "15px",
-                                  }}
-                                />
-                              </Flex>
-                            </Flex>
-                          </ReviewsText>
-                        </Flex>
-                      </ReviewHeader>
-                      <Content>
-                        <Flex direction="column">
-                          <Flex direction="column" className="main_content">
-                            <Text
-                              weight={"bold"}
-                              type="h4"
-                              size={16}
-                              text={review.title}
-                              styles={{ margin: "10px 0px" }}
-                            ></Text>
-                            <FadedText
-                              showAll={hiddenReviews.includes(index)}
-                              onClick={() => toggleReviewVisibility(index)}
-                              lineCount={getLineCount(review.comment)}
-                            >
-                              {review.comment}
-                            </FadedText>
-
-                            <ul
-                              style={{ fontSize: "13px", margin: "15px 0px" }}
-                            >
-                              <Flex gap="30px" className="date_wrap">
-                                <li style={{ listStyle: "none" }}>
-                                  <Text
-                                    type="p"
-                                    text={`Comment: ${commentDate}`}
-                                  ></Text>
-                                </li>
-                                <li style={{ listStyle: "" }}>
-                                  <Text
-                                    type="p"
-                                    text={`Stayed in: ${stayedIn}`}
-                                  ></Text>
-                                </li>
-                              </Flex>
-                            </ul>
-                          </Flex>
-
-                          <Span>
-                            <Flex
-                              className="hide_btn"
-                              align="center"
-                              gap="8px"
-                              styles={{
-                                color: ttColors.primary,
-                                cursor: "pointer",
-                                width: "fit-content",
-                              }}
-                              onClick={() => toggleReviewVisibility(index)}
-                            >
-                              {!hiddenReviews.includes(index) ? (
-                                <KeyboardArrowDownIcon />
-                              ) : (
-                                <KeyboardArrowUpIcon />
-                              )}
-                              <Text
-                                type="p"
-                                size={13}
-                                text={
-                                  !hiddenReviews.includes(index)
-                                    ? "Show Review"
-                                    : "Hide Review"
-                                }
-                              ></Text>
-                            </Flex>
-                          </Span>
-
-                          <Flex
-                            align="center"
-                            gap="20px"
-                            className="radio_wrap date_wrap"
-                          >
-                            <Text
-                              type="h5"
-                              weight={"bold"}
-                              text="Was this helpful?"
-                            ></Text>
-                            <RadioGroup
-                              aria-labelledby="demo-radio-buttons-group-label"
-                              name="radio-buttons-group"
-                            >
-                              <Flex align="center">
-                                <FormControlLabel
-                                  value="yes"
-                                  control={
-                                    <Radio
-                                      disableFocusRipple
-                                      disableRipple
-                                      sx={{
-                                        color: ttColors.gray,
-                                        "&.Mui-checked": {
-                                          color: ttColors.primary,
-                                        },
-                                        "&.MuiSvgIcon-root": {
-                                          // fontSize: 20,
-                                        },
-                                      }}
-                                    />
-                                  }
-                                  label={
-                                    <Text
-                                      size={14}
-                                      type="p"
-                                      text={`Yes (${13})`}
-                                    ></Text>
-                                  }
-                                />
-                                <FormControlLabel
-                                  value="no"
-                                  control={
-                                    <Radio
-                                      disableFocusRipple
-                                      disableRipple
-                                      sx={{
-                                        color: ttColors.gray,
-                                        "&.Mui-checked": {
-                                          color: ttColors.primary,
-                                        },
-                                        "& .MuiSvgIcon-root": {
-                                          // fontSize: 20,
-                                        },
-                                      }}
-                                    />
-                                  }
-                                  label={
-                                    <Text
-                                      size={14}
-                                      type="p"
-                                      text={`No (${2})`}
-                                    ></Text>
-                                  }
-                                />
-                              </Flex>
-                            </RadioGroup>
-                          </Flex>
-                        </Flex>
-                      </Content>
-                    </Span>
-                  );
-                })}
-                <Span style={{ marginTop: "20px" }}>
+                {/* REVIEW MODAL */}
+                <ReviewModal
+                  open={open.review}
+                  reviews={reviews}
+                  hiddenReviews={hiddenReviews}
+                  toggleReviewVisibility={toggleReviewVisibility}
+                  handleClose={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      review: false,
+                    }))
+                  }
+                />
+                <Span style={{ marginTop: "0px" }}>
                   <ButtonBtn
-                    className={remainingReviews === 0 ? "btn_disable" : ""}
-                    onClick={() => {
-                      const newDisplayedReviews = displayedReviews + 5;
-                      setDisplayedReviews(
-                        Math.min(reviews.length, newDisplayedReviews)
-                      );
-                    }}
+                    onClick={() =>
+                      setOpen((prev) => ({
+                        ...prev,
+                        review: true,
+                      }))
+                    }
                   >
-                    <BtnText>Read Review ({remainingReviews})</BtnText>
+                    <BtnText>Read Review ({reviews.length})</BtnText>
                   </ButtonBtn>
                 </Span>
               </>

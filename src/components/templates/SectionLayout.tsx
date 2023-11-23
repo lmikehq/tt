@@ -5,6 +5,7 @@ const SectionLayout = styled.section<{ margin?: string; padding?: string }>`
   // padding: ${(props) => props?.padding || "0 6.5rem"};
 
   width: 80vw;
+  scroll-behavior: smooth !important;
   max-width: 1600px;
   margin: ${(props) => props?.margin || "0 auto"};
   position: relative;

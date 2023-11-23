@@ -59,9 +59,18 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function PriceAlerts() {
   const [checked, setChecked] = useState(false);
 
+  const [open, setOpen] = useState({
+    alert: false,
+  });
   const handleCheckboxChange = () => {
     setChecked(!checked);
+
+    setOpen((prev) => ({
+      ...prev,
+      alert: true,
+    }));
   };
+
   return (
     <Section>
       <Box

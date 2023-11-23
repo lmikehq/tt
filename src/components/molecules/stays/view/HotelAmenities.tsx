@@ -21,9 +21,18 @@ const HotelAmenities = () => {
   //============
   //TOGGLE BOX
   //============
-  const [openBox, setOpenBox] = useState<number>();
+  const [openBoxes, setOpenBoxes] = useState<number[]>([]);
+
   const toggleBox = (index: number) => {
-    setOpenBox((prevIndex) => (prevIndex === index ? undefined : index));
+    setOpenBoxes((prevOpenBoxes) => {
+      const isOpen = prevOpenBoxes.includes(index);
+
+      if (isOpen) {
+        return prevOpenBoxes.filter((boxIndex) => boxIndex !== index);
+      } else {
+        return [...prevOpenBoxes, index];
+      }
+    });
   };
 
   return (
@@ -54,7 +63,7 @@ const HotelAmenities = () => {
         <Span style={{ width: "100%" }}>
           <GridLayout className="amenities_grid">
             <ul style={{ listStyle: "none" }} className="mobile_box">
-              <Flex justify="space-between">
+              <Flex justify="space-between" cursor="pointer">
                 <Flex gap="10px" align="center" onClick={() => toggleBox(0)}>
                   <PinDropIcon style={{ fontSize: "18px" }} />
                   <Text
@@ -67,7 +76,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 0 ? (
+                    {openBoxes.includes(0) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -79,7 +88,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 0 && (
+                  {openBoxes.includes(0) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -278,7 +287,7 @@ const HotelAmenities = () => {
               )}
             </ul>
             <ul style={{ listStyle: "none" }} className="mobile_box">
-              <Flex justify="space-between">
+              <Flex justify="space-between" cursor="pointer">
                 <Flex gap="10px" align="center" onClick={() => toggleBox(1)}>
                   <BedIcon style={{ fontSize: "18px" }} />
                   <Text
@@ -291,7 +300,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 1 ? (
+                    {openBoxes.includes(1) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -303,7 +312,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 1 && (
+                  {openBoxes.includes(1) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -471,7 +480,7 @@ const HotelAmenities = () => {
                   </Flex>
                   {isMobile ? (
                     <>
-                      {openBox === 2 ? (
+                      {openBoxes.includes(2) ? (
                         <KeyboardArrowUpIcon />
                       ) : (
                         <KeyboardArrowDownIcon />
@@ -483,7 +492,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile && (
                   <>
-                    {openBox === 2 && (
+                    {openBoxes.includes(2) && (
                       <Flex
                         gap="30px"
                         align="flex-start"
@@ -583,7 +592,7 @@ const HotelAmenities = () => {
                   </Flex>
                   {isMobile ? (
                     <>
-                      {openBox === 3 ? (
+                      {openBoxes.includes(3) ? (
                         <KeyboardArrowUpIcon />
                       ) : (
                         <KeyboardArrowDownIcon />
@@ -595,7 +604,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile && (
                   <>
-                    {openBox === 3 && (
+                    {openBoxes.includes(3) && (
                       <Flex
                         gap="30px"
                         align="flex-start"
@@ -681,7 +690,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 4 ? (
+                    {openBoxes.includes(4) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -693,7 +702,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 4 && (
+                  {openBoxes.includes(4) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -762,7 +771,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 5 ? (
+                    {openBoxes.includes(5) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -774,7 +783,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 5 && (
+                  {openBoxes.includes(5) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -843,7 +852,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 6 ? (
+                    {openBoxes.includes(6) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -855,7 +864,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 6 && (
+                  {openBoxes.includes(6) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -925,7 +934,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 7 ? (
+                    {openBoxes.includes(7) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -937,7 +946,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 7 && (
+                  {openBoxes.includes(7) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -992,7 +1001,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 8 ? (
+                    {openBoxes.includes(8) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -1004,7 +1013,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 8 && (
+                  {openBoxes.includes(8) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
@@ -1046,7 +1055,7 @@ const HotelAmenities = () => {
               )}
             </ul>{" "}
             <ul className="listNine mobile_box" style={{ listStyle: "none" }}>
-              <Flex justify="space-between">
+              <Flex justify="space-between" cursor="pointer">
                 <Flex gap="10px" align="center" onClick={() => toggleBox(9)}>
                   <PetsIcon style={{ fontSize: "18px" }} />
                   <Text
@@ -1059,7 +1068,7 @@ const HotelAmenities = () => {
                 </Flex>
                 {isMobile ? (
                   <>
-                    {openBox === 9 ? (
+                    {openBoxes.includes(9) ? (
                       <KeyboardArrowUpIcon />
                     ) : (
                       <KeyboardArrowDownIcon />
@@ -1071,7 +1080,7 @@ const HotelAmenities = () => {
               </Flex>
               {isMobile && (
                 <>
-                  {openBox === 9 && (
+                  {openBoxes.includes(9) && (
                     <Flex
                       gap="30px"
                       align="flex-start"
