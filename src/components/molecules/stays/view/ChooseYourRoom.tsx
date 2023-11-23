@@ -13,9 +13,9 @@ import TuneIcon from "@mui/icons-material/Tune";
 import CachedIcon from "@mui/icons-material/Cached";
 import CloseIcon from "@mui/icons-material/Close";
 import { FlexBox } from "../components/styles";
-import Filter from "./modals/components/FilterBox";
 import { useState } from "react";
 import { ChangeSearchModal, FilterModal } from "./modals/Modals";
+import FilterBox from "./modals/components/FilterBox";
 
 const ChooseYourRoom = () => {
   const { isMobile } = useScreenResolution();
@@ -24,6 +24,161 @@ const ChooseYourRoom = () => {
     search: false,
     filter: false,
   });
+
+  // BEDS
+  const [beds, setBeds] = useState("");
+  const bedsOptions = [
+    { value: "all options", displayValue: "All Options" },
+    { value: "double bed", displayValue: "Double Bed" },
+    { value: "separate bed", displayValue: "Separate Bed" },
+  ];
+
+  // MEALS
+  const [selectedMealCheckboxValues, setSelectedMealCheckboxValues] = useState<
+    string[]
+  >([]);
+  const mealOptions = [
+    { value: "no meal", displayValue: "No Meal" },
+    { value: "breakfast", displayValue: "Breakfast" },
+    {
+      value: "breakfast + lunch or dinner",
+      displayValue: "Breakfast + Lunch or Dinner",
+    },
+    {
+      value: "breakfast, lunch and dinner",
+      displayValue: "Breakfast, Lunch and Dinner",
+    },
+    { value: "all inclusive", displayValue: "All Inclusive" },
+  ];
+
+  // CANCELLATION
+  const [cancellation, setCancellation] = useState("");
+  const cancellationOptions = [
+    { value: "all options", displayValue: "All Options" },
+    { value: "with free cancellation", displayValue: "With Free Cancellation" },
+  ];
+
+  // PAYMENT
+  const [selectedPaymentCheckboxValues, setSelectedPaymentCheckboxValues] =
+    useState<string[]>([]);
+  const paymentOptions = [
+    { value: "pay now", displayValue: "Pay Now" },
+    { value: "pay at the hotel", displayValue: "Pay at the Hotel" },
+  ];
+
+  const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    //properties needed
+  });
+
+  const [allMappedOptions, setAllMappedOptions] = useState<string[]>([]);
+
+  // Map the selected options
+  const mapSelectedOptionsToDisplayValues = (
+    selectedOptions: string[],
+    options: { value: string; displayValue: string }[]
+  ) => {
+    return selectedOptions.map((option) => {
+      const selectedOption = options.find((o) => o.value === option);
+      return selectedOption ? selectedOption.displayValue : "";
+    });
+  };
+
+  const [totalSelectedOptions, setTotalSelectedOptions] = useState<number>(0);
+
+  // SUBMIT HANDLER
+  const handleSubmit = () => {
+    setOpen((prev) => ({
+      ...prev,
+      filter: false,
+    }));
+
+    // Map the selected options to their display values
+    const mappedBeds = mapSelectedOptionsToDisplayValues([beds], bedsOptions);
+    const mappedMeals = mapSelectedOptionsToDisplayValues(
+      selectedMealCheckboxValues,
+      mealOptions
+    );
+    const mappedCancellation = mapSelectedOptionsToDisplayValues(
+      [cancellation],
+      cancellationOptions
+    );
+    const mappedPayment = mapSelectedOptionsToDisplayValues(
+      selectedPaymentCheckboxValues,
+      paymentOptions
+    );
+
+    // Combine all the mapped options
+    const combinedOptions: string[] = [
+      ...mappedBeds,
+      ...mappedMeals,
+      ...mappedCancellation,
+      ...mappedPayment,
+    ].flat();
+
+    setAllMappedOptions(combinedOptions);
+
+    // Recalculate totalSelectedOptions
+    const updatedTotalSelectedOptions =
+      (beds === "" ? 0 : 1) +
+      (cancellation === "" ? 0 : 1) +
+      selectedMealCheckboxValues.length +
+      selectedPaymentCheckboxValues.length;
+
+    setTotalSelectedOptions(updatedTotalSelectedOptions);
+  };
+
+  const resetAllFilters = () => {
+    setBeds("");
+    setSelectedMealCheckboxValues([]);
+    setCancellation("");
+    setSelectedPaymentCheckboxValues([]);
+    setAllMappedOptions([]);
+    setTotalSelectedOptions(0);
+  };
+
+  // Remove an option from allMappedOptions
+  const removeOption = (optionToRemove: string) => {
+    setAllMappedOptions((prevOptions) => {
+      return prevOptions.filter((option) => option !== optionToRemove);
+    });
+
+    // Recalculate totalSelectedOptions
+    const updatedTotalSelectedOptions =
+      (beds === "" ? 0 : 1) +
+      (cancellation === "" ? 0 : 1) +
+      selectedMealCheckboxValues.filter((value) => value !== optionToRemove)
+        .length +
+      selectedPaymentCheckboxValues.filter((value) => value !== optionToRemove)
+        .length;
+
+    setTotalSelectedOptions(updatedTotalSelectedOptions);
+  };
+
+  // Remove a specific option from the list
+  const removeOptionHandler = (optionToRemove: string) => {
+    removeOption(optionToRemove);
+
+    // Assuming the optionToRemove is a string, directly check the values
+    if (bedsOptions.some((option) => option.value === optionToRemove)) {
+      setBeds("");
+    } else if (mealOptions.some((option) => option.value === optionToRemove)) {
+      setSelectedMealCheckboxValues((prev) =>
+        prev.filter((value) => value !== optionToRemove)
+      );
+    } else if (
+      cancellationOptions.some((option) => option.value === optionToRemove)
+    ) {
+      setCancellation("");
+    } else if (
+      paymentOptions.some((option) => option.value === optionToRemove)
+    ) {
+      setSelectedPaymentCheckboxValues((prev) =>
+        prev.filter((value) => value !== optionToRemove)
+      );
+    }
+  };
+
   return (
     <Container>
       <Header id="rooms">
@@ -108,12 +263,63 @@ const ChooseYourRoom = () => {
 
         {/* FILTER */}
         <Span>
-          {!isMobile && <Filter />}
+          {!isMobile && (
+            <FilterBox
+              // BEDS
+              beds={beds}
+              setBeds={setBeds}
+              bedsOptions={bedsOptions}
+              // MEALS
+              selectedMealCheckboxValues={selectedMealCheckboxValues}
+              setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
+              mealOptions={mealOptions}
+              // CANCELLATION
+              cancellation={cancellation}
+              setCancellation={setCancellation}
+              cancellationOptions={cancellationOptions}
+              // PAYMENT
+              selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
+              setSelectedPaymentCheckboxValues={
+                setSelectedPaymentCheckboxValues
+              }
+              paymentOptions={paymentOptions}
+              //SUBMIT
+              submissionState={submissionState}
+              setSubmissionState={setSubmissionState}
+              handleSubmit={handleSubmit}
+              resetAllFilters={resetAllFilters}
+            />
+          )}
           {isMobile && (
             <Span>
               {/* FILTER MODAL*/}
               <FilterModal
                 open={open.filter}
+                // BEDS
+                beds={beds}
+                setBeds={setBeds}
+                bedsOptions={bedsOptions}
+                // MEALS
+                selectedMealCheckboxValues={selectedMealCheckboxValues}
+                setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
+                mealOptions={mealOptions}
+                // CANCELLATION
+                cancellation={cancellation}
+                setCancellation={setCancellation}
+                cancellationOptions={cancellationOptions}
+                // PAYMENT
+                selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
+                setSelectedPaymentCheckboxValues={
+                  setSelectedPaymentCheckboxValues
+                }
+                paymentOptions={paymentOptions}
+                //SUBMIT
+                submissionState={submissionState}
+                setSubmissionState={setSubmissionState}
+                handleSubmit={handleSubmit}
+                // totalSelectedOptions={totalSelectedOptions}
+
+                resetAllFilters={resetAllFilters}
                 handleClose={() =>
                   setOpen((prev) => ({
                     ...prev,
@@ -138,7 +344,13 @@ const ChooseYourRoom = () => {
                       }))
                     }
                   >
-                    <Flex align="center" gap="5px">
+                    <Flex
+                      align="center"
+                      gap="5px"
+                      justify={
+                        totalSelectedOptions === 0 ? "center" : "flex-start"
+                      }
+                    >
                       <TuneIcon />
                       <Text
                         type="p"
@@ -147,9 +359,13 @@ const ChooseYourRoom = () => {
                         text="Filter"
                       ></Text>
                     </Flex>
-                    <Flex align="center" justify="center" className="badge">
-                      <Text type="p" text={`${2}`}></Text>
-                    </Flex>
+                    {totalSelectedOptions === 0 ? (
+                      " "
+                    ) : (
+                      <Flex align="center" justify="center" className="badge">
+                        <Text type="p" text={`${totalSelectedOptions}`}></Text>
+                      </Flex>
+                    )}
                   </ButtonBtn>
                 </Span>
                 <Span style={{ margin: "10px 0px" }}>
@@ -162,67 +378,52 @@ const ChooseYourRoom = () => {
                     gap="8px"
                     align="center"
                   >
-                    <BtnDetails
-                      className="filter_btn"
-                      style={{ backgroundColor: ttColors.grayishAsh }}
-                    >
-                      <Flex align="center" gap="5px">
-                        <Text
-                          weight={500}
-                          size={15}
-                          type="p"
-                          text="Double Bed"
-                        ></Text>
-                        <CloseIcon
-                          style={{ fontSize: "17px", cursor: "pointer" }}
-                        />
-                      </Flex>
-                    </BtnDetails>
-                    <BtnDetails
-                      className="filter_btn"
-                      style={{ backgroundColor: ttColors.grayishAsh }}
-                    >
-                      <Flex align="center" gap="5px">
-                        <Text
-                          weight={500}
-                          size={15}
-                          type="p"
-                          text="No Meal"
-                        ></Text>
-                        <CloseIcon
-                          style={{ fontSize: "17px", cursor: "pointer" }}
-                        />
-                      </Flex>
-                    </BtnDetails>
-                    <BtnDetails
-                      className="filter_btn"
-                      style={{ backgroundColor: ttColors.grayishAsh }}
-                    >
-                      <Flex align="center" gap="5px">
-                        <Text
-                          weight={500}
-                          size={15}
-                          type="p"
-                          text="With Free Cancellation"
-                        ></Text>
-                        <CloseIcon
-                          style={{ fontSize: "17px", cursor: "pointer" }}
-                        />
-                      </Flex>
-                    </BtnDetails>
+                    {allMappedOptions.map((option) => (
+                      <BtnDetails
+                        key={option}
+                        className="filter_btn"
+                        style={{ backgroundColor: ttColors.grayishAsh }}
+                      >
+                        <Flex align="center" gap="5px">
+                          <Text
+                            weight={500}
+                            size={15}
+                            type="p"
+                            text={option}
+                          ></Text>
+
+                          <CloseIcon
+                            onClick={() => removeOptionHandler(option)}
+                            style={{ fontSize: "17px", cursor: "pointer" }}
+                          />
+                        </Flex>
+                      </BtnDetails>
+                    ))}
                   </Flex>
-                  <Flex styles={{ marginTop: "8px" }}>
-                    <BtnDetails className="reset_filters">
-                      <Flex align="center" gap="5px">
-                        <Text
-                          weight={500}
-                          size={15}
-                          type="p"
-                          text="Reset All Filters"
-                        ></Text>
-                      </Flex>
-                    </BtnDetails>
-                  </Flex>
+                  {totalSelectedOptions === 0 ? (
+                    ""
+                  ) : (
+                    <Flex styles={{ marginTop: "8px" }}>
+                      <BtnDetails
+                        onClick={resetAllFilters}
+                        className="reset_filters"
+                      >
+                        <Flex
+                          align="center"
+                          gap="5px"
+                          justify="center"
+                          width="100%"
+                        >
+                          <Text
+                            weight={500}
+                            size={15}
+                            type="p"
+                            text="Reset All Filters"
+                          ></Text>
+                        </Flex>
+                      </BtnDetails>
+                    </Flex>
+                  )}
                 </Span>
                 <Span>
                   <Span>
@@ -269,56 +470,6 @@ const ChooseYourRoom = () => {
                         size={15}
                         type="p"
                         text="Double Beds"
-                      ></Text>
-                    </Flex>
-                    <CloseIcon
-                      style={{
-                        fontSize: "17px",
-                        cursor: "pointer",
-                        color: "var(--color-rating)",
-                      }}
-                    />
-                  </Flex>
-                </BtnDetails>
-                <BtnDetails className="reset_filters chosen_filter">
-                  <Flex align="center" justify="space-between" gap="5px">
-                    <Flex align="center" gap="5px">
-                      <Text
-                        weight={500}
-                        size={15}
-                        type="p"
-                        text="Meals:"
-                      ></Text>
-                      <Text
-                        color={"var(--text-gray-color)"}
-                        size={15}
-                        type="p"
-                        text="No meals"
-                      ></Text>
-                    </Flex>
-                    <CloseIcon
-                      style={{
-                        fontSize: "17px",
-                        cursor: "pointer",
-                        color: "var(--color-rating)",
-                      }}
-                    />
-                  </Flex>
-                </BtnDetails>{" "}
-                <BtnDetails className="reset_filters chosen_filter">
-                  <Flex align="center" justify="space-between" gap="5px">
-                    <Flex align="center" gap="5px">
-                      <Text
-                        weight={500}
-                        size={15}
-                        type="p"
-                        text="Cancellation policy:"
-                      ></Text>
-                      <Text
-                        color={"var(--text-gray-color)"}
-                        size={15}
-                        type="p"
-                        text="With free cancellation"
                       ></Text>
                     </Flex>
                     <CloseIcon

@@ -10,63 +10,57 @@ import CheckboxDropdown from "@/components/organisms/checkboxDropdown";
 import Button from "@/components/atoms/button";
 import Spinner from "@/components/molecules/icons/spinner";
 
-function FilterBox() {
+interface FilterBoxProps {
+  beds: string;
+  setBeds: React.Dispatch<React.SetStateAction<string>>;
+  bedsOptions: { value: string; displayValue: string }[];
+  selectedMealCheckboxValues: string[];
+  setSelectedMealCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
+  mealOptions: { value: string; displayValue: string }[];
+  cancellation: string;
+  setCancellation: React.Dispatch<React.SetStateAction<string>>;
+  cancellationOptions: { value: string; displayValue: string }[];
+  selectedPaymentCheckboxValues: string[];
+  setSelectedPaymentCheckboxValues: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
+  paymentOptions: { value: string; displayValue: string }[];
+  submissionState: {
+    loading: boolean;
+    //MORE PROPERTIES
+  };
+  setSubmissionState: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      //MORE PROPERTIES
+    }>
+  >;
+  handleSubmit: () => void;
+  resetAllFilters: () => void;
+}
+function FilterBox({
+  beds,
+  setBeds,
+  bedsOptions,
+  selectedMealCheckboxValues,
+  setSelectedMealCheckboxValues,
+  mealOptions,
+  cancellation,
+  setCancellation,
+  cancellationOptions,
+  selectedPaymentCheckboxValues,
+  setSelectedPaymentCheckboxValues,
+  paymentOptions,
+  submissionState,
+  setSubmissionState,
+  handleSubmit,
+  resetAllFilters,
+}: FilterBoxProps) {
   const { isMobile } = useScreenResolution();
-
-  // BEDS
-  const [beds, setBeds] = useState("all options");
-  const bedsOptions = [
-    { value: "all options", displayValue: "All Options" },
-    { value: "double bed", displayValue: "Double Bed" },
-    { value: "separate bed", displayValue: "Separate Bed" },
-  ];
-
-  // MEALS
-  const [selectedMealCheckboxValues, setSelectedMealCheckboxValues] = useState<
-    string[]
-  >([]);
-  const mealOptions = [
-    { value: "no meal", displayValue: "No Meal" },
-    { value: "breakfast", displayValue: "Breakfast" },
-    {
-      value: "breakfast + lunch or dinner",
-      displayValue: "Breakfast + Lunch or Dinner",
-    },
-    {
-      value: "breakfast, lunch and dinner",
-      displayValue: "Breakfast, Lunch and Dinner",
-    },
-    { value: "all inclusive", displayValue: "All Inclusive" },
-  ];
-
-  // CANCELLATION
-  const [cancellation, setCancellation] = useState("all options");
-  const cancellationOptions = [
-    { value: "all options", displayValue: "All Options" },
-    { value: "with free cancellation", displayValue: "With Free Cancellation" },
-  ];
-
-  // PAYMENT
-  const [selectedPaymentCheckboxValues, setSelectedPaymentCheckboxValues] =
-    useState<string[]>([]);
-  const paymentOptions = [
-    { value: "pay now", displayValue: "Pay Now" },
-    { value: "pay at the hotel", displayValue: "Pay at the Hotel" },
-  ];
-
-  const [submissionState, setSubmissionState] = useState({
-    loading: false,
-    //properties needed
-  });
-  const handleSubmit = () => {};
 
   return (
     <Span>
-      <GridLayout
-        className="grid_select"
-        // columns={isMobile ? 1 : 4}
-        // gap={isMobile ? "0.3rem" : "1rem"}
-      >
+      <GridLayout className="grid_select">
         <Flex
           direction="column"
           gap=".5rem"
@@ -141,6 +135,7 @@ function FilterBox() {
                   textAlign: "center",
                   cursor: "default",
                 }}
+                onClick={resetAllFilters}
               >
                 <Flex
                   align="center"
@@ -183,7 +178,7 @@ function FilterBox() {
               ) : (
                 <Text
                   type="p"
-                  text={`Show ${30} Options`}
+                  text={`Show ${12} Options`}
                   color={"white"}
                   size="16px"
                 />

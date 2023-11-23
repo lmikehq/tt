@@ -186,13 +186,57 @@ export const AmenitiesModal = ({
 };
 
 // FILTER MODAL
+interface FilterModalProps {
+  open: boolean;
+  handleClose: () => void;
+  beds: string;
+  setBeds: React.Dispatch<React.SetStateAction<string>>;
+  bedsOptions: { value: string; displayValue: string }[];
+  selectedMealCheckboxValues: string[];
+  setSelectedMealCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
+  mealOptions: { value: string; displayValue: string }[];
+  cancellation: string;
+  setCancellation: React.Dispatch<React.SetStateAction<string>>;
+  cancellationOptions: { value: string; displayValue: string }[];
+  selectedPaymentCheckboxValues: string[];
+  setSelectedPaymentCheckboxValues: React.Dispatch<
+    React.SetStateAction<string[]>
+  >;
+  paymentOptions: { value: string; displayValue: string }[];
+  submissionState: {
+    loading: boolean;
+    //MORE PROPERTIES
+  };
+  setSubmissionState: React.Dispatch<
+    React.SetStateAction<{
+      loading: boolean;
+      //MORE PROPERTIES
+    }>
+  >;
+  handleSubmit: () => void;
+  resetAllFilters: () => void;
+}
+
 export const FilterModal = ({
   open,
   handleClose,
-}: {
-  open: boolean;
-  handleClose: () => void;
-}) => {
+  beds,
+  setBeds,
+  bedsOptions,
+  selectedMealCheckboxValues,
+  setSelectedMealCheckboxValues,
+  mealOptions,
+  cancellation,
+  setCancellation,
+  cancellationOptions,
+  selectedPaymentCheckboxValues,
+  setSelectedPaymentCheckboxValues,
+  paymentOptions,
+  submissionState,
+  setSubmissionState,
+  handleSubmit,
+  resetAllFilters,
+}: FilterModalProps) => {
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -211,7 +255,27 @@ export const FilterModal = ({
               />
             </Flex>
             <Span style={{ padding: "15px" }}>
-              <FilterBox />
+              {/* Pass down the props to FilterBox */}
+              <FilterBox
+                beds={beds}
+                setBeds={setBeds}
+                bedsOptions={bedsOptions}
+                selectedMealCheckboxValues={selectedMealCheckboxValues}
+                setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
+                mealOptions={mealOptions}
+                cancellation={cancellation}
+                setCancellation={setCancellation}
+                cancellationOptions={cancellationOptions}
+                selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
+                setSelectedPaymentCheckboxValues={
+                  setSelectedPaymentCheckboxValues
+                }
+                paymentOptions={paymentOptions}
+                submissionState={submissionState}
+                setSubmissionState={setSubmissionState}
+                handleSubmit={handleSubmit}
+                resetAllFilters={resetAllFilters}
+              />
             </Span>
           </ModalWrapper>
         </ModalScroll>
