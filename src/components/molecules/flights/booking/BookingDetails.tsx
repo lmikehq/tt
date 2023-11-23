@@ -186,9 +186,9 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
 
             <Grid columns={isMobile ? 2 : 5} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
                 <HeaderDetail name="BOOKING ID" value={booking?.bookingId} />
-                <HeaderDetail name="PNR STATUS" value={booking?.pnrStatus} />
+                <HeaderDetail name={booking?.pnr ? "PNR" : "PNR STATUS"} value={booking?.pnr ? booking?.pnr?.segments?.pnr : booking?.pnrStatus} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
-                <HeaderDetail name="FLIGHT NUMBER" value={booking?.flightNum} />
+                <HeaderDetail name="FLIGHT NUMBER" value={`${booking?.airlineIata} ${booking?.flightNum}`} />
                 {/* <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0] ?? ''} /> */}
                 <HeaderDetail name="PAYMENT STATUS:" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
             </Grid>
@@ -285,15 +285,16 @@ function PassengerDetails({ booking }: { booking: GetFlightBookingByIdResponse }
                 <Divider direction='horizontal' px="1px" color={ttColors.lightestGray} />
             </Flex>
 
-            {booking?.passengerInfo?.map((passenger, index) =>
+            {booking?.passengerInfo?.length > 0 &&
+                booking?.passengerInfo?.map((passenger, index) =>
                 <Flex direction='column' key={`passenger-${index}`}>
                     <Text type="p"
                         text={`${allCaps(passenger.title)} ${allCaps(passenger.name)} ${allCaps(passenger.surname)} (${capCase(passenger.category)}${index === 0 ? " - Lead" : ""})`}
                         size={isMobile ? 16 : 18}
                         weight={500}
                     />
-                    <FieldDetail name="Email" value={booking?.passengerDetails[index]?.email} />
-                    <FieldDetail name="Phone Number" value={booking?.passengerDetails[index]?.phoneNumber} />
+                    <FieldDetail name="Email" value={booking?.passengerDetails ? booking?.passengerDetails[index]?.email : ''} />
+                    <FieldDetail name="Phone Number" value={booking?.passengerDetails ? booking?.passengerDetails[index]?.phoneNumber : ''} />
                     <FieldDetail name="Seat Details" value={booking?.seatId[index]} last />
                     {/* <FieldDetail name="Extra Baggage" value={""} last/> */}
                 </Flex>    

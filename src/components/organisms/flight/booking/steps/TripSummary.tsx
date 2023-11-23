@@ -209,6 +209,9 @@ const TripSummary = ({
                     ),
                 },
             });
+            console.log(passengersBagCombination)
+            console.log(insertSelectedCheckedBags(passengersBagCombination))
+            console.log(arrangeBaggageDataForOrdering(insertSelectedCheckedBags(passengersBagCombination)))
             await sleep(500);
             nextStep();
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

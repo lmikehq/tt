@@ -49,7 +49,8 @@ const SearchFlagInput = ({
           }}
         />
         {value?.name ? (
-          <AiOutlineCheck color="#3BB98E" />
+            <IoIosArrowDown size={20} />
+        //   <AiOutlineCheck color="#3BB98E" />
         ) : (
           <IoIosArrowDown size={20} />
         )}

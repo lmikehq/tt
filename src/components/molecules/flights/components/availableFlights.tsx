@@ -24,7 +24,7 @@ import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
 import { FaQuestion } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
-import { dateSort, numSort } from "@/lib/utilFns";
+import { cleanObject, dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
 import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
 import { IoShareSocial } from "react-icons/io5";
@@ -140,7 +140,7 @@ function LoginModal({
                 bgcolor="white"
                 padding={5}
                 borderRadius="16px"
-                width={isMobile ? "95vw" : "40vw"}
+                width={isMobile ? "95vw" : "35vw"}
             >
                 <Flex width="100%" justify="center">
                     <Flex
@@ -288,13 +288,16 @@ function ShareFlightModal({
     isOpen,
     onClose,
     flight,
+    flightReq
 }: {
     isOpen: boolean;
     onClose: VoidFunction;
     flight: FlightInfo | null;
+    flightReq: { bags: number; adults: number; children: number; }
 }) {
     const { isMobile } = useScreenResolution();
     const { copyToClipboard } = useClipboard();
+    const flightLink = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${flight?.booking_token}`
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -344,7 +347,7 @@ function ShareFlightModal({
                         >
                             <Text
                                 type="p"
-                                text={`${""}${window.location.href}`}
+                                text={`thrillers.travel/${flight?.cityCodeFrom}~${flight?.cityCodeTo}`}
                                 styles={{ minWidth: "max-content" }}
                                 size={14}
                             />
@@ -355,9 +358,7 @@ function ShareFlightModal({
                         height="100%"
                         width={isMobile ? "100%" : "24%"}
                         borderRadius="6px"
-                        onClick={() =>
-                            copyToClipboard(window.location.href, "Link copied")
-                        }
+                        onClick={() => copyToClipboard(flightLink, "Link copied")}
                     >
                         <Text type="p" text="Copy Link" />
                     </Button>
@@ -595,8 +596,43 @@ function AvailableFlights() {
         flight?.departureDate;
 
     useEffect(() => {
-        const bags = (num: number, bags: string) =>
-            num > 0 ? Array(num).fill(bags).join(",") : undefined;
+        // const bags = (num: number, bags: string) => num > 0 ? Array(num).fill(bags).join(",") : undefined;
+        const adults = Number(queryParams?.adults);
+        const children = Number(queryParams?.children);
+        const adultsAndChildren = adults + children;
+
+        const shareCabinBags = (numPass: number, numBags: number) => {
+            const arrBags = Array.from({ length: numBags }).fill(1)
+            const arrPass = Array.from({ length: numPass }).fill(0)
+
+            return arrPass.map(e => {
+                let val = arrBags.length > 0 ? 1 : 0
+                arrBags.pop()
+                return val
+            })
+        }
+        const shareCheckedBags = (numPass: number, numBags: number) => {
+            const arrBags = Array.from({ length: numBags }).fill(1)
+            const arrPass = Array.from({ length: numPass }).fill(0)
+            arrBags.forEach((e, ind, arr) => {
+                arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1
+            })
+
+            return arrPass
+        }
+
+        const sharedCabin = shareCabinBags(adultsAndChildren, Number(queryParams?.cabinBags))
+        const sharedChecked = shareCheckedBags(adultsAndChildren, Number(queryParams?.checkedBags))
+        const adultHandBags =
+            adults > 0 ? sharedCabin.slice(0, adults).join(',') : undefined;
+        const adultHoldBags =
+            adults > 0 ? sharedChecked.slice(0, adults).join(',') : undefined;
+        const childHandBags =
+            children > 0 ? sharedCabin.slice(adults).join(',') : undefined;
+        const childHoldBags =
+            children > 0 ? sharedChecked.slice(adults).join(',') : undefined;
+
+        // console.log(sharedCabin, sharedChecked)
 
         const sanitizedQuery = {
             fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
@@ -604,19 +640,14 @@ function AvailableFlights() {
             date_from: queryParams?.date_from ?? searchQuery?.date_from,
             return_from: queryParams?.return_from ?? searchQuery?.return_from,
             return_to: queryParams?.return_from ?? searchQuery?.return_from,
-
             selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
             adults: Number(queryParams?.adults ?? searchQuery?.adults),
             children: Number(queryParams?.children ?? searchQuery?.children),
             infants: Number(queryParams?.infants ?? searchQuery?.infants),
-            adult_hand_bag: bags(
-                Number(queryParams?.adults),
-                queryParams?.cabinBags
-            ),
-            adult_hold_bag: bags(
-                Number(queryParams?.adults),
-                queryParams?.checkedBags
-            ),
+            adult_hand_bag: adultHandBags,
+            adult_hold_bag: adultHoldBags,
+            child_hand_bag: childHandBags,
+            child_hold_bag: childHoldBags,
         };
         if (
             sanitizedQuery?.fly_from &&
@@ -624,7 +655,7 @@ function AvailableFlights() {
             sanitizedQuery?.date_from &&
             sanitizedQuery?.adults
         ) {
-            handleSearchResults({ ...searchQuery, ...sanitizedQuery });
+            handleSearchResults({ ...searchQuery, ...(cleanObject(sanitizedQuery)) });
         }
     }, [queryParams]);
 
@@ -634,6 +665,7 @@ function AvailableFlights() {
         }, 900000);
         return () => clearInterval(interval);
     }, []);
+
 
     return (
         <Flex
@@ -673,9 +705,7 @@ function AvailableFlights() {
                         <FlightBox
                             key={index}
                             flight={flight}
-                            selectFlight={({ bookingToken }) =>
-                                goToFlight(bookingToken)
-                            }
+                            selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
                             bookingToken={flight.booking_token}
                             departureCountryCode={flight.cityCodeFrom}
                             arrivalCountryCode={flight.cityCodeTo}
@@ -685,9 +715,9 @@ function AvailableFlights() {
                             label={getLabel(flight.price)}
                             stops={flight.route.length - 1}
                             seats={flight.availability.seats}
-                            hold={flight.baglimit.hold_weight ? 1 : 0}
-                            carryOn={flight.baglimit.hand_weight ? 1 : 0}
-                            flightStop={"one-way"}
+                            carryOn={(flightState?.fleet[0]?.cabinBaggage) ?? 0}
+                            hold={(Number(queryParams?.checkedBags) == flightState?.fleet[0]?.checkedBaggage) ? flightState?.fleet[0]?.checkedBaggage : Number(queryParams?.checkedBag) ?? 0}
+                            flightStop={(flightState?.stops === 'round' && flightState?.stops === queryParams?.stops) ? 'round' : "one-way"}
                             openShareModal={openShareModal}
                         />
                     ))}
@@ -744,6 +774,7 @@ function AvailableFlights() {
                     setModal((prev) => ({ ...prev, isOpenShare: false }))
                 }
                 flight={modal.share}
+                flightReq={flightReq}
             />
         </Flex>
     );

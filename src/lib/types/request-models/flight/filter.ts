@@ -5,7 +5,17 @@ export interface FilterData {
   };
   stops: string;
   airlines: string[];
-  times: {
+  departTimes: {
+    depart: {
+      min: string;
+      max: string;
+    };
+    arrival: {
+      min: string;
+      max: string;
+    };
+  };
+  returnTimes: {
     depart: {
       min: string;
       max: string;

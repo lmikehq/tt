@@ -43,16 +43,18 @@ function CategoryTag({
 }: {
     category: string;
     isMobile: boolean;
-}) {
+    }) {
+    const extra = category === 'adult' ? '(12+ yrs)' : category === 'child' ? '(2-12 yrs)' : '(Under 2 yrs)'
     return (
         <Flex
             width={isMobile ? "30%" : "max-content"}
-            padding=".3rem 1rem"
+            padding=".5rem 1.5rem"
             justify="center"
-            borderRadius="20px"
-            background={ttColors.dark}
+            borderRadius="6px"
+            border={`1px solid ${ttColors.dark}`}
+            background={ttColors.ghostWhite}
         >
-            <Text type="p" text={capCase(category)} color="white" />
+            <Text type="p" text={`${capCase(category)} ${extra}`} color={ttColors.dark} weight={500} />
         </Flex>
     );
 }
@@ -119,7 +121,7 @@ export default function MainPassenger({
             >
                 <Text
                     type="h2"
-                    size={isMobile ? 18 : 22}
+                    size={isMobile ? 18 : 24}
                     text={
                         index === 0
                             ? "Main Passenger"
@@ -252,25 +254,25 @@ export default function MainPassenger({
                     <Flex gap="1rem" align="center" padding="1rem 0">
                         <Text
                             type="h2"
-                            size={isMobile ? 18 : 22}
+                            size={isMobile ? 18 : 24}
                             text="Add extra check-in bags"
                             weight={600}
                         />
-                        <PiWarningCircleBold
+                        {/* <PiWarningCircleBold
                             size={30}
                             color={ttColors.primaryLight}
-                        />
+                        /> */}
                     </Flex>
-                    <ToastInfo
+                    {/* <ToastInfo
                         type="info"
                         message="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
-                    />
-                    {/* <Text
+                    /> */}
+                    <Text
                         type="p"
                         text="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
                         color="#414141"
                         size={isMobile ? 14 : 16}
-                    /> */}
+                    />
                     <Box sx={{ marginY: "1rem" }}>
                         <PassengerBaggagePane
                             index={index}

@@ -176,18 +176,17 @@ export default function PassengerBaggagePane({
         })
         .join(", ");
     
-    useEffect(() => console.log('nnnn', newBags), [newBags])
 
     return (
         <Box>
             <Flex gap="1rem" align="center" padding="2rem 0">
                 <Text
                     type="h3"
-                    size={isMobile ? 18 : 22}
+                    size={isMobile ? 18 : 20}
                     text="Cabin or Carry-On Baggage"
-                    weight={600}
+                    weight={500}
                 />
-                {/* <PiWarningCircleBold size={30} color={ttColors.primaryLight} /> */}
+                <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
             </Flex>
 
             {/* Hand Bags */}
@@ -285,16 +284,16 @@ export default function PassengerBaggagePane({
                 <Flex gap="1rem" align="center">
                     <Text
                         type="h3"
-                        size={isMobile ? 18 : 22}
+                        size={isMobile ? 18 : 20}
                         text="Checked Baggage"
-                        weight={600}
+                        weight={500}
                     />
-                    {/* <PiWarningCircleBold size={30} color={ttColors.primaryLight} /> */}
+                    <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
                 </Flex>
                 <Text
                     type="p"
                     text="Select one option:"
-                    weight={500}
+                    weight={400}
                     color={ttColors.foundation.gray}
                     size={isMobile ? 14 : 16}
                 />
@@ -323,9 +322,12 @@ export default function PassengerBaggagePane({
                                     JSON.stringify(comb.indices);
                                 const bagDefinition =
                                     bagDefinitions?.hold_bag[comb.indices[0]];
-                                const sameBags = comb.indices.every(
-                                    (e, i, indArr) => e === indArr[0]
-                                );
+                                const sameBags = comb.indices.every((e, i, indArr) => (e === indArr[0]) || (
+                                    (bagDefinitions?.hold_bag[e]?.restrictions?.height == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.height)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.width == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.width)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.length == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.length)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.weight == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.weight)
+                                ));
                                 return (
                                     <BaggageBox
                                         active={isActive}

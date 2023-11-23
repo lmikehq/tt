@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
@@ -9,6 +9,8 @@ import { styled } from "styled-components";
 import { PiCaretDownBold } from "react-icons/pi";
 import { FlightCountType } from "./flightModule";
 import { OneFlightType } from "@/lib/extensions/context";
+import { useQueryParams } from "@/hooks/useNext";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 
 const FlightDropdown = styled.section<{ isMobile: boolean }>`
     border: 1px solid ${ttColors.gray};
@@ -72,24 +74,34 @@ interface FlightProps {
 
 function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
     const [flightClass, setFlightClass] = useState(data.flightClass);
-    const [count, setCount] = useState<FlightCountType>({ ...data });
+    const [count, setCount] = useState<FlightCountType>({
+        ...data,
+    });
+
+    const maxBags = useMemo(() => ({
+        cabinBaggage: Number(count?.adults) + Number(count?.children),
+        checkedBaggage: (Number(count?.adults) + Number(count?.children)) * 2,
+    }), [count?.adults, count?.children])
 
     const setAdults = (type: "add" | "subtract") => {
         if (type === "subtract") {
             setCount((prev) => {
                 const newValue = prev.adults - 1;
+                const adultsAndChildren = newValue + prev.children;
+                const allow = prev.adults > 1
                 return {
                     ...prev,
                     adults: prev.adults > 1 ? newValue : prev.adults,
-                    children:
-                        newValue < prev.children ? newValue : prev.children,
-                    infants: newValue < prev.infants ? newValue : prev.infants,
+                    children: allow && (newValue < prev.children) ? newValue : prev.children,
+                    infants: allow && (newValue < prev.infants) ? newValue : prev.infants,
+                    cabinBaggage: allow && (adultsAndChildren < prev.cabinBaggage) ? adultsAndChildren : prev.cabinBaggage,
+                    checkedBaggage: allow && ((adultsAndChildren * 2) < prev.checkedBaggage) ? (adultsAndChildren * 2) : prev.checkedBaggage,
                 };
             });
         } else {
             setCount((prev) => ({
                 ...prev,
-                adults: prev.adults < 10 ? prev.adults + 1 : prev.adults,
+                adults: prev.adults < 9 ? prev.adults + 1 : prev.adults,
             }));
         }
     };
@@ -99,19 +111,23 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
         field: "children" | "infants"
     ) => {
         if (type === "subtract") {
-            setCount((prev) => ({
-                ...prev,
-                [field]: prev[field] > 0 ? prev[field] - 1 : prev[field],
-            }));
+            setCount((prev) => {
+                const newValue = prev[field] - 1;
+                const adultsAndChildren = newValue + prev.adults;
+                const allow = field === 'children'
+                return ({
+                    ...prev,
+                    [field]: prev[field] > 0 ? newValue : prev[field],
+                    cabinBaggage: (allow && adultsAndChildren < prev.cabinBaggage) ? adultsAndChildren : prev.cabinBaggage,
+                    checkedBaggage: (allow && ((adultsAndChildren * 2) < prev.checkedBaggage)) ? (adultsAndChildren * 2) : prev.checkedBaggage,
+                })
+            });
         } else {
             setCount((prev) => {
                 const newValue = prev[field] + 1;
                 return {
                     ...prev,
-                    [field]:
-                        newValue <= prev.adults && newValue < 10
-                            ? newValue
-                            : prev[field],
+                    [field]: (newValue <= prev.adults && newValue < 10) ? newValue : prev[field],
                 };
             });
         }
@@ -130,7 +146,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
             setCount((prev) => ({
                 ...prev,
                 [field]:
-                    prev[field] < (field === "cabinBaggage" ? 1 : 2)
+                    prev[field] < (field === "cabinBaggage" ? maxBags.cabinBaggage : maxBags.checkedBaggage)
                         ? prev[field] + 1
                         : prev[field],
             }));
@@ -178,7 +194,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         value={count.adults.toString()}
                         onAdd={() => setAdults("add")}
                         onSubtract={() => setAdults("subtract")}
-                        disabledAdd={count.adults === 10}
+                        disabledAdd={count.adults === 9}
                         disabledSubtract={count.adults <= 1}
                     />
                 </Flex>
@@ -197,7 +213,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         value={count.children.toString()}
                         onAdd={() => setKids("add", "children")}
                         onSubtract={() => setKids("subtract", "children")}
-                        disabledAdd={count.children === 10}
+                        disabledAdd={count.children === count.adults}
                         disabledSubtract={count.children <= 0}
                     />
                 </Flex>
@@ -216,7 +232,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         value={count.infants.toString()}
                         onAdd={() => setKids("add", "infants")}
                         onSubtract={() => setKids("subtract", "infants")}
-                        disabledAdd={count.infants === 10}
+                        disabledAdd={count.infants === count.adults}
                         disabledSubtract={count.infants <= 0}
                     />
                 </Flex>
@@ -249,7 +265,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         onSubtract={() =>
                             setBaggage("subtract", "cabinBaggage")
                         }
-                        disabledAdd={count.cabinBaggage === 10}
+                        disabledAdd={count.cabinBaggage === maxBags.cabinBaggage}
                         disabledSubtract={count.cabinBaggage <= 0}
                     />
                 </Flex>
@@ -269,7 +285,7 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         onSubtract={() =>
                             setBaggage("subtract", "checkedBaggage")
                         }
-                        disabledAdd={count.checkedBaggage === 10}
+                        disabledAdd={count.checkedBaggage === maxBags.checkedBaggage}
                         disabledSubtract={count.checkedBaggage <= 0}
                     />
                 </Flex>

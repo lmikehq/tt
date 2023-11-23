@@ -117,6 +117,8 @@ export interface SearchFlightsRequestQuery {
     return_to?: string;
     ret_dtime_from?: string;
     ret_dtime_to?: string;
+    ret_atime_from?: string;
+    ret_atime_to?: string;
     adult_hold_bag?: string;
     adult_hand_bag?: string;
     price_from?: number;
@@ -318,11 +320,10 @@ export const updateSeatAvailability = ({
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
     surname: "",
-
     cardno: "",
     birthday: "",
     nationality: { code: "NG", name: "Nigeria", flag: "s" },
-    title: "Mr",
+    title: "",
     expiration: "",
     category: PassengerCategory.ADULT,
     currency: "usd",

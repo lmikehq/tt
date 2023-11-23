@@ -207,7 +207,7 @@ function Flights() {
             arrival?.code
         }&date_from=${dateFrom}${
             flight?.returnDate ? `&return_from=${returnFrom}` : ""
-        }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
+        }&stops=${flightState?.stops}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
     };
 
     const flight = flightState?.fleet[0];
@@ -274,8 +274,7 @@ function Flights() {
                         handleUpdate={handleUpdateMultiFlight}
                         handleDelete={handleRemoveMultiFlight}
                         canDelete={
-                            flightState?.stops === "multi-city" &&
-                            arr.length > 1
+                            flightState?.stops === "multi-city" && arr.length > 1
                         }
                     />
                 ))}

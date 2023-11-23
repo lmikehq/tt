@@ -23,7 +23,7 @@ export default function ContactDetails({ formik }: TripSummaryCardProps) {
         <>
             <Text
                 type="h2"
-                size={isMobile ? 18 : 22}
+                size={isMobile ? 18 : 24}
                 text="Contact Details"
                 font="Montserrat"
                 weight={600}
