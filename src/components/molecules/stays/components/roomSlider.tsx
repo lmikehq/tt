@@ -41,6 +41,8 @@ const StyledRating = styled(Rating)({
   },
 });
 
+
+
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 interface Hotel {
