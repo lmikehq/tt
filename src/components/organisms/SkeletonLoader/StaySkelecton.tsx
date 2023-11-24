@@ -1,5 +1,7 @@
-import Skeleton from "@mui/material/Skeleton";
+import Skeleton, { SkeletonProps } from "@mui/material/Skeleton";
 import { CSSProperties } from "react";
+import { SxProps } from "@mui/system";
+
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -22,16 +24,27 @@ const Parent = styled.div`
   width: 100%;
 `;
 
-interface SkeletonLoader {
+interface SkeletonLoaderProps extends SkeletonProps {
   tabs?: number | 1;
   textWidth?: number | string;
   textHeight?: number | string;
-  rectangularWidth?: number | string;
-  rectangularHeight: number | string;
   text?: boolean | true;
-  containerProps?: CSSProperties;
+  rectangularWidth?: number | string;
+  rectangularHeight?: number | string;
+
+  containerProps?: {
+    sx?: SxProps;
+    position?: string;
+    top?: string;
+    left?: string;
+    right?: string;
+    bottom?: string;
+    overflow?: string;
+    borderRadius?: string;
+  };
 }
-const SkeletonLoader: React.FC<SkeletonLoader> = ({
+
+const StaySkeletonLoader: React.FC<SkeletonLoaderProps> = ({
   tabs,
   text,
   textWidth,
@@ -39,18 +52,26 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
   rectangularHeight,
   rectangularWidth,
   containerProps,
+  ...skeletonProps
 }) => {
   const tabsToMap = Array.from({ length: tabs || 0 });
   return (
-    <Container style={containerProps}>
+    <Container>
       {tabsToMap.map((_, index) => (
         <Parent key={index}>
           {text ? (
             <Skeleton
               variant="text"
-              sx={{ fontSize: "1rem" }}
+              sx={{
+                fontSize: "1rem",
+                ...(containerProps?.sx || {}),
+                ...(containerProps?.borderRadius
+                  ? { style: { borderRadius: containerProps.borderRadius } }
+                  : {}),
+              }}
               height={textHeight || "auto"}
               width={textWidth || "auto"}
+              {...skeletonProps}
             />
           ) : (
             ""
@@ -59,7 +80,13 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
             variant="rectangular"
             height={rectangularHeight ?? "auto"}
             width={rectangularWidth}
-            // maxWidth={rectangularWidth ?? 800}
+            sx={{
+              ...(containerProps?.sx || {}),
+              ...(containerProps?.borderRadius
+                ? { borderRadius: containerProps.borderRadius }
+                : {}),
+            }}
+            {...skeletonProps}
           />
         </Parent>
       ))}
@@ -67,4 +94,4 @@ const SkeletonLoader: React.FC<SkeletonLoader> = ({
   );
 };
 
-export default SkeletonLoader;
+export default StaySkeletonLoader;

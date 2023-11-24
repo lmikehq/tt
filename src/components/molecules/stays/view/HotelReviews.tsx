@@ -44,8 +44,8 @@ const StyledRating = muiStyled(Rating)({
 interface ExpandableTextProps {
   text: string;
   maxLines: number;
-  commentDate: string;
-  stayedIn: string;
+  commentDate?: string;
+  stayedIn?: string;
 }
 
 //=============================

@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import Flex from "@/components/templates/flex";
 import Section from "../../../section";
@@ -25,6 +25,12 @@ const ModalCenter = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  &.amenities {
+    overflow-y: auto;
+    @media screen and (max-width: 900px) {
+      overflow-y: none;
+    }
+  }
 `;
 const ModalScroll = styled.div`
   width: 900px;
@@ -39,8 +45,11 @@ const ModalScroll = styled.div`
     border-radius: 0px;
   }
   &.amenities_scroll {
-    overflow: hidden;
-    height: 600px !important;
+    width: 1000px;
+    height: 2030px;
+    margin-top: 1350px;
+    background: white;
+    margin-bottom: 20px;
   }
   &.search_box {
     width: 600px;
@@ -49,6 +58,13 @@ const ModalScroll = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0px;
+    &.amenities_scroll {
+      width: 100%;
+      height: 100%;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      overflow-y: auto;
+    }
     &.search_box {
       width: 100%;
     }
@@ -66,8 +82,9 @@ const ModalWrapper = styled.div`
     overflow-y: auto;
   }
   &.amenities_modal {
-    overflow-y: auto;
-    height: 600px !important;
+    height: 100%vh;
+    // height: 100vh !important;
+    // height: 1000px;
   }
   @media screen and (max-width: 900px) {
     width: 100%;
@@ -157,9 +174,14 @@ export const AmenitiesModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => (document.body.style.overflow = "unset");
+  // }, []);
+
   return (
-    <Modal open={open} onClose={handleClose}>
-      <ModalCenter>
+    <Modal disableScrollLock={true} open={open} onClose={handleClose}>
+      <ModalCenter className="amenities">
         <ModalScroll className="amenities_scroll">
           <ModalWrapper className="amenities_modal">
             <Flex
@@ -184,6 +206,12 @@ export const AmenitiesModal = ({
     </Modal>
   );
 };
+
+interface FilterItem {
+  name: string;
+  images: string[];
+  //Other properties here
+}
 
 // FILTER MODAL
 interface FilterModalProps {
@@ -215,6 +243,8 @@ interface FilterModalProps {
   >;
   handleSubmit: () => void;
   resetAllFilters: () => void;
+  totalSelectedOptions: number;
+  filterItems: FilterItem[];
 }
 
 export const FilterModal = ({
@@ -236,6 +266,8 @@ export const FilterModal = ({
   setSubmissionState,
   handleSubmit,
   resetAllFilters,
+  totalSelectedOptions,
+  filterItems,
 }: FilterModalProps) => {
   return (
     <Modal open={open} onClose={handleClose}>
@@ -275,6 +307,8 @@ export const FilterModal = ({
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
                 resetAllFilters={resetAllFilters}
+                totalSelectedOptions={totalSelectedOptions}
+                filterItems={filterItems}
               />
             </Span>
           </ModalWrapper>

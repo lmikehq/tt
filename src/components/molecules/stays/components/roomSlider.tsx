@@ -13,6 +13,7 @@ import {
   SliderWidth,
   SliderImgBox,
   FavoriteSliderBox,
+  Span,
 } from "./styles";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
@@ -31,6 +32,175 @@ import {
   formatPriceWithoutCurrency,
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
+import StaySkeletonLoader from "@/components/organisms/SkeletonLoader/StaySkelecton";
+import { FavoriteBoxSkeleton } from "./availableRooms";
+import { Grid } from "@/components/templates/grid";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+
+// FavoriteBoxSkeleton Component
+export const ArrowBoxSkeleton: React.FC = () => (
+  <Flex
+    justify="flex-end"
+    position="relative"
+    styles={{ top: "20px", right: "20px" }}
+    height="100%"
+    width="100%"
+    gap="20px"
+  >
+    <Span
+      style={{
+        position: "relative",
+        left: "15px",
+        backgroundColor: "var(--color-border)",
+        borderRadius: "50%",
+        width: "40px",
+        height: "40px",
+      }}
+    >
+      <Flex justify="center" align="center" width="100%" height="100%">
+        <ArrowBackIosIcon
+          style={{
+            // color: "var(--default-color)",
+            fontSize: "20px",
+            position: "relative",
+            left: "5px",
+          }}
+        />
+      </Flex>
+    </Span>
+
+    <Span
+      style={{
+        position: "relative",
+        left: "15px",
+        backgroundColor: "#a5a4a4",
+        borderRadius: "50%",
+        width: "40px",
+        height: "40px",
+      }}
+    >
+      <Flex justify="center" align="center" width="100%" height="100%">
+        <ArrowForwardIosIcon
+          style={{
+            color: "var(--default-color)",
+            fontSize: "20px",
+            position: "relative",
+            left: "2px",
+          }}
+        />
+      </Flex>
+    </Span>
+  </Flex>
+);
+
+export function HotelSliderBoxSkeleton() {
+  const { isMobile } = useScreenResolution();
+  const [screenWidth, setScreenWidth] = useState<number | undefined>(undefined);
+  const thresholdWidth = 600;
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+      };
+
+      setScreenWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
+
+  const arr = Array(screenWidth && screenWidth < thresholdWidth ? 1 : 2).fill(
+    0
+  );
+  return (
+    <React.Fragment>
+      <Span>
+        <Grid columns={2} className="slider_skeleton_grid">
+          {arr.map((e, index) => (
+            <Flex
+              width="100%"
+              direction="column"
+              background={ttColors.light}
+              borderRadius="10px"
+              key={index}
+              gap="20px"
+              styles={{ marginBottom: "20px" }}
+              overflow="hidden"
+            >
+              {/* Left Side with Image and Favorite Icon */}
+              <Flex
+                width="100%"
+                className="top_side"
+                position="relative"
+                overflow="hidden"
+              >
+                <StaySkeletonLoader
+                  tabs={1}
+                  textWidth="50%"
+                  rectangularHeight={230}
+                  rectangularWidth="100%"
+                  containerProps={{
+                    sx: { borderRadius: "12px" },
+                  }}
+                />
+                {/* Favorite Box */}
+                <FavoriteBoxSkeleton />
+              </Flex>
+              <Flex>
+                <Flex direction="column">
+                  <StaySkeletonLoader
+                    tabs={1}
+                    rectangularHeight={40}
+                    rectangularWidth="80%"
+                  />
+                  <StaySkeletonLoader
+                    tabs={1}
+                    text
+                    textHeight={35}
+                    textWidth="70%"
+                  />
+                </Flex>
+              </Flex>
+              <Flex
+                margin="0"
+                align="center"
+                justify="space-between"
+                gap="10%"
+                width="100%"
+                styles={{ marginTop: "-30px" }}
+              >
+                <Flex direction="column">
+                  <StaySkeletonLoader
+                    tabs={1}
+                    rectangularHeight={40}
+                    rectangularWidth="100%"
+                  />
+                </Flex>
+
+                <StaySkeletonLoader
+                  text
+                  tabs={1}
+                  textHeight={60}
+                  textWidth="100%"
+                />
+              </Flex>
+            </Flex>
+          ))}
+        </Grid>
+        <Span>
+          <ArrowBoxSkeleton />
+        </Span>
+      </Span>
+    </React.Fragment>
+  );
+}
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -159,6 +329,10 @@ function RoomSlider(props: RoomSliderProps) {
             />
           </Flex>
           <SlideContent>
+            {/* SKELETON */}
+            {/* <Span style={{ padding: "0px 10px" }}>
+              <HotelSliderBoxSkeleton />
+            </Span> */}
             <SliderWidth>
               <Slider {...SliderSettings} className="">
                 {hotels.map((hotel, index) => (

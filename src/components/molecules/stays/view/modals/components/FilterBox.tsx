@@ -10,6 +10,11 @@ import CheckboxDropdown from "@/components/organisms/checkboxDropdown";
 import Button from "@/components/atoms/button";
 import Spinner from "@/components/molecules/icons/spinner";
 
+interface FilterItem {
+  name: string;
+  images: string[];
+  //Other properties here
+}
 interface FilterBoxProps {
   beds: string;
   setBeds: React.Dispatch<React.SetStateAction<string>>;
@@ -37,6 +42,9 @@ interface FilterBoxProps {
   >;
   handleSubmit: () => void;
   resetAllFilters: () => void;
+
+  totalSelectedOptions: number;
+  filterItems: FilterItem[];
 }
 function FilterBox({
   beds,
@@ -55,6 +63,8 @@ function FilterBox({
   setSubmissionState,
   handleSubmit,
   resetAllFilters,
+  totalSelectedOptions,
+  filterItems,
 }: FilterBoxProps) {
   const { isMobile } = useScreenResolution();
 
@@ -127,39 +137,52 @@ function FilterBox({
         <Span>
           <Span style={{ width: "100%" }}>
             <Flex styles={{ margin: "8px 0px", width: "100%" }}>
-              <BtnDetails
-                className="reset_filters"
-                style={{
-                  padding: "15px",
-                  width: "100%",
-                  textAlign: "center",
-                  cursor: "default",
-                }}
-                onClick={resetAllFilters}
-              >
-                <Flex
-                  align="center"
-                  direction="column"
-                  justify="center"
-                  gap="5px"
+              {filterItems?.length === 0 && totalSelectedOptions === 0 ? (
+                ""
+              ) : (
+                <BtnDetails
+                  className="reset_filters"
+                  style={{
+                    padding: "15px",
+                    width: "100%",
+                    textAlign: "center",
+                    cursor: "default",
+                  }}
                 >
-                  <Text
-                    weight={500}
-                    size={15}
-                    type="p"
-                    color={ttColors.dark}
-                    text="There is No Result"
-                  ></Text>
-                  <Flex width="fit-content" styles={{ cursor: "pointer" }}>
-                    <Text
-                      weight={500}
-                      size={15}
-                      type="p"
-                      text="Reset All Filters"
-                    ></Text>
+                  <Flex
+                    align="center"
+                    direction="column"
+                    justify="center"
+                    gap="5px"
+                  >
+                    {filterItems?.length === 0 ? (
+                      <Text
+                        weight={500}
+                        size={15}
+                        type="p"
+                        color={ttColors.dark}
+                        text="There is No Result"
+                      ></Text>
+                    ) : (
+                      ""
+                    )}
+                    {totalSelectedOptions > 0 && (
+                      <Flex
+                        onClick={resetAllFilters}
+                        width="fit-content"
+                        styles={{ cursor: "pointer" }}
+                      >
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text="Reset All Filters"
+                        ></Text>
+                      </Flex>
+                    )}
                   </Flex>
-                </Flex>
-              </BtnDetails>
+                </BtnDetails>
+              )}
             </Flex>
           </Span>
           <Span>

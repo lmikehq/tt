@@ -6,6 +6,23 @@ import { GoDotFill } from "react-icons/go";
 import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
+import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+
+const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip
+    placement="top-start"
+    {...props}
+    arrow
+    classes={{ popper: className }}
+  />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette?.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette?.common.black,
+  },
+}));
 
 export const RoomContainer = styled.div`
   box-shadow: 0px 4px 16px 0px #8dd3bb1a;
@@ -51,11 +68,22 @@ type sortProps = {
   distance: string;
   setSortType: Dispatch<SetStateAction<string>>;
   sortType: string;
+  hotels: Hotel[];
 };
+
+interface Hotel {
+  name: string;
+  address: string;
+  distance: string;
+  reviews: number;
+  star_rating: number;
+  price: number;
+  images: string[];
+}
 
 function SortedRoomsTab(props: sortProps) {
   const { isMobile } = useScreenResolution();
-
+  const { hotels } = props;
   return (
     <>
       <Flex
@@ -66,9 +94,10 @@ function SortedRoomsTab(props: sortProps) {
       >
         <Text
           type="p"
-          text={`${1178} hotels found in london`}
+          text={`${hotels?.length} hotels found in london`}
           styles={{ fontWeight: "600" }}
         ></Text>
+
         <BsInfoCircle size={20} style={{ color: "var(--primary-color)" }} />
       </Flex>
       <RoomContainer>
@@ -93,7 +122,15 @@ function SortedRoomsTab(props: sortProps) {
                   justify={isMobile ? "center" : "flex-start"}
                 >
                   <Text type="p" text="Best" />
-                  {props.sortType === "best" && <BsInfoCircle size={20} />}
+                  {props.sortType === "best" && (
+                    <BootstrapTooltip
+                      title="We believe you will like these stays with your preferences in mind, considering factors like location, amenities, reviews, and price, ensuring a stay tailored just for you."
+                      placement="top-start"
+                      arrow
+                    >
+                      <BsInfoCircle size={20} style={{ zIndex: "10" }} />
+                    </BootstrapTooltip>
+                  )}
                 </Flex>
               </Flex>
             </ButtonBox>
@@ -116,7 +153,6 @@ function SortedRoomsTab(props: sortProps) {
                     text="Top Reviews"
                     styles={{ whiteSpace: "nowrap" }}
                   />
-                  {props.sortType === "top" && <BsInfoCircle size={20} />}
                 </Flex>
               </Flex>
             </ButtonBox>
@@ -139,7 +175,6 @@ function SortedRoomsTab(props: sortProps) {
                     text="Lowest Prices"
                     styles={{ whiteSpace: "nowrap" }}
                   />
-                  {props.sortType === "lowest" && <BsInfoCircle size={20} />}
                 </Flex>
               </Flex>
             </ButtonBox>
@@ -162,7 +197,6 @@ function SortedRoomsTab(props: sortProps) {
                     text="Star Rating"
                     styles={{ whiteSpace: "nowrap" }}
                   />
-                  {props.sortType === "star" && <BsInfoCircle size={20} />}
                 </Flex>
               </Flex>
             </ButtonBox>
@@ -181,7 +215,6 @@ function SortedRoomsTab(props: sortProps) {
                   justify={isMobile ? "center" : "flex-start"}
                 >
                   <Text type="p" text="Distance" />
-                  {props.sortType === "distance" && <BsInfoCircle size={20} />}
                 </Flex>
               </Flex>
             </ButtonBox>

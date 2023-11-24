@@ -7,6 +7,7 @@ function Page() {
     return (
         <SectionLayout>
             <RoomList />
+            
         </SectionLayout>
     );
 }

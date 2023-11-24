@@ -101,6 +101,7 @@ interface RoomBoxProps {
     hotel: Hotel;
     index: number;
 }
+
 function RoomBox({ hotel, index }: RoomBoxProps) {
     const { isMobile } = useScreenResolution();
 

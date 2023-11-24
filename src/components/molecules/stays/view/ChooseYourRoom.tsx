@@ -16,6 +16,75 @@ import { FlexBox } from "../components/styles";
 import { useState } from "react";
 import { ChangeSearchModal, FilterModal } from "./modals/Modals";
 import FilterBox from "./modals/components/FilterBox";
+import { isNull } from "util";
+
+interface Metapolicy {
+  meal: string[];
+  extra_bed: string[];
+}
+interface Hotel {
+  name: string;
+  images: string[];
+  price: number;
+  metapolicy_struct: Metapolicy;
+}
+
+const hotels: Hotel[] = [
+  {
+    name: "The Ritz London, 1 King Bed",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+];
 
 const ChooseYourRoom = () => {
   const { isMobile } = useScreenResolution();
@@ -24,6 +93,9 @@ const ChooseYourRoom = () => {
     search: false,
     filter: false,
   });
+
+  // FILTERED ITEMS
+  const [filterItems, setFilterItems] = useState([]);
 
   // BEDS
   const [beds, setBeds] = useState("");
@@ -142,24 +214,16 @@ const ChooseYourRoom = () => {
     setAllMappedOptions((prevOptions) => {
       return prevOptions.filter((option) => option !== optionToRemove);
     });
-
-    // Recalculate totalSelectedOptions
-    const updatedTotalSelectedOptions =
-      (beds === "" ? 0 : 1) +
-      (cancellation === "" ? 0 : 1) +
-      selectedMealCheckboxValues.filter((value) => value !== optionToRemove)
-        .length +
-      selectedPaymentCheckboxValues.filter((value) => value !== optionToRemove)
-        .length;
-
-    setTotalSelectedOptions(updatedTotalSelectedOptions);
   };
 
   // Remove a specific option from the list
   const removeOptionHandler = (optionToRemove: string) => {
+    console.log("Before removeOption:", allMappedOptions);
+
     removeOption(optionToRemove);
 
-    // Assuming the optionToRemove is a string, directly check the values
+    console.log("After removeOption:", allMappedOptions);
+
     if (bedsOptions.some((option) => option.value === optionToRemove)) {
       setBeds("");
     } else if (mealOptions.some((option) => option.value === optionToRemove)) {
@@ -177,6 +241,34 @@ const ChooseYourRoom = () => {
         prev.filter((value) => value !== optionToRemove)
       );
     }
+
+    setTotalSelectedOptions((prev) => prev - 1);
+  };
+
+  // Function to get the label for a given option
+  const getLabelForOption = (option: string): string => {
+    if (bedsOptions.some((bedOption) => bedOption.displayValue === option)) {
+      return "Beds:";
+    } else if (
+      mealOptions.some((mealOption) => mealOption.displayValue === option)
+    ) {
+      return "Meals:";
+    } else if (
+      cancellationOptions.some(
+        (cancelOption) => cancelOption.displayValue === option
+      )
+    ) {
+      return "Cancellation:";
+    } else if (
+      paymentOptions.some(
+        (paymentOption) => paymentOption.displayValue === option
+      )
+    ) {
+      return "Payment:";
+    }
+
+    // Default label if the option doesn't match any category
+    return "";
   };
 
   return (
@@ -288,6 +380,9 @@ const ChooseYourRoom = () => {
               setSubmissionState={setSubmissionState}
               handleSubmit={handleSubmit}
               resetAllFilters={resetAllFilters}
+              //
+              totalSelectedOptions={totalSelectedOptions}
+              filterItems={filterItems}
             />
           )}
           {isMobile && (
@@ -317,9 +412,10 @@ const ChooseYourRoom = () => {
                 submissionState={submissionState}
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
-                // totalSelectedOptions={totalSelectedOptions}
 
                 resetAllFilters={resetAllFilters}
+                totalSelectedOptions={totalSelectedOptions}
+                filterItems={filterItems}
                 handleClose={() =>
                   setOpen((prev) => ({
                     ...prev,
@@ -408,12 +504,7 @@ const ChooseYourRoom = () => {
                         onClick={resetAllFilters}
                         className="reset_filters"
                       >
-                        <Flex
-                          align="center"
-                          gap="5px"
-                          justify="center"
-                          width="100%"
-                        >
+                        <Flex align="center" gap="5px" justify="center">
                           <Text
                             weight={500}
                             size={15}
@@ -449,38 +540,55 @@ const ChooseYourRoom = () => {
             </Span>
             <Span style={{ marginTop: "20px" }}>
               <Flex direction="column">
-                <Text
-                  type="p"
-                  weight={500}
-                  text="There is no hotel available with the selected filters"
-                ></Text>
-                <Text
-                  type="p"
-                  size={14}
-                  text="Remove some of the selected filters to get results"
-                ></Text>
+                {filterItems.length > 0 ? (
+                  ""
+                ) : (
+                  <Text
+                    type="p"
+                    weight={500}
+                    text="There is no hotel available with the selected filters"
+                  ></Text>
+                )}
+                {totalSelectedOptions > 0 && (
+                  <Text
+                    type="p"
+                    size={14}
+                    text="Remove some of the selected filters to get results"
+                  ></Text>
+                )}
               </Flex>
               <Flex direction="column" gap="8px" styles={{ marginTop: "10px" }}>
-                <BtnDetails className="reset_filters chosen_filter">
-                  <Flex align="center" justify="space-between" gap="5px">
-                    <Flex align="center" gap="5px">
-                      <Text weight={500} size={15} type="p" text="Beds:"></Text>
-                      <Text
-                        color={"var(--text-gray-color)"}
-                        size={15}
-                        type="p"
-                        text="Double Beds"
-                      ></Text>
+                {allMappedOptions.map((option, index) => (
+                  <BtnDetails
+                    key={index}
+                    className="reset_filters chosen_filter"
+                  >
+                    <Flex align="center" justify="space-between" gap="5px">
+                      <Flex align="center" gap="5px">
+                        <Text
+                          weight={500}
+                          size={15}
+                          type="p"
+                          text={getLabelForOption(option)}
+                        ></Text>
+                        <Text
+                          color={"var(--text-gray-color)"}
+                          size={15}
+                          type="p"
+                          text={option}
+                        ></Text>
+                      </Flex>
+                      <CloseIcon
+                        onClick={() => removeOptionHandler(option)}
+                        style={{
+                          fontSize: "17px",
+                          cursor: "pointer",
+                          color: "var(--color-rating)",
+                        }}
+                      />
                     </Flex>
-                    <CloseIcon
-                      style={{
-                        fontSize: "17px",
-                        cursor: "pointer",
-                        color: "var(--color-rating)",
-                      }}
-                    />
-                  </Flex>
-                </BtnDetails>
+                  </BtnDetails>
+                ))}
               </Flex>
             </Span>
             <Span style={{ marginTop: "10px" }}>
@@ -500,7 +608,7 @@ const ChooseYourRoom = () => {
         </Button>
       </Section>
       <Span>
-        <ChooseYourRoomList />
+        <ChooseYourRoomList hotels={hotels} />
       </Span>
     </Container>
   );
