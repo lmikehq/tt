@@ -295,6 +295,18 @@ export const ButtonBtn = styled.div`
   color: var(--default-color);
   border-radius: 6px;
   cursor: pointer;
+  &.filter_btn {
+    background: transparent;
+    color: var(--secondary-color);
+    padding: 5px 20px;
+    width: fit-content;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+  }
+  &.active {
+    color: var(--default-color);
+    background-color: var(--secondary-color);
+  }
 `;
 export const BtnText = styled.div`
   white-space: nowrap;
