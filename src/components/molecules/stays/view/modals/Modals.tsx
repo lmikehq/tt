@@ -207,6 +207,12 @@ export const AmenitiesModal = ({
   );
 };
 
+interface FilterItem {
+  name: string;
+  images: string[];
+  //Other properties here
+}
+
 // FILTER MODAL
 interface FilterModalProps {
   open: boolean;
@@ -237,6 +243,8 @@ interface FilterModalProps {
   >;
   handleSubmit: () => void;
   resetAllFilters: () => void;
+  totalSelectedOptions: number;
+  filterItems: FilterItem[];
 }
 
 export const FilterModal = ({
@@ -258,6 +266,8 @@ export const FilterModal = ({
   setSubmissionState,
   handleSubmit,
   resetAllFilters,
+  totalSelectedOptions,
+  filterItems,
 }: FilterModalProps) => {
   return (
     <Modal open={open} onClose={handleClose}>
@@ -297,6 +307,8 @@ export const FilterModal = ({
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
                 resetAllFilters={resetAllFilters}
+                totalSelectedOptions={totalSelectedOptions}
+                filterItems={filterItems}
               />
             </Span>
           </ModalWrapper>

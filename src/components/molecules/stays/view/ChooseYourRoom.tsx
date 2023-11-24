@@ -412,9 +412,10 @@ const ChooseYourRoom = () => {
                 submissionState={submissionState}
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
-                // totalSelectedOptions={totalSelectedOptions}
 
                 resetAllFilters={resetAllFilters}
+                totalSelectedOptions={totalSelectedOptions}
+                filterItems={filterItems}
                 handleClose={() =>
                   setOpen((prev) => ({
                     ...prev,
