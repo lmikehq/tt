@@ -330,11 +330,11 @@ function RoomSlider(props: RoomSliderProps) {
           </Flex>
           <SlideContent>
             {/* SKELETON */}
-            <Span style={{ padding: "0px 10px" }}>
+            {/* <Span style={{ padding: "0px 10px" }}>
               <HotelSliderBoxSkeleton />
-            </Span>
+            </Span> */}
             <SliderWidth>
-              {/* <Slider {...SliderSettings} className="">
+              <Slider {...SliderSettings} className="">
                 {hotels.map((hotel, index) => (
                   <SlideCard key={index}>
                     <SlideList>
@@ -470,7 +470,7 @@ function RoomSlider(props: RoomSliderProps) {
                     </SlideList>
                   </SlideCard>
                 ))}
-              </Slider> */}
+              </Slider>
             </SliderWidth>
           </SlideContent>
         </SliderContainer>
