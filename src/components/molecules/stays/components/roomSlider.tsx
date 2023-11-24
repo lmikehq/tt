@@ -95,16 +95,30 @@ export const ArrowBoxSkeleton: React.FC = () => (
   </Flex>
 );
 
-const screenWidth = window.innerWidth;
-
-const thresholdWidth = 600;
-
-// HotelBoxSkeleton Component
 export function HotelSliderBoxSkeleton() {
   const { isMobile } = useScreenResolution();
+  const [screenWidth, setScreenWidth] = useState<number | undefined>(undefined);
+  const thresholdWidth = 600;
 
-  const arr = Array(screenWidth < thresholdWidth ? 1 : 2).fill(0);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+      };
 
+      setScreenWidth(window.innerWidth);
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
+
+  const arr = Array(screenWidth && screenWidth < thresholdWidth ? 1 : 2).fill(
+    0
+  );
   return (
     <React.Fragment>
       <Span>
@@ -316,11 +330,11 @@ function RoomSlider(props: RoomSliderProps) {
           </Flex>
           <SlideContent>
             {/* SKELETON */}
-            {/* <Span style={{ padding: "0px 10px" }}>
+            <Span style={{ padding: "0px 10px" }}>
               <HotelSliderBoxSkeleton />
-            </Span> */}
+            </Span>
             <SliderWidth>
-              <Slider {...SliderSettings} className="">
+              {/* <Slider {...SliderSettings} className="">
                 {hotels.map((hotel, index) => (
                   <SlideCard key={index}>
                     <SlideList>
@@ -456,7 +470,7 @@ function RoomSlider(props: RoomSliderProps) {
                     </SlideList>
                   </SlideCard>
                 ))}
-              </Slider>
+              </Slider> */}
             </SliderWidth>
           </SlideContent>
         </SliderContainer>
