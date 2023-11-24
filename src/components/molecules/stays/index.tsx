@@ -199,6 +199,7 @@ const StaySection = () => {
                   size={28}
                   font="Montserrat"
                 />
+                
                 <Text
                   type="p"
                   text="Per night"
