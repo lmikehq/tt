@@ -56,8 +56,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup.o
     meansOfId: yup.string().required("Required"),
     idNumber: yup.string().required("Required"),
     issueDate: yup.string().required("Required"),
-    expiryDate: yup.string().notRequired(),
-
+    expiryDate: yup.string().required("Required"),
     address: yup.string().required("Required"),
     countryOfCitizen: countrySchema.required(),
     dateOfBirth: yup.string().required("Required"),
@@ -345,8 +344,8 @@ export const employmentKeys: EmploymentDetailsInterface = {
 export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
   .object()
   .shape({
-    index: yup.number().notRequired(),
-    section: yup.string().notRequired(),
+    index: yup.number().required(),
+    section: yup.string().required(),
     accompanying: yup.boolean().required(),
     membersName: yup.string().when("accompanying", {
       is: true,
@@ -364,9 +363,10 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    membersEmail: yup.string()
-        .notRequired()
-        .email("Invalid email address"),
+    membersEmail: yup.string().when("accompanying", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
     passportNumber: yup.string().when("accompanying", {
       is: true,
       then: (schema) => schema.required("Required"),
@@ -555,7 +555,34 @@ export const test: ApplicationFormRequestInput = {
         stillAtSchool: false,
         endYear: 2018,
       },
-    ],
+        ],
+        //added
+        statusOfResidence: "",
+        startDateOfResidence: "",
+        changeOfName: false,
+        changedName: "",
+        occupation: "",
+        tripDurationStartDate: "",
+        tripDurationEndDate: "",
+        tripDurationLocation: "",
+        hasContactInLocation: false,
+        contactInLocationLastName: "",
+        contactInLocationFirstName: "",
+        contactInLocationAddress: "",
+        contactInLocationRelationship: "",
+        contactInLocationPhoneNumber: "",
+        hasGreenCard: false,
+        greenCardNumber: "",
+        greenCardExpiryDate: "",
+        prevResidence1: mockCountry,
+        prevResidence2: mockCountry,
+        prevResidence3: mockCountry,
+        startDatePrevResidence1: "",
+        startDatePrevResidence2: "",
+        startDatePrevResidence3: "",
+        endDatePrevResidence1: "",
+        endDatePrevResidence2: "",
+        endDatePrevResidence3: "",
   },
   familyMembers: [
     {

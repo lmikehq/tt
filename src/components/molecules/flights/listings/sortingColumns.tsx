@@ -226,7 +226,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         cabin: false,
     });
 
-    type FilterName = keyof typeof filterState;
+    type FilterName = keyof typeof filterData;
 
     const [activeTimes, setActiveTimes] = useState('depart')
 
@@ -267,7 +267,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         handleFilterResults(initFilterData);
     };
 
-    const toggleFilter = (columnName: FilterName) => {
+    const toggleFilter = (columnName: keyof typeof filterState) => {
         setFilterState((prevState) => ({
             ...prevState,
             [columnName]: !prevState[columnName],

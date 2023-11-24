@@ -293,11 +293,11 @@ function ShareFlightModal({
     isOpen: boolean;
     onClose: VoidFunction;
     flight: FlightInfo | null;
-    flightReq: { bags: number; adults: number; children: number; }
+    flightReq: { bags: number; adults?: number; children?: number; infants?: number; }
 }) {
     const { isMobile } = useScreenResolution();
     const { copyToClipboard } = useClipboard();
-    const flightLink = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${flight?.booking_token}`
+    const flightLink = `/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
