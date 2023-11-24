@@ -32,6 +32,16 @@ export interface SearchStayRequestRequestQuery extends StaySearchFilters {
     meals: string;
 }
 
+export interface ViewSingleStayRequestInput {
+    id: string;
+    checkin: string;
+    checkout: string;
+    residency: string;
+    language: string;
+    guests: RoomForGuest[];
+    currency: string;
+}
+
 export const convertRoomForGuestsToString = (data: RoomForGuest[]) => {
     return data
         .map(

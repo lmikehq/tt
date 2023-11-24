@@ -30,4 +30,16 @@ export class StaySearchService {
                 throw error;
             });
     };
+
+    static viewSingleHotel = async (params: SearchStayRequestRequestQuery) => {
+        const query = constructQueryFromParams(params);
+        return await rateHawkResourceClient
+            .get<any, SearchStaysResponse>(`/search${query}`)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
 }
