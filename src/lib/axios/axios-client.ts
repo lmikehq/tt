@@ -81,7 +81,7 @@ kiwiClient.interceptors.response.use(
 );
 const kiwiResourceClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
-    timeout: 15000,
+    timeout: 40000,
     //   withCredentials: true,
     headers: {
         "Content-Type": "application/json",
