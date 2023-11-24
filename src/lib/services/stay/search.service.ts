@@ -1,12 +1,14 @@
-import { kiwiClient } from "@/lib/axios/axios-client";
+import { rateHawkResourceClient } from "@/lib/axios/axios-client";
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
+import { RateHawkLocationRequestInput } from "@/lib/types/request-models/stay/location.type";
 import { SearchStayRequestRequestQuery } from "@/lib/types/request-models/stay/search.type";
+import { RateHawkLocationSearchResponse } from "@/lib/types/response-models/stay/location.type";
 import { SearchStaysResponse } from "@/lib/types/response-models/stay/search.type";
 
 export class StaySearchService {
     static searchStays = async (params: SearchStayRequestRequestQuery) => {
         const query = constructQueryFromParams(params);
-        return await kiwiClient
+        return await rateHawkResourceClient
             .get<any, SearchStaysResponse>(`/search${query}`)
             .then((response) => {
                 return response;
@@ -16,11 +18,11 @@ export class StaySearchService {
             });
     };
     static searchRateHawkLocations = async (
-        params: SearchStayRequestRequestQuery
-    ) => {
+        params: RateHawkLocationRequestInput
+    ): Promise<RateHawkLocationSearchResponse> => {
         const query = constructQueryFromParams(params);
-        return await kiwiClient
-            .get<any, SearchStaysResponse>(`/location${query}`)
+        return await rateHawkResourceClient
+            .get<any, RateHawkLocationSearchResponse>(`/stays${query}`)
             .then((response) => {
                 return response;
             })

@@ -16,7 +16,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
 import { GoArrowSwitch } from "react-icons/go";
 import Button from "../atoms/button";
-import LocationSearchSelectInput from "./LocationSearchSelectInput";
+import LocationSearchSelectInput from "./locationInputs/KiwiLocationSearchSelectInput";
 import Location from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
@@ -176,7 +176,10 @@ function FlightModule({
                     <Flex
                         direction="column"
                         gap=".5rem"
-                        styles={{ marginBottom: isMobile ? "1.2rem" : "0", position: 'relative' }}
+                        styles={{
+                            marginBottom: isMobile ? "1.2rem" : "0",
+                            position: "relative",
+                        }}
                     >
                         <Text
                             type="label"
