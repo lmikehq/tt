@@ -16,6 +16,75 @@ import { FlexBox } from "../components/styles";
 import { useState } from "react";
 import { ChangeSearchModal, FilterModal } from "./modals/Modals";
 import FilterBox from "./modals/components/FilterBox";
+import { isNull } from "util";
+
+interface Metapolicy {
+  meal: string[];
+  extra_bed: string[];
+}
+interface Hotel {
+  name: string;
+  images: string[];
+  price: number;
+  metapolicy_struct: Metapolicy;
+}
+
+const hotels: Hotel[] = [
+  {
+    name: "The Ritz London, 1 King Bed",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+  {
+    name: "Get Eden Life Hotel",
+    images: ["/assets/images/stays/image1.jpg"],
+    price: 105000,
+    metapolicy_struct: {
+      meal: [],
+      extra_bed: [],
+    },
+  },
+];
 
 const ChooseYourRoom = () => {
   const { isMobile } = useScreenResolution();
@@ -24,6 +93,9 @@ const ChooseYourRoom = () => {
     search: false,
     filter: false,
   });
+
+  // FILTERED ITEMS
+  const [filterItems, setFilterItems] = useState([]);
 
   // BEDS
   const [beds, setBeds] = useState("");
@@ -196,7 +268,7 @@ const ChooseYourRoom = () => {
     }
 
     // Default label if the option doesn't match any category
-    return "Options:";
+    return "";
   };
 
   return (
@@ -308,6 +380,9 @@ const ChooseYourRoom = () => {
               setSubmissionState={setSubmissionState}
               handleSubmit={handleSubmit}
               resetAllFilters={resetAllFilters}
+              //
+              totalSelectedOptions={totalSelectedOptions}
+              filterItems={filterItems}
             />
           )}
           {isMobile && (
@@ -464,16 +539,22 @@ const ChooseYourRoom = () => {
             </Span>
             <Span style={{ marginTop: "20px" }}>
               <Flex direction="column">
-                <Text
-                  type="p"
-                  weight={500}
-                  text="There is no hotel available with the selected filters"
-                ></Text>
-                <Text
-                  type="p"
-                  size={14}
-                  text="Remove some of the selected filters to get results"
-                ></Text>
+                {filterItems.length > 0 ? (
+                  ""
+                ) : (
+                  <Text
+                    type="p"
+                    weight={500}
+                    text="There is no hotel available with the selected filters"
+                  ></Text>
+                )}
+                {totalSelectedOptions > 0 && (
+                  <Text
+                    type="p"
+                    size={14}
+                    text="Remove some of the selected filters to get results"
+                  ></Text>
+                )}
               </Flex>
               <Flex direction="column" gap="8px" styles={{ marginTop: "10px" }}>
                 {allMappedOptions.map((option, index) => (
@@ -526,7 +607,7 @@ const ChooseYourRoom = () => {
         </Button>
       </Section>
       <Span>
-        <ChooseYourRoomList />
+        <ChooseYourRoomList hotels={hotels} />
       </Span>
     </Container>
   );

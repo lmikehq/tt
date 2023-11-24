@@ -30,48 +30,18 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@mui/material";
 
-interface Room {
+interface Hotel {
   name: string;
-  image: string;
+  images: string[];
   price: number;
 }
 
-const rooms: Room[] = [
-  {
-    name: "The Ritz London, 1 King Bed",
-    image: "/assets/images/stays/image1.jpg",
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
+interface HotelListProps {
+  hotels: Hotel[];
+}
 
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
-
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
-
-    price: 105000,
-  },
-];
-function ChooseYourRoomList() {
+function ChooseYourRoomList(props: HotelListProps) {
+  const { hotels } = props;
   const { isMobile } = useScreenResolution();
 
   const router = useRouter();
@@ -83,7 +53,7 @@ function ChooseYourRoomList() {
   return (
     <>
       <Span style={{ marginTop: "60px" }}>
-        {rooms.map((room, index) => (
+        {hotels.map((hotel, index) => (
           <Span key={index} style={{ marginBottom: "60px" }}>
             <GridLayout className="choose_room_list">
               <Span style={{ overflow: "hidden" }}>
@@ -102,13 +72,13 @@ function ChooseYourRoomList() {
                           objectFit: "cover",
                           borderRadius: "12px",
                         }}
-                        src={room.image}
-                        alt={room.name}
+                        src={hotel.images[0]}
+                        alt={hotel.name}
                       />
                     </ChooseRoomImg>
                     <Span>
                       {isMobile && (
-                        <Text type="h2" weight={600} text={room.name}></Text>
+                        <Text type="h2" weight={600} text={hotel.name}></Text>
                       )}
                       <Span>
                         <Flex align="center" gap="0">
@@ -174,7 +144,7 @@ function ChooseYourRoomList() {
               <Span>
                 <Flex direction="column">
                   {!isMobile && (
-                    <Text type="h2" weight={600} text={room.name}></Text>
+                    <Text type="h2" weight={600} text={hotel.name}></Text>
                   )}
                   <Span style={{ margin: "15px 0px" }}>
                     <Flex wrap="wrap" gap="8px" align="center">
