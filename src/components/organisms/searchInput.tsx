@@ -144,7 +144,7 @@ export default function SearchInput({
               top: "50%",
               display: "flex",
               justifyContent: "center",
-              width: "92%",
+              width: "95%",
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,

@@ -461,9 +461,9 @@ function FlightBox(props: flightProps) {
                     padding={isMobile ? "1rem 1.5rem 2rem" : "2rem 2rem 3rem 0"}
                     justify="space-between"
                     height="100%"
-                    gap={isMobile ? "2rem" : "1.5rem"}
+                    gap={isMobile ? "2rem" : "0rem"}
                 >
-                    <Flex align="center">
+                    <Flex align="center" height={isMobile ? "" : "100%"}>
                         <Flex gap=".5rem">
                             <IconBorders>
                                 <Text
@@ -490,7 +490,7 @@ function FlightBox(props: flightProps) {
                                 />
                             </IconBorders>
                         </Flex>
-                        {!isMobile && <BsShare size={23} onClick={() => props.openShareModal(props.flight) } cursor="pointer"/>}
+                        {!isMobile && <BsShare size={23} onClick={(e) => { e?.stopPropagation(); props.openShareModal(props.flight) }} cursor="pointer"/>}
                     </Flex>
                     <Flex
                         direction={isMobile ? "row" : "column"}

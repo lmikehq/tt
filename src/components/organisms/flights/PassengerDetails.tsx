@@ -19,6 +19,7 @@ import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps } from "formik";
 import {
     Combination,
+    Passenger,
     PassengerBaggageCombinationInterface,
     PassengerCategory,
     PassengerCategoryDesc,
@@ -36,6 +37,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ToastInfo } from "../flight/booking/toast";
 import { capCase } from "@/lib/utilFns";
 import dayjs from "dayjs";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 
 function CategoryTag({
     category,
@@ -44,7 +46,10 @@ function CategoryTag({
     category: string;
     isMobile: boolean;
     }) {
-    const extra = category === 'adult' ? '(12+ yrs)' : category === 'child' ? '(2-12 yrs)' : '(Under 2 yrs)'
+    const {
+        checkFlightsResponse,
+    } = useFlightBookingStore((state) => state);
+    const extra = category === 'adult' ? `(${checkFlightsResponse?.age_category_thresholds?.adult ?? 12}+ yrs)` : category === 'child' ? `(${checkFlightsResponse?.age_category_thresholds?.child ?? 2}-${checkFlightsResponse?.age_category_thresholds?.adult ?? 12} yrs)` : `(Under ${checkFlightsResponse?.age_category_thresholds?.child ?? 2} yrs)`
     return (
         <Flex
             width={isMobile ? "30%" : "max-content"}
@@ -61,9 +66,9 @@ function CategoryTag({
 interface TripSummaryCardProps {
     index: number;
     formik: FormikProps<{
-        passengers: PassengerFormInterface[];
+        passengers: Passenger[];
     }>;
-    values: PassengerFormInterface;
+    values: Passenger;
     count: number;
     combinationOptions: Combinations;
     passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -207,7 +212,7 @@ export default function MainPassenger({
                             formik={formik}
                             name={`passengers.${count}.title`}
                             placeholder="Select your title"
-                            options={["Mr", "Mrs"]}
+                            options={["Mr", "Ms"]}
                         />
                     </FormControl>
                     <FormControl>

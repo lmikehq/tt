@@ -22,7 +22,6 @@ import {
     SaveBookingRequestInput,
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
-    contactDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
     CheckFlightResponse,
@@ -87,6 +86,8 @@ const TripSummary = ({
         saveBooking,
         checkFlightsResponse,
         saveBookingDetails,
+        contactDetails,
+        setContactDetails,
         setSaveBookingDetails,
         nextStep,
     } = useFlightBookingStore((state) => state);
@@ -174,7 +175,7 @@ const TripSummary = ({
                     size: parseInt(infants),
                     category: PassengerCategory.INFANT,
                 }),
-            ],
+            ].map((e, ind) => ({ ...e, ...(saveBookingDetails.passengers[ind]) })),
         },
         enableReinitialize: true,
         validateOnMount: true,
@@ -193,15 +194,15 @@ const TripSummary = ({
                         index != 0
                             ? {
                                   ...el,
-                                  nationality:
-                                      el.nationality.code.toLowerCase(),
+                                  nationality: typeof el.nationality === 'string' ? 
+                                      el.nationality : el.nationality?.code?.toLowerCase(),
                               }
                             : {
                                   ...el,
                                   email: contactDetailsFormik.values.email,
                                   phone: contactDetailsFormik.values.phone,
-                                  nationality:
-                                      el.nationality.code.toLowerCase(),
+                                  nationality: typeof el.nationality === 'string' ? 
+                                      el.nationality : el.nationality?.code?.toLowerCase(),
                               }
                     ),
                     baggage: arrangeBaggageDataForOrdering(
@@ -209,6 +210,7 @@ const TripSummary = ({
                     ),
                 },
             });
+            setContactDetails({ data: contactDetailsFormik.values })
             console.log(passengersBagCombination)
             console.log(insertSelectedCheckedBags(passengersBagCombination))
             console.log(arrangeBaggageDataForOrdering(insertSelectedCheckedBags(passengersBagCombination)))
@@ -316,7 +318,7 @@ const TripSummary = ({
                                                 combinationOptions={getPassengerBagCombinationOptions(
                                                     {
                                                         category:
-                                                            passenger.category,
+                                                            passenger.category as PassengerCategory,
                                                     }
                                                 )}
                                                 passengerBagCombination={

@@ -33,7 +33,7 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 interface PassengerBaggagePaneProps {
     index: number;
-    values: PassengerFormInterface;
+    values: Passenger;
     combinationOptions: Combinations;
     count: number;
     passengerBagCombination: PassengerBaggageCombinationInterface;

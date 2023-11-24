@@ -327,17 +327,17 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         setFilter(checkType);
     };
 
-    const handleCheckAll = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        checkType: checkType,
-        allOptions: any[]
-    ) => {
-        setFilterData((prev) => ({
-            ...prev,
-            [checkType]: allOptions,
-        }));
-        setFilter(checkType);
-    };
+    // const handleCheckAll = (
+    //     event: React.ChangeEvent<HTMLInputElement>,
+    //     checkType: checkType,
+    //     allOptions: any[]
+    // ) => {
+    //     setFilterData((prev) => ({
+    //         ...prev,
+    //         [checkType]: allOptions,
+    //     }));
+    //     setFilter(checkType);
+    // };
 
     const convertTime = (value: number) => {
         const minutes = value * 15;

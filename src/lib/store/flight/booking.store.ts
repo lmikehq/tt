@@ -1,6 +1,8 @@
 import {
+    ContactDetailsInterface,
     ParticularSeatingOption,
     cardDetails,
+    contactDetails,
     saveBookingDetails,
     updateSeatAvailability,
 } from "./../../types/request-models/flight/booking.type";
@@ -47,6 +49,7 @@ interface State {
     initCheckFlightsMode: Mode;
     checkFlightsResponse: CheckFlightResponse | null;
     checkSeatingResponse: CheckSeatingResponse | null;
+    contactDetails: ContactDetailsInterface;
     saveBookingDetails: SaveBookingRequestInput;
     saveBookingResponse: {
         bookingId: string;
@@ -102,6 +105,11 @@ interface Actions {
     }: {
         data: SaveBookingRequestInput;
     }) => void;
+    setContactDetails: ({
+        data,
+    }: {
+        data: ContactDetailsInterface;
+    }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
     checkBookingDetails: ({
@@ -136,6 +144,7 @@ export const useFlightBookingStore = create<State & Actions>(
         checkSeatingMode: Mode.init,
         particularSeats: [],
         saveBookingDetails,
+        contactDetails: contactDetails,
         saveBookingResponse: null,
         tokenizeDataResponse: null,
         cardDetails,
@@ -167,6 +176,9 @@ export const useFlightBookingStore = create<State & Actions>(
         },
         setSaveBookingDetails({ data }: { data: SaveBookingRequestInput }) {
             set({ saveBookingDetails: data });
+        },
+        setContactDetails({ data }: { data: ContactDetailsInterface }) {
+            set({ contactDetails: data });
         },
         updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
             set({ searchQuery: data });

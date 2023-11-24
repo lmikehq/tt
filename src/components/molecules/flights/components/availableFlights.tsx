@@ -632,30 +632,31 @@ function AvailableFlights() {
         const childHoldBags =
             children > 0 ? sharedChecked.slice(adults).join(',') : undefined;
 
-        // console.log(sharedCabin, sharedChecked)
-
-        const sanitizedQuery = {
-            fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
-            fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
-            date_from: queryParams?.date_from ?? searchQuery?.date_from,
-            return_from: queryParams?.return_from ?? searchQuery?.return_from,
-            return_to: queryParams?.return_from ?? searchQuery?.return_from,
-            selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
-            adults: Number(queryParams?.adults ?? searchQuery?.adults),
-            children: Number(queryParams?.children ?? searchQuery?.children),
-            infants: Number(queryParams?.infants ?? searchQuery?.infants),
-            adult_hand_bag: adultHandBags,
-            adult_hold_bag: adultHoldBags,
-            child_hand_bag: childHandBags,
-            child_hold_bag: childHoldBags,
+            
+            const sanitizedQuery = {
+                ...searchQuery,
+                fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
+                fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
+                date_from: queryParams?.date_from ?? searchQuery?.date_from,
+                return_from: flightState?.stops === 'round' ? (queryParams?.return_from ?? searchQuery?.return_from) : undefined,
+                return_to: flightState?.stops === 'round' ? (queryParams?.return_from ?? searchQuery?.return_from) : undefined,
+                selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
+                adults: Number(queryParams?.adults ?? searchQuery?.adults),
+                children: Number(queryParams?.children ?? searchQuery?.children),
+                infants: Number(queryParams?.infants ?? searchQuery?.infants),
+                adult_hand_bag: adultHandBags,
+                adult_hold_bag: adultHoldBags,
+                child_hand_bag: childHandBags,
+                child_hold_bag: childHoldBags,
         };
+        console.log(cleanObject(sanitizedQuery))
         if (
             sanitizedQuery?.fly_from &&
             sanitizedQuery?.fly_to &&
             sanitizedQuery?.date_from &&
             sanitizedQuery?.adults
         ) {
-            handleSearchResults({ ...searchQuery, ...(cleanObject(sanitizedQuery)) });
+            handleSearchResults({ ...(cleanObject(sanitizedQuery)) });
         }
     }, [queryParams]);
 
@@ -716,7 +717,7 @@ function AvailableFlights() {
                             stops={flight.route.length - 1}
                             seats={flight.availability.seats}
                             carryOn={(flightState?.fleet[0]?.cabinBaggage) ?? 0}
-                            hold={(Number(queryParams?.checkedBags) == flightState?.fleet[0]?.checkedBaggage) ? flightState?.fleet[0]?.checkedBaggage : Number(queryParams?.checkedBag) ?? 0}
+                            hold={(Number(queryParams?.checkedBags) == flightState?.fleet[0]?.checkedBaggage) ? (flightState?.fleet[0]?.checkedBaggage ?? 0) : Number(queryParams?.checkedBag ?? 0)}
                             flightStop={(flightState?.stops === 'round' && flightState?.stops === queryParams?.stops) ? 'round' : "one-way"}
                             openShareModal={openShareModal}
                         />
