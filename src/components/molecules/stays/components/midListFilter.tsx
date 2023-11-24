@@ -8,6 +8,10 @@ import { ButtonBtn, FilterBox, FilterFlexBox, FilterList } from "./styles";
 import { ttColors } from "@/lib/theme/colors";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import {
+  formatPriceWithoutCurrency,
+  getCurrency,
+} from "@/lib/extensions/helpers/formatPrice";
 
 // Define the Filter and filters outside of your components
 interface Filter {
@@ -149,7 +153,35 @@ function MidListFilter(props: SortProps) {
                   </ButtonBox>
                 ))}
                 <ButtonBtn className="filter_btn">
-                  <Text type="p" text="₦0 - ₦100,000"></Text>
+                  <Flex gap="5px" align="center">
+                    <Text
+                      color="var(--text-dull-color)"
+                      type="h3"
+                      weight={"bold"}
+                      text={getCurrency()}
+                    />
+                    <Text
+                      color="var(--text-dull-color)"
+                      type="h3"
+                      weight={"bold"}
+                      text={formatPriceWithoutCurrency(0)}
+                    />
+                  </Flex>
+                  -
+                  <Flex gap="5px" align="center">
+                    <Text
+                      color="var(--text-dull-color)"
+                      type="h3"
+                      weight={"bold"}
+                      text={getCurrency()}
+                    />
+                    <Text
+                      color="var(--text-dull-color)"
+                      type="h3"
+                      weight={"bold"}
+                      text={formatPriceWithoutCurrency(0)}
+                    />
+                  </Flex>
                 </ButtonBtn>
               </Flex>
             </Flex>{" "}
