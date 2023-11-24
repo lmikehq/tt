@@ -133,7 +133,6 @@ function ApplicationForm() {
     initialValues: personalInfo,
     enableReinitialize: true,
     validateOnMount: true,
-
     validationSchema: personalInfoSchema,
     validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
@@ -314,33 +313,37 @@ function ApplicationForm() {
         }
       />
 
-      <AllCountryHead
-        cover={coverImage}
-        title={form.tripDetails.destination.name || ""}
-      />
+        <AllCountryHead
+            cover={coverImage}
+            title={form.tripDetails.destination.name || ""}
+        />
+          
+
       <SectionLayout>
         <SectionTitle
           title={`Apply Now for ${
             form.tripDetails.destination.name || ""
           } Employment Visa`}
-          description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
+          description="We'll Handle Your Travel Documentation Hassles, and ensure a seamless travel experience for you"
           showButton={false}
         />
+              
         <Button
-          onClick={() => setBottomDrawerOpen(true)}
-          styles={{ display: isMobile ? "block" : "none" }}
-          background="transparent"
-          padding="0"
-          width="fit-content"
-          height="fit-content"
+            onClick={() => setBottomDrawerOpen(true)}
+            styles={{ display: isMobile ? "block" : "none" }}
+            background="transparent"
+            padding="0"
+            width="fit-content"
+            height="fit-content"
         >
-          <Text
-            type="p"
-            size={14}
-            color={ttColors.primary}
-            text="View Important Documents Required"
-          />
+            <Text
+                type="p"
+                size={14}
+                color={ttColors.primary}
+                text="View Important Documents Required"
+            />
         </Button>
+              
         <CustomDrawer
           anchor="bottom"
           open={bottomDrawerOpen}
@@ -360,6 +363,7 @@ function ApplicationForm() {
             />
           </Section>
         </CustomDrawer>
+              
         <Flex
           {...(!isMobile && { background: "white" })}
           // background='white'
@@ -375,7 +379,7 @@ function ApplicationForm() {
           }}
           height="auto"
           padding={isMobile ? "0px" : "2.5rem"}
-          gap="2.25rem"
+          gap="4.5rem"
           direction={isMobile ? "column" : "row"}
         >
           <Section

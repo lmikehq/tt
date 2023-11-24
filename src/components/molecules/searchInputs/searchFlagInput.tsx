@@ -37,8 +37,8 @@ const SearchFlagInput = ({
       <Flex justify="space-between" cursor="pointer" align="center" width="100%">
         <Text
           type="p"
-          text={value.name ? value.name : placeholder}
-          color={value.name ? "#1C1B1F" : "#929292"}
+          text={value?.name ? value.name : placeholder}
+          color={value?.name ? "#1C1B1F" : "#929292"}
           weight={400}
           size={size}
           styles={{
@@ -48,8 +48,9 @@ const SearchFlagInput = ({
               overflow: "hidden",
           }}
         />
-        {value.name ? (
-          <AiOutlineCheck color="#3BB98E" />
+        {value?.name ? (
+            <IoIosArrowDown size={20} />
+        //   <AiOutlineCheck color="#3BB98E" />
         ) : (
           <IoIosArrowDown size={20} />
         )}

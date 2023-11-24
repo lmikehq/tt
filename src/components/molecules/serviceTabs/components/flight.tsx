@@ -122,13 +122,14 @@ function FlightStops({
 function Flights() {
     const router = useRouter();
     const { isMobile } = useScreenResolution();
-    const flightContext = useContext(FlightContext)
-    const flightState = flightContext?.state, dispatch = flightContext?.dispatch
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state,
+        dispatch = flightContext?.dispatch;
 
     const { searchFlightsMode } = useFlightBookingStore((state) => state);
 
-    const { queryParams } = useQueryParams()
-    
+    const { queryParams } = useQueryParams();
+
     const handleAddMultiFlight = () => {
         dispatch && dispatch({ type: "ADD_MULTI_FLIGHT" });
     };
@@ -153,81 +154,102 @@ function Flights() {
 
     const translateCabin = (x?: string) => {
         switch (x) {
-            case 'Economy': return 'M';
+            case "Economy":
+                return "M";
                 break;
-            case 'Economy Premium': return 'W';
+            case "Economy Premium":
+                return "W";
                 break;
-            case 'Business': return 'C';
+            case "Business":
+                return "C";
                 break;
-            case 'First': return 'F';
+            case "First":
+                return "F";
                 break;
-            default: return ''
+            default:
+                return "";
         }
-    }
+    };
 
     const reverseCabin = (x?: string) => {
         switch (x) {
-            case 'M': return 'Economy';
+            case "M":
+                return "Economy";
                 break;
-            case 'W': return 'Economy Premium';
+            case "W":
+                return "Economy Premium";
                 break;
-            case 'C': return 'Business';
+            case "C":
+                return "Business";
                 break;
-            case 'F': return 'First';
+            case "F":
+                return "First";
                 break;
-            default: return 'Economy'
+            default:
+                return "Economy";
         }
-    }
+    };
 
-	const formatSearchFlight = (flight?: OneFlightType) => {
-		const dateFrom = formatDate(flight?.departureDate ?? dayjs());
-		// const dateTo = formatDate(flight?.returnDate ?? dayjs());
-		const departure = flight?.departureCountry
-		const arrival = flight?.arrivalCountry
-		const adults = flight?.adults
-		const children = flight?.children
-        const infants = flight?.infants
-        const cabin = translateCabin(flight?.flightClass)
-        const cabinBags = flight?.cabinBaggage
-        const checkedBags = flight?.checkedBaggage
-        
-		return `/flight/listings?fly_from=${departure?.code}&fly_to=${arrival?.code}&date_from=${dateFrom}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`
-    }
+    const formatSearchFlight = (flight?: OneFlightType) => {
+        const dateFrom = formatDate(flight?.departureDate ?? dayjs());
+        const returnFrom = formatDate(flight?.returnDate ?? dayjs());
+        // const dateTo = formatDate(flight?.returnDate ?? dayjs());
+        const departure = flight?.departureCountry;
+        const arrival = flight?.arrivalCountry;
+        const adults = flight?.adults;
+        const children = flight?.children;
+        const infants = flight?.infants;
+        const cabin = translateCabin(flight?.flightClass);
+        const cabinBags = flight?.cabinBaggage;
+        const checkedBags = flight?.checkedBaggage;
 
-    const flight = flightState?.fleet[0]
+        return `/flight/listings?fly_from=${departure?.code}&fly_to=${
+            arrival?.code
+        }&date_from=${dateFrom}${
+            flight?.returnDate ? `&return_from=${returnFrom}` : ""
+        }&stops=${flightState?.stops}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
+    };
 
-    const formComplete = flight?.departureCountry && flight?.arrivalCountry && flight?.departureDate
+    const flight = flightState?.fleet[0];
+
+    const formComplete =
+        flight?.departureCountry &&
+        flight?.arrivalCountry &&
+        flight?.departureDate;
 
     const handleSearchFlights = () => {
         if (formComplete) {
-            router.push(formatSearchFlight(flight))
+            router.push(formatSearchFlight(flight));
         }
-    }
+    };
 
     useEffect(() => {
-        dispatch && dispatch({
-            type: "UPDATE_MULTI_FLIGHT",
-            payload: {
-                index: 0,
-                data: {
-                    // ...queryParams,
-                    // departureCountry: queryParams?.fly_from,
-                    // arrivalCountry: queryParams?.fly_to,
-                    // departureDate: dayjs(queryParams?.date_from),
-                    flightClass: reverseCabin(queryParams?.cabin),
-                    adults: Number(queryParams?.adults ?? 1),
-                    children: Number(queryParams?.children ?? 0),
-                    infants: Number(queryParams?.infants ?? 0),
-                }
-            }
-        })
-    }, [])
+        dispatch &&
+            dispatch({
+                type: "UPDATE_MULTI_FLIGHT",
+                payload: {
+                    index: 0,
+                    data: {
+                        // ...queryParams,
+                        // departureCountry: queryParams?.fly_from,
+                        // arrivalCountry: queryParams?.fly_to,
+                        // departureDate: dayjs(queryParams?.date_from),
+                        flightClass: reverseCabin(queryParams?.cabin),
+                        adults: Number(queryParams?.adults ?? 1),
+                        children: Number(queryParams?.children ?? 0),
+                        infants: Number(queryParams?.infants ?? 0),
+                    },
+                },
+            });
+    }, []);
 
-
-	return (
-        <Section padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"} styles={{ position: "relative" }}>
-			<Flex direction="column">
-				{/* {isMobile &&
+    return (
+        <Section
+            padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}
+            styles={{ position: "relative" }}
+        >
+            <Flex direction="column">
+                {/* {isMobile &&
 					<FlightType
 						isMobile={isMobile}
 						value={flightState?.flightType ?? ''}
@@ -251,12 +273,15 @@ function Flights() {
                         flight={e}
                         handleUpdate={handleUpdateMultiFlight}
                         handleDelete={handleRemoveMultiFlight}
-                        canDelete={flightState?.stops === "multi-city" && arr.length > 1}
+                        canDelete={
+                            flightState?.stops === "multi-city" && arr.length > 1
+                        }
                     />
                 ))}
             </Flex>
 
-            {flightState && flightState?.stops === "multi-city" &&
+            {flightState &&
+                flightState?.stops === "multi-city" &&
                 flightState?.fleet?.length < 3 && (
                     <Flex margin={isMobile ? "0px" : "30px 0px 0px"}>
                         <Button

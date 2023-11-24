@@ -44,7 +44,7 @@ export const TripHeader = () => {
     return (
         <Flex direction="column" gap="1.5rem">
             <Flex gap="1rem" justify={isMobile ? "space-between" : "flex-start"} align="center" padding={isMobile ? "0" : "0"}>
-                <Text text="Trip Summary" size={isMobile ? 18 : 22} type="h2" weight={600} />
+                <Text text="Trip Summary" size={isMobile ? 18 : 24} type="h2" weight={600} />
                 <Flex borderRadius="50%" background={ttColors.primary100} padding="5px" width="max-content">
                     <FaPlane color={ttColors.primary600} size={isMobile ? 30 : 20} />
                 </Flex>

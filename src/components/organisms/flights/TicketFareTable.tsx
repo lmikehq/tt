@@ -83,12 +83,18 @@ const Table = styled(MuiTable)(() => ({
 const TicketFareTable = () => {
     const { nextStep } = useFlightBookingStore((state) => state);
     const { isMobile } = useScreenResolution()
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState({
+        active: false,
+        index: 1,
+    });
     const [active, setActive] = useState("");
 
     const proceed = async (x: string) => {
         setActive(x)
-        setLoading(true);
+        setLoading(prev => ({
+            ...prev,
+            active: true, index: x === 'basic' ? 0 : x === 'flex' ? 1 : 2
+        }));
         await sleep(500);
         nextStep();
         window.scrollTo({
@@ -139,7 +145,7 @@ const TicketFareTable = () => {
                         color={active === 'basic' ? "white" : ttColors.dark}
                         onClick={() => proceed('basic')}
                     >
-                        {loading ? (
+                        {(loading.active && loading.index === 0) ? (
                             <Spinner fill={ttColors.primary} size={"45px"} />
                         ) : (
                             <Text type="p" size={16} text="Select" weight={500} />
@@ -155,7 +161,7 @@ const TicketFareTable = () => {
                     color={active === 'flex' ? "white" : "white"}
                     onClick={() => proceed('flex')}
                 >
-                    {loading ? (
+                    {(loading.active && loading.index === 1) ? (
                         <Spinner fill={ttColors.primary} size={"45px"} />
                     ) : (
                         <Text type="p" size={16} text="Select" weight={500} />
@@ -171,7 +177,7 @@ const TicketFareTable = () => {
                     color={active === 'super-flex' ? "white" : ttColors.dark}
                     onClick={() => proceed('super-flex')}
                 >
-                    {loading ? (
+                    {(loading.active && loading.index === 2) ? (
                         <Spinner fill={ttColors.primary} size={"45px"} />
                     ) : (
                         <Text type="p" size={16} text="Select" weight={500} />

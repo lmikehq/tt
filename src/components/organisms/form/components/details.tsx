@@ -41,7 +41,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
         <Section>
           <Flex
             direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
+            gap={isMobile ? "1rem" : "1.5rem"}
           >
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
@@ -93,14 +93,14 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
         <Section>
           <Flex
             direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
+            gap={isMobile ? "1rem" : "1.5rem"}
           >
             <Flex direction="column">
               <Flex align="center" gap="0.25rem">
                 <Text
                   size={isMobile ? 16 : 16}
                   type="p"
-                  text="Visa type"
+                  text="Visa Type"
                   margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
@@ -124,29 +124,29 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
               />
             </Flex>
             <Flex direction="column">
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  size={isMobile ? 16 : 16}
-                  type="p"
-                  text="Application type"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                />
-                <Required />
-              </Flex>
+                <Flex align="center" gap="0.25rem">
+                    <Text
+                    size={isMobile ? 16 : 16}
+                    type="p"
+                    text="Application Type"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    />
+                    <Required />
+                </Flex>
 
-              <FieldString
-                options={["Single", "Family"]}
-                formik={formik}
-                onChange={(x: any) => {
-                  formik?.setFieldValue("applicationType", x);
-                  // formik?.setFieldValue("numberOfTravellers", 1);
-                  // setFee(
-                  //   formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
-                  // );
-                }}
-                placeholder="Select your Application Type "
-                name="applicationType"
-              />
+                <FieldString
+                    options={["Single", "Family"]}
+                    formik={formik}
+                    onChange={(x: any) => {
+                    formik?.setFieldValue("applicationType", x);
+                    // formik?.setFieldValue("numberOfTravellers", 1);
+                    // setFee(
+                    //   formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
+                    // );
+                    }}
+                    placeholder="Select your Application Type "
+                    name="applicationType"
+                />
             </Flex>
           </Flex>
         </Section>

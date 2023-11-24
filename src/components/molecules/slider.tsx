@@ -1,3 +1,4 @@
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import MuiSlider, { SliderThumb } from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 
@@ -30,8 +31,8 @@ const CustomizedSlider = styled(MuiSlider)(({ theme }) => ({
         fontSize: "14px",
     },
     "& .MuiSlider-markLabel[data-index='1']": {
-        left: "96% !important",
         fontSize: "14px",
+        textAlign: 'left'
     },
     "& .MuiSlider-rail": {
         color: theme.palette.mode === "dark" ? "#7BBBD6" : "#DAF0F9",
@@ -65,6 +66,7 @@ interface SliderProps {
     min?: number;
     max?: number;
     step?: number;
+    money?: boolean;
 }
 
 export default function CustomSlider({
@@ -75,7 +77,10 @@ export default function CustomSlider({
     min,
     max,
     step,
+    money
 }: SliderProps) {
+    const { isMobile } = useScreenResolution()
+
     return (
         <CustomizedSlider
             components={{ Thumb: ThumbComponent }}
@@ -86,6 +91,13 @@ export default function CustomSlider({
             min={min}
             max={max}
             step={step}
+            sx={{
+                "& .MuiSlider-markLabel[data-index='1']": {
+                    right: money ? "-160px !important" : "-16% !important",
+                    fontSize: "14px",
+                    textAlign: 'left'
+                },
+            }}
         />
     );
 }

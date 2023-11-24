@@ -44,6 +44,9 @@ const FlightContainer = styled.div`
     margin: 0;
     border-radius: 12.5px;
     width: 100%;
+    &:hover {
+        box-shadow: 0px 0px 15px rgba(0,0,0,0.07)
+    }
 `;
 
 const IconBorders = styled.div`
@@ -141,7 +144,7 @@ function FlightBox(props: flightProps) {
     const isRoundTrip = props.flightStop === "round";
 
     return (
-        <FlightContainer>
+        <FlightContainer style={{ cursor: 'pointer' }} onClick={() => props.selectFlight({ bookingToken: props.bookingToken })}>
             <Box
                 sx={{
                     display: isMobile ? "flex" : "grid",
@@ -155,9 +158,7 @@ function FlightBox(props: flightProps) {
                 <Flex
                     direction="column"
                     gap=".6rem"
-                    padding={
-                        isMobile ? "1rem 1rem 1rem 0" : "1.5rem 2rem 3rem 1rem"
-                    }
+                    padding={isMobile ? "1rem 1rem 1rem 0" : "1.5rem 2rem 3rem 1rem"}
                     height="100%"
                     justify="center"
                 >
@@ -248,7 +249,7 @@ function FlightBox(props: flightProps) {
                                     color={ttColors.lighterGray}
                                 />
                             </Flex>
-                            <Flex align={"center"} gap="1rem">
+                            <Flex align={"center"} gap="2rem" wrap="wrap">
                                 <Text
                                     type="p"
                                     size={isMobile ? 14 : 15}
@@ -296,7 +297,9 @@ function FlightBox(props: flightProps) {
                                         size={isMobile ? 14 : 16}
                                         text={
                                             flightState?.airports[
-                                                endRoute.flyTo
+                                                isRoundTrip
+                                                ? startRoute.flyTo
+                                                : endRoute.flyTo
                                             ]?.name ?? props.flight.flyTo
                                         }
                                     />
@@ -338,9 +341,10 @@ function FlightBox(props: flightProps) {
                                 <FlightDepartureIcon stops={props.stops} />
 
                                 <Flex
+                                    width="100%"
                                     direction="column"
                                     gap="1rem"
-                                    margin="0 1rem"
+                                    // margin="0 1rem"
                                 >
                                     <Flex
                                         align="center"
@@ -390,7 +394,7 @@ function FlightBox(props: flightProps) {
                                             styles={{ minWidth: "max-content" }}
                                         />
                                     </Flex>
-                                    <Flex align={"center"} gap="1rem">
+                                    <Flex align={"center"} gap="2rem" wrap="wrap">
                                         <Text
                                             type="p"
                                             size={isMobile ? 14 : 16}
@@ -457,9 +461,9 @@ function FlightBox(props: flightProps) {
                     padding={isMobile ? "1rem 1.5rem 2rem" : "2rem 2rem 3rem 0"}
                     justify="space-between"
                     height="100%"
-                    gap={isMobile ? "2rem" : "1.5rem"}
+                    gap={isMobile ? "2rem" : "0rem"}
                 >
-                    <Flex align="center">
+                    <Flex align="center" height={isMobile ? "" : "100%"}>
                         <Flex gap=".5rem">
                             <IconBorders>
                                 <Text
@@ -486,7 +490,7 @@ function FlightBox(props: flightProps) {
                                 />
                             </IconBorders>
                         </Flex>
-                        {!isMobile && <BsShare size={23} onClick={() => props.openShareModal(props.flight) }/>}
+                        {!isMobile && <BsShare size={23} onClick={(e) => { e?.stopPropagation(); props.openShareModal(props.flight) }} cursor="pointer"/>}
                     </Flex>
                     <Flex
                         direction={isMobile ? "row" : "column"}

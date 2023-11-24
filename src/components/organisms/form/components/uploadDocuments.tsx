@@ -37,7 +37,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
       });
     }
     return !isMobile
-      ? "Proceed to payment"
+      ? "Review Application"
       : accompanies > 0
       ? "Make Payment (NGN 30,000)"
       : "Make Payment (NGN 20,000)";
@@ -156,7 +156,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
           size={isMobile ? 16 : 18}
           weight={400}
           color={"#929292"}
-          text="If you don't have all document required, don't worry, our team will complete the rest for you"
+          text="If you don't have all required documents, don't worry, our team will complete the rest for you"
         />
       </Section>
 

@@ -478,6 +478,9 @@ export interface GetFlightBookingByIdResponse {
     baggageInfo: Baggage[];
     passengerDetails: { email: string; phoneNumber: string; }[];
     pricing: SegmentPricing;
+    pnr: {
+        segments: { pnr: string }[]
+    }
 }
 
 export const mockRows = [

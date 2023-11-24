@@ -2,32 +2,31 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import { useRouter } from "next/navigation";
-import SortedRoomsTab from "./sortedRoomsTab";
-import RoomBox from "./roomsBox";
 import Pagination from "@mui/material/Pagination";
-import RoomSlider from "./roomSlider";
-import MidListFilter from "./midListFilter";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import SortedRoomsTab from "./sortedRoomsTab";
+import MidListFilter from "./midListFilter";
+import RoomSlider from "./roomSlider";
+import RoomBox from "./roomsBox";
 
-interface Room {
+interface Hotel {
   name: string;
-  location: string;
+  address: string;
   distance: string;
   reviews: number;
-  rating: number;
+  star_rating: number;
   price: number;
-  image: string;
-  images: string[]; // An array of image paths for the room
+  images: string[]; // An array of image paths for the Hotel
 }
-const rooms: Room[] = [
+const hotels: Hotel[] = [
   {
     name: "The Ritz London",
-    location: "City Center",
+    address: "City Center",
     distance: "0.5 miles",
     reviews: 10,
-    rating: 3,
+    star_rating: 3,
     price: 81000,
-    image: "/assets/images/stays/image1.jpg",
+
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/image2.jpg",
@@ -37,12 +36,12 @@ const rooms: Room[] = [
   },
   {
     name: "The Ritz London",
-    location: "Suburb Area",
+    address: "Suburb Area",
     distance: "1 mile",
     reviews: 15,
-    rating: 4.8,
+    star_rating: 4.8,
     price: 81000,
-    image: "/assets/images/stays/room2.jpeg",
+
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/image2.jpg",
@@ -52,12 +51,12 @@ const rooms: Room[] = [
   },
   {
     name: "The Ritz London",
-    location: "Downtown",
+    address: "Downtown",
     distance: "0.3 miles",
     reviews: 8,
-    rating: 4.2,
+    star_rating: 4.2,
     price: 81000,
-    image: "/assets/images/stays/room3.jpg",
+
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/image2.jpg",
@@ -67,12 +66,12 @@ const rooms: Room[] = [
   },
   {
     name: "The Ritz London",
-    location: "Downtown",
+    address: "Downtown",
     distance: "0.3 miles",
     reviews: 8,
-    rating: 4.2,
+    star_rating: 4.2,
     price: 81000,
-    image: "/assets/images/stays/room3.jpg",
+
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/image2.jpg",
@@ -82,12 +81,12 @@ const rooms: Room[] = [
   },
   {
     name: "The Ritz London",
-    location: "Downtown",
+    address: "Downtown",
     distance: "0.3 miles",
     reviews: 8,
-    rating: 4.2,
+    star_rating: 4.2,
     price: 81000,
-    image: "/assets/images/stays/room3.jpg",
+
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/image2.jpg",
@@ -97,12 +96,12 @@ const rooms: Room[] = [
   },
   {
     name: "The Ritz London",
-    location: "Downtown",
+    address: "Downtown",
     distance: "0.3 miles",
     reviews: 8,
-    rating: 4.2,
+    star_rating: 4.2,
     price: 81000,
-    image: "/assets/images/stays/room3.jpg",
+
     images: [
       "/assets/images/stays/room1.jpeg",
       "/assets/images/stays/image2.jpg",
@@ -111,6 +110,7 @@ const rooms: Room[] = [
     ],
   },
 ];
+
 function AvailableRooms() {
   const { isMobile } = useScreenResolution();
 
@@ -131,8 +131,8 @@ function AvailableRooms() {
           setSortType={setSortType}
         />
       )}
-      {rooms?.slice(0, 4).map((room, index) => (
-        <RoomBox room={room} index={index} key={index} />
+      {hotels?.slice(0, 4).map((hotel, index) => (
+        <RoomBox hotel={hotel} index={index} key={index} />
       ))}
       <MidListFilter
         sortType={sortType}
@@ -140,9 +140,9 @@ function AvailableRooms() {
         prices={1}
         setSortType={setSortType}
       />
-      <RoomSlider rooms={rooms} />
-      {rooms?.slice(4).map((room, index) => (
-        <RoomBox room={room} index={index} key={index} />
+      <RoomSlider hotels={hotels} />
+      {hotels?.slice(4).map((hotel, index) => (
+        <RoomBox hotel={hotel} index={index} key={index} />
       ))}
       <Flex justify="center" styles={{ marginTop: "40px" }}>
         <span className="pagination">

@@ -5,6 +5,11 @@ import Image from "@/components/atoms/image";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { MobileImageBox } from "../components/styles";
 import Slider from "react-slick";
+import { Span } from "./styles";
+import Text from "@/components/atoms/text";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import { GalleryModal } from "./modals/Modals";
+import { useState } from "react";
 
 //MOBILE SETTINGS
 const MobileSliderSettings = {
@@ -33,6 +38,9 @@ const rooms: Room[] = [
 const HeroImageGrid = () => {
   const { isMobile } = useScreenResolution();
 
+  const [open, setOpen] = useState({
+    gallery: false,
+  });
   return (
     <Section styles={{ marginBottom: !isMobile ? "37px" : "0px" }}>
       {!isMobile ? (
@@ -42,12 +50,19 @@ const HeroImageGrid = () => {
             borderRadius="12px"
           >
             <Image
+              onClick={() =>
+                setOpen((prev) => ({
+                  ...prev,
+                  gallery: true,
+                }))
+              }
               alt="stay"
               src={"/assets/images/topCountries/Canada.jpeg"}
               styles={{
                 width: "100%",
                 height: "120%",
                 objectFit: "cover",
+                cursor: "pointer",
               }}
             />
           </Section>
@@ -55,47 +70,101 @@ const HeroImageGrid = () => {
             <Grid columns={"2"} gap=".5rem">
               <Section styles={{ overflow: "hidden" }} borderRadius="6px">
                 <Image
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      gallery: true,
+                    }))
+                  }
                   alt="stay"
                   src={"/assets/images/topCountries/Canada.jpeg"}
                   styles={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
+                    cursor: "pointer",
                   }}
                 />
               </Section>
               <Section styles={{ overflow: "hidden" }} borderRadius="6px">
                 <Image
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      gallery: true,
+                    }))
+                  }
                   alt="stay"
                   src={"/assets/images/topCountries/Canada.jpeg"}
                   styles={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
+                    cursor: "pointer",
                   }}
                 />
               </Section>
               <Section styles={{ overflow: "hidden" }} borderRadius="6px">
                 <Image
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      gallery: true,
+                    }))
+                  }
                   alt="stay"
                   src={"/assets/images/topCountries/Canada.jpeg"}
                   styles={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
+                    cursor: "pointer",
                   }}
                 />
               </Section>
-              <Section styles={{ overflow: "hidden" }} borderRadius="6px">
+              <Section
+                styles={{ overflow: "hidden", position: "relative" }}
+                borderRadius="6px"
+              >
                 <Image
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      gallery: true,
+                    }))
+                  }
                   alt="stay"
                   src={"/assets/images/topCountries/Canada.jpeg"}
                   styles={{
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
+                    cursor: "pointer",
                   }}
                 />
+                <Span
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      gallery: true,
+                    }))
+                  }
+                  style={{
+                    position: "absolute",
+                    right: "20px",
+                    color: "var(--default-color)",
+                    bottom: "20px",
+                    backgroundColor: "var(--secondary-color)",
+                    padding: "8px",
+                    borderRadius: "20px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Flex align="center" gap="5px">
+                    <CollectionsIcon />
+                    <Text type="p" text="1/35"></Text>
+                  </Flex>
+                </Span>
               </Section>
             </Grid>
           </Section>
@@ -126,8 +195,35 @@ const HeroImageGrid = () => {
               ))
             )}
           </Slider>
+          <Span
+            style={{
+              position: "absolute",
+              right: "10px",
+              color: "var(--default-color)",
+              bottom: "20px",
+              backgroundColor: "var(--secondary-color)",
+              padding: "8px",
+              borderRadius: "20px",
+              cursor: "pointer",
+            }}
+          >
+            <Flex align="center" gap="5px">
+              <CollectionsIcon />
+              <Text type="p" text="1/35"></Text>
+            </Flex>
+          </Span>
         </MobileImageBox>
       )}
+      {/* GALLERY MODAL*/}
+      <GalleryModal
+        open={open.gallery}
+        handleClose={() =>
+          setOpen((prev) => ({
+            ...prev,
+            gallery: false,
+          }))
+        }
+      />
     </Section>
   );
 };

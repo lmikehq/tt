@@ -26,6 +26,8 @@ export default function ViewBooking({ params } : {
         checkBookingDetails({ bookingId: params.bookingId })
     }, [params.bookingId])
 
+    console.log(getBookingByIdResponse)
+
     return (
         <Box bgcolor={ttColors.primary300} padding="2rem 0 4rem">
             <SectionLayout>

@@ -24,7 +24,7 @@ const SaveProgressAndContinueLater = ({
           <Text
             text="Your info is safe with us"
             type="p"
-            size={18}
+            size={16}
             weight={500}
             styles={{ lineHeight: "27px" }}
           />

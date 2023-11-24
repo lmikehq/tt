@@ -119,7 +119,7 @@ export const DatePicker = ({
                         ref={fieldRef}
                         sx={{
                             "& .react-datepicker__month-container": {
-                                width: `${isMobile ? fieldWidth : '320px'} !important`,
+                                width: `${isMobile ? fieldWidth : '340px'} !important`,
                                 padding: '14px 20px 20px !important',
                             },
                             "& .react-datepicker__day-names": {

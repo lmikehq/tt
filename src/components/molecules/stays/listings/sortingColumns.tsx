@@ -1,21 +1,20 @@
 import { Divider } from "@atom/divider";
 import Flex from "@components/templates/flex";
-import { CustomRadioGroup } from "@molecule/radio";
-import { SearchInputAsString } from "@organism/searchInput";
 import Text from "@atom/text";
 import React, { useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
 import Slider from "../../slider";
-import FavoriteHotels from "../components/favoriteHotels";
-import PriceAlerts from "../components/priceAlerts";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Rating } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import styled from "styled-components";
+import PriceAlerts from "../components/priceAlerts";
+import FavoriteHotels from "../components/favoriteHotels";
+import Input from "@/components/atoms/input";
 
 const marks = [
   {
@@ -220,19 +219,7 @@ function SortingColumns() {
           <LuSearch color="#929292" size={20} />
         </SearchInputAsString> */}
           <span style={{ position: "relative" }}>
-            <input
-              type="text"
-              placeholder="Search for hotels"
-              style={{
-                width: "100%",
-                padding: "11px",
-                border: `1px solid ${ttColors.gray}`,
-                borderRadius: "5px",
-                outline: "none",
-                fontSize: "16px",
-                background: "transparent",
-              }}
-            />
+            <Input placeholder="Search for hotels" />
             <LuSearch
               color="#929292"
               size={20}
@@ -240,7 +227,7 @@ function SortingColumns() {
                 float: "right",
                 position: "absolute",
                 right: "10px",
-                top: "2px",
+                top: "12px",
               }}
             />
           </span>
@@ -279,7 +266,10 @@ function SortingColumns() {
                         <Text
                           type="p"
                           text={item}
-                          styles={{ fontSize: "15px", width: "fit-content" }}
+                          styles={{
+                            fontSize: "15px",
+                            width: "fit-content",
+                          }}
                         />
                       }
                     />
@@ -289,7 +279,11 @@ function SortingColumns() {
               {PopularItems.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "17px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "17px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       PopularItems,
@@ -344,7 +338,10 @@ function SortingColumns() {
                         <Text
                           type="p"
                           text={item}
-                          styles={{ fontSize: "15px", width: "fit-content" }}
+                          styles={{
+                            fontSize: "15px",
+                            width: "fit-content",
+                          }}
                         />
                       }
                     />
@@ -354,7 +351,11 @@ function SortingColumns() {
               {PropertyItems.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "15px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "15px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       PropertyItems,
@@ -463,7 +464,10 @@ function SortingColumns() {
                       <Text
                         type="p"
                         text={item.text}
-                        styles={{ fontSize: "15px", width: "fit-content" }}
+                        styles={{
+                          fontSize: "15px",
+                          width: "fit-content",
+                        }}
                       />
                       <Rating
                         name="customized-10"
@@ -514,7 +518,10 @@ function SortingColumns() {
                       <Text
                         type="p"
                         text={item.text}
-                        styles={{ fontSize: "15px", width: "fit-content" }}
+                        styles={{
+                          fontSize: "15px",
+                          width: "fit-content",
+                        }}
                       />
                       <Rating
                         name="customized-10"
@@ -571,7 +578,10 @@ function SortingColumns() {
                         <Text
                           type="p"
                           text={item}
-                          styles={{ fontSize: "15px", width: "fit-content" }}
+                          styles={{
+                            fontSize: "15px",
+                            width: "fit-content",
+                          }}
                         />
                       }
                     />
@@ -581,7 +591,11 @@ function SortingColumns() {
               {Policies.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "15px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "15px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       Policies,
@@ -640,7 +654,10 @@ function SortingColumns() {
                         <Text
                           type="p"
                           text={item}
-                          styles={{ fontSize: "15px", width: "fit-content" }}
+                          styles={{
+                            fontSize: "15px",
+                            width: "fit-content",
+                          }}
                         />
                       }
                     />
@@ -650,7 +667,11 @@ function SortingColumns() {
               {Facilities.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "15px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "15px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       Facilities,
@@ -704,7 +725,10 @@ function SortingColumns() {
                       <Text
                         type="p"
                         text={item}
-                        styles={{ fontSize: "15px", width: "fit-content" }}
+                        styles={{
+                          fontSize: "15px",
+                          width: "fit-content",
+                        }}
                       />
                     }
                   />
@@ -713,7 +737,11 @@ function SortingColumns() {
               {Meal.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "15px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "15px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       Meal,
@@ -769,7 +797,10 @@ function SortingColumns() {
                       <Text
                         type="p"
                         text={item}
-                        styles={{ fontSize: "15px", width: "fit-content" }}
+                        styles={{
+                          fontSize: "15px",
+                          width: "fit-content",
+                        }}
                       />
                     }
                   />
@@ -778,7 +809,11 @@ function SortingColumns() {
               {Rooms.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "15px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "15px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       Rooms,
@@ -829,7 +864,10 @@ function SortingColumns() {
                       <Text
                         type="p"
                         text={item}
-                        styles={{ fontSize: "15px", width: "fit-content" }}
+                        styles={{
+                          fontSize: "15px",
+                          width: "fit-content",
+                        }}
                       />
                     }
                   />
@@ -838,7 +876,11 @@ function SortingColumns() {
               {BedType.length > threshold && (
                 <Button
                   variant="link"
-                  styles={{ position: "relative", left: "15px", padding: 0 }}
+                  styles={{
+                    position: "relative",
+                    left: "15px",
+                    padding: 0,
+                  }}
                   onClick={() =>
                     handleToggleItems(
                       BedType,
