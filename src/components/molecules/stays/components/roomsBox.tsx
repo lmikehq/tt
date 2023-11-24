@@ -55,7 +55,6 @@ import {
   formatPriceWithoutCurrency,
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
-import { Span } from "../view/styles";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -100,6 +99,7 @@ interface RoomBoxProps {
   hotel: Hotel;
   index: number;
 }
+
 function RoomBox({ hotel, index }: RoomBoxProps) {
   const { isMobile } = useScreenResolution();
 
