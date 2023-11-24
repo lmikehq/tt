@@ -337,10 +337,11 @@ function AvailableRooms() {
           setSortType={setSortType}
         />
       )}
-      {/* {hotels?.slice(0, 4).map((hotel, index) => (
+      {hotels?.slice(0, 4).map((hotel, index) => (
         <RoomBox hotel={hotel} index={index} key={index} />
-      ))} */}
-      <HotelBoxSkeleton />
+      ))}
+      {/* SKELETON */}
+      {/* <HotelBoxSkeleton /> */}
       <MidListFilter
         sortType={sortType}
         ratings={1}
