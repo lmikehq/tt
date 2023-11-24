@@ -27,6 +27,9 @@ const ModalCenter = styled.div`
   height: 100%;
   &.amenities {
     overflow-y: auto;
+    @media screen and (max-width: 900px) {
+      overflow-y: none;
+    }
   }
 `;
 const ModalScroll = styled.div`
@@ -44,8 +47,9 @@ const ModalScroll = styled.div`
   &.amenities_scroll {
     width: 1000px;
     height: 2030px;
-    margin-top: 83%;
+    margin-top: 1350px;
     background: white;
+    margin-bottom: 20px;
   }
   &.search_box {
     width: 600px;
@@ -54,6 +58,13 @@ const ModalScroll = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 0px;
+    &.amenities_scroll {
+      width: 100%;
+      height: 100%;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      overflow-y: auto;
+    }
     &.search_box {
       width: 100%;
     }
@@ -71,7 +82,7 @@ const ModalWrapper = styled.div`
     overflow-y: auto;
   }
   &.amenities_modal {
-    height: 100%;
+    height: 100%vh;
     // height: 100vh !important;
     // height: 1000px;
   }
@@ -172,24 +183,24 @@ export const AmenitiesModal = ({
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
       <ModalCenter className="amenities">
         <ModalScroll className="amenities_scroll">
-          {/* <ModalWrapper className="amenities_modal"> */}
-          <Flex
-            padding="10px 35px"
-            align="center"
-            justify="space-between"
-            gap="20px"
-            styles={{ marginTop: "20px" }}
-          >
-            <Text type="h1" size={23} text="Hotel Amenities" weight={600} />
-            <CloseIcon
-              style={{ fontSize: "29px", cursor: "pointer" }}
-              onClick={handleClose}
-            />
-          </Flex>
-          <Span style={{ padding: "15px" }}>
-            <AmenitiesBox />
-          </Span>
-          {/* </ModalWrapper> */}
+          <ModalWrapper className="amenities_modal">
+            <Flex
+              padding="10px 35px"
+              align="center"
+              justify="space-between"
+              gap="20px"
+              styles={{ marginTop: "20px" }}
+            >
+              <Text type="h1" size={23} text="Hotel Amenities" weight={600} />
+              <CloseIcon
+                style={{ fontSize: "29px", cursor: "pointer" }}
+                onClick={handleClose}
+              />
+            </Flex>
+            <Span style={{ padding: "15px" }}>
+              <AmenitiesBox />
+            </Span>
+          </ModalWrapper>
         </ModalScroll>
       </ModalCenter>
     </Modal>
