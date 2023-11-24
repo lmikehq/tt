@@ -17,7 +17,7 @@ import dayjs from "dayjs";
 import { GoArrowSwitch } from "react-icons/go";
 import Button from "../atoms/button";
 import LocationSearchSelectInput from "./locationInputs/KiwiLocationSearchSelectInput";
-import Location from "@/lib/types/response-models/flight/location.type";
+import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
     stops: string;
@@ -116,7 +116,7 @@ function FlightModule({
                         weight={500}
                     />
                     <LocationSearchSelectInput
-                        onChange={(x: Location) =>
+                        onChange={(x: KiwiLocation) =>
                             handleUpdate &&
                             handleUpdate(flight, { departureCountry: x })
                         }
@@ -144,7 +144,7 @@ function FlightModule({
                     />
                     <LocationSearchSelectInput
                         value={flight.arrivalCountry}
-                        onChange={(x: Location) =>
+                        onChange={(x: KiwiLocation) =>
                             handleUpdate &&
                             handleUpdate(flight, { arrivalCountry: x })
                         }
