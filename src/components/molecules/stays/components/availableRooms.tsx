@@ -317,6 +317,7 @@ function HotelBoxSkeleton() {
   );
 }
 
+
 function AvailableRooms() {
   const { isMobile } = useScreenResolution();
 
@@ -334,6 +335,7 @@ function AvailableRooms() {
           starRatings={1}
           distance={"s"}
           sortType={sortType}
+          hotels={hotels}
           setSortType={setSortType}
         />
       )}

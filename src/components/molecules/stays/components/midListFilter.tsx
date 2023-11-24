@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { FilterBox, FilterFlexBox, FilterList } from "./styles";
+import { ButtonBtn, FilterBox, FilterFlexBox, FilterList } from "./styles";
 import { ttColors } from "@/lib/theme/colors";
 import StarOutlinedIcon from "@mui/icons-material/StarOutlined";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
@@ -24,7 +24,7 @@ const filters: Filter[] = [
       { min: 200000, max: 300000 },
       { min: 300000, max: 400000 },
       { min: 400000, max: 500000 },
-      { min: 400001 },
+      { min: 500000 },
     ],
   },
 ];
@@ -125,25 +125,32 @@ function MidListFilter(props: SortProps) {
                 styles={{ flexWrap: isMobile ? "nowrap" : "wrap" }}
                 gap="10px"
               >
-                {filters[0].prices.map((priceRangeOption, index) => (
+                {filters[0].prices.map((priceRangeOption, index, array) => (
                   <ButtonBox
                     key={index}
-                    active={props.sortType === priceRangeOption.min.toString()}
-                    onClick={() =>
-                      props.setSortType(priceRangeOption.min.toString())
-                    }
+                    active={props.sortType === String(priceRangeOption.min)}
+                    onClick={() => {
+                      if (priceRangeOption.min !== undefined) {
+                        props.setSortType(String(priceRangeOption.min));
+                      }
+                    }}
                   >
                     <Text
                       type="p"
                       styles={{ whiteSpace: "nowrap" }}
                       text={`${formatPrice(priceRangeOption.min)} - ${
-                        priceRangeOption.max
+                        index === array.length - 1
+                          ? "+"
+                          : priceRangeOption.max !== undefined
                           ? formatPrice(priceRangeOption.max)
                           : ""
                       }`}
                     />
                   </ButtonBox>
                 ))}
+                <ButtonBtn className="filter_btn">
+                  <Text type="p" text="₦0 - ₦100,000"></Text>
+                </ButtonBtn>
               </Flex>
             </Flex>{" "}
           </FilterFlexBox>
