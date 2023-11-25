@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import Flex from "@/components/templates/flex";
 import Section from "../../section";
@@ -38,6 +38,17 @@ export const FilterModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <Section>
@@ -65,6 +76,17 @@ export const SortModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   const options = [
     { value: "favorite", label: "My Favourite Hotels" },
     { value: "best", label: "Best" },
@@ -113,6 +135,17 @@ export const PriceAlertModal = ({
   setOpen: React.Dispatch<React.SetStateAction<{ alert: boolean }>>;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>

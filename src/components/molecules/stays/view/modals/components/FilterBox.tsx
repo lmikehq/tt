@@ -1,14 +1,72 @@
 import React, { useState } from "react";
 import { BtnDetails, GridLayout, Span } from "../../styles";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { Grid } from "@/components/templates/grid";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import { ttColors } from "@/lib/theme/colors";
-import Dropdown from "@/components/organisms/dropdown";
-import CheckboxDropdown from "@/components/organisms/checkboxDropdown";
 import Button from "@/components/atoms/button";
 import Spinner from "@/components/molecules/icons/spinner";
+import Select, { components, GroupBase, Props } from "react-select";
+
+const customStyles = {
+  control: (base: any) => ({
+    ...base,
+    height: 45,
+    minHeight: 45,
+    overflow: "hidden",
+  }),
+};
+
+interface MyOption {
+  value: string;
+  label: string;
+}
+
+interface MyGroup extends GroupBase<MyOption> {}
+
+interface CustomSelectProps extends Props<MyOption, true, MyGroup> {
+  myCustomProp: string;
+}
+
+const CheckboxOption = (props: any) => (
+  <components.Option {...props}>
+    <Flex gap="8px">
+      <input type="checkbox" checked={props.isSelected} onChange={() => null} />{" "}
+      <label>{props.label}</label>
+    </Flex>
+  </components.Option>
+);
+
+const MultiValue = (props: any) => (
+  <components.MultiValue {...props}>
+    <span
+      style={{
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {props.data.label}
+    </span>
+  </components.MultiValue>
+);
+
+function CustomSelect({ myCustomProp, ...props }: CustomSelectProps) {
+  return (
+    <Select
+      {...props}
+      isMulti
+      closeMenuOnSelect={false}
+      hideSelectedOptions={false}
+      styles={customStyles}
+      components={{
+        Option: CheckboxOption,
+        MultiValue,
+      }}
+      theme={(theme) => ({ ...theme, borderRadius: 0 })}
+    />
+  );
+}
 
 interface FilterItem {
   name: string;
@@ -18,13 +76,13 @@ interface FilterItem {
 interface FilterBoxProps {
   beds: string;
   setBeds: React.Dispatch<React.SetStateAction<string>>;
-  bedsOptions: { value: string; displayValue: string }[];
+  bedsOptions: { value: string; label: string }[];
   selectedMealCheckboxValues: string[];
   setSelectedMealCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
   mealOptions: { value: string; displayValue: string }[];
   cancellation: string;
   setCancellation: React.Dispatch<React.SetStateAction<string>>;
-  cancellationOptions: { value: string; displayValue: string }[];
+  cancellationOptions: { value: string; label: string }[];
   selectedPaymentCheckboxValues: string[];
   setSelectedPaymentCheckboxValues: React.Dispatch<
     React.SetStateAction<string[]>
@@ -41,11 +99,12 @@ interface FilterBoxProps {
     }>
   >;
   handleSubmit: () => void;
-  resetAllFilters: () => void;
+  // resetAllFilters: () => void;
 
-  totalSelectedOptions: number;
+  // totalSelectedOptions: number;
   filterItems: FilterItem[];
 }
+
 function FilterBox({
   beds,
   setBeds,
@@ -62,12 +121,17 @@ function FilterBox({
   submissionState,
   setSubmissionState,
   handleSubmit,
-  resetAllFilters,
-  totalSelectedOptions,
+  // resetAllFilters,
+  // totalSelectedOptions,
   filterItems,
 }: FilterBoxProps) {
   const { isMobile } = useScreenResolution();
 
+  const options: MyOption[] = [
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    // ... other options
+  ];
   return (
     <Span>
       <GridLayout className="grid_select">
@@ -77,14 +141,7 @@ function FilterBox({
           styles={{ marginBottom: "1.2rem" }}
         >
           <Text type="label" size={16} text="Beds" weight={400} />
-          <Dropdown
-            options={bedsOptions}
-            className="mui_select"
-            width="100%"
-            height="45px"
-            selectedValue={beds}
-            setSelectedValue={setBeds}
-          />
+          <Select styles={customStyles} options={bedsOptions} />
         </Flex>
         <Flex
           direction="column"
@@ -93,13 +150,12 @@ function FilterBox({
           styles={{ marginBottom: "1.2rem" }}
         >
           <Text type="label" size={16} text="Meals" weight={400} />
-          <CheckboxDropdown
-            className="mui_select"
-            width="100%"
-            height="45px"
-            options={mealOptions}
-            selectedValues={selectedMealCheckboxValues}
-            setSelectedValues={setSelectedMealCheckboxValues}
+          <CustomSelect
+            myCustomProp="customValue"
+            options={options}
+            onChange={(selectedOptions, actionMeta) =>
+              console.log(selectedOptions, actionMeta)
+            }
           />
         </Flex>{" "}
         <Flex
@@ -108,14 +164,7 @@ function FilterBox({
           styles={{ marginBottom: "1.2rem" }}
         >
           <Text type="label" size={16} text="Cancellation" weight={400} />
-          <Dropdown
-            options={cancellationOptions}
-            className="mui_select"
-            width="100%"
-            height="45px"
-            selectedValue={cancellation}
-            setSelectedValue={setCancellation}
-          />
+          <Select styles={customStyles} options={cancellationOptions} />
         </Flex>
         <Flex
           direction="column"
@@ -123,13 +172,12 @@ function FilterBox({
           styles={{ marginBottom: "1.2rem" }}
         >
           <Text type="label" size={16} text="Payment" weight={400} />
-          <CheckboxDropdown
-            className="mui_select"
-            width="100%"
-            height="45px"
-            options={paymentOptions}
-            selectedValues={selectedPaymentCheckboxValues}
-            setSelectedValues={setSelectedPaymentCheckboxValues}
+          <CustomSelect
+            myCustomProp="customValue"
+            options={options}
+            onChange={(selectedOptions, actionMeta) =>
+              console.log(selectedOptions, actionMeta)
+            }
           />
         </Flex>
       </GridLayout>
@@ -137,52 +185,52 @@ function FilterBox({
         <Span>
           <Span style={{ width: "100%" }}>
             <Flex styles={{ margin: "8px 0px", width: "100%" }}>
-              {filterItems?.length === 0 && totalSelectedOptions === 0 ? (
+              {/* {filterItems?.length === 0 && totalSelectedOptions === 0 ? (
                 ""
-              ) : (
-                <BtnDetails
-                  className="reset_filters"
-                  style={{
-                    padding: "15px",
-                    width: "100%",
-                    textAlign: "center",
-                    cursor: "default",
-                  }}
+              ) : ( */}
+              <BtnDetails
+                className="reset_filters"
+                style={{
+                  padding: "15px",
+                  width: "100%",
+                  textAlign: "center",
+                  cursor: "default",
+                }}
+              >
+                <Flex
+                  align="center"
+                  direction="column"
+                  justify="center"
+                  gap="5px"
                 >
+                  {filterItems?.length === 0 ? (
+                    <Text
+                      weight={500}
+                      size={15}
+                      type="p"
+                      color={ttColors.dark}
+                      text="There is No Result"
+                    ></Text>
+                  ) : (
+                    ""
+                  )}
+                  {/* {totalSelectedOptions > 0 && ( */}
                   <Flex
-                    align="center"
-                    direction="column"
-                    justify="center"
-                    gap="5px"
+                    // onClick={resetAllFilters}
+                    width="fit-content"
+                    styles={{ cursor: "pointer" }}
                   >
-                    {filterItems?.length === 0 ? (
-                      <Text
-                        weight={500}
-                        size={15}
-                        type="p"
-                        color={ttColors.dark}
-                        text="There is No Result"
-                      ></Text>
-                    ) : (
-                      ""
-                    )}
-                    {totalSelectedOptions > 0 && (
-                      <Flex
-                        onClick={resetAllFilters}
-                        width="fit-content"
-                        styles={{ cursor: "pointer" }}
-                      >
-                        <Text
-                          weight={500}
-                          size={15}
-                          type="p"
-                          text="Reset All Filters"
-                        ></Text>
-                      </Flex>
-                    )}
+                    <Text
+                      weight={500}
+                      size={15}
+                      type="p"
+                      text="Reset All Filters"
+                    ></Text>
                   </Flex>
-                </BtnDetails>
-              )}
+                  {/* )} */}
+                </Flex>
+              </BtnDetails>
+              {/* )} */}
             </Flex>
           </Span>
           <Span>

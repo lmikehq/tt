@@ -88,9 +88,7 @@ function GalleryBox() {
         <Flex justify="space-between" align="center" className="gallery_switch">
           <Flex>
             <BtnDetails
-              onClick={() => setActiveView("grid_view")}
               style={{
-                cursor: "pointer",
                 backgroundColor: ttColors.grayishAsh,
                 padding: "10px ",
               }}
@@ -111,7 +109,11 @@ function GalleryBox() {
               color="white"
               width="fit-content"
               padding="0px 10px"
-              onClick={() => setActiveView("slide_show")}
+              onClick={() =>
+                setActiveView(
+                  activeView === "slide_show" ? "grid_view" : "slide_show"
+                )
+              }
             >
               <Flex gap="8px" align="center">
                 <CollectionsIcon />

@@ -13,27 +13,16 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 
-// Define the Filter and filters outside of your components
 interface Filter {
   ratings: string[];
-  prices: { min: number; max?: number }[];
 }
 
 const filters: Filter[] = [
   {
     ratings: ["5.0", "4+", "3+"],
-    prices: [
-      { min: 0, max: 100000 },
-      { min: 100000, max: 200000 },
-      { min: 200000, max: 300000 },
-      { min: 300000, max: 400000 },
-      { min: 400000, max: 500000 },
-      { min: 500000 },
-    ],
   },
 ];
 
-// Define the ButtonBox component as you did
 export const ButtonBox = styled.div<{ active: boolean }>`
   background: ${({ active }) => (active ? "#06062A" : "transparent")};
   color: ${({ active }) => (active ? "white" : "#606060")};
@@ -63,8 +52,6 @@ type SortProps = {
   sortType: string;
 };
 
-const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
-
 function MidListFilter(props: SortProps) {
   const { isMobile } = useScreenResolution();
 
@@ -80,6 +67,15 @@ function MidListFilter(props: SortProps) {
     setShowFilterBox(false);
   };
 
+  //============
+  // PRICE RANGE
+  //============
+  const [activeButtonIndex, setActiveButtonIndex] = useState<number | null>(
+    null
+  );
+  const handleButtonClick = (index: number) => {
+    setActiveButtonIndex(index);
+  };
   return (
     <Box>
       {showFilterBox && (
@@ -101,7 +97,7 @@ function MidListFilter(props: SortProps) {
               {/* Map ratings filter options */}
               <Flex
                 styles={{ flexWrap: isMobile ? "nowrap" : "wrap" }}
-                gap="10px"
+                gap="11.3px"
               >
                 {filters[0].ratings.map((ratingOption, index) => (
                   <ButtonBox
@@ -123,66 +119,50 @@ function MidListFilter(props: SortProps) {
                   </ButtonBox>
                 ))}
               </Flex>
-              {/* Map price range filter options */}
+
               <Flex
                 direction={isMobile ? "row" : "row"}
-                styles={{ flexWrap: isMobile ? "nowrap" : "wrap" }}
-                gap="10px"
+                styles={{
+                  flexWrap: isMobile ? "nowrap" : "wrap",
+                  marginTop: "-5px",
+                }}
+                gap="11.3px"
               >
-                {filters[0].prices.map((priceRangeOption, index, array) => (
-                  <ButtonBox
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <ButtonBtn
                     key={index}
-                    active={props.sortType === String(priceRangeOption.min)}
-                    onClick={() => {
-                      if (priceRangeOption.min !== undefined) {
-                        props.setSortType(String(priceRangeOption.min));
-                      }
-                    }}
+                    className={`filter_btn ${
+                      index === activeButtonIndex ? "active" : ""
+                    }`}
+                    onClick={() => handleButtonClick(index)}
                   >
-                    <Text
-                      type="p"
-                      styles={{ whiteSpace: "nowrap" }}
-                      text={`${formatPrice(priceRangeOption.min)} - ${
-                        index === array.length - 1
-                          ? "+"
-                          : priceRangeOption.max !== undefined
-                          ? formatPrice(priceRangeOption.max)
-                          : ""
-                      }`}
-                    />
-                  </ButtonBox>
+                    <Flex gap="3px" align="center">
+                      <Text type="p" text={getCurrency()} />
+                      <Text
+                        type="p"
+                        text={
+                          index === 5
+                            ? `${formatPriceWithoutCurrency(500000)}+`
+                            : `${formatPriceWithoutCurrency(index * 100000)}`
+                        }
+                      />
+                    </Flex>
+                    {index < 5 && (
+                      <>
+                        <span style={{ margin: "0 3px" }}>-</span>
+                        <Flex gap="3px" align="center">
+                          <Text type="p" text={getCurrency()} />
+                          <Text
+                            type="p"
+                            text={formatPriceWithoutCurrency(
+                              (index + 1) * 100000
+                            )}
+                          />
+                        </Flex>
+                      </>
+                    )}
+                  </ButtonBtn>
                 ))}
-                <ButtonBtn className="filter_btn">
-                  <Flex gap="5px" align="center">
-                    <Text
-                      color="var(--text-dull-color)"
-                      type="h3"
-                      weight={"bold"}
-                      text={getCurrency()}
-                    />
-                    <Text
-                      color="var(--text-dull-color)"
-                      type="h3"
-                      weight={"bold"}
-                      text={formatPriceWithoutCurrency(0)}
-                    />
-                  </Flex>
-                  -
-                  <Flex gap="5px" align="center">
-                    <Text
-                      color="var(--text-dull-color)"
-                      type="h3"
-                      weight={"bold"}
-                      text={getCurrency()}
-                    />
-                    <Text
-                      color="var(--text-dull-color)"
-                      type="h3"
-                      weight={"bold"}
-                      text={formatPriceWithoutCurrency(0)}
-                    />
-                  </Flex>
-                </ButtonBtn>
               </Flex>
             </Flex>{" "}
           </FilterFlexBox>

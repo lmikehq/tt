@@ -116,9 +116,8 @@ const BedType = [
 ];
 
 const ScrollBox = styled.div`
-  height: 1070px !important;
-  overflow-y: scroll;
   padding-right: 8px;
+  position: relative;
 `;
 function SortingColumns() {
   const { isMobile } = useScreenResolution();
@@ -184,7 +183,6 @@ function SortingColumns() {
     }));
   };
 
-  // Create a generic function to handle item display
   const handleToggleItems = (
     items: any[],
     displayedItems: number,
@@ -198,26 +196,21 @@ function SortingColumns() {
   };
 
   return (
-    <ScrollBox>
+    <ScrollBox
+      style={{
+        height: isMobile ? "100%" : "1070px",
+        overflowY: isMobile ? "hidden" : "scroll",
+      }}
+    >
       <Flex
         direction="column"
         styles={{
           minWidth: "200px",
-          position: "sticky",
-          top: "0",
-          zIndex: 100,
         }}
       >
         <PriceAlerts />
         <FavoriteHotels />
         <div style={{ marginBottom: "10px" }}>
-          {/* <SearchInputAsString
-          options={["Hey move along"]}
-          onChange={(e: any) => console.log(e)}
-          placeholder="Search for hotels"
-        >
-          <LuSearch color="#929292" size={20} />
-        </SearchInputAsString> */}
           <span style={{ position: "relative" }}>
             <Input placeholder="Search for hotels" />
             <LuSearch

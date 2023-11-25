@@ -99,6 +99,18 @@ export const GalleryModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -142,6 +154,17 @@ export const MapModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -174,10 +197,17 @@ export const AmenitiesModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
-  // useEffect(() => {
-  //   document.body.style.overflow = "hidden";
-  //   return () => (document.body.style.overflow = "unset");
-  // }, []);
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
 
   return (
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
@@ -219,13 +249,13 @@ interface FilterModalProps {
   handleClose: () => void;
   beds: string;
   setBeds: React.Dispatch<React.SetStateAction<string>>;
-  bedsOptions: { value: string; displayValue: string }[];
+  bedsOptions: { value: string; label: string }[];
   selectedMealCheckboxValues: string[];
   setSelectedMealCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
   mealOptions: { value: string; displayValue: string }[];
   cancellation: string;
   setCancellation: React.Dispatch<React.SetStateAction<string>>;
-  cancellationOptions: { value: string; displayValue: string }[];
+  cancellationOptions: { value: string; label: string }[];
   selectedPaymentCheckboxValues: string[];
   setSelectedPaymentCheckboxValues: React.Dispatch<
     React.SetStateAction<string[]>
@@ -242,8 +272,8 @@ interface FilterModalProps {
     }>
   >;
   handleSubmit: () => void;
-  resetAllFilters: () => void;
-  totalSelectedOptions: number;
+  // resetAllFilters: () => void;
+  // totalSelectedOptions: number;
   filterItems: FilterItem[];
 }
 
@@ -265,10 +295,21 @@ export const FilterModal = ({
   submissionState,
   setSubmissionState,
   handleSubmit,
-  resetAllFilters,
-  totalSelectedOptions,
+  // resetAllFilters,
+  // totalSelectedOptions,
   filterItems,
 }: FilterModalProps) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -306,8 +347,8 @@ export const FilterModal = ({
                 submissionState={submissionState}
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
-                resetAllFilters={resetAllFilters}
-                totalSelectedOptions={totalSelectedOptions}
+                // resetAllFilters={resetAllFilters}
+                // totalSelectedOptions={totalSelectedOptions}
                 filterItems={filterItems}
               />
             </Span>
@@ -335,7 +376,17 @@ export const ChangeSearchModal = ({
   handleClose: () => void;
 }) => {
   let HotelName = "Hotels available in New York from 24 - 25 October 2023";
-
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -404,6 +455,17 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
   handleClose,
   reviews,
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
