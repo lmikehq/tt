@@ -70,6 +70,10 @@ function Stays() {
             : false;
 
     const computeStaySearchQuery = () => {
+        console.log(
+            stayTabInitialSearchQuery.checkInDate ?? dayjs(),
+            "YYYY-MM-DD"
+        );
         const params = {
             region: stayTabInitialSearchQuery.location?.name,
             countryCode: stayTabInitialSearchQuery.location?.country_code,
@@ -77,10 +81,12 @@ function Stays() {
                 ? stayTabInitialSearchQuery.stars[0]
                 : 3,
             checkIn: formatDate(
-                stayTabInitialSearchQuery.checkInDate ?? dayjs()
+                stayTabInitialSearchQuery.checkInDate ?? dayjs(),
+                "YYYY-MM-DD"
             ),
             checkOut: formatDate(
-                stayTabInitialSearchQuery.checkOutDate ?? dayjs()
+                stayTabInitialSearchQuery.checkOutDate ?? dayjs(),
+                "YYYY-MM-DD"
             ),
             guests: convertRoomForGuestsToString(roomForGuests),
         };
@@ -262,12 +268,14 @@ function Stays() {
                         placeholder="Select Date"
                         minDate={today}
                         value={stayTabInitialSearchQuery.checkInDate?.toDate()}
-                        onChange={(e) =>
+                        format="yyyy-mm-dd"
+                        onChange={(e) => {
+                            console.log(dayjs(e));
                             updateStaySearchSearchFilter({
                                 ...stayTabInitialSearchQuery,
                                 checkInDate: dayjs(e),
-                            })
-                        }
+                            });
+                        }}
                     />
                 </Flex>
 
@@ -283,6 +291,7 @@ function Stays() {
                     />
                     <DatePicker
                         placeholder="Select Date"
+                        format="yyyy-mm-dd"
                         minDate={today}
                         value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
                         onChange={(e) =>
