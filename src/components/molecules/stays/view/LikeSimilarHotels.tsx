@@ -210,10 +210,10 @@ function LikeSimilarHotels() {
             paddingBottom: "60px",
           }}
         >
-          <LikeSimilarHotelSkeleton
+          {/* <LikeSimilarHotelSkeleton
             // handleCloseSliderBox={handleCloseSliderBox}
-          />
-          {/* <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
+          /> */}
+          <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
             <Text
               type="h4"
               size={17}
@@ -358,7 +358,7 @@ function LikeSimilarHotels() {
                 ))}
               </Slider>
             </SliderWidth>
-          </SlideContent> */}
+          </SlideContent>
         </SliderContainer>
       )}
     </div>

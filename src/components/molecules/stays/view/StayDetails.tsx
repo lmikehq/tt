@@ -84,10 +84,10 @@ function StayDetails() {
           </Flex>
         </Tab>
       </Header>
-      <Span>
+      {/* <Span>
         <StayDetailSkeleton />
-      </Span>
-      {/* <Box
+      </Span> */}
+      <Box
         sx={{
           display: "grid",
           gridTemplateColumns: isMobile ? "100%" : "65% auto",
@@ -341,7 +341,7 @@ function StayDetails() {
             </Flex>
           </Button>
         </Section>
-      </Box>  */}
+      </Box> 
     </Container>
   );
 }
