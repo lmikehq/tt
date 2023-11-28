@@ -22,6 +22,7 @@ export const ttColors = {
     salmon: "#FF8682",
     slamon: "#FF8682",
     gray: "#B6B6B6",
+    grey: "#7C8DB0",
     red: "#A0001D",
     brown: "#B2B2BD",
     sunsetYellow: "#F48400",
@@ -33,7 +34,7 @@ export const ttColors = {
     lightestGray: "#E7E7E7",
     ghostWhite: "#F9F9FF",
     primaryLight: "#6092A7",
-    blackLight: '#414141',
+    blackLight: "#414141",
     foundation: {
         black: "#0D0D0D",
         black600: "#101010",
