@@ -66,7 +66,7 @@ interface SliderProps {
     min?: number;
     max?: number;
     step?: number;
-    money?: boolean;
+    offset?: string;
 }
 
 export default function CustomSlider({
@@ -77,7 +77,7 @@ export default function CustomSlider({
     min,
     max,
     step,
-    money
+    offset
 }: SliderProps) {
     const { isMobile } = useScreenResolution()
 
@@ -93,7 +93,7 @@ export default function CustomSlider({
             step={step}
             sx={{
                 "& .MuiSlider-markLabel[data-index='1']": {
-                    right: money ? "-160px !important" : "-16% !important",
+                    right: offset ? `${offset} !important` : "-16% !important",
                     fontSize: "14px",
                     textAlign: 'left'
                 },

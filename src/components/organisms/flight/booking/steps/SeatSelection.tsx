@@ -391,6 +391,7 @@ const SeatSelection = () => {
                         align="center"
                         gap="2rem"
                         padding="3rem 3rem"
+                        maxWidth={isMobile? "95vw" : "35vw"}
                     >
                         <Image
                             src={"/assets/icons/favourite_icon.svg"}
@@ -521,6 +522,7 @@ const SeatSelection = () => {
                     <Section
                         padding="3rem 3.5rem"
                         height="unset"
+                        maxWidth={isMobile? "95vw" : "35vw"}
                     >
                         <Flex direction="column" justify="center">
                             <Section margin="0 0  14px" height="unset">

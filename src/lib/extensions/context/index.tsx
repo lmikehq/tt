@@ -10,7 +10,9 @@ airports().forEach((e: AirportInterface) => {
     sortedAirports[e.iata_code] = e
 })
 airlines().forEach((e: AirlineInterface) => {
-    sortedAirlines[e.IATACode] = e
+    if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
+        sortedAirlines[e.IATACode] = e
+    }
 })
 
 import {
@@ -20,6 +22,8 @@ import {
     useReducer,
     Dispatch,
 } from "react";
+import { NOT_ALLOWED_AIRLINES } from "../constants";
+import { CountryFlagMapType, CountryFlagType, mappedCountryFlags } from "../data/COUNTRY_FLAGS";
 
 type CountryDetails = {
     name: string;
@@ -70,6 +74,7 @@ interface ContextType {
     fleet: OneFlightType[];
     airports: typeof sortedAirports;
     airlines: typeof sortedAirlines
+    countries: CountryFlagMapType
 }
 
 const oneFlight: OneFlightType = {
@@ -91,7 +96,8 @@ const initialValues: ContextType = {
     stops: "one-way",
     fleet: [oneFlight],
     airports: sortedAirports,
-    airlines: sortedAirlines
+    airlines: sortedAirlines,
+    countries : mappedCountryFlags()
 };
 
 type Action =

@@ -237,7 +237,7 @@ function StillSearchingModal({
                 bgcolor="white"
                 paddingX={6}
                 paddingY={4}
-                width={isMobile ? "95vw" : "40vw"}
+                width={isMobile ? "95vw" : "35vw"}
                 borderRadius="16px"
             >
                 <Flex width="100%" justify="center">
@@ -294,10 +294,11 @@ function ShareFlightModal({
     onClose: VoidFunction;
     flight: FlightInfo | null;
     flightReq: { bags: number; adults?: number; children?: number; infants?: number; }
-}) {
+    }) {
+    const host = window.location.host
     const { isMobile } = useScreenResolution();
     const { copyToClipboard } = useClipboard();
-    const flightLink = `/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`
+    const flightLink = `${host}/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -527,17 +528,20 @@ function AvailableFlights() {
     }, [searchFlightsResults]);
 
     const getLabel = (price: number) => {
+        let result = [];
         if (price === cheapest.price) {
-            return "Cheapest";
-        } else if (price === best.price) {
-            return "Best";
-        } else if (price === fastest.price) {
-            return "Fastest";
-        } else if (price === earliest.price) {
-            return "Earliest";
-        } else {
-            return "";
+            result.push("Cheapest");
         }
+        if (price === best.price) {
+            result.push("Best");
+        }
+        if (price === fastest.price) {
+            result.push("Fastest");
+        }
+        if (price === earliest.price) {
+            result.push("Earliest");
+        }
+        return result;
     };
 
     const flightReq = {
@@ -596,7 +600,6 @@ function AvailableFlights() {
         flight?.departureDate;
 
     useEffect(() => {
-        // const bags = (num: number, bags: string) => num > 0 ? Array(num).fill(bags).join(",") : undefined;
         const adults = Number(queryParams?.adults);
         const children = Number(queryParams?.children);
         const adultsAndChildren = adults + children;
@@ -649,7 +652,6 @@ function AvailableFlights() {
                 child_hand_bag: childHandBags,
                 child_hold_bag: childHoldBags,
         };
-        console.log(cleanObject(sanitizedQuery))
         if (
             sanitizedQuery?.fly_from &&
             sanitizedQuery?.fly_to &&

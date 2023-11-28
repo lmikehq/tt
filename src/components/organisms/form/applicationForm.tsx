@@ -116,8 +116,8 @@ function ApplicationForm() {
   const isLoading = mode == Mode.loading;
   const params = useSearchParams();
   const router = useRouter();
-  const [showApplicationExistsModal, setShowApplicationExistsModal] =
-    useState(false);
+  const [showApplicationExistsModal, setShowApplicationExistsModal] = useState(false);
+    
   const detailsFormik = useFormik({
     initialValues: tripDetails,
     validationSchema: detailsSchema,
@@ -273,6 +273,8 @@ function ApplicationForm() {
     });
     fetchRecentProgressFromSession();
   }, [params]);
+    
+    console.log(form)
 
   return (
     <>

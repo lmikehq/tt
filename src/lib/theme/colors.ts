@@ -34,6 +34,7 @@ export const ttColors = {
     ghostWhite: "#F9F9FF",
     primaryLight: "#6092A7",
     blackLight: '#414141',
+    darkBg: '#333333',
     foundation: {
         black: "#0D0D0D",
         black600: "#101010",

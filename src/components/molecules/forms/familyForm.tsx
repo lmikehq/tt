@@ -44,7 +44,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
         
         
   return (
-        <Section height="unset" margin="0 0 4rem">
+        <Section height="unset" margin="0 0 0rem">
           {isFirst && 
                 <Flex align="flex-start" margin="0 0 1rem">
                     <Flex direction="column" justify="flex-start" gap="1rem">
@@ -284,7 +284,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
               <FieldString
                 formik={formik}
                 name={`familyMembers.${count}.gender`}
-                placeholder="Select your Gender"
+                placeholder="Select Gender"
                 options={["Male", "Female"]}
               />
             </Section>
@@ -295,7 +295,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
               </Flex>
               <FieldAsDate
                 name={`familyMembers.${count}.dateOfBirth`}
-                placeholder="Select your DOB"
+                placeholder="Select DOB"
                 formik={formik}
               />
             </Section>
@@ -314,7 +314,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
               </Flex>
               <ArrayInput
                 formik={formik}
-                placeholder="Enter your Passport Number"
+                placeholder="Enter Passport Number"
                 name={`familyMembers.${count}.passportNumber`}
               />
             </Section>
@@ -331,7 +331,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                     }))}
                     name={`familyMembers.${count}.issueCountry`}
                     formik={formik}
-                    placeholder="Select the Issued Country"
+                    placeholder="Select Issued Country"
                 />
             </Section>
             </Flex>
@@ -343,21 +343,21 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
             gap={isMobile ? "0px" : "1.5rem"}
           >
             <Section margin="0">
-              <Text type="p" text="Issue Year" margin="0 0 .5rem" />
+              <Text type="p" text="Issue Date" margin="0 0 .5rem" />
               <FieldAsDate
                 name={`familyMembers.${count}.issueDate`}
                 placeholder="Select Issue Date"
                 formik={formik}
-                views={["year"]}
+                // views={["year"]}
               />
             </Section>
             <Section margin="0">
-              <Text type="p" text="Expiry Year" margin="0 0 .5rem" />
+              <Text type="p" text="Expiry Date" margin="0 0 .5rem" />
               <FieldAsDate
                 name={`familyMembers.${count}.expiryDate`}
                 placeholder="Select Expiry Date"
                 formik={formik}
-                views={["year"]}
+                // views={["year"]}
               />
             </Section>
         </Flex>

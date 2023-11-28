@@ -66,6 +66,14 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup.o
       is: "Married",
       then: (schema) => schema.required("Required"),
     }),
+    marriageStartDate: yup.string().when("maritalStatus", {
+      is: "Married",
+      then: (schema) => schema.required("Required"),
+    }),
+    marriageEndDate: yup.string().when("maritalStatus", {
+      is: "Married",
+      then: (schema) => schema.required("Required"),
+    }),
     passportNumber: yup.string().required("Required"),
 
     passportIssuedCountry: countrySchema.required(),
@@ -73,12 +81,20 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup.o
     passportIssuedDate: yup.string().notRequired(),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
+    tuberculosisDetails: yup.string().when("tuberculosis", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
     mentalDisorder: yup.boolean().required("Required"),
     mentalDisorderDetails: yup.string().when("mentalDisorder", {
       is: true,
       then: (schema) => schema.required("Required"),
     }),
     remainbeyondValidity: yup.boolean().required("Required"),
+    remainbeyondValidityDetails: yup.string().when("remainbeyondValidity", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
     refusedBefore: yup.boolean().required("Required"),
     refusedBeforeDetails: yup.string().when("refusedBefore", {
       is: true,
@@ -95,7 +111,15 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup.o
       then: (schema) => schema.required("Required"),
     }),
     memberOfViolentGroup: yup.boolean().required("Required"),
+    memberOfViolentGroupDetails: yup.string().when("memberOfViolentGroup", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
     participatedInViolentActivities: yup.boolean().required("Required"),
+    participatedInViolentActivitiesDetails: yup.string().when("participatedInViolentActivities", {
+      is: true,
+      then: (schema) => schema.required("Required"),
+    }),
 
     //added-values
     statusOfResidence: yup.string().required("Required"),
@@ -173,9 +197,11 @@ export const personalInfoKeys: PersonalInfoInterface = {
     passportExpiryDate: "",
     tripPurpose: "",
     tuberculosis: null,
+    tuberculosisDetails: "",
     mentalDisorder: null,
     mentalDisorderDetails: "",
     remainbeyondValidity: null,
+    remainbeyondValidityDetails: "",
     refusedBefore: null,
     refusedBeforeDetails: "",
     arrestedBefore: null,
@@ -183,7 +209,9 @@ export const personalInfoKeys: PersonalInfoInterface = {
     servedInMilitary: null,
     servedInMilitaryDetails: "",
     memberOfViolentGroup: null,
+    memberOfViolentGroupDetails: "",
     participatedInViolentActivities: null,
+    participatedInViolentActivitiesDetails: "",
     placeOfBirth: mockCountry,
     phoneNumber: "",
     countryOfCitizen: mockCountry,
@@ -216,6 +244,8 @@ export const personalInfoKeys: PersonalInfoInterface = {
     endDatePrevResidence1: "",
     endDatePrevResidence2: "",
     endDatePrevResidence3: "",
+    marriageStartDate: "",
+    marriageEndDate: "",
 
   // firstName: "John",
   // middleName: "M",
@@ -522,17 +552,21 @@ export const test: ApplicationFormRequestInput = {
     gender: "Male",
     tripPurpose: "Vacation",
     tuberculosis: false,
+    tuberculosisDetails: "Problem",
     mentalDisorder: true,
     mentalDisorderDetails: "Anxiety",
     remainbeyondValidity: false,
+    remainbeyondValidityDetails: "Problem",
     refusedBefore: true,
     refusedBeforeDetails: "Visa application rejected",
     arrestedBefore: false,
-    arrestedBeforeDetails: "",
+    arrestedBeforeDetails: "Locked up",
     servedInMilitary: true,
     servedInMilitaryDetails: "2 years of service",
     memberOfViolentGroup: false,
+    memberOfViolentGroupDetails: "Problem",
     participatedInViolentActivities: true,
+    participatedInViolentActivitiesDetails: "Problem",
     employment: [
       {
         companyName: "Company1",

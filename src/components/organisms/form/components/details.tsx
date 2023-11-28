@@ -47,7 +47,7 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
               <Flex align="center" gap="0.25rem">
                 <Text
                   type="p"
-                  text="Where are you from?"
+                  text="Where are you?"
                   margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
                   size={isMobile ? 16 : 16}
                 />

@@ -26,7 +26,7 @@ function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
   const { mode } = useApplicationFormStore((state) => state);
     const isLoading = mode == Mode.loading;
     
-    console.log(formik.values.familyMembers)
+    // console.log(formik.values.familyMembers)
 
   return (
     <FormikProvider value={formik}>
@@ -40,7 +40,7 @@ function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
                     <FormStepTitle steps={steps} index={index} />
                 </Flex>
                 {formik.values.familyMembers.map((family, index, arr) => (
-                  <div key={index}>
+                  <div key={index} style={{ marginBottom: '3.5rem' }}>
                     <FamilyForm formik={formik} values={family} count={index} arrayHelpers={arrayHelpers} isFirst={family?.index === 0} />
                     {arr.filter(e => e.section === family.section).length > 1 && (
                         <Flex
@@ -56,7 +56,8 @@ function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
                                 type="p"
                                 text="Delete Family Member"
                                 color={ttColors.red}
-                                weight="500"
+                                    weight="500"
+                                    size={15}
                             />
                       </Flex>
                     )}

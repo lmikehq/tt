@@ -11,6 +11,8 @@ import { Mode } from "@/lib/types";
 import ProgressLoader from "@/components/organisms/Loader/ProgressLoader";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
+import { Box } from "@mui/material";
+import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
 
 export const FlightContainer = styled.div`
     box-shadow: 0px 4px 16px 0px #8dd3bb1a;

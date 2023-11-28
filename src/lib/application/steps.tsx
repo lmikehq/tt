@@ -78,7 +78,7 @@ export const getSteps = ({
       title: "Education Details",
       content: (
         <EducationInfo
-            steps={["Education Details"]}
+            steps={["Education Details", "Please ensure the Information you are providing is as shown on your passport or Travel Document"]}
             index={2}
             persistForm={persistForm}
             formik={educationFormik}

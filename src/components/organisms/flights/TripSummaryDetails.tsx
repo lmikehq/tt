@@ -46,7 +46,7 @@ function TransferDuration({ duration, location }: { duration: string; location: 
             <BiTransferAlt size={30} />
             <Flex gap="0.25rem" align="flex-start" direction="column">
                 <Text type="p" weight={600} size={15} text={`Transfer Duration: ${duration}`} />
-                <Text type="p" size={isMobile ? 13 : 15} text={`Transfer in ${location}`} />
+                <Text type="p" size={isMobile ? 13 : 14} text={`Transfer in ${location}`} />
             </Flex>
         </Flex>
     )
