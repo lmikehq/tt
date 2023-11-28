@@ -95,10 +95,16 @@ const SeatSelectionMenu = () => {
                             size={16}
                             weight={500}
                             type="h1"
-                            text={checkFlightsResponse?.flights[0]?.src_station ?? ""}
+                            text={
+                                checkFlightsResponse?.flights[0]?.src_station ??
+                                ""
+                            }
                         />
                     </Section>
-                    <Section width="min-content" padding={"0rem 1.5rem 0 .5rem"}>
+                    <Section
+                        width="min-content"
+                        padding={"0rem 1.5rem 0 .5rem"}
+                    >
                         <BiRightArrowAlt size={24} />
                     </Section>
                     <Section>
@@ -106,7 +112,10 @@ const SeatSelectionMenu = () => {
                             size={16}
                             weight={500}
                             type="h1"
-                            text={checkFlightsResponse?.flights[0]?.dst_station ?? ""}
+                            text={
+                                checkFlightsResponse?.flights[0]?.dst_station ??
+                                ""
+                            }
                         />
                     </Section>
                 </Flex>
@@ -289,7 +298,7 @@ const SeatSelectionMenu = () => {
                 </Flex>
             </Flex>
 
-            <Flex direction="column"  gap="1rem" margin="40px 0 0 0">
+            <Flex direction="column" gap="1rem" margin="40px 0 0 0">
                 <Text type="h5" text="Seat Selection" size={20} weight={600} />
                 {passengers.map((el, index) => {
                     const selected = findSeatWithPassengerIndex({
