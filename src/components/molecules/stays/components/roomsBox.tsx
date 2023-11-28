@@ -56,7 +56,10 @@ import {
     getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import { Span } from "../view/styles";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import {
+    constructQueryFromParams,
+    extractSearchParamsFromUrl,
+} from "@/lib/extensions/helpers/constructQuery";
 
 const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -504,7 +507,11 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                                 ...initialParams,
                                                 id: hotel.name,
                                             };
-                                            router.push("/stay/view");
+                                            router.push(
+                                                `/stay/view${constructQueryFromParams(
+                                                    params
+                                                )}`
+                                            );
                                         }}
                                     >
                                         <BtnText>Check Availability</BtnText>
