@@ -60,7 +60,7 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                   />
                 </Flex>
                 {formik.values.employment.map((employment, index) => (
-                  <div key={index}>
+                  <div key={index} style={{ marginBottom: '3.5rem' }}>
                     <EmploymentForm
                       formik={formik}
                       values={employment}
@@ -79,7 +79,8 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                           type="p"
                           text="Delete Experience"
                           color={ttColors.red}
-                          weight="500"
+                            weight="500"
+                            size={15}
                         />
                       </Flex>
                     )}

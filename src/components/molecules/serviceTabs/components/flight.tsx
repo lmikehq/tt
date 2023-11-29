@@ -20,6 +20,7 @@ import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQu
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { Mode } from "@/lib/types";
 import { useQueryParams } from "@/hooks/useNext";
+import { COUNTRY_FLAGS, mappedCountryFlags } from "@/lib/extensions/data/COUNTRY_FLAGS";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -231,9 +232,9 @@ function Flights() {
                     index: 0,
                     data: {
                         // ...queryParams,
-                        // departureCountry: queryParams?.fly_from,
-                        // arrivalCountry: queryParams?.fly_to,
-                        // departureDate: dayjs(queryParams?.date_from),
+                        // departureCountry: flightState?.countries[queryParams?.fly_from]?.code,
+                        // arrivalCountry: flightState?.countries[queryParams?.fly_to]?.code,
+                        departureDate: dayjs(queryParams?.date_from),
                         flightClass: reverseCabin(queryParams?.cabin),
                         adults: Number(queryParams?.adults ?? 1),
                         children: Number(queryParams?.children ?? 0),
@@ -246,7 +247,7 @@ function Flights() {
     return (
         <Section
             padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}
-            styles={{ position: "relative" }}
+            styles={{ position: "sticky", top: '0' }}
         >
             <Flex direction="column">
                 {/* {isMobile &&

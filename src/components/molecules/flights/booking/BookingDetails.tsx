@@ -186,7 +186,7 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
 
             <Grid columns={isMobile ? 2 : 5} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
                 <HeaderDetail name="BOOKING ID" value={booking?.bookingId} />
-                <HeaderDetail name={booking?.pnr ? "PNR" : "PNR STATUS"} value={booking?.pnr ? booking?.pnr?.segments[0]?.pnr : booking?.pnrStatus} />
+                <HeaderDetail name={booking?.itinerary ? "PNR" : "PNR STATUS"} value={booking?.itinerary ? booking?.itinerary?.segments[0]?.pnr : booking?.pnrStatus} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
                 <HeaderDetail name="FLIGHT NUMBER" value={`${booking?.airlineIata} ${booking?.flightNum}`} />
                 {/* <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0] ?? ''} /> */}

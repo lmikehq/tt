@@ -478,8 +478,11 @@ export interface GetFlightBookingByIdResponse {
     baggageInfo: Baggage[];
     passengerDetails: { email: string; phoneNumber: string; }[];
     pricing: SegmentPricing;
-    pnr: {
-        segments: { pnr: string }[]
+    itinerary?: {
+        segments: { pnr: string }[];
+        boarding_documents_link: string | null;
+        eticket_link: string;
+        invoice_link: string;
     }
 }
 

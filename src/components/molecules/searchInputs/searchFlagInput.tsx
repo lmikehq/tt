@@ -45,14 +45,14 @@ const SearchFlagInput = ({
                 cursor: "pointer",
                 maxWidth: "85%",
                 textOverflow: "clip",
-              overflow: "hidden",
+                overflow: "hidden",
           }}
         />
         {value?.name ? (
-            <IoIosArrowDown size={20} />
+            <IoIosArrowDown size={18} />
         //   <AiOutlineCheck color="#3BB98E" />
         ) : (
-          <IoIosArrowDown size={20} />
+          <IoIosArrowDown size={18} />
         )}
       </Flex>
     </SearchInput>

@@ -268,10 +268,6 @@ export default function MainPassenger({
                             color={ttColors.primaryLight}
                         /> */}
                     </Flex>
-                    {/* <ToastInfo
-                        type="info"
-                        message="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
-                    /> */}
                     <Text
                         type="p"
                         text="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"

@@ -52,7 +52,7 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                   />
                 </Flex>
                 {formik.values.education.map((education, index) => (
-                  <div key={index}>
+                  <div key={index} style={{ marginBottom: '3.5rem' }}>
                     <EducationForm
                       formik={formik}
                       values={education}
@@ -71,7 +71,8 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                           type="p"
                           text="Delete Education"
                           color={ttColors.red}
-                          weight="500"
+                            weight="500"
+                            size={15}
                         />
                       </Flex>
                     )}

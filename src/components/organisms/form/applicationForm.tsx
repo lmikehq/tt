@@ -116,13 +116,13 @@ function ApplicationForm() {
   const isLoading = mode == Mode.loading;
   const params = useSearchParams();
   const router = useRouter();
-  const [showApplicationExistsModal, setShowApplicationExistsModal] =
-    useState(false);
+  const [showApplicationExistsModal, setShowApplicationExistsModal] = useState(false);
+    
   const detailsFormik = useFormik({
     initialValues: tripDetails,
-    validationSchema: detailsSchema,
-    validateOnMount: true,
     enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
       if (isLoading) return;
       nextStep({ data: { tripDetails: values } });
@@ -134,7 +134,7 @@ function ApplicationForm() {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: personalInfoSchema,
-    validateOnChange: true,
+    // validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       if (isLoading) return;
       nextStep({ data: { personalInfo: values } });
@@ -273,6 +273,8 @@ function ApplicationForm() {
     });
     fetchRecentProgressFromSession();
   }, [params]);
+    
+    console.log(form)
 
   return (
     <>

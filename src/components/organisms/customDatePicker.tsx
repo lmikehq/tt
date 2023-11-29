@@ -121,13 +121,15 @@ export const DatePicker = ({
                             "& .react-datepicker__month-container": {
                                 width: `${isMobile ? fieldWidth : '340px'} !important`,
                                 padding: '14px 20px 20px !important',
+                                zIndex: '10',
+                                // position: 'relative'
                             },
                             "& .react-datepicker__day-names": {
                                 marginTop: '10px !important',
                                 fontFamily: 'Poppins',
                             },
                             "& .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name": {
-                                width: 'calc(100%/7) !important',
+                                width: 'calc(100%/7.5) !important',
                                 fontFamily: 'Poppins',
                             },
                             "& .react-datepicker__month": {

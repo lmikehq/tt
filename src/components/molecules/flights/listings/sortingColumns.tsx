@@ -33,6 +33,7 @@ import SearchStringInput from "../../searchInputs/searchStringInput";
 import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -84,7 +85,7 @@ function Panel({
     last?: boolean;
 }) {
     return (
-        <Flex direction="column">
+        <Flex direction="column" margin={last ? "0 0 1rem" : ""} styles={{ position: "sticky", top: "0" }}>
             <Flex
                 align="center"
                 justify="space-between"
@@ -114,6 +115,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
     const flightState = flightContext?.state,
         dispatch = flightContext?.dispatch;
     const { queryParams } = useQueryParams();
+    const { isMobile } = useScreenResolution()
 
     const initFilterData = {
         bags: {
@@ -274,10 +276,14 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         }));
     };
 
-    const maxBags = useMemo(() => ({
-        cabinBaggage: Number(flightState?.fleet[0]?.adults) + Number(flightState?.fleet[0]?.children),
-        checkedBaggage: (Number(flightState?.fleet[0]?.adults) + Number(flightState?.fleet[0]?.children)) * 2,
-    }), [flightState?.fleet])
+    const maxBags = useMemo(() => {
+        const adults = Number(queryParams?.adults) === flightState?.fleet[0]?.adults ? flightState?.fleet[0]?.adults : Number(queryParams?.adults)
+        const children = Number(queryParams?.children) === flightState?.fleet[0]?.children ? flightState?.fleet[0]?.children : Number(queryParams?.children)
+        return ({
+            cabinBaggage: adults + children,
+            checkedBaggage: (adults + children) * 2,
+        })
+    }, [flightState?.fleet, queryParams])
 
     const handleBags = (
         bagType: "cabin" | "checked",
@@ -415,7 +421,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
 
     const filteredTags = useMemo(() =>
         activeFilters.list.map((e, index) => (
-            <Tag key={index}>
+            <Tag key={index} style={{ background: ttColors.dark }}>
                 <Text
                     type="p"
                     color="white"
@@ -451,7 +457,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             arrBags.forEach((e, ind, arr) => {
                 arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1
             })
-
             return arrPass
         }
 
@@ -470,24 +475,24 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             ...searchQuery,
             adult_hand_bag: String(adultHandBags),
             adult_hold_bag: String(adultHoldBags),
-            child_hand_bag: String(childHandBags),
-            child_hold_bag: String(childHoldBags),
+            child_hand_bag: children > 0 ? String(childHandBags) : undefined,
+            child_hold_bag: children > 0 ? String(childHoldBags) : undefined,
             select_airlines: data.airlines.map((e) => sortedAirlines[e]?.IATACode).join(","),
             select_airlines_exclude: false,
             max_sector_stopovers: data.stops === "any" ? "" : data.stops,
-            dtime_from: data.departTimes.depart.min,
-            dtime_to: data.departTimes.depart.max,
-            atime_from: data.departTimes.arrival.min,
-            atime_to: data.departTimes.arrival.max,
+            dtime_from: activeFilters.list.includes('times') ? data.departTimes.depart.min : undefined,
+            dtime_to: activeFilters.list.includes('times') ? data.departTimes.depart.max : undefined,
+            atime_from: activeFilters.list.includes('times') ? data.departTimes.arrival.min : undefined,
+            atime_to: activeFilters.list.includes('times') ? data.departTimes.arrival.max : undefined,
             ret_dtime_from: flightState?.stops === 'round' ? data.returnTimes.depart.min : undefined,
             ret_dtime_to: flightState?.stops === 'round' ? data.returnTimes.depart.max : undefined,
             ret_atime_from: flightState?.stops === 'round' ? data.returnTimes.arrival.min : undefined,
             ret_atime_to: flightState?.stops === 'round' ? data.returnTimes.arrival.max : undefined,
-            max_fly_duration: data.duration.travelTime.max,
-            stopover_from: `${data.duration.stopOver.min}:00`,
-            stopover_to: `${data.duration.stopOver.max}:00`,
-            price_from: data.price.min,
-            price_to: data.price.max,
+            max_fly_duration: activeFilters.list.includes('duration') ? data.duration.travelTime.max : undefined,
+            stopover_from: activeFilters.list.includes('duration') ?`${data.duration.stopOver.min}:00` : undefined,
+            stopover_to: activeFilters.list.includes('duration') ?`${data.duration.stopOver.max}:00` : undefined,
+            price_from: activeFilters.list.includes('price') ? data.price.min : undefined,
+            price_to: activeFilters.list.includes('price') ? data.price.max : undefined,
             selected_cabins: data.cabin,
             sort: searchQuery?.sort,
         };
@@ -503,25 +508,22 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         onClose && onClose();
     };
 
-    useEffect(() => {
-        setActiveFilters((prev) => ({
-            ...prev,
-            list: [],
-            active: false,
-        }));
-    }, [queryParams]);
+    console.log('ss', searchQuery)
 
     useEffect(() => {
-        console.log('ss', searchQuery)
         setFilterData(prev => ({
             ...prev,
             bags: {
                 ...prev.bags,
-                cabin: Number(flightState?.fleet[0]?.cabinBaggage) ?? prev.bags.cabin,
-                checked: Number(flightState?.fleet[0]?.checkedBaggage) ?? prev.bags.checked,
+                cabin: Number(queryParams?.cabinBags) ?? prev.bags.cabin,
+                checked: Number(queryParams?.checkedBags) ?? prev.bags.checked,
             }
         }))
-    }, [flightState?.fleet])
+    }, [queryParams])
+
+    useEffect(() => {
+        activeFilters.list.length > 0 && handleFilterResults(filterData)
+    }, [filterData.bags, filterData.stops, filterData.airlines, filterData.alliance, filterData.cabin])
 
     return (
         <Flex direction="column">
@@ -659,11 +661,13 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             icon={<LuSearch color="#929292" size={20} />}
                         />
                     </Flex>
-                    {filterData.airlines.map((airline, index) => (
-                        <CheckBox key={index} checked={true} name={airline} onChange={() => handleCheck(airline, 'airlines')}>
-                            <Text type="p" text={airline} size={16} />
-                        </CheckBox>
-                    ))}
+                    <Flex direction="column" gap="0rem" margin=".5rem 0 0">
+                        {filterData.airlines.map((airline, index) => (
+                            <CheckBox key={index} checked={true} name={airline} onChange={() => handleCheck(airline, 'airlines')}>
+                                <Text type="p" text={airline} size={15} />
+                            </CheckBox>
+                        ))}
+                    </Flex>
                 </Flex>
             </Panel>
 
@@ -798,6 +802,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             }
                             min={2}
                             max={48}
+                            offset="-100px"
                         />
                     </Flex>
                     <Flex direction="column" gap=".25rem" padding=".5rem 0">
@@ -827,6 +832,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             }
                             min={2}
                             max={48}
+                            offset="-100px"
                         />
                     </Flex>
                 </div>
@@ -879,7 +885,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                     min={0}
                     max={20000 * conversionRate}
                     step={250}
-                    money
+                    offset="-160px"
                 />
             </Panel>
 

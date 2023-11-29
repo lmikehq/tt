@@ -94,9 +94,11 @@ export interface PersonalInfoInterface {
     passportExpiryDate?: string | null;
     tripPurpose: string;
     tuberculosis: boolean | null;
+    tuberculosisDetails?: string;
     mentalDisorder: boolean | null;
     mentalDisorderDetails?: string;
     remainbeyondValidity: boolean | null;
+    remainbeyondValidityDetails?: string;
     refusedBefore: boolean | null;
     refusedBeforeDetails?: string;
     arrestedBefore: boolean | null;
@@ -104,7 +106,9 @@ export interface PersonalInfoInterface {
     servedInMilitary: boolean | null;
     servedInMilitaryDetails?: string;
     memberOfViolentGroup: boolean | null;
+    memberOfViolentGroupDetails?: string;
     participatedInViolentActivities: boolean | null;
+    participatedInViolentActivitiesDetails?: string;
 
     //added-details
     statusOfResidence?: string;
@@ -133,6 +137,8 @@ export interface PersonalInfoInterface {
     endDatePrevResidence1?: string,
     endDatePrevResidence2?: string,
     endDatePrevResidence3?: string,
+    marriageStartDate?: string,
+    marriageEndDate?: string,
 }
 
 export interface FamilyInfoInterface {
@@ -260,9 +266,11 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
         passportExpiryDate: data.personalInfo.passportExpiryDate,
         tripPurpose: data.personalInfo.tripPurpose,
         tuberculosis: data.personalInfo.tuberculosis,
+        tuberculosisDetails: data.personalInfo.tuberculosisDetails,
         mentalDisorder: data.personalInfo.mentalDisorder,
         mentalDisorderDetails: data.personalInfo.mentalDisorderDetails,
         remainbeyondValidity: data.personalInfo.remainbeyondValidity,
+        remainbeyondValidityDetails: data.personalInfo.remainbeyondValidityDetails,
         refusedBefore: data.personalInfo.refusedBefore,
         refusedBeforeDetails: data.personalInfo.refusedBeforeDetails,
         arrestedBefore: data.personalInfo.arrestedBefore,
@@ -270,9 +278,12 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
         servedInMilitary: data.personalInfo.servedInMilitary,
         servedInMilitaryDetails: data.personalInfo.servedInMilitaryDetails,
         memberOfViolentGroup: data.personalInfo.memberOfViolentGroup,
+        memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails,
         participatedInViolentActivities: data.personalInfo.participatedInViolentActivities,
+        participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails,
         education: data.education,
         employment: data.employment,
+        //added
         changedName: data.personalInfo.changedName,
         changeOfName: data.personalInfo.changeOfName,
         statusOfResidence: data.personalInfo.statusOfResidence,

@@ -56,6 +56,9 @@ interface flexProps {
     cursor?: string;
     ref?: any;
     onClick?: (e: any) => void;
+    onMouseOver?: (e: any) => void;
+    onMouseLeave?: (e: any) => void;
+    onMouseEnter?: (e: any) => void;
     className?: string;
     position?: CSSProperties["position"];
 }
@@ -92,6 +95,9 @@ const Flex: React.FC<flexProps> = ({
     onClick,
     className,
     position,
+    onMouseOver,
+    onMouseLeave,
+    onMouseEnter,
 }) => {
     return (
         <FlexWrapper
@@ -123,6 +129,9 @@ const Flex: React.FC<flexProps> = ({
                 ...styles,
             }}
             onClick={onClick}
+            onMouseOver={onMouseOver}
+            onMouseLeave={onMouseLeave}
+            onMouseEnter={onMouseEnter}
         >
             {children}
         </FlexWrapper>
