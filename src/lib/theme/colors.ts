@@ -22,6 +22,7 @@ export const ttColors = {
     salmon: "#FF8682",
     slamon: "#FF8682",
     gray: "#B6B6B6",
+    grey: "#7C8DB0",
     red: "#A0001D",
     brown: "#B2B2BD",
     sunsetYellow: "#F48400",

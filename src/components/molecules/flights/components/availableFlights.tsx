@@ -30,6 +30,7 @@ import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/boo
 import { IoShareSocial } from "react-icons/io5";
 import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
+import AuthModal from "@/components/organisms/auth/AuthModal";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -120,16 +121,14 @@ function LoginModal({
     isOpen,
     onClose,
     to,
+    handleLogin,
 }: {
     isOpen: boolean;
     onClose: VoidFunction;
     to: string;
+    handleLogin: () => void;
 }) {
     const { isMobile } = useScreenResolution();
-    const { push } = useRouter();
-    const goToLogin = () => {
-        push("/auth/login");
-    };
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -173,7 +172,10 @@ function LoginModal({
                         width="100%"
                         padding="1.8rem 0"
                         startIcon={<HiUserCircle color="white" size={20} />}
-                        onClick={goToLogin}
+                        onClick={() => {
+                            onClose();
+                            handleLogin();
+                        }}
                         background={ttColors.dark}
                     >
                         <Text type="p" text="Sign In" />
@@ -288,7 +290,7 @@ function ShareFlightModal({
     isOpen,
     onClose,
     flight,
-    flightReq
+    flightReq,
 }: {
     isOpen: boolean;
     onClose: VoidFunction;
@@ -359,7 +361,9 @@ function ShareFlightModal({
                         height="100%"
                         width={isMobile ? "100%" : "24%"}
                         borderRadius="6px"
-                        onClick={() => copyToClipboard(flightLink, "Link copied")}
+                        onClick={() =>
+                            copyToClipboard(flightLink, "Link copied")
+                        }
                     >
                         <Text type="p" text="Copy Link" />
                     </Button>
@@ -453,6 +457,7 @@ function AvailableFlights() {
     } = useFlightBookingStore((state) => state);
 
     const { isMobile } = useScreenResolution();
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
@@ -605,60 +610,71 @@ function AvailableFlights() {
         const adultsAndChildren = adults + children;
 
         const shareCabinBags = (numPass: number, numBags: number) => {
-            const arrBags = Array.from({ length: numBags }).fill(1)
-            const arrPass = Array.from({ length: numPass }).fill(0)
+            const arrBags = Array.from({ length: numBags }).fill(1);
+            const arrPass = Array.from({ length: numPass }).fill(0);
 
-            return arrPass.map(e => {
-                let val = arrBags.length > 0 ? 1 : 0
-                arrBags.pop()
-                return val
-            })
-        }
-        const shareCheckedBags = (numPass: number, numBags: number) => {
-            const arrBags = Array.from({ length: numBags }).fill(1)
-            const arrPass = Array.from({ length: numPass }).fill(0)
-            arrBags.forEach((e, ind, arr) => {
-                arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1
-            })
-
-            return arrPass
-        }
-
-        const sharedCabin = shareCabinBags(adultsAndChildren, Number(queryParams?.cabinBags))
-        const sharedChecked = shareCheckedBags(adultsAndChildren, Number(queryParams?.checkedBags))
-        const adultHandBags =
-            adults > 0 ? sharedCabin.slice(0, adults).join(',') : undefined;
-        const adultHoldBags =
-            adults > 0 ? sharedChecked.slice(0, adults).join(',') : undefined;
-        const childHandBags =
-            children > 0 ? sharedCabin.slice(adults).join(',') : undefined;
-        const childHoldBags =
-            children > 0 ? sharedChecked.slice(adults).join(',') : undefined;
-
-            
-            const sanitizedQuery = {
-                ...searchQuery,
-                fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
-                fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
-                date_from: queryParams?.date_from ?? searchQuery?.date_from,
-                return_from: flightState?.stops === 'round' ? (queryParams?.return_from ?? searchQuery?.return_from) : undefined,
-                return_to: flightState?.stops === 'round' ? (queryParams?.return_from ?? searchQuery?.return_from) : undefined,
-                selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
-                adults: Number(queryParams?.adults ?? searchQuery?.adults),
-                children: Number(queryParams?.children ?? searchQuery?.children),
-                infants: Number(queryParams?.infants ?? searchQuery?.infants),
-                adult_hand_bag: adultHandBags,
-                adult_hold_bag: adultHoldBags,
-                child_hand_bag: childHandBags,
-                child_hold_bag: childHoldBags,
+            return arrPass.map((e) => {
+                let val = arrBags.length > 0 ? 1 : 0;
+                arrBags.pop();
+                return val;
+            });
         };
+        const shareCheckedBags = (numPass: number, numBags: number) => {
+            const arrBags = Array.from({ length: numBags }).fill(1);
+            const arrPass = Array.from({ length: numPass }).fill(0);
+            arrBags.forEach((e, ind, arr) => {
+                arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
+            });
+            return arrPass;
+        };
+
+        const sharedCabin = shareCabinBags(
+            adultsAndChildren,
+            Number(queryParams?.cabinBags)
+        );
+        const sharedChecked = shareCheckedBags(
+            adultsAndChildren,
+            Number(queryParams?.checkedBags)
+        );
+        const adultHandBags =
+            adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
+        const adultHoldBags =
+            adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
+        const childHandBags =
+            children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
+        const childHoldBags =
+            children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
+
+        const sanitizedQuery = {
+            ...searchQuery,
+            fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
+            fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
+            date_from: queryParams?.date_from ?? searchQuery?.date_from,
+            return_from:
+                flightState?.stops === "round"
+                    ? queryParams?.return_from ?? searchQuery?.return_from
+                    : undefined,
+            return_to:
+                flightState?.stops === "round"
+                    ? queryParams?.return_from ?? searchQuery?.return_from
+                    : undefined,
+            selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
+            adults: Number(queryParams?.adults ?? searchQuery?.adults),
+            children: Number(queryParams?.children ?? searchQuery?.children),
+            infants: Number(queryParams?.infants ?? searchQuery?.infants),
+            adult_hand_bag: adultHandBags,
+            adult_hold_bag: adultHoldBags,
+            child_hand_bag: childHandBags,
+            child_hold_bag: childHoldBags,
+        };
+        // console.log(cleanObject(sanitizedQuery));
         if (
             sanitizedQuery?.fly_from &&
             sanitizedQuery?.fly_to &&
             sanitizedQuery?.date_from &&
             sanitizedQuery?.adults
         ) {
-            handleSearchResults({ ...(cleanObject(sanitizedQuery)) });
+            handleSearchResults({ ...cleanObject(sanitizedQuery) });
         }
     }, [queryParams]);
 
@@ -668,7 +684,6 @@ function AvailableFlights() {
         }, 900000);
         return () => clearInterval(interval);
     }, []);
-
 
     return (
         <Flex
@@ -708,7 +723,9 @@ function AvailableFlights() {
                         <FlightBox
                             key={index}
                             flight={flight}
-                            selectFlight={({ bookingToken }) => goToFlight(bookingToken)}
+                            selectFlight={({ bookingToken }) =>
+                                goToFlight(bookingToken)
+                            }
                             bookingToken={flight.booking_token}
                             departureCountryCode={flight.cityCodeFrom}
                             arrivalCountryCode={flight.cityCodeTo}
@@ -718,9 +735,19 @@ function AvailableFlights() {
                             label={getLabel(flight.price)}
                             stops={flight.route.length - 1}
                             seats={flight.availability.seats}
-                            carryOn={(flightState?.fleet[0]?.cabinBaggage) ?? 0}
-                            hold={(Number(queryParams?.checkedBags) == flightState?.fleet[0]?.checkedBaggage) ? (flightState?.fleet[0]?.checkedBaggage ?? 0) : Number(queryParams?.checkedBag ?? 0)}
-                            flightStop={(flightState?.stops === 'round' && flightState?.stops === queryParams?.stops) ? 'round' : "one-way"}
+                            carryOn={flightState?.fleet[0]?.cabinBaggage ?? 0}
+                            hold={
+                                Number(queryParams?.checkedBags) ==
+                                flightState?.fleet[0]?.checkedBaggage
+                                    ? flightState?.fleet[0]?.checkedBaggage ?? 0
+                                    : Number(queryParams?.checkedBag ?? 0)
+                            }
+                            flightStop={
+                                flightState?.stops === "round" &&
+                                flightState?.stops === queryParams?.stops
+                                    ? "round"
+                                    : "one-way"
+                            }
                             openShareModal={openShareModal}
                         />
                     ))}
@@ -757,6 +784,7 @@ function AvailableFlights() {
                 onClose={() =>
                     setModal((prev) => ({ ...prev, isOpenLogin: false }))
                 }
+                handleLogin={() => setShowAuthModal(true)}
                 to={modal.route}
             />
 
@@ -778,6 +806,10 @@ function AvailableFlights() {
                 }
                 flight={modal.share}
                 flightReq={flightReq}
+            />
+            <AuthModal
+                open={showAuthModal}
+                handleClose={() => setShowAuthModal(false)}
             />
         </Flex>
     );
