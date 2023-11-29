@@ -95,10 +95,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
             });
             setUser(res?.user);
             toast.success("You have successfully logged in!");
-            toast.loading("Redirecting to your dashboard...", {
-                duration: 3000,
-            });
-            return router.push("/dashboard");
+            handleClose();
         } else {
             setSubmissionState({
                 ...submissionState,
