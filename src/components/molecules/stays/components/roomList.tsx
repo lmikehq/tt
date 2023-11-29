@@ -2,7 +2,7 @@ import Flex from "@components/templates/flex";
 import Section from "src/components/molecules/section";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SortedColumn from "./sortedColumn";
 //import { useSearchStays } from "@/lib/hooks/stay/search.hook";
@@ -21,6 +21,7 @@ function RoomList() {
   //     limit: 20,
   //     page: 1,
   // });
+
 
   return (
     <Box

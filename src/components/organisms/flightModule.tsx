@@ -16,8 +16,8 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
 import { GoArrowSwitch } from "react-icons/go";
 import Button from "../atoms/button";
-import LocationSearchSelectInput from "./LocationSearchSelectInput";
-import Location from "@/lib/types/response-models/flight/location.type";
+import LocationSearchSelectInput from "./locationInputs/KiwiLocationSearchSelectInput";
+import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
     stops: string;
@@ -116,7 +116,7 @@ function FlightModule({
                         weight={500}
                     />
                     <LocationSearchSelectInput
-                        onChange={(x: Location) =>
+                        onChange={(x: KiwiLocation) =>
                             handleUpdate &&
                             handleUpdate(flight, { departureCountry: x })
                         }
@@ -144,7 +144,7 @@ function FlightModule({
                     />
                     <LocationSearchSelectInput
                         value={flight.arrivalCountry}
-                        onChange={(x: Location) =>
+                        onChange={(x: KiwiLocation) =>
                             handleUpdate &&
                             handleUpdate(flight, { arrivalCountry: x })
                         }
@@ -176,7 +176,10 @@ function FlightModule({
                     <Flex
                         direction="column"
                         gap=".5rem"
-                        styles={{ marginBottom: isMobile ? "1.2rem" : "0", position: 'relative' }}
+                        styles={{
+                            marginBottom: isMobile ? "1.2rem" : "0",
+                            position: "relative",
+                        }}
                     >
                         <Text
                             type="label"

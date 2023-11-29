@@ -32,7 +32,7 @@ export const useStaySearchStore = create<State & Actions>(
             roomForGuests: [
                 {
                     adults: 2,
-                    children: 0,
+                    children: [],
                 },
             ],
         },
@@ -50,8 +50,8 @@ export const useStaySearchStore = create<State & Actions>(
                     roomForGuests: [
                         ...state.stayTabInitialSearchQuery.roomForGuests,
                         {
-                            adults: 1,
-                            children: 0,
+                            adults: 2,
+                            children: [],
                         },
                     ],
                 },

@@ -1,7 +1,7 @@
 "use client";
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Button from "@atom/button";
 import Text from "@atom/text";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import { styled } from "styled-components";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Location from "@/lib/types/response-models/flight/location.type";
-import LocationSearchSelectInput from "@/components/organisms/LocationSearchSelectInput";
+import LocationSearchSelectInput from "@/components/organisms/locationInputs/KiwiLocationSearchSelectInput";
 import { DatePicker } from "@/components/organisms/customDatePicker";
 import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
@@ -22,6 +22,9 @@ import dayjs from "dayjs";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
 import { formatDate } from "@/lib/utilFns";
+import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
+import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
 // STYLES
 const FlexBox = styled.div`
     display: flex;
@@ -57,7 +60,7 @@ function Stays() {
     const { stayTabInitialSearchQuery, updateStaySearchSearchFilter } =
         useStaySearchStore((state) => state);
 
-    const { roomForGuests } = stayTabInitialSearchQuery;
+    const { roomForGuests, stars } = stayTabInitialSearchQuery;
     const validateStaySearchFilter =
         stayTabInitialSearchQuery.location &&
         stayTabInitialSearchQuery.checkInDate &&
@@ -67,20 +70,25 @@ function Stays() {
             : false;
 
     const computeStaySearchQuery = () => {
+        console.log(
+            stayTabInitialSearchQuery.checkInDate ?? dayjs(),
+            "YYYY-MM-DD"
+        );
         const params = {
-            location: stayTabInitialSearchQuery.location?.code,
+            region: stayTabInitialSearchQuery.location?.name,
+            countryCode: stayTabInitialSearchQuery.location?.country_code,
+            stars: stayTabInitialSearchQuery.stars
+                ? stayTabInitialSearchQuery.stars[0]
+                : 3,
             checkIn: formatDate(
-                stayTabInitialSearchQuery.checkInDate ?? dayjs()
+                stayTabInitialSearchQuery.checkInDate ?? dayjs(),
+                "YYYY-MM-DD"
             ),
             checkOut: formatDate(
-                stayTabInitialSearchQuery.checkOutDate ?? dayjs()
+                stayTabInitialSearchQuery.checkOutDate ?? dayjs(),
+                "YYYY-MM-DD"
             ),
-            guests:
-                roomForGuests.length == 1
-                    ? roomForGuests[0].adults + roomForGuests[0].children
-                    : `${roomForGuests.length}-${roomForGuests
-                          .map((el) => el.adults + el.children)
-                          .join(",")}`,
+            guests: convertRoomForGuestsToString(roomForGuests),
         };
 
         return constructQueryFromParams(params);
@@ -91,13 +99,32 @@ function Stays() {
 
         for (let index = 0; index < roomForGuests.length; index++) {
             const room = roomForGuests[index];
-            guests += room.adults + room.children;
+            guests += room.adults + room.children.length;
         }
         return `${rooms} room${rooms == 1 ? "" : "s"} for ${guests} guest${
             guests == 1 ? "" : "s"
         }`;
     };
 
+    const handleStarsGroupChanged = (val: string) => {
+        // Check if the value is already in the array
+        const value = parseInt(val);
+        const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
+
+        if (isSelected) {
+            // If the value is already selected, remove it
+            updateStaySearchSearchFilter({
+                ...stayTabInitialSearchQuery,
+                stars: stars?.filter((item) => item !== value),
+            });
+        } else {
+            // If the value is not selected, add it
+            updateStaySearchSearchFilter({
+                ...stayTabInitialSearchQuery,
+                stars: [...(stars ?? []), value],
+            });
+        }
+    };
     return (
         <Section
             padding={"2rem 0 1rem 0"}
@@ -117,9 +144,15 @@ function Stays() {
                                         color: ttColors.primary,
                                     },
                                 }}
+                                value={5}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
                             />
                         }
-                        label="Free Cancellation"
+                        label="5 stars"
                     />
                 </FlexItems>
                 <FlexItems>
@@ -134,6 +167,12 @@ function Stays() {
                                         color: ttColors.primary,
                                     },
                                 }}
+                                value={4}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
                             />
                         }
                         label="4 stars"
@@ -151,9 +190,38 @@ function Stays() {
                                         color: ttColors.primary,
                                     },
                                 }}
+                                value={3}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
                             />
                         }
                         label="3 stars"
+                    />
+                </FlexItems>{" "}
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                                value={2}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
+                            />
+                        }
+                        label="2 stars"
                     />
                 </FlexItems>
             </FlexBox>
@@ -174,8 +242,8 @@ function Stays() {
                         text="Your stay preference?"
                     />
                     <Span>
-                        <LocationSearchSelectInput
-                            onChange={(x: Location) =>
+                        <RateHawkLocationSearchInput
+                            onChange={(x: RateHawkRegionType) =>
                                 updateStaySearchSearchFilter({
                                     ...stayTabInitialSearchQuery,
                                     location: x,
@@ -200,12 +268,14 @@ function Stays() {
                         placeholder="Select Date"
                         minDate={today}
                         value={stayTabInitialSearchQuery.checkInDate?.toDate()}
-                        onChange={(e) =>
+                        format="yyyy-mm-dd"
+                        onChange={(e) => {
+                            console.log(dayjs(e));
                             updateStaySearchSearchFilter({
                                 ...stayTabInitialSearchQuery,
                                 checkInDate: dayjs(e),
-                            })
-                        }
+                            });
+                        }}
                     />
                 </Flex>
 
@@ -221,6 +291,7 @@ function Stays() {
                     />
                     <DatePicker
                         placeholder="Select Date"
+                        format="yyyy-mm-dd"
                         minDate={today}
                         value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
                         onChange={(e) =>

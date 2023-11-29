@@ -2,9 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Location, {
-    LocationType,
-} from "@/lib/types/response-models/flight/location.type";
+
 import { BiSolidCity, BiSolidPlane } from "react-icons/bi";
 import Flex from "../templates/flex";
 import Section from "../molecules/section";
@@ -14,16 +12,20 @@ import { InputAdornment, Popper } from "@mui/material";
 import { IoLocationOutline } from "react-icons/io5";
 import { ttColors } from "@/lib/theme/colors";
 import Spinner from "../molecules/icons/spinner";
+import {
+    KiwiLocation,
+    KiwiLocationType,
+} from "@/lib/types/response-models/flight/location.type";
+import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 
 interface SearchInputAsLocationTypesProps {
-    locations: Location[];
+    locations: (KiwiLocation | RateHawkRegionType)[];
     handleSetSearchText: (params: { text: string }) => void;
-    onChange: (value: Location) => void;
-    value?: Location;
+    onChange: (value: KiwiLocation | RateHawkRegionType) => void;
+    value?: KiwiLocation | RateHawkRegionType;
     placeholder: string;
     loading: boolean;
 }
-
 
 export default function SearchInputAsLocationTypes({
     locations,
@@ -33,8 +35,10 @@ export default function SearchInputAsLocationTypes({
     placeholder,
     loading,
 }: SearchInputAsLocationTypesProps) {
-    const fieldRef = React.useRef<HTMLDivElement | null>(null)
-    const fieldWidth = fieldRef?.current ? fieldRef.current.clientWidth : "300px"
+    const fieldRef = React.useRef<HTMLDivElement | null>(null);
+    const fieldWidth = fieldRef?.current
+        ? fieldRef.current.clientWidth
+        : "300px";
 
     const handleSetSearchTextDebounce = debounce((value: string) => {
         handleSetSearchText({ text: value });
@@ -46,18 +50,18 @@ export default function SearchInputAsLocationTypes({
             sx={{
                 width: fieldWidth,
                 "& div > ul::-webkit-scrollbar": {
-                    backgroundColor: 'transparent',
-                    width: '9px',
-                    height: '9px',
+                    backgroundColor: "transparent",
+                    width: "9px",
+                    height: "9px",
                 },
                 "& div > ul::-webkit-scrollbar-thumb": {
-                    backgroundColor: 'rgba(0, 0, 0, 0.15)',
-                    borderRadius: '6px',
-                }
+                    backgroundColor: "rgba(0, 0, 0, 0.15)",
+                    borderRadius: "6px",
+                },
             }}
             placement="bottom-start"
         />
-    )
+    );
 
     return (
         <Autocomplete
@@ -90,10 +94,16 @@ export default function SearchInputAsLocationTypes({
                         width="fit-content"
                         styles={{ flexShrink: 0, marginRight: "1.125rem" }}
                     >
-                        {option.type == LocationType.airport ? (
-                            <BiSolidPlane size={20} color={ttColors.foundation.black600} />
+                        {option.type == KiwiLocationType.airport ? (
+                            <BiSolidPlane
+                                size={20}
+                                color={ttColors.foundation.black600}
+                            />
                         ) : (
-                            <BiSolidCity size={20} color={ttColors.foundation.black600} />
+                            <BiSolidCity
+                                size={20}
+                                color={ttColors.foundation.black600}
+                            />
                         )}
                     </Section>
                     <Section styles={{ flexGrow: 1, minWidth: 0 }}>
@@ -102,7 +112,11 @@ export default function SearchInputAsLocationTypes({
                             size={15}
                             color={ttColors.foundation.black600}
                             className="truncate"
-                            text={`${option.name} (${option.code})`}
+                            text={`${option.name} (${
+                                "code" in option
+                                    ? option.code
+                                    : option.country_code
+                            })`}
                         />
                         <Text
                             type="p"
@@ -111,11 +125,13 @@ export default function SearchInputAsLocationTypes({
                             className="truncate"
                             color={ttColors.foundation.black600}
                             text={
-                                option.city?.country?.name ??
-                                option.country?.name ??
-                                option.city?.name ??
-                                option.alternative_names[0] ??
-                                option.name
+                                "code" in option
+                                    ? option.city?.country?.name ??
+                                      option.country?.name ??
+                                      option.city?.name ??
+                                      option.alternative_names[0] ??
+                                      option.name
+                                    : option.name
                             }
                         />
                     </Section>
@@ -139,13 +155,12 @@ export default function SearchInputAsLocationTypes({
                         },
                         "& .MuiFormControl-root": {
                             outline: "none !important",
-                            
                         },
                         "& .MuiOutlinedInput-root": {
                             outline: "none !important",
                             padding: "0  .6rem !important",
-                            fontFamily: 'Poppins',
-                            fontSize: '15px',
+                            fontFamily: "Poppins",
+                            fontSize: "15px",
                             color: ttColors.foundation.black,
                         },
                         // "&:hover .MuiInputBase-root": {
@@ -166,7 +181,7 @@ export default function SearchInputAsLocationTypes({
                         "& input": {
                             height: "45px",
                             padding: "0px !important",
-                            cursor: 'pointer !important',
+                            cursor: "pointer !important",
                         },
                         "& svg": {
                             // display: "none",
@@ -180,7 +195,9 @@ export default function SearchInputAsLocationTypes({
                                 <IoLocationOutline size={22} />
                             </InputAdornment>
                         ),
-                        endAdornment: loading ? <Spinner fill={ttColors.dark} size="22px"/> : null,
+                        endAdornment: loading ? (
+                            <Spinner fill={ttColors.dark} size="22px" />
+                        ) : null,
                         autoComplete: "new-password",
                         placeholder: placeholder,
                     }}
