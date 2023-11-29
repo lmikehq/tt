@@ -75,10 +75,9 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup.o
       then: (schema) => schema.required("Required"),
     }),
     passportNumber: yup.string().required("Required"),
-
-    passportIssuedCountry: countrySchema.required(),
-    passportExpiryDate: yup.string().notRequired(),
-    passportIssuedDate: yup.string().notRequired(),
+    passportIssuedCountry: countrySchema.required("Required"),
+    passportExpiryDate: yup.string().required("Required"),
+    passportIssuedDate: yup.string().required("Required"),
     tripPurpose: yup.string().required("Required"),
     tuberculosis: yup.boolean().required("Required"),
     tuberculosisDetails: yup.string().when("tuberculosis", {

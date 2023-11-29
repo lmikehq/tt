@@ -120,9 +120,9 @@ function ApplicationForm() {
     
   const detailsFormik = useFormik({
     initialValues: tripDetails,
-    validationSchema: detailsSchema,
-    validateOnMount: true,
     enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
       if (isLoading) return;
       nextStep({ data: { tripDetails: values } });
@@ -134,7 +134,7 @@ function ApplicationForm() {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: personalInfoSchema,
-    validateOnChange: true,
+    // validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       if (isLoading) return;
       nextStep({ data: { personalInfo: values } });

@@ -347,7 +347,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             </Flex>
             <FieldString
               options={[
-                "International Passport",
                 "National ID Card",
                 "Driver's License",
                 "Social Security Card",
@@ -795,103 +794,101 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         </Flex>
 
         {/* Passport Information */}
-        {formik.values.meansOfId !== "International Passport" && ( 
-            <React.Fragment>
-                <Text
-                    type="p"
-                    text="Passport Information"
-                    size={isMobile ? 18 : 20}
-                    weight={500}
-                    margin="3.5rem 0 .5rem"
-                /> 
-                <Flex
-                    margin="0"
-                    justify="space-between"
-                    direction={isMobile ? "column" : "row"}
-                    gap={isMobile ? "0px" : "1.5rem"}
-                >
-                    <Section>
-                        <Flex align="center" gap="0.25rem">
+        <React.Fragment>
+            <Text
+                type="p"
+                text="Passport Information"
+                size={isMobile ? 18 : 20}
+                weight={500}
+                margin="3.5rem 0 .5rem"
+            /> 
+            <Flex
+                margin="0"
+                justify="space-between"
+                direction={isMobile ? "column" : "row"}
+                gap={isMobile ? "0px" : "1.5rem"}
+            >
+                <Section>
+                    <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Passport Number"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                    />
+                    <Required />
+                    </Flex>
+                    <FieldInput
+                    name="passportNumber"
+                    formik={formik}
+                    placeholder="Enter your Passport Number"
+                    />
+                </Section>
+                <Section>
+                    <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Issued Country"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                    />
+                    <Required />
+                    </Flex>
+                    <FieldAsString
+                    options={COUNTRY_FLAGS.map((x) => ({
+                        name: x.name,
+                        flag: x.flag,
+                        code: x.code,
+                    }))}
+                    formik={formik}
+                    name="passportIssuedCountry"
+                    placeholder="Select the country"
+                    />
+                </Section>
+            </Flex>
+            <Flex
+                margin="0"
+                justify="space-between"
+                direction={isMobile ? "column" : "row"}
+                gap={isMobile ? "0px" : "1.5rem"}
+            >
+                <Section>
+                    <Flex align="center" gap="0.25rem">
                         <Text
                             type="p"
-                            text="Passport Number"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                            text="Passport Issued Date"
+                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                             size={15}
                         />
                         <Required />
-                        </Flex>
-                        <FieldInput
-                        name="passportNumber"
+                    </Flex>
+                    <FieldAsDate
+                        name="passportIssuedDate"
+                        placeholder="Select your Issued Date"
                         formik={formik}
-                        placeholder="Enter your Passport Number"
-                        />
-                    </Section>
-                    <Section>
-                        <Flex align="center" gap="0.25rem">
+                        maxDate={dayjs()}
+                        format="DD/MM/YYYY"
+                    />
+                </Section>
+                <Section>
+                    <Flex align="center" gap="0.25rem">
                         <Text
                             type="p"
-                            text="Issued Country"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                            text="Passport Expiry Date"
+                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                             size={15}
                         />
                         <Required />
-                        </Flex>
-                        <FieldAsString
-                        options={COUNTRY_FLAGS.map((x) => ({
-                            name: x.name,
-                            flag: x.flag,
-                            code: x.code,
-                        }))}
+                    </Flex>
+                    <FieldAsDate
+                        name="passportExpiryDate"
+                        placeholder="Select your Expiry Date"
                         formik={formik}
-                        name="passportIssuedCountry"
-                        placeholder="Select the country"
-                        />
-                    </Section>
-                </Flex>
-                <Flex
-                    margin="0"
-                    justify="space-between"
-                    direction={isMobile ? "column" : "row"}
-                    gap={isMobile ? "0px" : "1.5rem"}
-                >
-                    <Section>
-                        <Flex align="center" gap="0.25rem">
-                            <Text
-                                type="p"
-                                text="Passport Issued Date"
-                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-                                size={15}
-                            />
-                            <Required />
-                        </Flex>
-                        <FieldAsDate
-                            name="passportIssuedDate"
-                            placeholder="Select your Issued Date"
-                            formik={formik}
-                            maxDate={dayjs()}
-                            format="DD/MM/YYYY"
-                        />
-                    </Section>
-                    <Section>
-                        <Flex align="center" gap="0.25rem">
-                            <Text
-                                type="p"
-                                text="Passport Expiry Date"
-                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-                                size={15}
-                            />
-                            <Required />
-                        </Flex>
-                        <FieldAsDate
-                            name="passportExpiryDate"
-                            placeholder="Select your Expiry Date"
-                            formik={formik}
-                            format="DD/MM/YYYY"
-                        />
-                    </Section>
-                </Flex>
-            </React.Fragment>
-        )}
+                        format="DD/MM/YYYY"
+                    />
+                </Section>
+            </Flex>
+        </React.Fragment>
         
         <Flex
             direction={isMobile ? "column" : "row"}
