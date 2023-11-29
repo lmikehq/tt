@@ -30,6 +30,7 @@ import {
 } from "../components/styles";
 import { ReviewsText, Span } from "./styles";
 import { styled } from "@mui/material/styles";
+import LikeSimilarHotelSkeleton from "./skeleton/LikeSimilarHotelSkeleton";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -209,6 +210,9 @@ function LikeSimilarHotels() {
             paddingBottom: "60px",
           }}
         >
+          {/* <LikeSimilarHotelSkeleton
+            // handleCloseSliderBox={handleCloseSliderBox}
+          /> */}
           <Flex justify="space-between" styles={{ marginBottom: "10px" }}>
             <Text
               type="h4"

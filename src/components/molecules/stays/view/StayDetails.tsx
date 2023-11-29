@@ -14,7 +14,7 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import Button from "@/components/atoms/button";
-import { Container, GridLayout, Header, Tab } from "./styles";
+import { Container, GridLayout, Header, Span, Tab } from "./styles";
 import { styled } from "@mui/material/styles";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -27,6 +27,7 @@ import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
 import { FlexBox } from "../components/styles";
 import { AmenitiesModal, MapModal } from "./modals/Modals";
+import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -83,6 +84,9 @@ function StayDetails() {
           </Flex>
         </Tab>
       </Header>
+      {/* <Span>
+        <StayDetailSkeleton />
+      </Span> */}
       <Box
         sx={{
           display: "grid",
@@ -280,7 +284,7 @@ function StayDetails() {
                 }
               />
             </Flex>
-            {/* AMENITIES MODAL */}
+           
             <AmenitiesModal
               open={open.amenities}
               handleClose={() =>
@@ -324,7 +328,6 @@ function StayDetails() {
                 text="Show in map"
                 color={ttColors.primary}
               />
-              {/* MAP MODAL */}
               <MapModal
                 open={open.map}
                 handleClose={() =>
@@ -338,7 +341,7 @@ function StayDetails() {
             </Flex>
           </Button>
         </Section>
-      </Box>
+      </Box> 
     </Container>
   );
 }

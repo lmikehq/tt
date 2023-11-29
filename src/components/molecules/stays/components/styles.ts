@@ -298,12 +298,12 @@ export const ButtonBtn = styled.div`
   &.filter_btn {
     background: transparent;
     color: var(--secondary-color);
-    padding: 5px 20px;
+    height: 43px;
     width: fit-content;
     border: 1px solid var(--color-border);
-    border-radius: 20px;
+    border-radius: 25px;
   }
-  &.active {
+  &.active.filter_btn {
     color: var(--default-color);
     background-color: var(--secondary-color);
   }

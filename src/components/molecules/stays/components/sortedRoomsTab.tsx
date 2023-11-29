@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import { Span } from "./styles";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip
@@ -17,10 +18,14 @@ const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
   />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.arrow}`]: {
-    color: theme.palette?.common.black,
+    color: "var(--secondary-color)",
   },
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.palette?.common.black,
+    backgroundColor: "var(--secondary-color)",
+    position: "relative",
+    bottom: "12px",
+    left: "0px",
+    fontSize: "16px",
   },
 }));
 
@@ -109,6 +114,7 @@ function SortedRoomsTab(props: sortProps) {
             <ButtonBox
               active={props.sortType === "best"}
               onClick={() => props.setSortType("best")}
+              style={{ position: "relative" }}
             >
               <Flex
                 direction="column"
@@ -116,22 +122,36 @@ function SortedRoomsTab(props: sortProps) {
                 justify={isMobile ? "center" : "flex-start"}
                 padding=".05rem 1.25rem"
               >
-                <Flex
-                  gap="10px"
-                  align="center"
-                  justify={isMobile ? "center" : "flex-start"}
+                <Span
+                  style={{
+                    paddingRight: "8px",
+                  }}
                 >
-                  <Text type="p" text="Best" />
-                  {props.sortType === "best" && (
+                  <Text
+                    type="p"
+                    text="Best"
+                    styles={{ position: "relative", right: "10px" }}
+                  />
+                  <Span>
                     <BootstrapTooltip
                       title="We believe you will like these stays with your preferences in mind, considering factors like location, amenities, reviews, and price, ensuring a stay tailored just for you."
                       placement="top-start"
                       arrow
                     >
-                      <BsInfoCircle size={20} style={{ zIndex: "10" }} />
+                      <Span
+                        style={{
+                          position: "absolute",
+                          top: "19px",
+                          right: "20px",
+                        }}
+                      >
+                        {props.sortType === "best" && (
+                          <BsInfoCircle size={20} style={{ zIndex: "10" }} />
+                        )}
+                      </Span>
                     </BootstrapTooltip>
-                  )}
-                </Flex>
+                  </Span>
+                </Span>
               </Flex>
             </ButtonBox>
             <ButtonBox
