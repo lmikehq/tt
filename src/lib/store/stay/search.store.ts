@@ -14,13 +14,14 @@ interface State {
 
 interface Actions {
     setStayType: (params: StayTypeFilter) => void;
-    updateStaySearchSearchFilter: (params: StayTabInitialSearchQuery) => void;
+    updateStayTabInitialQuery: (params: StayTabInitialSearchQuery) => void;
     updateGuestRoom: (params: {
         index: number;
         roomForGuest: RoomForGuest;
     }) => void;
     addNewGuestRoom: () => void;
     deleteGuestRoom: (params: { index: number }) => void;
+    updateStaySearchFilters: (params: StaySearchFilters) => void;
 }
 
 export const useStaySearchStore = create<State & Actions>(
@@ -37,7 +38,7 @@ export const useStaySearchStore = create<State & Actions>(
             ],
         },
 
-        updateStaySearchSearchFilter(params) {
+        updateStayTabInitialQuery(params) {
             set({
                 stayTabInitialSearchQuery: params,
             });
@@ -91,6 +92,13 @@ export const useStaySearchStore = create<State & Actions>(
                     ...params,
                 },
             }));
+        },
+
+        updateStaySearchFilters(params) {
+            console.log(params);
+            set({
+                staySearchFilters: params,
+            });
         },
     })
 );

@@ -21,16 +21,70 @@ export interface RoomForGuest {
     children: number[];
 }
 
-export interface StaySearchFilters {}
-
-export interface SearchStayRequestRequestQuery extends StaySearchFilters {
-    countryCode: string;
-    city: string;
-    star: string;
-    early_checkin_in: string;
-    late_check_out: string;
-    meals: string;
+export enum HotelAmenityEnum {
+    has_fitness = "has_fitness",
 }
+export enum HotelMealEnum {
+    breakfast_included = "Breakfast",
+    breakfast_not_included = "No Breakfast",
+}
+export enum HotelBedTypeEnum {
+    full_double_bed = "full double bed",
+    twin_beds = "twin beds",
+}
+export enum HotelRoomEnum {
+    studio = "studio",
+    _1_room = "1 room",
+    _2_room = "2 room",
+}
+export enum HotelPopularTypes {
+    free_cancellation = "free cancelation",
+    guest_rating_4 = "guest rating 4",
+    breakfast_included = "breakfast included",
+    pet_friendly = "pet_friendly",
+    ocean_views = "ocean  views",
+}
+export enum HotelPropertyTypes {
+    apartment,
+    hotel,
+    resort,
+    holiday_centers,
+    unique_stays,
+}
+export enum HotelStarRating {
+    _5_stars,
+    _4_stars,
+    _3_stars,
+    _2_stars,
+    no_rating,
+}
+export enum HotelGuestRating {
+    _5_stars,
+    _4_stars,
+    _3_stars,
+    _2_stars,
+    no_rating,
+}
+export enum HotelCancellationPolicy {
+    free_cancellation,
+    no_cancellation,
+}
+export interface StaySearchFilters {
+    amenity?: string[];
+    meals?: string[];
+    popularTypes?: string[];
+    propertyTypes?: string[];
+    starRating?: string[];
+    guestRating?: string[];
+    cancellationPolicy?: string[];
+    bedType?: string[];
+    room?: string[];
+
+    minAmount?: number;
+    maxAmount?: number;
+}
+
+export interface SearchStayRequestRequestQuery extends StaySearchFilters {}
 
 export interface ViewSingleStayRequestInput {
     id: string;
