@@ -45,11 +45,11 @@ export enum HotelPopularTypes {
     ocean_views = "ocean  views",
 }
 export enum HotelPropertyTypes {
-    apartment,
-    hotel,
-    resort,
-    holiday_centers,
-    unique_stays,
+    apartment = "apartment",
+    hotel = "hotel",
+    resort = "resort",
+    holiday_centers = "holiday centers",
+    unique_stays = "unique stays",
 }
 export enum HotelStarRating {
     _5_stars,
@@ -66,8 +66,8 @@ export enum HotelGuestRating {
     no_rating,
 }
 export enum HotelCancellationPolicy {
-    free_cancellation,
-    no_cancellation,
+    free_cancellation = "free cancellation",
+    no_cancellation = "no cancelation",
 }
 export interface StaySearchFilters {
     amenity?: string[];
@@ -82,6 +82,7 @@ export interface StaySearchFilters {
 
     minAmount?: number;
     maxAmount?: number;
+    [key: string]: string | string[] | number | undefined;
 }
 
 export interface SearchStayRequestRequestQuery extends StaySearchFilters {}

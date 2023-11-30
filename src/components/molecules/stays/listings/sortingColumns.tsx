@@ -17,7 +17,13 @@ import FavoriteHotels from "../components/favoriteHotels";
 import Input from "@/components/atoms/input";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import {
+    HotelAmenityEnum,
+    HotelBedTypeEnum,
+    HotelCancellationPolicy,
     HotelMealEnum,
+    HotelPopularTypes,
+    HotelPropertyTypes,
+    HotelRoomEnum,
     StaySearchFilters,
 } from "@/lib/types/request-models/stay/search.type";
 
@@ -207,6 +213,18 @@ function SortingColumns() {
         (state) => state
     );
 
+    const {
+        meals,
+        popularTypes,
+        propertyTypes,
+        starRating,
+        guestRating,
+        cancellationPolicy,
+        amenity,
+        room,
+        bedType,
+    } = staySearchFilters;
+
     const handleUpdateStaySearchFilters = (params: StaySearchFilters) => {
         updateStaySearchFilters({
             ...staySearchFilters,
@@ -215,32 +233,135 @@ function SortingColumns() {
     };
     const handleMealPlanChanged = (value: string) => {
         // Check if the value is already in the array
-        const isSelected = staySearchFilters.meals?.includes(value);
+        const isSelected = meals?.includes(value);
         if (isSelected) {
             // If the value is already selected, remove it
             handleUpdateStaySearchFilters({
-                meals: staySearchFilters.meals?.filter(
-                    (item) => item !== value
-                ),
+                meals: meals?.filter((item) => item !== value),
             });
         } else {
             // If the value is not selected, add it
             handleUpdateStaySearchFilters({
-                meals: [...(staySearchFilters.meals ?? []), value],
+                meals: [...(meals ?? []), value],
             });
         }
     };
     const handlePropertyTypeChanged = (value: string) => {
-        const isSelected = staySearchFilters.meals?.includes(value);
+        const isSelected = propertyTypes?.includes(value);
         if (isSelected) {
             handleUpdateStaySearchFilters({
-                meals: staySearchFilters.meals?.filter(
+                propertyTypes: propertyTypes?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                propertyTypes: [...(propertyTypes ?? []), value],
+            });
+        }
+    };
+
+    const handlePopularTypeChanged = (value: string) => {
+        const isSelected = popularTypes?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                popularTypes: popularTypes?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                popularTypes: [...(popularTypes ?? []), value],
+            });
+        }
+    };
+    const handleStarRatingChanged = (value: string) => {
+        const isSelected = starRating?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                starRating: starRating?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                starRating: [...(starRating ?? []), value],
+            });
+        }
+    };
+    const handleGuestRatingChanged = (value: string) => {
+        const isSelected = guestRating?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                guestRating: guestRating?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                guestRating: [...(guestRating ?? []), value],
+            });
+        }
+    };
+    const handleCancellationPolicyChanged = (value: string) => {
+        const isSelected = cancellationPolicy?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                cancellationPolicy: cancellationPolicy?.filter(
                     (item) => item !== value
                 ),
             });
         } else {
             handleUpdateStaySearchFilters({
-                meals: [...(staySearchFilters.meals ?? []), value],
+                cancellationPolicy: [...(cancellationPolicy ?? []), value],
+            });
+        }
+    };
+    const handleAmenityChanged = (value: string) => {
+        const isSelected = amenity?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                amenity: amenity?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                amenity: [...(amenity ?? []), value],
+            });
+        }
+    };
+
+    const handleRoomChanged = (value: string) => {
+        const isSelected = room?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                room: room?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                room: [...(room ?? []), value],
+            });
+        }
+    };
+    const handleBedTypeChanged = (value: string) => {
+        const isSelected = bedType?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                bedType: bedType?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                bedType: [...(bedType ?? []), value],
+            });
+        }
+    };
+    const handleEnumCheckBoxGroupChanged = ({
+        value,
+        field,
+    }: {
+        value: string;
+        field: string;
+    }) => {
+        const values = staySearchFilters[field] as string[];
+        const isSelected = values?.includes(value);
+        if (isSelected) {
+            handleUpdateStaySearchFilters({
+                [field]: values?.filter((item) => item !== value),
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                [field]: [...(values ?? []), value],
             });
         }
     };
@@ -305,31 +426,47 @@ function SortingColumns() {
                     {columnState.popular && (
                         <>
                             <Flex direction="column" width="fit-content">
-                                {PopularItems.slice(
-                                    0,
-                                    displayedPopularItems
-                                ).map((item, index) => (
-                                    <FormControlLabel
-                                        key={index}
-                                        control={
-                                            <Checkbox
-                                                className="mui-checked"
-                                                disableFocusRipple
-                                                disableRipple
-                                            />
-                                        }
-                                        label={
-                                            <Text
-                                                type="p"
-                                                text={item}
-                                                styles={{
-                                                    fontSize: "15px",
-                                                    width: "fit-content",
-                                                }}
-                                            />
-                                        }
-                                    />
-                                ))}
+                                {Object.keys(HotelPopularTypes).map(
+                                    (popularTypeKey, index) => (
+                                        <FormControlLabel
+                                            key={index}
+                                            value={
+                                                HotelPopularTypes[
+                                                    popularTypeKey as keyof typeof HotelPopularTypes
+                                                ]
+                                            }
+                                            onChange={(e) =>
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelPopularTypes[
+                                                        popularTypeKey as keyof typeof HotelPopularTypes
+                                                    ],
+                                                    field: "popularTypes",
+                                                })
+                                            }
+                                            control={
+                                                <Checkbox
+                                                    className="mui-checked"
+                                                    disableFocusRipple
+                                                    disableRipple
+                                                />
+                                            }
+                                            label={
+                                                <Text
+                                                    type="p"
+                                                    text={popularTypeKey.replaceAll(
+                                                        "_",
+                                                        " "
+                                                    )}
+                                                    transform="capitalize"
+                                                    styles={{
+                                                        fontSize: "15px",
+                                                        width: "fit-content",
+                                                    }}
+                                                />
+                                            }
+                                        />
+                                    )
+                                )}
                             </Flex>
                             {PopularItems.length > threshold && (
                                 <Button
@@ -389,31 +526,47 @@ function SortingColumns() {
                     {columnState.property && (
                         <>
                             <Flex direction="column" width="fit-content">
-                                {PropertyItems.slice(
-                                    0,
-                                    displayedPropertyItems
-                                ).map((item, index) => (
-                                    <FormControlLabel
-                                        key={index}
-                                        control={
-                                            <Checkbox
-                                                className="mui-checked"
-                                                disableFocusRipple
-                                                disableRipple
-                                            />
-                                        }
-                                        label={
-                                            <Text
-                                                type="p"
-                                                text={item}
-                                                styles={{
-                                                    fontSize: "15px",
-                                                    width: "fit-content",
-                                                }}
-                                            />
-                                        }
-                                    />
-                                ))}
+                                {Object.keys(HotelPropertyTypes).map(
+                                    (propertyTypeKey, index) => (
+                                        <FormControlLabel
+                                            key={index}
+                                            value={
+                                                HotelPropertyTypes[
+                                                    propertyTypeKey as keyof typeof HotelPropertyTypes
+                                                ]
+                                            }
+                                            onChange={(e) =>
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelPropertyTypes[
+                                                        propertyTypeKey as keyof typeof HotelPropertyTypes
+                                                    ],
+                                                    field: "propertyTypes",
+                                                })
+                                            }
+                                            control={
+                                                <Checkbox
+                                                    className="mui-checked"
+                                                    disableFocusRipple
+                                                    disableRipple
+                                                />
+                                            }
+                                            label={
+                                                <Text
+                                                    type="p"
+                                                    transform="capitalize"
+                                                    text={propertyTypeKey.replaceAll(
+                                                        "_",
+                                                        " "
+                                                    )}
+                                                    styles={{
+                                                        fontSize: "15px",
+                                                        width: "fit-content",
+                                                    }}
+                                                />
+                                            }
+                                        />
+                                    )
+                                )}
                             </Flex>
                             {PropertyItems.length > threshold && (
                                 <Button
@@ -686,10 +839,23 @@ function SortingColumns() {
                     {columnState.policy && (
                         <>
                             <Flex direction="column" width="fit-content">
-                                {Policies.slice(0, displayedPoliciesItems).map(
-                                    (item, index) => (
+                                {Object.keys(HotelCancellationPolicy).map(
+                                    (cancellationPolicyKey, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            value={
+                                                HotelCancellationPolicy[
+                                                    cancellationPolicyKey as keyof typeof HotelCancellationPolicy
+                                                ]
+                                            }
+                                            onChange={(e) =>
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelCancellationPolicy[
+                                                        cancellationPolicyKey as keyof typeof HotelCancellationPolicy
+                                                    ],
+                                                    field: "cancellationPolicy",
+                                                })
+                                            }
                                             control={
                                                 <Checkbox
                                                     className="mui-checked"
@@ -700,7 +866,11 @@ function SortingColumns() {
                                             label={
                                                 <Text
                                                     type="p"
-                                                    text={item}
+                                                    transform="capitalize"
+                                                    text={cancellationPolicyKey.replaceAll(
+                                                        "_",
+                                                        " "
+                                                    )}
                                                     styles={{
                                                         fontSize: "15px",
                                                         width: "fit-content",
@@ -768,31 +938,47 @@ function SortingColumns() {
                     {columnState.services && (
                         <>
                             <Flex direction="column" width="fit-content">
-                                {Facilities.slice(
-                                    0,
-                                    displayedServicesItems
-                                ).map((item, index) => (
-                                    <FormControlLabel
-                                        key={index}
-                                        control={
-                                            <Checkbox
-                                                className="mui-checked"
-                                                disableFocusRipple
-                                                disableRipple
-                                            />
-                                        }
-                                        label={
-                                            <Text
-                                                type="p"
-                                                text={item}
-                                                styles={{
-                                                    fontSize: "15px",
-                                                    width: "fit-content",
-                                                }}
-                                            />
-                                        }
-                                    />
-                                ))}
+                                {Object.keys(HotelAmenityEnum).map(
+                                    (item, index) => (
+                                        <FormControlLabel
+                                            key={index}
+                                            value={
+                                                HotelAmenityEnum[
+                                                    item as keyof typeof HotelAmenityEnum
+                                                ]
+                                            }
+                                            onChange={(e) =>
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelAmenityEnum[
+                                                        item as keyof typeof HotelAmenityEnum
+                                                    ],
+                                                    field: "amenity",
+                                                })
+                                            }
+                                            control={
+                                                <Checkbox
+                                                    className="mui-checked"
+                                                    disableFocusRipple
+                                                    disableRipple
+                                                />
+                                            }
+                                            label={
+                                                <Text
+                                                    type="p"
+                                                    transform="capitalize"
+                                                    text={item.replaceAll(
+                                                        "_",
+                                                        " "
+                                                    )}
+                                                    styles={{
+                                                        fontSize: "15px",
+                                                        width: "fit-content",
+                                                    }}
+                                                />
+                                            }
+                                        />
+                                    )
+                                )}
                             </Flex>
                             {Facilities.length > threshold && (
                                 <Button
@@ -853,20 +1039,21 @@ function SortingColumns() {
                         <>
                             <Flex direction="column" width="fit-content">
                                 {Object.keys(HotelMealEnum).map(
-                                    (mealKey, index) => (
+                                    (item, index) => (
                                         <FormControlLabel
                                             key={index}
                                             value={
                                                 HotelMealEnum[
-                                                    mealKey as keyof typeof HotelMealEnum
+                                                    item as keyof typeof HotelMealEnum
                                                 ]
                                             }
                                             onChange={(e) =>
-                                                handleMealPlanChanged(
-                                                    HotelMealEnum[
-                                                        mealKey as keyof typeof HotelMealEnum
-                                                    ]
-                                                )
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelMealEnum[
+                                                        item as keyof typeof HotelMealEnum
+                                                    ],
+                                                    field: "meals",
+                                                })
                                             }
                                             control={
                                                 <Checkbox
@@ -879,7 +1066,7 @@ function SortingColumns() {
                                                 <Text
                                                     type="p"
                                                     transform="capitalize"
-                                                    text={mealKey.replaceAll(
+                                                    text={item.replaceAll(
                                                         "_",
                                                         " "
                                                     )}
@@ -950,10 +1137,23 @@ function SortingColumns() {
                     {columnState.rooms && (
                         <>
                             <Flex direction="column" width="fit-content">
-                                {Rooms.slice(0, displayedRoomsItems).map(
+                                {Object.keys(HotelRoomEnum).map(
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            value={
+                                                HotelRoomEnum[
+                                                    item as keyof typeof HotelRoomEnum
+                                                ]
+                                            }
+                                            onChange={(e) =>
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelRoomEnum[
+                                                        item as keyof typeof HotelRoomEnum
+                                                    ],
+                                                    field: "room",
+                                                })
+                                            }
                                             control={
                                                 <Checkbox
                                                     className="mui-checked"
@@ -964,7 +1164,11 @@ function SortingColumns() {
                                             label={
                                                 <Text
                                                     type="p"
-                                                    text={item}
+                                                    transform="capitalize"
+                                                    text={item.replaceAll(
+                                                        "_",
+                                                        " "
+                                                    )}
                                                     styles={{
                                                         fontSize: "15px",
                                                         width: "fit-content",
@@ -1032,10 +1236,22 @@ function SortingColumns() {
                     {columnState.bed && (
                         <>
                             <Flex direction="column" width="fit-content">
-                                {BedType.slice(0, displayedBedTypeItems).map(
+                                {Object.keys(HotelBedTypeEnum).map(
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            value={
+                                                HotelBedTypeEnum[
+                                                    item as keyof typeof HotelBedTypeEnum
+                                                ]
+                                            }
+                                            onChange={(e) =>
+                                                handleCancellationPolicyChanged(
+                                                    HotelBedTypeEnum[
+                                                        item as keyof typeof HotelBedTypeEnum
+                                                    ]
+                                                )
+                                            }
                                             control={
                                                 <Checkbox
                                                     className="mui-checked"

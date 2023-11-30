@@ -22,6 +22,17 @@ export const useSearchRateHawkLocations = (
     });
 };
 
+export const useSearchRateHawkStays = (
+    params: RateHawkLocationRequestInput,
+    options?: UseQueryOptions<RateHawkLocationSearchResponse>
+) => {
+    return useQuery({
+        queryKey: ["ratehawk-locations", params.query],
+        queryFn: () => StaySearchService.searchRateHawkLocations(params),
+        ...options,
+    });
+};
+
 export const useViewSingleStay = (
     params: ViewSingleStayRequestInput,
     options?: UseQueryOptions<ViewSingleStayResponse>
