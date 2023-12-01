@@ -31,7 +31,6 @@ import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
-import { COUNTRY_FLAGS } from "@/lib/extensions/data/data";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
 
