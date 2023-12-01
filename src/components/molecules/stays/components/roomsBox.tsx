@@ -60,6 +60,7 @@ import {
     constructQueryFromParams,
     extractSearchParamsFromUrl,
 } from "@/lib/extensions/helpers/constructQuery";
+import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
 
 const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -91,17 +92,8 @@ const MobileSliderSettings = {
     autoplay: false,
 };
 
-interface Hotel {
-    name: string;
-    address: string;
-    distance: string;
-    reviews: number;
-    star_rating: number;
-    price: number;
-    images: string[];
-}
 interface RoomBoxProps {
-    hotel: Hotel;
+    hotel: HotelBySearchInterface;
     index: number;
 }
 
@@ -111,13 +103,16 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     //===============
     //Image Selection
     //===============
-    const [selectedImage, setSelectedImage] = useState(hotel.images[0]);
+    const hotelImages = hotel.images.map((el) =>
+        el.replace("{size}", "200x200")
+    );
+    const [selectedImage, setSelectedImage] = useState(hotelImages[0]);
     const handleImageChange = (newImage: string) => {
         setSelectedImage(newImage);
     };
 
     const getPreviousImage = (currentImage: string) => {
-        const images = hotel.images;
+        const images = hotelImages;
         const currentIndex = images.indexOf(currentImage);
         if (currentIndex > 0) {
             return images[currentIndex - 1];
@@ -127,7 +122,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     };
 
     const getNextImage = (currentImage: string) => {
-        const images = hotel.images;
+        const images = hotelImages;
         const currentIndex = images.indexOf(currentImage);
         if (currentIndex < images.length - 1) {
             return images[currentIndex + 1];
@@ -140,6 +135,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     //FAVORITE
     //========
     const router = useRouter();
+
     const [checked, setChecked] = useState(false);
 
     const handleCheckboxChange = () => {
@@ -159,7 +155,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                         objectFit: "cover",
                                     }}
                                     className="img"
-                                    src={selectedImage || hotel.images[0]}
+                                    src={selectedImage || hotelImages[0]}
                                     alt={hotel.name}
                                 />
                                 <FavoriteBox>
@@ -211,7 +207,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
 
                             <SmallImg className="img_small img_img_small">
                                 <Slider {...SliderSettings} className="">
-                                    {hotel.images.map((x) => (
+                                    {hotelImages.map((x) => (
                                         <SmallSlideImg
                                             className={`${
                                                 x === selectedImage
@@ -247,7 +243,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                 {...MobileSliderSettings}
                                 className="slick-slider"
                             >
-                                {hotel.images.map((x) => (
+                                {hotelImages.map((x) => (
                                     <span
                                         key={index}
                                         style={{
@@ -388,7 +384,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                                 />
                                                 <Text
                                                     type="p"
-                                                    text={`${hotel.reviews} reviews`}
+                                                    text={`2 reviews`}
                                                 ></Text>
                                             </Flex>
                                         </Flex>
@@ -455,7 +451,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                         />
                                         <Text
                                             type="p"
-                                            text="Free Cancellation"
+                                            text={`No Free Cancellation`}
                                         ></Text>
                                     </FlexText>
                                     <FlexText>
@@ -487,7 +483,12 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                                 type="h2"
                                                 weight={"bold"}
                                                 text={formatPriceWithoutCurrency(
-                                                    hotel.price
+                                                    parseInt(
+                                                        hotel.rates[0]
+                                                            .payment_options
+                                                            .payment_types[0]
+                                                            .show_amount ?? 0
+                                                    )
                                                 )}
                                             />
                                         </Flex>

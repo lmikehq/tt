@@ -87,14 +87,17 @@ export interface StaySearchFilters {
 
 export interface SearchStayRequestRequestQuery extends StaySearchFilters {}
 
-export interface ViewSingleStayRequestInput {
-    id: string;
+export interface ManyStaysRequestInput {
     checkin: string;
     checkout: string;
     residency: string;
     language: string;
     guests: RoomForGuest[];
     currency: string;
+}
+
+export interface ViewSingleStayRequestInput extends ManyStaysRequestInput {
+    id: string;
 }
 
 export const convertRoomForGuestsToString = (data: RoomForGuest[]) => {

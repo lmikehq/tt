@@ -26,6 +26,7 @@ import {
     HotelRoomEnum,
     StaySearchFilters,
 } from "@/lib/types/request-models/stay/search.type";
+import { debounce } from "debounce";
 
 const marks = [
     {
@@ -626,17 +627,21 @@ function SortingColumns() {
                         {columnState.price && (
                             <>
                                 <Slider
-                                    defaultValue={[0, 100]}
+                                    defaultValue={[0, 20000000]}
                                     marks={marks}
+                                    min={0}
+                                    max={20000000}
                                     onChange={(e, v) =>
-                                        handleUpdateStaySearchFilters({
-                                            minAmount: Array.isArray(v)
-                                                ? v[0]
-                                                : 0,
-                                            maxAmount: Array.isArray(v)
-                                                ? v[1]
-                                                : 0,
-                                        })
+                                        debounce(() => {
+                                            handleUpdateStaySearchFilters({
+                                                minAmount: Array.isArray(v)
+                                                    ? v[0]
+                                                    : 0,
+                                                maxAmount: Array.isArray(v)
+                                                    ? v[1]
+                                                    : 0,
+                                            });
+                                        }, 800)
                                     }
                                 />
                                 <Flex gap="20px" align="center">
@@ -659,8 +664,10 @@ function SortingColumns() {
                                     <input
                                         type="number"
                                         defaultValue={
-                                            staySearchFilters.maxAmount ?? 0
+                                            staySearchFilters.maxAmount ??
+                                            20000000
                                         }
+                                        value={staySearchFilters.maxAmount}
                                         style={{
                                             width: "100%",
                                             padding: "11px",

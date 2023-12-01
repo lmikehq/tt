@@ -1,3 +1,4 @@
+import { ManyStaysRequestInput } from "./../../types/request-models/stay/search.type";
 import { rateHawkResourceClient } from "@/lib/axios/axios-client";
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
 import { RateHawkLocationRequestInput } from "@/lib/types/request-models/stay/location.type";
@@ -7,15 +8,25 @@ import {
 } from "@/lib/types/request-models/stay/search.type";
 import { RateHawkLocationSearchResponse } from "@/lib/types/response-models/stay/location.type";
 import {
+    HotelBySearchInterface,
     SearchStaysResponse,
     ViewSingleStayResponse,
 } from "@/lib/types/response-models/stay/search.type";
 
 export class StaySearchService {
-    static searchStays = async (params: SearchStayRequestRequestQuery) => {
-        const query = constructQueryFromParams(params);
+    static searchStays = async ({
+        query,
+        payload,
+    }: {
+        query: SearchStayRequestRequestQuery;
+        payload: ManyStaysRequestInput;
+    }) => {
+        const searchQuery = constructQueryFromParams(query);
         return await rateHawkResourceClient
-            .get<any, SearchStaysResponse>(`/search${query}`)
+            .post<any, SearchStaysResponse>(
+                `/stays/query-view-results${searchQuery}`,
+                payload
+            )
             .then((response) => {
                 return response;
             })

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Pagination from "@mui/material/Pagination";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import SortedRoomsTab from "./sortedRoomsTab";
@@ -16,108 +16,14 @@ import { Skeleton } from "@mui/material";
 import StaySkeletonLoader from "@/components/organisms/SkeletonLoader/StaySkelecton";
 import Favorite from "@mui/icons-material/Favorite";
 import { Grid } from "@/components/templates/grid";
-
-interface Hotel {
-    name: string;
-    address: string;
-    distance: string;
-    reviews: number;
-    star_rating: number;
-    price: number;
-    images: string[]; // An array of image paths for the Hotel
-}
-const hotels: Hotel[] = [
-    {
-        name: "The Ritz London",
-        address: "City Center",
-        distance: "0.5 miles",
-        reviews: 10,
-        star_rating: 3,
-        price: 81000,
-
-        images: [
-            "/assets/images/stays/room1.jpeg",
-            "/assets/images/stays/image2.jpg",
-            "/assets/images/stays/image3.png",
-            "/assets/images/stays/room4.jpg",
-        ],
-    },
-    {
-        name: "The Ritz London",
-        address: "Suburb Area",
-        distance: "1 mile",
-        reviews: 15,
-        star_rating: 4.8,
-        price: 81000,
-
-        images: [
-            "/assets/images/stays/room1.jpeg",
-            "/assets/images/stays/image2.jpg",
-            "/assets/images/stays/image3.png",
-            "/assets/images/stays/room4.jpg",
-        ],
-    },
-    {
-        name: "The Ritz London",
-        address: "Downtown",
-        distance: "0.3 miles",
-        reviews: 8,
-        star_rating: 4.2,
-        price: 81000,
-
-        images: [
-            "/assets/images/stays/room1.jpeg",
-            "/assets/images/stays/image2.jpg",
-            "/assets/images/stays/image3.png",
-            "/assets/images/stays/room4.jpg",
-        ],
-    },
-    {
-        name: "The Ritz London",
-        address: "Downtown",
-        distance: "0.3 miles",
-        reviews: 8,
-        star_rating: 4.2,
-        price: 81000,
-
-        images: [
-            "/assets/images/stays/room1.jpeg",
-            "/assets/images/stays/image2.jpg",
-            "/assets/images/stays/image3.png",
-            "/assets/images/stays/room4.jpg",
-        ],
-    },
-    {
-        name: "The Ritz London",
-        address: "Downtown",
-        distance: "0.3 miles",
-        reviews: 8,
-        star_rating: 4.2,
-        price: 81000,
-
-        images: [
-            "/assets/images/stays/room1.jpeg",
-            "/assets/images/stays/image2.jpg",
-            "/assets/images/stays/image3.png",
-            "/assets/images/stays/room4.jpg",
-        ],
-    },
-    {
-        name: "The Ritz London",
-        address: "Downtown",
-        distance: "0.3 miles",
-        reviews: 8,
-        star_rating: 4.2,
-        price: 81000,
-
-        images: [
-            "/assets/images/stays/room1.jpeg",
-            "/assets/images/stays/image2.jpg",
-            "/assets/images/stays/image3.png",
-            "/assets/images/stays/room4.jpg",
-        ],
-    },
-];
+import { useSearchStays } from "@/lib/hooks/stay/search.hook";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import {
+    ManyStaysRequestInput,
+    extractRoomForGuestsFromString,
+} from "@/lib/types/request-models/stay/search.type";
 
 // FavoriteBoxSkeleton Component
 export const FavoriteBoxSkeleton: React.FC = () => (
@@ -330,9 +236,31 @@ function HotelBoxSkeleton() {
 function AvailableRooms() {
     const { isMobile } = useScreenResolution();
 
-    const searchParams = extractSearchParamsFromUrl({
-        url: window.location.href,
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
+    const checkIn = searchParams.get("checkIn");
+    const checkOut = searchParams.get("checkOut");
+    const guests = searchParams.get("guests");
+    const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
+        (state) => state
+    );
+
+    const staysRequestParams = (): ManyStaysRequestInput => ({
+        checkin: checkIn ?? "",
+        checkout: checkOut ?? "",
+        residency: "ng",
+        language: preferredLanguage,
+        guests: extractRoomForGuestsFromString(guests ?? ""),
+        currency: preFerredCurrency,
     });
+
+    const { staySearchFilters } = useStaySearchStore((state) => state);
+
+    const { data = [], isFetching } = useSearchStays({
+        query: { ...staySearchFilters },
+        payload: staysRequestParams(),
+    });
+    const hotels = data as HotelBySearchInterface[];
     const router = useRouter();
 
     const [sortType, setSortType] = useState("best");
@@ -351,11 +279,15 @@ function AvailableRooms() {
                     setSortType={setSortType}
                 />
             )}
-            {hotels?.slice(0, 4).map((hotel, index) => (
-                <RoomBox hotel={hotel} index={index} key={index} />
-            ))}
-            {/* SKELETON */}
-            {/* <HotelBoxSkeleton /> */}
+            {!isFetching ? (
+                hotels
+                    ?.slice(0, 4)
+                    .map((hotel, index) => (
+                        <RoomBox hotel={hotel} index={index} key={index} />
+                    ))
+            ) : (
+                <HotelBoxSkeleton />
+            )}
             <MidListFilter
                 sortType={sortType}
                 ratings={1}
