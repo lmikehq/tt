@@ -235,6 +235,7 @@ const TripSummary = ({
     });
 
     const checkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault()
         formik.validateForm();
         contactDetailsFormik.validateForm();
         // if (!formik.isValid) {

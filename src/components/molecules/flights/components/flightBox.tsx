@@ -199,7 +199,7 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
 function FlightRoutes({ flight }: { flight: FlightInfo }) {
     const routes = flight?.route
     return (
-        <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding="1.5rem 2rem">
+        <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding=".8rem 2rem">
             {routes.map((e, index, arr) => {
                 const currentFlight = e
                 const nextFlight = arr[index + 1]

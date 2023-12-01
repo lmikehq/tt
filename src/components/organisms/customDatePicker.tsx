@@ -14,6 +14,7 @@ import { Poppins } from "next/font/google";
 import { Box, PopperPlacementType, Stack } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { PiCaretDoubleLeftBold, PiCaretDoubleRightBold } from "react-icons/pi";
+import dayjs from "dayjs";
 const poppins = Poppins({
     weight: "400",
     style: ["normal"],
@@ -143,7 +144,7 @@ export const DatePicker = ({
                     </Box>
                 }
                 wrapperClassName="w-full"
-                selected={value || selected}
+                selected={(value || selected) ?? undefined}
                 startDate={startDate}
                 minDate={minDate}
                 maxDate={maxDate}
@@ -163,6 +164,7 @@ export const DatePicker = ({
                         width={width}
                         height={height}
                         placeholder={placeholder}
+                        value={dayjs(value).toString()}
                     />
                 }
                 shouldCloseOnSelect={true}

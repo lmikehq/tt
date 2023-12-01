@@ -128,9 +128,9 @@ export interface PersonalInfoInterface {
     hasGreenCard?: boolean | null;
     greenCardNumber?: string,
     greenCardExpiryDate?: string,
-    prevResidence1?: CountryType,
-    prevResidence2?: CountryType,
-    prevResidence3?: CountryType,
+    prevResidence1?: string,
+    prevResidence2?: string,
+    prevResidence3?: string,
     startDatePrevResidence1?: string,
     startDatePrevResidence2?: string,
     startDatePrevResidence3?: string,
