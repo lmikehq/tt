@@ -1,3 +1,4 @@
+import { ManyStaysRequestInput } from "./../../types/request-models/stay/search.type";
 import { StaySearchService } from "@/lib/services/stay/search.service";
 import { RateHawkLocationRequestInput } from "@/lib/types/request-models/stay/location.type";
 import {
@@ -18,6 +19,20 @@ export const useSearchRateHawkLocations = (
     return useQuery({
         queryKey: ["ratehawk-locations", params.query],
         queryFn: () => StaySearchService.searchRateHawkLocations(params),
+        ...options,
+    });
+};
+
+export const useSearchStays = (
+    params: {
+        query: SearchStayRequestRequestQuery;
+        payload: ManyStaysRequestInput;
+    },
+    options?: UseQueryOptions<SearchStaysResponse>
+) => {
+    return useQuery({
+        queryKey: ["search-ratehawk", params.query],
+        queryFn: () => StaySearchService.searchStays(params),
         ...options,
     });
 };

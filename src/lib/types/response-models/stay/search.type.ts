@@ -1,6 +1,101 @@
-export interface SearchStaysResponse {
-    data: unknown[];
+export interface AmenityGroup {
+    amenities: string[];
+    group_name: string;
 }
+
+export interface DescriptionStructParagraph {
+    paragraphs: string[];
+    title: string;
+}
+
+export interface DescriptionStruct {
+    description_struct: DescriptionStructParagraph[];
+}
+
+export interface Region {
+    id: number;
+    country_code: string;
+    iata: string | null;
+    name: string;
+    type: string;
+}
+
+export interface MetapolicyVisa {
+    visa_support: string;
+}
+
+export interface MetapolicyNoShow {
+    availability: string;
+    time: string | null;
+    day_period: string;
+}
+
+export interface Metapolicy {
+    internet: string[];
+    meal: string[];
+    children_meal: string[];
+    extra_bed: string[];
+    cot: string[];
+    pets: string[];
+    shuttle: string[];
+    parking: string[];
+    children: string[];
+    visa: MetapolicyVisa;
+    deposit: string[];
+    no_show: MetapolicyNoShow;
+    add_fee: string[];
+    check_in_check_out: string[];
+}
+
+export interface FactsElectricity {
+    frequency: number[];
+    voltage: number[];
+    sockets: string[];
+}
+
+export interface Facts {
+    floors_number: number | null;
+    rooms_number: number;
+    year_built: number | null;
+    year_renovated: number | null;
+    electricity: FactsElectricity;
+}
+
+export interface HotelBySearchInterface {
+    address: string;
+    amenity_groups: AmenityGroup[];
+    check_in_time: string;
+    check_out_time: string;
+    id: string;
+    description_struct: DescriptionStructParagraph[];
+    images: string[];
+    kind: string;
+    latitude: number;
+    longitude: number;
+    name: string;
+    phone: string | null;
+    policy_struct: any[];
+    postal_code: string;
+    room_groups: any[];
+    region: Region;
+    star_rating: number;
+    email: string | null;
+    serp_filters: string[];
+    is_closed: boolean;
+    is_gender_specification_required: boolean;
+    metapolicy_struct: Metapolicy;
+    metapolicy_extra_info: null;
+    star_certificate: null;
+    facts: Facts;
+    payment_methods: string[];
+    hotel_chain: string;
+    front_desk_time_start: string | null;
+    front_desk_time_end: string | null;
+    semantic_version: number;
+    rates: Rate[];
+}
+
+export type SearchStaysResponse = HotelBySearchInterface[];
 
 export interface ViewSingleStayResponse {
     data: Data;

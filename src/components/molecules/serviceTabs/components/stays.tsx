@@ -57,7 +57,7 @@ function Stays() {
     };
 
     const open = Boolean(anchorEl);
-    const { stayTabInitialSearchQuery, updateStaySearchSearchFilter } =
+    const { stayTabInitialSearchQuery, updateStayTabInitialQuery } =
         useStaySearchStore((state) => state);
 
     const { roomForGuests, stars } = stayTabInitialSearchQuery;
@@ -113,13 +113,13 @@ function Stays() {
 
         if (isSelected) {
             // If the value is already selected, remove it
-            updateStaySearchSearchFilter({
+            updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,
                 stars: stars?.filter((item) => item !== value),
             });
         } else {
             // If the value is not selected, add it
-            updateStaySearchSearchFilter({
+            updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,
                 stars: [...(stars ?? []), value],
             });
@@ -244,7 +244,7 @@ function Stays() {
                     <Span>
                         <RateHawkLocationSearchInput
                             onChange={(x: RateHawkRegionType) =>
-                                updateStaySearchSearchFilter({
+                                updateStayTabInitialQuery({
                                     ...stayTabInitialSearchQuery,
                                     location: x,
                                 })
@@ -271,7 +271,7 @@ function Stays() {
                         format="yyyy-mm-dd"
                         onChange={(e) => {
                             console.log(dayjs(e));
-                            updateStaySearchSearchFilter({
+                            updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 checkInDate: dayjs(e),
                             });
@@ -295,7 +295,7 @@ function Stays() {
                         minDate={today}
                         value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
                         onChange={(e) =>
-                            updateStaySearchSearchFilter({
+                            updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 checkOutDate: dayjs(e),
                             })
