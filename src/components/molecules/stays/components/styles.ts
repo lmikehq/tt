@@ -28,6 +28,11 @@ export const FlexBox = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  &.price_alert {
+    justify-content: center;
+    gap: 60px;
+    margin-top: 25px;
+  }
   &.booking_improve_box {
     justify-content: space-between;
     align-items: center;
@@ -290,6 +295,18 @@ export const ButtonBtn = styled.div`
   color: var(--default-color);
   border-radius: 6px;
   cursor: pointer;
+  &.filter_btn {
+    background: transparent;
+    color: var(--secondary-color);
+    height: 43px;
+    width: fit-content;
+    border: 1px solid var(--color-border);
+    border-radius: 25px;
+  }
+  &.active.filter_btn {
+    color: var(--default-color);
+    background-color: var(--secondary-color);
+  }
 `;
 export const BtnText = styled.div`
   white-space: nowrap;
@@ -299,7 +316,17 @@ export const BtnText = styled.div`
   }
 `;
 
-export const Span = styled.div``;
+export const Span = styled.div`
+  .slider_skeleton_grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (max-width: 600px) {
+    .slider_skeleton_grid {
+      display: grid;
+      grid-template-columns: 1fr !important;
+    }
+  }
+`;
 
 //================
 // MID LIST FILTER

@@ -172,27 +172,12 @@ body {
   color: var(--primary-color) !important;
 }
 
-/* MUI SELECT */
-.formControl_width {
-  width: 100% !important;
-}
-#mui_simple_select {
-  max-width: 100px;
-}
-.mui_select {
-  max-width: auto !important;
-  width: 100%;
-}
-@media screen and (max-width: 900px) {
-  #mui_simple_select {
-    max-width: 90% !important;
-  }
-}
-.Mui-focused {
-  outline-color: var(--primary-color);
+/* REACT SELECT */
+.react_select {
+ 
 }
 
-/* MUI SELECT */
+/* REACT SELECT */
 
 /* PAGINATION */
 .pagination .paginationItemStyle.active {

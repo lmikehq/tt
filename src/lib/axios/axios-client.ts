@@ -98,4 +98,28 @@ kiwiResourceClient.interceptors.response.use(
     }
 );
 
-export { axiosClient, kiwiClientV1, kiwiClient, kiwiResourceClient };
+const rateHawkResourceClient: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
+rateHawkResourceClient.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
+);
+export {
+    axiosClient,
+    kiwiClientV1,
+    kiwiClient,
+    kiwiResourceClient,
+    rateHawkResourceClient,
+};

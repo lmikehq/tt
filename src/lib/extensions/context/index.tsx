@@ -1,14 +1,16 @@
 "use client";
 
-import Location from "@/lib/types/response-models/flight/location.type";
+import Location, {
+    KiwiLocation,
+} from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
-const airports = require('airport-iata-codes')
-const airlines = require('airline-iata-code')
-const sortedAirports: { [k: string]: AirportInterface } = {}
-const sortedAirlines: { [k: string]: AirlineInterface } = {}
+const airports = require("airport-iata-codes");
+const airlines = require("airline-iata-code");
+const sortedAirports: { [k: string]: AirportInterface } = {};
+const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airports().forEach((e: AirportInterface) => {
-    sortedAirports[e.iata_code] = e
-})
+    sortedAirports[e.iata_code] = e;
+});
 airlines().forEach((e: AirlineInterface) => {
     if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
         sortedAirlines[e.IATACode] = e
@@ -33,8 +35,8 @@ type CountryDetails = {
 
 export interface OneFlightType {
     index: number;
-    departureCountry?: Location;
-    arrivalCountry?: Location;
+    departureCountry?: KiwiLocation;
+    arrivalCountry?: KiwiLocation;
     departureDate?: dayjs.Dayjs;
     returnDate?: dayjs.Dayjs;
     adults: number;
@@ -73,8 +75,8 @@ interface ContextType {
     stops: string;
     fleet: OneFlightType[];
     airports: typeof sortedAirports;
-    airlines: typeof sortedAirlines
-    countries: CountryFlagMapType
+    airlines: typeof sortedAirlines;
+    countries: CountryFlagMapType;
 }
 
 const oneFlight: OneFlightType = {
@@ -97,7 +99,7 @@ const initialValues: ContextType = {
     fleet: [oneFlight],
     airports: sortedAirports,
     airlines: sortedAirlines,
-    countries : mappedCountryFlags()
+    countries : mappedCountryFlags(),
 };
 
 type Action =
