@@ -27,7 +27,7 @@ const CustomizedSlider = styled(MuiSlider)(({ theme }) => ({
         height: 10,
     },
     "& .MuiSlider-markLabel[data-index='0']": {
-        left: "14px !important",
+        left: "34px !important",
         fontSize: "14px",
     },
     "& .MuiSlider-markLabel[data-index='1']": {
@@ -66,7 +66,8 @@ interface SliderProps {
     min?: number;
     max?: number;
     step?: number;
-    offset?: string;
+    leftOffset?: string;
+    rightOffset?: string;
 }
 
 export default function CustomSlider({
@@ -77,7 +78,8 @@ export default function CustomSlider({
     min,
     max,
     step,
-    offset
+    leftOffset,
+    rightOffset,
 }: SliderProps) {
     const { isMobile } = useScreenResolution()
 
@@ -92,8 +94,12 @@ export default function CustomSlider({
             max={max}
             step={step}
             sx={{
+                "& .MuiSlider-markLabel[data-index='0']": {
+                    left: leftOffset ? `${leftOffset} !important` : "14px !important",
+                    fontSize: "14px",
+                },
                 "& .MuiSlider-markLabel[data-index='1']": {
-                    right: offset ? `${offset} !important` : "-16% !important",
+                    right: rightOffset ? `${rightOffset} !important` : "-16% !important",
                     fontSize: "14px",
                     textAlign: 'left'
                 },

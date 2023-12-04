@@ -139,7 +139,7 @@ function LoginModal({
                 bgcolor="white"
                 padding={5}
                 borderRadius="16px"
-                width={isMobile ? "95vw" : "35vw"}
+                maxWidth={isMobile ? "95vw" : "35vw"}
             >
                 <Flex width="100%" justify="center">
                     <Flex
@@ -239,7 +239,7 @@ function StillSearchingModal({
                 bgcolor="white"
                 paddingX={6}
                 paddingY={4}
-                width={isMobile ? "95vw" : "35vw"}
+                maxWidth={isMobile ? "95vw" : "35vw"}
                 borderRadius="16px"
             >
                 <Flex width="100%" justify="center">
@@ -311,7 +311,7 @@ function ShareFlightModal({
                 bgcolor="white"
                 paddingX={isMobile ? 5 : 6}
                 paddingY={isMobile ? 4 : 4}
-                width={isMobile ? "96vw" : "40vw"}
+                maxWidth={isMobile ? "96vw" : "40vw"}
                 borderRadius="16px"
             >
                 <Flex

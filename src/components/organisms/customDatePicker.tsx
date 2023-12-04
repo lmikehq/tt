@@ -122,7 +122,8 @@ export const DatePicker = ({
                             "& .react-datepicker__month-container": {
                                 width: `${isMobile ? fieldWidth : '340px'} !important`,
                                 padding: '14px 20px 20px !important',
-                                zIndex: '10',
+                                // background: 'white',
+                                // zIndex: '10',
                                 // position: 'relative'
                             },
                             "& .react-datepicker__day-names": {

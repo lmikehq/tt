@@ -26,7 +26,6 @@ function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
   const { mode } = useApplicationFormStore((state) => state);
     const isLoading = mode == Mode.loading;
     
-    // console.log(formik.values.familyMembers)
 
   return (
     <FormikProvider value={formik}>
@@ -69,7 +68,10 @@ function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
           <ContinueButton
             isLoading={isLoading}
             onClick={() => {
-              if (!formik.isValid) return ToastError();
+                if (!formik.isValid) {
+                    // formik.validateForm().then(res => console.log('vali', res)).catch(err => console.log('vali', err))
+                    return ToastError()
+                }
             }}
             disabled={!formik.isValid}
             saveProgressAndContinueLater={persistForm}

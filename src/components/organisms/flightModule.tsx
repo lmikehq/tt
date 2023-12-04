@@ -164,7 +164,7 @@ function FlightModule({
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        value={dayjs(flight?.departureDate).toDate()}
+                        value={dayjs(flight?.departureDate ?? undefined).toDate()}
                         minDate={today}
                         onChange={(e) =>
                             handleUpdate &&
@@ -186,8 +186,8 @@ function FlightModule({
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            value={dayjs(flight?.returnDate).toDate()}
-                            minDate={dayjs(flight?.departureDate).toDate()}
+                            value={dayjs(flight?.returnDate ?? undefined).toDate()}
+                            minDate={dayjs(flight?.departureDate ?? undefined).toDate()}
                             onChange={(e) =>
                                 handleUpdate &&
                                 handleUpdate(flight, { returnDate: dayjs(e) })

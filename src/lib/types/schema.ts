@@ -12,9 +12,9 @@ import { ApplicationFormRequestInput } from "./request-models/application-form.t
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 
 export const countrySchema: yup.ObjectSchema<CountryType> = yup.object().shape({
-  name: yup.string().required("Required"),
-  flag: yup.string().required("Required"),
-  code: yup.string().required("Required"),
+    name: yup.string(),
+    flag: yup.string(),
+    code: yup.string(),
 });
 
 export const mockCountry: CountryType = {
@@ -376,17 +376,29 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
     index: yup.number(),
     section: yup.string(),
     accompanying: yup.boolean().required("Required"),
-    membersName: yup.string().required("Required"),
-    address: yup.string().required("Required"),
-    membersPhoneNumber: yup.string().required("Required"),
-    membersEmail: yup.string().required("Required"),
-    occupation: yup.string(),
-    relationshipToPrimary: yup.string().required("Required"),
-    maritalStatus: yup.string(),
-    dateOfBirth: yup.string().when("section", {
-        is: "C",
+    membersName: yup.string().when("accompanying", {
+        is: true,
         then: (schema) => schema.required("Required"),
     }),
+    address: yup.string().when("accompanying", {
+        is: true,
+        then: (schema) => schema.required("Required"),
+    }),
+    membersPhoneNumber: yup.string().when("accompanying", {
+        is: true,
+        then: (schema) => schema.required("Required"),
+    }),
+    membersEmail: yup.string().when("accompanying", {
+        is: true,
+        then: (schema) => schema.required("Required"),
+    }),
+    occupation: yup.string(),
+    relationshipToPrimary: yup.string().when("accompanying", {
+        is: true,
+        then: (schema) => schema.required("Required"),
+    }),
+    maritalStatus: yup.string(),
+    dateOfBirth: yup.string(),
     gender: yup.string().when("accompanying", {
         is: true,
         then: (schema) => schema.required("Required"),
