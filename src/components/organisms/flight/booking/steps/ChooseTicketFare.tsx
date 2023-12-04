@@ -3,6 +3,7 @@ import TicketFareTable from "@/components/organisms/flights/TicketFareTable";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { ttColors } from "@/lib/theme/colors";
 import { Box } from "@mui/material";
 
 const ChooseTicketFare = () => {
@@ -15,7 +16,8 @@ const ChooseTicketFare = () => {
                 <Text
                     type="p"
                     text="Switch to the Advanced level now to feel secure in case your plans end up changing."
-                    size={isMobile ? 14: 15}
+                    size={isMobile ? 14 : 15}
+                    color={ttColors.foundation.gray}
                 />
             </Flex>
 

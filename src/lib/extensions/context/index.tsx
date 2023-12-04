@@ -1,6 +1,6 @@
 "use client";
 
-import Location, {
+import {
     KiwiLocation,
 } from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
@@ -12,8 +12,10 @@ airports().forEach((e: AirportInterface) => {
     sortedAirports[e.iata_code] = e;
 });
 airlines().forEach((e: AirlineInterface) => {
-    sortedAirlines[e.IATACode] = e;
-});
+    if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
+        sortedAirlines[e.IATACode] = e
+    }
+})
 
 import {
     createContext,
@@ -22,6 +24,8 @@ import {
     useReducer,
     Dispatch,
 } from "react";
+import { NOT_ALLOWED_AIRLINES } from "../constants";
+import { CountryFlagMapType, CountryFlagType, mappedCountryFlags } from "../data/COUNTRY_FLAGS";
 
 type CountryDetails = {
     name: string;
@@ -72,6 +76,7 @@ interface ContextType {
     fleet: OneFlightType[];
     airports: typeof sortedAirports;
     airlines: typeof sortedAirlines;
+    countries: CountryFlagMapType;
 }
 
 const oneFlight: OneFlightType = {
@@ -94,6 +99,7 @@ const initialValues: ContextType = {
     fleet: [oneFlight],
     airports: sortedAirports,
     airlines: sortedAirlines,
+    countries : mappedCountryFlags(),
 };
 
 type Action =

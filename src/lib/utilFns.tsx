@@ -97,3 +97,41 @@ export function dateSort (arr: any[] = [], key: string, order?: 'asc' | 'desc') 
 export function moneyFormat(val: string | number) {
     return Number(val).toFixed(2)
 } 
+
+export function translateCabin (x?: string) {
+        switch (x) {
+            case "Economy":
+                return "M";
+                break;
+            case "Economy Premium":
+                return "W";
+                break;
+            case "Business":
+                return "C";
+                break;
+            case "First":
+                return "F";
+                break;
+            default:
+                return "";
+        }
+    };
+
+export function reverseCabin (x?: string) {
+        switch (x) {
+            case "M":
+                return "Economy";
+                break;
+            case "W":
+                return "Economy Premium";
+                break;
+            case "C":
+                return "Business";
+                break;
+            case "F":
+                return "First";
+                break;
+            default:
+                return "Economy";
+        }
+    };

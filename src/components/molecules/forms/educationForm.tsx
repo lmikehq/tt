@@ -26,8 +26,8 @@ interface formProps {
 }
 
 export default function EducationForm({ formik, count, values }: formProps) {
-  const { isMobile } = useScreenResolution();
-
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset">
       <Section margin="0">
@@ -91,7 +91,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Grade"
+              text="Grade (0.0 - 5.0)"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
@@ -140,7 +140,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
             onChange={(e: any) => {
               formik.setFieldValue(`education.${count}.startYear`, e.$y);
             }}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs()}
           />
         </Section>
         <Section>
@@ -159,7 +159,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
               formik.setFieldValue(`education.${count}.endYear`, e.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs()}
           />
         </Section>
       </Flex>

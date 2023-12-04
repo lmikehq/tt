@@ -13,7 +13,6 @@ import { SaveBookingRequestInput } from "@/lib/types/request-models/flight/booki
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { TripHeader } from "../flight/booking/headers";
 import React, { useContext, useState } from "react";
-import Image from "@/components/atoms/image";
 import { Flight } from "@/lib/types/response-models/flight/check_flight.type";
 import { formatDate } from "@/lib/utilFns";
 import { Box } from "@mui/material";

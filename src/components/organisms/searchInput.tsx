@@ -140,17 +140,23 @@ export default function SearchInput({
             width: "100%",
             fontSize: 16,
             "& .MuiInputAdornment-root": {
-              position: "absolute",
-              top: "50%",
-              display: "flex",
-              justifyContent: "center",
-              width: "92%",
+                position: "absolute",
+                top: "50%",
+                left: '0',
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                paddingLeft: '14px',
+                paddingRight: '14px',
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,
             },
+            "& > .MuiInputBase-root": {
+                paddingRight: '14px',
+            },
             "&:hover .MuiInputBase-root": {
-              color: `${ttColors.primary} !important`,
+                color: `${ttColors.primary} !important`,
             },
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: error ? "red" : "",
@@ -296,7 +302,8 @@ export function SearchInputAsString({
   useEffect(() => {}, [inputValue]);
   return (
     <>
-      <Box
+    <Box
+        width="100%"
         ref={ref}
         sx={{
           border: 0,
@@ -307,21 +314,24 @@ export function SearchInputAsString({
             width: "100%",
             fontSize: 16,
             "& .MuiInputAdornment-root": {
-              position: "absolute",
-              top: "50%",
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
+                position: "absolute",
+                top: "50%",
+                left: '0',
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                paddingLeft: '14px',
+                paddingRight: '14px',
               // color: "inherit !important",
             },
             "& fieldset": {
               border: border === "bottom" ? "none" : border,
             },
-            "& svg": {
-              position: "absolute",
-              right: "25px",
-              bottom: "-10px",
-            },
+            // "& svg": {
+            //   position: "absolute",
+            //   right: "25px",
+            //   bottom: "-10px",
+            // },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,
             },

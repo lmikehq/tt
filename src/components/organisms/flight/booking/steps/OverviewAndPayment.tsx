@@ -90,17 +90,19 @@ const OverviewAndPayment = () => {
         if (bookingId) checkBookingDetails({ bookingId });
     }, []);
 
+    console.log(total * conversionRate)
+
     return (
         <Box
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                rowGap: "1rem",
+                // rowGap: "1rem",
                 width: "100%",
             }}
         >
             <TripOverviewCard />
-            <Box sx={{ marginY: "3rem" }}>
+            <Box sx={{ margin: "0 0 3rem" }}>
                 <Button
                     background={ttColors.dark}
                     width="100%"

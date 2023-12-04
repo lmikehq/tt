@@ -2,7 +2,7 @@
 import Text from "@atom/text";
 import useCloudinaryUpload from "@lib/extensions/hook/useCloudinary";
 import { FormikProps } from "formik";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Section from "src/components/molecules/section";
 
@@ -15,6 +15,7 @@ import SearchStringInput from "src/components/molecules/searchInputs/searchStrin
 import { FileContent, useFilePicker } from "use-file-picker";
 import { UploadedDoc } from "../applicationForm";
 import FormStepTitle from "./formStepsTitle";
+import ApplicationPreview from "./applicationPreview";
 
 interface formProps {
   steps: string[];
@@ -27,7 +28,12 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
   const { isMobile } = useScreenResolution();
   const { form, mode, setUploadedDocuments, uploadedDocuments } =
     useApplicationFormStore((state) => state);
-  const isLoading = mode == Mode.loading;
+    const isLoading = mode == Mode.loading;
+    const [isOpenPreview, setOpenPreview] = useState(false)
+
+    const togglePreview = () => {
+        setOpenPreview(prev => !prev)
+    }
 
   const computeButtonText = () => {
     let accompanies = 0;
@@ -37,7 +43,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
       });
     }
     return !isMobile
-      ? "Proceed to payment"
+      ? "Review Application"
       : accompanies > 0
       ? "Make Payment (NGN 30,000)"
       : "Make Payment (NGN 20,000)";
@@ -147,124 +153,141 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
     uploadFiles();
   }, [filesContent]);
 
-  return (
-    <Section>
-      <FormStepTitle steps={steps} index={index} />
-      <Section>
-        <Text
-          type="p"
-          size={isMobile ? 16 : 18}
-          weight={400}
-          color={"#929292"}
-          text="If you don't have all document required, don't worry, our team will complete the rest for you"
-        />
-      </Section>
-
-      <form onSubmit={formik.handleSubmit}>
+    return (
+      <React.Fragment>
         <Section>
-          <Section>
+        <FormStepTitle steps={steps} index={index} />
+        <Section>
             <Text
-              type="p"
-              text="Document Upload"
-              size={"1.125rem"}
-              weight={400}
-              color="#000000"
-              margin={isMobile ? "1.5rem 0 0.9rem 0" : "3rem 0 .9rem"}
+            type="p"
+            size={isMobile ? 16 : 18}
+            weight={400}
+            color={"#929292"}
+            text="If you don't have all required documents, don't worry, our team will complete the rest for you"
             />
-            <SearchStringInput
-              options={(() => {
-                const general = [
-                  "International passport",
-                  "Passport photograph",
-                  "Means of ID",
-                  "Bank statement",
-                  "Commitment Letter From Family or employer (if available)",
-                  "Proof of accommodation",
-                  "References from Employer",
-                  "Academic References",
-                  "Official Transcript from school",
-                  "Professsional CV",
-                  "Medical Records",
-                  "Police Character (if available)",
-                ];
-                switch (form.tripDetails.visaType) {
-                  case "Student Visa":
-                    return general;
-                  case "Work Visa":
-                    return [...general, "Proof of Qualifications"];
-                  case "family visa":
-                    return [
-                      ...general,
-                      "Marriage Certificate",
-                      "Birth Certificate of Children",
+        </Section>
+
+        <form onSubmit={formik.handleSubmit}>
+            <Section>
+            <Section>
+                <Text
+                type="p"
+                text="Document Upload"
+                size={"1.125rem"}
+                weight={400}
+                color="#000000"
+                margin={isMobile ? "1.5rem 0 0.9rem 0" : "3rem 0 .9rem"}
+                />
+                <SearchStringInput
+                options={(() => {
+                    const general = [
+                    "International passport",
+                    "Passport photograph",
+                    "Means of ID",
+                    "Bank statement",
+                    "Commitment Letter From Family or employer (if available)",
+                    "Proof of accommodation",
+                    "References from Employer",
+                    "Academic References",
+                    "Official Transcript from school",
+                    "Professsional CV",
+                    "Medical Records",
+                    "Police Character (if available)",
                     ];
-                  case "Elite Migration Visa":
-                    return [
-                      ...general,
-                      "Investment Proof",
-                      "Proof of net worth",
-                      "CV",
-                    ];
-                  default:
-                    return [
-                      ...general,
-                      "Proof of Qualifications",
-                      "Marriage Certificate",
-                      "Birth Certificate of Children",
-                      "Investment Proof",
-                      "Proof of net worth",
-                      "CV",
-                    ];
+                    switch (form.tripDetails.visaType) {
+                    case "Student Visa":
+                        return general;
+                    case "Work Visa":
+                        return [...general, "Proof of Qualifications"];
+                    case "family visa":
+                        return [
+                        ...general,
+                        "Marriage Certificate",
+                        "Birth Certificate of Children",
+                        ];
+                    case "Elite Migration Visa":
+                        return [
+                        ...general,
+                        "Investment Proof",
+                        "Proof of net worth",
+                        "CV",
+                        ];
+                    default:
+                        return [
+                        ...general,
+                        "Proof of Qualifications",
+                        "Marriage Certificate",
+                        "Birth Certificate of Children",
+                        "Investment Proof",
+                        "Proof of net worth",
+                        "CV",
+                        ];
+                    }
+                })()}
+                onChange={(e: string) => setDocumentToUpload(e)}
+                value={documentToUpload}
+                placeholder="Select each required document & Upload"
+                />
+            </Section>
+            </Section>
+            <Section styles={{ marginBottom: isMobile ? "1.5rem" : "0" }}>
+            <DocumentUploadWidget
+                loading={loading}
+                deleting={deleting}
+                progress={progress}
+                documents={uploadedDocuments}
+                openFilePicker={() => {
+                if (!documentToUpload)
+                    return toast.error("Please select a document to upload");
+                openFilePicker();
+                }}
+                handleDelete={async (i: number) => {
+                try {
+                    await deleteImage({
+                    imageUrl: formik.values.documents[i].url,
+                    });
+                    setUploadedDocuments([
+                    ...uploadedDocuments.filter(
+                        (_: any, index: number) => index !== i
+                    ),
+                    ]);
+                    formik.setFieldValue(
+                    "documents",
+                    formik.values.documents.filter(
+                        (_: any, index: number) => index !== i
+                    )
+                    );
+                } catch (error) {
+                    throw error;
                 }
-              })()}
-              onChange={(e: string) => setDocumentToUpload(e)}
-              value={documentToUpload}
-              placeholder="Select each required document & Upload"
+                }}
             />
-          </Section>
+            </Section>
+            <ContinueButton
+                isLoading={isLoading}
+                onClick={togglePreview}
+                disabled={!formik.isValid}
+                saveProgressAndContinueLater={persistForm}
+                buttonText={computeButtonText()}
+                type="button"
+            />
+            </form>
+                
+            <ApplicationPreview
+                isOpen={isOpenPreview}
+                onClose={togglePreview}
+                applicationDetails={form.tripDetails}
+                personalInfo={form.personalInfo}
+                familyMembers={form.familyMembers}
+                employment={form.employment}
+                education={form.education}
+                documents={form.documents}
+                handleSubmit={() => formik.handleSubmit()}
+            />
         </Section>
-        <Section styles={{ marginBottom: isMobile ? "1.5rem" : "0" }}>
-          <DocumentUploadWidget
-            loading={loading}
-            deleting={deleting}
-            progress={progress}
-            documents={uploadedDocuments}
-            openFilePicker={() => {
-              if (!documentToUpload)
-                return toast.error("Please select a document to upload");
-              openFilePicker();
-            }}
-            handleDelete={async (i: number) => {
-              try {
-                await deleteImage({
-                  imageUrl: formik.values.documents[i].url,
-                });
-                setUploadedDocuments([
-                  ...uploadedDocuments.filter(
-                    (_: any, index: number) => index !== i
-                  ),
-                ]);
-                formik.setFieldValue(
-                  "documents",
-                  formik.values.documents.filter(
-                    (_: any, index: number) => index !== i
-                  )
-                );
-              } catch (error) {
-                throw error;
-              }
-            }}
-          />
-        </Section>
-        <ContinueButton
-          isLoading={isLoading}
-          onClick={() => {}}
-          disabled={!formik.isValid}
-          saveProgressAndContinueLater={persistForm}
-          buttonText={computeButtonText()}
-        />
-      </form>
-    </Section>
+            
+            
+      </React.Fragment>
   );
 }
 

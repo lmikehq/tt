@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import React from "react";
 import Providers from "./providers";
 import { Poppins } from "next/font/google";
+import GoogleAuthWrapper from "@/components/templates/GoogleAuthWrapper";
 import RTQueryClient from "@/components/templates/rtqWrapper";
 const poppins = Poppins({
     weight: "400",
@@ -93,13 +94,15 @@ export default function RootLayout({
             <body>
                 <Toaster position="top-center" />
                 <PaymentConfirmationModal />
-                <StyledComponentsRegistry>
-                    <RTQueryClient>
-                        <LoaderLayout>
-                            <Providers>{children}</Providers>
-                        </LoaderLayout>
-                    </RTQueryClient>
-                </StyledComponentsRegistry>
+                <GoogleAuthWrapper>
+                    <StyledComponentsRegistry>
+                        <RTQueryClient>
+                            <LoaderLayout>
+                                <Providers>{children}</Providers>
+                            </LoaderLayout>
+                        </RTQueryClient>
+                    </StyledComponentsRegistry>
+                </GoogleAuthWrapper>
             </body>
         </html>
     );

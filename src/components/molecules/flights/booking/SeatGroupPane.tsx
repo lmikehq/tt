@@ -169,6 +169,9 @@ const SeatGroupPane = ({ seatGroup, selectSeat }: SeatGroupProps) => {
                         availability: seat.state,
                         selected: seat.selected,
                     })}
+                    style={{
+                        cursor: computeSeatColor({ seatClass: seat.seat_class, availability: seat.state, selected: seat.selected }) === '#E9E8FC' ? 'not-allowed' : 'pointer'
+                    }}
                 >
                     {seat.selected ? (
                         <BiCheck color={ttColors.light} size={16} />

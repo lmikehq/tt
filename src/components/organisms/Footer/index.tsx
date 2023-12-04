@@ -132,7 +132,7 @@ const FooterSection = ({ showNewsletter = true }) => {
       <FooterGrid isMobile={isMobile}>
         <SectionLayout
           margin="0 auto"
-          padding={isMobile ? "3rem 0px 0px 1rem;" : "1rem"}
+          padding={isMobile ? "3rem 0px 0px 1.5rem;" : "1rem"}
         >
           {!isMobile ? null : (
             <Section styles={{ marginBottom: "59px" }}>

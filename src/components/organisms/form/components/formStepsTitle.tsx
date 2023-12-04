@@ -16,16 +16,24 @@ function FormStepTitle({
   const { isMobile } = useScreenResolution();
 
   return (
-    <Flex align="center" gap="1rem" padding={padding}>
-      <Text
-        type="h1"
-        text={steps[0]}
-        size={isMobile ? "24px" : "24px"}
-        weight={600}
-        className="title-font"
-        // margin={isMobile ? "0" : "2rem 0px 0px"}
-      />
-      {steps.length > 1 && (
+      <Flex align="center" gap="1rem" padding={padding}>
+          <Flex direction="column" gap="1rem">
+            <Text
+                type="h1"
+                text={steps[0]}
+                size={isMobile ? "24px" : "24px"}
+                weight={600}
+                className="title-font"
+                // margin={isMobile ? "0" : "2rem 0px 0px"}
+            />
+            <Text
+                type="p"
+                text={steps[1]}
+                size={isMobile ? 15 : 15}
+                // margin={isMobile ? "0" : "2rem 0px 0px"}
+            />
+          </Flex>
+      {/* {steps.length > 1 && (
         <>
           {index === 1 ? <HiOutlineArrowNarrowRight /> : "..."}
           <Text
@@ -35,7 +43,7 @@ function FormStepTitle({
             weight={500}
           />
         </>
-      )}
+      )} */}
     </Flex>
   );
 }

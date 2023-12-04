@@ -34,7 +34,8 @@ function CheckBox({
             sx={{
                 ".MuiFormControlLabel-label": {
                     fontSize: '14px'
-                }
+                },
+                ...style
             }}
           />
         }

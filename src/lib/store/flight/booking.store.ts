@@ -1,6 +1,8 @@
 import {
+    ContactDetailsInterface,
     ParticularSeatingOption,
     cardDetails,
+    contactDetails,
     saveBookingDetails,
     updateSeatAvailability,
 } from "./../../types/request-models/flight/booking.type";
@@ -32,6 +34,7 @@ import { create } from "zustand";
 import { useUserPreferencesStore } from "../preferences.store";
 import { CONVERSION_RATE_KEY } from "@/lib/extensions/constants";
 
+
 interface State {
     highestStep: number;
     step: number;
@@ -46,6 +49,7 @@ interface State {
     initCheckFlightsMode: Mode;
     checkFlightsResponse: CheckFlightResponse | null;
     checkSeatingResponse: CheckSeatingResponse | null;
+    contactDetails: ContactDetailsInterface;
     saveBookingDetails: SaveBookingRequestInput;
     saveBookingResponse: {
         bookingId: string;
@@ -101,6 +105,11 @@ interface Actions {
     }: {
         data: SaveBookingRequestInput;
     }) => void;
+    setContactDetails: ({
+        data,
+    }: {
+        data: ContactDetailsInterface;
+    }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
     checkBookingDetails: ({
@@ -123,7 +132,7 @@ export const useFlightBookingStore = create<State & Actions>(
             currency: "USD",
             total: 0,
         },
-        searchQuery: { limit: 10 },
+        searchQuery: { limit: 10, sort: 'quality' },
         sessionId: null,
         seatRows: [],
         initCheckFlightsMode: Mode.init,
@@ -135,6 +144,7 @@ export const useFlightBookingStore = create<State & Actions>(
         checkSeatingMode: Mode.init,
         particularSeats: [],
         saveBookingDetails,
+        contactDetails: contactDetails,
         saveBookingResponse: null,
         tokenizeDataResponse: null,
         cardDetails,
@@ -166,6 +176,9 @@ export const useFlightBookingStore = create<State & Actions>(
         },
         setSaveBookingDetails({ data }: { data: SaveBookingRequestInput }) {
             set({ saveBookingDetails: data });
+        },
+        setContactDetails({ data }: { data: ContactDetailsInterface }) {
+            set({ contactDetails: data });
         },
         updateSearchQuery: ({ data }: { data: SearchFlightsRequestQuery }) => {
             set({ searchQuery: data });
@@ -218,25 +231,19 @@ export const useFlightBookingStore = create<State & Actions>(
                 },
             })
                 .then((response) => {
-                    console.log("rrrr", response);
-                    localStorage.setItem(
-                        CONVERSION_RATE_KEY,
-                        `${response.fx_rate}`
-                    );
+                    // console.log("rrrr", response);
+                    localStorage.setItem(CONVERSION_RATE_KEY, `${response.fx_rate}`);
                     useUserPreferencesStore.setState({
                         conversionRate: response.fx_rate,
                     });
                     set({
                         searchFlightsMode: Mode.loaded,
-                        searchFlightsResults: response.data,
+                        searchFlightsResults: [...response.data],
                         flightsResults: {
                             currency: response.currency,
                             total: response._results,
                         },
-                    });
-                    set({
-                        searchFlightsResults: response.data,
-                    });
+                    })
                 })
                 .catch((error) => {
                     set({ searchFlightsMode: Mode.error });
@@ -266,7 +273,7 @@ export const useFlightBookingStore = create<State & Actions>(
                     });
                     set({
                         searchMoreFlightsMode: Mode.loaded,
-                        searchFlightsResults: response.data,
+                        searchFlightsResults: [...response.data],
                     });
                 })
                 .catch((error) => {

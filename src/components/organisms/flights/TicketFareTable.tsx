@@ -83,12 +83,18 @@ const Table = styled(MuiTable)(() => ({
 const TicketFareTable = () => {
     const { nextStep } = useFlightBookingStore((state) => state);
     const { isMobile } = useScreenResolution()
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState({
+        active: false,
+        index: 1,
+    });
     const [active, setActive] = useState("");
 
     const proceed = async (x: string) => {
         setActive(x)
-        setLoading(true);
+        setLoading(prev => ({
+            ...prev,
+            active: true, index: x === 'basic' ? 0 : x === 'flex' ? 1 : 2
+        }));
         await sleep(500);
         nextStep();
         window.scrollTo({
@@ -139,7 +145,7 @@ const TicketFareTable = () => {
                         color={active === 'basic' ? "white" : ttColors.dark}
                         onClick={() => proceed('basic')}
                     >
-                        {loading ? (
+                        {(loading.active && loading.index === 0) ? (
                             <Spinner fill={ttColors.primary} size={"45px"} />
                         ) : (
                             <Text type="p" size={16} text="Select" weight={500} />
@@ -148,14 +154,14 @@ const TicketFareTable = () => {
             ),
             flex: (
                 <Button
-                    styles={{ minWidth: isMobile ? '100%' : '80%' }}
+                    styles={{ minWidth: '100%' }}
                     height="3.5rem"
-                    variant={active === 'flex' ? "solid" : "outline"}
-                    background={active === 'flex' ? ttColors.dark : "white"}
-                    color={active === 'flex' ? "white" : ttColors.dark}
+                    variant={active === 'flex' ? "solid" : "solid"}
+                    background={active === 'flex' ? ttColors.dark : ttColors.dark}
+                    color={active === 'flex' ? "white" : "white"}
                     onClick={() => proceed('flex')}
                 >
-                    {loading ? (
+                    {(loading.active && loading.index === 1) ? (
                         <Spinner fill={ttColors.primary} size={"45px"} />
                     ) : (
                         <Text type="p" size={16} text="Select" weight={500} />
@@ -171,7 +177,7 @@ const TicketFareTable = () => {
                     color={active === 'super-flex' ? "white" : ttColors.dark}
                     onClick={() => proceed('super-flex')}
                 >
-                    {loading ? (
+                    {(loading.active && loading.index === 2) ? (
                         <Spinner fill={ttColors.primary} size={"45px"} />
                     ) : (
                         <Text type="p" size={16} text="Select" weight={500} />
@@ -243,11 +249,11 @@ const TicketFareTable = () => {
                 <TableBody>
                     {data.map((row, index) =>
                         row.isButtonRow ? (
-                            <TableRow key={row.feature} style={{ minWidth: '1000px' }}>
-                                <TableCell></TableCell>
-                                <TableCell style={{ textAlign: 'center' }}>{row.basic}</TableCell>
-                                <TableCell style={{ textAlign: 'center' }}>{row.flex}</TableCell>
-                                <TableCell style={{ textAlign: 'center' }}>{row.superFlex}</TableCell>
+                            <TableRow key={row.feature} style={{ minWidth: '1000px', borderBottom: 'none' }}>
+                                <TableCell style={{ borderBottom: 'none' }}></TableCell>
+                                <TableCell style={{ textAlign: 'center', borderBottom: 'none' }}>{row.basic}</TableCell>
+                                <TableCell style={{ textAlign: 'center', borderBottom: 'none' }}>{row.flex}</TableCell>
+                                <TableCell style={{ textAlign: 'center', borderBottom: 'none' }}>{row.superFlex}</TableCell>
                             </TableRow>
                         ) : (
                             <StyledTableRow key={row.feature}>

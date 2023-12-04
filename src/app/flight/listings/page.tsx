@@ -15,7 +15,7 @@ const FlightTab = styled.div`
 
 function Page() {
     const { isMobile } = useScreenResolution();
-    
+
     return (
         <SectionLayout style={{ padding: isMobile ? "0 0rem" : "" }}>
             <FlightTab>

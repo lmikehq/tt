@@ -39,7 +39,7 @@ const SearchStringInput = ({
             error={error}
             cursor={cursor}
         >
-            <Flex justify="space-between" cursor="pointer" align="center" width="90%" >
+            <Flex justify="space-between" cursor="pointer" align="center" width="100%" >
                 <Text
                     type="p"
                     text={value ? value : placeholder}
@@ -54,9 +54,9 @@ const SearchStringInput = ({
                     }}
                 />
                 {value ? (
-                    icon ? icon : <AiOutlineCheck color="#3BB98E" />
+                    icon ? icon : <IoIosArrowDown size={18} />
                 ) : (
-                    <IoIosArrowDown size={20} />
+                    <IoIosArrowDown size={18} />
                 )}
             </Flex>
         </SearchInputAsString>
@@ -64,3 +64,5 @@ const SearchStringInput = ({
 };
 
 export default SearchStringInput;
+
+{/* <AiOutlineCheck color="#3BB98E" /> */}
