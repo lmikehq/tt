@@ -1,6 +1,6 @@
 "use client";
 
-import Location, {
+import {
     KiwiLocation,
 } from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";

@@ -12,7 +12,7 @@ import Input from "@atom/input";
 import { styled } from "styled-components";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Location from "@/lib/types/response-models/flight/location.type";
+// import Location from "@/lib/types/response-models/flight/location.type";
 import LocationSearchSelectInput from "@/components/organisms/locationInputs/KiwiLocationSearchSelectInput";
 import { DatePicker } from "@/components/organisms/customDatePicker";
 import { ClickAwayListener } from "@mui/material";
