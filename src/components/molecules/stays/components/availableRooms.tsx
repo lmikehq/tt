@@ -24,6 +24,8 @@ import {
     ManyStaysRequestInput,
     extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
+import Spinner from "../../icons/spinner";
+import Text from "@/components/atoms/text";
 
 // FavoriteBoxSkeleton Component
 export const FavoriteBoxSkeleton: React.FC = () => (
@@ -254,10 +256,19 @@ function AvailableRooms() {
         currency: preFerredCurrency,
     });
 
-    const { staySearchFilters } = useStaySearchStore((state) => state);
+    const {
+        staySearchFilters,
+        updateStaySearchMeta,
+        staySearchMeta,
+        staySearchSort,
+    } = useStaySearchStore((state) => state);
 
     const { data = [], isFetching } = useSearchStays({
-        query: { ...staySearchFilters },
+        query: {
+            ...staySearchFilters,
+            sortBy: staySearchSort,
+            ...staySearchMeta,
+        },
         payload: staysRequestParams(),
     });
     const hotels = data as HotelBySearchInterface[];
@@ -299,15 +310,28 @@ function AvailableRooms() {
                 <RoomBox hotel={hotel} index={index} key={index} />
             ))}
             <Flex justify="center" styles={{ marginTop: "40px" }}>
-                <span className="pagination">
-                    <Pagination
-                        className="paginationItemStyle"
-                        count={10}
-                        color="primary"
-                        variant="outlined"
-                        shape="rounded"
-                    />
-                </span>
+                <Button
+                    width="100%"
+                    background="#06062A"
+                    padding="2rem 0"
+                    onClick={() =>
+                        updateStaySearchMeta({
+                            ...staySearchMeta,
+                            page: staySearchMeta.page + 1,
+                        })
+                    }
+                >
+                    {isFetching ? (
+                        <Spinner fill={ttColors.primary} size={"25px"} />
+                    ) : (
+                        <Text
+                            type="p"
+                            text="Load More"
+                            weight={500}
+                            size={18}
+                        />
+                    )}
+                </Button>
             </Flex>
         </div>
     );

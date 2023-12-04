@@ -12,7 +12,7 @@ interface State {
     stayType: StayTypeFilter;
     stayTabInitialSearchQuery: StayTabInitialSearchQuery;
     staySearchFilters: StaySearchFilters;
-    staySearchSort: StaySearchSortEnum | null;
+    staySearchSort?: StaySearchSortEnum;
     staySearchMeta: StaySearchMeta;
 }
 
@@ -34,7 +34,6 @@ export const useStaySearchStore = create<State & Actions>(
     (set): State & Actions => ({
         stayType: {},
         staySearchFilters: {},
-        staySearchSort: null,
         staySearchMeta: {
             page: 1,
             limit: 10,
