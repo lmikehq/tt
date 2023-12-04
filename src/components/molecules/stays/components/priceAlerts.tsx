@@ -6,6 +6,7 @@ import Section from "../../section";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useState } from "react";
+import { PriceAlertModal } from "../listings/stayModal";
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 48,
@@ -59,37 +60,64 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function PriceAlerts() {
   const [checked, setChecked] = useState(false);
 
-  const handleCheckboxChange = () => {
-    setChecked(!checked);
-  };
-  return (
-    <Section>
-      <Box
-        width={"100%"}
-        bgcolor={ttColors.grayishAsh}
-        padding={"1rem"}
-        border={"1px solid var(--color-border)"}
-        marginBottom={"20px"}
-        borderRadius={"10px"}
-      >
-        <Flex align="center" justify="space-between">
-          <label>
-            <Text type="h4" weight="bold" text="Set up price alert" />
-          </label>{" "}
-          <AntSwitch
-            inputProps={{ "aria-label": "ant design" }}
-            id="favorite-price-checkbox"
-            disableFocusRipple
-            disableRipple
-            disableTouchRipple
-          />
-        </Flex>
+  const [open, setOpen] = useState({
+    alert: false,
+  });
 
-        <Text
-          type="p"
-          text="Receive alerts when the prices for this route change."
-        />
-      </Box>
-    </Section>
+  // PRICE ALERT HANDLER
+  const handleCheckboxChange = () => {
+    setChecked((prevChecked) => !prevChecked);
+
+    if (checked) {
+      setOpen((prev) => ({
+        ...prev,
+        alert: true,
+      }));
+    }
+  };
+
+  return (
+    <>
+      <Section>
+        <Box
+          width={"100%"}
+          bgcolor={ttColors.grayishAsh}
+          padding={"1rem"}
+          border={"1px solid var(--color-border)"}
+          marginBottom={"20px"}
+          borderRadius={"10px"}
+        >
+          <Flex align="center" justify="space-between">
+            <label>
+              <Text type="h4" weight="bold" text="Set up price alert" />
+            </label>{" "}
+            <AntSwitch
+              inputProps={{ "aria-label": "ant design" }}
+              id="favorite-price-checkbox"
+              disableFocusRipple
+              disableRipple
+              disableTouchRipple
+              checked={checked}
+              onChange={handleCheckboxChange}
+            />
+          </Flex>
+          <PriceAlertModal
+            open={open.alert}
+            setOpen={setOpen}
+            handleClose={() =>
+              setOpen((prev) => ({
+                ...prev,
+                alert: false,
+              }))
+            }
+          /> {/* PRICE MODAL*/}
+         
+          <Text
+            type="p"
+            text="Receive alerts when the prices for this route change."
+          />
+        </Box>
+      </Section>
+    </>
   );
 }

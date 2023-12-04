@@ -4,7 +4,6 @@ import Section from "../../section";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import Image from "@/components/atoms/image";
-import { Grid } from "@/components/templates/grid";
 import { BiChevronRight } from "react-icons/bi";
 import { ttColors } from "@/lib/theme/colors";
 import { Rating } from "@mui/material";
@@ -15,7 +14,7 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import Button from "@/components/atoms/button";
-import { Container, GridLayout, Header, Tab } from "./styles";
+import { Container, GridLayout, Header, Span, Tab } from "./styles";
 import { styled } from "@mui/material/styles";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
@@ -27,6 +26,8 @@ import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
 import { FlexBox } from "../components/styles";
+import { AmenitiesModal, MapModal } from "./modals/Modals";
+import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -60,6 +61,11 @@ function StayDetails() {
   const handleTabClick = (id: string) => {
     setActiveTab(id);
   };
+
+  const [open, setOpen] = useState({
+    map: false,
+    amenities: false,
+  });
   return (
     <Container>
       <Header id="overview">
@@ -78,6 +84,9 @@ function StayDetails() {
           </Flex>
         </Tab>
       </Header>
+      {/* <Span>
+        <StayDetailSkeleton />
+      </Span> */}
       <Box
         sx={{
           display: "grid",
@@ -94,20 +103,22 @@ function StayDetails() {
               weight={600}
               text="The Ritz London"
             />
-            <Checkbox
-              {...label}
-              icon={<FavoriteBorder />}
-              checkedIcon={
-                <Favorite style={{ color: "var(--color-favorite)" }} />
-              }
-              disableRipple
-              disableTouchRipple
-              disableFocusRipple
-              sx={{
-                "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
-              }}
-              id="favorite-hotels-checkbox"
-            />
+            {!isMobile && (
+              <Checkbox
+                {...label}
+                icon={<FavoriteBorder />}
+                checkedIcon={
+                  <Favorite style={{ color: "var(--color-favorite)" }} />
+                }
+                disableRipple
+                disableTouchRipple
+                disableFocusRipple
+                sx={{
+                  "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
+                }}
+                id="favorite-hotels-checkbox"
+              />
+            )}
           </Flex>
           <Text
             type="p"
@@ -265,8 +276,24 @@ function StayDetails() {
                 weight={500}
                 text="see more"
                 color={ttColors.primary}
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    amenities: true,
+                  }))
+                }
               />
             </Flex>
+           
+            <AmenitiesModal
+              open={open.amenities}
+              handleClose={() =>
+                setOpen((prev) => ({
+                  ...prev,
+                  amenities: false,
+                }))
+              }
+            />
           </Button>
         </Section>
         <Section>
@@ -292,14 +319,29 @@ function StayDetails() {
               <Text
                 type="p"
                 weight={500}
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    map: true,
+                  }))
+                }
                 text="Show in map"
                 color={ttColors.primary}
+              />
+              <MapModal
+                open={open.map}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    map: false,
+                  }))
+                }
               />
               <BiChevronRight color={ttColors.primary} size={24} />
             </Flex>
           </Button>
         </Section>
-      </Box>
+      </Box> 
     </Container>
   );
 }

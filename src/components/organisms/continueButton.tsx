@@ -1,19 +1,21 @@
 import Section from "src/components/molecules/section";
 import { Button } from "@atom/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, CSSProperties } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
-import { BottomNavigation } from "@mui/material";
+import { BottomNavigation, ButtonBaseProps } from "@mui/material";
 import { Grid } from "../templates/grid";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Spinner from "@molecule/icons/spinner";
+
 
 interface ButtonProps {
   isLoading: boolean;
   disabled?: boolean;
   onClick?: () => void;
   buttonText?: string;
+  type?: ButtonBaseProps['type'];
   saveProgressAndContinueLater?: () => void;
 }
 
@@ -21,7 +23,8 @@ export default function ContinueButton({
   isLoading,
   disabled,
   onClick,
-  buttonText,
+buttonText,
+  type,
   saveProgressAndContinueLater,
 }: ButtonProps) {
   const { isMobile } = useScreenResolution();
@@ -50,7 +53,7 @@ export default function ContinueButton({
           <Button
             width="100%"
             height={"3.5rem"}
-            type="submit"
+            type={type ?? "submit"}
             background={disabled ? "#585870" : "#06062A"}
             cursor={disabled ? "not-allowed" : "pointer"}
             onClick={onClick}
@@ -63,7 +66,7 @@ export default function ContinueButton({
                   type="span"
                   text={buttonText ?? "Save & Continue"}
                   weight={600}
-                  size={20}
+                  size={16}
                   color={ttColors.light}
                 />
               )}

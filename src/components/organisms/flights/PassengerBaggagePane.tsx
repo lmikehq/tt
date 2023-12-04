@@ -30,10 +30,12 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { capCase } from "@/lib/utilFns";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { Tooltip } from "@mui/material";
+import SimpleTooltip from "../SimplePopper/SimpleTooltip";
 
 interface PassengerBaggagePaneProps {
     index: number;
-    values: PassengerFormInterface;
+    values: Passenger;
     combinationOptions: Combinations;
     count: number;
     passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -176,18 +178,21 @@ export default function PassengerBaggagePane({
         })
         .join(", ");
     
-    useEffect(() => console.log('nnnn', newBags), [newBags])
 
     return (
         <Box>
             <Flex gap="1rem" align="center" padding="2rem 0">
                 <Text
                     type="h3"
-                    size={isMobile ? 18 : 22}
+                    size={isMobile ? 18 : 20}
                     text="Cabin or Carry-On Baggage"
-                    weight={600}
+                    weight={500}
                 />
-                {/* <PiWarningCircleBold size={30} color={ttColors.primaryLight} /> */}
+                <SimpleTooltip title="Comprising smaller bags that can be taken into the cabin and stored in the overhead locker or under your seat.">
+                    <Box display="flex" alignItems="center" sx={{ cursor: 'pointer' }}>
+                        <PiWarningCircleBold size={26} color={ttColors.primaryLight} />
+                    </Box>
+                </SimpleTooltip>
             </Flex>
 
             {/* Hand Bags */}
@@ -285,16 +290,20 @@ export default function PassengerBaggagePane({
                 <Flex gap="1rem" align="center">
                     <Text
                         type="h3"
-                        size={isMobile ? 18 : 22}
+                        size={isMobile ? 18 : 20}
                         text="Checked Baggage"
-                        weight={600}
+                        weight={500}
                     />
-                    {/* <PiWarningCircleBold size={30} color={ttColors.primaryLight} /> */}
+                    <SimpleTooltip title="Comprising larger baggage items that need to be checked in at the airline counter prior to airport security screening.">
+                        <Box display="flex" alignItems="center" sx={{ cursor: 'pointer' }}>
+                            <PiWarningCircleBold size={26} color={ttColors.primaryLight} />
+                        </Box>
+                    </SimpleTooltip>
                 </Flex>
                 <Text
                     type="p"
                     text="Select one option:"
-                    weight={500}
+                    weight={400}
                     color={ttColors.foundation.gray}
                     size={isMobile ? 14 : 16}
                 />
@@ -323,9 +332,12 @@ export default function PassengerBaggagePane({
                                     JSON.stringify(comb.indices);
                                 const bagDefinition =
                                     bagDefinitions?.hold_bag[comb.indices[0]];
-                                const sameBags = comb.indices.every(
-                                    (e, i, indArr) => e === indArr[0]
-                                );
+                                const sameBags = comb.indices.every((e, i, indArr) => (e === indArr[0]) || (
+                                    (bagDefinitions?.hold_bag[e]?.restrictions?.height == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.height)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.width == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.width)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.length == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.length)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.weight == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.weight)
+                                ));
                                 return (
                                     <BaggageBox
                                         active={isActive}

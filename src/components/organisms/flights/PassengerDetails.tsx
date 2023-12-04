@@ -19,6 +19,7 @@ import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { FormikProps } from "formik";
 import {
     Combination,
+    Passenger,
     PassengerBaggageCombinationInterface,
     PassengerCategory,
     PassengerCategoryDesc,
@@ -36,6 +37,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ToastInfo } from "../flight/booking/toast";
 import { capCase } from "@/lib/utilFns";
 import dayjs from "dayjs";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 
 function CategoryTag({
     category,
@@ -43,25 +45,30 @@ function CategoryTag({
 }: {
     category: string;
     isMobile: boolean;
-}) {
+    }) {
+    const {
+        checkFlightsResponse,
+    } = useFlightBookingStore((state) => state);
+    const extra = category === 'adult' ? `(${checkFlightsResponse?.age_category_thresholds?.adult ?? 12}+ yrs)` : category === 'child' ? `(${checkFlightsResponse?.age_category_thresholds?.child ?? 2}-${checkFlightsResponse?.age_category_thresholds?.adult ?? 12} yrs)` : `(Under ${checkFlightsResponse?.age_category_thresholds?.child ?? 2} yrs)`
     return (
         <Flex
             width={isMobile ? "30%" : "max-content"}
-            padding=".3rem 1rem"
+            padding=".5rem 1.5rem"
             justify="center"
-            borderRadius="20px"
-            background={ttColors.dark}
+            borderRadius="6px"
+            border={`1px solid ${ttColors.dark}`}
+            background={ttColors.ghostWhite}
         >
-            <Text type="p" text={capCase(category)} color="white" />
+            <Text type="p" text={`${capCase(category)} ${extra}`} color={ttColors.dark} weight={500} />
         </Flex>
     );
 }
 interface TripSummaryCardProps {
     index: number;
     formik: FormikProps<{
-        passengers: PassengerFormInterface[];
+        passengers: Passenger[];
     }>;
-    values: PassengerFormInterface;
+    values: Passenger;
     count: number;
     combinationOptions: Combinations;
     passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -119,7 +126,7 @@ export default function MainPassenger({
             >
                 <Text
                     type="h2"
-                    size={isMobile ? 18 : 22}
+                    size={isMobile ? 18 : 24}
                     text={
                         index === 0
                             ? "Main Passenger"
@@ -205,7 +212,7 @@ export default function MainPassenger({
                             formik={formik}
                             name={`passengers.${count}.title`}
                             placeholder="Select your title"
-                            options={["Mr", "Mrs"]}
+                            options={["Mr", "Ms"]}
                         />
                     </FormControl>
                     <FormControl>
@@ -252,25 +259,21 @@ export default function MainPassenger({
                     <Flex gap="1rem" align="center" padding="1rem 0">
                         <Text
                             type="h2"
-                            size={isMobile ? 18 : 22}
+                            size={isMobile ? 18 : 24}
                             text="Add extra check-in bags"
                             weight={600}
                         />
-                        <PiWarningCircleBold
+                        {/* <PiWarningCircleBold
                             size={30}
                             color={ttColors.primaryLight}
-                        />
+                        /> */}
                     </Flex>
-                    <ToastInfo
-                        type="info"
-                        message="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
-                    />
-                    {/* <Text
+                    <Text
                         type="p"
                         text="Choose an option. Airlines have varying restrictions concerning the dimensions of baggage, thus we're presenting you with the maximum acceptable size based on your travel plans"
                         color="#414141"
                         size={isMobile ? 14 : 16}
-                    /> */}
+                    />
                     <Box sx={{ marginY: "1rem" }}>
                         <PassengerBaggagePane
                             index={index}

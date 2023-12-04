@@ -1,4 +1,4 @@
-export interface Location {
+export interface KiwiLocation {
     id: string;
 
     int_id: number;
@@ -119,7 +119,7 @@ export interface Location {
     type: string;
 }
 
-export enum LocationType {
+export enum KiwiLocationType {
     station = "station",
     airport = "airport",
     bus_station = "bus_station",
@@ -138,8 +138,6 @@ interface Meta {
 }
 
 export interface FetchLocationsResponse {
-    locations: Location[];
+    locations: KiwiLocation[];
     meta: Meta;
 }
-
-export default Location;

@@ -1,13 +1,13 @@
 import { FlightLocationService } from "@/lib/services/flight/location.service";
-import SearchInputAsLocationTypes from "./SearchInputAsLocationTypes";
+import SearchInputAsLocationTypes from "../SearchInputAsLocationTypes";
 import { useEffect, useRef, useState } from "react";
 import { da } from "date-fns/locale";
-import Location from "@/lib/types/response-models/flight/location.type";
 import { useUserStore } from "@/lib/store/useStore";
+import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 interface LocationSearchSelectInputProps {
-    onChange: (value: Location) => void;
-    value?: Location;
+    onChange: (value: KiwiLocation) => void;
+    value?: KiwiLocation;
     placeholder: string;
 }
 
@@ -16,9 +16,11 @@ const LocationSearchSelectInput = ({
     value,
     placeholder,
 }: LocationSearchSelectInputProps) => {
-    const [locations, setLocations] = useState<Location[]>([]);
+    const [locations, setLocations] = useState<KiwiLocation[]>([]);
     const [searchText, setSearchText] = useState<string>("");
-    const [defaultLocations, setDefaultLocations] = useState<Location[]>([]);
+    const [defaultLocations, setDefaultLocations] = useState<KiwiLocation[]>(
+        []
+    );
     const [loading, setLoading] = useState<boolean>(false);
     const { geoInfo } = useUserStore((state) => state);
 
@@ -69,8 +71,8 @@ const LocationSearchSelectInput = ({
                     : locations
             }
             handleSetSearchText={({ text }) => setSearchText(text)}
-            onChange={onChange}
             value={value}
+            onChange={(value) => onChange(value as KiwiLocation)}
             placeholder={placeholder}
             loading={loading}
         />

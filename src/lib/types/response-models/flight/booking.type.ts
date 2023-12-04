@@ -478,6 +478,12 @@ export interface GetFlightBookingByIdResponse {
     baggageInfo: Baggage[];
     passengerDetails: { email: string; phoneNumber: string; }[];
     pricing: SegmentPricing;
+    itinerary?: {
+        segments: { pnr: string }[];
+        boarding_documents_link: string | null;
+        eticket_link: string;
+        invoice_link: string;
+    }
 }
 
 export const mockRows = [

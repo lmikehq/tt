@@ -1,5 +1,6 @@
 import Image from "@/components/atoms/image";
 import Flex from "@/components/templates/flex";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 
 export default function FlightDepartureIcon({
@@ -17,13 +18,14 @@ export default function FlightDepartureIcon({
     height?: number;
     stops?: number;
 }) {
-    const stopDots = Array.from({ length: (stops > 3 ? 3 : stops)})
+    const stopDots = Array.from({ length: (stops > 3 ? 3 : stops) })
+    const { isMobile } = useScreenResolution()
     
     return (
         <Flex
             styles={{
                 height: horizontal ? "80px" : "60%",
-                width: horizontal ? width : '30px',
+                width: horizontal ? width : (isMobile ? "24px" : '30px'),
                 alignSelf: horizontal ? "inherit" : "flex-end",
                 position: 'relative',
                 justifyContent: horizontal ? "center" : "",
