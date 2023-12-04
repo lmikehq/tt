@@ -41,7 +41,7 @@ export interface Passenger {
     email?: string;
     cardno: string;
     birthday: string; // YYYY-MM-DD format
-    nationality: CountryType | string; // ISO 3166-1 alpha-2 format (2 letter format)
+    nationality?: CountryType | string; // ISO 3166-1 alpha-2 format (2 letter format)
     title: string;
     expiration: string; // expiration of passport, YYYY-MM-DD format
     category: string;
@@ -54,7 +54,7 @@ export interface PassengerFormInterface {
 
     cardno: string;
     birthday: string; // YYYY-MM-DD format
-    nationality: CountryType | string; // ISO 3166-1 alpha-2 format (2 letter format)
+    nationality?: CountryType | string; // ISO 3166-1 alpha-2 format (2 letter format)
     title: string;
     expiration: string; // expiration of passport, YYYY-MM-DD format
     category: PassengerCategory;

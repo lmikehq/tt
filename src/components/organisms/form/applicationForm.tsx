@@ -31,7 +31,6 @@ import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
-import { COUNTRY_FLAGS } from "@/lib/extensions/data/data";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
 
@@ -165,17 +164,18 @@ function ApplicationForm() {
     validateOnChange: false,
   });
 
-  const familyMembersFormik = useFormik({
-    initialValues: { familyMembers },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: familyInfoSchema,
-    onSubmit: (values) => {
-      if (isLoading) return;
-      nextStep({ data: { familyMembers: values.familyMembers } });
-    },
-    validateOnChange: true,
-  });
+    const familyMembersFormik = useFormik({
+        initialValues: { familyMembers },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: familyInfoSchema,
+        onSubmit: (values, formikHelpers) => {
+            formikHelpers.validateForm().then(res => console.log('vali', res)).catch(err => console.log('vali', err))
+        if (isLoading) return;
+        nextStep({ data: { familyMembers: values.familyMembers } });
+        },
+        validateOnChange: true,
+    });
 
   const documentsFormik = useFormik({
     initialValues: { documents },
@@ -274,7 +274,7 @@ function ApplicationForm() {
     fetchRecentProgressFromSession();
   }, [params]);
     
-    console.log(form)
+    console.log(familyMembersFormik.values)
 
   return (
     <>

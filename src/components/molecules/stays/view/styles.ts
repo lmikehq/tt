@@ -327,6 +327,7 @@ export const BtnDetails = styled.div`
   width: fit-content;
   padding: 7px 10px;
   &.reset_filters {
+    padding: 10px;
     border: 2px solid var(--color-red-border);
     background-color: var(--color-red-bg);
     color: var(--color-favorite);
@@ -337,5 +338,12 @@ export const BtnDetails = styled.div`
     width: 100%;
     padding: 10px 10px;
     color: var(--secondary-color);
+    cursor: default;
   }
+  // @media screen and (max-width: 900px) {
+  //   &.reset_filters {
+  //     width: 100%;
+  //     text-align: center;
+  //   }
+  // }
 `;

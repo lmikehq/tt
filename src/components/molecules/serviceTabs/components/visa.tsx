@@ -15,9 +15,9 @@ import { useEffect, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Section from "src/components/molecules/section";
 export interface CountryType {
-    name: string;
-    flag: string;
-    code: string;
+    name?: string;
+    flag?: string;
+    code?: string;
 }
 export interface LabelType {
     name: string;

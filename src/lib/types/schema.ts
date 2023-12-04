@@ -12,9 +12,9 @@ import { ApplicationFormRequestInput } from "./request-models/application-form.t
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 
 export const countrySchema: yup.ObjectSchema<CountryType> = yup.object().shape({
-  name: yup.string().required("Required"),
-  flag: yup.string().required("Required"),
-  code: yup.string().required("Required"),
+    name: yup.string(),
+    flag: yup.string(),
+    code: yup.string(),
 });
 
 export const mockCountry: CountryType = {
@@ -162,9 +162,9 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup.o
         is: true,
         then: (schema) => schema.required("Required"),
     }),
-    prevResidence1: countrySchema.required(),
-    prevResidence2: countrySchema.required(),
-    prevResidence3: countrySchema.required(),
+    prevResidence1: yup.string(),
+    prevResidence2: yup.string(),
+    prevResidence3: yup.string(),
     startDatePrevResidence1: yup.string(),
     startDatePrevResidence2: yup.string(),
     startDatePrevResidence3: yup.string(),
@@ -234,9 +234,9 @@ export const personalInfoKeys: PersonalInfoInterface = {
     hasGreenCard: false,
     greenCardNumber: "",
     greenCardExpiryDate: "",
-    prevResidence1: mockCountry,
-    prevResidence2: mockCountry,
-    prevResidence3: mockCountry,
+    prevResidence1: "",
+    prevResidence2: "",
+    prevResidence3: "",
     startDatePrevResidence1: "",
     startDatePrevResidence2: "",
     startDatePrevResidence3: "",
@@ -373,38 +373,37 @@ export const employmentKeys: EmploymentDetailsInterface = {
 export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
   .object()
   .shape({
-    index: yup.number().required(),
-    section: yup.string().required(),
-    accompanying: yup.boolean().required(),
+    index: yup.number(),
+    section: yup.string(),
+    accompanying: yup.boolean().required("Required"),
     membersName: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    relationshipToPrimary: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
+        is: true,
+        then: (schema) => schema.required("Required"),
     }),
     address: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
+        is: true,
+        then: (schema) => schema.required("Required"),
     }),
     membersPhoneNumber: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
+        is: true,
+        then: (schema) => schema.required("Required"),
     }),
     membersEmail: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
+        is: true,
+        then: (schema) => schema.required("Required"),
+    }),
+    occupation: yup.string(),
+    relationshipToPrimary: yup.string().when("accompanying", {
+        is: true,
+        then: (schema) => schema.required("Required"),
+    }),
+    maritalStatus: yup.string(),
+    dateOfBirth: yup.string(),
+    gender: yup.string().when("accompanying", {
+        is: true,
+        then: (schema) => schema.required("Required"),
     }),
     passportNumber: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    dateOfBirth: yup.string().when("accompanying", {
-        is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    gender: yup.string().when("accompanying", {
         is: true,
         then: (schema) => schema.required("Required"),
     }),
@@ -417,8 +416,8 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
         then: (schema) => schema.required("Required"),
     }),
     expiryDate: yup.string().when("accompanying", {
-      is: true,
-      then: (schema) => schema.required("Required"),
+        is: true,
+        then: (schema) => schema.required("Required"),
     }),
   });
 
@@ -437,6 +436,7 @@ export const familyInforKeys: FamilyInfoInterface = {
     accompanying: false,
     section: "A",
     index: 0,
+    maritalStatus: "",
   // membersName: "Alice Smith",
   // relationshipToPrimary: "Spouse",
   // address: "789 Elm St",
@@ -607,9 +607,9 @@ export const test: ApplicationFormRequestInput = {
         hasGreenCard: false,
         greenCardNumber: "",
         greenCardExpiryDate: "",
-        prevResidence1: mockCountry,
-        prevResidence2: mockCountry,
-        prevResidence3: mockCountry,
+        prevResidence1: "",
+        prevResidence2: "",
+        prevResidence3: "",
         startDatePrevResidence1: "",
         startDatePrevResidence2: "",
         startDatePrevResidence3: "",

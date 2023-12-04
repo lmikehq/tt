@@ -34,6 +34,7 @@ import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/boo
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { debounce } from "debounce";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -363,7 +364,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         }
     };
 
-    const handleTimeChange = (
+    const handleTimeChange = debounce((
         newValue: number | number[],
         time: "arrival" | "depart" | "travelTime" | "stopOver"
     ) => {
@@ -388,9 +389,9 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             },
         }));
         setFilter(group);
-    };
+    }, 800);
 
-    const handleSlider = (
+    const handleSlider = debounce((
         newValue: number | number[],
         group: "duration" | "price",
         name: string
@@ -417,7 +418,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             }));
         }
         setFilter(group);
-    };
+    }, 800);
 
     const filteredTags = useMemo(() =>
         activeFilters.list.map((e, index) => (
@@ -523,7 +524,8 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
 
     useEffect(() => {
         activeFilters.list.length > 0 && handleFilterResults(filterData)
-    }, [filterData.bags, filterData.stops, filterData.airlines, filterData.alliance, filterData.cabin])
+    }, [filterData.bags, filterData.price, filterData.departTimes, filterData.returnTimes, filterData.duration, filterData.airlines, filterData.alliance, filterData.cabin, filterData.stops,])
+
 
     return (
         <Flex direction="column">
@@ -802,7 +804,8 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             }
                             min={2}
                             max={48}
-                            offset="-100px"
+                            leftOffset="20px"
+                            rightOffset="-100px"
                         />
                     </Flex>
                     <Flex direction="column" gap=".25rem" padding=".5rem 0">
@@ -832,7 +835,8 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             }
                             min={2}
                             max={48}
-                            offset="-100px"
+                            leftOffset="20px"
+                            rightOffset="-100px"
                         />
                     </Flex>
                 </div>
@@ -885,7 +889,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                     min={0}
                     max={20000 * conversionRate}
                     step={250}
-                    offset="-160px"
+                    rightOffset="-160px"
                 />
             </Panel>
 

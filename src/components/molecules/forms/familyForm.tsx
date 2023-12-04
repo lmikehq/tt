@@ -208,7 +208,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                             <Required />
                         </Flex>
                         <FieldAsDate
-                            name={`familyMembers.${count}.membersDateOfBirth`}
+                            name={`familyMembers.${count}.dateOfBirth`}
                             placeholder="Select member's date of birth"
                             formik={formik}
                             maxDate={dayjs()}
@@ -251,7 +251,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                                 "Remarried",
                             ]}
                             placeholder="Select member's marital status"
-                            name={`maritalStatus`}
+                            name={`familyMembers.${count}.maritalStatus`}
                             formik={formik}
                         />
                     </Section>
@@ -288,17 +288,19 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                 options={["Male", "Female"]}
               />
             </Section>
-            <Section margin="0">
-              <Flex align="center" gap="0.25rem" margin="0 0 .5rem">
-                <Text type="p" text="Date of Birth" />
-                <Required />
-              </Flex>
-              <FieldAsDate
-                name={`familyMembers.${count}.dateOfBirth`}
-                placeholder="Select DOB"
-                formik={formik}
-              />
-            </Section>
+            {!['C'].includes(values?.section ?? '') && (
+                <Section margin="0">
+                    <Flex align="center" gap="0.25rem" margin="0 0 .5rem">
+                        <Text type="p" text="Date of Birth" />
+                        <Required />
+                    </Flex>
+                    <FieldAsDate
+                        name={`familyMembers.${count}.dateOfBirth`}
+                        placeholder="Select DOB"
+                        formik={formik}
+                    />
+                </Section>      
+            )}
             </Flex>
                   
           <Flex

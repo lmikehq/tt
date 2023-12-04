@@ -128,9 +128,9 @@ export interface PersonalInfoInterface {
     hasGreenCard?: boolean | null;
     greenCardNumber?: string,
     greenCardExpiryDate?: string,
-    prevResidence1?: CountryType,
-    prevResidence2?: CountryType,
-    prevResidence3?: CountryType,
+    prevResidence1?: string,
+    prevResidence2?: string,
+    prevResidence3?: string,
     startDatePrevResidence1?: string,
     startDatePrevResidence2?: string,
     startDatePrevResidence3?: string,
@@ -148,6 +148,7 @@ export interface FamilyInfoInterface {
     membersPhoneNumber?: string;
     membersEmail?: string;
     accompanying: boolean;
+    maritalStatus?: string;
     issueDate?: string;
     expiryDate?: string;
     issueCountry?: CountryType;
@@ -239,14 +240,14 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
         middleName: data.personalInfo.middleName,
         email: data.personalInfo.email,
         homeCountry: {
-            name: data.tripDetails.homeCountry.name,
-            code: data.tripDetails.homeCountry.code,
+            name: data.tripDetails.homeCountry.name ?? "",
+            code: data.tripDetails.homeCountry.code ?? "",
         },
         destination: {
-            name: data.tripDetails.destination.name,
-            code: data.tripDetails.destination.code,
+            name: data.tripDetails.destination.name ?? "",
+            code: data.tripDetails.destination.code ?? "",
         },
-        placeOfBirth: data.personalInfo.placeOfBirth.name,
+        placeOfBirth: data.personalInfo.placeOfBirth.name ?? "",
         phoneNumber: data.personalInfo.phoneNumber,
         stateOfOrigin: data.personalInfo.stateOfOrigin,
         placeOfOrigin: data.personalInfo.placeOfOrigin,
@@ -256,13 +257,13 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
         issueDate: data.personalInfo.issueDate,
         expiryDate: data.personalInfo.expiryDate,
         address: data.personalInfo.address,
-        countryOfCitizen: data.personalInfo.countryOfCitizen.name,
+        countryOfCitizen: data.personalInfo.countryOfCitizen.name ?? "",
         dateOfBirth: data.personalInfo.dateOfBirth,
         gender: data.personalInfo.gender,
         maritalStatus: data.personalInfo.maritalStatus,
         partnersName: data.personalInfo.partnersName,
         passportNumber: data.personalInfo.passportNumber,
-        passportIssuedCountry: data.personalInfo.passportIssuedCountry.name,
+        passportIssuedCountry: data.personalInfo.passportIssuedCountry.name ?? "",
         passportExpiryDate: data.personalInfo.passportExpiryDate,
         tripPurpose: data.personalInfo.tripPurpose,
         tuberculosis: data.personalInfo.tuberculosis,

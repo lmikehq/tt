@@ -11,6 +11,7 @@ import React from "react";
 import Providers from "./providers";
 import { Poppins } from "next/font/google";
 import GoogleAuthWrapper from "@/components/templates/GoogleAuthWrapper";
+import RTQueryClient from "@/components/templates/rtqWrapper";
 const poppins = Poppins({
     weight: "400",
     style: ["normal"],
@@ -95,9 +96,11 @@ export default function RootLayout({
                 <PaymentConfirmationModal />
                 <GoogleAuthWrapper>
                     <StyledComponentsRegistry>
-                        <LoaderLayout>
-                            <Providers>{children}</Providers>
-                        </LoaderLayout>
+                        <RTQueryClient>
+                            <LoaderLayout>
+                                <Providers>{children}</Providers>
+                            </LoaderLayout>
+                        </RTQueryClient>
                     </StyledComponentsRegistry>
                 </GoogleAuthWrapper>
             </body>

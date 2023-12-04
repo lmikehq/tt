@@ -9,7 +9,7 @@ import { MdOutlineLuggage } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
 import Button from "@atom/button";
 import Dot from "@/components/atoms/dot";
-import { Box, Grid, Popper, Tooltip } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import FlightDepartureIcon from "./flightDepartureIcon";
 import StopsPill from "./stopsPill";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
@@ -53,13 +53,13 @@ const FlightContainer = styled.div`
 `;
 
 const IconBorders = styled.div`
-    padding: 0.5rem 0.6rem;
-    border: 1px solid ${ttColors.primary};
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
-    border-radius: 8px;
-    gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid ${ttColors.primary};
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  border-radius: 8px;
+  gap: 0.5rem;
 `;
 
 const LabelBox = styled.div`
@@ -199,7 +199,7 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
 function FlightRoutes({ flight }: { flight: FlightInfo }) {
     const routes = flight?.route
     return (
-        <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding="1.5rem 2rem">
+        <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding=".8rem 2rem">
             {routes.map((e, index, arr) => {
                 const currentFlight = e
                 const nextFlight = arr[index + 1]
@@ -306,14 +306,14 @@ function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
 
 
 function FlightBox(props: flightProps) {
-    const { isMobile } = useScreenResolution();
-    const flightContext = useContext(FlightContext);
-    const flightState = flightContext?.state;
-    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+  const { isMobile } = useScreenResolution();
+  const flightContext = useContext(FlightContext);
+  const flightState = flightContext?.state;
+  const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
-    function formatDate(day: Dayjs, short?: boolean) {
-        return day.format(short ? "ddd, MMMM D" : "dddd, MMMM D");
-    }
+  function formatDate(day: Dayjs, short?: boolean) {
+    return day.format(short ? "ddd, MMMM D" : "dddd, MMMM D");
+  }
 
     const timeDifference = (utcDeparture: string, utcArrival: string) => {
         const differenceMins = dayjs(utcArrival).diff(
@@ -810,7 +810,7 @@ function FlightBox(props: flightProps) {
                 </Flex>
             </Box>
         </FlightContainer>
-    );
+  );
 }
 
 export default FlightBox;

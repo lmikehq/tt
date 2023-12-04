@@ -31,6 +31,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Image from "@/components/atoms/image";
 import { ReviewModal } from "./modals/Modals";
 import Dropdown from "@/components/organisms/dropdown";
+import Select from "react-select";
 
 const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -44,8 +45,8 @@ const StyledRating = muiStyled(Rating)({
 interface ExpandableTextProps {
   text: string;
   maxLines: number;
-  commentDate: string;
-  stayedIn: string;
+  commentDate?: string;
+  stayedIn?: string;
 }
 
 //=============================
@@ -347,10 +348,10 @@ const HotelReviews = () => {
 
   // FILTERS
   const [filters, setFilters] = useState("recommended");
-  const filtersOptions = [
-    { value: "recommended", displayValue: "Recommended" },
-    { value: "oldest", displayValue: "Oldest" },
-    { value: "newest", displayValue: "Newest" },
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
   ];
 
   //=====================
@@ -416,15 +417,7 @@ const HotelReviews = () => {
                   textOverflow: "unset",
                 }}
               ></Text>
-              <Dropdown
-                options={filtersOptions}
-                className="mui_select"
-                width="100%"
-                minWidth="200px"
-                height="45px"
-                selectedValue={filters}
-                setSelectedValue={setFilters}
-              />
+              <Select className="react_select" options={options} />
             </Flex>
           </Flex>
         </Header>

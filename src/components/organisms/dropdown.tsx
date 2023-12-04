@@ -1,24 +1,18 @@
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 import styled from "styled-components";
 
 const SelectBox = styled.div`
-  #demo-simple-select {
-    outline-color: var(--primary-color) !important;
-  }
-  .MuiSelect-root {
-    width: 100% !important;
+  .react-select-container {
+    width: 100%;
     position: relative;
     outline-color: var(--primary-color) !important;
-  }
-  .MuiSelect-select {
-    position: relative;
   }
 `;
 
 interface DropdownProps {
   label?: string;
-  options: { value: string; displayValue: string }[];
+  options: { value: string; label: string }[];
   selectedValue: string;
   setSelectedValue: React.Dispatch<React.SetStateAction<string>>;
   className?: string;
@@ -47,37 +41,34 @@ const Dropdown: React.FC<DropdownProps> = ({
   border,
   borderColor,
 }) => {
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedValue(String(event.target.value));
+  const handleChange = (selectedOption: any) => {
+    setSelectedValue(selectedOption.value);
   };
 
   return (
     <SelectBox>
-      <InputLabel id="mui_simple_select">{label}</InputLabel>
+      <label id="react_select_label">{label}</label>
       <Select
-        labelId="mui_simple_select"
-        id="mui_simple_select"
-        value={selectedValue}
-        label={label}
+        inputId="react_select_input"
+        value={options.find((option) => option.value === selectedValue)}
+        options={options}
         onChange={handleChange}
         className={className}
-        sx={{
-          width: width,
-          minWidth: minWidth,
-          height: height,
-          minHeight: minHeight,
-          padding: padding,
-          border: border,
-          color: color,
-          borderColor: borderColor,
+        styles={{
+          container: (provided) => ({
+            ...provided,
+            width: width,
+            minWidth: minWidth,
+            height: height,
+            minHeight: minHeight,
+            padding: padding,
+            border: border,
+            color: color,
+            borderColor: borderColor,
+          }),
         }}
-      >
-        {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.displayValue}
-          </MenuItem>
-        ))}
-      </Select>
+        aria-labelledby="react_select_label"
+      />
     </SelectBox>
   );
 };

@@ -40,10 +40,15 @@ import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTransferAlt } from "react-icons/bi";
 import { BsDot } from "react-icons/bs";
+import { redirect } from "next/navigation";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
 function BookingLoader() {
+    const { queryParams } = useQueryParams()
+    if(!queryParams?.bnum || !queryParams?.booking_token || !queryParams?.adults || !queryParams?.children) {
+        redirect('/flight/listings')
+    }
     const { isMobile } = useScreenResolution();
     const { searchQuery } = useFlightBookingStore((state) => state);
     const flight = {
@@ -439,3 +444,5 @@ const FlightBookingPage = () => {
 };
 
 export default FlightBookingPage;
+
+

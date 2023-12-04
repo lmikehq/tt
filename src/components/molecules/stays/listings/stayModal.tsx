@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import styled from "styled-components";
 import Flex from "@/components/templates/flex";
 import Section from "../../section";
@@ -12,14 +12,22 @@ import CheckBox from "../../checkbox";
 import SortingColumns from "./sortingColumns";
 import DeletePriceAlertBox from "../components/DeletePriceAlertBox";
 
+const ModalCenter = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
 const ModalWrapper = styled.div`
   width: 100%;
   height: 100vh;
   overflow-y: auto;
   background: white;
   &.price_wrapper {
-    width: 400px;
-    height: 350px;
+    width: 500px;
+    height: 380px;
+    border-radius: 10px;
   }
 `;
 
@@ -30,6 +38,17 @@ export const FilterModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <Section>
@@ -57,6 +76,17 @@ export const SortModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   const options = [
     { value: "favorite", label: "My Favourite Hotels" },
     { value: "best", label: "Best" },
@@ -98,20 +128,33 @@ export const SortModal = ({
 
 export const PriceAlertModal = ({
   open,
+  setOpen,
   handleClose,
 }: {
   open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<{ alert: boolean }>>;
   handleClose: () => void;
 }) => {
+  useEffect(() => {
+    const handleBodyOverflow = () => {
+      document.documentElement.style.overflow = open ? "hidden" : "auto";
+      document.body.style.overflow = open ? "hidden" : "auto";
+    };
+    handleBodyOverflow();
+    return () => {
+      document.documentElement.style.overflow = "auto";
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
-      <Section>
+      <ModalCenter>
         <ModalWrapper className="price_wrapper">
           <Section padding="2rem">
-            <DeletePriceAlertBox />
+            <DeletePriceAlertBox setOpen={setOpen} />
           </Section>
         </ModalWrapper>
-      </Section>
+      </ModalCenter>
     </Modal>
   );
 };
