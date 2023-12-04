@@ -1,20 +1,31 @@
-import { Box, Stack } from '@mui/material'
-import React, { useState } from 'react'
-import Modal from '../../modal'
-import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
-import Text from '@/components/atoms/text'
+import { Box, Stack } from "@mui/material";
+import React, { useState } from "react";
+import Modal from "../../modal";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import Text from "@/components/atoms/text";
 import Accordion, { AccordionProps } from "@mui/material/Accordion";
 import { styled } from "@mui/material/styles";
-import { ttColors } from '@/lib/theme/colors'
-import CheckBox from '@/components/molecules/checkbox'
-import Button from '@/components/atoms/button'
-import One from './previewSteps/one'
-import { DetailsKeys, DocumentInterface, EducationDetailsInterface, EmploymentDetailsInterface, FamilyInfoInterface, PersonalInfoInterface } from '@/lib/types'
-import Flex from '@/components/templates/flex'
-
+import { ttColors } from "@/lib/theme/colors";
+import CheckBox from "@/components/molecules/checkbox";
+import Button from "@/components/atoms/button";
+import One from "./previewSteps/one";
+import {
+    DetailsKeys,
+    DocumentInterface,
+    EducationDetailsInterface,
+    EmploymentDetailsInterface,
+    FamilyInfoInterface,
+    PersonalInfoInterface,
+} from "@/lib/types";
+import Flex from "@/components/templates/flex";
 
 export const StyledAccordion = styled((props: AccordionProps) => (
-    <Accordion disableGutters={false} elevation={0} className='hello-accordion' {...props} />
+    <Accordion
+        disableGutters={false}
+        elevation={0}
+        className="hello-accordion"
+        {...props}
+    />
 ))(() => ({
     "&::before": {
         content: '""',
@@ -37,33 +48,24 @@ interface DetailProps {
     value: string;
     width?: string;
 }
-export function Detail({ name, value, width } : DetailProps) {
+export function Detail({ name, value, width }: DetailProps) {
     return (
         <Flex direction="column" width={width ?? "25%"} gap="0.5rem">
-            <Text
-                text={name}
-                type="p"
-                size={14}
-            />
-            <Text
-                text={value}
-                type="p"
-                size={16}
-                weight={600}
-            />
+            <Text text={name} type="p" size={14} />
+            <Text text={value} type="p" size={16} weight={600} />
         </Flex>
-    )
+    );
 }
 
 interface ApplicationPreviewProps {
     isOpen: boolean;
     onClose: () => void;
-    applicationDetails: DetailsKeys,
-    personalInfo: PersonalInfoInterface,
-    familyMembers: FamilyInfoInterface[],
-    employment: EmploymentDetailsInterface[],
-    education: EducationDetailsInterface[],
-    documents: DocumentInterface[],
+    applicationDetails: DetailsKeys;
+    personalInfo: PersonalInfoInterface;
+    familyMembers: FamilyInfoInterface[];
+    employment: EmploymentDetailsInterface[];
+    education: EducationDetailsInterface[];
+    documents: DocumentInterface[];
     handleSubmit: () => void;
 }
 function ApplicationPreview({
@@ -77,21 +79,21 @@ function ApplicationPreview({
     documents,
     handleSubmit,
 }: ApplicationPreviewProps) {
-    const { isMobile } = useScreenResolution()
-    const [agree, setAgree] = useState(false)
-    const [step, setStep] = useState(1)
+    const { isMobile } = useScreenResolution();
+    const [agree, setAgree] = useState(false);
+    const [step, setStep] = useState(1);
 
     const prevStep = () => {
-        setStep(prev => Math.max(1, prev - 1) )
-    }
+        setStep((prev) => Math.max(1, prev - 1));
+    };
     const nextStep = () => {
-        setStep(prev => Math.min(1, prev + 1) )
-    }
+        setStep((prev) => Math.min(1, prev + 1));
+    };
 
     const finalSubmit = () => {
-        handleSubmit()
-        onClose()
-    }
+        handleSubmit();
+        onClose();
+    };
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -106,14 +108,20 @@ function ApplicationPreview({
                 borderRadius="16px"
                 position="relative"
             >
-                {step === 1 &&
+                {step === 1 && (
                     <One
                         applicationDetails={applicationDetails}
                         personalInfo={personalInfo}
                     />
-                }
+                )}
 
-                <Flex direction="column" width='90%' gap="1rem" position="fixed" styles={{ bottom: "40px" }}>
+                <Flex
+                    direction="column"
+                    // width="90%"
+                    gap="1rem"
+                    // position="fixed"
+                    // styles={{ bottom: "40px" }}
+                >
                     <CheckBox
                         onChange={(x) => setAgree(x.target.checked)}
                         checked={agree}
@@ -129,9 +137,22 @@ function ApplicationPreview({
                         />
                     </CheckBox>
 
-                    <Stack direction="row" justifyContent="space-between">
-                        <Stack direction="row">
-                            <Button variant='link' onClick={prevStep} disabled={step === 1}>
+                    <Flex
+                        direction="column"
+                        justify="space-between"
+                        align="center"
+                        gap="1rem"
+                    >
+                        <Flex
+                            direction="row"
+                            justify="space-between"
+                            width="100%"
+                        >
+                            <Button
+                                variant="link"
+                                onClick={prevStep}
+                                disabled={step === 1}
+                            >
                                 <Text
                                     text="Back"
                                     type="p"
@@ -140,7 +161,7 @@ function ApplicationPreview({
                                     size={16}
                                 />
                             </Button>
-                            <Button variant='link' onClick={nextStep}>
+                            <Button variant="link" onClick={nextStep}>
                                 <Text
                                     text="Next"
                                     type="p"
@@ -149,14 +170,14 @@ function ApplicationPreview({
                                     size={16}
                                 />
                             </Button>
-                        </Stack>
-                        <Stack direction="row">
+                        </Flex>
+                        <Flex direction="row" width="100%">
                             <Button
                                 disabled={!agree}
                                 onClick={finalSubmit}
                                 background={ttColors.dark}
-                                width="max-content"
-                                padding='1rem 2rem'
+                                width="100%"
+                                padding="1rem 2rem"
                             >
                                 <Text
                                     text="Proceed To Payment"
@@ -167,13 +188,12 @@ function ApplicationPreview({
                                     size={16}
                                 />
                             </Button>
-                        </Stack>
-                    </Stack>
+                        </Flex>
+                    </Flex>
                 </Flex>
-
             </Flex>
         </Modal>
-    )
+    );
 }
 
-export default ApplicationPreview
+export default ApplicationPreview;
