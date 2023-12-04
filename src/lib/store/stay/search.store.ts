@@ -1,6 +1,8 @@
 import {
     RoomForGuest,
     StaySearchFilters,
+    StaySearchMeta,
+    StaySearchSortEnum,
     StayTabInitialSearchQuery,
     StayTypeFilter,
 } from "@/lib/types/request-models/stay/search.type";
@@ -10,6 +12,8 @@ interface State {
     stayType: StayTypeFilter;
     stayTabInitialSearchQuery: StayTabInitialSearchQuery;
     staySearchFilters: StaySearchFilters;
+    staySearchSort: StaySearchSortEnum | null;
+    staySearchMeta: StaySearchMeta;
 }
 
 interface Actions {
@@ -22,12 +26,19 @@ interface Actions {
     addNewGuestRoom: () => void;
     deleteGuestRoom: (params: { index: number }) => void;
     updateStaySearchFilters: (params: StaySearchFilters) => void;
+    updateStaySearchSort: (payload: StaySearchSortEnum) => void;
+    updateStaySearchMeta: (payload: StaySearchMeta) => void;
 }
 
 export const useStaySearchStore = create<State & Actions>(
     (set): State & Actions => ({
         stayType: {},
         staySearchFilters: {},
+        staySearchSort: null,
+        staySearchMeta: {
+            page: 1,
+            limit: 10,
+        },
 
         stayTabInitialSearchQuery: {
             roomForGuests: [
@@ -98,6 +109,18 @@ export const useStaySearchStore = create<State & Actions>(
             console.log(params);
             set({
                 staySearchFilters: params,
+            });
+        },
+
+        updateStaySearchSort(payload) {
+            set({
+                staySearchSort: payload,
+            });
+        },
+
+        updateStaySearchMeta(payload) {
+            set({
+                staySearchMeta: payload,
             });
         },
     })

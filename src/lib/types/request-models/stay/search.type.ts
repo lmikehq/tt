@@ -85,7 +85,24 @@ export interface StaySearchFilters {
     [key: string]: string | string[] | number | undefined;
 }
 
-export interface SearchStayRequestRequestQuery extends StaySearchFilters {}
+export enum StaySearchSortEnum {
+    best = "best",
+    top_reviews = "top reviews",
+    lowest_prices = "lowest prices",
+    star_rating = "star rating",
+    distance = "distance",
+}
+export interface StaySearchSort {
+    sortBy?: string;
+}
+export interface StaySearchMeta {
+    limit: number;
+    page: number;
+}
+export interface SearchStayRequestRequestQuery
+    extends StaySearchFilters,
+        StaySearchSort,
+        StaySearchMeta {}
 
 export interface ManyStaysRequestInput {
     checkin: string;
