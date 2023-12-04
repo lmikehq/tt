@@ -148,6 +148,7 @@ export interface FamilyInfoInterface {
     membersPhoneNumber?: string;
     membersEmail?: string;
     accompanying: boolean;
+    maritalStatus?: string;
     issueDate?: string;
     expiryDate?: string;
     issueCountry?: CountryType;

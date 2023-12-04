@@ -912,6 +912,50 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
         </Flex>
               
+        {String(formik.values.hasGreenCard) == 'true' && (
+            <Flex
+                margin="0"
+                justify="space-between"
+                direction={isMobile ? "column" : "row"}
+                gap={isMobile ? "0px" : "1.5rem"}
+            >
+            <Section>
+                <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Document Number"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                    />
+                    <Required />
+                </Flex>
+                <FieldInput
+                    name="greenCardNumber"
+                    formik={formik}
+                    placeholder="Enter document number"
+                />
+            </Section>
+            <Section width="100%">
+                <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Document Expiry Date"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                    />
+                    <Required />
+                </Flex>
+                <FieldAsDate
+                    name="greenCardExpiryDate"
+                    placeholder="Select green card expiry date"
+                    formik={formik}
+                    format="DD/MM/YYYY"
+                    styles={{ paddingBottom: '0' }}
+                />
+            </Section>
+            </Flex>         
+        )}
+              
         {/* Marriage Information */}
         <Text
             type="p"
@@ -1018,50 +1062,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 </Section>
             </Flex>
         )}    
-        
-        {String(formik.values.hasGreenCard) == 'true' && (
-            <Flex
-                margin="0"
-                justify="space-between"
-                direction={isMobile ? "column" : "row"}
-                gap={isMobile ? "0px" : "1.5rem"}
-            >
-            <Section>
-                <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Document Number"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                </Flex>
-                <FieldInput
-                    name="greenCardNumber"
-                    formik={formik}
-                    placeholder="Enter document number"
-                />
-            </Section>
-            <Section width="100%">
-                <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Document Expiry Date"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                </Flex>
-                <FieldAsDate
-                    name="greenCardExpiryDate"
-                    placeholder="Select green card expiry date"
-                    formik={formik}
-                    format="DD/MM/YYYY"
-                    styles={{ paddingBottom: '0' }}
-                />
-            </Section>
-            </Flex>         
-        )}
 
         {/* Purpose of Trip */}
         <Text

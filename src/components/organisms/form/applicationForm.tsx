@@ -120,8 +120,8 @@ function ApplicationForm() {
   const detailsFormik = useFormik({
     initialValues: tripDetails,
     enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: detailsSchema,
+    // validateOnMount: true,
+    // validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
       if (isLoading) return;
       nextStep({ data: { tripDetails: values } });
@@ -131,8 +131,8 @@ function ApplicationForm() {
   const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
     initialValues: personalInfo,
     enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: personalInfoSchema,
+    // validateOnMount: true,
+    // validationSchema: personalInfoSchema,
     // validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       if (isLoading) return;
@@ -143,8 +143,8 @@ function ApplicationForm() {
   const educationFormik = useFormik({
     initialValues: { education },
     enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: manyEducationSchema,
+    // validateOnMount: true,
+    // validationSchema: manyEducationSchema,
     onSubmit: (values) => {
       if (isLoading) return;
       nextStep({ data: { education: values.education } });
@@ -155,8 +155,8 @@ function ApplicationForm() {
   const employmentFormik = useFormik({
     initialValues: { employment },
     enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: manyEmploymentSchema,
+    // validateOnMount: true,
+    // validationSchema: manyEmploymentSchema,
     onSubmit: (values) => {
       if (isLoading) return;
       nextStep({ data: { employment: values.employment } });
@@ -169,7 +169,8 @@ function ApplicationForm() {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: familyInfoSchema,
-    onSubmit: (values) => {
+      onSubmit: (values, formikHelpers) => {
+        formikHelpers.validateForm().then(res => console.log('vali', res)).catch(err => console.log('vali', err))
       if (isLoading) return;
       nextStep({ data: { familyMembers: values.familyMembers } });
     },
@@ -273,7 +274,7 @@ function ApplicationForm() {
     fetchRecentProgressFromSession();
   }, [params]);
     
-    console.log(form)
+    console.log(familyMembersFormik.values)
 
   return (
     <>
