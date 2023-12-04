@@ -45,9 +45,14 @@ var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
 function BookingLoader() {
-    const { queryParams } = useQueryParams()
-    if(!queryParams?.bnum || !queryParams?.booking_token || !queryParams?.adults || !queryParams?.children) {
-        redirect('/flight/listings')
+    const { queryParams } = useQueryParams();
+    if (
+        !queryParams?.bnum ||
+        !queryParams?.booking_token ||
+        !queryParams?.adults ||
+        !queryParams?.children
+    ) {
+        redirect("/flight/listings");
     }
     const { isMobile } = useScreenResolution();
     const { searchQuery } = useFlightBookingStore((state) => state);
@@ -124,6 +129,8 @@ const FlightBookingPage = () => {
         checkFlightsResponse,
         setInitCheckFlightsMode,
         setParticularSeats,
+        savedBooking,
+        setSavedBooking,
     } = useFlightBookingStore((state) => state);
 
     const searchParams = extractSearchParamsFromUrl({
@@ -355,9 +362,13 @@ const FlightBookingPage = () => {
         return () => {
             intervalIds.current.forEach(clearInterval);
             setParticularSeats([]);
+            setSavedBooking(false);
         };
     }, []);
 
+    useEffect(() => {
+        if (savedBooking) intervalIds.current.forEach(clearInterval);
+    }, [savedBooking]);
     return (
         <Section>
             <SectionLayout>
@@ -397,7 +408,9 @@ const FlightBookingPage = () => {
                                 case 2:
                                 case 3:
                                     return (
-                                        <PriceSummary checkedBags={checkedBags} />
+                                        <PriceSummary
+                                            checkedBags={checkedBags}
+                                        />
                                     );
                                 case 4:
                                     return <SeatSelectionMenu />;
@@ -444,5 +457,3 @@ const FlightBookingPage = () => {
 };
 
 export default FlightBookingPage;
-
-
