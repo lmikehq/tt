@@ -35,7 +35,6 @@ function CheckBox({
                 ".MuiFormControlLabel-label": {
                     fontSize: '14px'
                 },
-                ...style
             }}
           />
         }

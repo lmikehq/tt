@@ -13,8 +13,8 @@ import { useState } from "react";
 import SectionTitle from "src/components/molecules/sectionTitle";
 import styled from "styled-components";
 import {
-  COUNTRY_FLAGS,
-  availableCountries,
+    COUNTRY_FLAGS,
+    availableCountries,
 } from "../../../lib/extensions/data/data";
 import AllCountryHead from "./allCountryHead";
 
@@ -183,146 +183,154 @@ import AllCountryHead from "./allCountryHead";
 // import AllCountryHead from "./allCountryHead";
 
 const CountryWrapper = styled.section`
-  // margin: 5rem 0;
+    // margin: 5rem 0;
 `;
 
 const Card = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 16px;
-  gap: 16px;
-  margin-bottom: 1rem;
-  height: 55px;
-  color: var(--secondary-color);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+    gap: 16px;
+    margin-bottom: 1rem;
+    height: 55px;
+    color: var(--secondary-color);
 
-  background: #ffffff;
+    background: #ffffff;
 
-  /* Cards Shadow */
-  box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-  border-radius: 16px;
-
-  & img {
-    width: 58.5px;
-    height: 40px;
-  }
-
-  & h3 {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
-  }
-
-  @media screen and (max-width: 900px) {
-    padding: 10px;
-    height: 48px;
-    border-radius: 5px;
+    /* Cards Shadow */
+    box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+    border-radius: 16px;
 
     & img {
-      width: 45px;
-      height: 30px;
+        width: 58.5px;
+        height: 40px;
     }
 
     & h3 {
-      font-size: 13px;
-      line-height: 15px;
-      margin-bottom: 0rem;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        opacity: 0.7;
+        margin-bottom: 0.5rem;
     }
-  }
+
+    @media screen and (max-width: 900px) {
+        padding: 10px;
+        height: 48px;
+        border-radius: 5px;
+
+        & img {
+            width: 45px;
+            height: 30px;
+        }
+
+        & h3 {
+            font-size: 13px;
+            line-height: 15px;
+            margin-bottom: 0rem;
+        }
+    }
 `;
 
 const CountriesList = () => {
-  const { isMobile } = useScreenResolution();
-  const [showAll, setShowAll] = useState(false);
-  const countriesPerPage = 48;
-  // const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
-  // const [displayedCountries, setDisplayedCountries] = useState(
-  //   countries.slice(0, countriesPerPage)
-  // );
+    const { isMobile } = useScreenResolution();
+    const [showAll, setShowAll] = useState(false);
+    const countriesPerPage = 48;
+    // const countries = COUNTRY_FLAGS.sort((a, b) => a.name.localeCompare(b.name));
+    // const [displayedCountries, setDisplayedCountries] = useState(
+    //   countries.slice(0, countriesPerPage)
+    // );
 
-  // const handleSeeMore = (e: any) => {
-  //   e.preventDefault();
-  //   if (showAll) {
-  //     setDisplayedCountries(countries.slice(0, countriesPerPage));
-  //     setShowAll(false);
-  //   } else {
-  //     const remainingCountries = countries.slice(
-  //       displayedCountries.length,
-  //       displayedCountries.length + 24
-  //     );
+    // const handleSeeMore = (e: any) => {
+    //   e.preventDefault();
+    //   if (showAll) {
+    //     setDisplayedCountries(countries.slice(0, countriesPerPage));
+    //     setShowAll(false);
+    //   } else {
+    //     const remainingCountries = countries.slice(
+    //       displayedCountries.length,
+    //       displayedCountries.length + 24
+    //     );
 
-  //     if (remainingCountries.length > 0) {
-  //       setDisplayedCountries((prevCountries) => [
-  //         ...prevCountries,
-  //         ...remainingCountries,
-  //       ]);
-  //       if (
-  //         displayedCountries.length + remainingCountries.length ===
-  //         countries.length
-  //       ) {
-  //         setShowAll(true);
-  //       }
-  //     } else {
-  //       setDisplayedCountries(countries.slice(0, countriesPerPage));
-  //       setShowAll(true);
-  //     }
-  //   }
-  // };
+    //     if (remainingCountries.length > 0) {
+    //       setDisplayedCountries((prevCountries) => [
+    //         ...prevCountries,
+    //         ...remainingCountries,
+    //       ]);
+    //       if (
+    //         displayedCountries.length + remainingCountries.length ===
+    //         countries.length
+    //       ) {
+    //         setShowAll(true);
+    //       }
+    //     } else {
+    //       setDisplayedCountries(countries.slice(0, countriesPerPage));
+    //       setShowAll(true);
+    //     }
+    //   }
+    // };
 
-  const coverImage = isMobile
-    ? "/assets/images/visaPageCover.jpg"
-    : "/assets/images/visaDesktopCover.jpg";
+    const coverImage = isMobile
+        ? "/assets/images/visaPageCover.jpg"
+        : "/assets/images/visaDesktopCover.jpg";
 
-  return (
-    <CountryWrapper>
-      <AllCountryHead cover={coverImage} title="ALL COUNTRIES" />
-      <SectionLayout>
-        <SectionTitle
-          title="All the countries we support!"
-          description="Explore our popular destinations to find the best option for your next adventure!"
-          buttonText="See More"
-          showButton={false}
-        />
-        <Grid
-          columns={isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)"}
-          style={{
-            gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
-          }}
-          gap={isMobile ? ".8rem" : "1.5rem"}
-          margin="2rem 0 0"
-        >
-          {availableCountries.map((country, index) => (
-            <Link href={`/visa/countries/${urlString(country)}`} key={index}>
-              <Flex
-                background="#fff"
-                align="center"
-                gap="2rem"
-                padding="15px"
-                borderRadius="12px"
-              >
-                <Image
-                  src={
-                    COUNTRY_FLAGS.find(
-                      (item) => item.name.toLocaleLowerCase() == country
-                    )?.flag || COUNTRY_FLAGS[0].flag
-                  }
-                  alt={country}
-                  width={50}
+    return (
+        <CountryWrapper>
+            <AllCountryHead cover={coverImage} title="ALL COUNTRIES" />
+            <SectionLayout>
+                <SectionTitle
+                    title="All the countries we support!"
+                    description="Explore our popular destinations to find the best option for your next adventure!"
+                    buttonText="See More"
+                    showButton={false}
                 />
-                <Text
-                  text={
-                    country.charAt(0).toLocaleUpperCase() + country.slice(1)
-                  }
-                  type="p"
-                />
-              </Flex>
-            </Link>
-          ))}
-        </Grid>
-        <Flex justify="center" margin="2rem 0 0">
+                <Grid
+                    columns={isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)"}
+                    style={{
+                        gridTemplateColumns: isMobile
+                            ? "repeat(2, 1fr)"
+                            : "repeat(4, 1fr)",
+                    }}
+                    gap={isMobile ? ".8rem" : "1.5rem"}
+                    margin="2rem 0 0"
+                >
+                    {availableCountries.map((country, index) => (
+                        <Link
+                            href={`/visa/countries/${urlString(country)}`}
+                            key={index}
+                        >
+                            <Flex
+                                background="#fff"
+                                align="center"
+                                gap="2rem"
+                                padding="15px"
+                                borderRadius="12px"
+                            >
+                                <Image
+                                    src={
+                                        COUNTRY_FLAGS.find(
+                                            (item) =>
+                                                item.name.toLocaleLowerCase() ==
+                                                country
+                                        )?.flag || COUNTRY_FLAGS[0].flag
+                                    }
+                                    alt={country}
+                                    width={50}
+                                />
+                                <Text
+                                    text={
+                                        country.charAt(0).toLocaleUpperCase() +
+                                        country.slice(1)
+                                    }
+                                    type="p"
+                                />
+                            </Flex>
+                        </Link>
+                    ))}
+                </Grid>
+                {/* <Flex justify="center" margin="2rem 0 0">
           {COUNTRY_FLAGS.length > countriesPerPage && (
             <Button
               background="transparent"
@@ -336,10 +344,10 @@ const CountriesList = () => {
               {showAll ? "See Less" : "See More"}
             </Button>
           )}
-        </Flex>
-      </SectionLayout>
-    </CountryWrapper>
-  );
+        </Flex> */}
+            </SectionLayout>
+        </CountryWrapper>
+    );
 };
 
 export default CountriesList;

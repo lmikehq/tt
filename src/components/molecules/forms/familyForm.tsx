@@ -347,19 +347,19 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
             <Section margin="0">
               <Text type="p" text="Issue Date" margin="0 0 .5rem" />
               <FieldAsDate
-                name={`familyMembers.${count}.issueDate`}
-                placeholder="Select Issue Date"
+                name={`familyMembers.${count}.issueYear`}
+                placeholder="Select Issue Year"
                 formik={formik}
-                // views={["year"]}
+                views={["year"]}
               />
             </Section>
             <Section margin="0">
               <Text type="p" text="Expiry Date" margin="0 0 .5rem" />
               <FieldAsDate
-                name={`familyMembers.${count}.expiryDate`}
-                placeholder="Select Expiry Date"
+                name={`familyMembers.${count}.expiryYear`}
+                placeholder="Select Expiry Year"
                 formik={formik}
-                // views={["year"]}
+                views={["year"]}
               />
             </Section>
         </Flex>
