@@ -391,7 +391,7 @@ const FlightBookingPage = () => {
                         text="Flight Not Found"
                         subText="Please try searching for a new flight"
                     >
-                        <Button onClick={() => router.push('/flight/listings')}>
+                        <Button onClick={() => router.push('/flight/listings')} padding="0 1rem">
                             <Text
                                 text="Go to Search"
                                 type='p'
