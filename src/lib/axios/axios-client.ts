@@ -80,7 +80,7 @@ kiwiClient.interceptors.response.use(
     }
 );
 const kiwiResourceClient: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
+    baseURL: process.env.NEXT_PUBLIC_API_SERVER,
     timeout: 40000,
     //   withCredentials: true,
     headers: {
