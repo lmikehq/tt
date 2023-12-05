@@ -77,7 +77,7 @@ function DashboardTabs() {
     return (
         <Wrapper>
             <RTQueryClient>
-                <CustomTab shadowShow tabItems={tabItems} />
+                <CustomTab shadowShow tabItems={tabItems} variant="fullWidth" />
             </RTQueryClient>
         </Wrapper>
     );

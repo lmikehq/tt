@@ -58,6 +58,7 @@ const Application = () => {
                     defaultIcons
                     addBackgroundColor
                     addColor
+                    variant="fullWidth"
                 />
             </SectionTabs>
         </Section>
