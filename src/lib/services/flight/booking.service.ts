@@ -24,7 +24,6 @@ import {
 import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
 
-
 export class FlightBookingService {
     static searchFlights = async ({
         data,
@@ -33,10 +32,9 @@ export class FlightBookingService {
     }) => {
         const query = constructQueryFromParams(data);
         return await kiwiClient
-        .get<any, SearchFlightsResponse>(`/search${query}`)
-        .then((response) => {
-                return response
-
+            .get<any, SearchFlightsResponse>(`/search${query}`)
+            .then((response) => {
+                return response;
             })
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
@@ -67,7 +65,7 @@ export class FlightBookingService {
             .post<any, any>("/booking/ancillaries/offers/check", data)
             .then((response) => response)
             .catch((error) => {
-                toast.error(error.response?.errorMessage);
+                toast.error("Unable to fetch seats");
                 throw error;
             });
     };
@@ -103,7 +101,10 @@ export class FlightBookingService {
         bookingId: string;
     }) => {
         return await kiwiResourceClient
-            .get<any, GetFlightBookingByIdResponse>(`/flight/bookings/get/${bookingId}`, {})
+            .get<any, GetFlightBookingByIdResponse>(
+                `/flight/bookings/get/${bookingId}`,
+                {}
+            )
             .then((response) => response)
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
