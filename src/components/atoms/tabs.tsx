@@ -110,6 +110,7 @@ export default function CustomTab({
     activeTab,
     setActiveTab,
     aside,
+    variant = "standard",
 }: {
     tabItems: any[];
     defaultIcons?: boolean;
@@ -120,6 +121,7 @@ export default function CustomTab({
     activeTab?: number;
     setActiveTab?: (value: number) => void;
     aside?: ReactNode;
+    variant?: "fullWidth" | "scrollable" | "standard" | undefined;
 }) {
     const [value, setValue] = useState(0);
 
@@ -145,7 +147,7 @@ export default function CustomTab({
                 <Tabs
                     value={value}
                     onChange={handleChange}
-                    variant={isMobile ? "scrollable" : "fullWidth"}
+                    variant={isMobile ? "scrollable" : variant}
                     aria-label="select your service"
                     scrollButtons="auto"
                     sx={{
