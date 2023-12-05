@@ -685,6 +685,8 @@ function AvailableFlights() {
         return () => clearInterval(interval);
     }, []);
 
+    console.log('ss', searchFlightsResults)
+
     return (
         <Flex
             direction="column"

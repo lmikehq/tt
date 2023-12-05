@@ -149,6 +149,7 @@ export interface FamilyInfoInterface {
     address?: string;
     membersPhoneNumber?: string;
     membersEmail?: string;
+    membersOccupation?: string;
     accompanying: boolean;
     maritalStatus?: string;
     issueYear?: string;

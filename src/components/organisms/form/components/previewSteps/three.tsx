@@ -22,7 +22,7 @@ function Three({ employmentInfo = [] }: ThreeProps) {
         <Flex direction='column' padding='1rem 0' gap="1rem" height='77%'>
             <Stack direction="row">
                 <Text
-                    text={`Visa Application Preview (2/5)`}
+                    text={`Visa Application Preview (3/5)`}
                     type="h2"
                     size={18}
                     weight={600}
@@ -33,8 +33,8 @@ function Three({ employmentInfo = [] }: ThreeProps) {
                 {employmentInfo.map((employment, index) =>
                     <MyAccordion
                         heading={`Employment Details ${index + 1}`}
-                        toggle={() => toggleAcc(0)}
-                        isOpen={isOpenAcc === 0}
+                        toggle={() => toggleAcc(index)}
+                        isOpen={isOpenAcc === index}
                         key={`employment-${index}`}
                     >
                         <Flex width='100%' wrap="wrap" gap="1rem">

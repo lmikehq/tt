@@ -25,6 +25,7 @@ interface SearchInputAsLocationTypesProps {
     value?: KiwiLocation | RateHawkRegionType;
     placeholder: string;
     loading: boolean;
+    defaultText?: string;
 }
 
 export default function SearchInputAsLocationTypes({
@@ -34,6 +35,7 @@ export default function SearchInputAsLocationTypes({
     value,
     placeholder,
     loading,
+    defaultText,
 }: SearchInputAsLocationTypesProps) {
     const fieldRef = React.useRef<HTMLDivElement | null>(null);
     const fieldWidth = fieldRef?.current
@@ -43,6 +45,7 @@ export default function SearchInputAsLocationTypes({
     const handleSetSearchTextDebounce = debounce((value: string) => {
         handleSetSearchText({ text: value });
     }, 800);
+
 
     const PopperMy = (props: any) => (
         <Popper
