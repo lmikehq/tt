@@ -111,8 +111,8 @@ export interface PersonalInfoInterface {
     participatedInViolentActivitiesDetails?: string;
 
     //added-details
-    // countryOfApply?: string,
-    // countryOfResidence?: string,
+    countryOfApply?: CountryType,
+    countryOfResidence?: CountryType,
     statusOfResidence?: string;
     startDateOfResidence?: string;
     changeOfName?: boolean | null;
