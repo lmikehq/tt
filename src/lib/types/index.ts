@@ -334,6 +334,8 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             delete member.section;
             delete member.index;
             delete member.membersOccupation;
+            delete member.issueCountry;
+            delete member.maritalStatus;
             return ({
                 ...member,
                 issueYear: String(safelyConvertToNumber(member?.issueYear)),
