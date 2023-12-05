@@ -189,7 +189,7 @@ const TripSummary = ({
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
-                    ...(!user
+                    ...(!user.id
                         ? { new_user_email: contactDetailsFormik.values.email }
                         : { user: user?.id }),
 
@@ -235,7 +235,7 @@ const TripSummary = ({
     });
 
     const checkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         formik.validateForm();
         contactDetailsFormik.validateForm();
         // if (!formik.isValid) {
