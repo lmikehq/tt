@@ -40,7 +40,7 @@ interface FormProps {
 }
 
 function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
-  const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution();
     const { mode, form } = useApplicationFormStore((state) => state);
     const { queryParams } = useQueryParams()
 
@@ -48,8 +48,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
     
     const destination = `${queryParams?.destination ?? 'your destination'}`
 
-
-  const country = COUNTRY_FLAGS.find(
+    const country = COUNTRY_FLAGS.find(
         (country) => country.name === form.tripDetails.homeCountry.name
     );
     const states: IState[] = State.getStatesOfCountry(`${country?.code}`);
@@ -517,12 +516,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldAsString
-              formik={formik}
-              options={COUNTRY_FLAGS.map((x) => ({
-                name: x.name,
-                flag: x.flag,
-                code: x.code,
-              }))}
+                formik={formik}
+                options={COUNTRY_FLAGS.map((x) => ({
+                    name: x.name,
+                    flag: x.flag,
+                    code: x.code,
+                }))}
               name="countryofApply"
               placeholder="Select country where applying"
             />
@@ -982,22 +981,22 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
                 <FieldString
-                options={[
-                    "Single",
-                    "Married",
-                    "Divorced",
-                    "Widowed",
-                    "Separated",
-                    "Annulled",
-                    "Domestic Partnership/Civil Union",
-                    "Common-Law Marriage",
-                    "Registered Partnership",
-                    "Cohabiting",
-                    "Remarried",
-                ]}
-                placeholder="Select your marital status"
-                name="maritalStatus"
-                formik={formik}
+                    options={[
+                        "Single",
+                        "Married",
+                        "Divorced",
+                        "Widowed",
+                        "Separated",
+                        "Annulled",
+                        "Domestic Partnership/Civil Union",
+                        "Common-Law Marriage",
+                        "Registered Partnership",
+                        "Cohabiting",
+                        "Remarried",
+                    ]}
+                    placeholder="Select your marital status"
+                    name="maritalStatus"
+                    formik={formik}
                 />
           </Section>
           {formik.values.maritalStatus === "Married" && (

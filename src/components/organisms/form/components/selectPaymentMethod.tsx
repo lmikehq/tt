@@ -137,24 +137,26 @@ const SelectPaymentMethod = () => {
         <ContinueButton
           isLoading={mode == Mode.loading || useVoucherMode == Mode.loading}
           onClick={() => {
-            if (!createVisaApplicationResponse) return;
-            applied && voucher
-              ? // eslint-disable-next-line react-hooks/rules-of-hooks
-                useVoucher({
-                  promoCode: voucher,
-                  serviceId: createVisaApplicationResponse.visa,
-                }).then((response) => {
-                  setModalOpen(true);
-                })
-              : createFormFeeCharge({
-                  data: createVisaApplicationResponse,
-                }).then((response) => {
-                  window.open(response.data.checkout_url, "_self");
-                });
-          }}
-          buttonText={
-            applied && voucher ? "Complete application" : "Make payment"
-          }
+                if (!createVisaApplicationResponse) return;
+                if (applied && voucher) {
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                    useVoucher({
+                        promoCode: voucher,
+                        serviceId: createVisaApplicationResponse.visa,
+                    }).then((response) => {
+                        setModalOpen(true);
+                    })
+                } else {
+                    createFormFeeCharge({
+                      data: createVisaApplicationResponse,
+                    }).then((response) => {
+                      window.open(response.data.checkout_url, "_self");
+                    });
+                }
+            }}
+            buttonText={
+                applied && voucher ? "Complete application" : "Make payment"
+            }
         />
       </Section>
     </>

@@ -60,7 +60,7 @@ export interface EmploymentDetailsInterface {
     companyName: string;
     jobTitle: string;
     employmentType: string;
-    locationType: string;
+    locationType?: string;
     companyLocation: string;
     startYear: number | null;
     endYear?: number | null;
@@ -80,7 +80,7 @@ export interface PersonalInfoInterface {
     meansOfId: string;
     idNumber: string;
     issueDate: string;
-    expiryDate?: string | null;
+    expiryDate?: string;
 
     address: string;
     countryOfCitizen: CountryType;
@@ -111,6 +111,8 @@ export interface PersonalInfoInterface {
     participatedInViolentActivitiesDetails?: string;
 
     //added-details
+    // countryOfApply?: string,
+    // countryOfResidence?: string,
     statusOfResidence?: string;
     startDateOfResidence?: string;
     changeOfName?: boolean | null;
@@ -149,8 +151,8 @@ export interface FamilyInfoInterface {
     membersEmail?: string;
     accompanying: boolean;
     maritalStatus?: string;
-    issueDate?: string;
-    expiryDate?: string;
+    issueYear?: string;
+    expiryYear?: string;
     issueCountry?: CountryType;
     passportNumber?: string;
     gender?: string;
@@ -322,11 +324,15 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             endDatePrevResidence2: data.personalInfo.endDatePrevResidence2,
             endDatePrevResidence3: data.personalInfo.endDatePrevResidence3,
         },
-        familyMembers: data.familyMembers.map((member) => ({
-            ...member,
-            issueDate: member?.issueDate,
-            expiryDate: member?.expiryDate,
-        })),
+        familyMembers: data.familyMembers.map((member) => {
+            delete member.section;
+            delete member.index;
+            return ({
+                ...member,
+                issueYear: member?.issueYear,
+                expiryYear: member?.expiryYear,
+            })
+        }),
         documents: data.documents,
     };
     if (user?._id)
