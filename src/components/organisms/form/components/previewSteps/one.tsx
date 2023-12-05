@@ -90,11 +90,25 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                         <Detail name="Gender" value={personalInfo?.gender} width='45%' />
                         <Detail name="Passport Number" value={personalInfo?.passportNumber} width='45%' />
                         <Detail name="Issued Country" value={personalInfo?.passportIssuedCountry?.name} width='45%' />
-                        <Detail name="Issued Date" value={formatDate(personalInfo?.passportIssuedDate ?? "'")} width='45%' />
-                        <Detail name="Expiry Date" value={formatDate(personalInfo?.passportExpiryDate ?? "'")} width='45%' />
+                        <Detail name="Issued Date" value={formatDate(personalInfo?.passportIssuedDate ?? '')} width='45%' />
+                        <Detail name="Expiry Date" value={formatDate(personalInfo?.passportExpiryDate ?? '')} width='45%' />
                         
                         <Divider sx={{ width: '100%' }} />
                         <Detail name="Are you a lawful permanent Resident of the United States with a valid alien registration card (Green Card)?" value={Boolean(personalInfo?.hasGreenCard) ? "Yes" : "No"} width='45%' />
+                        <Detail name="Document Number" value={personalInfo?.greenCardNumber} width='45%' />
+                        <Detail name="Expiry Date" value={formatDate(personalInfo?.greenCardExpiryDate ?? '')} width='45%' />
+                        
+                        <Divider sx={{ width: '100%' }} />
+                        <Detail name="Marital Status" value={personalInfo?.maritalStatus} width='45%' />
+                        {personalInfo.maritalStatus === "Married" && <Detail name="Marriage Start Date" value={formatDate(personalInfo?.marriageStartDate ?? '')} width='45%' />}
+                        {personalInfo.maritalStatus === "Married" && <Detail name="Marriage End Date" value={formatDate(personalInfo?.marriageEndDate ?? '')} width='45%' />}
+                        
+                        <Divider sx={{ width: '100%' }} />
+                        <Detail name="Main Purpose of your Trip" value={personalInfo?.tripPurpose} width='100%' />
+                        <Detail name="Start Duration" value={formatDate(personalInfo?.tripDurationStartDate ?? '')} width='45%' />
+                        <Detail name="End Duration" value={formatDate(personalInfo?.tripDurationEndDate ?? '')} width='45%' />
+                        <Detail name="Where do you intend to work or stay?" value={personalInfo?.tripDurationLocation} width='45%' />
+                        <Detail name="Do you know anybody there?" value={Boolean(personalInfo?.hasContactInLocation) ? 'Yes' : 'No'} width='45%' />
                     </Flex>
                 </MyAccordion>
             </Flex>
