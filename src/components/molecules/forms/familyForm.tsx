@@ -10,7 +10,7 @@ import Required from "@atom/required";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
 import { Switch } from "@mui/material";
-import { CHILD_RELATIONSHIPS, PRINCIPAL_RELATIONSHIPS, SIBLING_RELATIONSHIPS } from "@lib/extensions/data/utilData";
+import { IMMEDIATE_RELATIONSHIPS, PRINCIPAL_RELATIONSHIPS, SIBLING_RELATIONSHIPS } from "@lib/extensions/data/utilData";
 import { FieldArrayRenderProps, FormikValues } from "formik";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import React from "react";
@@ -22,10 +22,15 @@ import PhoneInput from "react-phone-input-2";
 import dayjs from "dayjs";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 const sectionDesc = {
-    A: "Comprises Principal applicant, and other three subordinates (Spouse, Father and Mother). Click on the Plus Icon to add subordinates",
-    B: "Comprises all Sons and daughters. Click on the Plus Icon to add subordinates",
-    C: "Comprises Brothers and sisters. Click on the Plus Icon to add subordinates",
+    A: "Comprises Principal applicant, and other three subordinates (Father and Mother). Click on the Plus Icon to add subordinates",
+    B: "Comprises Brothers and sisters. Click on the Plus Icon to add subordinates",
+    C: "Comprises all Spouse, Sons and daughters. Click on the Plus Icon to add subordinates",
 }
+const sectionName = {
+    A: "PARENT DETAILS",
+    B: "SIBLINGS DETAILS",
+    C: "IMMEDIATE FAMILY DETAILS",
+} as { [k: string]: string }
 
 
 interface formProps {
@@ -40,7 +45,7 @@ interface formProps {
 export default function FamilyForm({ formik, count, values, arrayHelpers, isFirst }: formProps) {
     const { isMobile } = useScreenResolution();
     
-    const relationshipOptions = values?.section === "A" ? PRINCIPAL_RELATIONSHIPS : values?.section === "B" ? CHILD_RELATIONSHIPS : SIBLING_RELATIONSHIPS
+    const relationshipOptions = values?.section === "A" ? PRINCIPAL_RELATIONSHIPS : values?.section === "B" ? SIBLING_RELATIONSHIPS : IMMEDIATE_RELATIONSHIPS
         
         
   return (
@@ -50,7 +55,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                     <Flex direction="column" justify="flex-start" gap="1rem">
                         <Text
                             type="h3"
-                            text={`SECTION ${values?.section}`}
+                            text={`SECTION ${sectionName[values?.section as keyof typeof sectionName]}`}
                             size={20}
                             weight={600}
                         />
@@ -128,74 +133,77 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
         />
         </Section>
           
-      <Flex
-        justify="space-between"
-        direction={isMobile ? "column" : "row"}
-        gap={isMobile ? "0px" : "1.5rem"}
-      >
+        <Flex
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+        >
+        {['A', 'C'].includes(values?.section ?? '') && (
+            <Section width="100%">
+                <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Member's Occupation"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                    />
+                    <Required />
+                </Flex>
+                <FieldInput
+                    name={`familyMembers.${count}.membersOccupation`}
+                    formik={formik}
+                    placeholder="Enter member's occupation"
+                />
+            </Section>
+        )}
         <Section margin="0">
-          <Flex align="center" gap="0.25rem">
-            <Text
-              type="p"
-              text="Member's Email"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-            />
-            <Required />
-          </Flex>
-          <FieldInput
-            type="text"
-            formik={formik}
-            name={`familyMembers.${count}.membersEmail`}
-            placeholder="Enter Member's Email Address"
-          />
-        </Section>
-        <Section margin="0">
-          <Flex align="center" gap="0.25rem">
-            <Text
+            <Flex align="center" gap="0.25rem">
+                <Text
                 type="p"
-                text={`Member's Phone Number`}
+                text="Member's Email"
                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                 />
                 <Required />
             </Flex>
-            <PhoneInput
-                country={"ng"}
-                autoFormat={true}
-                inputProps={{
-                    name: `familyMembers.${count}.membersPhoneNumber`,
-                }}
-                onChange={(e) => {
-                    formik.setFieldValue(`familyMembers.${count}.membersPhoneNumber`, e);
-                }}
-                inputClass="w"
-                placeholder="Enter member's phone number"
+            <FieldInput
+                type="text"
+                formik={formik}
+                name={`familyMembers.${count}.membersEmail`}
+                placeholder="Enter Member's Email Address"
             />
-        </Section>
+            </Section>
         </Flex>
           
-        {['A', 'C'].includes(values?.section ?? '') && (
+        {['A', 'B', 'C'].includes(values?.section ?? '') && (
             <Flex
                 margin="0"
                 justify="space-between"
                 direction={isMobile ? "column" : "row"}
                 gap={isMobile ? "0px" : "1.5rem"}
             >
-                <Section width="100%">
+                <Section margin="0">
                     <Flex align="center" gap="0.25rem">
                         <Text
                             type="p"
-                            text="Member's Occupation"
+                            text={`Member's Phone Number`}
                             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                            size={15}
+                            />
+                            <Required />
+                        </Flex>
+                        <PhoneInput
+                            country={"ng"}
+                            autoFormat={true}
+                            inputProps={{
+                                name: `familyMembers.${count}.membersPhoneNumber`,
+                            }}
+                            onChange={(e) => {
+                                formik.setFieldValue(`familyMembers.${count}.membersPhoneNumber`, e);
+                            }}
+                            inputClass="w"
+                            placeholder="Enter member's phone number"
                         />
-                        <Required />
-                    </Flex>
-                    <FieldInput
-                        name={`familyMembers.${count}.membersOccupation`}
-                        formik={formik}
-                        placeholder="Enter member's occupation"
-                    />
-                </Section>
+                  </Section>
+                  
                 {['C'].includes(values?.section ?? '') &&
                     <Section width="100%">
                         <Flex align="center" gap="0.25rem">
@@ -330,6 +338,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                         name: x.name,
                         flag: x.flag,
                         code: x.code,
+
                     }))}
                     name={`familyMembers.${count}.issueCountry`}
                     formik={formik}

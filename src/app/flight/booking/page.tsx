@@ -109,7 +109,7 @@ function BookingLoader() {
                     styles={{ minWidth: "max-content" }}
                     type="p"
                     size={14}
-                    text={dayjs().format("ddd, Do MMM")}
+                    text={dayjs(flight.departureDate).format("ddd, Do MMM")}
                     color={ttColors.foundation.black}
                 />
             </Flex>

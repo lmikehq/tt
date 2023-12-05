@@ -13,14 +13,14 @@ import { EmploymentDetailsInterface } from "@lib/types";
 interface formProps {
   formik: FormikValues;
   count: number;
+  length: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   values: EmploymentDetailsInterface;
 }
 
-export default function EmploymentForm({ formik, count, values }: formProps) {
+export default function EmploymentForm({ formik, count, length, values }: formProps) {
     const { isMobile } = useScreenResolution();
     
-    console.log(values)
 
   return (
     <Section height="unset">
@@ -28,7 +28,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
         <Flex align="center" gap="0.25rem">
           <Text
             type="p"
-            text={`Company Name ${count + 1}`}
+            text={`Company Name ${length > 1 ? count + 1 : ''}`}
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />

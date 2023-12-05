@@ -522,7 +522,7 @@ const SeatSelection = () => {
                     <Section
                         padding="3rem 3.5rem"
                         height="unset"
-                        maxWidth={isMobile? "95vw" : "35vw"}
+                        maxWidth={isMobile? "95vw" : "40vw"}
                     >
                         <Flex direction="column" justify="center">
                             <Section margin="0 0  14px" height="unset">

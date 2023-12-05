@@ -125,6 +125,8 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
         //added-values
         countryOfApply: countrySchema,
         countryOfResidence: countrySchema,
+        livedAbroad: yup.boolean(),
+        countriesLived: yup.number(),
         statusOfResidence: yup.string().required("Required"),
         startDateOfResidence: yup.string().required("Required"),
         changeOfName: yup.boolean().required("Required"),
@@ -225,8 +227,10 @@ export const personalInfoKeys: PersonalInfoInterface = {
     gender: "",
 
     //added-details
-    // countryOfApply: "",
-    // countryOfResidence: "",
+    // countryOfApply: mockCountry,
+    // countryOfResidence: mockCountry,
+    // livedAbroad: "",
+    // countriesLived: "",
     statusOfResidence: "",
     startDateOfResidence: "",
     changeOfName: false,
@@ -563,6 +567,8 @@ export const test: ApplicationFormRequestInput = {
             },
         ],
         //added
+        // livedAbroad: Country3",
+        // countriesLived: Country3",
         // countryOfApply: "Country3",
         // countryOfResidence: "Country3",
         // statusOfResidence: "",
