@@ -69,17 +69,46 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                         <Detail name="Issue Date" value={personalInfo?.issueDate} width='45%' />
                         <Detail name="Expiry Date" value={personalInfo?.expiryDate} width='45%' />
 
-                        <Divider sx={{ width: '100%' }}/>
+                        <Divider sx={{ width: '100%' }} />
                         <Detail name="Country of Citizenship" value={personalInfo?.countryOfCitizen?.name} width='45%' />
                         <Detail name="Place of Birth" value={personalInfo?.placeOfBirth?.name} width='45%' />
                         <Detail name="Country of Residence" value={personalInfo?.countryOfResidence?.name} width='45%' />
                         <Detail name="Country where Applying" value={personalInfo?.countryOfApply?.name} width='45%' />
                         <Detail name="Status of Current Residence" value={personalInfo?.statusOfResidence} width='45%' />
                         <Detail name="Start Date of Current Residence" value={formatDate(personalInfo?.startDateOfResidence ?? '')} width='45%' />
-                        {/* <Detail name="Place of Birth" value={personalInfo?.placeOfBirth?.name} width='45%' />
-                        <Detail name="Place of Birth" value={personalInfo?.placeOfBirth?.name} width='45%' />
-                        <Detail name="Place of Birth" value={personalInfo?.placeOfBirth?.name} width='45%' />
-                        <Detail name="Place of Birth" value={personalInfo?.placeOfBirth?.name} width='45%' /> */}
+                        <Detail name="Previous Country of Residence 1" value={personalInfo?.prevResidence1?.name} width='45%' />
+                        <Detail name="Since When?" value={formatDate(personalInfo?.startDatePrevResidence1 ?? '')} width='45%' />
+                        <Detail name="Till When?" value={formatDate(personalInfo?.endDatePrevResidence1 ?? '')} width='45%' />
+                        <Detail name="Previous Country of Residence 2" value={personalInfo?.prevResidence2?.name} width='45%' />
+                        <Detail name="Since When?" value={formatDate(personalInfo?.startDatePrevResidence2 ?? '')} width='45%' />
+                        <Detail name="Till When?" value={formatDate(personalInfo?.endDatePrevResidence2 ?? '')} width='45%' />
+                        <Detail name="Previous Country of Residence 3" value={personalInfo?.prevResidence3?.name} width='45%' />
+                        <Detail name="Since When?" value={formatDate(personalInfo?.startDatePrevResidence3 ?? '')} width='45%' />
+                        <Detail name="Till When?" value={formatDate(personalInfo?.endDatePrevResidence3 ?? '')} width='45%' />
+                        
+                        <Divider sx={{ width: '100%' }} />
+                        <Detail name="Gender" value={personalInfo?.gender} width='45%' />
+                        <Detail name="Passport Number" value={personalInfo?.passportNumber} width='45%' />
+                        <Detail name="Issued Country" value={personalInfo?.passportIssuedCountry?.name} width='45%' />
+                        <Detail name="Issued Date" value={formatDate(personalInfo?.passportIssuedDate ?? '')} width='45%' />
+                        <Detail name="Expiry Date" value={formatDate(personalInfo?.passportExpiryDate ?? '')} width='45%' />
+                        
+                        <Divider sx={{ width: '100%' }} />
+                        <Detail name="Are you a lawful permanent Resident of the United States with a valid alien registration card (Green Card)?" value={Boolean(personalInfo?.hasGreenCard) ? "Yes" : "No"} width='45%' />
+                        <Detail name="Document Number" value={personalInfo?.greenCardNumber} width='45%' />
+                        <Detail name="Expiry Date" value={formatDate(personalInfo?.greenCardExpiryDate ?? '')} width='45%' />
+                        
+                        <Divider sx={{ width: '100%' }} />
+                        <Detail name="Marital Status" value={personalInfo?.maritalStatus} width='45%' />
+                        {personalInfo.maritalStatus === "Married" && <Detail name="Marriage Start Date" value={formatDate(personalInfo?.marriageStartDate ?? '')} width='45%' />}
+                        {personalInfo.maritalStatus === "Married" && <Detail name="Marriage End Date" value={formatDate(personalInfo?.marriageEndDate ?? '')} width='45%' />}
+                        
+                        <Divider sx={{ width: '100%' }} />
+                        <Detail name="Main Purpose of your Trip" value={personalInfo?.tripPurpose} width='100%' />
+                        <Detail name="Start Duration" value={formatDate(personalInfo?.tripDurationStartDate ?? '')} width='45%' />
+                        <Detail name="End Duration" value={formatDate(personalInfo?.tripDurationEndDate ?? '')} width='45%' />
+                        <Detail name="Where do you intend to work or stay?" value={personalInfo?.tripDurationLocation} width='45%' />
+                        <Detail name="Do you know anybody there?" value={Boolean(personalInfo?.hasContactInLocation) ? 'Yes' : 'No'} width='45%' />
                     </Flex>
                 </MyAccordion>
             </Flex>

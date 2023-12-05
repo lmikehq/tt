@@ -21,6 +21,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Two from "./previewSteps/two";
+import Three from "./previewSteps/three";
+import Four from "./previewSteps/four";
+import Five from "./previewSteps/five";
 
 
 export const StyledAccordion = styled((props: AccordionProps) => (
@@ -134,13 +137,15 @@ function ApplicationPreview({
         setStep((prev) => Math.max(1, prev - 1));
     };
     const nextStep = () => {
-        setStep((prev) => Math.min(2, prev + 1));
+        setStep((prev) => Math.min(5, prev + 1));
     };
 
     const finalSubmit = () => {
         handleSubmit();
         onClose();
     };
+
+    console.log(documents)
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -165,6 +170,21 @@ function ApplicationPreview({
                 {step === 2 && (
                     <Two
                         educationInfo={education}
+                    />
+                )}
+                {step === 3 && (
+                    <Three
+                        employmentInfo={employment}
+                    />
+                )}
+                {step === 4 && (
+                    <Four
+                        familyInfo={familyMembers}
+                    />
+                )}
+                {step === 5 && (
+                    <Five
+                        documentsInfo={documents}
                     />
                 )}
                 

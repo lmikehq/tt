@@ -20,7 +20,7 @@ const FlightDropdown = styled.section<{ isMobile: boolean }>`
     width: ${(props) => (props.isMobile ? "100%" : "max-content")};
     right: 0rem;
     font-family: Poppins;
-    z-index: 2;
+    z-index: 3;
 `;
 
 interface CounterProps {
