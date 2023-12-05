@@ -266,17 +266,15 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             maritalStatus: data.personalInfo.maritalStatus,
             partnersName: data.personalInfo.partnersName,
             passportNumber: data.personalInfo.passportNumber,
-            passportIssuedCountry:
-                data.personalInfo.passportIssuedCountry.name ?? "",
+            passportIssuedCountry: data.personalInfo.passportIssuedCountry.name ?? "",
             passportExpiryDate: data.personalInfo.passportExpiryDate,
             tripPurpose: data.personalInfo.tripPurpose,
             tuberculosis: data.personalInfo.tuberculosis,
-            tuberculosisDetails: data.personalInfo.tuberculosisDetails,
+            // tuberculosisDetails: data.personalInfo.tuberculosisDetails,
             mentalDisorder: data.personalInfo.mentalDisorder,
             mentalDisorderDetails: data.personalInfo.mentalDisorderDetails,
             remainbeyondValidity: data.personalInfo.remainbeyondValidity,
-            remainbeyondValidityDetails:
-                data.personalInfo.remainbeyondValidityDetails,
+            // remainbeyondValidityDetails: data.personalInfo.remainbeyondValidityDetails,
             refusedBefore: data.personalInfo.refusedBefore,
             refusedBeforeDetails: data.personalInfo.refusedBeforeDetails,
             arrestedBefore: data.personalInfo.arrestedBefore,
@@ -284,54 +282,55 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             servedInMilitary: data.personalInfo.servedInMilitary,
             servedInMilitaryDetails: data.personalInfo.servedInMilitaryDetails,
             memberOfViolentGroup: data.personalInfo.memberOfViolentGroup,
-            memberOfViolentGroupDetails:
-                data.personalInfo.memberOfViolentGroupDetails,
-            participatedInViolentActivities:
-                data.personalInfo.participatedInViolentActivities,
-            participatedInViolentActivitiesDetails:
-                data.personalInfo.participatedInViolentActivitiesDetails,
+            // memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails,
+            participatedInViolentActivities: data.personalInfo.participatedInViolentActivities,
+            // participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails,
             education: data.education,
-            employment: data.employment,
+            employment: data.employment.map(e => {
+                delete e.locationType
+                return ({ ...e })
+            }),
             //added
-            changedName: data.personalInfo.changedName,
-            changeOfName: data.personalInfo.changeOfName,
-            statusOfResidence: data.personalInfo.statusOfResidence,
-            startDateOfResidence: data.personalInfo.startDateOfResidence,
-            occupation: data.personalInfo.occupation,
-            tripDurationStartDate: data.personalInfo.tripDurationStartDate,
-            tripDurationEndDate: data.personalInfo.tripDurationEndDate,
-            tripDurationLocation: data.personalInfo.tripDurationLocation,
-            hasContactInLocation: data.personalInfo.hasContactInLocation,
-            contactInLocationLastName:
-                data.personalInfo.contactInLocationLastName,
-            contactInLocationFirstName:
-                data.personalInfo.contactInLocationFirstName,
-            contactInLocationAddress:
-                data.personalInfo.contactInLocationAddress,
-            contactInLocationRelationship:
-                data.personalInfo.contactInLocationRelationship,
-            contactInLocationPhoneNumber:
-                data.personalInfo.contactInLocationPhoneNumber,
-            hasGreenCard: data.personalInfo.hasGreenCard,
-            greenCardNumber: data.personalInfo.greenCardNumber,
-            greenCardExpiryDate: data.personalInfo.greenCardExpiryDate,
-            prevResidence1: data.personalInfo.prevResidence1,
-            prevResidence2: data.personalInfo.prevResidence2,
-            prevResidence3: data.personalInfo.prevResidence3,
-            startDatePrevResidence1: data.personalInfo.startDatePrevResidence1,
-            startDatePrevResidence2: data.personalInfo.startDatePrevResidence2,
-            startDatePrevResidence3: data.personalInfo.startDatePrevResidence3,
-            endDatePrevResidence1: data.personalInfo.endDatePrevResidence1,
-            endDatePrevResidence2: data.personalInfo.endDatePrevResidence2,
-            endDatePrevResidence3: data.personalInfo.endDatePrevResidence3,
+            // changedName: data.personalInfo.changedName,
+            // changeOfName: data.personalInfo.changeOfName,
+            // statusOfResidence: data.personalInfo.statusOfResidence,
+            // startDateOfResidence: data.personalInfo.startDateOfResidence,
+            // occupation: data.personalInfo.occupation,
+            // tripDurationStartDate: data.personalInfo.tripDurationStartDate,
+            // tripDurationEndDate: data.personalInfo.tripDurationEndDate,
+            // tripDurationLocation: data.personalInfo.tripDurationLocation,
+            // hasContactInLocation: data.personalInfo.hasContactInLocation,
+            // contactInLocationLastName:
+            //     data.personalInfo.contactInLocationLastName,
+            // contactInLocationFirstName:
+            //     data.personalInfo.contactInLocationFirstName,
+            // contactInLocationAddress:
+            //     data.personalInfo.contactInLocationAddress,
+            // contactInLocationRelationship:
+            //     data.personalInfo.contactInLocationRelationship,
+            // contactInLocationPhoneNumber:
+            //     data.personalInfo.contactInLocationPhoneNumber,
+            // hasGreenCard: data.personalInfo.hasGreenCard,
+            // greenCardNumber: data.personalInfo.greenCardNumber,
+            // greenCardExpiryDate: data.personalInfo.greenCardExpiryDate,
+            // prevResidence1: data.personalInfo.prevResidence1,
+            // prevResidence2: data.personalInfo.prevResidence2,
+            // prevResidence3: data.personalInfo.prevResidence3,
+            // startDatePrevResidence1: data.personalInfo.startDatePrevResidence1,
+            // startDatePrevResidence2: data.personalInfo.startDatePrevResidence2,
+            // startDatePrevResidence3: data.personalInfo.startDatePrevResidence3,
+            // endDatePrevResidence1: data.personalInfo.endDatePrevResidence1,
+            // endDatePrevResidence2: data.personalInfo.endDatePrevResidence2,
+            // endDatePrevResidence3: data.personalInfo.endDatePrevResidence3,
         },
         familyMembers: data.familyMembers.filter(e => !!e?.membersName).map((member) => {
             delete member.section;
             delete member.index;
+            delete member.membersOccupation;
             return ({
                 ...member,
-                issueYear: member?.issueYear,
-                expiryYear: member?.expiryYear,
+                issueYear: String(safelyConvertToNumber(member?.issueYear)),
+                expiryYear: String(safelyConvertToNumber(member?.expiryYear)),
             })
         }),
         documents: data.documents,

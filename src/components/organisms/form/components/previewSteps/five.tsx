@@ -32,7 +32,7 @@ function Five({ documentsInfo = [] }: FiveProps) {
 
             <Flex direction='column' overflowX="hidden" overflowY="scroll" className='scroll-custom'>
                 {documentsInfo.length === 0 ? (
-                    <Flex width='100%' justify='center'>
+                    <Flex width='100%' justify='center' padding='2rem 0'>
                         <Text text='No documents' type='p' weight={500} />
                     </Flex>
                 ) : documentsInfo.map((document, index) =>

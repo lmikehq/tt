@@ -31,10 +31,10 @@ function Four({ familyInfo = [] }: FourProps) {
 
             <Flex direction='column' overflowX="hidden" overflowY="scroll" className='scroll-custom'>
                 {familyInfo.length === 0 ? (
-                    <Flex width='100%' justify='center'>
+                    <Flex width='100%' justify='center' padding='2rem 0'>
                         <Text text='No family members' type='p' weight={500} />
                     </Flex>
-                ) : familyInfo.filter(e => e?.membersName).map((member, index) =>
+                ) : familyInfo.map((member, index) =>
                     <MyAccordion
                         heading={`Family Member Details ${index + 1}`}
                         toggle={() => toggleAcc(index)}

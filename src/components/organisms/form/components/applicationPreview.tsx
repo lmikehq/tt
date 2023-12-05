@@ -174,17 +174,17 @@ function ApplicationPreview({
                 )}
                 {step === 2 && (
                     <Two
-                        educationInfo={education}
+                        educationInfo={education.filter(e => e?.school)}
                     />
                 )}
                 {step === 3 && (
                     <Three
-                        employmentInfo={employment}
+                        employmentInfo={employment.filter(e => e?.companyName)}
                     />
                 )}
                 {step === 4 && (
                     <Four
-                        familyInfo={familyMembers}
+                        familyInfo={familyMembers.filter(e => e?.membersName)}
                     />
                 )}
                 {step === 5 && (

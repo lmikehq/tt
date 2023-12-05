@@ -196,10 +196,10 @@ function ApplicationForm() {
           );
         })
         .catch((error) => {
-          const err = error.response.data;
+          const err = error.response?.data;
           if (
-            err.statusCode === 422 &&
-            err.errorMessage.includes("already exists")
+            err?.statusCode === 422 &&
+            err?.errorMessage.includes("already exists")
           ) {
             setShowApplicationExistsModal(true);
           } else if (err.statusCode === 400) {

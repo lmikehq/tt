@@ -7,6 +7,9 @@ import { DetailsKeys, PersonalInfoInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
 import { formatDateString } from '@/lib/utilFns';
 
+const MyBoolean = (x: boolean | null | undefined) => {
+    return String(x) === 'true' ? true : false
+}
 
 interface OneProps{
     personalInfo: PersonalInfoInterface;
@@ -54,7 +57,7 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                         <Detail name="Last Name" value={personalInfo?.lastName} width='45%' />
                         <Detail name="First Name" value={personalInfo?.firstName} width='45%' />
                         <Detail name="Have you previously changed or used any surname or given names apart from the one provided above?" value={personalInfo?.changeOfName ? "Yes" : "No"} width='100%' />
-                        {Boolean(personalInfo?.changeOfName) && <Detail name="Changed Name" value={personalInfo?.changedName} width='45%' />}
+                        {MyBoolean(personalInfo?.changeOfName) && <Detail name="Changed Name" value={personalInfo?.changedName} width='45%' />}
                         <Detail name="Middle Name" value={personalInfo?.firstName} width='45%' />
                         <Detail name="State of Origin" value={personalInfo?.stateOfOrigin} width='45%' />
                         <Detail name="Place of Origin" value={personalInfo?.placeOfOrigin} width='45%' />
@@ -93,7 +96,7 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                         <Detail name="Expiry Date" value={formatDateString(personalInfo?.passportExpiryDate ?? '')} width='45%' />
                         
                         <Divider sx={{ width: '100%' }} />
-                        <Detail name="Are you a lawful permanent Resident of the United States with a valid alien registration card (Green Card)?" value={Boolean(personalInfo?.hasGreenCard) ? "Yes" : "No"} width='45%' />
+                        <Detail name="Are you a lawful permanent Resident of the United States with a valid alien registration card (Green Card)?" value={MyBoolean(personalInfo?.hasGreenCard) ? "Yes" : "No"} width='45%' />
                         <Detail name="Document Number" value={personalInfo?.greenCardNumber} width='45%' />
                         <Detail name="Expiry Date" value={formatDateString(personalInfo?.greenCardExpiryDate ?? '')} width='45%' />
                         
@@ -107,30 +110,30 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                         <Detail name="Start Duration" value={formatDateString(personalInfo?.tripDurationStartDate ?? '')} width='45%' />
                         <Detail name="End Duration" value={formatDateString(personalInfo?.tripDurationEndDate ?? '')} width='45%' />
                         <Detail name="Where do you intend to work or stay?" value={personalInfo?.tripDurationLocation} width='45%' />
-                        <Detail name="Do you know anybody there?" value={Boolean(personalInfo?.hasContactInLocation) ? 'Yes' : 'No'} width='45%' />
-                        {Boolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Last Name" value={personalInfo?.contactInLocationLastName} width='45%' />}
-                        {Boolean(personalInfo?.hasContactInLocation) && <Detail name="Contact First Name" value={personalInfo?.contactInLocationFirstName} width='45%' />}
-                        {Boolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Residential Address" value={personalInfo?.contactInLocationAddress} width='45%' />}
-                        {Boolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Relationship" value={personalInfo?.contactInLocationRelationship} width='45%' />}
-                        {Boolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Phone Number" value={personalInfo?.contactInLocationPhoneNumber} width='45%' />}
+                        <Detail name="Do you know anybody there?" value={MyBoolean(personalInfo?.hasContactInLocation) ? 'Yes' : 'No'} width='45%' />
+                        {MyBoolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Last Name" value={personalInfo?.contactInLocationLastName} width='45%' />}
+                        {MyBoolean(personalInfo?.hasContactInLocation) && <Detail name="Contact First Name" value={personalInfo?.contactInLocationFirstName} width='45%' />}
+                        {MyBoolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Residential Address" value={personalInfo?.contactInLocationAddress} width='45%' />}
+                        {MyBoolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Relationship" value={personalInfo?.contactInLocationRelationship} width='45%' />}
+                        {MyBoolean(personalInfo?.hasContactInLocation) && <Detail name="Contact Phone Number" value={personalInfo?.contactInLocationPhoneNumber} width='45%' />}
                         
                         <Divider sx={{ width: '100%' }} />
-                        <Detail name={`Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?`} value={Boolean(personalInfo?.tuberculosis) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.tuberculosis) && <Detail name="Details" value={personalInfo?.tuberculosisDetails} width='100%' />}
-                        <Detail name={`Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in ${applicationInfo?.destination?.name}?`} value={Boolean(personalInfo?.mentalDisorder) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.mentalDisorder) && <Detail name="Details" value={personalInfo?.mentalDisorderDetails} width='100%' />}
-                        <Detail name={`Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in ${applicationInfo?.destination?.name}?`} value={Boolean(personalInfo?.remainbeyondValidity) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.remainbeyondValidity) && <Detail name="Details" value={personalInfo?.remainbeyondValidityDetails} width='100%' />}
-                        <Detail name={`Have you ever been refused a visa or permit, denied entry or ordered to leave ${applicationInfo?.destination?.name} or any other country?`} value={Boolean(personalInfo?.refusedBefore) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.refusedBefore) && <Detail name="Details" value={personalInfo?.refusedBeforeDetails} width='100%' />}
-                        <Detail name={`Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?`} value={Boolean(personalInfo?.arrestedBefore) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.arrestedBefore) && <Detail name="Details" value={personalInfo?.arrestedBeforeDetails} width='100%' />}
-                        <Detail name={`Did you serve in any military, militia, or defense unit or serve in a security organization or police force (including non-obligatory national service, reserve or volunteer units)?`} value={Boolean(personalInfo?.servedInMilitary) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.servedInMilitary) && <Detail name="Details" value={personalInfo?.servedInMilitaryDetails} width='100%' />}
-                        <Detail name={`Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?`} value={Boolean(personalInfo?.memberOfViolentGroup) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.memberOfViolentGroup) && <Detail name="Details" value={Boolean(personalInfo?.memberOfViolentGroupDetails) ? 'Yes' : 'No'} width='100%' />}
-                        <Detail name={`Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?`} value={Boolean(personalInfo?.participatedInViolentActivities) ? 'Yes' : 'No'} width='100%' />
-                        {Boolean(personalInfo?.participatedInViolentActivities) && <Detail name="Details" value={Boolean(personalInfo?.participatedInViolentActivitiesDetails) ? 'Yes' : 'No'} width='100%' />}
+                        <Detail name={`Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?`} value={MyBoolean(personalInfo?.tuberculosis) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.tuberculosis) && <Detail name="Details" value={personalInfo?.tuberculosisDetails} width='100%' />}
+                        <Detail name={`Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in ${applicationInfo?.destination?.name}?`} value={MyBoolean(personalInfo?.mentalDisorder) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.mentalDisorder) && <Detail name="Details" value={personalInfo?.mentalDisorderDetails} width='100%' />}
+                        <Detail name={`Have you ever remained beyond the validity of your status, attended school without authorization or worked without authorization in ${applicationInfo?.destination?.name}?`} value={MyBoolean(personalInfo?.remainbeyondValidity) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.remainbeyondValidity) && <Detail name="Details" value={personalInfo?.remainbeyondValidityDetails} width='100%' />}
+                        <Detail name={`Have you ever been refused a visa or permit, denied entry or ordered to leave ${applicationInfo?.destination?.name} or any other country?`} value={MyBoolean(personalInfo?.refusedBefore) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.refusedBefore) && <Detail name="Details" value={personalInfo?.refusedBeforeDetails} width='100%' />}
+                        <Detail name={`Have you ever committed, been arrested for, been charged with or convicted of any criminal offense?`} value={MyBoolean(personalInfo?.arrestedBefore) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.arrestedBefore) && <Detail name="Details" value={personalInfo?.arrestedBeforeDetails} width='100%' />}
+                        <Detail name={`Did you serve in any military, militia, or defense unit or serve in a security organization or police force (including non-obligatory national service, reserve or volunteer units)?`} value={MyBoolean(personalInfo?.servedInMilitary) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.servedInMilitary) && <Detail name="Details" value={personalInfo?.servedInMilitaryDetails} width='100%' />}
+                        <Detail name={`Are you, or have you ever been a member or associated with any political party, or other group or organization which has engaged in or advocated violence as a means to achieving a political or religious objective, or which has been associated with criminal activity at any time?`} value={MyBoolean(personalInfo?.memberOfViolentGroup) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.memberOfViolentGroup) && <Detail name="Details" value={personalInfo?.memberOfViolentGroupDetails} width='100%' />}
+                        <Detail name={`Have you ever witnessed or participated in the ill treatment of prisoners or civilians, looting or desecration of religious buildings?`} value={MyBoolean(personalInfo?.participatedInViolentActivities) ? 'Yes' : 'No'} width='100%' />
+                        {MyBoolean(personalInfo?.participatedInViolentActivities) && <Detail name="Details" value={personalInfo?.participatedInViolentActivitiesDetails} width='100%' />}
                     </Flex>
                 </MyAccordion>
             </Flex>

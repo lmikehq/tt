@@ -98,22 +98,22 @@ buttonText,
             >
               <Flex align="center" width="100%" height="100%" justify="center">
                 <Text
-                  type="span"
-                  text={"Exit & Continue Later"}
-                  weight={600}
-                  size={14}
-                  color={"#585870"}
+                    type="span"
+                    text={"Exit & Continue Later"}
+                    weight={600}
+                    size={14}
+                    color={"#585870"}
                 />
               </Flex>
             </Button>
             <Button
-              width="50%"
-              height={"3.5rem"}
-              type="submit"
-              background={disabled ? "#585870" : "#06062A"}
-              cursor={disabled ? "not-allowed" : "pointer"}
-              padding="0 1rem"
-              onClick={onClick}
+                width="50%"
+                height={"3.5rem"}
+                type={type ?? "submit"}
+                background={disabled ? "#585870" : "#06062A"}
+                cursor={disabled ? "not-allowed" : "pointer"}
+                padding="0 1rem"
+                onClick={onClick}
             >
               <Flex align="center" width="100%" height="100%" justify="center">
                 {isLoading ? (

@@ -31,10 +31,10 @@ function Two({ educationInfo = [] }: TwoProps) {
 
             <Flex direction='column' overflowX="hidden" overflowY="scroll" className='scroll-custom'>
                 {educationInfo.length === 0 ? (
-                    <Flex width='100%' justify='center'>
+                    <Flex width='100%' justify='center' padding='2rem 0'>
                         <Text text='No education history' type='p' weight={500} />
                     </Flex>
-                ) : educationInfo.filter(e => e?.school).map((education, index) =>
+                ) : educationInfo.map((education, index) =>
                     <MyAccordion
                         heading={`Education Details ${index + 1}`}
                         toggle={() => toggleAcc(index)}
