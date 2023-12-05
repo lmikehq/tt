@@ -509,8 +509,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         onClose && onClose();
     };
 
-    console.log('ss', searchQuery)
-
     useEffect(() => {
         setFilterData(prev => ({
             ...prev,

@@ -33,8 +33,8 @@ function Two({ educationInfo = [] }: TwoProps) {
                 {educationInfo.map((education, index) =>
                     <MyAccordion
                         heading={`Education Details ${index + 1}`}
-                        toggle={() => toggleAcc(0)}
-                        isOpen={isOpenAcc === 0}
+                        toggle={() => toggleAcc(index)}
+                        isOpen={isOpenAcc === index}
                         key={`education-${index}`}
                     >
                         <Flex width='100%' wrap="wrap" gap="1rem">

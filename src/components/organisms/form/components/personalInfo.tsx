@@ -1047,7 +1047,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     <Flex align="center" gap="0.25rem">
                         <Text
                             type="p"
-                            text="Marriage Start Date"
+                            text="Marriage End Date"
                             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                             size={15}
                         />

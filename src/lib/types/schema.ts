@@ -361,7 +361,7 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
             is: true,
             then: (schema) => schema.required("Required"),
         }),
-        occupation: yup.string(),
+        membersOccupation: yup.string(),
         relationshipToPrimary: yup.string().when("accompanying", {
             is: true,
             then: (schema) => schema.required("Required"),
