@@ -189,7 +189,7 @@ const TripSummary = ({
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
-                    ...(!user
+                    ...(!user?.id
                         ? { new_user_email: contactDetailsFormik.values.email }
                         : { user: user?.id }),
 

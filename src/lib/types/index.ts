@@ -325,7 +325,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             endDatePrevResidence2: data.personalInfo.endDatePrevResidence2,
             endDatePrevResidence3: data.personalInfo.endDatePrevResidence3,
         },
-        familyMembers: data.familyMembers.map((member) => {
+        familyMembers: data.familyMembers.filter(e => !!e?.membersName).map((member) => {
             delete member.section;
             delete member.index;
             return ({

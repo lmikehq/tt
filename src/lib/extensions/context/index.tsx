@@ -89,7 +89,7 @@ const oneFlight: OneFlightType = {
     index: 0,
     // departureCountry: undefined,
     // arrivalCountry: undefined,
-    // departureDate: dayjs(new Date()).year(2022),
+    departureDate: dayjs(new Date()),
     // returnDate: dayjs(new Date()).add(1, "day"),
     adults: 1,
     children: 0,

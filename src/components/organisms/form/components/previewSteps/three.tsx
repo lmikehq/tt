@@ -30,14 +30,18 @@ function Three({ employmentInfo = [] }: ThreeProps) {
             </Stack>
 
             <Flex direction='column' overflowX="hidden" overflowY="scroll" className='scroll-custom'>
-                {employmentInfo.map((employment, index) =>
+                {employmentInfo.length === 0 ? (
+                    <Flex width='100%' justify='center'>
+                        <Text text='No employment history' type='p' weight={500} />
+                    </Flex>
+                ) : employmentInfo.filter(e => e?.companyName).map((employment, index) =>
                     <MyAccordion
                         heading={`Employment Details ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
                         key={`employment-${index}`}
                     >
-                        <Flex width='100%' wrap="wrap" gap="1rem">
+                        <Flex width='100%' wrap="wrap" gap="1.4rem">
                             <Detail name="Company Name" value={employment?.companyName} width='45%' />
                             <Detail name="Job Title" value={employment?.jobTitle} width='45%' />
                             <Detail name="Employment Type" value={employment?.employmentType} width='45%' />
