@@ -123,8 +123,8 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             }),
 
         //added-values
-        // countryOfApply: yup.string().required("Required"),
-        // countryOfResidence: yup.string().required("Required"),
+        countryOfApply: countrySchema,
+        countryOfResidence: countrySchema,
         statusOfResidence: yup.string().required("Required"),
         startDateOfResidence: yup.string().required("Required"),
         changeOfName: yup.boolean().required("Required"),
