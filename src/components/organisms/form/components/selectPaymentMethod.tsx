@@ -100,7 +100,7 @@ const SelectPaymentMethod = () => {
                 });
               }}
             >
-              <Flex gap="1.5rem" margin="0 .6rem" align="center">
+              <Flex gap="1.5rem" margin="0" align="center">
                 <RoundFlag flag={currency?.flag ?? ""} />
                 <Flex
                   gap=".6rem"

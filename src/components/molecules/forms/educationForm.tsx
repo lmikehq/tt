@@ -22,10 +22,11 @@ interface formProps {
   formik: any;
   values: EducationDetailsInterface;
   count: number;
+  length: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function EducationForm({ formik, count, values }: formProps) {
+export default function EducationForm({ formik, count, length, values }: formProps) {
     const { isMobile } = useScreenResolution();
     
   return (
@@ -34,7 +35,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
         <Flex align="center" gap="0.25rem">
           <Text
             type="p"
-            text={`School Name ${count + 1}`}
+            text={`School Name ${length > 1 ? count + 1 : ''}`}
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
@@ -151,7 +152,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={values.stillAtSchool || !values.startYear}
+            disabled={values.stillAtSchool}
             views={["year"]}
             name={`education.${count}.endYear`}
             formik={formik}

@@ -115,6 +115,8 @@ export interface PersonalInfoInterface {
     countryOfResidence?: CountryType,
     statusOfResidence?: string;
     startDateOfResidence?: string;
+    livedAbroad?: boolean | null;
+    countriesLived?: number;
     changeOfName?: boolean | null;
     changedName?: string;
     occupation?: string;
@@ -261,6 +263,9 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             expiryDate: data.personalInfo.expiryDate,
             address: data.personalInfo.address,
             countryOfCitizen: data.personalInfo.countryOfCitizen.name ?? "",
+            // countryOfResidence: data.personalInfo.countryOfResidence.name ?? "",
+            // countryofApply: data.personalInfo.countryofApply.name ?? "",
+            // statusOfResidence: data.personalInfo.statusOfResidence.name ?? "",
             dateOfBirth: data.personalInfo.dateOfBirth,
             gender: data.personalInfo.gender,
             maritalStatus: data.personalInfo.maritalStatus,
@@ -291,6 +296,8 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                 return ({ ...e })
             }),
             //added
+            // livedAbroad: data.personalInfo.livedAbroad,
+            // countriesLived: data.personalInfo.countriesLived,
             // changedName: data.personalInfo.changedName,
             // changeOfName: data.personalInfo.changeOfName,
             // statusOfResidence: data.personalInfo.statusOfResidence,

@@ -234,7 +234,7 @@ function Flights() {
                         // ...queryParams,
                         // departureCountry: flightState?.countries[queryParams?.fly_from],
                         // arrivalCountry: flightState?.countries[queryParams?.fly_to],
-                        departureDate: dayjs(queryParams?.date_from).isValid() ? dayjs(queryParams?.date_from) : dayjs(),
+                        departureDate: dayjs(queryParams?.date_from, 'MM/DD/YYYY').isValid() ? dayjs(queryParams?.date_from, 'MM/DD/YYYY') : dayjs(),
                         flightClass: reverseCabin(queryParams?.cabin ?? 'M'),
                         adults: Number(queryParams?.adults ?? 1),
                         children: Number(queryParams?.children ?? 0),
