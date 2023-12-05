@@ -249,7 +249,6 @@ function Flights() {
     return (
         <Section
             padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}
-            styles={{ top: '0' }}
         >
             <Flex direction="column">
                 <FlightStops

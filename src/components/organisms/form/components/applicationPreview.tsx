@@ -24,6 +24,7 @@ import Two from "./previewSteps/two";
 import Three from "./previewSteps/three";
 import Four from "./previewSteps/four";
 import Five from "./previewSteps/five";
+import { UploadedDoc } from "../applicationForm";
 
 
 export const StyledAccordion = styled((props: AccordionProps) => (
@@ -37,8 +38,12 @@ export const StyledAccordion = styled((props: AccordionProps) => (
     "&::before": {
         content: '""',
         border: "none",
-        borderTop: `2px dotted ${ttColors.lightestGray}`,
+        // borderTop: `2px dotted ${ttColors.lightestGray}`,
         backgroundColor: "transparent",
+    },
+    ".MuiButtonBase-root": {
+        // borderTop: `1px dotted ${ttColors.lightestGray}`,
+        borderBottom: `1px dotted ${ttColors.lightestGray}`,
     },
     ".MuiAccordionSummary-root": {
         paddingLeft: "0px",
@@ -81,7 +86,7 @@ export function MyAccordion({ toggle, isOpen, heading, subHeading, children }: M
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="flight-details-content"
                 id="flight-details-header"
-                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', paddingY: "0"  }}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', paddingY: isOpen ? "0" : ".5rem"  }}
             >
                 <Flex direction='column' gap=".5rem">
                     <Text
@@ -99,7 +104,7 @@ export function MyAccordion({ toggle, isOpen, heading, subHeading, children }: M
                     }
                 </Flex>
             </AccordionSummary>
-            <AccordionDetails style={{ padding: "0" }}>
+            <AccordionDetails sx={{ paddingY: "1rem", paddingX: '0' }}>
                 {children}
             </AccordionDetails>
         </StyledAccordion>
@@ -114,7 +119,7 @@ interface ApplicationPreviewProps {
     familyMembers: FamilyInfoInterface[];
     employment: EmploymentDetailsInterface[];
     education: EducationDetailsInterface[];
-    documents: DocumentInterface[];
+    documents: UploadedDoc[];
     handleSubmit: () => void;
 }
 
@@ -145,7 +150,7 @@ function ApplicationPreview({
         onClose();
     };
 
-    console.log(documents)
+    console.log('doccs', documents)
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -169,17 +174,17 @@ function ApplicationPreview({
                 )}
                 {step === 2 && (
                     <Two
-                        educationInfo={education}
+                        educationInfo={education.filter(e => e?.school)}
                     />
                 )}
                 {step === 3 && (
                     <Three
-                        employmentInfo={employment}
+                        employmentInfo={employment.filter(e => e?.companyName)}
                     />
                 )}
                 {step === 4 && (
                     <Four
-                        familyInfo={familyMembers}
+                        familyInfo={familyMembers.filter(e => e?.membersName)}
                     />
                 )}
                 {step === 5 && (
@@ -193,11 +198,10 @@ function ApplicationPreview({
                     gap="1rem"
                     width="calc(100% - 4rem)"
                     position="fixed"
-                    styles={{ bottom: "1rem" }}
+                    padding="1rem 0 0"
+                    styles={{ bottom: "1rem", borderTop: `1px solid ${ttColors.lightestGray}` }}
                 >
-                    <Flex
-                        align="flex-start"
-                    >
+                    <Flex align="flex-start">
                         <CheckBox
                             onChange={(x) => setAgree(x.target.checked)}
                             checked={agree}
@@ -206,7 +210,7 @@ function ApplicationPreview({
                             <Text
                                 text="I certify that the information contained on this document is complete, accurate and factual. I also realize that once this document has been completed and signed that it will form part of my immigration record and will be used to verify my family details on future applications.“"
                                 type="p"
-                                size={12}
+                                size={13}
                             />
                         </CheckBox>
                     </Flex>

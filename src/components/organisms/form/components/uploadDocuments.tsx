@@ -25,9 +25,9 @@ interface formProps {
 }
 
 function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
-  const { isMobile } = useScreenResolution();
-  const { form, mode, setUploadedDocuments, uploadedDocuments } =
-    useApplicationFormStore((state) => state);
+    const { isMobile } = useScreenResolution();
+    const { form, mode, setUploadedDocuments, uploadedDocuments } = useApplicationFormStore((state) => state);
+    
     const isLoading = mode == Mode.loading;
     const [isOpenPreview, setOpenPreview] = useState(false)
 
@@ -281,7 +281,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
                 familyMembers={form.familyMembers}
                 employment={form.employment}
                 education={form.education}
-                documents={form.documents}
+                documents={uploadedDocuments}
                 handleSubmit={() => formik.handleSubmit()}
             />
         </Section>

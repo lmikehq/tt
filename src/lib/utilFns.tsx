@@ -46,6 +46,10 @@ export function formatDate(day: Dayjs | string, format?: string) {
   return dayjs(day ?? undefined).format(format ?? "DD/MM/YYYY");
 }
 
+export function formatDateString(day: Dayjs | string, format?: string) {
+    return dayjs(day).isValid() ? dayjs(day).format(format ?? "DD/MM/YYYY") : String(day);
+}
+
 export async function fetchHTMLContent(country: string) {
   try {
     const res = await axios.get(

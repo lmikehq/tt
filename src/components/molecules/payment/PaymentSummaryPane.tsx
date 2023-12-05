@@ -34,7 +34,7 @@ const PaymentSummaryPane = ({
           padding="1.5rem 1rem"
           background="#F5F5F5"
         >
-          <Text text="Visa Application Type" type="p" weight={600} size={18} />
+          <Text text="Visa Application Type" type="p" weight={600} size={16} />
           <Flex width="fit-content" align="center" gap="0.25rem">
             <BiSolidUser size={18} color="#06062A" />{" "}
             <Text
@@ -54,7 +54,7 @@ const PaymentSummaryPane = ({
           justify="space-between"
           padding="0 1rem"
         >
-          <Text text={visaApplicationType} type="p" weight={600} size={18} />
+          <Text text={visaApplicationType} type="p" weight={600} size={16} />
 
           <Text
             text={fee}
@@ -76,7 +76,7 @@ const PaymentSummaryPane = ({
           text={totalFee}
           type="p"
           weight={600}
-          size={30}
+          size={28}
           decoration={applied && voucher ? "line-through" : ""}
         />
       </Flex>

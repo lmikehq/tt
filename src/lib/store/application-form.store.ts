@@ -130,7 +130,7 @@ export const useApplicationFormStore = create<State & Actions>(
           user,
         });
         return await ApplicationFormService.createVisaApplication({
-            payload: testVisaForm,
+            payload: payload,
         })
         .then((response) => {
           set((state) => ({

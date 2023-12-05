@@ -5,10 +5,11 @@ import Text from '@/components/atoms/text';
 import { Detail } from '../applicationPreview';
 import { DocumentInterface, FamilyInfoInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
+import { UploadedDoc } from '../../applicationForm';
 
 
 interface FiveProps{
-    documentsInfo: DocumentInterface[];
+    documentsInfo: UploadedDoc[];
 }
 
 function Five({ documentsInfo = [] }: FiveProps) {
@@ -30,16 +31,20 @@ function Five({ documentsInfo = [] }: FiveProps) {
             </Stack>
 
             <Flex direction='column' overflowX="hidden" overflowY="scroll" className='scroll-custom'>
-                {documentsInfo.map((document, index) =>
+                {documentsInfo.length === 0 ? (
+                    <Flex width='100%' justify='center' padding='2rem 0'>
+                        <Text text='No documents' type='p' weight={500} />
+                    </Flex>
+                ) : documentsInfo.map((document, index) =>
                     <MyAccordion
                         heading={`Documents ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
                         key={`document-${index}`}
                     >
-                        <Flex width='100%' wrap="wrap" gap="1rem">
+                        <Flex width='100%' wrap="wrap" gap="1.4rem">
+                            <Detail name="Document Type" value={document?.title} width='45%' />
                             <Detail name="Document Name" value={document?.name} width='45%' />
-                            {/* <Detail name="Expiry Year" value={member?.expiryYear} width='45%' /> */}
                         </Flex>
                     </MyAccordion>
                 )}

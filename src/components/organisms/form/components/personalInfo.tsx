@@ -1314,11 +1314,11 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         <Section>
           <ol>
             <li>
-              <Flex
-                align="center"
-                gap={isMobile ? "0" : "2rem"}
-                justify="space-between"
-              >
+                <Flex
+                    align="center"
+                    gap={isMobile ? "0" : "2rem"}
+                    justify="space-between"
+                >
                 <Text
                   styles={{
                     width: "65%",
@@ -1402,11 +1402,11 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             {String(formik.values.mentalDisorder) == "true" && (
               <Section>
                 <Text
-                  size={16}
-                  weight={300}
-                  type="p"
-                  text="If you answered “yes”, please provide details"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                    size={16}
+                    weight={300}
+                    type="p"
+                    text="If you answered “yes”, please provide details"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
                 <TextArea
                   name="mentalDisorderDetails"

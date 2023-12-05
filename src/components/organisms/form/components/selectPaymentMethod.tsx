@@ -62,13 +62,13 @@ const SelectPaymentMethod = () => {
             text={"Select Visa Payment"}
             type={"h3"}
             weight={600}
-            size={24}
+            size={22}
             margin={"0 0 0.75rem 0"}
           />
           <Text
             text={"Select your preferred currency to make payment"}
             weight={400}
-            size={18}
+            size={15}
             color="#606060"
             type={"p"}
             margin={""}
@@ -78,7 +78,7 @@ const SelectPaymentMethod = () => {
           <Text
             text={"Select currency"}
             weight={400}
-            size={18}
+            size={14}
             type={"h5"}
             margin={"0 0 1.125rem 0"}
           />
@@ -121,14 +121,15 @@ const SelectPaymentMethod = () => {
           </Section>
           <Section styles={{ display: "flex" }}>
             <BiSolidInfoCircle
-              size={32}
+              size={26}
               color={"#6092A7"}
               style={{ marginRight: "1.125rem" }}
             />
             <Section>
               <Text
                 text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-                type="p"
+                    type="p"
+                    size={14}
               />
             </Section>
           </Section>
