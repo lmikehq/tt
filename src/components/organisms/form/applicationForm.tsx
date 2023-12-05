@@ -23,7 +23,6 @@ import { BsArrowLeft } from "react-icons/bs";
 import Button from "@atom/button";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
-import { useUserStore } from "@lib/store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import FormSideMenu from "./components/sideMenu/formSideMenu";
@@ -133,7 +132,6 @@ function ApplicationForm() {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: personalInfoSchema,
-    // validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       if (isLoading) return;
       nextStep({ data: { personalInfo: values } });
@@ -157,7 +155,7 @@ function ApplicationForm() {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: manyEmploymentSchema,
-    onSubmit: (values) => {
+      onSubmit: (values, formikHelpers) => {
       if (isLoading) return;
       nextStep({ data: { employment: values.employment } });
     },
@@ -229,20 +227,20 @@ function ApplicationForm() {
             );
           }
         });
-    },
-  });
+        },
+    });
 
   const persistForm = () => {
     saveProgress({
-      data: {
-        tripDetails: detailsFormik.values,
-        personalInfo: personalInfoFormik.values,
-        education: educationFormik.values.education,
-        employment: employmentFormik.values.employment,
-        familyMembers: familyMembersFormik.values.familyMembers,
-        documents: documentsFormik.values.documents,
-      },
-      uploadedDocuments,
+        data: {
+            tripDetails: detailsFormik.values,
+            personalInfo: personalInfoFormik.values,
+            education: educationFormik.values.education,
+            employment: employmentFormik.values.employment,
+            familyMembers: familyMembersFormik.values.familyMembers,
+            documents: documentsFormik.values.documents,
+        },
+        uploadedDocuments,
     });
     router.push("/");
   };

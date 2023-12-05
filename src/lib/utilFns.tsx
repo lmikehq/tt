@@ -42,8 +42,8 @@ export function checkIfFieldHasError(obj: any, field: string) {
   if (error) return error.constraints;
 }
 
-export function formatDate(day: Dayjs, format?: string) {
-  return day.format(format ?? "DD/MM/YYYY");
+export function formatDate(day: Dayjs | string, format?: string) {
+  return dayjs(day ?? undefined).format(format ?? "DD/MM/YYYY");
 }
 
 export async function fetchHTMLContent(country: string) {
