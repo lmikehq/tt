@@ -9,74 +9,74 @@ import FlightIcon from "@image/flightBooking.png";
 import { ttColors } from "@lib/theme/colors";
 
 const FlightWrapper = styled.div`
-  background: ${ttColors.defaultColor};
-  align-items: center;
-  margin-top: 15px;
+    background: ${ttColors.defaultColor};
+    align-items: center;
+    margin-top: 15px;
 
-  & button {
-    width: 154px !important;
-  }
+    & button {
+        width: 154px !important;
+    }
 
-  @media screen and (max-width: 900px) {
-    height: fit-content;
-    padding: 20px 16px;
-  }
+    @media screen and (max-width: 900px) {
+        height: fit-content;
+        padding: 20px 16px;
+    }
 `;
 const History = styled.div`
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  width: 100%;
-  height: 311px;
-  border: 1px solid #e7e7e7;
-  border-radius: 14px;
+    width: 100%;
+    height: 311px;
+    border: 1px solid #e7e7e7;
+    border-radius: 14px;
 `;
 
 const NotificationWrapper = styled.div`
-  background: ${ttColors.defaultColor};
-  align-items: center;
-  margin-top: 15px;
+    background: ${ttColors.defaultColor};
+    align-items: center;
+    margin-top: 15px;
 
-  & button {
-    width: 154px !important;
-  }
+    & button {
+        width: 154px !important;
+    }
 
-  @media screen and (max-width: 900px) {
-    height: fit-content;
-    padding: 20px 16px;
-  }
+    @media screen and (max-width: 900px) {
+        height: fit-content;
+        padding: 20px 16px;
+    }
 `;
 
 const TextContainer = styled.div`
-  background: #f3f3ff;
-  padding: 10px;
-  border-radius: 20px;
-  width: 88px;
-  text-align: center;
-  justify-content: center;
+    background: #f3f3ff;
+    padding: 10px;
+    border-radius: 20px;
+    width: 88px;
+    text-align: center;
+    justify-content: center;
 `;
 
 const Flight = () => {
-  const content = {
-    title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
-    links: [
-      { text: "Search Flights", url: "/flight" },
-      { text: "Search Stays", url: "/stays" },
-    ],
-  };
+    const content = {
+        title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
+        links: [
+            { text: "Search Flights", url: "/flight" },
+            { text: "Search Stays", url: "/stays" },
+        ],
+    };
 
-  function NoFlightImg() {
-    return <Image src="/assets/images/flight.png" alt="" />;
-  }
+    // function NoFlightImg() {
+    //   return <Image src="/assets/images/flight.png" alt="" />;
+    // }
 
-  return (
-    <FlightWrapper>
-      <VisaDashboardHeader headerText="All Flight Applications" />
-      <NoVisaApplication
-        noVisaImage={NoFlightImg}
-        content={content}
-      />
-      {/* <Flex direction="column" gap="1rem">
+    return (
+        <FlightWrapper>
+            <VisaDashboardHeader headerText="All Flight Applications" />
+            <NoVisaApplication
+                noVisaImage={"/assets/images/flight.png"}
+                content={content}
+            />
+            {/* <Flex direction="column" gap="1rem">
         <History>
           <Flex
             justify="space-between"
@@ -249,8 +249,8 @@ const Flight = () => {
           </Flex>
         </History>
       </Flex> */}
-    </FlightWrapper>
-  );
+        </FlightWrapper>
+    );
 };
 
 export default Flight;

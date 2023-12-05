@@ -12,72 +12,75 @@ import RTQueryClient from "@components/templates/rtqWrapper";
 import Referrals from "./components/referral";
 
 const Wrapper = styled.div`
-  margin-top: 10px;
+    margin-top: 10px;
 
-  .MuiBox-root.css-1gsv261 {
-    box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
-    border-radius: 12px;
-  }
-  .MuiButtonBase-root {
-    width: 16.6666667%;
-
-    .flex__FlexWrapper-sc-996d4228-0 {
-      justify-content: center;
+    .MuiBox-root.css-1gsv261 {
+        box-shadow: 0px 4px 16px rgba(17, 34, 17, 0.05);
+        border-radius: 12px;
     }
+    .MuiButtonBase-root {
+        width: 16.6666667%;
 
-    .flex__FlexWrapper-sc-54bd3624-0 {
-      justify-content: center;
-    }
+        .flex__FlexWrapper-sc-996d4228-0 {
+            justify-content: center;
+        }
 
-    @media screen and (max-width: 900px) {
-      width: 50%;
+        .flex__FlexWrapper-sc-54bd3624-0 {
+            justify-content: center;
+        }
+
+        @media screen and (max-width: 900px) {
+            width: 50%;
+        }
     }
-  }
 `;
 
 function DashboardTabs() {
-  const tabItems = [
-    {
-      label: "All Applications",
-      value: 0,
-      content: <Application />,
-    },
-    {
-      label: "Payment History",
-      value: 1,
-      content: <PaymentHistory />,
-    },
-    {
-      label: "Favourites",
-      value: 2,
-      content: <Favourite />,
-    },
+    const tabItems = [
+        {
+            label: "All Applications",
+            value: 0,
+            content: <Application />,
+        },
+        {
+            label: "Payment History",
+            value: 1,
+            content: <PaymentHistory />,
+        },
+        {
+            label: "Favourites",
+            value: 2,
+            content: <Favourite />,
+            disabled: true,
+        },
 
-    {
-      label: "Notifications",
-      value: 3,
-      content: <Notification />,
-    },
+        {
+            label: "Notifications",
+            value: 3,
+            content: <Notification />,
+            disabled: true,
+        },
 
-    {
-      label: "Account",
-      value: 4,
-      content: <Account />,
-    },
-    {
-      label: "Referral",
-      value: 5,
-      content: <Referrals />,
-    },
-  ];
+        {
+            label: "Account",
+            value: 4,
+            content: <Account />,
+        },
+        {
+            label: "Referral",
+            value: 5,
+            content: <Referrals />,
+            disabled: true,
+        },
+    ];
 
-  return (
-    <Wrapper>
-      <RTQueryClient>
-        <CustomTab shadowShow tabItems={tabItems} />
-      </RTQueryClient>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <RTQueryClient>
+                <CustomTab shadowShow tabItems={tabItems} />
+            </RTQueryClient>
+        </Wrapper>
+    );
 }
 
 export default DashboardTabs;
