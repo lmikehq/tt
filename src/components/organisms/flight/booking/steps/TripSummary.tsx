@@ -185,13 +185,14 @@ const TripSummary = ({
         validationSchema: manyPassengersAndBaggageDetailsSchema,
         onSubmit: async (values, helpers) => {
             console.log(contactDetailsFormik.values, "passengers");
+            console.log(user, "user");
             setLoading(true);
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
-                    ...(!user.id
+                    ...(!user?._id
                         ? { new_user_email: contactDetailsFormik.values.email }
-                        : { user: user?.id }),
+                        : { user: user?._id }),
 
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
