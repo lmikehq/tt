@@ -97,7 +97,6 @@ kiwiResourceClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
 const rateHawkResourceClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
     timeout: 15000,
