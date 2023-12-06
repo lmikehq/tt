@@ -2,7 +2,6 @@ import { safelyConvertToNumber } from "@lib/utilFns";
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 import { parse } from 'date-fns';
-import dayjs from "dayjs";
 
 function formatISODate(x?: string | null) {
     if (x) {

@@ -275,9 +275,6 @@ function ApplicationForm() {
   }, [params]);
     
 
-    const v = parse('10/12/2023', 'dd/MM/yyyy', new Date())
-    console.log(v.toString())
-
     return (
     <>
       <CustomConfirmationModal
