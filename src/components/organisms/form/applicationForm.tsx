@@ -32,6 +32,8 @@ import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
+import { parse, format } from 'date-fns';
+
 
 const PromoInput = styled.div`
   display: flex;
@@ -272,9 +274,8 @@ function ApplicationForm() {
     fetchRecentProgressFromSession();
   }, [params]);
     
-    console.log(familyMembersFormik.values)
 
-  return (
+    return (
     <>
       <CustomConfirmationModal
         open={showApplicationExistsModal}

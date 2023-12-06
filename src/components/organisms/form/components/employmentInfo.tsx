@@ -24,7 +24,6 @@ import ContinueButton from "@organism/continueButton";
 import { EmploymentDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { useRouter } from "next/navigation";
 import ToastError from "@molecule/toastError";
 
 interface formProps {
@@ -94,7 +93,9 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                 isLoading={isLoading}
                 saveProgressAndContinueLater={persistForm}
                 onClick={() => {
-                    if (!formik.isValid) return ToastError();
+                    formik.validateForm().then(res => {
+                        if (!formik.isValid) return ToastError();
+                    })
                 }}
                 disabled={!formik.isValid}
           />
