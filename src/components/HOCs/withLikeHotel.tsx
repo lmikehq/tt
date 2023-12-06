@@ -1,18 +1,32 @@
-import { ComponentType } from "react";
+import { useLikeHotel } from "@/lib/hooks/stay/index.hook";
+import { ComponentType, useState } from "react";
+import toast from "react-hot-toast";
 
 interface HocProps {
-    // Props definition for the HOC
+    id: string;
 }
 
 function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
     return function EnhancedComponent(props: P & HocProps) {
-        const handleLikeHotel = () => {};
+        const { id } = props;
+        const [hotelLiked, setHotelLiked] = useState(false);
+        const { isLoading, mutate } = useLikeHotel({
+            onSuccess: () => {
+                setHotelLiked(true);
+                toast.success("Hotel liked");
+            },
+        });
 
-        // Additional logic and functionality of the HOC
-        // You can access props of the wrapped component and the HOC's own props here
+        const handleLikeHotel = () => {
+            mutate({ id });
+        };
 
         return (
-            <WrappedComponent {...props} handlelikeHotel={handleLikeHotel} />
+            <WrappedComponent
+                {...props}
+                hotelLiked={hotelLiked}
+                handlelikeHotel={handleLikeHotel}
+            />
         );
     };
 }

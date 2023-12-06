@@ -141,5 +141,3 @@ export interface FetchLocationsResponse {
     locations: KiwiLocation[];
     meta: Meta;
 }
-
-export default Location;
