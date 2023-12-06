@@ -490,7 +490,7 @@ function FlightBox(props: flightProps) {
                                     color={ttColors.lighterGray}
                                 />
                             </Grid>
-                            <Flex align={"center"} gap="1rem" wrap="wrap">
+                            <Flex align={"center"} gap={isMobile ? "1rem" : "1.5rem"} wrap="wrap">
                                 <Text
                                     type="p"
                                     size={isMobile ? 14 : 15}
@@ -642,7 +642,7 @@ function FlightBox(props: flightProps) {
                                             styles={{ minWidth: "max-content" }}
                                         />
                                     </Grid>
-                                    <Flex align={"center"} gap="2rem" wrap="wrap">
+                                    <Flex align={"center"} gap={isMobile ? "1rem" : "1.5rem"} wrap="wrap">
                                         <Text
                                             type="p"
                                             size={isMobile ? 14 : 16}
@@ -716,7 +716,7 @@ function FlightBox(props: flightProps) {
                     height="100%"
                     gap={isMobile ? "2rem" : "0rem"}
                 >
-                    <Flex align="center" height={isMobile ? "" : "100%"}>
+                    <Flex align="center" height={isMobile ? "" : "100%"} margin={isMobile ? "0" : "0 0 1rem"}>
                         <Flex gap=".5rem">
                             <IconBorders>
                                 <Text
@@ -743,7 +743,7 @@ function FlightBox(props: flightProps) {
                                 />
                             </IconBorders>
                         </Flex>
-                        {isMobile && <BsShare size={23} onClick={(e) => { e?.stopPropagation(); props.openShareModal(props.flight) }} cursor="pointer"/>}
+                        {true && <BsShare size={23} onClick={(e) => { e?.stopPropagation(); props.openShareModal(props.flight) }} cursor="pointer"/>}
                     </Flex>
                     <Flex
                         direction={isMobile ? "row" : "column"}

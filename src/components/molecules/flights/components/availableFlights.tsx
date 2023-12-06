@@ -18,7 +18,7 @@ import { Stack } from "@mui/material";
 import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
@@ -139,7 +139,7 @@ function LoginModal({
                 bgcolor="white"
                 padding={5}
                 borderRadius="16px"
-                maxWidth={isMobile ? "95vw" : "35vw"}
+                width={isMobile ? "95vw" : "35vw"}
             >
                 <Flex width="100%" justify="center">
                     <Flex
@@ -311,7 +311,7 @@ function ShareFlightModal({
                 bgcolor="white"
                 paddingX={isMobile ? 5 : 6}
                 paddingY={isMobile ? 4 : 4}
-                maxWidth={isMobile ? "96vw" : "40vw"}
+                width={isMobile ? "96vw" : "40vw"}
                 borderRadius="16px"
             >
                 <Flex
@@ -443,7 +443,6 @@ function ShareFlightModal({
 
 function AvailableFlights() {
     const router = useRouter();
-    const pathName = usePathname();
     const { user } = useUserStore((state) => state);
     const {
         flightsResults,
@@ -685,7 +684,6 @@ function AvailableFlights() {
         return () => clearInterval(interval);
     }, []);
 
-    console.log('ss', searchFlightsResults)
 
     return (
         <Flex
