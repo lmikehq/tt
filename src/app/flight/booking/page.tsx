@@ -40,10 +40,22 @@ import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTransferAlt } from "react-icons/bi";
 import { BsDot } from "react-icons/bs";
+import { redirect, useRouter } from "next/navigation";
+import ErrorPage from "@/components/molecules/errorPage/ErrorPage";
+import Button from "@/components/atoms/button";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
 function BookingLoader() {
+    const { queryParams } = useQueryParams();
+    if (
+        !queryParams?.bnum ||
+        !queryParams?.booking_token ||
+        !queryParams?.adults ||
+        !queryParams?.children
+    ) {
+        redirect("/flight/listings");
+    }
     const { isMobile } = useScreenResolution();
     const { searchQuery } = useFlightBookingStore((state) => state);
     const flight = {
@@ -99,7 +111,7 @@ function BookingLoader() {
                     styles={{ minWidth: "max-content" }}
                     type="p"
                     size={14}
-                    text={dayjs().format("ddd, Do MMM")}
+                    text={dayjs(flight.departureDate).format("ddd, Do MMM")}
                     color={ttColors.foundation.black}
                 />
             </Flex>
@@ -119,11 +131,15 @@ const FlightBookingPage = () => {
         checkFlightsResponse,
         setInitCheckFlightsMode,
         setParticularSeats,
+        savedBooking,
+        setSavedBooking,
     } = useFlightBookingStore((state) => state);
 
     const searchParams = extractSearchParamsFromUrl({
         url: window.location.href,
     });
+
+    const router = useRouter()
 
     const { adults = "0", children = "0", infants = "0" } = searchParams;
     const intervalIds = useRef<any[]>([]);
@@ -350,9 +366,13 @@ const FlightBookingPage = () => {
         return () => {
             intervalIds.current.forEach(clearInterval);
             setParticularSeats([]);
+            setSavedBooking(false);
         };
     }, []);
 
+    useEffect(() => {
+        if (savedBooking) intervalIds.current.forEach(clearInterval);
+    }, [savedBooking]);
     return (
         <Section>
             <SectionLayout>
@@ -366,6 +386,19 @@ const FlightBookingPage = () => {
 
                 {initCheckFlightsMode === Mode.loading ? (
                     <BookingLoader />
+                ) : initCheckFlightsMode === Mode.error ? (
+                    <ErrorPage
+                        text="Flight Not Found"
+                        subText="Please try searching for a new flight"
+                    >
+                        <Button onClick={() => router.push('/flight/listings')} padding="0 1rem">
+                            <Text
+                                text="Go to Search"
+                                type='p'
+                                size={15}
+                            /> 
+                        </Button>   
+                    </ErrorPage>
                 ) : (
                     <MultiStepWithSideMenu
                         direction={(() => {

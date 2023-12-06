@@ -23,6 +23,7 @@ import { Poppins } from "next/font/google";
 import { Box, PopperPlacementType, Stack } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { PiCaretDoubleLeftBold, PiCaretDoubleRightBold } from "react-icons/pi";
+import dayjs from "dayjs";
 const poppins = Poppins({
     weight: "400",
     style: ["normal"],
@@ -132,20 +133,17 @@ export const DatePicker = ({
                         ref={fieldRef}
                         sx={{
                             "& .react-datepicker__month-container": {
-                                width: `${
-                                    isMobile ? fieldWidth : "320px"
-                                } !important`,
-                                padding: "14px 20px 20px !important",
+                                width: `${isMobile ? fieldWidth : '340px'} !important`,
+                                padding: '14px 20px 20px !important',
                             },
                             "& .react-datepicker__day-names": {
-                                marginTop: "10px !important",
-                                fontFamily: "Poppins",
+                                marginTop: '10px !important',
+                                fontFamily: 'Poppins',
                             },
-                            "& .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name":
-                                {
-                                    width: "calc(100%/7) !important",
-                                    fontFamily: "Poppins",
-                                },
+                            "& .react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name": {
+                                width: 'calc(100%/7.5) !important',
+                                fontFamily: 'Poppins',
+                            },
                             "& .react-datepicker__month": {
                                 margin: "0 !important",
                             },
@@ -158,7 +156,7 @@ export const DatePicker = ({
                 )}
                 dateFormat={format}
                 wrapperClassName="w-full"
-                selected={value || selected}
+                selected={(value || selected) ?? undefined}
                 startDate={startDate}
                 minDate={minDate}
                 maxDate={maxDate}
@@ -178,6 +176,7 @@ export const DatePicker = ({
                         width={width}
                         height={height}
                         placeholder={placeholder}
+                        value={dayjs(value).toString()}
                     />
                 }
                 shouldCloseOnSelect={true}

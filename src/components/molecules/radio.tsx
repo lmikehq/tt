@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEvent } from "react";
+import React, { CSSProperties, ChangeEvent, FocusEvent } from "react";
 import {
   Radio,
   RadioGroup,
@@ -18,27 +18,29 @@ interface CustomRadioGroupProps {
     name: string;
     onChange: (event: ChangeEvent<HTMLInputElement>, value?: string) => void;
     onBlur?: (e: FocusEvent<any, Element>) => void;
-    justifyContent: string;
+    justifyContent?: string;
     direction?: "row" | "column";
     align?: "center" | "flex-start" | "flex-end";
     value?: any;
     scroll?: boolean;
+    styles?: CSSProperties;
 }
 
 export function CustomRadioGroup({
   options,
-  onChange,
-  onBlur,
-  name,
-  justifyContent,
-  align = "center",
-  direction = "row",
+    onChange,
+    onBlur,
+    name,
+    justifyContent,
+    align = "center",
+    direction = "row",
     value,
-    scroll
+    scroll,
+    styles
 }: CustomRadioGroupProps) {
   const { isMobile } = useScreenResolution();
   return (
-    <FormControl style={{ width: '100%' }}>
+    <FormControl style={{ width: '100%', ...styles }}>
         <RadioGroup
             name={name}
             value={value}
@@ -46,7 +48,7 @@ export function CustomRadioGroup({
             onBlur={onBlur}
             style={{ justifyContent: justifyContent, width: '100%' }}
         >
-              <Flex align={align} gap="1rem" direction={direction} className={scroll ? "no-scrollbar" : ""} overflowX={scroll ? "auto" : "initial"}>
+              <Flex align={align} gap=".6rem" direction={direction} className={scroll ? "no-scrollbar" : ""} overflowX={scroll ? "auto" : "initial"}>
                 {options.map((option) =>
                     <FormControlLabel
                         key={option.label}

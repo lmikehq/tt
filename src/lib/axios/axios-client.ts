@@ -80,8 +80,8 @@ kiwiClient.interceptors.response.use(
     }
 );
 const kiwiResourceClient: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
-    timeout: 15000,
+    baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+    timeout: 40000,
     //   withCredentials: true,
     headers: {
         "Content-Type": "application/json",
@@ -97,7 +97,6 @@ kiwiResourceClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
 const rateHawkResourceClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
     timeout: 15000,

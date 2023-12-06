@@ -22,19 +22,20 @@ interface formProps {
   formik: any;
   values: EducationDetailsInterface;
   count: number;
+  length: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function EducationForm({ formik, count, values }: formProps) {
-  const { isMobile } = useScreenResolution();
-
+export default function EducationForm({ formik, count, length, values }: formProps) {
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset">
       <Section margin="0">
         <Flex align="center" gap="0.25rem">
           <Text
             type="p"
-            text={`School Name ${count + 1}`}
+            text={`School Name ${length > 1 ? count + 1 : ''}`}
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
@@ -91,7 +92,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Grade"
+              text="Grade (0.0 - 5.0)"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
@@ -138,9 +139,9 @@ export default function EducationForm({ formik, count, values }: formProps) {
             name={`education.${count}.startYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(`education.${count}.startYear`, e.$y);
+              formik.setFieldValue(`education.${count}.startYear`, e?.$y);
             }}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs()}
           />
         </Section>
         <Section>
@@ -151,15 +152,15 @@ export default function EducationForm({ formik, count, values }: formProps) {
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={values.stillAtSchool || !values.startYear}
+            disabled={values.stillAtSchool}
             views={["year"]}
             name={`education.${count}.endYear`}
             formik={formik}
             onChange={(e) => {
-              formik.setFieldValue(`education.${count}.endYear`, e.$y);
+              formik.setFieldValue(`education.${count}.endYear`, e?.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs()}
           />
         </Section>
       </Flex>

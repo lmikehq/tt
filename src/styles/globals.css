@@ -351,6 +351,7 @@ textarea:hover {
 
 .react-datepicker__month-container {
     padding: 32px !important;
+    background-color: white;
 }
 
 .react-datepicker__day-name {
@@ -414,4 +415,8 @@ textarea:hover {
 }
 .select::after {
     content: "\2304";
+}
+
+.css-yckcgr-MuiPaper-root-MuiAccordion-root {
+    width: 100%;
 }

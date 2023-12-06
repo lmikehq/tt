@@ -7,18 +7,20 @@ import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikValues } from "formik";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import React, { useState } from "react";
+import React from "react";
 import { EmploymentDetailsInterface } from "@lib/types";
 
 interface formProps {
   formik: FormikValues;
   count: number;
+  length: number;
   handleClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   values: EmploymentDetailsInterface;
 }
 
-export default function EmploymentForm({ formik, count, values }: formProps) {
-  const { isMobile } = useScreenResolution();
+export default function EmploymentForm({ formik, count, length, values }: formProps) {
+    const { isMobile } = useScreenResolution();
+    
 
   return (
     <Section height="unset">
@@ -26,7 +28,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
         <Flex align="center" gap="0.25rem">
           <Text
             type="p"
-            text={`Company Name ${count + 1}`}
+            text={`Company Name ${length > 1 ? count + 1 : ''}`}
             margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
           />
           <Required />
@@ -103,6 +105,26 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
             placeholder="Enter Location"
           />
         </Section>
+        <Section>
+          <Flex align="center" gap="0.25rem">
+            <Text
+              type="p"
+              text="Location Type"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            />
+            <Required />
+          </Flex>
+            <FieldString
+                placeholder="Select Location Type"
+                name={`employment.${count}.locationType`}
+                options={[
+                    "Onsite",
+                    "Hybrid",
+                    "Remote",
+                ]}
+                formik={formik}
+            />
+        </Section>
       </Flex>
       <Flex
         margin={isMobile ? "0px" : "0 0 1rem"}
@@ -114,7 +136,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
           <Text
             type="p"
             text="Start Year"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "0rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your Start Year"
@@ -131,7 +153,7 @@ export default function EmploymentForm({ formik, count, values }: formProps) {
           <Text
             type="p"
             text="End Year"
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={isMobile ? ".7rem  0 .2rem" : "0rem 0 .5rem"}
           />
           <FieldAsDate
             placeholder="Select your End Year"

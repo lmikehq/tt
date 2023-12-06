@@ -95,7 +95,7 @@ export const FieldInput = (props: FieldProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    formik?.setFieldValue(name, value?.trim());
+    formik?.setFieldValue(name, value);
   };
   const touched = getNestedValue(formik?.touched, name);
   const error = getNestedValue(formik?.errors, name);

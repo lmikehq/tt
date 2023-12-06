@@ -97,6 +97,7 @@ function FlightModule({
         handleUpdate && handleUpdate(flight, data);
     };
 
+
     return (
         <Section padding=".75rem 0 0 0 " height="unset">
             <Flex
@@ -143,11 +144,11 @@ function FlightModule({
                         weight={500}
                     />
                     <LocationSearchSelectInput
-                        value={flight.arrivalCountry}
                         onChange={(x: KiwiLocation) =>
                             handleUpdate &&
                             handleUpdate(flight, { arrivalCountry: x })
                         }
+                        value={flight.arrivalCountry}
                         placeholder="Where to?"
                     />
                 </Flex>
@@ -164,7 +165,7 @@ function FlightModule({
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        value={flight.departureDate?.toDate()}
+                        value={dayjs(flight?.departureDate ?? undefined).toDate()}
                         minDate={today}
                         onChange={(e) =>
                             handleUpdate &&
@@ -189,8 +190,8 @@ function FlightModule({
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            value={flight.returnDate?.toDate()}
-                            minDate={flight.departureDate?.toDate()}
+                            value={dayjs(flight?.returnDate ?? undefined).toDate()}
+                            minDate={dayjs(flight?.departureDate ?? undefined).toDate()}
                             onChange={(e) =>
                                 handleUpdate &&
                                 handleUpdate(flight, { returnDate: dayjs(e) })

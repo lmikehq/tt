@@ -25,6 +25,7 @@ interface SearchInputAsLocationTypesProps {
     value?: KiwiLocation | RateHawkRegionType;
     placeholder: string;
     loading: boolean;
+    defaultText?: string;
 }
 
 export default function SearchInputAsLocationTypes({
@@ -34,6 +35,7 @@ export default function SearchInputAsLocationTypes({
     value,
     placeholder,
     loading,
+    defaultText,
 }: SearchInputAsLocationTypesProps) {
     const fieldRef = React.useRef<HTMLDivElement | null>(null);
     const fieldWidth = fieldRef?.current
@@ -44,15 +46,16 @@ export default function SearchInputAsLocationTypes({
         handleSetSearchText({ text: value });
     }, 800);
 
+
     const PopperMy = (props: any) => (
         <Popper
             {...props}
             sx={{
                 width: fieldWidth,
                 "& div > ul::-webkit-scrollbar": {
-                    backgroundColor: "transparent",
-                    width: "9px",
-                    height: "9px",
+                    backgroundColor: 'transparent',
+                    width: '7px',
+                    height: '7px',
                 },
                 "& div > ul::-webkit-scrollbar-thumb": {
                     backgroundColor: "rgba(0, 0, 0, 0.15)",

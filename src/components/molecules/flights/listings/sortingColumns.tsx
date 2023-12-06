@@ -13,7 +13,6 @@ import Text from "@atom/text";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import CheckBox from "@molecule/checkbox";
 import { CustomRadioGroup } from "@molecule/radio";
-import { SearchInputAsString } from "@organism/searchInput";
 import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
@@ -34,6 +33,8 @@ import SearchStringInput from "../../searchInputs/searchStringInput";
 import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { debounce } from "debounce";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -58,19 +59,6 @@ const cabinOptions = [
     { value: "C", label: "Business" },
     { value: "F", label: "First Class" },
 ];
-
-// const airlines = [
-//     "Air Canada",
-//     "WestJet",
-//     "Air Transat",
-//     "Porter Airlines",
-//     "Sunwing Airlines",
-//     "Delta Air Lines",
-//     "United Airlines",
-//     "American Airlines",
-//     "British Airways",
-//     "Lufthansa",
-// ];
 
 const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
 
@@ -98,7 +86,7 @@ function Panel({
     last?: boolean;
 }) {
     return (
-        <Flex direction="column">
+        <Flex direction="column" margin={last ? "0 0 1rem" : ""} styles={{ position: "sticky", top: "0" }}>
             <Flex
                 align="center"
                 justify="space-between"
@@ -121,19 +109,14 @@ function Panel({
 }
 
 function SortingColumns({ onClose }: { onClose?: () => void }) {
-    const { searchFlights, searchFlightsMode, updateSearchQuery, searchQuery } =
-        useFlightBookingStore((state) => state);
-    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
-        (state) => state
-    );
+    const { searchFlights, searchFlightsMode, updateSearchQuery, searchQuery } = useFlightBookingStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
 
     const flightContext = useContext(FlightContext);
-    const flightState = flightContext?.state;
+    const flightState = flightContext?.state,
+        dispatch = flightContext?.dispatch;
     const { queryParams } = useQueryParams();
-
-    const searchParams = extractSearchParamsFromUrl({
-        url: window.location.href,
-    });
+    const { isMobile } = useScreenResolution()
 
     const initFilterData = {
         bags: {
@@ -142,7 +125,17 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         },
         stops: "any",
         airlines: [],
-        times: {
+        departTimes: {
+            depart: {
+                min: "0:00",
+                max: "23:59",
+            },
+            arrival: {
+                min: "0:00",
+                max: "23:59",
+            },
+        },
+        returnTimes: {
             depart: {
                 min: "0:00",
                 max: "23:59",
@@ -167,32 +160,42 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             min: 0,
             max: parseInt((20000 * conversionRate).toFixed(0)),
         },
-        cabin: "",
+        cabin: "M",
     };
 
     const [filterData, setFilterData] = useState<FilterData>({
         ...initFilterData,
         bags: {
             cabin: Number(
-                searchQuery?.adult_hold_bag ?? initFilterData.bags.cabin
+                Number(queryParams?.cabinBags) ?? initFilterData.bags.cabin
             ),
             checked: Number(
-                searchQuery?.adult_hand_bag ?? initFilterData.bags.checked
+                Number(queryParams?.checkedBags) ?? initFilterData.bags.checked
             ),
         },
         price: {
             min: Number(searchQuery?.price_from ?? initFilterData.price.min),
             max: Number(searchQuery?.price_to ?? initFilterData.price.max),
         },
-        times: {
+        departTimes: {
             arrival: {
                 min:
-                    searchQuery?.atime_from ?? initFilterData.times.arrival.min,
-                max: searchQuery?.atime_to ?? initFilterData.times.depart.max,
+                    searchQuery?.atime_from ?? initFilterData.departTimes.arrival.min,
+                max: searchQuery?.atime_to ?? initFilterData.departTimes.depart.max,
             },
             depart: {
-                min: searchQuery?.dtime_from ?? initFilterData.times.depart.min,
-                max: searchQuery?.dtime_to ?? initFilterData.times.depart.max,
+                min: searchQuery?.dtime_from ?? initFilterData.departTimes.depart.min,
+                max: searchQuery?.dtime_to ?? initFilterData.departTimes.depart.max,
+            },
+        },
+        returnTimes: {
+            arrival: {
+                min: searchQuery?.ret_atime_from ?? initFilterData.returnTimes.arrival.min,
+                max: searchQuery?.ret_atime_to ?? initFilterData.returnTimes.depart.max,
+            },
+            depart: {
+                min: searchQuery?.ret_dtime_from ?? initFilterData.returnTimes.depart.min,
+                max: searchQuery?.ret_dtime_to ?? initFilterData.returnTimes.depart.max,
             },
         },
         duration: {
@@ -226,12 +229,9 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         cabin: false,
     });
 
-    type FilterName = keyof typeof filterState;
+    type FilterName = keyof typeof filterData;
 
-    const [airlinePortal, setAirlinePortal] = useState({
-        isOpen: false,
-        search: "",
-    });
+    const [activeTimes, setActiveTimes] = useState('depart')
 
     const [activeFilters, setActiveFilters] = useState<{
         list: string[];
@@ -248,6 +248,18 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         }));
     };
 
+    const removeFilter = (value: string) => {
+        setActiveFilters((prev) => ({
+            ...prev,
+            list: prev.list.includes(value) ? prev.list.filter(e => e !== value) : prev.list,
+        }));
+        setFilterData(prev => {
+            const newFilter = { ...prev, [value]: initFilterData[value as FilterName] }
+            handleFilterResults(newFilter);
+            return ({ ...newFilter })
+        })
+    };
+
     const resetFilters = () => {
         setFilterData(initFilterData);
         setActiveFilters((prev) => ({
@@ -258,12 +270,21 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         handleFilterResults(initFilterData);
     };
 
-    const toggleFilter = (columnName: FilterName) => {
+    const toggleFilter = (columnName: keyof typeof filterState) => {
         setFilterState((prevState) => ({
             ...prevState,
             [columnName]: !prevState[columnName],
         }));
     };
+
+    const maxBags = useMemo(() => {
+        const adults = Number(queryParams?.adults) === flightState?.fleet[0]?.adults ? flightState?.fleet[0]?.adults : Number(queryParams?.adults)
+        const children = Number(queryParams?.children) === flightState?.fleet[0]?.children ? flightState?.fleet[0]?.children : Number(queryParams?.children)
+        return ({
+            cabinBaggage: adults + children,
+            checkedBaggage: (adults + children) * 2,
+        })
+    }, [flightState?.fleet, queryParams])
 
     const handleBags = (
         bagType: "cabin" | "checked",
@@ -271,18 +292,22 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
     ) => {
         setFilterData((prevState) => {
             const currentValue = prevState.bags[bagType];
-            const newValue =
-                actionType === "add"
-                    ? Math.min(currentValue + 1, bagType === "cabin" ? 1 : 2)
+            const newValue = actionType === "add"
+                    ? Math.min(currentValue + 1, bagType === "cabin" ? maxBags.cabinBaggage : maxBags.checkedBaggage)
                     : Math.max(currentValue - 1, 0);
-            return {
+            dispatch &&
+                dispatch({
+                    type: "UPDATE_MULTI_FLIGHT",
+                    payload: { index: 0, data: { [bagType === 'cabin' ? 'cabinBaggage' : 'checkedBaggage']: newValue } },
+                })
+            return ({
                 ...prevState,
                 bags: {
                     ...prevState.bags,
                     [bagType]: newValue,
                 },
-            };
-        });
+            })
+        })
         setFilter("bags");
     };
 
@@ -309,17 +334,17 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         setFilter(checkType);
     };
 
-    const handleCheckAll = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        checkType: checkType,
-        allOptions: any[]
-    ) => {
-        setFilterData((prev) => ({
-            ...prev,
-            [checkType]: allOptions,
-        }));
-        setFilter(checkType);
-    };
+    // const handleCheckAll = (
+    //     event: React.ChangeEvent<HTMLInputElement>,
+    //     checkType: checkType,
+    //     allOptions: any[]
+    // ) => {
+    //     setFilterData((prev) => ({
+    //         ...prev,
+    //         [checkType]: allOptions,
+    //     }));
+    //     setFilter(checkType);
+    // };
 
     const convertTime = (value: number) => {
         const minutes = value * 15;
@@ -339,7 +364,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         }
     };
 
-    const handleTimeChange = (
+    const handleTimeChange = debounce((
         newValue: number | number[],
         time: "arrival" | "depart" | "travelTime" | "stopOver"
     ) => {
@@ -351,7 +376,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             : convertTime(newValue);
         const group = ["travelTime", "stopOver"].includes(time)
             ? "duration"
-            : "times";
+            : (activeTimes === 'depart' ? "departTimes" : "returnTimes");
 
         setFilterData((prevFilterData) => ({
             ...prevFilterData,
@@ -364,9 +389,9 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             },
         }));
         setFilter(group);
-    };
+    }, 800);
 
-    const handleSlider = (
+    const handleSlider = debounce((
         newValue: number | number[],
         group: "duration" | "price",
         name: string
@@ -393,68 +418,82 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
             }));
         }
         setFilter(group);
-    };
+    }, 800);
 
-    const filteredTags = useMemo(
-        () =>
-            activeFilters.list.map((e, index) => (
-                <Tag key={index}>
-                    <Text
-                        type="p"
-                        color="white"
-                        text={capCase(e)}
-                        margin="0 .5rem 0 0"
-                    />{" "}
-                    <MdCancel size={25} color="white" />
-                </Tag>
-            )),
-        [activeFilters]
+    const filteredTags = useMemo(() =>
+        activeFilters.list.map((e, index) => (
+            <Tag key={index} style={{ background: ttColors.dark }}>
+                <Text
+                    type="p"
+                    color="white"
+                    text={capCase(e)}
+                    margin="0 .5rem 0 0"
+                />{" "}
+                <Flex width='min-content' onClick={() => removeFilter(e)}>
+                    <MdCancel size={25} color="white" cursor="pointer"/>
+                </Flex>
+            </Tag>
+        )), [activeFilters]
     );
 
     const parseQuery = (data: FilterData): SearchFlightsRequestQuery => {
         const flight = flightState?.fleet[0];
         const adults = Number(flight?.adults);
         const children = Number(flight?.children);
-        const infants = Number(flight?.infants);
+        const adultsAndChildren = adults + children;
+
+        const shareCabinBags = (numPass: number, numBags: number) => {
+            const arrBags = Array.from({ length: numBags }).fill(1)
+            const arrPass = Array.from({ length: numPass }).fill(0)
+
+            return arrPass.map(e => {
+                let val = arrBags.length > 0 ? 1 : 0
+                arrBags.pop()
+                return val
+            })
+        }
+        const shareCheckedBags = (numPass: number, numBags: number) => {
+            const arrBags = Array.from({ length: numBags }).fill(1)
+            const arrPass = Array.from({ length: numPass }).fill(0)
+            arrBags.forEach((e, ind, arr) => {
+                arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1
+            })
+            return arrPass
+        }
+
+        const sharedCabin = shareCabinBags(adultsAndChildren, data.bags.cabin)
+        const sharedChecked = shareCheckedBags(adultsAndChildren, data.bags.checked)
         const adultHandBags =
-            adults > 0
-                ? Array(adults).fill(data.bags.cabin).join(",")
-                : undefined;
+            adults > 0 ? sharedCabin.slice(0, adults).join(',') : undefined;
         const adultHoldBags =
-            adults > 0
-                ? Array(adults).fill(data.bags.checked).join(",")
-                : undefined;
+            adults > 0 ? sharedChecked.slice(0, adults).join(',') : undefined;
         const childHandBags =
-            children > 0
-                ? Array(adults).fill(data.bags.cabin).join(",")
-                : undefined;
+            children > 0 ? sharedCabin.slice(adults).join(',') : undefined;
         const childHoldBags =
-            children > 0
-                ? Array(adults).fill(data.bags.checked).join(",")
-                : undefined;
+            children > 0 ? sharedChecked.slice(adults).join(',') : undefined;
+
         const newParams = {
-            ...searchParams,
-            adults,
-            // children,
-            // infants,
+            ...searchQuery,
             adult_hand_bag: String(adultHandBags),
             adult_hold_bag: String(adultHoldBags),
-            // child_hand_bag: String(childHandBags),
-            // child_hold_bag: String(childHoldBags),
-            select_airlines: data.airlines
-                .map((e) => sortedAirlines[e]?.IATACode)
-                .join(","),
+            child_hand_bag: children > 0 ? String(childHandBags) : undefined,
+            child_hold_bag: children > 0 ? String(childHoldBags) : undefined,
+            select_airlines: data.airlines.map((e) => sortedAirlines[e]?.IATACode).join(","),
             select_airlines_exclude: false,
             max_sector_stopovers: data.stops === "any" ? "" : data.stops,
-            dtime_from: data.times.depart.min,
-            dtime_to: data.times.depart.max,
-            atime_from: data.times.arrival.min,
-            atime_to: data.times.arrival.max,
-            max_fly_duration: data.duration.travelTime.max,
-            stopover_from: `${data.duration.stopOver.min}:00`,
-            stopover_to: `${data.duration.stopOver.max}:00`,
-            price_from: data.price.min,
-            price_to: data.price.max,
+            dtime_from: activeFilters.list.includes('times') ? data.departTimes.depart.min : undefined,
+            dtime_to: activeFilters.list.includes('times') ? data.departTimes.depart.max : undefined,
+            atime_from: activeFilters.list.includes('times') ? data.departTimes.arrival.min : undefined,
+            atime_to: activeFilters.list.includes('times') ? data.departTimes.arrival.max : undefined,
+            ret_dtime_from: flightState?.stops === 'round' ? data.returnTimes.depart.min : undefined,
+            ret_dtime_to: flightState?.stops === 'round' ? data.returnTimes.depart.max : undefined,
+            ret_atime_from: flightState?.stops === 'round' ? data.returnTimes.arrival.min : undefined,
+            ret_atime_to: flightState?.stops === 'round' ? data.returnTimes.arrival.max : undefined,
+            max_fly_duration: activeFilters.list.includes('duration') ? data.duration.travelTime.max : undefined,
+            stopover_from: activeFilters.list.includes('duration') ?`${data.duration.stopOver.min}:00` : undefined,
+            stopover_to: activeFilters.list.includes('duration') ?`${data.duration.stopOver.max}:00` : undefined,
+            price_from: activeFilters.list.includes('price') ? data.price.min : undefined,
+            price_to: activeFilters.list.includes('price') ? data.price.max : undefined,
             selected_cabins: data.cabin,
             sort: searchQuery?.sort,
         };
@@ -466,24 +505,25 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         updateSearchQuery({ data: cleanObject(parsed) });
         searchFlights({ data: cleanObject(parsed) }).then((res) => {
             setActiveFilters((prev) => ({ ...prev, active: true }));
-        });
-
+        })
         onClose && onClose();
     };
 
     useEffect(() => {
-        const parsed = parseQuery(initFilterData);
-        updateSearchQuery({ data: parsed });
-        setActiveFilters((prev) => ({
+        setFilterData(prev => ({
             ...prev,
-            list: [],
-            active: false,
-        }));
-    }, [queryParams]);
+            bags: {
+                ...prev.bags,
+                cabin: Number(queryParams?.cabinBags) ?? prev.bags.cabin,
+                checked: Number(queryParams?.checkedBags) ?? prev.bags.checked,
+            }
+        }))
+    }, [queryParams])
 
-    // useEffect(() => {
-    //     console.log("ffff", filterData);
-    // }, [filterData]);
+    useEffect(() => {
+        activeFilters.list.length > 0 && handleFilterResults(filterData)
+    }, [filterData.bags, filterData.price, filterData.departTimes, filterData.returnTimes, filterData.duration, filterData.airlines, filterData.alliance, filterData.cabin, filterData.stops,])
+
 
     return (
         <Flex direction="column">
@@ -535,6 +575,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         />
                         <Flex width="50%" gap=".5rem" align="center" justify="flex-end">
                             <PlusMinusButton
+                                isDisabled={filterData.bags.cabin === 0}
                                 onClick={() => handleBags("cabin", "subtract")}
                             >
                                 <Text type="p" text="-" />
@@ -546,6 +587,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                                 textAlign="center"
                             />
                             <PlusMinusButton
+                                isDisabled={filterData.bags.cabin >= maxBags.cabinBaggage}
                                 onClick={() => handleBags("cabin", "add")}
                             >
                                 <Text type="p" text="+" />
@@ -561,6 +603,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         />
                         <Flex width="50%" gap=".5rem" align="center" justify="flex-end">
                             <PlusMinusButton
+                                isDisabled={filterData.bags.checked === 0}
                                 onClick={() =>
                                     handleBags("checked", "subtract")
                                 }
@@ -574,6 +617,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                                 textAlign="center"
                             />
                             <PlusMinusButton
+                                isDisabled={filterData.bags.checked >= maxBags.checkedBaggage}
                                 onClick={() => handleBags("checked", "add")}
                             >
                                 <Text type="p" text="+" />
@@ -599,19 +643,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         align="flex-start"
                         direction="column"
                     />
-                    {/* <CheckBox
-                    name="overnight"
-                    checked={filterData.stops === "overnight"}
-                    onChange={(x) => handleRadio(x)}
-                    style={{ paddingLeft: '5px', fontSize: '14px' }}
-                >
-                <Text
-                    type="p"
-                    text="Allow overnight stopovers"
-                    whiteSpace="nowrap"
-                    size={14}
-                />
-                </CheckBox> */}
                 </Flex>
             </Panel>
 
@@ -630,11 +661,13 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             icon={<LuSearch color="#929292" size={20} />}
                         />
                     </Flex>
-                    {filterData.airlines.map((airline, index) => (
-                        <CheckBox key={index} checked={true} name={airline}>
-                            <Text type="p" text={airline} size={16} />
-                        </CheckBox>
-                    ))}
+                    <Flex direction="column" gap="0rem" margin=".5rem 0 0">
+                        {filterData.airlines.map((airline, index) => (
+                            <CheckBox key={index} checked={true} name={airline} onChange={() => handleCheck(airline, 'airlines')}>
+                                <Text type="p" text={airline} size={15} />
+                            </CheckBox>
+                        ))}
+                    </Flex>
                 </Flex>
             </Panel>
 
@@ -653,7 +686,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         borderRadius="8px"
                         background={ttColors.grayishAsh}
                     >
-                        <ButtonBox active={true} width="50%">
+                        <ButtonBox active={activeTimes === 'depart'} width="50%" onClick={() => setActiveTimes('depart')}>
                             <Text
                                 type="p"
                                 text="Departure"
@@ -661,7 +694,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                                 size={16}
                             />
                         </ButtonBox>
-                        <ButtonBox active={false} width="50%">
+                        <ButtonBox active={activeTimes === 'return'} width="50%" onClick={() => setActiveTimes('return')}>
                             <Text
                                 type="p"
                                 text="Return"
@@ -672,22 +705,15 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                     </Flex>
                     <Flex direction="column" gap=".25rem" padding="1rem 0">
                         <Text type="p" text="Departure" weight={500} />
-                        {/* <Text
-                        type="p"
-                        text="All Day"
-                        size={16}
-                        weight={500}
-                        color="#7BBBD6"
-                    /> */}
                         <Slider
                             marks={[
                                 {
                                     value: 0,
-                                    label: filterData.times.depart.min,
+                                    label: activeTimes === 'depart' ? filterData.departTimes.depart.min : filterData.returnTimes.depart.min,
                                 },
                                 {
                                     value: 96,
-                                    label: filterData.times.depart.max,
+                                    label: activeTimes === 'depart' ? filterData.departTimes.depart.max : filterData.returnTimes.depart.max,
                                 },
                             ]}
                             defaultValue={[0, 96]}
@@ -704,11 +730,11 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             marks={[
                                 {
                                     value: 0,
-                                    label: filterData.times.arrival.min,
+                                    label: activeTimes === 'depart' ? filterData.departTimes.arrival.min : filterData.returnTimes.arrival.min,
                                 },
                                 {
                                     value: 96,
-                                    label: filterData.times.arrival.max,
+                                    label: activeTimes === 'depart' ? filterData.departTimes.arrival.max : filterData.returnTimes.arrival.max,
                                 },
                             ]}
                             defaultValue={[0, 96]}
@@ -728,7 +754,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 toggle={() => toggleFilter("alliance")}
                 isActive={filterState.alliance}
             >
-                <div>
+                <Flex direction="column" gap="0">
                     {alliance.map((alliance, index) => (
                         <CheckBox
                             key={index}
@@ -739,7 +765,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             <Text type="p" text={alliance} size={16} />
                         </CheckBox>
                     ))}
-                </div>
+                </Flex>
             </Panel>
 
             {/* Duration */}
@@ -776,6 +802,8 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             }
                             min={2}
                             max={48}
+                            leftOffset="20px"
+                            rightOffset="-100px"
                         />
                     </Flex>
                     <Flex direction="column" gap=".25rem" padding=".5rem 0">
@@ -805,6 +833,8 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                             }
                             min={2}
                             max={48}
+                            leftOffset="20px"
+                            rightOffset="-100px"
                         />
                     </Flex>
                 </div>
@@ -857,6 +887,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                     min={0}
                     max={20000 * conversionRate}
                     step={250}
+                    rightOffset="-160px"
                 />
             </Panel>
 
@@ -872,6 +903,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                         options={cabinOptions}
                         name="cabin"
                         onChange={(x) => handleRadio(x)}
+                        value={filterData.cabin}
                         justifyContent="flex-end"
                         align="flex-start"
                         direction="column"
@@ -879,7 +911,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 </Flex>
             </Panel>
 
-            <LoadingButton
+            {/* <LoadingButton
                 onClick={() => handleFilterResults(filterData)}
                 variant="contained"
                 style={{
@@ -890,7 +922,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 loading={searchFlightsMode === Mode.loading}
             >
                 <Text type="p" text="Apply" />
-            </LoadingButton>
+            </LoadingButton> */}
         </Flex>
     );
 }

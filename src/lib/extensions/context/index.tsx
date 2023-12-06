@@ -1,20 +1,10 @@
 "use client";
 
-import Location, {
+import {
     KiwiLocation,
 } from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
-const airports = require("airport-iata-codes");
-const airlines = require("airline-iata-code");
-const sortedAirports: { [k: string]: AirportInterface } = {};
-const sortedAirlines: { [k: string]: AirlineInterface } = {};
-airports().forEach((e: AirportInterface) => {
-    sortedAirports[e.iata_code] = e;
-});
-airlines().forEach((e: AirlineInterface) => {
-    sortedAirlines[e.IATACode] = e;
-});
-
+import countries from '@/constants/countries.json' 
 import {
     createContext,
     useContext,
@@ -22,12 +12,32 @@ import {
     useReducer,
     Dispatch,
 } from "react";
-
+import { NOT_ALLOWED_AIRLINES } from "../constants";
 type CountryDetails = {
     name: string;
     flag: string;
     code: string;
+    dial_code?: string;
 };
+
+const airports = require("airport-iata-codes");
+const airlines = require("airline-iata-code");
+const sortedAirports: { [k: string]: AirportInterface } = {};
+const sortedAirlines: { [k: string]: AirlineInterface } = {};
+const sortedCountries: { [k: string]: CountryDetails } = {};
+airports().forEach((e: AirportInterface) => {
+    sortedAirports[e.iata_code] = e;
+});
+airlines().forEach((e: AirlineInterface) => {
+    if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
+        sortedAirlines[e.IATACode] = e
+    }
+})
+countries.forEach((e: CountryDetails) => {
+    sortedCountries[e.code] = ({ name: e.name, flag: e.flag, code: e.code })
+})
+
+
 
 export interface OneFlightType {
     index: number;
@@ -72,13 +82,14 @@ interface ContextType {
     fleet: OneFlightType[];
     airports: typeof sortedAirports;
     airlines: typeof sortedAirlines;
+    countries: typeof sortedCountries;
 }
 
 const oneFlight: OneFlightType = {
     index: 0,
     // departureCountry: undefined,
     // arrivalCountry: undefined,
-    // departureDate: dayjs(new Date()),
+    departureDate: dayjs(new Date()),
     // returnDate: dayjs(new Date()).add(1, "day"),
     adults: 1,
     children: 0,
@@ -94,6 +105,7 @@ const initialValues: ContextType = {
     fleet: [oneFlight],
     airports: sortedAirports,
     airlines: sortedAirlines,
+    countries : sortedCountries,
 };
 
 type Action =

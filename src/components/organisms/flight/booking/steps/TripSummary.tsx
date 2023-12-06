@@ -22,7 +22,6 @@ import {
     SaveBookingRequestInput,
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
-    contactDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
     CheckFlightResponse,
@@ -87,6 +86,8 @@ const TripSummary = ({
         saveBooking,
         checkFlightsResponse,
         saveBookingDetails,
+        contactDetails,
+        setContactDetails,
         setSaveBookingDetails,
         nextStep,
     } = useFlightBookingStore((state) => state);
@@ -174,19 +175,25 @@ const TripSummary = ({
                     size: parseInt(infants),
                     category: PassengerCategory.INFANT,
                 }),
-            ],
+            ].map((e, ind) => ({
+                ...e,
+                ...saveBookingDetails.passengers[ind],
+            })),
         },
         enableReinitialize: true,
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
         onSubmit: async (values, helpers) => {
             console.log(contactDetailsFormik.values, "passengers");
+            console.log(user, "user");
             setLoading(true);
             setSaveBookingDetails({
                 data: {
                     ...saveBookingDetails,
-                    new_user_email: contactDetailsFormik.values.email,
-                    user: user?.id,
+                    ...(!user?._id
+                        ? { new_user_email: contactDetailsFormik.values.email }
+                        : { user: user?._id }),
+
                     booking_token: checkFlightsResponse?.booking_token ?? "",
                     session_id: checkFlightsResponse?.session_id ?? "",
                     passengers: values.passengers.map((el, index) =>
@@ -194,14 +201,18 @@ const TripSummary = ({
                             ? {
                                   ...el,
                                   nationality:
-                                      el.nationality.code.toLowerCase(),
+                                      typeof el.nationality === "string"
+                                          ? el.nationality
+                                          : el.nationality?.code?.toLowerCase(),
                               }
                             : {
                                   ...el,
                                   email: contactDetailsFormik.values.email,
                                   phone: contactDetailsFormik.values.phone,
                                   nationality:
-                                      el.nationality.code.toLowerCase(),
+                                      typeof el.nationality === "string"
+                                          ? el.nationality
+                                          : el.nationality?.code?.toLowerCase(),
                               }
                     ),
                     baggage: arrangeBaggageDataForOrdering(
@@ -209,6 +220,14 @@ const TripSummary = ({
                     ),
                 },
             });
+            setContactDetails({ data: contactDetailsFormik.values });
+            console.log(passengersBagCombination);
+            console.log(insertSelectedCheckedBags(passengersBagCombination));
+            console.log(
+                arrangeBaggageDataForOrdering(
+                    insertSelectedCheckedBags(passengersBagCombination)
+                )
+            );
             await sleep(500);
             nextStep();
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -217,6 +236,7 @@ const TripSummary = ({
     });
 
     const checkSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+        e.preventDefault();
         formik.validateForm();
         contactDetailsFormik.validateForm();
         // if (!formik.isValid) {
@@ -313,7 +333,7 @@ const TripSummary = ({
                                                 combinationOptions={getPassengerBagCombinationOptions(
                                                     {
                                                         category:
-                                                            passenger.category,
+                                                            passenger.category as PassengerCategory,
                                                     }
                                                 )}
                                                 passengerBagCombination={

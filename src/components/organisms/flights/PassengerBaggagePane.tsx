@@ -30,10 +30,12 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { capCase } from "@/lib/utilFns";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { Tooltip } from "@mui/material";
+import SimpleTooltip from "../SimplePopper/SimpleTooltip";
 
 interface PassengerBaggagePaneProps {
     index: number;
-    values: PassengerFormInterface;
+    values: Passenger;
     combinationOptions: Combinations;
     count: number;
     passengerBagCombination: PassengerBaggageCombinationInterface;
@@ -55,7 +57,7 @@ interface PassengerBaggagePaneProps {
 }
 
 const BaggageBox = styled.div<{ active: boolean }>`
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 1.1rem;
     border: 2px solid
         ${({ active }) => (active ? ttColors.primary : ttColors.lightestGray)};
     border-radius: 10px;
@@ -176,18 +178,21 @@ export default function PassengerBaggagePane({
         })
         .join(", ");
     
-    useEffect(() => console.log('nnnn', newBags), [newBags])
 
     return (
         <Box>
             <Flex gap="1rem" align="center" padding="2rem 0">
                 <Text
                     type="h3"
-                    size={isMobile ? 18 : 22}
+                    size={isMobile ? 18 : 20}
                     text="Cabin or Carry-On Baggage"
-                    weight={600}
+                    weight={500}
                 />
-                <PiWarningCircleBold size={30} color={ttColors.primaryLight} />
+                <SimpleTooltip title="Comprising smaller bags that can be taken into the cabin and stored in the overhead locker or under your seat.">
+                    <Box display="flex" alignItems="center" sx={{ cursor: 'pointer' }}>
+                        <PiWarningCircleBold size={26} color={ttColors.primaryLight} />
+                    </Box>
+                </SimpleTooltip>
             </Flex>
 
             {/* Hand Bags */}
@@ -210,7 +215,7 @@ export default function PassengerBaggagePane({
                             size={isMobile ? 14 : 16}
                             padding={isMobile ? "0 1rem" : ""}
                         />
-                        <Flex align="flex-end" justify="center">
+                        <Flex align="flex-end" justify="center" padding="0 0 1rem">
                             {newBags.handBags
                                 .filter(
                                     (e, index, arr) => arr.indexOf(e) === index
@@ -256,7 +261,7 @@ export default function PassengerBaggagePane({
                                 gap=".5rem"
                                 background="#F4F4F4"
                                 width={isMobile ? "max-content" : "9.5rem"}
-                                padding=".5rem .75rem"
+                                padding=".5rem .75rem .5rem 0rem"
                                 borderRadius="30px"
                                 border={`1px solid ${ttColors.lightestGray}`}
                             >
@@ -285,19 +290,20 @@ export default function PassengerBaggagePane({
                 <Flex gap="1rem" align="center">
                     <Text
                         type="h3"
-                        size={isMobile ? 18 : 22}
+                        size={isMobile ? 18 : 20}
                         text="Checked Baggage"
-                        weight={600}
+                        weight={500}
                     />
-                    <PiWarningCircleBold
-                        size={30}
-                        color={ttColors.primaryLight}
-                    />
+                    <SimpleTooltip title="Comprising larger baggage items that need to be checked in at the airline counter prior to airport security screening.">
+                        <Box display="flex" alignItems="center" sx={{ cursor: 'pointer' }}>
+                            <PiWarningCircleBold size={26} color={ttColors.primaryLight} />
+                        </Box>
+                    </SimpleTooltip>
                 </Flex>
                 <Text
                     type="p"
                     text="Select one option:"
-                    weight={500}
+                    weight={400}
                     color={ttColors.foundation.gray}
                     size={isMobile ? 14 : 16}
                 />
@@ -326,9 +332,12 @@ export default function PassengerBaggagePane({
                                     JSON.stringify(comb.indices);
                                 const bagDefinition =
                                     bagDefinitions?.hold_bag[comb.indices[0]];
-                                const sameBags = comb.indices.every(
-                                    (e, i, indArr) => e === indArr[0]
-                                );
+                                const sameBags = comb.indices.every((e, i, indArr) => (e === indArr[0]) || (
+                                    (bagDefinitions?.hold_bag[e]?.restrictions?.height == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.height)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.width == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.width)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.length == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.length)
+                                    && (bagDefinitions?.hold_bag[e]?.restrictions?.weight == bagDefinitions?.hold_bag[indArr[0]]?.restrictions?.weight)
+                                ));
                                 return (
                                     <BaggageBox
                                         active={isActive}
@@ -370,7 +379,7 @@ export default function PassengerBaggagePane({
                                                     align="center"
                                                 >
                                                     <Image
-                                                        height={150}
+                                                        height={140}
                                                         styles={{
                                                             objectFit: "contain",
                                                         }}
@@ -469,9 +478,7 @@ export default function PassengerBaggagePane({
                                                                     align="center"
                                                                 >
                                                                     <Image
-                                                                        height={
-                                                                            150
-                                                                        }
+                                                                        height={140}
                                                                         styles={{
                                                                             objectFit:
                                                                                 "contain",

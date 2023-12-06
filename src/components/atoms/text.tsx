@@ -1,6 +1,4 @@
 import React, { CSSProperties, MouseEventHandler } from "react";
-import styled from "styled-components";
-
 interface TextProps {
     text: string;
     type: string;
@@ -27,7 +25,9 @@ interface TextProps {
     cursor?: CSSProperties["cursor"];
     textAlign?: CSSProperties["textAlign"];
     width?: CSSProperties["width"];
-    onClick?: MouseEventHandler<HTMLParagraphElement | HTMLHeadingElement | HTMLLabelElement>
+    onClick?: MouseEventHandler<HTMLParagraphElement | HTMLHeadingElement | HTMLLabelElement>;
+    onMouseEnter?: (event: React.MouseEvent<HTMLElement>) => void;
+    onMouseLeave?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -50,6 +50,8 @@ export const Text: React.FC<TextProps> = ({
     textAlign,
     styles = {},
     onClick,
+    onMouseEnter,
+    onMouseLeave
 }) => {
     const updatedStyles: CSSProperties = {
         color,
@@ -73,59 +75,63 @@ export const Text: React.FC<TextProps> = ({
 
     if (type === "p")
         return (
-            <p style={updatedStyles} className={className} onClick={onClick}>
+            <p style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </p>
         );
     if (type === "span")
         return (
-            <span style={updatedStyles} className={className} onClick={onClick}>
+            <span style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </span>
         );
     if (type === "label")
         return (
-            <label style={updatedStyles} className={className} onClick={onClick}>
+            <label style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </label>
         );
     if (type === "h1")
         return (
-            <h1 style={updatedStyles} className={className} onClick={onClick}>
+            <h1 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </h1>
         );
     if (type === "h2")
         return (
-            <h2 style={updatedStyles} className={className} onClick={onClick}>
+            <h2 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </h2>
         );
     if (type === "h3")
         return (
-            <h3 style={updatedStyles} className={className} onClick={onClick}>
+            <h3 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </h3>
         );
     if (type === "h4")
         return (
-            <h4 style={updatedStyles} className={className} onClick={onClick}>
+            <h4 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </h4>
         );
     if (type === "h5")
         return (
-            <h5 style={updatedStyles} className={className} onClick={onClick}>
+            <h5 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </h5>
         );
     if (type === "h6")
         return (
-            <h6 style={updatedStyles} className={className} onClick={onClick}>
+            <h6 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {text}
             </h6>
         );
 
-    return <div>{text}</div>;
+    return (
+        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+            {text}
+        </div>
+    );
 };
 export default Text;

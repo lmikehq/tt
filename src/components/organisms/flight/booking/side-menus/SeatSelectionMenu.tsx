@@ -96,12 +96,15 @@ const SeatSelectionMenu = () => {
                             weight={500}
                             type="h1"
                             text={
-                                checkFlightsResponse?.flights[0].src_station +
-                                " Airport"
+                                checkFlightsResponse?.flights[0]?.src_station ??
+                                ""
                             }
                         />
                     </Section>
-                    <Section width="fit-content" padding={"1.5rem"}>
+                    <Section
+                        width="min-content"
+                        padding={"0rem 1.5rem 0 .5rem"}
+                    >
                         <BiRightArrowAlt size={24} />
                     </Section>
                     <Section>
@@ -110,8 +113,8 @@ const SeatSelectionMenu = () => {
                             weight={500}
                             type="h1"
                             text={
-                                checkFlightsResponse?.flights[0].dst_station +
-                                " Airport"
+                                checkFlightsResponse?.flights[0]?.dst_station ??
+                                ""
                             }
                         />
                     </Section>
@@ -151,13 +154,13 @@ const SeatSelectionMenu = () => {
                                 type="p"
                                 color="#101010"
                                 size={16}
-                                weight={400}
+                                weight={600}
                                 text="Standard"
                             />
                             <Text
                                 type="p"
                                 color={"#101010"}
-                                size={16}
+                                size={14}
                                 weight={400}
                                 text={
                                     leastStandardSeat
@@ -171,7 +174,7 @@ const SeatSelectionMenu = () => {
                         </Section>
                         <Text
                             type="p"
-                            size={16}
+                            size={15}
                             weight={400}
                             textAlign="right"
                             text={
@@ -205,13 +208,13 @@ const SeatSelectionMenu = () => {
                                 type="p"
                                 color="#101010"
                                 size={16}
-                                weight={400}
+                                weight={600}
                                 text="Premium"
                             />
                             <Text
                                 type="p"
                                 color={"#101010"}
-                                size={16}
+                                size={14}
                                 weight={400}
                                 text={
                                     leastPremiumSeat
@@ -225,7 +228,7 @@ const SeatSelectionMenu = () => {
                         </Section>
                         <Text
                             type="p"
-                            size={16}
+                            size={15}
                             weight={400}
                             textAlign="right"
                             text={
@@ -259,13 +262,13 @@ const SeatSelectionMenu = () => {
                                 type="p"
                                 color="#101010"
                                 size={16}
-                                weight={400}
+                                weight={600}
                                 text={seatClass.extra_legroom_seat.name}
                             />
                             <Text
                                 type="p"
                                 color={"#101010"}
-                                size={16}
+                                size={14}
                                 weight={400}
                                 text={
                                     leastExtraLegRoomSeat
@@ -280,7 +283,7 @@ const SeatSelectionMenu = () => {
                         </Section>
                         <Text
                             type="p"
-                            size={16}
+                            size={15}
                             weight={400}
                             textAlign="right"
                             text={
@@ -295,7 +298,7 @@ const SeatSelectionMenu = () => {
                 </Flex>
             </Flex>
 
-            <Section margin="40px 0 0 0">
+            <Flex direction="column" gap="1rem" margin="40px 0 0 0">
                 <Text type="h5" text="Seat Selection" size={20} weight={600} />
                 {passengers.map((el, index) => {
                     const selected = findSeatWithPassengerIndex({
@@ -306,16 +309,16 @@ const SeatSelectionMenu = () => {
                         <Flex
                             key={"passenger" + index}
                             justify="space-between"
-                            align="center"
+                            align="flex-end"
                             margin="0 0 16px 0"
                             styles={{ flexGrow: 1 }}
                         >
-                            <Section>
+                            <Flex direction="column" gap=".5rem">
                                 <Text
                                     type="p"
                                     color="#101010"
                                     size={16}
-                                    weight={400}
+                                    weight={500}
                                     text={
                                         index == 0
                                             ? "Main Passenger"
@@ -325,14 +328,15 @@ const SeatSelectionMenu = () => {
                                 <Text
                                     type="p"
                                     color="#101010"
-                                    size={16}
+                                    size={14}
                                     weight={400}
                                     text={selected ?? "Not Selected"}
                                 />
-                            </Section>
+                            </Flex>
                             <Button
                                 background="transparent"
                                 width="fit content"
+                                height="min-content"
                             >
                                 <Text
                                     type="p"
@@ -345,7 +349,7 @@ const SeatSelectionMenu = () => {
                         </Flex>
                     );
                 })}
-            </Section>
+            </Flex>
         </Section>
     );
 };
