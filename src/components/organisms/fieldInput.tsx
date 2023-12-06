@@ -263,7 +263,7 @@ export const FieldAsDate = (props: FieldProps) => {
             placeholder={placeholder}
             maxDate={maxDate}
             minDate={minDate}
-            value={value === "" ? undefined : dayjs(`${value}`)}
+            value={dayjs(`${value}`)}
             onChange={onChange ? onChange : handleChange}
             error={touched && error}
             format={format}

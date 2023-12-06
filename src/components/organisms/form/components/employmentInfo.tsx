@@ -94,7 +94,7 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                 saveProgressAndContinueLater={persistForm}
                 onClick={() => {
                     formik.validateForm().then(res => {
-                        if (!formik.isValid) return ToastError();
+                        if (Object.keys(res).length > 0) return ToastError();
                     })
                 }}
                 disabled={!formik.isValid}
