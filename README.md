@@ -1,4 +1,4 @@
-# Thrillers Travels Frontend!
+# Thrillers Travels Frontend.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
