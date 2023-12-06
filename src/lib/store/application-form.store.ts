@@ -12,6 +12,8 @@ import {
 import { create } from "zustand";
 import { COUNTRY_FLAGS, findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { useUserStore } from "./useStore";
+import { test as testVisaForm } from "@lib/types/schema";
+
 
 interface State {
   form: VisaApplicationFormInterface;
@@ -21,6 +23,7 @@ interface State {
   uploadedDocuments: UploadedDoc[];
   createVisaApplicationResponse: CreateVisaApplicationResponse | null;
 }
+
 interface Actions {
   prevStep: () => void;
   nextStep: (params: { data: VisaFormUnionType }) => void;
@@ -106,7 +109,8 @@ export const useApplicationFormStore = create<State & Actions>(
         uploadedDocuments: uploadedDocuments
           ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
           : null,
-      };
+        };
+        console.log('recent', recent)
       set((state) => ({
         form: recent.form ?? state.form,
         uploadedDocuments: recent.uploadedDocuments ?? [],
@@ -125,9 +129,9 @@ export const useApplicationFormStore = create<State & Actions>(
           data,
           user,
         });
-      return await ApplicationFormService.createVisaApplication({
-        payload,
-      })
+        return await ApplicationFormService.createVisaApplication({
+            payload: payload,
+        })
         .then((response) => {
           set((state) => ({
             createVisaApplicationResponse: response,

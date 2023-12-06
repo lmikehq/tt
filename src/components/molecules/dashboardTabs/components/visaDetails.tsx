@@ -847,7 +847,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         <Text
                           type="p"
                           text="+ Add accompanying"
-                          size={"15px"}
+                          size={"14px"}
                         />
                       </Button>
                     </Flex>

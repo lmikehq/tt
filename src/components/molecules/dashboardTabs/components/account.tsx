@@ -80,8 +80,6 @@ const Account = () => {
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
-
-
   const [isMobileEdit, setIsMobileEdit] = useState(false);
   // const [editedInfo, setEditedInfo] = useState({
   //   name: "",
@@ -118,8 +116,6 @@ const Account = () => {
   //   });
   // };
 
-
-
   const handleOpenAddAddressModal = () => {
     setOpenAddAddressModal(true);
   };
@@ -143,8 +139,6 @@ const Account = () => {
     setOpenChangePhoneModal(false);
   };
   // To here
-
-  
 
   const { user } = useUserStore((state) => state);
   const AccountInformation = [
@@ -218,82 +212,82 @@ const Account = () => {
     },
   ];
 
- const [submissionState, setSubmissionState] = useState({
-   loading: false,
-   error: [] as any,
-   success: false,
- });
- async function handleRegister(): Promise<any> {
-   const response = await apiService("/user", "POST", {
-     ...registerData,
-     email: registerData?.email?.toLowerCase(),
-   });
-   return response;
- }
+  const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    error: [] as any,
+    success: false,
+  });
+  async function handleRegister(): Promise<any> {
+    const response = await apiService("/user", "POST", {
+      ...registerData,
+      email: registerData?.email?.toLowerCase(),
+    });
+    return response;
+  }
 
- async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-   e.preventDefault();
-   if (submissionState.loading) return;
-   setSubmissionState({
-     ...submissionState,
-     loading: true,
-   });
-   if (!registerData.consent) {
-     setSubmissionState({
-       ...submissionState,
-       loading: false,
-     });
-     return alert("Please agree to the terms and conditions");
-   }
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (submissionState.loading) return;
+    setSubmissionState({
+      ...submissionState,
+      loading: true,
+    });
+    if (!registerData.consent) {
+      setSubmissionState({
+        ...submissionState,
+        loading: false,
+      });
+      return alert("Please agree to the terms and conditions");
+    }
 
-   if (registerData.password !== confirmPassword) {
-     setSubmissionState({
-       ...submissionState,
-       error: [
-         {
-           constraints: "Password do not match",
-           property: "confirmPassword",
-         },
-         {
-           constraints: "Password do not match",
-           property: "password",
-         },
-       ],
-       loading: false,
-     });
-     return;
-   }
+    if (registerData.password !== confirmPassword) {
+      setSubmissionState({
+        ...submissionState,
+        error: [
+          {
+            constraints: "Password do not match",
+            property: "confirmPassword",
+          },
+          {
+            constraints: "Password do not match",
+            property: "password",
+          },
+        ],
+        loading: false,
+      });
+      return;
+    }
 
-   const res = await handleRegister();
-   if (res.statusCode === 400) {
-     return setSubmissionState({
-       ...submissionState,
-       error: res.errors.message,
-       loading: false,
-     });
-   } else if (res.statusCode === 422) {
-     return setSubmissionState({
-       ...submissionState,
-       error: [{ property: "email", constraints: res.errors.message }],
-     });
-   }
+    const res = await handleRegister();
+    if (res.statusCode === 400) {
+      return setSubmissionState({
+        ...submissionState,
+        error: res.errors.message,
+        loading: false,
+      });
+    } else if (res.statusCode === 422) {
+      return setSubmissionState({
+        ...submissionState,
+        error: [{ property: "email", constraints: res.errors.message }],
+      });
+    }
 
-   setSubmissionState({
-     ...submissionState,
-     loading: true,
-   });
-   toast.success("Your details has been updated successfully!");
-   await sleep(3000);
-   toast.loading("Redirecting to login page...", {
-     duration: 3000,
-   });
- }
- function checkIfFieldHasError(field: string) {
-   const error: { constraints: string } = submissionState?.error?.find(
-     (err: any) => err.property.includes(field)
-   );
-   if (error) return error.constraints;
- }
+    setSubmissionState({
+      ...submissionState,
+      loading: true,
+    });
+    toast.success("Your details has been updated successfully!");
+    await sleep(3000);
+    toast.loading("Redirecting to login page...", {
+      duration: 3000,
+    });
+  }
+  function checkIfFieldHasError(field: string) {
+    const error: { constraints: string } = submissionState?.error?.find(
+      (err: any) => err.property.includes(field)
+    );
+    if (error) return error.constraints;
+  }
   return (
     <Section
       margin="2rem 0"
@@ -663,7 +657,7 @@ const Account = () => {
                       }
                     >
                       {detail.icon}
-                      <Text type="p" text={detail.edit} />
+                      <Text type="p" size={14} text={detail.edit} />
                     </Button>
                   )}
                   {detail.editable && (
@@ -693,7 +687,7 @@ const Account = () => {
                       }}
                     >
                       {detail.icon}
-                      <Text type="p" text={"Edit"} />
+                      <Text type="p" size={14} text={"Edit"} />
                     </Button>
                   )}
 

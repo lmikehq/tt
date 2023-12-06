@@ -1,26 +1,28 @@
 "use client";
 
 import { FormControlLabel, Checkbox as MUIChecky } from "@mui/material";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 function CheckBox({
   children,
   onChange,
   checked,
   value,
-  name,
+    name,
+  style
 }: {
   children: React.ReactNode;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean;
   value?: boolean;
   name?: string;
+  style?: CSSProperties;
 }) {
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   setChecked(event.target.checked);
   // };
   return (
-    <div>
+    <div style={style}>
       <FormControlLabel
         control={
           <MUIChecky
@@ -29,6 +31,11 @@ function CheckBox({
             value={value}
             onChange={onChange}
             inputProps={{ "aria-label": "controlled" }}
+            sx={{
+                ".MuiFormControlLabel-label": {
+                    fontSize: '14px'
+                },
+            }}
           />
         }
         label={children}

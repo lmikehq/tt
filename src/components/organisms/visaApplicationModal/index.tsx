@@ -3,6 +3,7 @@ import { Button, Modal, Backdrop, Fade } from "@mui/material";
 import styled from "styled-components";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 const StyledModal = styled(Modal)`
   display: flex;
@@ -34,9 +35,9 @@ const ModalHeader = styled.h2`
 
 const ModalDescription = styled.p`
   font-size: 1rem;
-  margin-top: 1rem;
+  margin: 1rem 0 1rem 0;
   color: #666;
-  padding: 1rem 5rem;
+  padding: 1rem 2rem;
 `;
 
 const ButtonWrapper = styled.div`
@@ -67,20 +68,21 @@ const CustomConfirmationModal: React.FC<CustomConfirmationModalProps> = ({
   buttons,
   child,
 }) => {
-  return (
+    const { isMobile } = useScreenResolution();
+    return (
     <StyledModal
-      open={open}
-      onClose={handleClose}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-        style: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-      }}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+            timeout: 500,
+            style: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+        }}
     >
       <Fade in={open}>
         {
-          <ModalContainer style={{ padding: child ? "0rem" : "2rem" }}>
+          <ModalContainer style={{ padding: child ? "0rem" : "2rem", maxWidth: isMobile ? "98vw" : "38vw" }}>
             {child ? (
               child
             ) : (
@@ -90,7 +92,7 @@ const CustomConfirmationModal: React.FC<CustomConfirmationModalProps> = ({
                 {description && (
                   <ModalDescription>{description}</ModalDescription>
                 )}
-                {subTitle && <Text type="h3" text={subTitle} />}
+                {subTitle && <Text type="h3" text={subTitle} size={16} />}
                 {buttons && <ButtonWrapper>{buttons}</ButtonWrapper>}
               </>
             )}

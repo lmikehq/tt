@@ -1,3 +1,5 @@
+'use client'
+
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Link from "@atom/link";
@@ -7,6 +9,8 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { toast } from "react-hot-toast";
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { ttColors } from "@lib/theme/colors";
+import { useState } from "react";
+import Spinner from "@/components/molecules/icons/spinner";
 
 interface SaveProgressAndContinueLaterProps {
   saveProgress?: () => void;
@@ -14,7 +18,13 @@ interface SaveProgressAndContinueLaterProps {
 const SaveProgressAndContinueLater = ({
   saveProgress,
 }: SaveProgressAndContinueLaterProps) => {
-  const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution();
+    const [isLoading, setLoading] = useState(false)
+
+    const handleSaveProgress = () => {
+        setLoading(true)
+        saveProgress && saveProgress()
+    }
 
   return (
     <Section height="unset">
@@ -24,7 +34,7 @@ const SaveProgressAndContinueLater = ({
           <Text
             text="Your info is safe with us"
             type="p"
-            size={18}
+            size={14}
             weight={500}
             styles={{ lineHeight: "27px" }}
           />
@@ -57,16 +67,20 @@ const SaveProgressAndContinueLater = ({
             background="none"
             borderRadius="4px"
             padding="1.5rem"
-            onClick={saveProgress}
-          >
-            <Text
-              type="p"
-              text="Save Progress & Continue Later"
-              size={16}
-              color="#06062A"
-              cursor="pointer"
-              weight={600}
-            />
+            onClick={handleSaveProgress}
+            >
+            {isLoading ? (
+                <Spinner size="40px" fill={ttColors.primary} />
+            ) : (
+                <Text
+                    type="p"
+                    text="Save Progress & Continue Later"
+                    size={15}
+                    color="#06062A"
+                    cursor="pointer"
+                    weight={600}
+                />
+            )}
           </Button>
         </Section>
         <Section height="unset">
@@ -83,7 +97,7 @@ const SaveProgressAndContinueLater = ({
                 type="p"
                 text="Exit Application"
                 weight={600}
-                size={16}
+                size={15}
                 color="#06062A"
                 cursor="pointer"
               />

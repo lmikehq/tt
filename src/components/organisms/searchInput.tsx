@@ -10,10 +10,11 @@ import InputBase from "@mui/material/InputBase";
 import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Image from "@atom/image";
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React, { CSSProperties, MouseEvent, useEffect, useRef, useState } from "react";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 interface PopperComponentProps {
   anchorEl?: any;
@@ -74,40 +75,42 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
   },
 }));
 export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
-  width: " 28px",
-  height: "28px",
+  width: " 26px",
+  height: "26px",
   borderRadius: "50%",
   backgroundImage: `url(${flag})`,
 }));
 
 interface SearchProps {
-  legend?: string;
-  children?: React.ReactNode;
-  placeholder?: string;
-  height?: string;
-  padding?: string;
-  options: any[];
-  value?: any;
-  border?: string;
-  disabled?: boolean;
-  error?: boolean;
-  onChange: (x: any) => void;
+    legend?: string;
+    children?: React.ReactNode;
+    placeholder?: string;
+    height?: string;
+    padding?: string;
+    options: any[];
+    value?: any;
+    border?: string;
+    disabled?: boolean;
+    error?: boolean;
+    onChange: (x: any) => void;
+    onFocus?: (x: any) => void;
+    onBlur?: (x: any) => void;
+    cursor?: CSSProperties['cursor'];
 }
 
 export default function SearchInput({
-  placeholder,
-  children,
-  options,
-  legend,
-  value,
-  height,
-  padding,
-  error,
-  onChange,
-  disabled = false,
-}: // anchorEl,
-// setAnchorEl,
-SearchProps) {
+    placeholder,
+    children,
+    options,
+    legend,
+    value,
+    height,
+    padding,
+    error,
+    onChange,
+    disabled = false
+}: SearchProps) {
+    const { isMobile } = useScreenResolution()
   const [_inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -137,17 +140,23 @@ SearchProps) {
             width: "100%",
             fontSize: 16,
             "& .MuiInputAdornment-root": {
-              position: "absolute",
-              top: "50%",
-              display: "flex",
-              justifyContent: "center",
-              width: "92%",
+                position: "absolute",
+                top: "50%",
+                left: '0',
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                paddingLeft: '14px',
+                paddingRight: '14px',
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,
             },
+            "& > .MuiInputBase-root": {
+                paddingRight: '14px',
+            },
             "&:hover .MuiInputBase-root": {
-              color: `${ttColors.primary} !important`,
+                color: `${ttColors.primary} !important`,
             },
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: error ? "red" : "",
@@ -159,8 +168,8 @@ SearchProps) {
               fontSize: "16px!important",
             },
             "& input": {
-              height: height || "45px",
-              padding: padding || "0px",
+                height: height || "45px",
+                padding: padding || "0px",
             },
           }}
           onClick={handleClick}
@@ -181,8 +190,9 @@ SearchProps) {
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
-          sx={{
-            width: getWidth(),
+            sx={{
+                zIndex: 2,
+                width: getWidth(),
           }}
         >
           <ClickAwayListener onClickAway={handleClose}>
@@ -222,12 +232,13 @@ SearchProps) {
                 noOptionsText="No matches found"
                 renderOption={(props, option, { selected }) => (
                   <li {...props}>
-                    <Flex align="center" margin=".4rem .6rem" gap="1.5rem">
+                    <Flex align="center" gap=".65rem">
                       <RoundFlag flag={option.flag} />
                       <Text
                         type="p"
                         text={`${option.code} - ${option.name}`}
-                        weight={100}
+                        weight={300}
+                        size={14}
                       />
                     </Flex>
                     <br />
@@ -254,16 +265,19 @@ SearchProps) {
 }
 
 export function SearchInputAsString({
-  placeholder,
-  children,
-  options,
-  legend,
-  value,
-  error,
-  onChange,
-  height,
-  padding,
-  border,
+    placeholder,
+    children,
+    options,
+    legend,
+    value,
+    error,
+    onChange,
+    onFocus,
+    onBlur,
+    height,
+    padding,
+    border,
+  cursor
 }: SearchProps) {
   const [inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -288,32 +302,36 @@ export function SearchInputAsString({
   useEffect(() => {}, [inputValue]);
   return (
     <>
-      <Box
+    <Box
+        width="100%"
         ref={ref}
         sx={{
           border: 0,
         }}
-      >
+    >
         <TextField
           sx={{
             width: "100%",
             fontSize: 16,
             "& .MuiInputAdornment-root": {
-              position: "absolute",
-              top: "50%",
-              display: "flex",
-              justifyContent: "center",
-              width: "100%",
+                position: "absolute",
+                top: "50%",
+                left: '0',
+                display: "flex",
+                justifyContent: "center",
+                width: "100%",
+                paddingLeft: '14px',
+                paddingRight: '14px',
               // color: "inherit !important",
             },
             "& fieldset": {
               border: border === "bottom" ? "none" : border,
             },
-            "& svg": {
-              position: "absolute",
-              right: "25px",
-              bottom: "-10px",
-            },
+            // "& svg": {
+            //   position: "absolute",
+            //   right: "25px",
+            //   bottom: "-10px",
+            // },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,
             },
@@ -339,9 +357,11 @@ export function SearchInputAsString({
               padding: padding || "0px",
             },
           }}
-          onClick={handleClick}
-          label={legend}
-          InputProps={{
+            onClick={handleClick}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            label={legend}
+            InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>

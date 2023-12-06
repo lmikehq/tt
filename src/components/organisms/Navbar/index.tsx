@@ -12,7 +12,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
 import { User } from "@lib/types";
-import { ButtonBase } from "@mui/material";
+import { ButtonBase, MenuItem, Select } from "@mui/material";
 import UserPopover from "@organism/Navbar/UserPopover";
 import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";
@@ -23,10 +23,20 @@ import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { TbCurrencyNaira } from "react-icons/tb";
 import styled from "styled-components";
 import { getIpDetails } from "../form/visaApis";
 import MobileNavigationDrawer from "./modals/mobileNav";
+import currencyCodes from "currency-codes";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { Poppins } from "next/font/google";
+import { PiCaretDownBold } from "react-icons/pi";
+const poppins = Poppins({
+  weight: "400",
+  style: ["normal"],
+  display: "swap",
+  subsets: ["latin-ext"],
+});
+
 const NavbarWrapper = styled.div<{ page: string }>`
   position: relative;
   width: 100%;
@@ -72,10 +82,10 @@ const NavMenu = styled.div`
 `;
 
 const Divider = styled.div`
-  width: 2px;
-  height: 20px;
-  border: 1px solid #000;
-  background: red;
+  width: 1px;
+  height: 30px;
+  // border: 1px solid #929292;
+  background: #929292;
 `;
 
 const MobileWrapper = styled.div<{ isSticky: boolean }>`
@@ -173,6 +183,9 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { setUser } = useUserStore((state) => state);
+  const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
+    useUserPreferencesStore((state) => state);
+
   async function getUser(): Promise<User | any> {
     const res = await apiService("/user", "GET");
     setUser(res);
@@ -185,9 +198,21 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
         <Grid columns="3" align="center">
           <NavLink>
             {[
-              { name: "Visa Apply", url: "visa", icon: <GiPassport /> },
-              { name: "Find Flight", url: "flight", icon: <IoAirplaneSharp /> },
-              { name: "Rent Stay", url: "stay", icon: <IoBedSharp /> },
+              {
+                name: "Visa Apply",
+                url: "visa",
+                icon: <GiPassport />,
+              },
+              {
+                name: "Find Flight",
+                url: "flight",
+                icon: <IoAirplaneSharp />,
+              },
+              {
+                name: "Rent Stay",
+                url: "stay",
+                icon: <IoBedSharp />,
+              },
             ].map((item, index) => {
               const active = pathArray === item.url;
               return (
@@ -230,15 +255,74 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
             <Flex
               // onClick={handleOpen}
               background="transparent"
-              gap=".4rem"
+              gap=".7rem"
               align="center"
               cursor="pointer"
             >
-              <BsGlobe />
-              <Text text="EN" type="span" weight={400} />
+              <BsGlobe size={24} />
+              <Text text="EN" type="span" weight={400} size={16} />
               <Divider />
-              <TbCurrencyNaira />
-              {/* <Text text="NGN" type="span" weight={400} /> */}
+
+              <Select
+                defaultValue={preFerredCurrency}
+                value={preFerredCurrency}
+                onChange={(e) => setPreferredCurrency(e.target.value)}
+                IconComponent={PiCaretDownBold}
+                MenuProps={{
+                  sx: {
+                    "& .MuiPaper-root": {
+                      maxHeight: "50vh",
+                      top: "55px !important",
+                      boxShadow: "0px 0px 1px rgba(0,0,0,0.3)",
+                    },
+                    "& .MuiPaper-root::-webkit-scrollbar": {
+                      backgroundColor: "transparent",
+                      width: "9px",
+                      height: "9px",
+                    },
+                    "& .MuiPaper-root::-webkit-scrollbar-thumb": {
+                      backgroundColor: "rgba(0, 0, 0, 0.15)",
+                      borderRadius: "6px",
+                    },
+                    '& li[aria-selected="true"]': {
+                      background: "#DAF0F9",
+                    },
+                  },
+                }}
+                sx={{
+                  boxShadow: "none",
+                  ".MuiOutlinedInput-notchedOutline": {
+                    border: 0,
+                  },
+                  "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                    {
+                      border: 0,
+                    },
+                  ".MuiSvgIcon-root": {
+                    display: "none",
+                  },
+                  ".MuiSelect-select": {
+                    width: "min-content",
+                    padding: "0",
+                    fontFamily: "Poppins",
+                    appearance: "none !important",
+                  },
+                  "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      border: 0,
+                    },
+                }}
+              >
+                {currencyCodes.codes().map((el: string, index: number) => (
+                  <MenuItem
+                    key={"item-" + index}
+                    value={el}
+                    sx={{ fontSize: "16px" }}
+                  >
+                    {el}
+                  </MenuItem>
+                ))}
+              </Select>
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}

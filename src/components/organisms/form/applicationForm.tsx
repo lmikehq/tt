@@ -23,7 +23,6 @@ import { BsArrowLeft } from "react-icons/bs";
 import Button from "@atom/button";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
-import { useUserStore } from "@lib/store/useStore";
 import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import FormSideMenu from "./components/sideMenu/formSideMenu";
@@ -31,7 +30,6 @@ import { useApplicationFormStore } from "@lib/store/application-form.store";
 import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
-import { COUNTRY_FLAGS } from "@/lib/extensions/data/data";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
 
@@ -116,13 +114,13 @@ function ApplicationForm() {
   const isLoading = mode == Mode.loading;
   const params = useSearchParams();
   const router = useRouter();
-  const [showApplicationExistsModal, setShowApplicationExistsModal] =
-    useState(false);
+  const [showApplicationExistsModal, setShowApplicationExistsModal] = useState(false);
+    
   const detailsFormik = useFormik({
     initialValues: tripDetails,
-    validationSchema: detailsSchema,
-    validateOnMount: true,
     enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
       if (isLoading) return;
       nextStep({ data: { tripDetails: values } });
@@ -133,9 +131,7 @@ function ApplicationForm() {
     initialValues: personalInfo,
     enableReinitialize: true,
     validateOnMount: true,
-
     validationSchema: personalInfoSchema,
-    validateOnChange: true,
     onSubmit: (values: PersonalInfoInterface) => {
       if (isLoading) return;
       nextStep({ data: { personalInfo: values } });
@@ -159,24 +155,25 @@ function ApplicationForm() {
     enableReinitialize: true,
     validateOnMount: true,
     validationSchema: manyEmploymentSchema,
-    onSubmit: (values) => {
+      onSubmit: (values, formikHelpers) => {
       if (isLoading) return;
       nextStep({ data: { employment: values.employment } });
     },
     validateOnChange: false,
   });
 
-  const familyMembersFormik = useFormik({
-    initialValues: { familyMembers },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: familyInfoSchema,
-    onSubmit: (values) => {
-      if (isLoading) return;
-      nextStep({ data: { familyMembers: values.familyMembers } });
-    },
-    validateOnChange: true,
-  });
+    const familyMembersFormik = useFormik({
+        initialValues: { familyMembers },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: familyInfoSchema,
+        onSubmit: (values, formikHelpers) => {
+            formikHelpers.validateForm().then(res => console.log('vali', res)).catch(err => console.log('vali', err))
+        if (isLoading) return;
+        nextStep({ data: { familyMembers: values.familyMembers } });
+        },
+        validateOnChange: true,
+    });
 
   const documentsFormik = useFormik({
     initialValues: { documents },
@@ -199,10 +196,10 @@ function ApplicationForm() {
           );
         })
         .catch((error) => {
-          const err = error.response.data;
+          const err = error.response?.data;
           if (
-            err.statusCode === 422 &&
-            err.errorMessage.includes("already exists")
+            err?.statusCode === 422 &&
+            err?.errorMessage.includes("already exists")
           ) {
             setShowApplicationExistsModal(true);
           } else if (err.statusCode === 400) {
@@ -230,20 +227,20 @@ function ApplicationForm() {
             );
           }
         });
-    },
-  });
+        },
+    });
 
   const persistForm = () => {
     saveProgress({
-      data: {
-        tripDetails: detailsFormik.values,
-        personalInfo: personalInfoFormik.values,
-        education: educationFormik.values.education,
-        employment: employmentFormik.values.employment,
-        familyMembers: familyMembersFormik.values.familyMembers,
-        documents: documentsFormik.values.documents,
-      },
-      uploadedDocuments,
+        data: {
+            tripDetails: detailsFormik.values,
+            personalInfo: personalInfoFormik.values,
+            education: educationFormik.values.education,
+            employment: employmentFormik.values.employment,
+            familyMembers: familyMembersFormik.values.familyMembers,
+            documents: documentsFormik.values.documents,
+        },
+        uploadedDocuments,
     });
     router.push("/");
   };
@@ -274,6 +271,8 @@ function ApplicationForm() {
     });
     fetchRecentProgressFromSession();
   }, [params]);
+    
+    console.log(familyMembersFormik.values)
 
   return (
     <>
@@ -314,32 +313,37 @@ function ApplicationForm() {
         }
       />
 
-      <AllCountryHead
-        cover={coverImage}
-        title={form.tripDetails.destination.name || ""}
-      />
+        <AllCountryHead
+            cover={coverImage}
+            title={form.tripDetails.destination.name || ""}
+        />
+          
+
       <SectionLayout>
         <SectionTitle
           title={`Apply Now for ${
             form.tripDetails.destination.name || ""
           } Employment Visa`}
-          description="We'll Handle Your Travel Documentation Hassles, and Ensure a Seamless travel experience for you"
+          description="We'll Handle Your Travel Documentation Hassles, and ensure a seamless travel experience for you"
           showButton={false}
         />
+              
         <Button
-          onClick={() => setBottomDrawerOpen(true)}
-          styles={{ display: isMobile ? "block" : "none" }}
-          background="transparent"
-          padding="0"
-          width="fit-content"
-          height="fit-content"
+            onClick={() => setBottomDrawerOpen(true)}
+            styles={{ display: isMobile ? "block" : "none" }}
+            background="transparent"
+            padding="0"
+            width="fit-content"
+            height="fit-content"
         >
-          <Text
-            type="p"
-            color={ttColors.primary}
-            text="View Important Documents Required"
-          />
+            <Text
+                type="p"
+                size={14}
+                color={ttColors.primary}
+                text="View Important Documents Required"
+            />
         </Button>
+              
         <CustomDrawer
           anchor="bottom"
           open={bottomDrawerOpen}
@@ -359,6 +363,7 @@ function ApplicationForm() {
             />
           </Section>
         </CustomDrawer>
+              
         <Flex
           {...(!isMobile && { background: "white" })}
           // background='white'
@@ -374,7 +379,7 @@ function ApplicationForm() {
           }}
           height="auto"
           padding={isMobile ? "0px" : "2.5rem"}
-          gap="2.25rem"
+          gap="4.5rem"
           direction={isMobile ? "column" : "row"}
         >
           <Section

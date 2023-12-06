@@ -4,29 +4,22 @@ import SortedColumn from "./sortedColumn";
 import Section from "src/components/molecules/section";
 import AvailableFlights from "./availableFlights";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import Box from "@mui/material/Box";
 
 function FlightList() {
   const { isMobile } = useScreenResolution();
   const [results, setResults] = useState(0);
-  const [sortType, setSortType] = useState("best");
+  const [sortType, setSortType] = useState("");
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        columnGap: "2rem",
-        gridTemplateColumns: { xs: "1fr", sm: "3fr 7fr" },
-      }}
-    >
-      <Section>
-        <SortedColumn results={results} sortType={sortType} />
-      </Section>
-      <Section>
-        <AvailableFlights />
-      </Section>
-    </Box>
-  );
+      <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? "0rem" : "2rem"} justify="space-between" align="flex-start">
+            <Section width={isMobile ? "100%" : "26%"}>
+                <SortedColumn results={results} sortType={sortType} />
+            </Section>
+            <Section width={isMobile ? "100%" : "74%"}>
+                <AvailableFlights />
+            </Section>
+        </Flex>
+    );
 }
 
 export default FlightList;

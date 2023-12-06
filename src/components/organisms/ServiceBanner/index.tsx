@@ -24,12 +24,12 @@ function ServiceBanner({ page }: { page?: string }) {
   const { isMobile } = useScreenResolution();
   return (
     <SectionLayout
-      padding={isMobile ? "1.65rem" : "6rem 0px 0px 0px !important"}
-      style={{
-        backgroundColor: "var(--default-color)",
-        borderRadius: "1rem",
-        boxShadow: "0px 3px 24px #00000014",
-      }}
+        padding={isMobile ? "1.65rem" : "6rem 0px 0px 0px !important"}
+        style={{
+            backgroundColor: "var(--default-color)",
+            borderRadius: "1rem",
+            boxShadow: "0px 4px 16px 0px #8DD3BB26",
+        }}
     >
       <ServiceTabs page={page} />
     </SectionLayout>
