@@ -618,12 +618,15 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             gap={isMobile ? "0px" : "1.5rem"}
             margin="2rem 0 1rem"
         >
-            <Text
-                size={15}
-                type="p"
-                text={`Have you previously lived in other countries?`}
-                width={isMobile ? "100%" : "60%"}
-            />
+            <Flex align="center" gap="0.25rem">
+                <Text
+                    size={15}
+                    type="p"
+                    text={`Have you previously lived in other countries?`}
+                    width={isMobile ? "100%" : "max-content"}
+                />
+                <Required />
+            </Flex>
             <CustomRadioGroup
                 options={trueFalseOptions}
                 name="livedAbroad"
@@ -1348,7 +1351,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                         size={15}
                     />
                     <Required />
-                    </Flex>
+                </Flex>
                     <PhoneInput
                         country={"ng"}
                         autoFormat={true}

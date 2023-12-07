@@ -227,9 +227,9 @@ export const personalInfoKeys: PersonalInfoInterface = {
     gender: "",
 
     //added-details
-    // countryOfApply: mockCountry,
-    // countryOfResidence: mockCountry,
-    // livedAbroad: "",
+    countryOfApply: mockCountry,
+    countryOfResidence: mockCountry,
+    livedAbroad: false,
     // countriesLived: "",
     statusOfResidence: "",
     startDateOfResidence: "",
