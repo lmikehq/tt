@@ -36,7 +36,7 @@ function Four({ familyInfo = [] }: FourProps) {
                     </Flex>
                 ) : familyInfo.map((member, index) =>
                     <MyAccordion
-                        heading={`Family Member Details ${index + 1}`}
+                        heading={`Family Member ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
                         key={`member-${index}`}

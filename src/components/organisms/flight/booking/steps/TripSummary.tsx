@@ -296,7 +296,7 @@ const TripSummary = ({
                 arrival={arrival}
                 flights={flights}
             />
-            {!user?.id && (
+            {!user?._id && (
                 <form
                     onSubmit={contactDetailsFormik.handleSubmit}
                     style={{ padding: "2rem 0 0" }}

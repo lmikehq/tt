@@ -18,6 +18,7 @@ import { Mode } from "@/lib/types";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { useSearchParams } from "next/navigation";
+import { useUserStore } from "@/lib/store/useStore";
 
 const OverviewAndPayment = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -36,10 +37,13 @@ const OverviewAndPayment = () => {
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
         (state) => state
     );
+    const { user } = useUserStore((state) => state);
 
     const flightId = searchParams.get("id") ?? "";
     const userId =
-        saveBookingResponse?.userId ?? getBookingByIdResponse?.userID ?? "";
+        saveBookingResponse?.userId ??
+        getBookingByIdResponse?.userID ??
+        user?._id;
     const total =
         saveBookingResponse?.total ?? getBookingByIdResponse?.totalAmount ?? 0;
     const handleMakepayment = async ({
@@ -90,7 +94,7 @@ const OverviewAndPayment = () => {
         if (bookingId) checkBookingDetails({ bookingId });
     }, []);
 
-    console.log(total * conversionRate)
+    console.log(total * conversionRate);
 
     return (
         <Box

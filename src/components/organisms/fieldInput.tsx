@@ -250,7 +250,7 @@ export const FieldAsDate = (props: FieldProps) => {
   const error = getNestedValue(formik?.errors, name);
 
   const handleChange = (e: any) => {
-    formik?.setFieldValue(name, `${dayjs(e.$d).format(format)}`);
+    formik?.setFieldValue(name, `${dayjs(e?.$d, format).format(format)}`);
   };
 
   const value = getNestedValue(formik?.values, name);
@@ -263,7 +263,7 @@ export const FieldAsDate = (props: FieldProps) => {
             placeholder={placeholder}
             maxDate={maxDate}
             minDate={minDate}
-            value={value === "" ? undefined : dayjs(`${value}`)}
+            value={dayjs(`${value}`)}
             onChange={onChange ? onChange : handleChange}
             error={touched && error}
             format={format}

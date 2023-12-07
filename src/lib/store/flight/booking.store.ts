@@ -133,10 +133,10 @@ export const useFlightBookingStore = create<State & Actions>(
         searchQuery: { limit: 10, sort: "quality" },
         sessionId: null,
         seatRows: [],
-        initCheckFlightsMode: Mode.init,
         saveBookingMode: Mode.init,
         confirmPaymentMode: Mode.init,
-
+        
+        initCheckFlightsMode: Mode.init,
         checkFlightsResponse: null,
         checkSeatingResponse: null,
         checkSeatingMode: Mode.init,

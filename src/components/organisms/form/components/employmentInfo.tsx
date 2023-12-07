@@ -24,7 +24,6 @@ import ContinueButton from "@organism/continueButton";
 import { EmploymentDetailsInterface, Mode } from "@lib/types";
 import { toast } from "react-hot-toast";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { useRouter } from "next/navigation";
 import ToastError from "@molecule/toastError";
 
 interface formProps {
@@ -59,12 +58,13 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                     }}
                   />
                 </Flex>
-                {formik.values.employment.map((employment, index) => (
+                {formik.values.employment.map((employment, index, arr) => (
                   <div key={index} style={{ marginBottom: '3.5rem' }}>
                     <EmploymentForm
                       formik={formik}
                       values={employment}
-                      count={index}
+                        count={index}
+                        length={arr.length}
                     />
                     {formik.values.employment.length > 1 && (
                       <Flex
@@ -93,7 +93,9 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                 isLoading={isLoading}
                 saveProgressAndContinueLater={persistForm}
                 onClick={() => {
-                    if (!formik.isValid) return ToastError();
+                    formik.validateForm().then(res => {
+                        if (Object.keys(res).length > 0) return ToastError();
+                    })
                 }}
                 disabled={!formik.isValid}
           />

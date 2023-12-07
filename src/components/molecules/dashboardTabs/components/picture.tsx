@@ -6,104 +6,119 @@ import Flex from "@components/templates/flex";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
+import {
+    BiCopy,
+    BiSolidCopy,
+    BiSolidUser,
+    BiSolidUserCircle,
+    BiUserCircle,
+} from "react-icons/bi";
 import { styled } from "styled-components";
+import Section from "../../section";
 const DashboardCoverPicture = styled.div`
-  position: relative;
-  width: 100%;
-  height: 250px;
-  display: block;
-
-  & img {
+    position: relative;
     width: 100%;
-    border-radius: 12px;
-  }
+    height: 250px;
+    display: block;
 
-  & button {
-    position: absolute !important;
-    display: flex;
-    right: 35px;
-    bottom: 35px;
-    border-radius: 4px;
-    padding: 8px 16px;
-    gap: 10px;
-    font-size: 16px;
-    line-height: 17px;
-
-    @media screen and (max-width: 900px) {
-      justify-content: center;
-      font-size: 12px;
-      line-height: 0px !important;
-      padding: 0px !important;
-      position: absolute !important;
-      top: 5px !important;
-      right: 5px !important;
-    }
-  }
-  @media screen and (max-width: 900px) {
     & img {
-      width: 100%;
+        width: 100%;
+        border-radius: 8px;
+        object-fit: cover;
     }
-  }
-  @media screen and (max-width: 900px) {
-    height: 0px !important;
-  }
+
+    & button {
+        position: absolute !important;
+        display: flex;
+        right: 35px;
+        bottom: 35px;
+        border-radius: 4px;
+        padding: 8px 16px;
+        gap: 10px;
+        font-size: 16px;
+        line-height: 17px;
+
+        @media screen and (max-width: 900px) {
+            justify-content: center;
+            font-size: 12px;
+            line-height: 0px !important;
+            padding: 0px !important;
+            position: absolute !important;
+            top: 5px !important;
+            right: 5px !important;
+        }
+    }
+    @media screen and (max-width: 900px) {
+        & img {
+            width: 100%;
+        }
+    }
+    @media screen and (max-width: 900px) {
+        height: 188px !important;
+    }
 `;
 
 const ProfileInfomation = styled.div`
-  position: absolute;
-  top: 100px;
-  //   margin-top: 15px;
-  display: flex;
-  flex-direction: column;
+    // position: absolute;
+    // top: 100px;
+    //   margin-top: 15px;
+    display: flex;
+    flex-direction: column;
 
-  & h3 {
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
-    text-align: center;
-    color: ${ttColors.dark};
+    & h3 {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 29px;
+        text-align: center;
+        color: ${ttColors.dark};
 
-    @media screen and (max-width: 900px) {
-      font-size: 16px;
-      line-height: 20px;
+        @media screen and (max-width: 900px) {
+            font-size: 16px;
+            line-height: 20px;
+        }
     }
-  }
 
-  & p {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20px;
-    color: ${ttColors.dark};
-    opacity: 0.7;
-    text-align: center;
-    @media screen and (max-width: 900px) {
-      font-size: 12px;
-      line-height: 10px;
-      opacity: 1;
+    & p {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        color: ${ttColors.dark};
+        opacity: 0.7;
+        text-align: center;
+        @media screen and (max-width: 900px) {
+            font-size: 12px;
+            opacity: 1;
+        }
     }
-  }
-  @media screen and (max-width: 900px) {
-    top: 150px !important;
-  }
+    @media screen and (max-width: 900px) {
+        top: 150px !important;
+    }
 `;
 
 const DashboardProfilePictue = styled.div`
-  position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  position: absolute;
+  top:-80px;
+  margin:auto;
+  left:0;
+  right:0;
+  @media screen and (max-width: 900px) {
+    top:-100px;
+
+}
   
   & img {
-    position: absolute;
+    // position: absolute;
     border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // top: 50%;
+    // left: 50%;
 
     @media screen and (max-width: 900px) {
-      transform: translate(-50%, 100%) ;
-      position: sticky;
+    //   transform: translate(-50%, 100%) ;
+    //   position: sticky;
     }
   }
 
@@ -135,34 +150,38 @@ const DashboardProfilePictue = styled.div`
 `;
 
 const ReferralLink = styled.div`
-  background: rgb(123 187 214 / 30%);
-  width: max-content;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  border: 1px solid #7bbbd6;
-  position: relative;
-  transform: translate(-50%, -50%) !important;
-  left: 50% !important;
+    background: #f3fafd;
+    width: fit-content;
+    max-width: 100%;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #7bbbd6;
+    margin: auto;
 `;
 
 function UserPicture() {
-  const { isMobile } = useScreenResolution();
-  const { user } = useUserStore((state) => state);
+    const { isMobile } = useScreenResolution();
+    const { user } = useUserStore((state) => state);
 
-  const referralLink = `https://thrillers.travel/register?ref=${String(user?.firstName ?? '').toLocaleLowerCase()}-${String(user?.lastName ?? '').toLocaleLowerCase()}`;
+    const referralLink = `https://thrillers.travel/register?ref=${String(
+        user?.firstName ?? ""
+    ).toLocaleLowerCase()}-${String(user?.lastName ?? "").toLocaleLowerCase()}`;
     const { copyToClipboard } = useClipboard();
-    
-  return (
-    <Flex direction="column" gap="1rem" margin="0px">
-      <DashboardCoverPicture>
-        <Image
-          src={user?.coverPicture || "/assets/images/dashboard/cover.jpg"}
-          alt="cover-picture"
-          height={isMobile ? 120 : 250}
-          styles={{ width: "100%" }}
-        />
-        {/* <Button
+
+    return (
+        <Flex direction="column" margin="0px">
+            <DashboardCoverPicture>
+                <Image
+                    src={
+                        user?.coverPicture ||
+                        "/assets/images/dashboard/cover_background.svg"
+                    }
+                    alt="cover-picture"
+                    height={isMobile ? 188 : 250}
+                    styles={{ width: "100%" }}
+                />
+                {/* <Button
           styles={{
             height: isMobile ? "25px" : "65px",
             width: isMobile ? "25px" : "230px",
@@ -182,80 +201,97 @@ function UserPicture() {
             styles={{ display: isMobile ? "none" : "block" }}
           />
         </Button> */}
-      </DashboardCoverPicture>
+            </DashboardCoverPicture>
+            <Section
+                styles={{
+                    position: "relative",
+                    height: isMobile ? "151px" : "238px",
+                    marginBottom: "2rem",
+                }}
+            >
+                <DashboardProfilePictue>
+                    {/* <Image
+                        src={
+                            user?.profilePicture || "/assets/images/avatar.jpg"
+                        }
+                        alt="profile-picture"
+                        height={isMobile ? 70 : 160}
+                        width={isMobile ? 70 : 160}
+                    /> */}
+                    <Section
+                        width="fit-content"
+                        borderRadius="50%"
+                        background="white"
+                        padding={10}
+                        styles={{
+                            border: "4px solid var(--Slamon, #FF8682)",
+                            marginBottom: "1.125rem",
+                        }}
+                    >
+                        <BiSolidUser
+                            size={isMobile ? 91 : 140}
+                            color={ttColors.lighterGray}
+                        />
+                    </Section>
 
-      <DashboardProfilePictue>
-        <Image
-          src={user?.profilePicture || "/assets/images/avatar.jpg"}
-          alt="profile-picture"
-          height={isMobile ? 70 : 160}
-          width={isMobile ? 70 : 160}
-        />
-        {/* <Button
-          styles={{
-            position: "absolute",
-            background: "red",
-            color: "var(--secondary-color)",
-            top: "10px",
-            right: " 45.5%",
-            borderRadius: "50%",
-            height: "50px",
-            width: "50px",
-            padding: "9px",
-          }}
-        >
-          <HiPencil size="2rem" />
-        </Button> */}
-        <ProfileInfomation>
-          <Text
-            type="h3"
-            text={user?.firstName + " " + user?.lastName}
-            size={isMobile ? "12px" : "14px"}
-          />
-          <Text type="p" text={user?.email} />
-        </ProfileInfomation>
-      </DashboardProfilePictue>
-
-      <ReferralLink
-        style={{
-          border: "1px solid #7BBBD6 !important",
-          padding: isMobile ? "8px" : "10px",
-          margin: isMobile ? "8rem 0px 1.5rem" : "10rem 0px .5rem",
-        }}
-      >
-        <Flex
-          gap=".5rem"
-          justify="center"
-          onClick={() =>
-            copyToClipboard(referralLink, "Referral link copied to clipboard")
-          }
-          cursor="pointer"
-          width="max-content"
-          align="center"
-        >
-          <Image
-            src="/assets/images/dashboard/copyIcon.png"
-            height={24}
-            width={24}
-            alt=""
-            styles={{
-              position: "relative",
-              transform: isMobile ? "none" : "none",
-              top: isMobile ? "0px" : "5px",
-              left: "0px",
-              alignContent: "center",
-            }}
-          />
-          <Text
-            type="h5"
-            size={isMobile ? "9px" : "19px"}
-            decoration="underline"
-            text={referralLink}
-          />
+                    <ProfileInfomation>
+                        <Text
+                            type="h3"
+                            text={user?.firstName + " " + user?.lastName}
+                            size={isMobile ? 16 : 24}
+                            weight={600}
+                            color={ttColors.blackishGreen}
+                        />
+                        <Text
+                            type="p"
+                            text={user?.email}
+                            size={16}
+                            color={ttColors.blackishGreen}
+                            margin="0.75rem 0"
+                        />
+                    </ProfileInfomation>
+                    <ReferralLink
+                        style={{
+                            border: "1px solid #7BBBD6 !important",
+                            padding: "0.875rem",
+                        }}
+                    >
+                        <Flex
+                            gap=".5rem"
+                            justify="center"
+                            onClick={() =>
+                                copyToClipboard(
+                                    referralLink,
+                                    "Referral link copied to clipboard"
+                                )
+                            }
+                            cursor="pointer"
+                            width="100%"
+                            align="center"
+                        >
+                            <BiSolidCopy
+                                size={isMobile ? 16 : 24}
+                                color={ttColors.blackishGreen}
+                            />
+                            <Section
+                                styles={{
+                                    minWidth: 0,
+                                    flex: 1,
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    fontWeight: 600,
+                                    fontSize: isMobile ? 12 : 16,
+                                }}
+                            >
+                                {referralLink}
+                            </Section>
+                        </Flex>
+                    </ReferralLink>
+                </DashboardProfilePictue>
+            </Section>
         </Flex>
-      </ReferralLink>
-    </Flex>
-  );
+    );
 }
 
 export default UserPicture;
