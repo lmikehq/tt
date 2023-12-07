@@ -24,8 +24,8 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
         return (
             <WrappedComponent
                 {...props}
-                hotelLiked={hotelLiked}
-                handlelikeHotel={handleLikeHotel}
+                checked={hotelLiked}
+                onChange={handleLikeHotel}
             />
         );
     };

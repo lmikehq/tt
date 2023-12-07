@@ -75,7 +75,7 @@ function Stays() {
             "YYYY-MM-DD"
         );
         const params = {
-            region: stayTabInitialSearchQuery.location?.name,
+            regionId: stayTabInitialSearchQuery.location?.id,
             countryCode: stayTabInitialSearchQuery.location?.country_code,
             stars: stayTabInitialSearchQuery.stars
                 ? stayTabInitialSearchQuery.stars[0]

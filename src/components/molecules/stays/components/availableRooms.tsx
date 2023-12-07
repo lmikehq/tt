@@ -239,7 +239,7 @@ function AvailableRooms() {
     const { isMobile } = useScreenResolution();
 
     const searchParams = useSearchParams();
-    const id = searchParams.get("id");
+    const regionId = searchParams.get("regionId");
     const checkIn = searchParams.get("checkIn");
     const checkOut = searchParams.get("checkOut");
     const guests = searchParams.get("guests");
@@ -248,6 +248,7 @@ function AvailableRooms() {
     );
 
     const staysRequestParams = (): ManyStaysRequestInput => ({
+        region_id: regionId ?? "",
         checkin: checkIn ?? "",
         checkout: checkOut ?? "",
         residency: "ng",
@@ -267,7 +268,7 @@ function AvailableRooms() {
         query: {
             ...staySearchFilters,
             sortBy: staySearchSort,
-            ...staySearchMeta,
+            // ...staySearchMeta,
         },
         payload: staysRequestParams(),
     });
