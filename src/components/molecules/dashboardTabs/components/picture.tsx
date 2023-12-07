@@ -23,7 +23,7 @@ const DashboardCoverPicture = styled.div`
 
     & img {
         width: 100%;
-        border-radius: 12px;
+        border-radius: 8px;
         object-fit: cover;
     }
 
@@ -54,7 +54,7 @@ const DashboardCoverPicture = styled.div`
         }
     }
     @media screen and (max-width: 900px) {
-        height: 0px !important;
+        height: 188px !important;
     }
 `;
 
@@ -87,7 +87,6 @@ const ProfileInfomation = styled.div`
         text-align: center;
         @media screen and (max-width: 900px) {
             font-size: 12px;
-            line-height: 10px;
             opacity: 1;
         }
     }
@@ -97,7 +96,6 @@ const ProfileInfomation = styled.div`
 `;
 
 const DashboardProfilePictue = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -107,6 +105,10 @@ const DashboardProfilePictue = styled.div`
   margin:auto;
   left:0;
   right:0;
+  @media screen and (max-width: 900px) {
+    top:-100px;
+
+}
   
   & img {
     // position: absolute;
@@ -115,8 +117,8 @@ const DashboardProfilePictue = styled.div`
     // left: 50%;
 
     @media screen and (max-width: 900px) {
-      transform: translate(-50%, 100%) ;
-      position: sticky;
+    //   transform: translate(-50%, 100%) ;
+    //   position: sticky;
     }
   }
 
@@ -149,15 +151,13 @@ const DashboardProfilePictue = styled.div`
 
 const ReferralLink = styled.div`
     background: #f3fafd;
-    width: max-content;
+    width: fit-content;
+    max-width: 100%;
     border-radius: 6px;
     display: flex;
     justify-content: center;
     border: 1px solid #7bbbd6;
     margin: auto;
-    // position: relative;
-    // transform: translate(-50%, -50%) !important;
-    // left: 50% !important;
 `;
 
 function UserPicture() {
@@ -178,7 +178,7 @@ function UserPicture() {
                         "/assets/images/dashboard/cover_background.svg"
                     }
                     alt="cover-picture"
-                    height={isMobile ? 120 : 250}
+                    height={isMobile ? 188 : 250}
                     styles={{ width: "100%" }}
                 />
                 {/* <Button
@@ -205,7 +205,7 @@ function UserPicture() {
             <Section
                 styles={{
                     position: "relative",
-                    height: "238px",
+                    height: isMobile ? "151px" : "238px",
                     marginBottom: "2rem",
                 }}
             >
@@ -228,7 +228,10 @@ function UserPicture() {
                             marginBottom: "1.125rem",
                         }}
                     >
-                        <BiSolidUser size={140} color={ttColors.lighterGray} />
+                        <BiSolidUser
+                            size={isMobile ? 91 : 140}
+                            color={ttColors.lighterGray}
+                        />
                     </Section>
 
                     <ProfileInfomation>
@@ -263,20 +266,26 @@ function UserPicture() {
                                 )
                             }
                             cursor="pointer"
-                            width="max-content"
+                            width="100%"
                             align="center"
                         >
                             <BiSolidCopy
-                                size={24}
+                                size={isMobile ? 16 : 24}
                                 color={ttColors.blackishGreen}
                             />
-                            <Text
-                                type="h5"
-                                size={isMobile ? 16 : 16}
-                                weight={600}
-                                decoration="none"
-                                text={referralLink}
-                            />
+                            <Section
+                                styles={{
+                                    minWidth: 0,
+                                    flex: 1,
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    fontWeight: 600,
+                                    fontSize: isMobile ? 12 : 16,
+                                }}
+                            >
+                                {referralLink}
+                            </Section>
                         </Flex>
                     </ReferralLink>
                 </DashboardProfilePictue>
