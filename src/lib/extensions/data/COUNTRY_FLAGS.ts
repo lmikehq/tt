@@ -1309,6 +1309,19 @@ const COUNTRY_FLAGS = [
   },
 ];
 
+export type CountryFlagType = typeof COUNTRY_FLAGS[0]
+export type CountryFlagMapType = {
+    [code: string]: typeof COUNTRY_FLAGS[0]
+}
+
+export const mappedCountryFlags = () => {
+    let mapped: CountryFlagMapType = {}
+    COUNTRY_FLAGS.forEach((e) => {
+        mapped[e.code] = e
+    })
+    return mapped
+}
+
 const findCountry = ({ name }: { name: string }) => {
   const regex = new RegExp(`^${name}$`, "i");
   const country = COUNTRY_FLAGS.find((el) => regex.test(el.name));

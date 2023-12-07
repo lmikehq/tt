@@ -24,7 +24,7 @@ const SwitchComponent = styled((props: SwitchProps) => (
       color: "#fff",
       "& + .MuiSwitch-track": {
         backgroundColor:
-          theme.palette.mode === "dark" ? ttColors.dark : ttColors.primary,
+          theme.palette.mode === "light" ? ttColors.dark : ttColors.primary,
         opacity: 1,
         border: 0,
       },

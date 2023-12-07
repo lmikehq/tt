@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface gridProps {
   children: React.ReactNode;
-  columns: string;
+  columns: string | number;
   gap?: string;
   position?: string;
   justify?: string;
@@ -17,7 +17,7 @@ interface gridProps {
 }
 
 const GridWrapper = styled.div<{
-  columns: string;
+  columns: string | number;
   gap: string;
   position: string;
   justify?: string;

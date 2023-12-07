@@ -7,31 +7,35 @@ import { ttColors } from "@/lib/theme/colors";
 import { useState } from "react";
 import { FilterModal, SortModal } from "../listings/flightModal";
 import Button from "@/components/atoms/button";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 
 type sortProps = {
-  results: number;
-  sortType: string;
+    results: number;
+    sortType: string;
 };
 
 function SortedColumn({ results, sortType }: sortProps) {
-  const { isMobile } = useScreenResolution();
-  const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
-  const [open, setOpen] = useState({
-    filter: false,
-    sort: false,
-  });
+    const { searchFlightsResults } = useFlightBookingStore((state) => state);
+    const { isMobile } = useScreenResolution();
+    const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
+    const [open, setOpen] = useState({
+        filter: false,
+        sort: false,
+    });
 
   return (
     <Section>
       {isMobile ? (
-        <Flex justify="space-between" align="center" padding="2rem">
+        <Flex justify="space-between" align="center" padding="0 1.5rem 2rem">
           <Flex direction="column">
-            <Text type="h1" text="Flights" weight={600} size={22} />
-            <Text
-              type="p"
-              text={`${results} results sorted by ${sorted}`}
-              size={14}
-            />
+            <Text type="h1" text="Flights" weight={500} size={20} />
+            {!!sorted &&
+                <Text
+                    type="p"
+                    text={`${searchFlightsResults.length} results sorted by ${sorted}`}
+                    size={14}
+                />
+            }
           </Flex>
           <Flex align="center" justify="flex-end" gap="2rem">
             <Button
@@ -52,7 +56,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                 size={18}
               />
             </Button>
-            <Button
+            {/* <Button
               width="max-content"
               onClick={() =>
                 setOpen((prev) => ({
@@ -69,7 +73,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                 weight={600}
                 size={18}
               />
-            </Button>
+            </Button> */}
           </Flex>
           <FilterModal
             open={open.filter}

@@ -1,151 +1,327 @@
 "use client";
+
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
 import { CustomRadioGroup } from "@molecule/radio";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
 import Text from "@atom/text";
 import { styled } from "styled-components";
 import { useRouter } from "next/navigation";
-import sleep from "@lib/extensions/helpers/sleep";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { FlightContext, OneFlightType } from "@/lib/extensions/context";
+import { formatDate } from "@/lib/utilFns";
+import dayjs, { Dayjs } from "dayjs";
+import { HiPlus } from "react-icons/hi";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { Mode } from "@/lib/types";
+import { useQueryParams } from "@/hooks/useNext";
+import { COUNTRY_FLAGS, mappedCountryFlags } from "@/lib/extensions/data/COUNTRY_FLAGS";
 
-const options = [
-  { value: "round", label: "Round Trip" },
-  { value: "one-way", label: "One Way" },
-  { value: "multi-city", label: "Multi-City" },
+const stopOptions = [
+    { value: "round", label: "Round Trip" },
+    { value: "one-way", label: "One Way" },
+    { value: "multi-city", label: "Multi-City" },
+];
+const flightTypeOptions = [
+    { value: "international", label: "International Flight" },
+    { value: "local", label: "Local Flight" },
 ];
 
 export const ButtonWrapper = styled.div`
-  width: 25%;
-  margin: auto;
-  // position: absolute;
-  // left: 0;
-  // right: 0;
-  // bottom: -24px;
-  transform: translateY(66px);
+    width: 25%;
+    margin: auto;
+    // position: absolute;
+    // left: 0;
+    // right: 0;
+    // bottom: -24px;
+    transform: translateY(66px);
 
-  @media (max-width: 900px) {
-    margin-top: 1rem;
-    position: static;
-    width: 100%;
-  }
+    @media (max-width: 900px) {
+        margin-top: 1rem;
+        position: static;
+        width: 100%;
+    }
 `;
 
-function Flights() {
-  const { isMobile } = useScreenResolution();
-  const [value, setValue] = useState("round");
-  const [multiCityFlights, setMultiCityFlights] = useState<Array<JSX.Element>>(
-    []
-  );
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
-
-  const handleAddMultiCityFlight = () => {
-    const newIndex = multiCityFlights.length;
-    const newMultiCityFlight = (
-      <div key={newIndex}>
-        <FlightModule
-          value={value}
-          index={newIndex}
-          handleDeleteFlight={handleDeleteFlight}
-          length={multiCityFlights.length}
-        />
-      </div>
-    );
-
-    newIndex > 3
-      ? ""
-      : setMultiCityFlights([...multiCityFlights, newMultiCityFlight]);
-  };
-
-  const handleDeleteFlight = (index: number) => {
-    setMultiCityFlights((prevFlights) =>
-      prevFlights.filter((_, i) => i !== index)
-    );
-  };
-
-  useEffect(() => {
-    if (value === "multi-city" && multiCityFlights.length === 0) {
-      handleAddMultiCityFlight();
-    }
-  }, [value]);
-  return (
-    <Section padding={"2rem 0 1rem 0"} styles={{ position: "relative" }}>
-      <Flex direction="column">
-        <Flex align="center" gap={isMobile ? "1rem" : "2rem"}>
-          <CustomRadioGroup
-            options={options}
-            value={value}
-            name="flight"
-            onChange={(e: any) => setValue(e.target.value)}
-            justifyContent="flex-end"
-            align="flex-start"
-            direction={isMobile ? "column" : "row"}
-          />
-        </Flex>
-        {value === "multi-city" ? (
-          <>
-            {multiCityFlights}
-            {/* <Button
-              onClick={handleAddMultiCityFlight}
-              padding="0rem .5rem"
-              borderRadius="4px"
-              background="transparent"
-              border="1px solid #06062A"
-              width="fit-content"
-              cursor="pointer"
-              margin="1.2rem 0 0 0"
-            >
-              <Flex align="center" gap="1rem" justify="center">
-                <HiPlus color="#06062A" size={25} />
-                <Text
-                  type="p"
-                  text="Add Another Flight"
-                  font="Montserrat"
-                  weight={600}
-                  color="#06062A"
-                  size={16}
-                  whiteSpace="nowrap"
-                />
-              </Flex>
-            </Button> */}
-          </>
-        ) : (
-          <FlightModule
-            value={value}
-            index={0}
-            handleDeleteFlight={() => {}}
-            length={0}
-          />
-        )}
-      </Flex>
-      <Flex justify={isMobile ? "center" : "flex-end"} margin="2rem 0 0">
-        <Button
-          width={isMobile ? "100%" : "fit-content"}
-          padding={"0 1.5rem"}
-          cursor="pointer"
-          borderRadius="4px"
-          background="#06062A"
-          onClick={async () => {
-            if (loading) return;
-            setLoading(true);
-            await sleep(200);
-            router.push(`https://www.booking.com/`);
-          }}
+export function FlightType({
+    isMobile,
+    value,
+    onChange,
+}: {
+    isMobile: boolean;
+    value: string;
+    onChange: (val?: string) => void;
+}) {
+    return (
+        <Flex
+            direction="column"
+            padding={isMobile ? "0px 0px 20px" : "0px"}
+            align={isMobile ? "flex-start" : "flex-end"}
+            justify="center"
         >
-          {loading ? (
-            <Spinner fill={ttColors.primary} size={"45px"} />
-          ) : (
-            <Text type="p" text="Search Flight" size={18} weight={500} />
-          )}
-        </Button>
-      </Flex>
-    </Section>
-  );
+            {isMobile && (
+                <Flex padding="0px 0px 16px">
+                    <Text type="p" size={16} weight={500} text="Type" />
+                </Flex>
+            )}
+            <Flex width={isMobile ? "100%" : "max-content"}>
+                <CustomRadioGroup
+                    options={flightTypeOptions}
+                    value={value}
+                    name="flightType"
+                    onChange={(e, val) => onChange(val)}
+                    justifyContent="flex-end"
+                    align="flex-start"
+                    scroll
+                />
+            </Flex>
+        </Flex>
+    );
+}
+
+function FlightStops({
+    isMobile,
+    value,
+    onChange,
+    showLabel,
+}: {
+    isMobile: boolean;
+    value: string;
+    onChange: (val: string) => void;
+    showLabel: boolean;
+}) {
+    return (
+        <Flex direction="column" padding="0px 0px 20px">
+            {showLabel && (
+                <Flex
+                    padding="0px 0px 10px"
+                    margin={isMobile ? "12px 0px 0px" : "0px"}
+                >
+                    <Text type="p" size={16} weight={500} text="Stops" />
+                </Flex>
+            )}
+            <Flex align="center">
+                <CustomRadioGroup
+                    options={stopOptions}
+                    value={value}
+                    name="flight"
+                    onChange={(e, val) => onChange(val ?? "")}
+                    justifyContent="flex-end"
+                    align="flex-start"
+                    scroll
+                />
+            </Flex>
+        </Flex>
+    );
+}
+
+function Flights() {
+    const router = useRouter();
+    const { isMobile } = useScreenResolution();
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state,
+        dispatch = flightContext?.dispatch;
+
+    const { searchFlightsMode } = useFlightBookingStore((state) => state);
+
+    const { queryParams } = useQueryParams();
+
+    const handleAddMultiFlight = () => {
+        dispatch && dispatch({ type: "ADD_MULTI_FLIGHT" });
+    };
+    const handleUpdateMultiFlight = (
+        flight: OneFlightType,
+        data: Partial<OneFlightType>
+    ) => {
+        dispatch &&
+            dispatch({
+                type: "UPDATE_MULTI_FLIGHT",
+                payload: { index: flight.index ?? 0, data },
+            });
+    };
+    const handleRemoveMultiFlight = (flight: OneFlightType) => {
+        dispatch && dispatch({ type: "REMOVE_MULTI_FLIGHT", payload: flight });
+    };
+
+    const handleChangeStops = (value?: string) => {
+        dispatch && dispatch({ type: "SET_STOPS", payload: value ?? "" });
+        dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
+    };
+
+    const translateCabin = (x?: string) => {
+        switch (x) {
+            case "Economy":
+                return "M";
+                break;
+            case "Economy Premium":
+                return "W";
+                break;
+            case "Business":
+                return "C";
+                break;
+            case "First":
+                return "F";
+                break;
+            default:
+                return "";
+        }
+    };
+
+    const reverseCabin = (x?: string) => {
+        switch (x) {
+            case "M":
+                return "Economy";
+                break;
+            case "W":
+                return "Economy Premium";
+                break;
+            case "C":
+                return "Business";
+                break;
+            case "F":
+                return "First";
+                break;
+            default:
+                return "Economy";
+        }
+    };
+
+    const formatSearchFlight = (flight?: OneFlightType) => {
+        const dateFrom = formatDate(flight?.departureDate ?? dayjs());
+        const returnFrom = formatDate(flight?.returnDate ?? dayjs());
+        // const dateTo = formatDate(flight?.returnDate ?? dayjs());
+        const departure = flight?.departureCountry;
+        const arrival = flight?.arrivalCountry;
+        const adults = flight?.adults;
+        const children = flight?.children;
+        const infants = flight?.infants;
+        const cabin = translateCabin(flight?.flightClass);
+        const cabinBags = flight?.cabinBaggage;
+        const checkedBags = flight?.checkedBaggage;
+
+        return `/flight/listings?fly_from=${departure?.code}&fly_to=${
+            arrival?.code
+        }&date_from=${dateFrom}${
+            flight?.returnDate ? `&return_from=${returnFrom}` : ""
+        }&stops=${flightState?.stops}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
+    };
+
+    const flight = flightState?.fleet[0];
+
+    const formComplete =
+        flight?.departureCountry &&
+        flight?.arrivalCountry &&
+        flight?.departureDate;
+
+    const handleSearchFlights = () => {
+        if (formComplete) {
+            router.push(formatSearchFlight(flight));
+        }
+    };
+
+    useEffect(() => {
+        dispatch &&
+            dispatch({
+                type: "UPDATE_MULTI_FLIGHT",
+                payload: {
+                    index: 0,
+                    data: {
+                        // ...queryParams,
+                        // departureCountry: flightState?.countries[queryParams?.fly_from],
+                        // arrivalCountry: flightState?.countries[queryParams?.fly_to],
+                        departureDate: dayjs(queryParams?.date_from).isValid() ? dayjs(queryParams?.date_from) : dayjs(),
+                        flightClass: reverseCabin(queryParams?.cabin ?? 'M'),
+                        adults: Number(queryParams?.adults ?? 1),
+                        children: Number(queryParams?.children ?? 0),
+                        infants: Number(queryParams?.infants ?? 0),
+                    },
+                },
+            });
+    }, []);
+
+
+
+    return (
+        <Section
+            padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}
+        >
+            <Flex direction="column">
+                <FlightStops
+                    isMobile={isMobile}
+                    value={flightState?.stops ?? "round"}
+                    onChange={handleChangeStops}
+                    showLabel={false}
+                />
+            </Flex>
+
+            <Flex direction="column">
+                {flightState?.fleet.map((e, index, arr) => (
+                    <FlightModule
+                        key={"multiflight" + index}
+                        stops={flightState?.stops}
+                        flight={e}
+                        handleUpdate={handleUpdateMultiFlight}
+                        handleDelete={handleRemoveMultiFlight}
+                        canDelete={
+                            flightState?.stops === "multi-city" && arr.length > 1
+                        }
+                    />
+                ))}
+            </Flex>
+
+            {flightState &&
+                flightState?.stops === "multi-city" &&
+                flightState?.fleet?.length < 3 && (
+                    <Flex margin={isMobile ? "0px" : "30px 0px 0px"}>
+                        <Button
+                            onClick={handleAddMultiFlight}
+                            padding="0rem 1rem"
+                            borderRadius="4px"
+                            background="transparent"
+                            border="1px solid #06062A"
+                            width="fit-content"
+                            cursor="pointer"
+                            startIcon={<HiPlus color="#06062A" size={25} />}
+                        >
+                            <Text
+                                type="p"
+                                text="Add Another Flight"
+                                font="Montserrat"
+                                weight={600}
+                                color="#06062A"
+                                size={14}
+                                whiteSpace="nowrap"
+                            />
+                        </Button>
+                    </Flex>
+                )}
+
+            <Flex
+                justify="flex-end"
+                margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}
+            >
+                <Button
+                    width={isMobile ? "100%" : "300px"}
+                    padding="0 1.5rem"
+                    borderRadius="4px"
+                    background={ttColors.dark}
+                    onClick={handleSearchFlights}
+                    disabled={!formComplete}
+                >
+                    {searchFlightsMode === Mode.loading ? (
+                        <Spinner fill={ttColors.primary} size="36px" />
+                    ) : (
+                        <Text type="p" text="Search Flight" weight={500} />
+                    )}
+                </Button>
+            </Flex>
+        </Section>
+    );
 }
 
 export default Flights;

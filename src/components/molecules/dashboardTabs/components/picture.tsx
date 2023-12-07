@@ -150,8 +150,9 @@ function UserPicture() {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
 
-  const referralLink = `https://thrillers.travel/register?ref=${user?.firstName.toLocaleLowerCase()}-${user?.lastName.toLocaleLowerCase()}`;
-  const { copyToClipboard } = useClipboard();
+  const referralLink = `https://thrillers.travel/register?ref=${String(user?.firstName ?? '').toLocaleLowerCase()}-${String(user?.lastName ?? '').toLocaleLowerCase()}`;
+    const { copyToClipboard } = useClipboard();
+    
   return (
     <Flex direction="column" gap="1rem" margin="0px">
       <DashboardCoverPicture>

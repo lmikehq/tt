@@ -18,7 +18,8 @@ const VisApplicationFormDetails = ({
   formData,
   onClose,
 }: VisaApplicationFormDetailsProps) => {
-  const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset">
       {isMobile && (
@@ -46,9 +47,9 @@ const VisApplicationFormDetails = ({
         <Section width="30%" height="unset">
           <Text
             type="p"
-            text={formData.tripDetails.homeCountry.name}
+            text={formData.tripDetails.homeCountry.name ?? ""}
             size={20}
-            weight={500}
+            weight={600}
           />
         </Section>
         <Section width="30%" height="unset">
@@ -58,9 +59,9 @@ const VisApplicationFormDetails = ({
           <Text
             type="p"
             textAlign="right"
-            text={formData.tripDetails.destination.name}
+            text={formData.tripDetails.destination.name ?? ""}
             size={20}
-            weight={500}
+            weight={600}
           />
         </Section>
       </Flex>
@@ -72,14 +73,13 @@ const VisApplicationFormDetails = ({
             text="Application Fee"
             type="h3"
             size={isMobile ? 16 : 18}
-            weight={500}
+            weight={600}
             // whiteSpace="nowrap"
             margin="0 0 .7rem 0"
           />
           <Text
             type="p"
-            size={isMobile ? 14 : 18}
-            weight={400}
+            size={isMobile ? 14 : 15}
             text="Non-Refundable"
             whiteSpace="nowrap"
           />
@@ -89,14 +89,13 @@ const VisApplicationFormDetails = ({
             text="Validity"
             type="h3"
             size={isMobile ? 16 : 18}
-            weight={500}
+            weight={600}
             // whiteSpace="nowrap"
             margin="0 0 .7rem 0"
           />
           <Text
             type="p"
-            size={isMobile ? 14 : 18}
-            weight={400}
+            size={isMobile ? 14 : 15}
             text="Passport dependent"
             whiteSpace="nowrap"
           />
@@ -113,7 +112,7 @@ const VisApplicationFormDetails = ({
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 14 : 15}
               weight={400}
               text="Passport sized photograph"
             />
@@ -121,15 +120,15 @@ const VisApplicationFormDetails = ({
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 14 : 15}
               weight={400}
-              text="Valid international passport"
+              text="Valid International Passport"
             />
           </ListItem>
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 14 : 15}
               weight={400}
               text="All academic certificates"
             />
@@ -137,7 +136,7 @@ const VisApplicationFormDetails = ({
           <ListItem>
             <Text
               type="p"
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 14 : 15}
               weight={400}
               text="Proof of address (utility bill)"
             />
@@ -146,7 +145,7 @@ const VisApplicationFormDetails = ({
             <Text
               type="p"
               text="Marriage certificate (if applicable)"
-              size={isMobile ? 14 : 16}
+              size={isMobile ? 14 : 15}
               weight={400}
             />
           </ListItem>

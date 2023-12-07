@@ -11,16 +11,16 @@ import Flex from "@components/templates/flex";
 import SectionLayout from "@components/templates/SectionLayout";
 
 const FrameWrapper = styled.div`
-  margin: 5rem 0;
+    margin: 5rem 0;
 `;
 const ServiceCard = styled.div`
-  display: block;
-  height: 25rem;
+    display: block;
+    height: 25rem;
 
-  & img {
-    // width: 100%;
-    border-radius: 24px;
-  }
+    & img {
+        // width: 100%;
+        border-radius: 24px;
+    }
 `;
 
 const FrameInfo = styled.div`
@@ -76,94 +76,114 @@ const FrameInfo = styled.div`
 `;
 
 const serviceCard = [
-  {
-    id: 1,
-    img: "/assets/images/serviceCard/visas.png",
-    title: "Visas",
-    description: "Apply for a visa to over 200 countries around the world.",
-    button: "Book visa",
-    icon: <FaPaperPlane size={14} />,
-    url: "/visa",
-  },
+    {
+        id: 1,
+        img: "/assets/images/serviceCard/visas.png",
+        title: "Visas",
+        description: "Apply for a visa to over 200 countries around the world.",
+        button: "Book visa",
+        icon: <FaPaperPlane size={14} />,
+        url: "/visa",
+    },
 
-  {
-    id: 2,
-    img: "/assets/images/serviceCard/flight.png",
-    title: "Flights",
-    description:
-      "Travel the world with cheap flights, exclusive deals, and more.",
-    button: "Search flights",
-    icon: <FaPaperPlane size={14} />,
-    url: "/flight",
-  },
+    {
+        id: 2,
+        img: "/assets/images/serviceCard/flight.png",
+        title: "Flights",
+        description:
+            "Travel the world with cheap flights, exclusive deals, and more.",
+        button: "Search flights",
+        icon: <FaPaperPlane size={14} />,
+        url: "/flight",
+    },
 
-  {
-    id: 3,
-    img: "/assets/images/serviceCard/travel.png",
-    title: "Travel Guide",
-    description: "Get the best travel tips from our experts",
-    button: "Explore guide",
-    icon: <FaPaperPlane size={14} />,
-    url: "/contact-us",
-  },
+    {
+        id: 3,
+        img: "/assets/images/serviceCard/travel.png",
+        title: "Travel Guide",
+        description: "Get the best travel tips from our experts",
+        button: "Explore guide",
+        icon: <FaPaperPlane size={14} />,
+        url: "/ai-guide",
+    },
 
-  {
-    id: 4,
-    img: "/assets/images/serviceCard/hotel.png",
-    title: "Hotels",
-    description: "Book hotels in over 100 countries around the world.",
-    button: "Show hotels",
-    icon: <FaPaperPlane size={14} />,
-  },
+    {
+        id: 4,
+        img: "/assets/images/serviceCard/hotel.png",
+        title: "Hotels",
+        description: "Book hotels in over 100 countries around the world.",
+        button: "Show hotels",
+        icon: <FaPaperPlane size={14} />,
+        url: "/stay",
+    },
 ];
 
 const Frame: React.FC = () => {
-  const { isMobile } = useScreenResolution();
-  const router = useRouter();
+    const { isMobile } = useScreenResolution();
+    const router = useRouter();
 
-  const applyButton = () => {
-    router.push("/visa");
-  };
+    const applyButton = () => {
+        router.push("/visa");
+    };
 
-  return (
-    <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
-      <SectionLayout>
-        <Grid
-          columns={isMobile ? "1fr" : "2"}
-          gap="2rem"
-          style={{
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-          }}
-        >
-          {serviceCard.map((item) => (
-            <ServiceCard key={item.id} style={{ position: "relative" }}>
-              <Image src={item.img} alt="card image" />
-              <FrameInfo>
-                <Text type="h2" text={item.title} weight={700} />
-                <Text type="p" text={item.description} />
-                <Button
-                  zIndex="1"
-                  background="var(--primary-color)"
-                  padding="1rem 1.3rem"
-                  styles={{
-                    width: isMobile ? "50%" : "40%",
-                    marginTop: isMobile ? ".5rem" : "0",
-                  }}
-                  color="var(--secondary-color)"
-                  onClick={applyButton}
+    return (
+        <FrameWrapper style={{ marginTop: isMobile ? "3rem" : "5rem" }}>
+            <SectionLayout>
+                <Grid
+                    columns={isMobile ? "1fr" : "2"}
+                    gap="2rem"
+                    style={{
+                        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+                    }}
                 >
-                  <Flex gap=".5rem" justify="center" align="center">
-                    {item.icon}
-                    <Text type="span" text={item.button} whiteSpace="nowrap" />
-                  </Flex>
-                </Button>
-              </FrameInfo>
-            </ServiceCard>
-          ))}
-        </Grid>
-      </SectionLayout>
-    </FrameWrapper>
-  );
+                    {serviceCard.map((item) => (
+                        <ServiceCard
+                            key={item.id}
+                            style={{ position: "relative" }}
+                        >
+                            <Image src={item.img} alt="card image" />
+                            <FrameInfo>
+                                <Text
+                                    type="h2"
+                                    text={item.title}
+                                    weight={700}
+                                />
+                                <Text type="p" text={item.description} />
+                                <Button
+                                    zIndex="1"
+                                    background="var(--primary-color)"
+                                    padding="1rem 1.3rem"
+                                    styles={{
+                                        width: isMobile ? "50%" : "40%",
+                                        marginTop: isMobile ? ".5rem" : "0",
+                                    }}
+                                    color="var(--secondary-color)"
+                                    onClick={() =>
+                                        item.url
+                                            ? router.push(item.url)
+                                            : applyButton()
+                                    }
+                                >
+                                    <Flex
+                                        gap=".5rem"
+                                        justify="center"
+                                        align="center"
+                                    >
+                                        {item.icon}
+                                        <Text
+                                            type="span"
+                                            text={item.button}
+                                            whiteSpace="nowrap"
+                                        />
+                                    </Flex>
+                                </Button>
+                            </FrameInfo>
+                        </ServiceCard>
+                    ))}
+                </Grid>
+            </SectionLayout>
+        </FrameWrapper>
+    );
 };
 
 export default Frame;

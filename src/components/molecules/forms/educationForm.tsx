@@ -1,5 +1,4 @@
 import CheckBox from "@molecule/checkbox";
-import { BlockDatePicker } from "@organism/datepicker";
 import {
   ArrayInput,
   FieldAsDate,
@@ -27,8 +26,8 @@ interface formProps {
 }
 
 export default function EducationForm({ formik, count, values }: formProps) {
-  const { isMobile } = useScreenResolution();
-
+    const { isMobile } = useScreenResolution();
+    
   return (
     <Section height="unset">
       <Section margin="0">
@@ -92,7 +91,7 @@ export default function EducationForm({ formik, count, values }: formProps) {
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Grade"
+              text="Grade (0.0 - 5.0)"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
             />
             <Required />
@@ -139,9 +138,9 @@ export default function EducationForm({ formik, count, values }: formProps) {
             name={`education.${count}.startYear`}
             formik={formik}
             onChange={(e: any) => {
-              formik.setFieldValue(`education.${count}.startYear`, e.$y);
+              formik.setFieldValue(`education.${count}.startYear`, e?.$y);
             }}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs()}
           />
         </Section>
         <Section>
@@ -157,10 +156,10 @@ export default function EducationForm({ formik, count, values }: formProps) {
             name={`education.${count}.endYear`}
             formik={formik}
             onChange={(e) => {
-              formik.setFieldValue(`education.${count}.endYear`, e.$y);
+              formik.setFieldValue(`education.${count}.endYear`, e?.$y);
             }}
             minDate={dayjs(`${values.startYear}`)}
-            // maxDate={dayjs(new Date())}
+            maxDate={dayjs()}
           />
         </Section>
       </Flex>
