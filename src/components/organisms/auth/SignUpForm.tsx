@@ -175,9 +175,7 @@ const SignUpForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 })
                 .catch((error) => {});
         },
-        onError: () => {
-            console.log("Login Failed");
-        },
+        onError: () => {},
     });
     function checkIfFieldHasError(field: string) {
         const error: { constraints: string } = submissionState?.error?.find(

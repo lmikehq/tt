@@ -16,70 +16,96 @@ import { useRouter } from "next/navigation";
 import ToastError from "@molecule/toastError";
 
 interface formProps {
-  steps: string[];
-  index: number;
-  persistForm: () => void;
-  formik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
+    steps: string[];
+    index: number;
+    persistForm: () => void;
+    formik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
 }
 
 function FamilyInfo({ steps, index, persistForm, formik }: formProps) {
-  const { mode } = useApplicationFormStore((state) => state);
+    const { mode } = useApplicationFormStore((state) => state);
     const isLoading = mode == Mode.loading;
-    
 
-  return (
-    <FormikProvider value={formik}>
-      <Section>
-        <form onSubmit={formik.handleSubmit}>
-          <FieldArray
-            name="familyMembers"
-            render={(arrayHelpers) => (
-              <div>
-                <Flex justify="space-between" padding="0 0 2rem 0">
-                    <FormStepTitle steps={steps} index={index} />
-                </Flex>
-                {formik.values.familyMembers.map((family, index, arr) => (
-                  <div key={index} style={{ marginBottom: '3.5rem' }}>
-                    <FamilyForm formik={formik} values={family} count={index} arrayHelpers={arrayHelpers} isFirst={family?.index === 0} />
-                    {arr.filter(e => e.section === family.section).length > 1 && (
-                        <Flex
-                            justify="flex-end"
-                            gap="0.25rem"
-                            align="center"
-                            onClick={() => arrayHelpers.remove(index)}
-                            cursor="pointer"
-                            margin="0"
-                        >
-                            <RiDeleteBin6Line color={ttColors.red} size={25} />
-                            <Text
-                                type="p"
-                                text="Delete Family Member"
-                                color={ttColors.red}
-                                    weight="500"
-                                    size={15}
-                            />
-                      </Flex>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          />
-          <ContinueButton
-            isLoading={isLoading}
-            onClick={() => {
-                if (!formik.isValid) {
-                    // formik.validateForm().then(res => console.log('vali', res)).catch(err => console.log('vali', err))
-                    return ToastError()
-                }
-            }}
-            disabled={!formik.isValid}
-            saveProgressAndContinueLater={persistForm}
-          />
-        </form>
-      </Section>
-    </FormikProvider>
-  );
+    return (
+        <FormikProvider value={formik}>
+            <Section>
+                <form onSubmit={formik.handleSubmit}>
+                    <FieldArray
+                        name="familyMembers"
+                        render={(arrayHelpers) => (
+                            <div>
+                                <Flex
+                                    justify="space-between"
+                                    padding="0 0 2rem 0"
+                                >
+                                    <FormStepTitle
+                                        steps={steps}
+                                        index={index}
+                                    />
+                                </Flex>
+                                {formik.values.familyMembers.map(
+                                    (family, index, arr) => (
+                                        <div
+                                            key={index}
+                                            style={{ marginBottom: "3.5rem" }}
+                                        >
+                                            <FamilyForm
+                                                formik={formik}
+                                                values={family}
+                                                count={index}
+                                                arrayHelpers={arrayHelpers}
+                                                isFirst={family?.index === 0}
+                                            />
+                                            {arr.filter(
+                                                (e) =>
+                                                    e.section === family.section
+                                            ).length > 1 && (
+                                                <Flex
+                                                    justify="flex-end"
+                                                    gap="0.25rem"
+                                                    align="center"
+                                                    onClick={() =>
+                                                        arrayHelpers.remove(
+                                                            index
+                                                        )
+                                                    }
+                                                    cursor="pointer"
+                                                    margin="0"
+                                                >
+                                                    <RiDeleteBin6Line
+                                                        color={ttColors.red}
+                                                        size={25}
+                                                    />
+                                                    <Text
+                                                        type="p"
+                                                        text="Delete Family Member"
+                                                        color={ttColors.red}
+                                                        weight="500"
+                                                        size={15}
+                                                    />
+                                                </Flex>
+                                            )}
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        )}
+                    />
+                    <ContinueButton
+                        isLoading={isLoading}
+                        onClick={() => {
+                            if (!formik.isValid) {
+                                // formik.validateForm().then(res =>
+                                return ToastError();
+                            }
+                        }}
+                        disabled={!formik.isValid}
+                        saveProgressAndContinueLater={persistForm}
+                    />
+                </form>
+            </Section>
+        </FormikProvider>
+    );
 }
 
 export default FamilyInfo;
