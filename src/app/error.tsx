@@ -29,7 +29,7 @@ export default function Error({
 
                 <Text
                     type="p"
-                    text="Something went wrong!"
+                    text={error.message ?? "Something went wrong!"}
                     size={isMobile ? 16 : 18}
                     weight={600}
                     color="#888888"
