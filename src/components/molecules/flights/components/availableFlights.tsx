@@ -156,7 +156,7 @@ function LoginModal({
                     type="h2"
                     text="Would you like to Login?"
                     weight={600}
-                    size={28}
+                    size={25}
                     textAlign="center"
                 />
                 <Text
@@ -257,7 +257,7 @@ function StillSearchingModal({
                     type="h2"
                     text="Still Searching?"
                     weight={600}
-                    size={26}
+                    size={25}
                     textAlign="center"
                 />
                 <Text
@@ -327,7 +327,7 @@ function ShareFlightModal({
                     type="h2"
                     text="Share your Flight to Family & Friends"
                     weight={600}
-                    size={isMobile ? 24 : 26}
+                    size={isMobile ? 24 : 25}
                 />
                 <Text
                     type="h2"

@@ -344,6 +344,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             delete member.membersOccupation;
             delete member.issueCountry;
             delete member.maritalStatus;
+            delete member.dateOfBirth;
             return ({
                 ...member,
                 dateOfBirth: formatISODate(member?.dateOfBirth),
