@@ -59,12 +59,13 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                     }}
                   />
                 </Flex>
-                {formik.values.employment.map((employment, index) => (
+                {formik.values.employment.map((employment, index, arr) => (
                   <div key={index} style={{ marginBottom: '3.5rem' }}>
                     <EmploymentForm
                       formik={formik}
                       values={employment}
-                      count={index}
+                        count={index}
+                        length={arr.length}
                     />
                     {formik.values.employment.length > 1 && (
                       <Flex
@@ -89,13 +90,13 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
               </div>
             )}
           />
-          <ContinueButton
-            isLoading={isLoading}
-            saveProgressAndContinueLater={persistForm}
-            onClick={() => {
-              if (!formik.isValid) return ToastError();
-            }}
-            disabled={!formik.isValid}
+            <ContinueButton
+                isLoading={isLoading}
+                saveProgressAndContinueLater={persistForm}
+                onClick={() => {
+                    if (!formik.isValid) return ToastError();
+                }}
+                disabled={!formik.isValid}
           />
         </form>
       </Section>

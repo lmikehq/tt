@@ -9,15 +9,17 @@ interface LocationSearchSelectInputProps {
     onChange: (value: KiwiLocation) => void;
     value?: KiwiLocation;
     placeholder: string;
+    defaultText?: string;
 }
 
 const LocationSearchSelectInput = ({
     onChange,
     value,
     placeholder,
+    defaultText,
 }: LocationSearchSelectInputProps) => {
     const [locations, setLocations] = useState<KiwiLocation[]>([]);
-    const [searchText, setSearchText] = useState<string>("");
+    const [searchText, setSearchText] = useState<string>(defaultText ?? "");
     const [defaultLocations, setDefaultLocations] = useState<KiwiLocation[]>(
         []
     );
@@ -62,6 +64,7 @@ const LocationSearchSelectInput = ({
 
         fetchLocations({});
     }, [searchText]);
+
 
     return (
         <SearchInputAsLocationTypes

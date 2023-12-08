@@ -347,7 +347,7 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
 export const saveBookingDetails: SaveBookingRequestInput = {
     health_declaration_checked: true,
     lang: "en",
-    new_user_email: "olal1ewsaeth14@gmail.com",
+    new_user_email: "",
     passengers: [],
     booking_token: "",
     session_id: "",

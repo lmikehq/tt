@@ -509,8 +509,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
         onClose && onClose();
     };
 
-    console.log('ss', searchQuery)
-
     useEffect(() => {
         setFilterData(prev => ({
             ...prev,
@@ -913,7 +911,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 </Flex>
             </Panel>
 
-            <LoadingButton
+            {/* <LoadingButton
                 onClick={() => handleFilterResults(filterData)}
                 variant="contained"
                 style={{
@@ -924,7 +922,7 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 loading={searchFlightsMode === Mode.loading}
             >
                 <Text type="p" text="Apply" />
-            </LoadingButton>
+            </LoadingButton> */}
         </Flex>
     );
 }

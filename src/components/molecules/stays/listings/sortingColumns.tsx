@@ -214,139 +214,13 @@ function SortingColumns() {
         (state) => state
     );
 
-    const {
-        meals,
-        popularTypes,
-        propertyTypes,
-        starRating,
-        guestRating,
-        cancellationPolicy,
-        amenity,
-        room,
-        bedType,
-    } = staySearchFilters;
-
     const handleUpdateStaySearchFilters = (params: StaySearchFilters) => {
         updateStaySearchFilters({
             ...staySearchFilters,
             ...params,
         });
     };
-    const handleMealPlanChanged = (value: string) => {
-        // Check if the value is already in the array
-        const isSelected = meals?.includes(value);
-        if (isSelected) {
-            // If the value is already selected, remove it
-            handleUpdateStaySearchFilters({
-                meals: meals?.filter((item) => item !== value),
-            });
-        } else {
-            // If the value is not selected, add it
-            handleUpdateStaySearchFilters({
-                meals: [...(meals ?? []), value],
-            });
-        }
-    };
-    const handlePropertyTypeChanged = (value: string) => {
-        const isSelected = propertyTypes?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                propertyTypes: propertyTypes?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                propertyTypes: [...(propertyTypes ?? []), value],
-            });
-        }
-    };
 
-    const handlePopularTypeChanged = (value: string) => {
-        const isSelected = popularTypes?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                popularTypes: popularTypes?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                popularTypes: [...(popularTypes ?? []), value],
-            });
-        }
-    };
-    const handleStarRatingChanged = (value: string) => {
-        const isSelected = starRating?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                starRating: starRating?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                starRating: [...(starRating ?? []), value],
-            });
-        }
-    };
-    const handleGuestRatingChanged = (value: string) => {
-        const isSelected = guestRating?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                guestRating: guestRating?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                guestRating: [...(guestRating ?? []), value],
-            });
-        }
-    };
-    const handleCancellationPolicyChanged = (value: string) => {
-        const isSelected = cancellationPolicy?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                cancellationPolicy: cancellationPolicy?.filter(
-                    (item) => item !== value
-                ),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                cancellationPolicy: [...(cancellationPolicy ?? []), value],
-            });
-        }
-    };
-    const handleAmenityChanged = (value: string) => {
-        const isSelected = amenity?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                amenity: amenity?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                amenity: [...(amenity ?? []), value],
-            });
-        }
-    };
-
-    const handleRoomChanged = (value: string) => {
-        const isSelected = room?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                room: room?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                room: [...(room ?? []), value],
-            });
-        }
-    };
-    const handleBedTypeChanged = (value: string) => {
-        const isSelected = bedType?.includes(value);
-        if (isSelected) {
-            handleUpdateStaySearchFilters({
-                bedType: bedType?.filter((item) => item !== value),
-            });
-        } else {
-            handleUpdateStaySearchFilters({
-                bedType: [...(bedType ?? []), value],
-            });
-        }
-    };
     const handleEnumCheckBoxGroupChanged = ({
         value,
         field,
@@ -1253,11 +1127,12 @@ function SortingColumns() {
                                                 ]
                                             }
                                             onChange={(e) =>
-                                                handleCancellationPolicyChanged(
-                                                    HotelBedTypeEnum[
+                                                handleEnumCheckBoxGroupChanged({
+                                                    value: HotelBedTypeEnum[
                                                         item as keyof typeof HotelBedTypeEnum
-                                                    ]
-                                                )
+                                                    ],
+                                                    field: "bedType",
+                                                })
                                             }
                                             control={
                                                 <Checkbox

@@ -140,7 +140,7 @@ export const COMMON_MAJORS = [
   "Others",
 ];
 
-export const RELATIONSHIPS = ["Spouse", "Child", "Parent", "Sibling", "In-Law"];
-export const PRINCIPAL_RELATIONSHIPS = ["Spouse", "Father", "Mother"];
-export const CHILD_RELATIONSHIPS = ["Son", "Daughter"];
-export const SIBLING_RELATIONSHIPS = ["Sibling"];
+export const PRINCIPAL_RELATIONSHIPS = ["Father", "Mother"];
+export const IMMEDIATE_RELATIONSHIPS = ["Spouse", "Son", "Daughter"];
+export const SIBLING_RELATIONSHIPS = ["Brother", "Sister"];
+export const RELATIONSHIPS = [...PRINCIPAL_RELATIONSHIPS, ...IMMEDIATE_RELATIONSHIPS, ...SIBLING_RELATIONSHIPS, "In-Law"];

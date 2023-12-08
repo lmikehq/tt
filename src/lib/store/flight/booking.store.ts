@@ -34,7 +34,6 @@ import { create } from "zustand";
 import { useUserPreferencesStore } from "../preferences.store";
 import { CONVERSION_RATE_KEY } from "@/lib/extensions/constants";
 
-
 interface State {
     highestStep: number;
     step: number;
@@ -72,6 +71,7 @@ interface State {
     bookingDetailsMode: Mode;
     bookingDetailsResponse: BookingDetailsInterface | null;
     getBookingByIdResponse: GetFlightBookingByIdResponse | null;
+    savedBooking: boolean;
 }
 interface Actions {
     prevStep: () => void;
@@ -105,11 +105,7 @@ interface Actions {
     }: {
         data: SaveBookingRequestInput;
     }) => void;
-    setContactDetails: ({
-        data,
-    }: {
-        data: ContactDetailsInterface;
-    }) => void;
+    setContactDetails: ({ data }: { data: ContactDetailsInterface }) => void;
     setParticularSeats: (data: ParticularSeatingOption[]) => void;
     setSeatRows: (data: SeatRowWithSegmentCodeInterface[]) => void;
     checkBookingDetails: ({
@@ -117,12 +113,14 @@ interface Actions {
     }: {
         bookingId: string;
     }) => Promise<void>;
+    setSavedBooking: (value: boolean) => void;
 }
 
 export const useFlightBookingStore = create<State & Actions>(
     (set): State & Actions => ({
         step: 2,
         highestStep: 2,
+        savedBooking: false,
 
         mode: Mode.init,
         searchFlightsMode: Mode.init,
@@ -132,13 +130,13 @@ export const useFlightBookingStore = create<State & Actions>(
             currency: "USD",
             total: 0,
         },
-        searchQuery: { limit: 10, sort: 'quality' },
+        searchQuery: { limit: 10, sort: "quality" },
         sessionId: null,
         seatRows: [],
-        initCheckFlightsMode: Mode.init,
         saveBookingMode: Mode.init,
         confirmPaymentMode: Mode.init,
-
+        
+        initCheckFlightsMode: Mode.init,
         checkFlightsResponse: null,
         checkSeatingResponse: null,
         checkSeatingMode: Mode.init,
@@ -232,7 +230,10 @@ export const useFlightBookingStore = create<State & Actions>(
             })
                 .then((response) => {
                     // console.log("rrrr", response);
-                    localStorage.setItem(CONVERSION_RATE_KEY, `${response.fx_rate}`);
+                    localStorage.setItem(
+                        CONVERSION_RATE_KEY,
+                        `${response.fx_rate}`
+                    );
                     useUserPreferencesStore.setState({
                         conversionRate: response.fx_rate,
                     });
@@ -243,7 +244,7 @@ export const useFlightBookingStore = create<State & Actions>(
                             currency: response.currency,
                             total: response._results,
                         },
-                    })
+                    });
                 })
                 .catch((error) => {
                     set({ searchFlightsMode: Mode.error });
@@ -378,6 +379,7 @@ export const useFlightBookingStore = create<State & Actions>(
                             userId: response.userId,
                             flightId: response.flightId,
                         },
+                        savedBooking: true,
                     }));
                     return response;
                 })
@@ -456,6 +458,11 @@ export const useFlightBookingStore = create<State & Actions>(
                     set({ bookingDetailsMode: Mode.error });
                     throw error;
                 });
+        },
+        setSavedBooking(value) {
+            set({
+                savedBooking: value,
+            });
         },
     })
 );

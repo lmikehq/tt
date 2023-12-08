@@ -51,12 +51,13 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                     }}
                   />
                 </Flex>
-                {formik.values.education.map((education, index) => (
+                {formik.values.education.map((education, index, arr) => (
                   <div key={index} style={{ marginBottom: '3.5rem' }}>
                     <EducationForm
                       formik={formik}
                       values={education}
-                      count={index}
+                        count={index}
+                        length={arr.length}
                     />
                     {formik.values.education.length > 1 && (
                       <Flex

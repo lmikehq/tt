@@ -232,10 +232,10 @@ function Flights() {
                     index: 0,
                     data: {
                         // ...queryParams,
-                        // departureCountry: flightState?.countries[queryParams?.fly_from]?.code,
-                        // arrivalCountry: flightState?.countries[queryParams?.fly_to]?.code,
-                        departureDate: dayjs(queryParams?.date_from),
-                        flightClass: reverseCabin(queryParams?.cabin),
+                        // departureCountry: flightState?.countries[queryParams?.fly_from],
+                        // arrivalCountry: flightState?.countries[queryParams?.fly_to],
+                        departureDate: dayjs(queryParams?.date_from, 'MM/DD/YYYY').isValid() ? dayjs(queryParams?.date_from, 'MM/DD/YYYY') : dayjs(),
+                        flightClass: reverseCabin(queryParams?.cabin ?? 'M'),
                         adults: Number(queryParams?.adults ?? 1),
                         children: Number(queryParams?.children ?? 0),
                         infants: Number(queryParams?.infants ?? 0),
@@ -244,20 +244,13 @@ function Flights() {
             });
     }, []);
 
+
+
     return (
         <Section
             padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}
-            styles={{ position: "sticky", top: '0' }}
         >
             <Flex direction="column">
-                {/* {isMobile &&
-					<FlightType
-						isMobile={isMobile}
-						value={flightState?.flightType ?? ''}
-						onChange={(x) => dispatch && dispatch({ type: "SET_FLIGHT_TYPE", payload: x ?? '' })}
-					/>
-				} */}
-
                 <FlightStops
                     isMobile={isMobile}
                     value={flightState?.stops ?? "round"}
