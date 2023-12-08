@@ -55,9 +55,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 })
                 .catch((error) => {});
         },
-        onError: () => {
-            console.log("Login Failed");
-        },
+        onError: () => {},
     });
 
     async function handleLogin(): Promise<any> {
@@ -72,7 +70,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
         if (submissionState.loading) return;
         setSubmissionState({ ...submissionState, loading: true });
         const res = await handleLogin();
-        console.log("res: ", res);
+
         if (res?.statusCode === 401) {
             return setSubmissionState({
                 ...submissionState,
