@@ -236,8 +236,9 @@ export const arrangeBaggageDataForOrdering = (
     ) => {
         return baggageData.findIndex(
             (baggageGroup) =>
-                (JSON.stringify(baggageGroup.combination.indices) === JSON.stringify(indices))
-                && (baggageGroup.combination.category === category)
+                JSON.stringify(baggageGroup.combination.indices) ===
+                    JSON.stringify(indices) &&
+                baggageGroup.combination.category === category
         );
     };
 
@@ -247,12 +248,12 @@ export const arrangeBaggageDataForOrdering = (
         type: "hand_bag" | "hold_bag";
     }) => {
         passengers.forEach((passenger, passengerIndex) => {
-            // console.log(passenger);
-            // console.log("  passenger[type].indices", passenger[type]);
+            //
+            //
             const bagCombinationIndex =
                 checkIfBaggageCombinationIsAlreadyRegistered(
                     passenger[type].indices,
-                    passenger[type].category,
+                    passenger[type].category
                 );
             if (bagCombinationIndex === -1) {
                 baggageData = [
@@ -276,7 +277,6 @@ export const arrangeBaggageDataForOrdering = (
 
     return baggageData;
 };
-
 
 export const findSeatWithPassengerIndex = ({
     index,
