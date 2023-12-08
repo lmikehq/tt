@@ -150,8 +150,6 @@ function ApplicationPreview({
         onClose();
     };
 
-    console.log('doccs', documents)
-
     return (
         <Modal open={isOpen} handleClose={onClose}>
             <Flex

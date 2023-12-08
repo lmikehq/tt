@@ -135,9 +135,10 @@ function ApplicationForm() {
     validateOnMount: true,
     validationSchema: personalInfoSchema,
     onSubmit: (values: PersonalInfoInterface) => {
-      if (isLoading) return;
-      nextStep({ data: { personalInfo: values } });
+        if (isLoading) return;
+        nextStep({ data: { personalInfo: values } });
     },
+    // validateOnChange: true,
   });
 
   const educationFormik = useFormik({
@@ -161,7 +162,7 @@ function ApplicationForm() {
       if (isLoading) return;
       nextStep({ data: { employment: values.employment } });
     },
-    validateOnChange: false,
+    validateOnChange: true,
   });
 
     const familyMembersFormik = useFormik({
@@ -177,18 +178,18 @@ function ApplicationForm() {
         validateOnChange: true,
     });
 
-  const documentsFormik = useFormik({
-    initialValues: { documents },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: documentsSchema,
-    onSubmit: (values) => {
-      createVisaApplication({
-        data: {
-          ...form,
-          documents: values.documents,
-        },
-      })
+    const documentsFormik = useFormik({
+        initialValues: { documents },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: documentsSchema,
+        onSubmit: (values) => {
+        createVisaApplication({
+            data: {
+            ...form,
+            documents: values.documents,
+            },
+        })
         .then((_: any) => {
           toast.success(
             "Your application has been submitted successfully, please proceed to make payment",

@@ -212,7 +212,7 @@ export const FieldString = (props: FieldProps) => {
   const error = getNestedValue(formik?.errors, name);
 
     const handleChange = (e: any) => {
-        console.log("ee: ", e);
+        // console.log("ee: ", e);
         onChanged && onChanged(e)
         formik?.setFieldValue(name, e);
     };
@@ -247,8 +247,8 @@ export const FieldAsDate = (props: FieldProps) => {
     styles,
   } = props;
   const touched = getNestedValue(formik?.touched, name);
-  const error = getNestedValue(formik?.errors, name);
-
+    const error = getNestedValue(formik?.errors, name);
+    
   const handleChange = (e: any) => {
     formik?.setFieldValue(name, `${dayjs(e?.$d, format).format(format)}`);
   };

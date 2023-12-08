@@ -66,7 +66,7 @@ const SelectPaymentMethod = () => {
             margin={"0 0 0.75rem 0"}
           />
           <Text
-            text={"Select your preferred currency to make payment"}
+            text={"Please pay the application fee to complete this application"}
             weight={400}
             size={15}
             color="#606060"
@@ -76,29 +76,30 @@ const SelectPaymentMethod = () => {
         </Section>
         <Section>
           <Text
-            text={"Select currency"}
+            text={"Select payment method"}
             weight={400}
             size={14}
             type={"h5"}
-            margin={"0 0 1.125rem 0"}
+            margin={"0 0 .75rem 0"}
           />
 
           <Section margin="0 0 1.5rem 0">
             <SearchInput
-              options={COUNTRY_FLAGS.filter((x) => x.code == "NG").map(
-                (el) => ({
-                  flag: el.flag,
-                  code: el.currencyCode,
-                  name: el.currency,
-                })
-              )}
-              onChange={(x) => {
-                setCurrency({
-                  currency: x.name,
-                  currencyCode: x.code,
-                  flag: x.flag.src,
-                });
-              }}
+                options={COUNTRY_FLAGS.filter((x) => x.code == "NG").map(
+                    (el) => ({
+                        flag: el.flag,
+                        code: el.currencyCode,
+                        name: el.currency,
+                    })
+                )}
+                onChange={(x) => {
+                    setCurrency({
+                        currency: x.name,
+                        currencyCode: x.code,
+                        flag: x.flag.src,
+                    });
+                }}
+                disabled
             >
               <Flex gap="1.5rem" margin="0" align="center">
                 <RoundFlag flag={currency?.flag ?? ""} />
@@ -111,6 +112,7 @@ const SelectPaymentMethod = () => {
                   <Text
                     type="p"
                     text={`${currency?.currencyCode} - ${currency?.currency}`}
+                    // text={`Kora`}
                     color="#1C1B1F"
                     weight={100}
                   />
@@ -127,9 +129,10 @@ const SelectPaymentMethod = () => {
             />
             <Section>
               <Text
-                text="Only the Nigerian currency naira (Naira) is active for now. Other currencies will be made available soon."
-                    type="p"
-                    size={14}
+                // text="Kora allows payments only in Nigerian currency (Naira)."
+                text="Only the Nigerian currency (Naira) is active for now. Other currencies will be made available soon."
+                type="p"
+                size={14}
               />
             </Section>
           </Section>
