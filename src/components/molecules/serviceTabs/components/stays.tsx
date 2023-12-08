@@ -340,7 +340,7 @@ function Stays() {
                     padding="0 1.5rem"
                     borderRadius="4px"
                     background={ttColors.dark}
-                    disabled={!validateStaySearchFilter}
+                    disabled={true || !validateStaySearchFilter}
                     onClick={async () => {
                         if (loading) return;
                         setLoading(true);
