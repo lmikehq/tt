@@ -110,7 +110,7 @@ export const useApplicationFormStore = create<State & Actions>(
           ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
           : null,
         };
-        console.log('recent', recent)
+        // console.log('recent', recent)
       set((state) => ({
         form: recent.form ?? state.form,
         uploadedDocuments: recent.uploadedDocuments ?? [],
@@ -179,7 +179,7 @@ export const useApplicationFormStore = create<State & Actions>(
       destination: string;
       visaType: string;
     }) => {
-      console.log(destination);
+    //   console.log(destination);
       set((state) => ({
         form: {
           ...state.form,

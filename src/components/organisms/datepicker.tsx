@@ -111,7 +111,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
                 slotProps={{
                     textField: {
                         placeholder: placeholder,
-                        error: error,
+                        error: !!error,
                     },
                 }}
                 slots={{

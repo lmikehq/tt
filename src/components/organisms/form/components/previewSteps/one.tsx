@@ -17,7 +17,7 @@ interface OneProps{
 }
 
 function One({ applicationInfo, personalInfo }: OneProps) {
-    const [isOpenAcc, setOpenAcc] = useState<number | null>(0)
+    const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
     const toggleAcc = (index: number) => {
         setOpenAcc(prev => prev === index ? null : index)
     }

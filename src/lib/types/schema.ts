@@ -508,7 +508,7 @@ export const test: ApplicationFormRequestInput = {
         middleName: "M",
         lastName: "TestDoe",
         dateOfBirth: "1990-01-01",
-        email: "testvisa@ymail.com",
+        email: "testvisa01@ymail.com",
         placeOfBirth: "City1",
         stateOfOrigin: "State1",
         phoneNumber: "1234567890",
