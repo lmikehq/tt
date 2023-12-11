@@ -279,7 +279,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 inputProps={{
                     name: "phoneNumber",
                 }}
-                inputStyle={{ border: Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : ''}}
+                inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : ''}}
                 onChange={(e) => {
                     formik.setFieldValue("phoneNumber", e);
                 }}

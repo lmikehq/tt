@@ -22,9 +22,9 @@ import PhoneInput from "react-phone-input-2";
 import dayjs from "dayjs";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 const sectionDesc = {
-    A: "Comprises Principal family members (Father and Mother). Click on the Plus Icon to add subordinates",
-    B: "Comprises all Brothers and Sisters. Click on the Plus Icon to add subordinates",
-    C: "Comprises Immediate Family (Spouse, Sons, and Daughters). Click on the Plus Icon to add subordinates",
+    A: "Comprises Principal family members (Father and Mother). Click the Plus Icon to add subordinates",
+    B: "Comprises Brothers and Sisters. Click the Plus Icon to add subordinates",
+    C: "Comprises Immediate Family (Spouse, Sons, and Daughters). Click the Plus Icon to add subordinates",
 }
 const sectionName = {
     A: "PARENT DETAILS",
