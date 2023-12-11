@@ -30,6 +30,7 @@ export const ttColors = {
     placeholderColor: "#1C1B1F",
     blackishBlue: "#06062A",
     grayishAsh: "#F3F3FF",
+    lightAsh: "#EBEBEB",
     lighterGray: "#929292",
     blackishGreen: "#121",
     lightestGray: "#E7E7E7",
