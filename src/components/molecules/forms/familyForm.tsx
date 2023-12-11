@@ -202,9 +202,8 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                             inputClass="w"
                             placeholder="Enter member's phone number"
                         />
-                  </Section>
-                  
-                {['C'].includes(values?.section ?? '') &&
+                    </Section>
+                    
                     <Section width="100%">
                         <Flex align="center" gap="0.25rem">
                             <Text
@@ -223,8 +222,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                             format="DD/MM/YYYY"
                         />
                     </Section>
-                }  
-            </Flex>
+                </Flex>
           )}
           
             {['C'].includes(values?.section ?? '') && (

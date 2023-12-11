@@ -117,7 +117,7 @@ function ApplicationForm() {
     const router = useRouter();
     const [showApplicationExistsModal, setShowApplicationExistsModal] =
         useState(false);
-
+  
     const detailsFormik = useFormik({
         initialValues: tripDetails,
         enableReinitialize: true,
@@ -141,6 +141,18 @@ function ApplicationForm() {
         // validateOnChange: true,
     });
 
+  const employmentFormik = useFormik({
+      initialValues: { employment },
+      enableReinitialize: true,
+      validateOnMount: true,
+      validationSchema: manyEmploymentSchema,
+        onSubmit: (values, formikHelpers) => {
+        if (isLoading) return;
+        nextStep({ data: { employment: values.employment } });
+      },
+      validateOnChange: true,
+    });
+  
     const educationFormik = useFormik({
         initialValues: { education },
         enableReinitialize: true,
@@ -149,18 +161,6 @@ function ApplicationForm() {
         onSubmit: (values) => {
             if (isLoading) return;
             nextStep({ data: { education: values.education } });
-        },
-        validateOnChange: true,
-    });
-
-    const employmentFormik = useFormik({
-        initialValues: { employment },
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: manyEmploymentSchema,
-        onSubmit: (values, formikHelpers) => {
-            if (isLoading) return;
-            nextStep({ data: { employment: values.employment } });
         },
         validateOnChange: true,
     });
@@ -187,59 +187,52 @@ function ApplicationForm() {
         validateOnMount: true,
         validationSchema: documentsSchema,
         onSubmit: (values) => {
-            createVisaApplication({
-                data: {
-                    ...form,
-                    documents: values.documents,
-                },
-            })
-                .then((_: any) => {
-                    toast.success(
-                        "Your application has been submitted successfully, please proceed to make payment",
-                        {
-                            duration: 15000,
-                        }
-                    );
-                })
-                .catch((error) => {
-                    const err = error.response?.data;
-                    if (
-                        err?.statusCode === 422 &&
-                        err?.errorMessage.includes("already exists")
-                    ) {
-                        setShowApplicationExistsModal(true);
-                    } else if (err.statusCode === 400) {
-                        toast(
-                            (t) => (
-                                <ErrorToastComponent>
-                                    <p style={{ textAlign: "center" }}>
-                                        There are errors in your form
-                                    </p>{" "}
-                                    {/* <br /> */}
-                                    {err.data.map(
-                                        (
-                                            error: ErrorInterface,
-                                            index: number
-                                        ) => (
-                                            <Text
-                                                type="p"
-                                                text={error.constraints}
-                                                color={ttColors.red}
-                                                key={index}
-                                            />
-                                        )
-                                    )}
-                                    <button onClick={() => toast.dismiss(t.id)}>
-                                        Dismiss
-                                    </button>
-                                </ErrorToastComponent>
-                            ),
-                            {
-                                duration: 100000,
-                            }
-                        );
-                    }
-                });
+        createVisaApplication({
+            data: {
+            ...form,
+            documents: values.documents,
+            },
+        })
+        .then((_: any) => {
+          toast.success(
+            "Your application has been submitted successfully, please proceed to make payment",
+            {
+              duration: 15000,
+            }
+          );
+        })
+        .catch((error) => {
+          const err = error.response?.data;
+          if (
+            err?.statusCode === 422 &&
+            err?.errorMessage.includes("already exists")
+          ) {
+            setShowApplicationExistsModal(true);
+          } else if (err.statusCode === 400) {
+            toast(
+              (t) => (
+                <ErrorToastComponent>
+                  <p style={{ textAlign: "center" }}>
+                    There are errors in your form
+                  </p>{" "}
+                  {/* <br /> */}
+                  {err.data.map((error: ErrorInterface, index: number) => (
+                    <Text
+                      type="p"
+                      text={error.constraints}
+                      color={ttColors.red}
+                      key={index}
+                    />
+                  ))}
+                  <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                </ErrorToastComponent>
+              ),
+              {
+                duration: 100000,
+              }
+            );
+          }
+        });
         },
     });
 

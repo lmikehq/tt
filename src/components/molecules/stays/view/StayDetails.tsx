@@ -66,6 +66,9 @@ function StayDetails() {
     map: false,
     amenities: false,
   });
+    
+    const response: any = {}
+    
   return (
     <Container>
       <Header id="overview">

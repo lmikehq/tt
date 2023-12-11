@@ -341,23 +341,20 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             // endDatePrevResidence2: formatISODate(data.personalInfo.endDatePrevResidence2),
             // endDatePrevResidence3: formatISODate(data.personalInfo.endDatePrevResidence3),
         },
-        familyMembers: data.familyMembers
-            .filter((e) => !!e?.membersName)
-            .map((member) => {
-                delete member.section;
-                delete member.index;
-                delete member.membersOccupation;
-                delete member.issueCountry;
-                delete member.maritalStatus;
-                return {
-                    ...member,
-                    dateOfBirth: formatISODate(member?.dateOfBirth),
-                    issueYear: String(safelyConvertToNumber(member?.issueYear)),
-                    expiryYear: String(
-                        safelyConvertToNumber(member?.expiryYear)
-                    ),
-                };
-            }),
+        familyMembers: data.familyMembers.filter(e => !!e?.membersName).map((member) => {
+            delete member.section;
+            delete member.index;
+            delete member.membersOccupation;
+            delete member.issueCountry;
+            delete member.maritalStatus;
+            delete member.dateOfBirth;
+            return ({
+                ...member,
+                dateOfBirth: formatISODate(member?.dateOfBirth),
+                issueYear: String(safelyConvertToNumber(member?.issueYear)),
+                expiryYear: String(safelyConvertToNumber(member?.expiryYear)),
+            })
+        }),
         documents: data.documents,
     };
     if (user?._id)

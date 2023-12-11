@@ -71,7 +71,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             then: (schema) => schema.required("Required"),
         }),
         marriageEndDate: yup.string().when("maritalStatus", {
-            is: "Married",
+            is: "Divorced",
             then: (schema) => schema.required("Required"),
         }),
         passportNumber: yup.string().required("Required"),

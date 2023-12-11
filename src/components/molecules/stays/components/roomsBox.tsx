@@ -141,6 +141,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     const handleCheckboxChange = () => {
         setChecked(!checked);
     };
+    
     return (
         <Box style={{ marginBottom: "20px" }}>
             <ItemList>

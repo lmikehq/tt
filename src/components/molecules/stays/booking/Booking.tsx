@@ -72,10 +72,10 @@ function Booking() {
                 <Spinner size="40px" fill={"white"} />
               ) : (
                 <Text
-                  type="p"
-                  text="Complete Booking"
-                  color={"white"}
-                  size="16px"
+                    type="p"
+                    text="Complete Booking"
+                    color={"white"}
+                    size="16px"
                 />
               )}
             </Button>

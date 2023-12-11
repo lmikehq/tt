@@ -1067,7 +1067,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     formik={formik}
                 />
           </Section>
-          {formik.values.maritalStatus === "Married" && (
+          {["Married", "Divorced"].includes(formik.values.maritalStatus) && (
             <Section>
               <Flex align="center" gap="0.25rem">
                 <Text
@@ -1381,7 +1381,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 margin="2.5rem 0 0"
             />
         </Section>
-        <Section>
+        <Section margin="0 0 0 .9rem">
           <ol>
             <li>
                 <Flex

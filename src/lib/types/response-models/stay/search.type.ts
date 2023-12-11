@@ -101,7 +101,7 @@ export interface ViewSingleStayResponse {
     data: Data;
     debug: ViewSingleStayDebug;
     status: string;
-    error: null;
+    error: null | string;
 }
 
 export interface Data {

@@ -1,4 +1,5 @@
 "use client";
+
 import Section from "@/components/molecules/section";
 import BreadCrumbPane from "@/components/molecules/stays/view/BreadCrumbPane";
 import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom";
@@ -61,6 +62,7 @@ const StayViewPage = () => {
     const handleGoBack = () => {
         router.back();
     };
+
     return (
         <SectionLayout>
             {!isMobile ? (

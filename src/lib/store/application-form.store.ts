@@ -174,28 +174,28 @@ export const useApplicationFormStore = create<State & Actions>(
                 });
         },
 
-        fetchDetailsFromURL: ({
-            homeCountry,
-            destination,
-            visaType,
-        }: {
-            homeCountry: string;
-            destination: string;
-            visaType: string;
-        }) => {
-            //
-            set((state) => ({
-                form: {
-                    ...state.form,
-                    tripDetails: {
-                        ...state.form.tripDetails,
-                        homeCountry: findCountry({ name: homeCountry }),
-                        destination: findCountry({ name: destination }),
-                        visaType,
-                    },
-                },
-            }));
-        },
+    fetchDetailsFromURL: ({
+      homeCountry,
+      destination,
+      visaType,
+    }: {
+      homeCountry: string;
+      destination: string;
+      visaType: string;
+    }) => {
+    //   console.log(destination);
+        set((state) => ({
+          form: {
+              ...state.form,
+              tripDetails: {
+                ...state.form.tripDetails,
+                homeCountry: findCountry({ name: homeCountry }),
+                destination: findCountry({ name: destination }),
+                visaType,
+              },
+          },
+        }));
+    },
 
         setStep: ({ step }: { step: number }) => {
             set({ step });
