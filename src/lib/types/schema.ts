@@ -71,7 +71,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             then: (schema) => schema.required("Required"),
         }),
         marriageEndDate: yup.string().when("maritalStatus", {
-            is: "Married",
+            is: "Divorced",
             then: (schema) => schema.required("Required"),
         }),
         passportNumber: yup.string().required("Required"),
@@ -508,7 +508,7 @@ export const test: ApplicationFormRequestInput = {
         middleName: "M",
         lastName: "TestDoe",
         dateOfBirth: "1990-01-01",
-        email: "testvisa@ymail.com",
+        email: "testvisa01@ymail.com",
         placeOfBirth: "City1",
         stateOfOrigin: "State1",
         phoneNumber: "1234567890",

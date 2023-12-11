@@ -70,10 +70,6 @@ function Stays() {
             : false;
 
     const computeStaySearchQuery = () => {
-        console.log(
-            stayTabInitialSearchQuery.checkInDate ?? dayjs(),
-            "YYYY-MM-DD"
-        );
         const params = {
             region: stayTabInitialSearchQuery.location?.name,
             countryCode: stayTabInitialSearchQuery.location?.country_code,
@@ -270,7 +266,6 @@ function Stays() {
                         value={stayTabInitialSearchQuery.checkInDate?.toDate()}
                         format="yyyy-mm-dd"
                         onChange={(e) => {
-                            console.log(dayjs(e));
                             updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 checkInDate: dayjs(e),

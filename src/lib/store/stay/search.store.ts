@@ -95,7 +95,6 @@ export const useStaySearchStore = create<State & Actions>(
         },
 
         updateStaySearchFilters(params) {
-            console.log(params);
             set({
                 staySearchFilters: params,
             });

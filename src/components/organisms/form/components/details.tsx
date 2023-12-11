@@ -20,138 +20,155 @@ import { useApplicationFormStore } from "@lib/store/application-form.store";
 import ToastError from "@molecule/toastError";
 
 interface formProps {
-  steps: string[];
-  index: number;
-  persistForm: () => void;
-  formik: FormikProps<DetailsKeys>;
+    steps: string[];
+    index: number;
+    persistForm: () => void;
+    formik: FormikProps<DetailsKeys>;
 }
 
 function TripDetails({ steps, index, persistForm, formik }: formProps) {
-  const { isMobile } = useScreenResolution();
-  const router = useRouter();
-  const { form, mode } = useApplicationFormStore((state) => state);
-  const { tripDetails } = form;
-  const isLoading = mode == Mode.loading;
-  console.log(formik);
+    const { isMobile } = useScreenResolution();
+    const router = useRouter();
+    const { form, mode } = useApplicationFormStore((state) => state);
+    const { tripDetails } = form;
+    const isLoading = mode == Mode.loading;
 
-  return (
-    <Section height="unset">
-      <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
-      <form onSubmit={formik.handleSubmit}>
-        <Section>
-          <Flex
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "1rem" : "1.5rem"}
-          >
-            <Flex direction="column">
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  type="p"
-                  text="Where are you?"
-                  margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
-                  size={isMobile ? 16 : 16}
-                />
-                <Required />
-              </Flex>
-              <FieldAsString
-                formik={formik}
-                options={COUNTRY_FLAGS.map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                name="homeCountry"
-                placeholder="Select where you are"
-              />
-            </Flex>
-            <Flex direction="column">
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  size={isMobile ? 16 : 16}
-                  type="p"
-                  text="Where to?"
-                  margin={isMobile ? "0rem  0 .2rem" : "1rem 0 .5rem"}
-                />
-                <Required />
-              </Flex>
-              <FieldAsString
-                formik={formik}
-                options={COUNTRY_FLAGS.filter(
-                  (el) => el.name != formik.values.homeCountry.name
-                ).map((x) => ({
-                  name: x.name,
-                  flag: x.flag,
-                  code: x.code,
-                }))}
-                name="destination"
-                placeholder="Select where you are"
-                disabled={!formik.values.homeCountry}
-              />
-            </Flex>
-          </Flex>
-        </Section>
-        <Section>
-          <Flex
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "1rem" : "1.5rem"}
-          >
-            <Flex direction="column">
-              <Flex align="center" gap="0.25rem">
-                <Text
-                  size={isMobile ? 16 : 16}
-                  type="p"
-                  text="Visa Type"
-                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                />
-                <Required />
-              </Flex>
-              <FieldString
-                options={[
-                  "Tourist Visa",
-                  "Business Visa",
-                  "Transit Visa",
-                  "Work Visa",
-                  "Student Visa",
-                  "Medical Visa",
-                  "Visa on Arrival",
-                  "Elite Migration Visa",
-                  "Other",
-                ]}
-                placeholder="Select your Visa Type"
-                name="visaType"
-                value={formik.values.visaType}
-                formik={formik}
-              />
-            </Flex>
-            <Flex direction="column">
-                <Flex align="center" gap="0.25rem">
-                    <Text
-                    size={isMobile ? 16 : 16}
-                    type="p"
-                    text="Application Type"
-                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    />
-                    <Required />
-                </Flex>
+    return (
+        <Section height="unset">
+            <FormStepTitle steps={steps} index={index} padding="0 0 2rem 0" />
+            <form onSubmit={formik.handleSubmit}>
+                <Section>
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
+                        gap={isMobile ? "1rem" : "1.5rem"}
+                    >
+                        <Flex direction="column">
+                            <Flex align="center" gap="0.25rem">
+                                <Text
+                                    type="p"
+                                    text="Where are you?"
+                                    margin={
+                                        isMobile
+                                            ? "0rem  0 .2rem"
+                                            : "1rem 0 .5rem"
+                                    }
+                                    size={isMobile ? 16 : 16}
+                                />
+                                <Required />
+                            </Flex>
+                            <FieldAsString
+                                formik={formik}
+                                options={COUNTRY_FLAGS.map((x) => ({
+                                    name: x.name,
+                                    flag: x.flag,
+                                    code: x.code,
+                                }))}
+                                name="homeCountry"
+                                placeholder="Select where you are"
+                            />
+                        </Flex>
+                        <Flex direction="column">
+                            <Flex align="center" gap="0.25rem">
+                                <Text
+                                    size={isMobile ? 16 : 16}
+                                    type="p"
+                                    text="Where to?"
+                                    margin={
+                                        isMobile
+                                            ? "0rem  0 .2rem"
+                                            : "1rem 0 .5rem"
+                                    }
+                                />
+                                <Required />
+                            </Flex>
+                            <FieldAsString
+                                formik={formik}
+                                options={COUNTRY_FLAGS.filter(
+                                    (el) =>
+                                        el.name !=
+                                        formik.values.homeCountry.name
+                                ).map((x) => ({
+                                    name: x.name,
+                                    flag: x.flag,
+                                    code: x.code,
+                                }))}
+                                name="destination"
+                                placeholder="Select where you are"
+                                disabled={!formik.values.homeCountry}
+                            />
+                        </Flex>
+                    </Flex>
+                </Section>
+                <Section>
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
+                        gap={isMobile ? "1rem" : "1.5rem"}
+                    >
+                        <Flex direction="column">
+                            <Flex align="center" gap="0.25rem">
+                                <Text
+                                    size={isMobile ? 16 : 16}
+                                    type="p"
+                                    text="Visa Type"
+                                    margin={
+                                        isMobile
+                                            ? ".7rem  0 .2rem"
+                                            : "1rem 0 .5rem"
+                                    }
+                                />
+                                <Required />
+                            </Flex>
+                            <FieldString
+                                options={[
+                                    "Tourist Visa",
+                                    "Business Visa",
+                                    "Transit Visa",
+                                    "Work Visa",
+                                    "Student Visa",
+                                    "Medical Visa",
+                                    "Visa on Arrival",
+                                    "Elite Migration Visa",
+                                    "Other",
+                                ]}
+                                placeholder="Select your Visa Type"
+                                name="visaType"
+                                value={formik.values.visaType}
+                                formik={formik}
+                            />
+                        </Flex>
+                        <Flex direction="column">
+                            <Flex align="center" gap="0.25rem">
+                                <Text
+                                    size={isMobile ? 16 : 16}
+                                    type="p"
+                                    text="Application Type"
+                                    margin={
+                                        isMobile
+                                            ? ".7rem  0 .2rem"
+                                            : "1rem 0 .5rem"
+                                    }
+                                />
+                                <Required />
+                            </Flex>
 
-                <FieldString
-                    options={["Single", "Family"]}
-                    formik={formik}
-                    onChange={(x: any) => {
-                    formik?.setFieldValue("applicationType", x);
-                    // formik?.setFieldValue("numberOfTravellers", 1);
-                    // setFee(
-                    //   formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
-                    // );
-                    }}
-                    placeholder="Select your Application Type "
-                    name="applicationType"
-                />
-            </Flex>
-          </Flex>
-        </Section>
+                            <FieldString
+                                options={["Single", "Family"]}
+                                formik={formik}
+                                onChange={(x: any) => {
+                                    formik?.setFieldValue("applicationType", x);
+                                    // formik?.setFieldValue("numberOfTravellers", 1);
+                                    // setFee(
+                                    //   formik?.values?.numberOfTravellers === 1 ? 20000 : 30000
+                                    // );
+                                }}
+                                placeholder="Select your Application Type "
+                                name="applicationType"
+                            />
+                        </Flex>
+                    </Flex>
+                </Section>
 
-        {/* {formik?.values?.applicationType === "Family" && (
+                {/* {formik?.values?.applicationType === "Family" && (
           <Section margin={isMobile ? "0rem" : "0 0 1rem"}>
             <Text
               size={isMobile ? 16 : 16}
@@ -172,18 +189,17 @@ function TripDetails({ steps, index, persistForm, formik }: formProps) {
           </Section>
         )} */}
 
-        <ContinueButton
-          isLoading={isLoading}
-          onClick={() => {
-            console.log(formik);
-            if (!formik.isValid) return ToastError();
-          }}
-          disabled={!formik.isValid}
-          saveProgressAndContinueLater={persistForm}
-        />
-      </form>
-    </Section>
-  );
+                <ContinueButton
+                    isLoading={isLoading}
+                    onClick={() => {
+                        if (!formik.isValid) return ToastError();
+                    }}
+                    disabled={!formik.isValid}
+                    saveProgressAndContinueLater={persistForm}
+                />
+            </form>
+        </Section>
+    );
 }
 
 export default TripDetails;

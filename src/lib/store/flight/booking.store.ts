@@ -135,7 +135,7 @@ export const useFlightBookingStore = create<State & Actions>(
         seatRows: [],
         saveBookingMode: Mode.init,
         confirmPaymentMode: Mode.init,
-        
+
         initCheckFlightsMode: Mode.init,
         checkFlightsResponse: null,
         checkSeatingResponse: null,
@@ -229,7 +229,7 @@ export const useFlightBookingStore = create<State & Actions>(
                 },
             })
                 .then((response) => {
-                    // console.log("rrrr", response);
+                    //
                     localStorage.setItem(
                         CONVERSION_RATE_KEY,
                         `${response.fx_rate}`
@@ -321,8 +321,6 @@ export const useFlightBookingStore = create<State & Actions>(
             });
         },
         updateSeatAvailablity: ({ previousSeat, newSeat }) => {
-            console.log(previousSeat);
-            console.log(newSeat);
             set((state) => ({
                 seatRows: updateSeatAvailability({
                     seatName: newSeat,
@@ -343,7 +341,6 @@ export const useFlightBookingStore = create<State & Actions>(
                 data,
             })
                 .then((response) => {
-                    console.log(response.seating.status, "k");
                     set((state) => ({
                         mode: Mode.loaded,
                         checkSeatingResponse: response,
@@ -448,7 +445,7 @@ export const useFlightBookingStore = create<State & Actions>(
             set({ bookingDetailsMode: Mode.loading });
             return await FlightBookingService.checkBookingDetails({ bookingId })
                 .then((response) => {
-                    // console.log(response, "sdsdf");
+                    //
                     set({
                         bookingDetailsMode: Mode.loaded,
                         getBookingByIdResponse: response,

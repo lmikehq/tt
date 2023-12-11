@@ -60,7 +60,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         `${state?.isoCode}`
     );
     
-    useEffect(() => console.log(formik), [formik])
 
   return (
     <Section>
@@ -275,17 +274,19 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <PhoneInput
-              country={"ng"}
-              autoFormat={true}
-              inputProps={{
-                name: "phoneNumber",
-              }}
-              onChange={(e) => {
-                formik.setFieldValue("phoneNumber", e);
-              }}
+                country={"ng"}
+                autoFormat={true}
+                inputProps={{
+                    name: "phoneNumber",
+                }}
+                inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : ''}}
+                onChange={(e) => {
+                    formik.setFieldValue("phoneNumber", e);
+                }}
               inputClass="w"
               placeholder="Enter phone number"
             />
+            {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}          
           </Section>
         </Flex>
               
@@ -1066,7 +1067,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     formik={formik}
                 />
           </Section>
-          {formik.values.maritalStatus === "Married" && (
+          {["Married", "Divorced"].includes(formik.values.maritalStatus) && (
             <Section>
               <Flex align="center" gap="0.25rem">
                 <Text
@@ -1380,7 +1381,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 margin="2.5rem 0 0"
             />
         </Section>
-        <Section>
+        <Section margin="0 0 0 .9rem">
           <ol>
             <li>
                 <Flex

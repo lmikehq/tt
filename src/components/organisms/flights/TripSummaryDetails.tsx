@@ -11,7 +11,11 @@ import { formatDate } from "@/lib/utilFns";
 import dayjs from "dayjs";
 import { Box } from "@mui/material";
 import { FlightContext } from "@/lib/extensions/context";
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { AiOutlineShopping } from "react-icons/ai";
+import SimplePopper from "../SimplePopper/SimplePopper";
+import Link from "next/link";
+import { PiWarningCircleBold } from "react-icons/pi";
 
 
 interface TripSummaryDetailsProps {
@@ -32,6 +36,72 @@ const Dot = ({ size = 14, color, top, bottom }: { size?: number; color?: string;
     />
 )
 
+function OneIcon({ logo, iata, airline }: { logo: string; iata: string; airline: string }) {
+    const { isMobile } = useScreenResolution();
+    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const handleHover = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+        setOpen((previousOpen) => !previousOpen);
+    };
+
+    return (
+        <React.Fragment>
+            <Flex width="fit-content">
+                {logo ? (
+                    <img
+                        src={logo}
+                        alt={`airline-${airline}`}
+                        width={isMobile ? "45px" : "55px"}
+                        height={isMobile ? "45px" : "55px"}
+                        style={{
+                            borderRadius: "50%",
+                            border: `1px solid ${ttColors.lightestGray}`,
+                            cursor: 'pointer',
+                            objectFit: 'cover',
+                            objectPosition: 'center',
+                        }}
+                        onMouseEnter={handleHover}
+                        onMouseLeave={handleHover}
+                    />
+                ) : (
+                    <Flex
+                        height={isMobile ? "45px" : "55px"}
+                        width={isMobile ? "45px" : "55px"}
+                        align="center"
+                        justify="center"
+                        borderRadius="50%"
+                        cursor='pointer'
+                        background={ttColors.primary}
+                        onMouseEnter={handleHover}
+                        onMouseLeave={handleHover}
+                    >
+                        <Text
+                            type="p"
+                            size={20}
+                            weight={500}
+                            color={ttColors.light}
+                            text={iata.slice(0, 2)}
+                        />
+                    </Flex>
+                )}
+            </Flex>
+            <SimplePopper open={open} anchorEl={anchorEl}>
+                <Flex borderRadius='8px' background={ttColors.darkBg} padding="1rem 2rem">
+                    <Text
+                        type="p"
+                        text={String(airline).split(',')[0] ?? ""}
+                        color="white"
+                        size={15}
+                        weight={500}
+                    />
+                </Flex>
+            </SimplePopper>
+        </React.Fragment>
+    )
+}
+
 function LineText({ text }: { text: string }) {
     const { isMobile } = useScreenResolution()
     return (
@@ -39,14 +109,30 @@ function LineText({ text }: { text: string }) {
     )
 }
 
-function TransferDuration({ duration, location }: { duration: string; location: string; }) {
+function TransferDuration({ duration, location, isSelfTransfer }: { duration: string; location: string; isSelfTransfer: boolean; }) {
     const { isMobile } = useScreenResolution()
     return (
         <Flex padding={isMobile ? "3rem 0rem 3rem" : "3rem 0rem 3rem"} gap={isMobile ? ".5rem" : "1rem"}>
             <BiTransferAlt size={30} />
             <Flex gap="0.25rem" align="flex-start" direction="column">
                 <Text type="p" weight={600} size={15} text={`Transfer Duration: ${duration}`} />
-                <Text type="p" size={isMobile ? 13 : 14} text={`Transfer in ${location}`} />
+                <Flex gap='.3rem'>
+                    <Text type="p" size={isMobile ? 13 : 14} text={`Transfer in ${location}`} />
+                    {isSelfTransfer &&
+                        <React.Fragment>
+                            <Link href='/articles/self_transfer' target="_blank" style={{ color: 'black', display: 'flex', gap: '.2rem' }}>
+                                <Text type="p" size={isMobile ? 13 : 14} weight={400} text={isSelfTransfer ? '(Self-Transfer)' : ''} />
+                                <PiWarningCircleBold color={ttColors.foundation.gray} size={18} />
+                            </Link>
+                        </React.Fragment>
+                    }
+                </Flex>
+                {isSelfTransfer &&
+                    <Flex gap='.5rem'>
+                        <Text type="p" size={isMobile ? 13 : 14} weight={400} text="You must collect and recheck your baggage" />
+                        <AiOutlineShopping color={ttColors.foundation.gray} size={20} />
+                    </Flex>
+                }
             </Flex>
         </Flex>
     )
@@ -80,10 +166,11 @@ function TimeOfFlight({
     time,
     airline,
     logo,
+    iata,
     order,
     width,
     margin,
-}: { time: string; airline: string; logo: string; order: number; width: string; margin: string; }) {
+}: { time: string; airline: string; logo: string; iata: string; order: number; width: string; margin: string; }) {
     const { isMobile } = useScreenResolution()
     
     return (
@@ -94,17 +181,10 @@ function TimeOfFlight({
             </Flex>
 
             <Flex gap=".6rem" align="center" width="96%">
-                <Box
-                    style={{
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        width: isMobile ? "45px" : "55px",
-                        height: isMobile ? "45px" : "50px",
-                        border: `1px solid ${ttColors.lightestGray}`,
-                        borderRadius: "50px",
-                        backgroundColor: 'white',
-                        backgroundImage: `url(${logo})`,
-                    }}
+                <OneIcon
+                    logo={logo}
+                    airline={airline}
+                    iata={iata}
                 />
                 <LineText text={airline} />
             </Flex>
@@ -163,6 +243,7 @@ function OneTrip({ index, chain, last, flight, nextFlight }: { index: number; ch
                         time={`${arrivalHoursLeft}h ${arrivalMinsLeft}m`}
                         airline={`${flight?.airline.name}, ${flight?.airline.code_public}${flight?.flight_no}`}
                         logo={flightState?.airlines[flight?.airline.iata_code]?.logo ?? ""}
+                        iata={flight?.airline.iata_code}
                         order={isMobile ? 3 : 2}
                         width={isMobile ? "100%" : "30%"}
                         margin={isMobile ? "2.5rem 0 0" : "0"}
@@ -180,6 +261,7 @@ function OneTrip({ index, chain, last, flight, nextFlight }: { index: number; ch
                     <TransferDuration
                         duration={`${layoverHoursLeft}h ${layoverMinsLeft}m`}
                         location={flight?.dst_name}
+                        isSelfTransfer={flight?.is_self_transfer}
                     />
                 }
             </Box>

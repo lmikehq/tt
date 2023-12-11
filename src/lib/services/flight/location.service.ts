@@ -37,8 +37,8 @@ export class FlightLocationService {
         return await kiwiClientV1
             .get<any, FetchLocationsResponse>(
                 !data.term
-                    ? `/locations/radius?lon=${longitude}&lat=${latitude}`
-                    : `/locations/query${query}&limit=10`
+                    ? `/locations/radius?lon=${longitude}&lat=${latitude}&location_types=airport`
+                    : `/locations/query${query}&limit=10&location_types=airport&location_types=city&location_types=country&location_types=region`
             )
             .then((response) => response)
             .catch((error) => {
