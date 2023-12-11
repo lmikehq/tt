@@ -8,15 +8,15 @@ import PopularDestination from "@organism/popularDestination";
 import TopCountriesSection from "@organism/TopCountriesSection";
 
 export default function Home() {
-  return (
-    <>
-        <ChatAlert />
-        <HeroSection />
-        <TopCountriesSection />
-        <PopularDestination />
-        <FrameCard />
-        <ReviewSec />
-        <FooterSection />
-    </>
-  );
+    return (
+        <>
+            <ChatAlert />
+            <HeroSection />
+            <TopCountriesSection />
+            <PopularDestination />
+            <FrameCard />
+            <ReviewSec />
+            <FooterSection />
+        </>
+    );
 }

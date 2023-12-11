@@ -184,8 +184,6 @@ const TripSummary = ({
         validateOnMount: true,
         validationSchema: manyPassengersAndBaggageDetailsSchema,
         onSubmit: async (values, helpers) => {
-            console.log(contactDetailsFormik.values, "passengers");
-            console.log(user, "user");
             setLoading(true);
             setSaveBookingDetails({
                 data: {
@@ -221,13 +219,7 @@ const TripSummary = ({
                 },
             });
             setContactDetails({ data: contactDetailsFormik.values });
-            console.log(passengersBagCombination);
-            console.log(insertSelectedCheckedBags(passengersBagCombination));
-            console.log(
-                arrangeBaggageDataForOrdering(
-                    insertSelectedCheckedBags(passengersBagCombination)
-                )
-            );
+
             await sleep(500);
             nextStep();
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -367,7 +359,7 @@ const TripSummary = ({
                             background={ttColors.dark}
                             height={"3.5rem"}
                             width="100%"
-                            // onClick={() => console.log(formik)}
+                            // onClick={() =>
                         >
                             {loading ? (
                                 <Spinner

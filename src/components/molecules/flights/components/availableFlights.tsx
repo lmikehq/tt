@@ -295,12 +295,17 @@ function ShareFlightModal({
     isOpen: boolean;
     onClose: VoidFunction;
     flight: FlightInfo | null;
-    flightReq: { bags: number; adults?: number; children?: number; infants?: number; }
-    }) {
-    const host = window.location.host
+    flightReq: {
+        bags: number;
+        adults?: number;
+        children?: number;
+        infants?: number;
+    };
+}) {
+    const host = window.location.host;
     const { isMobile } = useScreenResolution();
     const { copyToClipboard } = useClipboard();
-    const flightLink = `${host}/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`
+    const flightLink = `${host}/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`;
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -583,7 +588,7 @@ function AvailableFlights() {
 
     const loadMoreItems = () => {
         const limit = Number(searchQuery?.limit ?? 10);
-        console.log(searchQuery?.limit, limit);
+
         const newCount = flightsResults.total > limit ? limit + 10 : limit;
         if (newCount !== limit) {
             updateSearchQuery({ data: { ...searchQuery, limit: newCount } });
@@ -666,7 +671,7 @@ function AvailableFlights() {
             child_hand_bag: childHandBags,
             child_hold_bag: childHoldBags,
         };
-        // console.log(cleanObject(sanitizedQuery));
+        //
         if (
             sanitizedQuery?.fly_from &&
             sanitizedQuery?.fly_to &&
@@ -683,7 +688,6 @@ function AvailableFlights() {
         }, 900000);
         return () => clearInterval(interval);
     }, []);
-
 
     return (
         <Flex
