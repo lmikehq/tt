@@ -373,6 +373,9 @@ const FlightBookingPage = () => {
     useEffect(() => {
         if (savedBooking) intervalIds.current.forEach(clearInterval);
     }, [savedBooking]);
+
+    console.log(checkFlightsResponse)
+
     return (
         <Section>
             <SectionLayout>
