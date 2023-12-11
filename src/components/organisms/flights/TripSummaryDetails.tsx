@@ -58,7 +58,9 @@ function OneIcon({ logo, iata, airline }: { logo: string; iata: string; airline:
                         style={{
                             borderRadius: "50%",
                             border: `1px solid ${ttColors.lightestGray}`,
-                            cursor: 'pointer'
+                            cursor: 'pointer',
+                            objectFit: 'cover',
+                            objectPosition: 'center',
                         }}
                         onMouseEnter={handleHover}
                         onMouseLeave={handleHover}
@@ -179,18 +181,6 @@ function TimeOfFlight({
             </Flex>
 
             <Flex gap=".6rem" align="center" width="96%">
-                {/* <Box
-                    style={{
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        width: isMobile ? "45px" : "55px",
-                        height: isMobile ? "45px" : "50px",
-                        border: `1px solid ${ttColors.lightestGray}`,
-                        borderRadius: "50px",
-                        backgroundColor: 'white',
-                        backgroundImage: `url(${logo})`,
-                    }}
-                /> */}
                 <OneIcon
                     logo={logo}
                     airline={airline}
