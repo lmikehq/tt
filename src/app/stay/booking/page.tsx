@@ -21,8 +21,9 @@ function Page() {
     });
     const { mutate: orderBooking } = useStayOrderBooking();
     useEffect(() => {
+      if(!user) return;
         orderBooking(orderBookingRequestParams());
-    }, [orderBookingRequestParams()]);
+    }, [user]);
     return (
         <SectionLayout>
             <Booking />
