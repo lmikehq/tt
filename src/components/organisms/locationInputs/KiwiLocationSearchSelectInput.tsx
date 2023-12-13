@@ -42,7 +42,7 @@ const LocationSearchSelectInput = ({
                 latitude,
                 longitude,
             });
-            // console.log(data?.locations, "data");
+            //
             setLoading(false);
             setLocations(data.locations ?? []);
             return locations;
@@ -64,7 +64,6 @@ const LocationSearchSelectInput = ({
 
         fetchLocations({});
     }, [searchText]);
-
 
     return (
         <SearchInputAsLocationTypes

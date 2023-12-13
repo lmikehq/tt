@@ -1,4 +1,5 @@
 "use client";
+
 import Section from "@/components/molecules/section";
 import BreadCrumbPane from "@/components/molecules/stays/view/BreadCrumbPane";
 import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom";
@@ -34,8 +35,10 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StayViewPage = () => {
+    const router = useRouter();
     const { isMobile } = useScreenResolution();
     const searchParams = useSearchParams();
+
     const id = searchParams.get("id");
     const checkIn = searchParams.get("checkIn");
     const checkOut = searchParams.get("checkOut");
@@ -53,14 +56,17 @@ const StayViewPage = () => {
         guests: extractRoomForGuestsFromString(guests ?? ""),
         currency: preFerredCurrency,
     });
-    const router = useRouter();
-    const { isFetching } = useViewSingleStay(requestParams(), {
+
+    const { data: stayResponse, isFetching } = useViewSingleStay(requestParams(), {
         enabled: id ? true : false,
     });
 
     const handleGoBack = () => {
         router.back();
     };
+
+    console.log(stayResponse)
+
     return (
         <SectionLayout>
             {!isMobile ? (

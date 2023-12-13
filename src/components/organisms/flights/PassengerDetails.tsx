@@ -52,14 +52,21 @@ function CategoryTag({
     const extra = category === 'adult' ? `(${checkFlightsResponse?.age_category_thresholds?.adult ?? 12}+ yrs)` : category === 'child' ? `(${checkFlightsResponse?.age_category_thresholds?.child ?? 2}-${checkFlightsResponse?.age_category_thresholds?.adult ?? 12} yrs)` : `(Under ${checkFlightsResponse?.age_category_thresholds?.child ?? 2} yrs)`
     return (
         <Flex
-            width={isMobile ? "30%" : "max-content"}
-            padding=".5rem 1.5rem"
+            width="max-content"
+            padding={isMobile ? ".5rem 1rem" : ".5rem 1.5rem"}
             justify="center"
             borderRadius="6px"
             border={`1px solid ${ttColors.dark}`}
             background={ttColors.ghostWhite}
         >
-            <Text type="p" text={`${capCase(category)} ${extra}`} color={ttColors.dark} weight={500} />
+            <Text
+                type="p"
+                width='max-content'
+                text={`${capCase(category)} ${extra}`}
+                color={ttColors.dark}
+                weight={500}
+                size={isMobile ? 14 : 16}
+            />
         </Flex>
     );
 }

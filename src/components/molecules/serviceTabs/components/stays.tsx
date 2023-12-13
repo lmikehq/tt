@@ -70,10 +70,6 @@ function Stays() {
             : false;
 
     const computeStaySearchQuery = () => {
-        console.log(
-            stayTabInitialSearchQuery.checkInDate ?? dayjs(),
-            "YYYY-MM-DD"
-        );
         const params = {
             regionId: stayTabInitialSearchQuery.location?.id,
             countryCode: stayTabInitialSearchQuery.location?.country_code,
@@ -270,7 +266,6 @@ function Stays() {
                         value={stayTabInitialSearchQuery.checkInDate?.toDate()}
                         format="yyyy-mm-dd"
                         onChange={(e) => {
-                            console.log(dayjs(e));
                             updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 checkInDate: dayjs(e),
@@ -340,7 +335,7 @@ function Stays() {
                     padding="0 1.5rem"
                     borderRadius="4px"
                     background={ttColors.dark}
-                    disabled={!validateStaySearchFilter}
+                    disabled={true || !validateStaySearchFilter}
                     onClick={async () => {
                         if (loading) return;
                         setLoading(true);

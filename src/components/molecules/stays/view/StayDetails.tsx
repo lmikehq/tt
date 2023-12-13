@@ -53,6 +53,9 @@ const tabs: TabProps[] = [
   { id: "policies", label: "Policies" },
 ];
 
+interface StayDetailsProps {
+    stay: any
+}
 function StayDetails() {
   const { isMobile } = useScreenResolution();
 
@@ -66,6 +69,9 @@ function StayDetails() {
     map: false,
     amenities: false,
   });
+    
+    const response: any = {}
+    
   return (
     <Container>
       <Header id="overview">
@@ -89,9 +95,9 @@ function StayDetails() {
       </Span> */}
       <Box
         sx={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "100%" : "65% auto",
-          gap: "30px",
+            display: "grid",
+            gridTemplateColumns: isMobile ? "100%" : "65% auto",
+            gap: "30px",
         }}
       >
         <Section>
