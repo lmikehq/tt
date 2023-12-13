@@ -15,13 +15,13 @@ function Page() {
 
     const orderBookingRequestParams = (): StayOrderBookingReguestInput => ({
         hotel_id: hotelId ?? "",
-        userId: user?._id ?? "",
+        userId: "6579bbff603bfaafaa7b55d9" ?? user?._id ?? "",
         book_hash: bookHash ?? "",
         user_ip: geoInfo?.ip ?? "",
     });
     const { mutate: orderBooking } = useStayOrderBooking();
     useEffect(() => {
-      if(!user) return;
+        if (!user) return;
         orderBooking(orderBookingRequestParams());
     }, [user]);
     return (

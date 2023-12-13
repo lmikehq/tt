@@ -12,8 +12,8 @@ export interface BookingData {
     bookHash: string;
     itemId: string;
     orderId: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface PaymentOption {
@@ -28,4 +28,9 @@ export interface PaymentOption {
 export enum Type {
     Deposit = "deposit",
     Now = "now",
+}
+
+export interface StayCreditTokenizationResponse {
+    success: boolean;
+    message: string;
 }
