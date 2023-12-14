@@ -61,6 +61,8 @@ import {
     extractSearchParamsFromUrl,
 } from "@/lib/extensions/helpers/constructQuery";
 import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
+import FavouriteCheckBox from "../../FavouriteCheckBox";
+import withLikeHotel from "@/components/HOCs/withLikeHotel";
 
 const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -141,7 +143,9 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     const handleCheckboxChange = () => {
         setChecked(!checked);
     };
-    
+
+    const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
+
     return (
         <Box style={{ marginBottom: "20px" }}>
             <ItemList>
@@ -160,29 +164,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                     alt={hotel.name}
                                 />
                                 <FavoriteBox>
-                                    <Checkbox
-                                        {...label}
-                                        icon={<FavoriteBorder />}
-                                        checkedIcon={
-                                            <Favorite
-                                                style={{
-                                                    color: "var(--color-favorite)",
-                                                }}
-                                            />
-                                        }
-                                        disableRipple
-                                        disableTouchRipple
-                                        disableFocusRipple
-                                        sx={{
-                                            "& .MuiSvgIcon-root": {
-                                                fontSize: 28,
-                                                padding: 0,
-                                            },
-                                        }}
-                                        checked={checked}
-                                        onChange={handleCheckboxChange}
-                                        id="favorite-hotels-checkbox"
-                                    />
+                                    <EnhancedFavouriteCheckBox id={hotel.id} />
                                 </FavoriteBox>
                             </LargeImg>
                             <ControlBtn className="control_gallery room_img">

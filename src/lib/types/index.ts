@@ -3,6 +3,7 @@ import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 import { parse } from "date-fns";
 import { mockCountry } from "./schema";
+import { AuthUser } from "./response-models/auth/auth.type";
 
 function formatISODate(x?: string | null) {
     if (x) {
@@ -280,7 +281,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
     user,
 }: {
     data: VisaApplicationFormInterface;
-    user?: User;
+    user?: AuthUser | null;
     }) => {
     const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
         delete member.index;

@@ -114,7 +114,7 @@ const OverviewAndPayment = () => {
                             service: "FLIGHT",
                             serviceID: flightId ?? "",
                             paymentIntent: "FLIGHT FEE",
-                            user: userId,
+                            user: userId ?? "",
                             amount: total * conversionRate,
                         }).then((res) => {
                             window.open(res.data.link, "_blank");
