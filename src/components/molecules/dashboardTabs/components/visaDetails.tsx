@@ -230,7 +230,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   const { applied, voucher } = useVoucherStore((state) => state);
 
   const accompanying = visa?.familyMembers.filter(
-    (fm: any) => fm.accompanying === true
+    (fm: any) => fm.accompanying == true
   ).length;
 
   function getLocationField(field: string) {
@@ -762,7 +762,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   />
                 </Flex>
               ) : (
-                <Flex justify="space-between" align="center" margin="2rem 0">
+                <Flex width={isMobile ? "100%" : "92%"} justify="space-between" align="center" margin="2rem 0">
                   <div>
                     <Flex align="center" margin=".5rem 0" gap=".5rem">
                       <PiDotsThreeCircleLight size={20} />
@@ -823,7 +823,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                       <MdOutlineFamilyRestroom size={20} />
                       <Text
                         type="p"
-                        text={accompanying > 0 ? "Family" : "Single"}
+                        text={accompanying > 0 ? `Family${accompanying > 0 ? ` (${accompanying} travellers)` : ''}` : "Single"}
                         size={"15px"}
                       />
                     </Flex>
