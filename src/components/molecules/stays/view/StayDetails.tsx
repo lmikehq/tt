@@ -54,8 +54,9 @@ const tabs: TabProps[] = [
 ];
 
 interface StayDetailsProps {
-    stay: any
+    stay: any;
 }
+
 function StayDetails() {
   const { isMobile } = useScreenResolution();
 
