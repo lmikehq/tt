@@ -26,7 +26,7 @@ interface formProps {
 
 function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
     const { isMobile } = useScreenResolution();
-    const { form, mode, setUploadedDocuments, uploadedDocuments } = useApplicationFormStore((state) => state);
+    const { form, mode, setUploadedDocuments, uploadedDocuments, goToStep } = useApplicationFormStore((state) => state);
     
     const isLoading = mode == Mode.loading;
     const [isOpenPreview, setOpenPreview] = useState(false)
@@ -273,7 +273,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
                 type="button"
             />
             </form>
-                
+
             <ApplicationPreview
                 isOpen={isOpenPreview}
                 onClose={togglePreview}

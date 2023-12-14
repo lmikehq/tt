@@ -25,6 +25,7 @@ import Three from "./previewSteps/three";
 import Four from "./previewSteps/four";
 import Five from "./previewSteps/five";
 import { UploadedDoc } from "../applicationForm";
+import { useApplicationFormStore } from "@/lib/store/application-form.store";
 
 
 export const StyledAccordion = styled((props: AccordionProps) => (
@@ -74,34 +75,47 @@ interface MyAccordionProps {
     isOpen: boolean,
     heading: string,
     subHeading?: string,
+    onEdit?: VoidFunction,
     children: ReactNode
 }
-export function MyAccordion({ toggle, isOpen, heading, subHeading, children }: MyAccordionProps) {
+export function MyAccordion({ toggle, isOpen, onEdit, heading, subHeading, children }: MyAccordionProps) {
     return (
         <StyledAccordion
-            onChange={toggle}
-            expanded={isOpen}
+            // onChange={toggle}
+            expanded={true}
         >
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                // expandIcon={<ExpandMoreIcon />}
                 aria-controls="flight-details-content"
                 id="flight-details-header"
-                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', paddingY: isOpen ? "0" : ".5rem"  }}
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', paddingY: isOpen ? "0" : "0rem", cursor: 'default !important'  }}
             >
-                <Flex direction='column' gap=".5rem">
+                <Flex gap=".5rem" width="100%" justify="space-between">
+                    <Flex direction='column' width="85%" gap=".5rem">
+                        <Text
+                            type="p"
+                            weight={600}
+                            size={16}
+                            text={heading}
+                        />
+                        {subHeading &&
+                            <Text
+                            type="p"
+                            size={13}
+                            text={subHeading}
+                            />
+                        }
+                    </Flex>
                     <Text
                         type="p"
                         weight={600}
                         size={16}
-                        text={heading}
+                        text="Edit"
+                        width="max-content"
+                        color={ttColors.primary600}
+                        onClick={onEdit}
+                        styles={{ cursor: 'pointer' }}
                     />
-                    {subHeading && 
-                        <Text
-                            type="p"
-                            size={13}
-                            text={subHeading}
-                        />
-                    }
                 </Flex>
             </AccordionSummary>
             <AccordionDetails sx={{ paddingY: "1rem", paddingX: '0' }}>
@@ -134,6 +148,7 @@ function ApplicationPreview({
     documents,
     handleSubmit,
 }: ApplicationPreviewProps) {
+    const { goToStep } = useApplicationFormStore((state) => state);
     const { isMobile } = useScreenResolution();
     const [agree, setAgree] = useState(false);
     const [step, setStep] = useState(1);
@@ -144,6 +159,11 @@ function ApplicationPreview({
     const nextStep = () => {
         setStep((prev) => Math.min(5, prev + 1));
     };
+    const goToFormStep = (step: number) => {
+        goToStep({ step })
+        onClose()
+    }
+
 
     const finalSubmit = () => {
         handleSubmit();
@@ -168,26 +188,31 @@ function ApplicationPreview({
                     <One
                         applicationInfo={applicationDetails}
                         personalInfo={personalInfo}
+                        goToStep={goToFormStep}
                     />
                 )}
                 {step === 2 && (
                     <Two
                         educationInfo={education.filter(e => e?.school)}
+                        goToStep={goToFormStep}
                     />
                 )}
                 {step === 3 && (
                     <Three
                         employmentInfo={employment.filter(e => e?.companyName)}
+                        goToStep={goToFormStep}
                     />
                 )}
                 {step === 4 && (
                     <Four
                         familyInfo={familyMembers.filter(e => e?.membersName)}
+                        goToStep={goToFormStep}
                     />
                 )}
                 {step === 5 && (
                     <Five
                         documentsInfo={documents}
+                        goToStep={goToFormStep}
                     />
                 )}
                 
@@ -208,7 +233,7 @@ function ApplicationPreview({
                             <Text
                                 text="I certify that the information contained on this document is complete, accurate and factual. I also realize that once this document has been completed and signed that it will form part of my immigration record and will be used to verify my family details on future applications.“"
                                 type="p"
-                                size={13}
+                                size={isMobile ? 12 : 13}
                             />
                         </CheckBox>
                     </Flex>
@@ -234,7 +259,7 @@ function ApplicationPreview({
                                     type="p"
                                     color={step === 1 ? ttColors.gray : ttColors.foundation.gray}
                                     weight={500}
-                                    size={14}
+                                    size={isMobile ? 15 : 16}
                                 />
                             </Button>
                             <Button
@@ -248,7 +273,7 @@ function ApplicationPreview({
                                     type="p"
                                     color={step === 5 ? ttColors.gray : ttColors.primary}
                                     weight={500}
-                                    size={14}
+                                    size={isMobile ? 15 : 16}
                                 />
                             </Button>
                         </Flex>

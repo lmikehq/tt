@@ -24,6 +24,7 @@ interface State {
 }
 
 interface Actions {
+    goToStep: ({ step } : { step: number }) => void;
     prevStep: () => void;
     nextStep: (params: { data: VisaFormUnionType }) => void;
     saveProgress: (params: {
@@ -81,6 +82,12 @@ export const useApplicationFormStore = create<State & Actions>(
                     state.mode == Mode.loading || state.step == 1
                         ? state.step
                         : state.step - 1,
+            }));
+        },
+
+        goToStep: ({ step } : { step: number }) => {
+            set((state) => ({
+                step: step
             }));
         },
 
