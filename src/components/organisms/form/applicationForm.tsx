@@ -32,7 +32,8 @@ import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
-import { parse, format } from "date-fns";
+import testPayload from '@/constants/payload.json'
+
 
 const PromoInput = styled.div`
     display: flex;
@@ -277,6 +278,11 @@ function ApplicationForm() {
         });
         fetchRecentProgressFromSession();
     }, [params]);
+
+    // useEffect(() => {
+    //     saveProgress({ data: testPayload, uploadedDocuments: [] })
+    // }, [])
+
 
     return (
         <>
