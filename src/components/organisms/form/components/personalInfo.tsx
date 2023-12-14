@@ -1045,6 +1045,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     "Father",
                     "Mother",
                     "Sibling",
+                    "Friend",
                     "Others",
                 ]}
                 placeholder="Select your relationship to guarantor"

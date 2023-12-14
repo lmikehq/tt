@@ -51,7 +51,8 @@
             "issueYear": "",
             "expiryYear": "",
             "accompanying": false,
-            "section": "A"
+            "section": "A",
+            "index": 0
         },
         {
             "passportNumber": "",
@@ -71,8 +72,8 @@
             },
             "accompanying": false,
             "section": "B",
-            "index": 0,
-            "maritalStatus": ""
+            "maritalStatus": "",
+            "index": 0
         },
         {
             "passportNumber": "",
@@ -86,7 +87,8 @@
             "issueYear": "",
             "expiryYear": "",
             "accompanying": false,
-            "section": "C"
+            "section": "C",
+            "index": 0
         }
     ],
     "personalInfo": {
@@ -207,7 +209,12 @@
         "endDatePrevResidence5": "",
         "marriageStartDate": "",
         "marriageEndDate": "",
-        "countriesLived": 1
+        "countriesLived": 1,
+        "guarantorName": "Jane Smith",
+        "relationshipToGuarantor": "Friend",
+        "guarantorAddress": "456 Elm St",
+        "guarantorPhone": "9876543210",
+        "guarantorWorth": "50000"
     },
     "documents": []
 }

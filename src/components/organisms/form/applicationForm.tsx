@@ -283,6 +283,7 @@ function ApplicationForm() {
     //     saveProgress({ data: testPayload, uploadedDocuments: [] })
     // }, [])
 
+
     return (
         <>
             <CustomConfirmationModal
