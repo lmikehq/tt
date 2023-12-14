@@ -6,6 +6,7 @@ import { Detail } from '../applicationPreview';
 import { DetailsKeys, PersonalInfoInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
 import { formatDateString } from '@/lib/utilFns';
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 
 const MyBoolean = (x: boolean | null | undefined) => {
     return String(x) === 'true' ? true : false
@@ -14,16 +15,18 @@ const MyBoolean = (x: boolean | null | undefined) => {
 interface OneProps{
     personalInfo: PersonalInfoInterface;
     applicationInfo: DetailsKeys;
+    goToStep: (step: number) => void;
 }
 
-function One({ applicationInfo, personalInfo }: OneProps) {
+function One({ applicationInfo, personalInfo, goToStep }: OneProps) {
+    const { isMobile } = useScreenResolution()
     const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
     const toggleAcc = (index: number) => {
         setOpenAcc(prev => prev === index ? null : index)
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height='77%'>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '72%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (1/5)`}
@@ -38,12 +41,13 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                     heading="Trip Details"
                     toggle={() => toggleAcc(0)}
                     isOpen={isOpenAcc === 0}
+                    onEdit={() => goToStep(1)}
                 >
                     <Flex width='100%' wrap="wrap" gap="1.4rem">
-                        <Detail name="Where are you?" value={applicationInfo?.homeCountry?.name} width='23%' />
-                        <Detail name="Where to?" value={applicationInfo?.destination?.name} width='23%' />
-                        <Detail name="Visa Type" value={applicationInfo?.visaType} width='23%' />
-                        <Detail name="Application Type" value={applicationInfo?.applicationType} width='23%' />
+                        <Detail name="Where are you?" value={applicationInfo?.homeCountry?.name} width={isMobile ? '45%' :'23%'} />
+                        <Detail name="Where to?" value={applicationInfo?.destination?.name} width={isMobile ? '45%' :'23%'} />
+                        <Detail name="Visa Type" value={applicationInfo?.visaType} width={isMobile ? '45%' :'23%'} />
+                        <Detail name="Application Type" value={applicationInfo?.applicationType} width={isMobile ? '45%' :'23%'} />
                     </Flex>
                 </MyAccordion>
 
@@ -52,6 +56,7 @@ function One({ applicationInfo, personalInfo }: OneProps) {
                     subHeading="Please ensure the Information you are providing is as shown on your passport or Travel Document"
                     toggle={() => toggleAcc(1)}
                     isOpen={isOpenAcc === 1}
+                    onEdit={() => goToStep(2)}
                 >
                     <Flex width='100%' direction='row' wrap="wrap" gap="1.4rem">
                         <Detail name="Last Name" value={personalInfo?.lastName} width='45%' />
