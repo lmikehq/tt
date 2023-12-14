@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import OutletIcon from "@mui/icons-material/Outlet";
+import { ttColors } from "@/lib/theme/colors";
 
 export const BootstrapTooltip = styled(
   ({ className, ...props }: TooltipProps) => (
@@ -82,10 +83,11 @@ export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
   };
 
   return (
-    <div>
-      <p style={textStyle} ref={textRef}>
-        {text}
-      </p>
+      <div>
+        <Text type="p" size={13} text={text} color={ttColors.foundation.gray} />
+        <p style={textStyle} ref={textRef}>
+            {text}
+        </p>
 
       {!expanded && (
         <Flex

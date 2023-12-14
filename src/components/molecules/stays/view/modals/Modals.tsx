@@ -18,6 +18,9 @@ import GalleryBox from "./components/GalleryBox";
 import SectionLayout from "@/components/templates/SectionLayout";
 import ReviewListBox from "./components/ReviewListBox";
 import FilterBox from "./components/FilterBox";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { AmenityGroup, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+
 
 const ModalCenter = styled.div`
   display: flex;
@@ -148,91 +151,108 @@ export const GalleryModal = ({
   );
 };
 export const MapModal = ({
-  open,
-  handleClose,
-}: {
-  open: boolean;
-  handleClose: () => void;
+    open,
+    handleClose,
+    stayResponse,
+} : {
+    open: boolean;
+    handleClose: () => void;
+    stayResponse: ViewSingleStayResponse;
 }) => {
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <ModalCenter>
-        <ModalScroll className="map_scroll">
-          <ModalWrapper className="map_wrapper">
-            <Flex padding="1rem" align="center" gap="20px">
-              <CloseIcon
-                style={{ fontSize: "19px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
-              <Text
-                type="h4"
-                text="The Ritz London, United Kingdom"
-                weight={600}
-              />
+    const { isMobile } = useScreenResolution()
+//   useEffect(() => {
+//     const handleBodyOverflow = () => {
+//       document.documentElement.style.overflow = open ? "hidden" : "auto";
+//       document.body.style.overflow = open ? "hidden" : "auto";
+//     };
+//     handleBodyOverflow();
+//     return () => {
+//       document.documentElement.style.overflow = "auto";
+//       document.body.style.overflow = "auto";
+//     };
+//   }, [open]);
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <Flex
+                direction="column"
+                align="flex-start"
+                background="white"
+                padding="2rem"
+                gap="2rem"
+                width={isMobile ? "95vw" : "60vw"}
+                height={isMobile ? "95vh" : "95vh"}
+                borderRadius="16px"
+                margin="0 auto"
+                overflowY="scroll"
+                className="scroll-custom"
+            >
+                <Flex padding="1rem" align="center" gap="20px">
+                    <CloseIcon
+                        style={{ fontSize: "24px", cursor: "pointer" }}
+                        onClick={handleClose}
+                    />
+                    <Text
+                        type="h4"
+                        text={stayResponse.address}
+                        weight={600}
+                    />
+                </Flex>
+                <MapBox />
             </Flex>
-            <Span style={{ padding: "15px" }}>
-              <MapBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
-    </Modal>
-  );
+        </Modal>
+    );
 };
 export const AmenitiesModal = ({
-  open,
-  handleClose,
+    open,
+    handleClose,
+    amenities,
+    sortedAmenities,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    open: boolean;
+    handleClose: () => void;
+    amenities: AmenityGroup[];
+    sortedAmenities: string[];
 }) => {
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    const { isMobile } = useScreenResolution()
+//   useEffect(() => {
+//     const handleBodyOverflow = () => {
+//       document.documentElement.style.overflow = open ? "hidden" : "auto";
+//       document.body.style.overflow = open ? "hidden" : "auto";
+//     };
+//     handleBodyOverflow();
+//     return () => {
+//       document.documentElement.style.overflow = "auto";
+//       document.body.style.overflow = "auto";
+//     };
+//   }, [open]);
 
-  return (
-    <Modal disableScrollLock={true} open={open} onClose={handleClose}>
-      <ModalCenter className="amenities">
-        <ModalScroll className="amenities_scroll">
-          <ModalWrapper className="amenities_modal">
-            <Flex
-              padding="10px 35px"
-              align="center"
-              justify="space-between"
-              gap="20px"
-              styles={{ marginTop: "20px" }}
-            >
-              <Text type="h1" size={23} text="Hotel Amenities" weight={600} />
-              <CloseIcon
-                style={{ fontSize: "29px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
+return (
+    <Modal open={open} onClose={handleClose}>
+        <Flex
+            direction="column"
+            align="flex-start"
+            background="white"
+            padding="2rem 2rem 3rem 2.5rem"
+            gap="2rem"
+            width={isMobile ? "95vw" : "60vw"}
+            height={isMobile ? "95vh" : "95vh"}
+            borderRadius="16px"
+            margin="0 auto"
+            overflowY="scroll"
+            className="scroll-custom"
+          >
+            <Flex justify="space-between">
+                <Text type="h1" size={23} text="Hotel Amenities" weight={600} />
+                <CloseIcon
+                    style={{ fontSize: "24px", cursor: "pointer" }}
+                    onClick={handleClose}
+                />
             </Flex>
-            <Span style={{ padding: "15px" }}>
-              <AmenitiesBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
+            <AmenitiesBox
+                amenities={amenities}
+                sortedAmenities={sortedAmenities}
+            />
+        </Flex>
     </Modal>
   );
 };
@@ -340,9 +360,7 @@ export const FilterModal = ({
                 setCancellation={setCancellation}
                 cancellationOptions={cancellationOptions}
                 selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
-                setSelectedPaymentCheckboxValues={
-                  setSelectedPaymentCheckboxValues
-                }
+                setSelectedPaymentCheckboxValues={setSelectedPaymentCheckboxValues}
                 paymentOptions={paymentOptions}
                 submissionState={submissionState}
                 setSubmissionState={setSubmissionState}

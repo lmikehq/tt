@@ -31,6 +31,7 @@ import {
     extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { sampleViewStay } from "@/lib/types/response-models/stay/search.type";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -47,19 +48,21 @@ const StayViewPage = () => {
         (state) => state
     );
 
-    const requestParams = (): ViewSingleStayRequestInput => ({
-        id: "transcorp_hilton_abuja" ?? id ?? "",
-        checkin: checkIn ?? "",
-        checkout: checkOut ?? "",
-        residency: "ng",
+    const requestParams: ViewSingleStayRequestInput = {
+        // id: "transcorp_hilton_abuja" ?? id ?? "",
+        id: "test_hotel_do_not_book" ?? id ?? "",
+        checkin: checkIn ?? "2024-01-10",
+        checkout: checkOut ?? "2024-01-12",
+        residency: "gb",
         language: preferredLanguage,
         guests: extractRoomForGuestsFromString(guests ?? ""),
         currency: preFerredCurrency,
-    });
+    }
 
-    const { data: stayResponse, isFetching } = useViewSingleStay(requestParams(), {
+    const { data: stayRes, isFetching } = useViewSingleStay(requestParams, {
         enabled: id ? true : false,
     });
+    const stayResponse = sampleViewStay
 
     const handleGoBack = () => {
         router.back();
@@ -115,16 +118,16 @@ const StayViewPage = () => {
                 }}
             >
                 <Section>
-                    <StayDetails />
-                    <ChooseYourRoom />
-                    <LikeSimilarHotels />
-                    <Location />
-                    <DescriptionOfHotel />
-                    <HotelAmenities />
-                    <CompareSlider />
-                    <Policies />
-                    <HotelReviews />
-                    <CompareSimilarHotels />
+                    <StayDetails stayResponse={stayResponse} />
+                    <ChooseYourRoom stayResponse={stayResponse} />
+                    <LikeSimilarHotels stayResponse={stayResponse} />
+                    <Location stayResponse={stayResponse} />
+                    <DescriptionOfHotel stayResponse={stayResponse} />
+                    <HotelAmenities stayResponse={stayResponse} />
+                    <CompareSlider stayResponse={stayResponse} />
+                    <Policies stayResponse={stayResponse} />
+                    <HotelReviews stayResponse={stayResponse} />
+                    <CompareSimilarHotels stayResponse={stayResponse} />
                 </Section>
 
                 <Section>

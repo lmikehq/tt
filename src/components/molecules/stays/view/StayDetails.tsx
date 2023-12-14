@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Checkbox } from "@mui/material";
 import Section from "../../section";
 import Flex from "@/components/templates/flex";
@@ -19,16 +19,11 @@ import { styled } from "@mui/material/styles";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import AcUnitIcon from "@mui/icons-material/AcUnit";
-import WifiIcon from "@mui/icons-material/Wifi";
-import LocalParkingIcon from "@mui/icons-material/LocalParking";
-import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
-import PetsIcon from "@mui/icons-material/Pets";
-import SpaIcon from "@mui/icons-material/Spa";
 import { FlexBox } from "../components/styles";
 import { AmenitiesModal, MapModal } from "./modals/Modals";
 import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
-
+import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { pickIcon } from "./modals/components/AmenitiesBox";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StyledRating = styled(Rating)({
@@ -54,25 +49,29 @@ const tabs: TabProps[] = [
 ];
 
 interface StayDetailsProps {
-    stay: any;
+    stayResponse: ViewSingleStayResponse;
 }
 
-function StayDetails() {
-  const { isMobile } = useScreenResolution();
+function StayDetails({ stayResponse }: StayDetailsProps) {
+    const { isMobile } = useScreenResolution();
 
-  const [activeTab, setActiveTab] = useState("overview");
+    const [activeTab, setActiveTab] = useState("overview");
 
-  const handleTabClick = (id: string) => {
-    setActiveTab(id);
-  };
+    const handleTabClick = (id: string) => {
+        setActiveTab(id);
+    };
 
-  const [open, setOpen] = useState({
-    map: false,
-    amenities: false,
-  });
+    const [open, setOpen] = useState({
+        map: false,
+        amenities: false,
+    });
     
     const response: any = {}
-    
+
+    const sortedAmenities = useMemo(() => 
+        stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[])
+    , [stayResponse?.amenity_groups])
+
   return (
     <Container>
       <Header id="overview">
@@ -108,7 +107,7 @@ function StayDetails() {
               type="h1"
               size={32}
               weight={600}
-              text="The Ritz London"
+              text={stayResponse.name}
             />
             {!isMobile && (
               <Checkbox
@@ -132,7 +131,7 @@ function StayDetails() {
             size={15}
             weight={400}
             color="var(--text-gray-color)"
-            text="Black Prince Interchange, London, DA5 1ND, United Kingdom"
+            text={stayResponse.address}
             margin={"0 0 1.5rem 0"}
           />
           <Flex align="center">
@@ -147,20 +146,20 @@ function StayDetails() {
             </Flex>
             <Flex>
               <Rating
-                style={{
-                  marginLeft: "-4px",
-                  marginBottom: "5px",
-                  fontSize: "20px",
-                }}
+                // style={{
+                //     marginLeft: "-4px",
+                //     marginBottom: "5px",
+                //     fontSize: "20px",
+                // }}
                 name="rating"
                 precision={0.5}
                 readOnly
                 max={5}
-                defaultValue={4}
+                value={stayResponse.star_rating ?? 4}
               />
             </Flex>
           </Flex>
-          <FlexBox className="stay_wrap" style={{ margin: "15px 0px" }}>
+          <FlexBox className="stay_wrap" style={{ margin: "15px 0px 2.5rem" }}>
             <Flex gap="5px" align="center">
               <Text type="p" size={24} weight={600} text={getCurrency()} />
               <Text
@@ -211,77 +210,28 @@ function StayDetails() {
             type="h1"
             size={20}
             weight={500}
-            margin={"0 0 2rem 0"}
+            margin={"0 0 1.5rem 0"}
             text="Popular Amenities"
           />
-          <GridLayout className="stay_details_grid">
-            <Flex gap="8px" align="center">
-              <FreeBreakfastIcon style={{ fontSize: "28px" }} />
-              <Text
-                whiteSpace="nowrap"
-                type="h1"
-                size={16}
-                weight={400}
-                text="Breakfast Available"
-              />
-            </Flex>
-            <Flex gap="8px" align="center">
-              <SpaIcon style={{ fontSize: "28px" }} />
-              <Text
-                whiteSpace="nowrap"
-                type="h1"
-                size={16}
-                weight={400}
-                text="Spa"
-              />
-            </Flex>{" "}
-            <Flex gap="8px" align="center">
-              <WifiIcon style={{ fontSize: "28px" }} />
-              <Text
-                whiteSpace="nowrap"
-                type="h1"
-                size={16}
-                weight={400}
-                text="Free WiFi"
-              />
-            </Flex>{" "}
-            <Flex gap="8px" align="center">
-              <PetsIcon style={{ fontSize: "28px" }} />
-              <Text
-                whiteSpace="nowrap"
-                type="h1"
-                size={16}
-                weight={400}
-                text="Pet Friendly"
-              />
-            </Flex>{" "}
-            <Flex gap="8px" align="center">
-              <LocalParkingIcon style={{ fontSize: "28px" }} />
-              <Text
-                whiteSpace="nowrap"
-                type="h1"
-                size={16}
-                weight={400}
-                text="Parking available"
-              />
-            </Flex>
-            <Flex gap="8px" align="center">
-              <AcUnitIcon style={{ fontSize: "28px" }} />
-              <Text
-                whiteSpace="nowrap"
-                type="h1"
-                size={16}
-                weight={400}
-                text="Air conditioning"
-              />
-            </Flex>
+          <GridLayout className="stay_details_grid" style={{ margin: "0 0 1.5rem" }}>
+            {sortedAmenities.slice(0, 6).map((am, index) =>
+                <Flex gap="8px" align="center" key={`amenity-${index}`}>
+                    {pickIcon(am)}
+                    <Text
+                        whiteSpace="nowrap"
+                        type="h1"
+                        size={16}
+                        weight={400}
+                        text={am}
+                    />
+                    </Flex>
+            )}
           </GridLayout>
-          <Button background="transparent" width="fit-content" padding="0">
-            <Flex align="center" justify="flex-start">
+          <Button background="transparent" width="fit-content" padding="0 0" height="fit-content">
               <Text
                 type="p"
                 weight={500}
-                text="see more"
+                text="See more.."
                 color={ttColors.primary}
                 onClick={() =>
                   setOpen((prev) => ({
@@ -290,17 +240,6 @@ function StayDetails() {
                   }))
                 }
               />
-            </Flex>
-           
-            <AmenitiesModal
-              open={open.amenities}
-              handleClose={() =>
-                setOpen((prev) => ({
-                  ...prev,
-                  amenities: false,
-                }))
-              }
-            />
           </Button>
         </Section>
         <Section>
@@ -317,7 +256,7 @@ function StayDetails() {
           </Section>
           <Text
             type="p"
-            text="22 Portman Square, London, England, W1H 6LW"
+            text={stayResponse.address}
             size={16}
             weight={500}
           />
@@ -335,20 +274,33 @@ function StayDetails() {
                 text="Show in map"
                 color={ttColors.primary}
               />
-              <MapModal
-                open={open.map}
-                handleClose={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    map: false,
-                  }))
-                }
-              />
               <BiChevronRight color={ttColors.primary} size={24} />
             </Flex>
           </Button>
         </Section>
-      </Box> 
+        </Box> 
+          
+        <AmenitiesModal
+            open={open.amenities}
+            handleClose={() =>
+                setOpen((prev) => ({
+                    ...prev,
+                    amenities: false,
+                }))
+            }
+            amenities={stayResponse.amenity_groups}
+            sortedAmenities={sortedAmenities}
+        />
+        <MapModal
+            open={open.map}
+            handleClose={() =>
+                setOpen((prev) => ({
+                    ...prev,
+                    map: false,
+                }))
+            }
+            stayResponse={stayResponse}
+        />
     </Container>
   );
 }
