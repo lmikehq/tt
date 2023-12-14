@@ -209,7 +209,9 @@
         "endDatePrevResidence5": "",
         "marriageStartDate": "",
         "marriageEndDate": "",
-        "countriesLived": 1,
+        "countriesLived": 1
+    },
+    "guarantorInfo": {
         "guarantorName": "Jane Smith",
         "relationshipToGuarantor": "Friend",
         "guarantorAddress": "456 Elm St",

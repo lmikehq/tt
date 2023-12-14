@@ -164,11 +164,6 @@ export interface PersonalInfoInterface {
     endDatePrevResidence5?: string;
     marriageStartDate?: string;
     marriageEndDate?: string;
-    guarantorName: string;
-    relationshipToGuarantor: string;
-    guarantorAddress: string;
-    guarantorPhone: string;
-    guarantorWorth: string;
 }
 
 export interface BackgroundInfoInterface {
@@ -208,6 +203,13 @@ export interface FamilyInfoInterface {
     section?: string;
     index?: number;
 }
+export interface GuarantorInfoInterface {
+    guarantorName: string;
+    relationshipToGuarantor: string;
+    guarantorAddress: string;
+    guarantorPhone: string;
+    guarantorWorth: string;
+}
 
 export interface DocumentInterface {
     name: string;
@@ -234,6 +236,7 @@ export interface VisaApplicationFormInterface
         ManyDocumentInterface {
     personalInfo: PersonalInfoInterface;
     tripDetails: DetailsKeys;
+    guarantorInfo: GuarantorInfoInterface;
 }
 
 export interface PrimaryTravellerInterface
@@ -393,11 +396,11 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             }),
         },
         guarantorInformation: {
-            guarantorName: data.personalInfo.guarantorName,
-            relationshipToGuarantor: data.personalInfo.relationshipToGuarantor,
-            guarantorAddress: data.personalInfo.guarantorAddress,
-            guarantorPhone: data.personalInfo.guarantorPhone,
-            guarantorWorth: data.personalInfo.guarantorWorth,
+            guarantorName: data.guarantorInfo.guarantorName,
+            relationshipToGuarantor: data.guarantorInfo.relationshipToGuarantor,
+            guarantorAddress: data.guarantorInfo.guarantorAddress,
+            guarantorPhone: data.guarantorInfo.guarantorPhone,
+            guarantorWorth: data.guarantorInfo.guarantorWorth,
         },
         tripInformation: {
             tripDurationStartDate: formatISODate(data.personalInfo.tripDurationStartDate),
