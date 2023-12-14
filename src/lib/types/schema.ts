@@ -4,6 +4,7 @@ import {
     EducationDetailsInterface,
     EmploymentDetailsInterface,
     FamilyInfoInterface,
+    GuarantorInfoInterface,
     PersonalInfoInterface,
     VisaApplicationFormInterface,
 } from "@lib/types";
@@ -170,11 +171,6 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             is: true,
             then: (schema) => schema.required("Required"),
         }),
-        guarantorName: yup.string().required("Required"),
-        relationshipToGuarantor: yup.string().required("Required"),
-        guarantorAddress: yup.string().required("Required"),
-        guarantorPhone: yup.string().required("Required"),
-        guarantorWorth: yup.string().required("Required"),
         prevResidence1: countrySchema,
         prevResidence2: countrySchema,
         prevResidence3: countrySchema,
@@ -274,11 +270,6 @@ export const personalInfoKeys: PersonalInfoInterface = {
     endDatePrevResidence5: "",
     marriageStartDate: "",
     marriageEndDate: "",
-    guarantorName: "",
-    relationshipToGuarantor: "",
-    guarantorAddress: "",
-    guarantorPhone: "",
-    guarantorWorth: "",
 };
 
 //DOCUMENT
@@ -443,6 +434,22 @@ export const familyInforKeys: FamilyInfoInterface = {
     // issueYear: 2020,
 };
 
+export const guarantorSchema: yup.ObjectSchema<GuarantorInfoInterface> = yup.object().shape({
+    guarantorName: yup.string().required("Required"),
+    relationshipToGuarantor: yup.string().required("Required"),
+    guarantorAddress: yup.string().required("Required"),
+    guarantorPhone: yup.string().required("Required"),
+    guarantorWorth: yup.string().required("Required"),
+})
+
+export const guarantorKeys: GuarantorInfoInterface = {
+    guarantorName: "",
+    relationshipToGuarantor: "",
+    guarantorAddress: "",
+    guarantorPhone: "",
+    guarantorWorth: "",
+}
+
 export const educationArraySchema = yup
     .array()
     .of(singleEducationSchema)
@@ -499,6 +506,7 @@ export const visaInitVals: VisaApplicationFormInterface = {
     ...familyInfoArr,
     personalInfo: personalInfoKeys,
     ...documentsArr,
+    guarantorInfo: guarantorKeys,
 };
 
 export const waitlistSchema = yup.object().shape({
