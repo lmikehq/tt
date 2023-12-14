@@ -33,7 +33,6 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
 
     const togglePreview = () => {
         setOpenPreview(prev => !prev)
-        console.log(form)
     }
 
   const computeButtonText = () => {
