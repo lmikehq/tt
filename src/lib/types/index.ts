@@ -282,7 +282,6 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
     data: VisaApplicationFormInterface;
     user?: User;
     }) => {
-    console.log(data)
     const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
         delete member.index;
         delete member.membersOccupation;
