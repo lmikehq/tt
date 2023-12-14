@@ -259,9 +259,10 @@ export const FieldAsDate = (props: FieldProps) => {
   const touched = getNestedValue(formik?.touched, name);
     const error = getNestedValue(formik?.errors, name);
     
-  const handleChange = (e: any) => {
-    formik?.setFieldValue(name, `${dayjs(e?.$d, format).format(format)}`);
-  };
+    const handleChange = (e: any) => {
+        formik?.setFieldValue(name, `${dayjs(e, 'MM/DD/YYYY').format(format)}`);
+        console.log('changing', dayjs(e, format).format(format))
+    };
 
     const value = getNestedValue(formik?.values, name);
 

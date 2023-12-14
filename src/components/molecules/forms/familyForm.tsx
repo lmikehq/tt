@@ -225,7 +225,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                 </Flex>
           )}
           
-            {['C'].includes(values?.section ?? '') && (
+            {/* {['C'].includes(values?.section ?? '') && (
                 <Flex
                     margin="0"
                     justify="space-between"
@@ -262,7 +262,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                         />
                     </Section>
                 </Flex>
-            )}
+            )} */}
           
       <Flex justify="space-between" margin="1rem 0 1rem">
         <Text type="p" text="Will you be traveling with this Family Member?" />
