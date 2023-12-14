@@ -33,7 +33,6 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
 
     const togglePreview = () => {
         setOpenPreview(prev => !prev)
-        console.log(form)
     }
 
   const computeButtonText = () => {
@@ -273,7 +272,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
                 type="button"
             />
             </form>
-                
+
             <ApplicationPreview
                 isOpen={isOpenPreview}
                 onClose={togglePreview}

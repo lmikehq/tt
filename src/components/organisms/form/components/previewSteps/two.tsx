@@ -5,13 +5,16 @@ import Text from '@/components/atoms/text';
 import { Detail } from '../applicationPreview';
 import { EducationDetailsInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 
 
 interface TwoProps{
     educationInfo: EducationDetailsInterface[];
+    goToStep: (step: number) => void;
 }
 
-function Two({ educationInfo = [] }: TwoProps) {
+function Two({ educationInfo = [], goToStep }: TwoProps) {
+    const { isMobile } = useScreenResolution()
     const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
 
     const toggleAcc = (index: number) => {
@@ -19,7 +22,7 @@ function Two({ educationInfo = [] }: TwoProps) {
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height='77%'>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '72%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (2/5)`}
@@ -39,6 +42,7 @@ function Two({ educationInfo = [] }: TwoProps) {
                         heading={`Education Details ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
+                        onEdit={() => goToStep(3)}
                         key={`education-${index}`}
                     >
                         <Flex width='100%' wrap="wrap" gap="1.4rem">
