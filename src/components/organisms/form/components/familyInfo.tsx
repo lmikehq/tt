@@ -136,25 +136,18 @@ function FamilyInfo({ steps, index, persistForm, formik, guarantorFormik }: form
                     </Section>
                     <Section width="100%">
                         <Flex align="center" gap="0.25rem">
-                        <Text
-                            type="p"
-                            text="Relationship to Guarantor"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                            size={15}
-                        />
-                        <Required />
+                            <Text
+                                type="p"
+                                text="Relationship to Guarantor"
+                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                                size={15}
+                            />
+                            <Required />
                         </Flex>
-                        <FieldString
-                            options={[
-                                "Father",
-                                "Mother",
-                                "Sibling",
-                                "Friend",
-                                "Others",
-                            ]}
-                            placeholder="Select your relationship to guarantor"
+                        <FieldInput
                             name="relationshipToGuarantor"
                             formik={guarantorFormik}
+                            placeholder="Enter your relationship to guarantor"
                         />
                     </Section>
                     </Flex>
