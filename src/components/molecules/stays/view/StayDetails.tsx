@@ -23,7 +23,7 @@ import { FlexBox } from "../components/styles";
 import { AmenitiesModal, MapModal } from "./modals/Modals";
 import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
-import { pickAmenityIcon } from "./modals/components/AmenitiesBox";
+import { pickIcon } from "./modals/components/AmenitiesBox";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StyledRating = styled(Rating)({
@@ -216,7 +216,7 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
           <GridLayout className="stay_details_grid" style={{ margin: "0 0 1.5rem" }}>
             {sortedAmenities.slice(0, 6).map((am, index) =>
                 <Flex gap="8px" align="center" key={`amenity-${index}`}>
-                    {pickAmenityIcon(am)}
+                    {pickIcon(am, { fontSize: '28px' })}
                     <Text
                         whiteSpace="nowrap"
                         type="h1"

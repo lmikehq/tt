@@ -295,7 +295,7 @@ function ApplicationForm() {
         fetchRecentProgressFromSession();
     }, [params]);
 
-
+    // console.log(guarantorFormik.values)
     // useEffect(() => {
     //     saveProgress({ data: testPayload, uploadedDocuments: [] })
     // }, [])

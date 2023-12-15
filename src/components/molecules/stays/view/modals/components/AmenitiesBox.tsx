@@ -1,32 +1,57 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { GridLayout, Span } from "../../styles";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { AmenityGroup } from "@/lib/types/response-models/stay/search.type";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import WifiIcon from "@mui/icons-material/Wifi";
-import LocalParkingIcon from "@mui/icons-material/LocalParking";
 import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
-import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare } from "@mui/icons-material";
-import { PiCheckCircle } from "react-icons/pi";
+import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare, PinDrop, Bed, LocalHospitalOutlined, Wifi, Pets, Language, WatchLater, ChildFriendly, BedroomBaby, LocalDining, Payments, LunchDining, StickyNote2 } from "@mui/icons-material";
+import { PiBabyFill, PiCheckCircle } from "react-icons/pi";
+import { GiMeal } from "react-icons/gi";
+import { FaWheelchair } from "react-icons/fa6";
+import { LuParkingSquare } from "react-icons/lu";
+import { IoLocationSharp } from "react-icons/io5";
 
-export const pickAmenityIcon = (val: string) => {
-    switch (val) {
-        case 'Free Breakfast': return <FreeBreakfastIcon style={{ fontSize: '28px '}} />;
-        case 'Free Wi-Fi': return <WifiIcon style={{ fontSize: '28px '}} />;
-        case 'Air conditioning': return <AcUnitIcon style={{ fontSize: '28px '}} />;
-        case 'Heating': return <HeatPumpOutlined style={{ fontSize: '28px '}} />;
-        case 'Garden': return <GrassRounded style={{ fontSize: '28px '}} />;
-        case 'Pets': return <PetsIcon style={{ fontSize: '28px '}} />;
-        case 'Terrace': return <ViewColumn style={{ fontSize: '28px '}} />;
-        case 'Family room': return <Diversity3Rounded style={{ fontSize: '28px '}} />;
-        case 'Airport transportation': return <DirectionsCar style={{ fontSize: '28px '}} />;
-        case 'Transfer services': return <TransferWithinAStation style={{ fontSize: '28px '}} />;
-        case 'Offsite parking reservations required': return <LocalParking style={{ fontSize: '28px '}} />;
-        case 'Family/Kid Friendly': return <ChildCare style={{ fontSize: '28px '}} />;
-        default: return <PiCheckCircle size="28px" />;
+export const pickIcon = (val: string, styles?: CSSProperties ) => {
+    // const fontSize = size
+    switch (String(val).toLowerCase()) {
+        case 'free breakfast': return <FreeBreakfastIcon style={{ ...styles }} />;
+        case 'free wi-fi': return <WifiIcon style={{ ...styles }} />;
+        case 'air conditioning': return <AcUnitIcon style={{ ...styles }} />;
+        case 'heating': return <HeatPumpOutlined style={{ ...styles }} />;
+        case 'garden': return <GrassRounded style={{ ...styles }} />;
+        case 'pets': return <PetsIcon style={{ ...styles }} />;
+        case 'terrace': return <ViewColumn style={{ ...styles }} />;
+        case 'family room': return <Diversity3Rounded style={{ ...styles }} />;
+        case 'airport transportation': return <DirectionsCar style={{ ...styles }} />;
+        case 'transfer services': return <TransferWithinAStation style={{ ...styles }} />;
+        case 'offsite parking reservations required': return <LocalParking style={{ ...styles }} />;
+        case 'family/kid friendly': return <ChildCare style={{ ...styles }} />;
+        case 'general': return <PinDrop style={{ ...styles }} />;
+        case 'rooms': return <Bed style={{ ...styles }} />;
+        case 'internet': return <Wifi style={{ ...styles }} />;
+        case 'transfer': return <TransferWithinAStation style={{ ...styles }} />;
+        case 'languages spoken': return <Language style={{ ...styles }} />;
+        case 'parking': return <LuParkingSquare style={{ ...styles }} />;
+        case 'kids': return <PiBabyFill style={{ ...styles }} />;
+        case 'children': return <ChildFriendly style={{ ...styles }} />;
+        case 'cot': return <BedroomBaby style={{ ...styles }} />;
+        case 'meals': return <LocalDining style={{ ...styles }} />;
+        case 'meal': return <LocalDining style={{ ...styles }} />;
+        case 'children_meal': return <LunchDining style={{ ...styles }} />;
+        case 'accessibility': return <FaWheelchair style={{ ...styles }} />;
+        case 'beauty and wellness': return <LocalHospitalOutlined style={{ ...styles }} />;
+        case 'pets': return <Pets style={{ ...styles }} />;
+        case 'location': return <IoLocationSharp style={{ ...styles }} />;
+        case 'at the apartment': return <Bed style={{ ...styles }} />;
+        case 'check_in_check_out': return <WatchLater style={{ ...styles }} />;
+        case 'extra_bed': return <Bed style={{ ...styles }} />;
+        case 'deposit': return <Payments style={{ ...styles }} />;
+        case 'additional': return <StickyNote2 style={{ ...styles }} />;
+        default: return <PiCheckCircle style={{ ...styles }} />;
     }
 }
 
@@ -48,7 +73,7 @@ function AmenitiesBox({ amenities, sortedAmenities } : AmenitiesBoxProps) {
         <GridLayout className="stay_details_grid">
             {sortedAmenities.map((am, index) => 
                 <Flex gap="8px" align="center" key={`modal-amenity-${index}`}>
-                    {pickAmenityIcon(am)}
+                    {pickIcon(am, { fontSize: '28px' })}
                     <Text
                         whiteSpace="nowrap"
                         type="h1"

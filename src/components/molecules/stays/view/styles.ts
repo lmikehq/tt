@@ -90,7 +90,7 @@ export const GridLayout = styled.div`
     width: 100% !important;
     grid-template-columns: repeat(3, 1fr);
     justify-content: space-between !important;
-    grid-column-gap: 10%;
+    grid-column-gap: 1rem;
     @media screen and (max-width: 1095px) {
       grid-template-columns: repeat(2, 1fr);
     }
