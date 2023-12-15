@@ -56,8 +56,8 @@ export interface FactsElectricity {
 export interface Facts {
     floors_number: number | null;
     rooms_number: number;
-    year_built: number | null;
-    year_renovated: number | null;
+    year_built: number | string | null;
+    year_renovated: number | string | null;
     electricity: FactsElectricity;
 }
 

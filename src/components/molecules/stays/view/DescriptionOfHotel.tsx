@@ -139,7 +139,15 @@ interface DescriptionOfHotelProps {
 }
 
 const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
-  const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution();
+    
+    const facts = {
+        constructYear: String(stayResponse.facts.year_built) ?? null,
+        renovateYear: String(stayResponse.facts.year_renovated) ?? null,
+        roomsNumber: String(stayResponse.facts.rooms_number) ?? null,
+        floorsNumber: String(stayResponse.facts.floors_number) ?? null,
+        electricity: stayResponse.facts.electricity?.voltage ? stayResponse.facts.electricity : null
+    }
 
   return (
     <>
@@ -203,11 +211,12 @@ const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
           </Span>
           <Span>
             <Flex direction="column">
-              <Text
+            <Text
                 type="h4"
                 weight={"bold"}
                 text="Facts about the Hotel"
-              ></Text>
+            />
+            {facts.constructYear && 
               <Flex direction="column" styles={{ margin: "10px 0px" }}>
                 <Text
                   type="p"
@@ -215,17 +224,20 @@ const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
                   color="var(--text-gray-color)"
                   text="Year of construction"
                 ></Text>
-                <Text type="h5" weight={"bold"} text={`${2001}`}></Text>
+                <Text type="h5" weight={"bold"} text={facts.constructYear}></Text>
               </Flex>
-              <Flex direction="column" styles={{ margin: "10px 0px" }}>
-                <Text
-                  type="p"
-                  size={14}
-                  color="var(--text-gray-color)"
-                  text="Year of renovation"
-                ></Text>
-                <Text type="h5" weight={"bold"} text={`${2020}`}></Text>
-              </Flex>
+            }
+            {facts.renovateYear && 
+                <Flex direction="column" styles={{ margin: "10px 0px" }}>
+                    <Text
+                    type="p"
+                    size={14}
+                    color="var(--text-gray-color)"
+                    text="Year of renovation"
+                    ></Text>
+                    <Text type="h5" weight={"bold"} text={facts.renovateYear}></Text>
+                </Flex>
+            }
               <Flex direction="column" styles={{ margin: "10px 0px" }}>
                 <Flex align="center" gap="8px" styles={{ marginBottom: "5px" }}>
                   <Text
