@@ -6,31 +6,31 @@ import ServiceBanner from "@organism/ServiceBanner";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { styled } from "styled-components";
 
+// height: ${(props) => (props.isMobile ? "unset" : "500px")};
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
-  width: 100vw;
-  background: var(--bg-color);
-  height: ${(props) => (props.isMobile ? "unset" : "500px")};
-  background-image: url(${"/assets/images/herobg-visa.png"});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
+    width: 100vw;
+    background: var(--bg-color);
+    background-image: url(${"/assets/images/herobg-visa.png"});
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
 `;
 
 function StayHero() {
-  const { isMobile } = useScreenResolution();
-  return (
-    <>
-      <Navbar page="stay" />
-      <HeroWrapper isMobile={isMobile}>
-        <div style={{ paddingTop: "14rem" }}>
-          <Center>
-            <ServiceBanner />
-          </Center>
-        </div>
-      </HeroWrapper>
-    </>
-  );
+    const { isMobile } = useScreenResolution();
+    return (
+        <>
+            <Navbar page="stay" />
+            {/* <HeroWrapper isMobile={isMobile}> */}
+            {/* <div style={{ paddingTop: "14rem" }}> */}
+            <Center margin="3rem 0 5rem 0">
+                <ServiceBanner />
+            </Center>
+            {/* </div> */}
+            {/* </HeroWrapper> */}
+        </>
+    );
 }
 
 export default StayHero;
