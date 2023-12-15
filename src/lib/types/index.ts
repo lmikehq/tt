@@ -290,8 +290,8 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
         return ({
             ...member,
             dateOfBirth: formatISODate(member?.dateOfBirth),
-            issueYear: String(member?.issueYear),
-            expiryYear: String(member?.expiryYear),
+            issueYear: safelyConvertToNumber(member?.issueYear),
+            expiryYear: safelyConvertToNumber(member?.expiryYear),
         })
     })
 
@@ -376,22 +376,55 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             parentDetails: sortedFamily.filter(e => e.section === 'A').map((member) => {
                 delete member.section;
                 return ({
-                    ...member,
-                    // dateOfBirth: formatISODate(member?.dateOfBirth),
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        dateOfBirth: member.dateOfBirth,
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
                 })
             }),
             siblingDetails: sortedFamily.filter(e => e.section === 'B').map((member) => {
                 delete member.section;
                 return ({
-                    ...member,
-                    // dateOfBirth: formatISODate(member?.dateOfBirth),
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        dateOfBirth: member.dateOfBirth,
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
                 })
             }),
             immediateFamilyInfo: sortedFamily.filter(e => e.section === 'C').map((member) => {
                 delete member.section;
                 return ({
-                    ...member,
-                    dateOfBirth: formatISODate(member?.dateOfBirth),
+                    dateOfBirth: member?.dateOfBirth,
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
                 })
             }),
         },

@@ -203,25 +203,26 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                             placeholder="Enter member's phone number"
                         />
                     </Section>
-                    
-                    <Section width="100%">
-                        <Flex align="center" gap="0.25rem">
-                            <Text
-                                type="p"
-                                text="Member's Date of Birth"
-                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                size={15}
+                    {['C'].includes(values?.section ?? '') && 
+                        <Section width="100%">
+                            <Flex align="center" gap="0.25rem">
+                                <Text
+                                    type="p"
+                                    text="Member's Date of Birth"
+                                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                                    size={15}
+                                />
+                                <Required />
+                            </Flex>
+                            <FieldAsDate
+                                name={`familyMembers.${count}.dateOfBirth`}
+                                placeholder="Select member's date of birth"
+                                formik={formik}
+                                maxDate={dayjs()}
+                                format="DD/MM/YYYY"
                             />
-                            <Required />
-                        </Flex>
-                        <FieldAsDate
-                            name={`familyMembers.${count}.dateOfBirth`}
-                            placeholder="Select member's date of birth"
-                            formik={formik}
-                            maxDate={dayjs()}
-                            format="DD/MM/YYYY"
-                        />
-                    </Section>
+                        </Section>
+                    }
                 </Flex>
           )}
           
@@ -275,9 +276,9 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
         </Flex>
           
       {values?.accompanying && (
-        <div>
+        <React.Fragment>
           <Flex
-            margin="0"
+            margin="0 0 1rem"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
@@ -371,7 +372,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
             </Section>
         </Flex>
             
-        </div>
+        </React.Fragment>
       )}
     </Section>
   );
