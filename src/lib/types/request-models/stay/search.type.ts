@@ -96,7 +96,6 @@ export interface StaySearchSort {
     sortBy?: string;
 }
 export interface StaySearchMeta {
-    limit: number;
     page: number;
 }
 export interface SearchStayRequestRequestQuery
