@@ -12,7 +12,7 @@ import SpaIcon from "@mui/icons-material/Spa";
 import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare } from "@mui/icons-material";
 import { PiCheckCircle } from "react-icons/pi";
 
-export const pickIcon = (val: string) => {
+export const pickAmenityIcon = (val: string) => {
     switch (val) {
         case 'Free Breakfast': return <FreeBreakfastIcon style={{ fontSize: '28px '}} />;
         case 'Free Wi-Fi': return <WifiIcon style={{ fontSize: '28px '}} />;
@@ -48,7 +48,7 @@ function AmenitiesBox({ amenities, sortedAmenities } : AmenitiesBoxProps) {
         <GridLayout className="stay_details_grid">
             {sortedAmenities.map((am, index) => 
                 <Flex gap="8px" align="center" key={`modal-amenity-${index}`}>
-                    {pickIcon(am)}
+                    {pickAmenityIcon(am)}
                     <Text
                         whiteSpace="nowrap"
                         type="h1"

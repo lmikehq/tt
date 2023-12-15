@@ -335,7 +335,8 @@ export const sampleViewStay: ViewSingleStayResponse = {
         "description_struct": [
             {
                 "paragraphs": [
-                    "A perfect fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of \"D-Resort Sibenik\"."
+                    "A perfect fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of \"D-Resort Sibenik\".",
+                    "A nice fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of \"D-Resort Sibenik\".",
                 ],
                 "title": "Location"
             },

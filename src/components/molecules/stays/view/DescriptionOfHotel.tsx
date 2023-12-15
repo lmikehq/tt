@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import OutletIcon from "@mui/icons-material/Outlet";
 import { ttColors } from "@/lib/theme/colors";
+import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 
 export const BootstrapTooltip = styled(
   ({ className, ...props }: TooltipProps) => (
@@ -33,7 +34,7 @@ export const BootstrapTooltip = styled(
 }));
 
 interface ExpandableTextProps {
-  text: string;
+  text: string | string[];
   maxLines: number;
 }
 
@@ -80,14 +81,22 @@ export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
     WebkitBoxOrient: "vertical",
     whiteSpace: "pre-line",
     WebkitLineClamp: expanded ? "unset" : maxLines,
+    color: ttColors.foundation.gray,
+    fontSize: '14px',
+    marginBottom: '.5rem'
   };
 
   return (
       <div>
-        <Text type="p" size={13} text={text} color={ttColors.foundation.gray} />
-        <p style={textStyle} ref={textRef}>
-            {text}
-        </p>
+          {Array.isArray(text) ? text.map((t, index, arr) => 
+            <p style={textStyle} ref={index === arr.length - 1 ? textRef : undefined} key={`txt-${index}`}>
+                {t}
+            </p>
+          ) : (
+            <p style={textStyle} ref={textRef}>
+                {text}
+            </p>  
+        )}
 
       {!expanded && (
         <Flex
@@ -123,7 +132,13 @@ export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
     </div>
   );
 };
-const DescriptionOfHotel = () => {
+
+
+interface DescriptionOfHotelProps {
+    stayResponse: ViewSingleStayResponse;
+}
+
+const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
   const { isMobile } = useScreenResolution();
 
   return (
@@ -156,7 +171,7 @@ const DescriptionOfHotel = () => {
         </Header>
         <GridLayout className="description_grid">
           <Span>
-            <Span style={{ marginBottom: "25px" }}>
+            {/* <Span style={{ marginBottom: "25px" }}>
               <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
                 <PinDropIcon style={{ fontSize: "19px" }} />
                 <Text
@@ -172,17 +187,19 @@ const DescriptionOfHotel = () => {
                 color="var(--text-gray-color)"
                 text="Want to take a rest and explore the city? Hotel «New York Marriott Marquis» is located in New York. This hotel is located in 3 km from the city center. You can take a walk and explore the neighbourhood area of the hotel — Broadway, Times Square and Times Square – 42nd Street."
               ></Text>
-            </Span>
-            <Span>
-              <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
-                <BedIcon style={{ fontSize: "19px" }} />
-                <Text type="h5" weight={"bold"} size={15} text="Hotel"></Text>
-              </Flex>
-              <ExpandableTextTag
-                text="You can stop by the bar. You can stop by the restaurant. Have a cup of coffee in the cafe and, who knows, maybe it’s going to be the best one in the city. Want to be always on-line? Wi-Fi is available. If you travel by car, there’s a paid parking zone at the hotel. The following services are also available for the guests: a massage room, a spa center and a recreation club. Guests who love doing sports will be able to enjoy a fitness center and a gym. To book an excursion, consult the tour assistance desk of the hotel."
-                maxLines={4}
-              />
-            </Span>
+            </Span> */}
+            {stayResponse.description_struct.map((desc, index) => 
+                <Span key={`desc-${index}`} style={{ display: 'flex', flexDirection: 'column', margin: '0 0 1rem' }}>
+                    <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
+                        <BedIcon style={{ fontSize: "19px" }} />
+                        <Text type="h5" weight={"bold"} size={15} text={desc.title}></Text>
+                    </Flex>
+                    <ExpandableTextTag
+                        text={desc.paragraphs}
+                        maxLines={5}
+                    />
+                </Span>
+            )}
           </Span>
           <Span>
             <Flex direction="column">
