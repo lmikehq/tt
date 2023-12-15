@@ -121,10 +121,16 @@ export const getSteps = ({
       title: "Upload Document",
       content: (
         <UploadDocuments
-          steps={["Upload All Required Documents"]}
-          index={5}
-          persistForm={persistForm}
-          formik={documentsFormik}
+            steps={["Upload All Required Documents"]}
+            index={5}
+            persistForm={persistForm}
+            formik={documentsFormik}
+            detailsFormik={detailsFormik}
+            personalFormik={personalInfoFormik}
+            educationFormik={educationFormik}
+            employmentFormik={employmentFormik}
+            familyFormik={familyMembersFormik}
+            guarantorFormik={guarantorFormik}
         />
       ),
     },
