@@ -8,7 +8,7 @@ import Section from "src/components/molecules/section";
 
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { DocumentInterface, Mode } from "@lib/types";
+import { DetailsKeys, DocumentInterface, EducationDetailsInterface, EmploymentDetailsInterface, FamilyInfoInterface, GuarantorInfoInterface, Mode, PersonalInfoInterface } from "@lib/types";
 import DocumentUploadWidget from "@organism/DocumentUploadWidget";
 import ContinueButton from "@organism/continueButton";
 import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
@@ -18,13 +18,20 @@ import FormStepTitle from "./formStepsTitle";
 import ApplicationPreview from "./applicationPreview";
 
 interface formProps {
-  steps: string[];
-  index: number;
-  persistForm: () => void;
-  formik: FormikProps<{ documents: DocumentInterface[] }>;
+    steps: string[];
+    index: number;
+    persistForm: () => void;
+    formik: FormikProps<{ documents: DocumentInterface[] }>;
+    detailsFormik: FormikProps<DetailsKeys>;
+    personalFormik: FormikProps<PersonalInfoInterface>;
+    employmentFormik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
+    educationFormik: FormikProps<{ education: EducationDetailsInterface[] }>;
+    familyFormik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
+    guarantorFormik: FormikProps<GuarantorInfoInterface>;
 }
 
-function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
+
+function UploadDocuments({ steps, index, persistForm, formik, detailsFormik, personalFormik, employmentFormik, educationFormik, familyFormik, guarantorFormik }: formProps) {
     const { isMobile } = useScreenResolution();
     const { form, mode, setUploadedDocuments, uploadedDocuments } = useApplicationFormStore((state) => state);
     
@@ -276,11 +283,11 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
             <ApplicationPreview
                 isOpen={isOpenPreview}
                 onClose={togglePreview}
-                applicationDetails={form.tripDetails}
-                personalInfo={form.personalInfo}
-                familyMembers={form.familyMembers}
-                employment={form.employment}
-                education={form.education}
+                applicationDetails={detailsFormik.values}
+                personalInfo={personalFormik.values}
+                familyMembers={familyFormik.values.familyMembers}
+                employment={employmentFormik.values.employment}
+                education={educationFormik.values.education}
                 documents={uploadedDocuments}
                 handleSubmit={() => formik.handleSubmit()}
             />

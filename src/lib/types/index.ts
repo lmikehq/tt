@@ -263,6 +263,7 @@ export interface PrimaryTravellerInterface
 export type VisaFormUnionType =
     | { tripDetails: DetailsKeys }
     | { personalInfo: PersonalInfoInterface }
+    | { guarantorInfo: GuarantorInfoInterface }
     | ManyEducationDetailsInterface
     | ManyEmploymentDetailsInterface
     | ManyFamilyInfoInterface
