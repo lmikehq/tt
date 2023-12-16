@@ -22,7 +22,7 @@ function Two({ educationInfo = [], goToStep }: TwoProps) {
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '72%' : '80%'}>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '65%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (2/5)`}

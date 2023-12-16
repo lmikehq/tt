@@ -154,6 +154,9 @@ function ApplicationPreview({
     const [step, setStep] = useState(1);
 
     const prevStep = () => {
+        if (step == 1) {
+            onClose()
+        }
         setStep((prev) => Math.max(1, prev - 1));
     };
     const nextStep = () => {
@@ -163,7 +166,6 @@ function ApplicationPreview({
         goToStep({ step })
         onClose()
     }
-
 
     const finalSubmit = () => {
         handleSubmit();
@@ -179,7 +181,7 @@ function ApplicationPreview({
                 padding="1rem 2rem"
                 gap="2rem"
                 width={isMobile ? "95vw" : "45vw"}
-                height={isMobile ? "95vh" : "95vh"}
+                height={isMobile ? "85vh" : "95vh"}
                 borderRadius="16px"
                 position="relative"
                 justify="space-between"
@@ -222,6 +224,7 @@ function ApplicationPreview({
                     width="calc(100% - 4rem)"
                     position="fixed"
                     padding="1rem 0 0"
+                    background="white"
                     styles={{ bottom: "1rem", borderTop: `1px solid ${ttColors.lightestGray}` }}
                 >
                     <Flex align="flex-start">
@@ -245,12 +248,12 @@ function ApplicationPreview({
                         <Flex
                             direction="row"
                             width="100%"
-                            gap="2rem"
+                            gap="1.4rem"
                         >
                             <Button
                                 variant="link"
                                 onClick={prevStep}
-                                disabled={step === 1}
+                                disabled={step === 0}
                                 width="fit-content"
                                 height="fit-content"
                             >
@@ -259,7 +262,7 @@ function ApplicationPreview({
                                     type="p"
                                     color={step === 1 ? ttColors.gray : ttColors.foundation.gray}
                                     weight={500}
-                                    size={isMobile ? 15 : 16}
+                                    size={isMobile ? 14 : 16}
                                 />
                             </Button>
                             <Button
@@ -273,7 +276,7 @@ function ApplicationPreview({
                                     type="p"
                                     color={step === 5 ? ttColors.gray : ttColors.primary}
                                     weight={500}
-                                    size={isMobile ? 15 : 16}
+                                    size={isMobile ? 14 : 16}
                                 />
                             </Button>
                         </Flex>
@@ -282,6 +285,7 @@ function ApplicationPreview({
                             onClick={finalSubmit}
                             background={ttColors.dark}
                             width="100%"
+                            padding="0 1rem"
                         >
                             <Text
                                 text="Proceed To Payment"

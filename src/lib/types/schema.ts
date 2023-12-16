@@ -679,8 +679,8 @@ export const test: ApplicationFormRequestInput = {
                 "dateOfBirth": "1992-05-15",
                 "gender": "Female",
                 "passportNumber": "P987654",
-                "expiryYear": "2025",
-                "issueYear": "2020",
+                "expiryYear": 2025,
+                "issueYear": 2020,
             },
             {
                 "membersName": "Prettier Miia",
@@ -692,8 +692,8 @@ export const test: ApplicationFormRequestInput = {
                 "dateOfBirth": "1992-05-15",
                 "gender": "Female",
                 "passportNumber": "P987654",
-                "expiryYear": "2025",
-                "issueYear": "2020",
+                "expiryYear": 2025,
+                "issueYear": 2020,
             }
         ]
     },
