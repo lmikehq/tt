@@ -135,6 +135,15 @@ export const GridLayout = styled.div`
       }
     }
   }
+  &.flight_landing_grid {
+    grid-template-columns: repeat(3, 1fr);
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
 `;
 
 export const ImageBox = styled.div`
@@ -142,6 +151,19 @@ export const ImageBox = styled.div`
   max-height: 110px;
   border-radius: 6px;
   overflow: hidden;
+  &.flight_img_box {
+    width: 180px;
+    height: 150px;
+    border-radius: 4px;
+    @media screen and (max-width: 900px) {
+      width: 250px !important;
+      height: 250px !important;
+    }
+    .link {
+      width: 100%;
+      height: 100% !important;
+    }
+  }
   @media screen and (max-width: 395px) {
     width: 100%;
   }

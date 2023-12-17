@@ -48,6 +48,10 @@ export const FlexBox = styled.div`
       }
     }
   }
+  &.stay_blog_admin {
+    align-items: center;
+    margin: 5px 0px;
+  }
   @media screen and (max-width: 990px) {
     &.sty_wrap {
       flex-wrap: wrap;
@@ -380,18 +384,71 @@ export const SliderContainer = styled.div`
 export const SlideContent = styled.div`
   margin: 0px -5px;
   margin-left: -8px;
+  &.stay_slider_content {
+    position: relative;
+    // height: 400px;
+    margin: 0px -17px;
+    margin-left: 0px !important;
+    right: 7.5px;
+  }
 `;
-export const SliderWidth = styled.div``;
+export const SliderWidth = styled.div`
+  &.stay_landing_cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    @media screen and (max-width: 900px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  &.stay_slider_height {
+    // height: 400px;
+    width: 100%;
+
+    .text_styles {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+  }
+`;
 
 export const SlideList = styled.div`
   border-radius: 20px;
   margin: 10px;
   margin-bottom: 25px;
+  position: relative;
 `;
 export const SlideCard = styled.div``;
 export const SliderImgBox = styled.div`
-  border-radius: 12px;
+  border-radius: 12px !important;
   overflow: hidden;
+  &.stay_landing_trending {
+    height: 260px;
+    position: relative;
+    .image-container {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .image-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0.5)
+      );
+    }
+  }
 `;
 
 export const FavoriteSliderBox = styled.div`
@@ -407,4 +464,9 @@ export const FavoriteSliderBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  &.stay_landing_favorite {
+    position: absolute;
+    top: 45px;
+    right: 15px;
+  }
 `;

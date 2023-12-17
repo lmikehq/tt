@@ -222,9 +222,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   cursor="pointer"
                   gap=".3rem"
                   height="70px"
-                  borderBottom={
-                    active ? `5px solid ${ttColors.primary}` : "none"
-                  }
+                  color={active ? ttColors.primary600 : "none"}
                 >
                   {item.icon}
                   <Link href={`/${item.url}`}>
@@ -233,6 +231,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                       type="p"
                       whiteSpace="nowrap"
                       weight={600}
+                      color={active ? ttColors.primary600 : "none"}
                     />
                   </Link>
                 </Flex>
