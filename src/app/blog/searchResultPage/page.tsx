@@ -1,21 +1,13 @@
 import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
-import { BiDotsHorizontalRounded } from "react-icons/bi";
-import { LiaThumbsUpSolid, LiaThumbsDown } from "react-icons/lia";
-import { BsBoxArrowUp } from "react-icons/bs";
-
-import AdminPostImg from "../../../../../public/assets/images/blog/adminPost.png";
-import User from "../../../../../public/assets/images/blog/user.png";
-import BlogImg from "../../../../../public/assets/images/blog/blogImg.png";
-import CustomTab from "@/components/atoms/tabs";
 import BlogTab from "@/components/atoms/blogTab";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { BlogArticleMini } from "@/components/molecules/blog/component/blogArticleMini";
 import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
 import { RelatedTopic } from "@/components/molecules/blog/component/relatedTopic";
 
-export const SearchResult = () => {
+export const SearchResultPage = () => {
   const { isMobile } = useScreenResolution();
 
   const tabItems = [
@@ -51,7 +43,7 @@ export const SearchResult = () => {
   return (
     <>
       <Flex gap="50px" direction={isMobile ? "column" : "row"}>
-        <Flex direction="column" width="65%" gap="2rem">
+        <Flex direction="column" width={isMobile ? "100%" : "65%"} gap="2rem">
           <BlogTab tabItems={tabItems} addColor width={true} />
 
           <BlogArticleMini />
@@ -69,7 +61,7 @@ export const SearchResult = () => {
           <BlogArticleMini />
         </Flex>
 
-        <Flex width="40%" direction="column" justify="flex-start" gap="3.5rem">
+        <Flex width={isMobile ? "100%" : "40%"} direction="column" justify="flex-start" gap="3.5rem">
           <Flex direction="column" gap="3rem">
             <Text
               type="h2"

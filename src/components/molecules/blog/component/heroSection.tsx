@@ -8,7 +8,7 @@ import { useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { LiaTimesSolid } from "react-icons/lia";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { SearchResult } from "@/app/blog/searchResult/page";
+import { SearchResultPage } from "@/app/blog/searchResultPage/page";
 
 const Box = styled.div`
   width: 886px;
@@ -119,7 +119,7 @@ export const BlogHeroSection = () => {
 
   const renderContent = () => {
     if (searchTriggered) {
-      return <SearchResult />;
+      return <SearchResultPage />;
     } else {
       return <AdminPost />;
     }
