@@ -56,6 +56,12 @@ export const List = styled.div`
   border: 1px solid var(--color-border);
   padding: 10px;
   border-radius: 6px;
+  &.flight_list {
+    &:hover {
+      box-shadow: 0px 33px 33px 33px hsla(0, 10%, 73.3%, 0.15);
+      transition: all 400ms ease;
+    }
+  }
 
   @media screen and (max-width: 395px) {
     .compare_recently {

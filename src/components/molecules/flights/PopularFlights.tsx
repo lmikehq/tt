@@ -219,7 +219,7 @@ function PopularFlights() {
       </Flex>
       <GridLayout className="flight_landing_grid">
         {displayedFlights.map((flight, index) => (
-          <List key={index}>
+          <List key={index} className="flight_list">
             <Flex gap="15px" className="compare_recently">
               <ImageBox className="flight_img_box">
                 <Link href="" className="link">
