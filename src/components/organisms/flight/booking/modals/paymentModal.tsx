@@ -213,7 +213,7 @@ function PaymentModal({ open, handleClose, formik }: PaymentModalProps) {
                             width="100%"
                             background={ttColors.blackishBlue}
                             type="submit"
-                            onClick={() => console.log(formik)}
+                            onClick={() => {}}
                         >
                             {isLoading ? (
                                 <Spinner size="40px" fill={ttColors.primary} />

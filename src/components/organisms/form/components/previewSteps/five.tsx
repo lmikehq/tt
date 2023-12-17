@@ -6,21 +6,24 @@ import { Detail } from '../applicationPreview';
 import { DocumentInterface, FamilyInfoInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
 import { UploadedDoc } from '../../applicationForm';
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 
 
 interface FiveProps{
     documentsInfo: UploadedDoc[];
+    goToStep: (step: number) => void;
 }
 
-function Five({ documentsInfo = [] }: FiveProps) {
-    const [isOpenAcc, setOpenAcc] = useState<number | null>(0)
+function Five({ documentsInfo = [], goToStep }: FiveProps) {
+    const { isMobile } = useScreenResolution()
+    const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
 
     const toggleAcc = (index: number) => {
         setOpenAcc(prev => prev === index ? null : index)
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height='77%'>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '65%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (5/5)`}
@@ -40,6 +43,7 @@ function Five({ documentsInfo = [] }: FiveProps) {
                         heading={`Documents ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
+                        onEdit={() => goToStep(6)}
                         key={`document-${index}`}
                     >
                         <Flex width='100%' wrap="wrap" gap="1.4rem">

@@ -5,21 +5,24 @@ import Text from '@/components/atoms/text';
 import { Detail } from '../applicationPreview';
 import { FamilyInfoInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 
 
 interface FourProps{
     familyInfo: FamilyInfoInterface[];
+    goToStep: (step: number) => void;
 }
 
-function Four({ familyInfo = [] }: FourProps) {
-    const [isOpenAcc, setOpenAcc] = useState<number | null>(0)
+function Four({ familyInfo = [], goToStep }: FourProps) {
+    const { isMobile } = useScreenResolution()
+    const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
 
     const toggleAcc = (index: number) => {
         setOpenAcc(prev => prev === index ? null : index)
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height='77%'>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '65%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (4/5)`}
@@ -39,6 +42,7 @@ function Four({ familyInfo = [] }: FourProps) {
                         heading={`Family Member ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
+                        onEdit={() => goToStep(5)}
                         key={`member-${index}`}
                     >
                         <Flex width='100%' wrap="wrap" gap="1.4rem">

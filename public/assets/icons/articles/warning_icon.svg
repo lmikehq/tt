@@ -1,0 +1,20 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon-park-solid:caution">
+<g id="Mask group">
+<mask id="mask0_10410_35163" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="1" width="28" height="26">
+<g id="Group">
+<g id="Group_2">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M13.9998 2.91602L1.1665 25.0827H26.8332L13.9998 2.91602Z" fill="#FFDD78" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+<g id="Vector_2">
+<path d="M14 20.4154V20.9987V20.4154ZM14 11.082L14.0047 16.9154L14 11.082Z" fill="#FFDD78"/>
+<path d="M14 20.4154V20.9987M14 11.082L14.0047 16.9154" stroke="black" stroke-width="2" stroke-linecap="round"/>
+</g>
+</g>
+</g>
+</mask>
+<g mask="url(#mask0_10410_35163)">
+<path id="Vector_3" d="M0 0H28V28H0V0Z" fill="#F5B703"/>
+</g>
+</g>
+</g>
+</svg>

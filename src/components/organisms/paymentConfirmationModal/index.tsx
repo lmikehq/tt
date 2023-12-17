@@ -95,7 +95,7 @@ export const PaymentCompleteSection = ({
                 router.push("/dashboard");
               }}
             >
-              Back to dashboard
+              Go to Dashboard
             </Button>
           </Flex>
         </Section>
@@ -185,7 +185,7 @@ const PaymentConfirmationModal = () => {
                     router.push("/dashboard");
                   }}
                 >
-                  Back to dashboard
+                  Go to Dashboard
                 </Button>
               </Flex>
             </Section>

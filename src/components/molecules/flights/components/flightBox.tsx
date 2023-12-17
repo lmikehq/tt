@@ -228,7 +228,7 @@ function FlightRoutes({ flight }: { flight: FlightInfo }) {
     )
 }
 
-function OneIcon({ e } : { e: string }) {
+function OneIcon({ iata } : { iata: string }) {
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const { isMobile } = useScreenResolution();
@@ -243,10 +243,10 @@ function OneIcon({ e } : { e: string }) {
     return (
         <React.Fragment>
             <Flex>
-                {flightState?.airlines[e]?.logo ? (
+                {flightState?.airlines[iata]?.logo ? (
                     <img
-                        src={flightState?.airlines[e]?.logo}
-                        alt={`airline-${flightState?.airlines[e]?.Airline}`}
+                        src={flightState?.airlines[iata]?.logo}
+                        alt={`airline-${flightState?.airlines[iata]?.Airline}`}
                         width={isMobile ? "50px" : "60px"}
                         height={isMobile ? "50px" : "60px"}
                         style={{
@@ -272,7 +272,7 @@ function OneIcon({ e } : { e: string }) {
                             size={20}
                             weight={500}
                             color={ttColors.light}
-                            text={e.slice(0, 2)}
+                            text={iata.slice(0, 2)}
                         />
                     </Flex>
                 )}
@@ -281,7 +281,7 @@ function OneIcon({ e } : { e: string }) {
                 <Flex borderRadius='8px' background={ttColors.darkBg} padding="1rem 2rem">
                     <Text
                         type="p"
-                        text={flightState?.airlines[e]?.Airline ?? ""}
+                        text={flightState?.airlines[iata]?.Airline ?? ""}
                         color="white"
                         size={15}
                         weight={500}
@@ -296,7 +296,7 @@ function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
         <Flex width="auto" gap=".4rem">
             {airlines.map((e, index) =>
                 <OneIcon
-                    e={e}
+                    iata={e}
                     key={`airline-${index}`}
                 />
             )}

@@ -14,59 +14,59 @@ import CountryRequirementDetails from "./countryRequirementDetails";
 import SectionTitle from "./sectionTitle";
 // import '@style/countries.css'
 interface pageProps {
-  params: Qparams["params"];
+    params: Qparams["params"];
 }
 
 const CountryPage: React.FC<pageProps> = ({ params }) => {
-  const { isMobile } = useScreenResolution();
-  const [html, setHtml] = React.useState("");
+    const { isMobile } = useScreenResolution();
+    const [html, setHtml] = React.useState("");
 
-  useEffect(() => {
-    fetchHTMLContent(params.countryName || "canada").then((HTML) =>
-      setHtml(HTML)
-    );
-  }, []);
-  console.log("html: ", html);
-  const coverImage = isMobile
-    ? "/assets/images/visaPageCover.jpg"
-    : "/assets/images/visaDesktopCover.jpg";
-  const countryInfo = `
+    useEffect(() => {
+        fetchHTMLContent(params.countryName || "canada").then((HTML) =>
+            setHtml(HTML)
+        );
+    }, []);
+
+    const coverImage = isMobile
+        ? "/assets/images/visaPageCover.jpg"
+        : "/assets/images/visaDesktopCover.jpg";
+    const countryInfo = `
   <div class="prose prose-slate mx-auto mt-8 lg:prose-lg">
   ${html}
 
   `;
-  return (
-    <div>
-      <AllCountryHead
-        cover={coverImage}
-        title={unUrlString(params.countryName || "")}
-      />
-      <SectionLayout>
-        <SectionTitle
-          title={`${params?.countryName?.toLocaleUpperCase()} - Apply for your Visa now!`}
-          description="We can help you to process the visa, and provide all the necessary documents."
-          showButton={false}
-        />
+    return (
+        <div>
+            <AllCountryHead
+                cover={coverImage}
+                title={unUrlString(params.countryName || "")}
+            />
+            <SectionLayout>
+                <SectionTitle
+                    title={`${params?.countryName?.toLocaleUpperCase()} - Apply for your Visa now!`}
+                    description="We can help you to process the visa, and provide all the necessary documents."
+                    showButton={false}
+                />
 
-        <Grid
-          columns={isMobile ? "1fr" : "60% 40%"}
-          gap="0"
-          style={{
-            gridTemplateColumns: isMobile ? "1fr" : "65% 35%",
-          }}
-        >
-          <CountryDetails
-            details={countryInfo}
-            country={params?.countryName || ""}
-          />
-          <CountryRequirementDetails
-            details={SAMPLE_COUNTRY_REQUIREMENT}
-            country={params.countryName || ""}
-          />
-        </Grid>
-        <HelpfulOrNot />
-      </SectionLayout>
-    </div>
-  );
+                <Grid
+                    columns={isMobile ? "1fr" : "60% 40%"}
+                    gap="0"
+                    style={{
+                        gridTemplateColumns: isMobile ? "1fr" : "65% 35%",
+                    }}
+                >
+                    <CountryDetails
+                        details={countryInfo}
+                        country={params?.countryName || ""}
+                    />
+                    <CountryRequirementDetails
+                        details={SAMPLE_COUNTRY_REQUIREMENT}
+                        country={params.countryName || ""}
+                    />
+                </Grid>
+                <HelpfulOrNot />
+            </SectionLayout>
+        </div>
+    );
 };
 export default CountryPage;

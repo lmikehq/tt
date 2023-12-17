@@ -4,6 +4,7 @@ import {
     EducationDetailsInterface,
     EmploymentDetailsInterface,
     FamilyInfoInterface,
+    GuarantorInfoInterface,
     PersonalInfoInterface,
     VisaApplicationFormInterface,
 } from "@lib/types";
@@ -48,7 +49,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
         lastName: yup.string().required("Required"),
         middleName: yup.string(),
         email: yup.string().required("Required").email("Invalid email address"),
-        placeOfBirth: countrySchema.required(),
+        placeOfBirth: countrySchema.required("Required"),
         phoneNumber: yup.string().required("Required"),
         stateOfOrigin: yup.string().required("Required"),
         placeOfOrigin: yup.string().required("Required"),
@@ -58,7 +59,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
         issueDate: yup.string().required("Required"),
         expiryDate: yup.string().required("Required"),
         address: yup.string().required("Required"),
-        countryOfCitizen: countrySchema.required(),
+        countryOfCitizen: countrySchema.required("Required"),
         dateOfBirth: yup.string().required("Required"),
         gender: yup.string().required("Required"),
         maritalStatus: yup.string().required("Required"),
@@ -71,7 +72,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             then: (schema) => schema.required("Required"),
         }),
         marriageEndDate: yup.string().when("maritalStatus", {
-            is: "Married",
+            is: "Divorced",
             then: (schema) => schema.required("Required"),
         }),
         passportNumber: yup.string().required("Required"),
@@ -125,7 +126,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
         //added-values
         countryOfApply: countrySchema,
         countryOfResidence: countrySchema,
-        livedAbroad: yup.boolean(),
+        livedAbroad: yup.boolean().required("Required"),
         countriesLived: yup.number(),
         statusOfResidence: yup.string().required("Required"),
         startDateOfResidence: yup.string().required("Required"),
@@ -151,14 +152,12 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             is: true,
             then: (schema) => schema.required("Required"),
         }),
-        contactInLocationRelationship: yup
-            .string()
+        contactInLocationRelationship: yup.string()
             .when("hasContactInLocation", {
                 is: true,
                 then: (schema) => schema.required("Required"),
             }),
-        contactInLocationPhoneNumber: yup
-            .string()
+        contactInLocationPhoneNumber: yup.string()
             .when("hasContactInLocation", {
                 is: true,
                 then: (schema) => schema.required("Required"),
@@ -172,15 +171,21 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             is: true,
             then: (schema) => schema.required("Required"),
         }),
-        prevResidence1: countrySchema.required(),
-        prevResidence2: countrySchema.required(),
-        prevResidence3: countrySchema.required(),
+        prevResidence1: countrySchema,
+        prevResidence2: countrySchema,
+        prevResidence3: countrySchema,
+        prevResidence4: countrySchema,
+        prevResidence5: countrySchema,
         startDatePrevResidence1: yup.string(),
         startDatePrevResidence2: yup.string(),
         startDatePrevResidence3: yup.string(),
+        startDatePrevResidence4: yup.string(),
+        startDatePrevResidence5: yup.string(),
         endDatePrevResidence1: yup.string(),
         endDatePrevResidence2: yup.string(),
         endDatePrevResidence3: yup.string(),
+        endDatePrevResidence4: yup.string(),
+        endDatePrevResidence5: yup.string(),
     });
 
 export const personalInfoKeys: PersonalInfoInterface = {
@@ -251,12 +256,18 @@ export const personalInfoKeys: PersonalInfoInterface = {
     prevResidence1: mockCountry,
     prevResidence2: mockCountry,
     prevResidence3: mockCountry,
+    prevResidence4: mockCountry,
+    prevResidence5: mockCountry,
     startDatePrevResidence1: "",
     startDatePrevResidence2: "",
     startDatePrevResidence3: "",
+    startDatePrevResidence4: "",
+    startDatePrevResidence5: "",
     endDatePrevResidence1: "",
     endDatePrevResidence2: "",
     endDatePrevResidence3: "",
+    endDatePrevResidence4: "",
+    endDatePrevResidence5: "",
     marriageStartDate: "",
     marriageEndDate: "",
 };
@@ -423,6 +434,22 @@ export const familyInforKeys: FamilyInfoInterface = {
     // issueYear: 2020,
 };
 
+export const guarantorSchema: yup.ObjectSchema<GuarantorInfoInterface> = yup.object().shape({
+    guarantorName: yup.string().required("Required"),
+    relationshipToGuarantor: yup.string().required("Required"),
+    guarantorAddress: yup.string().required("Required"),
+    guarantorPhone: yup.string().required("Required"),
+    guarantorWorth: yup.string().required("Required"),
+})
+
+export const guarantorKeys: GuarantorInfoInterface = {
+    guarantorName: "",
+    relationshipToGuarantor: "",
+    guarantorAddress: "",
+    guarantorPhone: "",
+    guarantorWorth: "",
+}
+
 export const educationArraySchema = yup
     .array()
     .of(singleEducationSchema)
@@ -479,6 +506,7 @@ export const visaInitVals: VisaApplicationFormInterface = {
     ...familyInfoArr,
     personalInfo: personalInfoKeys,
     ...documentsArr,
+    guarantorInfo: guarantorKeys,
 };
 
 export const waitlistSchema = yup.object().shape({
@@ -493,138 +521,216 @@ export const waitlistSchema = yup.object().shape({
         .required({ message: "Please select readiness option" }),
 });
 
+
 export const test: ApplicationFormRequestInput = {
-    primaryTraveller: {
-        homeCountry: {
-            name: "Country1",
-            code: "C1",
+    "primaryTraveller": {
+        "personalDetails": {
+            "firstName": "John",
+            "middleName": "M",
+            "lastName": "Doe",
+            "previousSurname": "Schmedtmann",
+            "dateOfBirth": "1990-01-01",
+            "email": "tmike@yopmail.com",
+            "placeOfBirth": "City1",
+            "stateOfOrigin": "State1",
+            "phoneNumber": "13142536782900",
+            "lgaOfOrigin": "LGA1",
+            "nativeLanguage": "English",
+            "meansOfId": "Passport",
+            "idNumber": "ABC123",
+            "issueDate": "2020-01-01",
+            "expiryDate": "2030-01-01",
+            "address": "123 Main St",
+            "gender": "Male"
         },
-        destination: {
-            name: "Country2",
-            code: "C2",
+        "citizenshipInformation": {
+            "countryOfCitizenship": {
+                "name": "Nigeria",
+                "code": "NG"
+            },
+            "countryOfResidence": {
+                "name": "Nigeria",
+                "code": "NG"
+            },
+            "countryApplyingFrom": {
+                "name": "Nigeria",
+                "code": "NG"
+            },
+            "statusOfResidence": "Immigrant",
+            "startDateOfResidence": "Birth",
+            "placeOfOrigin": "Lagos",
+            "previousCountryOfResidences": [
+                {
+                    "country": {
+                        "name": "Nigeria",
+                        "code": "NG"
+                    },
+                    "since": "Jan 2023",
+                    "till": "Oct, 2023"
+                }
+            ],
+            "greenCardDetails": {
+                "number": "",
+                "expiryDate": "",
+            }
         },
-        travellingBy: "Airplane",
-        firstName: "TestJohn",
-        middleName: "M",
-        lastName: "TestDoe",
-        dateOfBirth: "1990-01-01",
-        email: "testvisa@ymail.com",
-        placeOfBirth: "City1",
-        stateOfOrigin: "State1",
-        phoneNumber: "1234567890",
-        placeOfOrigin: "LGA1",
-        nativeLanguage: "English",
-        meansOfId: "Passport",
-        idNumber: "ABC123",
-        issueDate: "2020-01-01",
-        expiryDate: "2030-01-01",
-        countryOfCitizen: "Country3",
-        address: "123 Main St",
-        maritalStatus: "Single",
-        partnersName: "",
-        passportNumber: "P123456",
-        passportIssuedCountry: "Country4",
-        passportExpiryDate: "",
-        gender: "Male",
-        tripPurpose: "Vacation",
-        tuberculosis: false,
-        // tuberculosisDetails: "Problem",
-        mentalDisorder: false,
-        // mentalDisorderDetails: "Anxiety",
-        remainbeyondValidity: false,
-        // remainbeyondValidityDetails: "Problem",
-        refusedBefore: false,
-        // refusedBeforeDetails: "Visa application rejected",
-        arrestedBefore: false,
-        // arrestedBeforeDetails: "Locked up",
-        servedInMilitary: false,
-        // servedInMilitaryDetails: "2 years of service",
-        memberOfViolentGroup: false,
-        // memberOfViolentGroupDetails: "Problem",
-        participatedInViolentActivities: false,
-        // participatedInViolentActivitiesDetails: "Problem",
-        employment: [
-            {
-                companyName: "Company1",
-                jobTitle: "Developer",
-                employmentType: "Full-time",
-                // locationType: "Onsite",
-                companyLocation: "City2",
-                startYear: 2018,
-                stillWorking: true,
+        "passportInformation": {
+            "number": "23423r023r0ee",
+            "issuedCountry": {
+                "name": "Canada",
+                "code": "CA"
             },
-        ],
-        education: [
+            "issuedDate": "23 Jan 2024",
+            "expiryDate": "2030-01-01"
+        },
+        "marriageInformation": {
+            "maritalStatus": "Married",
+            "partnersName": "Pretty Mia",
+            "marriageStartDate": "2024-01-01"
+        },
+        "employment": [
             {
-                school: "University1",
-                degree: "Bachelor's",
-                fieldOfStudy: "Computer Science",
-                cgpa: 3.8,
-                location: "City3",
-                startYear: 2014,
-                stillAtSchool: false,
-                endYear: 2018,
-            },
+                "companyName": "Company1",
+                "jobTitle": "Developer",
+                "employmentType": "Full-time",
+                "locationType": "Hybrid",//
+                "companyLocation": "City2",
+                "startYear": 2018,
+                "stillWorking": false,
+                "endYear": 2023,
+            }
         ],
-        //added
-        // livedAbroad: Country3",
-        // countriesLived: Country3",
-        // countryOfApply: "Country3",
-        // countryOfResidence: "Country3",
-        // statusOfResidence: "",
-        // startDateOfResidence: "",
-        // changeOfName: false,
-        // changedName: "",
-        // occupation: "",
-        // tripDurationStartDate: "",
-        // tripDurationEndDate: "",
-        // tripDurationLocation: "",
-        // hasContactInLocation: false,
-        // contactInLocationLastName: "",
-        // contactInLocationFirstName: "",
-        // contactInLocationAddress: "",
-        // contactInLocationRelationship: "",
-        // contactInLocationPhoneNumber: "",
-        // hasGreenCard: false,
-        // greenCardNumber: "",
-        // greenCardExpiryDate: "",
-        // prevResidence1: mockCountry,
-        // prevResidence2: mockCountry,
-        // prevResidence3: mockCountry,
-        // startDatePrevResidence1: "",
-        // startDatePrevResidence2: "",
-        // startDatePrevResidence3: "",
-        // endDatePrevResidence1: "",
-        // endDatePrevResidence2: "",
-        // endDatePrevResidence3: "",
+        "education": [
+            {
+                "school": "University1",
+                "degree": "Bachelor's",
+                "fieldOfStudy": "Computer Science",
+                "cgpa": 3.8,
+                "location": "City3",
+                "startYear": 2014,
+                "stillAtSchool": false,
+                "endYear": 2018
+            }
+        ],
+        "backgroundInformation": {
+            "tuberculosis": false,
+            // "tuberculosisDetails": "Anxiety",
+            "mentalDisorder": true,
+            "mentalDisorderDetails": "Anxiety",
+            "remainbeyondValidity": false,
+            // "remainbeyondValidityDetails": "Anxiety",
+            "refusedBefore": true,
+            "refusedBeforeDetails": "Visa application rejected",
+            "arrestedBefore": false,
+            "arrestedBeforeDetails": "",
+            "servedInMilitary": true,
+            "servedInMilitaryDetails": "2 years of service",
+            "memberOfViolentGroup": false,
+            // "memberOfViolentGroupDetails": "Anxiety",
+            "participatedInViolentActivities": true,
+            // "participatedInViolentActivitiesDetails": "Anxiety"
+        }
     },
-    familyMembers: [
+    "familyInformation": {
+        "parentDetails": [
+            {
+                "membersName": "Alice Smith",
+                "relationshipToPrimary": "Father",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            },
+            {
+                "membersName": "Alice Smither",
+                "relationshipToPrimary": "Mother",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            }
+        ],
+        "siblingDetails": [
+            {
+                "membersName": "Alice QQ",
+                "relationshipToPrimary": "Brother",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            },
+            {
+                "membersName": "Alice S",
+                "relationshipToPrimary": "Sister",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            }
+        ],
+        "immediateFamilyInfo": [
+            {
+                "membersName": "Pretty Mia",
+                "relationshipToPrimary": "Spouse",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": true,
+                "dateOfBirth": "1992-05-15",
+                "gender": "Female",
+                "passportNumber": "P987654",
+                "expiryYear": 2025,
+                "issueYear": 2020,
+            },
+            {
+                "membersName": "Prettier Miia",
+                "relationshipToPrimary": "Child",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": true,
+                "dateOfBirth": "1992-05-15",
+                "gender": "Female",
+                "passportNumber": "P987654",
+                "expiryYear": 2025,
+                "issueYear": 2020,
+            }
+        ]
+    },
+    "guarantorInformation": {
+        "guarantorName": "Jane Smith",
+        "relationshipToGuarantor": "Friend",
+        "guarantorAddress": "456 Elm St",
+        "guarantorPhone": "9876543210",
+        "guarantorWorth": "50000"
+    },
+    "tripInformation": {
+        "tripDurationStartDate": "",
+        "tripDurationEndDate": "",
+        "tripLocation": "Alberta",
+        "contactInLocationLastName": "Asgard",
+        "contactInLocationFirstName": "Jude",
+        "contactInLocationAddress": "123 Clover Street",
+        "contactInLocationRelationship":  "Uncle",
+        "contactInLocationPhoneNumber": "98768223",
+    },
+    "homeCountry": {
+        "name": "Nigeria",
+        "code": "NG"
+    },
+    "destination": {
+        "name": "Canada",
+        "code": "CA"
+    },
+    "travellingBy": "Airplane",
+    "documents": [
         {
-            membersName: "Alice Smith",
-            relationshipToPrimary: "Spouse",
-            address: "789 Elm St",
-            membersEmail: "alice@example.com",
-            membersPhoneNumber: "9876543210",
-            accompanying: true,
-            dateOfBirth: "1992-05-15",
-            gender: "Female",
-            passportNumber: "P987654",
-            // expiryDate: "",
-            // issueDate: "",
-            // issueCountry: mockCountry,
-            issueYear: "2022",
-            expiryYear: "2025",
-            // section: "",
-            // index: 0,
-        },
+            "name": "Passport",
+            "url": "https://example.com/passport.pdf"
+        }
     ],
-    documents: [
-        {
-            name: "Passport",
-            url: "https://example.com/passport.pdf",
-        },
-    ],
-    user: "64e12d838e1929dbf8450b60",
-    visaType: "Business",
-    applicationType: "Family",
-};
+    "statementOfPurpose": "I am looking for greener pasture",
+    "user": "64ef6ad2e655ed0c2820779f",
+    "visaType": "Business",
+    "applicationType": "Family"
+}
