@@ -9,7 +9,6 @@ import Map from "@molecule/map";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
 import FAQ from "./components/faq";
-
 import PopularHotels from "./PopularHotels";
 import TrendingDestination from "./TrendingDestination";
 import BlogStories from "./BlogStories";
