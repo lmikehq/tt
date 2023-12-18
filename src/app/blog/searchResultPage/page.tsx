@@ -7,7 +7,7 @@ import { BlogArticleMini } from "@/components/molecules/blog/component/blogArtic
 import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
 import { RelatedTopic } from "@/components/molecules/blog/component/relatedTopic";
 
-export const SearchResultPage = () => {
+export const ResultPage = () => {
   const { isMobile } = useScreenResolution();
 
   const tabItems = [
