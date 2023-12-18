@@ -234,7 +234,7 @@ function ApplicationPreview({
                             style={{ width: "97%" }}
                         >
                             <Text
-                                text="I certify that the information contained on this document is complete, accurate and factual. I also realize that once this document has been completed and signed that it will form part of my immigration record and will be used to verify my family details on future applications.“"
+                                text="I certify that all information provided in my visa application is accurate. I understand that providing false information may result in visa denial. By submitting this application, I acknowledge responsibility for its accuracy and agree to face consequences for any inaccuracies."
                                 type="p"
                                 size={isMobile ? 12 : 13}
                             />

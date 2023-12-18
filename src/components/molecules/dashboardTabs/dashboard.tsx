@@ -10,14 +10,14 @@ import Section from "src/components/molecules/section";
 const DashboardHeader = () => {
     const { user } = useUserStore()
     if (!user?._id) {
-        redirect('/login')
+        redirect('/auth/login')
     }
 
     return (
         <Section className="dashboardWrapper" margin={"1rem 0px"}>
             <SectionLayout>
-            <UserPicture />
-            <DashboardTabs />
+                <UserPicture />
+                <DashboardTabs />
             </SectionLayout>
         </Section>
     );
