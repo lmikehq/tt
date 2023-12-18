@@ -246,12 +246,6 @@ const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
                         weight={"bold"}
                         text={`${facts.electricity?.voltage[0]}V, ${facts.electricity?.frequency[0]}Hz`}
                     />
-                    {/* <Text
-                        type="h5"
-                        weight={"bold"}
-                        styles={{ marginTop: "10px" }}
-                        text="North American (grounded) 120 V / 60 Hz"
-                    /> */}
                 </Flex>
             }
             {facts.roomsNumber &&

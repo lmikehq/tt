@@ -319,17 +319,17 @@ export const FilterModal = ({
   // totalSelectedOptions,
   filterItems,
 }: FilterModalProps) => {
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    useEffect(() => {
+        const handleBodyOverflow = () => {
+        document.documentElement.style.overflow = open ? "hidden" : "auto";
+        document.body.style.overflow = open ? "hidden" : "auto";
+        };
+        handleBodyOverflow();
+        return () => {
+        document.documentElement.style.overflow = "auto";
+        document.body.style.overflow = "auto";
+        };
+    }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>

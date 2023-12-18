@@ -55,17 +55,23 @@ const Dropdown: React.FC<DropdownProps> = ({
         onChange={handleChange}
         className={className}
         styles={{
-          container: (provided) => ({
-            ...provided,
-            width: width,
-            minWidth: minWidth,
-            height: height,
-            minHeight: minHeight,
-            padding: padding,
-            border: border,
-            color: color,
-            borderColor: borderColor,
-          }),
+            container: (provided) => ({
+                ...provided,
+                width: width,
+                minWidth: minWidth,
+                height: height,
+                minHeight: minHeight,
+                padding: padding,
+                border: border,
+                color: color,
+                borderColor: borderColor,
+            }),
+            control: (provided) => ({
+                ...provided,
+                height: height,
+                minHeight: minHeight,
+            }),
+            
         }}
         aria-labelledby="react_select_label"
       />

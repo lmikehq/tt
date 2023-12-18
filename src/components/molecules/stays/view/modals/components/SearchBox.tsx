@@ -18,9 +18,9 @@ function SearchBox() {
         //properties needed
     });
 
-    const [guest, setGuest] = useState("guest");
+    const [guest, setGuest] = useState("");
     const options = [
-        { value: "guest", label: "Select guest" },
+        { value: "", label: "Select Guest" },
         { value: "2 adult", label: "2 Adult" },
         { value: "3 children", label: "3 Children" },
         { value: "all inclusive", label: "All Inclusive" },

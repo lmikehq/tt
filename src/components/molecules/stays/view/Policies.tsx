@@ -4,7 +4,6 @@ import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import Flex from "@/components/templates/flex";
 import PetsIcon from "@mui/icons-material/Pets";
-import { ttColors } from "@/lib/theme/colors";
 import { PiBabyFill } from "react-icons/pi";
 import { Metapolicy, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { pickIcon } from "./modals/components/AmenitiesBox";

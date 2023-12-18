@@ -17,6 +17,9 @@ import { useState } from "react";
 import { ChangeSearchModal, FilterModal } from "./modals/Modals";
 import FilterBox from "./modals/components/FilterBox";
 import { isNull } from "util";
+import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import Dropdown from "@/components/organisms/dropdown";
+
 
 interface Metapolicy {
   meal: string[];
@@ -30,158 +33,127 @@ interface Hotel {
 }
 
 const hotels: Hotel[] = [
-  {
-    name: "The Ritz London, 1 King Bed",
-    images: ["/assets/images/stays/image1.jpg"],
-    price: 105000,
-    metapolicy_struct: {
-      meal: [],
-      extra_bed: [],
+    {
+        name: "The Ritz London, 1 King Bed",
+        images: ["/assets/images/stays/image1.jpg"],
+        price: 105000,
+        metapolicy_struct: {
+        meal: [],
+        extra_bed: [],
+        },
     },
-  },
-  {
-    name: "Get Eden Life Hotel",
-    images: ["/assets/images/stays/image1.jpg"],
-    price: 105000,
-    metapolicy_struct: {
-      meal: [],
-      extra_bed: [],
-    },
-  },
-  {
-    name: "Get Eden Life Hotel",
-    images: ["/assets/images/stays/image1.jpg"],
-    price: 105000,
-    metapolicy_struct: {
-      meal: [],
-      extra_bed: [],
-    },
-  },
-  {
-    name: "Get Eden Life Hotel",
-    images: ["/assets/images/stays/image1.jpg"],
-    price: 105000,
-    metapolicy_struct: {
-      meal: [],
-      extra_bed: [],
-    },
-  },
-  {
-    name: "Get Eden Life Hotel",
-    images: ["/assets/images/stays/image1.jpg"],
-    price: 105000,
-    metapolicy_struct: {
-      meal: [],
-      extra_bed: [],
-    },
-  },
-  {
-    name: "Get Eden Life Hotel",
-    images: ["/assets/images/stays/image1.jpg"],
-    price: 105000,
-    metapolicy_struct: {
-      meal: [],
-      extra_bed: [],
-    },
-  },
 ];
 
-const ChooseYourRoom = () => {
-  const { isMobile } = useScreenResolution();
 
-  const [open, setOpen] = useState({
-    search: false,
-    filter: false,
-  });
+interface ChooseYourRoomProps {
+    stayResponse: ViewSingleStayResponse;
+}
 
-  // FILTERED ITEMS
-  const [filterItems, setFilterItems] = useState([]);
+const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
+    const { isMobile } = useScreenResolution();
 
-  // BEDS
-  const [beds, setBeds] = useState("");
-  const bedsOptions = [
-    { value: "all options", label: "All Options" },
-    { value: "double bed", label: "Double Bed" },
-    { value: "separate bed", label: "Separate Bed" },
-  ];
+    const [open, setOpen] = useState({
+        search: false,
+        filter: false,
+    });
 
-  // MEALS
-  const [selectedMealCheckboxValues, setSelectedMealCheckboxValues] = useState<
-    string[]
-  >([]);
-  const mealOptions = [
-    { value: "no meal", displayValue: "No Meal" },
-    { value: "breakfast", displayValue: "Breakfast" },
-    {
-      value: "breakfast + lunch or dinner",
-      displayValue: "Breakfast + Lunch or Dinner",
-    },
-    {
-      value: "breakfast, lunch and dinner",
-      displayValue: "Breakfast, Lunch and Dinner",
-    },
-    { value: "all inclusive", displayValue: "All Inclusive" },
-  ];
+    // FILTERED ITEMS
+    const [filterItems, setFilterItems] = useState([]);
 
-  // CANCELLATION
-  const [cancellation, setCancellation] = useState("");
-  const cancellationOptions = [
-    { value: "all options", label: "All Options" },
-    { value: "with free cancellation", label: "With Free Cancellation" },
-  ];
+    // BEDS
+    const [beds, setBeds] = useState("");
+    const bedsOptions = [
+        { value: "all options", label: "All Options" },
+        { value: "double bed", label: "Double Bed" },
+        { value: "separate bed", label: "Separate Bed" },
+    ];
 
-  // PAYMENT
-  const [selectedPaymentCheckboxValues, setSelectedPaymentCheckboxValues] =
-    useState<string[]>([]);
-  const paymentOptions = [
-    { value: "pay now", displayValue: "Pay Now" },
-    { value: "pay at the hotel", displayValue: "Pay at the Hotel" },
-  ];
+    // MEALS
+    const [selectedMealCheckboxValues, setSelectedMealCheckboxValues] = useState<
+        string[]
+    >([]);
+    const mealOptions = [
+        { value: "no meal", displayValue: "No Meal" },
+        { value: "breakfast", displayValue: "Breakfast" },
+        {
+        value: "breakfast + lunch or dinner",
+        displayValue: "Breakfast + Lunch or Dinner",
+        },
+        {
+        value: "breakfast, lunch and dinner",
+        displayValue: "Breakfast, Lunch and Dinner",
+        },
+        { value: "all inclusive", displayValue: "All Inclusive" },
+    ];
 
-  const [submissionState, setSubmissionState] = useState({
-    loading: false,
-    //properties needed
-  });
+    // CANCELLATION
+    const [cancellation, setCancellation] = useState("");
+    const cancellationOptions = [
+        { value: "all options", label: "All Options" },
+        { value: "with free cancellation", label: "With Free Cancellation" },
+    ];
 
-  // SUBMIT HANDLER
-  const handleSubmit = () => {
-    setOpen((prev) => ({
-      ...prev,
-      filter: false,
-    }));
-  };
+    // PAYMENT
+    const [selectedPaymentCheckboxValues, setSelectedPaymentCheckboxValues] = useState<string[]>([]);
+    const paymentOptions = [
+        { value: "pay now", displayValue: "Pay Now" },
+        { value: "pay at the hotel", displayValue: "Pay at the Hotel" },
+    ];
+
+    const [submissionState, setSubmissionState] = useState({
+        loading: false,
+        //properties needed
+    });
+    
+    const options = [
+        { value: "", label: "Select Guest" },
+        { value: "2 adult", label: "2 Adult" },
+        { value: "3 children", label: "3 Children" },
+        { value: "all inclusive", label: "All Inclusive" },
+    ];
+    const [guest, setGuest] = useState("");
+
+    // SUBMIT HANDLER
+    const handleSubmit = () => {
+        setOpen((prev) => ({
+        ...prev,
+        filter: false,
+        }));
+    };
 
   return (
     <Container>
-      <Header id="rooms">
+    <Header id="rooms">
         <Flex justify="space-between">
-          <Text type="h1" size={24} weight={600} text="Choose Your Room" />
-          <Button
-            background="transparent"
-            color={ttColors.dark}
-            border={`1px solid ${ttColors.dark}`}
-            padding="7px 10px"
-            styles={{ background: "transparent !important" }}
-            onClick={() =>
-              setOpen((prev) => ({
-                ...prev,
-                search: true,
-              }))
+            <Text type="h1" size={24} weight={600} text="Choose Your Room" />
+            {isMobile && 
+                <Button
+                    background="transparent"
+                    color={ttColors.dark}
+                    border={`1px solid ${ttColors.dark}`}
+                    padding="7px 10px"
+                    styles={{ background: "transparent !important" }}
+                    onClick={() =>
+                    setOpen((prev) => ({
+                        ...prev,
+                        search: true,
+                    }))
+                    }
+                >
+                    <Text type="p" weight={"bold"} size={15} text="Change"></Text>
+                </Button>
             }
-          >
-            <Text type="p" weight={"bold"} size={15} text="Change"></Text>
-          </Button>
         </Flex>
 
         {/* SEARCH MODAL*/}
         <ChangeSearchModal
-          open={open.search}
-          handleClose={() =>
-            setOpen((prev) => ({
-              ...prev,
-              search: false,
-            }))
-          }
+            open={open.search}
+            handleClose={() =>
+                setOpen((prev) => ({
+                    ...prev,
+                    search: false,
+                }))
+            }
         />
       </Header>
       <Section margin="0 0 2rem 0">
@@ -216,10 +188,14 @@ const ChooseYourRoom = () => {
             styles={{ marginBottom: "1.2rem" }}
           >
             <Text type="label" size={16} text="Guest & Rooms" weight={400} />
-            <DatePicker
-              placeholder="Select Date"
-              // position="relative"
-              onChange={(e) => {}}
+            <Dropdown
+                options={options}
+                className="mui_select"
+                width="100%"
+                minHeight="45px"
+                height="45px"
+                selectedValue={guest}
+                setSelectedValue={setGuest}
             />
           </Flex>
         </Grid>
@@ -482,7 +458,7 @@ const ChooseYourRoom = () => {
         </Button>
       </Section>
       <Span>
-        <ChooseYourRoomList hotels={hotels} />
+        <ChooseYourRoomList hotels={stayResponse.rates} />
       </Span>
     </Container>
   );
