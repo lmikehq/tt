@@ -50,7 +50,7 @@ function LanguageList() {
     <Span style={{ padding: "0px 20px" }}>
       {/* Top 6 Suggested for you */}
       <Flex direction="column">
-        <Text type="h3" weight={500} text="Suggested for you" />
+        <Text type="h4" weight={500} text="Suggested for you" />
         <GridLayout className="amenities_grid" style={{ marginTop: "10px" }}>
           {languageCodes.map((languageCode, index) => (
             <Span key={index} className={`all_languages_currency`}>
@@ -88,7 +88,7 @@ function LanguageList() {
       </Flex>
       {/* All Languages */}
       <Flex direction="column" styles={{ marginTop: "20px" }}>
-        <Text type="h3" weight={500} text="All Languages" />
+        <Text type="h4" weight={500} text="All Languages" />
         <GridLayout className="amenities_grid" style={{ marginTop: "10px" }}>
           {Object.keys(languages).map((languageCode, index) => (
             <Span key={index} className={`all_languages_currency`}>
