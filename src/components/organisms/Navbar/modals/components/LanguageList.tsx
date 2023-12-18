@@ -25,8 +25,14 @@ function LanguageList() {
     return language ? language.name : "";
   };
 
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>("en");
+  const getInitialLanguage = () => {
+    const storedLanguage = localStorage.getItem("selectedLanguage");
+    return storedLanguage || "en";
+  };
 
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(
+    getInitialLanguage()
+  );
   const handleLanguageSelect = (languageCode: TLanguageCode) => {
     setSelectedLanguage(languageCode);
   };
