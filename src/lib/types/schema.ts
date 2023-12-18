@@ -235,7 +235,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
     countryOfApply: mockCountry,
     countryOfResidence: mockCountry,
     livedAbroad: false,
-    // countriesLived: "",
+    countriesLived: 0,
     statusOfResidence: "",
     startDateOfResidence: "",
     changeOfName: false,

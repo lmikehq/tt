@@ -138,7 +138,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
             />
             <Text
                 type="p"
-                text="Log Into your account so you can continue with your visa Application"
+                text="Log Into your account so you can continue with your visa application"
                 size={isMobile ? "14px" : "17px"}
                 weight={isMobile ? 300 : 400}
             />
