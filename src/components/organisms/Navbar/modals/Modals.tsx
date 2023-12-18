@@ -69,8 +69,6 @@ const ModalWrapper = styled.div`
     height: 500px;
     overflow-y: auto;
     padding: 10px 0px;
-    padding-bottom: 30px;
-    margin-bottom: 30px;
   }
   @media screen and (max-width: 900px) {
     width: 100%;
