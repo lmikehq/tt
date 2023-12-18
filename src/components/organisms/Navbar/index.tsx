@@ -19,20 +19,17 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import styled from "styled-components";
 import { getIpDetails } from "../form/visaApis";
 import MobileNavigationDrawer from "./modals/mobileNav";
-import currencyCodes from "currency-codes";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CurrencyModal, LanguageModal } from "./modals/Modals";
-import ReactCountryFlag from "react-country-flag";
 import { CircleFlagLanguage } from "react-circle-flags";
 
 const poppins = Poppins({
@@ -289,7 +286,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 }
               >
                 <CircleFlagLanguage
-                  languageCode={selectedLanguage}
+                  languageCode={`${selectedLanguage}`}
                   height="30"
                 />
                 {/* <BsGlobe size={24} /> */}

@@ -2,19 +2,9 @@ import React, { useState, useEffect } from "react";
 import Text from "@/components/atoms/text";
 import { GridLayout, Span } from "@/components/molecules/stays/view/styles";
 import Flex from "@/components/templates/flex";
-import type {
-  ICountry,
-  ICountryData,
-  ILanguage,
-  TContinentCode,
-  TCountryCode,
-  TLanguageCode,
-  TLanguages,
-} from "countries-list";
-import ReactCountryFlag from "react-country-flag";
+import type { TLanguageCode } from "countries-list";
 import DoneIcon from "@mui/icons-material/Done";
 import { countries, languages } from "countries-list"; // Add this import statement
-import { CircleFlag } from "react-circle-flags";
 import { CircleFlagLanguage } from "react-circle-flags";
 
 function LanguageList() {
@@ -70,7 +60,6 @@ function LanguageList() {
               >
                 <Flex align="center" gap="10px">
                   <Span className="country_flag">
-                    {/* Use CircleFlag component for top 6 languages */}
                     <CircleFlagLanguage
                       languageCode={languageCode as TLanguageCode}
                       height="30"
