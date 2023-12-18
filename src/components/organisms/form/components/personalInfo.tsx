@@ -321,13 +321,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />      
           </Section>
         </Flex>
-        <Section width="100%">
+        {/* <Section width="100%">
             <Flex align="center" gap="0.25rem">
                 <Text
-                type="p"
-                text="Current Occupation"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={15}
+                    type="p"
+                    text="Current Occupation"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
                 />
                 <Required />
             </Flex>
@@ -336,7 +336,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 formik={formik}
                 placeholder="Enter your current occupation"
             />
-        </Section>
+        </Section> */}
               
         <Flex
             margin="0"
