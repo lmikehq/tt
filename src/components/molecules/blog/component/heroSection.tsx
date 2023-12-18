@@ -8,7 +8,8 @@ import { useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { LiaTimesSolid } from "react-icons/lia";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { ResultPage } from "@/app/blog/searchResultPage/page";
+import ResultPage from "@/app/blog/searchResultPage/page";
+
 
 const Box = styled.div`
   width: 886px;

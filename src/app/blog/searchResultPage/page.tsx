@@ -7,7 +7,7 @@ import { BlogArticleMini } from "@/components/molecules/blog/component/blogArtic
 import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
 import { RelatedTopic } from "@/components/molecules/blog/component/relatedTopic";
 
-export const ResultPage = () => {
+function ResultPage() {
   const { isMobile } = useScreenResolution();
 
   const tabItems = [
@@ -86,3 +86,4 @@ export const ResultPage = () => {
     </>
   );
 };
+export default ResultPage;
