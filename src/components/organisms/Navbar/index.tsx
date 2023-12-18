@@ -30,6 +30,7 @@ import currencyCodes from "currency-codes";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
+import { CurrencyModal, LanguageModal } from "./modals/Modals";
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
@@ -192,6 +193,11 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
     return res;
   }
   const { data: user } = useQuery(["getUser"], getUser);
+
+  const [open, setOpen] = useState({
+    language: false,
+    currency: false,
+  });
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -259,10 +265,50 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               cursor="pointer"
             >
               <BsGlobe size={24} />
-              <Text text="EN" type="span" weight={400} size={16} />
+              <Text
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    language: true,
+                  }))
+                }
+                text="EN"
+                type="span"
+                weight={400}
+                size={16}
+              />
+              <LanguageModal
+                open={open.language}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    language: false,
+                  }))
+                }
+              />
               <Divider />
-
-              <Select
+              <Text
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    currency: true,
+                  }))
+                }
+                text="CUR"
+                type="span"
+                weight={400}
+                size={16}
+              />
+              <CurrencyModal
+                open={open.currency}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    currency: false,
+                  }))
+                }
+              />
+              {/* <Select
                 defaultValue={preFerredCurrency}
                 value={preFerredCurrency}
                 onChange={(e) => setPreferredCurrency(e.target.value)}
@@ -321,7 +367,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                     {el}
                   </MenuItem>
                 ))}
-              </Select>
+              </Select> */}
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}

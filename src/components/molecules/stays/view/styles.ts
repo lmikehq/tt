@@ -253,6 +253,23 @@ export const Content = styled.div`
 
 export const Span = styled.div`
   position: relative;
+  &.all_languages_currency {
+    .cur_lang {
+      padding: 8px 15px;
+      cursor: pointer;
+      &:hover {
+        background-color: #d5f1fc74;
+        color: #395763;
+      }
+    }
+    .cur_lang.active {
+      background-color: #d5f1fc74;
+      color: #395763;
+    }
+  }
+  .currency_code {
+    color: var(--color-light-gray);
+  }
   .badge {
     width: 28px;
     height: 28px;
@@ -280,6 +297,7 @@ export const Span = styled.div`
     border-bottom: 1px solid #000;
     margin-right: 10px;
   }
+
   .mui_select {
     // overflow: hidden;
     outline-color: var(--primary-color) !important;
