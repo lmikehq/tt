@@ -98,20 +98,20 @@ export const LanguageModal = ({
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
       <ModalCenter className="amenities">
         <ModalScroll className="amenities_scroll">
+          <Flex
+            padding="10px 35px"
+            align="center"
+            justify="space-between"
+            gap="20px"
+            styles={{ marginTop: "20px" }}
+          >
+            <Text type="h1" size={23} text="Select Languages" weight={600} />
+            <CloseIcon
+              style={{ fontSize: "29px", cursor: "pointer" }}
+              onClick={handleClose}
+            />
+          </Flex>
           <ModalWrapper className="amenities_modal">
-            <Flex
-              padding="10px 35px"
-              align="center"
-              justify="space-between"
-              gap="20px"
-              styles={{ marginTop: "20px" }}
-            >
-              <Text type="h1" size={23} text="Select Languages" weight={600} />
-              <CloseIcon
-                style={{ fontSize: "29px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
-            </Flex>
             <Span style={{ padding: "15px" }}>
               <LanguageList />
             </Span>

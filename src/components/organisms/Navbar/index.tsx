@@ -30,7 +30,11 @@ import currencyCodes from "currency-codes";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CurrencyModal, LanguageModal } from "./modals/Modals";
+import ReactCountryFlag from "react-country-flag";
+import { CircleFlagLanguage } from "react-circle-flags";
+
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
@@ -192,12 +196,22 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
     setUser(res);
     return res;
   }
+
   const { data: user } = useQuery(["getUser"], getUser);
 
   const [open, setOpen] = useState({
     language: false,
     currency: false,
   });
+
+  //SELECTED CURRENCY
+  const selectedCurrency = localStorage.getItem("selectedCurrency");
+
+  //SELECTED LANGUAGE
+  const selectedLanguage = localStorage.getItem("selectedLanguage");
+
+  console.log("LANGUAGE", selectedLanguage);
+
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -264,19 +278,29 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               align="center"
               cursor="pointer"
             >
-              <BsGlobe size={24} />
-              <Text
+              <Flex
+                align="center"
+                gap="5px"
                 onClick={() =>
                   setOpen((prev) => ({
                     ...prev,
                     language: true,
                   }))
                 }
-                text="EN"
-                type="span"
-                weight={400}
-                size={16}
-              />
+              >
+                <CircleFlagLanguage
+                  languageCode={selectedLanguage}
+                  height="30"
+                />
+                {/* <BsGlobe size={24} /> */}
+                <Text
+                  text={`${selectedLanguage}`}
+                  type="span"
+                  weight={400}
+                  size={16}
+                  styles={{ textTransform: "uppercase" }}
+                />
+              </Flex>
               <LanguageModal
                 open={open.language}
                 handleClose={() =>
@@ -287,18 +311,25 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 }
               />
               <Divider />
-              <Text
+              <Flex
+                align="center"
                 onClick={() =>
                   setOpen((prev) => ({
                     ...prev,
                     currency: true,
                   }))
                 }
-                text="CUR"
-                type="span"
-                weight={400}
-                size={16}
-              />
+              >
+                <Text
+                  text={`${selectedCurrency}`}
+                  type="span"
+                  weight={400}
+                  size={16}
+                  styles={{ textTransform: "uppercase" }}
+                />
+                <KeyboardArrowDownIcon />
+              </Flex>
+
               <CurrencyModal
                 open={open.currency}
                 handleClose={() =>

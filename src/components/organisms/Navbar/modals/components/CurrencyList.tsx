@@ -5,14 +5,17 @@ import Flex from "@/components/templates/flex";
 import currencyCodes, { CurrencyCodeRecord } from "currency-codes";
 import { ttColors } from "@/lib/theme/colors";
 import DoneIcon from "@mui/icons-material/Done";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 function CurrencyList() {
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(
+    "NGN"
+  );
+   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
+     useUserPreferencesStore((state) => state);
 
-  // Get currency data from currency-codes
   const currencies: CurrencyCodeRecord[] = currencyCodes.data;
 
-  // Specify the currency codes you want to display
   const selectedCurrencyCodes: string[] = [
     "GBP",
     "INR",
@@ -22,13 +25,11 @@ function CurrencyList() {
     "ZAR",
   ];
 
-  // Filter the currencies based on the selected codes
   const selectedCurrencies = currencies.filter((currency) =>
     selectedCurrencyCodes.includes(currency.code)
   );
 
   useEffect(() => {
-    // Load selected currency from localStorage on component mount
     const storedCurrency = localStorage.getItem("selectedCurrency");
     if (storedCurrency && selectedCurrencyCodes.includes(storedCurrency)) {
       setSelectedCurrency(storedCurrency);
@@ -36,9 +37,7 @@ function CurrencyList() {
   }, []);
 
   const handleCurrencyClick = (currencyCode: string) => {
-    // Update selected currency state
     setSelectedCurrency(currencyCode);
-    // Save selected currency to localStorage
     localStorage.setItem("selectedCurrency", currencyCode);
   };
 
@@ -46,7 +45,7 @@ function CurrencyList() {
     <Span style={{ padding: "0px 20px" }}>
       {/* Suggested for you */}
       <Flex direction="column">
-        <Text type="h3" weight={500} text="Suggested for you" />
+        <Text type="h4" weight={500} text="Suggested for you" />
         <GridLayout className="amenities_grid" style={{ marginTop: "10px" }}>
           {selectedCurrencies.map((currency) => (
             <Span
@@ -80,7 +79,7 @@ function CurrencyList() {
 
       {/* All Currency */}
       <Flex direction="column" styles={{ marginTop: "20px" }}>
-        <Text type="h3" weight={500} text="All Currency" />
+        <Text type="h4" weight={500} text="All Currency" />
         <GridLayout className="amenities_grid" style={{ marginTop: "10px" }}>
           {currencies.map((currency) => (
             <Span
