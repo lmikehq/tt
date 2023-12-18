@@ -31,13 +31,20 @@ const Visa = () => {
     async function getVisas() {
         return await apiService("/visa", "GET");
     }
+    const initVisas = {
+        visas: []
+    }
 
     const {
         data: fetchedVisa,
         isLoading,
         error,
         refetch,
-    } = useQuery(["visas"], getVisas) as any;
+    } = useQuery({
+        queryKey: ["visas"],
+        queryFn: getVisas,
+        // initialData: initVisas
+    }) as any;
     if (isLoading) return <div>loading</div>;
     if (error) return <div>error loading visas, please try again</div>;
     const { data: visas } = fetchedVisa;
