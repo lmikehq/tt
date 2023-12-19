@@ -1,41 +1,22 @@
 "use client";
 
 import Center from "@components/templates/center";
-import Text from "@atom/text";
 import Navbar from "@organism/Navbar";
 import ServiceBanner from "@organism/ServiceBanner";
 import { styled } from "styled-components";
-import Flex from "@components/templates/flex";
-import SectionLayout from "@components/templates/SectionLayout";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Flex from "@/components/templates/flex";
+import Text from "@/components/atoms/text";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
-  background: var(--bg-color);
-  // height: calc(100vh - 70px);
-  height: ${({ isMobile }) => (isMobile ? "unset" : "600px")};
-
-  background-image: url(${"/assets/images/herobg-visa.png"});
+  height: ${(props) => (props.isMobile ? "unset" : "620px")};
+  margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url(${"/assets/images/flights/flight.png"});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-
-  margin-bottom: 2rem;
-  @media (max-width: 900px) {
-    height: unset;
-    background-image: none;
-    margin-bottom: 3.5rem;
-  }
-`;
-
-const HeroBackground = styled.div`
-  @media (max-width: 900px) {
-    background-image: url(${"/assets/images/herobg-visa.png"});
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    height: 14rem;
-  }
 `;
 
 function FlightHero() {
@@ -43,16 +24,37 @@ function FlightHero() {
   return (
     <>
       <Navbar page="flights" />
-      <Flex
-        height="100%"
-        align="center"
-        justify="flex-end"
-        direction="column"
-        margin="3rem 0 5rem 0"
-        padding={isMobile ? "0 1.187rem" : "0"}
-      >
-        <ServiceBanner page="flights" />
-      </Flex>
+      <HeroWrapper isMobile={isMobile}>
+        <Flex direction="column" position="relative" styles={{ top: "70px" }}>
+          <div>
+            <Flex
+              align="center"
+              justify="center"
+              styles={{ marginTop: "30px" }}
+            >
+              <Flex
+                direction="column"
+                align="center"
+                styles={{ textAlign: "center", maxWidth: "700px" }}
+              >
+                <Text color="white" type="p" text="With you, we can"></Text>
+                <Text
+                  color="white"
+                  type="h1"
+                  weight={600}
+                  size={45}
+                  text="ELEVATE YOUR TRAVEL EXPERIENCE"
+                ></Text>
+              </Flex>
+            </Flex>
+          </div>
+          <div style={{ paddingTop: "30px", paddingBottom: "20px" }}>
+            <Center>
+              <ServiceBanner page="flight" />
+            </Center>
+          </div>
+        </Flex>
+      </HeroWrapper>
     </>
   );
 }

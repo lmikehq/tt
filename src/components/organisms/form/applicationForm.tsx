@@ -6,6 +6,7 @@ import {
     detailsSchema,
     documentsSchema,
     familyInfoSchema,
+    guarantorSchema,
     manyEducationSchema,
     manyEmploymentSchema,
     personalInfoSchema,
@@ -27,12 +28,13 @@ import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import FormSideMenu from "./components/sideMenu/formSideMenu";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
+import { DetailsKeys, GuarantorInfoInterface, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
-import { parse, format } from "date-fns";
+import testPayload from '@/constants/payload.json'
+
 
 const PromoInput = styled.div`
     display: flex;
@@ -109,6 +111,7 @@ function ApplicationForm() {
         education,
         employment,
         familyMembers,
+        guarantorInfo,
         documents,
     } = form;
 
@@ -181,6 +184,18 @@ function ApplicationForm() {
         validateOnChange: true,
     });
 
+    const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
+        initialValues: guarantorInfo,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: guarantorSchema,
+        onSubmit: (values: GuarantorInfoInterface) => {
+            // if (isLoading) return;
+            // nextStep({ data: { personalInfo: values } });
+        },
+        validateOnChange: true,
+    });
+
     const documentsFormik = useFormik({
         initialValues: { documents },
         enableReinitialize: true,
@@ -244,6 +259,7 @@ function ApplicationForm() {
                 education: educationFormik.values.education,
                 employment: employmentFormik.values.employment,
                 familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
                 documents: documentsFormik.values.documents,
             },
             uploadedDocuments,
@@ -257,6 +273,7 @@ function ApplicationForm() {
         educationFormik,
         employmentFormik,
         familyMembersFormik,
+        guarantorFormik,
         documentsFormik,
         persistForm,
     }).find((x) => x.id === step);
@@ -277,6 +294,12 @@ function ApplicationForm() {
         });
         fetchRecentProgressFromSession();
     }, [params]);
+
+
+    // useEffect(() => {
+    //     saveProgress({ data: testPayload, uploadedDocuments: [] })
+    // }, [])
+
 
     return (
         <>

@@ -272,7 +272,7 @@ function UploadDocuments({ steps, index, persistForm, formik }: formProps) {
                 type="button"
             />
             </form>
-                
+
             <ApplicationPreview
                 isOpen={isOpenPreview}
                 onClose={togglePreview}
