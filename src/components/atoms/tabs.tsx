@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
-import { ReactNode, SyntheticEvent, useState } from "react";
+import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import Text from "./text";
@@ -125,6 +125,10 @@ export default function CustomTab({
 }) {
   const [value, setValue] = useState(0);
 
+  useEffect(() => {
+    setValue(activeTab ?? 0);
+  }, [activeTab]);
+
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue ?? value);
     setActiveTab && setActiveTab(newValue ?? value);
@@ -175,7 +179,7 @@ export default function CustomTab({
                       text={tabItem.label}
                       size={isMobile ? "1rem" : "1rem"}
                       weight={600}
-                      // color="var(--secondary-color)"
+                      // color={ttColors.primary600}
                     />
                   </Flex>
                 }
@@ -185,9 +189,10 @@ export default function CustomTab({
                   ...(isMobile && { padding: "0 0rem" }),
                   ...(isMobile && {
                     borderBottom: `0px solid ${ttColors.dark}`,
+                    color: ttColors.primary600,
                   }),
                   "&.MuiTab-textColorPrimary.Mui-selected": {
-                    color: "var(--secondary-color)",
+                    color: ttColors.primary600,
                   },
                   paddingLeft: "20px",
                   paddingRight: "20px",

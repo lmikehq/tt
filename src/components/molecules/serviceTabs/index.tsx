@@ -8,7 +8,7 @@ import Stays from "./components/stays";
 import Visa from "./components/visa";
 import Section from "@molecule/section";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FlightContext } from "@/lib/extensions/context";
 import Flex from "@/components/templates/flex";
 import { usePathname, useRouter } from "next/navigation";
@@ -27,13 +27,17 @@ function ServiceTabs({ page }: { page?: string }) {
   }));
 
   const path = usePathname();
-  const [activeTab, setActiveTab] = useState(
-    {
-      "/visa": 0,
-      "/flight": 1,
-      "/stay": 2,
-    }[path]
-  );
+  const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    setActiveTab(
+      {
+        "/visa": 0,
+        "/flight": 1,
+        "/stay": 2,
+      }[path] || 0
+    );
+  }, [path]);
 
   console.log("Path:", path);
   console.log("Active Tab:", activeTab);
