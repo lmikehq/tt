@@ -11,6 +11,7 @@ import {
 import { Box } from "@mui/material";
 import { BiTransferAlt } from "react-icons/bi";
 import { Span } from "../stays/components/styles";
+import TruncateMarkup from "react-truncate-markup";
 
 interface PopularFlight {
   to_location: string;
@@ -258,22 +259,27 @@ function PopularFlights() {
                     </Flex>
                   </Link>
                   <Flex gap="5px" align="center">
-                    <Flex>
-                      <Text
-                        type="p"
-                        whiteSpace="nowrap"
-                        size={15}
-                        text="Ticket starts from"
-                      ></Text>
+                    <Flex width="100%">
+                      <TruncateMarkup lines={1}>
+                        <p style={{ fontSize: "15px", width: "100%" }}>
+                          Ticket starts from
+                        </p>
+                      </TruncateMarkup>
                     </Flex>
-                    <Flex gap="3px" align="center">
+                    <Span
+                      style={{
+                        display: "flex",
+                        gap: "3px",
+                        alignItems: "center",
+                      }}
+                    >
                       <Text type="p" size={15} text={getCurrency()} />
                       <Text
                         type="p"
                         size={15}
                         text={formatPriceWithoutCurrency(flight.from_price)}
                       />
-                    </Flex>
+                    </Span>
                   </Flex>
                 </Flex>
               </Box>
