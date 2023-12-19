@@ -71,7 +71,7 @@ function Stays() {
 
     const computeStaySearchQuery = () => {
         const params = {
-            region: stayTabInitialSearchQuery.location?.name,
+            regionId: stayTabInitialSearchQuery.location?.id,
             countryCode: stayTabInitialSearchQuery.location?.country_code,
             stars: stayTabInitialSearchQuery.stars
                 ? stayTabInitialSearchQuery.stars[0]
@@ -335,7 +335,7 @@ function Stays() {
                     padding="0 1.5rem"
                     borderRadius="4px"
                     background={ttColors.dark}
-                    disabled={true || !validateStaySearchFilter}
+                    disabled={!validateStaySearchFilter}
                     onClick={async () => {
                         if (loading) return;
                         setLoading(true);

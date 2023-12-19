@@ -216,15 +216,27 @@ function Flights() {
         }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
     };
 
-    const flight = flightState?.fleet[0];
+    const flights = flightState?.fleet ?? [];
 
-    const formComplete =
-        flight?.departureCountry &&
-        flight?.arrivalCountry &&
-        flight?.departureDate;
+    const formComplete = () => {
+        for (let i = 0; i < flights?.length; i++) {
+            const flight = flights[i];
+            if (
+                !(
+                    flight?.departureCountry &&
+                    flight?.arrivalCountry &&
+                    flight?.departureDate
+                )
+            )
+                return false;
+        }
+
+        return true;
+    };
 
     const handleSearchFlights = () => {
-        if (formComplete) {
+        return console.log(flightState);
+        if (formComplete()) {
             router.push(formatSearchFlight(flight));
         }
     };

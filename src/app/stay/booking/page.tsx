@@ -1,14 +1,34 @@
 "use client";
 import Booking from "@/components/molecules/stays/booking/Booking";
 import SectionLayout from "@/components/templates/SectionLayout";
-import React from "react";
+import { useStayOrderBooking } from "@/lib/hooks/stay/booking.hook";
+import { useUserStore } from "@/lib/store/useStore";
+import { StayOrderBookingReguestInput } from "@/lib/types/request-models/stay/booking.type";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 function Page() {
-  return (
-    <SectionLayout>
-      <Booking />
-    </SectionLayout>
-  );
+    const searchParams = useSearchParams();
+    const hotelId = searchParams.get("hotelId");
+    const bookHash = searchParams.get("bookHash");
+    const { user, geoInfo } = useUserStore((state) => state);
+
+    const orderBookingRequestParams = (): StayOrderBookingReguestInput => ({
+        hotel_id: hotelId ?? "",
+        userId: "6579bbff603bfaafaa7b55d9" ?? user?._id ?? "",
+        book_hash: bookHash ?? "",
+        user_ip: geoInfo?.ip ?? "",
+    });
+    const { mutate: orderBooking } = useStayOrderBooking();
+    useEffect(() => {
+        if (!user) return;
+        orderBooking(orderBookingRequestParams());
+    }, [user]);
+    return (
+        <SectionLayout>
+            <Booking />
+        </SectionLayout>
+    );
 }
 
 export default Page;
