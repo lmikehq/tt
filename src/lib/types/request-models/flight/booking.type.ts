@@ -132,6 +132,9 @@ export interface SearchFlightsRequestQuery {
     sort?: string;
 }
 
+export interface SearchMultiFlightRequestQuery {
+    requests: SearchFlightsRequestQuery[];
+}
 export interface CheckFlightsRequestInput {
     booking_token: string;
     session_id?: string;

@@ -254,7 +254,7 @@ function Flights() {
                 )
                 .join("")}&stops=${
                 flightState?.stops
-            }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}
+            }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
         `;
         }
     };
