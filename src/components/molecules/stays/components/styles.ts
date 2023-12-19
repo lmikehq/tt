@@ -321,6 +321,13 @@ export const BtnText = styled.div`
 `;
 
 export const Span = styled.div`
+  &.not_list {
+    list-style: none;
+    border-bottom: 1px solid var(--color-border);
+    &:last-of-type {
+      border: none;
+    }
+  }
   .slider_skeleton_grid {
     grid-template-columns: 1fr 1fr;
   }

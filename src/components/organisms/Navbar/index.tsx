@@ -336,66 +336,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   }))
                 }
               />
-              {/* <Select
-                defaultValue={preFerredCurrency}
-                value={preFerredCurrency}
-                onChange={(e) => setPreferredCurrency(e.target.value)}
-                IconComponent={PiCaretDownBold}
-                MenuProps={{
-                  sx: {
-                    "& .MuiPaper-root": {
-                      maxHeight: "50vh",
-                      top: "55px !important",
-                      boxShadow: "0px 0px 1px rgba(0,0,0,0.3)",
-                    },
-                    "& .MuiPaper-root::-webkit-scrollbar": {
-                      backgroundColor: "transparent",
-                      width: "9px",
-                      height: "9px",
-                    },
-                    "& .MuiPaper-root::-webkit-scrollbar-thumb": {
-                      backgroundColor: "rgba(0, 0, 0, 0.15)",
-                      borderRadius: "6px",
-                    },
-                    '& li[aria-selected="true"]': {
-                      background: "#DAF0F9",
-                    },
-                  },
-                }}
-                sx={{
-                  boxShadow: "none",
-                  ".MuiOutlinedInput-notchedOutline": {
-                    border: 0,
-                  },
-                  "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                    {
-                      border: 0,
-                    },
-                  ".MuiSvgIcon-root": {
-                    display: "none",
-                  },
-                  ".MuiSelect-select": {
-                    width: "min-content",
-                    padding: "0",
-                    fontFamily: "Poppins",
-                    appearance: "none !important",
-                  },
-                  "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      border: 0,
-                    },
-                }}
-              >
-                {currencyCodes.codes().map((el: string, index: number) => (
-                  <MenuItem
-                    key={"item-" + index}
-                    value={el}
-                    sx={{ fontSize: "16px" }}
-                  >
-                    {el}
-                  </MenuItem>
-                ))}
-              </Select> */}
+             
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}
