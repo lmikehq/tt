@@ -68,10 +68,16 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
     
     const response: any = {}
 
-    const sortedAmenities = useMemo(() => 
+    const sortedAmenities = useMemo(() =>
         stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[])
     , [stayResponse?.amenity_groups])
+    
+    const lowestRate = useMemo(() => {
+        const sorted = stayResponse.rates.sort((a, b) => parseFloat(a.daily_prices[a.daily_prices.length - 1]) - parseFloat(b.daily_prices[b.daily_prices.length - 1]))
+        return sorted.length > 0 ? parseFloat(sorted[0]?.daily_prices[sorted.length - 1]) : 0
+    }, [stayResponse.rates])
 
+    
   return (
     <Container>
       <Header id="overview">
@@ -166,7 +172,7 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                 type="p"
                 size={30}
                 weight={600}
-                text={formatPriceWithoutCurrency(81500)}
+                text={formatPriceWithoutCurrency(lowestRate)}
               />
             </Flex>
             <Flex align="center" gap="8px">
