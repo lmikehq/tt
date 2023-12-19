@@ -3,9 +3,13 @@
 import Button from "@/components/atoms/button";
 import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
+import Section from "@/components/molecules/section";
+import Navbar from "@/components/organisms/Navbar";
 import Center from "@/components/templates/center";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { Theme, ttColors } from "@/lib/theme/colors";
+import { BiInfoCircle, BiSolidInfoCircle } from "react-icons/bi";
 
 export default function Error({
     error,
@@ -17,29 +21,67 @@ export default function Error({
     const { isMobile } = useScreenResolution();
 
     return (
-        <Center height="100vh">
-            <Flex direction="column" align="center">
-                {/* <Text
-            type="p"
-            text="Oopss!!"
-            size={30}
-            weight={700}
-            color="#000000"
-          /> */}
+        <Section height="100vh">
+            <Navbar page="" />
 
-                <Text
-                    type="p"
-                    text={error.message ?? "Something went wrong!"}
-                    size={isMobile ? 16 : 18}
-                    weight={600}
-                    color="#888888"
-                    textAlign="center"
+            <Flex
+                align="center"
+                direction="column"
+                justify="center"
+                width="100%"
+                height="calc(100vh - 90px)"
+            >
+                <Image
+                    alt=""
+                    src={"/assets/icons/error/error_warning.svg"}
+                    height={100}
+                    width={100}
                 />
+                <Flex
+                    direction="column"
+                    gap="10px"
+                    align="center"
+                    justify="center"
+                >
+                    <Text
+                        type="h4"
+                        text="Something went wrong"
+                        color={Theme.TextColor}
+                        size={48}
+                        weight={700}
+                    />
+                    <Text
+                        type="h4"
+                        text="There was an issue processing the request."
+                        color={ttColors.lighterGray}
+                        size={20}
+                    />
+                    <Text
+                        type="h4"
+                        text="Please try again later"
+                        color={ttColors.lighterGray}
+                        size={20}
+                    />
+                </Flex>
 
-                <Button margin="1rem 0 0" onClick={() => reset()}>
-                    <Text type="p" text="Retry" size={16} weight={600} />
-                </Button>
+                <Section margin="48px 0 0">
+                    <Flex align="center" justify="center">
+                        <Button
+                            height="56px"
+                            width="302px"
+                            borderRadius="6px"
+                            onClick={() => reset()}
+                        >
+                            <Text
+                                type="p"
+                                text="Try Again"
+                                weight={600}
+                                size={16}
+                            />
+                        </Button>
+                    </Flex>
+                </Section>
             </Flex>
-        </Center>
+        </Section>
     );
 }
