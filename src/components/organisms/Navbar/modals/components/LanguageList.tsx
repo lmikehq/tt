@@ -8,7 +8,7 @@ import { countries, languages } from "countries-list"; // Add this import statem
 import { CircleFlagLanguage } from "react-circle-flags";
 
 function LanguageList() {
-  const languageCodes: TLanguageCode[] = ["zh", "es", "en", "hi", "ar", "bn"];
+  const languageCodes: TLanguageCode[] = ["en", "es", "zh", "hi", "ar", "bn"];
 
   const getLanguageName = (languageCode: TLanguageCode): string => {
     const language = languages[languageCode];
@@ -35,7 +35,10 @@ function LanguageList() {
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem("selectedLanguage");
-    if (storedLanguage) {
+    if (!storedLanguage) {
+      localStorage.setItem("selectedLanguage", "en");
+      setSelectedLanguage("en");
+    } else {
       setSelectedLanguage(storedLanguage);
     }
   }, []);

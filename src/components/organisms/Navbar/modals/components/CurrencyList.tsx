@@ -11,8 +11,8 @@ function CurrencyList() {
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(
     "NGN"
   );
-   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
-     useUserPreferencesStore((state) => state);
+  const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
+    useUserPreferencesStore((state) => state);
 
   const currencies: CurrencyCodeRecord[] = currencyCodes.data;
 
@@ -33,8 +33,11 @@ function CurrencyList() {
     const storedCurrency = localStorage.getItem("selectedCurrency");
     if (storedCurrency && selectedCurrencyCodes.includes(storedCurrency)) {
       setSelectedCurrency(storedCurrency);
+    } else {
+      localStorage.setItem("selectedCurrency", "NGN");
+      setSelectedCurrency("NGN");
     }
-  }, []);
+  }, [selectedCurrency]);
 
   const handleCurrencyClick = (currencyCode: string) => {
     setSelectedCurrency(currencyCode);
