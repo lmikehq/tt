@@ -20,6 +20,7 @@ import {
   EducationDetailsInterface,
   EmploymentDetailsInterface,
   FamilyInfoInterface,
+  GuarantorInfoInterface,
   PersonalInfoInterface,
 } from "@lib/types";
 
@@ -36,78 +37,81 @@ export const getSteps = ({
     educationFormik,
     employmentFormik,
     familyMembersFormik,
+    guarantorFormik,
     documentsFormik,
     persistForm,
 }: {
     detailsFormik: FormikProps<DetailsKeys>;
     personalInfoFormik: FormikProps<PersonalInfoInterface>;
+    guarantorFormik: FormikProps<GuarantorInfoInterface>;
     familyMembersFormik: FormikProps<{ familyMembers: FamilyInfoInterface[] }>;
     employmentFormik: FormikProps<{ employment: EmploymentDetailsInterface[] }>;
     educationFormik: FormikProps<{ education: EducationDetailsInterface[] }>;
     documentsFormik: FormikProps<{ documents: DocumentInterface[] }>;
     persistForm: () => void;
 }): IFormStep[] => {
-  return [
-    {
-      id: 1,
-      title: "Enter your Trip details",
-      content: (
-        <TripDetails
-          steps={["Enter your Trip Details"]}
-          index={0}
-          persistForm={persistForm}
-          formik={detailsFormik}
-        />
-      ),
-    },
-    {
-        id: 2,
-        title: "Personal Details",
-        content: (
-            <PersonalInfo
-                steps={["Personal Details", "Please ensure the Information you are providing is as shown on your passport or Travel Document"]}
-                index={1}
-                persistForm={persistForm}
-                formik={personalInfoFormik}
-            />
-        ),
-        valKeys: Object.keys(personalInfoKeys),
-    },
-    {
-      id: 3,
-      title: "Education Details",
-      content: (
-        <EducationInfo
-            steps={["Education Details", "Please ensure the Information you are providing is as shown on your passport or Travel Document"]}
-            index={2}
-            persistForm={persistForm}
-            formik={educationFormik}
-        />
-      ),
-      valKeys: Object.keys(educationKeys),
-    },
-    {
-      id: 4,
-      title: "Employment Details",
-      content: (
-        <EmploymentInfo
-            steps={["Employment Details", "Give details of your employment for the past 10 years, including if you held any government positions (Such as civil servant, judge, police officer, mayor,member of parliament, hospital administrator, employee of a security organization). Do not leave gaps. If retired, not working or studying, please indicate. If you are retired, please provide the 10 years before your retirement."]}
-            index={3}
-            persistForm={persistForm}
-            formik={employmentFormik}
-        />
-      ),
-      valKeys: Object.keys(employmentKeys),
-    },
-    {
-      id: 5,
-      title: "Family Members' Details",
-      content: (
-        <FamilyInfo
-          steps={["Family Members' Information"]}
-          index={4}
-          persistForm={persistForm}
-          formik={familyMembersFormik}
+    return [
+        {
+            id: 1,
+            title: "Enter your Trip details",
+            content: (
+                <TripDetails
+                    steps={["Enter your Trip Details"]}
+                    index={0}
+                    persistForm={persistForm}
+                    formik={detailsFormik}
+                />
+            ),
+        },
+        {
+            id: 2,
+            title: "Personal Details",
+            content: (
+                <PersonalInfo
+                    steps={["Personal Details", "Please ensure the Information you are providing is as shown on your passport or Travel Document"]}
+                    index={1}
+                    persistForm={persistForm}
+                    formik={personalInfoFormik}
+                />
+            ),
+            valKeys: Object.keys(personalInfoKeys),
+        },
+        {
+            id: 3,
+            title: "Education Details",
+            content: (
+                <EducationInfo
+                    steps={["Education Details", "Please ensure the Information you are providing is as shown on your passport or Travel Document"]}
+                    index={2}
+                    persistForm={persistForm}
+                    formik={educationFormik}
+                />
+            ),
+            valKeys: Object.keys(educationKeys),
+        },
+        {
+            id: 4,
+            title: "Employment Details",
+            content: (
+                <EmploymentInfo
+                    steps={["Employment Details", "Give details of your employment for the past 10 years, including if you held any government positions (Such as civil servant, judge, police officer, mayor,member of parliament, hospital administrator, employee of a security organization). Do not leave gaps. If retired, not working or studying, please indicate. If you are retired, please provide the 10 years before your retirement."]}
+                    index={3}
+                    persistForm={persistForm}
+                    formik={employmentFormik}
+                />
+            ),
+            valKeys: Object.keys(employmentKeys),
+        },
+        {
+            id: 5,
+            title: "Family Members' Details",
+            content: (
+                <FamilyInfo
+                    steps={["Family Members' Information"]}
+                    index={4}
+                    persistForm={persistForm}
+                    formik={familyMembersFormik}
+                    guarantorFormik={guarantorFormik}
         />
       ),
       valKeys: Object.keys(familyInforKeys),
@@ -117,10 +121,16 @@ export const getSteps = ({
       title: "Upload Document",
       content: (
         <UploadDocuments
-          steps={["Upload All Required Documents"]}
-          index={5}
-          persistForm={persistForm}
-          formik={documentsFormik}
+            steps={["Upload All Required Documents"]}
+            index={5}
+            persistForm={persistForm}
+            formik={documentsFormik}
+            detailsFormik={detailsFormik}
+            personalFormik={personalInfoFormik}
+            educationFormik={educationFormik}
+            employmentFormik={employmentFormik}
+            familyFormik={familyMembersFormik}
+            guarantorFormik={guarantorFormik}
         />
       ),
     },

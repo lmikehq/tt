@@ -5,7 +5,6 @@ import { FormikProps } from "formik";
 import FormStepTitle from "./formStepsTitle";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Required from "@atom/required";
-import PhoneInput from "react-phone-input-2";
 import { City, ICity, IState, State } from "country-state-city";
 import TextArea from "@molecule/textArea";
 import { CustomRadioGroup } from "@molecule/radio";
@@ -16,6 +15,7 @@ import {
   FieldAsDate,
   FieldAsString,
   FieldInput,
+  FieldPhone,
   FieldString,
 } from "@organism/fieldInput";
 import { Mode, PersonalInfoInterface } from "@lib/types";
@@ -273,20 +273,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               />
               <Required />
             </Flex>
-            <PhoneInput
-                country={"ng"}
-                autoFormat={true}
-                inputProps={{
-                    name: "phoneNumber",
-                }}
-                inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : ''}}
-                onChange={(e) => {
-                    formik.setFieldValue("phoneNumber", e);
-                }}
-              inputClass="w"
-              placeholder="Enter phone number"
+            <FieldPhone
+                name="phoneNumber"
+                formik={formik}
+                country="ng"
+                placeholder="Enter phone number"
             />
-            {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}          
           </Section>
         </Flex>
               
@@ -329,13 +321,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />      
           </Section>
         </Flex>
-        <Section width="100%">
+        {/* <Section width="100%">
             <Flex align="center" gap="0.25rem">
                 <Text
-                type="p"
-                text="Current Occupation"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={15}
+                    type="p"
+                    text="Current Occupation"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
                 />
                 <Required />
             </Flex>
@@ -344,7 +336,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 formik={formik}
                 placeholder="Enter your current occupation"
             />
-        </Section>
+        </Section> */}
               
         <Flex
             margin="0"
@@ -360,6 +352,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                     size={15}
                 />
+                <Required />
             </Flex>
             <FieldInput
                 name="address"
@@ -564,7 +557,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     flag: x.flag,
                     code: x.code,
                 }))}
-              name="countryofApply"
+              name="countryOfApply"
               placeholder="Select country where applying"
             />
           </Section>
@@ -637,7 +630,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
             />
         </Flex>
-              
+
         {String(formik.values.livedAbroad) === 'true' && (
             <Section>
                 <Flex align="center" gap="0.25rem">
@@ -661,13 +654,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         {String(formik.values.livedAbroad) === 'true' && (
             <React.Fragment>
                 {/* Prev Residence 1 */}
-                {Number(formik.values.countriesLived) > 0 &&
-                    <React.Fragment>
+                {Number(formik.values.countriesLived) > 0 && (Array.from({ length: Math.min(Number(formik.values.countriesLived), 5) }).map((e, ind) => 
+                    <React.Fragment key={`prev-res-${ind}`}>
                         <Section>
                             <Flex align="center" gap="0.25rem">
                                 <Text
                                     type="p"
-                                    text="Previous Country of Residence 1"
+                                    text={`Previous Country of Residence ${ind + 1}`}
                                     margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                                     size={15}
                                 />
@@ -679,7 +672,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                                     flag: x.flag,
                                     code: x.code,
                                 }))}
-                                name="prevResidence1"
+                                name={`prevResidence${ind + 1}`}
                                 placeholder="Select previous country of residence"
                             />
                         </Section>
@@ -699,7 +692,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                                     />
                                 </Flex>
                                 <FieldAsDate
-                                    name="startDatePrevResidence1"
+                                    name={`startDatePrevResidence${ind + 1}`}
                                     placeholder="Select your start date"
                                     formik={formik}
                                     maxDate={dayjs()}
@@ -716,7 +709,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                                     />
                                 </Flex>
                                 <FieldAsDate
-                                    name="endDatePrevResidence1"
+                                    name={`endDatePrevResidence${ind + 1}`}
                                     placeholder="Select your end date"
                                     formik={formik}
                                     format="DD/MM/YYYY"
@@ -724,139 +717,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                             </Section>
                         </Flex>
                     </React.Fragment>
-                }
-                
-                {/* Prev Residence 2 */}
-                {Number(formik.values.countriesLived) > 1 &&
-                    <React.Fragment>
-                        <Section>
-                            <Flex align="center" gap="0.25rem">
-                                <Text
-                                    type="p"
-                                    text="Previous Country of Residence 2"
-                                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                    size={15}
-                                />
-                            </Flex>
-                            <FieldAsString
-                                formik={formik}
-                                options={COUNTRY_FLAGS.map((x) => ({
-                                    name: x.name,
-                                    flag: x.flag,
-                                    code: x.code,
-                                }))}
-                                name="prevResidence2"
-                                placeholder="Select previous country of residence"
-                            />
-                        </Section>
-                        <Flex
-                            margin="0"
-                            justify="space-between"
-                            direction={isMobile ? "column" : "row"}
-                            gap={isMobile ? "0px" : "1.5rem"}
-                        >
-                            <Section>
-                                <Flex align="center" gap="0.25rem">
-                                    <Text
-                                        type="p"
-                                        text="Since When?"
-                                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                        size={15}
-                                    />
-                                </Flex>
-                                <FieldAsDate
-                                    name="startDatePrevResidence2"
-                                    placeholder="Select your start date"
-                                    formik={formik}
-                                    maxDate={dayjs()}
-                                    format="DD/MM/YYYY"
-                                />
-                            </Section>
-                            <Section>
-                                <Flex align="center" gap="0.25rem">
-                                    <Text
-                                        type="p"
-                                        text="Till When?"
-                                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                        size={15}
-                                    />
-                                </Flex>
-                                <FieldAsDate
-                                    name="endDatePrevResidence2"
-                                    placeholder="Select your end date"
-                                    formik={formik}
-                                    format="DD/MM/YYYY"
-                                />
-                            </Section>
-                        </Flex>
-                    </React.Fragment>
-                }
-                
-                {/* Prev Residence 3 */}
-                {Number(formik.values.countriesLived) > 2 &&
-                    <React.Fragment>
-                        <Section>
-                            <Flex align="center" gap="0.25rem">
-                                <Text
-                                    type="p"
-                                    text="Previous Country of Residence 3"
-                                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                    size={15}
-                                />
-                            </Flex>
-                            <FieldAsString
-                                formik={formik}
-                                options={COUNTRY_FLAGS.map((x) => ({
-                                    name: x.name,
-                                    flag: x.flag,
-                                    code: x.code,
-                                }))}
-                                name="prevResidence3"
-                                placeholder="Select previous country of residence"
-                            />
-                        </Section>
-                        <Flex
-                            margin="0"
-                            justify="space-between"
-                            direction={isMobile ? "column" : "row"}
-                            gap={isMobile ? "0px" : "1.5rem"}
-                        >
-                            <Section>
-                                <Flex align="center" gap="0.25rem">
-                                    <Text
-                                        type="p"
-                                        text="Since When?"
-                                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                        size={15}
-                                    />
-                                </Flex>
-                                <FieldAsDate
-                                    name="startDatePrevResidence3"
-                                    placeholder="Select your start date"
-                                    formik={formik}
-                                    maxDate={dayjs()}
-                                    format="DD/MM/YYYY"
-                                />
-                            </Section>
-                            <Section>
-                                <Flex align="center" gap="0.25rem">
-                                    <Text
-                                        type="p"
-                                        text="Till When?"
-                                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                        size={15}
-                                    />
-                                </Flex>
-                                <FieldAsDate
-                                    name="endDatePrevResidence3"
-                                    placeholder="Select your end date"
-                                    formik={formik}
-                                    format="DD/MM/YYYY"
-                                />
-                            </Section>
-                        </Flex>
-                    </React.Fragment>
-                }
+                ))}
             </React.Fragment>
         )}
 
@@ -1130,7 +991,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     </Section>
                 }
             </Flex>
-        )}    
+        )}       
 
         {/* Purpose of Trip */}
         <Text
@@ -1144,7 +1005,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
           <Flex align="center" gap="0.25rem">
             <Text
               type="p"
-              text="Main Purpose of your Trip"
+              text="Statement of Purpose"
               margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
               size={15}
             />
@@ -1353,17 +1214,11 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                     />
                     <Required />
                 </Flex>
-                    <PhoneInput
-                        country={"ng"}
-                        autoFormat={true}
-                        inputProps={{
-                            name: "contactInLocationPhoneNumber",
-                        }}
-                        onChange={(e) => {
-                            formik.setFieldValue("contactInLocationPhoneNumber", e);
-                        }}
-                        inputClass="w"
-                        placeholder="Enter phone number"
+                    <FieldPhone
+                        name="contactInLocationPhoneNumber"
+                        formik={formik}
+                        country="ng"
+                        placeholder="Enter contact's phone number"
                     />
                 </Section>
                 </Flex>      
@@ -1381,7 +1236,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 margin="2.5rem 0 0"
             />
         </Section>
-        <Section margin="0 0 0 .9rem">
+        <Section margin={isMobile ? "0" : "0 0 0 .9rem"}>
           <ol>
             <li>
                 <Flex
@@ -1398,7 +1253,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                   weight={400}
                   type="p"
                   text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
-                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  margin={isMobile ? ".7rem  0" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
                 <Section height="auto" width="fit-content">
