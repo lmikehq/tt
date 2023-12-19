@@ -135,7 +135,7 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
             is: true,
             then: (schema) => schema.required("Required"),
         }),
-        occupation: yup.string().required("Required"),
+        occupation: yup.string(),
         tripDurationStartDate: yup.string().required("Required"),
         tripDurationEndDate: yup.string().required("Required"),
         tripDurationLocation: yup.string().required("Required"),
