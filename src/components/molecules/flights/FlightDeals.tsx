@@ -169,11 +169,13 @@ function FlightDeals() {
                   </Flex>
                   <Span>
                     <Flex direction="column">
-                      <Text
-                        type="p"
-                        whiteSpace="nowrap"
-                        text="Starts from"
-                      ></Text>
+                      <Flex justify="flex-end">
+                        <Text
+                          type="p"
+                          whiteSpace="nowrap"
+                          text="Starts from"
+                        ></Text>
+                      </Flex>
                       <Flex gap="3px" align="center">
                         <Text
                           type="h3"

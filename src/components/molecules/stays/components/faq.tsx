@@ -44,7 +44,7 @@ interface BoxTypes {
   box4: boolean;
 }
 
-function FAQ() {
+function Faq() {
   const [box, setBox] = useState<BoxTypes>({
     box1: false,
     box2: false,
@@ -226,4 +226,4 @@ function FAQ() {
   );
 }
 
-export default FAQ;
+export default Faq;
