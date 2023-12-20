@@ -1,6 +1,7 @@
 import { StayBookingService } from "@/lib/services/stay/booking.service";
 import {
     StayCreditTokenizationInput,
+    StayOrderBookingFinishInput,
     StayOrderBookingReguestInput,
 } from "@/lib/types/request-models/stay/booking.type";
 import {
@@ -41,6 +42,19 @@ export const useStayCreditTokenization = (
     return useMutation({
         mutationFn: (params: StayCreditTokenizationInput) =>
             StayBookingService.creditTokenization(params),
+        ...options,
+    });
+};
+
+export const useStayBookingFinish = (
+    options?: Omit<
+        UseMutationOptions<any, unknown, StayOrderBookingFinishInput, unknown>,
+        "mutationFn"
+    >
+) => {
+    return useMutation({
+        mutationFn: (params: StayOrderBookingFinishInput) =>
+            StayBookingService.orderBookingFinish(params),
         ...options,
     });
 };
