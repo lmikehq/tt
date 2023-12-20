@@ -328,6 +328,26 @@ export const Span = styled.div`
       border: none;
     }
   }
+  &.user_popover {
+    .user_drop_list {
+      padding: 5px 10px !important;
+      padding-left: 20px;
+      &:hover {
+        background-color: var(--color-border);
+      }
+    }
+
+    user_drop_list {
+      position: relative;
+      // left: 20px;
+      padding: 5px 10px !important;
+      width: 100%;
+    }
+    user_drop_list:hover {
+      padding: 5px 10px !important;
+      background-color: var(--color-border) !important;
+    }
+  }
   .slider_skeleton_grid {
     grid-template-columns: 1fr 1fr;
   }

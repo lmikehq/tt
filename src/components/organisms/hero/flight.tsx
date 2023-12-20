@@ -10,7 +10,7 @@ import Text from "@/components/atoms/text";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
-  height: ${(props) => (props.isMobile ? "unset" : "620px")};
+  height: ${(props) => (props.isMobile ? "unset" : "680px")};
   margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${"/assets/images/flights/flight.png"});

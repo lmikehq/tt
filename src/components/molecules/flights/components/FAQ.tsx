@@ -12,7 +12,7 @@ const Box = styled.div<{ color: string; border: string }>`
   background: ${(props) => props.color};
   width: 100%;
   height: 100%;
-  padding: 3rem 0;
+  padding: 15px 0;
   border-width: 1px 0px;
 
   &:first-child {
@@ -23,7 +23,7 @@ const Box = styled.div<{ color: string; border: string }>`
     border-bottom: 0;
   }
   @media (max-width: 900px) {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 `;
 
@@ -73,7 +73,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="01"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box1 ? "#6092A7" : "#3C3C4380"}
               />
@@ -82,7 +82,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="Can I cancel or change my flight after booking?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box1 ? 700 : 500}
                 color={box.box1 ? "#6092A7" : "#3C3C4380"}
               />
@@ -115,7 +115,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="02"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box2 ? "#6092A7" : "#3C3C4380"}
               />
@@ -124,7 +124,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="Can I filter search results by specific preferences?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box2 ? 700 : 500}
                 color={box.box2 ? "#6092A7" : "#3C3C4380"}
               />
@@ -155,7 +155,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="03"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box3 ? "#6092A7" : "#3C3C4380"}
               />
@@ -164,7 +164,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="Is my payment information secure on the website?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box3 ? 700 : 500}
                 color={box.box3 ? "#6092A7" : "#3C3C4380"}
               />
@@ -195,7 +195,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="04"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box4 ? "#6092A7" : "#3C3C4380"}
               />
@@ -204,7 +204,7 @@ function FAQ() {
               <Text
                 type="h1"
                 text="Can I book hotels and car rentals alongside my flight on the same website?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box4 ? 700 : 500}
                 color={box.box4 ? "#6092A7" : "#3C3C4380"}
               />

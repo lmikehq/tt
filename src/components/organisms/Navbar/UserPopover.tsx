@@ -130,6 +130,7 @@ const CustomPopover = () => {
   return (
     <>
       <Span
+        className="user_popover"
         style={{
           display: "flex",
           justifyContent: "flex-end",
@@ -192,16 +193,32 @@ const CustomPopover = () => {
                         }}
                         ref={moreRef}
                       >
-                        <Flex direction="column" gap="20px">
-                          <Flex cursor="pointer" align="center" gap="8px">
+                        <Flex direction="column" gap="10px">
+                          <Flex
+                            className="user_drop_list"
+                            cursor="pointer"
+                            align="center"
+                            gap="8px"
+                          >
                             <CheckIcon style={{ fontSize: "18px" }} />
                             <Text type="p" text="Mark all as read"></Text>
                           </Flex>
-                          <Flex cursor="pointer" align="center" gap="8px">
+                          <Flex
+                            className="user_drop_list"
+                            cursor="pointer"
+                            align="center"
+                            gap="8px"
+                          >
                             <CleaningServicesIcon
                               style={{ fontSize: "18px" }}
                             />
-                            <Text type="p" text="Clear Notifications"></Text>
+                            <Flex>
+                              <Text
+                                whiteSpace="nowrap"
+                                type="p"
+                                text="Clear Notifications"
+                              ></Text>
+                            </Flex>
                           </Flex>
                         </Flex>
                       </div>
@@ -362,14 +379,13 @@ const CustomPopover = () => {
                       router.push("/auth/login");
                     }}
                     key={i}
-                    style={{
-                      padding: "5px 10px",
-                    }}
+                    style={{ margin: "15px 0px" }}
                   >
                     <Flex
                       align="center"
                       gap="10px"
-                      styles={{ cursor: "pointer", width: "fit-content" }}
+                      className="user_drop_list"
+                      styles={{ cursor: "pointer", width: "100%" }}
                     >
                       <span>{item.icon}</span>
                       <Text
@@ -379,17 +395,17 @@ const CustomPopover = () => {
                         size={16}
                         weight={400}
                         decoration="none"
-                        margin=".5rem 0"
                       />
                     </Flex>
                   </div>
                 ) : (
-                  <div key={i} style={{ padding: "5px 10px" }}>
-                    <Link
-                      href={item.url}
-                      style={{ width: "fit-content", height: "fit-content" }}
-                    >
-                      <Flex align="center" gap="10px">
+                  <div key={i} style={{ margin: "15px 0px" }}>
+                    <Link href={item.url}>
+                      <Flex
+                        align="center"
+                        gap="10px"
+                        className="user_drop_list"
+                      >
                         <span>{item.icon}</span>
                         <Text
                           text={item.title}
@@ -398,7 +414,6 @@ const CustomPopover = () => {
                           size={16}
                           weight={400}
                           decoration="none"
-                          margin=".5rem 0"
                         />
                       </Flex>
                     </Link>
