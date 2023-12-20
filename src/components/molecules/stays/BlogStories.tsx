@@ -235,7 +235,6 @@ function BlogStories() {
                       <BiDislike
                         style={{ cursor: "pointer", fontSize: "18px" }}
                       />
-                      <Span>{blog.disLikes}</Span>
                     </Flex>
                   </Span>
                 </Flex>

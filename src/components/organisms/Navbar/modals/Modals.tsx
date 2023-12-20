@@ -99,7 +99,7 @@ export const LanguageModal = ({
       <ModalCenter className="amenities">
         <ModalScroll className="amenities_scroll">
           <Flex
-            padding="10px 35px"
+            padding="0px 35px"
             align="center"
             justify="space-between"
             gap="20px"
@@ -145,7 +145,7 @@ export const CurrencyModal = ({
       <ModalCenter className="amenities">
         <ModalScroll className="amenities_scroll">
           <Flex
-            padding="10px 35px"
+            padding="0px 35px"
             align="center"
             justify="space-between"
             gap="20px"

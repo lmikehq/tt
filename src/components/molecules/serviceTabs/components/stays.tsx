@@ -33,6 +33,14 @@ const FlexBox = styled.div`
   justify-content: flex-start;
   gap: 10px;
   margin-bottom: 20px;
+  @media screen and (max-width: 900px) {
+    overflow: hidden;
+    overflow-x: scroll;
+    max-width: 100%;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const FlexItems = styled.div``;
 
@@ -127,7 +135,7 @@ function Stays() {
       height="unset"
       styles={{ position: "relative" }}
     >
-      <FlexBox>
+      <FlexBox className="flex_scroll">
         <FlexItems>
           <FormControlLabel
             control={
@@ -135,7 +143,6 @@ function Stays() {
                 disableFocusRipple
                 disableRipple
                 sx={{
-                  color: ttColors.primary,
                   "&.Mui-checked": {
                     color: ttColors.primary,
                   },
@@ -156,7 +163,6 @@ function Stays() {
                 disableFocusRipple
                 disableRipple
                 sx={{
-                  color: ttColors.primary,
                   "&.Mui-checked": {
                     color: ttColors.primary,
                   },
@@ -177,7 +183,6 @@ function Stays() {
                 disableFocusRipple
                 disableRipple
                 sx={{
-                  color: ttColors.primary,
                   "&.Mui-checked": {
                     color: ttColors.primary,
                   },
@@ -198,7 +203,6 @@ function Stays() {
                 disableFocusRipple
                 disableRipple
                 sx={{
-                  color: ttColors.primary,
                   "&.Mui-checked": {
                     color: ttColors.primary,
                   },

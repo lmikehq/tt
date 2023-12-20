@@ -268,16 +268,13 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
           </NavLogo>
 
           <NavMenu>
-            <Flex
-              background="transparent"
-              gap=".7rem"
-              align="center"
-              cursor="pointer"
-            >
+            <Flex background="transparent" gap=".7rem" align="center">
               <Flex
                 align="center"
                 gap="5px"
                 justify="flex-end"
+                cursor="pointer"
+                width="fit-content"
                 // onClick={() =>
                 //   setOpen((prev) => ({
                 //     ...prev,
@@ -310,6 +307,8 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               <Divider />
               <Flex
                 align="center"
+                cursor="pointer"
+                width="fit-content"
                 onClick={() =>
                   setOpen((prev) => ({
                     ...prev,
@@ -324,7 +323,6 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   size={16}
                   styles={{ textTransform: "uppercase" }}
                 />
-                <KeyboardArrowDownIcon />
               </Flex>
 
               <CurrencyModal
