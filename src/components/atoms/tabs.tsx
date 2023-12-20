@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Typography from "@mui/material/Typography";
-import { ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, { ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import Text from "./text";
@@ -41,7 +41,7 @@ const TabWrapper = styled.div<{
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
     background: ${({ addBackgroundColor }) =>
       addBackgroundColor ? "#87CEEB" : "#fff"};
-    color: ${({ addColor }) => (addColor ? "#fff" : "#000000")};
+    color: ${({ addColor }) => (addColor ? "#fff" : "#7BBBD6")};
   }
   .css-1gsv261 {
     // border-bottom: 1px solid transparent;
@@ -136,10 +136,16 @@ export default function CustomTab({
   const { isMobile } = useScreenResolution();
 
   const icons = [
-    <GiPassport size={21} color="var(--secondary-color)" />,
-    <IoAirplaneSharp size={21} color="var(--secondary-color)" />,
-    <IoBedSharp size={21} color="var(--secondary-color)" />,
+    <GiPassport size={21} />,
+    <IoAirplaneSharp size={21} />,
+    <IoBedSharp size={21} />,
   ];
+
+  const coloredIcons = icons.map((icon, i) =>
+    React.cloneElement(icon, {
+      color: value === i ? ttColors.primary600 : "var(--secondary-color)",
+    })
+  );
 
   return (
     <TabWrapper
@@ -172,14 +178,13 @@ export default function CustomTab({
                 disabled={tabItem.disabled}
                 label={
                   <Flex align="center" justify="center" gap=".5rem">
-                    {defaultIcons && icons[tabItem.value]}
+                    {defaultIcons && coloredIcons[tabItem.value]}
                     <Text
                       font="Montserrat"
                       type="p"
                       text={tabItem.label}
                       size={isMobile ? "1rem" : "1rem"}
                       weight={600}
-                      // color={ttColors.primary600}
                     />
                   </Flex>
                 }
@@ -189,10 +194,9 @@ export default function CustomTab({
                   ...(isMobile && { padding: "0 0rem" }),
                   ...(isMobile && {
                     borderBottom: `0px solid ${ttColors.dark}`,
-                    color: ttColors.primary600,
                   }),
                   "&.MuiTab-textColorPrimary.Mui-selected": {
-                    color: ttColors.primary600,
+                    color: "#06062a",
                   },
                   paddingLeft: "20px",
                   paddingRight: "20px",

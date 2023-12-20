@@ -202,10 +202,10 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   });
 
   //SELECTED CURRENCY
-  const selectedCurrency = localStorage.getItem("selectedCurrency");
+  const selectedCurrency = localStorage.getItem("selectedCurrency") || "NGN";
 
-  //SELECTED LANGUAGE
-  const selectedLanguage = localStorage.getItem("selectedLanguage");
+  // SELECTED LANGUAGE
+  const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
 
   console.log("LANGUAGE", selectedLanguage);
 
@@ -269,7 +269,6 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
 
           <NavMenu>
             <Flex
-              // onClick={handleOpen}
               background="transparent"
               gap=".7rem"
               align="center"
@@ -278,12 +277,13 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               <Flex
                 align="center"
                 gap="5px"
-                onClick={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    language: true,
-                  }))
-                }
+                justify="flex-end"
+                // onClick={() =>
+                //   setOpen((prev) => ({
+                //     ...prev,
+                //     language: true,
+                //   }))
+                // }
               >
                 <CircleFlagLanguage
                   languageCode={`${selectedLanguage}`}
@@ -336,7 +336,6 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   }))
                 }
               />
-             
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}

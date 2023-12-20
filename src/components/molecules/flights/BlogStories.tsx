@@ -10,7 +10,15 @@ import IosShareIcon from "@mui/icons-material/IosShare";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import Button from "@/components/atoms/button";
-import { FlexBox, SlideCard, SlideContent, SlideList, SliderImgBox, SliderWidth, Span } from "../stays/components/styles";
+import {
+  FlexBox,
+  SlideCard,
+  SlideContent,
+  SlideList,
+  SliderImgBox,
+  SliderWidth,
+  Span,
+} from "../stays/components/styles";
 
 interface Blog {
   title: string;
@@ -148,7 +156,7 @@ function BlogStories() {
                       src={blog.authorImg}
                       alt={blog.author}
                     />
-                    <Flex direction="column">
+                    <Flex direction="column" gap="5px">
                       <Text
                         whiteSpace="nowrap"
                         type="h4"
@@ -180,16 +188,18 @@ function BlogStories() {
                     }}
                   />
                 </FlexBox>
-                <Link href="" style={{ width: "fit-content" }}>
-                  <Text
-                    type="h2"
-                    text={blog.title}
-                    weight={"bold"}
-                    styles={{
-                      fontSize: "22px",
-                    }}
-                  ></Text>
-                </Link>
+                <Flex styles={{ marginTop: "10px" }}>
+                  <Link href="" style={{ width: "fit-content" }}>
+                    <Text
+                      type="h2"
+                      text={blog.title}
+                      weight={"bold"}
+                      styles={{
+                        fontSize: "22px",
+                      }}
+                    ></Text>
+                  </Link>
+                </Flex>
                 <Flex margin="10px 0px">
                   <TruncateMarkup lines={2}>
                     <p style={{ fontSize: "16px" }}>{blog.description}</p>
@@ -234,7 +244,12 @@ function BlogStories() {
             </SlideCard>
           ))}
         </SliderWidth>
-        <Flex width="100%" justify="center" align="center">
+        <Flex
+          width="100%"
+          justify="center"
+          align="center"
+          styles={{ marginTop: "20px" }}
+        >
           <Link href="">
             <Span
               style={{

@@ -94,14 +94,21 @@ import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
-  const ref = useRef(null);
-  useDetectOutsideClick(ref, () => setIsVisible(false));
+
+  // Ref for notification modal
+  const notificationRef = useRef(null);
+  useDetectOutsideClick(notificationRef, () => setIsNotificationVisible(false));
+
+  // Ref for "More" dropdown
+  const moreRef = useRef(null);
+  useDetectOutsideClick(moreRef, () => setIsMoreVisible(false));
+
+  // Ref for "Visible" dropdown
+  const visibleRef = useRef(null);
+  useDetectOutsideClick(visibleRef, () => setIsVisible(false));
 
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
-  useDetectOutsideClick(ref, () => setIsNotificationVisible(false));
-
   const [isMoreVisible, setIsMoreVisible] = useState(false);
-  useDetectOutsideClick(ref, () => setIsMoreVisible(false));
 
   const notifications = [
     {
@@ -122,8 +129,16 @@ const CustomPopover = () => {
   ];
   return (
     <>
-      <Flex align="center" gap="1rem">
-        <Flex>
+      <Span
+        className="user_popover"
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Span>
           <NotificationsIcon
             onClick={() => setIsNotificationVisible(!isNotificationVisible)}
             style={{ cursor: "pointer" }}
@@ -142,7 +157,7 @@ const CustomPopover = () => {
                 top: "55px",
                 right: "30px",
               }}
-              ref={ref}
+              ref={notificationRef}
             >
               <Span>
                 <Span className="header">
@@ -176,18 +191,34 @@ const CustomPopover = () => {
                           top: "55px",
                           right: "0",
                         }}
-                        ref={ref}
+                        ref={moreRef}
                       >
-                        <Flex direction="column" gap="20px">
-                          <Flex cursor="pointer" align="center" gap="8px">
+                        <Flex direction="column" gap="10px">
+                          <Flex
+                            className="user_drop_list"
+                            cursor="pointer"
+                            align="center"
+                            gap="8px"
+                          >
                             <CheckIcon style={{ fontSize: "18px" }} />
                             <Text type="p" text="Mark all as read"></Text>
                           </Flex>
-                          <Flex cursor="pointer" align="center" gap="8px">
+                          <Flex
+                            className="user_drop_list"
+                            cursor="pointer"
+                            align="center"
+                            gap="8px"
+                          >
                             <CleaningServicesIcon
                               style={{ fontSize: "18px" }}
                             />
-                            <Text type="p" text="Clear Notifications"></Text>
+                            <Flex>
+                              <Text
+                                whiteSpace="nowrap"
+                                type="p"
+                                text="Clear Notifications"
+                              ></Text>
+                            </Flex>
                           </Flex>
                         </Flex>
                       </div>
@@ -275,16 +306,8 @@ const CustomPopover = () => {
               </Span>
             </div>
           )}
-        </Flex>
-        <Link href="/dashboard">
-          <Text
-            text="Dashboard"
-            type="p"
-            whiteSpace="nowrap"
-            size={16}
-            weight={400}
-          />
-        </Link>
+        </Span>
+
         <Flex
           align="center"
           gap=".5rem"
@@ -315,7 +338,7 @@ const CustomPopover = () => {
                 top: "40px",
                 right: "0",
               }}
-              ref={ref}
+              ref={visibleRef}
             >
               {[
                 {
@@ -356,14 +379,13 @@ const CustomPopover = () => {
                       router.push("/auth/login");
                     }}
                     key={i}
-                    style={{
-                      padding: "5px 10px",
-                    }}
+                    style={{ margin: "15px 0px" }}
                   >
                     <Flex
                       align="center"
                       gap="10px"
-                      styles={{ cursor: "pointer", width: "fit-content" }}
+                      className="user_drop_list"
+                      styles={{ cursor: "pointer", width: "100%" }}
                     >
                       <span>{item.icon}</span>
                       <Text
@@ -373,17 +395,17 @@ const CustomPopover = () => {
                         size={16}
                         weight={400}
                         decoration="none"
-                        margin=".5rem 0"
                       />
                     </Flex>
                   </div>
                 ) : (
-                  <div key={i} style={{ padding: "5px 10px" }}>
-                    <Link
-                      href={item.url}
-                      style={{ width: "fit-content", height: "fit-content" }}
-                    >
-                      <Flex align="center" gap="10px">
+                  <div key={i} style={{ margin: "15px 0px" }}>
+                    <Link href={item.url}>
+                      <Flex
+                        align="center"
+                        gap="10px"
+                        className="user_drop_list"
+                      >
                         <span>{item.icon}</span>
                         <Text
                           text={item.title}
@@ -392,7 +414,6 @@ const CustomPopover = () => {
                           size={16}
                           weight={400}
                           decoration="none"
-                          margin=".5rem 0"
                         />
                       </Flex>
                     </Link>
@@ -402,7 +423,7 @@ const CustomPopover = () => {
             </div>
           )}
         </Flex>
-      </Flex>
+      </Span>
     </>
   );
 };
