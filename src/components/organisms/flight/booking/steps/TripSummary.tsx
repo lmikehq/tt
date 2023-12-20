@@ -288,14 +288,14 @@ const TripSummary = ({
                 arrival={arrival}
                 flights={flights}
             />
-            {!user?._id && (
-                <form
-                    onSubmit={contactDetailsFormik.handleSubmit}
-                    style={{ padding: "2rem 0 0" }}
-                >
-                    <ContactDetails formik={contactDetailsFormik} />
-                </form>
-            )}
+
+            <form
+                onSubmit={contactDetailsFormik.handleSubmit}
+                style={{ padding: "2rem 0 0" }}
+            >
+                <ContactDetails formik={contactDetailsFormik} />
+            </form>
+
             <FormikProvider value={formik}>
                 <form onSubmit={checkSubmit}>
                     <FieldArray
@@ -322,6 +322,9 @@ const TripSummary = ({
                                                             passenger.category,
                                                     }).max
                                                 }
+                                                minPassportDate={dayjs(
+                                                    arrival?.utc_arrival
+                                                ).add(1, "day")}
                                                 combinationOptions={getPassengerBagCombinationOptions(
                                                     {
                                                         category:
