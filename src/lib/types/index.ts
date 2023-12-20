@@ -169,21 +169,21 @@ export interface PersonalInfoInterface {
 
 export interface BackgroundInfoInterface {
     tuberculosis: boolean,
-    // tuberculosisDetails?: string,
+    tuberculosisDetails?: string,
     mentalDisorder: boolean,
-    mentalDisorderDetails: string,
+    mentalDisorderDetails?: string,
     remainbeyondValidity: boolean,
-    // remainbeyondValidityDetails?: string;
+    remainbeyondValidityDetails?: string;
     refusedBefore: boolean,
-    refusedBeforeDetails: string,
+    refusedBeforeDetails?: string,
     arrestedBefore: boolean,
-    arrestedBeforeDetails: string,
+    arrestedBeforeDetails?: string,
     servedInMilitary: boolean,
-    servedInMilitaryDetails: string,
+    servedInMilitaryDetails?: string,
     memberOfViolentGroup: boolean,
-    // memberOfViolentGroupDetails?: string;
+    memberOfViolentGroupDetails?: string;
     participatedInViolentActivities: boolean,
-    // participatedInViolentActivitiesDetails?: string;
+    participatedInViolentActivitiesDetails?: string;
 }
 
 export interface FamilyInfoInterface {
@@ -264,6 +264,7 @@ export interface PrimaryTravellerInterface
 export type VisaFormUnionType =
     | { tripDetails: DetailsKeys }
     | { personalInfo: PersonalInfoInterface }
+    | { guarantorInfo: GuarantorInfoInterface }
     | ManyEducationDetailsInterface
     | ManyEmploymentDetailsInterface
     | ManyFamilyInfoInterface
@@ -291,8 +292,8 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
         return ({
             ...member,
             dateOfBirth: formatISODate(member?.dateOfBirth),
-            issueYear: String(member?.issueYear),
-            expiryYear: String(member?.expiryYear),
+            issueYear: safelyConvertToNumber(member?.issueYear),
+            expiryYear: safelyConvertToNumber(member?.expiryYear),
         })
     })
 
@@ -354,11 +355,11 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             },
             backgroundInformation: {
                 tuberculosis: data.personalInfo.tuberculosis ?? false,
-                // tuberculosisDetails: data.personalInfo.tuberculosisDetails ?? "",
+                tuberculosisDetails: data.personalInfo.tuberculosisDetails ?? "",
                 mentalDisorder: data.personalInfo.mentalDisorder ?? false,
                 mentalDisorderDetails: data.personalInfo.mentalDisorderDetails ?? "",
                 remainbeyondValidity: data.personalInfo.remainbeyondValidity ?? false,
-                // remainbeyondValidityDetails: data.personalInfo.remainbeyondValidityDetails ?? "",
+                remainbeyondValidityDetails: data.personalInfo.remainbeyondValidityDetails ?? "",
                 refusedBefore: data.personalInfo.refusedBefore ?? false,
                 refusedBeforeDetails: data.personalInfo.refusedBeforeDetails ?? "",
                 arrestedBefore: data.personalInfo.arrestedBefore ?? false,
@@ -366,9 +367,9 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                 servedInMilitary: data.personalInfo.servedInMilitary ?? false,
                 servedInMilitaryDetails: data.personalInfo.servedInMilitaryDetails ?? "",
                 memberOfViolentGroup: data.personalInfo.memberOfViolentGroup ?? false,
-                // memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails ?? "",
+                memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails ?? "",
                 participatedInViolentActivities: data.personalInfo.participatedInViolentActivities ?? false,
-                // participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails ?? "",
+                participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails ?? "",
             },
             employment: data.employment,
             education: data.education,
@@ -377,22 +378,55 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             parentDetails: sortedFamily.filter(e => e.section === 'A').map((member) => {
                 delete member.section;
                 return ({
-                    ...member,
-                    // dateOfBirth: formatISODate(member?.dateOfBirth),
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        dateOfBirth: member.dateOfBirth,
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
                 })
             }),
             siblingDetails: sortedFamily.filter(e => e.section === 'B').map((member) => {
                 delete member.section;
                 return ({
-                    ...member,
-                    // dateOfBirth: formatISODate(member?.dateOfBirth),
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        dateOfBirth: member.dateOfBirth,
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
                 })
             }),
             immediateFamilyInfo: sortedFamily.filter(e => e.section === 'C').map((member) => {
                 delete member.section;
                 return ({
-                    ...member,
-                    dateOfBirth: formatISODate(member?.dateOfBirth),
+                    dateOfBirth: member?.dateOfBirth,
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
                 })
             }),
         },

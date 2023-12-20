@@ -7,6 +7,10 @@ import {
     BackgroundInfoInterface,
 } from "@lib/types";
 
+interface ThisFamilyInterface extends Omit<FamilyInfoInterface, 'issueYear' | 'expiryYear'> {
+    issueYear?: number;
+    expiryYear?: number;
+}
 export interface ApplicationFormRequestInput {
     primaryTraveller: {
         personalDetails: {
@@ -57,9 +61,9 @@ export interface ApplicationFormRequestInput {
         backgroundInformation: BackgroundInfoInterface;
     };
     familyInformation: {
-        parentDetails: FamilyInfoInterface[];
-        siblingDetails: FamilyInfoInterface[];
-        immediateFamilyInfo: FamilyInfoInterface[];
+        parentDetails: ThisFamilyInterface[];
+        siblingDetails: ThisFamilyInterface[];
+        immediateFamilyInfo: ThisFamilyInterface[];
     };
     guarantorInformation: {
         guarantorName?: string;

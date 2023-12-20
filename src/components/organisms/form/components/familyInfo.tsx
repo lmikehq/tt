@@ -16,8 +16,7 @@ import { useRouter } from "next/navigation";
 import ToastError from "@molecule/toastError";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Required from "@/components/atoms/required";
-import { ErrorText, FieldInput, FieldString } from "../../fieldInput";
-import PhoneInput from "react-phone-input-2";
+import { ErrorText, FieldInput, FieldPhone, FieldString } from "../../fieldInput";
 
 interface formProps {
     steps: string[];
@@ -136,25 +135,18 @@ function FamilyInfo({ steps, index, persistForm, formik, guarantorFormik }: form
                     </Section>
                     <Section width="100%">
                         <Flex align="center" gap="0.25rem">
-                        <Text
-                            type="p"
-                            text="Relationship to Guarantor"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                            size={15}
-                        />
-                        <Required />
+                            <Text
+                                type="p"
+                                text="Relationship to Guarantor"
+                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                                size={15}
+                            />
+                            <Required />
                         </Flex>
-                        <FieldString
-                            options={[
-                                "Father",
-                                "Mother",
-                                "Sibling",
-                                "Friend",
-                                "Others",
-                            ]}
-                            placeholder="Select your relationship to guarantor"
+                        <FieldInput
                             name="relationshipToGuarantor"
                             formik={guarantorFormik}
+                            placeholder="Enter your relationship to guarantor"
                         />
                     </Section>
                     </Flex>
@@ -182,26 +174,20 @@ function FamilyInfo({ steps, index, persistForm, formik, guarantorFormik }: form
                     >
                     <Section>
                         <Flex align="center" gap="0.25rem">
-                        <Text
-                            type="p"
-                            text="Guarantor Phone Number"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                            size={15}
-                        />
-                        <Required />
+                            <Text
+                                type="p"
+                                text="Guarantor Phone Number"
+                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                                size={15}
+                            />
+                            <Required />
                         </Flex>
-                        <PhoneInput
-                            country={"ng"}
-                            autoFormat={true}
-                            inputProps={{
-                                name: "guarantorPhone",
-                            }}
-                            inputStyle={{ border: Object.keys(guarantorFormik.touched).includes('guarantorPhone') && Object.keys(guarantorFormik.errors).includes('guarantorPhone') ? `1px solid crimson` : ''}}
-                            onChange={(e) => guarantorFormik.setFieldValue("guarantorPhone", e)}
-                            inputClass="w"
-                            placeholder="Enter guarantor phone number"
+                        <FieldPhone
+                            name="guarantorPhone"
+                            formik={guarantorFormik}
+                            country="ng"
+                            placeholder="Enter guarantor's phone number"
                         />
-                        {Object.keys(guarantorFormik.touched).includes('guarantorPhone') && Object.keys(guarantorFormik.errors).includes('guarantorPhone') ? <ErrorText text={guarantorFormik.errors?.guarantorPhone ?? 'Required'} /> : null}  
                     </Section>
                     <Section width="100%">
                         <Flex align="center" gap="0.25rem">

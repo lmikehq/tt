@@ -5,13 +5,16 @@ import Text from '@/components/atoms/text';
 import { Detail } from '../applicationPreview';
 import { EmploymentDetailsInterface } from '@/lib/types';
 import Flex from '@/components/templates/flex';
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 
 
 interface ThreeProps{
     employmentInfo: EmploymentDetailsInterface[];
+    goToStep: (step: number) => void;
 }
 
-function Three({ employmentInfo = [] }: ThreeProps) {
+function Three({ employmentInfo = [], goToStep }: ThreeProps) {
+    const { isMobile } = useScreenResolution()
     const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
 
     const toggleAcc = (index: number) => {
@@ -19,7 +22,7 @@ function Three({ employmentInfo = [] }: ThreeProps) {
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height='77%'>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '65%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (3/5)`}
@@ -39,6 +42,7 @@ function Three({ employmentInfo = [] }: ThreeProps) {
                         heading={`Employment Details ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
+                        onEdit={() => goToStep(4)}
                         key={`employment-${index}`}
                     >
                         <Flex width='100%' wrap="wrap" gap="1.4rem">
