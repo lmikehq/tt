@@ -19,17 +19,19 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { BsGlobe } from "react-icons/bs";
 import { GiPassport } from "react-icons/gi";
 import { IoAirplaneSharp, IoBedSharp } from "react-icons/io5";
 import { RxHamburgerMenu } from "react-icons/rx";
 import styled from "styled-components";
 import { getIpDetails } from "../form/visaApis";
 import MobileNavigationDrawer from "./modals/mobileNav";
-import currencyCodes from "currency-codes";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { CurrencyModal, LanguageModal } from "./modals/Modals";
+import { CircleFlagLanguage } from "react-circle-flags";
+
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
@@ -191,7 +193,22 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
     setUser(res);
     return res;
   }
+
   const { data: user } = useQuery(["getUser"], getUser);
+
+  const [open, setOpen] = useState({
+    language: false,
+    currency: false,
+  });
+
+  //SELECTED CURRENCY
+  const selectedCurrency = localStorage.getItem("selectedCurrency") || "NGN";
+
+  // SELECTED LANGUAGE
+  const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
+
+  console.log("LANGUAGE", selectedLanguage);
+
   return (
     <NavbarWrapper page={page}>
       <NavbarLayout>
@@ -222,9 +239,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   cursor="pointer"
                   gap=".3rem"
                   height="70px"
-                  borderBottom={
-                    active ? `5px solid ${ttColors.primary}` : "none"
-                  }
+                  color={active ? ttColors.primary600 : "none"}
                 >
                   {item.icon}
                   <Link href={`/${item.url}`}>
@@ -233,6 +248,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                       type="p"
                       whiteSpace="nowrap"
                       weight={600}
+                      color={active ? ttColors.primary600 : "none"}
                     />
                   </Link>
                 </Flex>
@@ -253,76 +269,73 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
 
           <NavMenu>
             <Flex
-              // onClick={handleOpen}
               background="transparent"
               gap=".7rem"
               align="center"
               cursor="pointer"
             >
-              <BsGlobe size={24} />
-              <Text text="EN" type="span" weight={400} size={16} />
-              <Divider />
-
-              <Select
-                defaultValue={preFerredCurrency}
-                value={preFerredCurrency}
-                onChange={(e) => setPreferredCurrency(e.target.value)}
-                IconComponent={PiCaretDownBold}
-                MenuProps={{
-                  sx: {
-                    "& .MuiPaper-root": {
-                      maxHeight: "50vh",
-                      top: "55px !important",
-                      boxShadow: "0px 0px 1px rgba(0,0,0,0.3)",
-                    },
-                    "& .MuiPaper-root::-webkit-scrollbar": {
-                      backgroundColor: "transparent",
-                      width: "9px",
-                      height: "9px",
-                    },
-                    "& .MuiPaper-root::-webkit-scrollbar-thumb": {
-                      backgroundColor: "rgba(0, 0, 0, 0.15)",
-                      borderRadius: "6px",
-                    },
-                    '& li[aria-selected="true"]': {
-                      background: "#DAF0F9",
-                    },
-                  },
-                }}
-                sx={{
-                  boxShadow: "none",
-                  ".MuiOutlinedInput-notchedOutline": {
-                    border: 0,
-                  },
-                  "&.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                    {
-                      border: 0,
-                    },
-                  ".MuiSvgIcon-root": {
-                    display: "none",
-                  },
-                  ".MuiSelect-select": {
-                    width: "min-content",
-                    padding: "0",
-                    fontFamily: "Poppins",
-                    appearance: "none !important",
-                  },
-                  "&.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      border: 0,
-                    },
-                }}
+              <Flex
+                align="center"
+                gap="5px"
+                justify="flex-end"
+                // onClick={() =>
+                //   setOpen((prev) => ({
+                //     ...prev,
+                //     language: true,
+                //   }))
+                // }
               >
-                {currencyCodes.codes().map((el: string, index: number) => (
-                  <MenuItem
-                    key={"item-" + index}
-                    value={el}
-                    sx={{ fontSize: "16px" }}
-                  >
-                    {el}
-                  </MenuItem>
-                ))}
-              </Select>
+                <CircleFlagLanguage
+                  languageCode={`${selectedLanguage}`}
+                  height="30"
+                />
+                {/* <BsGlobe size={24} /> */}
+                <Text
+                  text={`${selectedLanguage}`}
+                  type="span"
+                  weight={400}
+                  size={16}
+                  styles={{ textTransform: "uppercase" }}
+                />
+              </Flex>
+              <LanguageModal
+                open={open.language}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    language: false,
+                  }))
+                }
+              />
+              <Divider />
+              <Flex
+                align="center"
+                onClick={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    currency: true,
+                  }))
+                }
+              >
+                <Text
+                  text={`${selectedCurrency}`}
+                  type="span"
+                  weight={400}
+                  size={16}
+                  styles={{ textTransform: "uppercase" }}
+                />
+                <KeyboardArrowDownIcon />
+              </Flex>
+
+              <CurrencyModal
+                open={open.currency}
+                handleClose={() =>
+                  setOpen((prev) => ({
+                    ...prev,
+                    currency: false,
+                  }))
+                }
+              />
             </Flex>
             <LanguageCurrencyModal
               open={modalOpen}

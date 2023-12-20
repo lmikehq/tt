@@ -75,39 +75,260 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { RxAvatar } from "react-icons/rx";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import LogoutIcon from "@mui/icons-material/Logout";
+import HotelIcon from "@mui/icons-material/Hotel";
+import AirplaneTicketIcon from "@mui/icons-material/AirplaneTicket";
+import StyleIcon from "@mui/icons-material/Style";
+import FeedIcon from "@mui/icons-material/Feed";
+import GridViewIcon from "@mui/icons-material/GridView";
+import { Span } from "@/components/molecules/stays/components/styles";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { ttColors } from "@/lib/theme/colors";
+import TruncateMarkup from "react-truncate-markup";
+import Button from "@/components/atoms/button";
+import CheckIcon from "@mui/icons-material/Check";
+import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
-  const ref = useRef(null);
-  useDetectOutsideClick(ref, () => setIsVisible(false));
+
+  // Ref for notification modal
+  const notificationRef = useRef(null);
+  useDetectOutsideClick(notificationRef, () => setIsNotificationVisible(false));
+
+  // Ref for "More" dropdown
+  const moreRef = useRef(null);
+  useDetectOutsideClick(moreRef, () => setIsMoreVisible(false));
+
+  // Ref for "Visible" dropdown
+  const visibleRef = useRef(null);
+  useDetectOutsideClick(visibleRef, () => setIsVisible(false));
+
+  const [isNotificationVisible, setIsNotificationVisible] = useState(false);
+  const [isMoreVisible, setIsMoreVisible] = useState(false);
+
+  const notifications = [
+    {
+      name: "admin",
+    },
+    {
+      name: "admin",
+    },
+    {
+      name: "admin",
+    },
+    {
+      name: "admin",
+    },
+    {
+      name: "admin",
+    },
+  ];
   return (
     <>
-      <Flex align="center" gap="1rem">
-        <Link href="/dashboard">
-          <Text
-            text="Dashboard"
-            type="p"
-            whiteSpace="nowrap"
-            size={16}
-            weight={400}
+      <Span
+        className="user_popover"
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Span>
+          <NotificationsIcon
+            onClick={() => setIsNotificationVisible(!isNotificationVisible)}
+            style={{ cursor: "pointer" }}
           />
-        </Link>
+          {isNotificationVisible && (
+            <div
+              style={{
+                position: "absolute",
+                width: "350px",
+                backgroundColor: "#fafafa",
+                border: "1px solid #ccc",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                borderRadius: "5px",
+                padding: "20px",
+                zIndex: 1,
+                top: "55px",
+                right: "30px",
+              }}
+              ref={notificationRef}
+            >
+              <Span>
+                <Span className="header">
+                  <Flex justify="space-between">
+                    <Span>
+                      <Text weight={600} type="h3" text="Notifications"></Text>
+                    </Span>
+                    <Span
+                      style={{
+                        padding: "1px 3px",
+                        cursor: "pointer",
+                        border: "1px solid var(--text-gray-color)",
+                      }}
+                    >
+                      <MoreHorizIcon
+                        onClick={() => setIsMoreVisible(!isMoreVisible)}
+                        style={{ position: "relative", top: "2px" }}
+                      />
+                    </Span>{" "}
+                    {isMoreVisible && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          width: "200px",
+                          backgroundColor: "#fafafa",
+                          border: "1px solid #ccc",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                          borderRadius: "5px",
+                          padding: "10px",
+                          zIndex: 1,
+                          top: "55px",
+                          right: "0",
+                        }}
+                        ref={moreRef}
+                      >
+                        <Flex direction="column" gap="10px">
+                          <Flex
+                            className="user_drop_list"
+                            cursor="pointer"
+                            align="center"
+                            gap="8px"
+                          >
+                            <CheckIcon style={{ fontSize: "18px" }} />
+                            <Text type="p" text="Mark all as read"></Text>
+                          </Flex>
+                          <Flex
+                            className="user_drop_list"
+                            cursor="pointer"
+                            align="center"
+                            gap="8px"
+                          >
+                            <CleaningServicesIcon
+                              style={{ fontSize: "18px" }}
+                            />
+                            <Flex>
+                              <Text
+                                whiteSpace="nowrap"
+                                type="p"
+                                text="Clear Notifications"
+                              ></Text>
+                            </Flex>
+                          </Flex>
+                        </Flex>
+                      </div>
+                    )}
+                  </Flex>
+                  <Flex margin="5px 0px" styles={{ marginTop: "10px" }}>
+                    <Text weight={500} type="p" text="Today"></Text>
+                  </Flex>
+                </Span>
+                {notifications.map((item, index) => (
+                  <Span
+                    className="not_list"
+                    key={index}
+                    style={{ padding: "8px 0px" }}
+                  >
+                    <Flex align="center" gap="8px">
+                      <Flex
+                        styles={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                        }}
+                      >
+                        <img
+                          style={{
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                          }}
+                          src="/assets/images/stays/admin.png"
+                          alt="admin"
+                        />
+                      </Flex>
+                      <Flex align="center" gap="6px">
+                        <Span>
+                          <Text
+                            color={ttColors.primary600}
+                            type="h4"
+                            weight={500}
+                            whiteSpace="nowrap"
+                            text="Admin"
+                          ></Text>
+                        </Span>
+
+                        <Span style={{ width: "100px" }}>
+                          <TruncateMarkup lines={1}>
+                            <p style={{ color: "var(--text-gray-color)" }}>
+                              requested Bio Metric document
+                            </p>
+                          </TruncateMarkup>
+                        </Span>
+                      </Flex>
+                      <Flex align="center">
+                        <FiberManualRecordIcon
+                          style={{
+                            color: ttColors.primary600,
+                            fontSize: "16px",
+                          }}
+                        />
+                        <Text
+                          color="var(--text-gray-color)"
+                          type="p"
+                          text="20mins"
+                        ></Text>
+                      </Flex>
+                    </Flex>
+                  </Span>
+                ))}
+                <Span className="btn">
+                  <Button
+                    background={ttColors.dark}
+                    color={ttColors.light}
+                    border={`1px solid ${ttColors.dark}`}
+                    padding="5px 10px"
+                    width="100%"
+                    styles={{ background: "transparent !important" }}
+                  >
+                    <Text
+                      type="p"
+                      weight={"bold"}
+                      size={15}
+                      text="See All Notification"
+                    ></Text>
+                  </Button>
+                </Span>
+              </Span>
+            </div>
+          )}
+        </Span>
+
         <Flex
           align="center"
           gap=".5rem"
-          cursor="pointer"
           styles={{
             position: "relative",
           }}
         >
-          <RxAvatar size={34} />
-          <IoIosArrowDown size={20} onClick={() => setIsVisible(!isVisible)} />
+          <Flex
+            align="center"
+            gap="5px"
+            cursor="pointer"
+            onClick={() => setIsVisible(!isVisible)}
+          >
+            <RxAvatar size={34} />
+            <IoIosArrowDown size={20} />
+          </Flex>
           {isVisible && (
             <div
               style={{
                 position: "absolute",
-                width: "200px",
+                width: "250px",
                 backgroundColor: "#fafafa",
                 border: "1px solid #ccc",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
@@ -117,15 +338,39 @@ const CustomPopover = () => {
                 top: "40px",
                 right: "0",
               }}
-              ref={ref}
+              ref={visibleRef}
             >
               {[
-                { title: "Settings", url: "/dashboard" },
-                { title: "Travel Guide", url: "/chat" },
-                { title: "Book Visa", url: "/visa" },
-                { title: "Rent Stay", url: "/stay" },
-                { title: "Book Flight", url: "/flight" },
-                { title: "Logout", url: "/logout" },
+                {
+                  title: "Dashboard",
+                  icon: <GridViewIcon />,
+                  url: "/dashboard",
+                },
+                {
+                  title: "Travel Guide",
+                  icon: <FeedIcon />,
+                  url: "/chat",
+                },
+                {
+                  title: "Book Visa",
+                  icon: <StyleIcon />,
+                  url: "/visa",
+                },
+                {
+                  title: "Rent Stay",
+                  icon: <HotelIcon />,
+                  url: "/stay",
+                },
+                {
+                  title: "Book Flight",
+                  icon: <AirplaneTicketIcon />,
+                  url: "/flight",
+                },
+                {
+                  title: "Logout",
+                  icon: <LogoutIcon />,
+                  url: "/logout",
+                },
               ].map((item, i) =>
                 item.title === "Logout" ? (
                   <div
@@ -134,35 +379,51 @@ const CustomPopover = () => {
                       router.push("/auth/login");
                     }}
                     key={i}
+                    style={{ margin: "15px 0px" }}
                   >
-                    <Text
-                      text={item.title}
-                      type="p"
-                      whiteSpace="nowrap"
-                      size={16}
-                      weight={400}
-                      decoration="underline"
-                      margin=".5rem 0"
-                    />
+                    <Flex
+                      align="center"
+                      gap="10px"
+                      className="user_drop_list"
+                      styles={{ cursor: "pointer", width: "100%" }}
+                    >
+                      <span>{item.icon}</span>
+                      <Text
+                        text={item.title}
+                        type="p"
+                        whiteSpace="nowrap"
+                        size={16}
+                        weight={400}
+                        decoration="none"
+                      />
+                    </Flex>
                   </div>
                 ) : (
-                  <Link href={item.url} key={i}>
-                    <Text
-                      text={item.title}
-                      type="p"
-                      whiteSpace="nowrap"
-                      size={16}
-                      weight={400}
-                      decoration="underline"
-                      margin=".5rem 0"
-                    />
-                  </Link>
+                  <div key={i} style={{ margin: "15px 0px" }}>
+                    <Link href={item.url}>
+                      <Flex
+                        align="center"
+                        gap="10px"
+                        className="user_drop_list"
+                      >
+                        <span>{item.icon}</span>
+                        <Text
+                          text={item.title}
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={16}
+                          weight={400}
+                          decoration="none"
+                        />
+                      </Flex>
+                    </Link>
+                  </div>
                 )
               )}
             </div>
           )}
         </Flex>
-      </Flex>
+      </Span>
     </>
   );
 };
