@@ -88,16 +88,18 @@ export default function TripSummaryCard({
     flights,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
-    const { push } = useRouter()
+    const { push } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
-    const flightContext = useContext(FlightContext)
-    const flightState = flightContext?.state
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state;
 
-    const flightStops = (flights.length - 1) ?? 0;
-    const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(dayjs(departure?.utc_departure), "minute");
+    const flightStops = flights.length - 1 ?? 0;
+    const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(
+        dayjs(departure?.utc_departure),
+        "minute"
+    );
     const hoursLeft = Math.floor(timeToArrivalMins / 60);
     const minsLeft = timeToArrivalMins % 60;
-
 
     return (
         <React.Fragment>
@@ -110,7 +112,7 @@ export default function TripSummaryCard({
                             color={ttColors.dark}
                             variant="outline"
                             styles={{ fontSize: isMobile ? "14px" : "14px" }}
-                            onClick={() => push('/flight/listings')}
+                            onClick={() => push("/flight/listings")}
                         >
                             Change Flight
                         </Button>
@@ -125,27 +127,64 @@ export default function TripSummaryCard({
                     gap="1rem"
                     margin="1rem 0"
                 >
-                    <Box
-                        style={{
-                            flex: "none",
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            borderRadius: "50%",
-                            border: `1px solid ${ttColors.lightestGray}`,
-                            width: isMobile ? "40px" : "60px",
-                            height: isMobile ? "40px" : "60px",
-                            backgroundImage: `url(${flightState?.airlines[departure?.airline?.iata_code]?.logo})`,
-                        }}
-                    />
+                    {flightState?.airlines[departure?.airline?.iata_code]
+                        ?.logo ? (
+                        <Box
+                            style={{
+                                flex: "none",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                borderRadius: "50%",
+                                border: `1px solid ${ttColors.lightestGray}`,
+                                width: isMobile ? "40px" : "60px",
+                                height: isMobile ? "40px" : "60px",
+                                backgroundImage: `url(${
+                                    flightState?.airlines[
+                                        departure?.airline?.iata_code
+                                    ]?.logo
+                                })`,
+                            }}
+                        />
+                    ) : (
+                        <Flex
+                            height={isMobile ? "40px" : "60px"}
+                            width={isMobile ? "40px" : "60px"}
+                            align="center"
+                            styles={{ flex: "none" }}
+                            justify="center"
+                            borderRadius="50%"
+                            background={ttColors.primary}
+                        >
+                            <Text
+                                type="p"
+                                size={20}
+                                weight={500}
+                                color={ttColors.light}
+                                text={(
+                                    departure?.airline?.iata_code ??
+                                    departure?.airline?.iatacode ??
+                                    []
+                                ).slice(0, 2)}
+                            />
+                        </Flex>
+                    )}
                     <Flex
                         direction={isMobile ? "column" : "row"}
                         gap={isMobile ? ".5rem" : "1rem"}
                     >
                         <Text text={"Departure"} type="p" weight={600} />
-                        <Text text={departure?.airline?.name} type="p" size={14} />
+                        <Text
+                            text={departure?.airline?.name}
+                            type="p"
+                            size={14}
+                        />
                     </Flex>
                 </Box>
-                <Text text={dayjs(departure?.utc_departure).format("D MMM, YYYY")} type="p" size={isMobile ? 14 : 16} />
+                <Text
+                    text={dayjs(departure?.utc_departure).format("D MMM, YYYY")}
+                    type="p"
+                    size={isMobile ? 14 : 16}
+                />
             </Flex>
 
             <Flex
@@ -178,7 +217,9 @@ export default function TripSummaryCard({
                     <Text
                         type="p"
                         size={14}
-                        text={`${flightStops} ${flightStops > 1 ? "stops" : "stop"}`}
+                        text={`${flightStops} ${
+                            flightStops > 1 ? "stops" : "stop"
+                        }`}
                     />
                 </Flex>
 
@@ -226,9 +267,7 @@ export default function TripSummaryCard({
                 </AccordionSummary>
 
                 <AccordionDetails style={{ padding: "0" }}>
-                    <TripSummaryDetails
-                        flights={flights}
-                    />
+                    <TripSummaryDetails flights={flights} />
                 </AccordionDetails>
             </StyledAccordion>
         </React.Fragment>
