@@ -402,7 +402,7 @@ const CustomPopover = () => {
                   <div
                     onClick={() => {
                       handleLogout();
-                      router.push("/auth/login");
+                      // router.push("/auth/login");
                     }}
                     key={i}
                     style={{ margin: "15px 0px" }}

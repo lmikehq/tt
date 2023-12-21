@@ -82,7 +82,6 @@ const NavMenu = styled.div`
   gap: 2rem;
   font-size: 0.9rem;
 `;
-
 const Divider = styled.div`
   width: 1px;
   height: 30px;
