@@ -57,7 +57,7 @@
 //       >
 //         <MenuItem onClick={handleClose}>Settings</MenuItem>
 //         <MenuItem onClick={handleClose}>Travel Guide</MenuItem>
-//         <MenuItem onClick={handleClose}>Book Visa</MenuItem>
+//         <MenuItem onClick={handleClose}>Get visa</MenuItem>
 //         <MenuItem onClick={handleClose}>Rent Stays</MenuItem>
 //         <MenuItem onClick={handleClose}>Book Flights</MenuItem>
 //         <MenuItem onClick={handleClose}>Logout</MenuItem>
@@ -378,7 +378,7 @@ const CustomPopover = () => {
                   url: "/chat",
                 },
                 {
-                  title: "Book Visa",
+                  title: "Get visa",
                   icon: <StyleIcon />,
                   url: "/visa",
                 },
@@ -402,7 +402,7 @@ const CustomPopover = () => {
                   <div
                     onClick={() => {
                       handleLogout();
-                      // router.push("/auth/login");
+                      router.push("/auth/login");
                     }}
                     key={i}
                     style={{ margin: "15px 0px" }}
