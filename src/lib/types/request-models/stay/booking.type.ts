@@ -1,3 +1,5 @@
+import { RoomForGuest } from "./search.type";
+
 export interface StayOrderBookingReguestInput {
     userId: string;
     hotel_id: string;
@@ -12,8 +14,8 @@ export interface StayCreditTokenizationInput {
 }
 
 export interface StayOrderBookingFinishRoomGuest {
-    first_name: string;
-    last_name: string;
+    first_name?: string;
+    last_name?: string;
 }
 export interface StayOrderBookingFinishRoom {
     guests: StayOrderBookingFinishRoomGuest[];
@@ -41,3 +43,31 @@ export interface StayOrderBookingFinishInput {
     object_id: string;
     payment_type: StayOrderBookingFinishPaymentType;
 }
+
+export interface GuestRoomsFormDataInterface {
+    [key: string]: {
+        guests: StayOrderBookingFinishRoomGuest & { required: boolean }[];
+        displayOtherGuests: boolean;
+    };
+}
+export const generateInitialFormDataForRoomsAndGuests = (
+    rooms: RoomForGuest[]
+) => {
+    let roomsData: GuestRoomsFormDataInterface = {};
+    rooms.forEach(
+        (el, index) =>
+            (roomsData[`${index}`] = {
+                guests: Array.from(
+                    { length: el.adults + el.children.length },
+                    (el, index) => ({
+                        first_name: "",
+                        last_name: "",
+                        required: index == 0,
+                    })
+                ),
+                displayOtherGuests: false,
+            })
+    );
+
+    return roomsData;
+};

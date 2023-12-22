@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
-  BtnDetails,
-  Container,
-  GridLayout,
-  Header,
-  Span,
+    BtnDetails,
+    Container,
+    GridLayout,
+    Header,
+    Span,
 } from "../view/styles";
 import Text from "@/components/atoms/text";
 import Input, { TextField } from "@/components/atoms/input";
@@ -18,210 +18,215 @@ import PhoneInput from "react-phone-number-input";
 import { ttColors } from "@/lib/theme/colors";
 import Divider from "@mui/material/Divider";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useFormik } from "formik";
+import {
+    RoomForGuest,
+    numberOfGuestsInRooms,
+} from "@/lib/types/request-models/stay/search.type";
+import { generateInitialFormDataForRoomsAndGuests } from "@/lib/types/request-models/stay/booking.type";
+import { generateValidationSchemaForRoomsAndGuests } from "@/lib/extensions/schemas/stay/booking.schema";
+import FirstAndLastNameInput from "./widgets/FirstAndLastName";
+import ordinal from "ordinal";
 
-function CheckingIn() {
-  const { isMobile } = useScreenResolution();
-  const [isExpanded, setIsExpanded] = useState(false);
+interface CheckingInProps {
+    guests: RoomForGuest[];
+}
 
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
+function CheckingIn({ guests }: CheckingInProps) {
+    const { isMobile } = useScreenResolution();
+    const [isExpanded, setIsExpanded] = useState(false);
 
-  const [isGridVisible, setIsGridVisible] = useState(false);
+    const handleToggle = () => {
+        setIsExpanded(!isExpanded);
+    };
 
-  const handleToggleGrid = () => {
-    setIsGridVisible(!isGridVisible);
-  };
-  // const [value, setValue] = useState<string | undefined>("");
+    const [isGridVisible, setIsGridVisible] = useState(false);
 
-  return (
-    <Container style={{ overflow: "hidden" }}>
-      <Header>
-        <Text weight={600} type="h3" text="Who is checking in?"></Text>
-      </Header>
-      <Span>
-        <GridLayout>
-          <Section>
-            <Text
-              type="p"
-              text="First Name"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              size={isMobile ? "14.5px" : "16px"}
-            />
-            <Input placeholder="Enter First Name" height="3rem" />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Last Name"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              size={isMobile ? "14.5px" : "16px"}
-            />
-            <Input placeholder="Enter Last Name" height="3rem" />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Email Address"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              size={isMobile ? "14.5px" : "16px"}
-            />
-            <Input placeholder="Enter Email Address" height="3rem" />
-          </Section>
-          <Section>
-            <Text
-              type="p"
-              text="Phone Number"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              size={isMobile ? "14.5px" : "16px"}
-            />
-            <Input placeholder="Enter Your Phone Number" height="3rem" />
-            {/* <Flex>
-              <PhoneInput
-                style={{ height: "30px", width: "100%" }}
-                placeholder="Enter Your Phone Number"
-                value={value}
-                defaultCountry="NG"
-                onChange={(phoneNumber: string) => setValue(phoneNumber)}
-              />
-            </Flex> */}
-          </Section>
-        </GridLayout>
-        <Span>
-          <Flex direction="column" margin="10px 0px">
-            <FormControlLabel
-              control={
-                <Checkbox
-                  className="mui-checked"
-                  disableFocusRipple
-                  disableRipple
-                />
-              }
-              label={
-                <Text
-                  type="p"
-                  text="Receive text alerts about this trip. Message and data rates may apply."
-                  styles={{ fontSize: "15px", width: "fit-content" }}
-                />
-              }
-            />
-            <Flex align="center" gap="20px" width="100%" overflow="hidden">
-              <BtnDetails
-                style={{
-                  backgroundColor: "var(--primary-light-color)",
-                  border: "1px solid var(--primary-color)",
-                  cursor: "default",
-                }}
-              >
-                <Flex>
-                  <Text
-                    weight={500}
-                    size={15}
-                    whiteSpace="nowrap"
-                    type="p"
-                    text="The 2nd Guest"
-                  ></Text>
-                </Flex>
-              </BtnDetails>
-              <Flex>
-                <Divider style={{ width: "100%" }} />
-              </Flex>
-            </Flex>
-          </Flex>
-          <Span>
-            {isGridVisible && (
-              <GridLayout>
+    const handleToggleGrid = () => {
+        setIsGridVisible(!isGridVisible);
+    };
+    // const [value, setValue] = useState<string | undefined>("");
+
+    const roomsAndGuestsDataFormik = useFormik({
+        initialValues: generateInitialFormDataForRoomsAndGuests(guests),
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: generateValidationSchemaForRoomsAndGuests(guests),
+        onSubmit: (values) => {},
+    });
+
+    return (
+        <Container style={{ overflow: "hidden" }}>
+            <Header>
+                <Text weight={600} type="h3" text="Who is checking in?"></Text>
+            </Header>
+            <Span>
+                {guests.map((room, index) => (
+                    <Section key={"room" + index} margin="0 0 1rem 0">
+                        <Section>
+                            <Text
+                                type="h4"
+                                weight={600}
+                                text={`Room ${index + 1}`}
+                            />
+                        </Section>
+                        <FirstAndLastNameInput
+                            namePrefix={`${index}.guests.0`}
+                            formik={roomsAndGuestsDataFormik}
+                        />
+                        <Span>
+                            {roomsAndGuestsDataFormik.values[`${index}`]
+                                .displayOtherGuests &&
+                                Array.from(
+                                    {
+                                        length:
+                                            room.adults +
+                                            room.children.length -
+                                            1,
+                                    },
+                                    (_, i) => (
+                                        <Section
+                                            key={"room" + index + "guest" + i}
+                                        >
+                                            {/* Guest DIVIDER */}
+                                            <Flex
+                                                direction="column"
+                                                margin="10px 0px"
+                                            >
+                                                <Flex
+                                                    align="center"
+                                                    gap="20px"
+                                                    width="100%"
+                                                    overflow="hidden"
+                                                >
+                                                    <BtnDetails
+                                                        style={{
+                                                            backgroundColor:
+                                                                "var(--primary-light-color)",
+                                                            border: "1px solid var(--primary-color)",
+                                                            cursor: "default",
+                                                        }}
+                                                    >
+                                                        <Flex>
+                                                            <Text
+                                                                weight={500}
+                                                                size={15}
+                                                                whiteSpace="nowrap"
+                                                                type="p"
+                                                                text={`${ordinal(
+                                                                    i + 2
+                                                                )} Guest`}
+                                                            ></Text>
+                                                        </Flex>
+                                                    </BtnDetails>
+                                                    <Flex>
+                                                        <Divider
+                                                            style={{
+                                                                width: "100%",
+                                                            }}
+                                                        />
+                                                    </Flex>
+                                                </Flex>
+                                            </Flex>
+
+                                            <FirstAndLastNameInput
+                                                namePrefix={`${index}.guests.${
+                                                    i + 1
+                                                }`}
+                                                formik={
+                                                    roomsAndGuestsDataFormik
+                                                }
+                                            />
+                                        </Section>
+                                    )
+                                )}
+
+                            <Flex
+                                align="center"
+                                gap="10px"
+                                margin="8px 0px"
+                                onClick={() =>
+                                    roomsAndGuestsDataFormik.setFieldValue(
+                                        `${index}.displayOtherGuests`,
+                                        !roomsAndGuestsDataFormik.values[
+                                            `${index}`
+                                        ].displayOtherGuests
+                                    )
+                                }
+                                styles={{ cursor: "pointer" }}
+                            >
+                                {roomsAndGuestsDataFormik.values[`${index}`]
+                                    .displayOtherGuests ? (
+                                    <FaUserMinus style={{ fontSize: "20px" }} />
+                                ) : (
+                                    <FaUserPlus style={{ fontSize: "20px" }} />
+                                )}
+                                <Text
+                                    weight={500}
+                                    type="p"
+                                    text={
+                                        isGridVisible
+                                            ? "Remove name(s) of other guests"
+                                            : "Add name(s) of other guests"
+                                    }
+                                />
+                            </Flex>
+                        </Span>
+                    </Section>
+                ))}
                 <Section>
-                  <Text
-                    type="p"
-                    text="First Name"
-                    margin=".7rem 0 .2rem"
-                    size="16px"
-                  />
-                  <Input placeholder="Enter First Name" height="3rem" />
+                    <Flex
+                        align="center"
+                        gap="10px"
+                        margin="10px 0px"
+                        cursor="pointer"
+                        width="fit-content"
+                        onClick={handleToggle}
+                    >
+                        <Text
+                            type="p"
+                            weight={600}
+                            text="Special Requests"
+                        ></Text>
+                        {isExpanded ? (
+                            <KeyboardArrowUpIcon />
+                        ) : (
+                            <KeyboardArrowDownIcon />
+                        )}
+                    </Flex>
+
+                    {isExpanded && (
+                        <Flex direction="column">
+                            <Flex>
+                                <Text
+                                    type="p"
+                                    text="Hotel accommodations may consider special requests based on their discretion and availability. If you wish to ensure specific services, kindly reach out to our Customer Support for guaranteed options."
+                                ></Text>
+                            </Flex>
+                            <Span style={{ marginTop: "20px" }}>
+                                <textarea
+                                    name="text"
+                                    placeholder="Enter request here"
+                                    style={{
+                                        width: "100%",
+                                        padding: "10px",
+                                        fontSize: "16px",
+                                        fontFamily: "var(--poppins-font)",
+                                        resize: "none",
+                                        borderRadius: "9px",
+                                        minHeight: "200px",
+                                        border: "1px solid var(--color-light-gray)",
+                                        outlineColor: ttColors.primary,
+                                        outlineWidth: "1px",
+                                    }}
+                                ></textarea>
+                            </Span>
+                        </Flex>
+                    )}
                 </Section>
-                <Section>
-                  <Text
-                    type="p"
-                    text="Last Name"
-                    margin=".7rem 0 .2rem"
-                    size="16px"
-                  />
-                  <Input placeholder="Enter Last Name" height="3rem" />
-                </Section>
-              </GridLayout>
-            )}
-
-            <Flex
-              align="center"
-              gap="10px"
-              margin="8px 0px"
-              onClick={handleToggleGrid}
-              styles={{ cursor: "pointer" }}
-            >
-              {isGridVisible ? (
-                <FaUserMinus style={{ fontSize: "20px" }} />
-              ) : (
-                <FaUserPlus style={{ fontSize: "20px" }} />
-              )}
-              <Text
-                weight={500}
-                type="p"
-                text={
-                  isGridVisible
-                    ? "Remove name(s) of other guests"
-                    : "Add name(s) of other guests"
-                }
-              />
-            </Flex>
-          </Span>
-
-          <Span>
-            <Flex
-              align="center"
-              gap="10px"
-              margin="10px 0px"
-              cursor="pointer"
-              width="fit-content"
-              onClick={handleToggle}
-            >
-              <Text type="p" weight={600} text="Special Requests"></Text>
-              {isExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </Flex>
-
-            {isExpanded && (
-              <Flex direction="column">
-                <Flex>
-                  <Text
-                    type="p"
-                    text="Hotel accommodations may consider special requests based on their discretion and availability. If you wish to ensure specific services, kindly reach out to our Customer Support for guaranteed options."
-                  ></Text>
-                </Flex>
-                <Span style={{ marginTop: "20px" }}>
-                  <textarea
-                    name="text"
-                    placeholder="Enter request here"
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      fontSize: "16px",
-                      fontFamily: "var(--poppins-font)",
-                      resize: "none",
-                      borderRadius: "9px",
-                      minHeight: "200px",
-                      border: "1px solid var(--color-light-gray)",
-                      outlineColor: ttColors.primary,
-                      outlineWidth: "1px",
-                    }}
-                  ></textarea>
-                </Span>
-              </Flex>
-            )}
-          </Span>
-        </Span>
-      </Span>
-    </Container>
-  );
+            </Span>
+        </Container>
+    );
 }
 
 export default CheckingIn;

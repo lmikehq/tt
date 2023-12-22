@@ -16,79 +16,86 @@ import Button from "@/components/atoms/button";
 import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
 import Link from "@/components/atoms/link";
+import { RoomForGuest } from "@/lib/types/request-models/stay/search.type";
 
-function Booking() {
-  const { isMobile } = useScreenResolution();
+interface BookingProps {
+    guests: RoomForGuest[];
+}
 
-  const [submissionState, setSubmissionState] = useState({
-    loading: false,
-    //properties needed
-  });
+function Booking({ guests }: BookingProps) {
+    const { isMobile } = useScreenResolution();
 
-  const handleSubmit = () => {};
+    const [submissionState, setSubmissionState] = useState({
+        loading: false,
+        //properties needed
+    });
 
-  return (
-    <Span>
-      <Header style={{ margin: "10px 0px", marginTop: "25px" }}>
-        <Span style={{ width: "fit-content" }}>
-          <Link href="/stay/view">
-            <Flex align="center" gap="10px">
-              <ArrowBackIosNewIcon style={{ fontSize: "19px" }} />
-              <Text
-                weight={600}
-                size={20}
-                type="h3"
-                text="Secure your booking"
-              />
-            </Flex>
-          </Link>
-        </Span>
-      </Header>
-      <Box
-        sx={{
-          display: isMobile ? "flex" : "grid",
-          gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
-          gap: "30px",
-          flexDirection: isMobile ? "column-reverse" : "",
-        }}
-      >
+    const handleSubmit = () => {};
+
+    return (
         <Span>
-          <CheckingIn />
-          <ImprovedCondition />
-          <BookingDetails />
-          <Payment />
-          <Span>
-            <Button
-              width="100%"
-              margin=".5rem 0"
-              color="white"
-              padding="10px"
-              background={
-                submissionState.loading ? ttColors.dark : ttColors.dark
-              }
-              onClick={handleSubmit}
+            <Header style={{ margin: "10px 0px", marginTop: "25px" }}>
+                <Span style={{ width: "fit-content" }}>
+                    <Link href="/stay/view">
+                        <Flex align="center" gap="10px">
+                            <ArrowBackIosNewIcon style={{ fontSize: "19px" }} />
+                            <Text
+                                weight={600}
+                                size={20}
+                                type="h3"
+                                text="Secure your booking"
+                            />
+                        </Flex>
+                    </Link>
+                </Span>
+            </Header>
+            <Box
+                sx={{
+                    display: isMobile ? "flex" : "grid",
+                    gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
+                    gap: "30px",
+                    flexDirection: isMobile ? "column-reverse" : "",
+                }}
             >
-              {submissionState.loading ? (
-                <Spinner size="40px" fill={"white"} />
-              ) : (
-                <Text
-                    type="p"
-                    text="Complete Booking"
-                    color={"white"}
-                    size="16px"
-                />
-              )}
-            </Button>
-          </Span>
+                <Span>
+                    <CheckingIn guests={guests} />
+                    <ImprovedCondition />
+                    <BookingDetails />
+                    <Payment />
+                    <Span>
+                        <Button
+                            width="100%"
+                            margin=".5rem 0"
+                            color="white"
+                            padding="10px"
+                            background={
+                                submissionState.loading
+                                    ? ttColors.dark
+                                    : ttColors.dark
+                            }
+                            onClick={handleSubmit}
+                        >
+                            {submissionState.loading ? (
+                                <Spinner size="40px" fill={"white"} />
+                            ) : (
+                                <Text
+                                    type="p"
+                                    text="Complete Booking"
+                                    color={"white"}
+                                    size="16px"
+                                />
+                            )}
+                        </Button>
+                    </Span>
+                </Span>
+                <Span>
+                    <HotelDetail />
+                    <PriceDetail />
+                    <FreeCancellation />
+                </Span>
+            </Box>
         </Span>
-        <Span>
-          <HotelDetail />
-          <PriceDetail />
-          <FreeCancellation />
-        </Span>
-      </Box>
-    </Span>
-  );
+    );
 }
 
 export default Booking;
