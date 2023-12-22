@@ -353,10 +353,15 @@ function OneTrip({
                         time={`${arrivalHoursLeft}h ${arrivalMinsLeft}m`}
                         airline={`${flight?.airline.name}, ${flight?.airline.code_public}${flight?.flight_no}`}
                         logo={
-                            flightState?.airlines[flight?.airline.iata_code]
-                                ?.logo ?? ""
+                            flightState?.airlines[
+                                flight?.airline.iata_code ??
+                                    flight?.airline.iatacode
+                            ]?.logo ?? ""
                         }
-                        iata={flight?.airline.iata_code}
+                        iata={
+                            flight?.airline.iata_code ??
+                            flight?.airline.iatacode
+                        }
                         order={isMobile ? 3 : 2}
                         width={isMobile ? "100%" : "30%"}
                         margin={isMobile ? "2.5rem 0 0" : "0"}
