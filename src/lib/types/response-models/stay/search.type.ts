@@ -575,7 +575,12 @@ export const sampleViewStay: ViewSingleStayResponse = {
                 "sell_price_limits": null,
                 "allotment": 27,
                 "amenities_data": [
-                    "non-smoking"
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
                 ],
                 "any_residency": true,
                 "deposit": null,
@@ -591,6 +596,178 @@ export const sampleViewStay: ViewSingleStayResponse = {
                     "bedding_type": "full double bed",
                     "misc_room_type": null
                 }
-            }
+            },
+            {
+                "book_hash": "h-ffcebcaa-03cd-548a-9f3a-f31e6fb27bed",
+                "match_hash": "m-b4af9fe1-51f1-58b9-b0f7-4905ca671902",
+                "daily_prices": [
+                    "824.00",
+                    "824.00"
+                ],
+                "meal": "breakfast",
+                "payment_options": {
+                    "payment_types": [
+                        {
+                            "amount": "2.00",
+                            "show_amount": "1848.00",
+                            "currency_code": "CHF",
+                            "show_currency_code": "NGN",
+                            "by": null,
+                            "is_need_credit_card_data": false,
+                            "is_need_cvc": false,
+                            "type": "now",
+                            "vat_data": {
+                                "included": false,
+                                "applied": false,
+                                "amount": "0.00",
+                                "currency_code": "HNL",
+                                "value": "0.00"
+                            },
+                            "tax_data": {
+                                "taxes": [
+                                    {
+                                        "name": "city_tax",
+                                        "included_by_supplier": false,
+                                        "amount": "1476.61",
+                                        "currency_code": "HNL"
+                                    },
+                                    {
+                                        "name": "electricity_fee",
+                                        "included_by_supplier": true,
+                                        "amount": "53.83",
+                                        "currency_code": "NGN"
+                                    },
+                                    {
+                                        "name": "service_fee",
+                                        "included_by_supplier": false,
+                                        "amount": "7.77",
+                                        "currency_code": "HNL"
+                                    },
+                                    {
+                                        "name": "vat",
+                                        "included_by_supplier": false,
+                                        "amount": "333.06",
+                                        "currency_code": "HNL"
+                                    }
+                                ]
+                            },
+                            "perks": {},
+                            "commission_info": {
+                                "show": {
+                                    "amount_gross": "1848.00",
+                                    "amount_net": "1848.00",
+                                    "amount_commission": "0.00"
+                                },
+                                "charge": {
+                                    "amount_gross": "2.00",
+                                    "amount_net": "2.00",
+                                    "amount_commission": "0.00"
+                                }
+                            },
+                            "cancellation_penalties": {
+                                "policies": [
+                                    {
+                                        "start_at": null,
+                                        "end_at": "2024-01-09T20:00:00",
+                                        "amount_charge": "0.00",
+                                        "amount_show": "0.00",
+                                        "commission_info": {
+                                            "show": {
+                                                "amount_gross": "0.00",
+                                                "amount_net": "0.00",
+                                                "amount_commission": "0.00"
+                                            },
+                                            "charge": {
+                                                "amount_gross": "0.00",
+                                                "amount_net": "0.00",
+                                                "amount_commission": "0.00"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "start_at": "2024-01-09T20:00:00",
+                                        "end_at": "2024-01-10T20:00:00",
+                                        "amount_charge": "1.00",
+                                        "amount_show": "924.00",
+                                        "commission_info": {
+                                            "show": {
+                                                "amount_gross": "924.00",
+                                                "amount_net": "924.00",
+                                                "amount_commission": "0.00"
+                                            },
+                                            "charge": {
+                                                "amount_gross": "1.00",
+                                                "amount_net": "1.00",
+                                                "amount_commission": "0.00"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "start_at": "2024-01-10T20:00:00",
+                                        "end_at": null,
+                                        "amount_charge": "2.00",
+                                        "amount_show": "1848.00",
+                                        "commission_info": {
+                                            "show": {
+                                                "amount_gross": "1848.00",
+                                                "amount_net": "1848.00",
+                                                "amount_commission": "0.00"
+                                            },
+                                            "charge": {
+                                                "amount_gross": "2.00",
+                                                "amount_net": "2.00",
+                                                "amount_commission": "0.00"
+                                            }
+                                        }
+                                    }
+                                ],
+                                "free_cancellation_before": null
+                            },
+                            "recommended_price": null
+                        }
+                    ]
+                },
+                "bar_rate_price_data": null,
+                "rg_ext": {
+                    "class": 3,
+                    "quality": 2,
+                    "sex": 0,
+                    "bathroom": 1,
+                    "bedding": 3,
+                    "family": 0,
+                    "capacity": 2,
+                    "club": 0,
+                    "bedrooms": 0,
+                    "balcony": 0,
+                    "view": 0,
+                    "floor": 0
+                },
+                "room_name": "Standard Double room (shared bathroom) (full double bed)",
+                "serp_filters": [],
+                "sell_price_limits": null,
+                "allotment": 27,
+                "amenities_data": [
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                    "non-smoking",
+                ],
+                "any_residency": true,
+                "deposit": null,
+                "no_show": {
+                    "amount": "20.00",
+                    "currency_code": "HNL",
+                    "from_time": "12:00:00"
+                },
+                "room_data_trans": {
+                    "main_room_type": "Standard Double room (shared bathroom)",
+                    "main_name": "Standard Double room",
+                    "bathroom": "shared bathroom",
+                    "bedding_type": "full double bed",
+                    "misc_room_type": null
+                }
+            },
         ]
     }

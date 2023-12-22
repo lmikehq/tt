@@ -7,6 +7,7 @@ import { ttColors } from "@/lib/theme/colors";
 import Button from "@/components/atoms/button";
 import Spinner from "@/components/molecules/icons/spinner";
 import Select, { components, GroupBase, Props } from "react-select";
+import { Rate } from "@/lib/types/response-models/stay/search.type";
 
 const customStyles = {
     control: (base: any) => ({
@@ -71,73 +72,59 @@ function CustomSelect({ myCustomProp, ...props }: CustomSelectProps) {
         />
     );
 }
+{/* <CustomSelect
+    myCustomProp="customValue"
+    options={options}
+    onChange={(selectedOptions, actionMeta) => {}}
+/> */}
 
-interface FilterItem {
-    name: string;
-    images: string[];
-    //Other properties here
-}
 interface FilterBoxProps {
     beds: string;
     setBeds: React.Dispatch<React.SetStateAction<string>>;
     bedsOptions: { value: string; label: string }[];
-    selectedMealCheckboxValues: string[];
-    setSelectedMealCheckboxValues: React.Dispatch<
-        React.SetStateAction<string[]>
-    >;
-    mealOptions: { value: string; displayValue: string }[];
+    selectedMeals: string;
+    setSelectedMeals: React.Dispatch<React.SetStateAction<string>>;
+    mealOptions: { value: string; label: string }[];
     cancellation: string;
     setCancellation: React.Dispatch<React.SetStateAction<string>>;
     cancellationOptions: { value: string; label: string }[];
-    selectedPaymentCheckboxValues: string[];
-    setSelectedPaymentCheckboxValues: React.Dispatch<
-        React.SetStateAction<string[]>
-    >;
-    paymentOptions: { value: string; displayValue: string }[];
+    selectedPayment: string;
+    setSelectedPayment: React.Dispatch<React.SetStateAction<string>>;
+    paymentOptions: { value: string; label: string }[];
     submissionState: {
         loading: boolean;
-        //MORE PROPERTIES
     };
     setSubmissionState: React.Dispatch<
-        React.SetStateAction<{
-            loading: boolean;
-            //MORE PROPERTIES
-        }>
+        React.SetStateAction<{loading: boolean;}>
     >;
     handleSubmit: () => void;
     // resetAllFilters: () => void;
-
     // totalSelectedOptions: number;
-    filterItems: FilterItem[];
+    items: Rate[];
 }
 
 function FilterBox({
     beds,
     setBeds,
     bedsOptions,
-    selectedMealCheckboxValues,
-    setSelectedMealCheckboxValues,
+    selectedMeals,
+    setSelectedMeals,
     mealOptions,
     cancellation,
     setCancellation,
     cancellationOptions,
-    selectedPaymentCheckboxValues,
-    setSelectedPaymentCheckboxValues,
+    selectedPayment,
+    setSelectedPayment,
     paymentOptions,
     submissionState,
     setSubmissionState,
     handleSubmit,
     // resetAllFilters,
     // totalSelectedOptions,
-    filterItems,
+    items,
 }: FilterBoxProps) {
     const { isMobile } = useScreenResolution();
 
-    const options: MyOption[] = [
-        { value: "option1", label: "Option 1" },
-        { value: "option2", label: "Option 2" },
-        // ... other options
-    ];
     return (
         <Span>
             <GridLayout className="grid_select">
@@ -147,7 +134,7 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Beds" weight={400} />
-                    <Select styles={customStyles} options={bedsOptions} />
+                    <Select styles={customStyles} options={bedsOptions} onChange={val => setBeds(val?.value ?? "")} />
                 </Flex>
                 <Flex
                     direction="column"
@@ -156,27 +143,16 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Meals" weight={400} />
-                    <CustomSelect
-                        myCustomProp="customValue"
-                        options={options}
-                        onChange={(selectedOptions, actionMeta) => {}}
-                    />
+                    <Select styles={customStyles} options={mealOptions} onChange={val => setSelectedMeals(val?.value ?? "")} />
+                    
                 </Flex>{" "}
                 <Flex
                     direction="column"
                     gap=".5rem"
                     styles={{ marginBottom: "1.2rem" }}
                 >
-                    <Text
-                        type="label"
-                        size={16}
-                        text="Cancellation"
-                        weight={400}
-                    />
-                    <Select
-                        styles={customStyles}
-                        options={cancellationOptions}
-                    />
+                    <Text type="label" size={16} text="Cancellation" weight={400} />
+                    <Select styles={customStyles} options={cancellationOptions} onChange={val => setCancellation(val?.value ?? "")} />
                 </Flex>
                 <Flex
                     direction="column"
@@ -184,20 +160,13 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Payment" weight={400} />
-                    <CustomSelect
-                        myCustomProp="customValue"
-                        options={options}
-                        onChange={(selectedOptions, actionMeta) => {}}
-                    />
+                    <Select styles={customStyles} options={paymentOptions} onChange={val => setSelectedPayment(val?.value ?? "")} />
                 </Flex>
             </GridLayout>
             {isMobile && (
                 <Span>
                     <Span style={{ width: "100%" }}>
                         <Flex styles={{ margin: "8px 0px", width: "100%" }}>
-                            {/* {filterItems?.length === 0 && totalSelectedOptions === 0 ? (
-                ""
-              ) : ( */}
                             <BtnDetails
                                 className="reset_filters"
                                 style={{
@@ -207,40 +176,13 @@ function FilterBox({
                                     cursor: "default",
                                 }}
                             >
-                                <Flex
-                                    align="center"
-                                    direction="column"
-                                    justify="center"
-                                    gap="5px"
-                                >
-                                    {filterItems?.length === 0 ? (
-                                        <Text
-                                            weight={500}
-                                            size={15}
-                                            type="p"
-                                            color={ttColors.dark}
-                                            text="There is No Result"
-                                        ></Text>
-                                    ) : (
-                                        ""
-                                    )}
-                                    {/* {totalSelectedOptions > 0 && ( */}
-                                    <Flex
-                                        // onClick={resetAllFilters}
-                                        width="fit-content"
-                                        styles={{ cursor: "pointer" }}
-                                    >
-                                        <Text
-                                            weight={500}
-                                            size={15}
-                                            type="p"
-                                            text="Reset All Filters"
-                                        ></Text>
-                                    </Flex>
-                                    {/* )} */}
-                                </Flex>
+                                <Text
+                                    weight={500}
+                                    size={15}
+                                    type="p"
+                                    text="Reset All Filters"
+                                />
                             </BtnDetails>
-                            {/* )} */}
                         </Flex>
                     </Span>
                     <Span>
@@ -249,19 +191,16 @@ function FilterBox({
                             margin=".5rem 0"
                             color="white"
                             padding="10px"
-                            background={
-                                submissionState.loading
-                                    ? ttColors.dark
-                                    : ttColors.dark
-                            }
+                            background={ttColors.dark}
                             onClick={handleSubmit}
+                            disabled={submissionState.loading}
                         >
                             {submissionState.loading ? (
                                 <Spinner size="40px" fill={"white"} />
                             ) : (
                                 <Text
                                     type="p"
-                                    text={`Show ${12} Options`}
+                                    text={`Search`}
                                     color={"white"}
                                     size="16px"
                                 />

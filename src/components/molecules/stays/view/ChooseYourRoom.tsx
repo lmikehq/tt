@@ -13,12 +13,13 @@ import TuneIcon from "@mui/icons-material/Tune";
 import CachedIcon from "@mui/icons-material/Cached";
 import CloseIcon from "@mui/icons-material/Close";
 import { FlexBox } from "../components/styles";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ChangeSearchModal, FilterModal } from "./modals/Modals";
 import FilterBox from "./modals/components/FilterBox";
 import { isNull } from "util";
-import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import Dropdown from "@/components/organisms/dropdown";
+import { capCase } from "@/lib/utilFns";
 
 
 interface Metapolicy {
@@ -58,46 +59,47 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
     });
 
     // FILTERED ITEMS
-    const [filterItems, setFilterItems] = useState([]);
+    const [filteredItems, setFilteredItems] = useState<Rate[]>(stayResponse.rates ?? []);
 
+    type OptionsType = { value: string; label: string; }[] 
     // BEDS
     const [beds, setBeds] = useState("");
-    const bedsOptions = [
-        { value: "all options", label: "All Options" },
-        { value: "double bed", label: "Double Bed" },
-        { value: "separate bed", label: "Separate Bed" },
-    ];
-
+    const bedsOptions = useMemo(() => {
+        const res = stayResponse.rates?.map((r, ind, arr) => ({
+            value: r.room_data_trans?.bedding_type,
+            label: capCase(r.room_data_trans?.bedding_type)
+        })).reduce((prev, curr) =>
+            !prev.some(e => e?.value === curr.value) ? [...prev, curr] : prev, [] as OptionsType) ?? []
+        return [{ value: '', label: 'All Options' }, ...res]
+    }
+    , [stayResponse.rates])
+    
+    
     // MEALS
-    const [selectedMealCheckboxValues, setSelectedMealCheckboxValues] = useState<
-        string[]
-    >([]);
-    const mealOptions = [
-        { value: "no meal", displayValue: "No Meal" },
-        { value: "breakfast", displayValue: "Breakfast" },
-        {
-        value: "breakfast + lunch or dinner",
-        displayValue: "Breakfast + Lunch or Dinner",
-        },
-        {
-        value: "breakfast, lunch and dinner",
-        displayValue: "Breakfast, Lunch and Dinner",
-        },
-        { value: "all inclusive", displayValue: "All Inclusive" },
-    ];
-
+    const [selectedMeals, setSelectedMeals] = useState("");
+    const mealOptions = useMemo(() => {
+        const res = stayResponse.rates.map(r => ({
+            value: r.meal,
+            label: capCase(r.meal)
+        })).reduce((prev, curr) =>
+            !prev.some(e => e?.value === curr.value) ? [...prev, curr] : prev, [] as OptionsType) ?? []
+        return [{ value: '', label: 'All Options' }, ...res]
+    } 
+    , [stayResponse.rates])
+    
     // CANCELLATION
     const [cancellation, setCancellation] = useState("");
     const cancellationOptions = [
-        { value: "all options", label: "All Options" },
-        { value: "with free cancellation", label: "With Free Cancellation" },
+        { value: "", label: "All Options" },
+        { value: "free cancellation", label: "With Free Cancellation" },
     ];
 
     // PAYMENT
-    const [selectedPaymentCheckboxValues, setSelectedPaymentCheckboxValues] = useState<string[]>([]);
+    const [selectedPayment, setSelectedPayment] = useState("");
     const paymentOptions = [
-        { value: "pay now", displayValue: "Pay Now" },
-        { value: "pay at the hotel", displayValue: "Pay at the Hotel" },
+        { value: "", label: "All Options" },
+        { value: "now", label: "Pay Now" },
+        { value: "deposit", label: "Deposit" },
     ];
 
     const [submissionState, setSubmissionState] = useState({
@@ -113,12 +115,34 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
     ];
     const [guest, setGuest] = useState("");
 
-    // SUBMIT HANDLER
+    const filterItems = () => {
+        const newItems = stayResponse.rates.filter(r => 
+            (!!beds ? r.room_data_trans.bedding_type === beds : true) &&
+            (!!selectedMeals ? r.meal === selectedMeals : true) &&
+            (!!cancellation ? r.payment_options.payment_types[0]?.cancellation_penalties.free_cancellation_before : true) &&
+            (!!selectedPayment ? r.payment_options.payment_types[0]?.type === selectedPayment : true)
+        )
+        console.log(newItems)
+        setFilteredItems(prev => newItems)
+    }
+
+    const activeFilters = useMemo(() => 
+        ({
+            beds: !!beds ? true : false,  
+            meals: !!selectedMeals ? true : false,
+            cancellation: !!cancellation ? true : false,  
+            payment: !!selectedPayment ? true : false,  
+        })
+    , [beds, selectedMeals, cancellation, selectedPayment])
+    
+    console.log(beds, selectedMeals, selectedPayment, cancellation)
+
     const handleSubmit = () => {
         setOpen((prev) => ({
-        ...prev,
-        filter: false,
+            ...prev,
+            filter: false,
         }));
+        filterItems()
     };
 
   return (
@@ -126,23 +150,21 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
     <Header id="rooms">
         <Flex justify="space-between">
             <Text type="h1" size={24} weight={600} text="Choose Your Room" />
-            {isMobile && 
-                <Button
-                    background="transparent"
-                    color={ttColors.dark}
-                    border={`1px solid ${ttColors.dark}`}
-                    padding="7px 10px"
-                    styles={{ background: "transparent !important" }}
-                    onClick={() =>
-                    setOpen((prev) => ({
-                        ...prev,
-                        search: true,
-                    }))
-                    }
-                >
-                    <Text type="p" weight={"bold"} size={15} text="Change"></Text>
-                </Button>
-            }
+            <Button
+                background="transparent"
+                color={ttColors.dark}
+                border={`1px solid ${ttColors.dark}`}
+                padding="7px 10px"
+                styles={{ background: "transparent !important" }}
+                onClick={() =>
+                setOpen((prev) => ({
+                    ...prev,
+                    search: true,
+                }))
+                }
+            >
+                <Text type="p" weight={"bold"} size={15} text="Change"></Text>
+            </Button>
         </Flex>
 
         {/* SEARCH MODAL*/}
@@ -165,9 +187,10 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
           >
             <Text type="label" size={16} text="Check-In" weight={400} />
             <DatePicker
-              placeholder="Select Date"
-              // position="relative"
-              onChange={(e) => {}}
+                placeholder="Select Date"
+                onChange={(e) => { }}
+                disabled
+                styles={{ background: '#f2f2f2' }}
             />
           </Flex>
           <Flex
@@ -177,9 +200,10 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
           >
             <Text type="label" size={16} text="Check-Out" weight={400} />
             <DatePicker
-              placeholder="Select Date"
-              // position="relative"
-              onChange={(e) => {}}
+                placeholder="Select Date"
+                onChange={(e) => { }}
+                disabled
+                styles={{ background: '#f2f2f2' }}
             />
           </Flex>{" "}
           <Flex
@@ -196,6 +220,7 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                 height="45px"
                 selectedValue={guest}
                 setSelectedValue={setGuest}
+                disabled  
             />
           </Flex>
         </Grid>
@@ -213,29 +238,22 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
         <Span>
           {!isMobile && (
             <FilterBox
-              // BEDS
               beds={beds}
               setBeds={setBeds}
               bedsOptions={bedsOptions}
-              // MEALS
-              selectedMealCheckboxValues={selectedMealCheckboxValues}
-              setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
+              selectedMeals={selectedMeals}
+              setSelectedMeals={setSelectedMeals}
               mealOptions={mealOptions}
-              // CANCELLATION
               cancellation={cancellation}
               setCancellation={setCancellation}
               cancellationOptions={cancellationOptions}
-              // PAYMENT
-              selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
-              setSelectedPaymentCheckboxValues={
-                setSelectedPaymentCheckboxValues
-              }
+              selectedPayment={selectedPayment}
+              setSelectedPayment={setSelectedPayment}
               paymentOptions={paymentOptions}
-              //SUBMIT
               submissionState={submissionState}
               setSubmissionState={setSubmissionState}
               handleSubmit={handleSubmit}
-              filterItems={filterItems}
+              items={filteredItems}
             />
           )}
           {isMobile && (
@@ -243,29 +261,22 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
               {/* FILTER MODAL*/}
               <FilterModal
                 open={open.filter}
-                // BEDS
                 beds={beds}
                 setBeds={setBeds}
                 bedsOptions={bedsOptions}
-                // MEALS
-                selectedMealCheckboxValues={selectedMealCheckboxValues}
-                setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
+                selectedMeals={selectedMeals}
+                setSelectedMeals={setSelectedMeals}
                 mealOptions={mealOptions}
-                // CANCELLATION
                 cancellation={cancellation}
                 setCancellation={setCancellation}
                 cancellationOptions={cancellationOptions}
-                // PAYMENT
-                selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
-                setSelectedPaymentCheckboxValues={
-                  setSelectedPaymentCheckboxValues
-                }
+                selectedPayment={selectedPayment}
+                setSelectedPayment={setSelectedPayment}
                 paymentOptions={paymentOptions}
-                //SUBMIT
                 submissionState={submissionState}
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
-                filterItems={filterItems}
+                items={filteredItems}
                 handleClose={() =>
                   setOpen((prev) => ({
                     ...prev,
@@ -293,9 +304,6 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                     <Flex
                       align="center"
                       gap="5px"
-                      // justify={
-                      //   totalSelectedOptions === 0 ? "center" : "flex-start"
-                      // }
                     >
                       <TuneIcon />
                       <Text
@@ -305,51 +313,37 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                         text="Filter"
                       ></Text>
                     </Flex>
-                    {/* {totalSelectedOptions === 0 ? (
-                      " "
-                    ) : (
-                      <Flex align="center" justify="center" className="badge">
-                        <Text type="p" text={`${totalSelectedOptions}`}></Text>
-                      </Flex>
-                    )} */}
                   </ButtonBtn>
                 </Span>
                 <Span style={{ margin: "10px 0px" }}>
                   <Flex
-                    styles={{
-                      overflowX: "scroll",
-                      whiteSpace: "nowrap",
-                      width: "100%",
-                    }}
-                    gap="8px"
-                    align="center"
-                  >
-                    {/* {allMappedOptions.map((option) => ( */}
-                    <BtnDetails
-                      // key={option}
-                      className="filter_btn"
-                      style={{ backgroundColor: ttColors.grayishAsh }}
+                        styles={{
+                            overflowX: "scroll",
+                            whiteSpace: "nowrap",
+                            width: "100%",
+                        }}
+                        gap="8px"
+                        align="center"
                     >
-                      <Flex align="center" gap="5px">
-                        <Text
-                          weight={500}
-                          size={15}
-                          type="p"
-                          text=""
-                          // text={option}
-                        ></Text>
-
-                        <CloseIcon
-                          //onClick={() => removeOptionHandler(option)}
-                          style={{ fontSize: "17px", cursor: "pointer" }}
-                        />
-                      </Flex>
-                    </BtnDetails>
-                    {/* ))} */}
+                    {Object.keys(activeFilters).map((opt) => 
+                        <BtnDetails
+                            key={opt}
+                            className="filter_btn"
+                            style={{ backgroundColor: ttColors.grayishAsh, display: 'flex', alignItems: 'center', gap: '5px' }}
+                        >
+                            <Text
+                                weight={500}
+                                size={15}
+                                type="p"
+                                text={opt}
+                            />                        
+                            <CloseIcon
+                                //onClick={() => removeOptionHandler(option)}
+                                style={{ fontSize: "17px", cursor: "pointer" }}
+                            />
+                        </BtnDetails>
+                    )}
                   </Flex>
-                  {/* {totalSelectedOptions === 0 ? (
-                    ""
-                  ) : ( */}
                   <Flex styles={{ marginTop: "8px" }}>
                     <BtnDetails
                       // onClick={resetAllFilters}
@@ -368,7 +362,6 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                   {/* )} */}
                 </Span>
                 <Span>
-                  <Span>
                     <Button
                       background="transparent"
                       color={ttColors.dark}
@@ -385,29 +378,23 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                         text="Reload Rates"
                       ></Text>
                     </Button>
-                  </Span>
-                </Span>{" "}
+                </Span>
               </Flex>
             </Span>
             <Span style={{ marginTop: "20px" }}>
-              <Flex direction="column">
-                {filterItems.length > 0 ? (
-                  ""
-                ) : (
-                  <Text
-                    type="p"
-                    weight={500}
-                    text="There is no hotel available with the selected filters"
-                  ></Text>
-                )}
-
-                <Text
-                  type="p"
-                  size={14}
-                  text="Remove some of the selected filters to get results"
-                ></Text>
-              </Flex>
-              <Flex direction="column" gap="8px" styles={{ marginTop: "10px" }}>
+                <Flex direction="column">
+                    <Text
+                        type="p"
+                        weight={500}
+                        text="There is no hotel available with the selected filters"
+                    />
+                    <Text
+                        type="p"
+                        size={14}
+                        text="Remove some of the selected filters to get results"
+                    />
+                </Flex>
+              {/* <Flex direction="column" gap="8px" styles={{ marginTop: "10px" }}>
                 <BtnDetails
                   // key={index}
                   className="reset_filters chosen_filter"
@@ -439,26 +426,26 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                     />
                   </Flex>
                 </BtnDetails>
-              </Flex>
+              </Flex> */}
             </Span>
-            <Span style={{ marginTop: "10px" }}>
+            {/* <Span style={{ marginTop: "10px" }}>
               <Text
                 type="p"
                 color={ttColors.primary}
                 cursor="pointer"
                 text="Show all options available"
               ></Text>
-            </Span>
+            </Span> */}
           </>
         )}
       </Section>
       <Section>
-        <Button background={ttColors.dark} width="100%" height="45px">
-          <Text type="p" text="Search Again" size={16} weight={600} />
+        <Button background={ttColors.dark} width="100%" height="45px" onClick={handleSubmit}>
+          <Text type="p" text="Search" size={16} weight={600} />
         </Button>
       </Section>
       <Span>
-        <ChooseYourRoomList hotels={stayResponse.rates} />
+        <ChooseYourRoomList hotels={filteredItems} />
       </Span>
     </Container>
   );

@@ -162,7 +162,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                       {isMobile && (
                         <Text type="h2" weight={600} text={hotel.room_name}></Text>
                       )}
-                      <Span>
+                      <Span style={{ margin: '1rem 0 .6rem'}}>
                         <Flex align="center" gap="0">
                           <Flex gap="5px" align="center">
                             <Text
@@ -187,7 +187,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                           </Flex>
                         </Flex>
                       </Span>
-                      <Span>
+                      <Span style={{ margin: '0 0 .6rem'}}>
                         <Flex gap="5px" align="center">
                           <Text
                             type="p"
@@ -210,17 +210,10 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                           </Flex>
                         </Flex>
                       </Span>
-                        <Text type="p" text={`${hotel.rg_ext?.capacity} travellers`} size={15} styles={{ margin: '0 0 .2rem'}}></Text>
+                        <Text type="p" text={`${hotel.rg_ext?.capacity} travellers`} size={15} styles={{ margin: '0 0 .6rem'}}></Text>
                         <Text type="p" text="Including taxes and fees" size={15}></Text>
                     </Span>
                   </Flex>
-                  {!isMobile && (
-                    <Span style={{ marginTop: "20px" }}>
-                      <ButtonBtn onClick={onClick}>
-                        <BtnText>Reserve Room</BtnText>
-                      </ButtonBtn>
-                    </Span>
-                  )}
                 </Flex>
               </Span>
               <Span>
@@ -228,9 +221,9 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                   {!isMobile && (
                     <Text type="h2" weight={600} text={hotel.room_name}></Text>
                   )}
-                  <Span style={{ margin: "15px 0px", gap: "1rem" }}>
+                  <Span style={{ margin: isMobile ? "1rem 0px" : "1rem 0px 3.5rem", gap: "1rem" }}>
                     <Flex wrap="wrap" gap="8px" align="center">
-                        {hotel.amenities_data.map((am, index) => 
+                        {hotel.amenities_data.map((am, index) =>
                             <BtnDetails
                                 style={{ backgroundColor: ttColors.grayishAsh }}
                                 key={`amenity-${index}`}
@@ -260,8 +253,15 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                             <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
                         </Flex>
                     </Link>
-                  </Span>
-                  <Span>
+                    </Span>
+                    {!isMobile && (
+                    <Span style={{ marginTop: "20px" }}>
+                      <ButtonBtn onClick={onClick}>
+                        <BtnText>Reserve Room</BtnText>
+                      </ButtonBtn>
+                    </Span>
+                  )}
+                  {/* <Span>
                     <Flex direction="column" styles={{ margin: "10px 0px" }}>
                       <Text
                         type="h5"
@@ -302,58 +302,6 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                                 onChange={onSelectCancel}
                             />
                         )}
-                      {/* <Flex justify="space-between" align="center">
-                        <FormControlLabel
-                          value="refundable"
-                          control={
-                            <Checkbox
-                              disableFocusRipple
-                              disableRipple
-                              sx={{
-                                color: ttColors.gray,
-                                "&.Mui-checked": {
-                                  color: ttColors.primary,
-                                },
-                                "&.MuiSvgIcon-root": {
-                                  // fontSize: 20,
-                                },
-                              }}
-                            />
-                          }
-                          label={
-                            <Flex direction="column" width="100%">
-                              <Flex
-                                width="100%"
-                                styles={{ whiteSpace: "nowrap" }}
-                                className="wrap_text"
-                              >
-                                <Text
-                                  size={14}
-                                  weight={500}
-                                  type="p"
-                                  // styles={{ minWidth: "210px" }}
-                                  // whiteSpace="nowrap"
-                                  text="Fully refundable before Oct 19"
-                                ></Text>
-                              </Flex>
-                              <Text
-                                size={12}
-                                type="p"
-                                text="Reserve now, pay later"
-                              ></Text>
-                            </Flex>
-                          }
-                        />
-                        <Flex justify="flex-end">
-                          <Text
-                            type="h4"
-                            weight={"bold"}
-                            whiteSpace="nowrap"
-                            styles={{ marginLeft: "3px" }}
-                            text={`+$${140}`}
-                          ></Text>
-                        </Flex>
-                      </Flex> */}
                     </Flex>
                   </Span>
                   <Span>
@@ -493,7 +441,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                         </Flex>
                       </Flex>
                     </Flex>
-                  </Span>
+                  </Span> */}
                 </Flex>
               </Span>
             </GridLayout>

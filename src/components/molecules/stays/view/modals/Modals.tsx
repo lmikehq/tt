@@ -19,7 +19,7 @@ import SectionLayout from "@/components/templates/SectionLayout";
 import ReviewListBox from "./components/ReviewListBox";
 import FilterBox from "./components/FilterBox";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { AmenityGroup, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { AmenityGroup, Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 
 
 const ModalCenter = styled.div`
@@ -257,67 +257,55 @@ return (
   );
 };
 
-interface FilterItem {
-  name: string;
-  images: string[];
-  //Other properties here
-}
-
 // FILTER MODAL
 interface FilterModalProps {
-  open: boolean;
-  handleClose: () => void;
-  beds: string;
-  setBeds: React.Dispatch<React.SetStateAction<string>>;
-  bedsOptions: { value: string; label: string }[];
-  selectedMealCheckboxValues: string[];
-  setSelectedMealCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
-  mealOptions: { value: string; displayValue: string }[];
-  cancellation: string;
-  setCancellation: React.Dispatch<React.SetStateAction<string>>;
-  cancellationOptions: { value: string; label: string }[];
-  selectedPaymentCheckboxValues: string[];
-  setSelectedPaymentCheckboxValues: React.Dispatch<
-    React.SetStateAction<string[]>
-  >;
-  paymentOptions: { value: string; displayValue: string }[];
-  submissionState: {
-    loading: boolean;
-    //MORE PROPERTIES
-  };
-  setSubmissionState: React.Dispatch<
-    React.SetStateAction<{
-      loading: boolean;
-      //MORE PROPERTIES
-    }>
-  >;
-  handleSubmit: () => void;
-  // resetAllFilters: () => void;
-  // totalSelectedOptions: number;
-  filterItems: FilterItem[];
+    beds: string;
+    setBeds: React.Dispatch<React.SetStateAction<string>>;
+    bedsOptions: { value: string; label: string }[];
+    selectedMeals: string;
+    setSelectedMeals: React.Dispatch<React.SetStateAction<string>>;
+    mealOptions: { value: string; label: string }[];
+    cancellation: string;
+    setCancellation: React.Dispatch<React.SetStateAction<string>>;
+    cancellationOptions: { value: string; label: string }[];
+    selectedPayment: string;
+    setSelectedPayment: React.Dispatch<React.SetStateAction<string>>;
+    paymentOptions: { value: string; label: string }[];
+    open: boolean;
+    handleClose: () => void;
+    submissionState: {
+        loading: boolean;
+    };
+    setSubmissionState: React.Dispatch<
+        React.SetStateAction<{loading: boolean;}>
+    >;
+    handleSubmit: () => void;
+    // resetAllFilters: () => void;
+    // totalSelectedOptions: number;
+    items: Rate[];
 }
 
 export const FilterModal = ({
-  open,
-  handleClose,
-  beds,
-  setBeds,
-  bedsOptions,
-  selectedMealCheckboxValues,
-  setSelectedMealCheckboxValues,
-  mealOptions,
-  cancellation,
-  setCancellation,
-  cancellationOptions,
-  selectedPaymentCheckboxValues,
-  setSelectedPaymentCheckboxValues,
-  paymentOptions,
-  submissionState,
-  setSubmissionState,
-  handleSubmit,
-  // resetAllFilters,
-  // totalSelectedOptions,
-  filterItems,
+    open,
+    handleClose,
+    beds,
+    setBeds,
+    bedsOptions,
+    selectedMeals,
+    setSelectedMeals,
+    mealOptions,
+    cancellation,
+    setCancellation,
+    cancellationOptions,
+    selectedPayment,
+    setSelectedPayment,
+    paymentOptions,
+    submissionState,
+    setSubmissionState,
+    handleSubmit,
+    // resetAllFilters,
+    // totalSelectedOptions,
+    items,
 }: FilterModalProps) => {
     useEffect(() => {
         const handleBodyOverflow = () => {
@@ -348,26 +336,25 @@ export const FilterModal = ({
               />
             </Flex>
             <Span style={{ padding: "15px" }}>
-              {/* Pass down the props to FilterBox */}
               <FilterBox
                 beds={beds}
                 setBeds={setBeds}
                 bedsOptions={bedsOptions}
-                selectedMealCheckboxValues={selectedMealCheckboxValues}
-                setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
+                selectedMeals={selectedMeals}
+                setSelectedMeals={setSelectedMeals}
                 mealOptions={mealOptions}
                 cancellation={cancellation}
                 setCancellation={setCancellation}
                 cancellationOptions={cancellationOptions}
-                selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
-                setSelectedPaymentCheckboxValues={setSelectedPaymentCheckboxValues}
+                selectedPayment={selectedPayment}
+                setSelectedPayment={setSelectedPayment}
                 paymentOptions={paymentOptions}
                 submissionState={submissionState}
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
                 // resetAllFilters={resetAllFilters}
                 // totalSelectedOptions={totalSelectedOptions}
-                filterItems={filterItems}
+                items={items}
               />
             </Span>
           </ModalWrapper>
@@ -393,7 +380,7 @@ export const ChangeSearchModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
-  let HotelName = "Hotels available in New York from 24 - 25 October 2023";
+  let HotelName = "Hotels available";
   useEffect(() => {
     const handleBodyOverflow = () => {
       document.documentElement.style.overflow = open ? "hidden" : "auto";
