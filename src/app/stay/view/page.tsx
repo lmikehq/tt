@@ -65,7 +65,7 @@ const StayViewPage = () => {
         router.back();
     };
 
-    console.log(stayResponse)
+    // console.log(stayResponse)
 
     return (
         <SectionLayout>

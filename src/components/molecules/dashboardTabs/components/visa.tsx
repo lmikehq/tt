@@ -41,7 +41,7 @@ const Visa = () => {
   if (isLoading) return <div>loading</div>
   if (error) return <div>error loading visas, please try again</div>
   const { data: visas } = fetchedVisa
-  console.log({ visas })
+  // console.log({ visas })
   const content = {
     title: "You’ve got no Visa Application - Let’s help you get Started",
     links: [

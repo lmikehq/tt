@@ -180,7 +180,7 @@ const PaymentHistory = () => {
   const { data: payments } = fetchedPayment
 
   const toggleDropdown = () => {
-    console.log('clicked')
+    // console.log('clicked')
     setIsDropdownOpen(!isDropdownOpen)
     setHoveredOption(null)
   }
