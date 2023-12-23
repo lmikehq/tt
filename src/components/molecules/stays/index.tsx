@@ -11,7 +11,6 @@ import SectionLayout from "@components/templates/SectionLayout";
 import PopularHotels from "./PopularHotels";
 import TrendingDestination from "./TrendingDestination";
 import BlogStories from "./BlogStories";
-import Faq from "./components/Faq";
 
 const BlueBox = styled.div`
   border: 1px solid #7bbbd6;
@@ -144,7 +143,7 @@ const StaySection = () => {
             text="Have all your questions answered here?"
             size={18}
           />
-          <Faq />
+          {/* <Faq /> */}
         </Flex>
       </Flex>
     </SectionLayout>
