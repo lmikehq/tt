@@ -72,7 +72,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="01"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box1 ? "#6092A7" : "#3C3C4380"}
               />
@@ -81,7 +81,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="Can I modify or cancel my booking after confirmation?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box1 ? 700 : 500}
                 color={box.box1 ? "#6092A7" : "#3C3C4380"}
               />
@@ -112,7 +112,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="02"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box2 ? "#6092A7" : "#3C3C4380"}
               />
@@ -121,7 +121,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="Is my personal information safe when booking?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box2 ? 700 : 500}
                 color={box.box2 ? "#6092A7" : "#3C3C4380"}
               />
@@ -152,7 +152,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="03"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box3 ? "#6092A7" : "#3C3C4380"}
               />
@@ -161,7 +161,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="Is my payment information secure on the website?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box3 ? 700 : 500}
                 color={box.box3 ? "#6092A7" : "#3C3C4380"}
               />
@@ -192,7 +192,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="04"
-                size={48}
+                size={35}
                 weight={700}
                 color={box.box4 ? "#6092A7" : "#3C3C4380"}
               />
@@ -201,7 +201,7 @@ function Faq() {
               <Text
                 type="h1"
                 text="Can I book hotels and car rentals alongside my flight on the same website?"
-                size={isMobile ? 20 : 32}
+                size={isMobile ? 18 : 25}
                 weight={box.box4 ? 700 : 500}
                 color={box.box4 ? "#6092A7" : "#3C3C4380"}
               />
@@ -225,6 +225,5 @@ function Faq() {
     </Section>
   );
 }
-
 
 export default Faq;
