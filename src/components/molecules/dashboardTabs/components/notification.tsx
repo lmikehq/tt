@@ -1,10 +1,10 @@
-import Flex from "@components/templates/flex";
-import NotificationItem from "@molecule/notificationItem";
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import styled from "styled-components";
-import { ttColors } from "@lib/theme/colors";
-import VisaDashboardHeader from "./visaDashboardHeader";
+import Flex from "@components/templates/flex"
+import NotificationItem from "@molecule/notificationItem"
+import Section from "src/components/molecules/section"
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
+import styled from "styled-components"
+import { ttColors } from "@lib/theme/colors"
+import VisaDashboardHeader from "./visaDashboardHeader"
 
 const NotificationWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -15,10 +15,10 @@ const NotificationWrapper = styled.div`
     height: fit-content;
     padding: 20px 16px;
   }
-`;
+`
 
 const Notification = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile } = useScreenResolution()
 
   return (
     <Section
@@ -33,15 +33,15 @@ const Notification = () => {
 
       <NotificationWrapper>
         <Flex direction="column" gap="1rem">
-          {!isMobile && (
-            <NotificationItem
-              src={"/assets/images/notification/notice1.png"}
-              title="Application fee for Canada - Employment visa"
-              date="25/08/23"
-              time="10:11am"
-              showDot
-            />
-          )}
+          {/* {!isMobile && ( */}
+          <NotificationItem
+            src={"/assets/images/notification/notice1.png"}
+            title="Hi! You are expected to be in Our Ikota Office on Wednesday, Jan 3rd 2024 for a dine with the Ambassador, press conference and free visa presentation."
+            date="24/12/23"
+            time="10:11am"
+            showDot
+          />
+          {/* )} */}
 
           {/* <NotificationItem
             src={NotificationImg2}
@@ -69,7 +69,7 @@ const Notification = () => {
         </Flex>
       </NotificationWrapper>
     </Section>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification

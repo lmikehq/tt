@@ -1,29 +1,29 @@
-import Button from "@atom/button";
-import Flex from "@components/templates/flex";
-import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useState } from "react";
-import { AiFillCheckCircle, AiFillPlusCircle } from "react-icons/ai";
-import { RiEditBoxFill } from "react-icons/ri";
-import { useUserStore } from "@lib/store/useStore";
-import styled from "styled-components";
-import { ttColors } from "@lib/theme/colors";
-import AddressModal from "../accountAddress";
-import PasswordModal from "../accountPassword";
-import PhoneModal from "../accountPhone";
-import { BiSolidPencil } from "react-icons/bi";
-import Input from "@atom/input";
-import toast from "react-hot-toast";
-import apiService from "@lib/extensions/hook/apiService";
-import sleep from "@lib/extensions/helpers/sleep";
-import Center from "@components/templates/center";
+import Button from "@atom/button"
+import Flex from "@components/templates/flex"
+import Text from "@atom/text"
+import Section from "src/components/molecules/section"
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
+import { useState } from "react"
+import { AiFillCheckCircle, AiFillPlusCircle } from "react-icons/ai"
+import { RiEditBoxFill } from "react-icons/ri"
+import { useUserStore } from "@lib/store/useStore"
+import styled from "styled-components"
+import { ttColors } from "@lib/theme/colors"
+import AddressModal from "../accountAddress"
+import PasswordModal from "../accountPassword"
+import PhoneModal from "../accountPhone"
+import { BiSolidPencil } from "react-icons/bi"
+import Input from "@atom/input"
+import toast from "react-hot-toast"
+import apiService from "@lib/extensions/hook/apiService"
+import sleep from "@lib/extensions/helpers/sleep"
+import Center from "@components/templates/center"
 
-const AccountLeft = styled.div``;
+const AccountLeft = styled.div``
 const AccountRight = styled.div`
   display: flex;
   gap: 20px;
-`;
+`
 
 const AccountDetails = styled.div`
   background: #ffffff;
@@ -31,7 +31,7 @@ const AccountDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`;
+`
 
 const AccountWrapper = styled.div`
   background: ${ttColors.defaultColor};
@@ -42,16 +42,16 @@ const AccountWrapper = styled.div`
     height: fit-content;
     padding: 20px 16px;
   }
-`;
+`
 
 const Account = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile } = useScreenResolution()
 
   // from here
-  const [openAddAddressModal, setOpenAddAddressModal] = useState(false);
-  const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false);
-  const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [openAddAddressModal, setOpenAddAddressModal] = useState(false)
+  const [openChangePasswordModal, setOpenChangePasswordModal] = useState(false)
+  const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false)
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
 
   const validationOptions = [
     { value: "length", label: "8 or more characters" },
@@ -61,26 +61,26 @@ const Account = () => {
       value: "specialCharacter",
       label: "Have Numbers, and Special symbols (e.g., !, @, #, $)",
     },
-  ];
+  ]
 
   function isPasswordValid(password: string, selectedOption: string) {
     switch (selectedOption) {
       case "length":
-        return password.length >= 8;
+        return password.length >= 8
       case "uppercaseLowercase":
-        return /[A-Z]/.test(password) && /[a-z]/.test(password);
+        return /[A-Z]/.test(password) && /[a-z]/.test(password)
       case "number":
-        return /\d/.test(password);
+        return /\d/.test(password)
       case "specialCharacter":
-        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
+        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)
       default:
-        return false;
+        return false
     }
   }
 
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("")
 
-  const [isMobileEdit, setIsMobileEdit] = useState(false);
+  const [isMobileEdit, setIsMobileEdit] = useState(false)
   // const [editedInfo, setEditedInfo] = useState({
   //   name: "",
   //   email: "",
@@ -99,14 +99,14 @@ const Account = () => {
     address: "",
     dateOfBirth: "",
     consent: false,
-  });
+  })
 
-  const [isSaving, setIsSaving] = useState(false); // Define setIsSaving
-  const [error, setError] = useState(null);
+  const [isSaving, setIsSaving] = useState(false) // Define setIsSaving
+  const [error, setError] = useState(null)
 
   const toggleMobileEdit = () => {
-    setIsMobileEdit(!isMobileEdit);
-  };
+    setIsMobileEdit(!isMobileEdit)
+  }
 
   // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   const { name, value } = e.target;
@@ -117,30 +117,30 @@ const Account = () => {
   // };
 
   const handleOpenAddAddressModal = () => {
-    setOpenAddAddressModal(true);
-  };
+    setOpenAddAddressModal(true)
+  }
 
   const handleCloseAddAddressModal = () => {
-    setOpenAddAddressModal(false);
-  };
+    setOpenAddAddressModal(false)
+  }
 
   const handleOpenChangePasswordModal = () => {
-    setOpenChangePasswordModal(true);
-  };
+    setOpenChangePasswordModal(true)
+  }
 
   const handleCloseChangePasswordModal = () => {
-    setOpenChangePasswordModal(false);
-  };
+    setOpenChangePasswordModal(false)
+  }
   const handleOpenChangePhoneModal = () => {
-    setOpenChangePhoneModal(true);
-  };
+    setOpenChangePhoneModal(true)
+  }
 
   const handleCloseChangePhoneModal = () => {
-    setOpenChangePhoneModal(false);
-  };
+    setOpenChangePhoneModal(false)
+  }
   // To here
 
-  const { user } = useUserStore((state) => state);
+  const { user } = useUserStore((state) => state)
   const AccountInformation = [
     {
       title: "Name",
@@ -210,34 +210,34 @@ const Account = () => {
 
       editable: false,
     },
-  ];
+  ]
 
   const [submissionState, setSubmissionState] = useState({
     loading: false,
     error: [] as any,
     success: false,
-  });
+  })
   async function handleRegister(): Promise<any> {
     const response = await apiService("/user", "POST", {
       ...registerData,
       email: registerData?.email?.toLowerCase(),
-    });
-    return response;
+    })
+    return response
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (submissionState.loading) return;
+    e.preventDefault()
+    if (submissionState.loading) return
     setSubmissionState({
       ...submissionState,
       loading: true,
-    });
+    })
     if (!registerData.consent) {
       setSubmissionState({
         ...submissionState,
         loading: false,
-      });
-      return alert("Please agree to the terms and conditions");
+      })
+      return alert("Please agree to the terms and conditions")
     }
 
     if (registerData.password !== confirmPassword) {
@@ -254,39 +254,39 @@ const Account = () => {
           },
         ],
         loading: false,
-      });
-      return;
+      })
+      return
     }
 
-    const res = await handleRegister();
+    const res = await handleRegister()
     if (res.statusCode === 400) {
       return setSubmissionState({
         ...submissionState,
         error: res.errors.message,
         loading: false,
-      });
+      })
     } else if (res.statusCode === 422) {
       return setSubmissionState({
         ...submissionState,
         error: [{ property: "email", constraints: res.errors.message }],
-      });
+      })
     }
 
     setSubmissionState({
       ...submissionState,
       loading: true,
-    });
-    toast.success("Your details has been updated successfully!");
-    await sleep(3000);
+    })
+    toast.success("Your details has been updated successfully!")
+    await sleep(3000)
     toast.loading("Redirecting to login page...", {
       duration: 3000,
-    });
+    })
   }
   function checkIfFieldHasError(field: string) {
     const error: { constraints: string } = submissionState?.error?.find(
       (err: any) => err.property.includes(field)
-    );
-    if (error) return error.constraints;
+    )
+    if (error) return error.constraints
   }
   return (
     <Section
@@ -297,10 +297,13 @@ const Account = () => {
         padding: ".25rem 1.5rem",
       }}
     >
-      <Flex margin="2.5rem 0px 0px" justify="space-between" align="center">
-        <Text type="h1" text="Account" size={20} weight={600} />
-        <BiSolidPencil onClick={toggleMobileEdit} />
-      </Flex>
+      {isMobile ? (
+        <Flex margin="2.5rem 0px 0px" justify="space-between" align="center">
+          <Text type="h1" text="Account" size={20} weight={600} />
+          <BiSolidPencil onClick={toggleMobileEdit} />
+        </Flex>
+      ) : null}
+
 
       {isMobileEdit ? (
         <form onSubmit={handleSubmit}>
@@ -648,12 +651,12 @@ const Account = () => {
                         detail.title === "Name"
                           ? undefined // Disable the "Edit" button for Name
                           : detail.title === "Address"
-                          ? handleOpenAddAddressModal
-                          : detail.title === "Password"
-                          ? handleOpenChangePasswordModal
-                          : detail.title === "Phone Number"
-                          ? handleOpenChangePhoneModal
-                          : undefined // Handle other modals
+                            ? handleOpenAddAddressModal
+                            : detail.title === "Password"
+                              ? handleOpenChangePasswordModal
+                              : detail.title === "Phone Number"
+                                ? handleOpenChangePhoneModal
+                                : undefined // Handle other modals
                       }
                     >
                       {detail.icon}
@@ -673,12 +676,12 @@ const Account = () => {
                         detail.title === "Name"
                           ? undefined // Disable the "Edit" button for Name
                           : detail.title === "Address"
-                          ? handleOpenAddAddressModal
-                          : detail.title === "Password"
-                          ? handleOpenChangePasswordModal
-                          : detail.title === "Phone Number"
-                          ? handleOpenChangePhoneModal
-                          : undefined // Handle other modals
+                            ? handleOpenAddAddressModal
+                            : detail.title === "Password"
+                              ? handleOpenChangePasswordModal
+                              : detail.title === "Phone Number"
+                                ? handleOpenChangePhoneModal
+                                : undefined // Handle other modals
                       }
                       styles={{
                         gap: "10px",
@@ -775,7 +778,7 @@ const Account = () => {
         </AccountWrapper>
       )}
     </Section>
-  );
-};
+  )
+}
 
-export default Account;
+export default Account
