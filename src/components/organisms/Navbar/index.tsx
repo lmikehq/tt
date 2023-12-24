@@ -31,6 +31,7 @@ import { PiCaretDownBold } from "react-icons/pi";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CurrencyModal, LanguageModal } from "./modals/Modals";
 import { CircleFlagLanguage } from "react-circle-flags";
+import { IoIosArrowDown } from "react-icons/io";
 
 const poppins = Poppins({
   weight: "400",
@@ -308,6 +309,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 align="center"
                 cursor="pointer"
                 width="fit-content"
+                gap="5px"
                 onClick={() =>
                   setOpen((prev) => ({
                     ...prev,
@@ -322,6 +324,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   size={16}
                   styles={{ textTransform: "uppercase" }}
                 />
+                <IoIosArrowDown size={20} />
               </Flex>
 
               <CurrencyModal
