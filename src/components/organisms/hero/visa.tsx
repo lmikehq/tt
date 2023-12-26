@@ -10,7 +10,7 @@ import Text from "@/components/atoms/text";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
-  height: ${(props) => (props.isMobile ? "unset" : "620px")};
+  height: ${(props) => (props.isMobile ? "unset" : "650px")};
   margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${"/assets/images/herobg-visa.png"});
@@ -38,6 +38,7 @@ function VisaHero() {
                 styles={{ textAlign: "center", maxWidth: "700px" }}
               >
                 <Text
+                  size={"1.2rem"}
                   color="white"
                   type="p"
                   text="Elevate Your Travel with"
@@ -45,8 +46,8 @@ function VisaHero() {
                 <Text
                   color="white"
                   type="h1"
-                  weight={600}
-                  size={45}
+                  size={isMobile ? "2.3rem" : "3.5rem"}
+                  weight={900}
                   text="HASSLE-FREE VISA APPLICATION"
                 ></Text>
               </Flex>
