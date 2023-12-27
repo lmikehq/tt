@@ -70,6 +70,7 @@
     "react-select": "^5.8.0",
     "react-slick": "^0.29.0",
     "react-truncate-markup": "^5.1.2",
+    "react-web-share": "^2.0.2",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.7.2",
     "styled-components": "^6.0.8",

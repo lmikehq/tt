@@ -1,7 +1,7 @@
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlexBox,
   SlideCard,
@@ -18,88 +18,107 @@ import IosShareIcon from "@mui/icons-material/IosShare";
 import { BiLike } from "react-icons/bi";
 import { BiDislike } from "react-icons/bi";
 import Button from "@/components/atoms/button";
+import apiService from "@lib/extensions/hook/apiService";
+import { toast } from "react-hot-toast";
+import { RWebShare } from "react-web-share";
 
 interface Blog {
-  title: string;
-  image: string;
+  _id: string;
   author: string;
-  authorImg: string;
-  description: string;
-  read_time: string;
-  likes: number;
-  disLikes: number;
+  blogImage: string;
+  readingTimeInMins: number;
+  topic: string;
+  tags: string[];
+  likes: string[];
+  dislikes: string[];
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const blogs: Blog[] = [
-  {
-    title: "10 Essential Travel Tips for a Stress-Free Vacation",
-    author: "Seun Adebayo",
-    authorImg: "/assets/images/stays/admin.png",
-    image: "/assets/images/stays/blog1.png",
-    description:
-      "Traveling can be a breeze with the right preparation. From packing also a breeze From packing also a breeze",
-    read_time: "6 mins",
-    likes: 150,
-    disLikes: 10,
-  },
-  {
-    title: "10 Essential Travel Tips for a Stress-Free Vacation",
-    author: "Seun Adebayo",
-    authorImg: "/assets/images/stays/admin.png",
-    image: "/assets/images/stays/blog1.png",
-    description:
-      "Traveling can be a breeze with the right preparation. From packing also a breeze",
-    read_time: "6 mins",
-    likes: 150,
-    disLikes: 10,
-  },
-  {
-    title: "10 Essential Travel Tips for a Stress-Free Vacation",
-    author: "Seun Adebayo",
-    authorImg: "/assets/images/stays/admin.png",
-    image: "/assets/images/stays/blog1.png",
-    description:
-      "Traveling can be a breeze with the right preparation. From packing also a breeze",
-    read_time: "6 mins",
-    likes: 150,
-    disLikes: 10,
-  },
-  {
-    title: "10 Essential Travel Tips for a Stress-Free Vacation",
-    author: "Seun Adebayo",
-    authorImg: "/assets/images/stays/admin.png",
-    image: "/assets/images/stays/blog1.png",
-    description:
-      "Traveling can be a breeze with the right preparation. From packing also a breeze",
-    read_time: "6 mins",
-    likes: 150,
-    disLikes: 10,
-  },
-  {
-    title: "10 Essential Travel Tips for a Stress-Free Vacation",
-    author: "Seun Adebayo",
-    authorImg: "/assets/images/stays/admin.png",
-    image: "/assets/images/stays/blog1.png",
-    description:
-      "Traveling can be a breeze with the right preparation. From packing also a breeze",
-    read_time: "6 mins",
-    likes: 150,
-    disLikes: 10,
-  },
-  {
-    title: "10 Essential Travel Tips for a Stress-Free Vacation",
-    author: "Seun Adebayo",
-    authorImg: "/assets/images/stays/admin.png",
-    image: "/assets/images/stays/blog1.png",
-    description:
-      "Traveling can be a breeze with the right preparation. From packing also a breeze",
-    read_time: "6 mins",
-    likes: 150,
-    disLikes: 10,
-  },
-];
+//DATE FORMAT
+function formatDate(dateString: string) {
+  const options = { month: "short", day: "numeric" } as const;
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(
+    new Date(dateString)
+  );
+  return formattedDate;
+}
+
+export const TruncatedBlogContent: React.FC<{ blog: { content: string } }> = ({
+  blog,
+}) => (
+  <div
+    style={{
+      display: "-webkit-box",
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
+      fontSize: "16px",
+      wordWrap: "break-word",
+      WebkitLineClamp: 2,
+    }}
+    dangerouslySetInnerHTML={{
+      __html:
+        blog.content.length > 200
+          ? blog.content.substring(0, 200) + "..."
+          : blog.content,
+    }}
+  />
+);
+
 function BlogStories() {
   const { isMobile } = useScreenResolution();
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+
+  // FETCH BLOG POST
+  const fetchBlogList = async () => {
+    try {
+      const response = await apiService("/blog", "GET");
+      if (response?.success) {
+        setBlogs(response.data);
+      } else {
+        console.error("Failed to fetch blog list");
+      }
+    } catch (error) {
+      console.error("Error fetching blog list", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogList();
+  }, []);
+
+  // LIKE
+  const handleLike = async (blogId: string) => {
+    try {
+      await apiService(`/blog/${blogId}/like`, "POST", {
+        ip: "fjfjfjfjfjfjfj",
+      });
+      fetchBlogList();
+    } catch (error) {
+      console.error("Error liking the post:", error);
+      toast.error("Failed to like the post. Please try again.");
+    }
+  };
+
+  // DISLIKE
+  const handleDislike = async (blogId: string) => {
+    try {
+      await apiService(`/blog/${blogId}/dislike`, "POST", {
+        ip: "fjfjfjfjfjfjfj",
+      });
+      fetchBlogList();
+    } catch (error) {
+      console.error("Error disliking the post:", error);
+      toast.error("Failed to dislike the post. Please try again.");
+    }
+  };
+
+  console.log("BLOG LIST:", blogs);
+
+  //PAGE URL
+  const pageURL = process.env.NEXT_PUBLIC_SITE_URL;
 
   return (
     <div>
@@ -130,7 +149,7 @@ function BlogStories() {
           {blogs?.slice(0, 3).map((blog, index) => (
             <SlideCard key={index}>
               <SlideList>
-                <SliderImgBox className="blog_img_height">
+                <SliderImgBox className="stay_landing_trending">
                   <Link href="">
                     <img
                       style={{
@@ -139,7 +158,7 @@ function BlogStories() {
                         objectFit: "cover",
                         borderRadius: "12px",
                       }}
-                      src={blog.image}
+                      src={blog.blogImage}
                       alt={blog.title}
                     />
                   </Link>
@@ -152,7 +171,7 @@ function BlogStories() {
                         height: "45px",
                         borderRadius: "50%",
                       }}
-                      src={blog.authorImg}
+                      src="/assets/images/stays/admin.png"
                       alt={blog.author}
                     />
                     <Flex direction="column" gap="5px">
@@ -173,36 +192,38 @@ function BlogStories() {
                           size={14}
                           whiteSpace="nowrap"
                           type="p"
-                          text="Sept 4"
+                          text={formatDate(blog.createdAt)}
                         ></Text>
                       </Flex>
                     </Flex>
                   </Flex>
 
-                  <IosShareIcon
-                    style={{
-                      fontSize: "20px",
-                      cursor: "pointer",
-                      color: "var(--text-gray-color)",
+                  <RWebShare
+                    data={{
+                      text: `Check out this cool ${blog.title}`,
+                      url: `${pageURL}/blog/${blog._id}`,
+                      title: blog.title,
                     }}
-                  />
+                    onClick={() => console.log("shared successfully!")}
+                  >
+                    <IosShareIcon
+                      style={{
+                        fontSize: "20px",
+                        cursor: "pointer",
+                        color: "var(--text-gray-color)",
+                      }}
+                    />
+                  </RWebShare>
                 </FlexBox>
                 <Flex styles={{ marginTop: "10px" }}>
                   <Link href="" style={{ width: "fit-content" }}>
-                    <Text
-                      type="h2"
-                      text={blog.title}
-                      weight={"bold"}
-                      styles={{
-                        fontSize: "22px",
-                      }}
-                    ></Text>
+                    <TruncateMarkup lines={1}>
+                      <h2>{blog.title}</h2>
+                    </TruncateMarkup>
                   </Link>
                 </Flex>
                 <Flex margin="10px 0px">
-                  <TruncateMarkup lines={2}>
-                    <p style={{ fontSize: "16px" }}>{blog.description}</p>
-                  </TruncateMarkup>{" "}
+                  <TruncatedBlogContent blog={blog} />
                 </Flex>
                 <Flex justify="space-between">
                   <Flex gap="5px" align="center">
@@ -217,7 +238,7 @@ function BlogStories() {
                       type="p"
                       color="var(--text-gray-color)"
                       size={14}
-                      text={`${blog.read_time} read`}
+                      text={`${blog.readingTimeInMins} read`}
                     ></Text>
                   </Flex>
                   <Span
@@ -228,11 +249,15 @@ function BlogStories() {
                     }}
                   >
                     <Flex gap="3px" align="center">
-                      <BiLike style={{ cursor: "pointer", fontSize: "18px" }} />
-                      <Span>{blog.likes}</Span>
+                      <BiLike
+                        onClick={() => handleLike(blog._id)}
+                        style={{ cursor: "pointer", fontSize: "18px" }}
+                      />
+                      <Span>{blog.likes.length}</Span>
                     </Flex>
                     <Flex gap="3px" align="center">
                       <BiDislike
+                        onClick={() => handleDislike(blog._id)}
                         style={{ cursor: "pointer", fontSize: "18px" }}
                       />
                     </Flex>
