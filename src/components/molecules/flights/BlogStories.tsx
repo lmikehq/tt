@@ -129,13 +129,8 @@ function BlogStories() {
       if (response && response.success) {
         fetchBlogList();
         toast.success("Post liked successfully!");
-      } else {
-        // Handle the case when the API request is successful, but the response indicates an error
-        console.error("Error liking the post. API response:", response);
-        toast.error("Failed to like the post. Please try again.");
       }
     } catch (error) {
-      // Handle the case when the API request itself fails
       console.error("Error liking the post:", error);
       toast.error("Failed to like the post. Please try again.");
     }
@@ -151,13 +146,8 @@ function BlogStories() {
       if (response && response.success) {
         fetchBlogList();
         toast.success("Post disliked successfully!");
-      } else {
-        // Handle the case when the API request is successful, but the response indicates an error
-        console.error("Error disliking the post. API response:", response);
-        toast.error("Failed to dislike the post. Please try again.");
       }
     } catch (error) {
-      // Handle the case when the API request itself fails
       console.error("Error disliking the post:", error);
       toast.error("Failed to dislike the post. Please try again.");
     }
