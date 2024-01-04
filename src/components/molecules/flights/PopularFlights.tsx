@@ -119,12 +119,12 @@ function PopularFlights() {
           text="Popular Flights"
           font="Montserrat"
           weight={700}
-          size={36}
+          size={isMobile ? 24 : 36}
         />
         <Text
           type="p"
           text="Here are the flight deals that are popular around the world"
-          size={18}
+          size={isMobile ? 16 : 18}
           whiteSpace={isMobile ? "unset" : "nowrap"}
         />
       </Flex>

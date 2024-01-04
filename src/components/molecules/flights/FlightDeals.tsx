@@ -52,24 +52,6 @@ const flights: Flight[] = [
     prices_from: 2250000,
     image_url: "/assets/images/flights/image1.jpg",
   },
-  {
-    city_name: "Venice",
-    country: "Italy",
-    prices_from: 2000000,
-    image_url: "/assets/images/flights/image3.jpg",
-  },
-  {
-    city_name: "Atlanta",
-    country: "United States",
-    prices_from: 1850000,
-    image_url: "/assets/images/flights/image2.png",
-  },
-  {
-    city_name: "Sao Paulo",
-    country: "Brazil",
-    prices_from: 2250000,
-    image_url: "/assets/images/flights/image1.jpg",
-  },
 ];
 function FlightDeals() {
   const { isMobile } = useScreenResolution();
@@ -98,12 +80,12 @@ function FlightDeals() {
           text="Flight Deals from Lagos"
           font="Montserrat"
           weight={700}
-          size={36}
+          size={isMobile ? 24 : 36}
         />
         <Text
           type="p"
           text="Here are the flight deals with the lowest prices. Act fast – they all 1-week trip in the next 6 months"
-          size={18}
+          size={isMobile ? 16 : 18}
           whiteSpace={isMobile ? "unset" : "nowrap"}
         />
       </Flex>
@@ -168,7 +150,7 @@ function FlightDeals() {
                     </Flex>
                   </Flex>
                   <Span>
-                    <Flex direction="column">
+                    {/* <Flex direction="column">
                       <Flex justify="flex-end">
                         <Text
                           type="p"
@@ -191,7 +173,7 @@ function FlightDeals() {
                           text={formatPriceWithoutCurrency(flight.prices_from)}
                         />
                       </Flex>
-                    </Flex>
+                    </Flex> */}
                   </Span>
                 </Flex>
               </SlideList>

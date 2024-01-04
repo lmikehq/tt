@@ -38,7 +38,12 @@ const FlightSection = () => {
 
   return (
     <SectionLayout>
-      <Flex direction="column" gap=".65rem" wrap="wrap">
+      <Flex
+        direction="column"
+        gap=".65rem"
+        wrap="wrap"
+        styles={{ marginTop: isMobile ? "100px" : "" }}
+      >
         <Text
           type="h1"
           text="What Thrillers have to offer"
@@ -114,9 +119,9 @@ const FlightSection = () => {
         </BlueBox>
       </Flex>
       {/* FLIGHT DEALS */}
-      {/* <div style={{ padding: "2rem 0" }}>
+      <div style={{ padding: "2rem 0" }}>
         <FlightDeals />
-      </div> */}
+      </div>
       <div style={{ padding: "2rem 0" }}>
         {/*POPULAR FLIGHT */}
         <PopularFlights />

@@ -172,12 +172,12 @@ function BlogStories() {
             text="Blog Stories"
             font="Montserrat"
             weight={700}
-            size={36}
+            size={isMobile ? 24 : 36}
           />
           <Text
             type="p"
             text="Find very interesting stories rating to Thrillers and Travel in general."
-            size={18}
+            size={isMobile ? 16 : 18}
             whiteSpace={isMobile ? "unset" : "nowrap"}
           />
         </Flex>
