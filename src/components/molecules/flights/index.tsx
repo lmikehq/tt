@@ -113,10 +113,10 @@ const FlightSection = () => {
           </Flex>
         </BlueBox>
       </Flex>
-      <div style={{ padding: "2rem 0" }}>
-        {/* FLIGHT DEALS */}
+      {/* FLIGHT DEALS */}
+      {/* <div style={{ padding: "2rem 0" }}>
         <FlightDeals />
-      </div>
+      </div> */}
       <div style={{ padding: "2rem 0" }}>
         {/*POPULAR FLIGHT */}
         <PopularFlights />
