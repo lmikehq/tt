@@ -186,7 +186,7 @@ function ApplicationForm() {
         validationSchema: familyInfoSchema,
         onSubmit: (values, formikHelpers) => {
             if (isLoading) return;
-            nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
+            // nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
         },
         validateOnChange: true,
     });
