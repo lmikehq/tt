@@ -28,6 +28,7 @@ const FirstAndLastNameInput = ({
                 />
                 <FieldInput
                     name={`${namePrefix}.first_name`}
+                    id={`${namePrefix}.first_name`}
                     formik={formik}
                     placeholder="Enter First Name"
                 />

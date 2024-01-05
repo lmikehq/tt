@@ -37,7 +37,7 @@ export interface StayOrderBookingFinishPaymentType {
 }
 export interface StayOrderBookingFinishInput {
     user: StayOrderBookingFinishUser;
-    partner: StayOrderBookingFinishPartner;
+    // partner: StayOrderBookingFinishPartner;
     language: string;
     rooms: StayOrderBookingFinishRoom[];
     object_id: string;
@@ -46,7 +46,7 @@ export interface StayOrderBookingFinishInput {
 
 export interface GuestRoomsFormDataInterface {
     [key: string]: {
-        guests: StayOrderBookingFinishRoomGuest & { required: boolean }[];
+        guests: (StayOrderBookingFinishRoomGuest & { required: boolean })[];
         displayOtherGuests: boolean;
     };
 }
@@ -70,4 +70,31 @@ export const generateInitialFormDataForRoomsAndGuests = (
     );
 
     return roomsData;
+};
+
+export const convertGuestRoomsFormDataToList = (
+    formData: GuestRoomsFormDataInterface
+): StayOrderBookingFinishRoom[] => {
+    const guestsList: StayOrderBookingFinishRoom[] = [];
+
+    Object.keys(formData).forEach((roomKey) => {
+        const room = formData[roomKey];
+
+        const guests: StayOrderBookingFinishRoomGuest[] = [];
+
+        room.guests.forEach((guest) => {
+            if (guest.first_name || guest.last_name) {
+                guests.push({
+                    first_name: guest.first_name,
+                    last_name: guest.last_name,
+                });
+            }
+        });
+
+        guestsList.push({
+            guests,
+        });
+    });
+
+    return guestsList;
 };

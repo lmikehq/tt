@@ -4,6 +4,7 @@ import {
 } from "@/lib/types/request-models/stay/booking.type";
 import { RoomForGuest } from "@/lib/types/request-models/stay/search.type";
 import * as yup from "yup";
+import { contactDetailsSchema } from "../flight/booking.schema";
 
 export const guestNamesSchema: yup.ObjectSchema<StayOrderBookingFinishRoomGuest> =
     yup.object().shape({
@@ -22,7 +23,7 @@ export const generateValidationSchemaForRoomsAndGuests = (
 ): yup.ObjectSchema<GuestRoomsFormDataInterface> => {
     let roomDataSchema = yup.object().shape({});
     rooms.forEach((el, index) => {
-        roomDataSchema.concat(
+        roomDataSchema = roomDataSchema.concat(
             yup.object().shape({
                 [`${index}`]: yup.object().shape({
                     displayOtherGuests: yup.boolean(),
@@ -32,5 +33,7 @@ export const generateValidationSchemaForRoomsAndGuests = (
         );
     });
 
+    console.log(rooms, roomDataSchema);
+    console.log(contactDetailsSchema);
     return roomDataSchema;
 };

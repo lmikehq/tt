@@ -7,8 +7,18 @@ import Input from "@/components/atoms/input";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Checkbox, FormControlLabel } from "@mui/material";
+import {
+    ContactDetailsInterface,
+    contactDetails,
+} from "@/lib/types/request-models/flight/booking.type";
+import { contactDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
+import { FormikProps, useFormik } from "formik";
+import { FieldInput } from "@/components/organisms/fieldInput";
 
-function BookingDetails() {
+interface BookingDetailsProps {
+    formik: FormikProps<ContactDetailsInterface>;
+}
+function BookingDetails({ formik }: BookingDetailsProps) {
     const { isMobile } = useScreenResolution();
 
     return (
@@ -37,9 +47,10 @@ function BookingDetails() {
                             }
                             size={isMobile ? "14.5px" : "16px"}
                         />
-                        <Input
+                        <FieldInput
+                            formik={formik}
+                            name="email"
                             placeholder="Enter Email Address"
-                            height="3rem"
                         />
                         <Flex
                             gap="8px"
@@ -65,9 +76,10 @@ function BookingDetails() {
                             }
                             size={isMobile ? "14.5px" : "16px"}
                         />
-                        <Input
+                        <FieldInput
+                            formik={formik}
+                            name="phone"
                             placeholder="Enter Your Phone Number "
-                            height="3rem"
                         />
                     </Section>
                 </Flex>

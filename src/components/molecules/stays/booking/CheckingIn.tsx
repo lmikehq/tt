@@ -18,21 +18,32 @@ import PhoneInput from "react-phone-number-input";
 import { ttColors } from "@/lib/theme/colors";
 import Divider from "@mui/material/Divider";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 import {
     RoomForGuest,
     numberOfGuestsInRooms,
 } from "@/lib/types/request-models/stay/search.type";
-import { generateInitialFormDataForRoomsAndGuests } from "@/lib/types/request-models/stay/booking.type";
+import {
+    GuestRoomsFormDataInterface,
+    generateInitialFormDataForRoomsAndGuests,
+} from "@/lib/types/request-models/stay/booking.type";
 import { generateValidationSchemaForRoomsAndGuests } from "@/lib/extensions/schemas/stay/booking.schema";
 import FirstAndLastNameInput from "./widgets/FirstAndLastName";
 import ordinal from "ordinal";
 
 interface CheckingInProps {
     guests: RoomForGuest[];
+    formik: FormikProps<GuestRoomsFormDataInterface>;
+    comment: string;
+    onChangeComment: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-function CheckingIn({ guests }: CheckingInProps) {
+function CheckingIn({
+    guests,
+    formik,
+    comment,
+    onChangeComment,
+}: CheckingInProps) {
     const { isMobile } = useScreenResolution();
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -46,14 +57,6 @@ function CheckingIn({ guests }: CheckingInProps) {
         setIsGridVisible(!isGridVisible);
     };
     // const [value, setValue] = useState<string | undefined>("");
-
-    const roomsAndGuestsDataFormik = useFormik({
-        initialValues: generateInitialFormDataForRoomsAndGuests(guests),
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: generateValidationSchemaForRoomsAndGuests(guests),
-        onSubmit: (values) => {},
-    });
 
     return (
         <Container style={{ overflow: "hidden" }}>
@@ -72,11 +75,10 @@ function CheckingIn({ guests }: CheckingInProps) {
                         </Section>
                         <FirstAndLastNameInput
                             namePrefix={`${index}.guests.0`}
-                            formik={roomsAndGuestsDataFormik}
+                            formik={formik}
                         />
                         <Span>
-                            {roomsAndGuestsDataFormik.values[`${index}`]
-                                .displayOtherGuests &&
+                            {formik.values[`${index}`].displayOtherGuests &&
                                 Array.from(
                                     {
                                         length:
@@ -133,9 +135,7 @@ function CheckingIn({ guests }: CheckingInProps) {
                                                 namePrefix={`${index}.guests.${
                                                     i + 1
                                                 }`}
-                                                formik={
-                                                    roomsAndGuestsDataFormik
-                                                }
+                                                formik={formik}
                                             />
                                         </Section>
                                     )
@@ -146,16 +146,15 @@ function CheckingIn({ guests }: CheckingInProps) {
                                 gap="10px"
                                 margin="8px 0px"
                                 onClick={() =>
-                                    roomsAndGuestsDataFormik.setFieldValue(
+                                    formik.setFieldValue(
                                         `${index}.displayOtherGuests`,
-                                        !roomsAndGuestsDataFormik.values[
-                                            `${index}`
-                                        ].displayOtherGuests
+                                        !formik.values[`${index}`]
+                                            .displayOtherGuests
                                     )
                                 }
                                 styles={{ cursor: "pointer" }}
                             >
-                                {roomsAndGuestsDataFormik.values[`${index}`]
+                                {formik.values[`${index}`]
                                     .displayOtherGuests ? (
                                     <FaUserMinus style={{ fontSize: "20px" }} />
                                 ) : (
@@ -206,6 +205,8 @@ function CheckingIn({ guests }: CheckingInProps) {
                             <Span style={{ marginTop: "20px" }}>
                                 <textarea
                                     name="text"
+                                    onChange={onChangeComment}
+                                    value={comment}
                                     placeholder="Enter request here"
                                     style={{
                                         width: "100%",
