@@ -64,6 +64,11 @@ const NavbarWrapper = styled.div<{ page: string }>`
       background: var(--secondary-color);
     }
   }
+  @media screen and (max-width: 900px) {
+    .display_none {
+      display: none !important;
+    }
+  }
 `;
 const NavLink = styled.div`
   display: flex;
@@ -183,6 +188,7 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 };
 
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
+  const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const { setUser } = useUserStore((state) => state);
   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
@@ -210,172 +216,185 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   console.log("LANGUAGE", selectedLanguage);
 
   return (
-    <NavbarWrapper page={page}>
-      <NavbarLayout>
-        <Grid columns="3" align="center">
-          <NavLink>
-            {[
-              {
-                name: "Visa Apply",
-                url: "visa",
-                icon: <GiPassport />,
-              },
-              {
-                name: "Find Flight",
-                url: "flight",
-                icon: <IoAirplaneSharp />,
-              },
-              {
-                name: "Rent Stay",
-                url: "stay",
-                icon: <IoBedSharp />,
-              },
-            ].map((item, index) => {
-              const active = pathArray === item.url;
-              return (
+    <>
+      <NavbarWrapper page={page}>
+        <NavbarLayout>
+          <Grid columns="3" align="center">
+            <NavLink>
+              {[
+                {
+                  name: "Visa Apply",
+                  url: "visa",
+                  icon: <GiPassport />,
+                },
+                {
+                  name: "Find Flight",
+                  url: "flight",
+                  icon: <IoAirplaneSharp />,
+                },
+                {
+                  name: "Rent Stay",
+                  url: "stay",
+                  icon: <IoBedSharp />,
+                },
+              ].map((item, index) => {
+                const active = pathArray === item.url;
+                return (
+                  <Flex
+                    key={index}
+                    align="center"
+                    cursor="pointer"
+                    gap=".3rem"
+                    height="70px"
+                    color={active ? ttColors.primary600 : "none"}
+                  >
+                    {item.icon}
+                    <Link href={`/${item.url}`}>
+                      <Text
+                        text={item.name}
+                        type="p"
+                        whiteSpace="nowrap"
+                        weight={600}
+                        color={active ? ttColors.primary600 : "none"}
+                      />
+                    </Link>
+                  </Flex>
+                );
+              })}
+            </NavLink>
+
+            <NavLogo>
+              <Link href="/">
+                <Image
+                  src={"/assets/images/brand/favicon.svg"}
+                  height={45}
+                  width={45}
+                  alt="TTLogo"
+                />
+              </Link>
+            </NavLogo>
+            <NavMenu>
+              <Flex background="transparent" gap=".7rem" align="center">
                 <Flex
-                  key={index}
+                  align="center"
+                  gap="5px"
+                  justify="flex-end"
+                  cursor="pointer"
+                  width="fit-content"
+                  // onClick={() =>
+                  //   setOpen((prev) => ({
+                  //     ...prev,
+                  //     language: true,
+                  //   }))
+                  // }
+                >
+                  <CircleFlagLanguage
+                    languageCode={`${selectedLanguage}`}
+                    height="30"
+                  />
+                  {/* <BsGlobe size={24} /> */}
+                  <Text
+                    text={`${selectedLanguage}`}
+                    type="span"
+                    weight={400}
+                    size={16}
+                    styles={{ textTransform: "uppercase" }}
+                  />
+                </Flex>
+                <span className="display_none">
+                  <LanguageModal
+                    open={open.language}
+                    handleClose={() =>
+                      setOpen((prev) => ({
+                        ...prev,
+                        language: false,
+                      }))
+                    }
+                  />
+                </span>
+                <Divider />
+                <Flex
                   align="center"
                   cursor="pointer"
-                  gap=".3rem"
-                  height="70px"
-                  color={active ? ttColors.primary600 : "none"}
+                  width="fit-content"
+                  gap="5px"
+                  onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      currency: true,
+                    }))
+                  }
                 >
-                  {item.icon}
-                  <Link href={`/${item.url}`}>
-                    <Text
-                      text={item.name}
-                      type="p"
-                      whiteSpace="nowrap"
-                      weight={600}
-                      color={active ? ttColors.primary600 : "none"}
-                    />
-                  </Link>
+                  <Text
+                    text={`${selectedCurrency}`}
+                    type="span"
+                    weight={400}
+                    size={16}
+                    styles={{ textTransform: "uppercase" }}
+                  />
+                  <IoIosArrowDown size={20} />
                 </Flex>
-              );
-            })}
-          </NavLink>
 
-          <NavLogo>
-            <Link href="/">
-              <Image
-                src={"/assets/images/brand/favicon.svg"}
-                height={45}
-                width={45}
-                alt="TTLogo"
-              />
-            </Link>
-          </NavLogo>
-
-          <NavMenu>
-            <Flex background="transparent" gap=".7rem" align="center">
-              <Flex
-                align="center"
-                gap="5px"
-                justify="flex-end"
-                cursor="pointer"
-                width="fit-content"
-                // onClick={() =>
-                //   setOpen((prev) => ({
-                //     ...prev,
-                //     language: true,
-                //   }))
-                // }
-              >
-                <CircleFlagLanguage
-                  languageCode={`${selectedLanguage}`}
-                  height="30"
-                />
-                {/* <BsGlobe size={24} /> */}
-                <Text
-                  text={`${selectedLanguage}`}
-                  type="span"
-                  weight={400}
-                  size={16}
-                  styles={{ textTransform: "uppercase" }}
-                />
+                <span className="display_none">
+                  {" "}
+                  <CurrencyModal
+                    open={open.currency}
+                    handleClose={() =>
+                      setOpen((prev) => ({
+                        ...prev,
+                        currency: false,
+                      }))
+                    }
+                  />
+                </span>
               </Flex>
-              <LanguageModal
-                open={open.language}
-                handleClose={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    language: false,
-                  }))
-                }
+              <LanguageCurrencyModal
+                open={modalOpen}
+                handleClose={() => setModalOpen(!modalOpen)}
               />
-              <Divider />
-              <Flex
-                align="center"
-                cursor="pointer"
-                width="fit-content"
-                gap="5px"
-                onClick={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    currency: true,
-                  }))
-                }
-              >
-                <Text
-                  text={`${selectedCurrency}`}
-                  type="span"
-                  weight={400}
-                  size={16}
-                  styles={{ textTransform: "uppercase" }}
-                />
-                <IoIosArrowDown size={20} />
-              </Flex>
-
-              <CurrencyModal
-                open={open.currency}
-                handleClose={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    currency: false,
-                  }))
-                }
-              />
-            </Flex>
-            <LanguageCurrencyModal
-              open={modalOpen}
-              handleClose={() => setModalOpen(!modalOpen)}
-            />
-            {user?.firstName ? (
-              <>
-                <UserPopover />
-              </>
-            ) : (
-              <Flex gap="1rem">
-                <Link href="/auth/login">
-                  <Button border="1px solid #06062A" background="transparent">
-                    <Text
-                      text="Sign in"
-                      color="#06062A"
-                      type="p"
-                      whiteSpace="nowrap"
-                      size={14}
-                      weight={600}
-                    />
-                  </Button>
-                </Link>
-                <Link href="/auth/register">
-                  <Button background={ttColors.dark}>
-                    <Text
-                      text="Sign up"
-                      type="p"
-                      whiteSpace="nowrap"
-                      weight={600}
-                      color="#fff"
-                    />
-                  </Button>
-                </Link>
-              </Flex>
-            )}
-          </NavMenu>
-        </Grid>
-      </NavbarLayout>
-    </NavbarWrapper>
+              {user?.firstName ? (
+                <>
+                  {" "}
+                  <UserPopover />{" "}
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Flex gap="1rem">
+                    <Link href="/auth/login">
+                      <Button
+                        border="1px solid #06062A"
+                        background="transparent"
+                      >
+                        <Text
+                          text="Sign in"
+                          color="#06062A"
+                          type="p"
+                          whiteSpace="nowrap"
+                          size={14}
+                          weight={600}
+                        />
+                      </Button>
+                    </Link>
+                    <Link href="/auth/register">
+                      <Button background={ttColors.dark}>
+                        <Text
+                          text="Sign up"
+                          type="p"
+                          whiteSpace="nowrap"
+                          weight={600}
+                          color="#fff"
+                        />
+                      </Button>
+                    </Link>
+                  </Flex>
+                </>
+              )}
+            </NavMenu>
+          </Grid>
+        </NavbarLayout>
+      </NavbarWrapper>
+    </>
   );
 };
 
