@@ -50,6 +50,7 @@
     "mui-daterange-picker": "^1.0.5",
     "next": "14.0.1",
     "next-sitemap": "^4.2.3",
+    "prop-types": "^15.8.1",
     "npm": "^10.2.5",
     "react": "18.2.0",
     "react-circle-flags": "^0.0.20",
