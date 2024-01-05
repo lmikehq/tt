@@ -46,16 +46,15 @@ export default function SearchInputAsLocationTypes({
         handleSetSearchText({ text: value });
     }, 800);
 
-
     const PopperMy = (props: any) => (
         <Popper
             {...props}
             sx={{
                 width: fieldWidth,
                 "& div > ul::-webkit-scrollbar": {
-                    backgroundColor: 'transparent',
-                    width: '7px',
-                    height: '7px',
+                    backgroundColor: "transparent",
+                    width: "7px",
+                    height: "7px",
                 },
                 "& div > ul::-webkit-scrollbar-thumb": {
                     backgroundColor: "rgba(0, 0, 0, 0.15)",
@@ -117,7 +116,7 @@ export default function SearchInputAsLocationTypes({
                             className="truncate"
                             text={`${option.name} (${
                                 "code" in option
-                                    ? option.code
+                                    ? option.code ?? option.name
                                     : option.country_code
                             })`}
                         />

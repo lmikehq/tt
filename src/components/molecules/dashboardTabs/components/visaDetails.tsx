@@ -229,14 +229,14 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       : { text: "#37008A", bg: "#F6F0FF" };
   const { applied, voucher } = useVoucherStore((state) => state);
 
-  const accompanying = visa?.familyMembers.filter(
+  const accompanying = visa?.familyMembers?.filter(
     (fm: any) => fm.accompanying == true
   ).length;
 
   function getLocationField(field: string) {
     return typeof visa?.primaryTraveller[field] === "string"
       ? visa?.primaryTraveller?.[field]
-      : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`;
+      : `${visa?.primaryTraveller?.[field]?.name ?? 'Country'} (${visa?.primaryTraveller?.[field]?.code ?? 'Code'})`;
   }
 
   const sortOptions = [
