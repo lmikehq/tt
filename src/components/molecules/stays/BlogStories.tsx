@@ -206,7 +206,7 @@ function BlogStories() {
                     </Link>
                   </SliderImgBox>
                   <FlexBox className="stay_blog_admin">
-                    <Flex align="center" gap="10px">
+                    <Flex align="center" gap="20px">
                       <img
                         style={{
                           width: "45px",
@@ -311,7 +311,7 @@ function BlogStories() {
             );
           })}
         </SliderWidth>
-        <Flex
+        {/* <Flex
           width="100%"
           justify="center"
           align="center"
@@ -328,7 +328,7 @@ function BlogStories() {
               <Text weight={600} type="p" text="View More"></Text>
             </Span>{" "}
           </Link>
-        </Flex>
+        </Flex> */}
       </SlideContent>
     </div>
   );
