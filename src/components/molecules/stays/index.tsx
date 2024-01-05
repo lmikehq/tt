@@ -8,10 +8,10 @@ import { styled } from "styled-components";
 import Map from "@molecule/map";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
-import FAQ from "./components/faq";
 import PopularHotels from "./PopularHotels";
 import TrendingDestination from "./TrendingDestination";
 import BlogStories from "./BlogStories";
+import FAQ from "./components/faq";
 
 const BlueBox = styled.div`
   border: 1px solid #7bbbd6;
@@ -39,18 +39,23 @@ const StaySection = () => {
 
   return (
     <SectionLayout padding={isMobile ? "0 1rem" : "0 5rem"}>
-      <Flex direction="column" gap=".65rem" wrap="wrap">
+      <Flex
+        direction="column"
+        gap=".65rem"
+        wrap="wrap"
+        styles={{ marginTop: isMobile ? "100px" : "" }}
+      >
         <Text
           type="h1"
           text="What Thrillers have to offer "
           font="Montserrat"
           weight={700}
-          size={36}
+          size={isMobile ? 24 : 36}
         />
         <Text
           type="p"
           text="Our goal is to assist you in traveling with assurance and ensuring your voyage is as seamless as can be."
-          size={18}
+          size={isMobile ? 16 : 18}
         />
       </Flex>
       <Flex
@@ -135,14 +140,14 @@ const StaySection = () => {
           <Text
             type="h2"
             text="Frequently Asked Questions"
-            size={36}
+            size={isMobile ? 24 : 36}
             font="Montserrat"
             weight={700}
           />
           <Text
             type="p"
             text="Have all your questions answered here?"
-            size={18}
+            size={isMobile ? 16 : 18}
           />
           <FAQ />
         </Flex>

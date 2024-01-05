@@ -118,12 +118,12 @@ function TrendingDestination() {
             text="Trending Destinations"
             font="Montserrat"
             weight={700}
-            size={36}
+            size={isMobile ? 24 : 36}
           />
           <Text
             type="p"
             text="Here are the most popular choices for travellers from Nigeria."
-            size={18}
+            size={isMobile ? 16 : 18}
             whiteSpace={isMobile ? "unset" : "nowrap"}
           />
         </Flex>

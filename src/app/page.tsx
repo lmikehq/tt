@@ -6,6 +6,7 @@ import ReviewSec from "@organism/review";
 import HeroSection from "@organism/hero/home";
 import PopularDestination from "@organism/popularDestination";
 import TopCountriesSection from "@organism/TopCountriesSection";
+import { error } from "console";
 
 export default function Home() {
     return (

@@ -8,7 +8,6 @@ import { styled } from "styled-components";
 import FAQ from "./components/FAQ";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
-import FlightDealCard from "./components/FlightDealCard";
 import BlogStories from "./BlogStories";
 import FlightDeals from "./FlightDeals";
 import PopularFlights from "./PopularFlights";
@@ -37,32 +36,14 @@ const BlueIcon = styled.div`
 const FlightSection = () => {
   const { isMobile } = useScreenResolution();
 
-  const flightDeals = [
-    {
-      city_name: "Venice",
-      country: "Italy",
-      prices_from: 2000,
-      is_favorite: true,
-      image_url: "/assets/images/flights/image3.jpg",
-    },
-    {
-      city_name: "Atlanta",
-      country: "United States",
-      prices_from: 1850,
-      is_favorite: false,
-      image_url: "/assets/images/flights/image2.png",
-    },
-    {
-      city_name: "Sao Paulo",
-      country: "Brazil",
-      prices_from: 2250,
-      is_favorite: true,
-      image_url: "/assets/images/flights/image1.jpg",
-    },
-  ];
   return (
     <SectionLayout>
-      <Flex direction="column" gap=".65rem" wrap="wrap">
+      <Flex
+        direction="column"
+        gap=".65rem"
+        wrap="wrap"
+        styles={{ marginTop: isMobile ? "100px" : "" }}
+      >
         <Text
           type="h1"
           text="What Thrillers have to offer"
@@ -137,8 +118,8 @@ const FlightSection = () => {
           </Flex>
         </BlueBox>
       </Flex>
+      {/* FLIGHT DEALS */}
       <div style={{ padding: "2rem 0" }}>
-        {/* FLIGHT DEALS */}
         <FlightDeals />
       </div>
       <div style={{ padding: "2rem 0" }}>

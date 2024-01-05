@@ -20,7 +20,6 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
-// import { useUserStore } from "store/useStore";
 import Button from "@atom/button";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
@@ -167,23 +166,7 @@ function ApplicationForm() {
         },
         validateOnChange: true,
     });
-
-    const familyMembersFormik = useFormik({
-        initialValues: { familyMembers },
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: familyInfoSchema,
-        onSubmit: (values, formikHelpers) => {
-            formikHelpers
-                .validateForm()
-                .then((res) => {})
-                .catch((err) => {});
-            if (isLoading) return;
-            nextStep({ data: { familyMembers: values.familyMembers } });
-        },
-        validateOnChange: true,
-    });
-
+    
     const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
         initialValues: guarantorInfo,
         enableReinitialize: true,
@@ -191,7 +174,19 @@ function ApplicationForm() {
         validationSchema: guarantorSchema,
         onSubmit: (values: GuarantorInfoInterface) => {
             // if (isLoading) return;
-            // nextStep({ data: { personalInfo: values } });
+            // nextStep({ data: { guarantorInfo: values } });
+        },
+        validateOnChange: true,
+    });
+
+    const familyMembersFormik = useFormik({
+        initialValues: { familyMembers },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: familyInfoSchema,
+        onSubmit: (values, formikHelpers) => {
+            if (isLoading) return;
+            // nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
         },
         validateOnChange: true,
     });
@@ -204,8 +199,14 @@ function ApplicationForm() {
         onSubmit: (values) => {
         createVisaApplication({
             data: {
-            ...form,
-            documents: values.documents,
+                // ...form,
+                tripDetails: detailsFormik.values,
+                personalInfo: personalInfoFormik.values,
+                employment: employmentFormik.values.employment,
+                education: educationFormik.values.education,
+                familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
+                documents: values.documents,
             },
         })
         .then((_: any) => {
@@ -217,13 +218,14 @@ function ApplicationForm() {
           );
         })
         .catch((error) => {
+            console.log(error)
           const err = error.response?.data;
           if (
             err?.statusCode === 422 &&
             err?.errorMessage.includes("already exists")
           ) {
             setShowApplicationExistsModal(true);
-          } else if (err.statusCode === 400) {
+          } else if (err?.statusCode === 400) {
             toast(
               (t) => (
                 <ErrorToastComponent>
@@ -256,8 +258,8 @@ function ApplicationForm() {
             data: {
                 tripDetails: detailsFormik.values,
                 personalInfo: personalInfoFormik.values,
-                education: educationFormik.values.education,
                 employment: employmentFormik.values.employment,
+                education: educationFormik.values.education,
                 familyMembers: familyMembersFormik.values.familyMembers,
                 guarantorInfo: guarantorFormik.values,
                 documents: documentsFormik.values.documents,
@@ -294,7 +296,6 @@ function ApplicationForm() {
         });
         fetchRecentProgressFromSession();
     }, [params]);
-
 
     // useEffect(() => {
     //     saveProgress({ data: testPayload, uploadedDocuments: [] })

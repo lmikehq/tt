@@ -134,6 +134,8 @@ function Flights() {
   const handleAddMultiFlight = () => {
     dispatch && dispatch({ type: "ADD_MULTI_FLIGHT" });
   };
+
+  // HERE PLEASE
   const handleUpdateMultiFlight = (
     flight: OneFlightType,
     data: Partial<OneFlightType>
@@ -144,6 +146,7 @@ function Flights() {
         payload: { index: flight.index ?? 0, data },
       });
   };
+
   const handleRemoveMultiFlight = (flight: OneFlightType) => {
     dispatch && dispatch({ type: "REMOVE_MULTI_FLIGHT", payload: flight });
   };

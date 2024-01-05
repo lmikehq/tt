@@ -65,6 +65,9 @@ export const FlexBox = styled.div`
   @media screen and (max-width: 545px) {
     flex-wrap: wrap;
     gap: 20px;
+    &.stay_blog_admin {
+      flex-wrap: nowrap;
+    }
     &.filter_btn {
       flex-wrap: nowrap;
       width: 100%;

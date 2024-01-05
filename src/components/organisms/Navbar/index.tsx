@@ -31,6 +31,7 @@ import { PiCaretDownBold } from "react-icons/pi";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CurrencyModal, LanguageModal } from "./modals/Modals";
 import { CircleFlagLanguage } from "react-circle-flags";
+import { IoIosArrowDown } from "react-icons/io";
 
 const poppins = Poppins({
   weight: "400",
@@ -82,7 +83,6 @@ const NavMenu = styled.div`
   gap: 2rem;
   font-size: 0.9rem;
 `;
-
 const Divider = styled.div`
   width: 1px;
   height: 30px;
@@ -268,16 +268,13 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
           </NavLogo>
 
           <NavMenu>
-            <Flex
-              background="transparent"
-              gap=".7rem"
-              align="center"
-              cursor="pointer"
-            >
+            <Flex background="transparent" gap=".7rem" align="center">
               <Flex
                 align="center"
                 gap="5px"
                 justify="flex-end"
+                cursor="pointer"
+                width="fit-content"
                 // onClick={() =>
                 //   setOpen((prev) => ({
                 //     ...prev,
@@ -310,6 +307,9 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               <Divider />
               <Flex
                 align="center"
+                cursor="pointer"
+                width="fit-content"
+                gap="5px"
                 onClick={() =>
                   setOpen((prev) => ({
                     ...prev,
@@ -324,7 +324,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   size={16}
                   styles={{ textTransform: "uppercase" }}
                 />
-                <KeyboardArrowDownIcon />
+                <IoIosArrowDown size={20} />
               </Flex>
 
               <CurrencyModal

@@ -10,7 +10,7 @@ import Text from "@/components/atoms/text";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
-  height: ${(props) => (props.isMobile ? "unset" : "680px")};
+  height: ${(props) => (props.isMobile ? "unset" : "720px")};
   margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${"/assets/images/flights/flight.png"});
@@ -37,12 +37,17 @@ function FlightHero() {
                 align="center"
                 styles={{ textAlign: "center", maxWidth: "700px" }}
               >
-                <Text color="white" type="p" text="With you, we can"></Text>
+                <Text
+                  size={"1.2rem"}
+                  color="white"
+                  type="p"
+                  text="With you, we can"
+                ></Text>
                 <Text
                   color="white"
                   type="h1"
-                  weight={600}
-                  size={45}
+                  size={isMobile ? "2.3rem" : "3.5rem"}
+                  weight={900}
                   text="ELEVATE YOUR TRAVEL EXPERIENCE"
                 ></Text>
               </Flex>

@@ -26,7 +26,7 @@ function One({ applicationInfo, personalInfo, goToStep }: OneProps) {
     }
 
     return (
-        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '72%' : '80%'}>
+        <Flex direction='column' padding='1rem 0' gap="1rem" height={isMobile ? '65%' : '80%'}>
             <Stack direction="row">
                 <Text
                     text={`Visa Application Preview (1/5)`}
@@ -83,15 +83,41 @@ function One({ applicationInfo, personalInfo, goToStep }: OneProps) {
                         <Detail name="Country where Applying" value={personalInfo?.countryOfApply?.name} width='45%' />
                         <Detail name="Status of Current Residence" value={personalInfo?.statusOfResidence} width='45%' />
                         <Detail name="Start Date of Current Residence" value={formatDateString(personalInfo?.startDateOfResidence ?? '')} width='45%' />
-                        <Detail name="Previous Country of Residence 1" value={personalInfo?.prevResidence1?.name} width='45%' />
-                        <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence1 ?? '')} width='45%' />
-                        <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence1 ?? '')} width='45%' />
-                        <Detail name="Previous Country of Residence 2" value={personalInfo?.prevResidence2?.name} width='45%' />
-                        <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence2 ?? '')} width='45%' />
-                        <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence2 ?? '')} width='45%' />
-                        <Detail name="Previous Country of Residence 3" value={personalInfo?.prevResidence3?.name} width='45%' />
-                        <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence3 ?? '')} width='45%' />
-                        <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence3 ?? '')} width='45%' />
+                        {!!personalInfo?.prevResidence1?.name &&
+                            <React.Fragment>
+                                <Detail name="Previous Country of Residence 1" value={personalInfo?.prevResidence1?.name} width='45%' />
+                                <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence1 ?? '')} width='45%' />
+                                <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence1 ?? '')} width='45%' />
+                            </React.Fragment>
+                        }
+                        {!!personalInfo?.prevResidence2?.name &&
+                            <React.Fragment>
+                                <Detail name="Previous Country of Residence 2" value={personalInfo?.prevResidence2?.name} width='45%' />
+                                <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence2 ?? '')} width='45%' />
+                                <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence2 ?? '')} width='45%' />
+                            </React.Fragment>
+                        }
+                        {!!personalInfo?.prevResidence3?.name &&
+                            <React.Fragment>
+                                <Detail name="Previous Country of Residence 3" value={personalInfo?.prevResidence3?.name} width='45%' />
+                                <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence3 ?? '')} width='45%' />
+                                <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence3 ?? '')} width='45%' />
+                            </React.Fragment>
+                        }
+                        {!!personalInfo?.prevResidence4?.name &&
+                            <React.Fragment>
+                                <Detail name="Previous Country of Residence 4" value={personalInfo?.prevResidence4?.name} width='45%' />
+                                <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence4 ?? '')} width='45%' />
+                                <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence4 ?? '')} width='45%' />
+                            </React.Fragment>
+                        }
+                        {!!personalInfo?.prevResidence5?.name &&
+                            <React.Fragment>
+                                <Detail name="Previous Country of Residence 5" value={personalInfo?.prevResidence5?.name} width='45%' />
+                                <Detail name="Since When?" value={formatDateString(personalInfo?.startDatePrevResidence5 ?? '')} width='45%' />
+                                <Detail name="Till When?" value={formatDateString(personalInfo?.endDatePrevResidence5 ?? '')} width='45%' />
+                            </React.Fragment>
+                        }
                         
                         <Divider sx={{ width: '100%' }} />
                         <Detail name="Gender" value={personalInfo?.gender} width='45%' />

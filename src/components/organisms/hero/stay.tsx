@@ -10,7 +10,7 @@ import Text from "@/components/atoms/text";
 
 const HeroWrapper = styled.div<{ isMobile?: boolean }>`
   width: 100vw;
-  height: ${(props) => (props.isMobile ? "unset" : "730px")};
+  height: ${(props) => (props.isMobile ? "unset" : "760px")};
   margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(${"/assets/images/stays/banner.png"});
@@ -35,14 +35,19 @@ function StayHero() {
               <Flex
                 direction="column"
                 align="center"
-                styles={{ textAlign: "center", maxWidth: "700px" }}
+                styles={{ textAlign: "center", maxWidth: "900px" }}
               >
-                <Text color="white" type="p" text="With you, we can"></Text>
+                <Text
+                  size={"1.2rem"}
+                  color="white"
+                  type="p"
+                  text="With you, we can"
+                ></Text>
                 <Text
                   color="white"
                   type="h1"
-                  weight={600}
-                  size={45}
+                  size={isMobile ? "2.3rem" : "3.5rem"}
+                  weight={900}
                   text="MIGRATE NIGERIANS TO THE WESTERN COUNTRIES "
                 ></Text>
               </Flex>

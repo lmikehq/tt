@@ -149,12 +149,12 @@ function PopularHotels() {
           text="Popular Stays Deals from Lagos"
           font="Montserrat"
           weight={700}
-          size={36}
+          size={isMobile ? 24 : 36}
         />
         <Text
           type="p"
           text="Here are the stays that are mainly booked from Lagos. You can check out the stays."
-          size={18}
+          size={isMobile ? 16 : 18}
           whiteSpace={isMobile ? "unset" : "nowrap"}
         />
       </Flex>

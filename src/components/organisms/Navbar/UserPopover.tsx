@@ -57,7 +57,7 @@
 //       >
 //         <MenuItem onClick={handleClose}>Settings</MenuItem>
 //         <MenuItem onClick={handleClose}>Travel Guide</MenuItem>
-//         <MenuItem onClick={handleClose}>Book Visa</MenuItem>
+//         <MenuItem onClick={handleClose}>Get visa</MenuItem>
 //         <MenuItem onClick={handleClose}>Rent Stays</MenuItem>
 //         <MenuItem onClick={handleClose}>Book Flights</MenuItem>
 //         <MenuItem onClick={handleClose}>Logout</MenuItem>
@@ -90,6 +90,10 @@ import TruncateMarkup from "react-truncate-markup";
 import Button from "@/components/atoms/button";
 import CheckIcon from "@mui/icons-material/Check";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "@lib/extensions/hook/apiService";
+import { User } from "@lib/types";
+import { useUserStore } from "@lib/store/useStore";
 
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -127,6 +131,16 @@ const CustomPopover = () => {
       name: "admin",
     },
   ];
+
+  const { setUser } = useUserStore((state) => state);
+  async function getUser(): Promise<User | any> {
+    const res = await apiService("/user", "GET");
+    setUser(res);
+    return res;
+  }
+
+  const { data: user } = useQuery(["getUser"], getUser);
+
   return (
     <>
       <Span
@@ -293,6 +307,9 @@ const CustomPopover = () => {
                     border={`1px solid ${ttColors.dark}`}
                     padding="5px 10px"
                     width="100%"
+                    onClick={() => {
+                      router.push("/dashboard");
+                    }}
                     styles={{ background: "transparent !important" }}
                   >
                     <Text
@@ -321,7 +338,20 @@ const CustomPopover = () => {
             cursor="pointer"
             onClick={() => setIsVisible(!isVisible)}
           >
-            <RxAvatar size={34} />
+            {user && user.avatar ? (
+              <img src={user.image} alt="" />
+            ) : (
+              <RxAvatar size={38} />
+            )}
+            <Flex direction="column">
+              <Text
+                whiteSpace="nowrap"
+                type="p"
+                size={14}
+                text={`${user?.lastName} ${user?.firstName} `}
+              ></Text>
+              <Text type="p" size={13} text={`${user.email}`}></Text>
+            </Flex>
             <IoIosArrowDown size={20} />
           </Flex>
           {isVisible && (
@@ -352,7 +382,7 @@ const CustomPopover = () => {
                   url: "/chat",
                 },
                 {
-                  title: "Book Visa",
+                  title: "Get visa",
                   icon: <StyleIcon />,
                   url: "/visa",
                 },
