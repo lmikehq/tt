@@ -119,7 +119,7 @@ export const BlogHeroSection = () => {
 
     const renderContent = () => {
         if (searchTriggered) {
-            return <BlogResults />;
+            return <BlogResults blogs={[]} />;
         } else {
             return <AdminPost />;
         }

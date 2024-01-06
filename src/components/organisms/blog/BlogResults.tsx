@@ -7,8 +7,12 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { BlogArticleMini } from "@/components/molecules/blog/component/blogArticleMini";
 import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
 import { RelatedTopic } from "@/components/molecules/blog/component/relatedTopic";
+import { SingleBlogInterface } from "@/lib/types/response-models/blog/index.type";
 
-function BlogResults() {
+interface BlogResultsProps {
+    blogs: SingleBlogInterface[];
+}
+function BlogResults({ blogs }: BlogResultsProps) {
     const { isMobile } = useScreenResolution();
 
     const tabItems = [
@@ -83,12 +87,14 @@ function BlogResults() {
                                 alignContent: "center",
                             }}
                         />
-
-                        <BlogArticle />
-                        <BlogArticle />
-                        <BlogArticle />
-                        <BlogArticle />
-                        <BlogArticle />
+                        {blogs.map((blog) => {
+                            return (
+                                <BlogArticle
+                                    key={blog.blog._id}
+                                    blog={blog.blog}
+                                />
+                            );
+                        })}
                     </Flex>
                     <RelatedTopic />
                 </Flex>

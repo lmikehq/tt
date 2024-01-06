@@ -4,7 +4,7 @@ import SectionLayout from "@/components/templates/SectionLayout";
 const ResultPage = () => {
     return (
         <SectionLayout>
-            <BlogResults />
+            <BlogResults blogs={[]} />
         </SectionLayout>
     );
 };
