@@ -145,6 +145,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     };
 
     const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
+
     return (
         <Box style={{ marginBottom: "20px" }}>
             <ItemList>

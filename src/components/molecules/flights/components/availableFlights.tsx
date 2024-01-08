@@ -18,7 +18,7 @@ import { Stack } from "@mui/material";
 import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
@@ -139,7 +139,7 @@ function LoginModal({
                 bgcolor="white"
                 padding={5}
                 borderRadius="16px"
-                maxWidth={isMobile ? "95vw" : "35vw"}
+                width={isMobile ? "95vw" : "35vw"}
             >
                 <Flex width="100%" justify="center">
                     <Flex
@@ -156,7 +156,7 @@ function LoginModal({
                     type="h2"
                     text="Would you like to Login?"
                     weight={600}
-                    size={28}
+                    size={25}
                     textAlign="center"
                 />
                 <Text
@@ -257,7 +257,7 @@ function StillSearchingModal({
                     type="h2"
                     text="Still Searching?"
                     weight={600}
-                    size={26}
+                    size={25}
                     textAlign="center"
                 />
                 <Text
@@ -295,12 +295,17 @@ function ShareFlightModal({
     isOpen: boolean;
     onClose: VoidFunction;
     flight: FlightInfo | null;
-    flightReq: { bags: number; adults?: number; children?: number; infants?: number; }
-    }) {
-    const host = window.location.host
+    flightReq: {
+        bags: number;
+        adults?: number;
+        children?: number;
+        infants?: number;
+    };
+}) {
+    const host = window.location.host;
     const { isMobile } = useScreenResolution();
     const { copyToClipboard } = useClipboard();
-    const flightLink = `${host}/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`
+    const flightLink = `${host}/flight/booking?bnum=${flightReq?.bags}&adults=${flightReq?.adults}&children=${flightReq?.children}&infants=${flightReq?.infants}&booking_token=${flight?.booking_token}`;
 
     return (
         <Modal open={isOpen} handleClose={onClose}>
@@ -311,7 +316,7 @@ function ShareFlightModal({
                 bgcolor="white"
                 paddingX={isMobile ? 5 : 6}
                 paddingY={isMobile ? 4 : 4}
-                maxWidth={isMobile ? "96vw" : "40vw"}
+                width={isMobile ? "96vw" : "40vw"}
                 borderRadius="16px"
             >
                 <Flex
@@ -327,7 +332,7 @@ function ShareFlightModal({
                     type="h2"
                     text="Share your Flight to Family & Friends"
                     weight={600}
-                    size={isMobile ? 24 : 26}
+                    size={isMobile ? 24 : 25}
                 />
                 <Text
                     type="h2"
@@ -443,7 +448,6 @@ function ShareFlightModal({
 
 function AvailableFlights() {
     const router = useRouter();
-    const pathName = usePathname();
     const { user } = useUserStore((state) => state);
     const {
         flightsResults,
@@ -584,7 +588,7 @@ function AvailableFlights() {
 
     const loadMoreItems = () => {
         const limit = Number(searchQuery?.limit ?? 10);
-        console.log(searchQuery?.limit, limit);
+
         const newCount = flightsResults.total > limit ? limit + 10 : limit;
         if (newCount !== limit) {
             updateSearchQuery({ data: { ...searchQuery, limit: newCount } });
@@ -667,7 +671,7 @@ function AvailableFlights() {
             child_hand_bag: childHandBags,
             child_hold_bag: childHoldBags,
         };
-        // console.log(cleanObject(sanitizedQuery));
+        //
         if (
             sanitizedQuery?.fly_from &&
             sanitizedQuery?.fly_to &&
@@ -684,8 +688,6 @@ function AvailableFlights() {
         }, 900000);
         return () => clearInterval(interval);
     }, []);
-
-    console.log('ss', searchFlightsResults)
 
     return (
         <Flex

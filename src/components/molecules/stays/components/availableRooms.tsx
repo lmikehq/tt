@@ -307,9 +307,11 @@ function AvailableRooms() {
                 setSortType={setSortType}
             />
             <RoomSlider hotels={hotels} />
+
             {hotels?.slice(4).map((hotel, index) => (
                 <RoomBox hotel={hotel} index={index} key={index} />
             ))}
+
             <Flex justify="center" styles={{ marginTop: "40px" }}>
                 <Button
                     width="100%"
@@ -318,7 +320,7 @@ function AvailableRooms() {
                     onClick={() =>
                         updateStaySearchMeta({
                             ...staySearchMeta,
-                            page: staySearchMeta.page + 1,
+                            page: (staySearchMeta?.page ?? 1) + 1,
                         })
                     }
                 >

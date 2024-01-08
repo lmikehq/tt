@@ -12,7 +12,7 @@ interface FourProps{
 }
 
 function Four({ familyInfo = [] }: FourProps) {
-    const [isOpenAcc, setOpenAcc] = useState<number | null>(0)
+    const [isOpenAcc, setOpenAcc] = useState<number | null>(null)
 
     const toggleAcc = (index: number) => {
         setOpenAcc(prev => prev === index ? null : index)
@@ -36,7 +36,7 @@ function Four({ familyInfo = [] }: FourProps) {
                     </Flex>
                 ) : familyInfo.map((member, index) =>
                     <MyAccordion
-                        heading={`Family Member Details ${index + 1}`}
+                        heading={`Family Member ${index + 1}`}
                         toggle={() => toggleAcc(index)}
                         isOpen={isOpenAcc === index}
                         key={`member-${index}`}

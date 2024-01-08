@@ -24,7 +24,7 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
     deleteVoucher,
   } = useVoucherStore((state) => state);
   return (
-    <Section margin="3rem  0 0">
+    <Section margin="5rem  0 0">
       <Text
         text={"Enter Travel Voucher"}
         type={"h3"}
@@ -45,7 +45,7 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
       <form onSubmit={(e) => e.preventDefault()}>
         <Flex
           gap="1rem"
-          margin={`${isMobile ? "1rem" : modal ? "1rem" : "4rem"} 0 .5rem`}
+          margin={`${isMobile ? "1rem" : modal ? "1rem" : "2rem"} 0 .5rem`}
           direction={isMobile ? "column" : "row"}
         >
           <Input

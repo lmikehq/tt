@@ -215,11 +215,25 @@ function SortingColumns() {
     );
 
     const handleUpdateStaySearchFilters = (params: StaySearchFilters) => {
+        console.log(params);
         updateStaySearchFilters({
             ...staySearchFilters,
             ...params,
         });
     };
+
+    const handlePriceChangeDebounce = debounce(
+        ({
+            minAmount,
+            maxAmount,
+        }: {
+            minAmount: number;
+            maxAmount: number;
+        }) => {
+            handleUpdateStaySearchFilters({ minAmount, maxAmount });
+        },
+        800
+    );
 
     const handleEnumCheckBoxGroupChanged = ({
         value,
@@ -305,6 +319,11 @@ function SortingColumns() {
                                     (popularTypeKey, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.popularTypes?.includes(
+                                                HotelPopularTypes[
+                                                    popularTypeKey as keyof typeof HotelPopularTypes
+                                                ]
+                                            )}
                                             value={
                                                 HotelPopularTypes[
                                                     popularTypeKey as keyof typeof HotelPopularTypes
@@ -405,6 +424,11 @@ function SortingColumns() {
                                     (propertyTypeKey, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.propertyTypes?.includes(
+                                                HotelPropertyTypes[
+                                                    propertyTypeKey as keyof typeof HotelPropertyTypes
+                                                ]
+                                            )}
                                             value={
                                                 HotelPropertyTypes[
                                                     propertyTypeKey as keyof typeof HotelPropertyTypes
@@ -505,18 +529,15 @@ function SortingColumns() {
                                     marks={marks}
                                     min={0}
                                     max={20000000}
-                                    onChange={(e, v) =>
-                                        debounce(() => {
-                                            handleUpdateStaySearchFilters({
-                                                minAmount: Array.isArray(v)
-                                                    ? v[0]
-                                                    : 0,
-                                                maxAmount: Array.isArray(v)
-                                                    ? v[1]
-                                                    : 0,
-                                            });
-                                        }, 800)
-                                    }
+                                    onChange={(e, v) => {
+                                        const values = v as number[];
+                                        // debounce(() => {
+                                        handlePriceChangeDebounce({
+                                            minAmount: values[0] || 0,
+                                            maxAmount: values[1] || 0,
+                                        });
+                                        // }, 800);
+                                    }}
                                 />
                                 <Flex gap="20px" align="center">
                                     <input
@@ -524,6 +545,7 @@ function SortingColumns() {
                                         defaultValue={
                                             staySearchFilters.minAmount ?? 0
                                         }
+                                        value={staySearchFilters.minAmount}
                                         style={{
                                             width: "100%",
                                             padding: "11px",
@@ -724,6 +746,11 @@ function SortingColumns() {
                                     (cancellationPolicyKey, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.cancellationPolicy?.includes(
+                                                HotelCancellationPolicy[
+                                                    cancellationPolicyKey as keyof typeof HotelCancellationPolicy
+                                                ]
+                                            )}
                                             value={
                                                 HotelCancellationPolicy[
                                                     cancellationPolicyKey as keyof typeof HotelCancellationPolicy
@@ -823,6 +850,11 @@ function SortingColumns() {
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.amenity?.includes(
+                                                HotelAmenityEnum[
+                                                    item as keyof typeof HotelAmenityEnum
+                                                ]
+                                            )}
                                             value={
                                                 HotelAmenityEnum[
                                                     item as keyof typeof HotelAmenityEnum
@@ -923,6 +955,11 @@ function SortingColumns() {
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.meals?.includes(
+                                                HotelMealEnum[
+                                                    item as keyof typeof HotelMealEnum
+                                                ]
+                                            )}
                                             value={
                                                 HotelMealEnum[
                                                     item as keyof typeof HotelMealEnum
@@ -1022,6 +1059,11 @@ function SortingColumns() {
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.room?.includes(
+                                                HotelRoomEnum[
+                                                    item as keyof typeof HotelRoomEnum
+                                                ]
+                                            )}
                                             value={
                                                 HotelRoomEnum[
                                                     item as keyof typeof HotelRoomEnum
@@ -1121,6 +1163,11 @@ function SortingColumns() {
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
+                                            checked={staySearchFilters.bedType?.includes(
+                                                HotelBedTypeEnum[
+                                                    item as keyof typeof HotelBedTypeEnum
+                                                ]
+                                            )}
                                             value={
                                                 HotelBedTypeEnum[
                                                     item as keyof typeof HotelBedTypeEnum

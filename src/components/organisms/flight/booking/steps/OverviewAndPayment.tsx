@@ -78,7 +78,6 @@ const OverviewAndPayment = () => {
         validateOnMount: true,
         validationSchema: cardDetailsSchema,
         onSubmit: (values) => {
-            console.log(values);
             handleMakepayment({
                 cardDetails: values,
             });
@@ -93,8 +92,6 @@ const OverviewAndPayment = () => {
         const bookingId = params.id;
         if (bookingId) checkBookingDetails({ bookingId });
     }, []);
-
-    console.log(total * conversionRate);
 
     return (
         <Box
@@ -117,7 +114,7 @@ const OverviewAndPayment = () => {
                             service: "FLIGHT",
                             serviceID: flightId ?? "",
                             paymentIntent: "FLIGHT FEE",
-                            user: userId,
+                            user: userId ?? "",
                             amount: total * conversionRate,
                         }).then((res) => {
                             window.open(res.data.link, "_blank");

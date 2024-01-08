@@ -1,6 +1,15 @@
 import { safelyConvertToNumber } from "@lib/utilFns";
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
+import { parse } from "date-fns";
+import { AuthUser } from "./response-models/auth/auth.type";
+
+function formatISODate(x?: string | null) {
+    if (x) {
+        return parse(x, "dd/MM/yyyy", new Date()).toString();
+    } else return "";
+}
+
 export type ISiteConfig = {
     name: string;
     description: string;
@@ -111,8 +120,8 @@ export interface PersonalInfoInterface {
     participatedInViolentActivitiesDetails?: string;
 
     //added-details
-    countryOfApply?: CountryType,
-    countryOfResidence?: CountryType,
+    countryOfApply?: CountryType;
+    countryOfResidence?: CountryType;
     statusOfResidence?: string;
     startDateOfResidence?: string;
     livedAbroad?: boolean | null;
@@ -232,9 +241,8 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
     user,
 }: {
     data: VisaApplicationFormInterface;
-    user?: User;
+    user?: AuthUser | null;
 }) => {
-    console.log("user: ", user);
     const applicationFormRequest: ApplicationFormRequestInput = {
         applicationType: data.tripDetails.applicationType,
         visaType: data.tripDetails.visaType,
@@ -259,20 +267,23 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             nativeLanguage: data.personalInfo.nativeLanguage,
             meansOfId: data.personalInfo.meansOfId,
             idNumber: data.personalInfo.idNumber,
-            issueDate: data.personalInfo.issueDate,
-            expiryDate: data.personalInfo.expiryDate,
+            issueDate: formatISODate(data.personalInfo.issueDate),
+            expiryDate: formatISODate(data.personalInfo.expiryDate),
             address: data.personalInfo.address,
             countryOfCitizen: data.personalInfo.countryOfCitizen.name ?? "",
             // countryOfResidence: data.personalInfo.countryOfResidence.name ?? "",
             // countryofApply: data.personalInfo.countryofApply.name ?? "",
             // statusOfResidence: data.personalInfo.statusOfResidence.name ?? "",
-            dateOfBirth: data.personalInfo.dateOfBirth,
+            dateOfBirth: formatISODate(data.personalInfo.dateOfBirth),
             gender: data.personalInfo.gender,
             maritalStatus: data.personalInfo.maritalStatus,
             partnersName: data.personalInfo.partnersName,
             passportNumber: data.personalInfo.passportNumber,
-            passportIssuedCountry: data.personalInfo.passportIssuedCountry.name ?? "",
-            passportExpiryDate: data.personalInfo.passportExpiryDate,
+            passportIssuedCountry:
+                data.personalInfo.passportIssuedCountry.name ?? "",
+            passportExpiryDate: formatISODate(
+                data.personalInfo.passportExpiryDate
+            ),
             tripPurpose: data.personalInfo.tripPurpose,
             tuberculosis: data.personalInfo.tuberculosis,
             // tuberculosisDetails: data.personalInfo.tuberculosisDetails,
@@ -288,12 +299,13 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             servedInMilitaryDetails: data.personalInfo.servedInMilitaryDetails,
             memberOfViolentGroup: data.personalInfo.memberOfViolentGroup,
             // memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails,
-            participatedInViolentActivities: data.personalInfo.participatedInViolentActivities,
+            participatedInViolentActivities:
+                data.personalInfo.participatedInViolentActivities,
             // participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails,
             education: data.education,
-            employment: data.employment.map(e => {
-                delete e.locationType
-                return ({ ...e })
+            employment: data.employment.map((e) => {
+                delete e.locationType;
+                return { ...e };
             }),
             //added
             // livedAbroad: data.personalInfo.livedAbroad,
@@ -301,10 +313,10 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             // changedName: data.personalInfo.changedName,
             // changeOfName: data.personalInfo.changeOfName,
             // statusOfResidence: data.personalInfo.statusOfResidence,
-            // startDateOfResidence: data.personalInfo.startDateOfResidence,
+            // startDateOfResidence: formatISODate(data.personalInfo.startDateOfResidence),
             // occupation: data.personalInfo.occupation,
-            // tripDurationStartDate: data.personalInfo.tripDurationStartDate,
-            // tripDurationEndDate: data.personalInfo.tripDurationEndDate,
+            // tripDurationStartDate: formatISODate(data.personalInfo.tripDurationStartDate),
+            // tripDurationEndDate: formatISODate(data.personalInfo.tripDurationEndDate),
             // tripDurationLocation: data.personalInfo.tripDurationLocation,
             // hasContactInLocation: data.personalInfo.hasContactInLocation,
             // contactInLocationLastName:
@@ -319,29 +331,35 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
             //     data.personalInfo.contactInLocationPhoneNumber,
             // hasGreenCard: data.personalInfo.hasGreenCard,
             // greenCardNumber: data.personalInfo.greenCardNumber,
-            // greenCardExpiryDate: data.personalInfo.greenCardExpiryDate,
+            // greenCardExpiryDate: formatISODate(data.personalInfo.greenCardExpiryDate),
             // prevResidence1: data.personalInfo.prevResidence1,
             // prevResidence2: data.personalInfo.prevResidence2,
             // prevResidence3: data.personalInfo.prevResidence3,
-            // startDatePrevResidence1: data.personalInfo.startDatePrevResidence1,
-            // startDatePrevResidence2: data.personalInfo.startDatePrevResidence2,
-            // startDatePrevResidence3: data.personalInfo.startDatePrevResidence3,
-            // endDatePrevResidence1: data.personalInfo.endDatePrevResidence1,
-            // endDatePrevResidence2: data.personalInfo.endDatePrevResidence2,
-            // endDatePrevResidence3: data.personalInfo.endDatePrevResidence3,
+            // startDatePrevResidence1: formatISODate(data.personalInfo.startDatePrevResidence1),
+            // startDatePrevResidence2: formatISODate(data.personalInfo.startDatePrevResidence2),
+            // startDatePrevResidence3: formatISODate(data.personalInfo.startDatePrevResidence3),
+            // endDatePrevResidence1: formatISODate(data.personalInfo.endDatePrevResidence1),
+            // endDatePrevResidence2: formatISODate(data.personalInfo.endDatePrevResidence2),
+            // endDatePrevResidence3: formatISODate(data.personalInfo.endDatePrevResidence3),
         },
-        familyMembers: data.familyMembers.filter(e => !!e?.membersName).map((member) => {
-            delete member.section;
-            delete member.index;
-            delete member.membersOccupation;
-            delete member.issueCountry;
-            delete member.maritalStatus;
-            return ({
-                ...member,
-                issueYear: String(safelyConvertToNumber(member?.issueYear)),
-                expiryYear: String(safelyConvertToNumber(member?.expiryYear)),
-            })
-        }),
+        familyMembers: data.familyMembers
+            .filter((e) => !!e?.membersName)
+            .map((member) => {
+                delete member.section;
+                delete member.index;
+                delete member.membersOccupation;
+                delete member.issueCountry;
+                delete member.maritalStatus;
+                delete member.dateOfBirth;
+                return {
+                    ...member,
+                    dateOfBirth: formatISODate(member?.dateOfBirth),
+                    issueYear: String(safelyConvertToNumber(member?.issueYear)),
+                    expiryYear: String(
+                        safelyConvertToNumber(member?.expiryYear)
+                    ),
+                };
+            }),
         documents: data.documents,
     };
     if (user?._id)

@@ -65,9 +65,7 @@ function LoginPage() {
                 })
                 .catch((error) => {});
         },
-        onError: () => {
-            console.log("Login Failed");
-        },
+        onError: () => {},
     });
     useEffect(() => {
         if (submissionState.error.length > 0) {
@@ -97,7 +95,7 @@ function LoginPage() {
         if (submissionState.loading) return;
         setSubmissionState({ ...submissionState, loading: true });
         const res = await handleLogin();
-        console.log("res: ", res);
+
         if (res?.statusCode === 401) {
             return setSubmissionState({
                 ...submissionState,

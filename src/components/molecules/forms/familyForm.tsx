@@ -22,9 +22,9 @@ import PhoneInput from "react-phone-input-2";
 import dayjs from "dayjs";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 const sectionDesc = {
-    A: "Comprises Principal applicant, and other three subordinates (Father and Mother). Click on the Plus Icon to add subordinates",
-    B: "Comprises Brothers and sisters. Click on the Plus Icon to add subordinates",
-    C: "Comprises all Spouse, Sons and daughters. Click on the Plus Icon to add subordinates",
+    A: "Comprises Principal family members (Father and Mother). Click the Plus Icon to add subordinates",
+    B: "Comprises Brothers and Sisters. Click the Plus Icon to add subordinates",
+    C: "Comprises Immediate Family (Spouse, Sons, and Daughters). Click the Plus Icon to add subordinates",
 }
 const sectionName = {
     A: "PARENT DETAILS",
@@ -55,7 +55,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                     <Flex direction="column" justify="flex-start" gap="1rem">
                         <Text
                             type="h3"
-                            text={`SECTION ${sectionName[values?.section as keyof typeof sectionName]}`}
+                            text={`${sectionName[values?.section as keyof typeof sectionName]}`}
                             size={20}
                             weight={600}
                         />
@@ -202,9 +202,8 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                             inputClass="w"
                             placeholder="Enter member's phone number"
                         />
-                  </Section>
-                  
-                {['C'].includes(values?.section ?? '') &&
+                    </Section>
+                    
                     <Section width="100%">
                         <Flex align="center" gap="0.25rem">
                             <Text
@@ -223,8 +222,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                             format="DD/MM/YYYY"
                         />
                     </Section>
-                }  
-            </Flex>
+                </Flex>
           )}
           
             {['C'].includes(values?.section ?? '') && (

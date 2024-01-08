@@ -20,7 +20,10 @@ import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQu
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { Mode } from "@/lib/types";
 import { useQueryParams } from "@/hooks/useNext";
-import { COUNTRY_FLAGS, mappedCountryFlags } from "@/lib/extensions/data/COUNTRY_FLAGS";
+import {
+    COUNTRY_FLAGS,
+    mappedCountryFlags,
+} from "@/lib/extensions/data/COUNTRY_FLAGS";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -208,19 +211,33 @@ function Flights() {
             arrival?.code
         }&date_from=${dateFrom}${
             flight?.returnDate ? `&return_from=${returnFrom}` : ""
-        }&stops=${flightState?.stops}&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
+        }&stops=${
+            flightState?.stops
+        }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
     };
 
-    const flight = flightState?.fleet[0];
+    const flights = flightState?.fleet ?? [];
 
-    const formComplete =
-        flight?.departureCountry &&
-        flight?.arrivalCountry &&
-        flight?.departureDate;
+    const formComplete = () => {
+        for (let i = 0; i < flights?.length; i++) {
+            const flight = flights[i];
+            if (
+                !(
+                    flight?.departureCountry &&
+                    flight?.arrivalCountry &&
+                    flight?.departureDate
+                )
+            )
+                return false;
+        }
+
+        return true;
+    };
 
     const handleSearchFlights = () => {
-        if (formComplete) {
-            router.push(formatSearchFlight(flight));
+        return console.log(flightState);
+        if (formComplete()) {
+            // router.push(formatSearchFlight(flights));
         }
     };
 
@@ -234,8 +251,13 @@ function Flights() {
                         // ...queryParams,
                         // departureCountry: flightState?.countries[queryParams?.fly_from],
                         // arrivalCountry: flightState?.countries[queryParams?.fly_to],
-                        departureDate: dayjs(queryParams?.date_from, 'MM/DD/YYYY').isValid() ? dayjs(queryParams?.date_from, 'MM/DD/YYYY') : dayjs(),
-                        flightClass: reverseCabin(queryParams?.cabin ?? 'M'),
+                        departureDate: dayjs(
+                            queryParams?.date_from,
+                            "MM/DD/YYYY"
+                        ).isValid()
+                            ? dayjs(queryParams?.date_from, "MM/DD/YYYY")
+                            : dayjs(),
+                        flightClass: reverseCabin(queryParams?.cabin ?? "M"),
                         adults: Number(queryParams?.adults ?? 1),
                         children: Number(queryParams?.children ?? 0),
                         infants: Number(queryParams?.infants ?? 0),
@@ -244,12 +266,8 @@ function Flights() {
             });
     }, []);
 
-
-
     return (
-        <Section
-            padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}
-        >
+        <Section padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}>
             <Flex direction="column">
                 <FlightStops
                     isMobile={isMobile}
@@ -268,7 +286,8 @@ function Flights() {
                         handleUpdate={handleUpdateMultiFlight}
                         handleDelete={handleRemoveMultiFlight}
                         canDelete={
-                            flightState?.stops === "multi-city" && arr.length > 1
+                            flightState?.stops === "multi-city" &&
+                            arr.length > 1
                         }
                     />
                 ))}

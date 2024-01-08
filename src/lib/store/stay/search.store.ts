@@ -13,7 +13,7 @@ interface State {
     stayTabInitialSearchQuery: StayTabInitialSearchQuery;
     staySearchFilters: StaySearchFilters;
     staySearchSort?: StaySearchSortEnum;
-    staySearchMeta: StaySearchMeta;
+    staySearchMeta?: StaySearchMeta;
 }
 
 interface Actions {
@@ -34,10 +34,6 @@ export const useStaySearchStore = create<State & Actions>(
     (set): State & Actions => ({
         stayType: {},
         staySearchFilters: {},
-        staySearchMeta: {
-            page: 1,
-            limit: 10,
-        },
 
         stayTabInitialSearchQuery: {
             roomForGuests: [
@@ -105,7 +101,6 @@ export const useStaySearchStore = create<State & Actions>(
         },
 
         updateStaySearchFilters(params) {
-            console.log(params);
             set({
                 staySearchFilters: params,
             });

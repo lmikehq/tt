@@ -21,7 +21,6 @@ interface formProps {
 export default function EmploymentForm({ formik, count, length, values }: formProps) {
     const { isMobile } = useScreenResolution();
     
-
   return (
     <Section height="unset">
       <Section margin="0">
@@ -157,7 +156,7 @@ export default function EmploymentForm({ formik, count, length, values }: formPr
           />
           <FieldAsDate
             placeholder="Select your End Year"
-            disabled={values.stillWorking || !values.startYear}
+            disabled={values.stillWorking}
             views={["year"]}
             name={`employment.${count}.endYear`}
             formik={formik}

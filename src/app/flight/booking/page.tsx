@@ -373,6 +373,8 @@ const FlightBookingPage = () => {
     useEffect(() => {
         if (savedBooking) intervalIds.current.forEach(clearInterval);
     }, [savedBooking]);
+
+
     return (
         <Section>
             <SectionLayout>
