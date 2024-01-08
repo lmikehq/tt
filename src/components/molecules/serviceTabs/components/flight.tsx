@@ -237,7 +237,7 @@ function Flights() {
     const handleSearchFlights = () => {
         return console.log(flightState);
         if (formComplete()) {
-            router.push(formatSearchFlight(flight));
+            // router.push(formatSearchFlight(flights));
         }
     };
 
