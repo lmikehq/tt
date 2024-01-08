@@ -22,10 +22,10 @@ export interface StayPaymentOption {
     is_need_credit_card_data: boolean;
     is_need_cvc: boolean;
     recommended_price: null;
-    type: Type;
+    type: StayPaymentOptionType;
 }
 
-export enum Type {
+export enum StayPaymentOptionType {
     Deposit = "deposit",
     Now = "now",
 }

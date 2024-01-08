@@ -44,10 +44,15 @@ function Page() {
 
     const [currentPaymentOption, setCurrentPaymentOption] =
         useState<StayPaymentOption>();
+    const [objectId, setObjectId] = useState<string>("");
+    const [partnerOrderId, setPartnerOrderId] = useState<string>("");
+
     const { mutate: orderBooking } = useStayOrderBooking({
         onSuccess: (data) => {
             setPaymentOptions(data.paymentOptions);
             setCurrentPaymentOption(data.paymentOptions[0]);
+            setObjectId(data.bookingData.itemId);
+            setPartnerOrderId(data.bookingData.partnerOrderId);
         },
     });
 
@@ -87,6 +92,9 @@ function Page() {
                 >
                     <Booking
                         guests={extractRoomForGuestsFromString(guests ?? "")}
+                        currentPaymentOption={currentPaymentOption}
+                        objectId={objectId}
+                        partnerOrderId={partnerOrderId}
                     />
                     <RightColumn
                         paymentOptions={paymentOptions}

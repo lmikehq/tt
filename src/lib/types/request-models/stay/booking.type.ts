@@ -1,3 +1,4 @@
+import { StayPaymentOptionType } from "../../response-models/stay/booking.type";
 import { RoomForGuest } from "./search.type";
 
 export interface StayOrderBookingReguestInput {
@@ -30,14 +31,14 @@ export interface StayOrderBookingFinishPartner {
     partner_order_id: string;
 }
 export interface StayOrderBookingFinishPaymentType {
-    type: "now" | "later";
+    type: StayPaymentOptionType;
     amount: string;
     currency_code: string;
     init_uuid?: string;
 }
 export interface StayOrderBookingFinishInput {
     user: StayOrderBookingFinishUser;
-    // partner: StayOrderBookingFinishPartner;
+    partner: StayOrderBookingFinishPartner;
     language: string;
     rooms: StayOrderBookingFinishRoom[];
     object_id: string;

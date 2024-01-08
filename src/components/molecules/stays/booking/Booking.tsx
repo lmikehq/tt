@@ -32,12 +32,21 @@ import { useFormik } from "formik";
 import { useStayBookingFinish } from "@/lib/hooks/stay/booking.hook";
 import * as yup from "yup";
 import { GiLetterBomb } from "react-icons/gi";
+import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type";
 
 interface BookingProps {
     guests: RoomForGuest[];
+    currentPaymentOption?: StayPaymentOption;
+    objectId: string;
+    partnerOrderId: string;
 }
 
-function Booking({ guests }: BookingProps) {
+function Booking({
+    guests,
+    currentPaymentOption,
+    objectId,
+    partnerOrderId,
+}: BookingProps) {
     const { isMobile } = useScreenResolution();
 
     const [submissionState, setSubmissionState] = useState({
@@ -78,18 +87,15 @@ function Booking({ guests }: BookingProps) {
                     phone: contactDetailsFormik.values.phone,
                     comment: "",
                 },
-                // partner: { partner_order_id: "" },
+                partner: { partner_order_id: partnerOrderId },
                 language: "en",
-                object_id: "",
-                payment_type: {
-                    type: "now",
-                    amount: "",
-                    currency_code: "",
-                },
+                object_id: objectId,
+                payment_type: currentPaymentOption!,
             });
     };
 
-    const { mutate: orderBookingFinish } = useStayBookingFinish();
+    const { mutate: orderBookingFinish, isLoading: bookingFinishIsLoading } =
+        useStayBookingFinish();
 
     return (
         <form onSubmit={handleSubmit}>
@@ -100,9 +106,9 @@ function Booking({ guests }: BookingProps) {
                     comment={comment}
                     onChangeComment={(e) => setComment(e.target.value)}
                 />
-                <ImprovedCondition />
+                {/* <ImprovedCondition /> */}
                 <BookingDetails formik={contactDetailsFormik} />
-                <Payment />
+                {/* <Payment /> */}
                 <Span>
                     <Button
                         width="100%"
@@ -110,13 +116,13 @@ function Booking({ guests }: BookingProps) {
                         color="white"
                         padding="10px"
                         background={
-                            submissionState.loading
+                            bookingFinishIsLoading
                                 ? ttColors.dark
                                 : ttColors.dark
                         }
                         onClick={handleSubmit}
                     >
-                        {submissionState.loading ? (
+                        {bookingFinishIsLoading ? (
                             <Spinner size="40px" fill={"white"} />
                         ) : (
                             <Text
