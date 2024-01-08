@@ -57,18 +57,18 @@ const StayViewPage = () => {
         language: preferredLanguage,
         guests: extractRoomForGuestsFromString(guests ?? ""),
         currency: preFerredCurrency,
-    }
+    };
 
     const { data: stayRes, isFetching } = useViewSingleStay(requestParams, {
         enabled: id ? true : false,
     });
-    const stayResponse = sampleViewStay
+    const stayResponse = sampleViewStay;
 
     const handleGoBack = () => {
         router.back();
     };
 
-    console.log(stayResponse)
+    console.log(stayResponse);
 
     return (
         <SectionLayout>
@@ -120,14 +120,22 @@ const StayViewPage = () => {
                 <Section>
                     <StayDetails stayResponse={stayResponse} />
                     <ChooseYourRoom stayResponse={stayResponse} />
-                    <LikeSimilarHotels stayResponse={stayResponse} />
+                    <LikeSimilarHotels
+                    // stayResponse={stayResponse}
+                    />
                     <Location stayResponse={stayResponse} />
                     <DescriptionOfHotel stayResponse={stayResponse} />
                     <HotelAmenities stayResponse={stayResponse} />
-                    <CompareSlider stayResponse={stayResponse} />
+                    <CompareSlider
+                    //  stayResponse={stayResponse}
+                    />
                     <Policies stayResponse={stayResponse} />
-                    <HotelReviews stayResponse={stayResponse} />
-                    <CompareSimilarHotels stayResponse={stayResponse} />
+                    <HotelReviews
+                    // stayResponse={stayResponse}
+                    />
+                    <CompareSimilarHotels
+                    //  stayResponse={stayResponse}
+                    />
                 </Section>
 
                 <Section>
