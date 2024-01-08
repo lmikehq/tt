@@ -43,6 +43,7 @@ import { BsDot } from "react-icons/bs";
 import { redirect, useRouter } from "next/navigation";
 import ErrorPage from "@/components/molecules/errorPage/ErrorPage";
 import Button from "@/components/atoms/button";
+import Image from "@/components/atoms/image";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -61,7 +62,7 @@ function BookingLoader() {
     const flight = {
         departure: searchQuery?.fly_from ?? "",
         arrival: searchQuery?.fly_to ?? "",
-        departureDate: searchQuery?.date_from ?? dayjs(),
+        departureDate: searchQuery?.date_from ?? "",
     };
 
     return (
@@ -69,21 +70,31 @@ function BookingLoader() {
             direction="column"
             align="center"
             gap="1rem"
-            padding={isMobile ? "8rem 0rem 12rem" : "6rem 1rem 12rem"}
+            padding={isMobile ? "8rem 0rem 12rem" : "6rem 1rem 16rem"}
         >
+            <Image
+                src={"/assets/images/brand/favicon.svg"}
+                height={isMobile ? 250 : 300}
+                width={isMobile ? 250 : 300}
+                alt="TTLogo"
+                styles={{ opacity: 0.05, position: 'absolute', top: isMobile ? "41%" : '47%', left: isMobile ? "" : '39%' }}
+            />
             <Text
                 type="h3"
                 text="Hold on your trip is loading"
                 weight={600}
                 size={isMobile ? 20 : 24}
+                styles={{ zIndex: 2 }}
             />
             <Flex
-                width={isMobile ? "70%" : "max-content"}
-                gap="1rem"
+                width={isMobile ? "max-content" : "max-content"}
+                gap=".5rem"
                 align="center"
+                justify="center"
                 margin="0 0 1.5rem 0"
+                styles={{ zIndex: 2 }}
             >
-                <Flex gap=".5rem">
+                <Flex gap=".4rem" justify="center">
                     <Text
                         type="p"
                         size={15}
@@ -101,19 +112,23 @@ function BookingLoader() {
                         color={ttColors.foundation.black}
                     />
                 </Flex>
-                <Flex
-                    background={ttColors.lightestGray}
-                    borderRadius="50%"
-                    width="28px"
-                    height="13px"
-                />
-                <Text
-                    styles={{ minWidth: "max-content" }}
-                    type="p"
-                    size={14}
-                    text={dayjs(flight.departureDate).format("ddd, Do MMM")}
-                    color={ttColors.foundation.black}
-                />
+                {!!flight.departureDate && 
+                    <React.Fragment>
+                        <Flex
+                            background={ttColors.lightestGray}
+                            borderRadius="50%"
+                            width="24px"
+                            height="13px"
+                        />
+                        <Text
+                            styles={{ minWidth: "max-content" }}
+                            type="p"
+                            size={14}
+                            text={dayjs(flight.departureDate, 'DD/MM/YYY').format("ddd, Do MMM")}
+                            color={ttColors.foundation.black}
+                        />
+                    </React.Fragment>
+                }
             </Flex>
             <ProgressLoader width={isMobile ? "90%" : "50%"} />
         </Flex>

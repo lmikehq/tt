@@ -2,12 +2,19 @@ import { safelyConvertToNumber } from "@lib/utilFns";
 import { CountryType } from "@molecule/serviceTabs/components/visa";
 import { ApplicationFormRequestInput } from "./request-models/application-form.type";
 import { parse } from "date-fns";
+import { mockCountry } from "./schema";
 import { AuthUser } from "./response-models/auth/auth.type";
 
 function formatISODate(x?: string | null) {
     if (x) {
         return parse(x, "dd/MM/yyyy", new Date()).toString();
     } else return "";
+}
+function formatCountry(country: CountryType) {
+    return ({
+        name: country?.name ?? '',
+        code: country?.code ?? '',
+    })
 }
 
 export type ISiteConfig = {
@@ -120,38 +127,63 @@ export interface PersonalInfoInterface {
     participatedInViolentActivitiesDetails?: string;
 
     //added-details
-    countryOfApply?: CountryType;
-    countryOfResidence?: CountryType;
-    statusOfResidence?: string;
-    startDateOfResidence?: string;
-    livedAbroad?: boolean | null;
+    countryOfApply: CountryType;
+    countryOfResidence: CountryType;
+    statusOfResidence: string;
+    startDateOfResidence: string;
+    livedAbroad: boolean | null;
     countriesLived?: number;
-    changeOfName?: boolean | null;
+    changeOfName: boolean | null;
     changedName?: string;
     occupation?: string;
-    tripDurationStartDate?: string;
-    tripDurationEndDate?: string;
-    tripDurationLocation?: string;
-    hasContactInLocation?: boolean | null;
+    tripDurationStartDate: string;
+    tripDurationEndDate: string;
+    tripDurationLocation: string;
+    hasContactInLocation: boolean | null;
     contactInLocationLastName?: string;
     contactInLocationFirstName?: string;
     contactInLocationAddress?: string;
     contactInLocationRelationship?: string;
     contactInLocationPhoneNumber?: string;
-    hasGreenCard?: boolean | null;
+    hasGreenCard: boolean | null;
     greenCardNumber?: string;
     greenCardExpiryDate?: string;
     prevResidence1?: CountryType;
     prevResidence2?: CountryType;
     prevResidence3?: CountryType;
+    prevResidence4?: CountryType;
+    prevResidence5?: CountryType;
     startDatePrevResidence1?: string;
     startDatePrevResidence2?: string;
     startDatePrevResidence3?: string;
+    startDatePrevResidence4?: string;
+    startDatePrevResidence5?: string;
     endDatePrevResidence1?: string;
     endDatePrevResidence2?: string;
     endDatePrevResidence3?: string;
+    endDatePrevResidence4?: string;
+    endDatePrevResidence5?: string;
     marriageStartDate?: string;
     marriageEndDate?: string;
+}
+
+export interface BackgroundInfoInterface {
+    tuberculosis: boolean,
+    tuberculosisDetails?: string,
+    mentalDisorder: boolean,
+    mentalDisorderDetails?: string,
+    remainbeyondValidity: boolean,
+    remainbeyondValidityDetails?: string;
+    refusedBefore: boolean,
+    refusedBeforeDetails?: string,
+    arrestedBefore: boolean,
+    arrestedBeforeDetails?: string,
+    servedInMilitary: boolean,
+    servedInMilitaryDetails?: string,
+    memberOfViolentGroup: boolean,
+    memberOfViolentGroupDetails?: string;
+    participatedInViolentActivities: boolean,
+    participatedInViolentActivitiesDetails?: string;
 }
 
 export interface FamilyInfoInterface {
@@ -171,6 +203,13 @@ export interface FamilyInfoInterface {
     dateOfBirth?: string;
     section?: string;
     index?: number;
+}
+export interface GuarantorInfoInterface {
+    guarantorName: string;
+    relationshipToGuarantor: string;
+    guarantorAddress: string;
+    guarantorPhone: string;
+    guarantorWorth: string;
 }
 
 export interface DocumentInterface {
@@ -198,6 +237,7 @@ export interface VisaApplicationFormInterface
         ManyDocumentInterface {
     personalInfo: PersonalInfoInterface;
     tripDetails: DetailsKeys;
+    guarantorInfo: GuarantorInfoInterface;
 }
 
 export interface PrimaryTravellerInterface
@@ -205,25 +245,26 @@ export interface PrimaryTravellerInterface
         PersonalInfoInterface,
         "placeOfBirth" | "countryOfCitizen" | "passportIssuedCountry"
     > {
-    homeCountry: {
-        name: string;
-        code: string;
-    };
-    destination: {
-        name: string;
-        code: string;
-    };
-    placeOfBirth: string;
-    countryOfCitizen: string;
-    passportIssuedCountry: string;
-    travellingBy?: string;
-    education: EducationDetailsInterface[];
-    employment: EmploymentDetailsInterface[];
+        placeOfBirth: string;
+        countryOfCitizen: string;
+        passportIssuedCountry: string;
+        // homeCountry: {
+        //     name: string;
+        //     code: string;
+        // };
+        // destination: {
+        //     name: string;
+        //     code: string;
+        // };
+        // travellingBy?: string;
+        // education: EducationDetailsInterface[];
+        // employment: EmploymentDetailsInterface[];
 }
 
 export type VisaFormUnionType =
     | { tripDetails: DetailsKeys }
     | { personalInfo: PersonalInfoInterface }
+    | { guarantorInfo: GuarantorInfoInterface }
     | ManyEducationDetailsInterface
     | ManyEmploymentDetailsInterface
     | ManyFamilyInfoInterface
@@ -242,125 +283,179 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
 }: {
     data: VisaApplicationFormInterface;
     user?: AuthUser | null;
-}) => {
+    }) => {
+    const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
+        delete member.index;
+        delete member.membersOccupation;
+        delete member.issueCountry;
+        delete member.maritalStatus;
+        return ({
+            ...member,
+            dateOfBirth: formatISODate(member?.dateOfBirth),
+            issueYear: safelyConvertToNumber(member?.issueYear),
+            expiryYear: safelyConvertToNumber(member?.expiryYear),
+        })
+    })
+
+    const prevResidences = [
+        data.personalInfo.prevResidence1?.name ? { country: formatCountry(data.personalInfo.prevResidence1), since: data.personalInfo?.startDatePrevResidence1 ?? '', till: data.personalInfo?.endDatePrevResidence1 ?? '' } : undefined,
+        data.personalInfo.prevResidence2?.name ? { country: formatCountry(data.personalInfo.prevResidence2), since: data.personalInfo?.startDatePrevResidence2 ?? '', till: data.personalInfo?.endDatePrevResidence2 ?? '' } : undefined,
+        data.personalInfo.prevResidence3?.name ? { country: formatCountry(data.personalInfo.prevResidence3), since: data.personalInfo?.startDatePrevResidence3 ?? '', till: data.personalInfo?.endDatePrevResidence3 ?? '' } : undefined,
+        data.personalInfo.prevResidence4?.name ? { country: formatCountry(data.personalInfo.prevResidence4), since: data.personalInfo?.startDatePrevResidence4 ?? '', till: data.personalInfo?.endDatePrevResidence4 ?? '' } : undefined,
+        data.personalInfo.prevResidence5?.name ? { country: formatCountry(data.personalInfo.prevResidence5), since: data.personalInfo?.startDatePrevResidence5 ?? '', till: data.personalInfo?.endDatePrevResidence5 ?? '' } : undefined,
+    ].filter(e => !!e)
+
     const applicationFormRequest: ApplicationFormRequestInput = {
+        primaryTraveller: {
+            personalDetails: {
+                firstName: data.personalInfo.firstName,
+                middleName: data.personalInfo.middleName ?? "",
+                lastName: data.personalInfo.lastName,
+                previousSurname: data.personalInfo.changedName ?? "",
+                dateOfBirth: formatISODate(data.personalInfo.dateOfBirth),
+                email: data.personalInfo.email,
+                placeOfBirth: data.personalInfo.placeOfBirth?.name ?? "",
+                stateOfOrigin: data.personalInfo.stateOfOrigin,
+                lgaOfOrigin: data.personalInfo.placeOfOrigin,
+                phoneNumber: data.personalInfo.phoneNumber,
+                nativeLanguage: data.personalInfo.nativeLanguage,
+                meansOfId: data.personalInfo.meansOfId,
+                idNumber: data.personalInfo.idNumber,
+                issueDate: data.personalInfo.issueDate,
+                expiryDate: formatISODate(data.personalInfo.expiryDate),
+                address: data.personalInfo.address,
+                gender: data.personalInfo.gender,
+            },
+            citizenshipInformation: {
+                countryOfCitizenship: formatCountry(data.personalInfo.countryOfCitizen),
+                countryOfResidence: formatCountry(data.personalInfo.countryOfResidence ?? mockCountry),
+                countryApplyingFrom: formatCountry(data.personalInfo.countryOfApply ?? mockCountry),
+                statusOfResidence: data.personalInfo.statusOfResidence ?? '',
+                startDateOfResidence: formatISODate(data.personalInfo.startDateOfResidence),
+                placeOfOrigin: data.personalInfo.placeOfOrigin,
+                previousCountryOfResidences: prevResidences.map(e => e!),
+                ...(String(data.personalInfo.hasGreenCard) == 'true' && {
+                    greenCardDetails: {
+                        number: data.personalInfo?.greenCardNumber ?? '',
+                        expiryDate: formatISODate(data.personalInfo.greenCardExpiryDate),
+                }}),
+            },
+            passportInformation: {
+                number: data.personalInfo.passportNumber,
+                issuedCountry: formatCountry(data.personalInfo.passportIssuedCountry),
+                issuedDate: formatISODate(data.personalInfo.passportIssuedDate),
+                expiryDate: formatISODate(data.personalInfo.passportExpiryDate),
+            },
+            marriageInformation: {
+                maritalStatus: data.personalInfo.maritalStatus,
+                ...(['Married', 'Divorced'].includes(data.personalInfo.maritalStatus) && {
+                    partnersName: data.personalInfo?.partnersName ?? '',
+                    marriageStartDate: formatISODate(data.personalInfo.marriageStartDate),
+                }),
+            },
+            backgroundInformation: {
+                tuberculosis: data.personalInfo.tuberculosis ?? false,
+                tuberculosisDetails: data.personalInfo.tuberculosisDetails ?? "",
+                mentalDisorder: data.personalInfo.mentalDisorder ?? false,
+                mentalDisorderDetails: data.personalInfo.mentalDisorderDetails ?? "",
+                remainbeyondValidity: data.personalInfo.remainbeyondValidity ?? false,
+                remainbeyondValidityDetails: data.personalInfo.remainbeyondValidityDetails ?? "",
+                refusedBefore: data.personalInfo.refusedBefore ?? false,
+                refusedBeforeDetails: data.personalInfo.refusedBeforeDetails ?? "",
+                arrestedBefore: data.personalInfo.arrestedBefore ?? false,
+                arrestedBeforeDetails: data.personalInfo.arrestedBeforeDetails ?? "",
+                servedInMilitary: data.personalInfo.servedInMilitary ?? false,
+                servedInMilitaryDetails: data.personalInfo.servedInMilitaryDetails ?? "",
+                memberOfViolentGroup: data.personalInfo.memberOfViolentGroup ?? false,
+                memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails ?? "",
+                participatedInViolentActivities: data.personalInfo.participatedInViolentActivities ?? false,
+                participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails ?? "",
+            },
+            employment: data.employment,
+            education: data.education,
+        },
+        familyInformation: {
+            parentDetails: sortedFamily.filter(e => e.section === 'A').map((member) => {
+                delete member.section;
+                return ({
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        dateOfBirth: member.dateOfBirth,
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
+                })
+            }),
+            siblingDetails: sortedFamily.filter(e => e.section === 'B').map((member) => {
+                delete member.section;
+                return ({
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        dateOfBirth: member.dateOfBirth,
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
+                })
+            }),
+            immediateFamilyInfo: sortedFamily.filter(e => e.section === 'C').map((member) => {
+                delete member.section;
+                return ({
+                    dateOfBirth: member?.dateOfBirth,
+                    membersName: member.membersName,
+                    relationshipToPrimary: member.relationshipToPrimary,
+                    address: member.address,
+                    membersEmail: member.membersEmail,
+                    membersPhoneNumber: member.membersPhoneNumber,
+                    accompanying: member.accompanying,
+                    ...(String(member.accompanying) === 'true' && {
+                        gender: member.gender,
+                        passportNumber: member.passportNumber,
+                        expiryYear: member.expiryYear,
+                        issueYear: member.issueYear,
+                    })
+                })
+            }),
+        },
+        guarantorInformation: {
+            guarantorName: data.guarantorInfo.guarantorName,
+            relationshipToGuarantor: data.guarantorInfo.relationshipToGuarantor,
+            guarantorAddress: data.guarantorInfo.guarantorAddress,
+            guarantorPhone: data.guarantorInfo.guarantorPhone,
+            guarantorWorth: data.guarantorInfo.guarantorWorth,
+        },
+        tripInformation: {
+            tripDurationStartDate: formatISODate(data.personalInfo.tripDurationStartDate),
+            tripDurationEndDate: formatISODate(data.personalInfo.tripDurationEndDate),
+            tripLocation: data.personalInfo.tripDurationLocation,
+            ...(String(data.personalInfo.hasContactInLocation) == 'true' && {
+                contactInLocationLastName: data.personalInfo?.contactInLocationLastName ?? "",
+                contactInLocationFirstName: data.personalInfo?.contactInLocationFirstName ?? "",
+                contactInLocationAddress: data.personalInfo?.contactInLocationAddress ?? "",
+                contactInLocationRelationship:  data.personalInfo?.contactInLocationRelationship ?? "",
+                contactInLocationPhoneNumber: data.personalInfo?.contactInLocationPhoneNumber ?? "",
+            })
+        },
+        documents: data.documents,
         applicationType: data.tripDetails.applicationType,
         visaType: data.tripDetails.visaType,
-        primaryTraveller: {
-            firstName: data.personalInfo.firstName,
-            lastName: data.personalInfo.lastName,
-            travellingBy: "Airplane",
-            middleName: data.personalInfo.middleName,
-            email: data.personalInfo.email,
-            homeCountry: {
-                name: data.tripDetails.homeCountry.name ?? "",
-                code: data.tripDetails.homeCountry.code ?? "",
-            },
-            destination: {
-                name: data.tripDetails.destination.name ?? "",
-                code: data.tripDetails.destination.code ?? "",
-            },
-            placeOfBirth: data.personalInfo.placeOfBirth.name ?? "",
-            phoneNumber: data.personalInfo.phoneNumber,
-            stateOfOrigin: data.personalInfo.stateOfOrigin,
-            placeOfOrigin: data.personalInfo.placeOfOrigin,
-            nativeLanguage: data.personalInfo.nativeLanguage,
-            meansOfId: data.personalInfo.meansOfId,
-            idNumber: data.personalInfo.idNumber,
-            issueDate: formatISODate(data.personalInfo.issueDate),
-            expiryDate: formatISODate(data.personalInfo.expiryDate),
-            address: data.personalInfo.address,
-            countryOfCitizen: data.personalInfo.countryOfCitizen.name ?? "",
-            // countryOfResidence: data.personalInfo.countryOfResidence.name ?? "",
-            // countryofApply: data.personalInfo.countryofApply.name ?? "",
-            // statusOfResidence: data.personalInfo.statusOfResidence.name ?? "",
-            dateOfBirth: formatISODate(data.personalInfo.dateOfBirth),
-            gender: data.personalInfo.gender,
-            maritalStatus: data.personalInfo.maritalStatus,
-            partnersName: data.personalInfo.partnersName,
-            passportNumber: data.personalInfo.passportNumber,
-            passportIssuedCountry:
-                data.personalInfo.passportIssuedCountry.name ?? "",
-            passportExpiryDate: formatISODate(
-                data.personalInfo.passportExpiryDate
-            ),
-            tripPurpose: data.personalInfo.tripPurpose,
-            tuberculosis: data.personalInfo.tuberculosis,
-            // tuberculosisDetails: data.personalInfo.tuberculosisDetails,
-            mentalDisorder: data.personalInfo.mentalDisorder,
-            mentalDisorderDetails: data.personalInfo.mentalDisorderDetails,
-            remainbeyondValidity: data.personalInfo.remainbeyondValidity,
-            // remainbeyondValidityDetails: data.personalInfo.remainbeyondValidityDetails,
-            refusedBefore: data.personalInfo.refusedBefore,
-            refusedBeforeDetails: data.personalInfo.refusedBeforeDetails,
-            arrestedBefore: data.personalInfo.arrestedBefore,
-            arrestedBeforeDetails: data.personalInfo.arrestedBeforeDetails,
-            servedInMilitary: data.personalInfo.servedInMilitary,
-            servedInMilitaryDetails: data.personalInfo.servedInMilitaryDetails,
-            memberOfViolentGroup: data.personalInfo.memberOfViolentGroup,
-            // memberOfViolentGroupDetails: data.personalInfo.memberOfViolentGroupDetails,
-            participatedInViolentActivities:
-                data.personalInfo.participatedInViolentActivities,
-            // participatedInViolentActivitiesDetails: data.personalInfo.participatedInViolentActivitiesDetails,
-            education: data.education,
-            employment: data.employment.map((e) => {
-                delete e.locationType;
-                return { ...e };
-            }),
-            //added
-            // livedAbroad: data.personalInfo.livedAbroad,
-            // countriesLived: data.personalInfo.countriesLived,
-            // changedName: data.personalInfo.changedName,
-            // changeOfName: data.personalInfo.changeOfName,
-            // statusOfResidence: data.personalInfo.statusOfResidence,
-            // startDateOfResidence: formatISODate(data.personalInfo.startDateOfResidence),
-            // occupation: data.personalInfo.occupation,
-            // tripDurationStartDate: formatISODate(data.personalInfo.tripDurationStartDate),
-            // tripDurationEndDate: formatISODate(data.personalInfo.tripDurationEndDate),
-            // tripDurationLocation: data.personalInfo.tripDurationLocation,
-            // hasContactInLocation: data.personalInfo.hasContactInLocation,
-            // contactInLocationLastName:
-            //     data.personalInfo.contactInLocationLastName,
-            // contactInLocationFirstName:
-            //     data.personalInfo.contactInLocationFirstName,
-            // contactInLocationAddress:
-            //     data.personalInfo.contactInLocationAddress,
-            // contactInLocationRelationship:
-            //     data.personalInfo.contactInLocationRelationship,
-            // contactInLocationPhoneNumber:
-            //     data.personalInfo.contactInLocationPhoneNumber,
-            // hasGreenCard: data.personalInfo.hasGreenCard,
-            // greenCardNumber: data.personalInfo.greenCardNumber,
-            // greenCardExpiryDate: formatISODate(data.personalInfo.greenCardExpiryDate),
-            // prevResidence1: data.personalInfo.prevResidence1,
-            // prevResidence2: data.personalInfo.prevResidence2,
-            // prevResidence3: data.personalInfo.prevResidence3,
-            // startDatePrevResidence1: formatISODate(data.personalInfo.startDatePrevResidence1),
-            // startDatePrevResidence2: formatISODate(data.personalInfo.startDatePrevResidence2),
-            // startDatePrevResidence3: formatISODate(data.personalInfo.startDatePrevResidence3),
-            // endDatePrevResidence1: formatISODate(data.personalInfo.endDatePrevResidence1),
-            // endDatePrevResidence2: formatISODate(data.personalInfo.endDatePrevResidence2),
-            // endDatePrevResidence3: formatISODate(data.personalInfo.endDatePrevResidence3),
-        },
-        familyMembers: data.familyMembers
-            .filter((e) => !!e?.membersName)
-            .map((member) => {
-                delete member.section;
-                delete member.index;
-                delete member.membersOccupation;
-                delete member.issueCountry;
-                delete member.maritalStatus;
-                delete member.dateOfBirth;
-                return {
-                    ...member,
-                    dateOfBirth: formatISODate(member?.dateOfBirth),
-                    issueYear: String(safelyConvertToNumber(member?.issueYear)),
-                    expiryYear: String(
-                        safelyConvertToNumber(member?.expiryYear)
-                    ),
-                };
-            }),
-        documents: data.documents,
+        statementOfPurpose: data.personalInfo.tripPurpose,
+        travellingBy: "Airplane",
+        homeCountry: formatCountry(data.tripDetails.homeCountry),
+        destination: formatCountry(data.tripDetails.destination),
     };
     if (user?._id)
         return {

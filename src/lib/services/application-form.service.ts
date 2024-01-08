@@ -22,7 +22,7 @@ export class ApplicationFormService {
                 const err = error.response.data;
                 if (
                     !(
-                        err.statusCode === 422 &&
+                        err?.statusCode === 422 &&
                         err.errorMessage.includes("already exists")
                     )
                 ) {

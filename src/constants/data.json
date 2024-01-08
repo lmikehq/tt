@@ -1,0 +1,218 @@
+{
+    "tripDetails": {
+        "homeCountry": {
+            "name": "Nigeria",
+            "code": "NG",
+            "flag": "/assets/flags/ng.svg"
+        },
+        "destination": {
+            "name": "Canada",
+            "code": "CA",
+            "flag": "/assets/flags/ca.svg"
+        },
+        "applicationType": "Single",
+        "visaType": "Work",
+        "travellingBy": "AirPlane"
+    },
+    "education": [
+        {
+            "school": "Uniben",
+            "degree": "Bachelor of Science (BSc)",
+            "cgpa": "4.8",
+            "location": "Benin City",
+            "fieldOfStudy": "Psychology",
+            "startYear": 2017,
+            "endYear": 2021,
+            "stillAtSchool": false
+        }
+    ],
+    "employment": [
+        {
+            "companyName": "Thrillers Travels",
+            "jobTitle": "The Law",
+            "employmentType": "Full-Time",
+            "locationType": "Remote",
+            "companyLocation": "Lekki",
+            "startYear": 2021,
+            "endYear": null,
+            "stillWorking": true
+        }
+    ],
+    "familyMembers": [
+        {
+            "passportNumber": "",
+            "gender": "",
+            "dateOfBirth": "16/12/1981",
+            "membersName": "Alo Wahab",
+            "relationshipToPrimary": "Father",
+            "address": "10 res",
+            "membersPhoneNumber": "234237923223",
+            "membersEmail": "wahabsee@gmail.com",
+            "issueYear": "",
+            "expiryYear": "",
+            "accompanying": false,
+            "section": "A"
+        },
+        {
+            "passportNumber": "",
+            "gender": "",
+            "dateOfBirth": "",
+            "membersName": "",
+            "relationshipToPrimary": "",
+            "address": "",
+            "membersPhoneNumber": "",
+            "membersEmail": "",
+            "issueYear": "",
+            "expiryYear": "",
+            "issueCountry": {
+                "name": "",
+                "flag": "",
+                "code": ""
+            },
+            "accompanying": false,
+            "section": "B",
+            "index": 0,
+            "maritalStatus": ""
+        },
+        {
+            "passportNumber": "",
+            "gender": "",
+            "dateOfBirth": "14/12/2004",
+            "membersName": "Tunde Wahab",
+            "relationshipToPrimary": "Son",
+            "address": "12 resdi",
+            "membersPhoneNumber": "234876836892232",
+            "membersEmail": "tundewahab@gmail.com",
+            "issueYear": "",
+            "expiryYear": "",
+            "accompanying": false,
+            "section": "C"
+        }
+    ],
+    "personalInfo": {
+        "firstName": "TestDav",
+        "lastName": "TestAy",
+        "middleName": "",
+        "email": "testay1@gmail.com",
+        "placeOfOrigin": "Lagos",
+        "stateOfOrigin": "Lagos",
+        "nativeLanguage": "English",
+        "meansOfId": "National ID Card",
+        "idNumber": "345",
+        "issueDate": "12/12/2022",
+        "expiryDate": "25/03/2024",
+        "address": "12 Resdi",
+        "dateOfBirth": "04/12/2000",
+        "maritalStatus": "Single",
+        "partnersName": "",
+        "passportNumber": "8793",
+        "passportIssuedCountry": {
+            "name": "Nigeria",
+            "flag": "/assets/flags/ng.svg",
+            "code": "NG"
+        },
+        "passportIssuedDate": "04/09/2023",
+        "passportExpiryDate": "06/04/2024",
+        "tripPurpose": "Come and go",
+        "tuberculosis": "false",
+        "tuberculosisDetails": "",
+        "mentalDisorder": "false",
+        "mentalDisorderDetails": "",
+        "remainbeyondValidity": "false",
+        "remainbeyondValidityDetails": "",
+        "refusedBefore": "false",
+        "refusedBeforeDetails": "",
+        "arrestedBefore": "false",
+        "arrestedBeforeDetails": "",
+        "servedInMilitary": "false",
+        "servedInMilitaryDetails": "",
+        "memberOfViolentGroup": "false",
+        "memberOfViolentGroupDetails": "",
+        "participatedInViolentActivities": "false",
+        "participatedInViolentActivitiesDetails": "",
+        "placeOfBirth": {
+            "name": "Nigeria",
+            "flag": "/assets/flags/ng.svg",
+            "code": "NG"
+        },
+        "phoneNumber": "2349155044880",
+        "countryOfCitizen": {
+            "name": "Nigeria",
+            "flag": "/assets/flags/ng.svg",
+            "code": "NG"
+        },
+        "gender": "Male",
+        "countryOfApply": {
+            "name": "",
+            "flag": "",
+            "code": ""
+        },
+        "countryOfResidence": {
+            "name": "Nigeria",
+            "flag": "/assets/flags/ng.svg",
+            "code": "NG"
+        },
+        "livedAbroad": "true",
+        "statusOfResidence": "Citizen",
+        "startDateOfResidence": "04/12/2001",
+        "changeOfName": false,
+        "changedName": "",
+        "occupation": "Lawyer",
+        "tripDurationStartDate": "21/12/2023",
+        "tripDurationEndDate": "21/02/2024",
+        "tripDurationLocation": "Toronto",
+        "hasContactInLocation": "true",
+        "contactInLocationLastName": "Sixtus",
+        "contactInLocationFirstName": "John",
+        "contactInLocationAddress": "7657 Boulevard Ave",
+        "contactInLocationRelationship": "Others",
+        "contactInLocationPhoneNumber": "18796223432",
+        "hasGreenCard": false,
+        "greenCardNumber": "",
+        "greenCardExpiryDate": "",
+        "prevResidence1": {
+            "name": "South Africa",
+            "flag": "/assets/flags/za.svg",
+            "code": "ZA"
+        },
+        "prevResidence2": {
+            "name": "",
+            "flag": "",
+            "code": ""
+        },
+        "prevResidence3": {
+            "name": "",
+            "flag": "",
+            "code": ""
+        },
+        "prevResidence4": {
+            "name": "",
+            "flag": "",
+            "code": ""
+        },
+        "prevResidence5": {
+            "name": "",
+            "flag": "",
+            "code": ""
+        },
+        "startDatePrevResidence1": "14/12/2021",
+        "startDatePrevResidence2": "",
+        "startDatePrevResidence3": "",
+        "startDatePrevResidence4": "",
+        "startDatePrevResidence5": "",
+        "endDatePrevResidence1": "21/12/2022",
+        "endDatePrevResidence2": "",
+        "endDatePrevResidence3": "",
+        "endDatePrevResidence4": "",
+        "endDatePrevResidence5": "",
+        "marriageStartDate": "",
+        "marriageEndDate": "",
+        "countryofApply": {
+            "name": "Nigeria",
+            "flag": "/assets/flags/ng.svg",
+            "code": "NG"
+        },
+        "countriesLived": 1
+    },
+    "documents": []
+}

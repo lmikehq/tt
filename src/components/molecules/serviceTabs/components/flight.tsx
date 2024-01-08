@@ -207,9 +207,9 @@ function Flights() {
         const cabinBags = flight?.cabinBaggage;
         const checkedBags = flight?.checkedBaggage;
 
-        return `/flight/listings?fly_from=${departure?.code}&fly_to=${
-            arrival?.code
-        }&date_from=${dateFrom}${
+        return `/flight/listings?fly_from=${
+            departure?.id ?? departure?.code
+        }&fly_to=${arrival?.id ?? arrival?.code}&date_from=${dateFrom}${
             flight?.returnDate ? `&return_from=${returnFrom}` : ""
         }&stops=${
             flightState?.stops

@@ -6,6 +6,7 @@ import {
     detailsSchema,
     documentsSchema,
     familyInfoSchema,
+    guarantorSchema,
     manyEducationSchema,
     manyEmploymentSchema,
     personalInfoSchema,
@@ -19,7 +20,6 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
-// import { useUserStore } from "store/useStore";
 import Button from "@atom/button";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
 import { FormikProps, useFormik } from "formik";
@@ -27,12 +27,13 @@ import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import FormSideMenu from "./components/sideMenu/formSideMenu";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { DetailsKeys, Mode, PersonalInfoInterface } from "@lib/types";
+import { DetailsKeys, GuarantorInfoInterface, Mode, PersonalInfoInterface } from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
-import { parse, format } from "date-fns";
+import testPayload from '@/constants/payload.json'
+
 
 const PromoInput = styled.div`
     display: flex;
@@ -109,6 +110,7 @@ function ApplicationForm() {
         education,
         employment,
         familyMembers,
+        guarantorInfo,
         documents,
     } = form;
 
@@ -164,6 +166,18 @@ function ApplicationForm() {
         },
         validateOnChange: true,
     });
+    
+    const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
+        initialValues: guarantorInfo,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: guarantorSchema,
+        onSubmit: (values: GuarantorInfoInterface) => {
+            // if (isLoading) return;
+            // nextStep({ data: { guarantorInfo: values } });
+        },
+        validateOnChange: true,
+    });
 
     const familyMembersFormik = useFormik({
         initialValues: { familyMembers },
@@ -171,12 +185,8 @@ function ApplicationForm() {
         validateOnMount: true,
         validationSchema: familyInfoSchema,
         onSubmit: (values, formikHelpers) => {
-            formikHelpers
-                .validateForm()
-                .then((res) => {})
-                .catch((err) => {});
             if (isLoading) return;
-            nextStep({ data: { familyMembers: values.familyMembers } });
+            nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
         },
         validateOnChange: true,
     });
@@ -189,8 +199,14 @@ function ApplicationForm() {
         onSubmit: (values) => {
         createVisaApplication({
             data: {
-            ...form,
-            documents: values.documents,
+                // ...form,
+                tripDetails: detailsFormik.values,
+                personalInfo: personalInfoFormik.values,
+                employment: employmentFormik.values.employment,
+                education: educationFormik.values.education,
+                familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
+                documents: values.documents,
             },
         })
         .then((_: any) => {
@@ -202,13 +218,14 @@ function ApplicationForm() {
           );
         })
         .catch((error) => {
+            console.log(error)
           const err = error.response?.data;
           if (
             err?.statusCode === 422 &&
             err?.errorMessage.includes("already exists")
           ) {
             setShowApplicationExistsModal(true);
-          } else if (err.statusCode === 400) {
+          } else if (err?.statusCode === 400) {
             toast(
               (t) => (
                 <ErrorToastComponent>
@@ -241,9 +258,10 @@ function ApplicationForm() {
             data: {
                 tripDetails: detailsFormik.values,
                 personalInfo: personalInfoFormik.values,
-                education: educationFormik.values.education,
                 employment: employmentFormik.values.employment,
+                education: educationFormik.values.education,
                 familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
                 documents: documentsFormik.values.documents,
             },
             uploadedDocuments,
@@ -257,6 +275,7 @@ function ApplicationForm() {
         educationFormik,
         employmentFormik,
         familyMembersFormik,
+        guarantorFormik,
         documentsFormik,
         persistForm,
     }).find((x) => x.id === step);
@@ -277,6 +296,11 @@ function ApplicationForm() {
         });
         fetchRecentProgressFromSession();
     }, [params]);
+
+    // useEffect(() => {
+    //     saveProgress({ data: testPayload, uploadedDocuments: [] })
+    // }, [])
+
 
     return (
         <>

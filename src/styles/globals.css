@@ -420,3 +420,8 @@ textarea:hover {
 .css-yckcgr-MuiPaper-root-MuiAccordion-root {
     width: 100%;
 }
+
+.mui_select div[aria-disabled='true']{
+    border: 1px solid #bdbdbd;
+    /* background-color: initial; */
+}
