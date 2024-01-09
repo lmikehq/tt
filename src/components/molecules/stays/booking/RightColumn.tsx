@@ -4,6 +4,7 @@ import FreeCancellation from "./FreeCancellation";
 import HotelDetail from "./HotelDetail";
 import PriceDetail from "./PriceDetail";
 import SelectCurrency from "./SelectCurrency";
+import { sampleViewStay } from "@/lib/types/response-models/stay/search.type";
 
 interface RightColumnProps {
     paymentOptions: StayPaymentOption[];
@@ -16,9 +17,10 @@ const RightColumn = ({
     currentPaymentOption,
     onChangePaymentOption,
 }: RightColumnProps) => {
+    const stayResponse = sampleViewStay;
     return (
         <Span>
-            <HotelDetail />
+            <HotelDetail hotel={stayResponse} />
             <PriceDetail />
             <FreeCancellation />
             <SelectCurrency
