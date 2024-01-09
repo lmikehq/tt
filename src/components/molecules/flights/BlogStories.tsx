@@ -192,7 +192,7 @@ function BlogStories() {
               <SlideCard key={index}>
                 <SlideList>
                   <SliderImgBox className="stay_landing_trending">
-                    <Link href="">
+                    <Link href={`/blog/preview`}>
                       <img
                         style={{
                           width: "100%",
@@ -243,7 +243,7 @@ function BlogStories() {
                     <RWebShare
                       data={{
                         text: `Check out this cool ${blog.title}`,
-                        url: `${pageURL}/blog/${blog._id}`,
+                        url: `${pageURL}/blog/preview`,
                         title: blog.title,
                       }}
                       onClick={() => console.log("shared successfully!")}
@@ -258,7 +258,10 @@ function BlogStories() {
                     </RWebShare>
                   </FlexBox>
                   <Flex styles={{ marginTop: "10px" }}>
-                    <Link href="" style={{ width: "fit-content" }}>
+                    <Link
+                      href={`/blog/preview`}
+                      style={{ width: "fit-content" }}
+                    >
                       <TruncateMarkup lines={1}>
                         <h2>{blog.title}</h2>
                       </TruncateMarkup>
@@ -317,7 +320,7 @@ function BlogStories() {
           align="center"
           styles={{ marginTop: "20px" }}
         >
-          <Link href="">
+          <Link href="/blog">
             <Span
               style={{
                 padding: "8px 30px",

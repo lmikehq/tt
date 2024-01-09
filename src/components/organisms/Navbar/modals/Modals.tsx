@@ -7,6 +7,7 @@ import { Span } from "@/components/molecules/stays/view/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import CurrencyList from "./components/CurrencyList";
 import LanguageList from "./components/LanguageList";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 const ModalCenter = styled.div`
   display: flex;
@@ -19,6 +20,9 @@ const ModalCenter = styled.div`
     @media screen and (max-width: 900px) {
       overflow-y: none;
     }
+  }
+  @media screen and (max-width: 900px) {
+    overflow-x: hidden;
   }
 `;
 const ModalScroll = styled.div`
@@ -40,17 +44,18 @@ const ModalScroll = styled.div`
     width: 600px;
   }
   @media screen and (max-width: 900px) {
-    width: 100%;
+    width: 100% !important;
+    overflow-x: hidden;
     height: 100%;
     border-radius: 0px;
     &.amenities_scroll {
-      width: 100%;
+      width: 100% !important;
       height: 100%;
       margin-top: 0px;
       margin-bottom: 0px;
     }
     &.search_box {
-      width: 100%;
+      width: 100% !important;
     }
   }
 `;
@@ -71,8 +76,9 @@ const ModalWrapper = styled.div`
     padding: 10px 0px;
   }
   @media screen and (max-width: 900px) {
-    width: 100%;
+    width: 100% !important;
     height: 100%;
+    overflow-x: hidden !important;
   }
 `;
 export const LanguageModal = ({
@@ -82,17 +88,21 @@ export const LanguageModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  const { isMobile } = useScreenResolution();
   useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    if (!isMobile) {
+      const handleBodyOverflow = () => {
+        document.documentElement.style.overflow = open ? "hidden" : "none";
+        document.body.style.overflow = open ? "hidden" : "none";
+      };
+      handleBodyOverflow();
+
+      return () => {
+        document.documentElement.style.overflow = "none";
+        document.body.style.overflow = "none";
+      };
+    }
+  }, [open, isMobile]);
 
   return (
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
@@ -128,17 +138,21 @@ export const CurrencyModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
+  const { isMobile } = useScreenResolution();
   useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    if (!isMobile) {
+      const handleBodyOverflow = () => {
+        document.documentElement.style.overflow = open ? "hidden" : "none";
+        document.body.style.overflow = open ? "hidden" : "none";
+      };
+      handleBodyOverflow();
+
+      return () => {
+        document.documentElement.style.overflow = "none";
+        document.body.style.overflow = "none";
+      };
+    }
+  }, [open, isMobile]);
 
   return (
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
