@@ -88,22 +88,6 @@ export const LanguageModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
-  const { isMobile } = useScreenResolution();
-  useEffect(() => {
-    if (!isMobile) {
-      const handleBodyOverflow = () => {
-        document.documentElement.style.overflow = open ? "hidden" : "none";
-        document.body.style.overflow = open ? "hidden" : "none";
-      };
-      handleBodyOverflow();
-
-      return () => {
-        document.documentElement.style.overflow = "none";
-        document.body.style.overflow = "none";
-      };
-    }
-  }, [open, isMobile]);
-
   return (
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
       <ModalCenter className="amenities">
@@ -138,22 +122,6 @@ export const CurrencyModal = ({
   open: boolean;
   handleClose: () => void;
 }) => {
-  const { isMobile } = useScreenResolution();
-  useEffect(() => {
-    if (!isMobile) {
-      const handleBodyOverflow = () => {
-        document.documentElement.style.overflow = open ? "hidden" : "none";
-        document.body.style.overflow = open ? "hidden" : "none";
-      };
-      handleBodyOverflow();
-
-      return () => {
-        document.documentElement.style.overflow = "none";
-        document.body.style.overflow = "none";
-      };
-    }
-  }, [open, isMobile]);
-
   return (
     <Modal disableScrollLock={true} open={open} onClose={handleClose}>
       <ModalCenter className="amenities">

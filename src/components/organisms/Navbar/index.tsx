@@ -292,7 +292,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                     languageCode={`${selectedLanguage}`}
                     height="30"
                   />
-                  {/* <BsGlobe size={24} /> */}
+                 
                   <Text
                     text={`${selectedLanguage}`}
                     type="span"
