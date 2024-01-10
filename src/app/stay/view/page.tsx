@@ -60,7 +60,7 @@ const StayViewPage = () => {
         language: preferredLanguage,
         guests: extractRoomForGuestsFromString(queryParams?.guests ?? ""),
         currency: preFerredCurrency,
-    }
+    };
 
     const { data: stayResponse = sampleViewStay, isFetching } = useViewSingleStay(requestParams, {
         enabled: requestParams?.id ? true : false,

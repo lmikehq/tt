@@ -96,7 +96,6 @@ export interface StaySearchSort {
     sortBy?: string;
 }
 export interface StaySearchMeta {
-    limit: number;
     page: number;
 }
 export interface SearchStayRequestRequestQuery
@@ -314,8 +313,9 @@ export const convertRoomForGuestsToString = (data: RoomForGuest[]) => {
 };
 
 export const extractRoomForGuestsFromString = (
-    dataString: string
+    dataString: string | null
 ): RoomForGuest[] => {
+    if (!dataString) return [];
     return dataString.split("-").map((el) => ({
         adults: parseInt(el.split("and")[0]),
         children:
@@ -327,3 +327,6 @@ export const extractRoomForGuestsFromString = (
                       .map((el) => parseInt(el)),
     }));
 };
+
+export const numberOfGuestsInRooms = (data: RoomForGuest[]) =>
+    data.reduce((acc, el) => acc + el.adults + el.children.length, 0);

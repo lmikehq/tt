@@ -3,6 +3,7 @@ import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuer
 import { SearchStayRequestRequestQuery } from "@/lib/types/request-models/stay/search.type";
 import {
     StayCreditTokenizationInput,
+    StayOrderBookingFinishInput,
     StayOrderBookingReguestInput,
 } from "@/lib/types/request-models/stay/booking.type";
 import { SearchStaysResponse } from "@/lib/types/response-models/stay/search.type";
@@ -31,6 +32,16 @@ export class StayBookingService {
                 `/stays/credit-tokenization`,
                 params
             )
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+    static orderBookingFinish = async (params: StayOrderBookingFinishInput) => {
+        return await rateHawkResourceClient
+            .post<any, any>(`/stays/booking-finish`, params)
             .then((response) => {
                 return response;
             })
