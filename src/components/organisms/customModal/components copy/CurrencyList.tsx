@@ -8,34 +8,40 @@ import DoneIcon from "@mui/icons-material/Done";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 function CurrencyList() {
-  const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
-    useUserPreferencesStore((state) => state);
+   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
+     useUserPreferencesStore((state) => state);
 
-  const currencies: CurrencyCodeRecord[] = currencyCodes.data;
+   const currencies: CurrencyCodeRecord[] = currencyCodes.data;
 
-  const selectedCurrencyCodes: string[] = [
-    "GBP",
-    "INR",
-    "EUR",
-    "NGN",
-    "AED",
-    "USD",
-  ];
+   const selectedCurrencyCodes: string[] = [
+     "GBP",
+     "INR",
+     "EUR",
+     "NGN",
+     "AED",
+     "USD",
+   ];
 
-  useEffect(() => {
-    const storedCurrency = localStorage.getItem("selectedCurrency");
-    if (storedCurrency && selectedCurrencyCodes.includes(storedCurrency)) {
-      setPreferredCurrency(storedCurrency);
-    } else if (!storedCurrency) {
-      localStorage.setItem("selectedCurrency", "NGN");
-      setPreferredCurrency("NGN");
-    }
-  }, []);
+   // To Remove Specified Currency with Currency Codes
+   const filteredCurrencies = currencies.filter(
+     (currency) =>
+       !["XXX", "XTS", "XBA", "XBB", "XBC", "XBD"].includes(currency.code)
+   );
 
-  const handleCurrencyClick = (currencyCode: string) => {
-    setPreferredCurrency(currencyCode);
-    localStorage.setItem("selectedCurrency", currencyCode);
-  };
+   useEffect(() => {
+     const storedCurrency = localStorage.getItem("selectedCurrency");
+     if (storedCurrency && selectedCurrencyCodes.includes(storedCurrency)) {
+       setPreferredCurrency(storedCurrency);
+     } else if (!storedCurrency) {
+       localStorage.setItem("selectedCurrency", "NGN");
+       setPreferredCurrency("NGN");
+     }
+   }, []);
+
+   const handleCurrencyClick = (currencyCode: string) => {
+     setPreferredCurrency(currencyCode);
+     localStorage.setItem("selectedCurrency", currencyCode);
+   };
 
   return (
     <Span style={{ padding: "0px 20px" }}>
@@ -83,7 +89,7 @@ function CurrencyList() {
       <Flex direction="column" styles={{ marginTop: "20px" }}>
         <Text type="h4" weight={500} text="All Currency" />
         <GridLayout className="amenities_grid" style={{ marginTop: "10px" }}>
-          {currencies.map((currency) => (
+          {filteredCurrencies.map((currency) => (
             <Span
               key={currency.code}
               className={`all_languages_currency `}

@@ -14,7 +14,6 @@ import { ttColors } from "@lib/theme/colors";
 import { User } from "@lib/types";
 import { ButtonBase, MenuItem, Select } from "@mui/material";
 import UserPopover from "@organism/Navbar/UserPopover";
-import LanguageCurrencyModal from "@organism/customModal/components/LanguageCurrencyModal";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -29,9 +28,9 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { CurrencyModal, LanguageModal } from "./modals/Modals";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { IoIosArrowDown } from "react-icons/io";
+import { CurrencyModal, LanguageModal } from "../customModal";
 
 const poppins = Poppins({
   weight: "400",
@@ -292,7 +291,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                     languageCode={`${selectedLanguage}`}
                     height="30"
                   />
-                  {/* <BsGlobe size={24} /> */}
+                 
                   <Text
                     text={`${selectedLanguage}`}
                     type="span"
@@ -348,10 +347,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   />
                 </span>
               </Flex>
-              <LanguageCurrencyModal
-                open={modalOpen}
-                handleClose={() => setModalOpen(!modalOpen)}
-              />
+             
               {user?.firstName ? (
                 <>
                   {" "}

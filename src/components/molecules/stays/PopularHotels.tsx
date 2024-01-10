@@ -230,7 +230,7 @@ function PopularHotels() {
                     }}
                   />
                 </Flex>
-                <Flex justify="space-between">
+                {/* <Flex justify="space-between">
                   <Flex align="center" gap="0px">
                     <Flex gap="3px" align="center">
                       <Text
@@ -297,7 +297,7 @@ function PopularHotels() {
                       </Flex>
                     </Flex>
                   </ReviewsText>
-                </Flex>
+                </Flex> */}
               </SlideList>
             </SlideCard>
           ))}
