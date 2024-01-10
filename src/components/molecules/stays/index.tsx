@@ -106,7 +106,7 @@ const StaySection = () => {
             <Flex direction="column">
               <Text
                 type="h3"
-                text="Find flexible flight deals"
+                text="Find flexible stays deals"
                 weight={600}
                 size={22}
               />
