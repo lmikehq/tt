@@ -124,6 +124,182 @@ export interface ViewSingleStayRequestInput {
     currency: string;
 }
 
+
+
+/* Trip Advisor */
+export enum TripAdvisorLocationType {
+    hotels = 'hotels',
+    attractions = 'attractions',
+    restaurants = 'restaurants',
+    geos = 'geos',
+}
+export interface TripAdvisorAddressObj {
+    street1?: string;
+    street2?: string;
+    city: string;
+    state: string;
+    country: string;
+    postalcode?: string;
+    address_string: string;
+    phone?: string;
+    latitude?: number;
+    longitude?: number;
+}
+export interface TripAdvisorUser {
+    username: string;
+    user_location: {
+        name?: string;
+        id: string;
+    };
+    review_count?: number;
+    reviewer_badge?: string;
+    avatar: any;
+}
+export interface TripAdvisorAncestor {
+    level:       string;
+    name:        string;
+    location_id: string;
+}
+export interface TripAdvisorRankingData {
+    geo_location_id:   string;
+    ranking_string:    string;
+    geo_location_name: string;
+    ranking_out_of:    string;
+    ranking:           string;
+}
+
+export interface TripAdvisorSubrating {
+    name:              string;
+    localized_name:    string;
+    rating_image_url?: string;
+    value:             string;
+}
+export interface TripAdvisorCategory {
+    name:           string;
+    localized_name: string;
+}
+
+
+
+export interface SearchTripAdvisorStayInput {
+    key?: string;
+    searchQuery?: string;
+    category?: TripAdvisorLocationType;
+    phone?: string;
+    address?: string;
+    latLong?: string;
+    radius?: string;
+    radiusUnit?: string;
+    language?: string;
+}
+export interface SearchTripAdvisorStayResponse {
+    data: {
+        location_id: number;
+        name: string;
+        distance: string;
+        rating: string;
+        bearing: string;
+        address_obj: TripAdvisorAddressObj;
+    }[];
+    // error: {
+    //     message: string;
+    //     type: string;
+    //     code: string;
+    // }
+}
+
+export interface ViewTripAdvisorStayDetailsInput {
+    key?: string;
+    locationId?: string;
+    language?: string;
+}
+export interface ViewTripAdvisorStayDetailsResponse {
+    location_id:         string;
+    name:                string;
+    description:         string;
+    web_url:             string;
+    address_obj:         TripAdvisorAddressObj;
+    ancestors:           TripAdvisorAncestor[];
+    latitude:            string;
+    longitude:           string;
+    timezone:            string;
+    write_review:        string;
+    ranking_data:        TripAdvisorRankingData;
+    rating:              string;
+    rating_image_url:    string;
+    num_reviews:         string;
+    review_rating_count: { [key: string]: string };
+    subratings:          { [key: string]: TripAdvisorSubrating };
+    photo_count:         string;
+    see_all_photos:      string;
+    price_level:         string;
+    amenities:           string[];
+    category:            TripAdvisorCategory;
+    subcategory:         TripAdvisorCategory[];
+    styles:              string[];
+    neighborhood_info:   any[];
+    trip_types:          TripAdvisorSubrating[];
+    awards:              any[];
+}
+
+export interface ViewTripAdvisorStayReviewsInput {
+    key?: string;
+    locationId?: string;
+    language?: string;
+}
+export interface ViewTripAdvisorStayReviewsResponse {
+    data: {
+        id: number;
+        location_id: number;
+        lang: string;
+        published_date: string;
+        rating: number;
+        helpful_votes: number;
+        rating_image_url: string;
+        url: string;
+        trip_type: string;
+        travel_date: string;
+        text: string;
+        title: string;
+        owner_response?: any;
+        is_machine_translated?: boolean;
+        user: TripAdvisorUser;
+        subratings: any;
+    }[];
+    // error: {
+    //     message: string;
+    //     type: string;
+    //     code: string;
+    // }
+}
+
+export interface ViewTripAdvisorStayNearbyInput {
+    key?: string;
+    category?: TripAdvisorLocationType;
+    phone?: string;
+    address?: string;
+    latLong?: string;
+    radius?: string;
+    radiusUnit?: string;
+    language?: string;
+}
+export interface ViewTripAdvisorStayNearbyResponse {
+    data: {
+        location_id: string;
+        name: string;
+        distance: string;
+        bearing: string;
+        address_obj: TripAdvisorAddressObj;
+    }[];
+    // error: {
+    //     message: string;
+    //     type: string;
+    //     code: string;
+    // }
+}
+
+
+
 export const convertRoomForGuestsToString = (data: RoomForGuest[]) => {
     return data
         .map(

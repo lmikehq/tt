@@ -23,7 +23,7 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { Box, Checkbox } from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useViewSingleStay } from "@/lib/hooks/stay/search.hook";
+import { useSearchTripAdvisorStay, useViewSingleStay, useViewTripAdvisorStayReviews, useViewTripAdvisorStayDetails, useViewTripAdvisorStayNearby } from "@/lib/hooks/stay/search.hook";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import {
     ViewSingleStayRequestInput,
@@ -31,44 +31,72 @@ import {
     extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import { sampleViewStay } from "@/lib/types/response-models/stay/search.type";
+import { sampleReviews, sampleStayDetails, sampleStayNearby, sampleViewStay } from "@/lib/types/response-models/stay/search.type";
+import { useQueryParams } from "@/hooks/useNext";
+const sample = {
+    name: '',
+    latitude: '',
+    longitude: '',
+    address: '',
+}
 
+const testId = "test_hotel_do_not_book"
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StayViewPage = () => {
     const router = useRouter();
     const { isMobile } = useScreenResolution();
-    const searchParams = useSearchParams();
-
-    const id = searchParams.get("id");
-    const checkIn = searchParams.get("checkIn");
-    const checkOut = searchParams.get("checkOut");
-    const guests = searchParams.get("guests");
+    const { queryParams } = useQueryParams()
     const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
         (state) => state
     );
 
     const requestParams: ViewSingleStayRequestInput = {
         // id: "transcorp_hilton_abuja" ?? id ?? "",
-        id: "test_hotel_do_not_book" ?? id ?? "",
-        checkin: checkIn ?? "2024-01-10",
-        checkout: checkOut ?? "2024-01-12",
+        id: queryParams?.id ?? "655feb9a82a80970ac4e90cd",
+        checkin: queryParams?.checkIn ?? "2024-01-10",
+        checkout: queryParams?.checkOut ?? "2024-01-12",
         residency: "gb",
         language: preferredLanguage,
-        guests: extractRoomForGuestsFromString(guests ?? ""),
+        guests: extractRoomForGuestsFromString(queryParams?.guests ?? ""),
         currency: preFerredCurrency,
     }
 
-    const { data: stayRes, isFetching } = useViewSingleStay(requestParams, {
-        enabled: id ? true : false,
+    const { data: stayResponse = sampleViewStay, isFetching } = useViewSingleStay(requestParams, {
+        enabled: requestParams?.id ? true : false,
     });
-    const stayResponse = sampleViewStay
+    // const { data: findStayResponse, isFetching: isFetchingFindStay } = useSearchTripAdvisorStay({
+    //     searchQuery: stayResponse?.name ?? '',
+    //     // latLong: stayResponse?.latitude ? `${stayResponse?.latitude},${stayResponse?.longitude}` : '',
+    //     // address: stayResponse?.address,
+    // }, {
+    //     enabled: stayResponse ? true : false,
+    // });
+    // const { data: stayDetailsResponse, isFetching: isFetchingStayDetails } = useViewTripAdvisorStayDetails({
+    //     locationId: `${findStayResponse?.data[0].location_id}`,
+    // }, {
+    //     enabled: findStayResponse?.data ? true : false,
+    // });
+    // const { data: stayReviewsResponse, isFetching: isFetchingStayReviews } = useViewTripAdvisorStayReviews({
+    //     locationId: `${findStayResponse?.data[0].location_id}`,
+    // }, {
+    //     enabled: findStayResponse?.data ? true : false,
+    // });
+    // const { data: stayNearbyResponse, isFetching: isFetchingStayNearby } = useViewTripAdvisorStayNearby({
+    //     latLong: stayResponse?.latitude ? `${stayResponse?.latitude},${stayResponse?.longitude}` : '',
+    // }, {
+    //     enabled: findStayResponse?.data ? true : false,
+    // });
+    
+    const stayReviewsResponse = sampleReviews.data
+    const stayDetailsResponse = sampleStayDetails
+    const stayNearbyResponse = sampleStayNearby.data
+    // console.log('ffrev', findStayResponse)
+    // console.log('ssrev', stayReviewsResponse)
 
     const handleGoBack = () => {
         router.back();
     };
-
-    console.log(stayResponse)
 
     return (
         <SectionLayout>
@@ -118,16 +146,16 @@ const StayViewPage = () => {
                 }}
             >
                 <Section>
-                    <StayDetails stayResponse={stayResponse} />
+                    <StayDetails stayResponse={stayResponse} stayDetails={stayDetailsResponse} />
                     <ChooseYourRoom stayResponse={stayResponse} />
-                    <LikeSimilarHotels stayResponse={stayResponse} />
-                    <Location stayResponse={stayResponse} />
+                    <LikeSimilarHotels />
+                    <Location stayResponse={stayResponse} stayDetails={stayDetailsResponse} nearbyLocations={stayNearbyResponse} />
                     <DescriptionOfHotel stayResponse={stayResponse} />
                     <HotelAmenities stayResponse={stayResponse} />
-                    <CompareSlider stayResponse={stayResponse} />
+                    <CompareSlider />
                     <Policies stayResponse={stayResponse} />
-                    <HotelReviews stayResponse={stayResponse} />
-                    <CompareSimilarHotels stayResponse={stayResponse} />
+                    <HotelReviews reviews={stayReviewsResponse} stayDetails={stayDetailsResponse} />
+                    <CompareSimilarHotels/>
                 </Section>
 
                 <Section>

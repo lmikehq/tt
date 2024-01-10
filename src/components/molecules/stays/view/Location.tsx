@@ -9,13 +9,18 @@ import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { ViewTripAdvisorStayDetailsResponse, ViewTripAdvisorStayNearbyResponse } from "@/lib/types/request-models/stay/search.type";
+import { allCaps, capCase } from "@/lib/utilFns";
+import GoogleMap from "./GoogleMap";
 
 
 interface StayDetailsProps {
     stayResponse: ViewSingleStayResponse;
+    nearbyLocations: ViewTripAdvisorStayNearbyResponse['data'];
+    stayDetails: ViewTripAdvisorStayDetailsResponse
 }
 
-const Location = ({ stayResponse } : StayDetailsProps) => {
+const Location = ({ stayResponse, stayDetails, nearbyLocations = [] } : StayDetailsProps) => {
   const { isMobile } = useScreenResolution();
   //============
   //TOGGLE BOX
@@ -57,12 +62,15 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
           </Flex>
         </Header>
         {/* MAP */}
-        <Span style={{ maxHeight: "350px" }}>
-          <MapBoxTag></MapBoxTag>
+        <Span style={{ height: "400px", marginBottom: '2rem' }}>
+            <GoogleMap
+                lat={stayDetails?.latitude}
+                lng={stayDetails?.longitude}
+            />
         </Span>
         {/* MAP */}
-        <GridLayout className="amenities_grid location_grid">
-          <ul style={{ listStyle: "none" }} className="mobile_box">
+        {/* <GridLayout className="amenities_grid location_grid"> */}
+          <ul style={{ listStyle: "none", width: '100%' }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
               <Flex justify="space-between" cursor="pointer">
                 <Flex
@@ -75,7 +83,7 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
                   <Text
                     type="h5"
                     size={16}
-                    text="What’s Nearby?"
+                    text="What's Nearby?"
                     weight={"bold"}
                   ></Text>
                 </Flex>
@@ -101,42 +109,16 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
                       className="list_box"
                     >
                       <Span></Span>
-                      <Span style={{ lineHeight: "27px" }}>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Prince Arthur's Landing - 6km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="OLG Casino Thunder Bay - 4km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Lake Superior - 380m"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Magnus Theater - 9km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Hillcrest Park - 800m"
-                          ></Text>
-                        </li>
+                    <Span style={{ lineHeight: "27px" }}>
+                        {nearbyLocations.map((nearby, index) =>
+                            <li key={`nearby-${index}`}>
+                                <Text
+                                    type="p"
+                                    size={14}
+                                    text={`${nearby?.name} - ${nearby?.distance}km ${allCaps(nearby?.bearing)}`}
+                                ></Text>
+                            </li>
+                        )}
                       </Span>
                     </Flex>
                   )}
@@ -150,48 +132,22 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
                   className="list_box"
                 >
                   <Span></Span>
-                  <Span style={{ lineHeight: "27px" }}>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Prince Arthur's Landing - 6km"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="OLG Casino Thunder Bay - 4km"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Lake Superior - 380m"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Magnus Theater - 9km"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Hillcrest Park - 800m"
-                      ></Text>
-                    </li>
+                  <Span style={{ lineHeight: "27px", width: '100%' }}>
+                    {nearbyLocations.map((nearby, index) =>
+                        <li key={`nearby-${index}`}>
+                            <Text
+                                type="p"
+                                size={14}
+                                text={`${nearby?.name} - ${parseFloat(nearby?.distance).toFixed(1)}km ${capCase(nearby?.bearing)}`}
+                            ></Text>
+                        </li>
+                    )}
                   </Span>
                 </Flex>
               )}
             </Span>
           </ul>
-          <ul style={{ listStyle: "none" }} className="mobile_box">
+          {/* <ul style={{ listStyle: "none" }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
               <Flex justify="space-between" cursor="pointer">
                 <Flex
@@ -303,8 +259,8 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
                 </Flex>
               )}
             </Span>
-          </ul>
-          <ul style={{ listStyle: "none" }} className="mobile_box">
+          </ul> */}
+          {/* <ul style={{ listStyle: "none" }} className="mobile_box">
             <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
               <Flex justify="space-between" cursor="pointer">
                 <Flex
@@ -432,8 +388,8 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
                 </Flex>
               )}
             </Span>
-          </ul>
-        </GridLayout>
+          </ul> */}
+        {/* </GridLayout> */}
       </Container>
     </>
   );

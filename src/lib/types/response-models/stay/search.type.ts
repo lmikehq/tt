@@ -1,3 +1,5 @@
+import { ViewTripAdvisorStayDetailsResponse, ViewTripAdvisorStayNearbyResponse, ViewTripAdvisorStayReviewsResponse } from "../../request-models/stay/search.type";
+
 export interface AmenityGroup {
     amenities: string[];
     group_name: string;
@@ -772,5 +774,492 @@ export const sampleViewStay: ViewSingleStayResponse = {
     ],
     "is_gender_specification_required": false,
     "semantic_version": 1
-    
+}
+
+export const sampleReviews: ViewTripAdvisorStayReviewsResponse = {
+    data: [
+        {
+            "id": 679008093,
+            "lang": "en",
+            "location_id": 1720231,
+            "published_date": "2019-06-04T21:25:54Z",
+            "rating": 5,
+            "helpful_votes": 0,
+            "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+            "url": "https://www.tripadvisor.com/ShowUserReviews-g1069851-d1720231-r679008093-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827#review679008093",
+            "text": "The perfect spot for an ideal vacation!  The accommodations were spotless and very comfortable.  Daniela is the perfect hostess and had great suggestions for things to do, how to get there and great people to facilitate!  She even had a beautiful gift for our birthday girl that our trip was planned around!!!  Thanks Daniela!!!",
+            "title": "A wonderful and beautiful location for a perfect holiday!",
+            "trip_type": "NONE",
+            "travel_date": "2019-05-31",
+            "user": {
+                "username": "fishincapecod",
+                "user_location": {
+                "id": "41523",
+                "name": "Dennis, Cape Cod, Massachusetts"
+                },
+                "avatar": {
+                "thumbnail": "https://media-cdn.tripadvisor.com/media/photo-t/1a/f6/f4/20/default-avatar-2020-31.jpg",
+                "small": "https://media-cdn.tripadvisor.com/media/photo-l/1a/f6/f4/20/default-avatar-2020-31.jpg",
+                "medium": "https://media-cdn.tripadvisor.com/media/photo-f/1a/f6/f4/20/default-avatar-2020-31.jpg",
+                "large": "https://media-cdn.tripadvisor.com/media/photo-p/1a/f6/f4/20/default-avatar-2020-31.jpg",
+                "original": "https://media-cdn.tripadvisor.com/media/photo-o/1a/f6/f4/20/default-avatar-2020-31.jpg"
+                }
+            },
+            "subratings": {}
+        },
+        {
+            "id": 515197901,
+            "lang": "en",
+            "location_id": 1720231,
+            "published_date": "2017-08-19T11:53:16Z",
+            "rating": 4,
+            "helpful_votes": 1,
+            "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s4.0-66827-5.svg",
+            "url": "https://www.tripadvisor.com/ShowUserReviews-g1069851-d1720231-r515197901-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827#review515197901",
+            "text": "We had a wonderfully relaxing week staying in apartment A2 in Apartments Danijela. The apartment was spacious, very clean and comfortable and the air con, situated in the hall, meant that both bedrooms were kept cool at night. The view from the balcony was superb and it was easy to walk down to the waterfront for a dip in the sea. The water was wonderfully clear and despite being a rocky waterfront, access and exit from the sea was easy enough. On arrival we were made to feel extremely welcome by Antonio and his lovely family. We hired their bikes which made it easier to get into the main part of Town for evening meals - about a 10 minute bike ride or a 20 minute walk. Lumbarda itself is charming with enough restaturants to choose from serving good quality Croatia food. We hired a small motorboat for two days for about £100 which meant that we could potter around the small islands nearby to find pleasant swimming spots. The beach is advertised as the best in Croatia, but beware if you are looking for miles of sand because it is a relativey small sandy beach on the south side of Lumbarda. Overall, we loved apartments Danijela for the peace, tranquility and friendliness of the place. Thank you Antonio for a lovely week.",
+            "title": "Peaceful Haven in Beautiful Bay",
+            "trip_type": "Couples",
+            "travel_date": "2017-08-31",
+            "user": {
+                "username": "Steve_JaneL",
+                "user_location": {
+                "id": "735762",
+                "name": "Trowbridge, Wiltshire, England"
+                },
+                "avatar": {
+                "thumbnail": "https://media-cdn.tripadvisor.com/media/photo-t/05/38/c7/b1/steve-janel.jpg",
+                "small": "https://media-cdn.tripadvisor.com/media/photo-l/05/38/c7/b1/steve-janel.jpg",
+                "medium": "https://media-cdn.tripadvisor.com/media/photo-f/05/38/c7/b1/steve-janel.jpg",
+                "large": "https://media-cdn.tripadvisor.com/media/photo-s/05/38/c7/b1/steve-janel.jpg",
+                "original": "https://media-cdn.tripadvisor.com/media/photo-o/05/38/c7/b1/steve-janel.jpg"
+                }
+            },
+            "subratings": {
+                "0": {
+                "name": "RATE_VALUE",
+                "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+                "value": 5,
+                "localized_name": "Value"
+                },
+                "1": {
+                "name": "RATE_SERVICE",
+                "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+                "value": 5,
+                "localized_name": "Service"
+                },
+                "2": {
+                "name": "RATE_SLEEP",
+                "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+                "value": 5,
+                "localized_name": "Sleep Quality"
+                }
+            }
+        },
+        {
+            "id": 503659072,
+            "lang": "en",
+            "location_id": 1720231,
+            "published_date": "2017-07-19T17:58:21Z",
+            "rating": 5,
+            "helpful_votes": 1,
+            "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+            "url": "https://www.tripadvisor.com/ShowUserReviews-g1069851-d1720231-r503659072-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827#review503659072",
+            "text": "I can't recommend highly enough. Very well appointed apartments and wonderfully (family) run. The pride and passion put in to making the stay a good one by Antonio and family are second to none which shows in the way the apartments are looked after and the home grown wine and produce you can purchase. And beyond that it's worth every penny to wake up to that view every day. ",
+            "title": "Wonderful hosts",
+            "trip_type": "Family",
+            "travel_date": "2017-07-31",
+            "user": {
+                "username": "nickhorne",
+                "user_location": {
+                "id": "186220",
+                "name": "Bristol, England"
+                },
+                "avatar": {
+                "thumbnail": "https://media-cdn.tripadvisor.com/media/photo-t/1a/f6/e4/59/default-avatar-2020-49.jpg",
+                "small": "https://media-cdn.tripadvisor.com/media/photo-l/1a/f6/e4/59/default-avatar-2020-49.jpg",
+                "medium": "https://media-cdn.tripadvisor.com/media/photo-f/1a/f6/e4/59/default-avatar-2020-49.jpg",
+                "large": "https://media-cdn.tripadvisor.com/media/photo-p/1a/f6/e4/59/default-avatar-2020-49.jpg",
+                "original": "https://media-cdn.tripadvisor.com/media/photo-o/1a/f6/e4/59/default-avatar-2020-49.jpg"
+                }
+            },
+            "subratings": {},
+            "owner_response": {
+                "id": 504508670,
+                "title": "Owner response",
+                "text": "Dear Nick,\nthanks you very much for your nice review.\nHope to see you again.\nAll the best for you and your familly.\nAntonio",
+                "lang": "en",
+                "author": "antonio m",
+                "published_date": "2017-07-22T13:42:52Z"
+            }
+        },
+        {
+            "id": 404378841,
+            "lang": "en",
+            "location_id": 1720231,
+            "published_date": "2016-08-12T02:33:38Z",
+            "rating": 5,
+            "helpful_votes": 1,
+            "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+            "url": "https://www.tripadvisor.com/ShowUserReviews-g1069851-d1720231-r404378841-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827#review404378841",
+            "text": "We stayed in Apartment 3. It is well appointed comfortable and clean. The views from the large balcony are stunning. The pool is larger than it looks in the photos and the view from the police is stunning as well. There is good swimming off the rocks below the apartment. It is a little too far from Lombarda to manage without a car. Probably 20 to 25 mins walk.\n\nStunning place I would definitely use this apartment again. The bottle of wine from Antonio's family vineyards on arrival was a nice touch. The area is also wonderful.",
+            "title": "Great apartment",
+            "trip_type": "Family",
+            "travel_date": "2016-08-31",
+            "user": {
+                "username": "male2015",
+                "user_location": {
+                    "id": "null"
+                },
+                "avatar": {
+                "thumbnail": "https://media-cdn.tripadvisor.com/media/photo-t/1a/f6/eb/6d/default-avatar-2020-19.jpg",
+                "small": "https://media-cdn.tripadvisor.com/media/photo-l/1a/f6/eb/6d/default-avatar-2020-19.jpg",
+                "medium": "https://media-cdn.tripadvisor.com/media/photo-f/1a/f6/eb/6d/default-avatar-2020-19.jpg",
+                "large": "https://media-cdn.tripadvisor.com/media/photo-p/1a/f6/eb/6d/default-avatar-2020-19.jpg",
+                "original": "https://media-cdn.tripadvisor.com/media/photo-o/1a/f6/eb/6d/default-avatar-2020-19.jpg"
+                }
+            },
+            "subratings": {}
+        },
+        {
+            "id": 323672219,
+            "lang": "en",
+            "location_id": 1720231,
+            "published_date": "2015-11-01T13:33:40Z",
+            "rating": 5,
+            "helpful_votes": 1,
+            "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/s5.0-66827-5.svg",
+            "url": "https://www.tripadvisor.com/ShowUserReviews-g1069851-d1720231-r323672219-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827#review323672219",
+            "text": "Very nice location, quiet and placed higher on the waterfront with a lovely view on Lumbarda bay. We had the bigger apartment with 3 bedrooms. In reality it looks much better as on the photos. The kitchen is well equipped with al kind of tools we may need for cooking for a big family. As well the bedrooms and the living room offers you all the possible comfort.\nOur kids had a lot of fun at the swimming pool and the see which is located just 2 minutes away from the house.\nThe house is also very close to daily food shopping’s, 10 minutes’ walk in Lumbarda directly or 5 minutes by car to Korcula.\n\nThe owners are very lovely and helped us with lots of advices regarding other places to swim (sand beaches), shopping or visiting. As we arrived, they surprised us with a bottle of wine from their own production and later we got some wonderful grapes.\nAll-in-all we had a wonderful vacation in a wonderful location",
+            "title": "Wonderful vacation in a wonderful location",
+            "trip_type": "NONE",
+            "travel_date": "2015-09-30",
+            "user": {
+                "username": "AntoniuBodea",
+                "user_location": {
+                "id": "664836",
+                "name": "Leimen, Baden-Württemberg"
+                },
+                "avatar": {
+                    "thumbnail": "https://media-cdn.tripadvisor.com/media/photo-t/1a/f6/e8/ea/default-avatar-2020-63.jpg",
+                    "small": "https://media-cdn.tripadvisor.com/media/photo-l/1a/f6/e8/ea/default-avatar-2020-63.jpg",
+                    "medium": "https://media-cdn.tripadvisor.com/media/photo-f/1a/f6/e8/ea/default-avatar-2020-63.jpg",
+                    "large": "https://media-cdn.tripadvisor.com/media/photo-p/1a/f6/e8/ea/default-avatar-2020-63.jpg",
+                    "original": "https://media-cdn.tripadvisor.com/media/photo-o/1a/f6/e8/ea/default-avatar-2020-63.jpg"
+                }
+            },
+            "subratings": {}
+        }
+    ]
+}
+
+export const sampleStayDetails: ViewTripAdvisorStayDetailsResponse = {
+    "location_id": "1720231",
+    "name": "Apartments Danijela",
+    "description": "If you are looking for comfortable apartments in Lumbarda near the sea where you can have the best vacation ever you are on the right place! Apartments Danijela are located at the most beautiful bay of the well reputed village of Lumbarda. They are situated on the west side of the bay of Racisce offering a magnificent view of this picturesque village bathing in crystal clear water. Apartments itself are surrounded with Mediterranean vegetation and a lovely garden. The distance from the sea is less then 50 meters, 1 km from the village center and about 5 km from the old city of Korcula. If you choose to spend your holidays with us you'll enjoy peace and quiet, fresh sea air, local gourmand specialties with famous wines and spirits together with your hosts whose family roots in the region date from centuries. Apartments Danijela are composed of three apartments*** (6+2, 4+1, 4+1) and one studio apartment***(2+1). You will have private parking, barbecue and anchorage for the boat. All apartments have air condition. Danijela Apartments offer you possibility of renting bikes , sale of native wines, brandy and extra virgin olive oil.",
+    "web_url": "https://www.tripadvisor.com/Hotel_Review-g1069851-d1720231-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827",
+    "address_obj": {
+        "street1": "Lumbarda 60",
+        "street2": "island Korcula",
+        "city": "Lumbarda",
+        "state": "Korcula Island",
+        "country": "Croatia",
+        "postalcode": "20260",
+        "address_string": "Lumbarda 60 island Korcula, Lumbarda, Korcula Island 20260 Croatia"
+    },
+    "ancestors": [
+        {
+            "level": "City",
+            "name": "Lumbarda",
+            "location_id": "1069851"
+        },
+        {
+            "level": "Island",
+            "name": "Korcula Island",
+            "location_id": "303810"
+        },
+        {
+            "level": "County",
+            "name": "Dubrovnik-Neretva County",
+            "location_id": "2569707"
+        },
+        {
+            "level": "Region",
+            "name": "Dalmatia",
+            "location_id": "1026906"
+        },
+        {
+            "level": "Country",
+            "name": "Croatia",
+            "location_id": "294453"
+        }
+    ],
+    "latitude": "42.932045",
+    "longitude": "17.162138",
+    "timezone": "Europe/Zagreb",
+    "write_review": "https://www.tripadvisor.com/UserReview-g1069851-d1720231-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html?m=66827",
+    "ranking_data": {
+        "geo_location_id": "1069851",
+        "ranking_string": "#4 of 78 Specialty lodging in Lumbarda",
+        "geo_location_name": "Lumbarda",
+        "ranking_out_of": "78",
+        "ranking": "4"
+    },
+    "rating": "5.0",
+    "rating_image_url": "https://www.tripadvisor.com/img/cdsi/img2/ratings/traveler/5.0-66827-5.svg",
+    "num_reviews": "21",
+    "review_rating_count": {
+        "1": "0",
+        "2": "0",
+        "3": "0",
+        "4": "2",
+        "5": "19"
+    },
+    "subratings": {
+        "0": {
+            "name": "rate_location",
+            "localized_name": "Location",
+            "rating_image_url": "https://static.tacdn.com/img2/ratings/traveler/ss5.0.svg",
+            "value": "5.0"
+        },
+        "1": {
+            "name": "rate_sleep",
+            "localized_name": "Sleep Quality",
+            "rating_image_url": "https://static.tacdn.com/img2/ratings/traveler/ss5.0.svg",
+            "value": "5.0"
+        },
+        "2": {
+            "name": "rate_room",
+            "localized_name": "Rooms",
+            "rating_image_url": "https://static.tacdn.com/img2/ratings/traveler/ss5.0.svg",
+            "value": "5.0"
+        },
+        "3": {
+            "name": "rate_service",
+            "localized_name": "Service",
+            "rating_image_url": "https://static.tacdn.com/img2/ratings/traveler/ss5.0.svg",
+            "value": "5.0"
+        },
+        "4": {
+            "name": "rate_value",
+            "localized_name": "Value",
+            "rating_image_url": "https://static.tacdn.com/img2/ratings/traveler/ss5.0.svg",
+            "value": "5.0"
+        },
+        "5": {
+            "name": "rate_cleanliness",
+            "localized_name": "Cleanliness",
+            "rating_image_url": "https://static.tacdn.com/img2/ratings/traveler/ss5.0.svg",
+            "value": "5.0"
+        }
+    },
+    "photo_count": "57",
+    "see_all_photos": "https://www.tripadvisor.com/Hotel_Review-g1069851-d1720231-m66827-Reviews-Apartments_Danijela-Lumbarda_Korcula_Island_Dubrovnik_Neretva_County_Dalmatia.html#photos",
+    "price_level": "$",
+    "amenities": [
+        "Internet",
+        "Free parking",
+        "Kitchenette",
+        "Free Wifi",
+        "Beachfront",
+        "Free Internet",
+        "Wifi",
+        "Refrigerator in room",
+        "Private Pools",
+        "Clothes Rack",
+        "Coffee / Tea Maker",
+        "Croatian",
+        "English",
+        "Complimentary Toiletries",
+        "Mosquito Net",
+        "Seating Area",
+        "Beach Access"
+    ],
+    "category": {
+        "name": "hotel",
+        "localized_name": "Hotel"
+    },
+    "subcategory": [
+        {
+            "name": "other",
+            "localized_name": "Specialty Lodging"
+        }
+    ],
+    "styles": [
+        "Family",
+        "Romantic"
+    ],
+    "neighborhood_info": [],
+    "trip_types": [
+        {
+            "name": "business",
+            "localized_name": "Business",
+            "value": "0"
+        },
+        {
+            "name": "couples",
+            "localized_name": "Couples",
+            "value": "3"
+        },
+        {
+            "name": "solo",
+            "localized_name": "Solo travel",
+            "value": "0"
+        },
+        {
+            "name": "family",
+            "localized_name": "Family",
+            "value": "13"
+        },
+        {
+            "name": "friends",
+            "localized_name": "Friends getaway",
+            "value": "3"
+        }
+    ],
+    "awards": []
+}
+
+export const sampleStayNearby: ViewTripAdvisorStayNearbyResponse = {
+    "data": [
+        {
+        "location_id": "1720231",
+        "name": "Apartments Danijela",
+        "distance": "0.0",
+        "bearing": "northeast",
+        "address_obj": {
+            "street1": "Lumbarda 60",
+            "street2": "island Korcula",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 60 island Korcula, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "15680861",
+        "name": "Apartments Villa Diha",
+        "distance": "0.02998078874249902",
+        "bearing": "southwest",
+        "address_obj": {
+            "street1": "Lumbarda 55",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 55, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "21337189",
+        "name": "Apartments Vukas",
+        "distance": "0.026919730330609744",
+        "bearing": "northwest",
+        "address_obj": {
+            "street1": "Lumbarda 61",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 61, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "16660495",
+        "name": "Apartmani Vila Hela",
+        "distance": "0.05958240926640384",
+        "bearing": "southwest",
+        "address_obj": {
+            "street1": "Lumbarda 52",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 52, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "10758466",
+        "name": "Maestral",
+        "distance": "0.05623834657156323",
+        "bearing": "southwest",
+        "address_obj": {
+            "street1": "Lumbarda 51",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 51, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "23217069",
+        "name": "Hamo Apartments",
+        "distance": "0.06985693535353073",
+        "bearing": "south",
+        "address_obj": {
+            "street1": "Uvala Racisce 50",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20263",
+            "address_string": "Uvala Racisce 50, Lumbarda, Korcula Island 20263 Croatia"
+        }
+        },
+        {
+        "location_id": "25235968",
+        "name": "Apartmani Sanko",
+        "distance": "0.09941568284133569",
+        "bearing": "south",
+        "address_obj": {
+            "street1": "Uvala Racisce 47",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20263",
+            "address_string": "Uvala Racisce 47, Lumbarda, Korcula Island 20263 Croatia"
+        }
+        },
+        {
+        "location_id": "23575220",
+        "name": "Adrians Boutique Winery",
+        "distance": "0.12403624262344601",
+        "bearing": "southwest",
+        "address_obj": {
+            "street1": "Lumbarda 42",
+            "street2": "Bay of Račišće",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 42 Bay of Račišće, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "23573853",
+        "name": "Adrian's Boutique Winery",
+        "distance": "0.12209561683469028",
+        "bearing": "southwest",
+        "address_obj": {
+            "street1": "Lumbarda 42",
+            "city": "Lumbarda",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "postalcode": "20260",
+            "address_string": "Lumbarda 42, Lumbarda, Korcula Island 20260 Croatia"
+        }
+        },
+        {
+        "location_id": "6155819",
+        "name": "Korcula Adventures",
+        "distance": "0.11127587038491144",
+        "bearing": "southwest",
+        "address_obj": {
+            "city": "Korcula Island",
+            "state": "Korcula Island",
+            "country": "Croatia",
+            "address_string": "Korcula Island Croatia"
+        }
+        }
+    ]
 }

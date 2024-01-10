@@ -20,6 +20,8 @@ import ReviewListBox from "./components/ReviewListBox";
 import FilterBox from "./components/FilterBox";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { AmenityGroup, Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { ViewTripAdvisorStayReviewsResponse } from "@/lib/types/request-models/stay/search.type";
+import GoogleMap from "../GoogleMap";
 
 
 const ModalCenter = styled.div`
@@ -154,10 +156,14 @@ export const MapModal = ({
     open,
     handleClose,
     stayResponse,
+    lat,
+    lng,
 } : {
     open: boolean;
     handleClose: () => void;
     stayResponse: ViewSingleStayResponse;
+    lat: string | number;
+    lng: string | number;
 }) => {
     const { isMobile } = useScreenResolution()
 //   useEffect(() => {
@@ -197,7 +203,10 @@ export const MapModal = ({
                         weight={600}
                     />
                 </Flex>
-                <MapBox />
+                <GoogleMap
+                    lat={lat}
+                    lng={lng}
+                />
             </Flex>
         </Modal>
     );
@@ -443,14 +452,7 @@ interface Reviews {
 interface ReviewModalProps {
   open: boolean;
   handleClose: () => void;
-  reviews: Reviews[];
-  hiddenReviews: number[];
-  toggleReviewVisibility: (index: number) => void;
-}
-interface ReviewModalProps {
-  open: boolean;
-  handleClose: () => void;
-  reviews: Reviews[];
+  reviews: ViewTripAdvisorStayReviewsResponse['data'];
   hiddenReviews: number[];
   toggleReviewVisibility: (index: number) => void;
 }

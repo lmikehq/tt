@@ -160,3 +160,7 @@ export function reverseCabin(x?: string) {
             return "Economy";
     }
 }
+
+export function keyValues(obj: object) {
+    return Object.values(obj ?? {}).filter(e => !!e)
+}

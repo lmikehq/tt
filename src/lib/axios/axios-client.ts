@@ -79,6 +79,8 @@ kiwiClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+
 const kiwiResourceClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_SERVER,
     timeout: 40000,
@@ -87,7 +89,6 @@ const kiwiResourceClient: AxiosInstance = axios.create({
         "Content-Type": "application/json",
     },
 });
-
 kiwiResourceClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response.data;
@@ -97,6 +98,8 @@ kiwiResourceClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+
 const rateHawkResourceClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
     timeout: 15000,
@@ -105,7 +108,6 @@ const rateHawkResourceClient: AxiosInstance = axios.create({
         "Content-Type": "application/json",
     },
 });
-
 rateHawkResourceClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response.data;
@@ -115,10 +117,33 @@ rateHawkResourceClient.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+
+const tripAdvisorResourceClient: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_TRIPADVISOR_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        "Referer": "https://thrillers.travel",
+    },
+});
+tripAdvisorResourceClient.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
+);
+
+
 export {
     axiosClient,
     kiwiClientV1,
     kiwiClient,
     kiwiResourceClient,
     rateHawkResourceClient,
+    tripAdvisorResourceClient,
 };

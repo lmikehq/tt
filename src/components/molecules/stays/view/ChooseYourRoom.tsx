@@ -135,7 +135,7 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
         })
     , [beds, selectedMeals, cancellation, selectedPayment])
     
-    console.log(beds, selectedMeals, selectedPayment, cancellation)
+    // console.log(beds, selectedMeals, selectedPayment, cancellation)
 
     const handleSubmit = () => {
         setOpen((prev) => ({
