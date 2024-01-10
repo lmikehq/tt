@@ -6,11 +6,11 @@ interface layoutProps {
 }
 
 export const metadata = {
-  title: "Thrllers Travel FAQs",
-  description: "Thrillers Travels Blog Section",
+  title: "Thrllers Travel Blog Page",
+  description: "Thrillers Travels Blog Page",
 };
 
-export default function PrivacyPolicyLayout({ children }: layoutProps) {
+export default function BlogLayout({ children }: layoutProps) {
   return (
     <>
       <Navbar page="blog_section" />

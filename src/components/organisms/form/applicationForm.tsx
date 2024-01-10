@@ -167,6 +167,7 @@ function ApplicationForm() {
         validateOnChange: true,
     });
     
+    
     const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
         initialValues: guarantorInfo,
         enableReinitialize: true,
@@ -186,7 +187,7 @@ function ApplicationForm() {
         validationSchema: familyInfoSchema,
         onSubmit: (values, formikHelpers) => {
             if (isLoading) return;
-            nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
+            // nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
         },
         validateOnChange: true,
     });
@@ -207,6 +208,14 @@ function ApplicationForm() {
                 familyMembers: familyMembersFormik.values.familyMembers,
                 guarantorInfo: guarantorFormik.values,
                 documents: values.documents,
+                // ...form,
+                // tripDetails: detailsFormik.values,
+                // personalInfo: personalInfoFormik.values,
+                // employment: employmentFormik.values.employment,
+                // education: educationFormik.values.education,
+                // familyMembers: familyMembersFormik.values.familyMembers,
+                // guarantorInfo: guarantorFormik.values,
+                // documents: values.documents,
             },
         })
         .then((_: any) => {
@@ -219,12 +228,14 @@ function ApplicationForm() {
         })
         .catch((error) => {
             console.log(error)
+            console.log(error)
           const err = error.response?.data;
           if (
             err?.statusCode === 422 &&
             err?.errorMessage.includes("already exists")
           ) {
             setShowApplicationExistsModal(true);
+          } else if (err?.statusCode === 400) {
           } else if (err?.statusCode === 400) {
             toast(
               (t) => (
@@ -260,6 +271,7 @@ function ApplicationForm() {
                 personalInfo: personalInfoFormik.values,
                 employment: employmentFormik.values.employment,
                 education: educationFormik.values.education,
+                //education: educationFormik.values.education,
                 familyMembers: familyMembersFormik.values.familyMembers,
                 guarantorInfo: guarantorFormik.values,
                 documents: documentsFormik.values.documents,

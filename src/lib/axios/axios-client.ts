@@ -60,6 +60,7 @@ kiwiClientV1.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
 const kiwiClient: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER,
     timeout: 15000,

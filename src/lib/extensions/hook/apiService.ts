@@ -23,6 +23,8 @@ const apiService = (url: string, method?: string, data?: any): Promise<any> => {
   });
 };
 
+
+
 export const extApiService = (url: string, method?: string, data?: any) => {
   return new Promise((resolve) => {
     axios({
