@@ -11,15 +11,25 @@ import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import { GalleryModal } from "../view/modals/Modals";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import dayjs from "dayjs";
 
 interface HotelDetailProps {
     hotel: ViewSingleStayResponse;
+    checkInDate: string;
+    checkOutDate: string;
+    durationDays: number;
 }
 
-function HotelDetail({ hotel }: HotelDetailProps) {
+function HotelDetail({
+    hotel,
+    checkInDate,
+    checkOutDate,
+    durationDays,
+}: HotelDetailProps) {
     const [open, setOpen] = useState({
         gallery: false,
     });
+
     return (
         <Container className="hotel_details_container">
             <Span style={{ marginBottom: "15px" }}>
@@ -88,15 +98,15 @@ function HotelDetail({ hotel }: HotelDetailProps) {
                                     <Text
                                         type="h3"
                                         weight={600}
-                                        text={
-                                            hotel.metapolicy_struct
-                                                .check_in_check_out[0]
-                                        }
+                                        text={checkInDate}
                                     ></Text>
                                     <Text
                                         size={16}
                                         type="p"
-                                        text="From 13:00"
+                                        text={`From ${dayjs(
+                                            hotel.check_in_time,
+                                            "HH:mm:ss"
+                                        ).format("HH:mm")}`}
                                     ></Text>
                                 </Flex>
                             </Span>
@@ -111,12 +121,15 @@ function HotelDetail({ hotel }: HotelDetailProps) {
                                     <Text
                                         type="h3"
                                         weight={600}
-                                        text="Nov 20,2023"
+                                        text={checkOutDate}
                                     ></Text>
                                     <Text
                                         size={14}
                                         type="p"
-                                        text="From 09:00"
+                                        text={`From ${dayjs(
+                                            hotel.check_out_time,
+                                            "HH:mm:ss"
+                                        ).format("HH:mm")}`}
                                     ></Text>
                                 </Flex>
                             </Span>
@@ -136,7 +149,13 @@ function HotelDetail({ hotel }: HotelDetailProps) {
                                     <Text
                                         type="h3"
                                         weight={600}
-                                        text="1 Room"
+                                        text={`${
+                                            hotel.facts.rooms_number
+                                        } Room${
+                                            hotel.facts.rooms_number == 1
+                                                ? ""
+                                                : "s"
+                                        }`}
                                     ></Text>
                                 </Flex>
                             </Span>
@@ -151,7 +170,9 @@ function HotelDetail({ hotel }: HotelDetailProps) {
                                     <Text
                                         type="h3"
                                         weight={600}
-                                        text="10 days"
+                                        text={`${durationDays} day${
+                                            durationDays == 1 ? "" : "s"
+                                        }`}
                                     ></Text>
                                 </Flex>
                             </Span>
