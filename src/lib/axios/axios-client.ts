@@ -125,7 +125,8 @@ const tripAdvisorResourceClient: AxiosInstance = axios.create({
     //   withCredentials: true,
     headers: {
         "Content-Type": "application/json",
-        "Referer": "https://thrillers.travel",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
     },
 });
 tripAdvisorResourceClient.interceptors.response.use(
@@ -133,7 +134,6 @@ tripAdvisorResourceClient.interceptors.response.use(
         return response.data;
     },
     (error: AxiosError) => {
-        // toast.error(error.message);
         return Promise.reject(error);
     }
 );

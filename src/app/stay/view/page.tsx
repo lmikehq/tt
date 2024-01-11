@@ -87,11 +87,11 @@ const StayViewPage = () => {
     // }, {
     //     enabled: findStayResponse?.data ? true : false,
     // });
-    
+
     const stayReviewsResponse = sampleReviews.data
     const stayDetailsResponse = sampleStayDetails
     const stayNearbyResponse = sampleStayNearby.data
-    // console.log('ffrev', findStayResponse)
+
     // console.log('ssrev', stayReviewsResponse)
 
     const handleGoBack = () => {
@@ -154,7 +154,7 @@ const StayViewPage = () => {
                     <HotelAmenities stayResponse={stayResponse} />
                     <CompareSlider />
                     <Policies stayResponse={stayResponse} />
-                    <HotelReviews reviews={stayReviewsResponse} stayDetails={stayDetailsResponse} />
+                    {stayReviewsResponse && <HotelReviews reviews={stayReviewsResponse!} stayDetails={stayDetailsResponse!} />}
                     <CompareSimilarHotels/>
                 </Section>
 
