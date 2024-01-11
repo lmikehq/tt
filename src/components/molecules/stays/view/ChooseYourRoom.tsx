@@ -20,6 +20,8 @@ import { isNull } from "util";
 import { Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import Dropdown from "@/components/organisms/dropdown";
 import { capCase } from "@/lib/utilFns";
+import { useQueryParams } from "@/hooks/useNext";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
 
 
 interface Metapolicy {
@@ -52,6 +54,8 @@ interface ChooseYourRoomProps {
 
 const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
     const { isMobile } = useScreenResolution();
+    const { queryParams } = useQueryParams()
+    const { stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore((state) => state);
 
     const [open, setOpen] = useState({
         search: false,
@@ -191,6 +195,7 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                 onChange={(e) => { }}
                 disabled
                 styles={{ background: '#f2f2f2' }}
+                value={stayTabInitialSearchQuery?.checkInDate ? new Date(stayTabInitialSearchQuery?.checkInDate?.toString() ?? '') : undefined}
             />
           </Flex>
           <Flex
@@ -204,6 +209,7 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                 onChange={(e) => { }}
                 disabled
                 styles={{ background: '#f2f2f2' }}
+                value={stayTabInitialSearchQuery?.checkOutDate ? new Date(stayTabInitialSearchQuery?.checkOutDate?.toString() ?? '') : undefined}
             />
           </Flex>{" "}
           <Flex
@@ -238,29 +244,6 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
         <Span>
           {!isMobile && (
             <FilterBox
-              beds={beds}
-              setBeds={setBeds}
-              bedsOptions={bedsOptions}
-              selectedMeals={selectedMeals}
-              setSelectedMeals={setSelectedMeals}
-              mealOptions={mealOptions}
-              cancellation={cancellation}
-              setCancellation={setCancellation}
-              cancellationOptions={cancellationOptions}
-              selectedPayment={selectedPayment}
-              setSelectedPayment={setSelectedPayment}
-              paymentOptions={paymentOptions}
-              submissionState={submissionState}
-              setSubmissionState={setSubmissionState}
-              handleSubmit={handleSubmit}
-              items={filteredItems}
-            />
-          )}
-          {isMobile && (
-            <Span>
-              {/* FILTER MODAL*/}
-              <FilterModal
-                open={open.filter}
                 beds={beds}
                 setBeds={setBeds}
                 bedsOptions={bedsOptions}
@@ -277,13 +260,36 @@ const ChooseYourRoom = ({ stayResponse } : ChooseYourRoomProps) => {
                 setSubmissionState={setSubmissionState}
                 handleSubmit={handleSubmit}
                 items={filteredItems}
-                handleClose={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    filter: false,
-                  }))
-                }
-              />
+            />
+          )}
+          {isMobile && (
+            <Span>
+                {/* FILTER MODAL*/}
+                <FilterModal
+                    open={open.filter}
+                    beds={beds}
+                    setBeds={setBeds}
+                    bedsOptions={bedsOptions}
+                    selectedMeals={selectedMeals}
+                    setSelectedMeals={setSelectedMeals}
+                    mealOptions={mealOptions}
+                    cancellation={cancellation}
+                    setCancellation={setCancellation}
+                    cancellationOptions={cancellationOptions}
+                    selectedPayment={selectedPayment}
+                    setSelectedPayment={setSelectedPayment}
+                    paymentOptions={paymentOptions}
+                    submissionState={submissionState}
+                    setSubmissionState={setSubmissionState}
+                    handleSubmit={handleSubmit}
+                    items={filteredItems}
+                    handleClose={() =>
+                    setOpen((prev) => ({
+                        ...prev,
+                        filter: false,
+                    }))
+                    }
+                />
             </Span>
           )}
         </Span>

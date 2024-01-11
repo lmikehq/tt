@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 import { string } from "yup";
-import { RateHawkRegionType } from "../../response-models/stay/location.type";
+import { RateHawkHotelType, RateHawkRegionType } from "../../response-models/stay/location.type";
 
 export interface StayTypeFilter {
     freeCancelation?: boolean;
@@ -9,7 +9,7 @@ export interface StayTypeFilter {
 }
 
 export interface StayTabInitialSearchQuery {
-    location?: RateHawkRegionType;
+    location?: RateHawkRegionType | RateHawkHotelType;
     checkInDate?: Dayjs;
     checkOutDate?: Dayjs;
     roomForGuests: RoomForGuest[];

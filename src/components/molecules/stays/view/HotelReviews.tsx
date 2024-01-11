@@ -252,6 +252,7 @@ const HotelReviews = ({ reviews = [], stayDetails }: HotelReviewsProps) => {
                     className="react_select"
                     options={options}
                     value={sort}
+                    //@ts-ignore
                     onChange={(v) => setSort(v)}
                 />
             </Flex>

@@ -4,19 +4,21 @@ import SearchInputAsLocationTypes from "../SearchInputAsLocationTypes";
 import { useEffect, useRef, useState } from "react";
 import { da } from "date-fns/locale";
 import { useUserStore } from "@/lib/store/useStore";
-import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { RateHawkHotelType, RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import { useSearchRateHawkLocations } from "@/lib/hooks/stay/search.hook";
 
 interface RateHawkLocationSearchInputProps {
-    onChange: (value: RateHawkRegionType) => void;
-    value?: RateHawkRegionType;
+    onChange: (value: RateHawkRegionType | RateHawkHotelType) => void;
+    value?: RateHawkRegionType | RateHawkHotelType;
     placeholder: string;
+    showHotels: boolean;
 }
 
 const RateHawkLocationSearchInput = ({
     onChange,
     value,
     placeholder,
+    showHotels,
 }: RateHawkLocationSearchInputProps) => {
     const [searchText, setSearchText] = useState<string>("");
 
@@ -27,16 +29,17 @@ const RateHawkLocationSearchInput = ({
         },
         { enabled: searchText ? true : false }
     );
-    const { regions = [] } = data?.data ?? {};
+    const { regions = [], hotels = [] } = data?.data ?? {};
 
     return (
         <SearchInputAsLocationTypes
-            locations={regions}
+            locations={showHotels ? hotels : regions}
             handleSetSearchText={({ text }) => setSearchText(text)}
             value={value}
-            onChange={(value) => onChange(value as RateHawkRegionType)}
+            onChange={(value) => showHotels ? onChange(value as RateHawkHotelType) : onChange(value as RateHawkRegionType)}
             placeholder={placeholder}
             loading={isFetching}
+            showHotels={showHotels}
         />
     );
 };

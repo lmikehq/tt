@@ -72,7 +72,7 @@ function Stays() {
     const computeStaySearchQuery = () => {
         const params = {
             regionId: stayTabInitialSearchQuery.location?.id,
-            countryCode: stayTabInitialSearchQuery.location?.country_code,
+            countryCode: stayTabInitialSearchQuery.location?.country_code ?? '',
             stars: stayTabInitialSearchQuery.stars
                 ? stayTabInitialSearchQuery.stars[0]
                 : 3,
