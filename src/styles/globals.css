@@ -111,8 +111,8 @@ body {
     margin: auto;
 }
 
-.scroll {
-}
+/* .scroll {
+} */
 
 .slick_slider_room_img_img {
     position: relative;
@@ -141,6 +141,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.stay_landing .next,
+.stay_landing .prev {
+  bottom: 0 !important;
+  top: -75px !important;
+}
+@media screen and (max-width: 900px) {
+  .stay_landing {
+    display: none;
+  }
 }
 .control_btn button {
     background-color: var(--color-border);
@@ -173,8 +183,8 @@ body {
 }
 
 /* REACT SELECT */
-.react_select {
-}
+/* .react_select {
+} */
 
 /* REACT SELECT */
 

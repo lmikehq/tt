@@ -26,9 +26,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSearchTripAdvisorStay, useViewSingleStay, useViewTripAdvisorStayReviews, useViewTripAdvisorStayDetails, useViewTripAdvisorStayNearby } from "@/lib/hooks/stay/search.hook";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import {
-    ViewSingleStayRequestInput,
-    convertRoomForGuestsToString,
-    extractRoomForGuestsFromString,
+  ViewSingleStayRequestInput,
+  convertRoomForGuestsToString,
+  extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { sampleReviews, sampleStayDetails, sampleStayNearby, sampleViewStay } from "@/lib/types/response-models/stay/search.type";
@@ -94,9 +94,9 @@ const StayViewPage = () => {
 
     // console.log('ssrev', stayReviewsResponse)
 
-    const handleGoBack = () => {
-        router.back();
-    };
+  const handleGoBack = () => {
+    router.back();
+  };
 
     return (
         <SectionLayout>
@@ -140,9 +140,10 @@ const StayViewPage = () => {
             <HeroImageGrid />
             <Box
                 sx={{
-                    display: "grid",
-                    gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
-                    gap: "30px",
+                  "& .MuiSvgIcon-root": {
+                    fontSize: 28,
+                    padding: 0,
+                  },
                 }}
             >
                 <Section>
@@ -158,12 +159,12 @@ const StayViewPage = () => {
                     <CompareSimilarHotels/>
                 </Section>
 
-                <Section>
-                    <RecentlyViewedList />
-                </Section>
-            </Box>
-        </SectionLayout>
-    );
+        <Section>
+          <RecentlyViewedList />
+        </Section>
+      </Box>
+    </SectionLayout>
+  );
 };
 
 export default StayViewPage;

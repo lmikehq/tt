@@ -15,7 +15,7 @@ export default function ShowButton({ active, handleClick }: showProps) {
         <>
           <BiSolidMinusCircle
             color="#6092A7"
-            size={isMobile ? 32 : 50}
+            size={isMobile ? 28 : 42}
             onClick={handleClick}
             cursor="pointer"
           />
@@ -24,7 +24,7 @@ export default function ShowButton({ active, handleClick }: showProps) {
         <>
           <BsPlusCircleFill
             color="#3C3C4380"
-            size={isMobile ? 32 : 45}
+            size={isMobile ? 28 : 35}
             onClick={handleClick}
             cursor="pointer"
           />
