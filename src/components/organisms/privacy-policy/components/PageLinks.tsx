@@ -3,6 +3,7 @@ import Flex from '@/components/templates/flex';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 import { ttColors } from '@/lib/theme/colors';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react'
 
 interface PageLink {
@@ -15,6 +16,7 @@ interface PageLinksProps {
 }
 function PageLinks({ links = [] }: PageLinksProps) {
     const { isMobile } = useScreenResolution();
+    const pathname = usePathname()
 
     return (
         <Flex
@@ -24,14 +26,17 @@ function PageLinks({ links = [] }: PageLinksProps) {
             
         >
             {links.map((link, index) => 
-                <Flex padding={isMobile ? '1.3rem 1rem' : "1.3rem 1rem"} key={`link-${index}`}>
-                    <Link href={link.url} style={{ textDecoration: 'none', color: 'black' }}>
-                        <Text
-                            type='p'
-                            text={link.name}
-                        />
-                    </Link>
-                </Flex>
+                <Link
+                    key={`link-${index}`}
+                    href={link.url}
+                    style={{ textDecoration: 'none', color: 'black', padding: "1.3rem 1rem", borderRadius: ".5rem", background: pathname === link.url ? ttColors.primary300 : '' }}
+                >
+                    <Text
+                        type='p'
+                        text={link.name}
+                        size={15}
+                    />
+                </Link>
             )}
         </Flex>
     )
