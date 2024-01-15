@@ -11,6 +11,11 @@ interface sectionProps {
   className?: string
   background?: string
   borderRadius?: string
+  border?: string
+  borderTop?: string
+  borderBottom?: string
+  borderRight?: string
+  borderLeft?: string
 }
 
 const Section: React.FC<sectionProps> = ({
@@ -25,6 +30,11 @@ const Section: React.FC<sectionProps> = ({
   background,
   borderRadius,
   className,
+  border,
+  borderBottom,
+  borderLeft,
+  borderRight,
+  borderTop,
 }) => {
   return (
     <section
@@ -38,6 +48,7 @@ const Section: React.FC<sectionProps> = ({
         height: height || "unset",
         background: background || "unset",
         borderRadius: borderRadius || "unset",
+        border: border,
         ...styles,
       }}
     >

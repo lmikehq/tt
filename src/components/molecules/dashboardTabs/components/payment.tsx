@@ -11,7 +11,7 @@ import CustomDrawer from "@molecule/drawers/customDrawer"
 import { useQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { useRef, useState } from "react"
-import { BiDotsVerticalRounded } from "react-icons/bi"
+import { BiDotsVerticalRounded, BiWallet } from "react-icons/bi"
 import { GrFormClose } from "react-icons/gr"
 import { PiEyeLight } from "react-icons/pi"
 import Section from "src/components/molecules/section"
@@ -21,6 +21,12 @@ import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideCli
 import Spinner from "../../icons/spinner"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Center from "@/components/templates/center"
+import NoApplication from "./noApplication"
+import NoPaymentImg from 'public/assets/icons/dashboard/no-payment.svg'
+import { ClickAwayListener } from "@mui/material"
+import { IoEyeOutline } from "react-icons/io5"
+import VisaPaymentModal from "../visaPayment"
 
 const SectionTitle = styled.div`
     display: flex;
@@ -114,7 +120,8 @@ const PaymentWrapper = styled.div`
 
 const DropdownContent = styled.div`
     position: absolute;
-    top: calc(78.5% + 5px);
+    // top: 5px;
+    // top: calc(78.5% + 5px);
     right: 33px;
     background-color: #ffffff;
     border: 1px solid #e7e7e7;
@@ -122,7 +129,7 @@ const DropdownContent = styled.div`
     // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 274px;
     height: max-content;
-    z-index: 09999999;
+    z-index: 9999999;
     overflow-y: scroll;
     font-size: 16px;
     line-height: 19.2px;
@@ -143,6 +150,7 @@ const OptionText = styled.div<{ hovered: boolean }>`
     font-weight: 400;
     flex: 1;
 `
+interface ISortOptions { value: string, label: string, icon: React.ReactNode, action: () => void }
 
 const PaymentHistory = () => {
   const { isMobile } = useScreenResolution()
@@ -150,6 +158,11 @@ const PaymentHistory = () => {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null)
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
   const router = useRouter()
+
+  const content = {
+    title: `You've got no Payment History - Make Payment for a Flight, Visa or Stay`,
+    links: []
+  }
 
   function PaymentIcon() {
     return (
@@ -185,7 +198,8 @@ const PaymentHistory = () => {
     setHoveredOption(null)
   }
 
-  const sortOptions = [
+
+  const sortOptions: ISortOptions[] = [
     {
       value: "Option 1",
       label: "Make Payment",
@@ -227,115 +241,18 @@ const PaymentHistory = () => {
                   align="center"
                   padding="18px 14px"
                 >
-                  <Flex direction="column" gap="1rem">
-                    <Text
-                      type="p"
-                      text={`${payment?.paymentIntent
-                        } - ${currencyFormatter(
-                          payment?.totalAmount
-                        )} `}
-                      size={14}
-                      weight={400}
-                    />
-                    <Flex
-                      gap="1.5rem"
-                      align="center"
-                      justify="flex-start"
-                    >
-                      <Text
-                        type="p"
-                        text={
-                          payment?.updatedAt
-                            ? format(
-                              new Date(
-                                payment?.updatedAt
-                              ),
-                              "dd MMM, yyyy"
-                            )
-                            : "n/a"
-                        }
-                        color="#112211"
-                        size={12}
-                        styles={{ opacity: "75%" }}
-                      />
-                      <PaymentStatus
-                        style={{
-                          background: payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100,
-                        }}
-                      >
-                        <Text
-                          type="p"
-                          text={payment?.status}
-                          styles={{
-                            width: isMobile
-                              ? "100%"
-                              : "20%",
-                          }}
-                          whiteSpace="nowrap"
-                          size={12}
-                          color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
-                          weight={500}
-                        />
-                      </PaymentStatus>
-                    </Flex>
-                  </Flex>
-                  <BiDotsVerticalRounded
-                    color="#040404"
-                    size="1.5rem"
-                    onClick={toggleDropdown}
+                  <MobileComp
+                    payment={payment}
+                    sortOptions={sortOptions}
                   />
-                  {isDropdownOpen && (
-                    <DropdownContent>
-                      {sortOptions.map(
-                        (option, index) => (
-                          <StyledOption
-                            key={option.value}
-                            hovered={
-                              hoveredOption ===
-                              index
-                            }
-                            lastChild={
-                              index ===
-                              sortOptions.length -
-                              1
-                            }
-                            onMouseEnter={() =>
-                              setHoveredOption(
-                                index
-                              )
-                            }
-                            onMouseLeave={() =>
-                              setHoveredOption(
-                                null
-                              )
-                            }
-                            onClick={option.action}
-                          >
-                            <OptionText
-                              hovered={
-                                hoveredOption ===
-                                index
-                              }
-                            >
-                              <Flex
-                                gap="1rem"
-                                align="center"
-                              >
-                                {option.icon}
-                                {option.label}
-                              </Flex>
-                            </OptionText>
-                          </StyledOption>
-                        )
-                      )}
-                    </DropdownContent>
-                  )}
-                  <CustomDrawer
+
+                  {/* <CustomDrawer
                     anchor="bottom"
                     open={bottomDrawerOpen}
                     onClose={() =>
                       setBottomDrawerOpen(false)
                     }
+                    background="#FFF"
                   >
                     <Section
                       height="unset"
@@ -367,7 +284,7 @@ const PaymentHistory = () => {
                             }}
                           />
                         </Flex>
-                        <GrFormClose />
+                        <GrFormClose onClick={() => setBottomDrawerOpen(false)} style={{ cursor: 'pointer' }} />
                       </Flex>
                       <Divider
                         direction="horizontal"
@@ -484,12 +401,14 @@ const PaymentHistory = () => {
                         </Flex>
                       </Flex>
                     </Section>
-                  </CustomDrawer>
+                  </CustomDrawer> */}
                 </Flex>
               </History>
             ))
           ) : (
-            "No payment history"
+            <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+              <NoApplication noVisaImage={NoPaymentImg} content={content} />
+            </Center>
           )
         ) : (
           <Flex direction="column" gap="1rem">
@@ -567,7 +486,7 @@ const PaymentHistory = () => {
                       />
                     </PaymentStatus>
 
-                    <Link href='/demo' target="_blank" rel="noopener noreferrer">
+                    <Link href='/payment-receipt/1' target="_blank" rel="noopener noreferrer">
                       <Button
                         // width="176px"
                         background={ttColors.dark}
@@ -587,20 +506,11 @@ const PaymentHistory = () => {
                 </History>
               ))
             ) : (
-              <Flex
-                justify="space-between"
-                width="100%"
-                align="center"
-                padding="28px 24px"
-              >
-                <Text
-                  type="p"
-                  text="No payment history"
-                  color="#112211"
-                  size={14}
-                  styles={{ opacity: "75%" }}
-                />
-              </Flex>
+              <>
+                <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+                  <NoApplication noVisaImage={NoPaymentImg} content={content} />
+                </Center>
+              </>
             )}
           </Flex>
         )}
@@ -610,3 +520,288 @@ const PaymentHistory = () => {
 }
 
 export default PaymentHistory
+
+
+type Props = {
+  payment: any
+  sortOptions: ISortOptions[]
+}
+
+export const MobileComp = ({ payment, sortOptions }: Props) => {
+  const { isMobile } = useScreenResolution()
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
+
+  const handleClickAway = () => {
+    setShowDropdown(false)
+  }
+
+  const handleClose = () => {
+    setOpenModal(false)
+  }
+
+  const VisaDetail = {
+    intent: '',
+    id: '',
+    accompanying: 0,
+    refetch: () => { }
+  }
+
+  return (
+    <>
+      <Flex
+        justify="space-between"
+        width="100%"
+        align="center"
+        padding="18px 14px"
+      >
+        <Flex direction="column" gap="1rem">
+          <Text
+            type="p"
+            text={`${payment?.paymentIntent
+              } - ${currencyFormatter(
+                payment?.totalAmount
+              )} `}
+            size={14}
+            weight={400}
+          />
+          <Flex
+            gap="1.5rem"
+            align="center"
+            justify="flex-start"
+          >
+            <Text
+              type="p"
+              text={
+                payment?.updatedAt
+                  ? format(
+                    new Date(
+                      payment?.updatedAt
+                    ),
+                    "dd MMM, yyyy"
+                  )
+                  : "n/a"
+              }
+              color="#112211"
+              size={12}
+              styles={{ opacity: "75%" }}
+            />
+            <PaymentStatus
+              style={{
+                background: payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100,
+              }}
+            >
+              <Text
+                type="p"
+                text={payment?.status}
+                styles={{
+                  width: isMobile
+                    ? "100%"
+                    : "20%",
+                }}
+                whiteSpace="nowrap"
+                size={12}
+                color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
+                weight={500}
+              />
+            </PaymentStatus>
+          </Flex>
+        </Flex>
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div style={{ position: 'relative' }}>
+            <div>
+              <BiDotsVerticalRounded
+                color="#040404"
+                size="1.5rem"
+                style={{ height: '1.5rem', cursor: 'pointer' }}
+                onClick={() => setShowDropdown(!showDropdown)}
+              />
+            </div>
+            {showDropdown && (
+              <div style={{ position: 'absolute', width: 'auto', left: '-200px', backgroundColor: '#FFF', boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.06), 0px 2px 4px 0px rgba(0, 0, 0, 0.25)', borderRadius: '12px', padding: '4px 6px', zIndex: 99 }}>
+                <>
+                  <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
+                    setOpenModal(true)
+                  }}>
+                    <BiWallet />
+                    <Text type='p' text="Make Payment" />
+                  </Flex>
+                  <Divider
+                    direction="horizontal"
+                    margin="0px 10px 0"
+                  />
+                  <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
+                    sortOptions[1].action()
+                    setBottomDrawerOpen(true)
+                  }}>
+                    <IoEyeOutline />
+                    <Text type="p" text="View More Details" />
+                  </Flex>
+                </>
+              </div>
+            )}
+          </div>
+        </ClickAwayListener>
+
+
+        <CustomDrawer
+          anchor="bottom"
+          open={bottomDrawerOpen}
+          onClose={() =>
+            setBottomDrawerOpen(false)
+          }
+        >
+          <Section
+            height="unset"
+            padding={
+              "1.125rem 1.125rem 3.5rem 1.125rem"
+            }
+            styles={{
+              background: ttColors.light,
+            }}
+          >
+            <Flex
+              justify="space-between"
+              align="center"
+            >
+              <Flex
+                justify="flex-start"
+                gap="1rem"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Application fee for Canada - Employment visa"
+                  size={16}
+                  weight={600}
+                  width="max-content"
+                  color="#112211"
+                  styles={{
+                    width: "80%",
+                  }}
+                />
+              </Flex>
+              <GrFormClose onClick={() => setBottomDrawerOpen(false)} style={{ cursor: 'pointer' }} />
+            </Flex>
+            <Divider
+              direction="horizontal"
+              margin="0px 0px 1rem"
+            />
+            <Flex gap="1rem" direction="column">
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Email"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Text
+                  type="h3"
+                  text="Jonathanadah @gmail.com"
+                  size={
+                    isMobile ? 14 : 16
+                  }
+                  weight={400}
+                  width="max-content"
+                  color="#5C5C5C"
+                />
+              </Flex>
+
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Date"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Text
+                  type="h3"
+                  text="Date"
+                  size={
+                    isMobile ? 14 : 16
+                  }
+                  weight={400}
+                  width="max-content"
+                  color="#5C5C5C"
+                />
+              </Flex>
+
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Amount"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Text
+                  type="h3"
+                  text="NGN 20,000"
+                  size={
+                    isMobile ? 14 : 16
+                  }
+                  weight={400}
+                  width="max-content"
+                  color="#5C5C5C"
+                />
+              </Flex>
+
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Referral Status"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Button
+                  width="max-content"
+                  height="48px"
+                  padding="5px 20px"
+                  styles={{
+                    marginLeft: "55px",
+                    background:
+                      "#FFF1C2",
+                    borderRadius:
+                      "24px",
+                    color: "#614909",
+                    display: isMobile
+                      ? "block"
+                      : "none",
+                  }}
+                >
+                  <Text
+                    type="p"
+                    text="PENDING"
+                    size={14}
+                    weight={600}
+                  />
+                </Button>
+              </Flex>
+            </Flex>
+          </Section>
+        </CustomDrawer>
+      </Flex>
+      {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={VisaDetail} />)}
+    </>
+  )
+}

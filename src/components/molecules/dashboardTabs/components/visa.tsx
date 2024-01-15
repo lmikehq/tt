@@ -9,6 +9,8 @@ import NoVisaApplication from "./noApplication"
 import VisaDashboardHeader from "./visaDashboardHeader"
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
 import Image from "@atom/image"
+import Flex from "@/components/templates/flex"
+import Spinner from "../../icons/spinner"
 
 const VisaWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -38,12 +40,18 @@ const Visa = () => {
     error,
     refetch,
   } = useQuery(["visas"], getVisas) as any
-  if (isLoading) return <div>loading</div>
+  if (isLoading) {
+    return (
+      <Flex height="450px" align="center" justify="center">
+        <Spinner size="60px" fill={ttColors.blackishBlue} />
+      </Flex>
+    )
+  }
   if (error) return <div>error loading visas, please try again</div>
   const { data: visas } = fetchedVisa
   // console.log({ visas })
   const content = {
-    title: "You’ve got no Visa Application - Let’s help you get Started",
+    title: "You've got no Visa Application - Let's help you get Started",
     links: [
       { text: "Apply for Visa", url: "/apply/visa" },
       { text: "Book flight", url: "/flight" },

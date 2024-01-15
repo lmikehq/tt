@@ -450,3 +450,23 @@ textarea:hover {
   grid-template-columns: 200px 1fr !important;
   padding: 22px 0 !important;
 }
+
+/* REFERRAL MODAL */
+.submission-successful-confetti-bg {
+  background-image: url(../../public/assets/images/dashboard/confetti.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* GRID TEMPLATE LAYOUT FOR VISA APPLICATION */
+.visa-application-grid {
+  display: grid;
+  grid-template-columns: 80px 1fr 25% 20%;
+  align-items: center;
+}
+
+/* THE COUNTRY SELECT DROPDOWN */
+.css-gbi5t6-MuiPopper-root {
+  z-index: 99999 !important;
+}

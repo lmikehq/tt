@@ -1,78 +1,78 @@
-import Flex from "@components/templates/flex";
-import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { FormikProps } from "formik";
-import FormStepTitle from "./formStepsTitle";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import Required from "@atom/required";
-import PhoneInput from "react-phone-input-2";
-import { City, ICity, IState, State } from "country-state-city";
-import TextArea from "@molecule/textArea";
-import { CustomRadioGroup } from "@molecule/radio";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
-import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema";
+import Flex from "@components/templates/flex"
+import Text from "@atom/text"
+import Section from "src/components/molecules/section"
+import { FormikProps } from "formik"
+import FormStepTitle from "./formStepsTitle"
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
+import Required from "@atom/required"
+import PhoneInput from "react-phone-input-2"
+import { City, ICity, IState, State } from "country-state-city"
+import TextArea from "@molecule/textArea"
+import { CustomRadioGroup } from "@molecule/radio"
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS"
+import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema"
 import {
   ErrorText,
   FieldAsDate,
   FieldAsString,
   FieldInput,
   FieldString,
-} from "@organism/fieldInput";
-import { Mode, PersonalInfoInterface } from "@lib/types";
-import ContinueButton from "@organism/continueButton";
-import dayjs from "dayjs";
-import { useApplicationFormStore } from "@lib/store/application-form.store";
-import ToastError from "@molecule/toastError";
-import React, { useEffect } from "react";
-import { useQueryParams } from "@/hooks/useNext";
+} from "@organism/fieldInput"
+import { Mode, PersonalInfoInterface } from "@lib/types"
+import ContinueButton from "@organism/continueButton"
+import dayjs from "dayjs"
+import { useApplicationFormStore } from "@lib/store/application-form.store"
+import ToastError from "@molecule/toastError"
+import React, { useEffect } from "react"
+import { useQueryParams } from "@/hooks/useNext"
 
 const trueFalseOptions = [
-    { value: true, label: "Yes" },
-    { value: false, label: "No" },
-];
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
+]
 
 
 interface FormProps {
-  steps: string[];
-  index: number;
-  persistForm: () => void;
-  formik: FormikProps<PersonalInfoInterface>;
+  steps: string[]
+  index: number
+  persistForm: () => void
+  formik: FormikProps<PersonalInfoInterface>
 }
 
 function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
-    const { isMobile } = useScreenResolution();
-    const { mode, form } = useApplicationFormStore((state) => state);
-    const { queryParams } = useQueryParams()
+  const { isMobile } = useScreenResolution()
+  const { mode, form } = useApplicationFormStore((state) => state)
+  const { queryParams } = useQueryParams()
 
-    const isLoading = mode == Mode.loading;
-    
-    const destination = `${queryParams?.destination ?? 'your destination'}`
+  const isLoading = mode == Mode.loading
 
-    const country = COUNTRY_FLAGS.find(
-        (country) => country.name === form.tripDetails.homeCountry.name
-    );
-    const states: IState[] = State.getStatesOfCountry(`${country?.code}`);
-    const state = states.find(
-        (state) => state.name === formik.values.stateOfOrigin
-    );
-    const cities: ICity[] = City.getCitiesOfState(
-        `${country?.code}`,
-        `${state?.isoCode}`
-    );
-    
+  const destination = `${queryParams?.destination ?? 'your destination'}`
+
+  const country = COUNTRY_FLAGS.find(
+    (country) => country.name === form.tripDetails.homeCountry.name
+  )
+  const states: IState[] = State.getStatesOfCountry(`${country?.code}`)
+  const state = states.find(
+    (state) => state.name === formik.values.stateOfOrigin
+  )
+  const cities: ICity[] = City.getCitiesOfState(
+    `${country?.code}`,
+    `${state?.isoCode}`
+  )
+
 
   return (
     <Section>
-    <FormStepTitle steps={steps} index={index} />
-          
-    {/* Personal Information */}
-    <Text
+      <FormStepTitle steps={steps} index={index} />
+
+      {/* Personal Information */}
+      <Text
         type="p"
         text="Personal Information"
         size={isMobile ? 18 : 20}
         weight={500}
         margin="3.5rem 0 .5rem"
-    />
+      />
       <form onSubmit={formik.handleSubmit}>
         <Flex
           margin="0"
@@ -113,50 +113,50 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
           </Section>
         </Flex>
-              
+
         <Flex
-            direction={isMobile ? "column" : "row"}
-            justify="space-between"
-            gap={isMobile ? "0px" : "1.5rem"}
-            padding="1rem 0 1rem"
+          direction={isMobile ? "column" : "row"}
+          justify="space-between"
+          gap={isMobile ? "0px" : "1.5rem"}
+          padding="1rem 0 1rem"
         >
-            <Text
-                size={15}
-                type="p"
-                text="Have you previously changed or used any surname or given names apart from the one provided above?"
-                margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
-                width={isMobile ? "100%" : "60%"}
-            />
-            <CustomRadioGroup
-                options={trueFalseOptions}
-                name="changeOfName"
-                value={formik.values.changeOfName}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
-            />
+          <Text
+            size={15}
+            type="p"
+            text="Have you previously changed or used any surname or given names apart from the one provided above?"
+            margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+            width={isMobile ? "100%" : "60%"}
+          />
+          <CustomRadioGroup
+            options={trueFalseOptions}
+            name="changeOfName"
+            value={formik.values.changeOfName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
+          />
         </Flex>
 
         {String(formik.values.changeOfName) == 'true' && (
-            <Flex
-                direction="column"
-                gap={isMobile ? ".5rem" : "1rem"}
-            >
-                <Flex gap=".5rem">
-                    <Text
-                        size={15}
-                        type="p"
-                        text="Changed or Previously given name"
-                    />
-                    <Required />        
-                </Flex>
-                <FieldInput
-                    name="changedName"
-                    placeholder="Enter changed or previously given name"
-                    formik={formik}
-                />
+          <Flex
+            direction="column"
+            gap={isMobile ? ".5rem" : "1rem"}
+          >
+            <Flex gap=".5rem">
+              <Text
+                size={15}
+                type="p"
+                text="Changed or Previously given name"
+              />
+              <Required />
             </Flex>
-        )}   
+            <FieldInput
+              name="changedName"
+              placeholder="Enter changed or previously given name"
+              formik={formik}
+            />
+          </Flex>
+        )}
 
         <Flex
           margin="0"
@@ -198,7 +198,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
           </Section>
         </Flex>
-              
+
         <Flex
           margin="0"
           justify="space-between"
@@ -240,7 +240,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
           </Section>
         </Flex>
-              
+
         <Flex
           margin="0"
           justify="space-between"
@@ -274,102 +274,102 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <PhoneInput
-                country={"ng"}
-                autoFormat={true}
-                inputProps={{
-                    name: "phoneNumber",
-                }}
-                inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : ''}}
-                onChange={(e) => {
-                    formik.setFieldValue("phoneNumber", e);
-                }}
+              country={"ng"}
+              autoFormat={true}
+              inputProps={{
+                name: "phoneNumber",
+              }}
+              inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : '' }}
+              onChange={(e) => {
+                formik.setFieldValue("phoneNumber", e)
+              }}
               inputClass="w"
-              placeholder="Enter phone number"
+              placeholder="Enter phone numbers"
             />
-            {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}          
+            {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}
           </Section>
         </Flex>
-              
+
         <Flex
-            margin="0"
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
             <Text
-                type="p"
-                text="Date Of Birth"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={15}
+              type="p"
+              text="Date Of Birth"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              size={15}
             />
             <FieldAsDate
-                name="dateOfBirth"
-                placeholder="Select your Date Of Birth"
-                formik={formik}
-                format="DD/MM/YYYY"
-                styles={{ paddingBottom: '0' }}
+              name="dateOfBirth"
+              placeholder="Select your Date Of Birth"
+              formik={formik}
+              format="DD/MM/YYYY"
+              styles={{ paddingBottom: '0' }}
             />
           </Section>
           <Section width="100%">
             <Flex align="center" gap="0.25rem">
-                <Text
-                    type="p"
-                    text="Gender"
-                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    size={15}
-                />
-                <Required />
+              <Text
+                type="p"
+                text="Gender"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={15}
+              />
+              <Required />
             </Flex>
             <FieldString
-                formik={formik}
-                name="gender"
-                placeholder="Select your Gender"
-                options={["Male", "Female"]}
-            />      
+              formik={formik}
+              name="gender"
+              placeholder="Select your Gender"
+              options={["Male", "Female"]}
+            />
           </Section>
         </Flex>
         <Section width="100%">
-            <Flex align="center" gap="0.25rem">
-                <Text
-                type="p"
-                text="Current Occupation"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={15}
-                />
-                <Required />
-            </Flex>
-            <FieldInput
-                name="occupation"
-                formik={formik}
-                placeholder="Enter your current occupation"
+          <Flex align="center" gap="0.25rem">
+            <Text
+              type="p"
+              text="Current Occupation"
+              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+              size={15}
             />
+            <Required />
+          </Flex>
+          <FieldInput
+            name="occupation"
+            formik={formik}
+            placeholder="Enter your current occupation"
+          />
         </Section>
-              
+
         <Flex
-            margin="0"
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
             <Flex align="center" gap="0.25rem">
-                <Text
-                    type="p"
-                    text="Residential Address"
-                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    size={15}
-                />
+              <Text
+                type="p"
+                text="Residential Address"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={15}
+              />
             </Flex>
             <FieldInput
-                name="address"
-                type="address"
-                formik={formik}
-                placeholder="Enter your residential address"
+              name="address"
+              type="address"
+              formik={formik}
+              placeholder="Enter your residential address"
             />
-            </Section>
+          </Section>
         </Flex>
-              
+
         <Flex
           margin="0"
           justify="space-between"
@@ -416,12 +416,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               name="idNumber"
               placeholder="Enter your ID number"
               formik={formik}
-              // disabled={formik.values.meansOfId == "International Passport"}
+            // disabled={formik.values.meansOfId == "International Passport"}
             />
           </Section>
         </Flex>
-              
-        
+
+
         {formik.values.meansOfId && (
           <Flex
             justify="space-between"
@@ -463,13 +463,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
 
         {/* Citizenship Information */}
         <Text
-            type="p"
-            text="Citizenship Information"
-            size={isMobile ? 18 : 20}
-            weight={500}
-            margin="3.5rem 0 .5rem"
-        /> 
-              
+          type="p"
+          text="Citizenship Information"
+          size={isMobile ? 18 : 20}
+          weight={500}
+          margin="3.5rem 0 .5rem"
+        />
+
         <Flex
           margin="0"
           justify="space-between"
@@ -519,7 +519,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
           </Section>
         </Flex>
- 
+
         <Flex
           margin="0"
           justify="space-between"
@@ -558,18 +558,18 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldAsString
-                formik={formik}
-                options={COUNTRY_FLAGS.map((x) => ({
-                    name: x.name,
-                    flag: x.flag,
-                    code: x.code,
-                }))}
+              formik={formik}
+              options={COUNTRY_FLAGS.map((x) => ({
+                name: x.name,
+                flag: x.flag,
+                code: x.code,
+              }))}
               name="countryOfApply"
               placeholder="Select country where applying"
             />
           </Section>
         </Flex>
- 
+
         <Flex
           margin="0"
           justify="space-between"
@@ -587,10 +587,10 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldString
-                formik={formik}
-                name="statusOfResidence"
-                placeholder="Select status of current residence"
-                options={["Citizen", "Visitor", "Worker", "Refugee", "Student", "Others"]}
+              formik={formik}
+              name="statusOfResidence"
+              placeholder="Select status of current residence"
+              options={["Citizen", "Visitor", "Worker", "Refugee", "Student", "Others"]}
             />
           </Section>
           <Section>
@@ -604,347 +604,347 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldAsDate
-                name="startDateOfResidence"
-                placeholder="Select your Start Date"
-                formik={formik}
-                maxDate={dayjs()}
-                format="DD/MM/YYYY"
+              name="startDateOfResidence"
+              placeholder="Select your Start Date"
+              formik={formik}
+              maxDate={dayjs()}
+              format="DD/MM/YYYY"
             />
           </Section>
         </Flex>
-              
+
         <Flex
-            direction={isMobile ? "column" : "row"}
-            justify="space-between"
-            gap={isMobile ? "0px" : "1.5rem"}
-            margin="2rem 0 1rem"
+          direction={isMobile ? "column" : "row"}
+          justify="space-between"
+          gap={isMobile ? "0px" : "1.5rem"}
+          margin="2rem 0 1rem"
         >
-            <Flex align="center" gap="0.25rem">
-                <Text
-                    size={15}
-                    type="p"
-                    text={`Have you previously lived in other countries?`}
-                    width={isMobile ? "100%" : "max-content"}
-                />
-                <Required />
-            </Flex>
-            <CustomRadioGroup
-                options={trueFalseOptions}
-                name="livedAbroad"
-                value={formik.values.livedAbroad}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
+          <Flex align="center" gap="0.25rem">
+            <Text
+              size={15}
+              type="p"
+              text={`Have you previously lived in other countries?`}
+              width={isMobile ? "100%" : "max-content"}
             />
+            <Required />
+          </Flex>
+          <CustomRadioGroup
+            options={trueFalseOptions}
+            name="livedAbroad"
+            value={formik.values.livedAbroad}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
+          />
         </Flex>
 
         {String(formik.values.livedAbroad) === 'true' && (
-            <Section>
-                <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="How many country(s) have you previously been to?"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                <Required />
-                </Flex>
-                    <FieldString
-                        options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-                        placeholder="Select number of previous countries"
-                        name="countriesLived"
-                        formik={formik}
-                    />
-            </Section>
+          <Section>
+            <Flex align="center" gap="0.25rem">
+              <Text
+                type="p"
+                text="How many country(s) have you previously been to?"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={15}
+              />
+              <Required />
+            </Flex>
+            <FieldString
+              options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+              placeholder="Select number of previous countries"
+              name="countriesLived"
+              formik={formik}
+            />
+          </Section>
         )}
 
         {String(formik.values.livedAbroad) === 'true' && (
-            <React.Fragment>
-                {/* Prev Residence 1 */}
-                {Number(formik.values.countriesLived) > 0 && (Array.from({ length: Math.min(Number(formik.values.countriesLived), 5) }).map((e, ind) => 
-                    <React.Fragment key={`prev-res-${ind}`}>
-                        <Section>
-                            <Flex align="center" gap="0.25rem">
-                                <Text
-                                    type="p"
-                                    text={`Previous Country of Residence ${ind + 1}`}
-                                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                    size={15}
-                                />
-                            </Flex>
-                            <FieldAsString
-                                formik={formik}
-                                options={COUNTRY_FLAGS.map((x) => ({
-                                    name: x.name,
-                                    flag: x.flag,
-                                    code: x.code,
-                                }))}
-                                name={`prevResidence${ind + 1}`}
-                                placeholder="Select previous country of residence"
-                            />
-                        </Section>
-                        <Flex
-                            margin="0"
-                            justify="space-between"
-                            direction={isMobile ? "column" : "row"}
-                            gap={isMobile ? "0px" : "1.5rem"}
-                        >
-                            <Section>
-                                <Flex align="center" gap="0.25rem">
-                                    <Text
-                                        type="p"
-                                        text="Since When?"
-                                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                        size={15}
-                                    />
-                                </Flex>
-                                <FieldAsDate
-                                    name={`startDatePrevResidence${ind + 1}`}
-                                    placeholder="Select your start date"
-                                    formik={formik}
-                                    maxDate={dayjs()}
-                                    format="DD/MM/YYYY"
-                                />
-                            </Section>
-                            <Section>
-                                <Flex align="center" gap="0.25rem">
-                                    <Text
-                                        type="p"
-                                        text="Till When?"
-                                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                                        size={15}
-                                    />
-                                </Flex>
-                                <FieldAsDate
-                                    name={`endDatePrevResidence${ind + 1}`}
-                                    placeholder="Select your end date"
-                                    formik={formik}
-                                    format="DD/MM/YYYY"
-                                />
-                            </Section>
-                        </Flex>
-                    </React.Fragment>
-                ))}
-            </React.Fragment>
+          <React.Fragment>
+            {/* Prev Residence 1 */}
+            {Number(formik.values.countriesLived) > 0 && (Array.from({ length: Math.min(Number(formik.values.countriesLived), 5) }).map((e, ind) =>
+              <React.Fragment key={`prev-res-${ind}`}>
+                <Section>
+                  <Flex align="center" gap="0.25rem">
+                    <Text
+                      type="p"
+                      text={`Previous Country of Residence ${ind + 1}`}
+                      margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                      size={15}
+                    />
+                  </Flex>
+                  <FieldAsString
+                    formik={formik}
+                    options={COUNTRY_FLAGS.map((x) => ({
+                      name: x.name,
+                      flag: x.flag,
+                      code: x.code,
+                    }))}
+                    name={`prevResidence${ind + 1}`}
+                    placeholder="Select previous country of residence"
+                  />
+                </Section>
+                <Flex
+                  margin="0"
+                  justify="space-between"
+                  direction={isMobile ? "column" : "row"}
+                  gap={isMobile ? "0px" : "1.5rem"}
+                >
+                  <Section>
+                    <Flex align="center" gap="0.25rem">
+                      <Text
+                        type="p"
+                        text="Since When?"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                      />
+                    </Flex>
+                    <FieldAsDate
+                      name={`startDatePrevResidence${ind + 1}`}
+                      placeholder="Select your start date"
+                      formik={formik}
+                      maxDate={dayjs()}
+                      format="DD/MM/YYYY"
+                    />
+                  </Section>
+                  <Section>
+                    <Flex align="center" gap="0.25rem">
+                      <Text
+                        type="p"
+                        text="Till When?"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                        size={15}
+                      />
+                    </Flex>
+                    <FieldAsDate
+                      name={`endDatePrevResidence${ind + 1}`}
+                      placeholder="Select your end date"
+                      formik={formik}
+                      format="DD/MM/YYYY"
+                    />
+                  </Section>
+                </Flex>
+              </React.Fragment>
+            ))}
+          </React.Fragment>
         )}
 
         {/* Passport Information */}
         <React.Fragment>
-            <Text
-                type="p"
-                text="Passport Information"
-                size={isMobile ? 18 : 20}
-                weight={500}
-                margin="3.5rem 0 .5rem"
-            /> 
-            <Flex
-                margin="0"
-                justify="space-between"
-                direction={isMobile ? "column" : "row"}
-                gap={isMobile ? "0px" : "1.5rem"}
-            >
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Passport Number"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                    </Flex>
-                    <FieldInput
-                    name="passportNumber"
-                    formik={formik}
-                    placeholder="Enter your Passport Number"
-                    />
-                </Section>
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Issued Country"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                    </Flex>
-                    <FieldAsString
-                    options={COUNTRY_FLAGS.map((x) => ({
-                        name: x.name,
-                        flag: x.flag,
-                        code: x.code,
-                    }))}
-                    formik={formik}
-                    name="passportIssuedCountry"
-                    placeholder="Select the country"
-                    />
-                </Section>
-            </Flex>
-            <Flex
-                margin="0"
-                justify="space-between"
-                direction={isMobile ? "column" : "row"}
-                gap={isMobile ? "0px" : "1.5rem"}
-            >
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                        <Text
-                            type="p"
-                            text="Passport Issued Date"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-                            size={15}
-                        />
-                        <Required />
-                    </Flex>
-                    <FieldAsDate
-                        name="passportIssuedDate"
-                        placeholder="Select your Issued Date"
-                        formik={formik}
-                        maxDate={dayjs()}
-                        format="DD/MM/YYYY"
-                    />
-                </Section>
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                        <Text
-                            type="p"
-                            text="Passport Expiry Date"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-                            size={15}
-                        />
-                        <Required />
-                    </Flex>
-                    <FieldAsDate
-                        name="passportExpiryDate"
-                        placeholder="Select your Expiry Date"
-                        formik={formik}
-                        format="DD/MM/YYYY"
-                    />
-                </Section>
-            </Flex>
-        </React.Fragment>
-        
-        <Flex
-            direction={isMobile ? "column" : "row"}
-            justify="space-between"
-            gap={isMobile ? "0px" : "1.5rem"}
-            margin="1rem 0 1rem"
-        >
-            <Text
-                size={15}
-                type="p"
-                text="Are you a lawful permanent Resident of the United States with a valid alien registration card (Green Card)?"
-                width={isMobile ? "100%" : "60%"}
-            />
-            <CustomRadioGroup
-                options={trueFalseOptions}
-                name="hasGreenCard"
-                value={formik.values.hasGreenCard}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
-            />
-        </Flex>
-              
-        {String(formik.values.hasGreenCard) == 'true' && (
-            <Flex
-                margin="0"
-                justify="space-between"
-                direction={isMobile ? "column" : "row"}
-                gap={isMobile ? "0px" : "1.5rem"}
-            >
-            <Section>
-                <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Document Number"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                </Flex>
-                <FieldInput
-                    name="greenCardNumber"
-                    formik={formik}
-                    placeholder="Enter document number"
-                />
-            </Section>
-            <Section width="100%">
-                <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Document Expiry Date"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                </Flex>
-                <FieldAsDate
-                    name="greenCardExpiryDate"
-                    placeholder="Select green card expiry date"
-                    formik={formik}
-                    format="DD/MM/YYYY"
-                    styles={{ paddingBottom: '0' }}
-                />
-            </Section>
-            </Flex>         
-        )}
-              
-        {/* Marriage Information */}
-        <Text
+          <Text
             type="p"
-            text="Marriage Information"
+            text="Passport Information"
             size={isMobile ? 18 : 20}
             weight={500}
             margin="3.5rem 0 .5rem"
-        /> 
-        
-        <Flex
+          />
+          <Flex
             margin="0"
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Passport Number"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={15}
+                />
+                <Required />
+              </Flex>
+              <FieldInput
+                name="passportNumber"
+                formik={formik}
+                placeholder="Enter your Passport Number"
+              />
+            </Section>
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Issued Country"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={15}
+                />
+                <Required />
+              </Flex>
+              <FieldAsString
+                options={COUNTRY_FLAGS.map((x) => ({
+                  name: x.name,
+                  flag: x.flag,
+                  code: x.code,
+                }))}
+                formik={formik}
+                name="passportIssuedCountry"
+                placeholder="Select the country"
+              />
+            </Section>
+          </Flex>
+          <Flex
+            margin="0"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Passport Issued Date"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                  size={15}
+                />
+                <Required />
+              </Flex>
+              <FieldAsDate
+                name="passportIssuedDate"
+                placeholder="Select your Issued Date"
+                formik={formik}
+                maxDate={dayjs()}
+                format="DD/MM/YYYY"
+              />
+            </Section>
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Passport Expiry Date"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                  size={15}
+                />
+                <Required />
+              </Flex>
+              <FieldAsDate
+                name="passportExpiryDate"
+                placeholder="Select your Expiry Date"
+                formik={formik}
+                format="DD/MM/YYYY"
+              />
+            </Section>
+          </Flex>
+        </React.Fragment>
+
+        <Flex
+          direction={isMobile ? "column" : "row"}
+          justify="space-between"
+          gap={isMobile ? "0px" : "1.5rem"}
+          margin="1rem 0 1rem"
+        >
+          <Text
+            size={15}
+            type="p"
+            text="Are you a lawful permanent Resident of the United States with a valid alien registration card (Green Card)?"
+            width={isMobile ? "100%" : "60%"}
+          />
+          <CustomRadioGroup
+            options={trueFalseOptions}
+            name="hasGreenCard"
+            value={formik.values.hasGreenCard}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
+          />
+        </Flex>
+
+        {String(formik.values.hasGreenCard) == 'true' && (
+          <Flex
+            margin="0"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Document Number"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={15}
+                />
+                <Required />
+              </Flex>
+              <FieldInput
+                name="greenCardNumber"
+                formik={formik}
+                placeholder="Enter document number"
+              />
+            </Section>
+            <Section width="100%">
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Document Expiry Date"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                  size={15}
+                />
+                <Required />
+              </Flex>
+              <FieldAsDate
+                name="greenCardExpiryDate"
+                placeholder="Select green card expiry date"
+                formik={formik}
+                format="DD/MM/YYYY"
+                styles={{ paddingBottom: '0' }}
+              />
+            </Section>
+          </Flex>
+        )}
+
+        {/* Marriage Information */}
+        <Text
+          type="p"
+          text="Marriage Information"
+          size={isMobile ? 18 : 20}
+          weight={500}
+          margin="3.5rem 0 .5rem"
+        />
+
+        <Flex
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
             <Flex align="center" gap="0.25rem">
-                <Text
-                    type="p"
-                    text="Marital Status"
-                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    size={15}
-                />
+              <Text
+                type="p"
+                text="Marital Status"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={15}
+              />
               <Required />
             </Flex>
-                <FieldString
-                    options={[
-                        "Single",
-                        "Married",
-                        "Divorced",
-                        "Widowed",
-                        "Separated",
-                        "Annulled",
-                        "Domestic Partnership/Civil Union",
-                        "Common-Law Marriage",
-                        "Registered Partnership",
-                        "Cohabiting",
-                        "Remarried",
-                    ]}
-                    placeholder="Select your marital status"
-                    name="maritalStatus"
-                    formik={formik}
-                />
+            <FieldString
+              options={[
+                "Single",
+                "Married",
+                "Divorced",
+                "Widowed",
+                "Separated",
+                "Annulled",
+                "Domestic Partnership/Civil Union",
+                "Common-Law Marriage",
+                "Registered Partnership",
+                "Cohabiting",
+                "Remarried",
+              ]}
+              placeholder="Select your marital status"
+              name="maritalStatus"
+              formik={formik}
+            />
           </Section>
           {["Married", "Divorced"].includes(formik.values.maritalStatus) && (
             <Section>
               <Flex align="center" gap="0.25rem">
                 <Text
-                    type="p"
-                    text="Partner's Name"
-                    margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
-                    size={15}
+                  type="p"
+                  text="Partner's Name"
+                  margin={isMobile ? ".5rem 0" : "1rem 0px 0.5rem"}
+                  size={15}
                 />
-                <Required/>
+                <Required />
               </Flex>
               <FieldInput
                 name="partnersName"
@@ -956,57 +956,57 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         </Flex>
 
         {["Married", "Divorced"].includes(formik.values.maritalStatus) && (
-            <Flex
-                margin="0"
-                justify="space-between"
-                direction={isMobile ? "column" : "row"}
-                gap={isMobile ? "0px" : "1.5rem"}
-            >
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                        <Text
-                            type="p"
-                            text="Marriage Start Date"
-                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-                            size={15}
-                        />
-                    </Flex>
-                    <FieldAsDate
-                        name="marriageStartDate"
-                        placeholder="Select start date"
-                        formik={formik}
-                        maxDate={dayjs()}
-                        format="DD/MM/YYYY"
-                    />
-                </Section>
-                {formik.values.maritalStatus === "Divorced" && 
-                    <Section>
-                        <Flex align="center" gap="0.25rem">
-                            <Text
-                                type="p"
-                                text="Marriage End Date"
-                                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
-                                size={15}
-                            />
-                        </Flex>
-                        <FieldAsDate
-                            name="marriageEndDate"
-                            placeholder="Select end date"
-                            formik={formik}
-                            format="DD/MM/YYYY"
-                        />
-                    </Section>
-                }
-            </Flex>
-        )}       
+          <Flex
+            margin="0"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+          >
+            <Section>
+              <Flex align="center" gap="0.25rem">
+                <Text
+                  type="p"
+                  text="Marriage Start Date"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                  size={15}
+                />
+              </Flex>
+              <FieldAsDate
+                name="marriageStartDate"
+                placeholder="Select start date"
+                formik={formik}
+                maxDate={dayjs()}
+                format="DD/MM/YYYY"
+              />
+            </Section>
+            {formik.values.maritalStatus === "Divorced" &&
+              <Section>
+                <Flex align="center" gap="0.25rem">
+                  <Text
+                    type="p"
+                    text="Marriage End Date"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                    size={15}
+                  />
+                </Flex>
+                <FieldAsDate
+                  name="marriageEndDate"
+                  placeholder="Select end date"
+                  formik={formik}
+                  format="DD/MM/YYYY"
+                />
+              </Section>
+            }
+          </Flex>
+        )}
 
         {/* Purpose of Trip */}
         <Text
-            type="p"
-            text="Purpose of Trip"
-            size={isMobile ? 18 : 20}
-            weight={500}
-            margin="3.5rem 0 0"
+          type="p"
+          text="Purpose of Trip"
+          size={isMobile ? 18 : 20}
+          weight={500}
+          margin="3.5rem 0 0"
         />
         <Section>
           <Flex align="center" gap="0.25rem">
@@ -1029,12 +1029,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             <ErrorText text={formik.errors["tripPurpose"]} />
           )}
         </Section>
-              
+
         <Flex
-            margin="0"
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -1047,12 +1047,12 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldAsDate
-                name="tripDurationStartDate"
-                placeholder="Select your duration start date"
-                formik={formik}
-                format="DD/MM/YYYY"
-                minDate={dayjs()}
-                styles={{ paddingBottom: '0' }}
+              name="tripDurationStartDate"
+              placeholder="Select your duration start date"
+              formik={formik}
+              format="DD/MM/YYYY"
+              minDate={dayjs()}
+              styles={{ paddingBottom: '0' }}
             />
           </Section>
           <Section width="100%">
@@ -1066,21 +1066,21 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldAsDate
-                name="tripDurationEndDate"
-                placeholder="Select your duration end date"
-                formik={formik}
-                format="DD/MM/YYYY"
-                minDate={!!formik.values.tripDurationStartDate ? dayjs(formik.values.tripDurationStartDate) : dayjs()}
-                styles={{ paddingBottom: '0' }}
+              name="tripDurationEndDate"
+              placeholder="Select your duration end date"
+              formik={formik}
+              format="DD/MM/YYYY"
+              minDate={!!formik.values.tripDurationStartDate ? dayjs(formik.values.tripDurationStartDate) : dayjs()}
+              styles={{ paddingBottom: '0' }}
             />
           </Section>
         </Flex>
-              
+
         <Flex
-            margin="0"
-            justify="space-between"
-            direction={isMobile ? "column" : "row"}
-            gap={isMobile ? "0px" : "1.5rem"}
+          margin="0"
+          justify="space-between"
+          direction={isMobile ? "column" : "row"}
+          gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
             <Flex align="center" gap="0.25rem">
@@ -1093,170 +1093,170 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               <Required />
             </Flex>
             <FieldInput
-                name="tripDurationLocation"
-                placeholder="Enter where you intend to work or stay"
-                formik={formik}
+              name="tripDurationLocation"
+              placeholder="Enter where you intend to work or stay"
+              formik={formik}
             />
           </Section>
         </Flex>
-              
+
         <Flex
-            direction={isMobile ? "column" : "row"}
-            justify="space-between"
-            gap={isMobile ? "0px" : "1.5rem"}
-            margin="2rem 0 1rem"
+          direction={isMobile ? "column" : "row"}
+          justify="space-between"
+          gap={isMobile ? "0px" : "1.5rem"}
+          margin="2rem 0 1rem"
         >
-            <Text
-                size={15}
-                type="p"
-                text={`Do you know anybody in ${destination}?`}
-                width={isMobile ? "100%" : "60%"}
-            />
-            <CustomRadioGroup
-                options={trueFalseOptions}
-                name="hasContactInLocation"
-                value={formik.values.hasContactInLocation}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
-            />
+          <Text
+            size={15}
+            type="p"
+            text={`Do you know anybody in ${destination}?`}
+            width={isMobile ? "100%" : "60%"}
+          />
+          <CustomRadioGroup
+            options={trueFalseOptions}
+            name="hasContactInLocation"
+            value={formik.values.hasContactInLocation}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            styles={{ width: isMobile ? "100%" : "auto", display: 'flex', justifyContent: 'center' }}
+          />
         </Flex>
-        
+
         {String(formik.values.hasContactInLocation) == "true" && (
-            <React.Fragment>
-                <Flex
-                    margin="0"
-                    justify="space-between"
-                    direction={isMobile ? "column" : "row"}
-                    gap={isMobile ? "0px" : "1.5rem"}
-                >
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Last Name"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                    </Flex>
-                    <FieldInput
-                        name="contactInLocationLastName"
-                        placeholder="Enter last name"
-                        formik={formik}
-                    />
-                </Section>
-                <Section width="100%">
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="First Name"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                    </Flex>
-                    <FieldInput
-                        name="contactInLocationFirstName"
-                        placeholder="Enter first name"
-                        formik={formik}
-                    />
-                </Section>
+          <React.Fragment>
+            <Flex
+              margin="0"
+              justify="space-between"
+              direction={isMobile ? "column" : "row"}
+              gap={isMobile ? "0px" : "1.5rem"}
+            >
+              <Section>
+                <Flex align="center" gap="0.25rem">
+                  <Text
+                    type="p"
+                    text="Last Name"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                  />
+                  <Required />
                 </Flex>
-                    
-                <Flex
-                    margin="0"
-                    justify="space-between"
-                    direction={isMobile ? "column" : "row"}
-                    gap={isMobile ? "0px" : "1.5rem"}
-                >
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Residential Address"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                    </Flex>
-                    <FieldInput
-                        name="contactInLocationAddress"
-                        placeholder="Enter residential address"
-                        formik={formik}
-                    />
-                </Section>
+                <FieldInput
+                  name="contactInLocationLastName"
+                  placeholder="Enter last name"
+                  formik={formik}
+                />
+              </Section>
+              <Section width="100%">
+                <Flex align="center" gap="0.25rem">
+                  <Text
+                    type="p"
+                    text="First Name"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                  />
+                  <Required />
                 </Flex>
-                    
-                <Flex
-                    margin="0"
-                    justify="space-between"
-                    direction={isMobile ? "column" : "row"}
-                    gap={isMobile ? "0px" : "1.5rem"}
-                >
-                <Section>
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Relationship with the person"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
-                    </Flex>
-                    <FieldString
-                        formik={formik}
-                        name="contactInLocationRelationship"
-                        placeholder="Select relationship"
-                        options={["Father", "Mother", "Sibling", "Others"]}
-                    />
-                </Section>
-                <Section width="100%">
-                    <Flex align="center" gap="0.25rem">
-                    <Text
-                        type="p"
-                        text="Phone Number"
-                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                        size={15}
-                    />
-                    <Required />
+                <FieldInput
+                  name="contactInLocationFirstName"
+                  placeholder="Enter first name"
+                  formik={formik}
+                />
+              </Section>
+            </Flex>
+
+            <Flex
+              margin="0"
+              justify="space-between"
+              direction={isMobile ? "column" : "row"}
+              gap={isMobile ? "0px" : "1.5rem"}
+            >
+              <Section>
+                <Flex align="center" gap="0.25rem">
+                  <Text
+                    type="p"
+                    text="Residential Address"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                  />
+                  <Required />
                 </Flex>
-                    <PhoneInput
-                        country={"ng"}
-                        autoFormat={true}
-                        inputProps={{
-                            name: "contactInLocationPhoneNumber",
-                        }}
-                        onChange={(e) => {
-                            formik.setFieldValue("contactInLocationPhoneNumber", e);
-                        }}
-                        inputClass="w"
-                        placeholder="Enter phone number"
-                    />
-                </Section>
-                </Flex>      
-            </React.Fragment>      
-        )}     
+                <FieldInput
+                  name="contactInLocationAddress"
+                  placeholder="Enter residential address"
+                  formik={formik}
+                />
+              </Section>
+            </Flex>
+
+            <Flex
+              margin="0"
+              justify="space-between"
+              direction={isMobile ? "column" : "row"}
+              gap={isMobile ? "0px" : "1.5rem"}
+            >
+              <Section>
+                <Flex align="center" gap="0.25rem">
+                  <Text
+                    type="p"
+                    text="Relationship with the person"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                  />
+                  <Required />
+                </Flex>
+                <FieldString
+                  formik={formik}
+                  name="contactInLocationRelationship"
+                  placeholder="Select relationship"
+                  options={["Father", "Mother", "Sibling", "Others"]}
+                />
+              </Section>
+              <Section width="100%">
+                <Flex align="center" gap="0.25rem">
+                  <Text
+                    type="p"
+                    text="Phone Number"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                  />
+                  <Required />
+                </Flex>
+                <PhoneInput
+                  country={"ng"}
+                  autoFormat={true}
+                  inputProps={{
+                    name: "contactInLocationPhoneNumber",
+                  }}
+                  onChange={(e) => {
+                    formik.setFieldValue("contactInLocationPhoneNumber", e)
+                  }}
+                  inputClass="w"
+                  placeholder="Enter phone number"
+                />
+              </Section>
+            </Flex>
+          </React.Fragment>
+        )}
 
 
         {/* Background Information */}
         <Section padding="2rem 0 0">
-            <Text
-                type="h2"
-                text="Background Information"
-                size={isMobile ? 18 : 20}
-                weight={500}
-                margin="2.5rem 0 0"
-            />
+          <Text
+            type="h2"
+            text="Background Information"
+            size={isMobile ? 18 : 20}
+            weight={500}
+            margin="2.5rem 0 0"
+          />
         </Section>
         <Section margin="0 0 0 .9rem">
           <ol>
             <li>
-                <Flex
-                    align="center"
-                    gap={isMobile ? "0" : "2rem"}
-                    justify="space-between"
-                >
+              <Flex
+                align="center"
+                gap={isMobile ? "0" : "2rem"}
+                justify="space-between"
+              >
                 <Text
                   styles={{
                     width: "65%",
@@ -1316,7 +1316,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                   size={16}
                   weight={400}
                   type="p"
-                    text={`Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in ${destination}?`}
+                  text={`Do you have any physical or mental disorder that would require social and/or health services, other than medication, during a stay in ${destination}?`}
                   margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
@@ -1340,11 +1340,11 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             {String(formik.values.mentalDisorder) == "true" && (
               <Section>
                 <Text
-                    size={16}
-                    weight={300}
-                    type="p"
-                    text="If you answered “yes”, please provide details"
-                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
+                  size={16}
+                  weight={300}
+                  type="p"
+                  text="If you answered “yes”, please provide details"
+                  margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .3rem"}
                 />
                 <TextArea
                   name="mentalDisorderDetails"
@@ -1681,14 +1681,14 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            if (!formik.isValid) return ToastError();
+            if (!formik.isValid) return ToastError()
           }}
           disabled={!formik.isValid}
           saveProgressAndContinueLater={persistForm}
         />
       </form>
     </Section>
-  );
+  )
 }
 
-export default PersonalInfo;
+export default PersonalInfo

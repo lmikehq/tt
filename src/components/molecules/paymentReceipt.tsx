@@ -1,7 +1,4 @@
 'use client'
-// import { PDFViewer } from '@react-pdf/renderer'
-// import { Document, Page, Text, View, Image } from '@react-pdf/renderer'
-// import { StyleSheet } from '@react-pdf/renderer'
 import ttLogo from 'public/assets/images/brand/tt_blue_logo_with_text1.png'
 import Section from './section'
 import Flex from '../templates/flex'

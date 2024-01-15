@@ -11,6 +11,7 @@ import { MdKeyboardArrowDown } from "react-icons/md"
 import styled from "styled-components"
 import Image from "@atom/image"
 import { ClickAwayListener } from "@mui/material"
+import { favouritesOptions, flightOptions, notificationOptions, paymentOptions, referralOptions, visaOptions } from "@/data/options"
 
 const DropdownContent = styled.div`
     position: absolute;
@@ -22,11 +23,17 @@ const DropdownContent = styled.div`
     border-radius: 12px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 370px;
-    height: 367px;
+    max-height: 367px;
     z-index: 09999999;
     overflow-y: scroll;
     font-size: 16px;
     line-height: 19.2px;
+
+    @media (max-width: 900px) {
+      font-size: 14px;
+      width: 300px;
+      line-height: 12px;
+    }
 `
 
 const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
@@ -59,18 +66,37 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
     setIsDropdownOpen(false)
   }
 
-  const sortOptions = [
-    { value: "Option 1", label: "Awaiting Embassy Decision" },
-    { value: "Option 2", label: "Awaiting Confirmation" },
-    { value: "Option 3", label: "Application in Progress" },
-    { value: "Option 4", label: "Visa Fees Required" },
-    { value: "Option 5", label: "Awaiting Passport Collection" },
-    { value: "Option 6", label: "Processing Fees Required" },
-    { value: "Option 7", label: "Courier Fees Required" },
-    { value: "Option 8", label: "Approved" },
-    { value: "Option 9", label: "Declined" },
-    { value: "Option 10", label: "Passport Physically Required" },
-  ]
+  const getSortOptions = (headerText: string): { value: string, name: string, option: string }[] => {
+    switch (headerText) {
+      case 'Notifications':
+        return notificationOptions
+      case 'Visa':
+        return visaOptions
+      case 'Favourites':
+        return favouritesOptions
+      case 'Referrals':
+        return referralOptions
+      case 'Payment History':
+        return paymentOptions
+      case 'All Flight Applications':
+        return flightOptions
+      default:
+        return visaOptions
+    }
+  }
+
+  // const sortOptions = [
+  //   { value: "Option 1", label: "Awaiting Embassy Decision" },
+  //   { value: "Option 2", label: "Awaiting Confirmation" },
+  //   { value: "Option 3", label: "Application in Progress" },
+  //   { value: "Option 4", label: "Visa Fees Required" },
+  //   { value: "Option 5", label: "Awaiting Passport Collection" },
+  //   { value: "Option 6", label: "Processing Fees Required" },
+  //   { value: "Option 7", label: "Courier Fees Required" },
+  //   { value: "Option 8", label: "Approved" },
+  //   { value: "Option 9", label: "Declined" },
+  //   { value: "Option 10", label: "Passport Physically Required" },
+  // ]
 
   const { isMobile } = useScreenResolution()
 
@@ -78,7 +104,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
     <Flex
       justify="space-between"
       align="center"
-      margin={isMobile ? ".5rem 0px" : "1.5rem 0px"}
+      margin={isMobile ? ".5rem 0px 56px" : "1.5rem 0px 56px"}
       gap="0px"
     >
       <Section>
@@ -90,12 +116,14 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
         />
       </Section>
       <Grid
-        columns="73%  25%"
+        columns={isMobile ? "100%" : "73% 25%"}
         gap=".8rem"
         style={{
           justifySelf: "flex-end",
-          gridTemplateColumns: "73% 25%",
-          display: isMobile ? "none" : "grid",
+          gridTemplateColumns: isMobile ? "100%" : "73% 25%",
+          display: isMobile ? "grid" : "grid",
+          justifyContent: 'space-between',
+          width: 'auto'
         }}
       >
         <Flex
@@ -105,13 +133,15 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
           padding="0px 10px"
           borderRadius="8px"
           borderBottom="1px solid #E7E7E7"
-          width="100%"
+          width="360px"
+          maxWidth="360px"
           gap="10px"
+          styles={{ display: isMobile ? 'none' : 'flex' }}
         >
           <CiSearch size="1.5rem" color="#5C5C5C" width="20%" />
           <Section width="100%">
             <Input
-              padding="0px"
+              padding="0px 20px 0 0"
               placeholder="Type here to search"
               styles={{
                 border: "none",
@@ -120,9 +150,8 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
           </Section>
         </Flex>
 
-
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div>
+          <div style={{ display: 'grid', justifyContent: 'flex-end', padding: '0 0', width: 'auto' }}>
             <Flex
               justify="space-between"
               align="center"
@@ -132,9 +161,15 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
               padding="0px 16px"
               styles={{ cursor: "pointer" }}
               height="54px"
+              width={isMobile ? 'max-content' : 'max-content'}
             >
-              <Flex align="center" justify="space-around" onClick={() => setIsDropdownOpen(prev => !prev)}>
-                <BiSort size="1.5rem" color="#606060" />
+              <Flex
+                align="center"
+                width="auto"
+                justify="space-around"
+                onClick={() => setIsDropdownOpen(prev => !prev)}
+              >
+                <BiSort size={isMobile ? "16px" : "1.5rem"} color="#606060" />
                 <Text
                   type="h5"
                   text="Sort By"
@@ -147,27 +182,28 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
 
               {isDropdownOpen && (
                 <DropdownContent>
-                  {sortOptions.map((option, index) => (
+                  {getSortOptions(headerText).map((option, index) => (
                     <StyledOption
                       key={option.value}
                       hovered={hoveredOption === index}
-                      lastChild={index === sortOptions.length - 1}
+                      lastChild={index === getSortOptions(headerText).length - 1}
                       onMouseEnter={() => setHoveredOption(index)}
                       onMouseLeave={() => setHoveredOption(null)}
                     >
                       <OptionText hovered={hoveredOption === index}>
-                        {option.label}
+                        {option.name}
                       </OptionText>
                     </StyledOption>
                   ))}
                 </DropdownContent>
               )}
+
             </Flex>
           </div>
         </ClickAwayListener>
 
       </Grid>
-      <Flex
+      {/* <Flex
         justify="flex-end"
         align="center"
         border="1px solid #E7E7E7"
@@ -196,7 +232,7 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
           size={14}
           color="#606060"
         />
-      </Flex>
+      </Flex> */}
     </Flex>
   )
 }

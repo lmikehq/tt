@@ -32,16 +32,17 @@ const Application = () => {
       label: "Flight",
       value: 1,
       content: <Flight />,
-      disabled: true,
+      disabled: false,
     },
   ]
   return (
     <Section
       margin="2rem 0"
+      // padding="0.5rem"
       styles={{
         background: "#fff",
         borderRadius: "20px",
-        padding: isMobile ? "0" : "2.5rem 1.5rem",
+        padding: isMobile ? "0.5rem" : "2.5rem 1.5rem",
       }}
     >
       {/* <Text

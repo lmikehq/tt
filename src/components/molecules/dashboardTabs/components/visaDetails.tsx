@@ -12,8 +12,8 @@ import { format } from "date-fns"
 import { useRef, useState } from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { GrFormClose } from "react-icons/gr"
-import { HiClock } from "react-icons/hi"
-import { IoCalendar } from "react-icons/io5"
+import { HiClock, HiOutlinePlusSm } from "react-icons/hi"
+import { IoCalendar, IoEyeOutline } from "react-icons/io5"
 import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
@@ -35,6 +35,8 @@ import { AiOutlineCheck } from "react-icons/ai"
 import { BiError } from "react-icons/bi"
 import { RxAvatar } from "react-icons/rx"
 import VisaUploadDocModal from "../visaUploadDoc"
+import { Grid } from "@/components/templates/grid"
+import { AddVisaAccompanyModal } from "./visaAccompanyModal"
 
 const Logo = styled.div`
   height: 64px;
@@ -62,7 +64,7 @@ const VisaStatus = styled.div`
   padding: 14px 18px;
   border-radius: 24px;
   // height: 45px;
-  width: 25%;
+  // width: 25%;
   text-align: center;
 
   @media screen and (max-width: 900px) {
@@ -74,7 +76,7 @@ const VisaStatus = styled.div`
 
 const DropdownContent = styled.div`
   position: absolute;
-  top: 20%;
+  top: 30%;
   right: 0;
   background-color: #ffffff;
   border: 1px solid #e7e7e7;
@@ -83,9 +85,14 @@ const DropdownContent = styled.div`
   width: 274px;
   height: max-content;
   z-index: 9999999;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-size: 16px;
   line-height: 19.2px;
+
+  @media screen and (max-width: 900px){
+    line-height: 10px;
+    font-size: 14px;
+  }
 `
 
 const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
@@ -155,7 +162,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         break
       case "DECLINED":
         visaInformation = {
-          text: "Download Visa",
+          text: "Re-apply Visa",
           fn: () => { },
           disabled: false,
           intent: "",
@@ -229,8 +236,24 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
             : { text: "#37008A", bg: "#F6F0FF" }
   const { applied, voucher } = useVoucherStore((state) => state)
 
+  // ACCOMPANYING
+  const renderAccompany = (status: string): { bg: string, color: string, border: string } => {
+    const setting = {
+      bg: '',
+      color: '',
+      border: ''
+    }
+
+    switch (status) {
+      case 'Pending':
+        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' }
+    }
+
+    return setting
+  }
+
   const accompanying = visa?.familyMembers?.filter(
-    (fm: any) => fm.accompanying == true
+    (fm: any) => fm.accompanying === true
   ).length
 
   function getLocationField(field: string) {
@@ -240,13 +263,31 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   }
 
   const sortOptions = [
-    // {
-    //   value: "Option 1",
-    //   label: "Add Accompanies",
-    //   icon: <HiOutlinePlusSm size="1rem" />,
-    //   action: () => {},
-    //   disabled: true,
-    // },
+    {
+      value: "Option 1",
+      label: "Add Accompanies",
+      icon: <HiOutlinePlusSm size="1rem" />,
+      action: () => {
+        setModalState((prev) => {
+          return {
+            ...prev,
+            open: true,
+            type: 'add-accompany'
+          }
+        })
+        setIsDropdownOpen(false)
+      },
+      disabled: false,
+    },
+    {
+      value: 'Option 2',
+      label: 'Upload Document',
+      icon: <IoEyeOutline size={16} />,
+      action: () => {
+        setModalState({ open: true, type: "upload" })
+        setIsDropdownOpen(false)
+      }
+    },
     {
       value: "Option 3",
       label: "View More Details",
@@ -264,7 +305,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         border: "1px solid #E7E7E7",
         borderRadius: "16px",
       }}
-      padding="15px 10px"
+      padding="24px"
       margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
       <VisaPaymentModal
@@ -283,6 +324,11 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         open={modalState.open && modalState.type === "upload"}
         visa={visa && visa}
         refetch={refetch}
+      />
+
+      <AddVisaAccompanyModal
+        open={modalState.open && modalState.type === 'add-accompany'}
+        setState={setModalState}
       />
 
       {isMobile ? (
@@ -375,6 +421,17 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 background: ttColors.light,
               }}
             >
+              <Flex align="center" justify="flex-end">
+                <GrFormClose
+                  size={30}
+                  color="#848484"
+                  cursor="pointer"
+                  onClick={() => {
+                    setBottomDrawerOpen(false)
+                    setIsDropdownOpen(false)
+                  }}
+                />
+              </Flex>
               <Flex
                 justify="space-between"
                 align="center"
@@ -392,14 +449,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     color="#112211"
                   />
                 </Flex>
-                <GrFormClose
-                  size={30}
-                  color="#848484"
-                  onClick={() => {
-                    setBottomDrawerOpen(false)
-                    setIsDropdownOpen(false)
-                  }}
-                />
               </Flex>
               <Divider direction="horizontal" margin="0px 0px 1rem" />
               <Flex gap="2rem" direction="column">
@@ -480,19 +529,21 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     color="#000000"
                   />
 
-                  <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
-                    <Text
-                      type="h5"
-                      text={
-                        visa.applicationStatus === "FORM FEE REQUESTED"
-                          ? "APPLICATION NOT SUBMITTED"
-                          : visa.applicationStatus
-                      }
-                      weight={800}
-                      size={isMobile ? 13 : 14}
-                      color={textAndBgColor.text}
-                    />
-                  </VisaStatus>
+                  <Flex width="60%">
+                    <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+                      <Text
+                        type="h5"
+                        text={
+                          visa.applicationStatus === "FORM FEE REQUESTED"
+                            ? "APPLICATION NOT SUBMITTED"
+                            : visa.applicationStatus
+                        }
+                        weight={800}
+                        size={isMobile ? 13 : 14}
+                        color={textAndBgColor.text}
+                      />
+                    </VisaStatus>
+                  </Flex>
                 </Flex>
                 <Flex>
                   <Button
@@ -511,7 +562,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     <Text
                       type="h5"
                       text={getButtonInformation().text}
-                      weight={400}
+                      weight={500}
                       size={14}
                       styles={{
                         width: "max-content",
@@ -526,18 +577,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         </Flex>
       ) : (
         <>
-          <Flex
-            justify="space-around"
-            gap={isMobile ? "1.5rem" : "0rem"}
-            direction={isMobile ? "column" : "row"}
-            // margin="2rem 0px 0px"
-            // border="1px solid #E7E7E7"
-            align="center"
-            // borderBottom="1px solid #E7E7E7"
-            styles={{
-              position: "relative",
-            }}
-          >
+
+          <Grid columns='' gap="24px" style={{ gridTemplateColumns: '80px 1fr 25% 20%' }} align="center">
             <Logo>
               {visa?.primaryTraveller?.destination?.code && (
                 <img
@@ -559,12 +600,12 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
 
             <Flex
               justify="flex-start"
-              width={isMobile ? "100%" : "32%"}
+              // width={isMobile ? "100%" : "32%"}
               direction={isMobile ? "column" : "row"}
               gap={isMobile ? "7px" : "0rem"}
             >
               <Flex
-                margin={isMobile ? "0" : "0px 0px 0px 1.5rem"}
+                margin={isMobile ? "0" : "0px"}
                 gap={isMobile ? "2rem" : "1rem"}
                 direction="column"
                 styles={{ display: isMobile ? "none" : "flex" }}
@@ -593,9 +634,10 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     <Section>
                       <Text
                         type="p"
-                        text="Last updated"
+                        text="Application Date"
                         color="#112211"
                         size={12}
+                        weight={600}
                         opacity="60%"
                       />
                       <Text
@@ -615,10 +657,11 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     <section>
                       <Text
                         type="p"
-                        text="Recent payment"
+                        text="Payment Fee"
                         whiteSpace="nowrap"
                         color="#112211"
                         size={12}
+                        weight={600}
                         opacity="60%"
                       />
                       <Text
@@ -647,52 +690,31 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 </Flex>
               </Flex>
 
-              {/* <Flex styles={{ display: isMobile ? "block" : "none" }}>
-                <Text
-                  type="p"
-                  letterSpacing="1px"
-                  weight={900}
-                  size={isMobile ? "1rem" : "1.3rem"}
-                  textAlign={isMobile ? "center" : "left"}
-                  text={`${visa?.primaryTraveller?.homeCountry} — ${visa?.primaryTraveller?.destination}`}
-                />
-                <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
-                  <Text
-                    type="h5"
-                    text={
-                      visa.applicationStatus === "FORM FEE REQUESTED"
-                        ? "APPLICATION NOT SUBMITTED"
-                        : visa.applicationStatus
-                    }
-                    weight={800}
-                    size={isMobile ? 13 : 14}
-                    color={textAndBgColor.text}
-                  />
-                </VisaStatus>
-              </Flex> */}
             </Flex>
 
-            <VisaStatus
-              style={{
-                backgroundColor: textAndBgColor.bg,
-                display: isMobile ? "none" : "block",
-              }}
-            >
-              <Text
-                type="h5"
-                text={
-                  visa.applicationStatus === "FORM FEE REQUESTED"
-                    ? "APPLICATION NOT SUBMITTED"
-                    : visa.applicationStatus
-                }
-                weight={800}
-                size={isMobile ? 13 : 14}
-                color={textAndBgColor.text}
-              />
-            </VisaStatus>
+            <Flex justify="center" align="center">
+              <VisaStatus
+                style={{
+                  backgroundColor: textAndBgColor.bg,
+                  display: isMobile ? "none" : "block",
+                }}
+              >
+                <Text
+                  type="h5"
+                  text={
+                    visa.applicationStatus === "FORM FEE REQUESTED"
+                      ? "APPLICATION NOT SUBMITTED"
+                      : visa.applicationStatus
+                  }
+                  weight={800}
+                  size={isMobile ? 13 : 14}
+                  color={textAndBgColor.text}
+                />
+              </VisaStatus>
+            </Flex>
 
             <Flex
-              width={isMobile ? "100%" : "25%"}
+              // width={isMobile ? "100%" : "25%"}
               justify={isMobile ? "space-between" : "flex-end"}
               gap=".5rem"
               align="center"
@@ -713,7 +735,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 <Text
                   type="h5"
                   text={getButtonInformation().text}
-                  weight={400}
+                  weight={500}
                   size={14}
                   styles={{
                     width: "max-content",
@@ -749,9 +771,10 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 </Section>
               )}
             </Flex>
-          </Flex>
+          </Grid>
+
           {isOpen && (
-            <Section margin="2rem 2rem 0" styles={{ transition: "all 3s" }}>
+            <Section width="auto" styles={{ transition: "all 3s" }}>
               {visa.applicationStatus === "FORM FEE REQUESTED" ? (
                 <Flex align="center" gap=".5rem">
                   <PiDotsThreeCircleLight size={20} color="red" />
@@ -762,97 +785,135 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   />
                 </Flex>
               ) : (
-                <Flex width={isMobile ? "100%" : "92%"} justify="space-between" align="center" margin="2rem 0">
-                  <div>
-                    <Flex align="center" margin=".5rem 0" gap=".5rem">
-                      <PiDotsThreeCircleLight size={20} />
-                      <Text
-                        type="p"
-                        text={visa?.applicationStatus}
-                        size={"15px"}
-                      />
-                    </Flex>
-                    {visa?.usedFormFeeVoucher && (
+                <Section>
+                  <Grid columns={''} gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} width={isMobile ? "100%" : "100%"} align="flex-start" margin="2rem 0">
+                    <div></div>
+
+                    <Section>
                       <Flex align="center" margin=".5rem 0" gap=".5rem">
-                        <PiWalletLight size={20} />
+                        <PiDotsThreeCircleLight size={20} fontWeight={500} />
                         <Text
                           type="p"
-                          text={"Application fee paid with Travel Voucher"}
+                          text={visa?.applicationStatus}
                           size={"15px"}
+                          weight={500}
                         />
                       </Flex>
-                    )}
-                    {/* <Flex align="center" gap=".5rem">
-                    <AiOutlineCheck size={20} />
-                    <Text
-                      type="p"
-                      text={"NO DOCUMENTED REQUESTED FROM YOU"}
-                      size={"15px"}
-                    />
-                  </Flex> */}
-                    <Flex align="center" gap=".5rem">
-                      {visa?.applicationStatus !==
-                        "ADDITIONAL INFORMATION REQUESTED" ? (
-                        <AiOutlineCheck size={20} />
-                      ) : (
-                        <BiError color="red" size={20} />
+                      {!visa?.usedFormFeeVoucher && (
+                        <Flex align="center" margin=".5rem 0" gap=".5rem">
+                          <PiWalletLight size={20} fontWeight={500} />
+                          <Text
+                            type="p"
+                            text={"Application fee paid with Travel Voucher"}
+                            size={"15px"}
+                            weight={500}
+                            transform="uppercase"
+                          />
+                        </Flex>
                       )}
-                      <Text
-                        type="p"
-                        text={
-                          visa?.applicationStatus ===
-                            "ADDITIONAL INFORMATION REQUESTED"
-                            ? "ADDITIONAL DOCUMENT REQUESTED"
-                            : "NO DOCUMENT REQUESTED FROM YOU"
-                        }
-                        size={"15px"}
-                      />
-                    </Flex>
-                  </div>
-                  <div>
-                    <Flex align="center" margin=".5rem 0" gap=".5rem">
-                      <RxAvatar size={20} />
-                      <Text
-                        type="p"
-                        text={`${visa?.primaryTraveller?.firstName} ${visa?.primaryTraveller?.lastName}`}
-                        size={"15px"}
-                      />
-                    </Flex>
 
-                    <Flex align="center" margin=".5rem 0" gap=".5rem">
-                      <MdOutlineFamilyRestroom size={20} />
-                      <Text
-                        type="p"
-                        text={accompanying > 0 ? `Family${accompanying > 0 ? ` (${accompanying} travellers)` : ''}` : "Single"}
-                        size={"15px"}
-                      />
-                    </Flex>
-
-                    <Flex align="center" gap=".5rem">
-                      <MdNumbers size={20} />
-                      <Text type="p" text={visa?.uniqueVisaId} size={"15px"} />
-                    </Flex>
-                  </div>
-                  <div>
-                    <Flex>
-                      <Button
-                        width="200px"
-                        styles={{
-                          maxWidth: "100%",
-                        }}
-                        background="transparent"
-                        border="1px solid black"
-                        color="black"
-                      >
+                      <Flex align="center" gap=".5rem">
+                        {visa?.applicationStatus !==
+                          "ADDITIONAL INFORMATION REQUESTED" ? (
+                          <AiOutlineCheck size={20} />
+                        ) : (
+                          <BiError color="red" size={20} />
+                        )}
                         <Text
                           type="p"
-                          text="+ Add accompanying"
-                          size={"14px"}
+                          text={
+                            visa?.applicationStatus ===
+                              "ADDITIONAL INFORMATION REQUESTED"
+                              ? "ADDITIONAL DOCUMENT REQUESTED"
+                              : "NO DOCUMENT REQUESTED FROM YOU"
+                          }
+                          size={"15px"}
+                          weight={500}
                         />
-                      </Button>
+                      </Flex>
+
+                      <Flex align="center" margin=".5rem 0" gap=".5rem">
+                        <RxAvatar size={20} />
+                        <Text
+                          type="p"
+                          text={`${visa?.primaryTraveller?.firstName} ${visa?.primaryTraveller?.lastName}`}
+                          size={"15px"}
+                          transform="uppercase"
+                          weight={500}
+                        />
+                      </Flex>
+
+
+                      <Flex align="center" margin=".5rem 0" gap=".5rem">
+                        <MdOutlineFamilyRestroom size={20} />
+                        <Text
+                          type="p"
+                          text={accompanying > 0 ? `Family${accompanying > 0 ? ` (${accompanying} travellers)` : ''}` : "Single"}
+                          size={"15px"}
+                          weight={500}
+                          transform="uppercase"
+                        />
+                      </Flex>
+
+                      <Flex align="center" gap=".5rem">
+                        <MdNumbers size={20} />
+                        <Text type="p" text={visa?.uniqueVisaId} size={"15px"} weight={500} transform="uppercase" />
+                      </Flex>
+                    </Section>
+                    {/*OPEN ACCOMPANY MODAL */}
+                    <div>
+                      <Flex justify="flex-end">
+                        <Button
+                          width="fit-content"
+                          styles={{
+                            maxWidth: "max-content",
+                          }}
+                          background="transparent"
+                          border="1px solid black"
+                          color="black"
+                          onClick={() => {
+                            // console.log('add-accompany modal')
+                            setModalState((prev) => {
+                              return {
+                                ...prev,
+                                open: true,
+                                type: 'add-accompany'
+                              }
+                            })
+                          }}
+                        >
+                          <Text
+                            type="p"
+                            text="+ Add Accompanies"
+                            size={"14px"}
+                            weight={500}
+                          />
+                        </Button>
+                      </Flex>
+                    </div>
+                  </Grid>
+
+                  <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+                    <div></div>
+                    <Section>
+                      <Flex>
+                        <Text type="p" text='Angela Abiodun' weight={500} />
+                      </Flex>
+                    </Section>
+
+                    <Flex justify="flex-end">
+                      <Flex
+                        styles={{ backgroundColor: renderAccompany('Pending').bg, color: renderAccompany('Pending').color }}
+                        border={`1px solid ${renderAccompany('Pending').border}`}
+                        width="fit-content"
+                        padding="6px 14px"
+                        borderRadius="24px"
+                      >
+                        <Text type="p" text='In Progress' weight={500} />
+                      </Flex>
                     </Flex>
-                  </div>
-                </Flex>
+                  </Grid>
+                </Section>
               )}
             </Section>
           )}

@@ -1,26 +1,26 @@
-import Flex from '@/components/templates/flex';
-import { Box, Fade, Popper, PopperPlacementType, PopperProps, styled } from '@mui/material';
+import Flex from '@/components/templates/flex'
+import { Box, Fade, Popper, PopperPlacementType, PopperProps, styled } from '@mui/material'
 import React, { ReactElement, ReactNode, useRef, useState } from 'react'
 const arrowStyles = {
-    position: 'absolute',
-    fontSize: 7,
-    width: '3em',
-    height: '3em',
-    '&::before': {
-        content: '""',
-        margin: 'auto',
-        display: 'block',
-        width: 0,
-        height: 0,
-        borderStyle: 'solid',
-        borderColor: '#333333'
-    },
+  position: 'absolute',
+  fontSize: 7,
+  width: '3em',
+  height: '3em',
+  '&::before': {
+    content: '""',
+    margin: 'auto',
+    display: 'block',
+    width: 0,
+    height: 0,
+    borderStyle: 'solid',
+    borderColor: '#333333'
+  },
 }
 
 const StyledPopper = styled(Popper)(({ theme }) => ({ // You can replace with `PopperUnstyled` for lower bundle size.
-//   zIndex: 1,
-//   maxWidth: '375px',
-//   width: '100%',
+  //   zIndex: 1,
+  //   maxWidth: '375px',
+  //   width: '100%',
   '&[data-popper-placement*="bottom"] .arrow': {
     top: 0,
     left: 0,
@@ -63,47 +63,47 @@ const StyledPopper = styled(Popper)(({ theme }) => ({ // You can replace with `P
       borderColor: `transparent transparent transparent #333333`,
     },
   },
-}));
+}))
 
 
 function SimplePopper({ children, open, anchorEl, placement, ...props }: {
-    children: ReactElement,
-    open: boolean,
-    anchorEl: HTMLElement | null,
-    placement?: PopperPlacementType
+  children: ReactElement,
+  open: boolean,
+  anchorEl: HTMLElement | null,
+  placement?: PopperPlacementType
 } & PopperProps) {
-    const [arrowRef, setArrowRef] = useState(null);
-    const canBeOpen = open && Boolean(anchorEl);
-    const id = canBeOpen ? 'transition-popper' : undefined;
+  const [arrowRef, setArrowRef] = useState(null)
+  const canBeOpen = open && Boolean(anchorEl)
+  const id = canBeOpen ? 'transition-popper' : undefined
 
-    return (
-        <StyledPopper
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            placement={placement ?? 'top'}
-            modifiers={[
-                {
-                    name: 'arrow',
-                    enabled: true,
-                    options: {
-                        element: arrowRef,
-                    },
-                },
-            ]}
-            transition
-            {...props}
-        >
-            {({ TransitionProps }) => (
-                <Fade {...TransitionProps} timeout={350}>
-                    <Box sx={{ width: 'max-content' }}>
-                        {children}
-                        <Box component="span" className="arrow" ref={setArrowRef} sx={arrowStyles} />
-                    </Box>
-                </Fade>
-            )}
-        </StyledPopper>
-    )
+  return (
+    <StyledPopper
+      id={id}
+      open={open}
+      anchorEl={anchorEl}
+      placement={placement ?? 'top'}
+      modifiers={[
+        {
+          name: 'arrow',
+          enabled: true,
+          options: {
+            element: arrowRef,
+          },
+        },
+      ]}
+      transition
+      {...props}
+    >
+      {({ TransitionProps }) => (
+        <Fade {...TransitionProps} timeout={350}>
+          <Box sx={{ width: 'max-content' }}>
+            {children}
+            <Box component="span" className="arrow" ref={setArrowRef} sx={arrowStyles} />
+          </Box>
+        </Fade>
+      )}
+    </StyledPopper>
+  )
 }
 
 export default SimplePopper

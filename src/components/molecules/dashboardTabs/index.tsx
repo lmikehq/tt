@@ -51,16 +51,14 @@ function DashboardTabs() {
       label: "Favourites",
       value: 2,
       content: <Favourite />,
-      disabled: true,
-    },
 
+    },
     {
       label: "Notifications",
       value: 3,
       content: <Notification />,
       disabled: false,
     },
-
     {
       label: "Account",
       value: 4,
@@ -70,7 +68,7 @@ function DashboardTabs() {
       label: "Referral",
       value: 5,
       content: <Referrals />,
-      disabled: true,
+      disabled: false,
     },
   ]
 
