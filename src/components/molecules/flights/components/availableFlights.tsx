@@ -31,6 +31,7 @@ import { IoShareSocial } from "react-icons/io5";
 import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import AuthModal from "@/components/organisms/auth/AuthModal";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -459,6 +460,7 @@ function AvailableFlights() {
         updateSearchQuery,
         searchQuery,
     } = useFlightBookingStore((state) => state);
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
     const { isMobile } = useScreenResolution();
     const [showAuthModal, setShowAuthModal] = useState(false);
@@ -680,7 +682,7 @@ function AvailableFlights() {
         ) {
             handleSearchResults({ ...cleanObject(sanitizedQuery) });
         }
-    }, [queryParams]);
+    }, [queryParams, preFerredCurrency]);
 
     useEffect(() => {
         const interval = setTimeout(() => {
