@@ -1,12 +1,12 @@
-'use client'
-import { PDFViewer, Document, Page, Text, View, Image } from '@react-pdf/renderer'
-import { PDFstyles as styles } from "@/styles/pdfStyle"
-import Flex from "@/components/templates/flex"
-import { ConvertDateToCad } from "@/lib/extensions/helpers/convertToCad"
-import ttLogo2 from 'public/assets/images/dashboard/ttlogo-2.png'
-import { FamilyMember, VisaApplication } from "@/lib/types/visa"
-import { isValidDate } from "@/lib/extensions/helpers/validDate"
-import Box from "@/components/molecules/section/box"
+'use client';
+import { PDFViewer, Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import { PDFstyles as styles } from "@/styles/pdfStyle";
+import Flex from "@/components/templates/flex";
+import { ConvertDateToCad } from "@/lib/extensions/helpers/convertToCad";
+import ttLogo2 from 'public/assets/images/dashboard/ttlogo-2.png';
+import { FamilyMember, VisaApplication } from "@/lib/types/visa";
+import { isValidDate } from "@/lib/extensions/helpers/validDate";
+import Box from "@/components/molecules/section/box";
 
 function DownloadVisaApplicationPage() {
 
@@ -77,6 +77,7 @@ function DownloadVisaApplicationPage() {
         {/* Page 1 */}
         <Page size="A4" style={[styles.page_one, styles.firstPage, styles.body]}>
           <View style={{ width: '100%' }}>
+            {/* eslint-disable jsx-a11y/alt-text */}
             <Image src={ttLogo2.src} style={[styles.image, { marginBottom: 25 }]} />
             <Text style={[styles.header_main, { marginBottom: 10 }]}>THRILLERS TRAVELS</Text>
             <Text style={[styles.white, styles.firstPage_header_sub]}>Visa Application Document</Text>
@@ -1948,7 +1949,7 @@ function DownloadVisaApplicationPage() {
 
       </Document>
     </PDFViewer>
-  )
+  );
 }
 
 export default DownloadVisaApplicationPage

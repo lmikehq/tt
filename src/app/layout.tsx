@@ -15,11 +15,11 @@ import RTQueryClient from "@/components/templates/rtqWrapper";
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
-  display: "swap",
+  // display: "swap",
   subsets: ["latin-ext"],
 });
 
-export const generateMetadata = () => {
+const generateMetadata = () => {
   return {
     title: {
       default: Siteconfig.name,
@@ -30,11 +30,11 @@ export const generateMetadata = () => {
   };
 };
 
-export const generateViewport = () => {
+const generateViewport = () => {
   return "width=device-width, initial-scale=1";
 };
 
-export const generateThemeColor = () => {
+const generateThemeColor = () => {
   return [{ media: "(prefers-color-scheme: light)", color: "white" }];
 };
 

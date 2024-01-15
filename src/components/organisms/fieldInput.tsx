@@ -10,13 +10,14 @@ import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInp
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import InputLabel from "@mui/material/InputLabel";
+import PhoneInput from "react-phone-input-2";
 
 interface FieldProps {
   id?: string;
   value?: any;
   defaultValue?: string;
   styles?: CSSProperties;
-
+  padding?: string;
   name: string;
   type?:
   | "text"
@@ -43,7 +44,7 @@ interface FieldProps {
   max?: number;
   min?: number;
   format?: string;
-  padding?: string;
+  country?: string;
 }
 
 function getNestedValue(obj: any, propertyPath: string) {
@@ -61,7 +62,7 @@ function getNestedValue(obj: any, propertyPath: string) {
 
 export const ErrorText = ({ text }: { text: string; }) => {
   return (
-    <Section styles={{ position: "relative", marginBottom: "0rem" }}>
+    <Section styles={{ position: "relative", marginBottom: "1rem" }}>
       <Section
         height="fit-content"
         styles={{ position: "absolute", top: "0.25rem" }}
@@ -222,9 +223,6 @@ export const FieldString = (props: FieldProps) => {
   const touched = getNestedValue(formik?.touched, name);
   const error = getNestedValue(formik?.errors, name);
 
-  console.log({ error });
-  // console.log('formik.touched', formik?.touched)
-
   const handleChange = (e: any) => {
     // console.log("ee: ", e);
     onChanged && onChanged(e);
@@ -242,7 +240,7 @@ export const FieldString = (props: FieldProps) => {
         value={value ? value : formikvalue}
         error={touched && error}
       />
-      {touched && error ? <ErrorText text={error.name} /> : null}
+      {touched && error ? <ErrorText text={error} /> : null}
     </Section>
   );
 };
@@ -274,7 +272,7 @@ export const FieldAsDate = (props: FieldProps) => {
   return (
     <Section
       styles={{ position: "relative", ...styles }}
-      padding={padding ? padding : "0 0 1.2rem 0"}
+      padding="0 0 1.2rem 0"
     >
       <DatePicker
         disabled={disabled}
@@ -286,6 +284,44 @@ export const FieldAsDate = (props: FieldProps) => {
         onChange={onChange ? onChange : handleChange}
         error={touched && error}
         format={format}
+      />
+      {touched && error ? <ErrorText text={error} /> : null}
+    </Section>
+  );
+};
+
+
+export const FieldPhone = (props: FieldProps) => {
+  const {
+    name,
+    formik,
+    placeholder,
+    onChange,
+    value,
+    country,
+    onChanged,
+  } = props;
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
+
+  const handleChange = (e: any) => {
+    onChanged && onChanged(e);
+    formik?.setFieldValue(name, e);
+  };
+
+  const formikvalue = getNestedValue(formik?.values, name);
+
+  return (
+    <Section styles={{ position: "relative" }}>
+      <PhoneInput
+        country={country ?? "ng"}
+        autoFormat={true}
+        value={formikvalue}
+        inputProps={{ name }}
+        inputStyle={{ border: touched && error ? `1px solid crimson` : '' }}
+        onChange={handleChange}
+        inputClass="w"
+        placeholder={placeholder ?? "Enter phone number"}
       />
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>

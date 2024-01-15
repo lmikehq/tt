@@ -1,10 +1,10 @@
-'use client'
-import { PDFViewer } from '@react-pdf/renderer'
-import { Document, Page, Text, View, Image } from '@react-pdf/renderer'
-import Flex from '@/components/templates/flex'
-import ttLogo from 'public/assets/images/brand/tt_blue_logo_with_text1.png'
-import { ttColors } from '@/lib/theme/colors'
-import { StyleSheet } from '@react-pdf/renderer'
+'use client';
+import { PDFViewer } from '@react-pdf/renderer';
+import { Document, Page, Text, View, Image } from '@react-pdf/renderer';
+import Flex from '@/components/templates/flex';
+import ttLogo from 'public/assets/images/brand/tt_blue_logo_with_text1.png';
+import { ttColors } from '@/lib/theme/colors';
+import { StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   subTitle: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     fontWeight: 400
   },
   flexContainer: {}
-})
+});
 
 function PaymentRecieptPage() {
   return (
@@ -27,6 +27,7 @@ function PaymentRecieptPage() {
         {/* PAGE 1 */}
         <Page size='A4'>
           <Flex direction='column' align='center' margin='0 0 14px'>
+            {/* eslint-disable jsx-a11y/alt-text */}
             <Image src={ttLogo.src} style={{ height: '57px', width: '57px', objectFit: 'contain' }} />
             <Text style={{ color: ttColors.foundation.gray, fontSize: '12px' }}>Generated on 21, December 2023</Text>
           </Flex>
@@ -92,7 +93,7 @@ function PaymentRecieptPage() {
         </Page>
       </Document>
     </PDFViewer >
-  )
+  );
 }
 
-export default PaymentRecieptPage
+export default PaymentRecieptPage;

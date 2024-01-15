@@ -18,15 +18,8 @@ import Flex from "@/components/templates/flex";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import sleep from "@/lib/extensions/helpers/sleep";
 import Spinner from "@/components/molecules/icons/spinner";
-import { Poppins } from "next/font/google";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-const poppins = Poppins({
-  weight: "400",
-  style: ["normal"],
-  display: "swap",
-  adjustFontFallback: false,
-  subsets: ["latin-ext"],
-});
+
 
 interface StyledTableCellProps extends TableCellProps {
   textAlign?: "center" | "left" | "right";

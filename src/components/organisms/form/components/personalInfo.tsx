@@ -1,4 +1,3 @@
-
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import Section from "src/components/molecules/section";
@@ -11,7 +10,6 @@ import TextArea from "@molecule/textArea";
 import { CustomRadioGroup } from "@molecule/radio";
 import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema";
-
 import {
   ErrorText,
   FieldAsDate,
@@ -19,48 +17,48 @@ import {
   FieldInput,
   FieldPhone,
   FieldString,
-} from "@organism/fieldInput"
-import { Mode, PersonalInfoInterface } from "@lib/types"
-import ContinueButton from "@organism/continueButton"
-import dayjs from "dayjs"
-import { useApplicationFormStore } from "@lib/store/application-form.store"
-import ToastError from "@molecule/toastError"
-import React, { useEffect } from "react"
-import { useQueryParams } from "@/hooks/useNext"
+} from "@organism/fieldInput";
+import { Mode, PersonalInfoInterface } from "@lib/types";
+import ContinueButton from "@organism/continueButton";
+import dayjs from "dayjs";
+import { useApplicationFormStore } from "@lib/store/application-form.store";
+import ToastError from "@molecule/toastError";
+import React, { useEffect } from "react";
+import { useQueryParams } from "@/hooks/useNext";
 
 const trueFalseOptions = [
   { value: true, label: "Yes" },
   { value: false, label: "No" },
-]
+];
 
 
 interface FormProps {
-  steps: string[]
-  index: number
-  persistForm: () => void
-  formik: FormikProps<PersonalInfoInterface>
+  steps: string[];
+  index: number;
+  persistForm: () => void;
+  formik: FormikProps<PersonalInfoInterface>;
 }
 
 function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
-  const { isMobile } = useScreenResolution()
-  const { mode, form } = useApplicationFormStore((state) => state)
-  const { queryParams } = useQueryParams()
+  const { isMobile } = useScreenResolution();
+  const { mode, form } = useApplicationFormStore((state) => state);
+  const { queryParams } = useQueryParams();
 
-  const isLoading = mode == Mode.loading
+  const isLoading = mode == Mode.loading;
 
-  const destination = `${queryParams?.destination ?? 'your destination'}`
+  const destination = `${queryParams?.destination ?? 'your destination'}`;
 
   const country = COUNTRY_FLAGS.find(
     (country) => country.name === form.tripDetails.homeCountry.name
-  )
-  const states: IState[] = State.getStatesOfCountry(`${country?.code}`)
+  );
+  const states: IState[] = State.getStatesOfCountry(`${country?.code}`);
   const state = states.find(
     (state) => state.name === formik.values.stateOfOrigin
-  )
+  );
   const cities: ICity[] = City.getCitiesOfState(
     `${country?.code}`,
     `${state?.isoCode}`
-  )
+  );
 
 
   return (
@@ -275,27 +273,11 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               />
               <Required />
             </Flex>
-
-            <PhoneInput
-              country={"ng"}
-              autoFormat={true}
-              inputProps={{
-                name: "phoneNumber",
-              }}
-              inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : '' }}
-              onChange={(e) => {
-                formik.setFieldValue("phoneNumber", e)
-              }}
-              inputClass="w"
-              placeholder="Enter phone numbers"
-            />
-            {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}
-
             <FieldPhone
-                name="phoneNumber"
-                formik={formik}
-                country="ng"
-                placeholder="Enter phone number"
+              name="phoneNumber"
+              formik={formik}
+              country="ng"
+              placeholder="Enter phone number"
             />
           </Section>
         </Flex>
@@ -339,23 +321,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
           </Section>
         </Flex>
-
-        <Section width="100%">
-          <Flex align="center" gap="0.25rem">
-            <Text
-              type="p"
-              text="Current Occupation"
-              margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-              size={15}
-            />
-            <Required />
-          </Flex>
-          <FieldInput
-            name="occupation"
-            formik={formik}
-            placeholder="Enter your current occupation"
-          />
-        </Section>
         {/* <Section width="100%">
             <Flex align="center" gap="0.25rem">
                 <Text
@@ -372,7 +337,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 placeholder="Enter your current occupation"
             />
         </Section> */}
-              
+
         <Flex
           margin="0"
           justify="space-between"
@@ -381,13 +346,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         >
           <Section>
             <Flex align="center" gap="0.25rem">
-                <Text
-                    type="p"
-                    text="Residential Address"
-                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    size={15}
-                />
-                <Required />
+              <Text
+                type="p"
+                text="Residential Address"
+                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                size={15}
+              />
+              <Required />
             </Flex>
             <FieldInput
               name="address"
@@ -1208,7 +1173,6 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                   />
                   <Required />
                 </Flex>
-
                 <FieldInput
                   name="contactInLocationAddress"
                   placeholder="Enter residential address"
@@ -1250,33 +1214,17 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                   />
                   <Required />
                 </Flex>
-                <PhoneInput
-                  country={"ng"}
-                  autoFormat={true}
-                  inputProps={{
-                    name: "contactInLocationPhoneNumber",
-                  }}
-                  onChange={(e) => {
-                    formik.setFieldValue("contactInLocationPhoneNumber", e)
-                  }}
-                  inputClass="w"
-                  placeholder="Enter phone number"
+                <FieldPhone
+                  name="contactInLocationPhoneNumber"
+                  formik={formik}
+                  country="ng"
+                  placeholder="Enter contact's phone number"
                 />
               </Section>
             </Flex>
           </React.Fragment>
         )}
 
-                    <FieldPhone
-                        name="contactInLocationPhoneNumber"
-                        formik={formik}
-                        country="ng"
-                        placeholder="Enter contact's phone number"
-                    />
-                </Section>
-                </Flex>      
-            </React.Fragment>      
-        )}     
 
         {/* Background Information */}
         <Section padding="2rem 0 0">
@@ -1720,14 +1668,14 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         <ContinueButton
           isLoading={isLoading}
           onClick={() => {
-            if (!formik.isValid) return ToastError()
+            if (!formik.isValid) return ToastError();
           }}
           disabled={!formik.isValid}
           saveProgressAndContinueLater={persistForm}
         />
       </form>
     </Section>
-  )
+  );
 }
 
-export default PersonalInfo
+export default PersonalInfo;

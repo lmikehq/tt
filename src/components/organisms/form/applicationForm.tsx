@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import Flex from "@components/templates/flex"
-import Text from "@atom/text"
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
 import {
 
-    detailsSchema,
-    documentsSchema,
-    familyInfoSchema,
-    guarantorSchema,
-    manyEducationSchema,
-    manyEmploymentSchema,
-    personalInfoSchema,
+  detailsSchema,
+  documentsSchema,
+  familyInfoSchema,
+  guarantorSchema,
+  manyEducationSchema,
+  manyEmploymentSchema,
+  personalInfoSchema,
 } from "@lib/types/schema";
 import { getSteps } from "src/lib/application/steps";
 import Section from "src/components/molecules/section";
@@ -33,7 +33,7 @@ import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
-import testPayload from '@/constants/payload.json'
+import testPayload from '@/constants/payload.json';
 
 
 const PromoInput = styled.div`
@@ -52,7 +52,7 @@ const PromoInput = styled.div`
         border-top-left-radius: 0 !important;
         height: 40px !important;
     }
-`
+`;
 
 const ErrorToastComponent = styled.div`
     width: 100%;
@@ -75,21 +75,21 @@ const ErrorToastComponent = styled.div`
         background: ${ttColors.primary};
         cursor: pointer;
     }
-`
+`;
 
 export interface UploadedDoc {
-  name: string
-  type: string
-  size: string
-  title: string
+  name: string;
+  type: string;
+  size: string;
+  title: string;
 }
 interface ErrorInterface {
-  property: string
-  constraints: string
+  property: string;
+  constraints: string;
 }
 
 function ApplicationForm() {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
   const {
     fetchRecentProgressFromSession,
     form,
@@ -103,7 +103,7 @@ function ApplicationForm() {
     mode,
     saveProgress,
     uploadedDocuments,
-  } = useApplicationFormStore((state) => state)
+  } = useApplicationFormStore((state) => state);
 
   const {
     tripDetails,
@@ -113,13 +113,13 @@ function ApplicationForm() {
     familyMembers,
     guarantorInfo,
     documents,
-  } = form
+  } = form;
 
-  const isLoading = mode == Mode.loading
-  const params = useSearchParams()
-  const router = useRouter()
+  const isLoading = mode == Mode.loading;
+  const params = useSearchParams();
+  const router = useRouter();
   const [showApplicationExistsModal, setShowApplicationExistsModal] =
-    useState(false)
+    useState(false);
 
   const detailsFormik = useFormik({
     initialValues: tripDetails,
@@ -127,10 +127,10 @@ function ApplicationForm() {
     validateOnMount: true,
     validationSchema: detailsSchema,
     onSubmit: (values: DetailsKeys) => {
-      if (isLoading) return
-      nextStep({ data: { tripDetails: values } })
+      if (isLoading) return;
+      nextStep({ data: { tripDetails: values } });
     },
-  })
+  });
 
   const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
     initialValues: personalInfo,
@@ -138,11 +138,11 @@ function ApplicationForm() {
     validateOnMount: true,
     validationSchema: personalInfoSchema,
     onSubmit: (values: PersonalInfoInterface) => {
-      if (isLoading) return
-      nextStep({ data: { personalInfo: values } })
+      if (isLoading) return;
+      nextStep({ data: { personalInfo: values } });
     },
     // validateOnChange: true,
-  })
+  });
 
   const employmentFormik = useFormik({
     initialValues: { employment },
@@ -150,11 +150,11 @@ function ApplicationForm() {
     validateOnMount: true,
     validationSchema: manyEmploymentSchema,
     onSubmit: (values, formikHelpers) => {
-      if (isLoading) return
-      nextStep({ data: { employment: values.employment } })
+      if (isLoading) return;
+      nextStep({ data: { employment: values.employment } });
     },
     validateOnChange: true,
-  })
+  });
 
   const educationFormik = useFormik({
     initialValues: { education },
@@ -162,11 +162,11 @@ function ApplicationForm() {
     validateOnMount: true,
     validationSchema: manyEducationSchema,
     onSubmit: (values) => {
-      if (isLoading) return
-      nextStep({ data: { education: values.education } })
+      if (isLoading) return;
+      nextStep({ data: { education: values.education } });
     },
     validateOnChange: true,
-  })
+  });
 
   const familyMembersFormik = useFormik({
     initialValues: { familyMembers },
@@ -177,12 +177,13 @@ function ApplicationForm() {
       formikHelpers
         .validateForm()
         .then((res) => { })
-        .catch((err) => { })
-      if (isLoading) return
-      nextStep({ data: { familyMembers: values.familyMembers } })
+        .catch((err) => { });
+      if (isLoading) return;
+      nextStep({ data: { familyMembers: values.familyMembers } });
     },
     validateOnChange: true,
-  })
+  });
+
 
   const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
     initialValues: guarantorInfo,
@@ -191,10 +192,10 @@ function ApplicationForm() {
     validationSchema: guarantorSchema,
     onSubmit: (values: GuarantorInfoInterface) => {
       // if (isLoading) return;
-      // nextStep({ data: { personalInfo: values } });
+      // nextStep({ data: { guarantorInfo: values } });
     },
     validateOnChange: true,
-  })
+  });
 
   const documentsFormik = useFormik({
     initialValues: { documents },
@@ -204,79 +205,36 @@ function ApplicationForm() {
     onSubmit: (values) => {
       createVisaApplication({
         data: {
-          ...form,
+          // ...form,
+          tripDetails: detailsFormik.values,
+          personalInfo: personalInfoFormik.values,
+          employment: employmentFormik.values.employment,
+          education: educationFormik.values.education,
+          familyMembers: familyMembersFormik.values.familyMembers,
+          guarantorInfo: guarantorFormik.values,
           documents: values.documents,
+          // ...form,
+          // tripDetails: detailsFormik.values,
+          // personalInfo: personalInfoFormik.values,
+          // employment: employmentFormik.values.employment,
+          // education: educationFormik.values.education,
+          // familyMembers: familyMembersFormik.values.familyMembers,
+          // guarantorInfo: guarantorFormik.values,
+          // documents: values.documents,
         },
       })
-
-        validateOnChange: true,
-    });
-    
-    
-    const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
-        initialValues: guarantorInfo,
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: guarantorSchema,
-        onSubmit: (values: GuarantorInfoInterface) => {
-            // if (isLoading) return;
-            // nextStep({ data: { guarantorInfo: values } });
-        },
-        validateOnChange: true,
-    });
-
-    const familyMembersFormik = useFormik({
-        initialValues: { familyMembers },
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: familyInfoSchema,
-        onSubmit: (values, formikHelpers) => {
-            if (isLoading) return;
-            // nextStep({ data: { familyMembers: values.familyMembers, guarantorInfo: guarantorFormik.values } });
-        },
-        validateOnChange: true,
-    });
-
-    const documentsFormik = useFormik({
-        initialValues: { documents },
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: documentsSchema,
-        onSubmit: (values) => {
-        createVisaApplication({
-            data: {
-                // ...form,
-                tripDetails: detailsFormik.values,
-                personalInfo: personalInfoFormik.values,
-                employment: employmentFormik.values.employment,
-                education: educationFormik.values.education,
-                familyMembers: familyMembersFormik.values.familyMembers,
-                guarantorInfo: guarantorFormik.values,
-                documents: values.documents,
-                // ...form,
-                // tripDetails: detailsFormik.values,
-                // personalInfo: personalInfoFormik.values,
-                // employment: employmentFormik.values.employment,
-                // education: educationFormik.values.education,
-                // familyMembers: familyMembersFormik.values.familyMembers,
-                // guarantorInfo: guarantorFormik.values,
-                // documents: values.documents,
-            },
-        })
         .then((_: any) => {
           toast.success(
             "Your application has been submitted successfully, please proceed to make payment",
             {
               duration: 15000,
             }
-          )
+          );
         })
         .catch((error) => {
 
-          const err = error.response?.data
-            console.log(error)
-         
           const err = error.response?.data;
+          console.log(error);
 
           if (
             err?.statusCode === 422 &&
@@ -307,11 +265,11 @@ function ApplicationForm() {
               {
                 duration: 100000,
               }
-            )
+            );
           }
-        })
+        });
     },
-  })
+  });
 
   const persistForm = () => {
     saveProgress({
@@ -325,9 +283,9 @@ function ApplicationForm() {
         documents: documentsFormik.values.documents,
       },
       uploadedDocuments,
-    })
-    router.push("/")
-  }
+    });
+    router.push("/");
+  };
 
   const steps = getSteps({
     detailsFormik,
@@ -338,24 +296,24 @@ function ApplicationForm() {
     guarantorFormik,
     documentsFormik,
     persistForm,
-  }).find((x) => x.id === step)
+  }).find((x) => x.id === step);
 
   const coverImage = isMobile
     ? "/assets/images/visaPageCover.jpg"
-    : "/assets/images/visaDesktopCover.jpg"
+    : "/assets/images/visaDesktopCover.jpg";
 
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search)
+    const searchParams = new URLSearchParams(window.location.search);
 
     fetchDetailsFromURL({
       homeCountry: searchParams.get("home") || "",
       destination: searchParams.get("destination") || "",
       visaType: searchParams.get("visaType") || "",
-    })
-    fetchRecentProgressFromSession()
-  }, [params])
+    });
+    fetchRecentProgressFromSession();
+  }, [params]);
 
 
   // useEffect(() => {
@@ -393,7 +351,7 @@ function ApplicationForm() {
               background={ttColors.blackishBlue}
               color="#fff"
               onClick={() => {
-                router.push("/dashboard")
+                router.push("/dashboard");
               }}
             >
               Continue
@@ -447,102 +405,6 @@ function ApplicationForm() {
               currentPhase={step}
               formData={form}
               onClose={() => setBottomDrawerOpen(false)}
-        });
-        },
-    });
-
-    const persistForm = () => {
-        saveProgress({
-            data: {
-                tripDetails: detailsFormik.values,
-                personalInfo: personalInfoFormik.values,
-                employment: employmentFormik.values.employment,
-                education: educationFormik.values.education,
-                //education: educationFormik.values.education,
-                familyMembers: familyMembersFormik.values.familyMembers,
-                guarantorInfo: guarantorFormik.values,
-                documents: documentsFormik.values.documents,
-            },
-            uploadedDocuments,
-        });
-        router.push("/");
-    };
-
-    const steps = getSteps({
-        detailsFormik,
-        personalInfoFormik,
-        educationFormik,
-        employmentFormik,
-        familyMembersFormik,
-        guarantorFormik,
-        documentsFormik,
-        persistForm,
-    }).find((x) => x.id === step);
-
-    const coverImage = isMobile
-        ? "/assets/images/visaPageCover.jpg"
-        : "/assets/images/visaDesktopCover.jpg";
-
-    const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
-
-    useEffect(() => {
-        const searchParams = new URLSearchParams(window.location.search);
-
-        fetchDetailsFromURL({
-            homeCountry: searchParams.get("home") || "",
-            destination: searchParams.get("destination") || "",
-            visaType: searchParams.get("visaType") || "",
-        });
-        fetchRecentProgressFromSession();
-    }, [params]);
-
-    // useEffect(() => {
-    //     saveProgress({ data: testPayload, uploadedDocuments: [] })
-    // }, [])
-
-
-    return (
-        <>
-            <CustomConfirmationModal
-                open={showApplicationExistsModal}
-                handleClose={() => setShowApplicationExistsModal(false)}
-                icon={
-                    <Image
-                        src={"/assets/images/visaIcons/duplicate_icon.svg"}
-                        alt="delete-icon"
-                        width={95.5}
-                        height={95.5}
-                    />
-                }
-                title={"Duplicate Application"}
-                description="There is an existing application with the same details."
-                subTitle={"Continue to your dashboard to view application?"}
-                buttons={
-                    <>
-                        <Button
-                            background="transparent"
-                            color={ttColors.dark}
-                            border="1px solid #19013b"
-                            onClick={() => setShowApplicationExistsModal(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            background={ttColors.blackishBlue}
-                            color="#fff"
-                            onClick={() => {
-                                router.push("/dashboard");
-                            }}
-                        >
-                            Continue
-                        </Button>
-                    </>
-                }
-            />
-
-            <AllCountryHead
-                cover={coverImage}
-                title={form.tripDetails.destination.name || ""}
             />
           </Section>
         </CustomDrawer>
@@ -634,7 +496,7 @@ function ApplicationForm() {
         </Flex>
       </SectionLayout>
     </>
-  )
+  );
 }
 
-export default ApplicationForm
+export default ApplicationForm;
