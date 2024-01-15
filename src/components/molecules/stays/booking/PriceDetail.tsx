@@ -61,8 +61,7 @@ function PriceDetail({
                                 weight={600}
                                 text={
                                     hotel?.rates[0].payment_options
-                                        .payment_types[0].show_currency_code ??
-                                    ""
+                                        .payment_types[0].currency_code ?? ""
                                 }
                             />
                             <Text
@@ -72,7 +71,7 @@ function PriceDetail({
                                 text={formatPriceWithoutCurrency(
                                     parseInt(
                                         hotel?.rates[0].payment_options
-                                            .payment_types[0].show_amount ?? ""
+                                            .payment_types[0].amount ?? ""
                                     )
                                 )}
                             />
@@ -145,7 +144,7 @@ function PriceDetail({
                                     />
                                 </Flex>
                             </Flex>
-                            <Flex justify="space-between" align="center">
+                            {/* <Flex justify="space-between" align="center">
                                 <Flex>
                                     <Text type="p" text="Service Charge"></Text>
                                 </Flex>
@@ -167,7 +166,7 @@ function PriceDetail({
                                         text={formatPriceWithoutCurrency(9200)}
                                     />
                                 </Flex>
-                            </Flex>
+                            </Flex> */}
                         </Flex>
                     </Span>
                     <Flex justify="space-between" align="center">
@@ -179,13 +178,21 @@ function PriceDetail({
                                 type="p"
                                 size={24}
                                 weight={600}
-                                text={getCurrency()}
+                                text={
+                                    hotel?.rates[0].payment_options
+                                        .payment_types[0].currency_code ?? ""
+                                }
                             />
                             <Text
                                 type="p"
                                 size={30}
                                 weight={600}
-                                text={formatPriceWithoutCurrency(105800)}
+                                text={formatPriceWithoutCurrency(
+                                    parseInt(
+                                        hotel?.rates[0].payment_options
+                                            .payment_types[0].amount ?? ""
+                                    )
+                                )}
                             />
                         </Flex>
                     </Flex>

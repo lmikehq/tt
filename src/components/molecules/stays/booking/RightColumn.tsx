@@ -34,7 +34,15 @@ const RightColumn = ({ guests }: RightColumnProps) => {
                 hotel={stayResponse}
                 durationDays={dayjs(checkOut).diff(dayjs(checkIn), "day")}
             />
-            <FreeCancellation />
+            {stayResponse.rates[0].payment_options.payment_types[0]
+                .cancellation_penalties.free_cancellation_before && (
+                <FreeCancellation
+                    freeCancelationBefore={
+                        stayResponse.rates[0].payment_options.payment_types[0]
+                            .cancellation_penalties.free_cancellation_before!
+                    }
+                />
+            )}
         </Span>
     );
 };
