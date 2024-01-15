@@ -33,7 +33,7 @@ const TabWrapper = styled.div<{
   .MuiTabs-root {
     padding: 0px;
     box-shadow: ${({ shadowShow }) =>
-      shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
+    shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
     box-shadow: ;
 
     border-radius: 6px;
@@ -41,7 +41,7 @@ const TabWrapper = styled.div<{
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
     background: ${({ addBackgroundColor }) =>
-      addBackgroundColor ? "#87CEEB" : "#fff"};
+    addBackgroundColor ? "#87CEEB" : "#fff"};
     color: ${({ addColor }) => (addColor ? "#fff" : "#7BBBD6")};
   }
   .css-1gsv261 {
@@ -72,8 +72,6 @@ const TabWrapper = styled.div<{
       justify-content: space-between;
     }
 
-`
-  }
 `;
 
 function TabPanel(props: TabPanelProps) {

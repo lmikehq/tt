@@ -1,4 +1,3 @@
-
 "use client";
 import { FormikProvider, FormikValues, useField } from "formik";
 import Input from "@atom/input";
@@ -11,56 +10,56 @@ import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInp
 import Section from "src/components/molecules/section";
 import dayjs, { Dayjs } from "dayjs";
 import InputLabel from "@mui/material/InputLabel";
-import PhoneInput from "react-phone-input-2";
 
 interface FieldProps {
-  id?: string
-  value?: any
-  defaultValue?: string
-  styles?: CSSProperties
-    name: string;
-    type?:
-        | "text"
-        | "number"
-        | "file"
-        | "textArea"
-        | "password"
-        | "email"
-        | "tel"
-        | "address"
-        | "checkbox";
-    step?: string;
-    border?: string;
-    placeholder: string;
-    formik?: FormikValues;
-    options?: any[];
-    addon?: ReactNode;
-    views?: ("year" | "month" | "day")[];
-    disabled?: boolean;
-    onChange?: (x: any) => void;
-    onChanged?: (x?: any) => void;
-    minDate?: Dayjs | null;
-    maxDate?: Dayjs;
-    max?: number;
-    min?: number;
-    format?: string;
-    country?: string;
+  id?: string;
+  value?: any;
+  defaultValue?: string;
+  styles?: CSSProperties;
+
+  name: string;
+  type?:
+  | "text"
+  | "number"
+  | "file"
+  | "textArea"
+  | "password"
+  | "email"
+  | "tel"
+  | "address"
+  | "checkbox";
+  step?: string;
+  border?: string;
+  placeholder: string;
+  formik?: FormikValues;
+  options?: any[];
+  addon?: ReactNode;
+  views?: ("year" | "month" | "day")[];
+  disabled?: boolean;
+  onChange?: (x: any) => void;
+  onChanged?: (x?: any) => void;
+  minDate?: Dayjs | null;
+  maxDate?: Dayjs;
+  max?: number;
+  min?: number;
+  format?: string;
+  padding?: string;
 }
 
 function getNestedValue(obj: any, propertyPath: string) {
-  const properties = propertyPath.split(".")
-  let value = obj
+  const properties = propertyPath.split(".");
+  let value = obj;
   for (const prop of properties) {
     if (value && typeof value === "object") {
-      value = value[prop]
+      value = value[prop];
     } else {
-      return undefined
+      return undefined;
     }
   }
-  return value
+  return value;
 }
 
-export const ErrorText = ({ text }: { text: string }) => {
+export const ErrorText = ({ text }: { text: string; }) => {
   return (
     <Section styles={{ position: "relative", marginBottom: "0rem" }}>
       <Section
@@ -77,8 +76,8 @@ export const ErrorText = ({ text }: { text: string }) => {
         />
       </Section>
     </Section>
-  )
-}
+  );
+};
 
 export const FieldInput = (props: FieldProps) => {
   const {
@@ -93,14 +92,14 @@ export const FieldInput = (props: FieldProps) => {
     min,
     max,
     border,
-  } = props
+  } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target
-    formik?.setFieldValue(name, value)
-  }
-  const touched = getNestedValue(formik?.touched, name)
-  const error = getNestedValue(formik?.errors, name)
+    const { value } = e.target;
+    formik?.setFieldValue(name, value);
+  };
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   return (
     <Section>
@@ -125,8 +124,8 @@ export const FieldInput = (props: FieldProps) => {
       />
       {touched && error ? <ErrorText text={error} /> : null}
     </Section>
-  )
-}
+  );
+};
 
 export const ArrayInput = (props: FieldProps) => {
   const {
@@ -139,20 +138,20 @@ export const ArrayInput = (props: FieldProps) => {
     min,
     defaultValue,
     step,
-  } = props
+  } = props;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let { value } = e.target
+    let { value } = e.target;
     if (name.includes("cgpa")) {
-      parseFloat(value) > 5 ? (value = "5") : value
+      parseFloat(value) > 5 ? (value = "5") : value;
     }
 
-    formik?.setFieldValue(name, value)
-  }
+    formik?.setFieldValue(name, value);
+  };
 
-  const value = getNestedValue(formik?.values, name)
-  const touched = getNestedValue(formik?.touched, name)
-  const error = getNestedValue(formik?.errors, name)
+  const value = getNestedValue(formik?.values, name);
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   return (
     <div>
@@ -173,8 +172,8 @@ export const ArrayInput = (props: FieldProps) => {
       />
       {touched && error ? <ErrorText text={error} /> : null}
     </div>
-  )
-}
+  );
+};
 
 export const FieldAsString = (props: FieldProps) => {
   const {
@@ -185,15 +184,15 @@ export const FieldAsString = (props: FieldProps) => {
     value,
     onChange,
     disabled,
-  } = props
-  const touched = getNestedValue(formik?.touched, name)
-  const error = getNestedValue(formik?.errors, name)
+  } = props;
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   const handleChange = (e: any) => {
-    formik?.setFieldValue(name, e)
-  }
+    formik?.setFieldValue(name, e);
+  };
 
-  const formikvalue = getNestedValue(formik?.values, name)
+  const formikvalue = getNestedValue(formik?.values, name);
 
   return (
     <Section styles={{ position: "relative" }}>
@@ -207,8 +206,8 @@ export const FieldAsString = (props: FieldProps) => {
       />{" "}
       {touched && error ? <ErrorText text={error.name} /> : null}
     </Section>
-  )
-}
+  );
+};
 
 export const FieldString = (props: FieldProps) => {
   const {
@@ -219,20 +218,20 @@ export const FieldString = (props: FieldProps) => {
     onChange,
     value,
     onChanged,
-  } = props
-  const touched = getNestedValue(formik?.touched, name)
-  const error = getNestedValue(formik?.errors, name)
+  } = props;
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
-  console.log({ error })
+  console.log({ error });
   // console.log('formik.touched', formik?.touched)
 
   const handleChange = (e: any) => {
     // console.log("ee: ", e);
-    onChanged && onChanged(e)
-    formik?.setFieldValue(name, e)
-  }
+    onChanged && onChanged(e);
+    formik?.setFieldValue(name, e);
+  };
 
-  const formikvalue = getNestedValue(formik?.values, name)
+  const formikvalue = getNestedValue(formik?.values, name);
 
   return (
     <Section styles={{ position: "relative" }}>
@@ -245,8 +244,8 @@ export const FieldString = (props: FieldProps) => {
       />
       {touched && error ? <ErrorText text={error.name} /> : null}
     </Section>
-  )
-}
+  );
+};
 
 export const FieldAsDate = (props: FieldProps) => {
   const {
@@ -261,73 +260,34 @@ export const FieldAsDate = (props: FieldProps) => {
     format,
     styles,
     padding
-  } = props
-  const touched = getNestedValue(formik?.touched, name)
-  const error = getNestedValue(formik?.errors, name)
+  } = props;
+  const touched = getNestedValue(formik?.touched, name);
+  const error = getNestedValue(formik?.errors, name);
 
   const handleChange = (e: any) => {
-    formik?.setFieldValue(name, `${dayjs(e, 'MM/DD/YYYY').format(format)}`)
+    formik?.setFieldValue(name, `${dayjs(e, 'MM/DD/YYYY').format(format)}`);
     // console.log('changing', dayjs(e, format).format(format))
-  }
+  };
 
-  const value = getNestedValue(formik?.values, name)
-}
+  const value = getNestedValue(formik?.values, name);
 
-    return (
-        <Section
-            styles={{ position: "relative", ...styles }}
-            padding="0 0 1.2rem 0"
-        >
-            <DatePicker
-                disabled={disabled}
-                views={views}
-                placeholder={placeholder}
-                maxDate={maxDate}
-                minDate={minDate}
-                value={dayjs(`${value}`, format)}
-                onChange={onChange ? onChange : handleChange}
-                error={touched && error}
-                format={format}
-            />
-            {touched && error ? <ErrorText text={error} /> : null}
-        </Section>
-    );
-};
-
-
-export const FieldPhone = (props: FieldProps) => {
-    const {
-        name,
-        formik,
-        placeholder,
-        onChange,
-        value,
-        country,
-        onChanged,
-    } = props;
-    const touched = getNestedValue(formik?.touched, name);
-    const error = getNestedValue(formik?.errors, name);
-
-    const handleChange = (e: any) => {
-        onChanged && onChanged(e)
-        formik?.setFieldValue(name, e);
-    };
-
-    const formikvalue = getNestedValue(formik?.values, name);
-
-    return (
-        <Section styles={{ position: "relative" }}>
-            <PhoneInput
-                country={country ?? "ng"}
-                autoFormat={true}
-                value={formikvalue}
-                inputProps={{ name }}
-                inputStyle={{ border: touched && error ? `1px solid crimson` : ''}}
-                onChange={handleChange}
-                inputClass="w"
-                placeholder={placeholder ?? "Enter phone number"}
-            />
-            {touched && error ? <ErrorText text={error} /> : null}
-        </Section>
-    );
+  return (
+    <Section
+      styles={{ position: "relative", ...styles }}
+      padding={padding ? padding : "0 0 1.2rem 0"}
+    >
+      <DatePicker
+        disabled={disabled}
+        views={views}
+        placeholder={placeholder}
+        maxDate={maxDate}
+        minDate={minDate}
+        value={dayjs(`${value}`, format)}
+        onChange={onChange ? onChange : handleChange}
+        error={touched && error}
+        format={format}
+      />
+      {touched && error ? <ErrorText text={error} /> : null}
+    </Section>
+  );
 };

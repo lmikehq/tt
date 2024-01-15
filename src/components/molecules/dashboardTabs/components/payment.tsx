@@ -1,32 +1,32 @@
-import Button from "@atom/button"
-import { Divider } from "@atom/divider"
-import Image from "@atom/image"
-import Text from "@atom/text"
-import Flex from "@components/templates/flex"
-import currencyFormatter from "@lib/extensions/data/currencyFormatter"
-import apiService from "@lib/extensions/hook/apiService"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import { ttColors } from "@lib/theme/colors"
-import CustomDrawer from "@molecule/drawers/customDrawer"
-import { useQuery } from "@tanstack/react-query"
-import { format } from "date-fns"
-import { useRef, useState } from "react"
-import { BiDotsVerticalRounded, BiWallet } from "react-icons/bi"
-import { GrFormClose } from "react-icons/gr"
-import { PiEyeLight } from "react-icons/pi"
-import Section from "src/components/molecules/section"
-import styled from "styled-components"
-import VisaDashboardHeader from "./visaDashboardHeader"
-import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick"
-import Spinner from "../../icons/spinner"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import Center from "@/components/templates/center"
-import NoApplication from "./noApplication"
-import NoPaymentImg from 'public/assets/icons/dashboard/no-payment.svg'
-import { ClickAwayListener } from "@mui/material"
-import { IoEyeOutline } from "react-icons/io5"
-import VisaPaymentModal from "../visaPayment"
+import Button from "@atom/button";
+import { Divider } from "@atom/divider";
+import Image from "@atom/image";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
+import apiService from "@lib/extensions/hook/apiService";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { ttColors } from "@lib/theme/colors";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+import { useRef, useState } from "react";
+import { BiDotsVerticalRounded, BiWallet } from "react-icons/bi";
+import { GrFormClose } from "react-icons/gr";
+import { PiEyeLight } from "react-icons/pi";
+import Section from "src/components/molecules/section";
+import styled from "styled-components";
+import VisaDashboardHeader from "./visaDashboardHeader";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
+import Spinner from "../../icons/spinner";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Center from "@/components/templates/center";
+import NoApplication from "./noApplication";
+import NoPaymentImg from 'public/assets/icons/dashboard/no-payment.svg';
+import { ClickAwayListener } from "@mui/material";
+import { IoEyeOutline } from "react-icons/io5";
+import VisaPaymentModal from "../visaPayment";
 
 const SectionTitle = styled.div`
     display: flex;
@@ -44,7 +44,7 @@ const SectionTitle = styled.div`
             margin: 0px 0px -4px !important;
         }
     }
-`
+`;
 
 const History = styled.div`
     display: flex;
@@ -85,7 +85,7 @@ const History = styled.div`
         height: 48px;
         marginleft: 55px;
     }
-`
+`;
 
 const PaymentStatus = styled.div`
     display: grid;
@@ -101,7 +101,7 @@ const PaymentStatus = styled.div`
         height: 35px;
         padding: 10px 16px;
     }
-`
+`;
 
 const PaymentWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -116,7 +116,7 @@ const PaymentWrapper = styled.div`
         height: fit-content;
         padding: 5px;
     }
-`
+`;
 
 const DropdownContent = styled.div`
     position: absolute;
@@ -133,9 +133,9 @@ const DropdownContent = styled.div`
     overflow-y: scroll;
     font-size: 16px;
     line-height: 19.2px;
-`
+`;
 
-const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
+const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean; }>`
     display: flex;
     align-items: center;
     padding: 24px 18px;
@@ -143,26 +143,26 @@ const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
     background-color: ${({ hovered }) => (hovered ? "#F3FAFD" : "transparent")};
     border-bottom: ${({ lastChild }) =>
     lastChild ? "none" : "1px solid #dedee3"};
-`
+`;
 
-const OptionText = styled.div<{ hovered: boolean }>`
+const OptionText = styled.div<{ hovered: boolean; }>`
     color: ${({ hovered }) => (hovered ? "#6092A7" : "#101010")};
     font-weight: 400;
     flex: 1;
-`
-interface ISortOptions { value: string, label: string, icon: React.ReactNode, action: () => void }
+`;
+interface ISortOptions { value: string, label: string, icon: React.ReactNode, action: () => void; }
 
 const PaymentHistory = () => {
-  const { isMobile } = useScreenResolution()
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [hoveredOption, setHoveredOption] = useState<number | null>(null)
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
-  const router = useRouter()
+  const { isMobile } = useScreenResolution();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const router = useRouter();
 
   const content = {
     title: `You've got no Payment History - Make Payment for a Flight, Visa or Stay`,
     links: []
-  }
+  };
 
   function PaymentIcon() {
     return (
@@ -172,31 +172,31 @@ const PaymentHistory = () => {
         width={17.2}
         height={12.4}
       />
-    )
+    );
   }
 
   async function getAllPayments() {
-    return await apiService("/payment", "GET")
+    return await apiService("/payment", "GET");
   }
   const {
     data: fetchedPayment,
     isLoading,
     error,
-  } = useQuery(["payments"], getAllPayments) as any
+  } = useQuery(["payments"], getAllPayments) as any;
   if (isLoading)
     return (
       <Flex height="450px" align="center" justify="center">
         <Spinner size="60px" fill={ttColors.blackishBlue} />
       </Flex>
-    )
-  if (error) return <div>error loading payments, please try again</div>
-  const { data: payments } = fetchedPayment
+    );
+  if (error) return <div>error loading payments, please try again</div>;
+  const { data: payments } = fetchedPayment;
 
   const toggleDropdown = () => {
     // console.log('clicked')
-    setIsDropdownOpen(!isDropdownOpen)
-    setHoveredOption(null)
-  }
+    setIsDropdownOpen(!isDropdownOpen);
+    setHoveredOption(null);
+  };
 
 
   const sortOptions: ISortOptions[] = [
@@ -211,11 +211,11 @@ const PaymentHistory = () => {
       label: "View More Details",
       icon: <PiEyeLight size="1rem" />,
       action: () => {
-        setBottomDrawerOpen(true)
-        setIsDropdownOpen(false)
+        setBottomDrawerOpen(true);
+        setIsDropdownOpen(false);
       },
     },
-  ]
+  ];
 
   // const ref = useRef(null);
   // useDetectOutsideClick(ref, () => setIsDropdownOpen(false))
@@ -516,37 +516,37 @@ const PaymentHistory = () => {
         )}
       </PaymentWrapper>
     </Section>
-  )
-}
+  );
+};
 
-export default PaymentHistory
+export default PaymentHistory;
 
 
 type Props = {
-  payment: any
-  sortOptions: ISortOptions[]
-}
+  payment: any;
+  sortOptions: ISortOptions[];
+};
 
 export const MobileComp = ({ payment, sortOptions }: Props) => {
-  const { isMobile } = useScreenResolution()
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
-  const [showDropdown, setShowDropdown] = useState(false)
+  const { isMobile } = useScreenResolution();
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleClickAway = () => {
-    setShowDropdown(false)
-  }
+    setShowDropdown(false);
+  };
 
   const handleClose = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   const VisaDetail = {
     intent: '',
     id: '',
     accompanying: 0,
     refetch: () => { }
-  }
+  };
 
   return (
     <>
@@ -622,7 +622,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
               <div style={{ position: 'absolute', width: 'auto', left: '-200px', backgroundColor: '#FFF', boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.06), 0px 2px 4px 0px rgba(0, 0, 0, 0.25)', borderRadius: '12px', padding: '4px 6px', zIndex: 99 }}>
                 <>
                   <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
-                    setOpenModal(true)
+                    setOpenModal(true);
                   }}>
                     <BiWallet />
                     <Text type='p' text="Make Payment" />
@@ -632,8 +632,8 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                     margin="0px 10px 0"
                   />
                   <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
-                    sortOptions[1].action()
-                    setBottomDrawerOpen(true)
+                    sortOptions[1].action();
+                    setBottomDrawerOpen(true);
                   }}>
                     <IoEyeOutline />
                     <Text type="p" text="View More Details" />
@@ -803,5 +803,5 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
       </Flex>
       {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={VisaDetail} />)}
     </>
-  )
-}
+  );
+};

@@ -1,19 +1,19 @@
-import styled from "styled-components"
-import NoVisaApplication from "./noApplication"
-import VisaDashboardHeader from "./visaDashboardHeader"
+import styled from "styled-components";
+import NoVisaApplication from "./noApplication";
+import VisaDashboardHeader from "./visaDashboardHeader";
 // import NoVisaBg from "@image/background.png"
 // import FlightImg from "@image/flight.png"
-import Text from "@atom/text"
-import Image from "@atom/image"
-import FlightIcon from "public/assets/icons/dashboard/plane-track.svg"
-import { ttColors } from "@lib/theme/colors"
-import Flex from "@/components/templates/flex"
-import Center from "@/components/templates/center"
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
-import { Divider } from "@mui/material"
-import { Grid } from "@/components/templates/grid"
-import { useState } from "react"
-import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper"
+import Text from "@atom/text";
+import Image from "@atom/image";
+import FlightIcon from "public/assets/icons/dashboard/plane-track.svg";
+import { ttColors } from "@lib/theme/colors";
+import Flex from "@/components/templates/flex";
+import Center from "@/components/templates/center";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { Divider } from "@mui/material";
+import { Grid } from "@/components/templates/grid";
+import { useState } from "react";
+import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
 
 const FlightWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -28,7 +28,7 @@ const FlightWrapper = styled.div`
         height: fit-content;
         padding: 20px 16px;
     }
-`
+`;
 const History = styled.div`
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@ const History = styled.div`
     // height: 311px;
     border: 1px solid #e7e7e7;
     border-radius: 14px;
-`
+`;
 
 const NotificationWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -52,7 +52,7 @@ const NotificationWrapper = styled.div`
         height: fit-content;
         padding: 20px 16px;
     }
-`
+`;
 
 const TextContainer = styled.div`
     background: #f3f3ff;
@@ -61,36 +61,36 @@ const TextContainer = styled.div`
     width: 88px;
     text-align: center;
     justify-content: center;
-`
+`;
 
 const Flight = () => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
   const content = {
     title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
     links: [
       { text: "Search Flights", url: "/flight" },
       { text: "Search Stays", url: "/stays" },
     ],
-  }
+  };
 
   // function NoFlightImg() {
   //   return <Image src="/assets/images/flight.png" alt="" />;
   // }
 
-  const flightArr: number[] = [1]
+  const flightArr: number[] = [1];
 
-  const [open, setOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleHover = (e: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(e.currentTarget)
-    setOpen((prev) => !prev)
-  }
+    setAnchorEl(e.currentTarget);
+    setOpen((prev) => !prev);
+  };
 
   const reset = () => {
-    setAnchorEl(null)
-    setOpen(false)
-  }
+    setAnchorEl(null);
+    setOpen(false);
+  };
 
   return (
     <FlightWrapper>
@@ -283,10 +283,10 @@ const Flight = () => {
         </Center>
       )}
     </FlightWrapper>
-  )
-}
+  );
+};
 
-export default Flight
+export default Flight;
 
 const MobileFlight = () => {
 
@@ -459,5 +459,5 @@ const MobileFlight = () => {
         </Flex>
       </Grid>
     </History>
-  )
-}
+  );
+};

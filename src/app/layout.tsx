@@ -13,52 +13,52 @@ import { Poppins } from "next/font/google";
 import GoogleAuthWrapper from "@/components/templates/GoogleAuthWrapper";
 import RTQueryClient from "@/components/templates/rtqWrapper";
 const poppins = Poppins({
-    weight: "400",
-    style: ["normal"],
-    display: "swap",
-    subsets: ["latin-ext"],
+  weight: "400",
+  style: ["normal"],
+  display: "swap",
+  subsets: ["latin-ext"],
 });
 
 export const generateMetadata = () => {
-    return {
-        title: {
-            default: Siteconfig.name,
-            template: `%s - ${Siteconfig.name}`,
-        },
-        description: `Today - ${Siteconfig.description}`,
-        keywords: Siteconfig.keywords,
-    };
+  return {
+    title: {
+      default: Siteconfig.name,
+      template: `%s - ${Siteconfig.name}`,
+    },
+    description: `Today - ${Siteconfig.description}`,
+    keywords: Siteconfig.keywords,
+  };
 };
 
 export const generateViewport = () => {
-    return "width=device-width, initial-scale=1";
+  return "width=device-width, initial-scale=1";
 };
 
 export const generateThemeColor = () => {
-    return [{ media: "(prefers-color-scheme: light)", color: "white" }];
+  return [{ media: "(prefers-color-scheme: light)", color: "white" }];
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en" suppressHydrationWarning className={poppins.className}>
-            <Script
-                strategy="lazyOnload"
-                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-            />
+  return (
+    <html lang="en" suppressHydrationWarning className={poppins.className}>
+      <Script
+        strategy="lazyOnload"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+      />
 
-            <script
-                src="https://cdn.popupsmart.com/bundle.js"
-                data-id={process.env.NEXT_PUBLIC_POPUPSMART_ID}
-                async
-                defer
-            ></script>
+      <script
+        src="https://cdn.popupsmart.com/bundle.js"
+        data-id={process.env.NEXT_PUBLIC_POPUPSMART_ID}
+        async
+        defer
+      ></script>
 
-            <Script strategy="lazyOnload" id="analytics">
-                {`
+      <Script strategy="lazyOnload" id="analytics">
+        {`
   
     window.$crisp = [];
     window.CRISP_WEBSITE_ID = '${process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID}';
@@ -86,24 +86,24 @@ export default function RootLayout({
                     page_path: window.location.pathname,
                     });
   `}
-            </Script>
+      </Script>
 
-            <head>
-                <link rel="icon" href="/favicon.svg" sizes="any" />
-            </head>
-            <body>
-                <Toaster position="top-center" />
-                <PaymentConfirmationModal />
-                <GoogleAuthWrapper>
-                    <StyledComponentsRegistry>
-                        <RTQueryClient>
-                            <LoaderLayout>
-                                <Providers>{children}</Providers>
-                            </LoaderLayout>
-                        </RTQueryClient>
-                    </StyledComponentsRegistry>
-                </GoogleAuthWrapper>
-            </body>
-        </html>
-    );
+      <head>
+        <link rel="icon" href="/favicon.svg" sizes="any" />
+      </head>
+      <body>
+        <Toaster position="top-center" />
+        <PaymentConfirmationModal />
+        <GoogleAuthWrapper>
+          <StyledComponentsRegistry>
+            <RTQueryClient>
+              <LoaderLayout>
+                <Providers>{children}</Providers>
+              </LoaderLayout>
+            </RTQueryClient>
+          </StyledComponentsRegistry>
+        </GoogleAuthWrapper>
+      </body>
+    </html>
+  );
 }

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import Button from "@/components/atoms/button"
-import Text from "@/components/atoms/text"
-import Flex from "@/components/templates/flex"
-import { ttColors } from "@/lib/theme/colors"
+import Button from "@/components/atoms/button";
+import Text from "@/components/atoms/text";
+import Flex from "@/components/templates/flex";
+import { ttColors } from "@/lib/theme/colors";
 import {
   MouseEventHandler,
   Ref,
@@ -13,51 +13,51 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react"
-import ReactDatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi"
-import { IoCalendarOutline } from "react-icons/io5"
-import { styled } from "styled-components"
-import { Poppins } from "next/font/google"
-import { Box, PopperPlacementType, Stack } from "@mui/material"
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
-import { PiCaretDoubleLeftBold, PiCaretDoubleRightBold } from "react-icons/pi"
-import dayjs from "dayjs"
+} from "react";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { IoCalendarOutline } from "react-icons/io5";
+import { styled } from "styled-components";
+import { Poppins } from "next/font/google";
+import { Box, PopperPlacementType, Stack } from "@mui/material";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { PiCaretDoubleLeftBold, PiCaretDoubleRightBold } from "react-icons/pi";
+import dayjs from "dayjs";
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
   display: "swap",
   adjustFontFallback: false,
   subsets: ["latin-ext"],
-})
+});
 
 interface CustomDatePickerProps {
-  minDate?: Date
-  maxDate?: Date
-  monthsShown?: number
-  endDate?: Date
-  startDate?: Date
+  minDate?: Date;
+  maxDate?: Date;
+  monthsShown?: number;
+  endDate?: Date;
+  startDate?: Date;
   onChange(
     date: Date | null,
     event: SyntheticEvent<any, Event> | undefined
-  ): void
-  selected?: Date
-  value?: Date
-  placeholder?: string
-  position?: PopperPlacementType
-  disabled?: boolean
-  views?: ("day" | "month" | "year")[]
-  error?: any
-  format?: string
-  width?: string
-  height?: string
+  ): void;
+  selected?: Date;
+  value?: Date;
+  placeholder?: string;
+  position?: PopperPlacementType;
+  disabled?: boolean;
+  views?: ("day" | "month" | "year")[];
+  error?: any;
+  format?: string;
+  width?: string;
+  height?: string;
 }
-const InputContainer = styled.div<{ width: string; height?: string }>`
+const InputContainer = styled.div<{ width: string; height?: string; }>`
     position: relative;
     display: inline-block;
     width: ${(props) => props.width ?? "100%"};
-`
+`;
 // height: ${(props) => props.height}
 
 const DateIcon = styled.span`
@@ -67,8 +67,8 @@ const DateIcon = styled.span`
     transform: translateY(-50%);
     font-size: 20px;
     display: inline-flex;
-`
-const DateInput = styled.input<{ width?: string }>`
+`;
+const DateInput = styled.input<{ width?: string; }>`
   height: 45px;
   font-size: 15px;
   font-family: Poppins;
@@ -99,7 +99,7 @@ const DateInput = styled.input<{ width?: string }>`
     color: #929292 !important;
     font-weight: 400 !important;
   }
-`
+`;
 
 export const DatePicker = ({
   minDate,
@@ -117,14 +117,14 @@ export const DatePicker = ({
   position,
   format,
 }: CustomDatePickerProps) => {
-  const { isMobile } = useScreenResolution()
-  const fieldRef = useRef<HTMLDivElement>(null)
-  const [fieldWidth, setFieldWidth] = useState("300px")
+  const { isMobile } = useScreenResolution();
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const [fieldWidth, setFieldWidth] = useState("300px");
 
   useEffect(
     () => setFieldWidth(`${fieldRef?.current?.clientWidth}px`),
     [fieldRef?.current]
-  )
+  );
 
   return (
     <Flex direction="column" width="100%">
@@ -266,8 +266,8 @@ export const DatePicker = ({
         )}
       />
     </Flex>
-  )
-}
+  );
+};
 
 // eslint-disable-next-line react/display-name
 export const CustomDatePickerInput = forwardRef(
@@ -279,11 +279,11 @@ export const CustomDatePickerInput = forwardRef(
       height,
       placeholder,
     }: {
-      value?: string
-      onClick?: MouseEventHandler<HTMLInputElement>
-      width?: string
-      height?: string
-      placeholder?: string
+      value?: string;
+      onClick?: MouseEventHandler<HTMLInputElement>;
+      width?: string;
+      height?: string;
+      placeholder?: string;
     },
     ref: Ref<HTMLDivElement>
   ) => (
@@ -301,4 +301,4 @@ export const CustomDatePickerInput = forwardRef(
       />
     </InputContainer>
   )
-)
+);

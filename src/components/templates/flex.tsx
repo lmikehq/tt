@@ -1,40 +1,40 @@
-"use client"
+"use client";
 
-import React, { CSSProperties } from "react"
-import styled from "styled-components"
+import React, { CSSProperties } from "react";
+import styled from "styled-components";
 
 interface flexProps {
-  children?: React.ReactNode
+  children?: React.ReactNode;
   justify?:
   | "center"
   | "space-between"
   | "space-around"
   | "space-evenly"
   | "flex-start"
-  | "flex-end"
+  | "flex-end";
   align?:
   | "center"
   | "flex-start"
   | "flex-end"
   | "stretch"
   | "baseline"
-  | "space-between"
-  gap?: string
-  direction?: "row" | "column" | "row-reverse" | "column-reverse"
-  alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline"
-  borderBottom?: string
-  borderLeft?: string
-  borderRight?: string
-  borderTop?: string
-  margin?: string
-  padding?: string
-  width?: string
-  maxWidth?: string
-  styles?: CSSProperties
-  background?: string
-  borderRadius?: string
-  id?: string
-  overflow?: string
+  | "space-between";
+  gap?: string;
+  direction?: "row" | "column" | "row-reverse" | "column-reverse";
+  alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+  borderBottom?: string;
+  borderLeft?: string;
+  borderRight?: string;
+  borderTop?: string;
+  margin?: string;
+  padding?: string;
+  width?: string;
+  maxWidth?: string;
+  styles?: CSSProperties;
+  background?: string;
+  borderRadius?: string;
+  id?: string;
+  overflow?: string;
   overflowY?:
   | "auto"
   | "clip"
@@ -43,7 +43,7 @@ interface flexProps {
   | "visible"
   | "inherit"
   | "initial"
-  | "unset"
+  | "unset";
   overflowX?:
   | "auto"
   | "clip"
@@ -52,24 +52,25 @@ interface flexProps {
   | "visible"
   | "inherit"
   | "initial"
-  | "unset"
-  wrap?: "wrap" | "nowrap" | "unset"
-  border?: string
-  height?: string
-  cursor?: string
-  ref?: any
-  onClick?: (e: any) => void
-  onMouseOver?: (e: any) => void
-  onMouseLeave?: (e: any) => void
-  onMouseEnter?: (e: any) => void
-  className?: string
-  position?: CSSProperties["position"]
+  | "unset";
+  wrap?: "wrap" | "nowrap" | "unset";
+  border?: string;
+  height?: string;
+  cursor?: string;
+  ref?: any;
+  onClick?: (e: any) => void;
+  onMouseOver?: (e: any) => void;
+  onMouseLeave?: (e: any) => void;
+  onMouseEnter?: (e: any) => void;
+  className?: string;
+  position?: CSSProperties["position"];
+  color?: string;
 }
 
 const FlexWrapper = styled.div`
     width: 100%;
     transition: all 300ms ease-out;
-`
+`;
 
 const Flex: React.FC<flexProps> = ({
   children,
@@ -104,6 +105,7 @@ const Flex: React.FC<flexProps> = ({
   onMouseOver,
   onMouseLeave,
   onMouseEnter,
+  color
 }) => {
   return (
     <FlexWrapper
@@ -135,6 +137,7 @@ const Flex: React.FC<flexProps> = ({
         height: height,
         alignSelf: alignSelf,
         position,
+        color: color,
         ...styles,
       }}
       onClick={onClick}

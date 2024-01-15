@@ -1,6 +1,6 @@
-import Flex from '@/components/templates/flex'
-import { Box, Fade, Popper, PopperPlacementType, PopperProps, styled } from '@mui/material'
-import React, { ReactElement, ReactNode, useRef, useState } from 'react'
+import Flex from '@/components/templates/flex';
+import { Box, Fade, Popper, PopperPlacementType, PopperProps, styled } from '@mui/material';
+import React, { ReactElement, ReactNode, useRef, useState } from 'react';
 const arrowStyles = {
   position: 'absolute',
   fontSize: 7,
@@ -15,7 +15,7 @@ const arrowStyles = {
     borderStyle: 'solid',
     borderColor: '#333333'
   },
-}
+};
 
 const StyledPopper = styled(Popper)(({ theme }) => ({ // You can replace with `PopperUnstyled` for lower bundle size.
   //   zIndex: 1,
@@ -63,18 +63,18 @@ const StyledPopper = styled(Popper)(({ theme }) => ({ // You can replace with `P
       borderColor: `transparent transparent transparent #333333`,
     },
   },
-}))
+}));
 
 
 function SimplePopper({ children, open, anchorEl, placement, ...props }: {
   children: ReactElement,
   open: boolean,
   anchorEl: HTMLElement | null,
-  placement?: PopperPlacementType
+  placement?: PopperPlacementType;
 } & PopperProps) {
-  const [arrowRef, setArrowRef] = useState(null)
-  const canBeOpen = open && Boolean(anchorEl)
-  const id = canBeOpen ? 'transition-popper' : undefined
+  const [arrowRef, setArrowRef] = useState(null);
+  const canBeOpen = open && Boolean(anchorEl);
+  const id = canBeOpen ? 'transition-popper' : undefined;
 
   return (
     <StyledPopper
@@ -103,7 +103,7 @@ function SimplePopper({ children, open, anchorEl, placement, ...props }: {
         </Fade>
       )}
     </StyledPopper>
-  )
+  );
 }
 
-export default SimplePopper
+export default SimplePopper;

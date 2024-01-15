@@ -1,16 +1,16 @@
-import Center from "@components/templates/center"
-import VisaDetail from "src/components/molecules/dashboardTabs/components/visaDetails"
-import { useQuery } from "@tanstack/react-query"
-import apiService from "@lib/extensions/hook/apiService"
-import React from "react"
-import styled from "styled-components"
-import { ttColors } from "@lib/theme/colors"
-import NoVisaApplication from "./noApplication"
-import VisaDashboardHeader from "./visaDashboardHeader"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import Image from "@atom/image"
-import Flex from "@/components/templates/flex"
-import Spinner from "../../icons/spinner"
+import Center from "@components/templates/center";
+import VisaDetail from "src/components/molecules/dashboardTabs/components/visaDetails";
+import { useQuery } from "@tanstack/react-query";
+import apiService from "@lib/extensions/hook/apiService";
+import React from "react";
+import styled from "styled-components";
+import { ttColors } from "@lib/theme/colors";
+import NoVisaApplication from "./noApplication";
+import VisaDashboardHeader from "./visaDashboardHeader";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Image from "@atom/image";
+import Flex from "@/components/templates/flex";
+import Spinner from "../../icons/spinner";
 
 const VisaWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -25,55 +25,30 @@ const VisaWrapper = styled.div`
         height: fit-content;
         padding: 20px 0;
     }
-`
+`;
 
 const Visa = () => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
 
-    async function getVisas() {
-        return await apiService("/visa", "GET");
-    }
-    const initVisas = {
-        visas: []
-    }
-
-    const {
-        data: fetchedVisa,
-        isLoading,
-        error,
-        refetch,
-    } = useQuery({
-        queryKey: ["visas"],
-        queryFn: getVisas,
-        // initialData: initVisas
-    }) as any;
-    if (isLoading) return <div>loading</div>;
-    if (error) return <div>error loading visas, please try again</div>;
-    const { data: visas } = fetchedVisa;
-
-    const content = {
-        title: "You’ve got no Visa Application - Let’s help you get Started",
-        links: [
-            { text: "Apply for Visa", url: "/apply/visa" },
-            { text: "Book flight", url: "/flight" },
-        ],
-    };
+  async function getVisas() {
+    return await apiService("/visa", "GET");
+  }
 
   const {
     data: fetchedVisa,
     isLoading,
     error,
     refetch,
-  } = useQuery(["visas"], getVisas) as any
+  } = useQuery(["visas"], getVisas) as any;
   if (isLoading) {
     return (
       <Flex height="450px" align="center" justify="center">
         <Spinner size="60px" fill={ttColors.blackishBlue} />
       </Flex>
-    )
+    );
   }
-  if (error) return <div>error loading visas, please try again</div>
-  const { data: visas } = fetchedVisa
+  if (error) return <div>error loading visas, please try again</div>;
+  const { data: visas } = fetchedVisa;
   // console.log({ visas })
   const content = {
     title: "You've got no Visa Application - Let's help you get Started",
@@ -81,7 +56,7 @@ const Visa = () => {
       { text: "Apply for Visa", url: "/apply/visa" },
       { text: "Book flight", url: "/flight" },
     ],
-  }
+  };
 
   return (
     <VisaWrapper>
@@ -107,7 +82,7 @@ const Visa = () => {
         )}
       </div>
     </VisaWrapper>
-  )
-}
+  );
+};
 
-export default Visa
+export default Visa;

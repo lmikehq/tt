@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import {
   Table as MuiTable,
   TableBody,
@@ -8,39 +8,39 @@ import {
   TableRow,
   styled,
   TableCellProps,
-} from "@mui/material"
-import Text from "@/components/atoms/text"
-import { ttColors } from "@/lib/theme/colors"
-import Button from "@/components/atoms/button"
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
-import CheckIcon from "@mui/icons-material/Check"
-import Flex from "@/components/templates/flex"
-import { useFlightBookingStore } from "@/lib/store/flight/booking.store"
-import sleep from "@/lib/extensions/helpers/sleep"
-import Spinner from "@/components/molecules/icons/spinner"
-import { Poppins } from "next/font/google"
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
+} from "@mui/material";
+import Text from "@/components/atoms/text";
+import { ttColors } from "@/lib/theme/colors";
+import Button from "@/components/atoms/button";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import CheckIcon from "@mui/icons-material/Check";
+import Flex from "@/components/templates/flex";
+import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import sleep from "@/lib/extensions/helpers/sleep";
+import Spinner from "@/components/molecules/icons/spinner";
+import { Poppins } from "next/font/google";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
   display: "swap",
   adjustFontFallback: false,
   subsets: ["latin-ext"],
-})
+});
 
 interface StyledTableCellProps extends TableCellProps {
-  textAlign?: "center" | "left" | "right"
-  hideBorder?: boolean
-  isHeader?: boolean
-  isRecommended?: boolean
-  isLastChild?: boolean
+  textAlign?: "center" | "left" | "right";
+  hideBorder?: boolean;
+  isHeader?: boolean;
+  isRecommended?: boolean;
+  isLastChild?: boolean;
 }
 
 const StyledTableCell = styled(TableCell)<StyledTableCellProps>(
   ({ textAlign, hideBorder, isHeader, isRecommended, isLastChild }) => {
     const recommendedColors = isRecommended
       ? `2px solid ${ttColors.primary600}`
-      : ""
+      : "";
     return {
       textAlign: textAlign ?? "center",
       border: hideBorder ? "none" : `1px solid ${ttColors.lightestGray}`,
@@ -65,45 +65,45 @@ const StyledTableCell = styled(TableCell)<StyledTableCellProps>(
         paddingBottom: "10px",
         fontFamily: 'Poppins',
       },
-    }
+    };
   }
-)
+);
 
 const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
     backgroundColor: ttColors.grayishAsh,
   },
-}))
+}));
 
 const Table = styled(MuiTable)(() => ({
   borderSpacing: "5px 0px",
   borderCollapse: "separate",
   paddingTop: "45px",
-}))
+}));
 
 const TicketFareTable = () => {
-  const { nextStep } = useFlightBookingStore((state) => state)
-  const { isMobile } = useScreenResolution()
+  const { nextStep } = useFlightBookingStore((state) => state);
+  const { isMobile } = useScreenResolution();
   const [loading, setLoading] = useState({
     active: false,
     index: 1,
-  })
-  const [active, setActive] = useState("")
+  });
+  const [active, setActive] = useState("");
 
   const proceed = async (x: string) => {
-    setActive(x)
+    setActive(x);
     setLoading(prev => ({
       ...prev,
       active: true, index: x === 'basic' ? 0 : x === 'flex' ? 1 : 2
-    }))
-    await sleep(500)
-    nextStep()
+    }));
+    await sleep(500);
+    nextStep();
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth",
-    })
-  }
+    });
+  };
 
   const data = [
     {
@@ -187,7 +187,7 @@ const TicketFareTable = () => {
       ),
       isButtonRow: true,
     },
-  ]
+  ];
 
   return (
     <TableContainer>
@@ -288,7 +288,7 @@ const TicketFareTable = () => {
         </TableBody>
       </Table>
     </TableContainer>
-  )
-}
+  );
+};
 
-export default TicketFareTable
+export default TicketFareTable;
