@@ -100,16 +100,16 @@ const FooterSection = ({ showNewsletter = true }) => {
     const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
     const useful_links = [
         { text: "Waitlist", href: "/waitlist", color: "#06062A" },
-        { text: "Travel guide", href: "/travel-guide", color: "#06062A" },
+        { text: "Travel Guide", href: "/travel-guide", color: "#06062A" },
         { text: "FAQs", href: "/faqs", color: "#06062A" },
         { text: "Referral Program", href: "/reviews", color: "#06062A" },
     ];
 
     const supports = [
         { href: "/help-center", text: "Help Center", color: "#06062A" },
-        { href: "/contact", text: "Contact us", color: "#06062A" },
-        { href: "/privacy-policy", text: "Privacy policy", color: "#06062A" },
-        { href: "/terms", text: "Terms of service", color: "#06062A" },
+        { href: "/contact", text: "Contact Us", color: "#06062A" },
+        { href: "/privacy-policy", text: "Privacy Policy", color: "#06062A" },
+        { href: "/terms-conditions", text: "Terms of Service", color: "#06062A" },
         {
             href: "/trust-and-safety",
             text: "Trust and safety",
@@ -118,7 +118,7 @@ const FooterSection = ({ showNewsletter = true }) => {
     ];
 
     const aboutUs = [
-        { href: "/about-us", text: "About us", color: "#06062A" },
+        { href: "/about-us", text: "About Us", color: "#06062A" },
         {
             href: "https://www.myjobmag.com/jobs-at/thrillers-travels",
             text: "Careers",

@@ -1,19 +1,18 @@
-import PrivacyPolicyPage from "@/components/organisms/privacy-policy/PrivacyPolicyPage";
+import TermsConditionsPage from "@/components/organisms/terms-conditions/TermsConditionsPage";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Breadcrumb from "@organism/breadcrumb";
 import Section from "src/components/molecules/section";
-// import PrivacyPoliicyPage from "src/components/molecules/privacyPolicyPage";
 
 
-const PrivacyPolicy = () => {
+const TermsAndConditions = () => {
     return (
         <Section styles={{ paddingTop: "2rem" }}>
             <Breadcrumb />
             <SectionLayout>
-                <PrivacyPolicyPage/>
+                <TermsConditionsPage />
             </SectionLayout>
         </Section>
     );
 };
 
-export default PrivacyPolicy;
+export default TermsAndConditions;

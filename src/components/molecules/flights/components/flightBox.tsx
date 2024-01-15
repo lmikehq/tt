@@ -291,6 +291,7 @@ function OneIcon({ iata } : { iata: string }) {
         </React.Fragment>
     )
 }
+
 function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
     return (
         <Flex width="auto" gap=".4rem">

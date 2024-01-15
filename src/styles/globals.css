@@ -403,8 +403,8 @@ textarea:hover {
 /* Custom Scrollbar */
 .scroll-custom::-webkit-scrollbar {
   background-color: transparent;
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
 }
 
 .scroll-custom::-webkit-scrollbar-thumb {
