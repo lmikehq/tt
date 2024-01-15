@@ -26,41 +26,8 @@ import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type
 
 function Page() {
     const searchParams = useSearchParams();
-    const hotelId = searchParams.get("hotelId");
-    const bookHash = searchParams.get("bookHash");
     const guests = searchParams.get("guests");
-    const { user, geoInfo } = useUserStore((state) => state);
     const { isMobile } = useScreenResolution();
-
-    const orderBookingRequestParams = (): StayOrderBookingReguestInput => ({
-        hotel_id: hotelId ?? "",
-        userId: "6579bbff603bfaafaa7b55d9" ?? user?._id ?? "",
-        book_hash: bookHash ?? "",
-        user_ip: geoInfo?.ip ?? "",
-    });
-    const [paymentOptions, setPaymentOptions] = useState<StayPaymentOption[]>(
-        []
-    );
-
-    const [currentPaymentOption, setCurrentPaymentOption] =
-        useState<StayPaymentOption>();
-    const [objectId, setObjectId] = useState<string>("");
-    const [partnerOrderId, setPartnerOrderId] = useState<string>("");
-
-    const { mutate: orderBooking } = useStayOrderBooking({
-        onSuccess: (data) => {
-            setPaymentOptions(data.paymentOptions);
-            setCurrentPaymentOption(data.paymentOptions[0]);
-            setObjectId(data.bookingData.itemId);
-            setPartnerOrderId(data.bookingData.partnerOrderId);
-        },
-    });
-
-    useEffect(() => {
-        if (!user && !geoInfo) return;
-        console.log(geoInfo);
-        orderBooking(orderBookingRequestParams());
-    }, [user, geoInfo]);
 
     return (
         <SectionLayout>
@@ -92,20 +59,8 @@ function Page() {
                 >
                     <Booking
                         guests={extractRoomForGuestsFromString(guests ?? "")}
-                        currentPaymentOption={currentPaymentOption}
-                        objectId={objectId}
-                        partnerOrderId={partnerOrderId}
                     />
-                    <RightColumn
-                        paymentOptions={paymentOptions}
-                        currentPaymentOption={currentPaymentOption}
-                        onChangePaymentOption={(code) => {
-                            const paymentOption = paymentOptions.find(
-                                (el) => el.currency_code == code
-                            );
-                            setCurrentPaymentOption(paymentOption);
-                        }}
-                    />
+                    <RightColumn guests={guests ?? ""} />
                 </Box>
             </Span>
         </SectionLayout>

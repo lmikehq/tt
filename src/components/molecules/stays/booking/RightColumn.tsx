@@ -4,21 +4,19 @@ import FreeCancellation from "./FreeCancellation";
 import HotelDetail from "./HotelDetail";
 import PriceDetail from "./PriceDetail";
 import SelectCurrency from "./SelectCurrency";
-import { sampleViewStay } from "@/lib/types/response-models/stay/search.type";
+import {
+    ViewSingleStayResponse,
+    sampleViewStay,
+} from "@/lib/types/response-models/stay/search.type";
 import { useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
 
 interface RightColumnProps {
-    paymentOptions: StayPaymentOption[];
-    currentPaymentOption?: StayPaymentOption;
-    onChangePaymentOption: (id: string) => void;
+    guests: string;
+    // hotel: ViewSingleStayResponse;
 }
 
-const RightColumn = ({
-    paymentOptions,
-    currentPaymentOption,
-    onChangePaymentOption,
-}: RightColumnProps) => {
+const RightColumn = ({ guests }: RightColumnProps) => {
     const stayResponse = sampleViewStay;
     const searchParams = useSearchParams();
     const checkIn = searchParams.get("checkIn");
@@ -31,13 +29,12 @@ const RightColumn = ({
                 checkOutDate={dayjs(checkOut).format("MMM DD,YYYY")}
                 durationDays={dayjs(checkOut).diff(dayjs(checkIn), "day")}
             />
-            <PriceDetail />
-            <FreeCancellation />
-            <SelectCurrency
-                paymentOptions={paymentOptions}
-                currentPaymentOption={currentPaymentOption}
-                onChangePaymentOption={onChangePaymentOption}
+            <PriceDetail
+                guests={guests}
+                hotel={stayResponse}
+                durationDays={dayjs(checkOut).diff(dayjs(checkIn), "day")}
             />
+            <FreeCancellation />
         </Span>
     );
 };

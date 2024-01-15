@@ -6,6 +6,7 @@ export interface StayOrderBookingReguestInput {
     hotel_id: string;
     book_hash: string;
     user_ip: string;
+    rooms: StayOrderBookingFinishRoom[];
 }
 
 export interface StayCreditTokenizationInput {

@@ -154,3 +154,23 @@ export const extractRoomForGuestsFromString = (
 
 export const numberOfGuestsInRooms = (data: RoomForGuest[]) =>
     data.reduce((acc, el) => acc + el.adults + el.children.length, 0);
+
+export const numberOfAdultsAndChildrenGuests = (
+    data: RoomForGuest[]
+): { adults: number; children: number } => {
+    const adults = data.reduce((acc, el) => acc + el.adults, 0);
+    const children = data.reduce((acc, el) => acc + el.children.length, 0);
+
+    return { adults, children };
+};
+
+export const numberOfAdultsAndChildrenGuestsToString = (
+    guests: string
+): string => {
+    const { adults, children } = numberOfAdultsAndChildrenGuests(
+        extractRoomForGuestsFromString(guests)
+    );
+    return `${adults} adult${adults == 1 ? "" : "s"}, ${children} child${
+        children == 1 ? "" : "ren"
+    }`;
+};

@@ -12,6 +12,7 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import { GalleryModal } from "../view/modals/Modals";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import dayjs from "dayjs";
+import { HiOutlineViewList } from "react-icons/hi";
 
 interface HotelDetailProps {
     hotel: ViewSingleStayResponse;
@@ -29,7 +30,14 @@ function HotelDetail({
     const [open, setOpen] = useState({
         gallery: false,
     });
-
+    const checkIfAmenityIsOffered = (targetAmenity: string) => {
+        for (const amenity of hotel.amenity_groups) {
+            if (amenity.amenities.includes(targetAmenity)) {
+                return true;
+            }
+        }
+        return false;
+    };
     return (
         <Container className="hotel_details_container">
             <Span style={{ marginBottom: "15px" }}>
@@ -180,83 +188,107 @@ function HotelDetail({
                     </Flex>
                     <Span>
                         <GridLayout className="stay_details_grid">
-                            <Flex gap="8px" align="center">
-                                <ZoomInMapIcon style={{ fontSize: "20px" }} />
-                                <Text
-                                    whiteSpace="nowrap"
-                                    type="p"
-                                    size={16}
-                                    weight={400}
-                                    text="40 m²"
-                                />
-                            </Flex>
-                            <Flex
-                                gap="8px"
-                                align="center"
-                                className="flex-end"
-                                justify="flex-end"
-                            >
-                                <PetsIcon style={{ fontSize: "20px" }} />
-                                <Text
-                                    whiteSpace="nowrap"
-                                    type="p"
-                                    size={16}
-                                    weight={400}
-                                    text="Pet Friendly"
-                                />
-                            </Flex>{" "}
-                            <Flex gap="8px" align="center">
-                                <FreeBreakfastIcon
-                                    style={{ fontSize: "20px" }}
-                                />
-                                <Text
-                                    whiteSpace="nowrap"
-                                    type="p"
-                                    size={16}
-                                    weight={400}
-                                    text="Meals not included"
-                                />
-                            </Flex>
-                            <Flex
-                                gap="8px"
-                                align="center"
-                                className="flex-end"
-                                justify="flex-end"
-                            >
-                                <BedIcon style={{ fontSize: "20px" }} />
-                                <Text
-                                    whiteSpace="nowrap"
-                                    type="h1"
-                                    size={16}
-                                    weight={400}
-                                    text="1 King Bed"
-                                />
-                            </Flex>{" "}
-                            <Flex gap="8px" align="center">
-                                <WifiIcon style={{ fontSize: "20px" }} />
-                                <Text
-                                    whiteSpace="nowrap"
-                                    type="h1"
-                                    size={16}
-                                    weight={400}
-                                    text="WiFi"
-                                />
-                            </Flex>{" "}
-                            <Flex
-                                gap="8px"
-                                align="center"
-                                className="flex-end"
-                                justify="flex-end"
-                            >
-                                <SmokeFreeIcon style={{ fontSize: "20px" }} />
-                                <Text
-                                    whiteSpace="nowrap"
-                                    type="h1"
-                                    size={16}
-                                    weight={400}
-                                    text="No Smoking"
-                                />
-                            </Flex>
+                            {checkIfAmenityIsOffered(
+                                "40 meters-squared Room"
+                            ) && (
+                                <Flex gap="8px" align="center">
+                                    <ZoomInMapIcon
+                                        style={{ fontSize: "20px" }}
+                                    />
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        type="p"
+                                        size={16}
+                                        weight={400}
+                                        text="40 m²"
+                                    />
+                                </Flex>
+                            )}
+                            {checkIfAmenityIsOffered("Pets allowed") && (
+                                <Flex
+                                    gap="8px"
+                                    align="center"
+                                    // className="flex-end"
+                                    // justify="flex-end"
+                                >
+                                    <PetsIcon style={{ fontSize: "20px" }} />
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        type="p"
+                                        size={16}
+                                        weight={400}
+                                        text="Pet Friendly"
+                                    />
+                                </Flex>
+                            )}
+                            {!(
+                                (hotel.amenity_groups.find(
+                                    (el) => el.group_name == "meals"
+                                )?.amenities.length ?? 0) > 0
+                            ) && (
+                                <Flex gap="8px" align="center">
+                                    <FreeBreakfastIcon
+                                        style={{ fontSize: "20px" }}
+                                    />
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        type="p"
+                                        size={16}
+                                        weight={400}
+                                        text="Meals not included"
+                                    />
+                                </Flex>
+                            )}
+                            {checkIfAmenityIsOffered(
+                                "40 meters-squared Room"
+                            ) && (
+                                <Flex
+                                    gap="8px"
+                                    align="center"
+                                    // className="flex-end"
+                                    // justify="flex-end"
+                                >
+                                    <BedIcon style={{ fontSize: "20px" }} />
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        type="h1"
+                                        size={16}
+                                        weight={400}
+                                        text="1 King Bed"
+                                    />
+                                </Flex>
+                            )}
+                            {checkIfAmenityIsOffered("Pets allowed") && (
+                                <Flex gap="8px" align="center">
+                                    <WifiIcon style={{ fontSize: "20px" }} />
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        type="h1"
+                                        size={16}
+                                        weight={400}
+                                        text="WiFi"
+                                    />
+                                </Flex>
+                            )}
+                            {checkIfAmenityIsOffered("Non-smoking rooms") && (
+                                <Flex
+                                    gap="8px"
+                                    align="center"
+                                    // className="flex-end"
+                                    // justify="flex-end"
+                                >
+                                    <SmokeFreeIcon
+                                        style={{ fontSize: "20px" }}
+                                    />
+                                    <Text
+                                        whiteSpace="nowrap"
+                                        type="h1"
+                                        size={16}
+                                        weight={400}
+                                        text="No Smoking"
+                                    />
+                                </Flex>
+                            )}
                         </GridLayout>
                     </Span>
                 </Span>
