@@ -1,21 +1,23 @@
-import Flex from "@components/templates/flex"
-import Text from "@atom/text"
-import Section from "src/components/molecules/section"
-import { FormikProps } from "formik"
-import FormStepTitle from "./formStepsTitle"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import Required from "@atom/required"
-import PhoneInput from "react-phone-input-2"
-import { City, ICity, IState, State } from "country-state-city"
-import TextArea from "@molecule/textArea"
-import { CustomRadioGroup } from "@molecule/radio"
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS"
-import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema"
+
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import Section from "src/components/molecules/section";
+import { FormikProps } from "formik";
+import FormStepTitle from "./formStepsTitle";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Required from "@atom/required";
+import { City, ICity, IState, State } from "country-state-city";
+import TextArea from "@molecule/textArea";
+import { CustomRadioGroup } from "@molecule/radio";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { personalInfoKeys, personalInfoSchema } from "@lib/types/schema";
+
 import {
   ErrorText,
   FieldAsDate,
   FieldAsString,
   FieldInput,
+  FieldPhone,
   FieldString,
 } from "@organism/fieldInput"
 import { Mode, PersonalInfoInterface } from "@lib/types"
@@ -273,6 +275,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               />
               <Required />
             </Flex>
+
             <PhoneInput
               country={"ng"}
               autoFormat={true}
@@ -287,6 +290,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               placeholder="Enter phone numbers"
             />
             {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}
+
+            <FieldPhone
+                name="phoneNumber"
+                formik={formik}
+                country="ng"
+                placeholder="Enter phone number"
+            />
           </Section>
         </Flex>
 
@@ -329,6 +339,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             />
           </Section>
         </Flex>
+
         <Section width="100%">
           <Flex align="center" gap="0.25rem">
             <Text
@@ -345,7 +356,23 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             placeholder="Enter your current occupation"
           />
         </Section>
-
+        {/* <Section width="100%">
+            <Flex align="center" gap="0.25rem">
+                <Text
+                    type="p"
+                    text="Current Occupation"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                />
+                <Required />
+            </Flex>
+            <FieldInput
+                name="occupation"
+                formik={formik}
+                placeholder="Enter your current occupation"
+            />
+        </Section> */}
+              
         <Flex
           margin="0"
           justify="space-between"
@@ -354,12 +381,13 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         >
           <Section>
             <Flex align="center" gap="0.25rem">
-              <Text
-                type="p"
-                text="Residential Address"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={15}
-              />
+                <Text
+                    type="p"
+                    text="Residential Address"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                />
+                <Required />
             </Flex>
             <FieldInput
               name="address"
@@ -1180,6 +1208,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                   />
                   <Required />
                 </Flex>
+
                 <FieldInput
                   name="contactInLocationAddress"
                   placeholder="Enter residential address"
@@ -1238,6 +1267,16 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
           </React.Fragment>
         )}
 
+                    <FieldPhone
+                        name="contactInLocationPhoneNumber"
+                        formik={formik}
+                        country="ng"
+                        placeholder="Enter contact's phone number"
+                    />
+                </Section>
+                </Flex>      
+            </React.Fragment>      
+        )}     
 
         {/* Background Information */}
         <Section padding="2rem 0 0">
@@ -1249,7 +1288,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
             margin="2.5rem 0 0"
           />
         </Section>
-        <Section margin="0 0 0 .9rem">
+        <Section margin={isMobile ? "0" : "0 0 0 .9rem"}>
           <ol>
             <li>
               <Flex
@@ -1266,7 +1305,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                   weight={400}
                   type="p"
                   text="Within the past two years, have you or a family member ever had tuberculosis of the lungs or been in close contact with a person with tuberculosis?"
-                  margin={isMobile ? ".7rem  0.2rem" : "1rem 0"}
+                  margin={isMobile ? ".7rem  0" : "1rem 0"}
                   padding="0 0 0 1rem"
                 />
                 <Section height="auto" width="fit-content">

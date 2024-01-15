@@ -256,9 +256,11 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
     (fm: any) => fm.accompanying === true
   ).length
 
+
   function getLocationField(field: string) {
     return typeof visa?.primaryTraveller[field] === "string"
       ? visa?.primaryTraveller?.[field]
+
       : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`
   }
 

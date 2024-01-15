@@ -52,14 +52,16 @@ const kiwiClientV1: AxiosInstance = axios.create({
 })
 
 kiwiClientV1.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data
-  },
-  (error: AxiosError) => {
-    // toast.error(error.message);
-    return Promise.reject(error)
-  }
-)
+
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        // toast.error(error.message);
+        return Promise.reject(error);
+    }
+);
+
 const kiwiClient: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_KIWI_SERVER,
   timeout: 15000,

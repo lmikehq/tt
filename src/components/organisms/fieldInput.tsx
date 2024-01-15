@@ -1,49 +1,50 @@
-"use client"
-import { FormikProvider, FormikValues, useField } from "formik"
-import Input from "@atom/input"
-import Text from "@atom/text"
-import { ttColors } from "@lib/theme/colors"
-import { CSSProperties, ReactNode } from "react"
-import { DatePicker } from "@organism/datepicker"
-import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput"
-import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput"
-import Section from "src/components/molecules/section"
-import dayjs, { Dayjs } from "dayjs"
-import InputLabel from "@mui/material/InputLabel"
+
+"use client";
+import { FormikProvider, FormikValues, useField } from "formik";
+import Input from "@atom/input";
+import Text from "@atom/text";
+import { ttColors } from "@lib/theme/colors";
+import { CSSProperties, ReactNode } from "react";
+import { DatePicker } from "@organism/datepicker";
+import SearchStringInput from "src/components/molecules/searchInputs/searchStringInput";
+import SearchFlagInput from "src/components/molecules/searchInputs/searchFlagInput";
+import Section from "src/components/molecules/section";
+import dayjs, { Dayjs } from "dayjs";
+import InputLabel from "@mui/material/InputLabel";
+import PhoneInput from "react-phone-input-2";
 
 interface FieldProps {
   id?: string
   value?: any
   defaultValue?: string
   styles?: CSSProperties
-
-  name: string
-  type?:
-  | "text"
-  | "number"
-  | "file"
-  | "textArea"
-  | "password"
-  | "email"
-  | "tel"
-  | "address"
-  | "checkbox"
-  step?: string
-  border?: string
-  placeholder: string
-  formik?: FormikValues
-  options?: any[]
-  addon?: ReactNode
-  views?: ("year" | "month" | "day")[]
-  disabled?: boolean
-  onChange?: (x: any) => void
-  onChanged?: (x?: any) => void
-  minDate?: Dayjs | null
-  maxDate?: Dayjs
-  max?: number
-  min?: number
-  format?: string
-  padding?: string
+    name: string;
+    type?:
+        | "text"
+        | "number"
+        | "file"
+        | "textArea"
+        | "password"
+        | "email"
+        | "tel"
+        | "address"
+        | "checkbox";
+    step?: string;
+    border?: string;
+    placeholder: string;
+    formik?: FormikValues;
+    options?: any[];
+    addon?: ReactNode;
+    views?: ("year" | "month" | "day")[];
+    disabled?: boolean;
+    onChange?: (x: any) => void;
+    onChanged?: (x?: any) => void;
+    minDate?: Dayjs | null;
+    maxDate?: Dayjs;
+    max?: number;
+    min?: number;
+    format?: string;
+    country?: string;
 }
 
 function getNestedValue(obj: any, propertyPath: string) {
@@ -270,24 +271,63 @@ export const FieldAsDate = (props: FieldProps) => {
   }
 
   const value = getNestedValue(formik?.values, name)
-
-  return (
-    <Section
-      styles={{ position: "relative", ...styles }}
-      padding={padding ? padding : "0 0 1.2rem 0"}
-    >
-      <DatePicker
-        disabled={disabled}
-        views={views}
-        placeholder={placeholder}
-        maxDate={maxDate}
-        minDate={minDate}
-        value={dayjs(`${value}`, format)}
-        onChange={onChange ? onChange : handleChange}
-        error={touched && error}
-        format={format}
-      />
-      {touched && error ? <ErrorText text={error} /> : null}
-    </Section>
-  )
 }
+
+    return (
+        <Section
+            styles={{ position: "relative", ...styles }}
+            padding="0 0 1.2rem 0"
+        >
+            <DatePicker
+                disabled={disabled}
+                views={views}
+                placeholder={placeholder}
+                maxDate={maxDate}
+                minDate={minDate}
+                value={dayjs(`${value}`, format)}
+                onChange={onChange ? onChange : handleChange}
+                error={touched && error}
+                format={format}
+            />
+            {touched && error ? <ErrorText text={error} /> : null}
+        </Section>
+    );
+};
+
+
+export const FieldPhone = (props: FieldProps) => {
+    const {
+        name,
+        formik,
+        placeholder,
+        onChange,
+        value,
+        country,
+        onChanged,
+    } = props;
+    const touched = getNestedValue(formik?.touched, name);
+    const error = getNestedValue(formik?.errors, name);
+
+    const handleChange = (e: any) => {
+        onChanged && onChanged(e)
+        formik?.setFieldValue(name, e);
+    };
+
+    const formikvalue = getNestedValue(formik?.values, name);
+
+    return (
+        <Section styles={{ position: "relative" }}>
+            <PhoneInput
+                country={country ?? "ng"}
+                autoFormat={true}
+                value={formikvalue}
+                inputProps={{ name }}
+                inputStyle={{ border: touched && error ? `1px solid crimson` : ''}}
+                onChange={handleChange}
+                inputClass="w"
+                placeholder={placeholder ?? "Enter phone number"}
+            />
+            {touched && error ? <ErrorText text={error} /> : null}
+        </Section>
+    );
+};

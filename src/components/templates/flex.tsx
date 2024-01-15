@@ -144,6 +144,7 @@ const Flex: React.FC<flexProps> = ({
     >
       {children}
     </FlexWrapper>
-  )
-}
-export default Flex
+  );
+};
+export default Flex;
+

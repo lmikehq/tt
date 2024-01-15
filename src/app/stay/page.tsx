@@ -1,4 +1,3 @@
-import FlightSection from "src/components/molecules/flights";
 import StaySection from "src/components/molecules/stays";
 import FooterSection from "@organism/Footer";
 import StayHero from "@organism/hero/stay";

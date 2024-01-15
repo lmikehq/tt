@@ -125,70 +125,70 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
         then: (schema) => schema.required("Required"),
       }),
 
-    //added-values
-    countryOfApply: countrySchema,
-    countryOfResidence: countrySchema,
-    livedAbroad: yup.boolean().required("Required"),
-    countriesLived: yup.number(),
-    statusOfResidence: yup.string().required("Required"),
-    startDateOfResidence: yup.string().required("Required"),
-    changeOfName: yup.boolean().required("Required"),
-    changedName: yup.string().when("changeOfName", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    occupation: yup.string().required("Required"),
-    tripDurationStartDate: yup.string().required("Required"),
-    tripDurationEndDate: yup.string().required("Required"),
-    tripDurationLocation: yup.string().required("Required"),
-    hasContactInLocation: yup.boolean().required("Required"),
-    contactInLocationLastName: yup.string().when("hasContactInLocation", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    contactInLocationFirstName: yup.string().when("hasContactInLocation", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    contactInLocationAddress: yup.string().when("hasContactInLocation", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    contactInLocationRelationship: yup.string()
-      .when("hasContactInLocation", {
-        is: true,
-        then: (schema) => schema.required("Required"),
-      }),
-    contactInLocationPhoneNumber: yup.string()
-      .when("hasContactInLocation", {
-        is: true,
-        then: (schema) => schema.required("Required"),
-      }),
-    hasGreenCard: yup.boolean().required("Required"),
-    greenCardNumber: yup.string().when("hasGreenCard", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    greenCardExpiryDate: yup.string().when("hasGreenCard", {
-      is: true,
-      then: (schema) => schema.required("Required"),
-    }),
-    prevResidence1: countrySchema,
-    prevResidence2: countrySchema,
-    prevResidence3: countrySchema,
-    prevResidence4: countrySchema,
-    prevResidence5: countrySchema,
-    startDatePrevResidence1: yup.string(),
-    startDatePrevResidence2: yup.string(),
-    startDatePrevResidence3: yup.string(),
-    startDatePrevResidence4: yup.string(),
-    startDatePrevResidence5: yup.string(),
-    endDatePrevResidence1: yup.string(),
-    endDatePrevResidence2: yup.string(),
-    endDatePrevResidence3: yup.string(),
-    endDatePrevResidence4: yup.string(),
-    endDatePrevResidence5: yup.string(),
-  })
+        //added-values
+        countryOfApply: countrySchema,
+        countryOfResidence: countrySchema,
+        livedAbroad: yup.boolean().required("Required"),
+        countriesLived: yup.number(),
+        statusOfResidence: yup.string().required("Required"),
+        startDateOfResidence: yup.string().required("Required"),
+        changeOfName: yup.boolean().required("Required"),
+        changedName: yup.string().when("changeOfName", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        occupation: yup.string(),
+        tripDurationStartDate: yup.string().required("Required"),
+        tripDurationEndDate: yup.string().required("Required"),
+        tripDurationLocation: yup.string().required("Required"),
+        hasContactInLocation: yup.boolean().required("Required"),
+        contactInLocationLastName: yup.string().when("hasContactInLocation", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        contactInLocationFirstName: yup.string().when("hasContactInLocation", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        contactInLocationAddress: yup.string().when("hasContactInLocation", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        contactInLocationRelationship: yup.string()
+            .when("hasContactInLocation", {
+                is: true,
+                then: (schema) => schema.required("Required"),
+            }),
+        contactInLocationPhoneNumber: yup.string()
+            .when("hasContactInLocation", {
+                is: true,
+                then: (schema) => schema.required("Required"),
+            }),
+        hasGreenCard: yup.boolean().required("Required"),
+        greenCardNumber: yup.string().when("hasGreenCard", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        greenCardExpiryDate: yup.string().when("hasGreenCard", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        prevResidence1: countrySchema,
+        prevResidence2: countrySchema,
+        prevResidence3: countrySchema,
+        prevResidence4: countrySchema,
+        prevResidence5: countrySchema,
+        startDatePrevResidence1: yup.string(),
+        startDatePrevResidence2: yup.string(),
+        startDatePrevResidence3: yup.string(),
+        startDatePrevResidence4: yup.string(),
+        startDatePrevResidence5: yup.string(),
+        endDatePrevResidence1: yup.string(),
+        endDatePrevResidence2: yup.string(),
+        endDatePrevResidence3: yup.string(),
+        endDatePrevResidence4: yup.string(),
+        endDatePrevResidence5: yup.string(),
+    });
 
 export const personalInfoKeys: PersonalInfoInterface = {
   firstName: "",
@@ -232,47 +232,47 @@ export const personalInfoKeys: PersonalInfoInterface = {
   phoneNumber: "",
   countryOfCitizen: mockCountry,
   gender: "",
+    //added-details
+    countryOfApply: mockCountry,
+    countryOfResidence: mockCountry,
+    livedAbroad: false,
+    countriesLived: 0,
+    statusOfResidence: "",
+    startDateOfResidence: "",
+    changeOfName: false,
+    changedName: "",
+    occupation: "",
+    tripDurationStartDate: "",
+    tripDurationEndDate: "",
+    tripDurationLocation: "",
+    hasContactInLocation: false,
+    contactInLocationLastName: "",
+    contactInLocationFirstName: "",
+    contactInLocationAddress: "",
+    contactInLocationRelationship: "",
+    contactInLocationPhoneNumber: "",
+    hasGreenCard: false,
+    greenCardNumber: "",
+    greenCardExpiryDate: "",
+    prevResidence1: mockCountry,
+    prevResidence2: mockCountry,
+    prevResidence3: mockCountry,
+    prevResidence4: mockCountry,
+    prevResidence5: mockCountry,
+    startDatePrevResidence1: "",
+    startDatePrevResidence2: "",
+    startDatePrevResidence3: "",
+    startDatePrevResidence4: "",
+    startDatePrevResidence5: "",
+    endDatePrevResidence1: "",
+    endDatePrevResidence2: "",
+    endDatePrevResidence3: "",
+    endDatePrevResidence4: "",
+    endDatePrevResidence5: "",
+    marriageStartDate: "",
+    marriageEndDate: "",
+};
 
-  //added-details
-  countryOfApply: mockCountry,
-  countryOfResidence: mockCountry,
-  livedAbroad: false,
-  // countriesLived: "",
-  statusOfResidence: "",
-  startDateOfResidence: "",
-  changeOfName: false,
-  changedName: "",
-  occupation: "",
-  tripDurationStartDate: "",
-  tripDurationEndDate: "",
-  tripDurationLocation: "",
-  hasContactInLocation: false,
-  contactInLocationLastName: "",
-  contactInLocationFirstName: "",
-  contactInLocationAddress: "",
-  contactInLocationRelationship: "",
-  contactInLocationPhoneNumber: "",
-  hasGreenCard: false,
-  greenCardNumber: "",
-  greenCardExpiryDate: "",
-  prevResidence1: mockCountry,
-  prevResidence2: mockCountry,
-  prevResidence3: mockCountry,
-  prevResidence4: mockCountry,
-  prevResidence5: mockCountry,
-  startDatePrevResidence1: "",
-  startDatePrevResidence2: "",
-  startDatePrevResidence3: "",
-  startDatePrevResidence4: "",
-  startDatePrevResidence5: "",
-  endDatePrevResidence1: "",
-  endDatePrevResidence2: "",
-  endDatePrevResidence3: "",
-  endDatePrevResidence4: "",
-  endDatePrevResidence5: "",
-  marriageStartDate: "",
-  marriageEndDate: "",
-}
 
 //DOCUMENT
 export const documentShema: yup.ObjectSchema<DocumentInterface> = yup
@@ -588,12 +588,91 @@ export const test: ApplicationFormRequestInput = {
       "address": "123 Main St",
       "gender": "Male"
     },
-    "citizenshipInformation": {
-      "countryOfCitizenship": {
-        "name": "Nigeria",
-        "code": "NG"
-      },
-      "countryOfResidence": {
+
+    "familyInformation": {
+        "parentDetails": [
+            {
+                "membersName": "Alice Smith",
+                "relationshipToPrimary": "Father",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            },
+            {
+                "membersName": "Alice Smither",
+                "relationshipToPrimary": "Mother",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            }
+        ],
+        "siblingDetails": [
+            {
+                "membersName": "Alice QQ",
+                "relationshipToPrimary": "Brother",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            },
+            {
+                "membersName": "Alice S",
+                "relationshipToPrimary": "Sister",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": false
+            }
+        ],
+        "immediateFamilyInfo": [
+            {
+                "membersName": "Pretty Mia",
+                "relationshipToPrimary": "Spouse",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": true,
+                "dateOfBirth": "1992-05-15",
+                "gender": "Female",
+                "passportNumber": "P987654",
+                "expiryYear": 2025,
+                "issueYear": 2020,
+            },
+            {
+                "membersName": "Prettier Miia",
+                "relationshipToPrimary": "Child",
+                "address": "789 Elm St",
+                "membersEmail": "alice@example.com",
+                "membersPhoneNumber": "9876543210",
+                "accompanying": true,
+                "dateOfBirth": "1992-05-15",
+                "gender": "Female",
+                "passportNumber": "P987654",
+                "expiryYear": 2025,
+                "issueYear": 2020,
+            }
+        ]
+    },
+    "guarantorInformation": {
+        "guarantorName": "Jane Smith",
+        "relationshipToGuarantor": "Friend",
+        "guarantorAddress": "456 Elm St",
+        "guarantorPhone": "9876543210",
+        "guarantorWorth": "50000"
+    },
+    "tripInformation": {
+        "tripDurationStartDate": "",
+        "tripDurationEndDate": "",
+        "tripLocation": "Alberta",
+        "contactInLocationLastName": "Asgard",
+        "contactInLocationFirstName": "Jude",
+        "contactInLocationAddress": "123 Clover Street",
+        "contactInLocationRelationship":  "Uncle",
+        "contactInLocationPhoneNumber": "98768223",
+    },
+    "homeCountry": {
         "name": "Nigeria",
         "code": "NG"
       },

@@ -45,11 +45,20 @@ function CategoryTag({
 }: {
     category: string;
     isMobile: boolean;
-    }) {
-    const {
-        checkFlightsResponse,
-    } = useFlightBookingStore((state) => state);
-    const extra = category === 'adult' ? `(${checkFlightsResponse?.age_category_thresholds?.adult ?? 12}+ yrs)` : category === 'child' ? `(${checkFlightsResponse?.age_category_thresholds?.child ?? 2}-${checkFlightsResponse?.age_category_thresholds?.adult ?? 12} yrs)` : `(Under ${checkFlightsResponse?.age_category_thresholds?.child ?? 2} yrs)`
+}) {
+    const { checkFlightsResponse } = useFlightBookingStore((state) => state);
+    const extra =
+        category === "adult"
+            ? `(${
+                  checkFlightsResponse?.age_category_thresholds?.adult ?? 12
+              }+ yrs)`
+            : category === "child"
+            ? `(${checkFlightsResponse?.age_category_thresholds?.child ?? 2}-${
+                  checkFlightsResponse?.age_category_thresholds?.adult ?? 12
+              } yrs)`
+            : `(Under ${
+                  checkFlightsResponse?.age_category_thresholds?.child ?? 2
+              } yrs)`;
     return (
         <Flex
             width="max-content"
@@ -61,7 +70,7 @@ function CategoryTag({
         >
             <Text
                 type="p"
-                width='max-content'
+                width="max-content"
                 text={`${capCase(category)} ${extra}`}
                 color={ttColors.dark}
                 weight={500}
@@ -81,6 +90,7 @@ interface TripSummaryCardProps {
     passengerBagCombination: PassengerBaggageCombinationInterface;
     minBirthDate?: dayjs.Dayjs;
     maxBirthDate?: dayjs.Dayjs;
+    minPassportDate?: dayjs.Dayjs;
     shouldUpdateCategory(params: {
         index: number;
         combination?: Combination;
@@ -118,6 +128,7 @@ export default function MainPassenger({
     removePassenger,
     maxBirthDate,
     minBirthDate,
+    minPassportDate,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
     return (
@@ -258,6 +269,7 @@ export default function MainPassenger({
                                 placeholder="Passport or ID Expiry Date"
                                 formik={formik}
                                 format="YYYY-MM-DD"
+                                minDate={minPassportDate}
                             />
                         </FormControl>
                     </React.Fragment>

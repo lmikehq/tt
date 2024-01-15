@@ -30,9 +30,34 @@ const VisaWrapper = styled.div`
 const Visa = () => {
   const { isMobile } = useScreenResolution()
 
-  async function getVisas() {
-    return await apiService("/visa", "GET")
-  }
+    async function getVisas() {
+        return await apiService("/visa", "GET");
+    }
+    const initVisas = {
+        visas: []
+    }
+
+    const {
+        data: fetchedVisa,
+        isLoading,
+        error,
+        refetch,
+    } = useQuery({
+        queryKey: ["visas"],
+        queryFn: getVisas,
+        // initialData: initVisas
+    }) as any;
+    if (isLoading) return <div>loading</div>;
+    if (error) return <div>error loading visas, please try again</div>;
+    const { data: visas } = fetchedVisa;
+
+    const content = {
+        title: "You’ve got no Visa Application - Let’s help you get Started",
+        links: [
+            { text: "Apply for Visa", url: "/apply/visa" },
+            { text: "Book flight", url: "/flight" },
+        ],
+    };
 
   const {
     data: fetchedVisa,

@@ -35,17 +35,18 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store"
 const label = { inputProps: { "aria-label": "Checkbox demo" } }
 
 const StayViewPage = () => {
-  const router = useRouter()
-  const { isMobile } = useScreenResolution()
-  const searchParams = useSearchParams()
 
-  const id = searchParams.get("id")
-  const checkIn = searchParams.get("checkIn")
-  const checkOut = searchParams.get("checkOut")
-  const guests = searchParams.get("guests")
+  const router = useRouter();
+  const { isMobile } = useScreenResolution();
+  const searchParams = useSearchParams();
+
+  const id = searchParams.get("id");
+  const checkIn = searchParams.get("checkIn");
+  const checkOut = searchParams.get("checkOut");
+  const guests = searchParams.get("guests");
   const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
     (state) => state
-  )
+  );
 
   const requestParams = (): ViewSingleStayRequestInput => ({
     id: "transcorp_hilton_abuja" ?? id ?? "",
@@ -57,15 +58,18 @@ const StayViewPage = () => {
     currency: preFerredCurrency,
   })
 
-  const { data: stayResponse, isFetching } = useViewSingleStay(requestParams(), {
-    enabled: id ? true : false,
-  })
+  const { data: stayResponse, isFetching } = useViewSingleStay(
+    requestParams(),
+    {
+      enabled: id ? true : false,
+    }
+  );
 
   const handleGoBack = () => {
-    router.back()
-  }
+    router.back();
+  };
 
-  // console.log(stayResponse)
+  console.log(stayResponse);
 
   return (
     <SectionLayout>
@@ -132,7 +136,9 @@ const StayViewPage = () => {
         </Section>
       </Box>
     </SectionLayout>
-  )
-}
+
+  );
+};
+
 
 export default StayViewPage

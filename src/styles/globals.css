@@ -150,6 +150,17 @@ body {
   align-items: center;
 }
 
+.stay_landing .next,
+.stay_landing .prev {
+  bottom: 0 !important;
+  top: -75px !important;
+}
+@media screen and (max-width: 900px) {
+  .stay_landing {
+    display: none;
+  }
+}
+
 .control_btn button {
   background-color: var(--color-border);
   backdrop-filter: blur(5px);
@@ -184,6 +195,7 @@ body {
 }
 
 /* REACT SELECT */
+
 .react_select {}
 
 /* REACT SELECT */
@@ -431,7 +443,6 @@ textarea:hover {
   max-width: 100%;
 }
 
-
 .css-yckcgr-MuiPaper-root-MuiAccordion-root {
   width: 100%;
 }
@@ -470,3 +481,4 @@ textarea:hover {
 .css-gbi5t6-MuiPopper-root {
   z-index: 99999 !important;
 }
+
