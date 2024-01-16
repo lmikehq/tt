@@ -206,7 +206,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   // SELECTED LANGUAGE
   const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
 
-  console.log("LANGUAGE", selectedLanguage);
+  // console.log("LANGUAGE", selectedLanguage);
 
   return (
     <>
@@ -216,12 +216,12 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
             <NavLink>
               {[
                 {
-                  name: "Visa Apply",
+                  name: "Get Visa",
                   url: "visa",
                   icon: <GiPassport />,
                 },
                 {
-                  name: "Find Flight",
+                  name: "Get Ticket",
                   url: "flight",
                   icon: <IoAirplaneSharp />,
                 },

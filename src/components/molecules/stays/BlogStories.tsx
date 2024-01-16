@@ -102,18 +102,18 @@ function BlogStories() {
   const fetchBlogList = async () => {
     try {
       const response = await apiService("/blog", "GET");
-      console.log("API Response:", response);
+      // console.log("API Response:", response);
       if (response) {
         setBlogs(response);
-        console.log("Setting new BLOG LIST with:", response);
+        // console.log("Setting new BLOG LIST with:", response);
       } else {
-        console.error("Failed to fetch blog list");
+        // console.error("Failed to fetch blog list");
       }
     } catch (error) {
-      console.error("Error fetching blog list", error);
+      // console.error("Error fetching blog list", error);
     }
   };
-  console.log("BLOG LIST:", blogs);
+  // console.log("BLOG LIST:", blogs);
 
   useEffect(() => {
     fetchBlogList();
@@ -153,7 +153,7 @@ function BlogStories() {
     }
   };
 
-  console.log(userIp);
+  // console.log(userIp);
 
   //PAGE URL
   const pageURL = process.env.NEXT_PUBLIC_SITE_URL;

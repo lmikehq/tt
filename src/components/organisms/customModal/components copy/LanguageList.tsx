@@ -43,7 +43,7 @@ function LanguageList() {
     }
   }, []);
 
-  console.log("CODE", countries);
+  // console.log("CODE", countries);
 
   return (
     <Span style={{ padding: "0px 20px" }}>
@@ -56,9 +56,8 @@ function LanguageList() {
               <Flex
                 align="center"
                 justify="space-between"
-                className={`cur_lang ${
-                  selectedLanguage === languageCode ? "active" : ""
-                }`}
+                className={`cur_lang ${selectedLanguage === languageCode ? "active" : ""
+                  }`}
                 onClick={() => handleLanguageSelect(languageCode)}
               >
                 <Flex align="center" gap="10px">
@@ -93,9 +92,8 @@ function LanguageList() {
               <Flex
                 align="center"
                 justify="space-between"
-                className={`cur_lang ${
-                  selectedLanguage === languageCode ? "active" : ""
-                }`}
+                className={`cur_lang ${selectedLanguage === languageCode ? "active" : ""
+                  }`}
                 onClick={() =>
                   handleLanguageSelect(languageCode as TLanguageCode)
                 }
