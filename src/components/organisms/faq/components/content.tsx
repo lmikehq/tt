@@ -537,23 +537,23 @@ export const accountContent = [
         questions: [
             {
                 q: 'Can I use social media accounts to sign up?',
-                a: "Noneee"
+                a: "Yes, you can use your social media accounts to sign up. We offer a seamless registration process through your google account for your convenience."
             },
             {
                 q: 'Is there a verification process after signing up?',
-                a: "Noneee"
+                a: "Absolutely. To ensure the security of your account and comply with our safety measures, we have a verification process in place. This may include confirming your email address or completing additional verification steps."
             },
             {
                 q: 'What information is required to create an account?',
-                a: "Noneee"
+                a: "To create an account, you typically need to provide basic information such as your full name, email address, and a secure password. Additional details may be required during the registration process for a more personalized experience."
             },
             {
                 q: 'How often can I change my email address?',
-                a: "Noneee"
+                a: "You can change your email address as needed. However, there may be certain limitations or verification steps to ensure the security of your account. Check our account settings for guidance on updating your email information."
             },
             {
                 q: 'Are there any restrictions on updating my email?',
-                a: "Noneee"
+                a: "While you have the flexibility to update your email, there might be certain restrictions or verification processes in place to protect your account. This is to prevent unauthorized changes and ensure the security of your account information."
             },
         ]
     },
@@ -564,19 +564,19 @@ export const accountContent = [
         questions: [
             {
                 q: 'How is my data protected from unauthorized access?',
-                a: "Noneee"
+                a: "Our cancellation policy allows for free cancellations within a specified timeframe before the check-in date. You can cancel your reservation through our website, app, or by contacting our customer service team."
             },
             {
                 q: 'Are there any specific security certifications or measures in place?',
-                a: "Noneee"
+                a: "If canceled within the allowable period as per our policy, you typically won't incur charges. However, cancellations made outside the specified window or last-minute cancellations might be subject to a cancellation fee equivalent to a certain night's stay."
             },
             {
                 q: 'How quickly can I report suspicious activity?',
-                a: "Noneee"
+                a: "You can modify or cancel your reservation by accessing your booking details through our website or app. Alternatively, contact our customer service team for assistance in modifying or canceling your reservation."
             },
             {
                 q: 'Is there a process to lock or freeze my account temporarily?',
-                a: "Noneee"
+                a: "If your cancellation complies with our policy, refunds are generally processed according to the payment method used during the reservation. Refunds are typically credited back to the original payment method within a specified timeframe."
             },
         ]
     },
@@ -587,11 +587,11 @@ export const accountContent = [
         questions: [
             {
                 q: 'Can I recover my password using my mobile number?',
-                a: "Noneee"
+                a: "Yes, you can recover your password using your mobile number. Our password recovery process includes the option to receive a verification code via SMS to your registered mobile number. Follow the instructions provided during the password recovery flow."
             },
             {
                 q: 'Are there any security questions involved in the password recovery process?',
-                a: "Noneee"
+                a: "Depending on your account settings, our password recovery process may include security questions as an additional layer of verification. If you have set up security questions during the account creation or later in your account settings, you may be prompted to answer them to proceed with password recovery."
             },
         ]
     },
@@ -602,11 +602,11 @@ export const accountContent = [
         questions: [
             {
                 q: 'Is there a waiting period before the account is permanently deleted?',
-                a: "Noneee"
+                a: "Our standard check-in time is at [specific time], and check-out is at [specific time]. These timings ensure a smooth experience for all our guests."
             },
             {
                 q: 'Will deleting my account remove all my data from the platform?',
-                a: "Noneee"
+                a: "Yes, we offer both early check-in and late check-out options based on availability. Additional charges may apply, and we recommend confirming your preferences during the booking process or contacting our front desk for assistance."
             },
         ]
     },
@@ -617,11 +617,11 @@ export const accountContent = [
         questions: [
             {
                 q: 'Are there any benefits to having multiple accounts?',
-                a: "Noneee"
+                a: "Our standard check-in time is at [specific time], and check-out is at [specific time]. These timings ensure a smooth experience for all our guests."
             },
             {
                 q: 'What are the risks or drawbacks of managing multiple accounts?',
-                a: "Noneee"
+                a: "Yes, we offer both early check-in and late check-out options based on availability. Additional charges may apply, and we recommend confirming your preferences during the booking process or contacting our front desk for assistance."
             },
         ]
     },
@@ -635,19 +635,19 @@ export const aiContent = [
         questions: [
             {
                 q: 'Does the AI consider flexible dates or nearby airports for better deals?',
-                a: "Noneee"
+                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
             },
             {
                 q: 'Can the AI accommodate specific preferences like non-stop flights?',
-                a: "Noneee"
+                a: "Absolutely. The AI is designed to accommodate specific preferences, including the option for non-stop flights. Users can set their travel preferences, and the AI will tailor its suggestions to align with those preferences, ensuring a more personalized and efficient travel experience."
             },
             {
                 q: 'What criteria can the AI use to suggest suitable accommodations?',
-                a: "Noneee"
+                a: "Yes, the AI can provide options based on both amenities and location preferences. Users can specify their preferences for accommodation features, such as Wi-Fi, parking, or specific facilities. Additionally, users can set location preferences, ensuring that the AI suggests options in desired areas."
             },
             {
                 q: 'Does it provide options based on amenities or location preferences?',
-                a: "Noneee"
+                a: "The AI considers various criteria to suggest suitable accommodations, including user preferences, budget constraints, location preferences, and amenities. It may also take into account user reviews and ratings to ensure a well-rounded recommendation that aligns with the user's expectations."
             },
         ]
     },
@@ -658,19 +658,19 @@ export const aiContent = [
         questions: [
             {
                 q: 'Does it suggest activities, landmarks, or local cuisines based on preferences?',
-                a: "Noneee"
+                a: "Yes, the AI suggests activities, landmarks, and local cuisines based on user preferences. "
             },
             {
                 q: 'Can it offer off-the-beaten-path suggestions for travelers seeking unique experiences?',
-                a: "Noneee"
+                a: "Absolutely. The AI is designed to offer off-the-beaten-path suggestions for travelers who seek unique and unconventional experiences."
             },
             {
                 q: 'How accurate and timely are the weather predictions provided by the AI?',
-                a: "Noneee"
+                a: "The accuracy and timeliness of weather predictions may vary based on the data sources and algorithms used by the AI."
             },
             {
                 q: 'Does it offer advice tailored to different seasons or events?',
-                a: "Noneee"
+                a: "Yes, the AI can offer advice tailored to different seasons or events. By analyzing the time of travel and considering local events or seasonal variations, the AI can provide valuable insights and recommendations to ensure a more enjoyable and well-prepared travel experience."
             },
         ]
     },
@@ -681,19 +681,19 @@ export const aiContent = [
         questions: [
             {
                 q: 'Can it suggest a step-by-step itinerary considering various attractions and travel times?',
-                a: "Noneee"
+                a: "Yes, the AI can suggest a step-by-step itinerary that takes into account various attractions, travel times, and preferences."
             },
             {
                 q: 'Does it consider user preferences in pacing the itinerary?',
-                a: "Noneee"
+                a: "Absolutely. The AI considers user preferences in pacing the itinerary. Users can specify their preferred pace, leisure time, and desired level of activity, allowing the AI to tailor the itinerary accordingly for a personalized and enjoyable travel experience."
             },
             {
                 q: 'Does it provide reminders or notifications for flight times, bookings, or visa expiration dates?',
-                a: "Noneee"
+                a: "No, the AI doesn't provide reminders or notifications for critical travel-related information, including flight times, bookings, and visa expiration dates."
             },
             {
                 q: 'Can users upload their documents for safekeeping?',
-                a: "Noneee"
+                a: "No, users are not allowed to upload essential documents for safekeeping."
             },
         ]
     },
@@ -704,19 +704,19 @@ export const aiContent = [
         questions: [
             {
                 q: 'Does the AI learn from user interactions and feedback to improve suggestions?',
-                a: "Noneee"
+                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
             },
             {
                 q: 'Does it facilitate connections between travelers with similar interests or itineraries?',
-                a: "Noneee"
+                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
             },
             {
                 q: 'Can it provide tailored suggestions for solo travelers, families, or specific interests?',
-                a: "Noneee"
+                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
             },
             {
                 q: 'Can it suggest group-friendly activities or accommodations?',
-                a: "Noneee"
+                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
             },
         ]
     },
@@ -730,19 +730,19 @@ export const referralContent = [
         questions: [
             {
                 q: 'What incentives or rewards are offered for successful referrals?',
-                a: "Noneee"
+                a: "Incentives or rewards for successful referrals can vary, but it is majorly cash rewards for now. Other rewards can come up later."
             },
             {
                 q: 'Are there specific conditions or requirements for referrals to be eligible?',
-                a: "Noneee"
+                a: "Yes, referral programs typically have specific conditions or requirements for referrals to be eligible. The criteria includes that users registered with your referral link and also make use of any of the services on our platform either Visa Application, Flight Booking or Stays Booking."
             },
             {
                 q: 'Are there any restrictions on the quantity or frequency of referrals?',
-                a: "Noneee"
+                a: "No, there is no restrictions on the quantity or frequency of referrals."
             },
             {
                 q: 'Does the program have tiers or escalating rewards based on referral counts?',
-                a: "Noneee"
+                a: "Yes, if the company observes that you have referred a lot of users to our platform and they have all made use of any of our services available either Visa Application, Flight Booking or Stays Booking. There is every tendency you will be made an Associate in the company. "
             },
         ]
     },
@@ -753,19 +753,19 @@ export const referralContent = [
         questions: [
             {
                 q: 'Is there a unique referral link or code I can share?',
-                a: "Noneee"
+                a: "Yes, each user have a unique referral link or code that is associated with their account. This link or code is used to track and attribute successful referrals back to the referring user."
             },
             {
                 q: 'Can referrals be made through social media, email, or other platforms?',
-                a: "Noneee"
+                a: "Absolutely. Referrals can typically be made through various channels, including social media, email, messaging apps, or other online platforms. Users can share their unique referral link or code across these channels to reach a wider audience."
             },
             {
                 q: 'Are there specific details or steps for ensuring successful referrals?',
-                a: "Noneee"
+                a: "To ensure a successful referrals, users using the referral link needs to register with the referral link and also ensure to make use of one of the services available on our platform either Visa Application, Flight Booking or Stays Booking."
             },
             {
                 q: 'How is the referral linked to my account or profile?',
-                a: "Noneee"
+                a: "The referral is linked to your account or profile through the unique referral link or code assigned to you. When the referred person uses this link or code during the sign-up or purchase process, the referral program's tracking mechanism associates the successful referral with your account, allowing you to receive the designated rewards."
             },
         ]
     },
@@ -776,19 +776,23 @@ export const referralContent = [
         questions: [
             {
                 q: 'Is there a dashboard or section in my account for monitoring referral progress?',
-                a: "Noneee"
+                a: "Yes, there is a dedicated dashboard or section within your account where you can monitor the progress of your referrals. This dashboard typically provides insights into the number of referrals made, their status, and the rewards earned."
             },
             {
                 q: 'Can I receive notifications or updates regarding my referrals?',
-                a: "Noneee"
+                a: "Absolutely. Users often have the option to receive notifications or updates regarding their referrals. This can include notifications for successful referrals, pending rewards, or other relevant information, helping users stay informed about the status of their referral activities."
             },
             {
                 q: 'Is there a timeline or specific conditions for receiving the rewards?',
-                a: "Noneee"
+                a: "No, is no timeline or specific conditions outlined for receiving the rewards. As long as all referral requirement has been met. The users can receive referral at his/her convenience."
             },
             {
                 q: 'Are the rewards instantly credited or provided after a certain period?',
-                a: "Noneee"
+                a: "The timing of reward crediting can vary. Some referral programs provide instant rewards, while others may have a waiting period."
+            },
+            {
+                q: 'Is there a limit to the reward that can be received?',
+                a: "Yes, there is a limit of reward that can be received in a day."
             },
         ]
     },
@@ -799,19 +803,19 @@ export const referralContent = [
         questions: [
             {
                 q: 'Is there customer support available for referral-related queries or concerns?',
-                a: "Noneee"
+                a: "Yes, there is a customer support for any queries or concerns related to referrals. Users can typically reach out to the customer support team through designated channels, such as email, live chat, or a support ticket system."
             },
             {
                 q: 'How can I address discrepancies or problems with referrals?',
-                a: "Noneee"
+                a: "Users facing discrepancies or problems with referrals can usually contact customer support to address these issues. Customer support will guide users through the resolution process, which may involve verifying referral details, investigating any discrepancies, and ensuring fair resolution."
             },
             {
                 q: 'Are there restrictions on the type of referrals accepted into the program?',
-                a: "Noneee"
+                a: "Yes, there are restrictions on the type of referrals accepted. These restrictions include criteria such as the referred person being a new customer, completing a specific action using our platform either Visa Application, Flight Booking or Stays Booking."
             },
             {
                 q: 'Can I refer users who have previously engaged with Thrillers Travels?',
-                a: "Noneee"
+                a: "No, you can not refer users who have created an a account with us or users who have made use of any of our services either Visa Application, Flight Booking or Stays Booking."
             },
         ]
     },
