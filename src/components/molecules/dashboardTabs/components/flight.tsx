@@ -60,7 +60,7 @@ const Flight = () => {
     const content = {
         title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
         links: [
-            { text: "Search Flights", url: "/flight" },
+            { text: "Search Tickets", url: "/flight" },
             { text: "Search Stays", url: "/stays" },
         ],
     };
