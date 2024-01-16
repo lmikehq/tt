@@ -366,7 +366,7 @@ export const BtnText = styled.div`
   font-size: 16px;
 `;
 
-export const BtnDetails = styled.div`
+export const BtnDetails = styled.button`
   border: 2px solid var(--color-border);
   border-radius: 6px;
   width: fit-content;

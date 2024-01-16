@@ -17,20 +17,15 @@ import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { ttColors } from "@/lib/theme/colors";
 import { LineProgressBar } from "@frogress/line";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Pagination } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { styled as muiStyled } from "@mui/material/styles";
 import { Rating } from "@mui/material";
-import styled from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Image from "@/components/atoms/image";
 import { ReviewModal } from "./modals/Modals";
-import Dropdown from "@/components/organisms/dropdown";
 import Select from "react-select";
 import { ViewTripAdvisorStayDetailsResponse, ViewTripAdvisorStayNearbyResponse, ViewTripAdvisorStayReviewsResponse } from "@/lib/types/request-models/stay/search.type";
 import { numSort } from "@/lib/utilFns";
@@ -149,22 +144,6 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
   );
 };
 
-interface Reviews {
-  name: string;
-  rating: number;
-  title: string;
-  comment: string;
-  cleanliness: number;
-  service: number;
-  sleepQuality: number;
-  value: number;
-  location: number;
-  commentDate: string;
-  stayedIn: string;
-  rooms: number;
-}
-
-
 interface HotelReviewsProps {
     reviews?: ViewTripAdvisorStayReviewsResponse['data'];
     stayDetails: ViewTripAdvisorStayDetailsResponse
@@ -175,8 +154,8 @@ const HotelReviews = ({ reviews = [], stayDetails }: HotelReviewsProps) => {
     // FILTERS
     const [sort, setSort] = useState({ value: "high-low", label: "High to Low" });
     const options = [
-            { value: "high-low", label: "High to Low" },
-            { value: "low-high", label: "Low to High" },
+        { value: "high-low", label: "High to Low" },
+        { value: "low-high", label: "Low to High" },
     ];
 
     //=====================
@@ -211,7 +190,7 @@ const HotelReviews = ({ reviews = [], stayDetails }: HotelReviewsProps) => {
     }
 
     const subRatings = Object.values(stayDetails?.subratings ?? {})
-    console.log('sub', subRatings)
+    // console.log('sub', subRatings)
 
   return (
     <>

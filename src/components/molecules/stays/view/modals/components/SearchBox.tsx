@@ -8,22 +8,25 @@ import Button from "@/components/atoms/button";
 import Spinner from "../../../../icons/spinner";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
-import Dropdown from "@/components/organisms/dropdown";
 import { useQueryParams } from "@/hooks/useNext";
 import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
-import { RateHawkHotelType, RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utilFns";
 import dayjs from "dayjs";
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
 import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
+import { ClickAwayListener } from "@mui/material";
+import StaysMenu from "@organism/staysMenu";
+
 
 function SearchBox() {
     const { isMobile } = useScreenResolution();
     const { queryParams } = useQueryParams();
     const { push } = useRouter()
     const { stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore((state) => state);
+    const { roomForGuests } = stayTabInitialSearchQuery
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
@@ -37,6 +40,26 @@ function SearchBox() {
         { value: "3 children", label: "3 Children" },
         { value: "all inclusive", label: "All Inclusive" },
     ];
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const menuOpen = Boolean(anchorEl);
+
+    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    const computeGuestsAndRoomsString = () => {
+        const rooms = roomForGuests.length;
+        let guests = 0;
+
+        for (let index = 0; index < roomForGuests.length; index++) {
+            const room = roomForGuests[index];
+            guests += room.adults + room.children.length;
+        }
+        return `${rooms} room${rooms == 1 ? "" : "s"} for ${guests} guest${guests == 1 ? "" : "s"}`;
+    };
 
     const computeStaySearchQuery = () => {
         const params = {
@@ -67,6 +90,8 @@ function SearchBox() {
             push(`/stay/listings${computeStaySearchQuery()}`)
         }
     };
+
+    console.log('initQ', stayTabInitialSearchQuery)
     
 
     return (
@@ -78,12 +103,8 @@ function SearchBox() {
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="p" text="Where do you want to stay?"></Text>
-                    {/* <Input
-                        // placeholder="New York, United States of America"
-                        height="3rem"
-                    /> */}
                     <RateHawkLocationSearchInput
-                        onChange={(x: RateHawkHotelType) =>
+                        onChange={(x: RateHawkRegionType) =>
                             updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 location: x,
@@ -108,7 +129,12 @@ function SearchBox() {
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            onChange={(e) => { }}
+                            onChange={(e) => 
+                                updateStayTabInitialQuery({
+                                    ...stayTabInitialSearchQuery,
+                                    checkInDate: dayjs(e)
+                                })
+                            }
                             value={stayTabInitialSearchQuery?.checkInDate ? new Date(stayTabInitialSearchQuery?.checkInDate?.toString() ?? '') : undefined}
                             minDate={new Date()}
                         />
@@ -128,7 +154,12 @@ function SearchBox() {
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            onChange={(e) => { }}
+                            onChange={(e) =>
+                                updateStayTabInitialQuery({
+                                    ...stayTabInitialSearchQuery,
+                                    checkOutDate: dayjs(e)
+                                })
+                            }
                             value={stayTabInitialSearchQuery?.checkOutDate ? new Date(stayTabInitialSearchQuery?.checkOutDate?.toString() ?? '') : undefined}
                             minDate={new Date(stayTabInitialSearchQuery?.checkOutDate?.toString() ?? '')}
                         />
@@ -146,14 +177,21 @@ function SearchBox() {
                             text="Guests & Rooms"
                             weight={400}
                         />
-                        <Dropdown
-                            options={options}
-                            className="mui_select"
-                            width="100%"
-                            height="45px"
-                            selectedValue={guest}
-                            setSelectedValue={setGuest}
-                        />
+                        <ClickAwayListener onClickAway={handleCloseMenu}>
+                            <div>
+                                <Input
+                                    onClick={handleOpenMenu}
+                                    placeholder="Click me to open dropdown"
+                                    value={computeGuestsAndRoomsString()}
+                                    styles={{
+                                        fontFamily: "poppins",
+                                        cursor: "pointer",
+                                        fontSize: "14px",
+                                    }}
+                                />
+                                {menuOpen && <StaysMenu />}
+                            </div>
+                        </ClickAwayListener>
                     </Flex>
                 </Flex>
                 <Flex>

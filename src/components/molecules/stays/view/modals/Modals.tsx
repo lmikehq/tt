@@ -5,12 +5,9 @@ import Flex from "@/components/templates/flex";
 import Section from "../../../section";
 import { BsChevronBarLeft } from "react-icons/bs";
 import Text from "@/components/atoms/text";
-import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../../radio";
-import CheckBox from "../../../checkbox";
 import { Span } from "../styles";
-import MapBox from "./components/MapBox";
 import CloseIcon from "@mui/icons-material/Close";
 import AmenitiesBox from "./components/AmenitiesBox";
 import SearchBox from "./components/SearchBox";
@@ -22,6 +19,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { AmenityGroup, Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { ViewTripAdvisorStayReviewsResponse } from "@/lib/types/request-models/stay/search.type";
 import GoogleMap from "../GoogleMap";
+import { FiltersInterface } from "../ChooseYourRoom";
 
 
 const ModalCenter = styled.div`
@@ -98,11 +96,15 @@ const ModalWrapper = styled.div`
 `;
 
 export const GalleryModal = ({
-  open,
-  handleClose,
+    stayResponse,
+    images,
+    open,
+    handleClose,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    stayResponse: ViewSingleStayResponse;
+    images: string[];
+    open: boolean;
+    handleClose: () => void;
 }) => {
   useEffect(() => {
     const handleBodyOverflow = () => {
@@ -128,7 +130,7 @@ export const GalleryModal = ({
                 gap="20px"
                 justify="space-between"
               >
-                <Text type="h2" text="The Ritz London Hotel" weight={600} />
+                <Text type="h2" text={stayResponse?.name ?? "Hotel"} weight={600} />
                 <Flex
                   align="center"
                   justify="center"
@@ -143,7 +145,9 @@ export const GalleryModal = ({
                 </Flex>
               </Flex>
               <Span>
-                <GalleryBox />
+                <GalleryBox
+                    images={images}
+                />
               </Span>
             </SectionLayout>
           </ModalWrapper>
@@ -266,54 +270,35 @@ return (
   );
 };
 
+type OptionType = { value: string, label: string };
 // FILTER MODAL
 interface FilterModalProps {
-    beds: string;
-    setBeds: React.Dispatch<React.SetStateAction<string>>;
-    bedsOptions: { value: string; label: string }[];
-    selectedMeals: string;
-    setSelectedMeals: React.Dispatch<React.SetStateAction<string>>;
-    mealOptions: { value: string; label: string }[];
-    cancellation: string;
-    setCancellation: React.Dispatch<React.SetStateAction<string>>;
-    cancellationOptions: { value: string; label: string }[];
-    selectedPayment: string;
-    setSelectedPayment: React.Dispatch<React.SetStateAction<string>>;
-    paymentOptions: { value: string; label: string }[];
+    filters: FiltersInterface;
+    setFilters: React.Dispatch<React.SetStateAction<FiltersInterface>>;
+    bedsOptions: OptionType[];
+    mealOptions: OptionType[];
+    cancellationOptions: OptionType[];
+    paymentOptions: OptionType[];
     open: boolean;
     handleClose: () => void;
-    submissionState: {
-        loading: boolean;
-    };
-    setSubmissionState: React.Dispatch<
-        React.SetStateAction<{loading: boolean;}>
-    >;
     handleSubmit: () => void;
-    // resetAllFilters: () => void;
-    // totalSelectedOptions: number;
+    resetFilters: () => void;
+    loading: boolean;
     items: Rate[];
 }
 
 export const FilterModal = ({
+    filters,
+    setFilters,
     open,
     handleClose,
-    beds,
-    setBeds,
     bedsOptions,
-    selectedMeals,
-    setSelectedMeals,
     mealOptions,
-    cancellation,
-    setCancellation,
     cancellationOptions,
-    selectedPayment,
-    setSelectedPayment,
     paymentOptions,
-    submissionState,
-    setSubmissionState,
     handleSubmit,
-    // resetAllFilters,
-    // totalSelectedOptions,
+    resetFilters,
+    loading,
     items,
 }: FilterModalProps) => {
     useEffect(() => {
@@ -345,26 +330,18 @@ export const FilterModal = ({
               />
             </Flex>
             <Span style={{ padding: "15px" }}>
-              <FilterBox
-                beds={beds}
-                setBeds={setBeds}
-                bedsOptions={bedsOptions}
-                selectedMeals={selectedMeals}
-                setSelectedMeals={setSelectedMeals}
-                mealOptions={mealOptions}
-                cancellation={cancellation}
-                setCancellation={setCancellation}
-                cancellationOptions={cancellationOptions}
-                selectedPayment={selectedPayment}
-                setSelectedPayment={setSelectedPayment}
-                paymentOptions={paymentOptions}
-                submissionState={submissionState}
-                setSubmissionState={setSubmissionState}
-                handleSubmit={handleSubmit}
-                // resetAllFilters={resetAllFilters}
-                // totalSelectedOptions={totalSelectedOptions}
-                items={items}
-              />
+                <FilterBox
+                    filters={filters}
+                    setFilters={setFilters}
+                    bedsOptions={bedsOptions}
+                    mealOptions={mealOptions}
+                    cancellationOptions={cancellationOptions}
+                    paymentOptions={paymentOptions}
+                    handleSubmit={handleSubmit}
+                    resetFilters={resetFilters}
+                    loading={loading}
+                    items={items}
+                />
             </Span>
           </ModalWrapper>
         </ModalScroll>

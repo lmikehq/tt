@@ -52,9 +52,10 @@ const tabs: TabProps[] = [
 interface StayDetailsProps {
     stayResponse: ViewSingleStayResponse;
     stayDetails: ViewTripAdvisorStayDetailsResponse;
+    loading: boolean;
 }
 
-function StayDetails({ stayResponse, stayDetails }: StayDetailsProps) {
+function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
     const { isMobile } = useScreenResolution();
 
     const [activeTab, setActiveTab] = useState("overview");
@@ -75,13 +76,15 @@ function StayDetails({ stayResponse, stayDetails }: StayDetailsProps) {
     , [stayResponse?.amenity_groups])
     
     const lowestRate = useMemo(() => {
-        const sorted = stayResponse.rates.sort((a, b) => parseFloat(a.daily_prices[a.daily_prices.length - 1]) - parseFloat(b.daily_prices[b.daily_prices.length - 1]))
+        const sorted = stayResponse?.rates.sort((a, b) => parseFloat(a.daily_prices[a.daily_prices.length - 1]) - parseFloat(b.daily_prices[b.daily_prices.length - 1]))
         return sorted.length > 0 ? parseFloat(sorted[0]?.daily_prices[sorted.length - 1]) : 0
-    }, [stayResponse.rates])
+    }, [stayResponse?.rates])
 
     
-  return (
-    <Container>
+    return (loading ? (
+        <StayDetailSkeleton />
+    ) : (
+        <Container>
       <Header id="overview">
         <Tab>
           <Flex gap="20px">
@@ -313,8 +316,8 @@ function StayDetails({ stayResponse, stayDetails }: StayDetailsProps) {
             lng={stayDetails?.longitude ?? 0}
             stayResponse={stayResponse}
         />
-    </Container>
-  );
+        </Container>
+    ));
 }
 
 export default StayDetails;

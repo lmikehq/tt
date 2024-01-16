@@ -65,19 +65,19 @@ interface HotelAmenitiesProps {
 }
 
 const HotelAmenities = ({ stayResponse }: HotelAmenitiesProps) => {
-  const [openBoxes, setOpenBoxes] = useState<number[]>([0]);
+    const [openBoxes, setOpenBoxes] = useState<number[]>([0]);
 
-  const toggleBox = (index: number) => {
-    setOpenBoxes((prevOpenBoxes) => {
-      const isOpen = prevOpenBoxes.includes(index);
+    const toggleBox = (index: number) => {
+        setOpenBoxes((prevOpenBoxes) => {
+        const isOpen = prevOpenBoxes.includes(index);
 
-      if (isOpen) {
-        return prevOpenBoxes.filter((boxIndex) => boxIndex !== index);
-      } else {
-        return [...prevOpenBoxes, index];
-      }
-    });
-  };
+        if (isOpen) {
+            return prevOpenBoxes.filter((boxIndex) => boxIndex !== index);
+        } else {
+            return [...prevOpenBoxes, index];
+        }
+        });
+    };
 
   return (
     <>

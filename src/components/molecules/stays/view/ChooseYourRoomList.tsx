@@ -31,6 +31,8 @@ import { Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/s
 import { pickIcon } from "./modals/components/AmenitiesBox";
 import { capCase } from "@/lib/utilFns";
 import dayjs from "dayjs";
+import { useQueryParams } from "@/hooks/useNext";
+import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 
 interface OneOptionProps {
     label: string,
@@ -130,8 +132,6 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
             [name]: value
         }))
     }
-
-    console.log(selected)
 
 
     return (
@@ -463,11 +463,12 @@ interface HotelListProps {
 function ChooseYourRoomList(props: HotelListProps) {
     const { hotels } = props;
     const { isMobile } = useScreenResolution();
+    const { queryParams } = useQueryParams()
 
     const router = useRouter();
 
     const handleClick = () => {
-        router.push("/stay/booking");
+        router.push(`/stay/booking?hotelId=${queryParams?.hotelId}&bookHash=${queryParams?.bookHash}&guests=${extractRoomForGuestsFromString(queryParams?.guests)}`);
     };
 
     const formatPolicy = (start: string | null, end: string | null) => {
@@ -479,8 +480,6 @@ function ChooseYourRoomList(props: HotelListProps) {
             return `Cancel before ${dayjs(end).format('MMM DD')}`
         } else return ''
     }
-    // const cancellationOptions = useMemo(() => {
-    // }, [])
 
     return (
         <React.Fragment>

@@ -16,17 +16,17 @@ import {
     KiwiLocation,
     KiwiLocationType,
 } from "@/lib/types/response-models/flight/location.type";
-import { RateHawkHotelType, RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 
 interface SearchInputAsLocationTypesProps {
-    locations: (KiwiLocation | RateHawkRegionType | RateHawkHotelType)[];
+    locations: (KiwiLocation | RateHawkRegionType)[];
     handleSetSearchText: (params: { text: string }) => void;
-    onChange: (value: KiwiLocation | RateHawkRegionType | RateHawkHotelType) => void;
-    value?: KiwiLocation | RateHawkRegionType | RateHawkHotelType;
+    onChange: (value: KiwiLocation | RateHawkRegionType) => void;
+    value?: KiwiLocation | RateHawkRegionType;
     placeholder: string;
     loading: boolean;
     defaultText?: string;
-    showHotels: boolean;
+    showHotels?: boolean;
 }
 
 export default function SearchInputAsLocationTypes({

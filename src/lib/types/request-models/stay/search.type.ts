@@ -9,7 +9,7 @@ export interface StayTypeFilter {
 }
 
 export interface StayTabInitialSearchQuery {
-    location?: RateHawkRegionType | RateHawkHotelType;
+    location?: RateHawkRegionType;
     checkInDate?: Dayjs;
     checkOutDate?: Dayjs;
     roomForGuests: RoomForGuest[];

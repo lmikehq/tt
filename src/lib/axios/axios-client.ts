@@ -128,6 +128,8 @@ const tripAdvisorResourceClient: AxiosInstance = axios.create({
         "Content-Type": "application/json",
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate, br",
+        "Referer": "https://stays-dev.thrillers.travel",
+        "Origin": "https://stays-dev.thrillers.travel"
     },
 });
 tripAdvisorResourceClient.interceptors.response.use(
