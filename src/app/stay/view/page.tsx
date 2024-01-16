@@ -35,6 +35,7 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StayViewPage = () => {
+
   const router = useRouter();
   const { isMobile } = useScreenResolution();
   const searchParams = useSearchParams();
@@ -68,7 +69,7 @@ const StayViewPage = () => {
     router.back();
   };
 
-  console.log(stayResponse);
+  // console.log(stayResponse);
 
   return (
     <SectionLayout>
@@ -135,7 +136,9 @@ const StayViewPage = () => {
         </Section>
       </Box>
     </SectionLayout>
+
   );
 };
+
 
 export default StayViewPage;

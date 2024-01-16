@@ -1,36 +1,37 @@
-"use client";
-import Button from "@/components/atoms/button";
-import Input from "@/components/atoms/input";
-import Text from "@/components/atoms/text";
-import Section from "@/components/molecules/section";
-import Flex from "@/components/templates/flex";
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { useVoucherStore } from "@/lib/store/voucher.store";
-import { ttColors } from "@/lib/theme/colors";
-import { Mode } from "@lib/types";
-import { useState } from "react";
-import { toast } from "react-hot-toast";
-import { BiSolidErrorCircle } from "react-icons/bi";
-import { BsFillCheckCircleFill, BsTrash } from "react-icons/bs";
+"use client"
+import Button from "@/components/atoms/button"
+import Input from "@/components/atoms/input"
+import Text from "@/components/atoms/text"
+import Section from "@/components/molecules/section"
+import Flex from "@/components/templates/flex"
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
+import { useVoucherStore } from "@/lib/store/voucher.store"
+import { ttColors } from "@/lib/theme/colors"
+import { Mode } from "@lib/types"
+import { useState } from "react"
+import { toast } from "react-hot-toast"
+import { BiSolidErrorCircle } from "react-icons/bi"
+import { BsFillCheckCircleFill, BsTrash } from "react-icons/bs"
 
 function VoucherForm({ modal = false }: { modal?: boolean }) {
-  const { isMobile } = useScreenResolution();
-  const [promoCode, setPromoCode] = useState("");
+  const { isMobile } = useScreenResolution()
+  const [promoCode, setPromoCode] = useState("")
   const {
     voucher,
     errorMessage,
     checkVoucher,
     mode: voucherMode,
     deleteVoucher,
-  } = useVoucherStore((state) => state);
+  } = useVoucherStore((state) => state)
   return (
-    <Section margin="5rem  0 0">
+    <Section margin={isMobile ? '3rem 0 0' : "5rem 0 0"}>
       <Text
         text={"Enter Travel Voucher"}
         type={"h3"}
         weight={600}
         size={20}
         margin={"0 0 0.75rem 0"}
+        textAlign={isMobile ? 'center' : 'left'}
       />
       <Text
         text={
@@ -41,6 +42,7 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
         color="#606060"
         type={"p"}
         margin={""}
+        textAlign={isMobile ? 'center' : 'left'}
       />
       <form onSubmit={(e) => e.preventDefault()}>
         <Flex
@@ -54,20 +56,19 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
             flexGrow={1}
             onChange={(e) => setPromoCode(e.target.value)}
             value={promoCode}
-            border={`1px solid ${
-              voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
-            }`}
+            border={`1px solid ${voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
+              }`}
             height="50px"
             styles={{ outline: "none" }}
           />
           <Button
             onClick={() => {
-              if (voucherMode == Mode.loading) return;
+              if (voucherMode == Mode.loading) return
 
               checkVoucher({ promoCode }).then((response) => {
-                toast.success("Travel voucher applied");
-                setPromoCode("");
-              });
+                toast.success("Travel voucher applied")
+                setPromoCode("")
+              })
             }}
             disabled={!promoCode}
             width={isMobile ? "100%" : "25%"}
@@ -108,8 +109,8 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
             cursor="pointer"
             width="fit-content"
             onClick={() => {
-              deleteVoucher();
-              setPromoCode("");
+              deleteVoucher()
+              setPromoCode("")
             }}
           >
             <BsTrash size={20} color="#A0001D" />
@@ -118,7 +119,7 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
         </Flex>
       )}
     </Section>
-  );
+  )
 }
 
-export default VoucherForm;
+export default VoucherForm
