@@ -25,21 +25,15 @@ import styled from "styled-components";
 import { getIpDetails } from "../form/visaApis";
 import MobileNavigationDrawer from "./modals/mobileNav";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import { Poppins } from "next/font/google";
 import { PiCaretDownBold } from "react-icons/pi";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { IoIosArrowDown } from "react-icons/io";
 import { CurrencyModal, LanguageModal } from "../customModal";
 
-const poppins = Poppins({
-  weight: "400",
-  style: ["normal"],
-  display: "swap",
-  subsets: ["latin-ext"],
-});
 
-const NavbarWrapper = styled.div<{ page: string }>`
+
+const NavbarWrapper = styled.div<{ page: string; }>`
   position: relative;
   width: 100%;
   height: 70px;
@@ -94,7 +88,7 @@ const Divider = styled.div`
   background: #929292;
 `;
 
-const MobileWrapper = styled.div<{ isSticky: boolean }>`
+const MobileWrapper = styled.div<{ isSticky: boolean; }>`
   // position: ${({ isSticky }) => (isSticky ? "fixed" : "static")};
 `;
 
@@ -103,7 +97,7 @@ interface navbarProps {
   pathArray: string | string[];
 }
 
-const Navbar = ({ page }: { page: string }) => {
+const Navbar = ({ page }: { page: string; }) => {
   let path = usePathname();
   let pathArray = path.split("/")[1];
   const { setGeoInfo } = useUserStore((state) => state);
@@ -280,18 +274,18 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   justify="flex-end"
                   cursor="pointer"
                   width="fit-content"
-                  // onClick={() =>
-                  //   setOpen((prev) => ({
-                  //     ...prev,
-                  //     language: true,
-                  //   }))
-                  // }
+                // onClick={() =>
+                //   setOpen((prev) => ({
+                //     ...prev,
+                //     language: true,
+                //   }))
+                // }
                 >
                   <CircleFlagLanguage
                     languageCode={`${selectedLanguage}`}
                     height="30"
                   />
-                 
+
                   <Text
                     text={`${selectedLanguage}`}
                     type="span"
@@ -347,7 +341,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                   />
                 </span>
               </Flex>
-             
+
               {user?.firstName ? (
                 <>
                   {" "}

@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-key */
+
 "use client";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -32,7 +33,7 @@ const TabWrapper = styled.div<{
   .MuiTabs-root {
     padding: 0px;
     box-shadow: ${({ shadowShow }) =>
-      shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
+    shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
     box-shadow: ;
 
     border-radius: 6px;
@@ -40,7 +41,7 @@ const TabWrapper = styled.div<{
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
     background: ${({ addBackgroundColor }) =>
-      addBackgroundColor ? "#87CEEB" : "#fff"};
+    addBackgroundColor ? "#87CEEB" : "#fff"};
     color: ${({ addColor }) => (addColor ? "#fff" : "#7BBBD6")};
   }
   .css-1gsv261 {
@@ -70,7 +71,7 @@ const TabWrapper = styled.div<{
       display: flex;
       justify-content: space-between;
     }
-  }
+
 `;
 
 function TabPanel(props: TabPanelProps) {
@@ -90,14 +91,19 @@ function TabPanel(props: TabPanelProps) {
         </Box>
       )}
     </div>
+
+
   );
+
 }
 
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
+
   };
+
 }
 
 export default function CustomTab({
@@ -112,6 +118,7 @@ export default function CustomTab({
   aside,
   variant = "standard",
 }: {
+
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
@@ -166,17 +173,20 @@ export default function CustomTab({
             overflow: "auto",
           }}
         >
+
           {tabItems.map((tabItem, i) => {
             const borderStyle = {
               border: "none",
               borderRight: i % 4 === 0 ? "1px solid #ccc" : "none",
               borderLeft: i % 4 === 2 ? "1px solid #ccc" : "none",
             };
+
             return (
               <Tab
                 key={tabItem.value}
                 disabled={tabItem.disabled}
                 label={
+
                   <Flex align="center" justify="center" gap=".5rem">
                     {defaultIcons && coloredIcons[tabItem.value]}
                     <Text
@@ -210,6 +220,7 @@ export default function CustomTab({
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (
+
         <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>

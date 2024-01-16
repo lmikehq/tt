@@ -1,15 +1,15 @@
-"use client";
-import { isoLangs } from "@lib/extensions/data/isoLangs";
-import { ttColors } from "@lib/theme/colors";
-import { Autocomplete, Box, TextField as MUITextField } from "@mui/material";
+"use client"
+import { isoLangs } from "@lib/extensions/data/isoLangs"
+import { ttColors } from "@lib/theme/colors"
+import { Autocomplete, Box, TextField as MUITextField } from "@mui/material"
 import {
   CSSProperties,
   KeyboardEventHandler,
   ReactNode,
   useState,
-} from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import styled from "styled-components";
+} from "react"
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import styled from "styled-components"
 
 const StyledInput = styled.input`
   background-color: transparent;
@@ -27,7 +27,7 @@ const StyledInput = styled.input`
     color: #929292 !important;
     font-weight: 400 !important;
   }
-`;
+`
 
 const StyledMuiTextField = styled(MUITextField)`
   background-color: transparent;
@@ -50,52 +50,52 @@ const StyledMuiTextField = styled(MUITextField)`
   &:hover {
     border: transparent;
   }
-`;
+`
 
 export interface InputProps {
-  onChange?: (e: any) => void;
-  onClick?: (e: any) => void;
-  onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined;
-  onPaste?: () => void;
-  placeholder?: string;
-  onBlur?: (e: any) => void;
-  onFocus?: (e: any) => void;
-  margin?: CSSProperties["margin"];
-  padding?: CSSProperties["padding"];
-  touchedError?: boolean;
+  onChange?: (e: any) => void
+  onClick?: (e: any) => void
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement> | undefined
+  onPaste?: () => void
+  placeholder?: string
+  onBlur?: (e: any) => void
+  onFocus?: (e: any) => void
+  margin?: CSSProperties["margin"]
+  padding?: CSSProperties["padding"]
+  touchedError?: boolean
   type?:
-    | "text"
-    | "number"
-    | "file"
-    | "textArea"
-    | "password"
-    | "email"
-    | "tel"
-    | "address"
-    | "checkbox";
-  value?: string;
-  defaultValue?: string;
-  name?: string;
-  id?: string;
-  step?: string;
-  readOnly?: boolean;
-  legend?: string;
-  border?: string;
-  width?: string;
-  height?: string;
-  size?: string;
-  color?: string;
-  weight?: string;
-  br?: string;
-  addon?: ReactNode;
-  min?: number;
-  max?: number;
-  flexGrow?: number;
-  parentWidth?: string;
-  styles?: CSSProperties;
-  error?: boolean;
-  ref?: any;
-  autoFocus?: boolean;
+  | "text"
+  | "number"
+  | "file"
+  | "textArea"
+  | "password"
+  | "email"
+  | "tel"
+  | "address"
+  | "checkbox"
+  value?: string
+  defaultValue?: string
+  name?: string
+  id?: string
+  step?: string
+  readOnly?: boolean
+  legend?: string
+  border?: string
+  width?: string
+  height?: string
+  size?: string
+  color?: string
+  weight?: string
+  br?: string
+  addon?: ReactNode
+  min?: number
+  max?: number
+  flexGrow?: number
+  parentWidth?: string
+  styles?: CSSProperties
+  error?: boolean
+  ref?: any
+  autoFocus?: boolean
 }
 
 const Input = ({
@@ -134,7 +134,7 @@ const Input = ({
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
     type === "password" ? "password" : ""
-  );
+  )
   if (type === "textArea") {
     return (
       <textarea
@@ -155,8 +155,9 @@ const Input = ({
         }}
         onChange={onChange}
       ></textarea>
-    );
+    )
   }
+
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
@@ -165,7 +166,7 @@ const Input = ({
         onClick={onClick}
         onFocus={onFocus}
         className={`custom-form-input ${error ? "error" : ""}`}
-        type={miniType || type}
+        type={type || type}
         onBlur={onBlur}
         placeholder={placeholder}
         onPaste={onPaste}
@@ -223,8 +224,8 @@ const Input = ({
         </Box>
       )}
     </div>
-  );
-};
+  )
+}
 
 export const TextField = ({
   onChange,
@@ -250,6 +251,8 @@ export const TextField = ({
         type={type || "text"}
         // onBlur={onBlur}
         placeholder={placeholder}
+        autoComplete="new-password"
+        autoCorrect="off"
         // onPaste={onPaste}
         // value={value}
         onChange={onChange}
@@ -269,8 +272,8 @@ export const TextField = ({
         }}
       />
     </>
-  );
-};
+  )
+}
 
 export const AutoComplete = ({
   onChange,
@@ -286,7 +289,7 @@ export const AutoComplete = ({
   padding,
   legend,
 }: InputProps) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("")
   return (
     <Autocomplete
       id="combo-box-demo"
@@ -294,7 +297,7 @@ export const AutoComplete = ({
       sx={{ width: 300 }}
       renderInput={(params) => <MUITextField {...params} label="Movie" />}
     />
-  );
-};
+  )
+}
 
-export default Input;
+export default Input

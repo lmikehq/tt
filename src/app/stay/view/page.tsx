@@ -1,40 +1,41 @@
-"use client";
+"use client"
 
-import Section from "@/components/molecules/section";
-import BreadCrumbPane from "@/components/molecules/stays/view/BreadCrumbPane";
-import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom";
-import CompareSimilarHotels from "@/components/molecules/stays/view/CompareSimilarHotels";
-import CompareSlider from "@/components/molecules/stays/view/CompareSlider";
-import DescriptionOfHotel from "@/components/molecules/stays/view/DescriptionOfHotel";
-import HeroImageGrid from "@/components/molecules/stays/view/HeroImageGrid";
-import HotelAmenities from "@/components/molecules/stays/view/HotelAmenities";
-import HotelReviews from "@/components/molecules/stays/view/HotelReviews";
-import LikeSimilarHotels from "@/components/molecules/stays/view/LikeSimilarHotels";
-import Location from "@/components/molecules/stays/view/Location";
-import Policies from "@/components/molecules/stays/view/Policies";
-import StayDetails from "@/components/molecules/stays/view/StayDetails";
-import RecentlyViewedList from "@/components/molecules/stays/view/recently-viewed/RecentlyViewedList";
-import { Span } from "@/components/molecules/stays/view/styles";
-import SectionLayout from "@/components/templates/SectionLayout";
-import Flex from "@/components/templates/flex";
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import Favorite from "@mui/icons-material/Favorite";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import { Box, Checkbox } from "@mui/material";
-import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useViewSingleStay } from "@/lib/hooks/stay/search.hook";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import Section from "@/components/molecules/section"
+import BreadCrumbPane from "@/components/molecules/stays/view/BreadCrumbPane"
+import ChooseYourRoom from "@/components/molecules/stays/view/ChooseYourRoom"
+import CompareSimilarHotels from "@/components/molecules/stays/view/CompareSimilarHotels"
+import CompareSlider from "@/components/molecules/stays/view/CompareSlider"
+import DescriptionOfHotel from "@/components/molecules/stays/view/DescriptionOfHotel"
+import HeroImageGrid from "@/components/molecules/stays/view/HeroImageGrid"
+import HotelAmenities from "@/components/molecules/stays/view/HotelAmenities"
+import HotelReviews from "@/components/molecules/stays/view/HotelReviews"
+import LikeSimilarHotels from "@/components/molecules/stays/view/LikeSimilarHotels"
+import Location from "@/components/molecules/stays/view/Location"
+import Policies from "@/components/molecules/stays/view/Policies"
+import StayDetails from "@/components/molecules/stays/view/StayDetails"
+import RecentlyViewedList from "@/components/molecules/stays/view/recently-viewed/RecentlyViewedList"
+import { Span } from "@/components/molecules/stays/view/styles"
+import SectionLayout from "@/components/templates/SectionLayout"
+import Flex from "@/components/templates/flex"
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
+import Favorite from "@mui/icons-material/Favorite"
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder"
+import { Box, Checkbox } from "@mui/material"
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useViewSingleStay } from "@/lib/hooks/stay/search.hook"
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery"
 import {
   ViewSingleStayRequestInput,
   convertRoomForGuestsToString,
   extractRoomForGuestsFromString,
-} from "@/lib/types/request-models/stay/search.type";
-import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+} from "@/lib/types/request-models/stay/search.type"
+import { useUserPreferencesStore } from "@/lib/store/preferences.store"
 
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
+const label = { inputProps: { "aria-label": "Checkbox demo" } }
 
 const StayViewPage = () => {
+
   const router = useRouter();
   const { isMobile } = useScreenResolution();
   const searchParams = useSearchParams();
@@ -55,7 +56,7 @@ const StayViewPage = () => {
     language: preferredLanguage,
     guests: extractRoomForGuestsFromString(guests ?? ""),
     currency: preFerredCurrency,
-  });
+  })
 
   const { data: stayResponse, isFetching } = useViewSingleStay(
     requestParams(),
@@ -135,7 +136,9 @@ const StayViewPage = () => {
         </Section>
       </Box>
     </SectionLayout>
+
   );
 };
 
-export default StayViewPage;
+
+export default StayViewPage
