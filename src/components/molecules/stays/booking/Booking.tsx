@@ -41,9 +41,17 @@ import { useUserStore } from "@/lib/store/useStore";
 
 interface BookingProps {
     guests: RoomForGuest[];
+    handleSetPaymentOptions: (options: StayPaymentOption[]) => void;
+    handleSetBookingSuccessful: (value: boolean) => void;
+    handleSetBookingId: (value: string) => void;
 }
 
-function Booking({ guests }: BookingProps) {
+function Booking({
+    guests,
+    handleSetPaymentOptions,
+    handleSetBookingId,
+    handleSetBookingSuccessful,
+}: BookingProps) {
     const { isMobile } = useScreenResolution();
     const searchParams = useSearchParams();
     const { user, geoInfo } = useUserStore((state) => state);
@@ -90,7 +98,13 @@ function Booking({ guests }: BookingProps) {
     };
 
     const { mutate: orderBooking, isLoading: bookingIsLoading } =
-        useStayOrderBooking();
+        useStayOrderBooking({
+            onSuccess: (data) => {
+                handleSetBookingId(data.bookingData._id);
+                handleSetPaymentOptions(data.bookingData.paymentOptions);
+                handleSetBookingSuccessful(true);
+            },
+        });
 
     return (
         <form onSubmit={handleSubmit}>

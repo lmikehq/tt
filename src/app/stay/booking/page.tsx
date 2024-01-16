@@ -23,11 +23,17 @@ import Text from "@/components/atoms/text";
 import { Box } from "@mui/material";
 import RightColumn from "@/components/molecules/stays/booking/RightColumn";
 import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type";
+import SelectPaymentMethod from "@/components/molecules/stays/booking/SelectPaymentMethod";
 
 function Page() {
     const searchParams = useSearchParams();
     const guests = searchParams.get("guests");
     const { isMobile } = useScreenResolution();
+    const [bookingSuccessful, setBookingSucessful] = useState(false);
+    const [paymentOptions, setPaymentOptions] = useState<StayPaymentOption[]>(
+        []
+    );
+    const [bookingId, setBookingId] = useState("");
 
     return (
         <SectionLayout>
@@ -57,10 +63,26 @@ function Page() {
                         flexDirection: isMobile ? "column-reverse" : "",
                     }}
                 >
-                    <Booking
-                        guests={extractRoomForGuestsFromString(guests ?? "")}
-                    />
-                    <RightColumn guests={guests ?? ""} />
+                    {bookingSuccessful && paymentOptions.length != 0 ? (
+                        <SelectPaymentMethod
+                            bookingId={bookingId}
+                            paymentOptions={paymentOptions}
+                        />
+                    ) : (
+                        <Booking
+                            guests={extractRoomForGuestsFromString(
+                                guests ?? ""
+                            )}
+                            handleSetPaymentOptions={(options) =>
+                                setPaymentOptions(options)
+                            }
+                            handleSetBookingSuccessful={(value) =>
+                                setBookingSucessful(value)
+                            }
+                            handleSetBookingId={(value) => setBookingId(value)}
+                        />
+                    )}
+                    <RightColumn />
                 </Box>
             </Span>
         </SectionLayout>

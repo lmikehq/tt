@@ -44,7 +44,7 @@ function HotelDetail({
                 <Flex direction="column">
                     <Span style={{ position: "relative" }}>
                         <img
-                            src="/assets/images/stays/image1.jpg"
+                            src={hotel.images[0].replace("{size}", "1024x768")}
                             alt=""
                             style={{ width: "100%", height: "auto" }}
                         />
