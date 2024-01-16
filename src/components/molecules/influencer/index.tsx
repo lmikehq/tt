@@ -738,7 +738,6 @@ const InfluencerPage = () => {
                                     <Text
                                         type="p"
                                         text="Find your home away from home with Thrillers Travels' rent stay services. We offer a range of accommodation options, from cozy apartments to luxurious villas, tailored to your destination"
-                                        Ticket
                                         weight={400}
                                         size={isMobile ? 14 : 16}
                                         color={isMobile ? "#414141" : "#000000"}
