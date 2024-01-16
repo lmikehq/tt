@@ -1,11 +1,10 @@
 import Flex from '@/components/templates/flex';
 import React, { CSSProperties } from 'react';
-import GoogleMapReact from 'google-map-react';
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { ttColors } from '@/lib/theme/colors';
 import { IconBaseProps } from 'react-icons';
 import Text from '@/components/atoms/text';
-import { GoogleMap as RGoogleMap, useLoadScript, Marker as RMarker, Libraries, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap as RGoogleMap, useLoadScript, Marker as RMarker, Libraries } from '@react-google-maps/api';
 const libraries: Libraries = ['places'];
 
 
@@ -54,22 +53,3 @@ function GoogleMap({ lat, lng, zoom, containerStyles }: GoogleMapProps) {
 }
 
 export default GoogleMap
-
-// function GoogleMap({ lat, lng, zoom, containerStyles }: GoogleMapProps) {
-//     const center = { lat: Number(lat), lng: Number(lng) }
-//     return (
-//         <Flex width='100%' height='400px' styles={containerStyles}>
-//             <GoogleMapReact
-//                 bootstrapURLKeys={{ key: "AIzaSyBat3WKWJACxCmLF3W2AsqTzAsaAPhmdSg" }}
-//                 defaultCenter={center}
-//                 defaultZoom={zoom ?? 11}
-//             >
-//                 <Marker
-//                     lat={center.lat}
-//                     lng={center.lng}
-//                     text="My Marker"
-//                 />
-//             </GoogleMapReact>
-//         </Flex>
-//     )
-// }
