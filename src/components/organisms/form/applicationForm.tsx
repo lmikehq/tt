@@ -234,7 +234,7 @@ function ApplicationForm() {
         .catch((error) => {
 
           const err = error.response?.data;
-          console.log(error);
+          // console.log(error);
 
           if (
             err?.statusCode === 422 &&

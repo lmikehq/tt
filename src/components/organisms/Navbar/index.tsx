@@ -206,7 +206,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   // SELECTED LANGUAGE
   const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
 
-  console.log("LANGUAGE", selectedLanguage);
+  // console.log("LANGUAGE", selectedLanguage);
 
   return (
     <>
