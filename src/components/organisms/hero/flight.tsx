@@ -8,7 +8,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 
-const HeroWrapper = styled.div<{ isMobile?: boolean }>`
+const HeroWrapper = styled.div<{ isMobile?: boolean; }>`
   // width: 100vw;
   height: ${(props) => (props.isMobile ? "unset" : "720px")};
   margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
@@ -41,14 +41,14 @@ function FlightHero() {
                   size={"1.2rem"}
                   color="white"
                   type="p"
-                  text="With you, we can"
+                  text="With us, you can"
                 ></Text>
                 <Text
                   color="white"
                   type="h1"
                   size={isMobile ? "2.3rem" : "3.5rem"}
                   weight={900}
-                  text="ELEVATE YOUR TRAVEL EXPERIENCE"
+                  text="GET EXCLUSIVE TICKET DEALS AT CHEAP PRICES "
                 ></Text>
               </Flex>
             </Flex>

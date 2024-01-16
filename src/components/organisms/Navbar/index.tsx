@@ -216,12 +216,12 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
             <NavLink>
               {[
                 {
-                  name: "Visa Apply",
+                  name: "Get Visa",
                   url: "visa",
                   icon: <GiPassport />,
                 },
                 {
-                  name: "Find Flight",
+                  name: "Get Ticket",
                   url: "flight",
                   icon: <IoAirplaneSharp />,
                 },

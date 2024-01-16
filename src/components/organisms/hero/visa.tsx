@@ -8,7 +8,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 
-const HeroWrapper = styled.div<{ isMobile?: boolean }>`
+const HeroWrapper = styled.div<{ isMobile?: boolean; }>`
   // width: 100vw;
   height: ${(props) => (props.isMobile ? "unset" : "650px")};
   margin-bottom: ${(props) => (props.isMobile ? "2rem" : "10rem")};
@@ -35,7 +35,7 @@ function VisaHero() {
               <Flex
                 direction="column"
                 align="center"
-                styles={{ textAlign: "center", maxWidth: "700px" }}
+                styles={{ textAlign: "center", maxWidth: "730px" }}
               >
                 <Text
                   size={"1.2rem"}
@@ -48,7 +48,7 @@ function VisaHero() {
                   type="h1"
                   size={isMobile ? "2.3rem" : "3.5rem"}
                   weight={900}
-                  text="HASSLE-FREE VISA APPLICATION"
+                  text="A 100% VISA GUARANTEED APPROVAL"
                 ></Text>
               </Flex>
             </Flex>
