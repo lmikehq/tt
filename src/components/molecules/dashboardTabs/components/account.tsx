@@ -144,7 +144,7 @@ const Account = () => {
   const AccountInformation = [
     {
       title: "Name",
-      description: user.firstName + " " + user.lastName,
+      description: user?.firstName + " " + user?.lastName,
       icon: (
         <RiEditBoxFill
           size={isMobile ? ".8rem" : "1rem"}
@@ -156,7 +156,7 @@ const Account = () => {
 
     {
       title: "Email",
-      description: user.email || "No email added",
+      description: user?.email || "No email added",
       icon: <AiFillPlusCircle size={isMobile ? ".8rem" : "1rem"} />,
       edit: "",
       editable: false,

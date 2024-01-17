@@ -19,4 +19,6 @@ export interface AuthUser {
     createdAt: Date;
     updatedAt: Date;
     resetPasswordToken: string;
+    dateOfBirth: string;
+    address: string;
 }
