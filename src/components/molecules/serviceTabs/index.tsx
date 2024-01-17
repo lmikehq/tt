@@ -13,7 +13,7 @@ import { FlightContext } from "@/lib/extensions/context";
 import Flex from "@/components/templates/flex";
 import { usePathname, useRouter } from "next/navigation";
 
-function ServiceTabs({ page }: { page?: string }) {
+function ServiceTabs({ page }: { page?: string; }) {
   const { isMobile } = useScreenResolution();
   const flightContext = useContext(FlightContext);
   const flightState = flightContext?.state,
@@ -39,8 +39,8 @@ function ServiceTabs({ page }: { page?: string }) {
     );
   }, [path]);
 
-  console.log("Path:", path);
-  console.log("Active Tab:", activeTab);
+  // console.log("Path:", path);
+  // console.log("Active Tab:", activeTab);
   return (
     <Section {...(!isMobile && { padding: "1.5rem 2rem" })}>
       <CustomTab

@@ -1,27 +1,27 @@
-"use client";
+"use client"
 
-import Flex from "@components/templates/flex";
-import Image from "@atom/image";
-import Link from "@atom/link";
-import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import React from "react";
-import styled from "styled-components";
+import Flex from "@components/templates/flex"
+import Image from "@atom/image"
+import Link from "@atom/link"
+import Text from "@atom/text"
+import Section from "src/components/molecules/section"
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
+import React from "react"
+import styled from "styled-components"
 
 const NoVisaWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 interface LinkItem {
-  text: string;
-  url: string;
+  text: string
+  url: string
 }
 export interface NoVisaApplicationProps {
-  noVisaImage: any;
+  noVisaImage: any
   content: {
-    title: string;
-    links: LinkItem[];
+    title: string
+    links: LinkItem[]
   }
 }
 
@@ -29,7 +29,7 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
   noVisaImage,
   content,
 }) => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile } = useScreenResolution()
 
   return (
     <NoVisaWrapper>
@@ -71,8 +71,8 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
         ))}
       </Flex>
     </NoVisaWrapper>
-  );
-};
+  )
+}
 
 // NoVisaApplication.propTypes = {
 //   noVisaImage: PropTypes.string.isRequired,
@@ -87,4 +87,4 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
 //   }).isRequired,
 // };
 
-export default NoApplication;
+export default NoApplication

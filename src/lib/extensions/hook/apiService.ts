@@ -6,6 +6,7 @@ const globalAxios = axios.create({
 });
 
 const apiService = (url: string, method?: string, data?: any): Promise<any> => {
+  // console.log(url)
   return new Promise((resolve) => {
     globalAxios({
       url,

@@ -6,23 +6,26 @@ import styled from "styled-components";
 interface flexProps {
   children?: React.ReactNode;
   justify?:
-    | "center"
-    | "space-between"
-    | "space-around"
-    | "space-evenly"
-    | "flex-start"
-    | "flex-end";
+  | "center"
+  | "space-between"
+  | "space-around"
+  | "space-evenly"
+  | "flex-start"
+  | "flex-end";
   align?:
-    | "center"
-    | "flex-start"
-    | "flex-end"
-    | "stretch"
-    | "baseline"
-    | "space-between";
+  | "center"
+  | "flex-start"
+  | "flex-end"
+  | "stretch"
+  | "baseline"
+  | "space-between";
   gap?: string;
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
   borderBottom?: string;
+  borderLeft?: string;
+  borderRight?: string;
+  borderTop?: string;
   margin?: string;
   padding?: string;
   width?: string;
@@ -33,26 +36,25 @@ interface flexProps {
   id?: string;
   overflow?: string;
   overflowY?:
-    | "auto"
-    | "clip"
-    | "hidden"
-    | "scroll"
-    | "visible"
-    | "inherit"
-    | "initial"
-    | "unset";
+  | "auto"
+  | "clip"
+  | "hidden"
+  | "scroll"
+  | "visible"
+  | "inherit"
+  | "initial"
+  | "unset";
   overflowX?:
-    | "auto"
-    | "clip"
-    | "hidden"
-    | "scroll"
-    | "visible"
-    | "inherit"
-    | "initial"
-    | "unset";
+  | "auto"
+  | "clip"
+  | "hidden"
+  | "scroll"
+  | "visible"
+  | "inherit"
+  | "initial"
+  | "unset";
   wrap?: "wrap" | "nowrap" | "unset";
   border?: string;
-  color?: string;
   height?: string;
   cursor?: string;
   ref?: any;
@@ -62,11 +64,12 @@ interface flexProps {
   onMouseEnter?: (e: any) => void;
   className?: string;
   position?: CSSProperties["position"];
+  color?: string;
 }
 
 const FlexWrapper = styled.div`
-  width: 100%;
-  transition: all 300ms ease-out;
+    width: 100%;
+    transition: all 300ms ease-out;
 `;
 
 const Flex: React.FC<flexProps> = ({
@@ -88,8 +91,10 @@ const Flex: React.FC<flexProps> = ({
   overflowX,
   wrap,
   border,
-  color,
   borderBottom,
+  borderLeft,
+  borderRight,
+  borderTop,
   alignSelf,
   cursor,
   ref,
@@ -100,6 +105,7 @@ const Flex: React.FC<flexProps> = ({
   onMouseOver,
   onMouseLeave,
   onMouseEnter,
+  color
 }) => {
   return (
     <FlexWrapper
@@ -121,14 +127,17 @@ const Flex: React.FC<flexProps> = ({
         overflowY: overflowY,
         overflowX: overflowX,
         borderRadius: borderRadius,
-        border: border,
-        color: color,
         borderBottom: borderBottom ?? border,
+        borderTop: borderTop,
+        borderRight: borderRight,
+        borderLeft: borderLeft,
+        border: border,
         padding: padding,
         flexWrap: wrap,
         height: height,
         alignSelf: alignSelf,
         position,
+        color: color,
         ...styles,
       }}
       onClick={onClick}
@@ -141,3 +150,4 @@ const Flex: React.FC<flexProps> = ({
   );
 };
 export default Flex;
+

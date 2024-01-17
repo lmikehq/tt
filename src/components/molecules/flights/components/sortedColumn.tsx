@@ -23,40 +23,44 @@ function SortedColumn({ results, sortType }: sortProps) {
         sort: false,
     });
 
-  return (
-    <Section>
-      {isMobile ? (
-        <Flex justify="space-between" align="center" padding="0 1.5rem 2rem">
-          <Flex direction="column">
-            <Text type="h1" text="Flights" weight={500} size={20} />
-            {!!sorted &&
-                <Text
-                    type="p"
-                    text={`${searchFlightsResults.length} results sorted by ${sorted}`}
-                    size={14}
-                />
-            }
-          </Flex>
-          <Flex align="center" justify="flex-end" gap="2rem">
-            <Button
-              width="max-content"
-              onClick={() =>
-                setOpen((prev) => ({
-                  ...prev,
-                  filter: true,
-                }))
-              }
-              background="none"
-            >
-              <Text
-                type="p"
-                text="Filter"
-                color={ttColors.primary}
-                weight={600}
-                size={18}
-              />
-            </Button>
-            {/* <Button
+    return (
+        <Section>
+            {isMobile ? (
+                <Flex
+                    justify="space-between"
+                    align="center"
+                    padding="0 1.5rem 2rem"
+                >
+                    <Flex direction="column">
+                        <Text type="h1" text="Tickets" weight={500} size={20} />
+                        {!!sorted && (
+                            <Text
+                                type="p"
+                                text={`${searchFlightsResults.length} results sorted by ${sorted}`}
+                                size={14}
+                            />
+                        )}
+                    </Flex>
+                    <Flex align="center" justify="flex-end" gap="2rem">
+                        <Button
+                            width="max-content"
+                            onClick={() =>
+                                setOpen((prev) => ({
+                                    ...prev,
+                                    filter: true,
+                                }))
+                            }
+                            background="none"
+                        >
+                            <Text
+                                type="p"
+                                text="Filter"
+                                color={ttColors.primary}
+                                weight={600}
+                                size={18}
+                            />
+                        </Button>
+                        {/* <Button
               width="max-content"
               onClick={() =>
                 setOpen((prev) => ({
@@ -74,31 +78,31 @@ function SortedColumn({ results, sortType }: sortProps) {
                 size={18}
               />
             </Button> */}
-          </Flex>
-          <FilterModal
-            open={open.filter}
-            handleClose={() =>
-              setOpen((prev) => ({
-                ...prev,
-                filter: false,
-              }))
-            }
-          />
-          <SortModal
-            open={open.sort}
-            handleClose={() =>
-              setOpen((prev) => ({
-                ...prev,
-                sort: false,
-              }))
-            }
-          />
-        </Flex>
-      ) : (
-        <SortingColumns />
-      )}
-    </Section>
-  );
+                    </Flex>
+                    <FilterModal
+                        open={open.filter}
+                        handleClose={() =>
+                            setOpen((prev) => ({
+                                ...prev,
+                                filter: false,
+                            }))
+                        }
+                    />
+                    <SortModal
+                        open={open.sort}
+                        handleClose={() =>
+                            setOpen((prev) => ({
+                                ...prev,
+                                sort: false,
+                            }))
+                        }
+                    />
+                </Flex>
+            ) : (
+                <SortingColumns />
+            )}
+        </Section>
+    );
 }
 
 export default SortedColumn;

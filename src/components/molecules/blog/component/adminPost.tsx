@@ -38,7 +38,7 @@ export const AdminPost = () => {
         },
 
         {
-            label: "Flight",
+            label: "Ticket",
             value: 3,
             content: "",
         },
