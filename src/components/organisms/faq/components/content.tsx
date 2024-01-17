@@ -680,6 +680,29 @@ export const aiContent = [
         icon: <LuCalendarCheck color={ttColors.dark} size={22} />, 
         questions: [
             {
+                q: 'Does the AI learn from user interactions and feedback to improve suggestions?',
+                a: "Our AI continuously evolves, learning from your interactions and feedback to tailor future suggestions and enhance your overall experience."
+            },
+            {
+                q: 'Does it facilitate connections between travelers with similar interests or itineraries?',
+                a: "Discover like-minded travelers! Our AI not only suggests personalized experiences but can also facilitate connections with others who share similar interests or travel plans."
+            },
+            {
+                q: 'Can it provide tailored suggestions for solo travelers, families, or specific interests?',
+                a: "Whether you're a solo adventurer, a family on vacation, or someone with specific interests, our AI crafts tailored suggestions to match your unique preferences."
+            },
+            {
+                q: 'Can it suggest group-friendly activities or accommodations?',
+                a: "Traveling with a group? Our AI ensures group-friendly suggestions, recommending activities and accommodations that cater to collective interests and preferences."
+            },
+        ]
+    },
+    {
+        name: 'Personalized Assistance',
+        id: 'personalized-assistance',
+        icon: <LiaHandsHelpingSolid color={ttColors.dark} size={24} />, 
+        questions: [
+            {
                 q: 'Can it suggest a step-by-step itinerary considering various attractions and travel times?',
                 a: "Yes, the AI can suggest a step-by-step itinerary that takes into account various attractions, travel times, and preferences."
             },
@@ -694,29 +717,6 @@ export const aiContent = [
             {
                 q: 'Can users upload their documents for safekeeping?',
                 a: "No, users are not allowed to upload essential documents for safekeeping."
-            },
-        ]
-    },
-    {
-        name: 'Personalized Assistance',
-        id: 'personalized-assistance',
-        icon: <LiaHandsHelpingSolid color={ttColors.dark} size={24} />, 
-        questions: [
-            {
-                q: 'Does the AI learn from user interactions and feedback to improve suggestions?',
-                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
-            },
-            {
-                q: 'Does it facilitate connections between travelers with similar interests or itineraries?',
-                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
-            },
-            {
-                q: 'Can it provide tailored suggestions for solo travelers, families, or specific interests?',
-                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
-            },
-            {
-                q: 'Can it suggest group-friendly activities or accommodations?',
-                a: "Yes, the AI takes into account flexible dates and nearby airports to provide users with more options and potentially better deals. This feature allows users to explore alternative travel arrangements that may offer cost savings or more convenient options."
             },
         ]
     },
