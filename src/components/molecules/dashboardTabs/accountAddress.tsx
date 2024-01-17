@@ -1,24 +1,25 @@
-import Text from "@atom/text";
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import ReusableModal from "./components/dashboardModal";
-import Input from "@atom/input";
-import Flex from "@components/templates/flex";
-import Required from "@atom/required";
+import Text from "@atom/text"
+import Section from "src/components/molecules/section"
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
+import ReusableModal from "./components/dashboardModal"
+import Input from "@atom/input"
+import Flex from "@components/templates/flex"
+import Required from "@atom/required"
 
 type AddressModalProps = {
-  open: boolean;
-  onClose: () => void;
-};
+  open: boolean
+  onClose: () => void
+}
 
 const AddressModal: React.FC<AddressModalProps> = ({ open, onClose }) => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile } = useScreenResolution()
 
   return (
     <ReusableModal
       open={open}
       onClose={onClose}
       headerText="Edit Your Address"
+      maxWidth={isMobile ? '90%' : '640px'}
       description="Keep us informed: Edit your address"
     >
       {/* Additional content goes here */}
@@ -39,7 +40,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ open, onClose }) => {
         />
       </Section>
     </ReusableModal>
-  );
-};
+  )
+}
 
-export default AddressModal;
+export default AddressModal

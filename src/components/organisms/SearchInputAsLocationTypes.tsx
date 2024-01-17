@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FaHotel } from "react-icons/fa6";
+
 import { BiSolidCity, BiSolidPlane } from "react-icons/bi";
 import Flex from "../templates/flex";
 import Section from "../molecules/section";
@@ -17,6 +17,7 @@ import {
     KiwiLocationType,
 } from "@/lib/types/response-models/flight/location.type";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { FaHotel } from "react-icons/fa6";
 
 interface SearchInputAsLocationTypesProps {
     locations: (KiwiLocation | RateHawkRegionType)[];
@@ -37,7 +38,7 @@ export default function SearchInputAsLocationTypes({
     placeholder,
     loading,
     defaultText,
-    showHotels
+    showHotels,
 }: SearchInputAsLocationTypesProps) {
     const fieldRef = React.useRef<HTMLDivElement | null>(null);
     const fieldWidth = fieldRef?.current

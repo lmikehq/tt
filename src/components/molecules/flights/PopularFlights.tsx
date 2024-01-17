@@ -72,7 +72,7 @@ function PopularFlights() {
     fetchData();
   }, [flightsPerPage]);
 
-  console.log("TOP DEST:", displayedFlights);
+  // console.log("TOP DEST:", displayedFlights);
 
   //===================
   // VIEW MORE HANDLER

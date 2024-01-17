@@ -133,7 +133,7 @@ const StayViewPage = () => {
                 </Span>
             )}
             <HeroImageGrid
-                images={stayResponse?.images}
+                images={stayImages}
                 stayResponse={stayResponse}
             />
             <Box
@@ -190,5 +190,6 @@ const StayViewPage = () => {
         </SectionLayout>
     );
 };
+
 
 export default StayViewPage;

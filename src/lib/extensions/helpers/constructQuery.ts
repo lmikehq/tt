@@ -17,7 +17,7 @@ export function constructQueryFromParams(
 }
 
 export function constructParamsFromQuery(queryString: string): {
-    [key: string]: string;
+  [key: string]: string
 } {
     const queryObject: { [key: string]: string } = {};
 

@@ -9,6 +9,8 @@ import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Image from "@atom/image";
+import Flex from "@/components/templates/flex";
+import Spinner from "../../icons/spinner";
 
 const VisaWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -26,62 +28,61 @@ const VisaWrapper = styled.div`
 `;
 
 const Visa = () => {
-    const { isMobile } = useScreenResolution();
+  const { isMobile } = useScreenResolution();
 
-    async function getVisas() {
-        return await apiService("/visa", "GET");
-    }
-    const initVisas = {
-        visas: []
-    }
+  async function getVisas() {
+    return await apiService("/visa", "GET");
+  }
 
-    const {
-        data: fetchedVisa,
-        isLoading,
-        error,
-        refetch,
-    } = useQuery({
-        queryKey: ["visas"],
-        queryFn: getVisas,
-        // initialData: initVisas
-    }) as any;
-    if (isLoading) return <div>loading</div>;
-    if (error) return <div>error loading visas, please try again</div>;
-    const { data: visas } = fetchedVisa;
-
-    const content = {
-        title: "You’ve got no Visa Application - Let’s help you get Started",
-        links: [
-            { text: "Apply for Visa", url: "/apply/visa" },
-            { text: "Book flight", url: "/flight" },
-        ],
-    };
-
+  const {
+    data: fetchedVisa,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery(["visas"], getVisas) as any;
+  if (isLoading) {
     return (
-        <VisaWrapper>
-            <VisaDashboardHeader headerText="All Visa Applications" />
-
-            <div>
-                {visas?.length > 0 ? (
-                    visas?.map((visa: any, i: number) => (
-                        <div key={i}>
-                            <VisaDetail visa={visa} refetch={refetch} />
-                        </div>
-                    ))
-                ) : (
-                    <Center
-                        margin={isMobile ? "3.5rem 0px" : "10rem 0"}
-                        height="25rem"
-                    >
-                        <NoVisaApplication
-                            noVisaImage={"/assets/images/noVisa.png"}
-                            content={content}
-                        />
-                    </Center>
-                )}
-            </div>
-        </VisaWrapper>
+      <Flex height="450px" align="center" justify="center">
+        <Spinner size="60px" fill={ttColors.blackishBlue} />
+      </Flex>
     );
+  }
+  if (error) return <div>error loading visas, please try again</div>;
+  const { data: visas } = fetchedVisa;
+  // console.log({ visas })
+  const content = {
+    title: "You've got no Visa Application - Let's help you get Started",
+    links: [
+      { text: "Apply for Visa", url: "/apply/visa" },
+      { text: "Book flight", url: "/flight" },
+    ],
+  };
+
+  return (
+    <VisaWrapper>
+      <VisaDashboardHeader headerText="All Visa Applications" />
+
+      <div>
+        {visas?.length > 0 ? (
+          visas?.map((visa: any, i: number) => (
+            <div key={i}>
+              <VisaDetail visa={visa} refetch={refetch} />
+            </div>
+          ))
+        ) : (
+          <Center
+            margin={isMobile ? "3.5rem 0px" : "10rem 0"}
+            height="25rem"
+          >
+            <NoVisaApplication
+              noVisaImage={"/assets/images/noVisa.png"}
+              content={content}
+            />
+          </Center>
+        )}
+      </div>
+    </VisaWrapper>
+  );
 };
 
 export default Visa;

@@ -1,6 +1,6 @@
-"use client";
-import React from "react";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+"use client"
+import React from "react"
+import { GoogleOAuthProvider } from "@react-oauth/google"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -9,5 +9,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     >
       <div>{children}</div>
     </GoogleOAuthProvider>
-  );
+  )
 }

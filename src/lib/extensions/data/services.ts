@@ -1,1 +1,1 @@
-export const SERVICES = ['Visa', 'Flights', 'Stays']
+export const SERVICES = ["Visa", "Tickets", "Stays"];
