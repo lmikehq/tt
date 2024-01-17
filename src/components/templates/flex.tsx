@@ -18,7 +18,8 @@ interface flexProps {
   | "flex-end"
   | "stretch"
   | "baseline"
-  | "space-between";
+  | "space-between"
+  | "";
   gap?: string;
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";

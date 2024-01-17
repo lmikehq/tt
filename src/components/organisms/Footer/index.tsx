@@ -119,11 +119,8 @@ const FooterSection = ({ showNewsletter = true }) => {
 
     const aboutUs = [
         { href: "/about-us", text: "About Us", color: "#06062A" },
-        {
-            href: "https://www.myjobmag.com/jobs-at/thrillers-travels",
-            text: "Careers",
-            color: "#06062A",
-        },
+        // { href: "https://www.myjobmag.com/jobs-at/thrillers-travels", text: "Careers", color: "#06062A" },
+        { href: "/careers", text: "Careers", color: "#06062A" },
         { href: "/press", text: "Press", color: "#06062A" },
         { href: "/blog", text: "Blog", color: "#06062A" },
     ];

@@ -1,17 +1,17 @@
 import Breadcrumb from "@organism/breadcrumb";
 import SectionLayout from "@components/templates/SectionLayout";
 import Section from "src/components/molecules/section";
-import AboutUsPage from "@/components/organisms/about-us/AboutUsPage";
+import CareersPage from "@/components/organisms/careers/CareersPage";
 
-function AboutUs () {
+function Careers () {
     return (
         <Section padding="1rem 0 0">
             <Breadcrumb/>
             <SectionLayout>
-                <AboutUsPage/>
+                <CareersPage/>
             </SectionLayout>
         </Section>
     );
 };
 
-export default AboutUs;
+export default Careers;

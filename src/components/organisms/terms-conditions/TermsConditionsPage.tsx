@@ -23,7 +23,7 @@ function TermsConditionsPage() {
             gridTemplateColumns={isMobile ? '1fr' : '1fr 3fr'}
             columnGap='1.5rem'
             rowGap='2.5rem'
-            padding={isMobile ? '0 1rem' : ''}
+            padding={isMobile ? '0 .5rem 4rem' : '0 0 4rem'}
         >
             <PageLinks
                 links={pageLinks}

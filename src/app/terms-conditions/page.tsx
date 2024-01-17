@@ -4,7 +4,7 @@ import Breadcrumb from "@organism/breadcrumb";
 import Section from "src/components/molecules/section";
 
 
-const TermsAndConditions = () => {
+function TermsAndConditions () {
     return (
         <Section styles={{ paddingTop: "2rem" }}>
             <Breadcrumb />

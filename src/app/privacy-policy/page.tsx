@@ -2,10 +2,9 @@ import PrivacyPolicyPage from "@/components/organisms/privacy-policy/PrivacyPoli
 import SectionLayout from "@/components/templates/SectionLayout";
 import Breadcrumb from "@organism/breadcrumb";
 import Section from "src/components/molecules/section";
-// import PrivacyPoliicyPage from "src/components/molecules/privacyPolicyPage";
 
 
-const PrivacyPolicy = () => {
+function PrivacyPolicy () {
     return (
         <Section styles={{ paddingTop: "2rem" }}>
             <Breadcrumb />
