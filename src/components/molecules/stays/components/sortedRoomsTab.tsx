@@ -9,6 +9,11 @@ import { ttColors } from "@/lib/theme/colors";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import { Span } from "./styles";
 import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
+import {
+    HotelPropertyTypes,
+    StaySearchSortEnum,
+} from "@/lib/types/request-models/stay/search.type";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip
@@ -90,6 +95,9 @@ interface Hotel {
 function SortedRoomsTab(props: sortProps) {
     const { isMobile } = useScreenResolution();
     const { hotels } = props;
+    const { staySearchSort, updateStaySearchSort } = useStaySearchStore(
+        (state) => state
+    );
     return (
         <>
             <Flex
@@ -164,28 +172,45 @@ function SortedRoomsTab(props: sortProps) {
                                 </Span>
                             </Flex>
                         </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "top"}
-                            onClick={() => props.setSortType("top")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
+                        {Object.keys(StaySearchSortEnum).map((item, index) => {
+                            const value =
+                                StaySearchSortEnum[
+                                    item as keyof typeof StaySearchSortEnum
+                                ];
+                            return (
+                                <ButtonBox
+                                    key={"sort-" + index}
+                                    active={staySearchSort === item}
+                                    onClick={() => updateStaySearchSort(value)}
                                 >
-                                    <Text
-                                        type="p"
-                                        text="Top Reviews"
-                                        styles={{ whiteSpace: "nowrap" }}
-                                    />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
+                                    <Flex
+                                        direction="column"
+                                        justify={
+                                            isMobile ? "center" : "flex-start"
+                                        }
+                                        padding=".05rem 1.25rem"
+                                    >
+                                        <Flex
+                                            gap="10px"
+                                            align="center"
+                                            justify={
+                                                isMobile
+                                                    ? "center"
+                                                    : "flex-start"
+                                            }
+                                        >
+                                            <Text
+                                                type="p"
+                                                text={value}
+                                                styles={{
+                                                    whiteSpace: "nowrap",
+                                                }}
+                                            />
+                                        </Flex>
+                                    </Flex>
+                                </ButtonBox>
+                            );
+                        })}
                         <ButtonBox
                             active={props.sortType === "lowest"}
                             onClick={() => props.setSortType("lowest")}

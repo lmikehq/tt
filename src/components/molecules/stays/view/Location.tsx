@@ -8,8 +8,14 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 
-const Location = () => {
+
+interface StayDetailsProps {
+    stayResponse: ViewSingleStayResponse;
+}
+
+const Location = ({ stayResponse } : StayDetailsProps) => {
   const { isMobile } = useScreenResolution();
   //============
   //TOGGLE BOX
@@ -46,7 +52,7 @@ const Location = () => {
               type="p"
               size={14}
               color="var(--text-gray-color)"
-              text="Black Prince Interchange, London, DA5 1ND, United Kingdom"
+              text={stayResponse.address}
             ></Text>
           </Flex>
         </Header>

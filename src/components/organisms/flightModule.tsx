@@ -97,7 +97,6 @@ function FlightModule({
         handleUpdate && handleUpdate(flight, data);
     };
 
-
     return (
         <Section padding=".75rem 0 0 0 " height="unset">
             <Flex
@@ -165,7 +164,9 @@ function FlightModule({
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        value={dayjs(flight?.departureDate ?? undefined).toDate()}
+                        value={dayjs(
+                            flight?.departureDate ?? undefined
+                        ).toDate()}
                         minDate={today}
                         onChange={(e) =>
                             handleUpdate &&
@@ -173,7 +174,7 @@ function FlightModule({
                         }
                     />
                 </Flex>
-                {stops !== "one-way" && (
+                {stops == "round" && (
                     <Flex
                         direction="column"
                         gap=".5rem"
@@ -190,8 +191,12 @@ function FlightModule({
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            value={dayjs(flight?.returnDate ?? undefined).toDate()}
-                            minDate={dayjs(flight?.departureDate ?? undefined).toDate()}
+                            value={dayjs(
+                                flight?.returnDate ?? undefined
+                            ).toDate()}
+                            minDate={dayjs(
+                                flight?.departureDate ?? undefined
+                            ).toDate()}
                             onChange={(e) =>
                                 handleUpdate &&
                                 handleUpdate(flight, { returnDate: dayjs(e) })
