@@ -7,32 +7,59 @@ import {
     constructQueryFromParams,
     extractSearchParamsFromUrl,
 } from "@/lib/extensions/helpers/constructQuery";
-import { useRouter } from "next/navigation";
-import { StaySearchFilters } from "@/lib/types/request-models/stay/search.type";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+    StaySearchFilters,
+    StaySearchInitialQuery,
+    StayTabInitialSearchQuery,
+} from "@/lib/types/request-models/stay/search.type";
 
 function Page() {
     const {
         staySearchFilters,
         staySearchSort,
         staySearchMeta,
+        stayTabInitialSearchQuery,
         updateStaySearchFilters,
     } = useStaySearchStore((state) => state);
     const router = useRouter();
 
     const mountedRef = useRef(false);
 
+    const searchParams = useSearchParams();
+
+    const regionId = searchParams.get("regionId") ?? "";
+    const checkIn = searchParams.get("checkIn") ?? "";
+    const checkOut = searchParams.get("checkOut") ?? "";
+    const guests = searchParams.get("guests") ?? "";
+    const countryCode = searchParams.get("countryCode") ?? "";
+    const stars = searchParams.get("stars") ?? "";
+
     //This useEffect updates the URL
     useEffect(() => {
+        const initialSearchQuery: StaySearchInitialQuery = {
+            regionId,
+            countryCode,
+            stars,
+            checkIn,
+            checkOut,
+            guests,
+        };
         const query = constructQueryFromParams(
-            { ...staySearchFilters, sortBy: staySearchSort, ...staySearchMeta },
+            {
+                ...initialSearchQuery,
+                ...staySearchFilters,
+                sortBy: staySearchSort,
+                ...staySearchMeta,
+            },
             {
                 initialize: false,
             }
         );
         const currentUrl = new URL(window.location.href);
-
+        console.log(currentUrl, "currentUrl");
         // Append the new query string
-        currentUrl.search += "&" + query;
+        currentUrl.search = query;
 
         // Replace the URL in the browser without a page reload
         router.replace(currentUrl.toString());

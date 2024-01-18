@@ -123,55 +123,6 @@ function SortedRoomsTab(props: sortProps) {
                         justify={isMobile ? "center" : "space-between"}
                         styles={{ width: "100%" }}
                     >
-                        <ButtonBox
-                            active={props.sortType === "best"}
-                            onClick={() => props.setSortType("best")}
-                            style={{ position: "relative" }}
-                        >
-                            <Flex
-                                direction="column"
-                                align="center"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Span
-                                    style={{
-                                        paddingRight: "8px",
-                                    }}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Best"
-                                        styles={{
-                                            position: "relative",
-                                            right: "10px",
-                                        }}
-                                    />
-                                    <Span>
-                                        <BootstrapTooltip
-                                            title="We believe you will like these stays with your preferences in mind, considering factors like location, amenities, reviews, and price, ensuring a stay tailored just for you."
-                                            placement="top-start"
-                                            arrow
-                                        >
-                                            <Span
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "19px",
-                                                    right: "20px",
-                                                }}
-                                            >
-                                                {props.sortType === "best" && (
-                                                    <BsInfoCircle
-                                                        size={20}
-                                                        style={{ zIndex: "10" }}
-                                                    />
-                                                )}
-                                            </Span>
-                                        </BootstrapTooltip>
-                                    </Span>
-                                </Span>
-                            </Flex>
-                        </ButtonBox>
                         {Object.keys(StaySearchSortEnum).map((item, index) => {
                             const value =
                                 StaySearchSortEnum[
@@ -180,99 +131,42 @@ function SortedRoomsTab(props: sortProps) {
                             return (
                                 <ButtonBox
                                     key={"sort-" + index}
-                                    active={staySearchSort === item}
+                                    active={staySearchSort === value}
                                     onClick={() => updateStaySearchSort(value)}
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                    }}
                                 >
                                     <Flex
-                                        direction="column"
-                                        justify={
-                                            isMobile ? "center" : "flex-start"
-                                        }
+                                        align={"center"}
                                         padding=".05rem 1.25rem"
                                     >
-                                        <Flex
-                                            gap="10px"
-                                            align="center"
-                                            justify={
-                                                isMobile
-                                                    ? "center"
-                                                    : "flex-start"
-                                            }
+                                        <Text
+                                            type="p"
+                                            text={value}
+                                            styles={{
+                                                position: "relative",
+                                                right: "10px",
+                                            }}
+                                        />
+                                        <BootstrapTooltip
+                                            title="We believe you will like these stays with your preferences in mind, considering factors like location, amenities, reviews, and price, ensuring a stay tailored just for you."
+                                            placement="top-start"
+                                            style={{ flex: "none" }}
+                                            arrow
                                         >
-                                            <Text
-                                                type="p"
-                                                text={value}
-                                                styles={{
-                                                    whiteSpace: "nowrap",
-                                                }}
-                                            />
-                                        </Flex>
+                                            {staySearchSort == value ? (
+                                                <BsInfoCircle size={20} />
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </BootstrapTooltip>
                                     </Flex>
                                 </ButtonBox>
                             );
                         })}
-                        <ButtonBox
-                            active={props.sortType === "lowest"}
-                            onClick={() => props.setSortType("lowest")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Lowest Prices"
-                                        styles={{ whiteSpace: "nowrap" }}
-                                    />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "star"}
-                            onClick={() => props.setSortType("star")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Star Rating"
-                                        styles={{ whiteSpace: "nowrap" }}
-                                    />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "distance"}
-                            onClick={() => props.setSortType("distance")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text type="p" text="Distance" />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
+
                         {isMobile && (
                             <ButtonBox
                                 active={props.sortType === "best"}
