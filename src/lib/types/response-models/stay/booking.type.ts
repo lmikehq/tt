@@ -1,7 +1,6 @@
 export interface StayOrderBookingRequestResponse {
     success: boolean;
     bookingData: BookingData;
-    paymentOptions: StayPaymentOption[];
 }
 
 export interface BookingData {
@@ -14,6 +13,7 @@ export interface BookingData {
     orderId: string;
     createdAt: string;
     updatedAt: string;
+    paymentOptions: StayPaymentOption[];
 }
 
 export interface StayPaymentOption {

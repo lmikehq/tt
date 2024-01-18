@@ -96,8 +96,8 @@ export interface HotelBySearchInterface {
     front_desk_time_end: string | null;
     semantic_version: number;
     rates: Rate[];
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type SearchStaysResponse = HotelBySearchInterface[];
@@ -281,353 +281,329 @@ export interface Guest {
 }
 
 export const sampleViewStay: ViewSingleStayResponse = {
-    "_id": "655feb9382a80970ac4e879a",
-    "address": "Stara Cesta 70, 22000, Šibenik, Croatia, Sibenik",
-    "amenity_groups": [
+    _id: "655feb9382a80970ac4e879a",
+    address: "Stara Cesta 70, 22000, Šibenik, Croatia, Sibenik",
+    amenity_groups: [
         {
-            "amenities": [
-                "Air conditioning",
-                "Heating",
-                "Garden",
-                "Terrace"
-            ],
-            "group_name": "General"
+            amenities: ["Air conditioning", "Heating", "Garden", "Terrace"],
+            group_name: "General",
         },
         {
-            "amenities": [
-                "Family room"
-            ],
-            "group_name": "Rooms"
+            amenities: ["Family room"],
+            group_name: "Rooms",
         },
         {
-            "amenities": [
-                "Free Wi-Fi"
-            ],
-            "group_name": "Internet"
+            amenities: ["Free Wi-Fi"],
+            group_name: "Internet",
         },
         {
-            "amenities": [
-                "Airport transportation",
-                "Transfer services"
-            ],
-            "group_name": "Transfer"
+            amenities: ["Airport transportation", "Transfer services"],
+            group_name: "Transfer",
         },
         {
-            "amenities": [
-                "German",
-                "English"
-            ],
-            "group_name": "Languages Spoken"
+            amenities: ["German", "English"],
+            group_name: "Languages Spoken",
         },
         {
-            "amenities": [
-                "Offsite parking reservations required"
-            ],
-            "group_name": "Parking"
+            amenities: ["Offsite parking reservations required"],
+            group_name: "Parking",
         },
         {
-            "amenities": [
-                "Family/Kid Friendly"
-            ],
-            "group_name": "Kids"
-        }
+            amenities: ["Family/Kid Friendly"],
+            group_name: "Kids",
+        },
     ],
-    "check_in_time": "14:00:00",
-    "check_out_time": "12:00:00",
-    "description_struct": [
+    check_in_time: "14:00:00",
+    check_out_time: "12:00:00",
+    description_struct: [
         {
-            "paragraphs": [
-                "A perfect fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of \"D-Resort Sibenik\".",
-                "A nice fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of \"D-Resort Sibenik\".",
+            paragraphs: [
+                'A perfect fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of "D-Resort Sibenik".',
+                'A nice fit for a big group of travellers: apartment «Apartment Danijela» is located in Sibenik. This apartment is located 1 km from the city center. You can take a walk and explore the neighbourhood area of the apartment. Places nearby: Banj Beach and Private Beach of "D-Resort Sibenik".',
             ],
-            "title": "Location"
+            title: "Location",
         },
         {
-            "paragraphs": [
-                "Want to be always on-line? Wi-Fi is available. If you travel by car, you can park in a parking zone. The staff of the apartment will order a transfer for you. The staff of the apartment speaks English and German."
+            paragraphs: [
+                "Want to be always on-line? Wi-Fi is available. If you travel by car, you can park in a parking zone. The staff of the apartment will order a transfer for you. The staff of the apartment speaks English and German.",
             ],
-            "title": "At the apartment"
-        }
+            title: "At the apartment",
+        },
     ],
-    "email": "danijelajel@hotmail.de",
-    "facts": {
-        "floors_number": null,
-        "rooms_number": 1,
-        "year_built": null,
-        "year_renovated": null,
-        "electricity": {
-            "frequency": [
-                50
-            ],
-            "voltage": [
-                230
-            ],
-            "sockets": [
-                "c",
-                "f"
-            ]
-        }
+    email: "danijelajel@hotmail.de",
+    facts: {
+        floors_number: null,
+        rooms_number: 1,
+        year_built: null,
+        year_renovated: null,
+        electricity: {
+            frequency: [50],
+            voltage: [230],
+            sockets: ["c", "f"],
+        },
     },
-    "front_desk_time_end": null,
-    "front_desk_time_start": null,
-    "hotel_chain": "No chain",
-    "id": "test_hotel_do_not_book",
+    front_desk_time_end: null,
+    front_desk_time_start: null,
+    hotel_chain: "No chain",
+    id: "test_hotel_do_not_book",
     "images": [
-      "https://cdn.ostrovok.ru/t/{size}/content/52/78/5278bb54f9a76c535563658bf67801c695a390f3.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/68/f1/68f1ab7fb24e9cb74cc896f6574e7550beb5b4d7.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/f3/50/f350ccc7d95bbe93d450bb0860066e6edf932826.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/e2/2b/e22bc2ed7344e12380d36f5635daf67247c9a5e6.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/ec/ac/ecacc76b8228b9fc446273f31f5f72917b11d2dc.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/62/7a/627aa9532924d8f6de14daefbc22081c365c988a.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/8c/42/8c42e14961f50e01490bb5626bb2eea9b4b019bf.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/b0/c8/b0c8d0bb2ac3c3ab1652fcde3628deb7128557fb.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/9c/9b/9c9b5d37830d3c243acb9226aade6467d5d57f45.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/ab/83/ab83a7f7ff5ee515978b506d41929fdf45ee4a0a.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/15/da/15da6b2852d9fcaf90f972a0a410e2b9ce471653.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/95/6f/956fea454905d6d24140439145718a4b2eb86e58.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/38/0c/380cd3b62b211a9ee341d456972194828a9c6c42.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/c7/59/c759d8b310b5fdd45edc35869386a4e5e37269ac.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/c4/88/c488e6415f9b713223097f044ff4375920b400ed.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/25/e6/25e6d3591866866c196279c1e157dac8c5ebadbe.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/0f/91/0f910593c93120a4066271c44dddf51146eb7a9a.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/fa/0b/fa0bb6c57fa334dfd5e48381afba084721599b05.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/7d/71/7d717e514d444b1d4000dae42fcc2d201be72d4b.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/2f/16/2f16424b0917149669e11d64ce5515b4cfb432ea.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/47/b1/47b12a8ccf90663b2caa771a60990368d6700501.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/66/9e/669ec83a0573b403b1d5c6debd17e2524f872701.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/28/76/2876a12a08efd1f949f7a3e3582bb187a7a006d3.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/39/zz/39ad45cdbfeff8b35d19ffdc21b4ab8434a5f50f.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/4a/6f/4a6f822bdbf31b9634cebab4a272718bc566ef88.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/bc/2c/bc2cd3028007a5f361b8d018db8560c541554197.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/73/8a/738ab4a1aca6bcfce0d2ba1491b629566cd98652.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/69/b3/69b32de46e86e79b69f950a0d1ce3f404ef127ea.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/c4/95/c49519ba1a529dce6b93ccdfaaa829b728e76420.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/b5/3e/b53e279f74561956f06752ce5c5ce0270bbfd14e.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/04/44/0444fd116c4e6fa74165b38def08a5f1527c23c1.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/2e/a9/2ea9dd6f4bec448e5cbe9b42b516a8c8f2dfab31.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/01/ff/01ffff7282a34b3a8767c0a8e3d1df3b35368666.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/06/5b/065bf4eef952ccc8a8e327ac400d7fbe315286f1.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/d1/55/d155516695258ea939692804623ace18d0b61d47.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/44/9e/449e79236a3e8735ff2a0cf7d5de9733533c8526.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/9c/76/9c76ac809f7fa7c6ff13f3e5b28b03ad1f9f50e5.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/1f/26/1f2639f26e2340bd34bdc561984ae2c5bde61590.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/99/b3/99b3c1fe318de632b8b0640bfc1f1b2529f745cc.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/17/a0/17a06c53aa9d41267af082589b042f45db017650.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/7e/c3/7ec3f8e98d10ec857c60b764abc9d379f44a5c1a.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/41/63/4163c98fa676a239dfa2963d2175a322629cc0e2.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/15/a5/15a59ded76fce0ea6fd24f63eddddafd721e448a.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/79/f1/79f15772e50730c2aa6da8613e3b0982dcd1823f.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/0e/1d/0e1d75699c32c542c19d71de81ee5fd6385796d2.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/92/ba/92ba8c050d00ce588579a30e78ee0609f7c1ed51.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/a2/d3/a2d39da3f77b41022458eab2e634b8876eaac7b9.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/17/b1/17b1248e899da57a5a8dd275869665a8a29959ed.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/e5/0a/e50a4ee8c6054a97b9ea5986d902d4c3bc561356.jpeg",
-      "https://cdn.ostrovok.ru/t/{size}/content/d4/bd/d4bd1691157dfa16f05e9f5736361e62f547bf38.jpeg"
+        "https://cdn.ostrovok.ru/t/{size}/content/52/78/5278bb54f9a76c535563658bf67801c695a390f3.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/68/f1/68f1ab7fb24e9cb74cc896f6574e7550beb5b4d7.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/f3/50/f350ccc7d95bbe93d450bb0860066e6edf932826.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/e2/2b/e22bc2ed7344e12380d36f5635daf67247c9a5e6.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/ec/ac/ecacc76b8228b9fc446273f31f5f72917b11d2dc.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/62/7a/627aa9532924d8f6de14daefbc22081c365c988a.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/8c/42/8c42e14961f50e01490bb5626bb2eea9b4b019bf.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/b0/c8/b0c8d0bb2ac3c3ab1652fcde3628deb7128557fb.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/9c/9b/9c9b5d37830d3c243acb9226aade6467d5d57f45.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/ab/83/ab83a7f7ff5ee515978b506d41929fdf45ee4a0a.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/15/da/15da6b2852d9fcaf90f972a0a410e2b9ce471653.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/95/6f/956fea454905d6d24140439145718a4b2eb86e58.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/38/0c/380cd3b62b211a9ee341d456972194828a9c6c42.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/c7/59/c759d8b310b5fdd45edc35869386a4e5e37269ac.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/c4/88/c488e6415f9b713223097f044ff4375920b400ed.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/25/e6/25e6d3591866866c196279c1e157dac8c5ebadbe.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/0f/91/0f910593c93120a4066271c44dddf51146eb7a9a.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/fa/0b/fa0bb6c57fa334dfd5e48381afba084721599b05.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/7d/71/7d717e514d444b1d4000dae42fcc2d201be72d4b.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/2f/16/2f16424b0917149669e11d64ce5515b4cfb432ea.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/47/b1/47b12a8ccf90663b2caa771a60990368d6700501.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/66/9e/669ec83a0573b403b1d5c6debd17e2524f872701.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/28/76/2876a12a08efd1f949f7a3e3582bb187a7a006d3.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/39/zz/39ad45cdbfeff8b35d19ffdc21b4ab8434a5f50f.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/4a/6f/4a6f822bdbf31b9634cebab4a272718bc566ef88.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/bc/2c/bc2cd3028007a5f361b8d018db8560c541554197.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/73/8a/738ab4a1aca6bcfce0d2ba1491b629566cd98652.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/69/b3/69b32de46e86e79b69f950a0d1ce3f404ef127ea.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/c4/95/c49519ba1a529dce6b93ccdfaaa829b728e76420.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/b5/3e/b53e279f74561956f06752ce5c5ce0270bbfd14e.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/04/44/0444fd116c4e6fa74165b38def08a5f1527c23c1.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/2e/a9/2ea9dd6f4bec448e5cbe9b42b516a8c8f2dfab31.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/01/ff/01ffff7282a34b3a8767c0a8e3d1df3b35368666.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/06/5b/065bf4eef952ccc8a8e327ac400d7fbe315286f1.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/d1/55/d155516695258ea939692804623ace18d0b61d47.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/44/9e/449e79236a3e8735ff2a0cf7d5de9733533c8526.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/9c/76/9c76ac809f7fa7c6ff13f3e5b28b03ad1f9f50e5.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/1f/26/1f2639f26e2340bd34bdc561984ae2c5bde61590.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/99/b3/99b3c1fe318de632b8b0640bfc1f1b2529f745cc.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/17/a0/17a06c53aa9d41267af082589b042f45db017650.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/7e/c3/7ec3f8e98d10ec857c60b764abc9d379f44a5c1a.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/41/63/4163c98fa676a239dfa2963d2175a322629cc0e2.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/15/a5/15a59ded76fce0ea6fd24f63eddddafd721e448a.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/79/f1/79f15772e50730c2aa6da8613e3b0982dcd1823f.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/0e/1d/0e1d75699c32c542c19d71de81ee5fd6385796d2.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/92/ba/92ba8c050d00ce588579a30e78ee0609f7c1ed51.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/a2/d3/a2d39da3f77b41022458eab2e634b8876eaac7b9.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/17/b1/17b1248e899da57a5a8dd275869665a8a29959ed.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/e5/0a/e50a4ee8c6054a97b9ea5986d902d4c3bc561356.jpeg",
+        "https://cdn.ostrovok.ru/t/{size}/content/d4/bd/d4bd1691157dfa16f05e9f5736361e62f547bf38.jpeg"
     ],
-    "is_closed": false,
-    "kind": "Apartment",
-    "latitude": 43.74154281616211,
-    "longitude": 15.89171314239502,
-    "metapolicy_extra_info": null,
-    "metapolicy_struct": {
-        "internet": ["Late check-in subject to availability", "Late check-in subject to availability", "Late check-in subject to availability"],
-        "meal": ["Late check-in subject to availability"],
-        "children_meal": ["Late check-in subject to availability"],
-        "extra_bed": ["Late check-in subject to availability"],
-        "cot": ["Late check-in subject to availability"],
-        "pets": ["Late check-in subject to availability"],
-        "shuttle": ["Late check-in subject to availability"],
-        "parking": ["Late check-in subject to availability"],
-        "children": ["Late check-in subject to availability"],
-        "visa": {
-            "visa_support": "unspecified"
+    is_closed: false,
+    kind: "Apartment",
+    latitude: 43.74154281616211,
+    longitude: 15.89171314239502,
+    metapolicy_extra_info: null,
+    metapolicy_struct: {
+        internet: [
+            "Late check-in subject to availability",
+            "Late check-in subject to availability",
+            "Late check-in subject to availability",
+        ],
+        meal: ["Late check-in subject to availability"],
+        children_meal: ["Late check-in subject to availability"],
+        extra_bed: ["Late check-in subject to availability"],
+        cot: ["Late check-in subject to availability"],
+        pets: ["Late check-in subject to availability"],
+        shuttle: ["Late check-in subject to availability"],
+        parking: ["Late check-in subject to availability"],
+        children: ["Late check-in subject to availability"],
+        visa: {
+            visa_support: "unspecified",
         },
-        "deposit": ["Late check-in subject to availability"],
-        "no_show": {
-            "availability": "unspecified",
-            "time": null,
-            "day_period": "unspecified"
+        deposit: ["Late check-in subject to availability"],
+        no_show: {
+            availability: "unspecified",
+            time: null,
+            day_period: "unspecified",
         },
-        "add_fee": [],
-        "check_in_check_out": []
+        add_fee: [],
+        check_in_check_out: [],
     },
-    "name": "Apartment Danijela",
-    "payment_methods": [],
-    "phone": "385989226846",
-    "policy_struct": [],
-    "postal_code": "22000",
-    "region": {
-        "id": 6023213,
-        "country_code": "HR",
-        "iata": null,
-        "name": "Sibenik",
-        "type": "City"
+    name: "Apartment Danijela",
+    payment_methods: [],
+    phone: "385989226846",
+    policy_struct: [],
+    postal_code: "22000",
+    region: {
+        id: 6023213,
+        country_code: "HR",
+        iata: null,
+        name: "Sibenik",
+        type: "City",
     },
-    "room_groups": [],
-    "serp_filters": [
+    room_groups: [],
+    serp_filters: [
         "has_internet",
         "has_airport_transfer",
         "has_parking",
         "has_kids",
         "beach",
-        "air_conditioning"
+        "air_conditioning",
     ],
-    "star_certificate": null,
-    "star_rating": 0,
-    "createdAt": "2023-11-24T00:17:23.502Z",
-    "updatedAt": "2023-11-24T00:17:23.502Z",
-    "__v": 0,
-    "rates": [
+    star_certificate: null,
+    star_rating: 0,
+    createdAt: "2023-11-24T00:17:23.502Z",
+    updatedAt: "2023-11-24T00:17:23.502Z",
+    __v: 0,
+    rates: [
         {
-            "book_hash": "h-ffcebcaa-03cd-548a-9f3a-f31e6fb27bed",
-            "match_hash": "m-b4af9fe1-51f1-58b9-b0f7-4905ca671902",
-            "daily_prices": [
-                "924.00",
-                "924.00"
-            ],
-            "meal": "nomeal",
-            "payment_options": {
-                "payment_types": [
+            book_hash: "h-ffcebcaa-03cd-548a-9f3a-f31e6fb27bed",
+            match_hash: "m-b4af9fe1-51f1-58b9-b0f7-4905ca671902",
+            daily_prices: ["924.00", "924.00"],
+            meal: "nomeal",
+            payment_options: {
+                payment_types: [
                     {
-                        "amount": "2.00",
-                        "show_amount": "1848.00",
-                        "currency_code": "CHF",
-                        "show_currency_code": "NGN",
-                        "by": null,
-                        "is_need_credit_card_data": false,
-                        "is_need_cvc": false,
-                        "type": "deposit",
-                        "vat_data": {
-                            "included": false,
-                            "applied": false,
-                            "amount": "0.00",
-                            "currency_code": "HNL",
-                            "value": "0.00"
+                        amount: "2.00",
+                        show_amount: "1848.00",
+                        currency_code: "CHF",
+                        show_currency_code: "NGN",
+                        by: null,
+                        is_need_credit_card_data: false,
+                        is_need_cvc: false,
+                        type: "deposit",
+                        vat_data: {
+                            included: false,
+                            applied: false,
+                            amount: "0.00",
+                            currency_code: "HNL",
+                            value: "0.00",
                         },
-                        "tax_data": {
-                            "taxes": [
+                        tax_data: {
+                            taxes: [
                                 {
-                                    "name": "city_tax",
-                                    "included_by_supplier": false,
-                                    "amount": "1476.61",
-                                    "currency_code": "HNL"
+                                    name: "city_tax",
+                                    included_by_supplier: false,
+                                    amount: "1476.61",
+                                    currency_code: "HNL",
                                 },
                                 {
-                                    "name": "electricity_fee",
-                                    "included_by_supplier": true,
-                                    "amount": "53.83",
-                                    "currency_code": "NGN"
+                                    name: "electricity_fee",
+                                    included_by_supplier: true,
+                                    amount: "53.83",
+                                    currency_code: "NGN",
                                 },
                                 {
-                                    "name": "service_fee",
-                                    "included_by_supplier": false,
-                                    "amount": "7.77",
-                                    "currency_code": "HNL"
+                                    name: "service_fee",
+                                    included_by_supplier: false,
+                                    amount: "7.77",
+                                    currency_code: "HNL",
                                 },
                                 {
-                                    "name": "vat",
-                                    "included_by_supplier": false,
-                                    "amount": "333.06",
-                                    "currency_code": "HNL"
-                                }
-                            ]
-                        },
-                        "perks": {},
-                        "commission_info": {
-                            "show": {
-                                "amount_gross": "1848.00",
-                                "amount_net": "1848.00",
-                                "amount_commission": "0.00"
-                            },
-                            "charge": {
-                                "amount_gross": "2.00",
-                                "amount_net": "2.00",
-                                "amount_commission": "0.00"
-                            }
-                        },
-                        "cancellation_penalties": {
-                            "policies": [
-                                {
-                                    "start_at": null,
-                                    "end_at": "2024-01-09T20:00:00",
-                                    "amount_charge": "0.00",
-                                    "amount_show": "0.00",
-                                    "commission_info": {
-                                        "show": {
-                                            "amount_gross": "0.00",
-                                            "amount_net": "0.00",
-                                            "amount_commission": "0.00"
-                                        },
-                                        "charge": {
-                                            "amount_gross": "0.00",
-                                            "amount_net": "0.00",
-                                            "amount_commission": "0.00"
-                                        }
-                                    }
+                                    name: "vat",
+                                    included_by_supplier: false,
+                                    amount: "333.06",
+                                    currency_code: "HNL",
                                 },
-                                {
-                                    "start_at": "2024-01-09T20:00:00",
-                                    "end_at": "2024-01-10T20:00:00",
-                                    "amount_charge": "1.00",
-                                    "amount_show": "924.00",
-                                    "commission_info": {
-                                        "show": {
-                                            "amount_gross": "924.00",
-                                            "amount_net": "924.00",
-                                            "amount_commission": "0.00"
-                                        },
-                                        "charge": {
-                                            "amount_gross": "1.00",
-                                            "amount_net": "1.00",
-                                            "amount_commission": "0.00"
-                                        }
-                                    }
-                                },
-                                {
-                                    "start_at": "2024-01-10T20:00:00",
-                                    "end_at": null,
-                                    "amount_charge": "2.00",
-                                    "amount_show": "1848.00",
-                                    "commission_info": {
-                                        "show": {
-                                            "amount_gross": "1848.00",
-                                            "amount_net": "1848.00",
-                                            "amount_commission": "0.00"
-                                        },
-                                        "charge": {
-                                            "amount_gross": "2.00",
-                                            "amount_net": "2.00",
-                                            "amount_commission": "0.00"
-                                        }
-                                    }
-                                }
                             ],
-                            "free_cancellation_before": "2024-01-09T20:00:00"
                         },
-                        "recommended_price": null
-                    }
-                ]
+                        perks: {},
+                        commission_info: {
+                            show: {
+                                amount_gross: "1848.00",
+                                amount_net: "1848.00",
+                                amount_commission: "0.00",
+                            },
+                            charge: {
+                                amount_gross: "2.00",
+                                amount_net: "2.00",
+                                amount_commission: "0.00",
+                            },
+                        },
+                        cancellation_penalties: {
+                            policies: [
+                                {
+                                    start_at: null,
+                                    end_at: "2024-01-09T20:00:00",
+                                    amount_charge: "0.00",
+                                    amount_show: "0.00",
+                                    commission_info: {
+                                        show: {
+                                            amount_gross: "0.00",
+                                            amount_net: "0.00",
+                                            amount_commission: "0.00",
+                                        },
+                                        charge: {
+                                            amount_gross: "0.00",
+                                            amount_net: "0.00",
+                                            amount_commission: "0.00",
+                                        },
+                                    },
+                                },
+                                {
+                                    start_at: "2024-01-09T20:00:00",
+                                    end_at: "2024-01-10T20:00:00",
+                                    amount_charge: "1.00",
+                                    amount_show: "924.00",
+                                    commission_info: {
+                                        show: {
+                                            amount_gross: "924.00",
+                                            amount_net: "924.00",
+                                            amount_commission: "0.00",
+                                        },
+                                        charge: {
+                                            amount_gross: "1.00",
+                                            amount_net: "1.00",
+                                            amount_commission: "0.00",
+                                        },
+                                    },
+                                },
+                                {
+                                    start_at: "2024-01-10T20:00:00",
+                                    end_at: null,
+                                    amount_charge: "2.00",
+                                    amount_show: "1848.00",
+                                    commission_info: {
+                                        show: {
+                                            amount_gross: "1848.00",
+                                            amount_net: "1848.00",
+                                            amount_commission: "0.00",
+                                        },
+                                        charge: {
+                                            amount_gross: "2.00",
+                                            amount_net: "2.00",
+                                            amount_commission: "0.00",
+                                        },
+                                    },
+                                },
+                            ],
+                            free_cancellation_before: "2024-01-09T20:00:00",
+                        },
+                        recommended_price: null,
+                    },
+                ],
             },
-            "bar_rate_price_data": null,
-            "rg_ext": {
-                "class": 3,
-                "quality": 2,
-                "sex": 0,
-                "bathroom": 1,
-                "bedding": 3,
-                "family": 0,
-                "capacity": 2,
-                "club": 0,
-                "bedrooms": 0,
-                "balcony": 0,
-                "view": 0,
-                "floor": 0
+            bar_rate_price_data: null,
+            rg_ext: {
+                class: 3,
+                quality: 2,
+                sex: 0,
+                bathroom: 1,
+                bedding: 3,
+                family: 0,
+                capacity: 2,
+                club: 0,
+                bedrooms: 0,
+                balcony: 0,
+                view: 0,
+                floor: 0,
             },
-            "room_name": "Standard Double room (shared bathroom) (full double bed)",
-            "serp_filters": [],
-            "sell_price_limits": null,
-            "allotment": 27,
-            "amenities_data": [
+            room_name:
+                "Standard Double room (shared bathroom) (full double bed)",
+            serp_filters: [],
+            sell_price_limits: null,
+            allotment: 27,
+            amenities_data: [
                 "non-smoking",
                 "non-smoking",
                 "non-smoking",
@@ -635,171 +611,169 @@ export const sampleViewStay: ViewSingleStayResponse = {
                 "non-smoking",
                 "non-smoking",
             ],
-            "any_residency": true,
-            "deposit": null,
-            "no_show": {
-                "amount": "20.00",
-                "currency_code": "HNL",
-                "from_time": "12:00:00"
+            any_residency: true,
+            deposit: null,
+            no_show: {
+                amount: "20.00",
+                currency_code: "HNL",
+                from_time: "12:00:00",
             },
-            "room_data_trans": {
-                "main_room_type": "Standard Double room (shared bathroom)",
-                "main_name": "Standard Double room",
-                "bathroom": "shared bathroom",
-                "bedding_type": "full double bed",
-                "misc_room_type": null
-            }
+            room_data_trans: {
+                main_room_type: "Standard Double room (shared bathroom)",
+                main_name: "Standard Double room",
+                bathroom: "shared bathroom",
+                bedding_type: "full double bed",
+                misc_room_type: null,
+            },
         },
         {
-            "book_hash": "h-ffcebcaa-03cd-548a-9f3a-f31e6fb27bed",
-            "match_hash": "m-b4af9fe1-51f1-58b9-b0f7-4905ca671902",
-            "daily_prices": [
-                "824.00",
-                "824.00"
-            ],
-            "meal": "breakfast",
-            "payment_options": {
-                "payment_types": [
+            book_hash: "h-ffcebcaa-03cd-548a-9f3a-f31e6fb27bed",
+            match_hash: "m-b4af9fe1-51f1-58b9-b0f7-4905ca671902",
+            daily_prices: ["824.00", "824.00"],
+            meal: "breakfast",
+            payment_options: {
+                payment_types: [
                     {
-                        "amount": "2.00",
-                        "show_amount": "1848.00",
-                        "currency_code": "CHF",
-                        "show_currency_code": "NGN",
-                        "by": null,
-                        "is_need_credit_card_data": false,
-                        "is_need_cvc": false,
-                        "type": "now",
-                        "vat_data": {
-                            "included": false,
-                            "applied": false,
-                            "amount": "0.00",
-                            "currency_code": "HNL",
-                            "value": "0.00"
+                        amount: "2.00",
+                        show_amount: "1848.00",
+                        currency_code: "CHF",
+                        show_currency_code: "NGN",
+                        by: null,
+                        is_need_credit_card_data: false,
+                        is_need_cvc: false,
+                        type: "now",
+                        vat_data: {
+                            included: false,
+                            applied: false,
+                            amount: "0.00",
+                            currency_code: "HNL",
+                            value: "0.00",
                         },
-                        "tax_data": {
-                            "taxes": [
+                        tax_data: {
+                            taxes: [
                                 {
-                                    "name": "city_tax",
-                                    "included_by_supplier": false,
-                                    "amount": "1476.61",
-                                    "currency_code": "HNL"
+                                    name: "city_tax",
+                                    included_by_supplier: false,
+                                    amount: "1476.61",
+                                    currency_code: "HNL",
                                 },
                                 {
-                                    "name": "electricity_fee",
-                                    "included_by_supplier": true,
-                                    "amount": "53.83",
-                                    "currency_code": "NGN"
+                                    name: "electricity_fee",
+                                    included_by_supplier: true,
+                                    amount: "53.83",
+                                    currency_code: "NGN",
                                 },
                                 {
-                                    "name": "service_fee",
-                                    "included_by_supplier": false,
-                                    "amount": "7.77",
-                                    "currency_code": "HNL"
+                                    name: "service_fee",
+                                    included_by_supplier: false,
+                                    amount: "7.77",
+                                    currency_code: "HNL",
                                 },
                                 {
-                                    "name": "vat",
-                                    "included_by_supplier": false,
-                                    "amount": "333.06",
-                                    "currency_code": "HNL"
-                                }
-                            ]
-                        },
-                        "perks": {},
-                        "commission_info": {
-                            "show": {
-                                "amount_gross": "1848.00",
-                                "amount_net": "1848.00",
-                                "amount_commission": "0.00"
-                            },
-                            "charge": {
-                                "amount_gross": "2.00",
-                                "amount_net": "2.00",
-                                "amount_commission": "0.00"
-                            }
-                        },
-                        "cancellation_penalties": {
-                            "policies": [
-                                {
-                                    "start_at": null,
-                                    "end_at": "2024-01-09T20:00:00",
-                                    "amount_charge": "0.00",
-                                    "amount_show": "0.00",
-                                    "commission_info": {
-                                        "show": {
-                                            "amount_gross": "0.00",
-                                            "amount_net": "0.00",
-                                            "amount_commission": "0.00"
-                                        },
-                                        "charge": {
-                                            "amount_gross": "0.00",
-                                            "amount_net": "0.00",
-                                            "amount_commission": "0.00"
-                                        }
-                                    }
+                                    name: "vat",
+                                    included_by_supplier: false,
+                                    amount: "333.06",
+                                    currency_code: "HNL",
                                 },
-                                {
-                                    "start_at": "2024-01-09T20:00:00",
-                                    "end_at": "2024-01-10T20:00:00",
-                                    "amount_charge": "1.00",
-                                    "amount_show": "924.00",
-                                    "commission_info": {
-                                        "show": {
-                                            "amount_gross": "924.00",
-                                            "amount_net": "924.00",
-                                            "amount_commission": "0.00"
-                                        },
-                                        "charge": {
-                                            "amount_gross": "1.00",
-                                            "amount_net": "1.00",
-                                            "amount_commission": "0.00"
-                                        }
-                                    }
-                                },
-                                {
-                                    "start_at": "2024-01-10T20:00:00",
-                                    "end_at": null,
-                                    "amount_charge": "2.00",
-                                    "amount_show": "1848.00",
-                                    "commission_info": {
-                                        "show": {
-                                            "amount_gross": "1848.00",
-                                            "amount_net": "1848.00",
-                                            "amount_commission": "0.00"
-                                        },
-                                        "charge": {
-                                            "amount_gross": "2.00",
-                                            "amount_net": "2.00",
-                                            "amount_commission": "0.00"
-                                        }
-                                    }
-                                }
                             ],
-                            "free_cancellation_before": null
                         },
-                        "recommended_price": null
-                    }
-                ]
+                        perks: {},
+                        commission_info: {
+                            show: {
+                                amount_gross: "1848.00",
+                                amount_net: "1848.00",
+                                amount_commission: "0.00",
+                            },
+                            charge: {
+                                amount_gross: "2.00",
+                                amount_net: "2.00",
+                                amount_commission: "0.00",
+                            },
+                        },
+                        cancellation_penalties: {
+                            policies: [
+                                {
+                                    start_at: null,
+                                    end_at: "2024-01-09T20:00:00",
+                                    amount_charge: "0.00",
+                                    amount_show: "0.00",
+                                    commission_info: {
+                                        show: {
+                                            amount_gross: "0.00",
+                                            amount_net: "0.00",
+                                            amount_commission: "0.00",
+                                        },
+                                        charge: {
+                                            amount_gross: "0.00",
+                                            amount_net: "0.00",
+                                            amount_commission: "0.00",
+                                        },
+                                    },
+                                },
+                                {
+                                    start_at: "2024-01-09T20:00:00",
+                                    end_at: "2024-01-10T20:00:00",
+                                    amount_charge: "1.00",
+                                    amount_show: "924.00",
+                                    commission_info: {
+                                        show: {
+                                            amount_gross: "924.00",
+                                            amount_net: "924.00",
+                                            amount_commission: "0.00",
+                                        },
+                                        charge: {
+                                            amount_gross: "1.00",
+                                            amount_net: "1.00",
+                                            amount_commission: "0.00",
+                                        },
+                                    },
+                                },
+                                {
+                                    start_at: "2024-01-10T20:00:00",
+                                    end_at: null,
+                                    amount_charge: "2.00",
+                                    amount_show: "1848.00",
+                                    commission_info: {
+                                        show: {
+                                            amount_gross: "1848.00",
+                                            amount_net: "1848.00",
+                                            amount_commission: "0.00",
+                                        },
+                                        charge: {
+                                            amount_gross: "2.00",
+                                            amount_net: "2.00",
+                                            amount_commission: "0.00",
+                                        },
+                                    },
+                                },
+                            ],
+                            free_cancellation_before: null,
+                        },
+                        recommended_price: null,
+                    },
+                ],
             },
-            "bar_rate_price_data": null,
-            "rg_ext": {
-                "class": 3,
-                "quality": 2,
-                "sex": 0,
-                "bathroom": 1,
-                "bedding": 3,
-                "family": 0,
-                "capacity": 2,
-                "club": 0,
-                "bedrooms": 0,
-                "balcony": 0,
-                "view": 0,
-                "floor": 0
+            bar_rate_price_data: null,
+            rg_ext: {
+                class: 3,
+                quality: 2,
+                sex: 0,
+                bathroom: 1,
+                bedding: 3,
+                family: 0,
+                capacity: 2,
+                club: 0,
+                bedrooms: 0,
+                balcony: 0,
+                view: 0,
+                floor: 0,
             },
-            "room_name": "Standard Double room (shared bathroom) (full double bed)",
-            "serp_filters": [],
-            "sell_price_limits": null,
-            "allotment": 27,
-            "amenities_data": [
+            room_name:
+                "Standard Double room (shared bathroom) (full double bed)",
+            serp_filters: [],
+            sell_price_limits: null,
+            allotment: 27,
+            amenities_data: [
                 "non-smoking",
                 "non-smoking",
                 "non-smoking",
@@ -807,20 +781,20 @@ export const sampleViewStay: ViewSingleStayResponse = {
                 "non-smoking",
                 "non-smoking",
             ],
-            "any_residency": true,
-            "deposit": null,
-            "no_show": {
-                "amount": "20.00",
-                "currency_code": "HNL",
-                "from_time": "12:00:00"
+            any_residency: true,
+            deposit: null,
+            no_show: {
+                amount: "20.00",
+                currency_code: "HNL",
+                from_time: "12:00:00",
             },
-            "room_data_trans": {
-                "main_room_type": "Standard Double room (shared bathroom)",
-                "main_name": "Standard Double room",
-                "bathroom": "shared bathroom",
-                "bedding_type": "full double bed",
-                "misc_room_type": null
-            }
+            room_data_trans: {
+                main_room_type: "Standard Double room (shared bathroom)",
+                main_name: "Standard Double room",
+                bathroom: "shared bathroom",
+                bedding_type: "full double bed",
+                misc_room_type: null,
+            },
         },
     ],
     "is_gender_specification_required": false,

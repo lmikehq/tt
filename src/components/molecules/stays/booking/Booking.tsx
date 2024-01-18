@@ -29,25 +29,32 @@ import {
     generateInitialFormDataForRoomsAndGuests,
 } from "@/lib/types/request-models/stay/booking.type";
 import { useFormik } from "formik";
-import { useStayBookingFinish } from "@/lib/hooks/stay/booking.hook";
+import {
+    useStayBookingFinish,
+    useStayOrderBooking,
+} from "@/lib/hooks/stay/booking.hook";
 import * as yup from "yup";
 import { GiLetterBomb } from "react-icons/gi";
 import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type";
+import { useSearchParams } from "next/navigation";
+import { useUserStore } from "@/lib/store/useStore";
 
 interface BookingProps {
     guests: RoomForGuest[];
-    currentPaymentOption?: StayPaymentOption;
-    objectId: string;
-    partnerOrderId: string;
+    handleSetPaymentOptions: (options: StayPaymentOption[]) => void;
+    handleSetBookingSuccessful: (value: boolean) => void;
+    handleSetBookingId: (value: string) => void;
 }
 
 function Booking({
     guests,
-    currentPaymentOption,
-    objectId,
-    partnerOrderId,
+    handleSetPaymentOptions,
+    handleSetBookingId,
+    handleSetBookingSuccessful,
 }: BookingProps) {
     const { isMobile } = useScreenResolution();
+    const searchParams = useSearchParams();
+    const { user, geoInfo } = useUserStore((state) => state);
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
@@ -55,7 +62,8 @@ function Booking({
     });
 
     const [comment, setComment] = useState("");
-
+    const hotelId = searchParams.get("hotelId");
+    const bookHash = searchParams.get("bookHash");
     const contactDetailsFormik = useFormik({
         initialValues: contactDetails,
         enableReinitialize: true,
@@ -78,24 +86,25 @@ function Booking({
         contactDetailsFormik.handleSubmit();
 
         if (roomsAndGuestsDataFormik.isValid && contactDetailsFormik.isValid)
-            orderBookingFinish({
+            orderBooking({
+                hotel_id: hotelId ?? "",
+                userId: "6579bbff603bfaafaa7b55d9" ?? user?._id ?? "",
+                book_hash: bookHash ?? "",
+                user_ip: geoInfo?.ip ?? "",
                 rooms: convertGuestRoomsFormDataToList(
                     roomsAndGuestsDataFormik.values
                 ),
-                user: {
-                    email: contactDetailsFormik.values.email,
-                    phone: contactDetailsFormik.values.phone,
-                    comment: "",
-                },
-                partner: { partner_order_id: partnerOrderId },
-                language: "en",
-                object_id: objectId,
-                payment_type: currentPaymentOption!,
             });
     };
 
-    const { mutate: orderBookingFinish, isLoading: bookingFinishIsLoading } =
-        useStayBookingFinish();
+    const { mutate: orderBooking, isLoading: bookingIsLoading } =
+        useStayOrderBooking({
+            onSuccess: (data) => {
+                handleSetBookingId(data.bookingData._id);
+                handleSetPaymentOptions(data.bookingData.paymentOptions);
+                handleSetBookingSuccessful(true);
+            },
+        });
 
     return (
         <form onSubmit={handleSubmit}>
@@ -116,13 +125,11 @@ function Booking({
                         color="white"
                         padding="10px"
                         background={
-                            bookingFinishIsLoading
-                                ? ttColors.dark
-                                : ttColors.dark
+                            bookingIsLoading ? ttColors.dark : ttColors.dark
                         }
                         onClick={handleSubmit}
                     >
-                        {bookingFinishIsLoading ? (
+                        {bookingIsLoading ? (
                             <Spinner size="40px" fill={"white"} />
                         ) : (
                             <Text
