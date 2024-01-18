@@ -85,9 +85,26 @@ export interface StaySearchFilters {
     [key: string]: string | string[] | number | undefined;
 }
 
-export interface SearchStayRequestRequestQuery extends StaySearchFilters {}
+export enum StaySearchSortEnum {
+    best = "best",
+    top_reviews = "top reviews",
+    lowest_prices = "lowest prices",
+    star_rating = "star rating",
+    distance = "distance",
+}
+export interface StaySearchSort {
+    sortBy?: string;
+}
+export interface StaySearchMeta {
+    page: number;
+}
+export interface SearchStayRequestRequestQuery
+    extends StaySearchFilters,
+        StaySearchSort {}
+//    StaySearchMeta
 
 export interface ManyStaysRequestInput {
+    region_id: string;
     checkin: string;
     checkout: string;
     residency: string;
@@ -96,8 +113,14 @@ export interface ManyStaysRequestInput {
     currency: string;
 }
 
-export interface ViewSingleStayRequestInput extends ManyStaysRequestInput {
+export interface ViewSingleStayRequestInput {
     id: string;
+    checkin: string;
+    checkout: string;
+    residency: string;
+    language: string;
+    guests: RoomForGuest[];
+    currency: string;
 }
 
 export const convertRoomForGuestsToString = (data: RoomForGuest[]) => {
@@ -114,8 +137,9 @@ export const convertRoomForGuestsToString = (data: RoomForGuest[]) => {
 };
 
 export const extractRoomForGuestsFromString = (
-    dataString: string
+    dataString: string | null
 ): RoomForGuest[] => {
+    if (!dataString) return [];
     return dataString.split("-").map((el) => ({
         adults: parseInt(el.split("and")[0]),
         children:
@@ -127,3 +151,6 @@ export const extractRoomForGuestsFromString = (
                       .map((el) => parseInt(el)),
     }));
 };
+
+export const numberOfGuestsInRooms = (data: RoomForGuest[]) =>
+    data.reduce((acc, el) => acc + el.adults + el.children.length, 0);

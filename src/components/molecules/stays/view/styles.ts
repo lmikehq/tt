@@ -96,7 +96,7 @@ export const GridLayout = styled.div`
     width: 100% !important;
     grid-template-columns: repeat(3, 1fr);
     justify-content: space-between !important;
-    grid-column-gap: 10%;
+    grid-column-gap: 1rem;
     @media screen and (max-width: 1095px) {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -283,25 +283,24 @@ export const Span = styled.div`
       white-space: wrap !important;
     }
   }
-  &.border::before {
-    content: "";
-    display: block;
-    height: 60px;
-    border-left: 1px solid var(--secondary-color);
-    margin-right: 10px;
-  }
-  &.horizontal_border::after {
-    content: "";
-    display: block;
-    width: 100%;
-    border-bottom: 1px solid #000;
-    margin-right: 10px;
-  }
-
-  .mui_select {
-    // overflow: hidden;
-    outline-color: var(--primary-color) !important;
-  }
+    &.border::before {
+        content: "";
+        display: block;
+        height: 60px;
+        border-left: 1px solid var(--secondary-color);
+        margin-right: 10px;
+    }
+    &.horizontal_border::after {
+        content: "";
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid #000;
+        margin-right: 10px;
+    }
+    .mui_select {
+        // overflow: hidden;
+        outline-color: var(--primary-color) !important;
+    }
   @media screen and (max-width: 1120px) {
     .recently {
       flex-direction: column;

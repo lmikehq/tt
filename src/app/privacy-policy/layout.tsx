@@ -7,7 +7,7 @@ interface layoutProps {
 
 export const metadata = {
   title: "Privacy Policy",
-  description: "Welcome to Thrillers Travels privacy policy page",
+  description: "Welcome to Thrillers Travels Privacy Policy page",
 };
 
 export default function PrivacyPolicyLayout({ children }: layoutProps) {

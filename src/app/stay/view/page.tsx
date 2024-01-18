@@ -31,6 +31,7 @@ import {
   extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { sampleViewStay } from "@/lib/types/response-models/stay/search.type";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -58,7 +59,7 @@ const StayViewPage = () => {
     currency: preFerredCurrency,
   });
 
-  const { data: stayResponse, isFetching } = useViewSingleStay(
+  const { data: stayResponse = sampleViewStay, isFetching } = useViewSingleStay(
     requestParams(),
     {
       enabled: id ? true : false,
@@ -68,6 +69,7 @@ const StayViewPage = () => {
   const handleGoBack = () => {
     router.back();
   };
+    console.log(stayResponse);
 
   // console.log(stayResponse);
 
@@ -105,31 +107,39 @@ const StayViewPage = () => {
                   },
                 }}
                 id="favorite-hotels-checkbox"
-              />
-            </Span>
-          </Flex>
-        </Span>
-      )}
-      <HeroImageGrid />
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
-          gap: "30px",
-        }}
-      >
-        <Section>
-          <StayDetails />
-          <ChooseYourRoom />
-          <LikeSimilarHotels />
-          <Location />
-          <DescriptionOfHotel />
-          <HotelAmenities />
-          <CompareSlider />
-          <Policies />
-          <HotelReviews />
-          <CompareSimilarHotels />
-        </Section>
+                />
+                </Span>
+                </Flex>
+                </Span>
+            )}
+            <HeroImageGrid />
+            <Box
+                sx={{
+                display: "grid",
+                gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
+                gap: "30px",
+                }}
+            >
+                <Section>
+                    <StayDetails stayResponse={stayResponse} />
+                    <ChooseYourRoom stayResponse={stayResponse} />
+                    <LikeSimilarHotels
+                    // stayResponse={stayResponse}
+                    />
+                    <Location stayResponse={stayResponse} />
+                    <DescriptionOfHotel stayResponse={stayResponse} />
+                    <HotelAmenities stayResponse={stayResponse} />
+                    <CompareSlider
+                    //  stayResponse={stayResponse}
+                    />
+                    <Policies stayResponse={stayResponse} />
+                    <HotelReviews
+                    // stayResponse={stayResponse}
+                    />
+                    <CompareSimilarHotels
+                    //  stayResponse={stayResponse}
+                    />
+                </Section>
 
         <Section>
           <RecentlyViewedList />

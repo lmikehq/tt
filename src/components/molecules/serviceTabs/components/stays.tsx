@@ -27,316 +27,333 @@ import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.ty
 import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
 // STYLES
 const FlexBox = styled.div`
-  display: flex;
-  align-items: center;
-  max-width: 50%;
-  justify-content: flex-start;
-  gap: 10px;
-  margin-bottom: 20px;
-  @media screen and (max-width: 900px) {
-    overflow: hidden;
-    overflow-x: scroll;
-    max-width: 100%;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
+    display: flex;
+    align-items: center;
+    max-width: 50%;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
 `;
 const FlexItems = styled.div``;
 
 const Span = styled.div`
-  position: relative;
+    position: relative;
 `;
 
 function Stays() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
-  const { isMobile } = useScreenResolution();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const router = useRouter();
+    const { isMobile } = useScreenResolution();
 
-  const today = dayjs().toDate();
+    const today = dayjs().toDate();
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const { stayTabInitialSearchQuery, updateStayTabInitialQuery } =
-    useStaySearchStore((state) => state);
-
-  const { roomForGuests, stars } = stayTabInitialSearchQuery;
-  const validateStaySearchFilter =
-    stayTabInitialSearchQuery.location &&
-    stayTabInitialSearchQuery.checkInDate &&
-    stayTabInitialSearchQuery.checkOutDate &&
-    stayTabInitialSearchQuery.roomForGuests.length > 0
-      ? true
-      : false;
-
-  const computeStaySearchQuery = () => {
-    const params = {
-      region: stayTabInitialSearchQuery.location?.name,
-      countryCode: stayTabInitialSearchQuery.location?.country_code,
-      stars: stayTabInitialSearchQuery.stars
-        ? stayTabInitialSearchQuery.stars[0]
-        : 3,
-      checkIn: formatDate(
-        stayTabInitialSearchQuery.checkInDate ?? dayjs(),
-        "YYYY-MM-DD"
-      ),
-      checkOut: formatDate(
-        stayTabInitialSearchQuery.checkOutDate ?? dayjs(),
-        "YYYY-MM-DD"
-      ),
-      guests: convertRoomForGuestsToString(roomForGuests),
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
     };
 
-    return constructQueryFromParams(params);
-  };
-  const computeGuestsAndRoomsString = () => {
-    const rooms = roomForGuests.length;
-    let guests = 0;
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-    for (let index = 0; index < roomForGuests.length; index++) {
-      const room = roomForGuests[index];
-      guests += room.adults + room.children.length;
-    }
-    return `${rooms} room${rooms == 1 ? "" : "s"} for ${guests} guest${
-      guests == 1 ? "" : "s"
-    }`;
-  };
+    const open = Boolean(anchorEl);
+    const { stayTabInitialSearchQuery, updateStayTabInitialQuery } =
+        useStaySearchStore((state) => state);
 
-  const handleStarsGroupChanged = (val: string) => {
-    // Check if the value is already in the array
-    const value = parseInt(val);
-    const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
+    const { roomForGuests, stars } = stayTabInitialSearchQuery;
+    const validateStaySearchFilter =
+        stayTabInitialSearchQuery.location &&
+        stayTabInitialSearchQuery.checkInDate &&
+        stayTabInitialSearchQuery.checkOutDate &&
+        stayTabInitialSearchQuery.roomForGuests.length > 0
+            ? true
+            : false;
 
-    if (isSelected) {
-      // If the value is already selected, remove it
-      updateStayTabInitialQuery({
-        ...stayTabInitialSearchQuery,
-        stars: stars?.filter((item) => item !== value),
-      });
-    } else {
-      // If the value is not selected, add it
-      updateStayTabInitialQuery({
-        ...stayTabInitialSearchQuery,
-        stars: [...(stars ?? []), value],
-      });
-    }
-  };
-  return (
-    <Section
-      padding={"2rem 0 1rem 0"}
-      height="unset"
-      styles={{ position: "relative" }}
-    >
-      <FlexBox className="flex_scroll">
-        <FlexItems>
-          <FormControlLabel
-            control={
-              <Checkbox
-                disableFocusRipple
-                disableRipple
-                sx={{
-                  "&.Mui-checked": {
-                    color: ttColors.primary,
-                  },
-                }}
-                value={5}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
-              />
-            }
-            label={<Text whiteSpace="nowrap" type="p" text="5 stars"></Text>}
-          />
-        </FlexItems>
-        <FlexItems>
-          <FormControlLabel
-            control={
-              <Checkbox
-                disableFocusRipple
-                disableRipple
-                sx={{
-                  "&.Mui-checked": {
-                    color: ttColors.primary,
-                  },
-                }}
-                value={4}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
-              />
-            }
-            label={<Text whiteSpace="nowrap" type="p" text="4 stars"></Text>}
-          />
-        </FlexItems>
-        <FlexItems>
-          <FormControlLabel
-            control={
-              <Checkbox
-                disableFocusRipple
-                disableRipple
-                sx={{
-                  "&.Mui-checked": {
-                    color: ttColors.primary,
-                  },
-                }}
-                value={3}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
-              />
-            }
-            label={<Text whiteSpace="nowrap" type="p" text="3 stars"></Text>}
-          />
-        </FlexItems>{" "}
-        <FlexItems>
-          <FormControlLabel
-            control={
-              <Checkbox
-                disableFocusRipple
-                disableRipple
-                sx={{
-                  "&.Mui-checked": {
-                    color: ttColors.primary,
-                  },
-                }}
-                value={2}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
-              />
-            }
-            label={<Text whiteSpace="nowrap" type="p" text="2 stars"></Text>}
-          />
-        </FlexItems>
-      </FlexBox>
-      <Flex
-        align="center"
-        direction={isMobile ? "column" : "row"}
-        gap=".5rem"
-        styles={{ paddingBottom: "20px" }}
-      >
-        <Flex
-          direction="column"
-          gap=".5rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text
-            type="label"
-            size={isMobile ? 16 : 18}
-            text="Your stay preference?"
-          />
-          <Span>
-            <RateHawkLocationSearchInput
-              onChange={(x: RateHawkRegionType) =>
-                updateStayTabInitialQuery({
-                  ...stayTabInitialSearchQuery,
-                  location: x,
-                })
-              }
-              value={stayTabInitialSearchQuery.location}
-              placeholder="Enter Destination or Hotel Name"
-            />
-          </Span>
-        </Flex>
-        <Flex
-          direction="column"
-          gap=".5rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text type="label" size={isMobile ? 16 : 18} text="Check In" />
-          <DatePicker
-            placeholder="Select Date"
-            minDate={today}
-            value={stayTabInitialSearchQuery.checkInDate?.toDate()}
-            format="yyyy-mm-dd"
-            onChange={(e) => {
-              updateStayTabInitialQuery({
+    const computeStaySearchQuery = () => {
+        const params = {
+            regionId: stayTabInitialSearchQuery.location?.id,
+            countryCode: stayTabInitialSearchQuery.location?.country_code,
+            stars: stayTabInitialSearchQuery.stars
+                ? stayTabInitialSearchQuery.stars[0]
+                : 3,
+            checkIn: formatDate(
+                stayTabInitialSearchQuery.checkInDate ?? dayjs(),
+                "YYYY-MM-DD"
+            ),
+            checkOut: formatDate(
+                stayTabInitialSearchQuery.checkOutDate ?? dayjs(),
+                "YYYY-MM-DD"
+            ),
+            guests: convertRoomForGuestsToString(roomForGuests),
+        };
+
+        return constructQueryFromParams(params);
+    };
+    const computeGuestsAndRoomsString = () => {
+        const rooms = roomForGuests.length;
+        let guests = 0;
+
+        for (let index = 0; index < roomForGuests.length; index++) {
+            const room = roomForGuests[index];
+            guests += room.adults + room.children.length;
+        }
+        return `${rooms} room${rooms == 1 ? "" : "s"} for ${guests} guest${
+            guests == 1 ? "" : "s"
+        }`;
+    };
+
+    const handleStarsGroupChanged = (val: string) => {
+        // Check if the value is already in the array
+        const value = parseInt(val);
+        const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
+
+        if (isSelected) {
+            // If the value is already selected, remove it
+            updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,
-                checkInDate: dayjs(e),
-              });
-            }}
-          />
-        </Flex>
-
-        <Flex
-          direction="column"
-          gap=".5rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
-        >
-          <Text type="label" size={isMobile ? 16 : 18} text="Return" />
-          <DatePicker
-            placeholder="Select Date"
-            format="yyyy-mm-dd"
-            minDate={today}
-            value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
-            onChange={(e) =>
-              updateStayTabInitialQuery({
+                stars: stars?.filter((item) => item !== value),
+            });
+        } else {
+            // If the value is not selected, add it
+            updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,
-                checkOutDate: dayjs(e),
-              })
-            }
-          />
-        </Flex>
-
-        <Flex
-          direction="column"
-          gap=".75rem"
-          styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                stars: [...(stars ?? []), value],
+            });
+        }
+    };
+    return (
+        <Section
+            padding={"2rem 0 1rem 0"}
+            height="unset"
+            styles={{ position: "relative" }}
         >
-          <Text
-            type="label"
-            size={isMobile ? 16 : 18}
-            text="Guests and Rooms"
-          />
-          <ClickAwayListener onClickAway={handleClose}>
-            <div>
-              <Input
-                onClick={handleClick}
-                placeholder="Click me to open dropdown"
-                value={computeGuestsAndRoomsString()}
-                styles={{
-                  fontFamily: "poppins",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                }}
-              />
-              {open && <StaysMenu />}
-            </div>
-          </ClickAwayListener>
-        </Flex>
-      </Flex>
+            <FlexBox>
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                                value={5}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
+                            />
+                        }
+                        label="5 stars"
+                    />
+                </FlexItems>
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                                value={4}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
+                            />
+                        }
+                        label="4 stars"
+                    />
+                </FlexItems>
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                                value={3}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
+                            />
+                        }
+                        label="3 stars"
+                    />
+                </FlexItems>{" "}
+                <FlexItems>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                disableFocusRipple
+                                disableRipple
+                                sx={{
+                                    color: ttColors.primary,
+                                    "&.Mui-checked": {
+                                        color: ttColors.primary,
+                                    },
+                                }}
+                                value={2}
+                                onChange={(
+                                    event: ChangeEvent<HTMLInputElement>
+                                ) =>
+                                    handleStarsGroupChanged(event.target.value)
+                                }
+                            />
+                        }
+                        label="2 stars"
+                    />
+                </FlexItems>
+            </FlexBox>
+            <Flex
+                align="center"
+                direction={isMobile ? "column" : "row"}
+                gap=".5rem"
+                styles={{ paddingBottom: "20px" }}
+            >
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Your stay preference?"
+                    />
+                    <Span>
+                        <RateHawkLocationSearchInput
+                            onChange={(x: RateHawkRegionType) =>
+                                updateStayTabInitialQuery({
+                                    ...stayTabInitialSearchQuery,
+                                    location: x,
+                                })
+                            }
+                            value={stayTabInitialSearchQuery.location}
+                            placeholder="Enter Destination or Hotel Name"
+                        />
+                    </Span>
+                </Flex>
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Check In"
+                    />
+                    <DatePicker
+                        placeholder="Select Date"
+                        minDate={today}
+                        value={stayTabInitialSearchQuery.checkInDate?.toDate()}
+                        format="yyyy-mm-dd"
+                        onChange={(e) => {
+                            updateStayTabInitialQuery({
+                                ...stayTabInitialSearchQuery,
+                                checkInDate: dayjs(e),
+                            });
+                        }}
+                    />
+                </Flex>
 
-      <Flex justify="flex-end" margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}>
-        <Button
-          width={isMobile ? "100%" : "300px"}
-          padding="0 1.5rem"
-          borderRadius="4px"
-          background={ttColors.dark}
-          disabled={true || !validateStaySearchFilter}
-          onClick={async () => {
-            if (loading) return;
-            setLoading(true);
-            await sleep(200);
-            router.push(`/stay/listings${computeStaySearchQuery()}`);
-          }}
-        >
-          {loading ? (
-            <Spinner fill={ttColors.primary} size={"36px"} />
-          ) : (
-            <Text type="p" text="Search for Hotels" weight={500} />
-          )}
-        </Button>
-      </Flex>
-    </Section>
-  );
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Return"
+                    />
+                    <DatePicker
+                        placeholder="Select Date"
+                        format="yyyy-mm-dd"
+                        minDate={today}
+                        value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
+                        onChange={(e) =>
+                            updateStayTabInitialQuery({
+                                ...stayTabInitialSearchQuery,
+                                checkOutDate: dayjs(e),
+                            })
+                        }
+                    />
+                </Flex>
+
+                <Flex
+                    direction="column"
+                    gap=".75rem"
+                    styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
+                >
+                    <Text
+                        type="label"
+                        size={isMobile ? 16 : 18}
+                        text="Guests and Rooms"
+                    />
+                    <ClickAwayListener onClickAway={handleClose}>
+                        <div>
+                            <Input
+                                onClick={handleClick}
+                                placeholder="Click me to open dropdown"
+                                value={computeGuestsAndRoomsString()}
+                                styles={{
+                                    fontFamily: "poppins",
+                                    cursor: "pointer",
+                                    fontSize: "14px",
+                                }}
+                            />
+                            {open && <StaysMenu />}
+                        </div>
+                    </ClickAwayListener>
+                </Flex>
+            </Flex>
+
+            <Flex
+                justify="flex-end"
+                margin={isMobile ? "1rem 0 0" : "1.5rem 0 0"}
+            >
+                <Button
+                    width={isMobile ? "100%" : "300px"}
+                    padding="0 1.5rem"
+                    borderRadius="4px"
+                    background={ttColors.dark}
+                    disabled={!validateStaySearchFilter}
+                    onClick={async () => {
+                        if (loading) return;
+                        setLoading(true);
+                        await sleep(200);
+                        router.push(
+                            `/stay/listings${computeStaySearchQuery()}`
+                        );
+                    }}
+                >
+                    {loading ? (
+                        <Spinner fill={ttColors.primary} size={"36px"} />
+                    ) : (
+                        <Text type="p" text="Search for Hotels" weight={500} />
+                    )}
+                </Button>
+            </Flex>
+        </Section>
+    );
 }
 
 export default Stays;
