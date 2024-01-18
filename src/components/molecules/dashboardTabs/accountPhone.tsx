@@ -1,25 +1,26 @@
-import React, { useState } from "react"; // Import your modal component
-import Text from "@atom/text"; // Import other necessary components
-import Section from "src/components/molecules/section";
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import ReusableModal from "./components/dashboardModal";
-import Flex from "@components/templates/flex";
-import Required from "@atom/required";
-import PhoneInput from "react-phone-input-2";
+import React, { useState } from "react" // Import your modal component
+import Text from "@atom/text" // Import other necessary components
+import Section from "src/components/molecules/section"
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
+import ReusableModal from "./components/dashboardModal"
+import Flex from "@components/templates/flex"
+import Required from "@atom/required"
+import PhoneInput from "react-phone-input-2"
 
 type PhoneModalProps = {
-  open: boolean; // Change this type to match your actual type
-  onClose: () => void;
-};
+  open: boolean // Change this type to match your actual type
+  onClose: () => void
+}
 
 const PhoneModal: React.FC<PhoneModalProps> = ({ open, onClose }) => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile } = useScreenResolution()
 
   return (
     <ReusableModal
       open={open}
       onClose={onClose}
       headerText="Edit Your Phone Number"
+      maxWidth={isMobile ? '90%' : '640px'}
       description="Stay connected always: Update your phone number"
     >
       {/* Additional content goes here */}
@@ -43,7 +44,7 @@ const PhoneModal: React.FC<PhoneModalProps> = ({ open, onClose }) => {
         />
       </Section>
     </ReusableModal>
-  );
-};
+  )
+}
 
-export default PhoneModal;
+export default PhoneModal

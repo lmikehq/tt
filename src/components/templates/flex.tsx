@@ -4,63 +4,67 @@ import React, { CSSProperties } from "react";
 import styled from "styled-components";
 
 interface flexProps {
-    children?: React.ReactNode;
-    justify?:
-        | "center"
-        | "space-between"
-        | "space-around"
-        | "space-evenly"
-        | "flex-start"
-        | "flex-end";
-    align?:
-        | "center"
-        | "flex-start"
-        | "flex-end"
-        | "stretch"
-        | "baseline"
-        | "space-between";
-    gap?: string;
-    direction?: "row" | "column" | "row-reverse" | "column-reverse";
-    alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
-    borderBottom?: string;
-    margin?: string;
-    padding?: string;
-    width?: string;
-    maxWidth?: string;
-    styles?: CSSProperties;
-    background?: string;
-    borderRadius?: string;
-    id?: string;
-    overflow?: string;
-    overflowY?:
-        | "auto"
-        | "clip"
-        | "hidden"
-        | "scroll"
-        | "visible"
-        | "inherit"
-        | "initial"
-        | "unset";
-    overflowX?:
-        | "auto"
-        | "clip"
-        | "hidden"
-        | "scroll"
-        | "visible"
-        | "inherit"
-        | "initial"
-        | "unset";
-    wrap?: "wrap" | "nowrap" | "unset";
-    border?: string;
-    height?: string;
-    cursor?: string;
-    ref?: any;
-    onClick?: (e: any) => void;
-    onMouseOver?: (e: any) => void;
-    onMouseLeave?: (e: any) => void;
-    onMouseEnter?: (e: any) => void;
-    className?: string;
-    position?: CSSProperties["position"];
+  children?: React.ReactNode;
+  justify?:
+  | "center"
+  | "space-between"
+  | "space-around"
+  | "space-evenly"
+  | "flex-start"
+  | "flex-end";
+  align?:
+  | "center"
+  | "flex-start"
+  | "flex-end"
+  | "stretch"
+  | "baseline"
+  | "space-between";
+  gap?: string;
+  direction?: "row" | "column" | "row-reverse" | "column-reverse";
+  alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+  borderBottom?: string;
+  borderLeft?: string;
+  borderRight?: string;
+  borderTop?: string;
+  margin?: string;
+  padding?: string;
+  width?: string;
+  maxWidth?: string;
+  styles?: CSSProperties;
+  background?: string;
+  borderRadius?: string;
+  id?: string;
+  overflow?: string;
+  overflowY?:
+  | "auto"
+  | "clip"
+  | "hidden"
+  | "scroll"
+  | "visible"
+  | "inherit"
+  | "initial"
+  | "unset";
+  overflowX?:
+  | "auto"
+  | "clip"
+  | "hidden"
+  | "scroll"
+  | "visible"
+  | "inherit"
+  | "initial"
+  | "unset";
+  wrap?: "wrap" | "nowrap" | "unset";
+  border?: string;
+  height?: string;
+  cursor?: string;
+  ref?: any;
+  onClick?: (e: any) => void;
+  onMouseOver?: (e: any) => void;
+  onMouseLeave?: (e: any) => void;
+  onMouseEnter?: (e: any) => void;
+  className?: string;
+  position?: CSSProperties["position"];
+  color?: string;
 }
 
 const FlexWrapper = styled.div`
@@ -69,72 +73,81 @@ const FlexWrapper = styled.div`
 `;
 
 const Flex: React.FC<flexProps> = ({
-    children,
-    justify,
-    align,
-    gap,
-    direction,
-    margin,
-    padding,
-    background,
-    width,
-    maxWidth,
-    height,
-    borderRadius,
-    id,
-    overflow,
-    overflowY,
-    overflowX,
-    wrap,
-    border,
-    borderBottom,
-    alignSelf,
-    cursor,
-    ref,
-    styles,
-    onClick,
-    className,
-    position,
-    onMouseOver,
-    onMouseLeave,
-    onMouseEnter,
+  children,
+  justify,
+  align,
+  gap,
+  direction,
+  margin,
+  padding,
+  background,
+  width,
+  maxWidth,
+  height,
+  borderRadius,
+  id,
+  overflow,
+  overflowY,
+  overflowX,
+  wrap,
+  border,
+  borderBottom,
+  borderLeft,
+  borderRight,
+  borderTop,
+  alignSelf,
+  cursor,
+  ref,
+  styles,
+  onClick,
+  className,
+  position,
+  onMouseOver,
+  onMouseLeave,
+  onMouseEnter,
+  color
 }) => {
-    return (
-        <FlexWrapper
-            className={className}
-            ref={ref}
-            id={id}
-            style={{
-                margin: margin,
-                display: "flex",
-                justifyContent: justify,
-                alignItems: align,
-                gap: gap,
-                cursor,
-                flexDirection: direction,
-                background: background,
-                width: width,
-                maxWidth: maxWidth,
-                overflow: overflow || "unset",
-                overflowY: overflowY,
-                overflowX: overflowX,
-                borderRadius: borderRadius,
-                border: border,
-                borderBottom: borderBottom ?? border,
-                padding: padding,
-                flexWrap: wrap,
-                height: height,
-                alignSelf: alignSelf,
-                position,
-                ...styles,
-            }}
-            onClick={onClick}
-            onMouseOver={onMouseOver}
-            onMouseLeave={onMouseLeave}
-            onMouseEnter={onMouseEnter}
-        >
-            {children}
-        </FlexWrapper>
-    );
+  return (
+    <FlexWrapper
+      className={className}
+      ref={ref}
+      id={id}
+      style={{
+        margin: margin,
+        display: "flex",
+        justifyContent: justify,
+        alignItems: align,
+        gap: gap,
+        cursor,
+        flexDirection: direction,
+        background: background,
+        width: width,
+        maxWidth: maxWidth,
+        overflow: overflow || "unset",
+        overflowY: overflowY,
+        overflowX: overflowX,
+        borderRadius: borderRadius,
+        borderBottom: borderBottom ?? border,
+        borderTop: borderTop,
+        borderRight: borderRight,
+        borderLeft: borderLeft,
+        border: border,
+        padding: padding,
+        flexWrap: wrap,
+        height: height,
+        alignSelf: alignSelf,
+        position,
+        color: color,
+        ...styles,
+      }}
+      onClick={onClick}
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+      onMouseEnter={onMouseEnter}
+    >
+      {children}
+    </FlexWrapper>
+  );
 };
 export default Flex;
+

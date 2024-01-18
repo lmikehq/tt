@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BtnDetails, Header, Span } from "../../styles";
 import { Grid } from "@/components/templates/grid";
+import { Grid as MGrid } from "@mui/material";
 import Section from "../../../../section";
 import Image from "@/components/atoms/image";
 import Flex from "@/components/templates/flex";
@@ -20,21 +21,8 @@ import {
 import Slider from "react-slick";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { Box } from "@mui/material";
 
-interface Room {
-  images: string[];
-}
-const rooms: Room[] = [
-  {
-    images: [
-      "/assets/images/stays/room1.jpeg",
-      "/assets/images/stays/image1.jpg",
-      "/assets/images/stays/room4.jpg",
-      "/assets/images/stays/room5.jpg",
-      "/assets/images/stays/image2.jpg",
-    ],
-  },
-];
 
 //SLIDER SETTINGS
 const SliderSettings = {
@@ -47,19 +35,23 @@ const SliderSettings = {
   arrow: false,
 };
 
-function GalleryBox() {
+
+interface GalleryBoxProps {
+    images: string[];
+}
+
+function GalleryBox({ images }: GalleryBoxProps) {
   const { isMobile } = useScreenResolution();
 
   //===============
   //Image Selection
   //===============
-  const [selectedImage, setSelectedImage] = useState(rooms[0].images[0]); // Initialize with the first image
+  const [selectedImage, setSelectedImage] = useState(images[0] ?? ''); // Initialize with the first image
   const handleImageChange = (newImage: string) => {
     setSelectedImage(newImage);
   };
 
   const getPreviousImage = (currentImage: string) => {
-    const images = rooms[0].images;
     const currentIndex = images.indexOf(currentImage);
     if (currentIndex > 0) {
       return images[currentIndex - 1];
@@ -69,7 +61,6 @@ function GalleryBox() {
   };
 
   const getNextImage = (currentImage: string) => {
-    const images = rooms[0].images;
     const currentIndex = images.indexOf(currentImage);
     if (currentIndex < images.length - 1) {
       return images[currentIndex + 1];
@@ -99,7 +90,7 @@ function GalleryBox() {
                 size={15}
                 whiteSpace="nowrap"
                 type="p"
-                text={`All Images (${35})`}
+                text={`All Images (${images.length})`}
               ></Text>
             </BtnDetails>
           </Flex>
@@ -120,7 +111,7 @@ function GalleryBox() {
                 <Text
                   type="p"
                   whiteSpace="nowrap"
-                  text="Slideshow View"
+                  text={activeView === "slide_show" ? "Grid View" : "Slideshow"}
                   color={"white"}
                   size={"16px"}
                 />
@@ -131,63 +122,30 @@ function GalleryBox() {
       </Header>
       {activeView === "grid_view" && (
         <Span className="grid_view">
-          <Grid columns={"2"} gap=".5rem">
-            <Section
-              styles={{ maxHeight: "600px", overflow: "hidden" }}
-              borderRadius="12px"
-            >
-              <Image
-                alt="stay"
-                src={"/assets/images/topCountries/Canada.jpeg"}
-                styles={{
-                  width: "100%",
-                  height: "120%",
-                  objectFit: "cover",
-                }}
-              />
-            </Section>
-            <Section styles={{ maxHeight: "600px" }}>
-              <Grid columns={"2"} gap=".5rem">
-                <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                  <Image
-                    alt="stay"
-                    src={"/assets/images/topCountries/Canada.jpeg"}
-                    styles={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Section>
-                <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                  <Image
-                    alt="stay"
-                    src={"/assets/images/topCountries/Canada.jpeg"}
-                    styles={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Section>
-                <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                  <Image
-                    alt="stay"
-                    src={"/assets/images/topCountries/Canada.jpeg"}
-                    styles={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Section>
+        <Box
+            display='grid'  
+            gap=".5rem"
+            sx={{
+                columns: 4,
+                gridTemplateColumns: isMobile ? '1fr' : '3fr 1fr 1fr',
+                maxHeight: '80vh',
+                overflow: "auto",
+            }}
+        >
+            {images.map((img, index) => 
                 <Section
-                  styles={{ overflow: "hidden", position: "relative" }}
-                  borderRadius="6px"
+                    styles={{
+                        overflow: "hidden",
+                        // gridRowStart: index === 0 ? 1 : 2,
+                        // gridRowEnd: 2,
+                        // columnSpan: 1
+                    }}
+                    borderRadius="6px"
+                    key={`img-show-${index}`}
                 >
                   <Image
                     alt="stay"
-                    src={"/assets/images/topCountries/Canada.jpeg"}
+                    src={img}
                     styles={{
                       width: "100%",
                       height: "100%",
@@ -195,49 +153,8 @@ function GalleryBox() {
                     }}
                   />
                 </Section>
-              </Grid>
-            </Section>
-          </Grid>
-          <Flex styles={{ margin: "10px 0px", maxHeight: "300px" }}>
-            <Flex gap="10px">
-              <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                <Image
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </Section>
-              <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                <Image
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </Section>
-              <Section
-                styles={{ overflow: "hidden", position: "relative" }}
-                borderRadius="6px"
-              >
-                <Image
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </Section>
-            </Flex>
-          </Flex>
+            )}
+          </Box>
         </Span>
       )}
 
@@ -306,7 +223,7 @@ function GalleryBox() {
               <Flex justify="center">
                 <ImgWidth style={{ width: "81%" }}>
                   <Slider {...SliderSettings} className="">
-                    {rooms[0].images.map((x) => (
+                    {images.map((x) => (
                       <SmallSlideImg
                         className={`${
                           x === selectedImage

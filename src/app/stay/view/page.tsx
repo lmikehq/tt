@@ -22,53 +22,76 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import { Box, Checkbox } from "@mui/material";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useViewSingleStay } from "@/lib/hooks/stay/search.hook";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import {
-    ViewSingleStayRequestInput,
-    convertRoomForGuestsToString,
-    extractRoomForGuestsFromString,
-} from "@/lib/types/request-models/stay/search.type";
+import { useRouter } from "next/navigation";
+import { useSearchTripAdvisorStay, useViewSingleStay, useViewTripAdvisorStayReviews, useViewTripAdvisorStayDetails, useViewTripAdvisorStayNearby } from "@/lib/hooks/stay/search.hook";
+import { ViewSingleStayRequestInput, convertRoomForGuestsToString, extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import { sampleViewStay } from "@/lib/types/response-models/stay/search.type";
+import { sampleReviews, sampleStayDetails, sampleStayNearby, sampleViewStay } from "@/lib/types/response-models/stay/search.type";
+import { useQueryParams } from "@/hooks/useNext";
+const sample = {
+    name: '',
+    latitude: '',
+    longitude: '',
+    address: '',
+}
 
+const testId = "transcorp_hilton_abuja, test_hotel_do_not_book"
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StayViewPage = () => {
     const router = useRouter();
     const { isMobile } = useScreenResolution();
-    const searchParams = useSearchParams();
-
-    const id = searchParams.get("id");
-    const checkIn = searchParams.get("checkIn");
-    const checkOut = searchParams.get("checkOut");
-    const guests = searchParams.get("guests");
-    const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
-        (state) => state
-    );
+    const { queryParams } = useQueryParams()
+    const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore((state) => state);
 
     const requestParams: ViewSingleStayRequestInput = {
-        // id: "transcorp_hilton_abuja" ?? id ?? "",
-        id: "test_hotel_do_not_book" ?? id ?? "",
-        checkin: checkIn ?? "2024-01-10",
-        checkout: checkOut ?? "2024-01-12",
-        residency: "gb",
+        id: queryParams?.id ?? "",
+        checkin: queryParams?.checkIn ?? "2024-01-22",
+        checkout: queryParams?.checkOut ?? "2024-01-26",
+        residency: "ng",
         language: preferredLanguage,
-        guests: extractRoomForGuestsFromString(guests ?? ""),
+        // guests: extractRoomForGuestsFromString(queryParams?.guests ?? { adults: 2, children: [] }),
+        guests: [{ adults: 2, children: [] }],
         currency: preFerredCurrency,
     };
 
-    const { data: stayRes, isFetching } = useViewSingleStay(requestParams, {
-        enabled: id ? true : false,
+    const { data: stayResponse = sampleViewStay, isFetching:  isLoadingStay, refetch } = useViewSingleStay(requestParams, {
+        enabled: requestParams?.id ? true : false,
     });
-    const stayResponse = sampleViewStay;
+    // const { data: findStayResponse, isFetching: isFetchingFindStay } = useSearchTripAdvisorStay({
+    //     searchQuery: stayResponse ? stayResponse[0]?.name : '',
+    //     // latLong: stayResponse?.latitude ? `${stayResponse?.latitude},${stayResponse?.longitude}` : '',
+    //     // address: stayResponse?.address,
+    // }, {
+    //     enabled: stayResponse ? true : false,
+    // });
+    // const { data: stayDetailsResponse, isFetching: isFetchingStayDetails } = useViewTripAdvisorStayDetails({
+    //     locationId: `${findStayResponse?.data[0].location_id}`,
+    // }, {
+    //     enabled: findStayResponse?.data ? true : false,
+    // });
+    // const { data: stayReviewsResponse, isFetching: isFetchingStayReviews } = useViewTripAdvisorStayReviews({
+    //     locationId: `${findStayResponse?.data[0].location_id}`,
+    // }, {
+    //     enabled: findStayResponse?.data ? true : false,
+    // });
+    // const { data: stayNearbyResponse, isFetching: isFetchingStayNearby } = useViewTripAdvisorStayNearby({
+    //     latLong: stayResponse?.latitude ? `${stayResponse?.latitude},${stayResponse?.longitude}` : '',
+    // }, {
+    //     enabled: findStayResponse?.data ? true : false,
+    // });
 
+    const stayReviewsResponse = sampleReviews.data
+    const stayDetailsResponse = sampleStayDetails
+    const stayNearbyResponse = sampleStayNearby.data
+    const stayImages = stayResponse?.images.map(img => img.replace('{size}', '1024x768'))
+    
     const handleGoBack = () => {
         router.back();
     };
 
-    console.log(stayResponse);
+    console.log('sres', stayResponse)
+    
 
     return (
         <SectionLayout>
@@ -109,35 +132,57 @@ const StayViewPage = () => {
                     </Flex>
                 </Span>
             )}
-            <HeroImageGrid />
+            <HeroImageGrid
+                images={stayImages}
+                stayResponse={stayResponse}
+            />
             <Box
                 sx={{
-                    display: "grid",
-                    gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
-                    gap: "30px",
+                  "& .MuiSvgIcon-root": {
+                    fontSize: 28,
+                    padding: 0,
+                  },
                 }}
             >
-                <Section>
-                    <StayDetails stayResponse={stayResponse} />
-                    <ChooseYourRoom stayResponse={stayResponse} />
-                    <LikeSimilarHotels
-                    // stayResponse={stayResponse}
-                    />
-                    <Location stayResponse={stayResponse} />
-                    <DescriptionOfHotel stayResponse={stayResponse} />
-                    <HotelAmenities stayResponse={stayResponse} />
-                    <CompareSlider
-                    //  stayResponse={stayResponse}
-                    />
-                    <Policies stayResponse={stayResponse} />
-                    <HotelReviews
-                    // stayResponse={stayResponse}
-                    />
-                    <CompareSimilarHotels
-                    //  stayResponse={stayResponse}
-                    />
-                </Section>
-
+                {stayResponse && 
+                    <Section>
+                        <StayDetails
+                            stayResponse={stayResponse}
+                            stayDetails={stayDetailsResponse!}
+                            loading={isLoadingStay}
+                        />
+                        <ChooseYourRoom
+                            stayResponse={stayResponse}
+                            refetch={refetch}
+                            loading={isLoadingStay}
+                        />
+                        <LikeSimilarHotels
+                            loading={isLoadingStay}
+                        />
+                        <Location
+                            stayResponse={stayResponse}
+                            stayDetails={stayDetailsResponse!}
+                            nearbyLocations={stayNearbyResponse!}
+                        />
+                        <DescriptionOfHotel
+                            stayResponse={stayResponse}
+                        />
+                        <HotelAmenities
+                            stayResponse={stayResponse}
+                        />
+                        <CompareSlider />
+                        <Policies
+                            stayResponse={stayResponse}
+                        />
+                        {stayReviewsResponse &&
+                            <HotelReviews
+                                reviews={stayReviewsResponse!}
+                                stayDetails={stayDetailsResponse!}
+                            />
+                        }
+                        <CompareSimilarHotels />
+                    </Section>
+                }
                 <Section>
                     <RecentlyViewedList />
                 </Section>
@@ -145,5 +190,6 @@ const StayViewPage = () => {
         </SectionLayout>
     );
 };
+
 
 export default StayViewPage;

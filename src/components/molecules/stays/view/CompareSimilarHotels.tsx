@@ -62,8 +62,6 @@ const rooms: Room[] = [
     price: 105000,
   },
 ];
-// PRICE FORMAT
-const formatPrice = (price: number) => `₦ ${price.toLocaleString()}`;
 
 const CompareSimilarHotels = () => {
   //COMPONENT OPEN/CLOSE
@@ -132,11 +130,7 @@ const CompareSimilarHotels = () => {
                         max={5}
                         defaultValue={room.rating}
                       />
-                      {/* <Text
-                        weight={600}
-                        type="h4"
-                        text={`${formatPrice(room.price)}`}
-                      ></Text> */}
+
                       <Flex gap="5px" align="center">
                         <Text type="h4" weight={"bold"} text={getCurrency()} />
                         <Text

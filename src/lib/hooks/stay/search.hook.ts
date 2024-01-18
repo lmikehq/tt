@@ -1,4 +1,4 @@
-import { ManyStaysRequestInput } from "./../../types/request-models/stay/search.type";
+import { ManyStaysRequestInput, SearchTripAdvisorStayInput, SearchTripAdvisorStayResponse, ViewTripAdvisorStayDetailsInput, ViewTripAdvisorStayDetailsResponse, ViewTripAdvisorStayNearbyInput, ViewTripAdvisorStayNearbyResponse, ViewTripAdvisorStayReviewsInput, ViewTripAdvisorStayReviewsResponse } from "./../../types/request-models/stay/search.type";
 import { StaySearchService } from "@/lib/services/stay/search.service";
 import { RateHawkLocationRequestInput } from "@/lib/types/request-models/stay/location.type";
 import {
@@ -10,6 +10,7 @@ import {
     SearchStaysResponse,
     ViewSingleStayResponse,
 } from "@/lib/types/response-models/stay/search.type";
+import { keyValues } from "@/lib/utilFns";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export const useSearchRateHawkLocations = (
@@ -44,6 +45,50 @@ export const useViewSingleStay = (
     return useQuery({
         queryKey: ["view-single-stay", params.id],
         queryFn: () => StaySearchService.viewSingleStay(params),
+        ...options,
+    });
+};
+
+export const useSearchTripAdvisorStay = (
+    params: SearchTripAdvisorStayInput,
+    options?: UseQueryOptions<SearchTripAdvisorStayResponse>
+) => {
+    return useQuery({
+        queryKey: ["search-trip-advisor-stay", params],
+        queryFn: () => StaySearchService.searchTripAdvisorStay(params),
+        ...options,
+    });
+};
+
+export const useViewTripAdvisorStayDetails = (
+    params: ViewTripAdvisorStayDetailsInput,
+    options?: UseQueryOptions<ViewTripAdvisorStayDetailsResponse>
+) => {
+    return useQuery({
+        queryKey: ["view-trip-advisor-stay-details", params],
+        queryFn: () => StaySearchService.viewTripAdvisorStayDetails(params),
+        ...options,
+    });
+};
+
+export const useViewTripAdvisorStayReviews = (
+    params: ViewTripAdvisorStayReviewsInput,
+    options?: UseQueryOptions<ViewTripAdvisorStayReviewsResponse>
+) => {
+    return useQuery({
+        queryKey: ["view-trip-advisor-stay-reviews", params],
+        queryFn: () => StaySearchService.viewTripAdvisorStayReviews(params),
+        ...options,
+    });
+};
+
+export const useViewTripAdvisorStayNearby = (
+    params: ViewTripAdvisorStayNearbyInput,
+    options?: UseQueryOptions<ViewTripAdvisorStayNearbyResponse>
+) => {
+    return useQuery({
+        queryKey: ["view-trip-advisor-stay-nearby-locations", params],
+        queryFn: () => StaySearchService.viewTripAdvisorStayNearby(params),
         ...options,
     });
 };

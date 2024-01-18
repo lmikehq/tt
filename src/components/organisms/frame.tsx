@@ -81,7 +81,7 @@ const serviceCard = [
         img: "/assets/images/serviceCard/visas.png",
         title: "Visas",
         description: "Apply for a visa to over 200 countries around the world.",
-        button: "Book visa",
+        button: "Get visa",
         icon: <FaPaperPlane size={14} />,
         url: "/visa",
     },
@@ -89,7 +89,7 @@ const serviceCard = [
     {
         id: 2,
         img: "/assets/images/serviceCard/flight.png",
-        title: "Flights",
+        title: "Tickets",
         description:
             "Travel the world with cheap flights, exclusive deals, and more.",
         button: "Search flights",

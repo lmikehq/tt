@@ -24,6 +24,7 @@ import { AmenitiesModal, MapModal } from "./modals/Modals";
 import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { pickIcon } from "./modals/components/AmenitiesBox";
+import { ViewTripAdvisorStayDetailsResponse } from "@/lib/types/request-models/stay/search.type";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StyledRating = styled(Rating)({
@@ -50,9 +51,11 @@ const tabs: TabProps[] = [
 
 interface StayDetailsProps {
     stayResponse: ViewSingleStayResponse;
+    stayDetails: ViewTripAdvisorStayDetailsResponse;
+    loading: boolean;
 }
 
-function StayDetails({ stayResponse }: StayDetailsProps) {
+function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
     const { isMobile } = useScreenResolution();
 
     const [activeTab, setActiveTab] = useState("overview");
@@ -73,13 +76,15 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
     , [stayResponse?.amenity_groups])
     
     const lowestRate = useMemo(() => {
-        const sorted = stayResponse.rates.sort((a, b) => parseFloat(a.daily_prices[a.daily_prices.length - 1]) - parseFloat(b.daily_prices[b.daily_prices.length - 1]))
+        const sorted = stayResponse?.rates.sort((a, b) => parseFloat(a.daily_prices[a.daily_prices.length - 1]) - parseFloat(b.daily_prices[b.daily_prices.length - 1]))
         return sorted.length > 0 ? parseFloat(sorted[0]?.daily_prices[sorted.length - 1]) : 0
-    }, [stayResponse.rates])
+    }, [stayResponse?.rates])
 
     
-  return (
-    <Container>
+    return (loading ? (
+        <StayDetailSkeleton />
+    ) : (
+        <Container>
       <Header id="overview">
         <Tab>
           <Flex gap="20px">
@@ -178,7 +183,7 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
             <Flex align="center" gap="8px">
               <Text
                 type="p"
-                text="4.0"
+                text={stayDetails?.rating}
                 size={30}
                 weight={600}
                 styles={{ flex: "none" }}
@@ -194,7 +199,7 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                   <Flex>
                     <StyledRating
                       name="customized-color"
-                      defaultValue={4}
+                      value={Number(stayDetails?.rating)}
                       getLabelText={(value: number) =>
                         `${value} Heart${value !== 1 ? "s" : ""}`
                       }
@@ -207,7 +212,7 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                       }}
                     />
                   </Flex>
-                  <Text whiteSpace="nowrap" type="p" text="1000 reviews" />
+                  <Text whiteSpace="nowrap" type="p" text={`${stayDetails?.num_reviews} reviews`} />
                 </Flex>
               </Flex>
             </Flex>
@@ -265,26 +270,28 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
             text={stayResponse.address}
             size={16}
             weight={500}
-          />
-          <Button background="transparent" width="fit-content" padding="0">
-            <Flex align="center" justify="flex-start">
-              <Text
-                type="p"
-                weight={500}
-                onClick={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    map: true,
-                  }))
-                }
-                text="Show in map"
-                color={ttColors.primary}
-              />
-              <BiChevronRight color={ttColors.primary} size={24} />
-            </Flex>
-          </Button>
+        />
+        {stayDetails?.latitude && stayDetails?.longitude && 
+            <Button background="transparent" width="fit-content" padding="0">
+                <Flex align="center" justify="flex-start">
+                <Text
+                    type="p"
+                    weight={500}
+                    onClick={() =>
+                    setOpen((prev) => ({
+                        ...prev,
+                        map: true,
+                    }))
+                    }
+                    text="Show in map"
+                    color={ttColors.primary}
+                />
+                <BiChevronRight color={ttColors.primary} size={24} />
+                </Flex>
+            </Button>
+        }
         </Section>
-        </Box> 
+        </Box>
           
         <AmenitiesModal
             open={open.amenities}
@@ -305,10 +312,12 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                     map: false,
                 }))
             }
+            lat={stayDetails?.latitude ?? 0}
+            lng={stayDetails?.longitude ?? 0}
             stayResponse={stayResponse}
         />
-    </Container>
-  );
+        </Container>
+    ));
 }
 
 export default StayDetails;

@@ -76,6 +76,8 @@ function HotelDetail({
 
                 {/* GALLERY MODAL*/}
                 <GalleryModal
+                    stayResponse={hotel}
+                    images={hotel?.images}
                     open={open.gallery}
                     handleClose={() =>
                         setOpen((prev) => ({

@@ -10,6 +10,7 @@ import Text from "@/components/atoms/text";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import { GalleryModal } from "./modals/Modals";
 import { useState } from "react";
+import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 
 //MOBILE SETTINGS
 const MobileSliderSettings = {
@@ -35,7 +36,25 @@ const rooms: Room[] = [
     ],
   },
 ];
-const HeroImageGrid = () => {
+
+const sampleImages = [
+    "/assets/images/stays/room1.jpeg",
+    "/assets/images/topCountries/Canada.jpeg",
+    "/assets/images/stays/room1.jpeg",
+    "/assets/images/stays/image3.png",
+    "/assets/images/topCountries/Canada.jpeg",
+    "/assets/images/stays/image3.png",
+    "/assets/images/topCountries/Canada.jpeg",
+    "/assets/images/stays/image3.png",
+    "/assets/images/topCountries/Canada.jpeg",
+]
+
+interface HeroImageGridProps {
+    stayResponse: ViewSingleStayResponse;
+    images?: string[]
+}
+
+function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
   const { isMobile } = useScreenResolution();
 
   const [open, setOpen] = useState({
@@ -45,10 +64,10 @@ const HeroImageGrid = () => {
     <Section styles={{ marginBottom: !isMobile ? "37px" : "0px" }}>
       {!isMobile ? (
         <Grid columns={"2"} gap=".5rem">
-          <Section
-            styles={{ maxHeight: "600px", overflow: "hidden" }}
-            borderRadius="12px"
-          >
+            <Section
+                styles={{ maxHeight: "600px", overflow: "hidden" }}
+                borderRadius="12px"
+            >
             <Image
               onClick={() =>
                 setOpen((prev) => ({
@@ -57,7 +76,7 @@ const HeroImageGrid = () => {
                 }))
               }
               alt="stay"
-              src={"/assets/images/topCountries/Canada.jpeg"}
+              src={images[0] ?? ''}
               styles={{
                 width: "100%",
                 height: "120%",
@@ -68,132 +87,107 @@ const HeroImageGrid = () => {
           </Section>
           <Section styles={{ maxHeight: "600px" }}>
             <Grid columns={"2"} gap=".5rem">
-              <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                <Image
-                  onClick={() =>
-                    setOpen((prev) => ({
-                      ...prev,
-                      gallery: true,
-                    }))
-                  }
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    cursor: "pointer",
-                  }}
-                />
-              </Section>
-              <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                <Image
-                  onClick={() =>
-                    setOpen((prev) => ({
-                      ...prev,
-                      gallery: true,
-                    }))
-                  }
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    cursor: "pointer",
-                  }}
-                />
-              </Section>
-              <Section styles={{ overflow: "hidden" }} borderRadius="6px">
-                <Image
-                  onClick={() =>
-                    setOpen((prev) => ({
-                      ...prev,
-                      gallery: true,
-                    }))
-                  }
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    cursor: "pointer",
-                  }}
-                />
-              </Section>
-              <Section
-                styles={{ overflow: "hidden", position: "relative" }}
-                borderRadius="6px"
-              >
-                <Image
-                  onClick={() =>
-                    setOpen((prev) => ({
-                      ...prev,
-                      gallery: true,
-                    }))
-                  }
-                  alt="stay"
-                  src={"/assets/images/topCountries/Canada.jpeg"}
-                  styles={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    cursor: "pointer",
-                  }}
-                />
-                <Span
-                  onClick={() =>
-                    setOpen((prev) => ({
-                      ...prev,
-                      gallery: true,
-                    }))
-                  }
-                  style={{
-                    position: "absolute",
-                    right: "20px",
-                    color: "var(--default-color)",
-                    bottom: "20px",
-                    backgroundColor: "var(--secondary-color)",
-                    padding: "8px",
-                    borderRadius: "20px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Flex align="center" gap="5px">
-                    <CollectionsIcon />
-                    <Text type="p" text="1/35"></Text>
-                  </Flex>
-                </Span>
-              </Section>
+                {images.slice(1, 5).map((img, index, arr) => {
+                    if (index === arr.length - 1) {
+                        return (
+                            <Section
+                                styles={{ overflow: "hidden", position: "relative" }}
+                                borderRadius="6px"
+                                key={`img-hero-${index}`}
+                            >
+                                <Image
+                                    onClick={() =>
+                                        setOpen((prev) => ({
+                                        ...prev,
+                                        gallery: true,
+                                        }))
+                                    }
+                                    alt="stay"
+                                    src={img}
+                                    styles={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        cursor: "pointer",
+                                    }}
+                                />
+                                <Span
+                                onClick={() =>
+                                    setOpen((prev) => ({
+                                    ...prev,
+                                    gallery: true,
+                                    }))
+                                }
+                                style={{
+                                    position: "absolute",
+                                    right: "20px",
+                                    color: "var(--default-color)",
+                                    bottom: "20px",
+                                    backgroundColor: "var(--secondary-color)",
+                                    padding: "8px",
+                                    borderRadius: "20px",
+                                    cursor: "pointer",
+                                }}
+                                >
+                                <Flex align="center" gap="5px">
+                                    <CollectionsIcon />
+                                    <Text type="p" text={`1/${images.length}`}></Text>
+                                </Flex>
+                                </Span>
+                            </Section>
+                        )
+                    } else return (
+                        <Section
+                            styles={{ overflow: "hidden" }}
+                            borderRadius="6px"
+                            key={`img-hero-${index}`}
+                        >
+                            <Image
+                            onClick={() =>
+                                setOpen((prev) => ({
+                                ...prev,
+                                gallery: true,
+                                }))
+                            }
+                            alt="stay"
+                            src={img}
+                            styles={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                cursor: "pointer",
+                            }}
+                            />
+                        </Section>
+                    )
+                })}
             </Grid>
           </Section>
         </Grid>
       ) : (
         <MobileImageBox className="stay_page_slider">
           <Slider {...MobileSliderSettings} className="slick-slider">
-            {rooms.map((room, roomIndex) =>
-              room.images.map((image, imageIndex) => (
+            {images.map((image, index) => (
                 <span
-                  key={`${roomIndex}-${imageIndex}`}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <img
-                    src={image}
-                    alt=""
-                    className="slick_slider_room_img_img"
+                    key={`img-${index}`}
                     style={{
-                      width: "100%",
-                      borderRadius: "12.5px",
+                        width: "100%",
+                        height: "100%",
+                        position: "relative",
                     }}
-                  />
+                >
+                    <img
+                        src={image}
+                        alt=""
+                        className="slick_slider_room_img_img"
+                        style={{
+                            width: "100%",
+                            borderRadius: "12.5px",
+                        }}
+                    />
                 </span>
               ))
-            )}
+            }
           </Slider>
           <Span
             style={{
@@ -213,15 +207,19 @@ const HeroImageGrid = () => {
             </Flex>
           </Span>
         </MobileImageBox>
-      )}
+        )}
+          
+
       {/* GALLERY MODAL*/}
-      <GalleryModal
+    <GalleryModal
+        stayResponse={stayResponse}
+        images={images}
         open={open.gallery}
         handleClose={() =>
-          setOpen((prev) => ({
-            ...prev,
-            gallery: false,
-          }))
+            setOpen((prev) => ({
+                ...prev,
+                gallery: false,
+            }))
         }
       />
     </Section>

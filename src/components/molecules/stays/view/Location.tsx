@@ -9,13 +9,18 @@ import { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { ViewTripAdvisorStayDetailsResponse, ViewTripAdvisorStayNearbyResponse } from "@/lib/types/request-models/stay/search.type";
+import { allCaps, capCase } from "@/lib/utilFns";
+import GoogleMap from "./GoogleMap";
 
 
 interface StayDetailsProps {
     stayResponse: ViewSingleStayResponse;
+    nearbyLocations: ViewTripAdvisorStayNearbyResponse['data'];
+    stayDetails: ViewTripAdvisorStayDetailsResponse
 }
 
-const Location = ({ stayResponse } : StayDetailsProps) => {
+const Location = ({ stayResponse, stayDetails, nearbyLocations = [] } : StayDetailsProps) => {
   const { isMobile } = useScreenResolution();
   //============
   //TOGGLE BOX
@@ -57,383 +62,336 @@ const Location = ({ stayResponse } : StayDetailsProps) => {
           </Flex>
         </Header>
         {/* MAP */}
-        <Span style={{ maxHeight: "350px" }}>
-          <MapBoxTag></MapBoxTag>
+        <Span style={{ height: "400px", marginBottom: '2rem' }}>
+            <GoogleMap
+                lat={stayDetails?.latitude}
+                lng={stayDetails?.longitude}
+            />
         </Span>
         {/* MAP */}
-        <GridLayout className="amenities_grid location_grid">
-          <ul style={{ listStyle: "none" }} className="mobile_box">
-            <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
-              <Flex justify="space-between" cursor="pointer">
-                <Flex
-                  gap="10px"
-                  align="center"
-                  className="head_box"
-                  onClick={() => toggleBox(0)}
-                >
-                  <LocationOnIcon style={{ fontSize: "18px" }} />
-                  <Text
-                    type="h5"
-                    size={16}
-                    text="What’s Nearby?"
-                    weight={"bold"}
-                  ></Text>
-                </Flex>
-                {isMobile ? (
-                  <>
-                    {openBoxes.includes(0) ? (
-                      <KeyboardArrowUpIcon />
-                    ) : (
-                      <KeyboardArrowDownIcon />
-                    )}
-                  </>
-                ) : (
-                  ""
-                )}
-              </Flex>
-              {isMobile && (
-                <>
-                  {openBoxes.includes(0) && (
+        {nearbyLocations.length > 0 && 
+            <ul style={{ listStyle: "none", width: '100%' }} className="mobile_box">
+                <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
+                <Flex justify="space-between" cursor="pointer">
                     <Flex
-                      gap="30px"
-                      align="flex-start"
-                      styles={{ marginTop: "10px" }}
-                      className="list_box"
+                        gap="10px"
+                        align="center"
+                        className="head_box"
+                        onClick={() => toggleBox(0)}
                     >
-                      <Span></Span>
-                      <Span style={{ lineHeight: "27px" }}>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Prince Arthur's Landing - 6km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="OLG Casino Thunder Bay - 4km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Lake Superior - 380m"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Magnus Theater - 9km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Hillcrest Park - 800m"
-                          ></Text>
-                        </li>
-                      </Span>
+                    <LocationOnIcon style={{ fontSize: "18px" }} />
+                    <Text
+                        type="h5"
+                        size={16}
+                        text="What's Nearby?"
+                        weight={"bold"}
+                    ></Text>
                     </Flex>
-                  )}
-                </>
-              )}
-              {!isMobile && (
-                <Flex
-                  gap="30px"
-                  align="flex-start"
-                  styles={{ marginTop: "10px" }}
-                  className="list_box"
-                >
-                  <Span></Span>
-                  <Span style={{ lineHeight: "27px" }}>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Prince Arthur's Landing - 6km"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="OLG Casino Thunder Bay - 4km"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Lake Superior - 380m"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Magnus Theater - 9km"
-                      ></Text>
-                    </li>
-                    <li>
-                      <Text
-                        type="p"
-                        size={14}
-                        text="Hillcrest Park - 800m"
-                      ></Text>
-                    </li>
-                  </Span>
-                </Flex>
-              )}
-            </Span>
-          </ul>
-          <ul style={{ listStyle: "none" }} className="mobile_box">
-            <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
-              <Flex justify="space-between" cursor="pointer">
-                <Flex
-                  gap="10px"
-                  align="center"
-                  className="head_box"
-                  onClick={() => toggleBox(1)}
-                >
-                  <RestaurantMenuIcon style={{ fontSize: "18px" }} />
-                  <Text
-                    type="h5"
-                    size={16}
-                    text="What’s Nearby?"
-                    weight={"bold"}
-                  ></Text>
-                </Flex>
-                {isMobile ? (
-                  <>
-                    {openBoxes.includes(1) ? (
-                      <KeyboardArrowUpIcon />
+                    {isMobile ? (
+                    <>
+                        {openBoxes.includes(0) ? (
+                        <KeyboardArrowUpIcon />
+                        ) : (
+                        <KeyboardArrowDownIcon />
+                        )}
+                    </>
                     ) : (
-                      <KeyboardArrowDownIcon />
+                    ""
                     )}
-                  </>
-                ) : (
-                  ""
+                </Flex>
+                {isMobile && (
+                    <>
+                    {openBoxes.includes(0) && (
+                        <Flex
+                        gap="30px"
+                        align="flex-start"
+                        styles={{ marginTop: "10px" }}
+                        className="list_box"
+                        >
+                        <Span></Span>
+                        <Span style={{ lineHeight: "27px" }}>
+                            {nearbyLocations.map((nearby, index) =>
+                                <li key={`nearby-${index}`}>
+                                    <Text
+                                        type="p"
+                                        size={14}
+                                        text={`${nearby?.name} - ${nearby?.distance}km ${allCaps(nearby?.bearing)}`}
+                                    ></Text>
+                                </li>
+                            )}
+                        </Span>
+                        </Flex>
+                    )}
+                    </>
                 )}
-              </Flex>
-              {isMobile && (
-                <>
-                  {openBoxes.includes(1) && (
+                {!isMobile && (
                     <Flex
-                      gap="30px"
-                      align="flex-start"
-                      styles={{ marginTop: "10px" }}
-                      className="list_box"
+                    gap="30px"
+                    align="flex-start"
+                    styles={{ marginTop: "10px" }}
+                    className="list_box"
                     >
-                      <Span></Span>
-                      <Span style={{ lineHeight: "27px" }}>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="McDonald's - 10km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Red Lion Smokehouse - 2km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Lakehead_box Beer Co - 600m"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text type="p" size={14} text="On Deck - 8km"></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Madhouse - 950m"
-                          ></Text>
-                        </li>
-                      </Span>
+                    <Span></Span>
+                    <Span style={{ lineHeight: "27px", width: '100%' }}>
+                        {nearbyLocations.map((nearby, index) =>
+                            <li key={`nearby-${index}`}>
+                                <Text
+                                    type="p"
+                                    size={14}
+                                    text={`${nearby?.name} - ${parseFloat(nearby?.distance).toFixed(1)}km ${capCase(nearby?.bearing)}`}
+                                ></Text>
+                            </li>
+                        )}
+                    </Span>
                     </Flex>
-                  )}
+                )}
+                </Span>
+            </ul>
+        }
+        {/* <ul style={{ listStyle: "none" }} className="mobile_box">
+        <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
+            <Flex justify="space-between" cursor="pointer">
+            <Flex
+                gap="10px"
+                align="center"
+                className="head_box"
+                onClick={() => toggleBox(1)}
+            >
+                <RestaurantMenuIcon style={{ fontSize: "18px" }} />
+                <Text
+                type="h5"
+                size={16}
+                text="What’s Nearby?"
+                weight={"bold"}
+                ></Text>
+            </Flex>
+            {isMobile ? (
+                <>
+                {openBoxes.includes(1) ? (
+                    <KeyboardArrowUpIcon />
+                ) : (
+                    <KeyboardArrowDownIcon />
+                )}
                 </>
-              )}
-              {!isMobile && (
+            ) : (
+                ""
+            )}
+            </Flex>
+            {isMobile && (
+            <>
+                {openBoxes.includes(1) && (
                 <Flex
-                  gap="30px"
-                  align="flex-start"
-                  styles={{ marginTop: "10px" }}
-                  className="list_box"
+                    gap="30px"
+                    align="flex-start"
+                    styles={{ marginTop: "10px" }}
+                    className="list_box"
                 >
-                  <Span></Span>
-                  <Span style={{ lineHeight: "27px" }}>
+                    <Span></Span>
+                    <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text type="p" size={14} text="McDonald's - 10km"></Text>
+                        <Text
+                        type="p"
+                        size={14}
+                        text="McDonald's - 10km"
+                        ></Text>
                     </li>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="Red Lion Smokehouse - 2km"
-                      ></Text>
+                        ></Text>
                     </li>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="Lakehead_box Beer Co - 600m"
-                      ></Text>
+                        ></Text>
                     </li>
                     <li>
-                      <Text type="p" size={14} text="On Deck - 8km"></Text>
+                        <Text type="p" size={14} text="On Deck - 8km"></Text>
                     </li>
                     <li>
-                      <Text type="p" size={14} text="Madhouse - 950m"></Text>
+                        <Text
+                        type="p"
+                        size={14}
+                        text="Madhouse - 950m"
+                        ></Text>
                     </li>
-                  </Span>
+                    </Span>
                 </Flex>
-              )}
-            </Span>
-          </ul>
-          <ul style={{ listStyle: "none" }} className="mobile_box">
-            <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
-              <Flex justify="space-between" cursor="pointer">
-                <Flex
-                  gap="10px"
-                  align="center"
-                  className="head_box"
-                  onClick={() => toggleBox(2)}
-                >
-                  <FlightIcon style={{ fontSize: "18px" }} />
-                  <Text
-                    type="h5"
-                    size={16}
-                    text="Airports"
-                    weight={"bold"}
-                  ></Text>
-                </Flex>
-                {isMobile ? (
-                  <>
-                    {openBoxes.includes(2) ? (
-                      <KeyboardArrowUpIcon />
-                    ) : (
-                      <KeyboardArrowDownIcon />
-                    )}
-                  </>
-                ) : (
-                  ""
                 )}
-              </Flex>
-              {isMobile && (
+            </>
+            )}
+            {!isMobile && (
+            <Flex
+                gap="30px"
+                align="flex-start"
+                styles={{ marginTop: "10px" }}
+                className="list_box"
+            >
+                <Span></Span>
+                <Span style={{ lineHeight: "27px" }}>
+                <li>
+                    <Text type="p" size={14} text="McDonald's - 10km"></Text>
+                </li>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="Red Lion Smokehouse - 2km"
+                    ></Text>
+                </li>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="Lakehead_box Beer Co - 600m"
+                    ></Text>
+                </li>
+                <li>
+                    <Text type="p" size={14} text="On Deck - 8km"></Text>
+                </li>
+                <li>
+                    <Text type="p" size={14} text="Madhouse - 950m"></Text>
+                </li>
+                </Span>
+            </Flex>
+            )}
+        </Span>
+        </ul> */}
+        {/* <ul style={{ listStyle: "none" }} className="mobile_box">
+        <Span style={{ marginBottom: isMobile ? "" : "20px" }}>
+            <Flex justify="space-between" cursor="pointer">
+            <Flex
+                gap="10px"
+                align="center"
+                className="head_box"
+                onClick={() => toggleBox(2)}
+            >
+                <FlightIcon style={{ fontSize: "18px" }} />
+                <Text
+                type="h5"
+                size={16}
+                text="Airports"
+                weight={"bold"}
+                ></Text>
+            </Flex>
+            {isMobile ? (
                 <>
-                  {openBoxes.includes(2) && (
-                    <Flex
-                      gap="30px"
-                      align="flex-start"
-                      styles={{ marginTop: "10px" }}
-                      className="list_box"
-                    >
-                      <Span></Span>
-                      <Span style={{ lineHeight: "27px" }}>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Prince Arthur's Landing - 3km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="OLG Casino Thunder Bay - 6km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Lake Superior - 8km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Magnus Theater - 14km"
-                          ></Text>
-                        </li>
-                        <li>
-                          <Text
-                            type="p"
-                            size={14}
-                            text="Hillcrest Park - 17km"
-                          ></Text>
-                        </li>
-                      </Span>
-                    </Flex>
-                  )}
+                {openBoxes.includes(2) ? (
+                    <KeyboardArrowUpIcon />
+                ) : (
+                    <KeyboardArrowDownIcon />
+                )}
                 </>
-              )}
-              {!isMobile && (
+            ) : (
+                ""
+            )}
+            </Flex>
+            {isMobile && (
+            <>
+                {openBoxes.includes(2) && (
                 <Flex
-                  gap="30px"
-                  align="flex-start"
-                  styles={{ marginTop: "10px" }}
-                  className="list_box"
+                    gap="30px"
+                    align="flex-start"
+                    styles={{ marginTop: "10px" }}
+                    className="list_box"
                 >
-                  <Span></Span>
-                  <Span style={{ lineHeight: "27px" }}>
+                    <Span></Span>
+                    <Span style={{ lineHeight: "27px" }}>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="Prince Arthur's Landing - 3km"
-                      ></Text>
+                        ></Text>
                     </li>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="OLG Casino Thunder Bay - 6km"
-                      ></Text>
+                        ></Text>
                     </li>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="Lake Superior - 8km"
-                      ></Text>
+                        ></Text>
                     </li>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="Magnus Theater - 14km"
-                      ></Text>
+                        ></Text>
                     </li>
                     <li>
-                      <Text
+                        <Text
                         type="p"
                         size={14}
                         text="Hillcrest Park - 17km"
-                      ></Text>
+                        ></Text>
                     </li>
-                  </Span>
+                    </Span>
                 </Flex>
-              )}
-            </Span>
-          </ul>
-        </GridLayout>
+                )}
+            </>
+            )}
+            {!isMobile && (
+            <Flex
+                gap="30px"
+                align="flex-start"
+                styles={{ marginTop: "10px" }}
+                className="list_box"
+            >
+                <Span></Span>
+                <Span style={{ lineHeight: "27px" }}>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="Prince Arthur's Landing - 3km"
+                    ></Text>
+                </li>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="OLG Casino Thunder Bay - 6km"
+                    ></Text>
+                </li>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="Lake Superior - 8km"
+                    ></Text>
+                </li>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="Magnus Theater - 14km"
+                    ></Text>
+                </li>
+                <li>
+                    <Text
+                    type="p"
+                    size={14}
+                    text="Hillcrest Park - 17km"
+                    ></Text>
+                </li>
+                </Span>
+            </Flex>
+            )}
+        </Span>
+        </ul> */}
+        {/* <GridLayout className="amenities_grid location_grid"> */}  
+        {/* </GridLayout> */}
       </Container>
     </>
   );
