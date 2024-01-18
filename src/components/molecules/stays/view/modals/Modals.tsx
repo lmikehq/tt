@@ -97,7 +97,7 @@ const ModalWrapper = styled.div`
 
 export const GalleryModal = ({
     stayResponse,
-    images,
+    images = [],
     open,
     handleClose,
 }: {
