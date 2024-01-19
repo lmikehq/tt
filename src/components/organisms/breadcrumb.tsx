@@ -9,6 +9,7 @@ import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
+import { capCase } from "@/lib/utilFns";
 
 const BreadcrumbContainer = styled.div`
   font-size: 14px;
@@ -21,10 +22,10 @@ const BreadcrumbContainer = styled.div`
 `;
 
 const Breadcrumb = () => {
-  const { isMobile } = useScreenResolution();
-
-  let path = usePathname();
-  let pathArray = path.split("/");
+    const { isMobile } = useScreenResolution();
+    let path = usePathname();
+    let pathArray = path.split("/");
+    
   return (
     <BreadcrumbContainer>
       <SectionLayout>
@@ -43,7 +44,7 @@ const Breadcrumb = () => {
             if (item === "") {
               return null;
             }
-            item = item.replace(/-/g, " ");
+            item = capCase(item.replace(/-/g, " "));
             if (index === pathArray.length - 1) {
               return (
                 <Text

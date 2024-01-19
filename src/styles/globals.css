@@ -70,15 +70,18 @@ body {
         transform: rotate(360deg);
     }
 }
+
 .spinner {
     animation: spin 1s linear infinite;
     /* animation-duration: 2ms; */
 }
+
 .truncate {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .selected_room_img {
     border: 2px solid var(--primary-color) !important;
 }
@@ -88,20 +91,24 @@ body {
     position: relative;
     outline: none;
 }
+
 .slick-slider ul {
     position: absolute;
     bottom: 6%;
     z-index: 5;
     outline: none;
 }
+
 .slick-slider ul li {
     border-radius: 50%;
     padding: 10px;
 }
+
 .slick-slider ul li button {
     background: transparent !important;
     color: var(--default-color) !important;
 }
+
 .slick-slider ul li button::before {
     font-size: 13px !important;
     color: var(--default-color) !important;
@@ -111,8 +118,7 @@ body {
     margin: auto;
 }
 
-.scroll {
-}
+.scroll {}
 
 .slick_slider_room_img_img {
     position: relative;
@@ -124,6 +130,7 @@ body {
 .MuiSelect-root {
     position: absolute !important;
 }
+
 /*----- control btn -------*/
 .control_btn .next,
 .control_btn .prev {
@@ -142,15 +149,29 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.stay_landing .next,
+.stay_landing .prev {
+  bottom: 0 !important;
+  top: -75px !important;
+}
+@media screen and (max-width: 900px) {
+  .stay_landing {
+    display: none;
+  }
+}
+
 .control_btn button {
     background-color: var(--color-border);
     backdrop-filter: blur(5px);
     right: 10px;
 }
+
 .control_btn .prev {
     right: 75px;
     bottom: 0;
 }
+
 .control_btn .next {
     bottom: 0;
 }
@@ -165,6 +186,7 @@ body {
     color: var(--default-color) !important;
     cursor: pointer;
 }
+
 /* ROOM STAY MOBILE SLICK SLIDER ROOT CSS*/
 
 /* MUI CHECKBOX */
@@ -173,8 +195,8 @@ body {
 }
 
 /* REACT SELECT */
-.react_select {
-}
+/* .react_select {
+} */
 
 /* REACT SELECT */
 
@@ -183,10 +205,12 @@ body {
     background-color: var(--primary-color);
     color: var(--default-color);
 }
+
 .pagination .paginationItemStyle.active:hover {
     background-color: var(--primary-color);
     color: var(--default-color);
 }
+
 /* PAGINATION */
 
 /* Media Queries Here */
@@ -199,7 +223,8 @@ body {
 }
 
 @media screen and (max-width: 1024px) {
-    /* .reviewCard {
+
+  /* .reviewCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;
   } */
@@ -217,6 +242,7 @@ body {
         display: none !important;
     }
 }
+
 @media screen and (max-width: 768px) {
     .footerBarcode {
         position: absolute !important;
@@ -266,6 +292,7 @@ body {
 .react-tel-input .selected-flag {
     width: 46px !important;
 }
+
 .react-tel-input .form-control {
     padding-left: 50px !important;
 }
@@ -301,6 +328,7 @@ input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
+
 .title-font {
     font-family: var(--title-font) !important;
 }
@@ -392,9 +420,9 @@ textarea:hover {
 
 /* Custom Scrollbar */
 .scroll-custom::-webkit-scrollbar {
-    background-color: transparent;
-    width: 9px;
-    height: 9px;
+  background-color: transparent;
+  width: 7px;
+  height: 7px;
 }
 
 .scroll-custom::-webkit-scrollbar-thumb {
@@ -418,5 +446,45 @@ textarea:hover {
 }
 
 .css-yckcgr-MuiPaper-root-MuiAccordion-root {
-    width: 100%;
+  width: 100%;
+}
+
+.payment-receipt-grid {
+  display: grid;
+  gap: 60px;
+  grid-template-columns: 200px 1fr !important;
+  padding: 22px 0 !important;
+  border-bottom: 1px solid #AFDEF2;
+}
+
+.payment-receipt-grid-last {
+  display: grid;
+  gap: 60px;
+  grid-template-columns: 200px 1fr !important;
+  padding: 22px 0 !important;
+}
+
+/* REFERRAL MODAL */
+.submission-successful-confetti-bg {
+  background-image: url(../../public/assets/images/dashboard/confetti.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* GRID TEMPLATE LAYOUT FOR VISA APPLICATION */
+.visa-application-grid {
+  display: grid;
+  grid-template-columns: 80px 1fr 25% 20%;
+  align-items: center;
+}
+
+/* THE COUNTRY SELECT DROPDOWN */
+.css-gbi5t6-MuiPopper-root {
+  z-index: 99999 !important;
+}
+
+.mui_select div[aria-disabled='true']{
+    border: 1px solid #bdbdbd;
+    /* background-color: initial; */
 }

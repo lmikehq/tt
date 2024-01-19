@@ -56,6 +56,12 @@ export const List = styled.div`
   border: 1px solid var(--color-border);
   padding: 10px;
   border-radius: 6px;
+  &.flight_list {
+    &:hover {
+      box-shadow: 0px 33px 33px 33px hsla(0, 10%, 73.3%, 0.15);
+      transition: all 400ms ease;
+    }
+  }
 
   @media screen and (max-width: 395px) {
     .compare_recently {
@@ -90,7 +96,7 @@ export const GridLayout = styled.div`
     width: 100% !important;
     grid-template-columns: repeat(3, 1fr);
     justify-content: space-between !important;
-    grid-column-gap: 10%;
+    grid-column-gap: 1rem;
     @media screen and (max-width: 1095px) {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -135,6 +141,15 @@ export const GridLayout = styled.div`
       }
     }
   }
+  &.flight_landing_grid {
+    grid-template-columns: repeat(3, 1fr);
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
 `;
 
 export const ImageBox = styled.div`
@@ -142,6 +157,19 @@ export const ImageBox = styled.div`
   max-height: 110px;
   border-radius: 6px;
   overflow: hidden;
+  &.flight_img_box {
+    width: 180px;
+    height: 150px;
+    border-radius: 4px;
+    @media screen and (max-width: 900px) {
+      width: 250px !important;
+      height: 250px !important;
+    }
+    .link {
+      width: 100%;
+      height: 100% !important;
+    }
+  }
   @media screen and (max-width: 395px) {
     width: 100%;
   }
@@ -225,6 +253,23 @@ export const Content = styled.div`
 
 export const Span = styled.div`
   position: relative;
+  &.all_languages_currency {
+    .cur_lang {
+      padding: 8px 15px;
+      cursor: pointer;
+      &:hover {
+        background-color: #d5f1fc74;
+        color: #395763;
+      }
+    }
+    .cur_lang.active {
+      background-color: #d5f1fc74;
+      color: #395763;
+    }
+  }
+  .currency_code {
+    color: var(--color-light-gray);
+  }
   .badge {
     width: 28px;
     height: 28px;
@@ -238,24 +283,24 @@ export const Span = styled.div`
       white-space: wrap !important;
     }
   }
-  &.border::before {
-    content: "";
-    display: block;
-    height: 60px;
-    border-left: 1px solid var(--secondary-color);
-    margin-right: 10px;
-  }
-  &.horizontal_border::after {
-    content: "";
-    display: block;
-    width: 100%;
-    border-bottom: 1px solid #000;
-    margin-right: 10px;
-  }
-  .mui_select {
-    // overflow: hidden;
-    outline-color: var(--primary-color) !important;
-  }
+    &.border::before {
+        content: "";
+        display: block;
+        height: 60px;
+        border-left: 1px solid var(--secondary-color);
+        margin-right: 10px;
+    }
+    &.horizontal_border::after {
+        content: "";
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid #000;
+        margin-right: 10px;
+    }
+    .mui_select {
+        // overflow: hidden;
+        outline-color: var(--primary-color) !important;
+    }
   @media screen and (max-width: 1120px) {
     .recently {
       flex-direction: column;

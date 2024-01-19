@@ -137,6 +137,8 @@ function Flights() {
     const handleAddMultiFlight = () => {
         dispatch && dispatch({ type: "ADD_MULTI_FLIGHT" });
     };
+
+    // HERE PLEASE
     const handleUpdateMultiFlight = (
         flight: OneFlightType,
         data: Partial<OneFlightType>
@@ -147,6 +149,7 @@ function Flights() {
                 payload: { index: flight.index ?? 0, data },
             });
     };
+
     const handleRemoveMultiFlight = (flight: OneFlightType) => {
         dispatch && dispatch({ type: "REMOVE_MULTI_FLIGHT", payload: flight });
     };
@@ -154,44 +157,6 @@ function Flights() {
     const handleChangeStops = (value?: string) => {
         dispatch && dispatch({ type: "SET_STOPS", payload: value ?? "" });
         dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
-    };
-
-    const translateCabin = (x?: string) => {
-        switch (x) {
-            case "Economy":
-                return "M";
-                break;
-            case "Economy Premium":
-                return "W";
-                break;
-            case "Business":
-                return "C";
-                break;
-            case "First":
-                return "F";
-                break;
-            default:
-                return "";
-        }
-    };
-
-    const reverseCabin = (x?: string) => {
-        switch (x) {
-            case "M":
-                return "Economy";
-                break;
-            case "W":
-                return "Economy Premium";
-                break;
-            case "C":
-                return "Business";
-                break;
-            case "F":
-                return "First";
-                break;
-            default:
-                return "Economy";
-        }
     };
 
     const formatSearchFlight = ({
@@ -258,7 +223,45 @@ function Flights() {
         `;
         }
     };
+    const translateCabin = (x?: string) => {
+        switch (x) {
+            case "Economy":
+                return "M";
+                break;
+            case "Economy Premium":
+                return "W";
+                break;
+            case "Business":
+                return "C";
+                break;
+            case "First":
+                return "F";
+                break;
+            default:
+                return "";
+        }
+    };
 
+    const reverseCabin = (x?: string) => {
+        switch (x) {
+            case "M":
+                return "Economy";
+                break;
+            case "W":
+                return "Economy Premium";
+                break;
+            case "C":
+                return "Business";
+                break;
+            case "F":
+                return "First";
+                break;
+            default:
+                return "Economy";
+        }
+    };
+
+    const flight = flightState?.fleet[0];
     const flights = flightState?.fleet ?? [];
 
     const formComplete = () => {

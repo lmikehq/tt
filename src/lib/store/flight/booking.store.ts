@@ -1,7 +1,6 @@
 import {
     ContactDetailsInterface,
     ParticularSeatingOption,
-    SearchMultiFlightRequestQuery,
     cardDetails,
     contactDetails,
     saveBookingDetails,
@@ -283,7 +282,6 @@ export const useFlightBookingStore = create<State & Actions>(
                     throw error;
                 });
         },
-
         checkFlights: async ({ query }: { query: CheckFlightsQuery }) => {
             set({ mode: Mode.loading });
             return await FlightBookingService.checkFlights({

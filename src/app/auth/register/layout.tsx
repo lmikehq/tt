@@ -1,14 +1,14 @@
-import RTQueryClient from "@components/templates/rtqWrapper";
+import RTQueryClient from "@components/templates/rtqWrapper"
 
 export const metadata = {
   title: "Register your travels account",
   description: "Register your travels account",
-};
+}
 
 export default function RegisterLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  return <RTQueryClient>{children}</RTQueryClient>;
+  return <RTQueryClient>{children}</RTQueryClient>
 }

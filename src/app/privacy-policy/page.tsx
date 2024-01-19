@@ -1,18 +1,18 @@
+import PrivacyPolicyPage from "@/components/organisms/privacy-policy/PrivacyPolicyPage";
+import SectionLayout from "@/components/templates/SectionLayout";
 import Breadcrumb from "@organism/breadcrumb";
-import PrivacyPoliicyPage from "src/components/molecules/privacyPolicyPage";
 import Section from "src/components/molecules/section";
 
-const PrivacyPolicyComponent = () => {
-  return (
-    <Section
-      styles={{
-        paddingTop: "2rem",
-      }}
-    >
-      <Breadcrumb />
-      <PrivacyPoliicyPage />
-    </Section>
-  );
+
+function PrivacyPolicy () {
+    return (
+        <Section styles={{ paddingTop: "2rem" }}>
+            <Breadcrumb />
+            <SectionLayout>
+                <PrivacyPolicyPage/>
+            </SectionLayout>
+        </Section>
+    );
 };
 
-export default PrivacyPolicyComponent;
+export default PrivacyPolicy;

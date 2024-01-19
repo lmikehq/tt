@@ -6,6 +6,7 @@ const globalAxios = axios.create({
 });
 
 const apiService = (url: string, method?: string, data?: any): Promise<any> => {
+  // console.log(url)
   return new Promise((resolve) => {
     globalAxios({
       url,
@@ -22,6 +23,8 @@ const apiService = (url: string, method?: string, data?: any): Promise<any> => {
       });
   });
 };
+
+
 
 export const extApiService = (url: string, method?: string, data?: any) => {
   return new Promise((resolve) => {

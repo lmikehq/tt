@@ -71,7 +71,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
   };
   const menuListWithIcon = [
     {
-      name: "Book visa",
+      name: "Get visa",
       url: "visa",
       icon: <GiPassport size={19} />,
     },

@@ -264,7 +264,6 @@ export interface PrimaryTravellerInterface
 export type VisaFormUnionType =
     | { tripDetails: DetailsKeys }
     | { personalInfo: PersonalInfoInterface }
-    | { guarantorInfo: GuarantorInfoInterface }
     | ManyEducationDetailsInterface
     | ManyEmploymentDetailsInterface
     | ManyFamilyInfoInterface
@@ -456,6 +455,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                         }),
                     };
                 }),
+
             siblingDetails: sortedFamily
                 .filter((e) => e.section === "B")
                 .map((member) => {
@@ -552,4 +552,26 @@ export enum ChatUserIdentityType {
 export interface ChatUserIdentity {
     id: string; // userId or IpAddress
     type: ChatUserIdentityType;
+}
+
+export interface IAccompany {
+    memberName: string;
+    relationship: string;
+    memberAddress: string;
+    memberOccupation: string;
+    memberEmail: string;
+    phoneNumber: string;
+    memberWorth: string;
+    gender: string;
+    dateOfBirth: string;
+    passportNumber: string;
+    passportIssuedCountry: string;
+    issueDate: string;
+    expiryDate: string;
+}
+
+export interface IUpdatePassword {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
 }
