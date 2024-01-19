@@ -15,6 +15,14 @@ export interface StayTabInitialSearchQuery {
     roomForGuests: RoomForGuest[];
     stars?: number[];
 }
+export interface StaySearchInitialQuery {
+    regionId: string;
+    countryCode: string;
+    stars: string;
+    checkIn: string;
+    checkOut: string;
+    guests: string;
+}
 
 export interface RoomForGuest {
     adults: number;
