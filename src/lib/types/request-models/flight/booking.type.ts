@@ -121,6 +121,8 @@ export interface SearchFlightsRequestQuery {
     ret_atime_to?: string;
     adult_hold_bag?: string;
     adult_hand_bag?: string;
+    child_hold_bag?: string;
+    child_hand_bag?: string;
     price_from?: number;
     price_to?: number;
     select_airlines?: string;
