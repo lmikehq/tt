@@ -5,12 +5,15 @@ import Text from '@/components/atoms/text';
 import Flex from '@/components/templates/flex'
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 import { ttColors } from '@/lib/theme/colors';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { RiCustomerService2Fill } from "react-icons/ri";
 
 
 function ReachOut() {
     const { isMobile } = useScreenResolution()
+    const { push } = useRouter()
+
     return (
         <Flex
             borderRadius='1rem'
@@ -51,6 +54,7 @@ function ReachOut() {
                     color='white'
                     padding='1rem 1.5rem'
                     width='max-content'
+                    onClick={() => push(`/contact`)}
                 >
                     <Text
                         text='Contact Customer Service'

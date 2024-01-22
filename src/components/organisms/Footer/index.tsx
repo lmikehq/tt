@@ -195,6 +195,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -220,6 +221,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -243,6 +245,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -266,6 +269,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"

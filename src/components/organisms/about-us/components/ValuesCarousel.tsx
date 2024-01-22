@@ -26,10 +26,11 @@ const CarouselWrapper = styled.div<{ isMobile: boolean }>`
         position: absolute;
         top: -3rem;
         left: ${({ isMobile }) => (isMobile ? "78%" : "88%")};
+        display: none !important;
         &::before {
             line-height: 0;
             content: '<'
-        }
+        };
     }
     & .slick-arrow.slick-next {
         background-color: #7BBBD6;
@@ -42,10 +43,11 @@ const CarouselWrapper = styled.div<{ isMobile: boolean }>`
         position: absolute;
         top: -3rem;
         right: 0%;
+        display: none !important;
         &::before {
             line-height: 0;
             content: '>'
-        }
+        };
     }
     & h1 {
         margin-bottom: 1rem;
@@ -73,7 +75,7 @@ function ValuesCarousel({ items } : ValuesCarouselProps) {
         dots: false,
         infinite: false,
         speed: 500,
-        slidesToShow: isMobile ? 2 : 4,
+        slidesToShow: isMobile ? 1 : 4,
         slidesToScroll: 1,
         autoplay: false,
         autoplaySpeed: 2000
@@ -83,7 +85,7 @@ function ValuesCarousel({ items } : ValuesCarouselProps) {
         <CarouselWrapper isMobile={isMobile}>
             <StyledSlider {...settings}>
                 {items.map((item, index) =>
-                    <Flex key={`caro-${index}`} height='13rem'>
+                    <Flex key={`caro-${index}`} height={isMobile ? '14rem' : '14rem'}>
                         <ValueCard
                             index={index}
                             {...item}

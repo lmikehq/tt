@@ -10,33 +10,27 @@ import React, { ReactNode } from 'react';
 import styled from "styled-components";
 import ImageGrid from './components/ImageGrid';
 import dayjs from 'dayjs';
-import PositionCard from './components/PositionCard';
+import PositionCard, { PositionCardProps } from './components/PositionCard';
 import PostCard from '../about-us/components/PostCard';
 import ValuesCarousel from '../about-us/components/ValuesCarousel';
 import { coreValues, postCard } from '../about-us/AboutUsPage';
+import { IoBriefcase } from 'react-icons/io5';
 const gridImages = Array.from({ length: 6 }).map(e => '/assets/images/empty-img.png')
-const openPositions = [
-    {
-        position: 'Product Design',
-        description: 'Are you passionate about crafting exceptional user experiences that elevate travel? Thrillers Travels is seeking a creative Product Designer to reimagine and shape intuitive interfaces that redefine how travelers explore the world.',
-        tags: ['Design', 'Full Time', 'Remote'],
-        status: 'Ongoing',
-        deadline: dayjs().format(),
-    },
-    {
-        position: 'Front-End Engineer',
-        description: 'Join Thrillers Travels as a Frontend Developer and be at the forefront of shaping our digital footprint. Collaborate with a dynamic team to build immersive web experiences, ensuring seamless functionality and stunning visuals.',
-        tags: ['Design', 'Full Time', 'Remote'],
-        status: 'Ongoing',
-        deadline: dayjs().format(),
-    },
-    {
-        position: 'Back-End Engineer',
-        description: "Thrillers Travels is on the lookout for a Backend Developer to power our platform's foundation. Join our team in architecting robust and scalable systems that fuel seamless travel experiences.",
-        tags: ['Design', 'Full Time', 'Remote'],
-        status: 'Ongoing',
-        deadline: dayjs().format(),
-    },
+const openPositions: PositionCardProps[] = [
+    // {
+    //     position: 'Product Design',
+    //     description: 'Are you passionate about crafting exceptional user experiences that elevate travel? Thrillers Travels is seeking a creative Product Designer to reimagine and shape intuitive interfaces that redefine how travelers explore the world.',
+    //     tags: ['Design', 'Full Time', 'Remote'],
+    //     status: 'Ongoing',
+    //     deadline: dayjs().format(),
+    // },
+    // {
+    //     position: 'Back-End Engineer',
+    //     description: "Thrillers Travels is on the lookout for a Backend Developer to power our platform's foundation. Join our team in architecting robust and scalable systems that fuel seamless travel experiences.",
+    //     tags: ['Design', 'Full Time', 'Remote'],
+    //     status: 'Ongoing',
+    //     deadline: dayjs().format(),
+    // },
 ]
 
 const Wrapper = styled.div`
@@ -45,14 +39,14 @@ const Wrapper = styled.div`
 
 function Section({ children, id }: { children: ReactNode; id?: string; }) {
     return (
-        <Flex direction='column' id={id} padding='1.5rem 0' gap='2rem' position='relative'>
+        <Flex direction='column' id={id} padding='1.5rem 0' gap='4.5rem' position='relative'>
             {children}
         </Flex>
     )
 }
 function SubHeading({ title, text }: { title: string; text: string; }) {
     return (
-        <Flex direction='column' width='max-content' gap="1rem">
+        <Flex direction='column' gap="1rem">
             <Text
                 type='h2'
                 text={title}
@@ -79,7 +73,7 @@ function CareersPage() {
                 justify="center"
                 align="center"
                 background={`url(/assets/images/faq/faq-bg.png)`}
-                padding={isMobile ? '7rem 2rem 6rem' : '10rem 7rem'}
+                padding={isMobile ? '4rem 2rem 3rem' : '9rem 7rem 8rem'}
                 margin="0 0 2rem"
                 gap="2rem"
                 borderRadius=".5rem"
@@ -118,7 +112,7 @@ function CareersPage() {
             </Flex>
 
             
-            <Flex direction='column' gap="4.5rem" margin='3rem 0' padding="0 0 3rem">
+            <Flex direction='column' gap="3.5rem" margin='3rem 0' padding="0 0 3rem">
                 <PostCard
                     {...postCard}
                 />
@@ -148,11 +142,22 @@ function CareersPage() {
                             {...position}
                         />
                     ) : (
-                        <Flex padding='5rem 5rem' justify='center'>
+                        <Flex padding='5rem 1rem' justify='center' align='center' gap='1rem' direction='column'>
+                            <Flex width='max-content' padding='2rem' borderRadius='100%' border='1px solid #AFDEF2' background={ttColors.primary100}>
+                                <IoBriefcase color='#4A7181' size={40} />
+                            </Flex>
                             <Text
                                 type='p'
-                                text='No positions are currently open, please check back.'
+                                text="Currently, we don't have any open positions."
                                 textAlign='center'
+                                weight={600}
+                                size={18}
+                            />
+                            <Text
+                                type='p'
+                                text="Kindly check back later !!!"
+                                textAlign='center'
+                                weight={600}
                             />
                         </Flex>
                     )}

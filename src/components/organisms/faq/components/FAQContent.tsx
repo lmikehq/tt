@@ -6,6 +6,7 @@ import React from 'react'
 import { FAQContentType } from './content'
 import FAQAccordion from './FAQAccordion'
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
+import { Box } from '@mui/material'
 
 interface FAQContentProps {
     sections: FAQContentType[]
@@ -17,6 +18,10 @@ function FAQContent({ sections = [] }: FAQContentProps) {
         <React.Fragment>
             {sections.map((section, index) =>
                 <Flex direction='column' key={`${section.name}-section`} gap="1rem" id={section.id}>
+                    <Box
+                        visibility='hidden'
+                        height={isMobile ? '4rem' : '2rem'}
+                    />
                     <Text
                         type='h3'
                         text={section.name}

@@ -9,8 +9,7 @@ import { Box } from '@mui/material'
 import dayjs from 'dayjs';
 import React from 'react'
 
-
-interface PositionCardProps {
+export interface PositionCardProps {
     position: string;
     description: string;
     tags: string[];
@@ -25,7 +24,7 @@ function PositionCard({ position, description, tags, status, deadline }: Positio
             display='grid'
             gridTemplateColumns={isMobile ? '1fr' : '4fr 1fr'}
             columnGap={isMobile ? '' : '3rem'}
-            rowGap={isMobile ? '3rem' : ''}
+            rowGap={isMobile ? '2.5rem' : ''}
             border={`1px solid ${ttColors.lightestGray}`}
             borderRadius='.5rem'
             padding='2.5rem 2rem'
