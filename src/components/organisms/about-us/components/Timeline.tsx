@@ -101,7 +101,7 @@ interface TimelineProps {
 function Timeline({ timeline = [] }: TimelineProps) {
     const { isMobile } = useScreenResolution();
     const containerRef = useRef<HTMLDivElement | null>(null)
-    const [height, setHeight] = useState('0%')
+    const [height, setHeight] = useState(0)
 
     useEffect(() => {
         const handleScroll = (ev: Event) => {
@@ -110,7 +110,7 @@ function Timeline({ timeline = [] }: TimelineProps) {
                 const contDist = containerRef.current.getBoundingClientRect().top
                 const startFrom = isMobile ? 200 : 200
                 const ratio = (contDist > startFrom) ? 0 : (contDist < 0 && Math.abs(contDist - startFrom) > contHeight) ? 100 : (((contDist > 0 ? (startFrom - contDist) : Math.abs(contDist) + startFrom)/contHeight) * 100)
-                setHeight(`${Math.min(isMobile ? 85 : 82.5, ratio)}%`)
+                setHeight(Math.min(isMobile ? 85 : 82.5, ratio))
             }
         }
         window.addEventListener('scroll', handleScroll)
@@ -123,9 +123,9 @@ function Timeline({ timeline = [] }: TimelineProps) {
     return (
         <Flex>
             <Flex
-                border={`1px solid ${ttColors.dark}`}
+                border={height > 0 ? `1px solid ${ttColors.dark}` : '0px solid black'}
                 width='1px'
-                height={height}
+                height={`${height}%`}
                 overflowX='visible'
                 position={isMobile ? 'absolute' : 'absolute'}
                 styles={{ minHeight: '', left: isMobile ? '2rem' : '50%', zIndex: 1 }}

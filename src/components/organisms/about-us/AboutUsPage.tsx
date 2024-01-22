@@ -3,7 +3,7 @@
 import Text from '@/components/atoms/text';
 import Flex, { FlexProps } from '@/components/templates/flex';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
-import React, { ReactNode, useRef, forwardRef, CSSProperties } from 'react';
+import React, { ReactNode, forwardRef } from 'react';
 import styled from "styled-components";
 import PostCard from './components/PostCard';
 import { Box } from '@mui/material';
