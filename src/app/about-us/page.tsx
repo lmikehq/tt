@@ -6,7 +6,7 @@ import AboutUsPage from "@/components/organisms/about-us/AboutUsPage";
 function AboutUs () {
     return (
         <Section padding="1rem 0 0">
-            <Breadcrumb/>
+            {/* <Breadcrumb/> */}
             <SectionLayout>
                 <AboutUsPage/>
             </SectionLayout>

@@ -26,7 +26,6 @@ export interface BlogCardItem {
     dislikes: number;
 }
 function BlogCard({ headerImg, userImg, user, position, createdDate, title, content, subject, length, likes, dislikes }: BlogCardItem) {
-    const { isMobile } = useScreenResolution();
 
     return (
         <Flex
@@ -38,7 +37,7 @@ function BlogCard({ headerImg, userImg, user, position, createdDate, title, cont
                 alt='blog-image'
                 src={headerImg}
                 styles={{ width: '100%', height: 'auto', borderRadius: '0.5rem' }}
-                height={320}
+                height={280}
             />
 
             <Flex direction='column' gap='1.5rem'>
