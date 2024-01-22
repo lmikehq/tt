@@ -175,7 +175,7 @@ function AboutUsPage() {
                 justify="center"
                 align="center"
                 background={`url(/assets/images/faq/faq-bg.png)`}
-                padding={isMobile ? '4rem 2rem 3rem' : '8rem 7rem 7rem'}
+                padding={isMobile ? '4rem 2rem 3rem' : '9rem 7rem 8rem'}
                 margin="0 0 2rem"
                 gap="2rem"
                 borderRadius=".5rem"

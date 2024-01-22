@@ -87,7 +87,7 @@ function BlogCarousel({ items } : BlogCarouselProps) {
         slidesToShow: isMobile ? 1 : 3,
         slidesToScroll: 2,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 10000,
         centerMode: true,
         prevArrow: (
             <Flex
