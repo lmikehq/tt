@@ -20,10 +20,17 @@ const CarouselWrapper = styled.div<{ isMobile: boolean }>`
         transform: translateY(6rem);
     }
     & .slick-dots li {
+        width: auto;
+        height: auto;
+        padding: 0;
         background-color: #E7E7E7;
         & button::before {
             content: none;
         }
+    }
+    & .slick-dots li button {
+        border-radius: 100%;
+        padding: 0;
     }
     & .slick-dots li.slick-active {
         background-color: #06062A;
@@ -40,7 +47,7 @@ const CarouselWrapper = styled.div<{ isMobile: boolean }>`
         align-items: center;
         z-index: 2;
         position: absolute;
-        top: ${({ isMobile }) => isMobile ? '-7rem' : '-3rem' };
+        top: ${({ isMobile }) => isMobile ? '-8rem' : '-3rem' };
         left: ${({ isMobile }) => isMobile ? "72%" : "90%" };
         &::before {
             display: none;
@@ -55,7 +62,7 @@ const CarouselWrapper = styled.div<{ isMobile: boolean }>`
         align-items: center;
         z-index: 2;
         position: absolute;
-        top: ${({ isMobile }) => isMobile ? '-7rem' : '-3rem' };
+        top: ${({ isMobile }) => isMobile ? '-8rem' : '-3rem' };
         right: 0%;
         &::before {
             display: none;
@@ -82,17 +89,18 @@ function BlogCarousel({ items } : BlogCarouselProps) {
 
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: isMobile ? 1 : 3,
         slidesToScroll: 2,
         autoplay: true,
         autoplaySpeed: 10000,
         centerMode: true,
+        pauseOnFocus: true,
         prevArrow: (
             <Flex
                 width='max-content'
-                padding={isMobile ? '1.5rem 0.9rem' : '1.5rem 0.9rem'}
+                padding={isMobile ? '1.5rem 0.7rem' : '1.5rem 0.7rem'}
                 borderRadius="100%"
                 background="#7BBBD6"
             >
@@ -102,7 +110,7 @@ function BlogCarousel({ items } : BlogCarouselProps) {
         nextArrow: (
             <Flex
                 width='max-content'
-                padding={isMobile ? '1.5rem 0.9rem' : '1.5rem 0.9rem'}
+                padding={isMobile ? '1.5rem 0.7rem' : '1.5rem 0.7rem'}
                 borderRadius="100%"
                 background="#7BBBD6"
             >
@@ -115,7 +123,6 @@ function BlogCarousel({ items } : BlogCarouselProps) {
         <CarouselWrapper isMobile={isMobile}>
             <StyledSlider
                 {...settings}
-                
             >
                 {items.map((item, index) =>
                     <Flex key={`caro-${index}`}>

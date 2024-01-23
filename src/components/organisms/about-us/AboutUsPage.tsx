@@ -122,14 +122,14 @@ const timeline = [
     },
     {
         startDate: '2023/09/02',
-        endDate: 'Now',
+        endDate: '2023/12/01',
         title: 'Thrillers Travels Launch',
         content: 'A monumental day as Thrillers Travels officially launches its platform, marking a significant milestone in its journey to redefine travel experiences. The platform goes live, offering travelers a seamless and curated approach to travel, stays, and visa solutions.',
     },
     {
         startDate: '2023/09/03',
-        endDate: '2023/12/01',
-        title: 'Thrillers Travels Launch',
+        endDate: 'Now',
+        title: 'Thrillers Travels Fully Operating',
         content: 'Following the successful launch, Thrillers Travels focuses on enhancing user experiences, gathering feedback, and initiating strategic marketing campaigns. The company witnesses substantial growth in its user base, solidifying its presence in the travel industry as it closes the year with aspirations for continued success and innovation.',
     },
 ]

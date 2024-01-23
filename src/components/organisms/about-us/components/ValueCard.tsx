@@ -11,8 +11,9 @@ interface ValueCardProps {
     heading: string;
     text: string;
     index: number;
+    active: boolean;
 }
-function ValueCard({ heading, text, index }: ValueCardProps) {
+function ValueCard({ heading, text, index, active }: ValueCardProps) {
     const { isMobile } = useScreenResolution();
     const [hover, setHover] = useState(false);
 
@@ -20,17 +21,17 @@ function ValueCard({ heading, text, index }: ValueCardProps) {
         <Flex
             direction='column'
             gap="1rem"
-            padding='4rem 1.5rem 1.5rem'
+            padding='4rem 2rem 1.5rem'
             position='relative'
             overflow='hidden'
             borderRadius='0.5rem'
-            background={hover ? ttColors.primary600 : '#F0F0F0'}
+            background={(hover || active) ? ttColors.primary600 : '#F0F0F0'}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
             <Image
                 alt='grid-image'
-                src={hover ? '/assets/images/about-us/value-card-vector.svg' : '/assets/images/about-us/value-card-vector-blue.svg'}
+                src={(hover || active) ? '/assets/images/about-us/value-card-vector.svg' : '/assets/images/about-us/value-card-vector-blue.svg'}
                 styles={{ top: '0%', right: '0%', position: 'absolute' }}
                 width={100}
                 height={100}
@@ -40,13 +41,13 @@ function ValueCard({ heading, text, index }: ValueCardProps) {
                 text={heading}
                 size={18}
                 weight={600}
-                color={hover ? 'white' : ''}
+                color={(hover || active) ? 'white' : ''}
             />
             <Text
                 type='p'
                 text={text}
                 size={14}
-                color={hover ? 'white' : ''}
+                color={(hover || active) ? 'white' : ''}
             />
         </Flex>
     )

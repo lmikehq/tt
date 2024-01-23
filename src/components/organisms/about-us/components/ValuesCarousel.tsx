@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -70,6 +70,7 @@ interface ValuesCarouselProps {
 }
 function ValuesCarousel({ items } : ValuesCarouselProps) {
     const { isMobile } = useScreenResolution();
+    const [active, setActive] = useState(0)
 
     const settings = {
         dots: false,
@@ -78,7 +79,13 @@ function ValuesCarousel({ items } : ValuesCarouselProps) {
         slidesToShow: isMobile ? 1 : 4,
         slidesToScroll: 1,
         autoplay: false,
-        autoplaySpeed: 2000
+        autoplaySpeed: 2000,
+        focusOnSelect: true,
+        pauseOnFocus: true,
+        beforeChange: (oldIndex: number, newIndex: number) => {
+            console.log('nn', oldIndex, newIndex)
+            setActive(newIndex)
+        }
     };
 
     return (
@@ -88,6 +95,7 @@ function ValuesCarousel({ items } : ValuesCarouselProps) {
                     <Flex key={`caro-${index}`} height={isMobile ? '14rem' : '14rem'}>
                         <ValueCard
                             index={index}
+                            active={isMobile ? active === index : false}
                             {...item}
                         />
                     </Flex>
