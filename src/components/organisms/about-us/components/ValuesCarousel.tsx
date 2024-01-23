@@ -83,7 +83,6 @@ function ValuesCarousel({ items } : ValuesCarouselProps) {
         focusOnSelect: true,
         pauseOnFocus: true,
         beforeChange: (oldIndex: number, newIndex: number) => {
-            console.log('nn', oldIndex, newIndex)
             setActive(newIndex)
         }
     };
