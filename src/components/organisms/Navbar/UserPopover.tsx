@@ -341,16 +341,17 @@ const CustomPopover = () => {
             {user && user.avatar ? (
               <img src={user.image} alt="" />
             ) : (
-              <RxAvatar size={38} />
+              <RxAvatar size={48} />
             )}
             <Flex direction="column">
               <Text
                 whiteSpace="nowrap"
                 type="p"
-                size={14}
+                size={18}
+                weight={600}
                 text={`${user?.lastName} ${user?.firstName} `}
               ></Text>
-              <Text type="p" size={13} text={`${user.email}`}></Text>
+              <Text type="p" size={13} text={`${user.email}`} color={'#333'}></Text>
             </Flex>
             <IoIosArrowDown size={20} />
           </Flex>
