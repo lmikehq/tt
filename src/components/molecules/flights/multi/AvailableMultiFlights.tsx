@@ -34,6 +34,8 @@ import SortedFlightsTab from "../components/sortedFlightsTab";
 import FlightBox from "../components/flightBox";
 import { useSearchMulticity } from "@/lib/hooks/flight/multi.hook";
 import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { extractFlightDataFromParams } from "@/lib/types/request-models/flight/multi/search.type";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -699,6 +701,20 @@ function AvailableMultiFlights() {
     const { isFetching } = useSearchMulticity(searchMultiCityQuery, {
         enabled: shouldFetch,
     });
+    const flyFrom = queryParams.fly_from;
+
+    useEffect(() => {
+        if (!flyFrom) return;
+        const data = extractFlightDataFromParams({
+            flyFrom,
+            url: window.location.href,
+        });
+
+        if (data) {
+            updateSearchMultiCityQuery({ requests: data });
+            setShouldFetch(true);
+        }
+    }, [flyFrom]);
     return (
         <Flex
             direction="column"
