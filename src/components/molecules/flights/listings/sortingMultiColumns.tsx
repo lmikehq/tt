@@ -120,10 +120,10 @@ interface SortingMultiColumnsProps {
 function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const { searchMultiCityQuery, updateSearchMultiCityQuery } = useSearchMultiFlightStore(s => s)
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore(s => s)
+    const { queryParams } = useQueryParams();
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const flightDispatch = flightContext?.dispatch;
-    const { queryParams } = useQueryParams();
 
     const defaultMulti = {
         ...defaultMultiQuery,
