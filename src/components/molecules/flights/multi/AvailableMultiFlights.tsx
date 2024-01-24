@@ -678,14 +678,14 @@ function AvailableMultiFlights() {
             child_hold_bag: childHoldBags,
         };
         //
-        if (
-            sanitizedQuery?.fly_from &&
-            sanitizedQuery?.fly_to &&
-            sanitizedQuery?.date_from &&
-            sanitizedQuery?.adults
-        ) {
-            handleSearchResults({ ...cleanObject(sanitizedQuery) });
-        }
+        // if (
+        //     sanitizedQuery?.fly_from &&
+        //     sanitizedQuery?.fly_to &&
+        //     sanitizedQuery?.date_from &&
+        //     sanitizedQuery?.adults
+        // ) {
+        //     handleSearchResults({ ...cleanObject(sanitizedQuery) });
+        // }
     }, [queryParams, preFerredCurrency]);
 
     useEffect(() => {
@@ -705,10 +705,12 @@ function AvailableMultiFlights() {
 
     useEffect(() => {
         if (!flyFrom) return;
+        console.log("extracting data");
         const data = extractFlightDataFromParams({
             flyFrom,
             url: window.location.href,
         });
+        console.log("stays", data);
 
         if (data) {
             updateSearchMultiCityQuery({ requests: data });

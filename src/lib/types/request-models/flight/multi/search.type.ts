@@ -7,15 +7,17 @@ export const extractFlightDataFromParams = ({
     flyFrom: string;
     url: string;
 }) => {
-    const urlData = extractSearchParamsFromUrl({ url });
     const formattedData: any[] = flyFrom.split("~").map((e) => ({
         fly_from: e,
     }));
+    console.log(formattedData, "formm");
+    const urlData = extractSearchParamsFromUrl({ url });
 
+    console.log(flyFrom, urlData, formattedData);
     Object.keys(urlData).forEach((key) => {
         if (urlData[key].split("~").length > 1) {
             urlData[key].split("~").forEach((el, i) => {
-                formattedData.splice(i, 0, {
+                formattedData.splice(i, 1, {
                     ...formattedData[i],
                     [key]: el,
                 });
