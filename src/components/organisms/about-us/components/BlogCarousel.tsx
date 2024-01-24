@@ -38,36 +38,36 @@ const CarouselWrapper = styled.div<{ isMobile: boolean }>`
             content: none;
         }
     }
-    & .slick-arrow.slick-prev {
-        background-color: #7BBBD6;
-        padding: 1.5rem 2rem 1.5rem 1rem;
-        border-radius: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2;
-        position: absolute;
-        top: ${({ isMobile }) => isMobile ? '-8rem' : '-3rem' };
-        left: ${({ isMobile }) => isMobile ? "72%" : "90%" };
-        &::before {
-            display: none;
-        };
-    }
-    & .slick-arrow.slick-next {
-        background-color: #7BBBD6;
-        padding: 1.5rem 1.9rem 1.5rem 1.1rem;
-        border-radius: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2;
-        position: absolute;
-        top: ${({ isMobile }) => isMobile ? '-8rem' : '-3rem' };
-        right: 0%;
-        &::before {
-            display: none;
-        };
-    }
+    // & .slick-arrow.slick-prev {
+    //     background-color: #7BBBD6;
+    //     padding: 1.5rem 2rem 1.5rem 1rem;
+    //     border-radius: 100%;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     z-index: 2;
+    //     position: absolute;
+    //     top: ${({ isMobile }) => isMobile ? '-8rem' : '-3rem' };
+    //     left: ${({ isMobile }) => isMobile ? "72%" : "90%" };
+    //     &::before {
+    //         display: none;
+    //     };
+    // }
+    // & .slick-arrow.slick-next {
+    //     background-color: #7BBBD6;
+    //     padding: 1.5rem 1.9rem 1.5rem 1.1rem;
+    //     border-radius: 100%;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     z-index: 2;
+    //     position: absolute;
+    //     top: ${({ isMobile }) => isMobile ? '-8rem' : '-3rem' };
+    //     right: 0%;
+    //     &::before {
+    //         display: none;
+    //     };
+    // }
     & h1 {
         margin-bottom: 1rem;
         font-weight: 600;
@@ -89,34 +89,34 @@ function BlogCarousel({ items } : BlogCarouselProps) {
 
     const settings = {
         dots: true,
-        infinite: false,
+        infinite: isMobile ? false : false,
         speed: 500,
         slidesToShow: isMobile ? 1 : 3,
         slidesToScroll: 2,
         autoplay: true,
         autoplaySpeed: 10000,
-        centerMode: true,
+        centerMode: isMobile ? true : false,
         pauseOnFocus: true,
-        prevArrow: (
-            <Flex
-                width='max-content'
-                padding={isMobile ? '1.5rem 0.7rem' : '1.5rem 0.7rem'}
-                borderRadius="100%"
-                background="#7BBBD6"
-            >
-                <RxCaretLeft color='white' size={25} />
-            </Flex>
-        ),
-        nextArrow: (
-            <Flex
-                width='max-content'
-                padding={isMobile ? '1.5rem 0.7rem' : '1.5rem 0.7rem'}
-                borderRadius="100%"
-                background="#7BBBD6"
-            >
-                <RxCaretRight color='white' size={25} />
-            </Flex>
-        ),
+        // prevArrow: (
+        //     <Flex
+        //         width='max-content'
+        //         padding={isMobile ? '1.5rem 0.7rem' : '1.5rem 0.7rem'}
+        //         borderRadius="100%"
+        //         background="#7BBBD6"
+        //     >
+        //         <RxCaretLeft color='white' size={25} />
+        //     </Flex>
+        // ),
+        // nextArrow: (
+        //     <Flex
+        //         width='max-content'
+        //         padding={isMobile ? '1.5rem 0.7rem' : '1.5rem 0.7rem'}
+        //         borderRadius="100%"
+        //         background="#7BBBD6"
+        //     >
+        //         <RxCaretRight color='white' size={25} />
+        //     </Flex>
+        // ),
     };
 
     return (
