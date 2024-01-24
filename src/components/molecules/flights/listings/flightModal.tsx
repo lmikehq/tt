@@ -9,8 +9,9 @@ import Text from "@/components/atoms/text";
 import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../radio";
-import CheckBox from "../../checkbox";
 import { PiCaretLeftBold } from "react-icons/pi";
+import { useQueryParams } from "@/hooks/useNext";
+import SortingMultiColumns from "./sortingMultiColumns";
 
 const ModalWrapper = styled.div`
     width: 100%;
@@ -26,6 +27,8 @@ export const FilterModal = ({
     open: boolean;
     handleClose: () => void;
 }) => {
+    const { queryParams } = useQueryParams()
+
     return (
         <Modal open={open} onClose={handleClose}>
             <Section>
@@ -47,7 +50,11 @@ export const FilterModal = ({
                         </Button>
                     </Flex>
                     <Section padding="0 2rem 2.5rem">
-                        <SortingColumns onClose={handleClose} />
+                        {queryParams?.multi == 'true' ? (
+                            <SortingMultiColumns />
+                        ) : (    
+                            <SortingColumns onClose={handleClose} />
+                        )}
                     </Section>
                 </ModalWrapper>
             </Section>
