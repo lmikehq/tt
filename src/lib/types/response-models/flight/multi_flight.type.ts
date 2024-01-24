@@ -1,10 +1,12 @@
-export interface SearchMultiFlightsResponse {
+export interface Multi_SingleFlightInfo {
     id: string;
     baglimit: Baglimit;
     booking_token: string;
     price: number;
-    route: PokedexRoute[];
+    route: Multi_FlightInfo[];
 }
+
+export type SearchMultiFlightsResponse = Multi_SingleFlightInfo[];
 
 export interface Baglimit {
     hand_height: number;
@@ -17,15 +19,18 @@ export interface Baglimit {
     hold_width: number;
 }
 
-export interface PokedexRoute {
+export interface Multi_FlightInfo {
     airlines: string[];
     baglimit: Baglimit;
     bags_price: { [key: string]: number };
     cityFrom: string;
-    cityTo: string;
     conversion: Conversion;
     countryFrom: Country;
     countryTo: Country;
+    cityCodeFrom: string;
+    cityTo: string;
+    cityCodeTo: string;
+    flyFrom: string;
     distance: number;
     duration: Duration;
     facilitated_booking_available: boolean;
@@ -65,7 +70,10 @@ export interface RouteRoute {
     bags_recheck_required: boolean;
     cityFrom: string;
     cityTo: string;
-    combination_id: number;
+    id: string;
+    combination_id: string;
+    cityCodeFrom: string;
+    cityCodeTo: string;
     equipment: string;
     fare_basis: string;
     fare_classes: string;
@@ -74,7 +82,6 @@ export interface RouteRoute {
     flyFrom: string;
     flyTo: string;
     guarantee: boolean;
-    id: string;
     last_seen: string;
     local_arrival: string;
     local_departure: string;
