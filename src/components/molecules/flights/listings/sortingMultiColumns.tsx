@@ -4,7 +4,7 @@ import { AirlineInterface, FlightContext } from '@/lib/extensions/context';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 import { useSearchMultiFlightStore } from '@/lib/store/flight/multi/search.store';
 import { useUserPreferencesStore } from '@/lib/store/preferences.store';
-import { MultiFlightQuery, SearchFlightsRequestQuery, defaultMultiQuery, parseMultiFlightQuery } from '@/lib/types/request-models/flight/booking.type';
+import { SearchFlightsRequestQuery, defaultMultiQuery, parseMultiFlightQuery } from '@/lib/types/request-models/flight/booking.type';
 import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import PriceAlerts from '../components/priceAlerts';
 import { debounce } from 'debounce';
@@ -20,7 +20,6 @@ import { formatPrice } from '@/lib/extensions/helpers/formatPrice';
 import { LuSearch } from 'react-icons/lu';
 import { ttColors } from '@/lib/theme/colors';
 import { IoCaretDown } from 'react-icons/io5';
-import { allLower } from '@/lib/utilFns';
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -121,7 +120,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const flightDispatch = flightContext?.dispatch;
-    const { isMobile } = useScreenResolution();
     const { queryParams } = useQueryParams();
 
     const defaultMultiParams = {
