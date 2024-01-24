@@ -9,12 +9,23 @@ import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import BlogCard, { BlogCardItem } from "./BlogCard";
-import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 
 
-const CarouselWrapper = styled.div<{ isMobile: boolean }>`
+const CarouselWrapper = styled.div < { isMobile: boolean; width: number; itemCount: number; }>`
     .slick-slide div {
         outline: none;
+    }
+    .blog-title {
+        font-size: ${({ isMobile }) => isMobile ? '14px !important' : '20px !important'};
+    }
+    .blog-content {
+        font-size: ${({ isMobile }) => isMobile ? '10px !important' : '15px !important'};
+    }
+    .slick-list {
+        padding: ${({ isMobile, width }) => width < 530 ? '0 50px 0 28px !important' : isMobile ? '0 50px 0 0 !important' : ''}
+    }
+    .slick-track {
+        width: ${({ isMobile, itemCount }) => isMobile ? `calc(77vw * ${itemCount + 1}) !important` : ''};
     }
     & .slick-dots {
         transform: translateY(6rem);
@@ -85,18 +96,19 @@ interface BlogCarouselProps {
     items: BlogCardItem[];
 }
 function BlogCarousel({ items } : BlogCarouselProps) {
-    const { isMobile } = useScreenResolution();
+    const { isMobile, width } = useScreenResolution();
 
     const settings = {
         dots: true,
-        infinite: isMobile ? false : false,
+        infinite: false,
         speed: 500,
         slidesToShow: isMobile ? 1 : 3,
-        slidesToScroll: 2,
+        slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 10000,
-        centerMode: isMobile ? true : false,
         pauseOnFocus: true,
+        centerMode: isMobile ? true : false,
+        variableWidth: isMobile ? true : false,
         // prevArrow: (
         //     <Flex
         //         width='max-content'
@@ -120,12 +132,10 @@ function BlogCarousel({ items } : BlogCarouselProps) {
     };
 
     return (
-        <CarouselWrapper isMobile={isMobile}>
-            <StyledSlider
-                {...settings}
-            >
+        <CarouselWrapper isMobile={isMobile} width={width} itemCount={items.length}>
+            <StyledSlider {...settings}>
                 {items.map((item, index) =>
-                    <Flex key={`caro-${index}`}>
+                    <Flex key={`caro-${index}`} width={isMobile ? '77vw' : '100%'}>
                         <BlogCard
                             {...item}
                         />
