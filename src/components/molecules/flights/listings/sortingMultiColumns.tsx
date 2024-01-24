@@ -1,7 +1,6 @@
 import Flex from '@/components/templates/flex';
 import { useQueryParams } from '@/hooks/useNext';
 import { AirlineInterface, FlightContext } from '@/lib/extensions/context';
-import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 import { useSearchMultiFlightStore } from '@/lib/store/flight/multi/search.store';
 import { useUserPreferencesStore } from '@/lib/store/preferences.store';
 import { SearchFlightsRequestQuery, defaultMultiQuery, parseMultiFlightQuery } from '@/lib/types/request-models/flight/booking.type';
@@ -97,8 +96,8 @@ interface AccordionProps {
 }
 function Accordion({ isOpen, onToggle, children, index, title }: AccordionProps) {
     return (
-        <Flex border={`1px solid ${ttColors.lighterGray}`} padding='1rem .5rem'>
-            <Flex>
+        <Flex border={`1px solid ${ttColors.lightestGray}`} direction='column' borderRadius='.5rem' gap='2rem'>
+            <Flex justify='space-between' padding='2rem 1.5rem' onClick={onToggle}>
                 <Text
                     type='p'
                     text={title}
@@ -106,7 +105,11 @@ function Accordion({ isOpen, onToggle, children, index, title }: AccordionProps)
                 />
                 <IoCaretDown size={20} color={ttColors.lighterGray} />
             </Flex>
-            {isOpen ? children : null}
+            {isOpen ? (
+                <Flex direction='column' padding='0 1.5rem'>
+                    {children}
+                </Flex>
+            ) : null}
         </Flex>
     )
 }
@@ -122,12 +125,12 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const flightDispatch = flightContext?.dispatch;
     const { queryParams } = useQueryParams();
 
-    const defaultMultiParams = {
+    const defaultMulti = {
         ...defaultMultiQuery,
         price: [0, parseInt((20000 * conversionRate).toFixed(0))] as [number, number]
     }
 
-    const [filters, setFilters] = useState([defaultMultiParams])
+    const [filters, setFilters] = useState([defaultMulti])
 
     const [openMulti, setOpenMulti] = useState([false])
 
@@ -135,9 +138,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
 
     const onToggleMulti = (index: number) => {
         setOpenMulti(prev => {
-            let newMulti = prev
-            newMulti[index] = !newMulti[index]
-            return newMulti
+            return prev.map((e, ind) => index === ind ? !e : e)
         })
     }
 
@@ -283,8 +284,11 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     useEffect(() => {
         updateSearchMultiCityQuery({
             ...searchMultiCityQuery,
-            requests: flightState?.fleet.map(() => defaultQuery) ?? [defaultQuery]
+            requests: searchMultiCityQuery.requests.map(() => defaultQuery) ?? [defaultQuery]
         })
+        setOpenAcc(searchMultiCityQuery.requests.map(e => defaultAcc) ?? [defaultAcc])
+        setOpenMulti(searchMultiCityQuery.requests.map(e => false) ?? [false])
+        setFilters(searchMultiCityQuery.requests.map(e => defaultMulti) ?? [defaultMulti])
     }, [queryParams])
 
 
@@ -293,8 +297,13 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             <PriceAlerts />
 
             {searchMultiCityQuery.requests.map((req, index) =>
-                <Accordion key={`flight-${index}-filters`} isOpen={openMulti[index]} onToggle={() => onToggleMulti(index)} index={index} title={`SRC - DST (${index})`}>
-                    
+                <Accordion
+                    key={`flight-${index}-filters`}
+                    isOpen={openMulti[index]}
+                    onToggle={() => onToggleMulti(index)}
+                    index={index}
+                    title={`${flightState?.fleet[index].departureCountry?.name ?? 'SRC'} - ${flightState?.fleet[index].arrivalCountry?.name ?? 'DST'}`}
+                >
                     {/* Number of Bags */}
                     <Panel
                         title="Bags"
