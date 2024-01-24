@@ -14,6 +14,7 @@ import {
     axiosClient,
     kiwiClient,
     kiwiResourceClient,
+    kiwiMultiCityClient,
 } from "../../axios/axios-client";
 import { constructQueryFromParams } from "../../extensions/helpers/constructQuery";
 import {
@@ -48,7 +49,7 @@ export class FlightBookingService {
     }: {
         data: SearchMultiFlightRequestQuery;
     }) => {
-        return await kiwiClient
+        return await kiwiMultiCityClient
             .post<any, SearchMultiFlightsResponse>(`/flights_multi`, data)
             .then((response) => {
                 return response;
