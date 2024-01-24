@@ -1,7 +1,5 @@
 "use client";
 
-import Filter from "./filters";
-import LoadingButton from "@mui/lab/LoadingButton";
 import React, { ReactNode, useContext, useEffect, useMemo } from "react";
 import { useState } from "react";
 import { FilterData } from "@/lib/types/request-models/flight/filter";
@@ -14,17 +12,13 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import CheckBox from "@molecule/checkbox";
 import { CustomRadioGroup } from "@molecule/radio";
 import { LuSearch } from "react-icons/lu";
-import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import Slider from "../../slider";
 import { ButtonBox } from "../components/sortedFlightsTab";
 import dayjs from "dayjs";
-import { HiXMark } from "react-icons/hi2";
-import { Grid } from "@/components/templates/grid";
 import { Divider } from "@/components/atoms/divider";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import { Mode } from "@/lib/types";
 import { AirlineInterface, FlightContext } from "@/lib/extensions/context";
 import { capCase, cleanObject } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
@@ -72,7 +66,26 @@ const Tag = styled.div`
     max-width: 310px;
 `;
 
-function Panel({
+
+export const convertTime = (value: number) => {
+    const minutes = value * 15;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    const formattedTime = dayjs()
+        .set("hour", hours)
+        .set("minute", remainingMinutes)
+        .format("HH:mm");
+    switch (value) {
+        case 0:
+            return "0:00";
+        case 96:
+            return "23:59";
+        default:
+            return formattedTime;
+    }
+};
+
+export function Panel({
     title,
     toggle,
     isActive,
@@ -378,24 +391,6 @@ function SortingColumns({ onClose }: { onClose?: () => void }) {
                 : [...prev[checkType], value],
         }));
         setFilter(checkType);
-    };
-
-    const convertTime = (value: number) => {
-        const minutes = value * 15;
-        const hours = Math.floor(minutes / 60);
-        const remainingMinutes = minutes % 60;
-        const formattedTime = dayjs()
-            .set("hour", hours)
-            .set("minute", remainingMinutes)
-            .format("HH:mm");
-        switch (value) {
-            case 0:
-                return "0:00";
-            case 96:
-                return "23:59";
-            default:
-                return formattedTime;
-        }
     };
 
     const handleTimeChange = debounce(

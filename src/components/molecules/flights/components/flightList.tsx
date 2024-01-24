@@ -6,9 +6,9 @@ import AvailableFlights from "./availableFlights";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 function FlightList() {
-  const { isMobile } = useScreenResolution();
-  const [results, setResults] = useState(0);
-  const [sortType, setSortType] = useState("");
+    const { isMobile } = useScreenResolution();
+    const [results, setResults] = useState(0);
+    const [sortType, setSortType] = useState("");
 
   return (
       <Flex direction={isMobile ? "column" : "row"} gap={isMobile ? "0rem" : "2rem"} justify="space-between" align="flex-start">
