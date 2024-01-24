@@ -1,10 +1,10 @@
 import Flex from '@/components/templates/flex';
 import { useQueryParams } from '@/hooks/useNext';
-import { FlightContext } from '@/lib/extensions/context';
+import { AirlineInterface, FlightContext } from '@/lib/extensions/context';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 import { useSearchMultiFlightStore } from '@/lib/store/flight/multi/search.store';
 import { useUserPreferencesStore } from '@/lib/store/preferences.store';
-import { SearchFlightsRequestQuery } from '@/lib/types/request-models/flight/booking.type';
+import { MultiFlightQuery, SearchFlightsRequestQuery, defaultMultiQuery, parseMultiFlightQuery } from '@/lib/types/request-models/flight/booking.type';
 import React, { ReactNode, useContext, useEffect, useMemo, useState } from 'react'
 import PriceAlerts from '../components/priceAlerts';
 import { debounce } from 'debounce';
@@ -16,7 +16,17 @@ import { CustomRadioGroup } from '../../radio';
 import SearchStringInput from '../../searchInputs/searchStringInput';
 import CheckBox from '../../checkbox';
 import { ButtonBox } from "../components/sortedFlightsTab";
-import dayjs from 'dayjs';
+import { formatPrice } from '@/lib/extensions/helpers/formatPrice';
+import { LuSearch } from 'react-icons/lu';
+import { ttColors } from '@/lib/theme/colors';
+import { IoCaretDown } from 'react-icons/io5';
+import { allLower } from '@/lib/utilFns';
+const airlines = require("airline-iata-code");
+const sortedAirlines: { [k: string]: AirlineInterface } = {};
+airlines().forEach((e: AirlineInterface) => {
+    sortedAirlines[e.Airline] = e;
+});
+
 const defaultQuery = {
     fly_from: '',
     fly_to: '',
@@ -54,17 +64,50 @@ const defaultQuery = {
     limit: 10,
     sort: '',
 }
+const stopOptions = [
+    { value: "", label: "Any" },
+    { value: "0", label: "Non-Stop" },
+    { value: "1", label: "Up to 1 stop" },
+    { value: "2", label: "Up to 2 stops" },
+];
+const cabinOptions = [
+    { value: "M", label: "Economy" },
+    { value: "W", label: "Economy Premium" },
+    { value: "C", label: "Business" },
+    { value: "F", label: "First Class" },
+];
+const alliance = ["Oneworld", "SkyTeam", "Star Alliance", "Value Alliance"];
 
-   
+const defaultAcc = {
+    bags: false,
+    stops: false,
+    airlines: false,
+    alliance: false,
+    times: false,
+    duration: false,
+    price: false,
+    cabin: false,
+}
+
 interface AccordionProps {
     isOpen: boolean;
     onToggle: (x: number) => void;
     children: ReactNode;
+    index: number;
+    title: string;
 }
-function Accordion({ isOpen, onToggle, children }: AccordionProps) {
+function Accordion({ isOpen, onToggle, children, index, title }: AccordionProps) {
     return (
-        <Flex>
-            {children}
+        <Flex border={`1px solid ${ttColors.lighterGray}`} padding='1rem .5rem'>
+            <Flex>
+                <Text
+                    type='p'
+                    text={title}
+                    weight={600}
+                />
+                <IoCaretDown size={20} color={ttColors.lighterGray} />
+            </Flex>
+            {isOpen ? children : null}
         </Flex>
     )
 }
@@ -78,78 +121,40 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const flightDispatch = flightContext?.dispatch;
-    const { queryParams } = useQueryParams();
     const { isMobile } = useScreenResolution();
-    const defaultFilters = {
-        cabinBags: 1,
-        checkedBags: 0,
-        minPrice: 0,
-        maxPrice: parseInt((20000 * conversionRate).toFixed(0)),
-        departTime: ["0:00", "23:59"],
-        // departTimeFrom: ["0:00", "23:59"],
-        // departTimeTo: ["0:00", "23:59"],
-        arrivalTime: ["0:00", "23:59"],
-        // arrivalTimeFrom: ["0:00", "23:59"],
-        // arrivalTimeTo: ["0:00", "23:59"],
-        stopOver: [2, 48],
-        travelTime: [2, 48],
-        cabin: 'M',
-        stops: 'any',
-        airlines: [],
-        alliances: [],
+    const { queryParams } = useQueryParams();
+
+    const defaultMultiParams = {
+        ...defaultMultiQuery,
+        price: [0, parseInt((20000 * conversionRate).toFixed(0))] as [number, number]
     }
 
-    const [isOpen, setIsOpen] = useState([
-        {
-            bags: false,
-            stops: false,
-            airlines: false,
-            alliance: false,
-            times: false,
-            duration: false,
-            price: false,
-            cabin: false,
-        }
-    ]);
+    const [filters, setFilters] = useState([defaultMultiParams])
 
-    const [isOpenAcc, setIsOpenAcc] = useState([
-        {
-            bags: false,
-            stops: false,
-            airlines: false,
-            alliance: false,
-            times: false,
-            duration: false,
-            price: false,
-            cabin: false,
-        }
-    ]);
+    const [openMulti, setOpenMulti] = useState([false])
 
-    const [filters, setFilters] = useState([defaultFilters])
+    const [openAcc, setOpenAcc] = useState([defaultAcc])
+
+    const onToggleMulti = (index: number) => {
+        setOpenMulti(prev => {
+            let newMulti = prev
+            newMulti[index] = !newMulti[index]
+            return newMulti
+        })
+    }
 
     const onToggleAcc = (index: number, type: string) => {
-        setIsOpenAcc(prev => prev.map((p, ind) => index === ind ? ({ ...p, [type]: !p[type as keyof typeof p] }) : p))
+        setOpenAcc(prev => prev.map((p, ind) => index === ind ? ({ ...p, [type]: !p[type as keyof typeof p] }) : p))
     }
 
-    const handleFilterResults = (params: SearchFlightsRequestQuery) => {
-        // const parsed = parseQuery(params);
-        // updateSearchQuery({ data: cleanObject(parsed) });
-        // searchFlights({ data: cleanObject(parsed) }).then((res) => {
-        //     setActiveFilters((prev) => ({ ...prev, active: true }))
-        // })
-        onClose && onClose();
-    };
-
-    const activeFilters = useMemo(() => ({
-        list: searchMultiCityQuery.requests.map(req => {
-            const newObj: any = {}
-            Object.keys(req).forEach(r => {
-                if (req[r as keyof typeof req] === defaultQuery[r as keyof typeof defaultQuery]) {
-                    newObj[r] = true
-                }  
-            })
-            return newObj
-        }),
+    const activeFilters = useMemo(() => searchMultiCityQuery.requests.map(req => {
+        const newObj: any = {}
+        Object.keys(req).forEach(r => {
+            if (req[r as keyof typeof req] !== defaultQuery[r as keyof typeof defaultQuery]) {
+                newObj[r] = true
+            }
+        })
+        return newObj
     }), [searchMultiCityQuery.requests])
 
     const removeFilter = (index: number, name: string, value: string) => {
@@ -174,64 +179,129 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
         const adults = req.adults ?? defaultQuery.adults
         const children = req.children ?? defaultQuery.children
         return {
-            cabinBaggage: adults + children,
-            checkedBaggage: (adults + children) * 2,
+            cabinBags: adults + children,
+            checkedBags: (adults + children) * 2,
         }
     }), [searchMultiCityQuery.requests])
 
-    const handleBags = (index: number, bagType: "cabin" | "checked", actionType: "add" | "subtract") => {
-        setFilters(prev =>
-            prev.map((req, ind) => {
-                const currentValue = req.ch;
-                    const newValue = actionType === "add" ? Math.min(currentValue + 1, bagType === "cabin" ? maxBags.cabinBaggage : maxBags.checkedBaggage)
-                        : Math.max(currentValue - 1, 0);
-                if (index === ind) {
-                    return {...req}
-                } return req
-            })
-        )
+    const handleBags = (index: number, type: "cabinBags" | "checkedBags", actionType: "add" | "subtract") => {
+        setFilters(prev => prev.map((req, ind) => {
+            if (index === ind) {
+                const currentValue = req[type];
+                const newValue = actionType === "add" ? Math.min(currentValue + 1, maxBags[index][type]) : Math.max(currentValue - 1, 0);
+                return {
+                    ...req,
+                    [type]: newValue
+                }
+            } else {
+                return req
+            }
+        }))
     }
 
     const handleRadio = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value, name } = event.target;
+        setFilters(prev => prev.map((req, ind) => {
+            if (index === ind) {
+                return {
+                    ...req,
+                    [name]: value
+                }
+            } else {
+                return req
+            }
+        }))
     }
 
-    const handleCheck = (index: number, value: string, checkType: "alliance" | "airlines") => {
+    const handleCheck = (index: number, value: string, type: "alliance" | "airlines") => {
+        setFilters(prev => prev.map((req, ind) => {
+            if (index === ind) {
+                return {
+                    ...req,
+                    [type]: req[type].includes(value) ? req[type].filter((item) => item !== value) : [...req[type], value],
+                }
+            } else {
+                return req
+            }
+        }))
     }
 
     const handleTimeChange = debounce((
         index: number,
-        newValue: number | number[],
-        time: "arrival" | "depart" | "travelTime" | "stopOver"
+        value: number | number[],
+        type: "arrivalTime" | "departTime"
     ) => {
+        setFilters(prev => prev.map((req, ind) => {
+            if (index === ind) {
+                const newMin = Array.isArray(value) ? convertTime(value[0]) : convertTime(value);
+                const newMax = Array.isArray(value) ? convertTime(value[1]) : convertTime(value);
+                return {
+                    ...req,
+                    [type]: [newMin, newMax]
+                }
+            } else {
+                return req
+            }
+        }))
     })
 
     const handleSlider = debounce((
         index: number,
-        newValue: number | number[],
-        group: "duration" | "price",
-        name: string
+        value: number | number[],
+        type: "travelTime" | "stopOver" | "price"
     ) => {
+        setFilters(prev => prev.map((req, ind) => {
+            if (index === ind) {
+                const newValue = Array.isArray(value) ? value : [0, 0];
+                if (type === 'price') {
+                    return {
+                        ...req,
+                        [type]: [parseFloat(newValue[0].toFixed(0)), parseFloat(newValue[1].toFixed(0))]
+                    }
+                } else {
+                    return {
+                        ...req,
+                        [type]: newValue
+                    }
+                }
+            } else {
+                return req
+            }
+        }))
     })
+
+    const handleFilterResults = (params: SearchFlightsRequestQuery[]) => {
+        const parsed = filters.map((filter, index) => parseMultiFlightQuery(filter, flightState?.fleet[index]))
+        updateSearchMultiCityQuery({
+            ...searchMultiCityQuery,
+            requests: searchMultiCityQuery.requests.map((e, ind) => ({
+                ...e,
+                ...parsed[ind]
+            }))
+        })
+        onClose && onClose();
+    };
 
     useEffect(() => {
         updateSearchMultiCityQuery({
             ...searchMultiCityQuery,
             requests: flightState?.fleet.map(() => defaultQuery) ?? [defaultQuery]
         })
-    }, [flightState?.fleet])
+    }, [queryParams])
 
 
     return (
         <Flex direction="column">
             <PriceAlerts />
 
-            {searchMultiCityQuery.requests.map((req, index) => 
-                <Accordion key={`flight-${index}-filters`} isOpen={isOpenAcc[index]} onToggle={onToggleAcc}>
+            {searchMultiCityQuery.requests.map((req, index) =>
+                <Accordion key={`flight-${index}-filters`} isOpen={openMulti[index]} onToggle={() => onToggleMulti(index)} index={index} title={`SRC - DST (${index})`}>
+                    
                     {/* Number of Bags */}
                     <Panel
                         title="Bags"
                         toggle={() => onToggleAcc(index, "bags")}
-                        isActive={isOpenAcc[index]?.bags ?? false}
+                        isActive={openAcc[index]?.bags ?? false}
                     >
                         <Flex
                             direction="column"
@@ -253,23 +323,20 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     justify="flex-end"
                                 >
                                     <PlusMinusButton
-                                        isDisabled={filterData.bags.cabin === 0}
-                                        onClick={() => handleBags("cabin", "subtract")}
+                                        isDisabled={filters[index]?.cabinBags === 0}
+                                        onClick={() => handleBags(index, "cabinBags", "subtract")}
                                     >
                                         <Text type="p" text="-" />
                                     </PlusMinusButton>
                                     <Text
                                         type="p"
-                                        text={filterData.bags.cabin.toString()}
+                                        text={filters[index]?.cabinBags.toString()}
                                         width="1.5rem"
                                         textAlign="center"
                                     />
                                     <PlusMinusButton
-                                        isDisabled={
-                                            filterData.bags.cabin >=
-                                            maxBags.cabinBaggage
-                                        }
-                                        onClick={() => handleBags("cabin", "add")}
+                                        isDisabled={filters[index]?.cabinBags >= maxBags[index].cabinBags}
+                                        onClick={() => handleBags(index, "cabinBags", "add")}
                                     >
                                         <Text type="p" text="+" />
                                     </PlusMinusButton>
@@ -289,25 +356,20 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     justify="flex-end"
                                 >
                                     <PlusMinusButton
-                                        isDisabled={filterData.bags.checked === 0}
-                                        onClick={() =>
-                                            handleBags("checked", "subtract")
-                                        }
+                                        isDisabled={filters[index]?.checkedBags === 0}
+                                        onClick={() => handleBags(index, "checkedBags", "subtract")}
                                     >
                                         <Text type="p" text="-" />
                                     </PlusMinusButton>
                                     <Text
                                         type="p"
-                                        text={filterData.bags.checked.toString()}
+                                        text={filters[index]?.checkedBags.toString()}
                                         width="1.5rem"
                                         textAlign="center"
                                     />
                                     <PlusMinusButton
-                                        isDisabled={
-                                            filterData.bags.checked >=
-                                            maxBags.checkedBaggage
-                                        }
-                                        onClick={() => handleBags("checked", "add")}
+                                        isDisabled={filters[index]?.checkedBags >= maxBags[index].checkedBags}
+                                        onClick={() => handleBags(index, "checkedBags", "add")}
                                     >
                                         <Text type="p" text="+" />
                                     </PlusMinusButton>
@@ -320,14 +382,14 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Stops"
                         toggle={() => onToggleAcc(index, "stops")}
-                        isActive={isOpenAcc[index]?.stops ?? false}
+                        isActive={openAcc[index]?.stops ?? false}
                     >
                         <Flex direction="column" align="flex-start" gap=".5rem">
                             <CustomRadioGroup
                                 options={stopOptions}
                                 name="stops"
-                                value={filterData.stops}
-                                onChange={(x) => handleRadio(x)}
+                                value={filters[index]?.stops}
+                                onChange={(ev) => handleRadio(index, ev)}
                                 justifyContent="flex-end"
                                 align="flex-start"
                                 direction="column"
@@ -339,30 +401,28 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Airlines"
                         toggle={() => onToggleAcc(index, "airlines")}
-                        isActive={isOpenAcc[index]?.airlines ?? false}
+                        isActive={openAcc[index]?.airlines ?? false}
                     >
                         <Flex direction="column" gap=".5rem">
                             <Flex direction="column" align="space-between" gap=".5rem">
                                 <SearchStringInput
                                     placeholder="Search Airlines"
                                     options={Object.keys(sortedAirlines)}
-                                    onChange={(e: any) => handleCheck(e, "airlines")}
+                                    onChange={(ev: any) => handleCheck(index, ev, "airlines")}
                                     icon={<LuSearch color="#929292" size={20} />}
                                 />
                             </Flex>
                             <Flex direction="column" gap="0rem" margin=".5rem 0 0">
-                                {filterData.airlines.map((airline, index) => (
+                                {filters[index]?.airlines.map((airline, index) =>
                                     <CheckBox
                                         key={index}
                                         checked={true}
                                         name={airline}
-                                        onChange={() =>
-                                            handleCheck(airline, "airlines")
-                                        }
+                                        onChange={() => handleCheck(index, airline, "airlines")}
                                     >
                                         <Text type="p" text={airline} size={15} />
                                     </CheckBox>
-                                ))}
+                                )}
                             </Flex>
                         </Flex>
                     </Panel>
@@ -371,7 +431,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Times"
                         toggle={() => onToggleAcc(index, "times")}
-                        isActive={isOpenAcc[index]?.times ?? false}
+                        isActive={openAcc[index]?.times ?? false}
                     >
                         <Flex direction="column">
                             <Flex
@@ -383,9 +443,9 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                 background={ttColors.grayishAsh}
                             >
                                 <ButtonBox
-                                    active={activeTimes === "depart"}
-                                    width="50%"
-                                    onClick={() => setActiveTimes("depart")}
+                                    active={true}
+                                    width="100%"
+                                    onClick={() => null}
                                 >
                                     <Text
                                         type="p"
@@ -394,10 +454,10 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                         size={16}
                                     />
                                 </ButtonBox>
-                                <ButtonBox
-                                    active={activeTimes === "return"}
+                                {/* <ButtonBox
+                                    active={openTimes === "return"}
                                     width="50%"
-                                    onClick={() => setActiveTimes("return")}
+                                    onClick={() => setOpenTimes("return")}
                                 >
                                     <Text
                                         type="p"
@@ -405,7 +465,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                         weight={500}
                                         size={16}
                                     />
-                                </ButtonBox>
+                                </ButtonBox> */}
                             </Flex>
                             <Flex direction="column" gap=".25rem" padding="1rem 0">
                                 <Text type="p" text="Departure" weight={500} />
@@ -413,23 +473,15 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     marks={[
                                         {
                                             value: 0,
-                                            label:
-                                                activeTimes === "depart"
-                                                    ? filterData.departTimes.depart.min
-                                                    : filterData.returnTimes.depart.min,
+                                            label: filters[index]?.departTime[0]
                                         },
                                         {
                                             value: 96,
-                                            label:
-                                                activeTimes === "depart"
-                                                    ? filterData.departTimes.depart.max
-                                                    : filterData.returnTimes.depart.max,
+                                            label: filters[index]?.departTime[1]
                                         },
                                     ]}
                                     defaultValue={[0, 96]}
-                                    onChange={(event, newValue) =>
-                                        handleTimeChange(newValue, "depart")
-                                    }
+                                    onChange={(event, value) => handleTimeChange(index, value, "departTime")}
                                     min={0}
                                     max={96}
                                 />
@@ -440,25 +492,15 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     marks={[
                                         {
                                             value: 0,
-                                            label:
-                                                activeTimes === "depart"
-                                                    ? filterData.departTimes.arrival.min
-                                                    : filterData.returnTimes.arrival
-                                                        .min,
+                                            label: filters[index]?.arrivalTime[0]
                                         },
                                         {
                                             value: 96,
-                                            label:
-                                                activeTimes === "depart"
-                                                    ? filterData.departTimes.arrival.max
-                                                    : filterData.returnTimes.arrival
-                                                        .max,
+                                            label: filters[index]?.arrivalTime[1]
                                         },
                                     ]}
                                     defaultValue={[0, 96]}
-                                    onChange={(event, newValue) =>
-                                        handleTimeChange(newValue, "arrival")
-                                    }
+                                    onChange={(event, value) => handleTimeChange(index, value, "arrivalTime")}
                                     min={0}
                                     max={96}
                                 />
@@ -470,15 +512,15 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Alliance"
                         toggle={() => onToggleAcc(index, "alliance")}
-                        isActive={isOpenAcc[index]?.alliance ?? false}
+                        isActive={openAcc[index]?.alliance ?? false}
                     >
                         <Flex direction="column" gap="0">
                             {alliance.map((alliance, index) => (
                                 <CheckBox
                                     key={index}
-                                    checked={filterData.alliance.includes(alliance)}
+                                    checked={filters[index]?.alliance.includes(alliance)}
                                     name={alliance}
-                                    onChange={(e) => handleCheck(alliance, "alliance")}
+                                    onChange={(e) => handleCheck(index, alliance, "alliance")}
                                 >
                                     <Text type="p" text={alliance} size={16} />
                                 </CheckBox>
@@ -490,7 +532,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Duration"
                         toggle={() => onToggleAcc(index, "duration")}
-                        isActive={isOpenAcc[index]?.duration ?? false}
+                        isActive={openAcc[index]?.duration ?? false}
                     >
                         <div>
                             <Flex direction="column" gap=".25rem" padding=".5rem 0">
@@ -504,20 +546,15 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     marks={[
                                         {
                                             value: 2,
-                                            label: `${filterData.duration.travelTime.min} Hours`,
+                                            label: `${filters[index]?.travelTime[0]} Hours`,
                                         },
                                         {
                                             value: 48,
-                                            label: `${filterData.duration.travelTime.max} Hours`,
+                                            label: `${filters[index]?.travelTime[1]} Hours`,
                                         },
                                     ]}
-                                    defaultValue={[
-                                        filterData.duration.travelTime.min,
-                                        filterData.duration.travelTime.max,
-                                    ]}
-                                    onChange={(event, newValue) =>
-                                        handleSlider(newValue, "duration", "travelTime")
-                                    }
+                                    defaultValue={[filters[index]?.travelTime[0], filters[index]?.travelTime[1]]}
+                                    onChange={(event, value) => handleSlider(index, value, "travelTime")}
                                     min={2}
                                     max={48}
                                     leftOffset="20px"
@@ -535,20 +572,15 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     marks={[
                                         {
                                             value: 2,
-                                            label: `${filterData.duration.stopOver.min} Hours`,
+                                            label: `${filters[index]?.stopOver[0]} Hours`,
                                         },
                                         {
                                             value: 48,
-                                            label: `${filterData.duration.stopOver.max} Hours`,
+                                            label: `${filters[index]?.stopOver[1]} Hours`,
                                         },
                                     ]}
-                                    defaultValue={[
-                                        filterData.duration.stopOver.min,
-                                        filterData.duration.stopOver.max,
-                                    ]}
-                                    onChange={(event, newValue) =>
-                                        handleSlider(newValue, "duration", "stopOver")
-                                    }
+                                    defaultValue={[filters[index]?.stopOver[0], filters[index]?.stopOver[1]]}
+                                    onChange={(event, value) => handleSlider(index, value, "stopOver")}
                                     min={2}
                                     max={48}
                                     leftOffset="20px"
@@ -562,16 +594,16 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Price"
                         toggle={() => onToggleAcc(index, "price")}
-                        isActive={isOpenAcc[index]?.price ?? false}
+                        isActive={openAcc[index]?.price ?? false}
                     >
                         <Text
                             type="p"
                             text={`${formatPrice({
-                                total: filterData.price.min,
+                                total: filters[index]?.price[0],
                                 currency: preFerredCurrency,
                                 numberOfDecimalDigits: 0,
                             })} - ${formatPrice({
-                                total: filterData.price.max,
+                                total: filters[index]?.price[1],
                                 currency: preFerredCurrency,
                                 numberOfDecimalDigits: 0,
                             })}`}
@@ -584,7 +616,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                 {
                                     value: 0,
                                     label: formatPrice({
-                                        total: filterData.price.min,
+                                        total: filters[index]?.price[0],
                                         currency: preFerredCurrency,
                                         numberOfDecimalDigits: 0,
                                     }),
@@ -592,16 +624,14 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                 {
                                     value: 20000 * conversionRate,
                                     label: formatPrice({
-                                        total: filterData.price.max,
+                                        total: filters[index]?.price[1],
                                         currency: preFerredCurrency,
                                         numberOfDecimalDigits: 0,
                                     }),
                                 },
                             ]}
-                            defaultValue={[filterData.price.min, filterData.price.max]}
-                            onChange={(event, newValue) =>
-                                handleSlider(newValue, "price", "price")
-                            }
+                            defaultValue={[filters[index]?.price[0], filters[index]?.price[1]]}
+                            onChange={(event, value) => handleSlider(index, value, "price")}
                             min={0}
                             max={20000 * conversionRate}
                             step={250}
@@ -613,15 +643,15 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     <Panel
                         title="Cabin"
                         toggle={() => onToggleAcc(index, "cabin")}
-                        isActive={isOpenAcc[index]?.cabin ?? false}
+                        isActive={openAcc[index]?.cabin ?? false}
                         last
                     >
                         <Flex direction="column" gap=".25rem" margin="0 0 1.5rem 0">
                             <CustomRadioGroup
                                 options={cabinOptions}
                                 name="cabin"
-                                onChange={(x) => handleRadio(x)}
-                                value={filterData.cabin}
+                                onChange={(ev) => handleRadio(index, ev)}
+                                value={filters[index]?.cabin}
                                 justifyContent="flex-end"
                                 align="flex-start"
                                 direction="column"

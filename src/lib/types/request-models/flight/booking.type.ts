@@ -1,6 +1,11 @@
 import { CountryType } from "@/components/molecules/serviceTabs/components/visa";
-import { mockCountry } from "../../schema";
 import { SeatRowWithSegmentCodeInterface } from "../../response-models/flight/booking.type";
+import { OneFlightType, AirlineInterface } from "@/lib/extensions/context";
+const airlines = require("airline-iata-code");
+const sortedAirlines: { [k: string]: AirlineInterface } = {};
+airlines().forEach((e: AirlineInterface) => {
+    sortedAirlines[e.Airline] = e;
+});
 
 interface PaymentDetails {
     status: string;
@@ -377,3 +382,83 @@ export const contactDetails: ContactDetailsInterface = {
 //     email: "olallere@gmail.com",
 //     phone: "0908909889",
 // };
+
+
+export interface MultiFlightQuery {
+    cabinBags: number;
+    checkedBags: number;
+    price: [number, number];
+    departTime: [string, string];
+    arrivalTime: [string, string],
+    stopOver: [number, number],
+    travelTime: [number, number],
+    cabin: string;
+    stops: string;
+    airlines: string[];
+    alliance: string[];
+}
+export const defaultMultiQuery: MultiFlightQuery = {
+    cabinBags: 1,
+    checkedBags: 0,
+    price: [0, 20000],
+    departTime: ["0:00", "23:59"],
+    arrivalTime: ["0:00", "23:59"],
+    stopOver: [2, 48],
+    travelTime: [2, 48],
+    cabin: 'M',
+    stops: '',
+    airlines: [],
+    alliance: [],
+}
+
+export const parseMultiFlightQuery = (params: MultiFlightQuery, flight?: OneFlightType) => {
+    const adults = Number(flight?.adults);
+    const children = Number(flight?.children);
+    const adultsAndChildren = adults + children;
+
+    const shareCabinBags = (numPass: number, numBags: number) => {
+        const arrBags = Array.from({ length: numBags }).fill(1);
+        const arrPass = Array.from({ length: numPass }).fill(0);
+        return arrPass.map((e) => {
+            let val = arrBags.length > 0 ? 1 : 0;
+            arrBags.pop();
+            return val;
+        });
+    };
+
+    const shareCheckedBags = (numPass: number, numBags: number) => {
+        const arrBags = Array.from({ length: numBags }).fill(1);
+        const arrPass = Array.from({ length: numPass }).fill(0);
+        arrBags.forEach((e, ind, arr) => {
+            arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
+        });
+        return arrPass;
+    };
+
+    const sharedCabin = shareCabinBags(adultsAndChildren, params.cabinBags);
+    const sharedChecked = shareCheckedBags(adultsAndChildren, params.cabinBags);
+    const adultHandBags = adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
+    const adultHoldBags = adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
+    const childHandBags = children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
+    const childHoldBags = children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
+
+    return {
+        adult_hand_bag: String(adultHandBags),
+        adult_hold_bag: String(adultHoldBags),
+        child_hand_bag: children > 0 ? String(childHandBags) : undefined,
+        child_hold_bag: children > 0 ? String(childHoldBags) : undefined,
+        select_airlines: params.airlines.map((e) => sortedAirlines[e]?.IATACode).join(","),
+        select_airlines_exclude: false,
+        max_sector_stopovers: params.stops,
+        dtime_from: params?.departTime[0],
+        dtime_to: params?.departTime[1],
+        atime_from: params?.arrivalTime[0],
+        atime_to: params?.arrivalTime[1],
+        max_fly_duration: params.travelTime[1],
+        stopover_from: params.stopOver[0],
+        stopover_to: params.stopOver[1],
+        price_from: params.price[0],
+        price_to: params.price[1],
+        selected_cabins: params.cabin,
+    };
+}

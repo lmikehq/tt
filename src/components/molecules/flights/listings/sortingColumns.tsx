@@ -35,11 +35,6 @@ airlines().forEach((e: AirlineInterface) => {
     sortedAirlines[e.Airline] = e;
 });
 
-const TimeBox = styled.div`
-    background: #f3f3ff;
-    border-radius: 8px;
-`;
-
 const stopOptions = [
     { value: "any", label: "Any" },
     { value: 0, label: "Non-Stop" },
