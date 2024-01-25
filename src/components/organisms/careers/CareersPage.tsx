@@ -39,7 +39,7 @@ const Wrapper = styled.div`
 
 function Section({ children, id }: { children: ReactNode; id?: string; }) {
     return (
-        <Flex direction='column' id={id} padding='1.5rem 0' gap='4.5rem' position='relative'>
+        <Flex direction='column' id={id} padding='1.5rem 0' gap='2.5rem' position='relative'>
             {children}
         </Flex>
     )
@@ -157,7 +157,7 @@ function CareersPage() {
                                 type='p'
                                 text="Kindly check back later !!!"
                                 textAlign='center'
-                                weight={600}
+                                color={ttColors.foundation.gray}
                             />
                         </Flex>
                     )}

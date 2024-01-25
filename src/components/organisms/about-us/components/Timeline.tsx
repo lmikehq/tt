@@ -4,7 +4,6 @@ import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 import { ttColors } from '@/lib/theme/colors';
 import dayjs from 'dayjs';
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components';
 
 interface OneTimeline {
     startDate: string;
@@ -27,7 +26,7 @@ const Row = forwardRef(function Row({ left, right, index }: RowProps, ref: any) 
 
     return (
         <Flex justify='space-between' padding='.5rem 0 0' styles={{ scrollSnapAlign: 'start' }}>
-            <Flex width='45%' direction='column' gap='.8rem' styles={{ display: isMobile ? 'none' : 'flex' }}>
+            <Flex width='40%' direction='column' gap='.8rem' styles={{ display: isMobile ? 'none' : 'flex' }}>
                 {left && 
                     <React.Fragment>
                         <Text
@@ -68,7 +67,7 @@ const Row = forwardRef(function Row({ left, right, index }: RowProps, ref: any) 
                 />
             </Flex>
 
-            <Flex width={isMobile ? '90%' : '45%'} direction='column' gap='.8rem'>
+            <Flex width={isMobile ? '90%' : '40%'} direction='column' gap='.8rem'>
                 {right && 
                     <React.Fragment>
                         <Text
@@ -136,7 +135,6 @@ function Timeline({ timeline = [] }: TimelineProps) {
                 overflowX='visible'
                 overflowY='visible'
                 className='timeline'
-                onScroll={() => console.log('yeahhhh')}
                 ref={containerRef}
             >
                 {timeline.map((tim, index, arr) => 

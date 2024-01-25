@@ -10,6 +10,7 @@ import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 import styled from 'styled-components'
 import Link from 'next/link'
 
+
 const FlexWrapper = styled(Flex)<{ isActive: boolean; isHovered: boolean; }>`
     & svg {
         fill: ${({isActive, isHovered }) => isActive ? 'white' : ''};
@@ -18,7 +19,7 @@ const FlexWrapper = styled(Flex)<{ isActive: boolean; isHovered: boolean; }>`
 `
 const LinkWrapper = styled(Link)<{ isActive: boolean; isHovered: boolean; }>`
     & p {
-        color: ${({ isActive }) => isActive ? 'white !important' : `${ttColors.dark} !important`}
+        color: ${({ isActive, isHovered}) => isActive ? 'white !important' : `${ttColors.dark} !important`}
     };
 `
 
@@ -34,7 +35,6 @@ function FAQHeadings({ sections = [], active, onSelect }: FAQHeadingsProps) {
     const goToSection = (id: string) => {
         onSelect(id)
     }
-
 
     return (
         <Flex
@@ -67,13 +67,13 @@ function FAQHeadings({ sections = [], active, onSelect }: FAQHeadingsProps) {
                         padding='1.4rem 1rem'
                         onMouseEnter={() => setHover(index)}
                         onMouseLeave={() => setHover(null)}
-                        background={active === section.id ? ttColors.dark : hover === index ? ttColors.primary300 : ''}
+                        background={active === section.id ? ttColors.dark : hover === index ? '#e6e6ea' : ''}
                         isActive={active === section.id}
                         isHovered={hover === index}
                     >
                         {section.icon ??
                             <LuUser2
-                                color={active === section.id ? 'white' : hover === index ? ttColors.dark : ''}
+                                color={active === section.id ? 'white' : ''}
                                 size={22}
                             />
                         }
@@ -82,7 +82,7 @@ function FAQHeadings({ sections = [], active, onSelect }: FAQHeadingsProps) {
                             text={section.name}
                             size={15}
                             width='max-content'
-                            color={active === section.id ? 'white' : hover === index ? ttColors.dark : ''}
+                            color={active === section.id ? 'white' : ''}
                         />
                     </FlexWrapper>
                 </LinkWrapper>
