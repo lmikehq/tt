@@ -1,4 +1,5 @@
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { shareCheckedAndCabinBaggage } from "../booking.type";
 
 export const extractFlightDataFromParams = ({
     flyFrom,
@@ -11,7 +12,26 @@ export const extractFlightDataFromParams = ({
         fly_from: e,
     }));
     console.log(formattedData, "formm");
-    const urlData = extractSearchParamsFromUrl({ url });
+    let urlData = extractSearchParamsFromUrl({ url });
+    const adults = Number(urlData.adults);
+    const children = Number(urlData.children);
+    const cabin = Number(urlData.cabinBags);
+    const checked = Number(urlData.checkedBags);
+
+    const sharedBags = shareCheckedAndCabinBaggage({
+        adults,
+        children,
+        cabin,
+        checked,
+    });
+
+    urlData = {
+        ...urlData,
+        ...sharedBags,
+    };
+
+    delete urlData.checkedBags;
+    delete urlData.cabinBags;
 
     console.log(flyFrom, urlData, formattedData);
     Object.keys(urlData).forEach((key) => {

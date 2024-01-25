@@ -326,6 +326,61 @@ export const updateSeatAvailability = ({
     });
 };
 
+export const shareCheckedAndCabinBaggage = ({
+    adults,
+    children,
+    cabin,
+    checked,
+}: {
+    adults: number;
+    children: number;
+    cabin: number;
+    checked: number;
+}): {
+    child_hand_bag: string;
+    child_hold_bag: string;
+    adult_hand_bag: string;
+    adult_hold_bag: string;
+} => {
+    const adultsAndChildren = adults + children;
+    const shareCabinBags = (numPass: number, numBags: number) => {
+        const arrBags = Array.from({ length: numBags }).fill(1);
+        const arrPass = Array.from({ length: numPass }).fill(0);
+
+        return arrPass.map((e) => {
+            let val = arrBags.length > 0 ? 1 : 0;
+            arrBags.pop();
+            return val;
+        });
+    };
+    const shareCheckedBags = (numPass: number, numBags: number) => {
+        const arrBags = Array.from({ length: numBags }).fill(1);
+        const arrPass = Array.from({ length: numPass }).fill(0);
+        arrBags.forEach((e, ind, arr) => {
+            arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
+        });
+        return arrPass;
+    };
+
+    const sharedCabin = shareCabinBags(adultsAndChildren, cabin);
+    const sharedChecked = shareCheckedBags(adultsAndChildren, checked);
+    const adultHandBags =
+        adults > 0 ? sharedCabin.slice(0, adults).join(",") : "0";
+    const adultHoldBags =
+        adults > 0 ? sharedChecked.slice(0, adults).join(",") : "0";
+    const childHandBags =
+        children > 0 ? sharedCabin.slice(adults).join(",") : "0";
+    const childHoldBags =
+        children > 0 ? sharedChecked.slice(adults).join(",") : "0";
+
+    return {
+        child_hand_bag: childHandBags,
+        child_hold_bag: childHoldBags,
+        adult_hand_bag: adultHandBags,
+        adult_hold_bag: adultHoldBags,
+    };
+};
+
 export const passengerAndBaggageDetails: PassengerFormInterface = {
     name: "",
     surname: "",
