@@ -32,7 +32,10 @@ import AuthModal from "@/components/organisms/auth/AuthModal";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import SortedFlightsTab from "../components/sortedFlightsTab";
 import FlightBox from "../components/flightBox";
-import { useSearchMulticity } from "@/lib/hooks/flight/multi.hook";
+import {
+    useSearchMulticity,
+    useSearchMulticityBySort,
+} from "@/lib/hooks/flight/multi.hook";
 import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
 import { extractFlightDataFromParams } from "@/lib/types/request-models/flight/multi/search.type";
@@ -463,6 +466,23 @@ function AvailableMultiFlights() {
         searchQuery,
     } = useFlightBookingStore((state) => state);
     const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const {
+        updateSearchMultiCityQuery,
+        searchMultiCityQuery,
+        updateSingleSearchQuery,
+    } = useSearchMultiFlightStore((state) => state);
+    const [shouldFetch, setShouldFetch] = useState(false);
+    const {
+        isFetching,
+        data: flightData,
+        isLoading,
+    } = useSearchMulticity(searchMultiCityQuery, {
+        enabled: shouldFetch,
+    });
+    const [bestSortData, cheapestSortData, fastestSortData, earliestSortData] =
+        useSearchMulticityBySort(searchMultiCityQuery, {
+            enabled: searchMultiCityQuery.requests.length > 1,
+        });
 
     const { isMobile } = useScreenResolution();
     const [showAuthModal, setShowAuthModal] = useState(false);
@@ -485,19 +505,6 @@ function AvailableMultiFlights() {
         route: "",
     });
 
-    // const calculateDuration = (departure?: string, arrival?: string) => {
-    //     const departureTime = dayjs(departure);
-    //     const arrivalTime = dayjs(arrival);
-
-    //     const duration = arrivalTime.diff(departureTime, "minute");
-    //     const hours = Math.floor(duration / 60);
-    //     const minutes = duration % 60;
-    //     const formattedDuration =
-    //         isNaN(hours) || isNaN(hours) ? "" : `${hours}hr ${minutes}mins`;
-
-    //     return formattedDuration;
-    // };
-
     // const best = useMemo(() => {
     //     const pick = numSort(searchFlightsResults, "quality", "asc")[0];
     //     return {
@@ -508,17 +515,17 @@ function AvailableMultiFlights() {
     // }, [searchFlightsResults]);
 
     // const cheapest = useMemo(() => {
-    //     const pick = numSort(searchFlightsResults, "price", "asc")[0];
+    //     const pick = numSort(flightData, "price", "asc")[0];
     //     return {
     //         price: pick?.price ?? 0,
     //         duration:
     //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
     //         pick,
     //     };
-    // }, [searchFlightsResults]);
+    // }, [flightData]);
 
     // const fastest = useMemo(() => {
-    //     const arr = searchFlightsResults.map((e) => ({
+    //     const arr = flightData.map((e) => ({
     //         ...e,
     //         travelTime: e.duration.total,
     //     }));
@@ -691,18 +698,6 @@ function AvailableMultiFlights() {
         return () => clearInterval(interval);
     }, []);
 
-    const {
-        updateSearchMultiCityQuery,
-        searchMultiCityQuery,
-        updateSingleSearchQuery,
-    } = useSearchMultiFlightStore((state) => state);
-    const [shouldFetch, setShouldFetch] = useState(false);
-    const { isFetching, data, isLoading } = useSearchMulticity(
-        searchMultiCityQuery,
-        {
-            enabled: shouldFetch,
-        }
-    );
     const flyFrom = queryParams.fly_from;
 
     useEffect(() => {
@@ -715,10 +710,20 @@ function AvailableMultiFlights() {
         console.log("stays", data);
 
         if (data) {
+            let requests = data;
+            requests[0] = {
+                ...requests[0],
+                curr: preFerredCurrency,
+            };
             updateSearchMultiCityQuery({ requests: data });
             setShouldFetch(true);
         }
     }, [flyFrom]);
+
+    const best = bestSortData.data ? bestSortData?.data[0] : null;
+    const cheapest = cheapestSortData.data ? cheapestSortData?.data[0] : null;
+    const fastest = fastestSortData.data ? fastestSortData?.data[0] : null;
+    const earliest = earliestSortData.data ? earliestSortData?.data[0] : null;
     return (
         <Flex
             direction="column"
@@ -732,14 +737,14 @@ function AvailableMultiFlights() {
                     cheapest={cheapest}
                     fastest={fastest}
                     earliest={earliest}
-                    data={searchFlightsResults}
-                    updateSearchQueryHandler={updateSearchQueryHandler}
+                    isLoading={isLoading}
+                    multi={true}
                 />
             )}
 
             {isLoading ? (
                 <FlightBoxSkeleton />
-            ) : data?.length === 0 ? (
+            ) : flightData?.length === 0 ? (
                 <Flex width="100%" justify="center" padding="9rem 0">
                     <Text
                         type="p"
@@ -750,7 +755,7 @@ function AvailableMultiFlights() {
                 </Flex>
             ) : (
                 <>
-                    {data?.map((flight, index) => (
+                    {flightData?.map((flight, index) => (
                         <MultiFlightPreviewCard
                             key={"flight-" + index}
                             flight={flight}

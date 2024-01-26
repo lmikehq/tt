@@ -1,6 +1,7 @@
 import { CountryType } from "@/components/molecules/serviceTabs/components/visa";
 import { SeatRowWithSegmentCodeInterface } from "../../response-models/flight/booking.type";
 import { OneFlightType, AirlineInterface } from "@/lib/extensions/context";
+import dayjs from "dayjs";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -139,6 +140,12 @@ export interface SearchFlightsRequestQuery {
     sort?: string;
 }
 
+export enum FlightSortEnum {
+    best = "quality",
+    cheapest = "price",
+    fastest = "duration",
+    earliest = "date",
+}
 export interface SearchMultiFlightRequestQuery {
     requests: SearchFlightsRequestQuery[];
 }
@@ -342,10 +349,10 @@ export const shareCheckedAndCabinBaggage = ({
     cabin: number;
     checked: number;
 }): {
-    child_hand_bag: string;
-    child_hold_bag: string;
-    adult_hand_bag: string;
-    adult_hold_bag: string;
+    child_hand_bag?: string;
+    child_hold_bag?: string;
+    adult_hand_bag?: string;
+    adult_hold_bag?: string;
 } => {
     const adultsAndChildren = adults + children;
     const shareCabinBags = (numPass: number, numBags: number) => {
@@ -370,20 +377,35 @@ export const shareCheckedAndCabinBaggage = ({
     const sharedCabin = shareCabinBags(adultsAndChildren, cabin);
     const sharedChecked = shareCheckedBags(adultsAndChildren, checked);
     const adultHandBags =
-        adults > 0 ? sharedCabin.slice(0, adults).join(",") : "0";
+        adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
     const adultHoldBags =
-        adults > 0 ? sharedChecked.slice(0, adults).join(",") : "0";
+        adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
     const childHandBags =
-        children > 0 ? sharedCabin.slice(adults).join(",") : "0";
+        children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
     const childHoldBags =
-        children > 0 ? sharedChecked.slice(adults).join(",") : "0";
+        children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
 
-    return {
-        child_hand_bag: childHandBags,
-        child_hold_bag: childHoldBags,
-        adult_hand_bag: adultHandBags,
-        adult_hold_bag: adultHoldBags,
-    };
+    return Object.fromEntries(
+        Object.entries({
+            child_hand_bag: childHandBags,
+            child_hold_bag: childHoldBags,
+            adult_hand_bag: adultHandBags,
+            adult_hold_bag: adultHoldBags,
+        }).filter(([_, value]) => value !== undefined)
+    );
+};
+
+export const calculateDuration = (departure?: string, arrival?: string) => {
+    const departureTime = dayjs(departure);
+    const arrivalTime = dayjs(arrival);
+
+    const duration = arrivalTime.diff(departureTime, "minute");
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+    const formattedDuration =
+        isNaN(hours) || isNaN(hours) ? "" : `${hours}hr ${minutes}mins`;
+
+    return formattedDuration;
 };
 
 export const passengerAndBaggageDetails: PassengerFormInterface = {
@@ -438,15 +460,14 @@ export const contactDetails: ContactDetailsInterface = {
 //     phone: "0908909889",
 // };
 
-
 export interface MultiFlightQuery {
     cabinBags: number;
     checkedBags: number;
     price: [number, number];
     departTime: [string, string];
-    arrivalTime: [string, string],
-    stopOver: [number, number],
-    travelTime: [number, number],
+    arrivalTime: [string, string];
+    stopOver: [number, number];
+    travelTime: [number, number];
     cabin: string;
     stops: string;
     airlines: string[];
@@ -460,13 +481,16 @@ export const defaultMultiQuery: MultiFlightQuery = {
     arrivalTime: ["0:00", "23:59"],
     stopOver: [2, 48],
     travelTime: [2, 48],
-    cabin: 'M',
-    stops: '',
+    cabin: "M",
+    stops: "",
     airlines: [],
     alliance: [],
-}
+};
 
-export const parseMultiFlightQuery = (params: MultiFlightQuery, flight?: OneFlightType) => {
+export const parseMultiFlightQuery = (
+    params: MultiFlightQuery,
+    flight?: OneFlightType
+) => {
     const adults = Number(flight?.adults);
     const children = Number(flight?.children);
     const adultsAndChildren = adults + children;
@@ -492,17 +516,23 @@ export const parseMultiFlightQuery = (params: MultiFlightQuery, flight?: OneFlig
 
     const sharedCabin = shareCabinBags(adultsAndChildren, params.cabinBags);
     const sharedChecked = shareCheckedBags(adultsAndChildren, params.cabinBags);
-    const adultHandBags = adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
-    const adultHoldBags = adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
-    const childHandBags = children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
-    const childHoldBags = children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
+    const adultHandBags =
+        adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
+    const adultHoldBags =
+        adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
+    const childHandBags =
+        children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
+    const childHoldBags =
+        children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
 
     return {
         adult_hand_bag: String(adultHandBags),
         adult_hold_bag: String(adultHoldBags),
         child_hand_bag: children > 0 ? String(childHandBags) : undefined,
         child_hold_bag: children > 0 ? String(childHoldBags) : undefined,
-        select_airlines: params.airlines.map((e) => sortedAirlines[e]?.IATACode).join(","),
+        select_airlines: params.airlines
+            .map((e) => sortedAirlines[e]?.IATACode)
+            .join(","),
         select_airlines_exclude: false,
         max_sector_stopovers: params.stops,
         dtime_from: params?.departTime[0],
@@ -516,4 +546,4 @@ export const parseMultiFlightQuery = (params: MultiFlightQuery, flight?: OneFlig
         price_to: params.price[1],
         selected_cabins: params.cabin,
     };
-}
+};
