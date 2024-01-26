@@ -45,6 +45,8 @@ interface CustomDatePickerProps {
   format?: string;
   width?: string;
   height?: string;
+  selectsRange?: boolean;
+  border?: string;
 }
 const InputContainer = styled.div<{ width: string; height?: string; }>`
     position: relative;
@@ -61,7 +63,7 @@ const DateIcon = styled.span`
     font-size: 20px;
     display: inline-flex;
 `;
-const DateInput = styled.input<{ width?: string; }>`
+const DateInput = styled.input<{ width?: string; border?: string; }>`
   height: 45px;
   font-size: 15px;
   font-family: Poppins;
@@ -73,15 +75,17 @@ const DateInput = styled.input<{ width?: string; }>`
   box-sizing: border-box;
   background-color: transparent;
   cursor: pointer;
-  border: 1px solid #bdbdbd;
+  // border: 1px solid #bdbdbd;
+  outline: none;
+  border: ${(props) => props.border ? props.border : '1px solid #bdbdbd'};
   &:hover {
-    border: 1px solid ${ttColors.primary};
+    border: ${(props) => props.border ? props.border : `1px solid ${ttColors.primary}`};
   }
   &:focus {
-    border: 1px solid ${ttColors.primary};
+    border: ${(props) => props.border ? props.border : `1px solid ${ttColors.primary}`};
   }
   &:focus-visible {
-    border: 1px solid ${ttColors.primary};
+    border: ${(props) => props.border ? props.border : `1px solid ${ttColors.primary}`};
     outline: none !important;
   }
   &.error {
@@ -109,6 +113,8 @@ export const DatePicker = ({
   height,
   position,
   format,
+  selectsRange,
+  border
 }: CustomDatePickerProps) => {
   const { isMobile } = useScreenResolution();
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -126,6 +132,9 @@ export const DatePicker = ({
           <Box
             ref={fieldRef}
             sx={{
+              "& .react-datepicker": {
+                display: 'flex' // added this code to flex the display when months = 2
+              },
               "& .react-datepicker__month-container": {
                 width: `${isMobile ? fieldWidth : '340px'} !important`,
                 padding: '14px 20px 20px !important',
@@ -163,6 +172,7 @@ export const DatePicker = ({
         placeholderText={placeholder}
         withPortal={false}
         showIcon={false}
+        selectsRange={selectsRange}
         useWeekdaysShort={true}
         disabledKeyboardNavigation={true}
         customInput={
@@ -171,6 +181,7 @@ export const DatePicker = ({
             height={height}
             placeholder={placeholder}
             value={dayjs(value).toString()}
+            border={border}
           />
         }
         shouldCloseOnSelect={true}
@@ -206,6 +217,7 @@ export const DatePicker = ({
               type="p"
               size={16}
               weight={700}
+              styles={{ overflow: 'unset' }}
             />
 
             <Button
@@ -271,12 +283,14 @@ export const CustomDatePickerInput = forwardRef(
       width,
       height,
       placeholder,
+      border
     }: {
       value?: string;
       onClick?: MouseEventHandler<HTMLInputElement>;
       width?: string;
       height?: string;
       placeholder?: string;
+      border?: string;
     },
     ref: Ref<HTMLDivElement>
   ) => (
@@ -291,6 +305,7 @@ export const CustomDatePickerInput = forwardRef(
         readOnly
         className={''}
         style={{ width: "100%", fontFamily: 'Poppins' }}
+        border={border}
       />
     </InputContainer>
   )

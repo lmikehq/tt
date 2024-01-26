@@ -94,10 +94,15 @@ import { useQuery } from "@tanstack/react-query";
 import apiService from "@lib/extensions/hook/apiService";
 import { User } from "@lib/types";
 import { useUserStore } from "@lib/store/useStore";
+import { useNotificationStore } from "@/lib/store/notification.store";
+import { NotificationProps } from "@/lib/types/response-models/dashboard";
+import { NotificationService } from "@/lib/services/dashboard/notification.service";
+import toast from "react-hot-toast";
 
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
+  const { notifications, resetNotifications } = useNotificationStore((state) => state);
 
   // Ref for notification modal
   const notificationRef = useRef(null);
@@ -114,23 +119,6 @@ const CustomPopover = () => {
   const [isNotificationVisible, setIsNotificationVisible] = useState(false);
   const [isMoreVisible, setIsMoreVisible] = useState(false);
 
-  const notifications = [
-    {
-      name: "admin",
-    },
-    {
-      name: "admin",
-    },
-    {
-      name: "admin",
-    },
-    {
-      name: "admin",
-    },
-    {
-      name: "admin",
-    },
-  ];
 
   const { setUser } = useUserStore((state) => state);
   async function getUser(): Promise<User | any> {
@@ -213,6 +201,12 @@ const CustomPopover = () => {
                             cursor="pointer"
                             align="center"
                             gap="8px"
+                            onClick={async () => {
+                              const response = await NotificationService.markAllNotification();
+                              if (response.success === true || response.message === 'all user notifications read') {
+                                toast.success('Notifications Read');
+                              }
+                            }}
                           >
                             <CheckIcon style={{ fontSize: "18px" }} />
                             <Text type="p" text="Mark all as read"></Text>
@@ -222,6 +216,7 @@ const CustomPopover = () => {
                             cursor="pointer"
                             align="center"
                             gap="8px"
+                            onClick={() => resetNotifications()}
                           >
                             <CleaningServicesIcon
                               style={{ fontSize: "18px" }}
@@ -242,7 +237,7 @@ const CustomPopover = () => {
                     <Text weight={500} type="p" text="Today"></Text>
                   </Flex>
                 </Span>
-                {notifications.map((item, index) => (
+                {notifications.map((notification: NotificationProps, index) => (
                   <Span
                     className="not_list"
                     key={index}
@@ -279,7 +274,7 @@ const CustomPopover = () => {
                         <Span style={{ width: "100px" }}>
                           <TruncateMarkup lines={1}>
                             <p style={{ color: "var(--text-gray-color)" }}>
-                              requested Bio Metric document
+                              {notification.message}
                             </p>
                           </TruncateMarkup>
                         </Span>

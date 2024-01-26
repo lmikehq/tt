@@ -37,7 +37,7 @@ function formatDate(dateString: string) {
   }
 }
 
-export const TruncatedBlogContent: React.FC<{ blog: { content: string } }> = ({
+export const TruncatedBlogContent: React.FC<{ blog: { content: string; }; }> = ({
   blog,
 }) => (
   <div
@@ -246,7 +246,7 @@ function BlogStories() {
                         url: ``,
                         title: blog.title,
                       }}
-                      onClick={() => console.log("shared successfully!")}
+                    // onClick={() => console.log("shared successfully!")}
                     >
                       <IosShareIcon
                         style={{

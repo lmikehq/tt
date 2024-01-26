@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap");
+@import "react-datepicker/dist/react-datepicker.css";
 
 /* 
     Breakpoints: 
@@ -155,6 +156,7 @@ body {
   bottom: 0 !important;
   top: -75px !important;
 }
+
 @media screen and (max-width: 900px) {
   .stay_landing {
     display: none;
@@ -482,3 +484,111 @@ textarea:hover {
   z-index: 99999 !important;
 }
 
+/* CALENDAR DATE-RANGE component */
+.calendarStyle {
+  /* background-color: brown; */
+  border: 1px solid #eee;
+  font-family: poppins;
+  border-radius: 1.5rem;
+}
+
+.calendar-container {
+  position: relative;
+}
+
+.OneWayCalandar {
+  border: 1px solid #eee;
+  font-family: poppins;
+  border-radius: 1.5rem;
+}
+
+input:focus,
+:focus-within {
+  outline: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  left: -80px;
+  /* background-color: #fff; */
+  /* padding: 10px 20px; */
+}
+
+.animation-active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: var(--speed) ease;
+}
+
+.animation-inactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: var(--speed) ease;
+}
+
+.dropdown-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: var(--speed) ease;
+  z-index: 99999;
+}
+
+.dropdown-menu.inactive {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: var(--speed) ease;
+}
+
+.calendar-trigger {
+  display: flex;
+}
+
+.calendar-input {
+  min-width: 150px;
+  max-width: 150px;
+  height: 45px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: 'poppins';
+}
+
+/* REFERRAL */
+.referral-info {
+  background-color: #333;
+  border-radius: 8px;
+  padding: 20px 25px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+  position: absolute;
+  z-index: 88;
+  width: 344px;
+  min-width: 344px;
+}
+
+@media screen and (max-widhth:900px) {
+  .referral-info {
+    min-width: 300px;
+    width: 300px;
+  }
+}
+
+.otp-input {
+  height: 65px;
+  width: 65px;
+  border-radius: 8px;
+  border: 1px solid #B6B6B6;
+  font-size: 36px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* REFERRAL */

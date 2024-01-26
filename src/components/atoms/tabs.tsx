@@ -14,6 +14,7 @@ import { CustomRadioGroup } from "../molecules/radio";
 import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -131,10 +132,16 @@ export default function CustomTab({
   variant?: "fullWidth" | "scrollable" | "standard" | undefined;
 }) {
   const [value, setValue] = useState(0);
+  const { updateTab } = useDashboardStore((state) => state);
 
   useEffect(() => {
     setValue(activeTab ?? 0);
   }, [activeTab]);
+
+  useEffect(() => {
+    updateTab(tabItems[value].label);
+
+  }, [value]);
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setValue(newValue ?? value);
@@ -174,11 +181,10 @@ export default function CustomTab({
           }}
         >
 
-          {tabItems.map((tabItem, i) => {
+          {tabItems.map((tabItem, i, arr) => {
             const borderStyle = {
               border: "none",
-              borderRight: i % 4 === 0 ? "1px solid #ccc" : "none",
-              borderLeft: i % 4 === 2 ? "1px solid #ccc" : "none",
+              borderRight: i !== arr.length - 1 ? "1px solid #ccc" : "none",
             };
 
             return (
