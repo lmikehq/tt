@@ -88,12 +88,12 @@ export default function TripSummaryCard({
     flights,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
-    const { push } = useRouter();
+    const { push, back } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
 
-    const flightStops = flights.length - 1 ?? 0;
+    const flightStops = Math.max(0, flights?.length - 1);
     const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(
         dayjs(departure?.utc_departure),
         "minute"
@@ -112,7 +112,7 @@ export default function TripSummaryCard({
                             color={ttColors.dark}
                             variant="outline"
                             styles={{ fontSize: isMobile ? "14px" : "14px" }}
-                            onClick={() => push("/flight/listings")}
+                            onClick={back}
                         >
                             Change Flight
                         </Button>
@@ -217,9 +217,7 @@ export default function TripSummaryCard({
                     <Text
                         type="p"
                         size={14}
-                        text={`${flightStops} ${
-                            flightStops > 1 ? "stops" : "stop"
-                        }`}
+                        text={flightStops > 0 ? `${flightStops} ${flightStops > 1 ? 'stops' : 'stop'}` : "Non-Stop"}
                     />
                 </Flex>
 
@@ -249,27 +247,29 @@ export default function TripSummaryCard({
                 </Flex>
             </Flex>
 
-            <StyledAccordion
-                onChange={(e, isExpanded) => setIsOpen(isExpanded)}
-            >
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="flight-details-content"
-                    id="flight-details-header"
+            {flightStops > 0 && 
+                <StyledAccordion
+                    onChange={(e, isExpanded) => setIsOpen(isExpanded)}
                 >
-                    <Text
-                        color={ttColors.primary}
-                        type="p"
-                        weight={500}
-                        size={16}
-                        text={isOpen ? "Hide Details" : "Show Details"}
-                    />
-                </AccordionSummary>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="flight-details-content"
+                        id="flight-details-header"
+                    >
+                        <Text
+                            color={ttColors.primary}
+                            type="p"
+                            weight={500}
+                            size={16}
+                            text={isOpen ? "Hide Details" : "Show Details"}
+                        />
+                    </AccordionSummary>
 
-                <AccordionDetails style={{ padding: "0" }}>
-                    <TripSummaryDetails flights={flights} />
-                </AccordionDetails>
-            </StyledAccordion>
+                    <AccordionDetails style={{ padding: "0" }}>
+                        <TripSummaryDetails flights={flights} />
+                    </AccordionDetails>
+                </StyledAccordion>
+            }
         </React.Fragment>
     );
 }

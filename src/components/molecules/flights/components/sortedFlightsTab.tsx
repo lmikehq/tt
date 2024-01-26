@@ -13,6 +13,7 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { Box } from "@mui/material";
 import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
+import { capCase } from "@/lib/utilFns";
 
 export const FlightContainer = styled.div`
     box-shadow: 0px 4px 16px 0px #8dd3bb1a;
@@ -151,7 +152,7 @@ function SortedFlightsTab(props: sortProps) {
         <FlightContainer>
             {isLoading ? (
                 <Flex padding={isMobile ? ".5rem 1.5rem" : ".5rem 1rem"} direction="column" gap=".8rem">
-                    <Text type="h3" text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`} weight={600} size={20} />
+                    <Text type="h3" text={`Looking for flights from ${capCase(searchQuery?.fly_from, '_', '-').toUpperCase()} to ${capCase(searchQuery?.fly_to, '_', '-').toUpperCase()}`} weight={600} size={20} />
                     <Text type="p" size={14} text="for selected dates" color={ttColors.lighterGray} />
                     <ProgressLoader />
                 </Flex>
