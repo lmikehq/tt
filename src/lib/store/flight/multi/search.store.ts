@@ -6,7 +6,10 @@ interface State {
 }
 interface Actions {
     updateSearchMultiCityQuery: (params: SearchMultiFlightRequestQuery) => void;
-    updateSingleSearchQuery: (params: { sort: string; limit: number }) => void;
+    updateSingleSearchQuery: (params: {
+        sort?: string;
+        limit?: number;
+    }) => void;
 }
 
 export const useSearchMultiFlightStore = create<State & Actions>(
