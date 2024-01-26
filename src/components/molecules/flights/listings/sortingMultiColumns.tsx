@@ -15,10 +15,9 @@ import { CustomRadioGroup } from '../../radio';
 import SearchStringInput from '../../searchInputs/searchStringInput';
 import CheckBox from '../../checkbox';
 import { ButtonBox } from "../components/sortedFlightsTab";
-import { formatPrice } from '@/lib/extensions/helpers/formatPrice';
-import { LuSearch } from 'react-icons/lu';
 import { ttColors } from '@/lib/theme/colors';
 import { IoCaretDown } from 'react-icons/io5';
+import { capCase } from '@/lib/utilFns';
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -123,7 +122,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const { queryParams } = useQueryParams();
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
-    const flightDispatch = flightContext?.dispatch;
 
     const defaultMulti = {
         ...defaultMultiQuery,
@@ -132,18 +130,18 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
 
     const [filters, setFilters] = useState([defaultMulti])
 
-    const [openMulti, setOpenMulti] = useState([false])
+    const [openAcc, setOpenAcc] = useState(defaultAcc)
 
-    const [openAcc, setOpenAcc] = useState([defaultAcc])
+    const [openTimes, setOpenTimes] = useState('departure')
 
-    const onToggleMulti = (index: number) => {
-        setOpenMulti(prev => {
-            return prev.map((e, ind) => index === ind ? !e : e)
-        })
-    }
+    // const onToggleMulti = (index: number) => {
+    //     setOpenMulti(prev => {
+    //         return prev.map((e, ind) => index === ind ? !e : e)
+    //     })
+    // }
 
-    const onToggleAcc = (index: number, type: string) => {
-        setOpenAcc(prev => prev.map((p, ind) => index === ind ? ({ ...p, [type]: !p[type as keyof typeof p] }) : p))
+    const onToggleAcc = (type: string) => {
+        setOpenAcc(prev => ({ ...prev, [type]: !prev[type as keyof typeof prev] }))
     }
 
     const activeFilters = useMemo(() => searchMultiCityQuery.requests.map(req => {
@@ -286,8 +284,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             ...searchMultiCityQuery,
             requests: searchMultiCityQuery.requests.map(() => defaultQuery) ?? [defaultQuery]
         })
-        setOpenAcc(searchMultiCityQuery.requests.map(e => defaultAcc) ?? [defaultAcc])
-        setOpenMulti(searchMultiCityQuery.requests.map(e => false) ?? [false])
         setFilters(searchMultiCityQuery.requests.map(e => defaultMulti) ?? [defaultMulti])
     }, [queryParams])
 
@@ -296,101 +292,100 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
         <Flex direction="column">
             <PriceAlerts />
 
-            {searchMultiCityQuery.requests.map((req, index) =>
-                <Accordion
-                    key={`flight-${index}-filters`}
-                    isOpen={openMulti[index]}
-                    onToggle={() => onToggleMulti(index)}
-                    index={index}
-                    title={`${flightState?.fleet[index].departureCountry?.name ?? 'SRC'} - ${flightState?.fleet[index].arrivalCountry?.name ?? 'DST'}`}
-                >
-                    {/* Number of Bags */}
-                    <Panel
-                        title="Bags"
-                        toggle={() => onToggleAcc(index, "bags")}
-                        isActive={openAcc[index]?.bags ?? false}
+            {/* Number of Bags */}
+            <Panel
+                title="Bags"
+                toggle={() => onToggleAcc("bags")}
+                isActive={openAcc.bags}
+            >
+                {searchMultiCityQuery.requests.map((req, index) => index === 0 ? 
+                    <Flex
+                        direction="column"
+                        justify="center"
+                        gap="1rem"
+                        padding="1rem 0"
+                        margin="0 0 1rem"
+                        key={`filter-stops-${index}`}
                     >
-                        <Flex
-                            direction="column"
-                            justify="center"
-                            gap="1rem"
-                            padding="1rem 0"
-                        >
-                            <Flex align="center" justify="space-between">
+                        <Flex align="center" justify="space-between">
+                            <Text
+                                type="p"
+                                text="Cabin Baggage"
+                                size={14}
+                                whiteSpace="nowrap"
+                            />
+                            <Flex
+                                width="50%"
+                                gap=".5rem"
+                                align="center"
+                                justify="flex-end"
+                            >
+                                <PlusMinusButton
+                                    isDisabled={filters[index]?.cabinBags === 0}
+                                    onClick={() => handleBags(index, "cabinBags", "subtract")}
+                                >
+                                    <Text type="p" text="-" />
+                                </PlusMinusButton>
                                 <Text
                                     type="p"
-                                    text="Cabin Baggage"
-                                    size={14}
-                                    whiteSpace="nowrap"
+                                    text={filters[index]?.cabinBags.toString()}
+                                    width="1.5rem"
+                                    textAlign="center"
                                 />
-                                <Flex
-                                    width="50%"
-                                    gap=".5rem"
-                                    align="center"
-                                    justify="flex-end"
+                                <PlusMinusButton
+                                    isDisabled={filters[index]?.cabinBags >= maxBags[index].cabinBags}
+                                    onClick={() => handleBags(index, "cabinBags", "add")}
                                 >
-                                    <PlusMinusButton
-                                        isDisabled={filters[index]?.cabinBags === 0}
-                                        onClick={() => handleBags(index, "cabinBags", "subtract")}
-                                    >
-                                        <Text type="p" text="-" />
-                                    </PlusMinusButton>
-                                    <Text
-                                        type="p"
-                                        text={filters[index]?.cabinBags.toString()}
-                                        width="1.5rem"
-                                        textAlign="center"
-                                    />
-                                    <PlusMinusButton
-                                        isDisabled={filters[index]?.cabinBags >= maxBags[index].cabinBags}
-                                        onClick={() => handleBags(index, "cabinBags", "add")}
-                                    >
-                                        <Text type="p" text="+" />
-                                    </PlusMinusButton>
-                                </Flex>
-                            </Flex>
-                            <Flex align="center" justify="space-between">
-                                <Text
-                                    type="p"
-                                    text="Checked Baggage"
-                                    size={14}
-                                    whiteSpace="nowrap"
-                                />
-                                <Flex
-                                    width="50%"
-                                    gap=".5rem"
-                                    align="center"
-                                    justify="flex-end"
-                                >
-                                    <PlusMinusButton
-                                        isDisabled={filters[index]?.checkedBags === 0}
-                                        onClick={() => handleBags(index, "checkedBags", "subtract")}
-                                    >
-                                        <Text type="p" text="-" />
-                                    </PlusMinusButton>
-                                    <Text
-                                        type="p"
-                                        text={filters[index]?.checkedBags.toString()}
-                                        width="1.5rem"
-                                        textAlign="center"
-                                    />
-                                    <PlusMinusButton
-                                        isDisabled={filters[index]?.checkedBags >= maxBags[index].checkedBags}
-                                        onClick={() => handleBags(index, "checkedBags", "add")}
-                                    >
-                                        <Text type="p" text="+" />
-                                    </PlusMinusButton>
-                                </Flex>
+                                    <Text type="p" text="+" />
+                                </PlusMinusButton>
                             </Flex>
                         </Flex>
-                    </Panel>
+                        <Flex align="center" justify="space-between">
+                            <Text
+                                type="p"
+                                text="Checked Baggage"
+                                size={14}
+                                whiteSpace="nowrap"
+                            />
+                            <Flex
+                                width="50%"
+                                gap=".5rem"
+                                align="center"
+                                justify="flex-end"
+                            >
+                                <PlusMinusButton
+                                    isDisabled={filters[index]?.checkedBags === 0}
+                                    onClick={() => handleBags(index, "checkedBags", "subtract")}
+                                >
+                                    <Text type="p" text="-" />
+                                </PlusMinusButton>
+                                <Text
+                                    type="p"
+                                    text={filters[index]?.checkedBags.toString()}
+                                    width="1.5rem"
+                                    textAlign="center"
+                                />
+                                <PlusMinusButton
+                                    isDisabled={filters[index]?.checkedBags >= maxBags[index].checkedBags}
+                                    onClick={() => handleBags(index, "checkedBags", "add")}
+                                >
+                                    <Text type="p" text="+" />
+                                </PlusMinusButton>
+                            </Flex>
+                        </Flex>
+                    </Flex> : null
+                )}
+            </Panel>
 
-                    {/* Number of Stops */}
-                    <Panel
-                        title="Stops"
-                        toggle={() => onToggleAcc(index, "stops")}
-                        isActive={openAcc[index]?.stops ?? false}
-                    >
+            {/* Number of Stops */}
+            <Panel
+                title="Stops"
+                toggle={() => onToggleAcc("stops")}
+                isActive={openAcc.stops}
+            >
+                {searchMultiCityQuery.requests.map((req, index) =>
+                    <Flex direction="column" gap=".5rem" margin="0 0 1rem" key={`filter-stops-${index}`}>
+                        <Text type="p" text={`${capCase(req?.fly_from)} to ${capCase(req?.fly_to)}`} weight={500} /> 
                         <Flex direction="column" align="flex-start" gap=".5rem">
                             <CustomRadioGroup
                                 options={stopOptions}
@@ -402,99 +397,103 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                 direction="column"
                             />
                         </Flex>
-                    </Panel>
+                    </Flex>
+                )}
+            </Panel>
 
-                    {/* Airlines */}
-                    <Panel
-                        title="Airlines"
-                        toggle={() => onToggleAcc(index, "airlines")}
-                        isActive={openAcc[index]?.airlines ?? false}
-                    >
-                        <Flex direction="column" gap=".5rem">
-                            <Flex direction="column" align="space-between" gap=".5rem">
-                                <SearchStringInput
-                                    placeholder="Search Airlines"
-                                    options={Object.keys(sortedAirlines)}
-                                    onChange={(ev: any) => handleCheck(index, ev, "airlines")}
-                                    icon={<LuSearch color="#929292" size={20} />}
-                                />
-                            </Flex>
-                            <Flex direction="column" gap="0rem" margin=".5rem 0 0">
-                                {filters[index]?.airlines.map((airline, index) =>
-                                    <CheckBox
-                                        key={index}
-                                        checked={true}
-                                        name={airline}
-                                        onChange={() => handleCheck(index, airline, "airlines")}
-                                    >
-                                        <Text type="p" text={airline} size={15} />
-                                    </CheckBox>
-                                )}
-                            </Flex>
-                        </Flex>
-                    </Panel>
-
-                    {/* Times */}
-                    <Panel
-                        title="Times"
-                        toggle={() => onToggleAcc(index, "times")}
-                        isActive={openAcc[index]?.times ?? false}
-                    >
-                        <Flex direction="column">
-                            <Flex
-                                gap=".5rem"
-                                align="center"
-                                padding="1rem"
-                                justify="space-between"
-                                borderRadius="8px"
-                                background={ttColors.grayishAsh}
+            {/* Airlines */}
+            {/* <Panel
+                title="Airlines"
+                toggle={() => onToggleAcc("airlines")}
+                isActive={openAcc.airlines}
+            >
+                <Flex direction="column" gap=".5rem">
+                    <Flex direction="column" align="space-between" gap=".5rem">
+                        <SearchStringInput
+                            placeholder="Search Airlines"
+                            options={Object.keys(sortedAirlines)}
+                            onChange={(ev: any) => handleCheck(index, ev, "airlines")}
+                            icon={<LuSearch color="#929292" size={20} />}
+                        />
+                    </Flex>
+                    <Flex direction="column" gap="0rem" margin=".5rem 0 0">
+                        {filters[index]?.airlines.map((airline, index) =>
+                            <CheckBox
+                                key={index}
+                                checked={true}
+                                name={airline}
+                                onChange={() => handleCheck(index, airline, "airlines")}
                             >
-                                <ButtonBox
-                                    active={true}
-                                    width="100%"
-                                    onClick={() => null}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Departure"
-                                        weight={500}
-                                        size={16}
-                                    />
-                                </ButtonBox>
-                                {/* <ButtonBox
-                                    active={openTimes === "return"}
-                                    width="50%"
-                                    onClick={() => setOpenTimes("return")}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Return"
-                                        weight={500}
-                                        size={16}
-                                    />
-                                </ButtonBox> */}
-                            </Flex>
-                            <Flex direction="column" gap=".25rem" padding="1rem 0">
-                                <Text type="p" text="Departure" weight={500} />
-                                <Slider
-                                    marks={[
-                                        {
-                                            value: 0,
-                                            label: filters[index]?.departTime[0]
-                                        },
-                                        {
-                                            value: 96,
-                                            label: filters[index]?.departTime[1]
-                                        },
-                                    ]}
-                                    defaultValue={[0, 96]}
-                                    onChange={(event, value) => handleTimeChange(index, value, "departTime")}
-                                    min={0}
-                                    max={96}
-                                />
-                            </Flex>
-                            <Flex direction="column" gap=".25rem" padding="1rem 0">
-                                <Text type="p" text="Arrival" weight={500} />
+                                <Text type="p" text={airline} size={15} />
+                            </CheckBox>
+                        )}
+                    </Flex>
+                </Flex>
+            </Panel> */}
+
+            {/* Times */}
+            <Panel
+                title="Times"
+                toggle={() => onToggleAcc("times")}
+                isActive={openAcc.times}
+            >
+                <Flex direction="column">
+                    <Flex
+                        gap=".5rem"
+                        align="center"
+                        padding="1rem"
+                        justify="space-between"
+                        borderRadius="8px"
+                        background={ttColors.grayishAsh}
+                    >
+                        <ButtonBox
+                            active={openTimes === "departure"}
+                            width="100%"
+                            onClick={() => setOpenTimes("departure")}
+                        >
+                            <Text
+                                type="p"
+                                text="Departure"
+                                weight={500}
+                                size={16}
+                            />
+                        </ButtonBox>
+                        <ButtonBox
+                            active={openTimes === "return"}
+                            width="50%"
+                            onClick={() => setOpenTimes("return")}
+                        >
+                            <Text
+                                type="p"
+                                text="Arrival"
+                                weight={500}
+                                size={16}
+                            />
+                        </ButtonBox>
+                    </Flex>
+                    {openTimes === "departure" ? (searchMultiCityQuery.requests.map((req, index) =>
+                        <Flex direction="column" gap=".25rem" padding="1rem 0" margin="0 0 1rem" key={`filter-times-${index}`}>
+                            <Text type="p" text={`Depart from ${capCase(req?.fly_from)}`} weight={500} />
+                            <Slider
+                                marks={[
+                                    {
+                                        value: 0,
+                                        label: filters[index]?.departTime[0]
+                                    },
+                                    {
+                                        value: 96,
+                                        label: filters[index]?.departTime[1]
+                                    },
+                                ]}
+                                defaultValue={[0, 96]}
+                                onChange={(event, value) => handleTimeChange(index, value, "departTime")}
+                                min={0}
+                                max={96}
+                            />
+                        </Flex>
+                    )) : (searchMultiCityQuery.requests.map((req, index) =>
+                            <Flex direction="column" gap=".25rem" padding="1rem 0" margin="0 0 1rem" key={`filter-stops-${index}`}>
+                                <Text type="p" text={`Arrive in ${capCase(req?.fly_to)}`} weight={500} />
                                 <Slider
                                     marks={[
                                         {
@@ -511,162 +510,161 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     min={0}
                                     max={96}
                                 />
-                            </Flex>
                         </Flex>
-                    </Panel>
+                    ))}
+                </Flex>
+            </Panel>
 
-                    {/* Alliance */}
-                    <Panel
-                        title="Alliance"
-                        toggle={() => onToggleAcc(index, "alliance")}
-                        isActive={openAcc[index]?.alliance ?? false}
-                    >
-                        <Flex direction="column" gap="0">
-                            {alliance.map((alliance, index) => (
-                                <CheckBox
-                                    key={index}
-                                    checked={filters[index]?.alliance.includes(alliance)}
-                                    name={alliance}
-                                    onChange={(e) => handleCheck(index, alliance, "alliance")}
-                                >
-                                    <Text type="p" text={alliance} size={16} />
-                                </CheckBox>
-                            ))}
-                        </Flex>
-                    </Panel>
+            {/* Alliance */}
+            {/* <Panel
+                title="Alliance"
+                toggle={() => onToggleAcc("alliance")}
+                isActive={openAcc.alliance}
+            >
+                <Flex direction="column" gap="0">
+                    {alliance.map((alliance, index) => (
+                        <CheckBox
+                            key={index}
+                            checked={filters[index]?.alliance.includes(alliance)}
+                            name={alliance}
+                            onChange={(e) => handleCheck(index, alliance, "alliance")}
+                        >
+                            <Text type="p" text={alliance} size={16} />
+                        </CheckBox>
+                    ))}
+                </Flex>
+            </Panel> */}
 
-                    {/* Duration */}
-                    <Panel
-                        title="Duration"
-                        toggle={() => onToggleAcc(index, "duration")}
-                        isActive={openAcc[index]?.duration ?? false}
-                    >
-                        <div>
-                            <Flex direction="column" gap=".25rem" padding=".5rem 0">
-                                <Text
-                                    type="p"
-                                    text="Max Travel Time"
-                                    size={16}
-                                    weight={500}
-                                />
-                                <Slider
-                                    marks={[
-                                        {
-                                            value: 2,
-                                            label: `${filters[index]?.travelTime[0]} Hours`,
-                                        },
-                                        {
-                                            value: 48,
-                                            label: `${filters[index]?.travelTime[1]} Hours`,
-                                        },
-                                    ]}
-                                    defaultValue={[filters[index]?.travelTime[0], filters[index]?.travelTime[1]]}
-                                    onChange={(event, value) => handleSlider(index, value, "travelTime")}
-                                    min={2}
-                                    max={48}
-                                    leftOffset="20px"
-                                    rightOffset="-100px"
-                                />
-                            </Flex>
-                            <Flex direction="column" gap=".25rem" padding=".5rem 0">
-                                <Text
-                                    type="p"
-                                    text="Stop Overs"
-                                    size={16}
-                                    weight={500}
-                                />
-                                <Slider
-                                    marks={[
-                                        {
-                                            value: 2,
-                                            label: `${filters[index]?.stopOver[0]} Hours`,
-                                        },
-                                        {
-                                            value: 48,
-                                            label: `${filters[index]?.stopOver[1]} Hours`,
-                                        },
-                                    ]}
-                                    defaultValue={[filters[index]?.stopOver[0], filters[index]?.stopOver[1]]}
-                                    onChange={(event, value) => handleSlider(index, value, "stopOver")}
-                                    min={2}
-                                    max={48}
-                                    leftOffset="20px"
-                                    rightOffset="-100px"
-                                />
-                            </Flex>
-                        </div>
-                    </Panel>
-
-                    {/* Price */}
-                    <Panel
-                        title="Price"
-                        toggle={() => onToggleAcc(index, "price")}
-                        isActive={openAcc[index]?.price ?? false}
-                    >
+            {/* Duration */}
+            {/* <Panel
+                title="Duration"
+                toggle={() => onToggleAcc("duration")}
+                isActive={openAcc.duration}
+            >
+                <div>
+                    <Flex direction="column" gap=".25rem" padding=".5rem 0">
                         <Text
                             type="p"
-                            text={`${formatPrice({
-                                total: filters[index]?.price[0],
-                                currency: preFerredCurrency,
-                                numberOfDecimalDigits: 0,
-                            })} - ${formatPrice({
-                                total: filters[index]?.price[1],
-                                currency: preFerredCurrency,
-                                numberOfDecimalDigits: 0,
-                            })}`}
+                            text="Max Travel Time"
                             size={16}
                             weight={500}
-                            color="#7BBBD6"
                         />
                         <Slider
                             marks={[
                                 {
-                                    value: 0,
-                                    label: formatPrice({
-                                        total: filters[index]?.price[0],
-                                        currency: preFerredCurrency,
-                                        numberOfDecimalDigits: 0,
-                                    }),
+                                    value: 2,
+                                    label: `${filters[index]?.travelTime[0]} Hours`,
                                 },
                                 {
-                                    value: 20000 * conversionRate,
-                                    label: formatPrice({
-                                        total: filters[index]?.price[1],
-                                        currency: preFerredCurrency,
-                                        numberOfDecimalDigits: 0,
-                                    }),
+                                    value: 48,
+                                    label: `${filters[index]?.travelTime[1]} Hours`,
                                 },
                             ]}
-                            defaultValue={[filters[index]?.price[0], filters[index]?.price[1]]}
-                            onChange={(event, value) => handleSlider(index, value, "price")}
-                            min={0}
-                            max={20000 * conversionRate}
-                            step={250}
-                            rightOffset="-160px"
+                            defaultValue={[filters[index]?.travelTime[0], filters[index]?.travelTime[1]]}
+                            onChange={(event, value) => handleSlider(index, value, "travelTime")}
+                            min={2}
+                            max={48}
+                            leftOffset="20px"
+                            rightOffset="-100px"
                         />
-                    </Panel>
+                    </Flex>
+                    <Flex direction="column" gap=".25rem" padding=".5rem 0">
+                        <Text
+                            type="p"
+                            text="Stop Overs"
+                            size={16}
+                            weight={500}
+                        />
+                        <Slider
+                            marks={[
+                                {
+                                    value: 2,
+                                    label: `${filters[index]?.stopOver[0]} Hours`,
+                                },
+                                {
+                                    value: 48,
+                                    label: `${filters[index]?.stopOver[1]} Hours`,
+                                },
+                            ]}
+                            defaultValue={[filters[index]?.stopOver[0], filters[index]?.stopOver[1]]}
+                            onChange={(event, value) => handleSlider(index, value, "stopOver")}
+                            min={2}
+                            max={48}
+                            leftOffset="20px"
+                            rightOffset="-100px"
+                        />
+                    </Flex>
+                </div>
+            </Panel> */}
 
-                    {/* Cabin */}
-                    <Panel
-                        title="Cabin"
-                        toggle={() => onToggleAcc(index, "cabin")}
-                        isActive={openAcc[index]?.cabin ?? false}
-                        last
-                    >
-                        <Flex direction="column" gap=".25rem" margin="0 0 1.5rem 0">
-                            <CustomRadioGroup
-                                options={cabinOptions}
-                                name="cabin"
-                                onChange={(ev) => handleRadio(index, ev)}
-                                value={filters[index]?.cabin}
-                                justifyContent="flex-end"
-                                align="flex-start"
-                                direction="column"
-                            />
-                        </Flex>
-                    </Panel>
-                </Accordion>
-            )}
+            {/* Price */}
+            {/* <Panel
+                title="Price"
+                toggle={() => onToggleAcc("price")}
+                isActive={openAcc.price}
+            >
+                <Text
+                    type="p"
+                    text={`${formatPrice({
+                        total: filters[index]?.price[0],
+                        currency: preFerredCurrency,
+                        numberOfDecimalDigits: 0,
+                    })} - ${formatPrice({
+                        total: filters[index]?.price[1],
+                        currency: preFerredCurrency,
+                        numberOfDecimalDigits: 0,
+                    })}`}
+                    size={16}
+                    weight={500}
+                    color="#7BBBD6"
+                />
+                <Slider
+                    marks={[
+                        {
+                            value: 0,
+                            label: formatPrice({
+                                total: filters[index]?.price[0],
+                                currency: preFerredCurrency,
+                                numberOfDecimalDigits: 0,
+                            }),
+                        },
+                        {
+                            value: 20000 * conversionRate,
+                            label: formatPrice({
+                                total: filters[index]?.price[1],
+                                currency: preFerredCurrency,
+                                numberOfDecimalDigits: 0,
+                            }),
+                        },
+                    ]}
+                    defaultValue={[filters[index]?.price[0], filters[index]?.price[1]]}
+                    onChange={(event, value) => handleSlider(index, value, "price")}
+                    min={0}
+                    max={20000 * conversionRate}
+                    step={250}
+                    rightOffset="-160px"
+                />
+            </Panel> */}
+
+            {/* Cabin */}
+            {/* <Panel
+                title="Cabin"
+                toggle={() => onToggleAcc("cabin")}
+                isActive={openAcc.cabin}
+                last
+            >
+                <Flex direction="column" gap=".25rem" margin="0 0 1.5rem 0">
+                    <CustomRadioGroup
+                        options={cabinOptions}
+                        name="cabin"
+                        onChange={(ev) => handleRadio(index, ev)}
+                        value={filters[index]?.cabin}
+                        justifyContent="flex-end"
+                        align="flex-start"
+                        direction="column"
+                    />
+                </Flex>
+            </Panel> */}
         </Flex>
     )
 }

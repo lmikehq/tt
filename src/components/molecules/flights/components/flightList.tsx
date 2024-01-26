@@ -4,7 +4,6 @@ import SortedColumn from "./sortedColumn";
 import Section from "src/components/molecules/section";
 import AvailableFlights from "./availableFlights";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { useParams } from "next/navigation";
 import { useQueryParams } from "@/hooks/useNext";
 import MultiFlightPreviewCard from "./MultiFlightPreviewCard";
 import AvailableMultiFlights from "../multi/AvailableMultiFlights";
