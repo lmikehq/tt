@@ -248,8 +248,17 @@ function SortedFlightsTab({
                         <SortOption
                             label="Fastest"
                             flightTime={computeDuration(
-                                multi ? (fastest as Multi_SingleFlightInfo).route.reduce((acc, curr) => acc + curr.duration.total, 0)
-                                : (fastest as FlightInfo).duration.total
+
+                                multi
+                                    ? (
+                                          fastest as Multi_SingleFlightInfo
+                                      )?.route.reduce(
+                                          (acc, curr) =>
+                                              acc + curr.duration.total,
+                                          0
+                                      )
+                                    : (fastest as FlightInfo).duration.total
+
                             )}
                             isLoading={isLoading}
                         />
