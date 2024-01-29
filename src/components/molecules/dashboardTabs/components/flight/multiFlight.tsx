@@ -26,9 +26,9 @@ export const MultiFlightComp = () => {
     <FlightHistory>
       <Flex align="stretch" gap="20px">
         <Flex direction="column" styles={{ flexBasis: '90%', flexGrow: 1 }}>
-          {[1, 2, 3].map(() => {
+          {[1, 2, 3].map((key) => {
             return (
-              <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="center" gap="80px" padding="28px 24px">
+              <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="center" gap="80px" padding="28px 24px" key={key}>
                 <Flex gap="1.5rem" align="center">
                   <Flex direction="column" align="center" justify="flex-start" width="15%">
                     <Text type="h1" text="25" size={48} weight={600} />
