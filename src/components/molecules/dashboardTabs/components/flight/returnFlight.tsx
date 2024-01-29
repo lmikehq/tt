@@ -28,9 +28,9 @@ export const ReturnFlightComp = () => {
   };
   return (
     <FlightHistory>
-      <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="flex-start" gap="80px" padding="28px 24px">
+      <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="center" gap="80px" padding="28px 24px">
 
-        <Flex gap="1.5rem" align="flex-start">
+        <Flex gap="1.5rem" align="center">
           <Flex direction="column" align="center" justify="flex-start" width="15%">
             <Text type="h1" text="25" size={48} weight={600} />
             <Text
@@ -117,8 +117,8 @@ export const ReturnFlightComp = () => {
         </Flex>
       </Grid>
 
-      <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="flex-start" gap="80px" padding="28px 24px">
-        <Flex gap="1.5rem" align="flex-start">
+      <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="center" gap="80px" padding="28px 24px">
+        <Flex gap="1.5rem" align="center">
           <Flex direction="column" align="center" width="15%">
             <Text type="h1" text="12" size={48} weight={600} />
             <Text

@@ -80,7 +80,7 @@ const mockVisa = {
 export const mockFlightBooking: DashboardFlightBookingProps[] = [
   {
     _id: "65855d2b46e6a6437258e958",
-    flightType: 'ONE WAY',
+    flightType: 'MULTI CITY',
     bookingId: 480745969,
     totalAmount: 14973.567,
     ticketPrice: "14973.567",

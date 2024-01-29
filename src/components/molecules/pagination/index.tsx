@@ -20,7 +20,7 @@ const PaginationCtrl = <T,>({ page, setPage, data }: PaginationProp<T>) => {
       <Grid columns={''} style={{ gridTemplateColumns: '150px 150px' }} gap="10px">
         <Button
           width="100%"
-          styles={{ maxWidth: '100%' }}
+          styles={{ maxWidth: '100%', background: 'transparent !important' }}
           disabled={page === 1 ? true : false}
           background={'transparent'}
           border={`1px solid ${ttColors.dark}`}

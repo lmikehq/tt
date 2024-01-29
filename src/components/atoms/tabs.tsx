@@ -201,6 +201,7 @@ export default function CustomTab({
                       text={tabItem.label}
                       size={isMobile ? "1rem" : "1rem"}
                       weight={600}
+                      color={tabItem.value === value ? '#000' : ''}
                     />
                   </Flex>
                 }
