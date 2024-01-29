@@ -88,7 +88,7 @@ export default function TripSummaryCard({
     flights,
 }: TripSummaryCardProps) {
     const { isMobile } = useScreenResolution();
-    const { push, back } = useRouter();
+    const { back } = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
