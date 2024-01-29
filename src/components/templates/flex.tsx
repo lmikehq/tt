@@ -1,9 +1,9 @@
 "use client";
 
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, forwardRef } from "react";
 import styled from "styled-components";
 
-interface flexProps {
+export interface FlexProps {
   children?: React.ReactNode;
   justify?:
   | "center"
@@ -18,7 +18,8 @@ interface flexProps {
   | "flex-end"
   | "stretch"
   | "baseline"
-  | "space-between";
+  | "space-between"
+  | "";
   gap?: string;
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   alignSelf?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
@@ -53,18 +54,18 @@ interface flexProps {
   | "inherit"
   | "initial"
   | "unset";
-  wrap?: "wrap" | "nowrap" | "unset";
-  border?: string;
-  height?: string;
-  cursor?: string;
-  ref?: any;
-  onClick?: (e: any) => void;
-  onMouseOver?: (e: any) => void;
-  onMouseLeave?: (e: any) => void;
-  onMouseEnter?: (e: any) => void;
-  className?: string;
-  position?: CSSProperties["position"];
-  color?: string;
+    wrap?: "wrap" | "nowrap" | "unset";
+    border?: string;
+    height?: string;
+    cursor?: string;
+    onClick?: (e: any) => void;
+    onMouseOver?: (e: any) => void;
+    onMouseLeave?: (e: any) => void;
+    onMouseEnter?: (e: any) => void;
+    onScroll?: (e: any) => void;
+    className?: string;
+    position?: CSSProperties["position"];
+    color?: string;
 }
 
 const FlexWrapper = styled.div`
@@ -72,82 +73,85 @@ const FlexWrapper = styled.div`
     transition: all 300ms ease-out;
 `;
 
-const Flex: React.FC<flexProps> = ({
-  children,
-  justify,
-  align,
-  gap,
-  direction,
-  margin,
-  padding,
-  background,
-  width,
-  maxWidth,
-  height,
-  borderRadius,
-  id,
-  overflow,
-  overflowY,
-  overflowX,
-  wrap,
-  border,
-  borderBottom,
-  borderLeft,
-  borderRight,
-  borderTop,
-  alignSelf,
-  cursor,
-  ref,
-  styles,
-  onClick,
-  className,
-  position,
-  onMouseOver,
-  onMouseLeave,
-  onMouseEnter,
-  color
-}) => {
-  return (
-    <FlexWrapper
-      className={className}
-      ref={ref}
-      id={id}
-      style={{
-        margin: margin,
-        display: "flex",
-        justifyContent: justify,
-        alignItems: align,
-        gap: gap,
-        cursor,
-        flexDirection: direction,
-        background: background,
-        width: width,
-        maxWidth: maxWidth,
-        overflow: overflow || "unset",
-        overflowY: overflowY,
-        overflowX: overflowX,
-        borderRadius: borderRadius,
-        borderBottom: borderBottom ?? border,
-        borderTop: borderTop,
-        borderRight: borderRight,
-        borderLeft: borderLeft,
-        border: border,
-        padding: padding,
-        flexWrap: wrap,
-        height: height,
-        alignSelf: alignSelf,
-        position,
-        color: color,
-        ...styles,
-      }}
-      onClick={onClick}
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
-      onMouseEnter={onMouseEnter}
-    >
-      {children}
-    </FlexWrapper>
-  );
-};
+const Flex = forwardRef(function Flex ({
+    children,
+    justify,
+    align,
+    gap,
+    direction,
+    margin,
+    padding,
+    background,
+    width,
+    maxWidth,
+    height,
+    borderRadius,
+    id,
+    overflow,
+    overflowY,
+    overflowX,
+    wrap,
+    border,
+    borderBottom,
+    borderLeft,
+    borderRight,
+    borderTop,
+    alignSelf,
+    cursor,
+    styles,
+    onClick,
+    className,
+    position,
+    onMouseOver,
+    onMouseLeave,
+    onMouseEnter,
+    onScroll,
+    color
+}: FlexProps, ref: any) {
+    return (
+        <FlexWrapper
+            className={className}
+            ref={ref}
+            id={id}
+            style={{
+                margin: margin,
+                display: "flex",
+                justifyContent: justify,
+                alignItems: align,
+                gap: gap,
+                cursor,
+                flexDirection: direction,
+                background: background,
+                width: width,
+                maxWidth: maxWidth,
+                overflow: overflow || "unset",
+                overflowY: overflowY,
+                overflowX: overflowX,
+                borderRadius: borderRadius,
+                borderBottom: borderBottom ?? border,
+                borderTop: borderTop,
+                borderRight: borderRight,
+                borderLeft: borderLeft,
+                border: border,
+                padding: padding,
+                flexWrap: wrap,
+                height: height,
+                alignSelf: alignSelf,
+                position,
+                color: color,
+                ...styles,
+            }}
+            onClick={onClick}
+            onMouseOver={onMouseOver}
+            onMouseLeave={onMouseLeave}
+            onMouseEnter={onMouseEnter}
+            onScroll={onScroll}
+        >
+            {children}
+        </FlexWrapper>
+    );
+})
+
+Flex.displayName = 'Flex'
 export default Flex;
 

@@ -18,6 +18,7 @@ export const ttColors = {
   primary600: "#7BBBD6",
   primary300: "#DAF0F9",
   primary100: "#F3FAFD",
+  primary50: "#F3FAFD66",
   defaultColor: "#FFFFFF",
   salmon: "#FF8682",
   slamon: "#FF8682",

@@ -22,6 +22,7 @@ import { mockFlightBooking } from "@/lib/extensions/data/mock";
 import { MobileReturnFlightComp, ReturnFlightComp } from "./flight/returnFlight";
 import PaginationCtrl from "../../pagination";
 import { MobileSingleFlightComp, SingleFlightComp } from "./flight/singleFlight";
+import { MultiFlightComp } from "./flight/multiFlight";
 
 const FlightWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -112,7 +113,7 @@ const Flight = () => {
       case 'MULTI CITY':
         return (
           <>
-            {isMobile ? ('') : ('')}
+            {isMobile ? ('') : (<MultiFlightComp />)}
           </>
         );
     }

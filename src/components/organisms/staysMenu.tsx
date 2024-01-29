@@ -8,6 +8,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import Section from "../molecules/section";
 import Button from "../atoms/button";
+import { Select } from "@mui/material";
 
 const FlightDropdown = styled.section<{ isMobile: boolean }>`
     border: 1px solid ${ttColors.gray};
@@ -20,6 +21,49 @@ const FlightDropdown = styled.section<{ isMobile: boolean }>`
     z-index: 2;
 `;
 
+// position: relative;
+// width: 100px;
+// height: 48px;
+// border-radius: 4px;
+// border: none;
+// outline: none;
+// text-transform: lowercase;
+// color: #101010;
+// background: #e7e7e7;
+// text-align: left;
+// padding: 0 10px;
+// font-size: 16px;
+// cursor: pointer;
+
+// &::after {
+//     position: absolute;
+//     right: 40px;
+//     top: 50%;
+//     transform: translateY(-50%) rotate(45deg);
+//     width: 16px;
+//     height: 16px;
+//     border-right: 4px solid #101010;
+//     border-bottom: 4px solid #101010;
+// }
+const SelectWrapper = styled.select`
+    display: block;
+    width: 100px;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    color: #101010;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 0.7rem;
+    text-transform: lowercase;
+    border: none;
+    background: url("/assets/icons/chevron_down.svg") no-repeat #e7e7e7;
+    background-position: right 0.4rem center;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+`;
 interface CounterProps {
     value: string;
     onAdd: () => void;
@@ -61,7 +105,7 @@ function Counter({
             </Flex>
             <AiOutlinePlusCircle
                 size={32}
-                onClick={onAdd}
+                onClick={disabledAdd ? () => {} : onAdd}
                 cursor={disabledAdd ? "initial" : "pointer"}
                 color={disabledAdd ? ttColors.gray : "#606060"}
             />
@@ -88,21 +132,16 @@ function StaysMenu() {
                 maxHeight="37.5rem"
                 styles={{ overflowY: "auto" }}
             >
-                <Flex direction="column" gap="1rem">
+                <Flex direction="column" gap="2rem">
                     {roomForGuests.map((el, index) => (
                         <Section key={index}>
-                            {index != 0 && (
-                                <Button
-                                    border={"solid 1px " + ttColors.red}
-                                    color={ttColors.red}
-                                    background="transparent"
-                                    onClick={() => deleteGuestRoom({ index })}
-                                    margin="0 0 1rem 0"
-                                >
-                                    Delete
-                                </Button>
-                            )}
-
+                            <Text
+                                type="h5"
+                                size={18}
+                                weight={500}
+                                text={"Room " + (index + 1)}
+                                margin={" 0 0 1rem  0"}
+                            />
                             <Flex
                                 direction="column"
                                 justify="center"
@@ -120,7 +159,7 @@ function StaysMenu() {
                                     >
                                         <Text
                                             type="p"
-                                            size={15}
+                                            size={16}
                                             text="Adults"
                                             weight={500}
                                         />
@@ -168,13 +207,13 @@ function StaysMenu() {
                                     >
                                         <Text
                                             type="p"
-                                            size={15}
+                                            size={16}
                                             text="Children"
                                             weight={500}
                                         />
                                         <Text
                                             type="p"
-                                            text="Ages 2 - 11"
+                                            text="Ages 0 - 17"
                                             size={13}
                                             color={ttColors.gray}
                                         />
@@ -188,7 +227,7 @@ function StaysMenu() {
                                                     ...el,
                                                     children: [
                                                         ...el.children,
-                                                        4,
+                                                        1,
                                                     ],
                                                 },
                                             })
@@ -198,11 +237,13 @@ function StaysMenu() {
                                                 index,
                                                 roomForGuest: {
                                                     ...el,
-                                                    children:
+                                                    children: (() => {
                                                         el.children.splice(
                                                             0,
                                                             1
-                                                        ),
+                                                        );
+                                                        return el.children;
+                                                    })(),
                                                 },
                                             })
                                         }
@@ -213,9 +254,86 @@ function StaysMenu() {
                                     />
                                 </Flex>
                             </Flex>
+                            {el.children.length != 0 && (
+                                <Section margin="2rem 0 0">
+                                    <Text
+                                        type="p"
+                                        text="Select Children Age"
+                                        size={16}
+                                        weight={500}
+                                        margin="0 0 1rem 0"
+                                    />
+
+                                    <Flex gap="1rem" wrap="wrap">
+                                        {el.children.map((element, i) => (
+                                            <SelectWrapper
+                                                className="select"
+                                                key={index}
+                                                onChange={(e) => {
+                                                    const value = parseInt(
+                                                        e.target.value
+                                                    );
+                                                    const children =
+                                                        roomForGuests[index]
+                                                            .children;
+                                                    children[i] = value;
+                                                    updateGuestRoom({
+                                                        index,
+                                                        roomForGuest: {
+                                                            ...el,
+                                                            children,
+                                                        },
+                                                    });
+                                                }}
+                                                value={
+                                                    roomForGuests[index]
+                                                        .children[i] ?? 1
+                                                }
+                                            >
+                                                {Array.from(
+                                                    { length: 18 },
+                                                    (_el, index) => (
+                                                        <option
+                                                            key={
+                                                                "room-" +
+                                                                index +
+                                                                "-child-" +
+                                                                i
+                                                            }
+                                                            value={index}
+                                                            style={{
+                                                                textTransform:
+                                                                    "lowercase",
+                                                            }}
+                                                        >
+                                                            {index +
+                                                                " year" +
+                                                                (index == 1
+                                                                    ? ""
+                                                                    : "s")}
+                                                        </option>
+                                                    )
+                                                )}
+                                            </SelectWrapper>
+                                        ))}
+                                    </Flex>
+                                </Section>
+                            )}
+                            {index != 0 && (
+                                <Button
+                                    border={"solid 1px " + ttColors.red}
+                                    color={ttColors.red}
+                                    background="transparent"
+                                    onClick={() => deleteGuestRoom({ index })}
+                                    margin="1rem 0 0rem 0"
+                                >
+                                    Delete
+                                </Button>
+                            )}
                         </Section>
                     ))}
                 </Flex>
+
                 <Section margin="2rem 0 0 0">
                     <Button width="100%" onClick={() => addNewGuestRoom()}>
                         Add Room

@@ -24,6 +24,8 @@ import {
   ManyStaysRequestInput,
   extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
+import Spinner from "../../icons/spinner";
+import Text from "@/components/atoms/text";
 
 // FavoriteBoxSkeleton Component
 export const FavoriteBoxSkeleton: React.FC = () => (
@@ -227,32 +229,42 @@ function HotelBoxSkeleton() {
 function AvailableRooms() {
   const { isMobile } = useScreenResolution();
 
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const checkIn = searchParams.get("checkIn");
-  const checkOut = searchParams.get("checkOut");
-  const guests = searchParams.get("guests");
-  const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
-    (state) => state
-  );
+    const searchParams = useSearchParams();
+    const regionId = searchParams.get("regionId");
+    const checkIn = searchParams.get("checkIn");
+    const checkOut = searchParams.get("checkOut");
+    const guests = searchParams.get("guests");
+    const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
+        (state) => state
+    );
 
-  const staysRequestParams = (): ManyStaysRequestInput => ({
-    checkin: checkIn ?? "",
-    checkout: checkOut ?? "",
-    residency: "ng",
-    language: preferredLanguage,
-    guests: extractRoomForGuestsFromString(guests ?? ""),
-    currency: preFerredCurrency,
-  });
+    const staysRequestParams = (): ManyStaysRequestInput => ({
+        region_id: regionId ?? "",
+        checkin: checkIn ?? "",
+        checkout: checkOut ?? "",
+        residency: "ng",
+        language: preferredLanguage,
+        guests: extractRoomForGuestsFromString(guests ?? ""),
+        currency: preFerredCurrency,
+    });
 
-  const { staySearchFilters } = useStaySearchStore((state) => state);
+    const {
+        staySearchFilters,
+        updateStaySearchMeta,
+        staySearchMeta,
+        staySearchSort,
+    } = useStaySearchStore((state) => state);
 
-  const { data = [], isFetching } = useSearchStays({
-    query: { ...staySearchFilters },
-    payload: staysRequestParams(),
-  });
-  const hotels = data as HotelBySearchInterface[];
-  const router = useRouter();
+    const { data = [], isFetching } = useSearchStays({
+        query: {
+            ...staySearchFilters,
+            sortBy: staySearchSort,
+            // ...staySearchMeta,
+        },
+        payload: staysRequestParams(),
+    });
+    const hotels = data as HotelBySearchInterface[];
+    const router = useRouter();
 
   const [sortType, setSortType] = useState("best");
 
@@ -287,23 +299,36 @@ function AvailableRooms() {
       />
       <RoomSlider hotels={hotels} />
 
-      {hotels?.slice(4).map((hotel, index) => (
-        <RoomBox hotel={hotel} index={index} key={index} />
-      ))}
+            {hotels?.slice(4).map((hotel, index) => (
+                <RoomBox hotel={hotel} index={index} key={index} />
+            ))}
 
-      <Flex justify="center" styles={{ marginTop: "40px" }}>
-        <span className="pagination">
-          <Pagination
-            className="paginationItemStyle"
-            count={10}
-            color="primary"
-            variant="outlined"
-            shape="rounded"
-          />
-        </span>
-      </Flex>
-    </div>
-  );
+            <Flex justify="center" styles={{ marginTop: "40px" }}>
+                <Button
+                    width="100%"
+                    background="#06062A"
+                    padding="2rem 0"
+                    onClick={() =>
+                        updateStaySearchMeta({
+                            ...staySearchMeta,
+                            page: (staySearchMeta?.page ?? 1) + 1,
+                        })
+                    }
+                >
+                    {isFetching ? (
+                        <Spinner fill={ttColors.primary} size={"25px"} />
+                    ) : (
+                        <Text
+                            type="p"
+                            text="Load More"
+                            weight={500}
+                            size={18}
+                        />
+                    )}
+                </Button>
+            </Flex>
+        </div>
+    );
 }
 
 export default AvailableRooms;

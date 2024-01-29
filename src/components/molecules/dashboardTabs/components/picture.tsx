@@ -174,7 +174,7 @@ function UserPicture() {
             <DashboardCoverPicture>
                 <Image
                     src={
-                        user?.coverPicture ||
+                        // user?.coverPicture ||
                         "/assets/images/dashboard/cover_background.svg"
                     }
                     alt="cover-picture"
@@ -244,7 +244,7 @@ function UserPicture() {
                         />
                         <Text
                             type="p"
-                            text={user?.email}
+                            text={user?.email ?? ""}
                             size={16}
                             color={ttColors.blackishGreen}
                             margin="0.75rem 0"
