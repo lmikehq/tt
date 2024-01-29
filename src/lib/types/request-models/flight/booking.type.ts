@@ -472,6 +472,8 @@ export interface MultiFlightQuery {
     stops: string;
     airlines: string[];
     alliance: string[];
+    flyFrom: string;
+    flyTo: string;
 }
 export const defaultMultiQuery: MultiFlightQuery = {
     cabinBags: 1,
@@ -485,6 +487,8 @@ export const defaultMultiQuery: MultiFlightQuery = {
     stops: "",
     airlines: [],
     alliance: [],
+    flyFrom: '',
+    flyTo: '',
 };
 
 export const parseMultiFlightQuery = (
