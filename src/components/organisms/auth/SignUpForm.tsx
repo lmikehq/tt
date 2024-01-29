@@ -203,7 +203,7 @@ const SignUpForm = ({ setLoginView, handleClose }: AuthFormProps) => {
             />
             <Text
                 type="p"
-                text="Let’s get you all st up so you can access your personal account."
+                text="Let’s get you all set up so you can access your personal account."
                 size={isMobile ? "14px" : "17px"}
                 weight={isMobile ? 300 : 400}
             />

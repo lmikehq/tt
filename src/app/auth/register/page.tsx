@@ -282,7 +282,7 @@ if(!validateEmail(registerData.email)){
             />
             <Text
               type="p"
-              text="Let’s get you all st up so you can access your personal account."
+              text="Let’s get you all set up so you can access your personal account."
               size="17px"
               weight={400}
             />
