@@ -24,7 +24,10 @@ import { FaQuestion } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
 import { cleanObject, dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
-import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
+import {
+    FlightSortEnum,
+    SearchFlightsRequestQuery,
+} from "@/lib/types/request-models/flight/booking.type";
 import { IoShareSocial } from "react-icons/io5";
 import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
@@ -477,8 +480,9 @@ function AvailableMultiFlights() {
         data: flightData,
         isLoading,
     } = useSearchMulticity(searchMultiCityQuery, {
-        enabled: shouldFetch,
+        enabled: searchMultiCityQuery.requests.length > 1,
     });
+    console.log("mmm", searchMultiCityQuery);
     const [bestSortData, cheapestSortData, fastestSortData, earliestSortData] =
         useSearchMulticityBySort(searchMultiCityQuery, {
             enabled: searchMultiCityQuery.requests.length > 1,
@@ -619,77 +623,77 @@ function AvailableMultiFlights() {
         flight?.arrivalCountry &&
         flight?.departureDate;
 
-    useEffect(() => {
-        // const adults = Number(queryParams?.adults);
-        // const children = Number(queryParams?.children);
-        // const cabin = Number(queryParams?.cabinBags);
-        // const checked = Number(queryParams?.checkedBags);
-        // const adultsAndChildren = adults + children;
-        // const shareCabinBags = (numPass: number, numBags: number) => {
-        //     const arrBags = Array.from({ length: numBags }).fill(1);
-        //     const arrPass = Array.from({ length: numPass }).fill(0);
-        //     return arrPass.map((e) => {
-        //         let val = arrBags.length > 0 ? 1 : 0;
-        //         arrBags.pop();
-        //         return val;
-        //     });
-        // };
-        // const shareCheckedBags = (numPass: number, numBags: number) => {
-        //     const arrBags = Array.from({ length: numBags }).fill(1);
-        //     const arrPass = Array.from({ length: numPass }).fill(0);
-        //     arrBags.forEach((e, ind, arr) => {
-        //         arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
-        //     });
-        //     return arrPass;
-        // };
-        // const sharedCabin = shareCabinBags(
-        //     adultsAndChildren,
-        //     Number(queryParams?.cabinBags)
-        // );
-        // const sharedChecked = shareCheckedBags(
-        //     adultsAndChildren,
-        //     Number(queryParams?.checkedBags)
-        // );
-        // const adultHandBags =
-        //     adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
-        // const adultHoldBags =
-        //     adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
-        // const childHandBags =
-        //     children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
-        // const childHoldBags =
-        //     children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
-        // const sanitizedQuery = {
-        //     ...searchQuery,
-        //     fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
-        //     fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
-        //     date_from: queryParams?.date_from ?? searchQuery?.date_from,
-        //     return_from:
-        //         flightState?.stops === "round"
-        //             ? queryParams?.return_from ?? searchQuery?.return_from
-        //             : undefined,
-        //     return_to:
-        //         flightState?.stops === "round"
-        //             ? queryParams?.return_from ?? searchQuery?.return_from
-        //             : undefined,
-        //     selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
-        //     adults: Number(queryParams?.adults ?? searchQuery?.adults),
-        //     children: Number(queryParams?.children ?? searchQuery?.children),
-        //     infants: Number(queryParams?.infants ?? searchQuery?.infants),
-        //     adult_hand_bag: adultHandBags,
-        //     adult_hold_bag: adultHoldBags,
-        //     child_hand_bag: childHandBags,
-        //     child_hold_bag: childHoldBags,
-        // };
-        //
-        // if (
-        //     sanitizedQuery?.fly_from &&
-        //     sanitizedQuery?.fly_to &&
-        //     sanitizedQuery?.date_from &&
-        //     sanitizedQuery?.adults
-        // ) {
-        //     handleSearchResults({ ...cleanObject(sanitizedQuery) });
-        // }
-    }, [queryParams, preFerredCurrency]);
+    // useEffect(() => {
+    //     // const adults = Number(queryParams?.adults);
+    //     // const children = Number(queryParams?.children);
+    //     // const cabin = Number(queryParams?.cabinBags);
+    //     // const checked = Number(queryParams?.checkedBags);
+    //     // const adultsAndChildren = adults + children;
+    //     // const shareCabinBags = (numPass: number, numBags: number) => {
+    //     //     const arrBags = Array.from({ length: numBags }).fill(1);
+    //     //     const arrPass = Array.from({ length: numPass }).fill(0);
+    //     //     return arrPass.map((e) => {
+    //     //         let val = arrBags.length > 0 ? 1 : 0;
+    //     //         arrBags.pop();
+    //     //         return val;
+    //     //     });
+    //     // };
+    //     // const shareCheckedBags = (numPass: number, numBags: number) => {
+    //     //     const arrBags = Array.from({ length: numBags }).fill(1);
+    //     //     const arrPass = Array.from({ length: numPass }).fill(0);
+    //     //     arrBags.forEach((e, ind, arr) => {
+    //     //         arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
+    //     //     });
+    //     //     return arrPass;
+    //     // };
+    //     // const sharedCabin = shareCabinBags(
+    //     //     adultsAndChildren,
+    //     //     Number(queryParams?.cabinBags)
+    //     // );
+    //     // const sharedChecked = shareCheckedBags(
+    //     //     adultsAndChildren,
+    //     //     Number(queryParams?.checkedBags)
+    //     // );
+    //     // const adultHandBags =
+    //     //     adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
+    //     // const adultHoldBags =
+    //     //     adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
+    //     // const childHandBags =
+    //     //     children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
+    //     // const childHoldBags =
+    //     //     children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
+    //     // const sanitizedQuery = {
+    //     //     ...searchQuery,
+    //     //     fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
+    //     //     fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
+    //     //     date_from: queryParams?.date_from ?? searchQuery?.date_from,
+    //     //     return_from:
+    //     //         flightState?.stops === "round"
+    //     //             ? queryParams?.return_from ?? searchQuery?.return_from
+    //     //             : undefined,
+    //     //     return_to:
+    //     //         flightState?.stops === "round"
+    //     //             ? queryParams?.return_from ?? searchQuery?.return_from
+    //     //             : undefined,
+    //     //     selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
+    //     //     adults: Number(queryParams?.adults ?? searchQuery?.adults),
+    //     //     children: Number(queryParams?.children ?? searchQuery?.children),
+    //     //     infants: Number(queryParams?.infants ?? searchQuery?.infants),
+    //     //     adult_hand_bag: adultHandBags,
+    //     //     adult_hold_bag: adultHoldBags,
+    //     //     child_hand_bag: childHandBags,
+    //     //     child_hold_bag: childHoldBags,
+    //     // };
+    //     //
+    //     // if (
+    //     //     sanitizedQuery?.fly_from &&
+    //     //     sanitizedQuery?.fly_to &&
+    //     //     sanitizedQuery?.date_from &&
+    //     //     sanitizedQuery?.adults
+    //     // ) {
+    //     //     handleSearchResults({ ...cleanObject(sanitizedQuery) });
+    //     // }
+    // }, [queryParams, preFerredCurrency]);
 
     useEffect(() => {
         const interval = setTimeout(() => {
@@ -714,16 +718,14 @@ function AvailableMultiFlights() {
             requests[0] = {
                 ...requests[0],
                 curr: preFerredCurrency,
+                sort: FlightSortEnum.best,
+                limit: 20,
             };
             updateSearchMultiCityQuery({ requests: data });
             setShouldFetch(true);
         }
     }, [flyFrom]);
 
-    const best = bestSortData.data ? bestSortData?.data[0] : null;
-    const cheapest = cheapestSortData.data ? cheapestSortData?.data[0] : null;
-    const fastest = fastestSortData.data ? fastestSortData?.data[0] : null;
-    const earliest = earliestSortData.data ? earliestSortData?.data[0] : null;
     return (
         <Flex
             direction="column"
@@ -733,10 +735,16 @@ function AvailableMultiFlights() {
         >
             {formComplete && (
                 <SortedFlightsTab
-                    best={best}
-                    cheapest={cheapest}
-                    fastest={fastest}
-                    earliest={earliest}
+                    best={bestSortData.data ? bestSortData?.data[0] : null}
+                    cheapest={
+                        cheapestSortData.data ? cheapestSortData?.data[0] : null
+                    }
+                    fastest={
+                        fastestSortData.data ? fastestSortData?.data[0] : null
+                    }
+                    earliest={
+                        earliestSortData.data ? earliestSortData?.data[0] : null
+                    }
                     isLoading={isLoading}
                     multi={true}
                 />

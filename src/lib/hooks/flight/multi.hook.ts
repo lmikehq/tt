@@ -22,6 +22,7 @@ export const useSearchMulticity = (
     params: SearchMultiFlightRequestQuery,
     options?: UseQueryOptions<SearchMultiFlightsResponse>
 ) => {
+    console.log(params, "real params");
     return useQuery({
         queryKey: ["search-multiflight", params],
         queryFn: () =>
@@ -34,48 +35,88 @@ export const useSearchMulticityBySort = (
     params: SearchMultiFlightRequestQuery,
     options?: UseQueryOptions<SearchMultiFlightsResponse>
 ) => {
-    let payload = { ...params };
-    console.log(payload, "s");
-    payload.requests[0] = {
-        ...payload.requests[0],
-        limit: 1,
-    };
+    // let payload = { ...params };
+    // console.log(payload, "s");
+    // payload.requests[0] = {
+    //     ...payload.requests[0],
+    //     limit: 1,
+    // };
 
     return useQueries({
         queries: [
             {
                 queryKey: ["search-multiflight-best-sort", params],
                 queryFn: () => {
-                    let data = { ...payload };
-                    data.requests[0].sort = FlightSortEnum.best;
-                    return FlightBookingService.searchMultiFlights({ data });
+                    const query = {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.best,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    };
+                    return FlightBookingService.searchMultiFlights({
+                        data: query,
+                    });
                 },
                 ...options,
             },
             {
                 queryKey: ["search-multiflight-cheapest-sort", params],
                 queryFn: () => {
-                    let data = payload;
-                    data.requests[0].sort = FlightSortEnum.cheapest;
-                    return FlightBookingService.searchMultiFlights({ data });
+                    const query = {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.best,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    };
+                    return FlightBookingService.searchMultiFlights({
+                        data: query,
+                    });
                 },
                 ...options,
             },
             {
                 queryKey: ["search-multiflight-fastest-sort", params],
                 queryFn: () => {
-                    let data = payload;
-                    data.requests[0].sort = FlightSortEnum.fastest;
-                    return FlightBookingService.searchMultiFlights({ data });
+                    const query = {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.best,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    };
+                    return FlightBookingService.searchMultiFlights({
+                        data: query,
+                    });
                 },
                 ...options,
             },
             {
                 queryKey: ["search-multiflight-earliest-sort", params],
                 queryFn: () => {
-                    let data = payload;
-                    data.requests[0].sort = FlightSortEnum.earliest;
-                    return FlightBookingService.searchMultiFlights({ data });
+                    const query = {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.best,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    };
+                    return FlightBookingService.searchMultiFlights({
+                        data: query,
+                    });
                 },
                 ...options,
             },

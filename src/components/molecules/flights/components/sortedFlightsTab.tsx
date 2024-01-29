@@ -251,7 +251,7 @@ function SortedFlightsTab({
                                 multi
                                     ? (
                                           fastest as Multi_SingleFlightInfo
-                                      ).route.reduce(
+                                      )?.route.reduce(
                                           (acc, curr) =>
                                               acc + curr.duration.total,
                                           0
