@@ -5,6 +5,7 @@ import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { ttColors } from "@/lib/theme/colors";
 import {
+  CSSProperties,
   MouseEventHandler,
   Ref,
   SyntheticEvent,
@@ -45,6 +46,7 @@ interface CustomDatePickerProps {
   format?: string;
   width?: string;
   height?: string;
+  styles?: CSSProperties;
   selectsRange?: boolean;
   border?: string;
 }
@@ -114,6 +116,7 @@ export const DatePicker = ({
   position,
   format,
   selectsRange,
+  styles,
   border
 }: CustomDatePickerProps) => {
   const { isMobile } = useScreenResolution();
@@ -182,6 +185,7 @@ export const DatePicker = ({
             placeholder={placeholder}
             value={dayjs(value).toString()}
             border={border}
+            styles={styles}
           />
         }
         shouldCloseOnSelect={true}
@@ -283,7 +287,8 @@ export const CustomDatePickerInput = forwardRef(
       width,
       height,
       placeholder,
-      border
+      border,
+      styles
     }: {
       value?: string;
       onClick?: MouseEventHandler<HTMLInputElement>;
@@ -291,6 +296,7 @@ export const CustomDatePickerInput = forwardRef(
       height?: string;
       placeholder?: string;
       border?: string;
+      styles?: CSSProperties;
     },
     ref: Ref<HTMLDivElement>
   ) => (
@@ -304,7 +310,7 @@ export const CustomDatePickerInput = forwardRef(
         onClick={onClick}
         readOnly
         className={''}
-        style={{ width: "100%", fontFamily: 'Poppins' }}
+        style={{ width: "100%", fontFamily: 'Poppins', ...styles }}
         border={border}
       />
     </InputContainer>
