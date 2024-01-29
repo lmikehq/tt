@@ -13,6 +13,7 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { Box } from "@mui/material";
 import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
+import { capCase } from "@/lib/utilFns";
 import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
 import { Multi_SingleFlightInfo } from "@/lib/types/response-models/flight/multi_flight.type";
 import { calculateDuration } from "@/lib/types/request-models/flight/booking.type";
@@ -162,8 +163,7 @@ function SortedFlightsTab({
 }: SortProps) {
     const { isMobile } = useScreenResolution();
 
-    const { updateSingleSearchQuery, searchMultiCityQuery } =
-        useSearchMultiFlightStore((state) => state);
+    const { updateSingleSearchQuery, searchMultiCityQuery } = useSearchMultiFlightStore((state) => state);
 
     const searchQuery = searchMultiCityQuery.requests[0];
 
@@ -190,7 +190,7 @@ function SortedFlightsTab({
                 >
                     <Text
                         type="h3"
-                        text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`}
+                        text={`Looking for flights from ${capCase(searchQuery?.fly_from, '_', '-').toUpperCase()} to ${capCase(searchQuery?.fly_to, '_', '-').toUpperCase()}`}
                         weight={600}
                         size={20}
                     />
@@ -248,6 +248,7 @@ function SortedFlightsTab({
                         <SortOption
                             label="Fastest"
                             flightTime={computeDuration(
+
                                 multi
                                     ? (
                                           fastest as Multi_SingleFlightInfo
@@ -257,6 +258,7 @@ function SortedFlightsTab({
                                           0
                                       )
                                     : (fastest as FlightInfo).duration.total
+
                             )}
                             isLoading={isLoading}
                         />

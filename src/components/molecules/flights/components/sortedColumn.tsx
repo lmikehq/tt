@@ -81,7 +81,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                 size={18}
               />
             </Button> */}
-                    </Flex>
+                </Flex>
                     <FilterModal
                         open={open.filter}
                         handleClose={() =>
