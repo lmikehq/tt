@@ -11,6 +11,8 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Image from "@atom/image";
 import Flex from "@/components/templates/flex";
 import Spinner from "../../icons/spinner";
+import { useGetAllVisaApplication } from "@/lib/hooks/dashboard/visa.hook";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 
 const VisaWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -29,10 +31,16 @@ const VisaWrapper = styled.div`
 
 const Visa = () => {
   const { isMobile } = useScreenResolution();
+  const { queryParams, page, limit } = useDashboardStore((state) => state);
 
   async function getVisas() {
     return await apiService("/visa", "GET");
   }
+
+  const { data } = useGetAllVisaApplication({
+    query: { status: queryParams.join(','), currentPage: page, limit },
+    options: { retry: 2 }
+  });
 
   const {
     data: fetchedVisa,
@@ -60,7 +68,7 @@ const Visa = () => {
 
   return (
     <VisaWrapper>
-      <VisaDashboardHeader headerText="All Visa Applications" />
+      <VisaDashboardHeader headerText="All Visa Applications" type="checkbox" />
 
       <div>
         {visas?.length > 0 ? (

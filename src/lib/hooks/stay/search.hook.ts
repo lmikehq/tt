@@ -2,48 +2,48 @@ import { ManyStaysRequestInput } from "./../../types/request-models/stay/search.
 import { StaySearchService } from "@/lib/services/stay/search.service";
 import { RateHawkLocationRequestInput } from "@/lib/types/request-models/stay/location.type";
 import {
-    SearchStayRequestRequestQuery,
-    ViewSingleStayRequestInput,
+  SearchStayRequestRequestQuery,
+  ViewSingleStayRequestInput,
 } from "@/lib/types/request-models/stay/search.type";
 import { RateHawkLocationSearchResponse } from "@/lib/types/response-models/stay/location.type";
 import {
-    SearchStaysResponse,
-    ViewSingleStayResponse,
+  SearchStaysResponse,
+  ViewSingleStayResponse,
 } from "@/lib/types/response-models/stay/search.type";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export const useSearchRateHawkLocations = (
-    params: RateHawkLocationRequestInput,
-    options?: UseQueryOptions<RateHawkLocationSearchResponse>
+  params: RateHawkLocationRequestInput,
+  options?: UseQueryOptions<RateHawkLocationSearchResponse>
 ) => {
-    return useQuery({
-        queryKey: ["ratehawk-locations", params.query],
-        queryFn: () => StaySearchService.searchRateHawkLocations(params),
-        ...options,
-    });
+  return useQuery({
+    queryKey: ["ratehawk-locations", params.query],
+    queryFn: () => StaySearchService.searchRateHawkLocations(params),
+    ...options,
+  });
 };
 
 export const useSearchStays = (
-    params: {
-        query: SearchStayRequestRequestQuery;
-        payload: ManyStaysRequestInput;
-    },
-    options?: UseQueryOptions<SearchStaysResponse>
+  params: {
+    query: SearchStayRequestRequestQuery;
+    payload: ManyStaysRequestInput;
+  },
+  options?: UseQueryOptions<SearchStaysResponse>
 ) => {
-    return useQuery({
-        queryKey: ["search-ratehawk", params.query],
-        queryFn: () => StaySearchService.searchStays(params),
-        ...options,
-    });
+  return useQuery({
+    queryKey: ["search-ratehawk", params.query],
+    queryFn: () => StaySearchService.searchStays(params),
+    ...options,
+  });
 };
 
 export const useViewSingleStay = (
-    params: ViewSingleStayRequestInput,
-    options?: UseQueryOptions<ViewSingleStayResponse>
+  params: ViewSingleStayRequestInput,
+  options?: UseQueryOptions<ViewSingleStayResponse>
 ) => {
-    return useQuery({
-        queryKey: ["view-single-stay", params.id],
-        queryFn: () => StaySearchService.viewSingleStay(params),
-        ...options,
-    });
+  return useQuery({
+    queryKey: ["view-single-stay", params.id],
+    queryFn: () => StaySearchService.viewSingleStay(params),
+    ...options,
+  });
 };

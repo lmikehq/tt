@@ -1,24 +1,26 @@
-import styled from "styled-components"
-import Text from "@atom/text"
-import Button from "@atom/button"
-import Section from "@molecule/section"
-import Image from "@atom/image"
-import Referral1 from "@image/dashboard/referral1.png"
-import Referral2 from "@image/dashboard/referral2.png"
-import Referral3 from "@image/dashboard/referral3.png"
-import { BsThreeDotsVertical } from "react-icons/bs"
-import CustomDrawer from "@molecule/drawers/customDrawer"
-import { useState } from "react"
-import { Divider } from "@atom/divider"
-import { GrFormClose } from "react-icons/gr"
-import { ttColors } from "@lib/theme/colors"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import Flex from "@components/templates/flex"
-import VisaDashboardHeader from "./visaDashboardHeader"
-import { ReferralModal, ReferralSubmissionModal } from "./referral/referralModal"
-import Center from "@/components/templates/center"
-import NoApplication from "./noApplication"
-import NoReferralImg from 'public/assets/icons/dashboard/no-referral.svg'
+import styled from "styled-components";
+import Text from "@atom/text";
+import Button from "@atom/button";
+import Section from "@molecule/section";
+import Image from "@atom/image";
+import Referral1 from "@image/dashboard/referral1.png";
+import Referral2 from "@image/dashboard/referral2.png";
+import Referral3 from "@image/dashboard/referral3.png";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { useState } from "react";
+import { Divider } from "@atom/divider";
+import { GrFormClose } from "react-icons/gr";
+import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Flex from "@components/templates/flex";
+import VisaDashboardHeader from "./visaDashboardHeader";
+import { ReferralModal, ReferralOTPModal, ReferralSubmissionModal, ReferralUserBankAccountModal } from "./referral/referralModal";
+import Center from "@/components/templates/center";
+import NoApplication from "./noApplication";
+import NoReferralImg from 'public/assets/icons/dashboard/no-referral.svg';
+import { useReferral } from "@/lib/hooks/dashboard/referral.hook";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 
 const Referral = styled.div`
   display: flex;
@@ -69,7 +71,7 @@ const Referral = styled.div`
   @media screen and (max-width: 390px) {
     border-radius: 8px;
   }
-`
+`;
 
 const ReferralWrapper = styled.div`
   display: flex;
@@ -80,35 +82,44 @@ const ReferralWrapper = styled.div`
 
   width: 100%;
   height: fit-content;
-`
+`;
 
 const Referrals = () => {
-  const { isMobile } = useScreenResolution()
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
-  const [openModal, setOpenModal] = useState(false)
-  const [openSubmissionModal, setOpenSubmissionModal] = useState(false)
+  const { isMobile } = useScreenResolution();
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openSubmissionModal, setOpenSubmissionModal] = useState(false);
+  const [openAccountModal, setOpenAccountModal] = useState(false);
+  const [openOtpModal, setOtpModal] = useState(false);
+  const { search, page, param, limit, startDate, endDate } = useDashboardStore((state) => state);
 
   const referral = {
     referralStatus: 'Claimed'
-  }
+  };
 
   const textAndBgColor = () => {
     switch (referral.referralStatus) {
       case 'Claimed':
-        return { text: "#0CAF60", bg: "#E7F7EF" }
+        return { text: "#0CAF60", bg: "#E7F7EF" };
       case 'Unclaimed':
-        return { text: "#614909", bg: "#FFF1C2" }
+        return { text: "#614909", bg: "#FFF1C2" };
       default:
-        return { text: "#614909", bg: "#FFF1C2" }
+        return { text: "#614909", bg: "#FFF1C2" };
     }
-  }
+  };
 
-  const referralArr: number[] = [2]
+  const referralArr: number[] = [2];
 
   const content = {
     title: `You've got no Referral - Refer people and start earning`,
     links: []
-  }
+  };
+
+  const { data, isLoading } = useReferral({
+    query: { status: param, limit: limit, currentPage: page, search, startDate, endDate }
+  });
+
+  console.log('referral data', { data });
 
   return (
     <Section
@@ -119,7 +130,7 @@ const Referrals = () => {
         padding: ".5rem 1.5rem",
       }}
     >
-      <VisaDashboardHeader headerText="Referrals" />
+      <VisaDashboardHeader headerText="Referrals" type="radio" />
 
       {referralArr.length > 0 ? (
         <ReferralWrapper>
@@ -165,7 +176,7 @@ const Referrals = () => {
                   />
                   <Text
                     type="p"
-                    text="Jonathanadah@gmail.com"
+                    text="Visa application"
                     size={isMobile ? 12 : 16}
                     weight={400}
                   />
@@ -186,33 +197,49 @@ const Referrals = () => {
                   align="center"
                   width="30%"
                 >
-                  <Text
-                    type="p"
-                    text="Claimed"
-                    size={isMobile ? 11 : 16}
-                    weight={400}
-                  />
+                  <Flex
+                    align="center"
+                    justify="center"
+                    width="fit-content"
+                    background={textAndBgColor().bg}
+                    borderRadius="24px"
+                    padding="10px 18px"
+                    styles={{ display: isMobile ? 'none' : 'block' }}
+                  >
+                    <Text
+                      type="p"
+                      text="Successful"
+                      size={isMobile ? 11 : 14}
+                      weight={500}
+                      color={textAndBgColor().text}
+                    />
+                  </Flex>
+
                   <Button
                     width="max-content"
-                    height="48px"
+                    onClick={() => setOpenModal(true)}
                     padding="5px 20px"
-                    color={textAndBgColor().text}
-                    background={textAndBgColor().bg}
+                    background={ttColors.dark}
                     fontWeight="500"
                     styles={{
                       marginLeft: "55px",
-                      borderRadius: "24px",
+                      // borderRadius: "24px",
                       display: isMobile ? "none" : "block",
                     }}
                   >
-                    Successful
+                    <Text
+                      type="p"
+                      text="Claim"
+                      weight={500}
+                    />
                   </Button>
 
                   <BsThreeDotsVertical
                     size="1rem"
-                    style={{ display: isMobile ? "block" : "none" }}
+                    style={{ display: isMobile ? "block" : "none", cursor: 'pointer' }}
                     onClick={() => setBottomDrawerOpen(true)}
                   />
+
                   <CustomDrawer
                     anchor="bottom"
                     open={bottomDrawerOpen}
@@ -242,7 +269,10 @@ const Referrals = () => {
                             color="#112211"
                           />
                         </Flex>
-                        <GrFormClose />
+                        <GrFormClose
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => setBottomDrawerOpen(false)}
+                        />
                       </Flex>
                       <Divider direction="horizontal" margin="0px 0px 1rem" />
                       <Flex gap="1rem" direction="column">
@@ -327,16 +357,32 @@ const Referrals = () => {
                             <Text type="p" text="Successful" size={14} weight={600} />
                           </Button>
                         </Flex>
+                        <Flex>
+                          <Button
+                            background={ttColors.dark}
+                            width="100%"
+                            onClick={() => {
+                              setBottomDrawerOpen(false);
+                              setOpenModal(true);
+                            }}
+                          >
+                            <Text
+                              type="p"
+                              text="Claim"
+                              weight={500}
+                            />
+                          </Button>
+                        </Flex>
                       </Flex>
                     </Section>
                   </CustomDrawer>
                 </Flex>
               </Flex>
-            )
+            );
           })}
-          <Button width={isMobile ? '300px' : "503px"} height="60px" background={ttColors.blackishBlue} styles={{ margin: "1.5rem 0px" }} onClick={() => setOpenModal(true)}>
+          {/* <Button width={isMobile ? '300px' : "503px"} height="60px" background={ttColors.blackishBlue} styles={{ margin: "1.5rem 0px" }}>
             <Text type="p" size={14} text="Claim 5 Referrals" weight={600} />
-          </Button>
+          </Button> */}
         </ReferralWrapper>
       ) : (
         <Center>
@@ -348,8 +394,17 @@ const Referrals = () => {
         <ReferralModal
           state={openModal}
           setState={setOpenModal}
-          setSubmissionModal={setOpenSubmissionModal}
+          setOpenAccountModal={setOpenAccountModal}
+        // setSubmissionModal={setOpenSubmissionModal}
         />
+      )}
+
+      {openAccountModal && (
+        <ReferralUserBankAccountModal state={openAccountModal} setState={setOpenAccountModal} setOpenOtpModal={setOtpModal} />
+      )}
+
+      {openOtpModal && (
+        <ReferralOTPModal state={openOtpModal} setState={setOtpModal} setSubmissionModal={setOpenSubmissionModal} />
       )}
 
       {openSubmissionModal && (
@@ -360,7 +415,7 @@ const Referrals = () => {
       )}
 
     </Section>
-  )
-}
+  );
+};
 
-export default Referrals
+export default Referrals;

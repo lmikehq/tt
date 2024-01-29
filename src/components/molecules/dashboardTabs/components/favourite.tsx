@@ -1,23 +1,24 @@
-import VisaDashboardHeader from "./visaDashboardHeader"
-import styled from "styled-components"
-import { AiFillHeart } from "react-icons/ai"
-import { useState } from "react"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import Section from "@molecule/section"
-import { Grid } from "@components/templates/grid"
-import Image from "@atom/image"
-import Flex from "@components/templates/flex"
-import Text from "@atom/text"
-import FavouritesCard from "./favourites/favouriteCard"
-import Center from "@/components/templates/center"
-import NoApplication from "./noApplication"
-import NoFavImg from 'public/assets/icons/dashboard/no-favourites.svg'
+import VisaDashboardHeader from "./visaDashboardHeader";
+import styled from "styled-components";
+import { AiFillHeart } from "react-icons/ai";
+import { useState } from "react";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import Section from "@molecule/section";
+import { Grid } from "@components/templates/grid";
+import Image from "@atom/image";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import FavouritesCard from "./favourites/favouriteCard";
+import Center from "@/components/templates/center";
+import NoApplication from "./noApplication";
+import NoFavImg from 'public/assets/icons/dashboard/no-favourites.svg';
+import { useFavouriteDashboard } from "@/lib/hooks/dashboard/favourite.hook";
 
-const FavouriteWrapper = styled.div``
+const FavouriteWrapper = styled.div``;
 
 
 const Favourite = () => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
 
   const content = {
     title: "You've got no favorite - Let's help you get Started",
@@ -25,7 +26,10 @@ const Favourite = () => {
       { text: "Apply for Visa", url: "/apply/visa" },
       { text: "Book flight", url: "/flight" },
     ],
-  }
+  };
+
+  const { data, isLoading } = useFavouriteDashboard({ query: '', options: { retry: 2 } });
+  console.log({ data });
 
   return (
     <Section
@@ -36,7 +40,7 @@ const Favourite = () => {
         padding: ".5rem 1.5rem",
       }}
     >
-      <VisaDashboardHeader headerText="Favourites" />
+      <VisaDashboardHeader headerText="Favourites" type="radio" />
       {/* NO-FAVOURITE COMPONENT */}
 
       {/* <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
@@ -49,12 +53,12 @@ const Favourite = () => {
           {new Array(4).fill(2).map((_key, index) => {
             return (
               <FavouritesCard key={index} />
-            )
+            );
           })}
         </Grid>
       </FavouriteWrapper>
     </Section>
-  )
-}
+  );
+};
 
-export default Favourite
+export default Favourite;

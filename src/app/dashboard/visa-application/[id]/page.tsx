@@ -7,8 +7,18 @@ import ttLogo2 from 'public/assets/images/dashboard/ttlogo-2.png';
 import { FamilyMember, VisaApplication } from "@/lib/types/visa";
 import { isValidDate } from "@/lib/extensions/helpers/validDate";
 import Box from "@/components/molecules/section/box";
+import { useGetVisaApplication } from "@/lib/hooks/dashboard/visa.hook";
+import { useParams } from "next/navigation";
 
 function DownloadVisaApplicationPage() {
+  const router = useParams();
+
+  const { data, isLoading } = useGetVisaApplication({
+    query: router.id as string,
+    options: { retry: 2 }
+  });
+
+  console.log({ data });
 
   // TYPE GUARD FUNCTION
   // function isVisaApplication(obj: any): obj is VisaApplication {
