@@ -733,22 +733,18 @@ function AvailableMultiFlights() {
             gap=".5rem"
             padding={isMobile ? "0 1.5rem" : "0"}
         >
-            {formComplete && (
-                <SortedFlightsTab
-                    best={bestSortData.data ? bestSortData?.data[0] : null}
-                    cheapest={
-                        cheapestSortData.data ? cheapestSortData?.data[0] : null
-                    }
-                    fastest={
-                        fastestSortData.data ? fastestSortData?.data[0] : null
-                    }
-                    earliest={
-                        earliestSortData.data ? earliestSortData?.data[0] : null
-                    }
-                    isLoading={isLoading}
-                    multi={true}
-                />
-            )}
+            <SortedFlightsTab
+                best={bestSortData.data ? bestSortData?.data[0] : null}
+                cheapest={
+                    cheapestSortData.data ? cheapestSortData?.data[0] : null
+                }
+                fastest={fastestSortData.data ? fastestSortData?.data[0] : null}
+                earliest={
+                    earliestSortData.data ? earliestSortData?.data[0] : null
+                }
+                isLoading={isLoading}
+                multi={true}
+            />
 
             {isLoading ? (
                 <FlightBoxSkeleton />

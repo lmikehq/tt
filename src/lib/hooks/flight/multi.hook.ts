@@ -32,7 +32,7 @@ export const useSearchMulticity = (
 };
 
 export const useSearchMulticityBySort = (
-    params: SearchMultiFlightRequestQuery,
+    payload: SearchMultiFlightRequestQuery,
     options?: UseQueryOptions<SearchMultiFlightsResponse>
 ) => {
     // let payload = { ...params };
@@ -41,6 +41,16 @@ export const useSearchMulticityBySort = (
     //     ...payload.requests[0],
     //     limit: 1,
     // };
+    const params = {
+        requests: [
+            {
+                ...payload.requests[0],
+                limit: 1,
+                sort: FlightSortEnum.best,
+            },
+            ...payload.requests.slice(1), // Keep the rest of the requests unchanged
+        ],
+    };
 
     return useQueries({
         queries: [
@@ -71,7 +81,7 @@ export const useSearchMulticityBySort = (
                             {
                                 ...params.requests[0],
                                 limit: 1,
-                                sort: FlightSortEnum.best,
+                                sort: FlightSortEnum.cheapest,
                             },
                             ...params.requests.slice(1), // Keep the rest of the requests unchanged
                         ],
@@ -90,7 +100,7 @@ export const useSearchMulticityBySort = (
                             {
                                 ...params.requests[0],
                                 limit: 1,
-                                sort: FlightSortEnum.best,
+                                sort: FlightSortEnum.fastest,
                             },
                             ...params.requests.slice(1), // Keep the rest of the requests unchanged
                         ],
@@ -109,7 +119,7 @@ export const useSearchMulticityBySort = (
                             {
                                 ...params.requests[0],
                                 limit: 1,
-                                sort: FlightSortEnum.best,
+                                sort: FlightSortEnum.earliest,
                             },
                             ...params.requests.slice(1), // Keep the rest of the requests unchanged
                         ],
