@@ -234,3 +234,121 @@ export interface IUser {
 }
 
 
+interface Room {
+  match_hash: string;
+  daily_prices: string[];
+  meal: string;
+  payment_options: {
+    payment_types: {
+      amount: string;
+      show_amount: string;
+      currency_code: string;
+      show_currency_code: string;
+      by: string | null;
+      is_need_credit_card_data: boolean;
+      is_need_cvc: boolean;
+      type: string;
+      tax_data: {
+        taxes: {
+          name: string;
+          included_by_supplier: boolean;
+          amount: string;
+          currency_code: string;
+        }[];
+      };
+      cancellation_penalties: {
+        policies: {
+          start_at: string | null;
+          end_at: string | null;
+          amount_charge: string;
+          amount_show: string;
+        }[];
+        free_cancellation_before: string | null;
+      };
+    }[];
+  };
+  rg_ext: {
+    class: number;
+    quality: number;
+    sex: number;
+    bathroom: number;
+    bedding: number;
+    family: number;
+    capacity: number;
+    club: number;
+    bedrooms: number;
+    balcony: number;
+    view: number;
+    floor: number;
+  };
+  room_name: string;
+  serp_filters: string[];
+  allotment: number;
+  amenities_data: string[];
+  any_residency: boolean;
+  deposit: string | null;
+  no_show: {
+    amount: string;
+    currency_code: string;
+    from_time: string;
+  };
+  room_data_trans: {
+    main_room_type: string;
+    main_name: string;
+    bathroom: string | null;
+    bedding_type: string | null;
+    misc_room_type: string | null;
+  };
+}
+
+interface Region {
+  id: number;
+  country_code: string;
+  iata: string;
+  name: string;
+  type: string;
+}
+
+export interface HotelRoomFavourite {
+  _id: string;
+  address: string;
+  images: string[];
+  name: string;
+  region: Region;
+  rates: Room[];
+}
+
+export interface HotelBookingHistory {
+  _id: string;
+  userID: string;
+  checkInDate: string;
+  checkOutDate: string;
+  partnerOrderId: string;
+  isTokenized: boolean;
+  paymentOptions: {
+    amount: string;
+    currency_code: string;
+    is_need_credit_card_data: boolean;
+    is_need_cvc: boolean;
+    type: string;
+  }[];
+  rooms: {
+    first_name: string;
+    last_name: string;
+  }[];
+  status: string;
+  hotelId: string;
+  hotelPayload: {
+    image: string;
+    rating: number;
+  };
+  bookHash: string;
+  itemId: string;
+  orderId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
+
+

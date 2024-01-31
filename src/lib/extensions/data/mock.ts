@@ -1,4 +1,4 @@
-import { DashboardFlightBookingProps } from "@/lib/types/response-models/dashboard";
+import { DashboardFlightBookingProps, HotelBookingHistory, HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
 
 const mockVisa = {
   "applicationType": "Single",
@@ -346,5 +346,526 @@ export const rooms: Room[] = [
       "/assets/images/stays/image3.png",
       "/assets/images/stays/room4.jpg",
     ],
+  },
+];
+
+
+export const mockUserDashboardLikes: HotelRoomFavourite = {
+  _id: "655ca968fb18ae3389c84d30",
+  address: "Albay Sadri Alantar Sokak 24-30, Istanbul",
+  images: [
+    "https://cdn.worldota.net/t/{size}/content/97/4f/974f621e557fabf65a1fb3f487915044c5becba5.jpeg",
+    // Add other image URLs here...
+  ],
+  name: "Canka Residence",
+  region: {
+    id: 1639,
+    country_code: "TR",
+    iata: "IST",
+    name: "Istanbul",
+    type: "City",
+  },
+  "rates": [
+    {
+      "match_hash": "m-cbca702f-f092-5422-8f24-7dff84b596fc",
+      "daily_prices": [
+        "0.40",
+        "0.40",
+        "0.40",
+        "0.40",
+        "0.40"
+      ],
+      "meal": "nomeal",
+      "payment_options": {
+        "payment_types": [
+          {
+            "amount": "75.00",
+            "show_amount": "2.00",
+            "currency_code": "HNL",
+            "show_currency_code": "EUR",
+            "by": null,
+            "is_need_credit_card_data": false,
+            "is_need_cvc": false,
+            "type": "hotel",
+            "tax_data": {
+              "taxes": [
+                {
+                  "name": "city_tax",
+                  "included_by_supplier": false,
+                  "amount": "3691.61",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "electricity_fee",
+                  "included_by_supplier": true,
+                  "amount": "0.06",
+                  "currency_code": "EUR"
+                },
+                {
+                  "name": "service_fee",
+                  "included_by_supplier": false,
+                  "amount": "14.56",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "vat",
+                  "included_by_supplier": false,
+                  "amount": "333.07",
+                  "currency_code": "HNL"
+                }
+              ]
+            },
+            "cancellation_penalties": {
+              "policies": [
+                {
+                  "start_at": null,
+                  "end_at": null,
+                  "amount_charge": "75.00",
+                  "amount_show": "2.00"
+                }
+              ],
+              "free_cancellation_before": null
+            }
+          }
+        ]
+      },
+      "rg_ext": {
+        "class": 3,
+        "quality": 2,
+        "sex": 0,
+        "bathroom": 1,
+        "bedding": 3,
+        "family": 0,
+        "capacity": 2,
+        "club": 0,
+        "bedrooms": 0,
+        "balcony": 0,
+        "view": 0,
+        "floor": 0
+      },
+      "room_name": "Standard Double room (shared bathroom) (full double bed)",
+      "serp_filters": [],
+      "allotment": 13,
+      "amenities_data": [
+        "non-smoking"
+      ],
+      "any_residency": true,
+      "deposit": null,
+      "no_show": {
+        "amount": "15.00",
+        "currency_code": "HNL",
+        "from_time": "12:00:00"
+      },
+      "room_data_trans": {
+        "main_room_type": "Standard Double room (shared bathroom)",
+        "main_name": "Standard Double room",
+        "bathroom": "shared bathroom",
+        "bedding_type": "full double bed",
+        "misc_room_type": null
+      }
+    },
+    {
+      "match_hash": "m-192663bf-46a0-54db-a5c6-69850846561a",
+      "daily_prices": [
+        "0.48",
+        "0.48",
+        "0.48",
+        "0.48",
+        "0.48"
+      ],
+      "meal": "nomeal",
+      "payment_options": {
+        "payment_types": [
+          {
+            "amount": "2.41",
+            "show_amount": "2.41",
+            "currency_code": "EUR",
+            "show_currency_code": "EUR",
+            "by": "credit_card",
+            "is_need_credit_card_data": true,
+            "is_need_cvc": true,
+            "type": "now",
+            "tax_data": {
+              "taxes": [
+                {
+                  "name": "city_tax",
+                  "included_by_supplier": false,
+                  "amount": "3691.61",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "electricity_fee",
+                  "included_by_supplier": true,
+                  "amount": "0.07",
+                  "currency_code": "EUR"
+                },
+                {
+                  "name": "service_fee",
+                  "included_by_supplier": false,
+                  "amount": "14.56",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "vat",
+                  "included_by_supplier": false,
+                  "amount": "333.07",
+                  "currency_code": "HNL"
+                }
+              ]
+            },
+            "cancellation_penalties": {
+              "policies": [
+                {
+                  "start_at": null,
+                  "end_at": null,
+                  "amount_charge": "2.41",
+                  "amount_show": "2.41"
+                }
+              ],
+              "free_cancellation_before": null
+            }
+          }
+        ]
+      },
+      "rg_ext": {
+        "class": 3,
+        "quality": 2,
+        "sex": 0,
+        "bathroom": 1,
+        "bedding": 3,
+        "family": 0,
+        "capacity": 2,
+        "club": 0,
+        "bedrooms": 0,
+        "balcony": 0,
+        "view": 0,
+        "floor": 0
+      },
+      "room_name": "Standard Double room (shared bathroom) (full double bed)",
+      "serp_filters": [],
+      "allotment": 13,
+      "amenities_data": [
+        "non-smoking"
+      ],
+      "any_residency": true,
+      "deposit": null,
+      "no_show": {
+        "amount": "15.00",
+        "currency_code": "HNL",
+        "from_time": "12:00:00"
+      },
+      "room_data_trans": {
+        "main_room_type": "Standard Double room (shared bathroom)",
+        "main_name": "Standard Double room",
+        "bathroom": "shared bathroom",
+        "bedding_type": "full double bed",
+        "misc_room_type": null
+      }
+    },
+    {
+      "match_hash": "m-c96b899e-e879-5507-9293-3dc530ea2c62",
+      "daily_prices": [
+        "0.60",
+        "0.60",
+        "0.60",
+        "0.60",
+        "0.60"
+      ],
+      "meal": "nomeal",
+      "payment_options": {
+        "payment_types": [
+          {
+            "amount": "100.00",
+            "show_amount": "3.00",
+            "currency_code": "HNL",
+            "show_currency_code": "EUR",
+            "by": null,
+            "is_need_credit_card_data": false,
+            "is_need_cvc": false,
+            "type": "hotel",
+            "tax_data": {
+              "taxes": [
+                {
+                  "name": "city_tax",
+                  "included_by_supplier": false,
+                  "amount": "3691.61",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "electricity_fee",
+                  "included_by_supplier": true,
+                  "amount": "0.09",
+                  "currency_code": "EUR"
+                },
+                {
+                  "name": "service_fee",
+                  "included_by_supplier": false,
+                  "amount": "19.42",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "vat",
+                  "included_by_supplier": false,
+                  "amount": "333.07",
+                  "currency_code": "HNL"
+                }
+              ]
+            },
+            "cancellation_penalties": {
+              "policies": [
+                {
+                  "start_at": null,
+                  "end_at": null,
+                  "amount_charge": "100.00",
+                  "amount_show": "3.00"
+                }
+              ],
+              "free_cancellation_before": null
+            }
+          }
+        ]
+      },
+      "rg_ext": {
+        "class": 3,
+        "quality": 2,
+        "sex": 0,
+        "bathroom": 2,
+        "bedding": 3,
+        "family": 0,
+        "capacity": 2,
+        "club": 0,
+        "bedrooms": 0,
+        "balcony": 0,
+        "view": 0,
+        "floor": 0
+      },
+      "room_name": "Standard Double room (full double bed)",
+      "serp_filters": [
+        "has_bathroom"
+      ],
+      "allotment": 5,
+      "amenities_data": [
+        "non-smoking"
+      ],
+      "any_residency": true,
+      "deposit": null,
+      "no_show": {
+        "amount": "100.00",
+        "currency_code": "HNL",
+        "from_time": "12:00:00"
+      },
+      "room_data_trans": {
+        "main_room_type": "Standard Double room",
+        "main_name": "Standard Double room",
+        "bathroom": null,
+        "bedding_type": "full double bed",
+        "misc_room_type": null
+      }
+    },
+    {
+      "match_hash": "m-312703e0-cab8-57a4-a588-4e65ea1fbc8c",
+      "daily_prices": [
+        "5.60",
+        "5.60",
+        "5.60",
+        "5.60",
+        "5.60"
+      ],
+      "meal": "nomeal",
+      "payment_options": {
+        "payment_types": [
+          {
+            "amount": "755.00",
+            "show_amount": "28.00",
+            "currency_code": "HNL",
+            "show_currency_code": "EUR",
+            "by": null,
+            "is_need_credit_card_data": false,
+            "is_need_cvc": false,
+            "type": "hotel",
+            "tax_data": {
+              "taxes": [
+                {
+                  "name": "city_tax",
+                  "included_by_supplier": false,
+                  "amount": "3691.61",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "electricity_fee",
+                  "included_by_supplier": true,
+                  "amount": "0.82",
+                  "currency_code": "EUR"
+                },
+                {
+                  "name": "service_fee",
+                  "included_by_supplier": false,
+                  "amount": "146.60",
+                  "currency_code": "HNL"
+                },
+                {
+                  "name": "vat",
+                  "included_by_supplier": false,
+                  "amount": "333.07",
+                  "currency_code": "HNL"
+                }
+              ]
+            },
+            "cancellation_penalties": {
+              "policies": [
+                {
+                  "start_at": null,
+                  "end_at": null,
+                  "amount_charge": "755.00",
+                  "amount_show": "28.00"
+                }
+              ],
+              "free_cancellation_before": null
+            }
+          }
+        ]
+      },
+      "rg_ext": {
+        "class": 6,
+        "quality": 0,
+        "sex": 0,
+        "bathroom": 2,
+        "bedding": 0,
+        "family": 0,
+        "capacity": 0,
+        "club": 0,
+        "bedrooms": 0,
+        "balcony": 1,
+        "view": 0,
+        "floor": 0
+      },
+      "room_name": "Apartment with balcony",
+      "serp_filters": [
+        "has_bathroom"
+      ],
+      "allotment": 29,
+      "amenities_data": [
+        "non-smoking"
+      ],
+      "any_residency": true,
+      "deposit": null,
+      "no_show": {
+        "amount": "151.00",
+        "currency_code": "HNL",
+        "from_time": "12:00:00"
+      },
+      "room_data_trans": {
+        "main_room_type": "Apartment with balcony",
+        "main_name": "Apartment with balcony",
+        "bathroom": null,
+        "bedding_type": null,
+        "misc_room_type": null
+      }
+    }
+  ]
+};
+
+
+export const mockStaysBookingHistory: HotelBookingHistory[] = [
+  {
+    "_id": "65b8f4f2a7865de9710e0524",
+    "userID": "65545b98a7255b4e8c0beaae",
+    "checkInDate": "2024-02-05",
+    "checkOutDate": "2024-02-20",
+    "partnerOrderId": "0d16465f-43ed-4ca9-8e64-5b6eaa895db0",
+    "isTokenized": false,
+    "paymentOptions": [
+      {
+        "amount": "9",
+        "currency_code": "USD",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "8",
+        "currency_code": "EUR",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "7",
+        "currency_code": "GBP",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "14",
+        "currency_code": "AUD",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "16",
+        "currency_code": "BGN",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "43",
+        "currency_code": "MYR",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "37",
+        "currency_code": "PLN",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "42",
+        "currency_code": "RON",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "12",
+        "currency_code": "SGD",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      },
+      {
+        "amount": "174",
+        "currency_code": "ZAR",
+        "is_need_credit_card_data": true,
+        "is_need_cvc": true,
+        "type": "now"
+      }
+    ],
+    "rooms": [
+      {
+        "first_name": "Marty",
+        "last_name": "Quatro"
+      },
+      {
+        "first_name": "Marta",
+        "last_name": "Quatro"
+      }
+    ],
+    "status": "PENDING",
+    "hotelId": "test_hotel_do_not_book",
+    "hotelPayload": {
+      "image": "https://cdn.worldota.net/t/{size}/content/97/4f/974f621e557fabf65a1fb3f487915044c5becba5.jpeg",
+      "rating": 4
+    },
+    "bookHash": "h-7e3536e6-2c52-5689-97f7-952a399414bd",
+    "itemId": "76401240",
+    "orderId": "58088363",
+    "createdAt": "2024-01-30T13:09:06.231Z",
+    "updatedAt": "2024-01-30T13:09:06.231Z"
   },
 ];

@@ -4,6 +4,7 @@ import { ttColors } from "@/lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import { Grid } from "@/components/templates/grid";
 import StaysCard from "./stays/card";
+import PaginationCtrl from "../../pagination";
 
 const StaysWrapper = styled.div`
    background: ${ttColors.defaultColor};
@@ -39,11 +40,14 @@ const TextContainer = styled.div`
     justify-content: center;
 `;
 
+// const {} = 
+
 function Stays() {
   return (
     <StaysWrapper>
       <VisaDashboardHeader headerText="All Stays Booking" type="radio" />
       <StaysCard />
+      {/* <PaginationCtrl /> */}
     </StaysWrapper>
   );
 }

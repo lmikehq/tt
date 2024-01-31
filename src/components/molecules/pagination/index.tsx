@@ -20,6 +20,7 @@ const PaginationCtrl = <T,>({ page, setPage, data }: PaginationProp<T>) => {
       <Grid columns={''} style={{ gridTemplateColumns: '150px 150px' }} gap="10px">
         <Button
           variant="outline"
+          color={ttColors.dark}
           width="100%"
           styles={{ maxWidth: '100%', background: 'transparent !important' }}
           disabled={page === 1 ? true : false}
@@ -36,6 +37,8 @@ const PaginationCtrl = <T,>({ page, setPage, data }: PaginationProp<T>) => {
           <Text type="p" text="Prev" weight={600} color={ttColors.dark} />
         </Button>
         <Button
+          variant="outline"
+          color={ttColors.dark}
           width="100%"
           styles={{ maxWidth: '100%' }}
           disabled={data.length === 0 ? true : false}

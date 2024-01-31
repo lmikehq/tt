@@ -8,6 +8,7 @@ import VisaPaymentModal from "@/components/molecules/dashboardTabs/visaPayment";
 import { useNotificationStore } from "@/lib/store/notification.store";
 import toast from "react-hot-toast";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useUserStore } from "@/lib/store/useStore";
 
 
 const DashboardHeaderComponent = () => {
@@ -15,6 +16,7 @@ const DashboardHeaderComponent = () => {
   const [paymentModal, setPaymentModal] = useState(false);
   const { queryParams } = useDashboardStore(state => state);
   const { setNotification } = useNotificationStore((state) => state);
+  const { user } = useUserStore((state) => state);
 
   // EVENT LISTENER
   const ctrl = new AbortController();
@@ -57,6 +59,7 @@ const DashboardHeaderComponent = () => {
 
               ctrl.abort();
               toast.error('Failed to fetch data after multiple attempts');
+              process.exit(0);
             }
           }
         });
@@ -65,13 +68,17 @@ const DashboardHeaderComponent = () => {
       }
     };
 
-    fetchData();
+    if (user && user?._id?.length > 1) {
+      fetchData();
+    } else {
+      return;
+    }
 
     // Cleanup function
     return () => {
       ctrl.abort();
     };
-  }, []);
+  }, [user]);
   // EVENT LISTENER
 
   return (

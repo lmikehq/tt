@@ -1,9 +1,9 @@
-import styled from "styled-components"
-import { AiFillHeart } from "react-icons/ai"
-import Image from "@atom/image"
-import Flex from "@components/templates/flex"
-import Text from "@atom/text"
-import { useState } from "react"
+import styled from "styled-components";
+import { AiFillHeart } from "react-icons/ai";
+import Image from "@atom/image";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import { useState } from "react";
 
 
 const FavouriteCard = styled.div`
@@ -11,12 +11,12 @@ const FavouriteCard = styled.div`
   @media (max-width: 900px) {
     margin: 0 auto;
   }
-`
+`;
 const FavouriteCardImg = styled.div`
   position: relative;
   max-width: 370px;
   border-radius: 8px;
-`
+`;
 const FavouriteCardIcon = styled.div`
   position: absolute;
   top: 24px;
@@ -33,22 +33,30 @@ const FavouriteCardIcon = styled.div`
   @media (max-width: 900px) {
     right: 20px;
   }
-`
+`;
 
-function FavouritesCard() {
-  const [isFavourite, setIsFavourite] = useState(false)
+interface Props {
+  image: string;
+  name: string;
+  countryName: string;
+  price: number;
+}
+
+
+function FavouritesCard({ image, name, countryName, price }: Props) {
+  const [isFavourite, setIsFavourite] = useState(false);
 
   const toggleFavourite = () => {
-    setIsFavourite(!isFavourite)
-  }
-  const heartColor = isFavourite ? "red" : "grey"
+    setIsFavourite(!isFavourite);
+  };
+  const heartColor = isFavourite ? "red" : "grey";
 
   return (
     <FavouriteCard>
       <FavouriteCardImg>
         <Image
-          src="/assets/images/favourite/favourite1.png"
-          alt=""
+          src={image.replace("{size}", "x500")}
+          alt={name}
           width={370}
           height={258}
           styles={{ borderRadius: "8px", objectFit: 'cover' }}
@@ -61,14 +69,14 @@ function FavouritesCard() {
         <Flex direction="column">
           <Text
             type="h3"
-            text="Venice"
+            text={name}
             size={20}
             weight={600}
             color="#000000"
           />
           <Text
             type="span"
-            text="Italy"
+            text={countryName}
             size={16}
             weight={400}
             color="#606060"
@@ -84,7 +92,7 @@ function FavouritesCard() {
           />
           <Text
             type="h3"
-            text="$2,000"
+            text={`$${price * 100}`}
             size={20}
             weight={600}
             color="#000000"
@@ -92,7 +100,7 @@ function FavouritesCard() {
         </Flex>
       </Flex>
     </FavouriteCard>
-  )
+  );
 }
 
-export default FavouritesCard
+export default FavouritesCard;

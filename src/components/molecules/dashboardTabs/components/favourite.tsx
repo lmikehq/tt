@@ -13,6 +13,10 @@ import Center from "@/components/templates/center";
 import NoApplication from "./noApplication";
 import NoFavImg from 'public/assets/icons/dashboard/no-favourites.svg';
 import { useFavouriteDashboard } from "@/lib/hooks/dashboard/favourite.hook";
+import { mockUserDashboardLikes } from "@/lib/extensions/data/mock";
+import withLikeHotel from "@/components/HOCs/withLikeHotel";
+import PaginationCtrl from "../../pagination";
+import { HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
 
 const FavouriteWrapper = styled.div``;
 
@@ -28,8 +32,12 @@ const Favourite = () => {
     ],
   };
 
+  ;
+
   const { data, isLoading } = useFavouriteDashboard({ query: '', options: { retry: 2 } });
-  console.log({ data });
+  console.log({ mockUserDashboardLikes });
+
+  const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite && [];
 
   return (
     <Section
@@ -52,11 +60,22 @@ const Favourite = () => {
         <Grid columns={isMobile ? "1" : "3"} gap={isMobile ? "1.5rem" : "1rem"} style={{ rowGap: '56px', justifyItems: 'center' }}>
           {new Array(4).fill(2).map((_key, index) => {
             return (
-              <FavouritesCard key={index} />
+              <FavouritesCard
+                key={mockUserDashboardLikes._id}
+                image={mockUserDashboardLikes.images[0]}
+                name={mockUserDashboardLikes.name}
+                countryName={mockUserDashboardLikes.region.name}
+                price={Number(mockUserDashboardLikes.rates[0].daily_prices[0])}
+              />
             );
           })}
         </Grid>
       </FavouriteWrapper>
+
+      {favourites?.length > 20 ? (
+        <PaginationCtrl data={[]} page={1} setPage={() => { }} />
+      ) : null}
+
     </Section>
   );
 };

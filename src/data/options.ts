@@ -35,8 +35,8 @@ const referralsEnum: OptionsEnum[] = [
 ];
 
 const paymentsEnum: OptionsEnum[] = [
-  { value: 'DESCENDING', label: 'Oldest to Newest' },
-  // { value: 'ASCENDING', label: 'Newest to Oldest' },
+  // { value: 'DESCENDING', label: 'Oldest to Newest' },
+  { value: 'ALL', label: 'All' },
   { value: 'PENDING', label: 'Pending Status' },
   { value: 'SUCCESS', label: 'Successful Status' },
   { value: 'NOT PAID', label: 'Not Paid' },
@@ -44,6 +44,11 @@ const paymentsEnum: OptionsEnum[] = [
 ];
 
 const flightsEnum: OptionsEnum[] = [
+  { value: 'DESCENDING', label: 'Oldest to Newest' },
+  { value: 'ASCENDING', label: 'Newest to Oldest' },
+];
+
+const staysEnum: OptionsEnum[] = [
   { value: 'DESCENDING', label: 'Oldest to Newest' },
   { value: 'ASCENDING', label: 'Newest to Oldest' },
 ];
@@ -89,6 +94,14 @@ export const paymentOptions = paymentsEnum.map((key, _index) => (
 ));
 
 export const flightOptions = flightsEnum.map((key, _index) => (
+  {
+    option: key.label,
+    name: key.label,
+    value: key.value
+  }
+));
+
+export const staysOptions = staysEnum.map((key, _index) => (
   {
     option: key.label,
     name: key.label,

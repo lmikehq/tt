@@ -12,7 +12,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import styled from "styled-components";
 import Image from "@atom/image";
 import { ClickAwayListener } from "@mui/material";
-import { favouritesOptions, flightOptions, notificationOptions, paymentOptions, referralOptions, visaOptions } from "@/data/options";
+import { favouritesOptions, flightOptions, notificationOptions, paymentOptions, referralOptions, staysOptions, visaOptions } from "@/data/options";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import CheckBox from "../../checkbox";
 import { useDashboardVisaStore } from "@/lib/store/dashboard/visa.store";
@@ -110,8 +110,10 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
         return referralOptions;
       case 'Payment History':
         return paymentOptions;
-      case 'All Flight Applications':
+      case 'All Flight Booking':
         return flightOptions;
+      case 'All Stays Booking':
+        return staysOptions;
       default:
         return visaOptions;
     }
