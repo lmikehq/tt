@@ -77,9 +77,10 @@ function Stays() {
       ? true
       : false;
 
-  const computeStaySearchQuery = () => {
+    const computeStaySearchQuery = () => {
+      console.log('reg-id', stayTabInitialSearchQuery.location)
     const params = {
-      region: stayTabInitialSearchQuery.location?.name,
+      regionId: stayTabInitialSearchQuery.location?.id,
       countryCode: stayTabInitialSearchQuery.location?.country_code,
       stars: stayTabInitialSearchQuery.stars
         ? stayTabInitialSearchQuery.stars[0]
@@ -256,7 +257,7 @@ function Stays() {
             placeholder="Select Date"
             minDate={today}
             value={stayTabInitialSearchQuery.checkInDate?.toDate()}
-            format="yyyy-mm-dd"
+            format="yyyy-MM-dd"
             onChange={(e) => {
               updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,
@@ -274,7 +275,7 @@ function Stays() {
           <Text type="label" size={isMobile ? 16 : 18} text="Return" />
           <DatePicker
             placeholder="Select Date"
-            format="yyyy-mm-dd"
+            format="yyyy-MM-dd"
             minDate={today}
             value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
             onChange={(e) =>

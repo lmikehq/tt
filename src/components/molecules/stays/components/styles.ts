@@ -13,15 +13,12 @@ export const ItemList = styled.div`
   }
 `;
 
-export const GridLayout = styled.div`
+export const GridLayout = styled.div<{ isMobile?: boolean }>`
   display: grid;
-  grid-template-columns: 38% auto;
+  grid-template-columns: ${({ isMobile }) => isMobile ? '1fr' : '1fr 2fr'};
   gap: 10px;
   position: relative;
   padding: 0;
-  @media screen and (max-width: 1300px) {
-    grid-template-columns: 100%;
-  }
 `;
 
 export const FlexBox = styled.div`
@@ -215,8 +212,9 @@ export const SmallSpan = styled.div`
 `;
 
 export const TextBox = styled.div`
-  padding: 10px;
+  padding: 1rem;
   width: 100%;
+  max-width: 100%;
 `;
 
 export const RowOne = styled.div``;

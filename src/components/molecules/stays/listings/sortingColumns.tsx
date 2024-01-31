@@ -619,6 +619,7 @@ function SortingColumns() {
                                             className="mui-checked"
                                             disableFocusRipple
                                             disableRipple
+                                            onChange={(v) => console.log('check', v)}
                                         />
                                     }
                                     label={
