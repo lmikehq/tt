@@ -135,6 +135,8 @@ export interface SearchFlightsRequestQuery {
     vehicle_type?: string;
     max_stopovers?: number;
     max_fly_duration?: number;
+    stopover_from?: string;
+    stopover_to?: string;
     page?: number;
     limit?: number;
     sort?: string;
@@ -487,8 +489,8 @@ export const defaultMultiQuery: MultiFlightQuery = {
     stops: "",
     airlines: [],
     alliance: [],
-    flyFrom: '',
-    flyTo: '',
+    flyFrom: "",
+    flyTo: "",
 };
 
 export const parseMultiFlightQuery = (
