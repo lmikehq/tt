@@ -76,8 +76,8 @@ function Stays() {
       <Section>
         {mockStaysBookingHistory.length > 0 ? (
           <Flex direction="column" gap="1rem">
-            {mockStaysBookingHistory.map((stays) => {
-              return <StaysCard />;
+            {mockStaysBookingHistory.map((stay) => {
+              return <StaysCard key={stay._id} />;
             })}
             <PaginationCtrl data={[]} page={page} setPage={setPage} />
           </Flex>

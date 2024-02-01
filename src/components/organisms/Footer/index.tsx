@@ -123,8 +123,7 @@ const FooterSection = ({ showNewsletter = true }) => {
 
   if (isApply && isMobile) return null;
 
-  const pathname = usePathname();
-  if (pathname.startsWith('/dashboard/visa-application')) return;
+  if (path.startsWith('/dashboard/visa-application')) return <></>;
 
   return (
     <FooterWrapper>
