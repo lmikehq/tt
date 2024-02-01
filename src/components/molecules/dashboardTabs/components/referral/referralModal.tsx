@@ -216,7 +216,7 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
       </Flex>
 
       <Section padding={isMobile ? '0 20px 40px' : '0 89px 40px'}>
-        <Flex direction="column" align="center" justify="center" gap="16px" margin="0 0 44px">
+        <Flex direction="column" align="center" justify="center" gap="10px" margin="0 0 34px">
           <Text type="p" text="Claim Rewards" size={32} weight={600} />
           <Text type="p" text="Fill in the following information to get rewarded" textAlign="center" color={ttColors.lighterGray} />
         </Flex>

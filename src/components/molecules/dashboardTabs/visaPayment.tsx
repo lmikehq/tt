@@ -320,7 +320,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
             />
           </Section>
           {!isMobile && (
-            <Section margin="-10px 0px 2.5rem">
+            <Section margin="-10px 0px 24px">
               <Flex
                 align="center"
                 justify="flex-start"

@@ -24,7 +24,7 @@ interface layoutProps {
 export default async function DashboardLayout({ children }: layoutProps) {
   const user = await getUser();
 
-  console.log({ user });
+  console.log('user in the layout component of the dashboard', user);
 
   // if (user?.statusCode === 401 || user?.errorMessage) {
   //   return '';

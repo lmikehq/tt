@@ -25,7 +25,7 @@ export const MultiFlightComp = () => {
   return (
     <FlightHistory>
       <Flex align="stretch" gap="20px">
-        <Flex direction="column" styles={{ flexBasis: '90%', flexGrow: 1 }}>
+        <Flex direction="column" styles={{ flexBasis: '80%', flexGrow: 1 }}>
           {[1, 2, 3].map((key) => {
             return (
               <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="center" gap="80px" padding="28px 24px" key={key}>
@@ -108,7 +108,7 @@ export const MultiFlightComp = () => {
           })}
         </Flex>
 
-        <Flex styles={{ flexBasis: '11%' }}>
+        <Flex styles={{ flexBasis: '20%' }}>
           <Flex direction="row" align="center" justify="center" width="100%" height="100%">
             <div style={{ transform: "rotate(-90deg)" }}>
               <Text

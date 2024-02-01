@@ -63,6 +63,7 @@ const Visa = () => {
     links: [
       { text: "Apply for Visa", url: "/apply/visa" },
       { text: "Book flight", url: "/flight" },
+      { text: "Search Stays", url: "/stay" }
     ],
   };
 

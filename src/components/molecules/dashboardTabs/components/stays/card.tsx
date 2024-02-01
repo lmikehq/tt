@@ -77,6 +77,13 @@ const NextArrow = (props: any) => {
 // PRICE FORMAT
 const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
+interface StaysProps {
+  name: string;
+  image: string;
+  checkInDate: string;
+  checkoutDate: string;
+  payment: string;
+}
 
 function StaysCard() {
   const { isMobile } = useScreenResolution();
@@ -194,7 +201,7 @@ function StaysCard() {
                 styles={{ fontSize: "15px", position: "relative" }}
               >
                 <Text type="p" color={ttColors.foundation.gray} text={room.location}></Text>
-                <Rating
+                {/* <Rating
                   name="rating"
                   readOnly
                   defaultValue={room.rating}
@@ -202,7 +209,7 @@ function StaysCard() {
                     color: "var(--color-rating)",
                     fontSize: "17px",
                   }}
-                />
+                /> */}
               </Flex>
 
               <Flex justify="space-between">

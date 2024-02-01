@@ -1,19 +1,19 @@
-import Button from "@atom/button"
-import Text from "@atom/text"
-import Spinner from "@molecule/icons/spinner"
-import { Modal } from "@mui/material"
-import PropTypes from "prop-types"
-import React, { useState } from "react"
-import { IoMdClose } from "react-icons/io"
-import styled from "styled-components"
-import { ttColors } from "@lib/theme/colors"
+import Button from "@atom/button";
+import Text from "@atom/text";
+import Spinner from "@molecule/icons/spinner";
+import { Modal } from "@mui/material";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { IoMdClose } from "react-icons/io";
+import styled from "styled-components";
+import { ttColors } from "@lib/theme/colors";
 
 // Styled component for the modal content wrapper
 const StyledModalContent = styled.div<{
-  width?: string
-  height?: string
-  maxWidth?: string
-  maxHeight?: string
+  width?: string;
+  height?: string;
+  maxWidth?: string;
+  maxHeight?: string;
 }>`
   background-color: white;
   border-radius: 12px;
@@ -39,7 +39,7 @@ const StyledModalContent = styled.div<{
     // width: 100%;
     // max-width: 100%;
   }
-`
+`;
 
 // Styled component for the modal header
 const StyledModalHeader = styled.div`
@@ -49,7 +49,7 @@ const StyledModalHeader = styled.div`
   & h2 {
     text-align: center;
   }
-`
+`;
 
 const ModalIcon = styled.div`
   position: absolute;
@@ -63,23 +63,23 @@ const ModalIcon = styled.div`
   background: #f3f3ff;
   border-radius: 4px;
   cursor: pointer;
-`
+`;
 interface ReusableModalProps {
-  open: boolean
-  onClose: () => void
-  headerText: string
-  description: string
-  children?: React.ReactNode
-  height?: string
-  width?: string
-  maxWidth?: string
-  maxHeight?: string
-  loading?: boolean
-  setLoading?: (loading: boolean) => void
+  open: boolean;
+  onClose: () => void;
+  headerText: string;
+  description: string;
+  children?: React.ReactNode;
+  height?: string;
+  width?: string;
+  maxWidth?: string;
+  maxHeight?: string;
+  loading?: boolean;
+  setLoading?: (loading: boolean) => void;
   buttonProps?: {
-    text: string
-    onClick: () => void
-  }
+    text: string;
+    onClick: () => void;
+  };
 }
 // Reusable Modal Component
 const ReusableModal: React.FC<ReusableModalProps> = ({
@@ -109,7 +109,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         maxWidth={maxWidth}
       >
         <StyledModalHeader>
-          <h2>{headerText}</h2>
+          <Text type="h2" text={headerText} size={32} weight={600} />
         </StyledModalHeader>
         <ModalIcon onClick={onClose}>
           <IoMdClose />
@@ -121,8 +121,8 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
           width="100%"
           background={ttColors.dark}
           onClick={() => {
-            setLoading(true)
-            buttonProps.onClick()
+            setLoading(true);
+            buttonProps.onClick();
           }}
         >
           {loading ? (
@@ -133,8 +133,8 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         </Button>
       </StyledModalContent>
     </Modal>
-  )
-}
+  );
+};
 
 ReusableModal.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -142,6 +142,6 @@ ReusableModal.propTypes = {
   headerText: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   children: PropTypes.node,
-}
+};
 
-export default ReusableModal
+export default ReusableModal;

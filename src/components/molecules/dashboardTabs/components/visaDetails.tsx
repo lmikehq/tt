@@ -1,42 +1,42 @@
-"use client"
-import Button from "@atom/button"
-import { Divider } from "@atom/divider"
-import Text from "@atom/text"
-import Flex from "@components/templates/flex"
-import currencyFormatter from "@lib/extensions/data/currencyFormatter"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import { useVoucherStore } from "@lib/store/voucher.store"
-import { ttColors } from "@lib/theme/colors"
-import CustomDrawer from "@molecule/drawers/customDrawer"
-import { format } from "date-fns"
-import { useRef, useState } from "react"
-import { BsThreeDotsVertical } from "react-icons/bs"
-import { GrFormClose } from "react-icons/gr"
-import { HiClock, HiOutlinePlusSm } from "react-icons/hi"
-import { IoCalendar, IoEyeOutline } from "react-icons/io5"
+"use client";
+import Button from "@atom/button";
+import { Divider } from "@atom/divider";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useVoucherStore } from "@lib/store/voucher.store";
+import { ttColors } from "@lib/theme/colors";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { format } from "date-fns";
+import { useRef, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { GrFormClose } from "react-icons/gr";
+import { HiClock, HiOutlinePlusSm } from "react-icons/hi";
+import { IoCalendar, IoEyeOutline } from "react-icons/io5";
 import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdNumbers,
   MdOutlineFamilyRestroom,
-} from "react-icons/md"
+} from "react-icons/md";
 import {
   PiDotsThreeCircleLight,
   PiEyeLight,
   PiWalletLight,
-} from "react-icons/pi"
-import Section from "src/components/molecules/section"
-import styled from "styled-components"
-import VisaPaymentModal from "../visaPayment"
+} from "react-icons/pi";
+import Section from "src/components/molecules/section";
+import styled from "styled-components";
+import VisaPaymentModal from "../visaPayment";
 
-import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS"
-import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick"
-import { AiOutlineCheck } from "react-icons/ai"
-import { BiError } from "react-icons/bi"
-import { RxAvatar } from "react-icons/rx"
-import VisaUploadDocModal from "../visaUploadDoc"
-import { Grid } from "@/components/templates/grid"
-import { AddVisaAccompanyModal } from "./visaAccompanyModal"
+import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
+import { AiOutlineCheck } from "react-icons/ai";
+import { BiError } from "react-icons/bi";
+import { RxAvatar } from "react-icons/rx";
+import VisaUploadDocModal from "../visaUploadDoc";
+import { Grid } from "@/components/templates/grid";
+import { AddVisaAccompanyModal } from "./visaAccompanyModal";
 
 const Logo = styled.div`
   height: 64px;
@@ -49,7 +49,7 @@ const Logo = styled.div`
     height: 41px;
     width: 65px;
   }
-`
+`;
 
 const DateIcon = styled.div`
   background: #ebf6f2 !important;
@@ -57,7 +57,7 @@ const DateIcon = styled.div`
   height: 45px;
   width: 46px;
   border-radius: 8px;
-`
+`;
 
 const VisaStatus = styled.div`
   background: #fffeef;
@@ -72,7 +72,7 @@ const VisaStatus = styled.div`
     font-size: 14px;
     padding: 10px 0px;
   }
-`
+`;
 
 const DropdownContent = styled.div`
   position: absolute;
@@ -93,9 +93,9 @@ const DropdownContent = styled.div`
     line-height: 10px;
     font-size: 14px;
   }
-`
+`;
 
-const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
+const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean; }>`
   display: flex;
   align-items: center;
   padding: 24px 18px;
@@ -103,17 +103,17 @@ const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
   background-color: ${({ hovered }) => (hovered ? "#F3FAFD" : "transparent")};
   border-bottom: ${({ lastChild }) =>
     lastChild ? "none" : "1px solid #dedee3"};
-`
+`;
 
-const OptionText = styled.div<{ hovered: boolean }>`
+const OptionText = styled.div<{ hovered: boolean; }>`
   color: ${({ hovered }) => (hovered ? "#6092A7" : "#101010")};
   font-weight: 400;
   flex: 1;
-`
+`;
 
 interface VisaDataProps {
   // countryLogoSrc: string;
-  visa?: any
+  visa?: any;
   // applicationDate: string;
   // paymentFee: string;
   // visaStatus: string;
@@ -121,28 +121,28 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
-  const { isMobile } = useScreenResolution()
+function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
+  const { isMobile } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
     type: "",
-  })
-  const [isOpen, setIsOpen] = useState(false)
-  const [hoveredOption, setHoveredOption] = useState<number | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
+  });
+  const [isOpen, setIsOpen] = useState(false);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
   const handleAccordionClick = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   // const toggleDropdown = () => {
   //   setIsDropdownOpen(!isDropdownOpen);
   //   setHoveredOption(null);
   // };
 
-  const ref = useRef(null)
-  useDetectOutsideClick(ref, () => setIsDropdownOpen(false))
+  const ref = useRef(null);
+  useDetectOutsideClick(ref, () => setIsDropdownOpen(false));
 
   function getButtonInformation() {
     let visaInformation = {
@@ -150,7 +150,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       fn: () => { },
       disabled: false,
       intent: "",
-    }
+    };
     switch (visa?.applicationStatus) {
       case "APPROVED":
         visaInformation = {
@@ -158,58 +158,58 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           fn: () => { },
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       case "DECLINED":
         visaInformation = {
           text: "Re-apply Visa",
           fn: () => { },
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       case "FORM FEE REQUESTED":
         visaInformation = {
           text: "Submit Application",
           fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "FORM FEE",
-        }
-        break
+        };
+        break;
       case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
           fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "PROCESSING FEE",
-        }
-        break
+        };
+        break;
       case "ADDITIONAL INFORMATION REQUESTED":
         visaInformation = {
           text: "Upload documents",
           fn: () => setModalState({ open: true, type: "upload" }),
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       case "ADDITIONAL DOCUMENT REQUESTED":
         visaInformation = {
           text: "Upload documents",
           fn: () => setModalState({ open: true, type: "upload" }),
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       default:
         visaInformation = {
           text: "No action required",
           fn: () => { },
           disabled: true,
           intent: "",
-        }
+        };
     }
 
-    return visaInformation
+    return visaInformation;
   }
 
   // function PaymentIcon() {
@@ -223,7 +223,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   //   );
   // }
 
-  const recentPayment = visa?.payments[visa?.payments.length - 1]
+  const recentPayment = visa?.payments[visa?.payments.length - 1];
   const textAndBgColor =
     visa?.applicationStatus === "DECLINED"
       ? { text: "#9C0000", bg: "#FFF1F1" }
@@ -233,35 +233,35 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           ? { text: "#7A7422", bg: "FFFEEF" }
           : visa?.applicationStatus === "FORM FEE REQUESTED"
             ? { text: "#fff", bg: "#8f3d3d" }
-            : { text: "#37008A", bg: "#F6F0FF" }
-  const { applied, voucher } = useVoucherStore((state) => state)
+            : { text: "#37008A", bg: "#F6F0FF" };
+  const { applied, voucher } = useVoucherStore((state) => state);
 
   // ACCOMPANYING
-  const renderAccompany = (status: string): { bg: string, color: string, border: string } => {
+  const renderAccompany = (status: string): { bg: string, color: string, border: string; } => {
     const setting = {
       bg: '',
       color: '',
       border: ''
-    }
+    };
 
     switch (status) {
       case 'Pending':
-        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' }
+        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' };
     }
 
-    return setting
-  }
+    return setting;
+  };
 
   const accompanying = visa?.familyMembers?.filter(
     (fm: any) => fm.accompanying === true
-  ).length
+  ).length;
 
 
   function getLocationField(field: string) {
     return typeof visa?.primaryTraveller[field] === "string"
       ? visa?.primaryTraveller?.[field]
 
-      : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`
+      : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`;
   }
 
   const sortOptions = [
@@ -275,9 +275,9 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
             ...prev,
             open: true,
             type: 'add-accompany'
-          }
-        })
-        setIsDropdownOpen(false)
+          };
+        });
+        setIsDropdownOpen(false);
       },
       disabled: false,
     },
@@ -286,8 +286,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       label: 'Upload Document',
       icon: <IoEyeOutline size={16} />,
       action: () => {
-        setModalState({ open: true, type: "upload" })
-        setIsDropdownOpen(false)
+        setModalState({ open: true, type: "upload" });
+        setIsDropdownOpen(false);
       }
     },
     {
@@ -295,11 +295,11 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       label: "View More Details",
       icon: <PiEyeLight size="1rem" />,
       action: () => {
-        setBottomDrawerOpen(true)
-        setIsDropdownOpen(false)
+        setBottomDrawerOpen(true);
+        setIsDropdownOpen(false);
       },
     },
-  ]
+  ];
 
   return (
     <Section
@@ -429,8 +429,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   color="#848484"
                   cursor="pointer"
                   onClick={() => {
-                    setBottomDrawerOpen(false)
-                    setIsDropdownOpen(false)
+                    setBottomDrawerOpen(false);
+                    setIsDropdownOpen(false);
                   }}
                 />
               </Flex>
@@ -778,19 +778,23 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           {isOpen && (
             <Section width="auto" styles={{ transition: "all 3s" }}>
               {visa.applicationStatus === "FORM FEE REQUESTED" ? (
-                <Flex align="center" gap=".5rem">
-                  <PiDotsThreeCircleLight size={20} color="red" />
-                  <Text
-                    type="p"
-                    text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
-                    size={"15px"}
-                  />
-                </Flex>
+                <Grid columns={""} gap="24px" style={{ gridTemplateColumns: "80px 2fr 1fr" }}>
+                  {/* this div here is part of the ui */}
+                  <div></div>
+                  <Flex align="center" gap=".5rem">
+                    <PiDotsThreeCircleLight size={20} color="red" />
+                    <Text
+                      type="p"
+                      text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
+                      size={"15px"}
+                    />
+                  </Flex>
+                </Grid>
               ) : (
                 <Section>
                   <Grid columns={''} gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} width={isMobile ? "100%" : "100%"} align="flex-start" margin="2rem 0">
+                    {/* this div here is part of the ui */}
                     <div></div>
-
                     <Section>
                       <Flex align="center" margin=".5rem 0" gap=".5rem">
                         <PiDotsThreeCircleLight size={20} fontWeight={500} />
@@ -880,8 +884,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                                 ...prev,
                                 open: true,
                                 type: 'add-accompany'
-                              }
-                            })
+                              };
+                            });
                           }}
                         >
                           <Text
@@ -922,6 +926,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         </>
       )}
     </Section>
-  )
+  );
 }
-export default VisaDetail
+export default VisaDetail;

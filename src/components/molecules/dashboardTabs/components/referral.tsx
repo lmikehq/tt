@@ -176,7 +176,7 @@ const Referrals = () => {
                   />
                   <Text
                     type="p"
-                    text="Visa application"
+                    text="jonathanadah@gmail.com"
                     size={isMobile ? 12 : 16}
                     weight={400}
                   />
@@ -260,6 +260,7 @@ const Referrals = () => {
                             width={40}
                             height={40}
                           />
+
                           <Text
                             type="h3"
                             text="Adah Jonathan"
