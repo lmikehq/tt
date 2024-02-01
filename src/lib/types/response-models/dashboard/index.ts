@@ -341,6 +341,8 @@ export interface HotelBookingHistory {
   hotelPayload: {
     image: string;
     rating: number;
+    name: string;
+    region: string;
   };
   bookHash: string;
   itemId: string;

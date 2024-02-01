@@ -19,7 +19,7 @@ import { ReferralModal, ReferralOTPModal, ReferralSubmissionModal, ReferralUserB
 import Center from "@/components/templates/center";
 import NoApplication from "./noApplication";
 import NoReferralImg from 'public/assets/icons/dashboard/no-referral.svg';
-import { useReferral } from "@/lib/hooks/dashboard/referral.hook";
+import { useFetchReferralBanks, useReferral } from "@/lib/hooks/dashboard/referral.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 
 const Referral = styled.div`
@@ -118,6 +118,10 @@ const Referrals = () => {
   const { data, isLoading } = useReferral({
     query: { status: param, limit: limit, currentPage: page, search, startDate, endDate }
   });
+
+  const { data: banks } = useFetchReferralBanks();
+
+  console.log({ banks });
 
   console.log('referral data', { data });
 

@@ -39,6 +39,8 @@ const Favourite = () => {
 
   const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite && [];
 
+  const HandleFavouriteComponent = withLikeHotel(FavouritesCard);
+
   return (
     <Section
       margin="2rem 0"
@@ -60,7 +62,16 @@ const Favourite = () => {
         <Grid columns={isMobile ? "1" : "3"} gap={isMobile ? "1.5rem" : "1rem"} style={{ rowGap: '56px', justifyItems: 'center' }}>
           {new Array(4).fill(2).map((_key, index) => {
             return (
+              // <HandleFavouriteComponent
+              //   key={mockUserDashboardLikes._id}
+              //   id={mockUserDashboardLikes._id as string}
+              //   image={mockUserDashboardLikes.images[0]}
+              //   countryName={mockUserDashboardLikes.region.name}
+              //   name={mockUserDashboardLikes.name}
+              //   price={Number(mockUserDashboardLikes.rates[0].daily_prices[0])}
+              // />
               <FavouritesCard
+                id={mockUserDashboardLikes._id}
                 key={mockUserDashboardLikes._id}
                 image={mockUserDashboardLikes.images[0]}
                 name={mockUserDashboardLikes.name}

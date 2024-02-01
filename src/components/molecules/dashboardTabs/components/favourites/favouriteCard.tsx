@@ -40,10 +40,11 @@ interface Props {
   name: string;
   countryName: string;
   price: number;
+  id: string;
 }
 
 
-function FavouritesCard({ image, name, countryName, price }: Props) {
+function FavouritesCard({ image, name, countryName, price, id }: Props) {
   const [isFavourite, setIsFavourite] = useState(false);
 
   const toggleFavourite = () => {

@@ -1,38 +1,58 @@
-import React, { useState } from "react" // Import your modal component
-import Text from "@atom/text" // Import other necessary components
-import Section from "src/components/molecules/section"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import ReusableModal from "./components/dashboardModal"
-import Input, { TextField } from "@atom/input"
-import Flex from "@components/templates/flex"
-import Required from "@atom/required"
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5"
-import { useToggle } from "@/hooks/useToggle"
-import { useFormik } from "formik"
-import { updatePasswordSchema, updatePasswordVal } from "@/lib/types/schema"
-import { ttColors } from "@/lib/theme/colors"
+import React, { useState } from "react"; // Import your modal component
+import Text from "@atom/text"; // Import other necessary components
+import Section from "src/components/molecules/section";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import ReusableModal from "./components/dashboardModal";
+import Input, { TextField } from "@atom/input";
+import Flex from "@components/templates/flex";
+import Required from "@atom/required";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { useToggle } from "@/hooks/useToggle";
+import { useFormik } from "formik";
+import { updatePasswordSchema, updatePasswordVal } from "@/lib/types/schema";
+import { ttColors } from "@/lib/theme/colors";
+import apiService from "@/lib/extensions/hook/apiService";
+import { DashboardAccountService } from "@/lib/services/dashboard/getUser";
+import { RefetchProp } from "types";
+import toast from "react-hot-toast";
 
 type PasswordModalProps = {
-  open: boolean // Change this type to match your actual type
-  onClose: () => void
-}
+  open: boolean; // Change this type to match your actual type
+  onClose: () => void;
+  refetch: RefetchProp;
+};
 
 const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose }) => {
-  const { isMobile } = useScreenResolution()
-  const { toggle: oldPasswordToggle, handleToogle: handleToggleOld } = useToggle()
-  const { toggle: newPasswordToggle, handleToogle: handleToggleNew } = useToggle()
-  const { toggle: confirmPasswordToggle, handleToogle: handleToggleConfirm } = useToggle()
+  const [loading, setLoading] = useState(false);
+  const { isMobile } = useScreenResolution();
 
   const formik = useFormik({
     initialValues: updatePasswordVal,
     validationSchema: updatePasswordSchema,
-    onSubmit: (values) => {
-      // console.log({ values })
+    onSubmit: async (values) => {
+      try {
+        setLoading(true);
+        const response = await DashboardAccountService.updatePassword({
+          currentPassword: values.oldPassword,
+          newPassword: values.newPassword,
+        });
+        if (response.message === "Password changed") {
+          setLoading(false);
+          toast.success(response.message);
+        }
+        onClose();
+        formik.resetForm();
+      } catch (err) {
+        onClose();
+        setLoading(false);
+
+      }
     }
-  })
+  });
 
   return (
     <ReusableModal
+      loading={loading}
       open={open}
       onClose={onClose}
       headerText="Edit Your Password"
@@ -61,17 +81,14 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose }) => {
                 height="3rem"
                 name="oldPassword"
                 onBlur={formik.handleBlur}
-                type={oldPasswordToggle ? "text" : "password"}
+                type="password"
                 border="none"
                 parentWidth="100%"
                 onChange={formik.handleChange}
                 width="100%"
+                value={formik.values.oldPassword}
               />
-              {oldPasswordToggle ? (
-                <IoEyeOutline size={20} onClick={handleToggleOld} style={{ cursor: 'pointer' }} />
-              ) : (
-                <IoEyeOffOutline size={20} onClick={handleToggleOld} style={{ cursor: 'pointer' }} />
-              )}
+
             </Flex>
             {formik.touched.oldPassword && formik.errors.oldPassword && (
               <Text
@@ -102,7 +119,8 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose }) => {
               <Input
                 placeholder="******"
                 height="3rem"
-                type={newPasswordToggle ? "text" : "password"}
+                type={"password"}
+                value={formik.values.newPassword}
                 border="none"
                 parentWidth="100%"
                 width="100%"
@@ -110,12 +128,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose }) => {
                 onBlur={formik.handleBlur}
                 name="newPassword"
               />
-              {newPasswordToggle ? (
-                <IoEyeOutline size={20} onClick={handleToggleNew} style={{ cursor: 'pointer' }} />
-              ) : (
-                <IoEyeOffOutline size={20} onClick={handleToggleNew} style={{ cursor: 'pointer' }} />
-              )}
-              {/* <IoEyeOutline /> */}
+
             </Flex>
             {formik.touched.newPassword && formik.errors.newPassword && (
               <Text
@@ -145,18 +158,20 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose }) => {
               <Input
                 placeholder="******"
                 height="3rem"
-                type={confirmPasswordToggle ? "text" : "password"}
+                type={"password"}
                 border="none" parentWidth="100%" width="100%"
                 name="confirmPassword"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                value={formik.values.confirmPassword}
+
               />
-              {confirmPasswordToggle ? (
+              {/* {confirmPasswordToggle ? (
                 <IoEyeOutline size={20} onClick={handleToggleConfirm} style={{ cursor: 'pointer' }} />
               ) : (
                 <IoEyeOffOutline size={20} onClick={handleToggleConfirm} style={{ cursor: 'pointer' }} />
-              )}
-              {/* <IoEyeOutline /> */}
+              )} */}
+
             </Flex>
             {formik.touched.confirmPassword && formik.errors.confirmPassword && (
               <Text
@@ -173,7 +188,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({ open, onClose }) => {
         </Section>
       </form>
     </ReusableModal>
-  )
-}
+  );
+};
 
-export default PasswordModal
+export default PasswordModal;

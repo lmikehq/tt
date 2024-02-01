@@ -36,7 +36,6 @@ export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) 
 
   useEffect(() => {
     setUserInfo(user);
-    console.log(userInfo);
   }, [user]);
 
   const handleClose = () => {

@@ -24,4 +24,5 @@ export interface AuthUser {
     status: string;
   };
   address: string;
+  dateOfBirth?: string;
 }

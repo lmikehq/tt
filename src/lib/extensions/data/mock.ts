@@ -860,7 +860,9 @@ export const mockStaysBookingHistory: HotelBookingHistory[] = [
     "hotelId": "test_hotel_do_not_book",
     "hotelPayload": {
       "image": "https://cdn.worldota.net/t/{size}/content/97/4f/974f621e557fabf65a1fb3f487915044c5becba5.jpeg",
-      "rating": 4
+      "rating": 4,
+      name: "Marriott Hotel",
+      region: "Lagos, Nigeria"
     },
     "bookHash": "h-7e3536e6-2c52-5689-97f7-952a399414bd",
     "itemId": "76401240",

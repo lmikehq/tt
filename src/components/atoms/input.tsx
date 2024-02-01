@@ -134,7 +134,7 @@ const Input = ({
   autoFocus
 }: InputProps) => {
   const [miniType, setMiniType] = useState(
-    type === "password" ? "password" : ""
+    type === "password" ? "password" : "text"
   );
 
   if (type === "textArea") {
@@ -168,7 +168,7 @@ const Input = ({
         onClick={onClick}
         onFocus={onFocus}
         className={`custom-form-input ${error ? "error" : ""}`}
-        type={miniType || type}
+        type={miniType}
         onBlur={onBlur}
         placeholder={placeholder}
         onPaste={onPaste}

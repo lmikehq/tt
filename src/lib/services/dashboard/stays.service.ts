@@ -6,7 +6,8 @@ class StaysDashboardService {
   static fetchAllStaysBookingHistory = async (params: DashboardFilters) => {
     const query = constructQueryFromParams(params);
 
-    return await staysService(`/stays-booking/user${query}`).then((response) => {
+    return await staysService(`/stays-bookings/user${query}`).then((response) => {
+      console.log({ response });
       return response.data;
     }).catch((err) => {
       throw err;

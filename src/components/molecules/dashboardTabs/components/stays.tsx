@@ -77,7 +77,19 @@ function Stays() {
         {mockStaysBookingHistory.length > 0 ? (
           <Flex direction="column" gap="1rem">
             {mockStaysBookingHistory.map((stay) => {
-              return <StaysCard key={stay._id} />;
+              return (
+                <div key={stay._id}>
+                  <StaysCard
+                    name={stay.hotelPayload.name}
+                    image={stay.hotelPayload.image}
+                    payment={stay.paymentOptions[0].amount}
+                    checkInDate={stay.checkInDate}
+                    checkoutDate={stay.checkOutDate}
+                    region={stay.hotelPayload.region}
+                    rating={stay.hotelPayload.rating}
+                  />
+                </div>
+              );
             })}
             <PaginationCtrl data={[]} page={page} setPage={setPage} />
           </Flex>
