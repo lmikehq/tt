@@ -1,23 +1,23 @@
-import { Box, Dialog } from "@mui/material"
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
-import Section from "../../section"
-import Flex from "@/components/templates/flex"
-import { IoMdClose } from "react-icons/io"
-import { ttColors } from "@/lib/theme/colors"
-import Text from "@/components/atoms/text"
-import { Grid } from "@/components/templates/grid"
-import PhoneInput from "react-phone-input-2"
-import Required from "@/components/atoms/required"
-import { useFormik, FormikProps } from "formik"
-import { ErrorText, FieldAsDate, FieldAsString, FieldInput, FieldString } from "@/components/organisms/fieldInput"
-import styled from "styled-components"
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS"
-import Button from "@/components/atoms/button"
-import { accompanySchema, accompanyVal } from "@/lib/types/schema"
+import { Box, Dialog } from "@mui/material";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import Section from "../../section";
+import Flex from "@/components/templates/flex";
+import { IoMdClose } from "react-icons/io";
+import { ttColors } from "@/lib/theme/colors";
+import Text from "@/components/atoms/text";
+import { Grid } from "@/components/templates/grid";
+import PhoneInput from "react-phone-input-2";
+import Required from "@/components/atoms/required";
+import { useFormik, FormikProps } from "formik";
+import { ErrorText, FieldAsDate, FieldAsString, FieldInput, FieldString } from "@/components/organisms/fieldInput";
+import styled from "styled-components";
+import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import Button from "@/components/atoms/button";
+import { accompanySchema, accompanyVal } from "@/lib/types/schema";
 
 interface Props {
-  open: boolean
-  setState: React.Dispatch<React.SetStateAction<{ open: boolean, type: string }>>
+  open: boolean;
+  setState: React.Dispatch<React.SetStateAction<{ open: boolean, type: string; }>>;
 }
 
 const PhoneInputStyle = styled.div`
@@ -29,7 +29,7 @@ const PhoneInputStyle = styled.div`
    border-color: ${ttColors.primary};
    border-radius: 6px;
   }
-`
+`;
 
 const SectionContainer = styled.div`
   position: relative;
@@ -40,10 +40,10 @@ const SectionContainer = styled.div`
     z-index: 99999;
     background-color: orange;
   }
-`
+`;
 
 export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
 
   const handleClose = () => {
     setState((prev) => {
@@ -51,17 +51,17 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
         ...prev,
         open: false,
         type: ''
-      }
-    })
-  }
+      };
+    });
+  };
 
   const formik = useFormik({
     initialValues: accompanyVal,
     validationSchema: accompanySchema,
     onSubmit: (values) => {
-      console.log('the code is in the submit')
+      console.log('the code is in the submit');
     }
-  })
+  });
 
   return (
     <Dialog
@@ -177,7 +177,7 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
                     }}
                     inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : '' }}
                     onChange={(e) => {
-                      formik.setFieldValue("phoneNumber", e)
+                      formik.setFieldValue("phoneNumber", e);
                     }}
                     inputClass="w"
                     placeholder="Enter phone numbers"
@@ -305,5 +305,5 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
         </form>
       </Box>
     </Dialog>
-  )
-}
+  );
+};

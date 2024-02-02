@@ -1,17 +1,29 @@
-import Flex from "@components/templates/flex"
-import { Grid } from "@components/templates/grid"
-import Input from "@atom/input"
-import Text from "@atom/text"
-import Section from "src/components/molecules/section"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import React, { useState } from "react"
-import { BiSort } from "react-icons/bi"
-import { CiSearch } from "react-icons/ci"
-import { MdKeyboardArrowDown } from "react-icons/md"
-import styled from "styled-components"
-import Image from "@atom/image"
-import { ClickAwayListener } from "@mui/material"
-import { favouritesOptions, flightOptions, notificationOptions, paymentOptions, referralOptions, visaOptions } from "@/data/options"
+'use client';
+import Flex from "@components/templates/flex";
+import { Grid } from "@components/templates/grid";
+import Input from "@atom/input";
+import Text from "@atom/text";
+import Section from "src/components/molecules/section";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import React, { useEffect, useState } from "react";
+import { BiSort } from "react-icons/bi";
+import { CiSearch } from "react-icons/ci";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import styled from "styled-components";
+import Image from "@atom/image";
+import { ClickAwayListener } from "@mui/material";
+import { favouritesOptions, flightOptions, notificationOptions, paymentOptions, referralOptions, visaOptions } from "@/data/options";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import CheckBox from "../../checkbox";
+import { useDashboardVisaStore } from "@/lib/store/dashboard/visa.store";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
+import DateRangeComponent from "@/components/atoms/dateRangeComponent";
+import { DatePicker } from "@/components/organisms/customDatePicker";
+
+import format from "date-fns/format";
+import { FaInfoCircle } from "react-icons/fa";
+
 
 const DropdownContent = styled.div`
     position: absolute;
@@ -34,9 +46,9 @@ const DropdownContent = styled.div`
       width: 300px;
       line-height: 12px;
     }
-`
+`;
 
-const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
+const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean; }>`
     display: flex;
     align-items: center;
     padding: 24px 18px;
@@ -44,61 +56,194 @@ const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
     background-color: ${({ hovered }) => (hovered ? "#F3FAFD" : "transparent")};
     border-bottom: ${({ lastChild }) =>
     lastChild ? "none" : "1px solid #dedee3"};
-`
+`;
 
-const OptionText = styled.div<{ hovered: boolean }>`
+const OptionText = styled.div<{ hovered: boolean; }>`
     color: ${({ hovered }) => (hovered ? "#6092A7" : "#7C7C7A")};
     font-weight: 400;
     flex: 1;
-`
+`;
 
-function VisaDashboardHeader({ headerText }: { headerText: string }) {
-  const [hoveredOption, setHoveredOption] = useState<number | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+function VisaDashboardHeader({ headerText, type }: { headerText: string; type: string; }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { queryParams, activeTab, param, updateParams, setDateRange, search: globalSearch, setSearch: setGlobalStoreSearch, page, limit } = useDashboardStore((state) => state);
+  const { addVisaParams, visaQueryParams, setVisaSearchQuery, visaSearch } = useDashboardVisaStore((state) => state);
+  const [search, setSearch] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const onChange = (dates: any) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    const startDate = format(new Date(start!), 'MM-dd-yyyy');
+    const endDate = format(new Date(end!), 'MM-dd-yyyy');
+
+    setDateRange(startDate, endDate);
+  };
+  const [showReferralInfo, setShowReferralInfo] = useState(false);
+
+  const { isMobile } = useScreenResolution();
 
   const toggleDropdown = () => {
     // if (headerText == "Payment History") return
-    setIsDropdownOpen(false)
+    setIsDropdownOpen(false);
     // setIsDropdownOpen(true)
-  }
+  };
 
   const handleClickAway = () => {
-    setIsDropdownOpen(false)
-  }
+    setIsDropdownOpen(false);
+  };
 
-  const getSortOptions = (headerText: string): { value: string, name: string, option: string }[] => {
+  const getSortOptions = (headerText: string): { value: string, name: string, option: string; }[] => {
     switch (headerText) {
       case 'Notifications':
-        return notificationOptions
+        return notificationOptions;
       case 'Visa':
-        return visaOptions
+        return visaOptions;
       case 'Favourites':
-        return favouritesOptions
+        return favouritesOptions;
       case 'Referrals':
-        return referralOptions
+        return referralOptions;
       case 'Payment History':
-        return paymentOptions
+        return paymentOptions;
       case 'All Flight Applications':
-        return flightOptions
+        return flightOptions;
       default:
-        return visaOptions
+        return visaOptions;
     }
-  }
+  };
 
-  // const sortOptions = [
-  //   { value: "Option 1", label: "Awaiting Embassy Decision" },
-  //   { value: "Option 2", label: "Awaiting Confirmation" },
-  //   { value: "Option 3", label: "Application in Progress" },
-  //   { value: "Option 4", label: "Visa Fees Required" },
-  //   { value: "Option 5", label: "Awaiting Passport Collection" },
-  //   { value: "Option 6", label: "Processing Fees Required" },
-  //   { value: "Option 7", label: "Courier Fees Required" },
-  //   { value: "Option 8", label: "Approved" },
-  //   { value: "Option 9", label: "Declined" },
-  //   { value: "Option 10", label: "Passport Physically Required" },
-  // ]
+  const handleClick = (param: string) => {
+    switch (activeTab) {
+      case 'All Applications':
+      case 'Visa':
+        return addVisaParams(param);
+      case 'Flight':
+        return updateParams(param);
+      // return updateFlightParams(param);
+      case 'Payment History':
+        return updateParams(param);
+      // return setPaymentParam(param);
+      case 'Referral':
+        return updateParams(param);
+      case 'Notifications':
+        return updateParams(param);
+      // return updateReferralParams(param);
+    }
+  };
 
-  const { isMobile } = useScreenResolution()
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    const inputValue = e.target.value;
+    switch (activeTab) {
+      case 'All Applications':
+      case 'Visa':
+        return setVisaSearchQuery(inputValue);
+      case 'Flight':
+        return setGlobalStoreSearch(inputValue);
+      case 'Payment History':
+        return setGlobalStoreSearch(inputValue);
+      case 'Referral':
+        setGlobalStoreSearch(inputValue);
+      // return setReferralSearch(inputValue);
+    }
+  };
+
+  // const handleDateChange = (item: RangeKeyDict): void => {
+  //   setCalendarState([item.selection]);
+  //   const startDate = format(item.selection.startDate!, 'MM-dd-yyyy');
+  //   const endDate = format(item.selection.endDate!, 'MM-dd-yyyy');
+  //   const formattedDate = startDate + ',' + endDate;
+  //   setDateRange(startDate, endDate);
+  // };
+
+  // sample code
+  const getQueryParamsForActiveTab = () => {
+    switch (activeTab) {
+      case 'All Applications':
+      case 'Visa':
+        return {
+          applicationStatus: visaQueryParams.join(','),
+          search: visaSearch,
+          // search: search
+          // other tab-specific parameters
+        };
+      case 'Flight':
+        return {
+          applicationStatus: param,
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
+          // search: search
+          // other tab-specific parameters
+        };
+      case 'Payment History':
+        return {
+          // applicationStatus: paymentParam,
+          // applicationStatus: paymentParam.join(','),
+          applicationStatus: param,
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
+        };
+      case 'Favourites':
+        return {
+          applicationStatus: '',
+          search: ''
+        };
+      case 'Referral':
+        return {
+          applicationStatus: param,
+          limit: limit,
+          page: page,
+          search: globalSearch,
+          dateRange: dateRange
+          // applicationStatus: referralParam.join(','),
+        };
+      case 'Notifications':
+        return {
+          applicationStatus: param,
+          limit: limit,
+          page: page,
+          // search: globalSearch,
+          dateRange: dateRange
+        };
+      default:
+        return {
+          applicationStatus: '',
+          search: ''
+        };
+    }
+  };
+
+
+  const searchParams = useSearchParams();
+
+  const applicationStatus = searchParams.get('applicationStatus') ?? '';
+  const searchQuery = searchParams.get('search') ?? '';
+  const dateRange = searchParams.get('dateRange') ?? '';
+  // ADD THE QUERY TO THE URL PARAMS
+  useEffect(() => {
+    const initialQuery = {
+      applicationStatus,
+      search: searchQuery,
+      dateRange: dateRange
+    };
+
+    const queryParams = getQueryParamsForActiveTab();
+    const query = constructQueryFromParams({ ...initialQuery, ...queryParams });
+    const currentUrl = new URL(window.location.href);
+    currentUrl.search = query;
+    router.replace(currentUrl.toString(), { scroll: false });
+
+  }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
+
 
   return (
     <Flex
@@ -107,80 +252,177 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
       margin={isMobile ? ".5rem 0px 56px" : "1.5rem 0px 56px"}
       gap="0px"
     >
-      <Section>
-        <Text
-          type="h1"
-          text={headerText}
-          size={isMobile ? "18px" : "24px"}
-          weight={600}
-        />
-      </Section>
-      <Grid
-        columns={isMobile ? "100%" : "73% 25%"}
-        gap=".8rem"
-        style={{
-          justifySelf: "flex-end",
-          gridTemplateColumns: isMobile ? "100%" : "73% 25%",
-          display: isMobile ? "grid" : "grid",
-          justifyContent: 'space-between',
-          width: 'auto'
-        }}
-      >
-        <Flex
-          justify="flex-start"
-          align="center"
-          border="1px solid #E7E7E7"
-          padding="0px 10px"
-          borderRadius="8px"
-          borderBottom="1px solid #E7E7E7"
-          width="360px"
-          maxWidth="360px"
-          gap="10px"
-          styles={{ display: isMobile ? 'none' : 'flex' }}
-        >
-          <CiSearch size="1.5rem" color="#5C5C5C" width="20%" />
-          <Section width="100%">
-            <Input
-              padding="0px 20px 0 0"
-              placeholder="Type here to search"
-              styles={{
-                border: "none",
-              }}
-            />
-          </Section>
+      <Section width={isMobile ? '' : '30%'}>
+        <Flex align="center" gap="12px">
+          <Text
+            type="h1"
+            text={headerText}
+            size={isMobile ? "18px" : "24px"}
+            weight={600}
+            width={'auto'}
+            styles={{ overflow: 'unset' }}
+          />
+          {activeTab === 'Referral' ? (
+            <Section styles={{ position: 'relative' }}>
+              <FaInfoCircle
+                style={{ cursor: 'pointer' }}
+                size={'20px'}
+                onClick={() => {
+                  setShowReferralInfo(!showReferralInfo);
+                }}
+              />
+              {showReferralInfo && (
+                <Flex className="referral-info">
+                  <Text
+                    type="p"
+                    text="Refer up people that will make use of  your referral link to either Apply for Visa, Book Flight or Rent Stays and Stand a chance to Earn money."
+                    weight={600}
+                    size={isMobile ? '14px' : '16px'}
+                    color="#FFF"
+                  />
+                </Flex>
+              )}
+
+
+            </Section>
+          ) : null}
         </Flex>
+      </Section>
+      {['Favourites'].includes(activeTab) ? null : (
+        <Grid
+          columns={isMobile ? "100%" : "44% 25% 25%"}
+          gap="20px"
+          style={{
+            justifySelf: "flex-end",
+            gridTemplateColumns: isMobile ? "100%" : "50% auto auto",
+            display: isMobile ? "grid" : "grid",
+            width: 'auto',
+            justifyContent: 'flex-end',
+            flexGrow: 1
+          }}
+        >
+          <Flex
+            justify="flex-start"
+            align="center"
+            border="1px solid #E7E7E7"
+            padding="0px 10px"
+            borderRadius="8px"
+            borderBottom="1px solid #E7E7E7"
+            gap="10px"
+            styles={{ display: isMobile ? 'none' : 'flex', visibility: ['Payment History', 'Notifications'].includes(activeTab) ? 'hidden' : 'visible' }}
+          >
+            <CiSearch size="1.5rem" color="#5C5C5C" width="20%" />
+            <Section width="100%">
+              <Input
+                padding="0px 20px 0 0"
+                placeholder="Type here to search"
+                styles={{
+                  border: "none",
+                }}
+                value={search}
+                onChange={handleSearch}
+              />
+              {/* <input onChange={(e) => ''}/> */}
+            </Section>
+          </Flex>
 
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <div style={{ display: 'grid', justifyContent: 'flex-end', padding: '0 0', width: 'auto' }}>
-            <Flex
-              justify="space-between"
-              align="center"
-              border="1px solid #E7E7E7"
-              borderRadius="8px"
-              borderBottom="1px solid #e7e7e7"
-              padding="0px 16px"
-              styles={{ cursor: "pointer" }}
-              height="54px"
-              width={isMobile ? 'max-content' : 'max-content'}
-            >
+
+          <Section
+            styles={{
+              border: "1px solid #E7E7E7",
+              borderRadius: "8px",
+              cursor: "pointer",
+              display: isMobile ? 'none' : 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+            width={isMobile ? '200px' : "fit-content"}
+            height="56px"
+          >
+            <Flex align="center" justify="center" padding=".75rem 1rem">
+              {/* <DateRangeComponent onChange={handleDateChange} state={calendarState} /> */}
+              <DatePicker
+                onChange={onChange}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange={true}
+                selected={startDate}
+                height="56px"
+                width="100%"
+                monthsShown={2}
+                border="none"
+              />
+            </Flex>
+          </Section>
+
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <div style={{ display: 'grid', justifyContent: 'flex-start', padding: '0 0', width: 'auto' }}>
               <Flex
+                justify="space-between"
                 align="center"
-                width="auto"
-                justify="space-around"
-                onClick={() => setIsDropdownOpen(prev => !prev)}
+                border="1px solid #E7E7E7"
+                borderRadius="8px"
+                borderBottom="1px solid #e7e7e7"
+                padding="0px 16px"
+                styles={{ cursor: "pointer" }}
+                height="56px"
+                width={isMobile ? 'max-content' : 'max-content'}
               >
-                <BiSort size={isMobile ? "16px" : "1.5rem"} color="#606060" />
-                <Text
-                  type="h5"
-                  text="Sort By"
-                  weight={400}
-                  size={14}
-                  color="#606060"
-                />
-                <MdKeyboardArrowDown size="1.5rem" color="#606060" />
-              </Flex>
+                <Flex
+                  align="center"
+                  width="auto"
+                  justify="space-around"
+                  onClick={() => setIsDropdownOpen(prev => !prev)}
+                >
+                  <BiSort size={isMobile ? "16px" : "1.5rem"} color="#606060" />
+                  <Text
+                    type="h5"
+                    text="Sort By"
+                    weight={400}
+                    size={14}
+                    color="#606060"
+                  />
+                  <MdKeyboardArrowDown size="1.5rem" color="#606060" />
+                </Flex>
 
-              {isDropdownOpen && (
+                {isDropdownOpen && (
+                  <DropdownContent>
+                    {getSortOptions(headerText).map((option, index, arr) => (
+                      <Flex
+                        key={index}
+                        align="center"
+                        padding="24px 18px" gap="10px" cursor="pointer"
+                        styles={{ borderBottom: index === arr.length - 1 ? '' : '1px solid #ccc' }}
+                      >
+                        {type === 'checkbox' ? (
+                          <input
+                            type="checkbox"
+                            onClick={() => {
+                              handleClick(option.value);
+                            }}
+                            name={option.option}
+                            checked={getQueryParamsForActiveTab().applicationStatus.split(',').includes(option.value)}
+                          />
+                        ) : (
+                          <input
+                            type="radio"
+                            name="param"
+                            checked={getQueryParamsForActiveTab().applicationStatus === option.value}
+                            onClick={() => {
+                              console.log(getQueryParamsForActiveTab().applicationStatus);
+                              console.log(option.value);
+                              handleClick(option.value);
+                            }}
+                          />
+                        )}
+
+                        <Text type="label" text={option.name} />
+                      </Flex>
+                    ))}
+                  </DropdownContent>
+                )}
+
+                {/* {isDropdownOpen && (
                 <DropdownContent>
                   {getSortOptions(headerText).map((option, index) => (
                     <StyledOption
@@ -190,51 +432,101 @@ function VisaDashboardHeader({ headerText }: { headerText: string }) {
                       onMouseEnter={() => setHoveredOption(index)}
                       onMouseLeave={() => setHoveredOption(null)}
                     >
-                      <OptionText hovered={hoveredOption === index}>
-                        {option.name}
+                      <OptionText
+                        hovered={hoveredOption === index}
+                      >
+                        <p onClick={() => handleClick(option.value)}>{option.name}</p>
                       </OptionText>
                     </StyledOption>
                   ))}
                 </DropdownContent>
-              )}
+              )} */}
 
-            </Flex>
-          </div>
-        </ClickAwayListener>
+              </Flex>
+            </div>
+          </ClickAwayListener>
 
-      </Grid>
-      {/* <Flex
-        justify="flex-end"
-        align="center"
-        border="1px solid #E7E7E7"
-        padding="0px 15px"
-        height="44px"
-        borderRadius="8px"
-        borderBottom="1px solid #E7E7E7"
-        width="40%"
-        gap="10px"
-        styles={{
-          display: isMobile ? "flex" : "none",
-          cursor: "pointer",
-        }}
-        onClick={toggleDropdown}
-      >
-        <Image
-          src="/assets/images/dashboard/filter.png"
-          alt=""
-          height={20}
-          width={20}
-        />
-        <Text
-          type="h5"
-          text="Filter"
-          weight={400}
-          size={14}
-          color="#606060"
-        />
-      </Flex> */}
+        </Grid>
+      )}
     </Flex>
-  )
+  );
 }
 
-export default VisaDashboardHeader
+export default VisaDashboardHeader;
+/**
+ * 
+  // EXTRACT THE QUERY FROM THE URL PARAMS WHEN A USER REFRESH THE PAGE OR CHANGES TAB
+  useEffect(() => {
+    const fetchStateFromUrl = () => {
+      const params = extractSearchParamsFromUrl({
+        url: window.location.href
+      });
+      let localStorageData;
+
+      console.log({ activeTab });
+
+      if (activeTab === 'Visa' || activeTab === 'All Applications') {
+        console.log('the code is here');
+        const visa = activeTab && localStorage.getItem('Visa');
+        const allApplication = activeTab && localStorage.getItem('All Applications');
+
+        const visaStorageData = visa ? JSON.parse(visa) : null;
+        const allApplicationStorageData = allApplication ? JSON.parse(allApplication) : null;
+
+        localStorageData = { ...allApplicationStorageData, ...visaStorageData };
+      } else {
+        const otherStorageData = activeTab && localStorage.getItem(activeTab);
+
+        localStorageData = otherStorageData ? JSON.parse(otherStorageData) : null;
+      }
+
+      console.log({ localStorageData });
+
+      // const parsedData = localStorageData ? JSON.parse(localStorageData) : null;
+      const parsedData = localStorageData ? localStorageData : null;
+
+      let filters: { search: string; applicationStatus: string[]; dateRange: string; } = {
+        search: '',
+        applicationStatus: [],
+        dateRange: ''
+      };
+
+      if (parsedData) {
+        filters = {
+          applicationStatus: parsedData?.applicationStatus.split(','),
+          search: parsedData?.search,
+          dateRange: ''
+        };
+      } else {
+        filters = {
+          applicationStatus: params.applicationStatus?.split(','),
+          search: params.search ?? '',
+          dateRange: params.dateRange?.split(',').join('')
+        };
+      }
+
+      // console.log({ filters });
+
+      // MOVE THE STATE TO THE STORE
+      switch (activeTab) {
+        case 'All Applications':
+        case 'Visa':
+          setVisaSearchQuery(filters.search || '');
+          const visaParams = filters.applicationStatus ? filters.applicationStatus : [];
+          visaParams.forEach((param) => addVisaParams(param));
+          break;
+        case 'Flight':
+          const status = filters.applicationStatus.join('');
+          updateFlightParams(status || '');
+          setFlightSearch(filters.search || '');
+
+        default:
+          break;
+      }
+
+    };
+
+    fetchStateFromUrl();
+  }, [activeTab]);
+
+ */

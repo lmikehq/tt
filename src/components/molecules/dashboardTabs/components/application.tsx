@@ -1,11 +1,12 @@
-"use client"
+"use client";
 
-import CustomTab from "@atom/tabs"
-import Section from "src/components/molecules/section"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import styled from "styled-components"
-import Flight from "./flight"
-import Visa from "./visa"
+import CustomTab from "@atom/tabs";
+import Section from "src/components/molecules/section";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import styled from "styled-components";
+import Flight from "./flight";
+import Visa from "./visa";
+import Stays from "./stays";
 
 const SectionTabs = styled.div`
     .MuiButtonBase-root {
@@ -16,10 +17,10 @@ const SectionTabs = styled.div`
     .MuiTabs-flexContainer {
         justify-content: space-between;
     }
-`
+`;
 
 const Application = () => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
 
   const tabItem = [
     {
@@ -27,14 +28,19 @@ const Application = () => {
       value: 0,
       content: <Visa />,
     },
-
     {
       label: "Flight",
       value: 1,
       content: <Flight />,
       disabled: false,
     },
-  ]
+    {
+      label: "Stays",
+      value: 2,
+      content: <Stays />,
+      disabled: false,
+    }
+  ];
   return (
     <Section
       margin="2rem 0"
@@ -63,7 +69,7 @@ const Application = () => {
         />
       </SectionTabs>
     </Section>
-  )
-}
+  );
+};
 
-export default Application
+export default Application;

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import CustomTab from "@atom/tabs"
-import React from "react"
-import { styled } from "styled-components"
-import Application from "./components/application"
-import PaymentHistory from "./components/payment"
-import Account from "./components/account"
-import Favourite from "./components/favourite"
-import Notification from "./components/notification"
-import RTQueryClient from "@components/templates/rtqWrapper"
-import Referrals from "./components/referral"
+import CustomTab from "@atom/tabs";
+import React from "react";
+import { styled } from "styled-components";
+import Application from "./components/application";
+import PaymentHistory from "./components/payment";
+import Account from "./components/account";
+import Favourite from "./components/favourite";
+import Notification from "./components/notification";
+import RTQueryClient from "@components/templates/rtqWrapper";
+import Referrals from "./components/referral";
 
 const Wrapper = styled.div`
     margin-top: 10px;
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
             width: 50%;
         }
     }
-`
+`;
 
 function DashboardTabs() {
   const tabItems = [
@@ -70,7 +70,7 @@ function DashboardTabs() {
       content: <Referrals />,
       disabled: false,
     },
-  ]
+  ];
 
   return (
     <Wrapper>
@@ -78,7 +78,7 @@ function DashboardTabs() {
         <CustomTab shadowShow tabItems={tabItems} variant="fullWidth" />
       </RTQueryClient>
     </Wrapper>
-  )
+  );
 }
 
-export default DashboardTabs
+export default DashboardTabs;

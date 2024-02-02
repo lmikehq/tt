@@ -3,6 +3,9 @@ import LoaderLayout from "@organism/Loader/layout";
 import PaymentConfirmationModal from "@organism/paymentConfirmationModal";
 import "@style/globals.css";
 import "react-phone-input-2/lib/style.css";
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+
 
 import { Siteconfig } from "@lib/extensions/config/site";
 import Script from "next/script";
@@ -12,6 +15,8 @@ import Providers from "./providers";
 import { Poppins } from "next/font/google";
 import GoogleAuthWrapper from "@/components/templates/GoogleAuthWrapper";
 import RTQueryClient from "@/components/templates/rtqWrapper";
+import { ScrollToTop } from "@/components/atoms/scrollToTop";
+
 const poppins = Poppins({
   weight: "400",
   style: ["normal"],
@@ -98,7 +103,10 @@ export default function RootLayout({
           <StyledComponentsRegistry>
             <RTQueryClient>
               <LoaderLayout>
-                <Providers>{children}</Providers>
+                <Providers>
+                  {children}
+                  <ScrollToTop />
+                </Providers>
               </LoaderLayout>
             </RTQueryClient>
           </StyledComponentsRegistry>

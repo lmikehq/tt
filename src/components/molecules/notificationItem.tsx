@@ -1,15 +1,18 @@
-import React from "react"
-import PropTypes from "prop-types"
-import Flex from "@components/templates/flex"
-import Image from "@atom/image"
-import Text from "@atom/text"
-import { GoDotFill } from "react-icons/go"
-import Button from "@atom/button"
-import { BiDotsVerticalRounded } from "react-icons/bi"
-import { ttColors } from "@lib/theme/colors"
-import styled from "styled-components"
-import { StaticImageData } from "next/image"
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import Flex from "@components/templates/flex";
+import Image from "@atom/image";
+import Text from "@atom/text";
+import { GoDotFill } from "react-icons/go";
+import Button from "@atom/button";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { ttColors } from "@lib/theme/colors";
+import styled from "styled-components";
+import { StaticImageData } from "next/image";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { ClickAwayListener } from "@mui/material";
+import { NotificationService } from "@/lib/services/dashboard/notification.service";
+import toast from "react-hot-toast";
 
 const History = styled.div`
   display: flex;
@@ -44,14 +47,15 @@ const History = styled.div`
     line-height: 24px;
     color: ${ttColors.dark};
   }
-`
+`;
 
 interface NotificationItemProps {
-  src: StaticImageData | string
-  title: string
-  date: string
-  time: string
-  showDot?: boolean
+  src: StaticImageData | string;
+  title: string;
+  date: string;
+  time: string;
+  showDot?: boolean;
+  id: string;
 }
 
 const NotificationItem: React.FC<NotificationItemProps> = ({
@@ -60,8 +64,14 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   date,
   time,
   showDot,
+  id
 }) => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
+  const [toggleDropdown, setToggleDropdown] = useState(false);
+
+  const handleClickAway = () => {
+    setToggleDropdown(false);
+  };
 
   return (
     <History>
@@ -72,7 +82,11 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
         align="center"
         padding={isMobile ? "28px 6px" : "28px 24px"}
       >
-        <Flex gap="1.5rem" align={isMobile ? 'flex-start' : "center"} direction={isMobile ? 'row' : 'row'}>
+        <Flex
+          gap="1.5rem"
+          align={isMobile ? 'flex-start' : "center"}
+          direction={isMobile ? 'row' : 'row'}
+        >
           {/* {isMobile ? (
             <Flex justify="space-between" align="center">
               <Image src={src} alt="" height={60} width={60} />
@@ -124,26 +138,61 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           {/* <Text type='p' text='New' /> */}
         </Flex>
 
-        {!isMobile && (<Button
-          height="43px"
-          width="43px"
-          styles={{ marginLeft: "55px" }}
-          background="transparent"
-          border="1px solid #B6B6B6"
-        >
-          <BiDotsVerticalRounded color="#040404" />
-        </Button>
-        )}
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div style={{ position: 'relative' }}>
+            <div>
+              <Button
+                height="43px"
+                width="43px"
+                styles={{ marginLeft: isMobile ? '' : "55px", position: 'relative' }}
+                background="transparent"
+                border="1px solid #B6B6B6"
+                onClick={() => {
+                  setToggleDropdown(!toggleDropdown);
+                }}
+              >
+                <BiDotsVerticalRounded color="#040404" />
+              </Button>
+            </div>
+            {toggleDropdown && (
+              <div
+                onClick={async () => {
+                  const response = await NotificationService.markNotification(id);
+
+                  if (response.success === true || response.message === 'notification read') {
+                    toast('Notification Read');
+                  }
+                  setToggleDropdown(false);
+                }}
+                style={{
+                  cursor: 'pointer',
+                  position: "absolute",
+                  width: "200px",
+                  backgroundColor: "#fafafa",
+                  border: "1px solid #ccc",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  zIndex: 99999,
+                  top: "45px",
+                  right: "0",
+                }}>
+                <Text type="p" text="Mark as read" />
+              </div>
+            )}
+          </div>
+        </ClickAwayListener>
+
       </Flex>
     </History >
-  )
-}
+  );
+};
 
 NotificationItem.propTypes = {
   title: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
   showDot: PropTypes.bool,
-}
+};
 
-export default NotificationItem
+export default NotificationItem;
