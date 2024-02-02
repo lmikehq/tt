@@ -1,15 +1,10 @@
 import Text from "@/components/atoms/text";
 import { Container, GridLayout, Header, Span } from "./styles";
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import Flex from "@/components/templates/flex";
-import PetsIcon from "@mui/icons-material/Pets";
-import { PiBabyFill } from "react-icons/pi";
 import { Metapolicy, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { pickIcon } from "./modals/components/AmenitiesBox";
 import React, { CSSProperties, useMemo } from "react";
 import { capCase } from "@/lib/utilFns";
-import { valueContainerCSS } from "react-select/dist/declarations/src/components/containers";
 
 
 export const pickPaymentIcon = (val: string, styles?: CSSProperties ) => {
@@ -105,7 +100,7 @@ const Policies = ({ stayResponse }: PoliciesProps) => {
                             title={section?.title}
                             items={section?.items ?? []}
                         />
-                        )}
+                    )}
                 </GridLayout>
             </Span>
             <Span style={{ marginTop: "30px" }}>

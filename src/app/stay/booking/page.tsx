@@ -17,13 +17,13 @@ import {
 import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 import Link from "@/components/atoms/link";
 import { useSearchParams } from "next/navigation";
-
 import React, { useEffect, useState } from "react";
 import Text from "@/components/atoms/text";
 import { Box } from "@mui/material";
 import RightColumn from "@/components/molecules/stays/booking/RightColumn";
 import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type";
 import SelectPaymentMethod from "@/components/molecules/stays/booking/SelectPaymentMethod";
+
 
 function Page() {
     const searchParams = useSearchParams();
@@ -34,6 +34,7 @@ function Page() {
         []
     );
     const [bookingId, setBookingId] = useState("");
+
 
     return (
         <SectionLayout>
