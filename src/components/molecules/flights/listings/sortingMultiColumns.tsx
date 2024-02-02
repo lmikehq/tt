@@ -479,7 +479,22 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                                   ].dtime_to ?? "23:00",
                                           },
                                       ]}
-                                      defaultValue={[0, 23]}
+                                      defaultValue={[
+                                          parseInt(
+                                              (
+                                                  searchMultiCityQuery.requests[
+                                                      index
+                                                  ].dtime_from ?? "00:00"
+                                              ).split(":")[0]
+                                          ),
+                                          parseInt(
+                                              (
+                                                  searchMultiCityQuery.requests[
+                                                      index
+                                                  ].dtime_to ?? "23:00"
+                                              ).split(":")[0]
+                                          ),
+                                      ]}
                                       onChange={(event, value) =>
                                           updateMultiCityQueryAtIndex(index, {
                                               dtime_from: dayjs()
@@ -527,7 +542,22 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                                   ].atime_to ?? "23:00",
                                           },
                                       ]}
-                                      defaultValue={[0, 23]}
+                                      defaultValue={[
+                                          parseInt(
+                                              (
+                                                  searchMultiCityQuery.requests[
+                                                      index
+                                                  ].atime_from ?? "00:00"
+                                              ).split(":")[0]
+                                          ),
+                                          parseInt(
+                                              (
+                                                  searchMultiCityQuery.requests[
+                                                      index
+                                                  ].atime_to ?? "23:00"
+                                              ).split(":")[0]
+                                          ),
+                                      ]}
                                       onChange={(event, value) =>
                                           updateMultiCityQueryAtIndex(index, {
                                               atime_from: dayjs()
@@ -637,7 +667,10 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                             }`,
                                         },
                                     ]}
-                                    defaultValue={48}
+                                    defaultValue={
+                                        (searchMultiCityQuery.requests[index]
+                                            .max_fly_duration as number) ?? 48
+                                    }
                                     onChange={(event, value) =>
                                         updateMultiCityQueryAtIndex(index, {
                                             max_fly_duration: value as number,
@@ -678,6 +711,22 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                         },
                                     ]}
                                     defaultValue={[0, 48]}
+                                    value={[
+                                        parseInt(
+                                            (
+                                                searchMultiCityQuery.requests[
+                                                    index
+                                                ].stopover_from ?? "00:00"
+                                            ).split(":")[0]
+                                        ),
+                                        parseInt(
+                                            (
+                                                searchMultiCityQuery.requests[
+                                                    index
+                                                ].stopover_to ?? "48:00"
+                                            ).split(":")[0]
+                                        ),
+                                    ]}
                                     onChange={(event, value) =>
                                         updateMultiCityQueryAtIndex(index, {
                                             stopover_from: dayjs()
@@ -692,8 +741,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     }
                                     min={0}
                                     max={48}
-                                    leftOffset="20px"
-                                    rightOffset="-100px"
                                 />
                             </Flex>
                         </div>
@@ -757,7 +804,18 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     }),
                                 },
                             ]}
-                            defaultValue={[0, 20000 * conversionRate]}
+                            defaultValue={[
+                                (searchMultiCityQuery.requests[index]
+                                    ?.price_from ?? "0") as number,
+                                (searchMultiCityQuery.requests[index]
+                                    ?.price_to ?? "20000") as number,
+                            ]}
+                            value={[
+                                (searchMultiCityQuery.requests[index]
+                                    ?.price_from ?? "0") as number,
+                                (searchMultiCityQuery.requests[index]
+                                    ?.price_to ?? "20000") as number,
+                            ]}
                             onChange={(event, value) =>
                                 // handleSlider(index, value, "price")
                                 updateMultiCityQueryAtIndex(index, {

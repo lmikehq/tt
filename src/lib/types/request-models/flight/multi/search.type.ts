@@ -46,6 +46,7 @@ export const extractFlightDataFromParams = ({
     Object.keys(urlData).forEach((key) => {
         if (urlData[key].split("~").length > 1) {
             urlData[key].split("~").forEach((el, i) => {
+                if (el == "x") return;
                 formattedData.splice(i, 1, {
                     ...formattedData[i],
                     [key]: el,
@@ -106,4 +107,47 @@ export const parseMultiFlightFilters = (
         queryParams[key] = values.join("~");
     });
     return queryParams;
+};
+
+export const extractFlightFiltersFromURL = ({
+    flyFrom,
+    url,
+}: {
+    flyFrom: string;
+    url: string;
+}) => {
+    const formattedData: any[] = flyFrom.split("~").map((e) => ({
+        fly_from: e,
+    }));
+    const fieldsToOmit = [
+        "fly_from",
+        "fly_to",
+        "date_from",
+        "stops",
+        "cabin",
+        "adults",
+        "children",
+        "infants",
+        "cabinBags",
+        "checkedBags",
+    ];
+    let urlData = extractSearchParamsFromUrl({ url });
+
+    fieldsToOmit.forEach((el) => delete urlData[el]);
+
+    Object.keys(urlData).forEach((key) => {
+        if (urlData[key].split("~").length > 1) {
+            urlData[key].split("~").forEach((el, i) => {
+                if (el == "x") return;
+                formattedData.splice(i, 1, {
+                    ...formattedData[i],
+                    [key]: el,
+                });
+            });
+        } else {
+            formattedData[0][key] = urlData[key];
+        }
+    });
+
+    return formattedData;
 };

@@ -472,12 +472,8 @@ function AvailableMultiFlights() {
         searchQuery,
     } = useFlightBookingStore((state) => state);
     const { preFerredCurrency } = useUserPreferencesStore((state) => state);
-    const {
-        updateSearchMultiCityQuery,
-        searchMultiCityQuery,
-        updateSingleSearchQuery,
-    } = useSearchMultiFlightStore((state) => state);
-    const [shouldFetch, setShouldFetch] = useState(false);
+    const { updateSearchMultiCityQuery, searchMultiCityQuery } =
+        useSearchMultiFlightStore((state) => state);
     const {
         isFetching,
         data: flightData,
@@ -629,78 +625,6 @@ function AvailableMultiFlights() {
         flight?.arrivalCountry &&
         flight?.departureDate;
 
-    // useEffect(() => {
-    //     // const adults = Number(queryParams?.adults);
-    //     // const children = Number(queryParams?.children);
-    //     // const cabin = Number(queryParams?.cabinBags);
-    //     // const checked = Number(queryParams?.checkedBags);
-    //     // const adultsAndChildren = adults + children;
-    //     // const shareCabinBags = (numPass: number, numBags: number) => {
-    //     //     const arrBags = Array.from({ length: numBags }).fill(1);
-    //     //     const arrPass = Array.from({ length: numPass }).fill(0);
-    //     //     return arrPass.map((e) => {
-    //     //         let val = arrBags.length > 0 ? 1 : 0;
-    //     //         arrBags.pop();
-    //     //         return val;
-    //     //     });
-    //     // };
-    //     // const shareCheckedBags = (numPass: number, numBags: number) => {
-    //     //     const arrBags = Array.from({ length: numBags }).fill(1);
-    //     //     const arrPass = Array.from({ length: numPass }).fill(0);
-    //     //     arrBags.forEach((e, ind, arr) => {
-    //     //         arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
-    //     //     });
-    //     //     return arrPass;
-    //     // };
-    //     // const sharedCabin = shareCabinBags(
-    //     //     adultsAndChildren,
-    //     //     Number(queryParams?.cabinBags)
-    //     // );
-    //     // const sharedChecked = shareCheckedBags(
-    //     //     adultsAndChildren,
-    //     //     Number(queryParams?.checkedBags)
-    //     // );
-    //     // const adultHandBags =
-    //     //     adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
-    //     // const adultHoldBags =
-    //     //     adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
-    //     // const childHandBags =
-    //     //     children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
-    //     // const childHoldBags =
-    //     //     children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
-    //     // const sanitizedQuery = {
-    //     //     ...searchQuery,
-    //     //     fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
-    //     //     fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
-    //     //     date_from: queryParams?.date_from ?? searchQuery?.date_from,
-    //     //     return_from:
-    //     //         flightState?.stops === "round"
-    //     //             ? queryParams?.return_from ?? searchQuery?.return_from
-    //     //             : undefined,
-    //     //     return_to:
-    //     //         flightState?.stops === "round"
-    //     //             ? queryParams?.return_from ?? searchQuery?.return_from
-    //     //             : undefined,
-    //     //     selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
-    //     //     adults: Number(queryParams?.adults ?? searchQuery?.adults),
-    //     //     children: Number(queryParams?.children ?? searchQuery?.children),
-    //     //     infants: Number(queryParams?.infants ?? searchQuery?.infants),
-    //     //     adult_hand_bag: adultHandBags,
-    //     //     adult_hold_bag: adultHoldBags,
-    //     //     child_hand_bag: childHandBags,
-    //     //     child_hold_bag: childHoldBags,
-    //     // };
-    //     //
-    //     // if (
-    //     //     sanitizedQuery?.fly_from &&
-    //     //     sanitizedQuery?.fly_to &&
-    //     //     sanitizedQuery?.date_from &&
-    //     //     sanitizedQuery?.adults
-    //     // ) {
-    //     //     handleSearchResults({ ...cleanObject(sanitizedQuery) });
-    //     // }
-    // }, [queryParams, preFerredCurrency]);
-
     useEffect(() => {
         const interval = setTimeout(() => {
             setModal((prev) => ({ ...prev, isOpenStillSearching: true }));
@@ -724,11 +648,10 @@ function AvailableMultiFlights() {
             requests[0] = {
                 ...requests[0],
                 curr: preFerredCurrency,
-                sort: FlightSortEnum.best,
+                sort: requests[0].sort ?? FlightSortEnum.best,
                 limit: 20,
             };
             updateSearchMultiCityQuery({ requests: data });
-            setShouldFetch(true);
         }
     }, [flyFrom]);
 
