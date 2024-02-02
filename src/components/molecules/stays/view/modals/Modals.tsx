@@ -165,7 +165,7 @@ export const MapModal = ({
 } : {
     open: boolean;
     handleClose: () => void;
-    stayResponse: ViewSingleStayResponse;
+    stayResponse?: ViewSingleStayResponse;
     lat: string | number;
     lng: string | number;
 }) => {
@@ -203,7 +203,7 @@ export const MapModal = ({
                     />
                     <Text
                         type="h4"
-                        text={stayResponse.address}
+                        text={stayResponse?.address ?? 'Address'}
                         weight={600}
                     />
                 </Flex>

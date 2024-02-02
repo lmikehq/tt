@@ -57,17 +57,18 @@ const Location = ({ stayResponse, stayDetails, nearbyLocations = [] } : StayDeta
               type="p"
               size={14}
               color="var(--text-gray-color)"
-              text={stayResponse.address}
+              text={stayResponse?.address}
             ></Text>
           </Flex>
         </Header>
         {/* MAP */}
-        <Span style={{ height: "400px", marginBottom: '2rem' }}>
+        {/* <Span style={{ height: "400px", marginBottom: '2rem' }}> */}
             <GoogleMap
-                lat={stayDetails?.latitude}
-                lng={stayDetails?.longitude}
+                lat={stayResponse?.latitude}
+                lng={stayResponse?.longitude}
+                zoom={16}
             />
-        </Span>
+        {/* </Span> */}
         {/* MAP */}
         {nearbyLocations.length > 0 && 
             <ul style={{ listStyle: "none", width: '100%' }} className="mobile_box">

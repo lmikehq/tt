@@ -294,7 +294,16 @@ function AvailableRooms() {
                     setSortType={setSortType}
                 />
             )}
-            {!isFetching ? (
+            {hotels.length === 0 ? (
+                <Flex padding="5rem 0" justify="center">
+                    <Text
+                        type="p"
+                        text="Sorry no hotels found"
+                        weight={500}
+                        size={18}
+                    />
+                </Flex>
+            ) : !isFetching ? (
                 hotels
                 ?.slice(0, 4)
                 .map((hotel, index) => (
@@ -311,7 +320,7 @@ function AvailableRooms() {
             /> */}
             {/* <RoomSlider hotels={hotels} /> */}
 
-            {hotels?.slice(4).map((hotel, index) => (
+            {hotels.length > 0 && hotels?.slice(4).map((hotel, index) => (
                 <RoomBox hotel={hotel} index={index} key={index} />
             ))}
 

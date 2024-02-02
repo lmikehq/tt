@@ -8,12 +8,14 @@ import WifiIcon from "@mui/icons-material/Wifi";
 import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
-import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare, PinDrop, Bed, LocalHospitalOutlined, Wifi, Pets, Language, WatchLater, ChildFriendly, BedroomBaby, LocalDining, Payments, LunchDining, StickyNote2 } from "@mui/icons-material";
+import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare, PinDrop, Bed, LocalHospitalOutlined, Wifi, Pets, Language, WatchLater, ChildFriendly, BedroomBaby, LocalDining, Payments, LunchDining, StickyNote2, FitnessCenter, SmokingRooms, Pool, Spa, HotTub, Kitchen, BeachAccess, Bathroom } from "@mui/icons-material";
 import { PiBabyFill, PiCheckCircle } from "react-icons/pi";
 import { GiMeal } from "react-icons/gi";
 import { FaWheelchair } from "react-icons/fa6";
 import { LuParkingSquare } from "react-icons/lu";
 import { IoLocationSharp } from "react-icons/io5";
+import { Box } from "@mui/material";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 export const pickIcon = (val: string, styles?: CSSProperties ) => {
     // const fontSize = size
@@ -51,6 +53,19 @@ export const pickIcon = (val: string, styles?: CSSProperties ) => {
         case 'extra_bed': return <Bed style={{ ...styles }} />;
         case 'deposit': return <Payments style={{ ...styles }} />;
         case 'additional': return <StickyNote2 style={{ ...styles }} />;
+        case 'has_internet': return <Wifi style={{ ...styles }} />;
+        case 'has_fitness': return <FitnessCenter style={{ ...styles }} />;
+        case 'has_parking': return <LuParkingSquare style={{ ...styles }} />;
+        case 'has_smoking': return <SmokingRooms style={{ ...styles }} />;
+        case 'has_pool': return <Pool style={{ ...styles }} />;
+        case 'has_spa': return <Spa style={{ ...styles }} />;
+        case 'air_conditioning': return <AcUnitIcon style={{ ...styles }} />;
+        case 'has_jacuzzi': return <HotTub style={{ ...styles }} />;
+        case 'has_airport_transfer': return <TransferWithinAStation style={{ ...styles }} />;
+        case 'kitchen': return <Kitchen style={{ ...styles }} />;
+        case 'beach': return <BeachAccess style={{ ...styles }} />;
+        case 'has_pets': return <Pets style={{ ...styles }} />;
+        case 'has_bathroom': return <Bathroom style={{ ...styles }} />;
         default: return <PiCheckCircle style={{ ...styles }} />;
     }
 }
@@ -60,9 +75,10 @@ interface AmenitiesBoxProps {
     sortedAmenities: string[];
 }
 
-function AmenitiesBox({ amenities, sortedAmenities } : AmenitiesBoxProps) {
+function AmenitiesBox({ amenities, sortedAmenities }: AmenitiesBoxProps) {
+    const { isMobile } = useScreenResolution()
   return (
-    <Span>
+    <Flex direction='column' gap='2.5rem'>
         <Text
             type="h1"
             size={20}
@@ -85,7 +101,12 @@ function AmenitiesBox({ amenities, sortedAmenities } : AmenitiesBoxProps) {
             )}
         </GridLayout>
           
-        <Flex direction="column" margin="2rem 0 0" gap="2rem">
+        <Box
+            display='grid'
+            gridTemplateColumns={isMobile ? '1fr' : '1fr 1fr'}
+            margin="2rem 0 0"
+            gap="2rem"
+        >
             {amenities.map((am, index) => 
                 <Flex direction="column" gap=".5rem" key={`full-amenity-${index}`}>
                     <Text type="h2" size={20} weight={500} text={am.group_name} />
@@ -98,120 +119,8 @@ function AmenitiesBox({ amenities, sortedAmenities } : AmenitiesBoxProps) {
                     </ul>
                 </Flex>
             )}
-            {/* <Flex direction="column" gap=".5rem">
-                <Text type="h2" size={20} weight={500} text="Accessibility" />
-                <Span style={{ marginLeft: "25px" }}>
-                    <ul>
-                    <li>
-                        <Text
-                        type="p"
-                        text="if you have requests for specific accessibility needs, please contact the property using the information on the reservation confirmation received after booking."
-                        ></Text>
-                    </li>{" "}
-                    <li>
-                        <Text
-                        type="p"
-                        text="Accessible bathroom available in select rooms"
-                        ></Text>
-                    </li>{" "}
-                    <li>
-                        <Text type="p" text="Assistive listening devices"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Braille/raised signage"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Elevator"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Height-adjustable showerhead"></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="In-room accessibility available in select rooms"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Lever door handles"></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Roll-in shower available in select rooms"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Stair-free path to entrance"></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Valet for wheelchair-equipped vehicles"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Visual alarms in hallways"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Well-lit path to entrance"></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Wheelchair accessible (may have limitations)"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Wheelchair-accessible business center"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Wheelchair-accessible gym"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Wheelchair-accessible lounge"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Wheelchair-accessible parking"></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Wheelchair-accessible path of travel"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Wheelchair-accessible path to elevator"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Wheelchair-accessible public washroom"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text
-                        type="p"
-                        text="Wheelchair-accessible registration desk"
-                        ></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Wheelchair-accessible restaurant"></Text>
-                    </li>
-                    <li>
-                        <Text type="p" text="Wheelchairs on site"></Text>
-                    </li>
-                    </ul>
-                </Span>
-            </Flex> */}
-      </Flex>
-    </Span>
+      </Box>
+    </Flex>
   );
 }
 

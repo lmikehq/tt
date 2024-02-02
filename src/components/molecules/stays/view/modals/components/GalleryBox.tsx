@@ -127,7 +127,7 @@ function GalleryBox({ images }: GalleryBoxProps) {
             gap=".5rem"
             sx={{
                 columns: 4,
-                gridTemplateColumns: isMobile ? '1fr' : '3fr 1fr 1fr',
+                gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr 1fr',
                 maxHeight: '80vh',
                 overflow: "auto",
             }}

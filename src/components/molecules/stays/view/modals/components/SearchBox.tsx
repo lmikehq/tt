@@ -84,8 +84,8 @@ function SearchBox() {
 
     const handleSubmit = () => {
         if (queryParams?.regionId === String(stayTabInitialSearchQuery?.location?.id ?? '')) {
-            //refresh rates
-            push(`/stay/view`)
+            return
+            // push(`/stay/view`)
         } else {
             push(`/stay/listings${computeStaySearchQuery()}`)
         }

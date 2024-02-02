@@ -103,14 +103,6 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
         { value: "now", label: "Pay Now" },
         { value: "deposit", label: "Deposit" },
     ];
-    
-    const [guests, setGuests] = useState({ value: "", label: "Select Guest" });
-    const options = [
-        { value: "", label: "Select Guest" },
-        { value: "2 adult", label: "2 Adult" },
-        { value: "3 children", label: "3 Children" },
-        { value: "all inclusive", label: "All Inclusive" },
-    ];
 
     const [state, setState] = useState({
         loading: false,
@@ -429,7 +421,7 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
                 )}
             </Section>
             <Section>
-                <Button background={ttColors.dark} width="100%" height="45px" onClick={handleSubmit}>
+                <Button background={ttColors.dark} width="100%" height="45px" padding="1rem 0" onClick={handleSubmit}>
                     {state.loading ? (
                         <Spinner
                             fill={ttColors.primary}
@@ -442,7 +434,7 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
             </Section>
             <Span>
                 {filteredItems.length > 0 ? (
-                    <ChooseYourRoomList hotels={filteredItems} />
+                    <ChooseYourRoomList stayResponse={stayResponse} hotels={filteredItems} />
                 ) : (
                     <Flex padding="4rem 0" justify="center">
                         <Text type="p" text="No hotel available with the selected filters" size={16} weight={600} />   

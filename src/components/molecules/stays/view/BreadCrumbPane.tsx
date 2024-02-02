@@ -39,7 +39,7 @@ const BreadCrumbPane = ({ stayResponse }: { stayResponse: ViewSingleStayResponse
         size={18}
         weight={400}
         color={ttColors.lighterGray}
-        text="The Ritz London"
+        text={stayResponse?.name ?? ''}
       />
     </Flex>
   );

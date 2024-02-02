@@ -60,7 +60,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
   const [open, setOpen] = useState({
     gallery: false,
   });
-  return (
+  return (stayResponse && 
     <Section styles={{ marginBottom: !isMobile ? "37px" : "0px" }}>
       {!isMobile ? (
         <Grid columns={"2"} gap=".5rem">
