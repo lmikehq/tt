@@ -5,7 +5,7 @@ import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.
 export class StayService {
     static likeHotel = async (params: LikeHotelRequestInput) => {
         return await rateHawkResourceClient
-            .post<any, ViewSingleStayResponse>(`/stays/like-hotel`, params)
+            .post<any, ViewSingleStayResponse>(`/stays/${params.id}/like`, {})
             .then((response) => {
                 return response;
             })

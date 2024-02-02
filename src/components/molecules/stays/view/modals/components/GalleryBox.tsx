@@ -143,10 +143,10 @@ function GalleryBox({ images }: GalleryBoxProps) {
                     borderRadius="6px"
                     key={`img-show-${index}`}
                 >
-                  <Image
+                  <img
                     alt="stay"
                     src={img}
-                    styles={{
+                    style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",

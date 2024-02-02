@@ -255,78 +255,92 @@ function AvailableRooms() {
         staySearchSort,
     } = useStaySearchStore((state) => state);
 
-    const { data = [], isFetching } = useSearchStays({
+    const { data, isFetching } = useSearchStays({
         query: {
             ...staySearchFilters,
-            sortBy: staySearchSort,
-            // ...staySearchMeta,
+            meals: staySearchFilters.meals ? staySearchFilters?.meals : undefined,
+            amenity: (staySearchFilters?.amenity ?? []).some(e => !!e) ? staySearchFilters.amenity : undefined,
+            apartmentType: (staySearchFilters?.apartmentType ?? []).some(e => !!e) ? staySearchFilters.apartmentType : undefined,
+            bedType: (staySearchFilters?.bedType ?? []).some(e => !!e) ? staySearchFilters.bedType : undefined,
+            room: (staySearchFilters?.room ?? []).some(e => !!e) ? staySearchFilters.room : undefined,
+            star: staySearchFilters.star ? staySearchFilters?.star : undefined,
+            sort: staySearchSort ?? undefined,
+            regionId: regionId ?? undefined,
+            ...staySearchMeta,
         },
         payload: staysRequestParams(),
     });
-    const hotels = data as HotelBySearchInterface[];
-    const router = useRouter();
+    const hotels = data?.hotelArray as HotelBySearchInterface[];
+    const hotelCount = data?.count ?? 0
+    const limit = staySearchFilters.limit ?? 20
+    const currentPage = staySearchMeta?.currentPage ?? 1
+    const totalPages = Math.floor(hotelCount > 20 ? hotelCount/limit : 1)
 
-  const [sortType, setSortType] = useState("best");
+    console.log('tttpp', totalPages)
+    const [sortType, setSortType] = useState("best");
 
-  return (
-    <div>
-      {!isMobile && (
-        <SortedRoomsTab
-          bestPrice={1}
-          topReviews={1}
-          lowestPrice={1}
-          starRatings={1}
-          distance={"s"}
-          sortType={sortType}
-          hotels={hotels}
-          setSortType={setSortType}
-        />
-      )}
-      {!isFetching ? (
-        hotels
-          ?.slice(0, 4)
-          .map((hotel, index) => (
-            <RoomBox hotel={hotel} index={index} key={index} />
-          ))
-      ) : (
-        <HotelBoxSkeleton />
-      )}
-      <MidListFilter
-        sortType={sortType}
-        ratings={1}
-        prices={1}
-        setSortType={setSortType}
-      />
-      <RoomSlider hotels={hotels} />
+
+    return (
+        <div>
+            {!isMobile && (
+                <SortedRoomsTab
+                    bestPrice={1}
+                    topReviews={1}
+                    lowestPrice={1}
+                    starRatings={1}
+                    distance={"s"}
+                    sortType={sortType}
+                    hotels={hotels}
+                    setSortType={setSortType}
+                />
+            )}
+            {!isFetching ? (
+                hotels
+                ?.slice(0, 4)
+                .map((hotel, index) => (
+                    <RoomBox hotel={hotel} index={index} key={index} />
+                ))
+            ) : (
+                <HotelBoxSkeleton />
+            )}
+            {/* <MidListFilter
+                sortType={sortType}
+                ratings={1}
+                prices={1}
+                setSortType={setSortType}
+            /> */}
+            {/* <RoomSlider hotels={hotels} /> */}
 
             {hotels?.slice(4).map((hotel, index) => (
                 <RoomBox hotel={hotel} index={index} key={index} />
             ))}
 
-            <Flex justify="center" styles={{ marginTop: "40px" }}>
-                <Button
-                    width="100%"
-                    background="#06062A"
-                    padding="2rem 0"
-                    onClick={() =>
-                        updateStaySearchMeta({
-                            ...staySearchMeta,
-                            page: (staySearchMeta?.page ?? 1) + 1,
-                        })
-                    }
-                >
-                    {isFetching ? (
-                        <Spinner fill={ttColors.primary} size={"25px"} />
-                    ) : (
-                        <Text
-                            type="p"
-                            text="Load More"
-                            weight={500}
-                            size={18}
-                        />
-                    )}
-                </Button>
-            </Flex>
+            {currentPage <  totalPages &&
+                <Flex justify="center" styles={{ marginTop: "40px" }}>
+                    <Button
+                        width="100%"
+                        background="#06062A"
+                        padding="2rem 0"
+                        onClick={() =>
+                            updateStaySearchMeta({
+                                ...staySearchMeta,
+                                currentPage: currentPage + 1,
+                            })
+                        }
+                    >
+                        {isFetching ? (
+                            <Spinner fill={ttColors.primary} size={"25px"} />
+                        ) : (
+                            <Text
+                                type="p"
+                                text="Load More"
+                                weight={500}
+                                size={18}
+                            />
+                        )}
+                    </Button>
+                </Flex>
+            }
         </div>
     );
 }

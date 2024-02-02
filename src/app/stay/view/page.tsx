@@ -55,7 +55,7 @@ const StayViewPage = () => {
         currency: preFerredCurrency,
     };
 
-    const { data: stayResponse = sampleViewStay, isFetching:  isLoadingStay, refetch } = useViewSingleStay(requestParams, {
+    const { data: stayResponse, isFetching:  isLoadingStay, refetch } = useViewSingleStay(requestParams, {
         enabled: requestParams?.id ? true : false,
     });
     // const { data: findStayResponse, isFetching: isFetchingFindStay } = useSearchTripAdvisorStay({
@@ -89,14 +89,12 @@ const StayViewPage = () => {
     const handleGoBack = () => {
         router.back();
     };
-
-    console.log('sres', stayResponse)
     
 
     return (
         <SectionLayout>
             {!isMobile ? (
-                <BreadCrumbPane />
+                <BreadCrumbPane stayResponse={stayResponse!} />
             ) : (
                 <Span style={{ margin: "10px 0px" }}>
                     <Flex justify="space-between" align="center">
@@ -134,7 +132,7 @@ const StayViewPage = () => {
             )}
             <HeroImageGrid
                 images={stayImages}
-                stayResponse={stayResponse}
+                stayResponse={stayResponse!}
             />
             <Box
                 sx={{
@@ -171,16 +169,16 @@ const StayViewPage = () => {
                             stayResponse={stayResponse}
                         />
                         <CompareSlider />
-                        <Policies
+                        {/* <Policies
                             stayResponse={stayResponse}
-                        />
+                        /> */}
                         {stayReviewsResponse &&
                             <HotelReviews
                                 reviews={stayReviewsResponse!}
                                 stayDetails={stayDetailsResponse!}
                             />
                         }
-                        <CompareSimilarHotels />
+                        {/* <CompareSimilarHotels /> */}
                     </Section>
                 }
                 <Section>

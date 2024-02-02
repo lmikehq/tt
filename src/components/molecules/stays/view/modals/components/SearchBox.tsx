@@ -92,7 +92,7 @@ function SearchBox() {
     };
 
     console.log('initQ', stayTabInitialSearchQuery)
-    
+
 
     return (
         <Span style={{ padding: "0px 20px" }}>

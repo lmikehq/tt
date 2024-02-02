@@ -10,7 +10,7 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
     return function EnhancedComponent(props: P & HocProps) {
         const { id } = props;
         const [hotelLiked, setHotelLiked] = useState(false);
-        const { isLoading, mutate } = useLikeHotel({
+        const { isLoading, mutateAsync } = useLikeHotel({
             onSuccess: () => {
                 setHotelLiked(true);
                 toast.success("Hotel liked");
@@ -18,7 +18,7 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
         });
 
         const handleLikeHotel = () => {
-            mutate({ id });
+            mutateAsync({ id });
         };
 
         return (

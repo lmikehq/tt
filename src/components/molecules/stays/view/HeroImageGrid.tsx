@@ -68,7 +68,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                 styles={{ maxHeight: "600px", overflow: "hidden" }}
                 borderRadius="12px"
             >
-            <Image
+            <img
               onClick={() =>
                 setOpen((prev) => ({
                   ...prev,
@@ -77,7 +77,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
               }
               alt="stay"
               src={images[0] ?? ''}
-              styles={{
+              style={{
                 width: "100%",
                 height: "120%",
                 objectFit: "cover",
@@ -95,7 +95,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                                 borderRadius="6px"
                                 key={`img-hero-${index}`}
                             >
-                                <Image
+                                <img
                                     onClick={() =>
                                         setOpen((prev) => ({
                                         ...prev,
@@ -104,7 +104,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                                     }
                                     alt="stay"
                                     src={img}
-                                    styles={{
+                                    style={{
                                         width: "100%",
                                         height: "100%",
                                         objectFit: "cover",
@@ -142,7 +142,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                             borderRadius="6px"
                             key={`img-hero-${index}`}
                         >
-                            <Image
+                            <img
                             onClick={() =>
                                 setOpen((prev) => ({
                                 ...prev,
@@ -151,7 +151,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                             }
                             alt="stay"
                             src={img}
-                            styles={{
+                            style={{
                                 width: "100%",
                                 height: "100%",
                                 objectFit: "cover",

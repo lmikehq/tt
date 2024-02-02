@@ -68,8 +68,6 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
         map: false,
         amenities: false,
     });
-    
-    const response: any = {}
 
     const sortedAmenities = useMemo(() =>
         stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[])

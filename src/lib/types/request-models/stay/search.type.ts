@@ -1,5 +1,4 @@
 import { Dayjs } from "dayjs";
-import { string } from "yup";
 import { RateHawkHotelType, RateHawkRegionType } from "../../response-models/stay/location.type";
 
 export interface StayTypeFilter {
@@ -18,7 +17,7 @@ export interface StayTabInitialSearchQuery {
 export interface StaySearchInitialQuery {
     regionId: string;
     countryCode: string;
-    stars: string;
+    star: string;
     checkIn: string;
     checkOut: string;
     guests: string;
@@ -30,81 +29,123 @@ export interface RoomForGuest {
 }
 
 export enum HotelAmenityEnum {
+    has_internet = "has_internet",
     has_fitness = "has_fitness",
+    has_parking = "has_parking",
+    has_smoking = "has_smoking",
+    has_pool = "has_pool",
+    has_spa = "has_spa",
+    air_conditioning = "air_conditioning",
+    has_jacuzzi = "has_jacuzzi",
+    has_airport_transfer = "has_airport_transfer",
+    kitchen = "kitchen",
+    beach = "beach",
+    has_pets = "has_pets",
 }
 export enum HotelMealEnum {
     breakfast_included = "Breakfast",
-    breakfast_not_included = "No Breakfast",
+    // breakfast_not_included = "No Breakfast",
 }
 export enum HotelBedTypeEnum {
     full_double_bed = "full double bed",
     twin_beds = "twin beds",
 }
 export enum HotelRoomEnum {
-    studio = "studio",
-    _1_room = "1 room",
-    _2_room = "2 room",
+    studio = "Studio",
+    suite = "Suite",
+    ComfortRoom = 'Comfort room',
+    StandardTripleRoom = 'Standard Triple room',
+    EconomyDoubleRoom = 'Economy Double room',
+    StandardSingleRoom = 'Standard Single room',
+    ConfortDoubleRoom = 'Comfort Double room',
+    BedroomPenthouseBalcony = '1 Bedroom penthouse Suite with balcony',
+    StandardRoom = 'Standard room',
+    BedroomBalcony = '1 Bedroom Apartment with balcony',
+    BedroomTripleApartmentBalcony = '1 Bedroom Triple Apartment with balcony',
+    SuperiorApartment = 'Superior Apartment',
+    Suite = 'Suite',
+    EconomyRoom = 'Economy room',
 }
 export enum HotelPopularTypes {
-    free_cancellation = "free cancelation",
-    guest_rating_4 = "guest rating 4",
-    breakfast_included = "breakfast included",
-    pet_friendly = "pet_friendly",
-    ocean_views = "ocean  views",
+    free_cancellation = "free cancellation",
+    breakfast_included = "Breakfast",
+    has_internet = "has_internet",
+    pet_friendly = "has_pets",
+    has_fitness = "has_fitness",
+    has_parking = "has_parking",
+    // guest_rating_4 = "guest_rating_4",
+    // ocean_views = "ocean views",
 }
 export enum HotelPropertyTypes {
-    apartment = "apartment",
-    hotel = "hotel",
-    resort = "resort",
-    holiday_centers = "holiday centers",
-    unique_stays = "unique stays",
+    hotel = "Hotel",
+    apartment = "Apartment",
+    guest_house = "Guesthouse",
+    resort = "Resort",
+    camping = "Camping",
+    villas_and_bungalows = "Villas_and_Bungalows",
+    // apartment_hotel = "Apart-hotel",
+    // bnb = "BNB",
+    // hostel = "Hostel",
+    // mini_hotel = "Mini-hotel",
+    // castle = "Castle",
+    // boutique_and_design = "Boutique_and_Design",
+    // cottages_and_houses = "Cottages_and_Houses",
+    // farm = "Farm",
+    // glamping = "Glamping",
+    // holiday_centers = "holiday centers",
+    // unique_stays = "unique stays",
 }
 export enum HotelStarRating {
-    _5_stars,
-    _4_stars,
-    _3_stars,
-    _2_stars,
-    no_rating,
+    _5_stars = '5',
+    _4_stars = '4',
+    _3_stars = '3',
+    _2_stars = '2',
+    _1_stars = '1',
+    no_rating = '0',
 }
 export enum HotelGuestRating {
-    _5_stars,
-    _4_stars,
-    _3_stars,
-    _2_stars,
-    no_rating,
+    _5_stars = '5',
+    _4_stars = '4',
+    _3_stars = '3',
+    _2_stars = '2',
+    _1_stars = '1',
+    no_rating = '0',
 }
 export enum HotelCancellationPolicy {
     free_cancellation = "free cancellation",
     no_cancellation = "no cancelation",
 }
 export interface StaySearchFilters {
+    regionId?: string;
     amenity?: string[];
-    meals?: string[];
-    popularTypes?: string[];
-    propertyTypes?: string[];
-    starRating?: string[];
-    guestRating?: string[];
-    cancellationPolicy?: string[];
-    bedType?: string[];
-    room?: string[];
-
+    apartmentType?: string[];
+    meals?: string;
     minAmount?: number;
     maxAmount?: number;
+    bedType?: string[];
+    room?: string[];
+    cancellationPolicy?: string[];
+    star?: string;
+    guestRating?: string[];
+    popularTypes?: string[];
+    limit?: number;
     [key: string]: string | string[] | number | undefined;
 }
 
 export enum StaySearchSortEnum {
-    best = "best",
-    top_reviews = "top reviews",
-    lowest_prices = "lowest prices",
-    star_rating = "star rating",
-    distance = "distance",
+    highest_stars = "HIGHEST_STAR",
+    lowest_stars = "LOWEST_STAR",
+    highest_price = "HIGHEST_PRICE",
+    lowest_price = "LOWEST_PRICE",
+    // best = "best",
+    // top_reviews = "top reviews",
+    // distance = "distance",
 }
 export interface StaySearchSort {
-    sortBy?: string;
+    sort?: string;
 }
 export interface StaySearchMeta {
-    page: number;
+    currentPage: number;
 }
 export interface SearchStayRequestRequestQuery
     extends StaySearchFilters,
@@ -130,7 +171,6 @@ export interface ViewSingleStayRequestInput {
     guests: RoomForGuest[];
     currency: string;
 }
-
 
 
 /* Trip Advisor */

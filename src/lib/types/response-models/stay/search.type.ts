@@ -100,7 +100,10 @@ export interface HotelBySearchInterface {
     updatedAt: string;
 }
 
-export type SearchStaysResponse = HotelBySearchInterface[];
+export type SearchStaysResponse = {
+    count: number;
+    hotelArray: HotelBySearchInterface[];
+}
 
 // export interface ViewSingleStayResponse {
 //     data: Data;

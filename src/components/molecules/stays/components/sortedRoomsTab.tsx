@@ -14,6 +14,7 @@ import {
     StaySearchSortEnum,
 } from "@/lib/types/request-models/stay/search.type";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { capCase } from "@/lib/utilFns";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip
@@ -95,7 +96,7 @@ interface Hotel {
 function SortedRoomsTab(props: sortProps) {
     const { isMobile } = useScreenResolution();
     const { hotels } = props;
-    const { staySearchSort, updateStaySearchSort } = useStaySearchStore(
+    const { staySearchSort, updateStaySearchSort, stayTabInitialSearchQuery } = useStaySearchStore(
         (state) => state
     );
     return (
@@ -108,7 +109,7 @@ function SortedRoomsTab(props: sortProps) {
             >
                 <Text
                     type="p"
-                    text={`${hotels?.length} hotels found in london`}
+                    text={`${hotels?.length} hotels found in ${stayTabInitialSearchQuery?.location?.name}`}
                     styles={{ fontWeight: "600" }}
                 ></Text>
 
@@ -144,7 +145,7 @@ function SortedRoomsTab(props: sortProps) {
                                     >
                                         <Text
                                             type="p"
-                                            text={value}
+                                            text={capCase(item, '_')}
                                             styles={{
                                                 position: "relative",
                                                 right: "10px",

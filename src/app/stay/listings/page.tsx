@@ -24,8 +24,6 @@ function Page() {
     } = useStaySearchStore((state) => state);
     const router = useRouter();
 
-    const mountedRef = useRef(false);
-
     const searchParams = useSearchParams();
 
     const regionId = searchParams.get("regionId") ?? "";
@@ -33,14 +31,14 @@ function Page() {
     const checkOut = searchParams.get("checkOut") ?? "";
     const guests = searchParams.get("guests") ?? "";
     const countryCode = searchParams.get("countryCode") ?? "";
-    const stars = searchParams.get("stars") ?? "";
+    const star = searchParams.get("star") ?? "";
 
     //This useEffect updates the URL
     useEffect(() => {
         const initialSearchQuery: StaySearchInitialQuery = {
             regionId,
             countryCode,
-            stars,
+            star,
             checkIn,
             checkOut,
             guests,
@@ -49,7 +47,7 @@ function Page() {
             {
                 ...initialSearchQuery,
                 ...staySearchFilters,
-                sortBy: staySearchSort,
+                sort: staySearchSort,
                 ...staySearchMeta,
             },
             {
@@ -57,7 +55,6 @@ function Page() {
             }
         );
         const currentUrl = new URL(window.location.href);
-        console.log(currentUrl, "currentUrl");
         // Append the new query string
         currentUrl.search = query;
 
@@ -73,9 +70,10 @@ function Page() {
         });
         const filters: StaySearchFilters = {
             popularTypes: params.popularTypes?.split(","),
-            meals: params.meals?.split(","),
-            propertyTypes: params.propertyTypes?.split(","),
-            starRating: params.starRating?.split(","),
+            meals: params.meals,
+            amenity: params.amenity?.split(","),
+            apartmentType: params.apartmentType?.split(","),
+            star: params.star,
             guestRating: params.guestRating?.split(","),
             cancellationPolicy: params.cancellationPolicy?.split(","),
             bedType: params.bedType?.split(","),
@@ -86,8 +84,8 @@ function Page() {
             maxAmount: params.maxAmount
                 ? parseInt(params.maxAmount)
                 : undefined,
+            limit: 20,
         };
-        console.log(filters, "filters");
         updateStaySearchFilters(filters);
     }, []);
 

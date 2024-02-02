@@ -65,7 +65,7 @@ function Stays() {
   };
 
   const open = Boolean(anchorEl);
-  const { stayTabInitialSearchQuery, updateStayTabInitialQuery } =
+  const { stayTabInitialSearchQuery, updateStayTabInitialQuery, staySearchFilters, updateStaySearchFilters } =
     useStaySearchStore((state) => state);
 
   const { roomForGuests, stars } = stayTabInitialSearchQuery;
@@ -78,11 +78,10 @@ function Stays() {
       : false;
 
     const computeStaySearchQuery = () => {
-      console.log('reg-id', stayTabInitialSearchQuery.location)
     const params = {
       regionId: stayTabInitialSearchQuery.location?.id,
       countryCode: stayTabInitialSearchQuery.location?.country_code,
-      stars: stayTabInitialSearchQuery.stars
+      star: stayTabInitialSearchQuery.stars
         ? stayTabInitialSearchQuery.stars[0]
         : 3,
       checkIn: formatDate(
@@ -236,11 +235,16 @@ function Stays() {
           />
           <Span>
             <RateHawkLocationSearchInput
-              onChange={(x: RateHawkRegionType) =>
-                updateStayTabInitialQuery({
-                  ...stayTabInitialSearchQuery,
-                  location: x,
-                })
+                onChange={(x: RateHawkRegionType) => {
+                    updateStayTabInitialQuery({
+                      ...stayTabInitialSearchQuery,
+                      location: x,
+                    })
+                    updateStaySearchFilters({
+                        ...staySearchFilters,
+                        regionId: String(x.id)
+                    })        
+                }
               }
               value={stayTabInitialSearchQuery.location}
               placeholder="Enter Destination or Hotel Name"

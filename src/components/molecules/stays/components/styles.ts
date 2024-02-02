@@ -19,6 +19,7 @@ export const GridLayout = styled.div<{ isMobile?: boolean }>`
   gap: 10px;
   position: relative;
   padding: 0;
+  width: 100%;
 `;
 
 export const FlexBox = styled.div`
@@ -103,8 +104,9 @@ export const ImgBox = styled.div`
 
 export const MobileImageBox = styled.div`
   max-height: 420px;
-  overflow: hidden;
   width: 100%;
+  max-width: 95vw;
+  overflow: hidden;
   border-radius: 12px;
   position: relative;
   z-index: 1;
@@ -214,7 +216,7 @@ export const SmallSpan = styled.div`
 export const TextBox = styled.div`
   padding: 1rem;
   width: 100%;
-  max-width: 100%;
+  max-width: 95vw;
 `;
 
 export const RowOne = styled.div``;
