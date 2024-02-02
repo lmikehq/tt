@@ -64,7 +64,7 @@ function FamilyInfo({ steps, index, persistForm, formik, guarantorFormik }: form
                                             {arr.filter(
                                                 (e) =>
                                                     e.section === family.section
-                                            ).length > 1 && (
+                                            ).length > 1 && family?.index !== 0 && (
                                                 <Flex
                                                     justify="flex-end"
                                                     gap="0.25rem"

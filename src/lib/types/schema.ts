@@ -240,7 +240,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
     startDateOfResidence: "",
     changeOfName: false,
     changedName: "",
-    occupation: "",
+    occupation: "none",
     tripDurationStartDate: "",
     tripDurationEndDate: "",
     tripDurationLocation: "",

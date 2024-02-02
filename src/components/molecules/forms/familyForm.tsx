@@ -48,7 +48,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
     const relationshipOptions = values?.section === "A" ? PRINCIPAL_RELATIONSHIPS : values?.section === "B" ? SIBLING_RELATIONSHIPS : IMMEDIATE_RELATIONSHIPS
         
         
-  return (
+    return (
         <Section height="unset" margin="0 0 0rem">
           {isFirst && 
                 <Flex align="flex-start" margin="0 0 1rem">
@@ -66,11 +66,11 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                         />
                     </Flex>
                     <AddButton
-                        disabled={formik.values.familyMembers.length === 6}
+                        disabled={formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length === (values?.section === 'C' ? 5 : 3)}
                         onClick={() => {
                             if (!formik.isValid || !formik.dirty)
                             return toast.error("Please fill the form first");
-                            if (formik.values.familyMembers.length < 6) {
+                            if (formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length < (values?.section === 'C' ? 5 : 3)) {
                                 arrayHelpers?.insert(count + 1, {
                                     ...familyInforKeys,
                                     section: values?.section,
