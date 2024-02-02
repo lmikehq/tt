@@ -16,7 +16,7 @@ import { Stack } from "@mui/material";
 import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
@@ -41,7 +41,10 @@ import {
 } from "@/lib/hooks/flight/multi.hook";
 import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import { extractFlightDataFromParams } from "@/lib/types/request-models/flight/multi/search.type";
+import {
+    extractFlightDataFromParams,
+    parseMultiFlightFilters,
+} from "@/lib/types/request-models/flight/multi/search.type";
 import MultiFlightPreviewCard from "../components/MultiFlightPreviewCard";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
@@ -493,7 +496,10 @@ function AvailableMultiFlights() {
 
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
-    const { queryParams } = useQueryParams();
+    const params = useQueryParams();
+    const { queryParams } = params;
+    // const searchParams = useSearchParams();
+    // const params = new URLSearchParams(searchParams.toString());
 
     const [modal, setModal] = useState<{
         isOpenLogin: boolean;
@@ -725,6 +731,21 @@ function AvailableMultiFlights() {
             setShouldFetch(true);
         }
     }, [flyFrom]);
+
+    useEffect(() => {
+        if (!flightState) return;
+        console.log("sss", `${flightState?.fleet[0].checkedBaggage}`);
+        params.setQueryParams({
+            checkedBags: `${flightState?.fleet[0].checkedBaggage}`,
+            cabinBags: `${flightState?.fleet[0].cabinBaggage}`,
+        });
+    }, [flightState]);
+
+    useEffect(() => {
+        const queryObject = parseMultiFlightFilters(searchMultiCityQuery);
+        console.log("sss", queryObject);
+        params.setQueryParams(queryObject);
+    }, [JSON.stringify(searchMultiCityQuery)]);
 
     return (
         <Flex

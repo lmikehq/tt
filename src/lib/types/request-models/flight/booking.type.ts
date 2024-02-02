@@ -102,44 +102,88 @@ export interface CardInfo {
     holder: string;
 }
 
-export interface SearchFlightsRequestQuery {
-    fly_from?: string;
-    fly_to?: string;
-    date_from?: string;
-    date_to?: string;
-    fly_days_type?: string;
-    fly_days?: string;
-    curr?: string;
-    stops?: string;
-    adults?: number;
-    children?: number;
-    infants?: number;
-    selected_cabins?: string;
-    atime_from?: string;
-    atime_to?: string;
-    dtime_from?: string;
-    dtime_to?: string;
-    return_from?: string;
-    return_to?: string;
-    ret_dtime_from?: string;
-    ret_dtime_to?: string;
-    ret_atime_from?: string;
-    ret_atime_to?: string;
-    adult_hold_bag?: string;
-    adult_hand_bag?: string;
-    child_hold_bag?: string;
-    child_hand_bag?: string;
-    price_from?: number;
-    price_to?: number;
-    select_airlines?: string;
-    vehicle_type?: string;
-    max_stopovers?: number;
-    max_fly_duration?: number;
-    stopover_from?: string;
-    stopover_to?: string;
-    page?: number;
-    limit?: number;
-    sort?: string;
+export class SearchFlightsRequestQueryClass {
+    constructor(
+        public fly_from?: string,
+        public fly_to?: string,
+        public date_from?: string,
+        public date_to?: string,
+        public fly_days_type?: string,
+        public fly_days?: string,
+        public curr?: string,
+        public stops?: string,
+        public adults?: number | string,
+        public children?: number | string,
+        public infants?: number | string,
+        public selected_cabins?: string,
+        public atime_from?: string,
+        public atime_to?: string,
+        public dtime_from?: string,
+        public dtime_to?: string,
+        public return_from?: string,
+        public return_to?: string,
+        public ret_dtime_from?: string,
+        public ret_dtime_to?: string,
+        public ret_atime_from?: string,
+        public ret_atime_to?: string,
+        public adult_hold_bag?: string,
+        public adult_hand_bag?: string,
+        public child_hold_bag?: string,
+        public child_hand_bag?: string,
+        public price_from?: number | string,
+        public price_to?: number | string,
+        public select_airlines?: string,
+        public vehicle_type?: string,
+        public max_stopovers?: number | string,
+        public max_fly_duration?: number | string,
+        public stopover_from?: string,
+        public stopover_to?: string,
+        public page?: number | string,
+        public limit?: number | string,
+        public sort?: string
+    ) {}
+}
+
+export interface SearchFlightsRequestQuery
+    extends SearchFlightsRequestQueryClass {
+    [x: string]: any;
+    // fly_from?: string;
+    // fly_to?: string;
+    // date_from?: string;
+    // date_to?: string;
+    // fly_days_type?: string;
+    // fly_days?: string;
+    // curr?: string;
+    // stops?: string;
+    // adults?: number | string;
+    // children?: number | string;
+    // infants?: number | string;
+    // selected_cabins?: string;
+    // atime_from?: string;
+    // atime_to?: string;
+    // dtime_from?: string;
+    // dtime_to?: string;
+    // return_from?: string;
+    // return_to?: string;
+    // ret_dtime_from?: string;
+    // ret_dtime_to?: string;
+    // ret_atime_from?: string;
+    // ret_atime_to?: string;
+    // adult_hold_bag?: string;
+    // adult_hand_bag?: string;
+    // child_hold_bag?: string;
+    // child_hand_bag?: string;
+    // price_from?: number | string;
+    // price_to?: number | string;
+    // select_airlines?: string;
+    // vehicle_type?: string;
+    // max_stopovers?: number | string;
+    // max_fly_duration?: number | string;
+    // stopover_from?: string;
+    // stopover_to?: string;
+    // page?: number | string;
+    // limit?: number | string;
+    // sort?: string;
 }
 
 export enum FlightSortEnum {

@@ -14,6 +14,7 @@ function FlightList() {
     const [sortType, setSortType] = useState("");
 
     const { queryParams } = useQueryParams();
+
     const multi = queryParams?.multi;
 
     return (

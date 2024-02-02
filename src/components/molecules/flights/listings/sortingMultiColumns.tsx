@@ -7,18 +7,8 @@ import {
 } from "@/lib/extensions/context";
 import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import {
-    SearchFlightsRequestQuery,
-    defaultMultiQuery,
-    parseMultiFlightQuery,
-} from "@/lib/types/request-models/flight/booking.type";
-import React, {
-    ReactNode,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from "react";
+
+import React, { ReactNode, useContext, useMemo, useState } from "react";
 import PriceAlerts from "../components/priceAlerts";
 import { debounce } from "debounce";
 import Slider from "../../slider";
@@ -284,11 +274,12 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                 options={stopOptions}
                                 name="stops"
                                 value={
-                                    searchMultiCityQuery.requests[index]?.stops
+                                    searchMultiCityQuery.requests[index]
+                                        ?.max_stopovers
                                 }
                                 onChange={(ev) =>
                                     updateMultiCityQueryAtIndex(index, {
-                                        stops: ev.target.value,
+                                        max_stopovers: ev.target.value,
                                     })
                                 }
                                 justifyContent="flex-end"
@@ -734,12 +725,12 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                             type="p"
                             text={`${formatPrice({
                                 total: searchMultiCityQuery.requests[index]
-                                    ?.price_from,
+                                    ?.price_from as number,
                                 currency: preFerredCurrency,
                                 numberOfDecimalDigits: 0,
                             })} - ${formatPrice({
                                 total: searchMultiCityQuery.requests[index]
-                                    ?.price_to,
+                                    ?.price_to as number,
                                 currency: preFerredCurrency,
                                 numberOfDecimalDigits: 0,
                             })}`}

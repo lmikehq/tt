@@ -22,7 +22,6 @@ export const useSearchMulticity = (
     params: SearchMultiFlightRequestQuery,
     options?: UseQueryOptions<SearchMultiFlightsResponse>
 ) => {
-    console.log(params, "real params");
     return useQuery({
         queryKey: ["search-multiflight", params],
         queryFn: () =>

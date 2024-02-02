@@ -1,5 +1,14 @@
+import {
+    SearchFlightsRequestQuery,
+    SearchFlightsRequestQueryClass,
+} from "@/lib/types/request-models/flight/booking.type";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import { shareCheckedAndCabinBaggage } from "../booking.type";
+import { keys } from "ts-transformer-keys";
+
+import {
+    SearchMultiFlightRequestQuery,
+    shareCheckedAndCabinBaggage,
+} from "../booking.type";
 
 export const extractFlightDataFromParams = ({
     flyFrom,
@@ -48,4 +57,53 @@ export const extractFlightDataFromParams = ({
     });
 
     return formattedData;
+};
+type FlightFilters = Omit<
+    SearchFlightsRequestQuery,
+    | "fly_from"
+    | "fly_to"
+    | "date_from"
+    | "stops"
+    | "adults"
+    | "children"
+    | "infants"
+    | "adult_hold_bag"
+    | "adult_hand_bag"
+    | "child_hold_bag"
+    | "child_hand_bag"
+    | "curr"
+>;
+export const parseMultiFlightFilters = (
+    params: SearchMultiFlightRequestQuery
+): FlightFilters => {
+    const fieldsToOmit = [
+        "fly_from",
+        "fly_to",
+        "date_from",
+        "stops",
+        "cabin",
+        "adults",
+        "children",
+        "infants",
+        "adult_hold_bag",
+        "adult_hand_bag",
+        "child_hold_bag",
+        "child_hand_bag",
+        "curr",
+        "sort",
+        "limit",
+    ];
+    const objectKeys = Object.keys(new SearchFlightsRequestQueryClass());
+    let queryParams: FlightFilters = {};
+    objectKeys.forEach((key) => {
+        if (fieldsToOmit.includes(key)) return;
+        let values: string[] = [];
+        params.requests.forEach((flight) => {
+            values.push(flight[key] ? `${flight[key]}` : "x");
+        });
+        const allX = values.every((element) => element === "x");
+        if (allX) return;
+        queryParams[key] = values.join("~");
+    });
+    return queryParams;
 };
