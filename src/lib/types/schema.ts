@@ -6,6 +6,7 @@ import {
   FamilyInfoInterface,
   GuarantorInfoInterface,
   IAccompany,
+  IReferralInfo,
   IUpdatePassword,
   PersonalInfoInterface,
   VisaApplicationFormInterface,
@@ -567,3 +568,14 @@ export const updatePasswordSchema: yup.ObjectSchema<IUpdatePassword> = yup.objec
   confirmPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match').required("Confirm New Password")
 });
 
+export const referralInfoSchema: yup.ObjectSchema<Omit<IReferralInfo, 'referrerId'>> = yup.object().shape({
+  accountName: yup.string().required("Account Name is required"),
+  accountNumber: yup.string().required("Account Number is required"),
+  bankName: yup.string().required('Bank is required')
+});
+
+export const referralInfoVal: IReferralInfo = {
+  accountName: "",
+  accountNumber: "",
+  bankName: ""
+};

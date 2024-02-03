@@ -280,21 +280,21 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
   data,
   user,
 }: {
-    data: VisaApplicationFormInterface;
-    user?: AuthUser | null;
-    }) => {
-    const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
-        delete member.index;
-        delete member.membersOccupation;
-        delete member.issueCountry;
-        delete member.maritalStatus;
-        return ({
-            ...member,
-            dateOfBirth: formatISODate(member?.dateOfBirth),
-            issueYear: safelyConvertToNumber(member?.issueYear),
-            expiryYear: safelyConvertToNumber(member?.expiryYear),
-        })
-    })
+  data: VisaApplicationFormInterface;
+  user?: AuthUser | null;
+}) => {
+  const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
+    delete member.index;
+    delete member.membersOccupation;
+    delete member.issueCountry;
+    delete member.maritalStatus;
+    return ({
+      ...member,
+      dateOfBirth: formatISODate(member?.dateOfBirth),
+      issueYear: safelyConvertToNumber(member?.issueYear),
+      expiryYear: safelyConvertToNumber(member?.expiryYear),
+    });
+  });
 
   const prevResidences = [
     data.personalInfo.prevResidence1?.name
@@ -572,4 +572,11 @@ export interface IUpdatePassword {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
+}
+
+export interface IReferralInfo {
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  referrerId?: string;
 }

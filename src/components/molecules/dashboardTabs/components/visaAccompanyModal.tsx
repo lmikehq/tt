@@ -50,7 +50,7 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
       return {
         ...prev,
         open: false,
-        type: ''
+        type: 'add-accompany'
       };
     });
   };

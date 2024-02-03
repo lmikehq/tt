@@ -257,7 +257,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
   //   (fm: any) => fm.accompanying === true
   // ).length;
 
-  const accompanying = 0;
+  const accompanying = 1;
 
 
   // function getLocationField(field: string) {
@@ -330,6 +330,8 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         visa={visa && visa}
         refetch={refetch}
       />
+
+      {/* <SetVisaAccompanyModal open={} setState={}/> */}
 
       <AddVisaAccompanyModal
         open={modalState.open && modalState.type === 'add-accompany'}
@@ -578,7 +580,6 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         </Flex>
       ) : (
         <>
-
           <Grid columns='' gap="24px" style={{ gridTemplateColumns: '80px 1fr 25% 20%' }} align="center">
             <Logo>
               {visa?.destination.code && (

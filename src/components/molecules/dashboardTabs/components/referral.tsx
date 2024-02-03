@@ -24,6 +24,7 @@ import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import { ReferralProp } from "@/lib/types/response-models/dashboard";
 import { mockReferees } from "@/lib/extensions/data/mock";
 import { format } from "date-fns";
+import referralStore from "@/lib/store/dashboard/referrer.store";
 
 const Referral = styled.div`
   display: flex;
@@ -95,10 +96,8 @@ const Referrals = () => {
   const [openAccountModal, setOpenAccountModal] = useState(false);
   const [openOtpModal, setOtpModal] = useState(false);
   const { search, page, param, limit, startDate, endDate } = useDashboardStore((state) => state);
+  const { addId, addReferrerId } = referralStore((state) => state);
 
-  const referral = {
-    referralStatus: 'Claimed'
-  };
 
   const textAndBgColor = (status: string) => {
     switch (status) {
@@ -226,7 +225,13 @@ const Referrals = () => {
 
                   <Button
                     width="max-content"
-                    onClick={() => setOpenModal(true)}
+                    onClick={() => {
+                      // ADD REFERRED ID TO THE GLOBAL STATE
+                      addId(referral._id);
+                      // ADD OBJECT ID TO THE GLOBAL STATE
+                      addReferrerId(referral.referrer);
+                      setOpenModal(true);
+                    }}
                     padding="5px 20px"
                     background={ttColors.dark}
                     fontWeight="500"
@@ -374,6 +379,10 @@ const Referrals = () => {
                             onClick={() => {
                               setBottomDrawerOpen(false);
                               setOpenModal(true);
+                              // ADD REFERRED ID TO THE GLOBAL STATE
+                              addId(referral._id);
+                              // ADD OBJECT ID TO THE GLOBAL STATE
+                              addReferrerId(referral.referrer);
                             }}
                           >
                             <Text
