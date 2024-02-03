@@ -60,7 +60,7 @@ const Account = () => {
   const [openChangePhoneModal, setOpenChangePhoneModal] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   // refactor the modal here
-  const [openModal, setOpenModal] = useState();
+  // const [openModal, setOpenModal] = useState();
   const [passwordBtnLoading, setPasswordBtnLoading] = useState(false);
 
 
@@ -92,6 +92,7 @@ const Account = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [isMobileEdit, setIsMobileEdit] = useState(false);
+  const [isPasswordEdit, setIsPasswordEdit] = useState(false);
   // const [editedInfo, setEditedInfo] = useState({
   //   name: "",
   //   email: "",
@@ -105,6 +106,10 @@ const Account = () => {
 
   const toggleMobileEdit = () => {
     setIsMobileEdit(!isMobileEdit);
+  };
+
+  const togglePasswordEdit = () => {
+    setIsPasswordEdit(!isPasswordEdit);
   };
 
   // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,8 +148,8 @@ const Account = () => {
 
   const formik = useFormik({
     initialValues: {
-      phoneNumber: user?.phoneNumber || '',
-      address: user?.address || ''
+      phoneNumber: user?.phoneNumber,
+      address: user?.address
     },
     validationSchema: yup.object().shape({
       phoneNumber: yup.string().required("Phone Number is required"),
@@ -153,6 +158,7 @@ const Account = () => {
     onSubmit: async (values, formikHelpers) => {
       console.log({ values });
     },
+
   });
 
   const [registerData, setRegisterData] = useState({
@@ -221,18 +227,18 @@ const Account = () => {
       editable: true,
     },
 
-    {
-      title: "Date of Birth",
-      description: "Not set",
-      icon: (
-        <RiEditBoxFill
-          size={isMobile ? ".8rem" : "1rem"}
-          style={{ borderRadius: "4px" }}
-        />
-      ),
+    // {
+    //   title: "Date of Birth",
+    //   description: "Not set",
+    //   icon: (
+    //     <RiEditBoxFill
+    //       size={isMobile ? ".8rem" : "1rem"}
+    //       style={{ borderRadius: "4px" }}
+    //     />
+    //   ),
 
-      editable: false,
-    },
+    //   editable: false,
+    // },
   ];
 
   const [submissionState, setSubmissionState] = useState({
@@ -243,8 +249,8 @@ const Account = () => {
   async function handleUserUpdate(): Promise<any> {
     setLoading(true);
     const response = await apiService("/user/update", "POST", {
-      phoneNumber: registerData.phoneNumber.length > 0 ? registerData.phoneNumber : user.phoneNumber,
-      address: registerData?.address.length > 0 ? registerData.address : user.address
+      phoneNumber: formik?.values?.phoneNumber?.length > 0 ? formik?.values?.phoneNumber : user?.phoneNumber,
+      address: formik?.values?.address?.length > 0 ? formik?.values?.address : user?.address
     });
 
     refetch();
@@ -264,8 +270,6 @@ const Account = () => {
     try {
 
       const response = await apiService("/auth/change-password", "POST", {
-        // ...registerData,
-        // email: registerData?.email?.toLowerCase(),
         currentPassword: registerData.currentPassword,
         newPassword: registerData.newPassword
       });
@@ -278,69 +282,8 @@ const Account = () => {
     }
   };
 
-  console.log(user.phoneNumber);
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('the code is here');
-
-    if (submissionState.loading) return;
-    setSubmissionState({
-      ...submissionState,
-      loading: true,
-    });
-    if (!registerData.consent) {
-      setSubmissionState({
-        ...submissionState,
-        loading: false,
-      });
-      // return alert("Please agree to the terms and conditions");
-    }
-
-    if (registerData.phoneNumber.length < 1) {
-      setSubmissionState({
-        ...submissionState,
-        error: [
-          {
-            constraints: "Phone Number is empty",
-            property: "phoneNumber"
-          }
-        ]
-      });
-    }
-
-    if (registerData.address.length < 1) {
-      setSubmissionState({
-        ...submissionState,
-        error: [
-          {
-            constraints: "Address is Empty",
-            property: "address"
-          }
-        ]
-      });
-    }
-
-    // if (registerData.currentPassword !== confirmPassword) {
-    //   setSubmissionState({
-    //     ...submissionState,
-    //     error: [
-    //       {
-    //         constraints: "Password do not match",
-    //         property: "confirmPassword",
-    //       },
-    //       {
-    //         constraints: "Password do not match",
-    //         property: "password",
-    //       },
-    //     ],
-    //     loading: false,
-    //   });
-    //   return;
-    // }
-
-    if (submissionState.error.length > 0) return;
-    console.log('the code is here');
 
     const res = await handleUserUpdate();
     if (res.statusCode === 400) {
@@ -364,15 +307,7 @@ const Account = () => {
       loading: true,
     });
     toast.success("Your details has been updated successfully!");
-    // setRegisterData({
-    //   ...registerData,
-    //   currentPassword: "",
-    //   newPassword: ""
-    // });
-    // await sleep(3000);
-    // toast.loading("Redirecting to login page...", {
-    //   duration: 3000,
-    // });
+
   }
   function checkIfFieldHasError(field: string) {
     const error: { constraints: string; } = submissionState?.error?.find(
@@ -429,17 +364,15 @@ const Account = () => {
                     placeholder="Enter your first name"
                     readOnly={true}
                     value={user?.firstName}
-                    // onChange={(e) =>
-                    //   setRegisterData({
-                    //     ...registerData,
-                    //     firstName: e.target.value,
-                    //   })
-                    // }
+                    color={ttColors.lighterGray}
                     border={
                       checkIfFieldHasError("firstName")
                         ? "1px solid #FF8682"
                         : ""
                     }
+                    styles={{
+                      fontFamily: 'poppins'
+                    }}
                     height="3rem"
                   />
                   {checkIfFieldHasError("firstName") && (
@@ -468,18 +401,16 @@ const Account = () => {
                   <Input
                     placeholder="Enter your last name"
                     readOnly={true}
-                    // onChange={(e) =>
-                    //   setRegisterData({
-                    //     ...registerData,
-                    //     lastName: e.target.value,
-                    //   })
-                    // }
+                    color={ttColors.lighterGray}
                     value={user?.lastName}
                     border={
                       checkIfFieldHasError("lastName")
                         ? "1px solid #FF8682"
                         : ""
                     }
+                    styles={{
+                      fontFamily: 'poppins'
+                    }}
                     height="3rem"
                   />
                   {checkIfFieldHasError("lastName") && (
@@ -507,19 +438,17 @@ const Account = () => {
                 <Input
                   placeholder="Enter you email"
                   type="email"
+                  color={ttColors.lighterGray}
                   readOnly={true}
-                  // onChange={(e) =>
-                  //   setRegisterData({
-                  //     ...registerData,
-                  //     email: e.target.value,
-                  //   })
-                  // }
                   value={user?.email}
                   border={
                     checkIfFieldHasError("email")
                       ? "1px solid #FF8682"
                       : ""
                   }
+                  styles={{
+                    fontFamily: 'poppins'
+                  }}
                   height="3rem"
                 />
                 {checkIfFieldHasError("email") && (
@@ -531,83 +460,156 @@ const Account = () => {
                 )}
               </Section>
 
-              <Section>
-                <Text
-                  type="p"
-                  text="Phone Number"
-                  // readOnly={true}
-                  margin={
-                    isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
-                  }
-                  size={isMobile ? "14.5px" : "16px"}
-                />
-                <Input
-                  placeholder="Enter your phone number"
-                  readOnly={isMobileEdit ? false : true}
-                  // onChange={(e) =>
-                  //   setRegisterData({
-                  //     ...registerData,
-                  //     phoneNumber: e.target.value,
-                  //   })
-                  // }
-                  onChange={formik.handleChange}
-                  name="phoneNumber"
-                  border={
-                    checkIfFieldHasError("phoneNumber")
-                      ? "1px solid #FF8682"
-                      : ""
-                  }
-                  height="3rem"
-                  type="number"
-                  value={formik?.values.phoneNumber}
-                />
-                {checkIfFieldHasError("phoneNumber") && (
+              {isMobileEdit ? (
+                <Section>
                   <Text
                     type="p"
-                    text={
-                      checkIfFieldHasError("phoneNumber") ||
-                      ""
+                    text="Phone Number"
+                    // readOnly={true}
+                    margin={
+                      isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
                     }
-                    color="#FF8682"
+                    size={isMobile ? "14.5px" : "16px"}
                   />
-                )}
-              </Section>
-
-              <Section>
-                <Text
-                  type="p"
-                  text="Address"
-                  margin={
-                    isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"
-                  }
-                  size={isMobile ? "14.5px" : "16px"}
-                />
-                <Input
-                  placeholder="Enter your address"
-                  readOnly={isMobileEdit ? false : true}
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      address: e.target.value,
-                    })
-                  }
-                  border={
-                    checkIfFieldHasError("address")
-                      ? "1px solid #FF8682"
-                      : ""
-                  }
-                  height="3rem"
-                  type="text"
-                  value={isMobile ? registerData.address : user?.address}
-                />
-                {checkIfFieldHasError("address") && (
+                  <Input
+                    placeholder="Enter your phone number"
+                    readOnly={isMobileEdit ? false : true}
+                    onChange={formik.handleChange}
+                    name="phoneNumber"
+                    styles={{
+                      fontFamily: 'poppins'
+                    }}
+                    border={
+                      checkIfFieldHasError("phoneNumber")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                    type="number"
+                    value={formik?.values.phoneNumber}
+                  />
+                  {checkIfFieldHasError("phoneNumber") && (
+                    <Text
+                      type="p"
+                      text={
+                        checkIfFieldHasError("phoneNumber") ||
+                        ""
+                      }
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
+              ) : (
+                <Section>
                   <Text
                     type="p"
-                    text={checkIfFieldHasError("address") || ""}
-                    color="#FF8682"
+                    text="Phone Number"
+                    // readOnly={true}
+                    margin={
+                      isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
+                    }
+                    size={isMobile ? "14.5px" : "16px"}
                   />
-                )}
-              </Section>
+                  <Input
+                    placeholder="Enter your phone number"
+                    readOnly={true}
+                    name="phoneNumber"
+                    styles={{
+                      fontFamily: 'poppins'
+                    }}
+                    border={
+                      checkIfFieldHasError("phoneNumber")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    height="3rem"
+                    type="number"
+                    value={user?.phoneNumber}
+                  />
+                  {checkIfFieldHasError("phoneNumber") && (
+                    <Text
+                      type="p"
+                      text={
+                        checkIfFieldHasError("phoneNumber") ||
+                        ""
+                      }
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
+              )}
+
+              {isMobileEdit ? (
+                <Section>
+                  <Text
+                    type="p"
+                    text="Address"
+                    margin={
+                      isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"
+                    }
+                    size={isMobile ? "14.5px" : "16px"}
+                  />
+                  <Input
+                    placeholder={user?.address}
+                    readOnly={isMobileEdit ? false : true}
+                    name="address"
+                    onChange={(e) =>
+                      formik.handleChange(e)
+                    }
+                    border={
+                      checkIfFieldHasError("address")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    styles={{
+                      fontFamily: 'poppins'
+                    }}
+                    height="3rem"
+                    type="text"
+                    value={isMobileEdit ? formik.values.address : user?.address}
+                  />
+                  {checkIfFieldHasError("address") && (
+                    <Text
+                      type="p"
+                      text={checkIfFieldHasError("address") || ""}
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
+              ) : (
+                <Section>
+                  <Text
+                    type="p"
+                    text="Address"
+                    margin={
+                      isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"
+                    }
+                    size={isMobile ? "14.5px" : "16px"}
+                  />
+                  <Input
+                    placeholder="Enter your address"
+                    readOnly={true}
+                    border={
+                      checkIfFieldHasError("address")
+                        ? "1px solid #FF8682"
+                        : ""
+                    }
+                    styles={{
+                      fontFamily: 'poppins'
+                    }}
+                    height="3rem"
+                    type="text"
+                    value={user?.address}
+                  />
+                  {checkIfFieldHasError("address") && (
+                    <Text
+                      type="p"
+                      text={checkIfFieldHasError("address") || ""}
+                      color="#FF8682"
+                    />
+                  )}
+                </Section>
+              )}
 
               {/* <Section>
               <Text
@@ -648,28 +650,44 @@ const Account = () => {
             </Section> */}
             </Flex>
 
-            <Center>
-              <Button
-                background={ttColors.dark}
-                type="submit"
-                disabled={isMobileEdit ? false : true}
-                margin="1rem 0px 1.5rem"
-                styles={{
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                {loading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : (
-                  <Text type="p" text={isSaving ? "Saving..." : "Save"} color="#fff" size="16px" weight={500} />
-                )}
+            {isMobileEdit ? (
+              <Flex align="center" gap="12px" margin="1.5rem 0">
+                <Button background="transparent" border={`1px solid ${ttColors.dark}`} width="50%" onClick={() => setIsMobileEdit(false)}>
+                  <Text type="p" text="Cancel" color={ttColors.dark} />
+                </Button>
+                <Button
+                  background={ttColors.dark}
+                  type="submit"
+                  disabled={isMobileEdit ? false : true}
+                  width="50%"
+                  styles={{
+                    justifyContent: "center",
+                    alignContent: "center",
+                  }}
+                >
+                  {loading ? (
+                    <Spinner size="40px" fill={ttColors.primary} />
+                  ) : (
+                    <Text type="p" text={isSaving ? "Saving..." : "Save"} color="#fff" size="16px" weight={500} />
+                  )}
 
-              </Button>
-            </Center>
+                </Button>
+              </Flex>
+            ) : ''}
+
           </form>
 
           <form onSubmit={updateUserPassword}>
+            <Section>
+              <Flex
+                margin="2.5rem 0px 0px"
+                justify="space-between"
+                align="center">
+                <Text type="h1" text="Change Password" size={20} weight={600} />
+                <BiSolidPencil onClick={togglePasswordEdit} style={{ display: isMobile ? 'block' : 'none' }} />
+              </Flex>
+            </Section>
+
             <Section>
               <Text
                 type="p"
@@ -681,6 +699,7 @@ const Account = () => {
               <Input
                 placeholder="Current Password"
                 type="password"
+                readOnly={isPasswordEdit ? false : true}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
                   setRegisterData({
@@ -725,6 +744,7 @@ const Account = () => {
                 <Input
                   placeholder="Enter New Password"
                   type="password"
+                  readOnly={isPasswordEdit ? false : true}
                   onChange={(e) =>
                     setRegisterData({
                       ...registerData,
@@ -786,25 +806,35 @@ const Account = () => {
                 </Section>
               )}
             </Section>
-            <Center>
-              <Button
-                background={ttColors.dark}
-                type="submit"
-                disabled={isSaving}
-                margin="1rem 0px 1.5rem"
-                styles={{
-                  justifyContent: "center",
-                  alignContent: "center",
-                }}
-              >
-                {passwordBtnLoading ? (
-                  <Spinner size="40px" fill={ttColors.primary} />
-                ) : (
-                  <Text type="p" text={isSaving ? "Saving..." : "Save"} color="#fff" size="16px" weight={500} />
-                )}
 
-              </Button>
-            </Center>
+            {isPasswordEdit ? (
+              <Flex align="center" gap="12px" margin="1.5rem 0">
+                <Button background="transparent" border={`1px solid ${ttColors.dark}`} width="50%" onClick={() => {
+                  setIsPasswordFocused(false);
+                  setIsPasswordEdit(false);
+                }}>
+                  <Text type="p" text="Cancel" color={ttColors.dark} />
+                </Button>
+                <Button
+                  width="50%"
+                  background={ttColors.dark}
+                  type="submit"
+                  disabled={isSaving}
+                  styles={{
+                    justifyContent: "center",
+                    alignContent: "center",
+                  }}
+                >
+                  {passwordBtnLoading ? (
+                    <Spinner size="40px" fill={ttColors.primary} />
+                  ) : (
+                    <Text type="p" text={isSaving ? "Saving..." : "Save"} color="#fff" size="16px" weight={500} />
+                  )}
+
+                </Button>
+              </Flex>
+            ) : ('')}
+
           </form>
         </>
       ) : (

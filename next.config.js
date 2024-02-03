@@ -4,13 +4,17 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ["cdn.worldota.net"],
+    domains: ["cdn.worldota.net", "res.cloudinary.com"],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**cdn.worldota.net",
+        hostname: "cdn.worldota.net",
         port: "",
         pathname: "*",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com"
       }
     ]
   },

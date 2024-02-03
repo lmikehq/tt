@@ -4,6 +4,8 @@ import Image from "@atom/image";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import { useState } from "react";
+import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
+import withLikeHotel from "@/components/HOCs/withLikeHotel";
 
 
 const FavouriteCard = styled.div`
@@ -40,11 +42,12 @@ interface Props {
   name: string;
   countryName: string;
   price: number;
-  id: string;
+  hotelId: string;
 }
 
+const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
 
-function FavouritesCard({ image, name, countryName, price, id }: Props) {
+function FavouritesCard({ image, name, countryName, price, hotelId }: Props) {
   const [isFavourite, setIsFavourite] = useState(false);
 
   const toggleFavourite = () => {
@@ -62,8 +65,8 @@ function FavouritesCard({ image, name, countryName, price, id }: Props) {
           height={258}
           styles={{ borderRadius: "8px", objectFit: 'cover' }}
         />
-        <FavouriteCardIcon onClick={toggleFavourite}>
-          <AiFillHeart size="1.5rem" color={heartColor} />
+        <FavouriteCardIcon>
+          <EnhancedFavouriteCheckBox id={hotelId} />
         </FavouriteCardIcon>
       </FavouriteCardImg>
       <Flex justify="space-between" width="370px">
@@ -93,7 +96,7 @@ function FavouritesCard({ image, name, countryName, price, id }: Props) {
           />
           <Text
             type="h3"
-            text={`$${price * 100}`}
+            text={`NGN ${price}`}
             size={20}
             weight={600}
             color="#000000"

@@ -4,19 +4,19 @@ import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 export const useLikeHotel = (
-    options?: Omit<
-        UseMutationOptions<
-            ViewSingleStayResponse,
-            unknown,
-            LikeHotelRequestInput,
-            unknown
-        >,
-        "mutationFn"
-    >
+  options?: Omit<
+    UseMutationOptions<
+      ViewSingleStayResponse,
+      unknown,
+      LikeHotelRequestInput,
+      unknown
+    >,
+    "mutationFn"
+  >
 ) => {
-    return useMutation({
-        mutationFn: (params: LikeHotelRequestInput) =>
-            StayService.likeHotel(params),
-        ...options,
-    });
+  return useMutation({
+    mutationFn: (params: LikeHotelRequestInput) =>
+      StayService.likeHotel(params),
+    ...options,
+  });
 };

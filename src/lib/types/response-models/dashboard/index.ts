@@ -309,8 +309,10 @@ interface Region {
   type: string;
 }
 
+// FAVOURITES
 export interface HotelRoomFavourite {
   _id: string;
+  id: string;
   address: string;
   images: string[];
   name: string;
@@ -318,6 +320,7 @@ export interface HotelRoomFavourite {
   rates: Room[];
 }
 
+// STAYS BOOKING HISTORY
 export interface HotelBookingHistory {
   _id: string;
   userID: string;
@@ -351,6 +354,71 @@ export interface HotelBookingHistory {
   updatedAt: string;
 }
 
+// REFERRAL
+export interface ReferralProp {
+  _id: string;
+  user: {
+    name: string;
+    profilePic: string | null;
+    email: string;
+  };
+  referrer: string;
+  status: string;
+  isClaimed: boolean;
+  firstService: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
+// VISA
 
+export interface VisaResponseProp {
+  _id: string;
+  homeCountry: {
+    name: string;
+    code: string;
+  };
+  destination: {
+    name: string;
+    code: string;
+  };
+  applicationType: string;
+  primaryTraveller: {
+    personalDetails: {
+      firstName: string;
+      lastName: string;
+    };
+  };
+  uniqueVisaId: string;
+  payments: {
+    _id: string;
+    gateway: string;
+    method: string;
+    totalAmount: number;
+    currency: string;
+    status: string;
+    description: string;
+    oneTime: boolean;
+    fee: number;
+    service: string;
+    paymentIntent: string;
+    reference: string;
+    checkoutUrl: string;
+    isPartPayment: boolean;
+    serviceID: string;
+    user: string;
+    userName: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  infoRequests: any[]; // Assuming this can be of any type
+  applicationStatus: string;
+  usedFormFeeVoucher: boolean;
+  updatedAt: string;
+}
 
+export interface GetBankNamesProp {
+  id: number,
+  code: string,
+  name: string;
+}

@@ -44,7 +44,7 @@ const DropdownContent = styled.div`
     @media (max-width: 900px) {
       font-size: 14px;
       width: 300px;
-      line-height: 12px;
+      line-height: 19px;
     }
 `;
 

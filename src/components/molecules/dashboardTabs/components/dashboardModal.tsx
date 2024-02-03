@@ -22,7 +22,7 @@ const StyledModalContent = styled.div<{
   width: ${({ width }) => width || "100%"};
   max-height: calc(100vh - 3rem);
   height: ${({ height }) => height || "auto"};
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -80,6 +80,7 @@ interface ReusableModalProps {
     text: string;
     onClick: () => void;
   };
+  showButton?: boolean;
 }
 // Reusable Modal Component
 const ReusableModal: React.FC<ReusableModalProps> = ({
@@ -98,6 +99,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
     text: "Save",
     onClick: () => { },
   },
+  showButton
 }) => {
   // const [loading, setLoading] = useState(false);
   return (
@@ -116,21 +118,25 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         </ModalIcon>
         {description && <p style={{ textAlign: "center" }}>{description}</p>}
         {children}
-        <Button
-          type="submit"
-          width="100%"
-          background={ttColors.dark}
-          onClick={() => {
-            setLoading(true);
-            buttonProps.onClick();
-          }}
-        >
-          {loading ? (
-            <Spinner size="40px" fill={ttColors.primary} />
-          ) : (
-            <Text type="p" text={buttonProps.text} color="#fff" size="16px" weight={500} />
-          )}
-        </Button>
+
+        {showButton === false ? null : (
+          <Button
+            type="submit"
+            width="100%"
+            background={ttColors.dark}
+            onClick={() => {
+              setLoading(true);
+              buttonProps.onClick();
+            }}
+          >
+            {loading ? (
+              <Spinner size="40px" fill={ttColors.primary} />
+            ) : (
+              <Text type="p" text={buttonProps.text} color="#fff" size="16px" weight={500} />
+            )}
+          </Button>
+        )}
+
       </StyledModalContent>
     </Modal>
   );

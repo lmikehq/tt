@@ -37,6 +37,7 @@ import { RxAvatar } from "react-icons/rx";
 import VisaUploadDocModal from "../visaUploadDoc";
 import { Grid } from "@/components/templates/grid";
 import { AddVisaAccompanyModal } from "./visaAccompanyModal";
+import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
 
 const Logo = styled.div`
   height: 64px;
@@ -121,7 +122,7 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
+function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }) {
   const { isMobile } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
@@ -252,17 +253,19 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
     return setting;
   };
 
-  const accompanying = visa?.familyMembers?.filter(
-    (fm: any) => fm.accompanying === true
-  ).length;
+  // const accompanying = visa?.familyMembers?.filter(
+  //   (fm: any) => fm.accompanying === true
+  // ).length;
+
+  const accompanying = 0;
 
 
-  function getLocationField(field: string) {
-    return typeof visa?.primaryTraveller[field] === "string"
-      ? visa?.primaryTraveller?.[field]
+  // function getLocationField(field: string) {
+  //   return typeof visa?.primaryTraveller[field] === "string"
+  //     ? visa?.primaryTraveller?.[field]
 
-      : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`;
-  }
+  //     : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`;
+  // }
 
   const sortOptions = [
     {
@@ -316,7 +319,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
         visaDetails={{
           id: visa?._id,
           intent: getButtonInformation().intent,
-          accompanying: accompanying,
+          accompanying: accompanying || 0,
           refetch,
         }}
       />
@@ -341,11 +344,11 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
           styles={{ position: "relative" }}
         >
           <Logo>
-            {visa?.primaryTraveller?.destination?.code && (
+            {visa?.destination?.code && (
               <img
                 src={
                   COUNTRY_FLAGS.find(
-                    (x) => x.code === visa?.primaryTraveller?.destination?.code
+                    (x) => x.code === visa?.destination?.code
                   )?.flag
                 }
                 alt="logo"
@@ -363,9 +366,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
               weight={900}
               size={isMobile ? "14px" : "20px"}
               textAlign={isMobile ? "center" : "left"}
-              text={`${getLocationField("homeCountry")} — ${getLocationField(
-                "destination"
-              )}`}
+              text={`${visa.homeCountry.name} — ${visa.destination.name}`}
               letterSpacing={"unset"}
             />
             <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
@@ -442,9 +443,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
                 <Flex justify="flex-start" gap="1rem" align="center">
                   <Text
                     type="h3"
-                    text={`${getLocationField(
-                      "homeCountry"
-                    )} — ${getLocationField("destination")}`}
+                    text={`${visa?.homeCountry?.name} — ${visa?.destination?.name}`}
                     size={16}
                     weight={600}
                     width="max-content"
@@ -466,8 +465,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
                   <Text
                     type="h3"
                     text={
-                      visa?.createdAt
-                        ? format(new Date(visa?.createdAt), "dd MMM, yyyy")
+                      visa?.updatedAt
+                        ? format(new Date(visa?.updatedAt), "dd MMM, yyyy")
                         : "n/a"
                     }
                     size={16}
@@ -582,12 +581,12 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
 
           <Grid columns='' gap="24px" style={{ gridTemplateColumns: '80px 1fr 25% 20%' }} align="center">
             <Logo>
-              {visa?.primaryTraveller?.destination?.code && (
+              {visa?.destination.code && (
                 <img
                   src={
                     COUNTRY_FLAGS.find(
                       (x) =>
-                        x.code === visa?.primaryTraveller?.destination?.code
+                        x.code === visa?.destination?.code
                     )?.flag
                   }
                   alt="logo"
@@ -618,9 +617,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
                   weight={900}
                   size={isMobile ? "1rem" : "1.3rem"}
                   textAlign={isMobile ? "center" : "left"}
-                  text={`${getLocationField(
-                    "homeCountry"
-                  )} — ${getLocationField("destination")}`}
+                  text={`${visa?.homeCountry?.name} — ${visa?.destination?.name}`}
                 />
 
                 <Flex justify="flex-start" gap="0px">
@@ -842,7 +839,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any; }) {
                         <RxAvatar size={20} />
                         <Text
                           type="p"
-                          text={`${visa?.primaryTraveller?.firstName} ${visa?.primaryTraveller?.lastName}`}
+                          text={`${visa?.primaryTraveller?.personalDetails?.firstName} ${visa?.primaryTraveller?.personalDetails?.lastName}`}
                           size={"15px"}
                           transform="uppercase"
                           weight={500}

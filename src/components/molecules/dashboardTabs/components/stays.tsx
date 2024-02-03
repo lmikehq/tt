@@ -80,6 +80,7 @@ function Stays() {
               return (
                 <div key={stay._id}>
                   <StaysCard
+                    hotelId={stay.hotelId}
                     name={stay.hotelPayload.name}
                     image={stay.hotelPayload.image}
                     payment={stay.paymentOptions[0].amount}

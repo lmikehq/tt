@@ -3,8 +3,7 @@ import { staysService } from "@/lib/extensions/hook/apiService";
 export class FavouriteService {
   static fetchFavourites = async () => {
     return await staysService(`/stays-likes/user`).then((response) => {
-      console.log('response from the favourites api', response);
-      return response.data;
+      return response;
     }).catch((error) => {
       throw (error);
     });

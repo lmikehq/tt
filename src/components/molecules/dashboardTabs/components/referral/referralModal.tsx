@@ -13,6 +13,9 @@ import { IoMdClose } from "react-icons/io";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import confetti from 'public/assets/images/dashboard/confetti.png';
 import Image from "@/components/atoms/image";
+import { useFetchReferralBanks } from "@/lib/hooks/dashboard/referral.hook";
+import { GetBankNamesProp } from "@/lib/types/response-models/dashboard";
+import { FaSpinner } from "react-icons/fa";
 
 interface ReferralModalProps {
   state: boolean;
@@ -176,6 +179,11 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
     setState(false);
   };
 
+  const { data, isLoading } = useFetchReferralBanks();
+  console.log({ data });
+  const banks: GetBankNamesProp[] = data?.banks as GetBankNamesProp[];
+  console.log(banks);
+
   const formik = useFormik({
     initialValues: {},
     validationSchema: {},
@@ -196,6 +204,8 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
           borderRadius: '12px',
           width: '647px',
           maxWidth: '647px',
+          maxHeight: isMobile ? '550px' : '775px',
+          overflow: 'auto'
           // padding: '20px 89px 40px'
         }
       }}
@@ -216,26 +226,32 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
       </Flex>
 
       <Section padding={isMobile ? '0 20px 40px' : '0 89px 40px'}>
-        <Flex direction="column" align="center" justify="center" gap="10px" margin="0 0 34px">
-          <Text type="p" text="Claim Rewards" size={32} weight={600} />
-          <Text type="p" text="Fill in the following information to get rewarded" textAlign="center" color={ttColors.lighterGray} />
+        <Flex direction="column" align="center" justify="center" gap="1px" margin="0 0 34px">
+          <Text type="p" text="Claim Rewards" size={isMobile ? 22 : 32} weight={600} />
+          <Text type="p" size={isMobile ? 12 : 16} text="Fill in the following information to get rewarded" textAlign="center" color={ttColors.lighterGray} />
         </Flex>
 
-        <Flex direction="column" align="center" justify="center" gap="10px" margin="0 0 44px">
-          <Text type="h4" text="NGN 20,000" weight={600} size={48} />
-          <Text type="p" text="Visa Application Referral Reward" color={ttColors.lighterGray} />
+        <Flex direction="column" align="center" justify="center" gap="1px" margin="0 0 44px">
+          <Text type="h4" text="NGN 20,000" weight={600} size={isMobile ? 28 : 48} />
+          <Text type="p" size={isMobile ? 12 : 16} text="Visa Application Referral Reward" color={ttColors.lighterGray} />
         </Flex>
 
         <form action="">
           <Flex direction="column" gap="16px" align="center" justify="center">
             <Flex gap="12px" direction="column">
               <Text type="label" text="Bank Name" />
-              <FieldString
-                formik={formik}
-                name="bankName"
-                placeholder="Bank Name"
-                options={['Access Bank']}
-              />
+              {isLoading ? (
+                <>
+                  <FaSpinner className="spinner" />
+                </>
+              ) : (
+                <FieldString
+                  formik={formik}
+                  name="bankName"
+                  placeholder="Bank Name"
+                  options={banks?.map((bank) => bank.name).sort((a, b) => a.localeCompare(b)).filter((name, index, self) => self.indexOf(name) === index)}
+                />
+              )}
             </Flex>
 
             <Flex gap="12px" direction="column">

@@ -31,17 +31,8 @@ import { Grid } from "@/components/templates/grid";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { SiTripadvisor } from "react-icons/si";
 import getMonthAndDay from "@/lib/extensions/helpers/getDateFormat";
-
-interface Room {
-  name: string;
-  location: string;
-  distance: string;
-  reviews: number;
-  rating: number;
-  price: number;
-  image: string;
-  images: string[];
-}
+import withLikeHotel from "@/components/HOCs/withLikeHotel";
+import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -52,29 +43,6 @@ const StyledRating = styled(Rating)({
   },
 });
 
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
-// REACT SLICK BUTTON
-const PrevArrow = (props: any) => {
-  const { onClick } = props;
-  return (
-    <div className="control_btn l_flex" onClick={onClick}>
-      <button className="prev l_flex">
-        <KeyboardArrowLeftIcon className="icon" />
-      </button>
-    </div>
-  );
-};
-const NextArrow = (props: any) => {
-  const { onClick } = props;
-  return (
-    <div className="control_btn" onClick={onClick}>
-      <button className="next l_flex">
-        <KeyboardArrowRightIcon className="icon" />
-      </button>
-    </div>
-  );
-};
 // PRICE FORMAT
 const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
@@ -86,9 +54,12 @@ interface StaysProps {
   payment: string;
   region: string;
   rating: number;
+  hotelId: string;
 }
 
-function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, rating }: StaysProps) {
+const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
+
+function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, rating, hotelId }: StaysProps) {
   const { isMobile } = useScreenResolution();
   const { checkInMonth, checkInDay, checkOutMonth, checkOutDay, range } = getMonthAndDay(checkInDate, checkoutDate);
 
@@ -111,24 +82,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
               </Link>
             </SliderImgBox>
             <FavoriteSliderBox>
-              <Checkbox
-                {...label}
-                icon={<FavoriteBorder />}
-                checkedIcon={
-                  <Favorite
-                    style={{ color: "var(--color-favorite)" }}
-                  />
-                }
-                disableRipple
-                disableTouchRipple
-                disableFocusRipple
-                sx={{
-                  "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
-                }}
-                // checked={checkedRooms[index]}
-                // onChange={() => handleCheckboxChange(index)}
-                id="favorite-hotels-checkbox"
-              />
+              <EnhancedFavouriteCheckBox id={hotelId} />
             </FavoriteSliderBox>
             <Span style={{ width: "fit-content" }}>
               <Link href="">

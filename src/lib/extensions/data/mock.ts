@@ -1,4 +1,4 @@
-import { DashboardFlightBookingProps, HotelBookingHistory, HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
+import { DashboardFlightBookingProps, HotelBookingHistory, HotelRoomFavourite, ReferralProp } from "@/lib/types/response-models/dashboard";
 
 const mockVisa = {
   "applicationType": "Single",
@@ -352,6 +352,7 @@ export const rooms: Room[] = [
 
 export const mockUserDashboardLikes: HotelRoomFavourite = {
   _id: "655ca968fb18ae3389c84d30",
+  id: "hotel_book_do_not_like",
   address: "Albay Sadri Alantar Sokak 24-30, Istanbul",
   images: [
     "https://cdn.worldota.net/t/{size}/content/97/4f/974f621e557fabf65a1fb3f487915044c5becba5.jpeg",
@@ -870,4 +871,35 @@ export const mockStaysBookingHistory: HotelBookingHistory[] = [
     "createdAt": "2024-01-30T13:09:06.231Z",
     "updatedAt": "2024-01-30T13:09:06.231Z"
   },
+];
+
+export const mockReferees: ReferralProp[] = [
+  {
+    "_id": "65b973381611a51a1f16ffb4",
+    "user": {
+      "name": "Hey Pay",
+      "profilePic": "NOT SET",
+      "email": "vandammeinhell@movie4.com"
+    },
+    "referrer": "65700b9e1a107dcd79505db2",
+    "status": "PENDING",
+    "isClaimed": false,
+    "firstService": "NOT AVAILABLE",
+    "createdAt": "2024-01-30T22:07:52.479Z",
+    "updatedAt": "2024-01-30T22:07:52.479Z"
+  },
+  {
+    "_id": "65b973231611a51a1f16ffad",
+    "user": {
+      "name": "Van Damme",
+      "profilePic": "NOT SET",
+      "email": "vandammeinhell@movie1.com"
+    },
+    "referrer": "65700b9e1a107dcd79505db2",
+    "status": "SUCCESS",
+    "isClaimed": false,
+    "firstService": "NOT AVAILABLE",
+    "createdAt": "2024-01-30T22:07:31.063Z",
+    "updatedAt": "2024-01-30T22:07:31.063Z"
+  }
 ];
