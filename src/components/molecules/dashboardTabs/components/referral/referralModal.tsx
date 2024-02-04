@@ -13,13 +13,15 @@ import { IoMdClose } from "react-icons/io";
 import { PiMedalMilitaryFill } from "react-icons/pi";
 import confetti from 'public/assets/images/dashboard/confetti.png';
 import Image from "@/components/atoms/image";
-import { useFetchReferralBanks, useReferralClaimReward, useVerifyOTP } from "@/lib/hooks/dashboard/referral.hook";
+import { useFetchReferralBanks, useSendOTP, useVerifyOTP } from "@/lib/hooks/dashboard/referral.hook";
 import { GetBankNamesProp } from "@/lib/types/response-models/dashboard";
 import { FaSpinner } from "react-icons/fa";
 import referralStore from "@/lib/store/dashboard/referrer.store";
 import Spinner from "@/components/molecules/icons/spinner";
 import { referralInfoSchema, referralInfoVal } from "@/lib/types/schema";
 import ReferralService from "@/lib/services/dashboard/referral.service";
+import { useUserStore } from "@/lib/store/useStore";
+import toast from "react-hot-toast";
 
 interface ReferralModalProps {
   state: boolean;
@@ -30,6 +32,9 @@ interface ReferralModalProps {
 }
 
 export const ReferralModal = ({ state, setState, setOpenAccountModal }: ReferralModalProps) => {
+  const { referrerPersonalInfo } = referralStore((state) => state);
+  const { user } = useUserStore((state) => state);
+
   const isMobile = useScreenResolution();
   const handleClose = () => {
     setState(false);
@@ -78,14 +83,15 @@ export const ReferralModal = ({ state, setState, setOpenAccountModal }: Referral
 
         <Section margin="24px 0 56px">
           <Flex direction="column" align="center" justify="center">
-            <Text type="p" text='Dear Jonathan Adah' weight={500} />
+            <Text type="p" text={`Dear ${user?.firstName}`} weight={500} textAlign="center" margin="0 0 10px" />
             <Text
               type="p"
-              text={`Are you sure you want to claim the rewards for the 5 Referrals?`}
+              text={`Are you sure you want to claim the rewards for the referral of`}
               weight={400}
               styles={{ textAlign: 'center' }}
               color={ttColors.lighterGray}
             />
+            <Text type="p" text={`${referrerPersonalInfo.name}?`} weight={500} textAlign="center" color={ttColors.dark} />
           </Flex>
         </Section>
 
@@ -178,7 +184,7 @@ export const ReferralSubmissionModal = ({ state, setState }: ReferralModalProps)
 };
 
 export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal }: ReferralModalProps) => {
-  const { referrerId, addReferrerInfo, referrerInfo } = referralStore((state) => state);
+  const { addReferrerBankInfo, referrerBankInfo, referrerPersonalInfo } = referralStore((state) => state);
   const { isMobile } = useScreenResolution();
   const handleClose = () => {
     setState(false);
@@ -187,18 +193,19 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
   const { data, isLoading } = useFetchReferralBanks();
   const banks: GetBankNamesProp[] = data?.banks as GetBankNamesProp[];
 
-  // console.log({ referrerId });
   // get the amount the person wants to claim
-  const { data: referralAmountData, isLoading: referralAmountLoading } = useReferralClaimReward(referrerId);
+  // const { data: referralAmountData, isLoading: referralAmountLoading } = useSendOTP(referrerPersonalInfo.referrerId);
 
 
   const formik = useFormik({
     initialValues: referralInfoVal,
     validationSchema: referralInfoSchema,
-    onSubmit(values, formikHelpers) {
-      addReferrerInfo({ accountName: values.accountName, accountNumber: values.accountNumber, bankName: values.bankName });
-      // console.log('referral-info values', values);
-      // console.log({ referrerInfo });
+    async onSubmit(values, formikHelpers) {
+      addReferrerBankInfo({ accountName: values.accountName, accountNumber: values.accountNumber, bankName: values.bankName });
+      // SEND THE OTP TO THE USER
+      const res = await ReferralService.getOTP(referrerPersonalInfo.id);
+      // TOAST OTP SENT
+      toast.success('Check your email for OTP!');
 
       if (setOpenOtpModal) {
         handleClose();
@@ -299,10 +306,9 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
   );
 };
 
-let currentOTPIndex = 0;
 
 export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: ReferralModalProps) => {
-  const { referrerInfo, referrerId } = referralStore((state) => state);
+  const { referrerBankInfo, referrerPersonalInfo } = referralStore((state) => state);
   const { isMobile } = useScreenResolution();
   const [otp, setOTP] = useState(['', '', '', '']);
   const [timer, setTimer] = useState<number>(30);
@@ -333,20 +339,21 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
     setState(false);
   };
 
-  const handleResendOTP = () => {
-    console.log({ referrerInfo });
+  const handleResendOTP = async () => {
     setTimer(30);
     setIsTimerRunning(true);
     // CALL API TO RESEND OTP TO THE USER
+    const response = await ReferralService.getOTP(referrerPersonalInfo.id);
+    toast.success('OTP re-sent!, check your email');
   };
 
   // VERIFY OTP
-  const { data, isLoading } = useVerifyOTP(otp.join(''), {
-    accountName: referrerInfo.accountName,
-    accountNumber: referrerInfo.accountNumber,
-    bankName: referrerInfo.bankName,
-    referrerId: referrerId
-  });
+  // const { data, isLoading } = useVerifyOTP(otp.join(''), {
+  //   accountName: referrerBankInfo.accountName,
+  //   accountNumber: referrerBankInfo.accountNumber,
+  //   bankName: referrerBankInfo.bankName,
+  //   referrerId: referrerPersonalInfo.referrerId
+  // });
 
   const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { value } = target;
@@ -381,6 +388,25 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
       inputRef.current[0]?.focus();
     }
   }, []);
+
+  const handleVerifyOTP = async () => {
+    const response = await ReferralService.verifyOTP(otp.join(''), {
+      accountName: referrerBankInfo.accountName,
+      accountNumber: referrerBankInfo.accountNumber,
+      bankName: referrerBankInfo.bankName,
+      referrerId: referrerPersonalInfo.referrerId
+    });
+
+    if (response.success === true) {
+      if (setSubmissionModal) {
+        handleClose();
+        setSubmissionModal(true);
+      }
+    } else {
+      toast.error("OTP is invalid, Try again!");
+      setEnable(false);
+    }
+  };
 
   return (
     <Dialog
@@ -455,10 +481,7 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
             disabled={enable ? false : true}
             background={ttColors.dark}
             onClick={() => {
-              handleClose();
-              if (setSubmissionModal) {
-                setSubmissionModal(true);
-              }
+              handleVerifyOTP();
             }}>
             <Text type="p" text="Verify" weight={500} />
           </Button>

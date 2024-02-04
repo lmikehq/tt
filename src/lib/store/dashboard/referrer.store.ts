@@ -1,11 +1,10 @@
 
-import { IReferralInfo } from "@/lib/types";
+import { IReferralBankInfo, IReferralPersonalInfo } from "@/lib/types";
 import { create } from "zustand";
 
 interface State {
-  referrerId: string;
-  id: string;
-  referrerInfo: {
+  referrerPersonalInfo: IReferralPersonalInfo,
+  referrerBankInfo: {
     bankName: string;
     accountNumber: string;
     accountName: string;
@@ -13,30 +12,35 @@ interface State {
 }
 
 interface Actions {
-  addReferrerId: (param: string) => void;
-  addReferrerInfo: ({ accountName, accountNumber, bankName }: IReferralInfo) => void;
-  addId: (param: string) => void;
+  // addReferrerId: (param: string) => void;
+  // addId: (param: string) => void;
+  addReferrerInfo: ({ id, referrerId, name, email }: IReferralPersonalInfo) => void;
+  addReferrerBankInfo: ({ accountName, accountNumber, bankName }: IReferralBankInfo) => void;
 }
 
 const referralStore = create<Actions & State>((set): Actions & State => ({
-  id: "",
-  referrerId: "",
-  referrerInfo: { bankName: "", accountName: "", accountNumber: "" },
-  addReferrerId(param) {
+  referrerPersonalInfo: { email: "", name: "", id: "", referrerId: "" },
+  referrerBankInfo: { bankName: "", accountName: "", accountNumber: "" },
+  // addReferrerId(param) {
+  //   set((state) => ({
+  //     referrerId: param
+  //   }));
+  // },
+  addReferrerInfo({ email, id, name, referrerId }: IReferralPersonalInfo) {
     set((state) => ({
-      referrerId: param
+      referrerPersonalInfo: { ...state.referrerPersonalInfo, email, id, name, referrerId }
     }));
   },
-  addReferrerInfo({ accountName, accountNumber, bankName }: IReferralInfo) {
+  addReferrerBankInfo({ accountName, accountNumber, bankName }: IReferralBankInfo) {
     set((state) => ({
-      referrerInfo: { ...state.referrerInfo, accountName, accountNumber, bankName }
+      referrerBankInfo: { ...state.referrerBankInfo, accountName, accountNumber, bankName }
     }));
   },
-  addId(param) {
-    set((state) => ({
-      id: param
-    }));
-  },
+  // addId(param) {
+  //   set((state) => ({
+  //     id: param
+  //   }));
+  // },
 }));
 
 export default referralStore;

@@ -25,6 +25,7 @@ import { ReferralProp } from "@/lib/types/response-models/dashboard";
 import { mockReferees } from "@/lib/extensions/data/mock";
 import { format } from "date-fns";
 import referralStore from "@/lib/store/dashboard/referrer.store";
+import { Grid } from "@/components/templates/grid";
 
 const Referral = styled.div`
   display: flex;
@@ -96,7 +97,7 @@ const Referrals = () => {
   const [openAccountModal, setOpenAccountModal] = useState(false);
   const [openOtpModal, setOtpModal] = useState(false);
   const { search, page, param, limit, startDate, endDate } = useDashboardStore((state) => state);
-  const { addId, addReferrerId } = referralStore((state) => state);
+  const { addReferrerInfo } = referralStore((state) => state);
 
 
   const textAndBgColor = (status: string) => {
@@ -168,27 +169,55 @@ const Referrals = () => {
                   />
                 </Flex>
 
-                <Flex
-                  justify="flex-start"
-                  direction={isMobile ? "column" : "row"}
-                  align={isMobile ? "flex-start" : "center"}
-                  gap={isMobile ? ".1rem" : "3.5rem"}
-                  width="45%"
-                >
-                  <Text
-                    type="h3"
-                    text={referral?.user?.name}
-                    size={isMobile ? 14 : 16}
-                    weight={600}
-                    width="max-content"
-                  />
-                  <Text
-                    type="p"
-                    text={referral?.user?.email}
-                    size={isMobile ? 12 : 16}
-                    weight={400}
-                  />
-                </Flex>
+                {isMobile ? (
+                  <Flex
+                    justify="flex-start"
+                    direction={isMobile ? "column" : "row"}
+                    align={isMobile ? "flex-start" : "center"}
+                    gap={isMobile ? ".1rem" : "3.5rem"}
+                    width="45%"
+                  >
+                    <Text
+                      type="h3"
+                      text={referral?.user?.name}
+                      size={isMobile ? 14 : 16}
+                      weight={600}
+                      width="max-content"
+                    />
+                    <Text
+                      type="p"
+                      text={referral?.user?.email}
+                      size={isMobile ? 12 : 16}
+                      weight={400}
+                    />
+                  </Flex>
+                ) : (
+                  <Grid
+                    columns={""}
+                    style={{
+                      gridTemplateColumns: "1fr 2fr"
+                    }}
+                    justify="flex-start"
+                    // direction={isMobile ? "column" : "row"}
+                    align={isMobile ? "flex-start" : "center"}
+                    gap={isMobile ? ".1rem" : "3.5rem"}
+                    width="45%"
+                  >
+                    <Text
+                      type="h3"
+                      text={referral?.user?.name}
+                      size={isMobile ? 14 : 16}
+                      weight={600}
+                      width="max-content"
+                    />
+                    <Text
+                      type="p"
+                      text={referral?.user?.email}
+                      size={isMobile ? 12 : 16}
+                      weight={400}
+                    />
+                  </Grid>
+                )}
 
                 <Text
                   type="p"
@@ -226,10 +255,13 @@ const Referrals = () => {
                   <Button
                     width="max-content"
                     onClick={() => {
-                      // ADD REFERRED ID TO THE GLOBAL STATE
-                      addId(referral._id);
-                      // ADD OBJECT ID TO THE GLOBAL STATE
-                      addReferrerId(referral.referrer);
+                      // ADD REFERRER INFO TO THE GLOBAL STATE
+                      addReferrerInfo({
+                        id: referral._id,
+                        referrerId: referral.referrer,
+                        name: referral.user.name,
+                        email: referral.user.email
+                      });
                       setOpenModal(true);
                     }}
                     padding="5px 20px"
@@ -379,10 +411,13 @@ const Referrals = () => {
                             onClick={() => {
                               setBottomDrawerOpen(false);
                               setOpenModal(true);
-                              // ADD REFERRED ID TO THE GLOBAL STATE
-                              addId(referral._id);
-                              // ADD OBJECT ID TO THE GLOBAL STATE
-                              addReferrerId(referral.referrer);
+                              // ADD REFERRER INFO TO THE GLOBAL STATE
+                              addReferrerInfo({
+                                id: referral._id,
+                                referrerId: referral.referrer,
+                                name: referral.user.name,
+                                email: referral.user.email
+                              });
                             }}
                           >
                             <Text

@@ -574,9 +574,16 @@ export interface IUpdatePassword {
   confirmPassword: string;
 }
 
-export interface IReferralInfo {
+export interface IReferralBankInfo {
   bankName: string;
   accountName: string;
   accountNumber: string;
   referrerId?: string;
+}
+
+export interface IReferralPersonalInfo {
+  id: string;
+  referrerId: string;
+  email: string;
+  name: string;
 }

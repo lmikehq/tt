@@ -1,5 +1,5 @@
 import ReferralService from "@/lib/services/dashboard/referral.service";
-import { IReferralInfo } from "@/lib/types";
+import { IReferralBankInfo } from "@/lib/types";
 import { DashboardFilters } from "@/lib/types/request-models/dashboard";
 import { useQuery } from "@tanstack/react-query";
 
@@ -17,14 +17,14 @@ export const useFetchReferralBanks = () => {
   });
 };
 
-export const useReferralClaimReward = (param: string) => {
+export const useSendOTP = (param: string) => {
   return useQuery({
-    queryFn: () => ReferralService.getReferralReward(param),
+    queryFn: () => ReferralService.getOTP(param),
     queryKey: ["get-referral-reward", param]
   });
 };
 
-export const useVerifyOTP = (param: string, payload: IReferralInfo) => {
+export const useVerifyOTP = (param: string, payload: IReferralBankInfo) => {
   return useQuery({
     queryFn: () => ReferralService.verifyOTP(param, payload),
     queryKey: ['verify-OTP-token', param]
