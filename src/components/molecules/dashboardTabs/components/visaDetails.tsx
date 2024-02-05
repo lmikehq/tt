@@ -38,6 +38,7 @@ import VisaUploadDocModal from "../visaUploadDoc";
 import { Grid } from "@/components/templates/grid";
 import { AddVisaAccompanyModal } from "./visaAccompanyModal";
 import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
+import SetVisaAccompanyModal from "./setVisaAccompanyModal";
 
 const Logo = styled.div`
   height: 64px;
@@ -277,7 +278,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
           return {
             ...prev,
             open: true,
-            type: 'add-accompany'
+            type: 'set-accompany'
           };
         });
         setIsDropdownOpen(false);
@@ -331,7 +332,11 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         refetch={refetch}
       />
 
-      {/* <SetVisaAccompanyModal open={} setState={}/> */}
+      <SetVisaAccompanyModal
+        // onClose={ }
+        open={modalState.open && modalState.type === 'set-accompany'}
+        setState={setModalState}
+      />
 
       <AddVisaAccompanyModal
         open={modalState.open && modalState.type === 'add-accompany'}
@@ -350,7 +355,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
               <img
                 src={
                   COUNTRY_FLAGS.find(
-                    (x) => x.code === visa?.destination?.code
+                    (x) => x?.code === visa?.destination?.code
                   )?.flag
                 }
                 alt="logo"
@@ -582,12 +587,12 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         <>
           <Grid columns='' gap="24px" style={{ gridTemplateColumns: '80px 1fr 25% 20%' }} align="center">
             <Logo>
-              {visa?.destination.code && (
+              {visa?.destination?.code && (
                 <img
                   src={
                     COUNTRY_FLAGS.find(
                       (x) =>
-                        x.code === visa?.destination?.code
+                        x?.code === visa?.destination?.code
                     )?.flag
                   }
                   alt="logo"
@@ -864,7 +869,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         <Text type="p" text={visa?.uniqueVisaId} size={"15px"} weight={500} transform="uppercase" />
                       </Flex>
                     </Section>
-                    {/*OPEN ACCOMPANY MODAL */}
+                    {/*OPEN SET ACCOMPANY MODAL */}
                     <div>
                       <Flex justify="flex-end">
                         <Button
@@ -881,7 +886,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                               return {
                                 ...prev,
                                 open: true,
-                                type: 'add-accompany'
+                                type: 'set-accompany'
                               };
                             });
                           }}

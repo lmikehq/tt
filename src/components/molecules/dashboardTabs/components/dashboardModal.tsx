@@ -69,6 +69,7 @@ interface ReusableModalProps {
   onClose: () => void;
   headerText: string;
   description: string;
+  descriptionColor?: string;
   children?: React.ReactNode;
   height?: string;
   width?: string;
@@ -88,6 +89,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   onClose,
   headerText,
   description,
+  descriptionColor,
   height,
   width,
   maxWidth,
@@ -101,7 +103,6 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   },
   showButton
 }) => {
-  // const [loading, setLoading] = useState(false);
   return (
     <Modal open={open} onClose={onClose}>
       <StyledModalContent
@@ -116,7 +117,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         <ModalIcon onClick={onClose}>
           <IoMdClose />
         </ModalIcon>
-        {description && <p style={{ textAlign: "center" }}>{description}</p>}
+        {description && <p style={{ textAlign: "center", color: descriptionColor }}>{description}</p>}
         {children}
 
         {showButton === false ? null : (

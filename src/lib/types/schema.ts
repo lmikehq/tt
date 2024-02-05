@@ -535,23 +535,27 @@ export const accompanyVal: IAccompany = {
   gender: '',
   dateOfBirth: '',
   passportNumber: '',
-  passportIssuedCountry: '',
+  passportIssuedCountry: { name: "", code: "", flag: "" },
   issueDate: '',
   expiryDate: ''
 };
 
 export const accompanySchema: yup.ObjectSchema<IAccompany> = yup.object().shape({
   memberName: yup.string().required("Name is required"),
-  relationship: yup.string().required({ name: 'Relationship is required' }),
+  relationship: yup.string().required('Relationship is required'),
   memberAddress: yup.string().required("Address is required"),
   memberOccupation: yup.string().required("Occupation is Required"),
   memberEmail: yup.string().required("Email is required").email("Enter a valid email"),
   phoneNumber: yup.string().required("Phone number is required"),
   memberWorth: yup.string().required("Net Worth is required"),
-  gender: yup.string().required({ name: "Gender is required" }),
+  gender: yup.string().required("Gender is required"),
   dateOfBirth: yup.string().required("Date of Birth is required"),
   passportNumber: yup.string().required("Passport number is required"),
-  passportIssuedCountry: yup.string().required({ name: "Country is required" }),
+  passportIssuedCountry: yup.object().shape({
+    name: yup.string().required("Name Required"),
+    code: yup.string().required("Code Required"),
+    flag: yup.string().required("Flag Required"),
+  }),
   issueDate: yup.string().required("Issue Date is required"),
   expiryDate: yup.string().required("Expiry Date is required")
 });
@@ -578,4 +582,12 @@ export const referralInfoVal: Omit<IReferralBankInfo, "referrerId"> = {
   accountName: "",
   accountNumber: "",
   bankName: ""
+};
+
+export const setDependantsSchema: yup.ObjectSchema<{ numberOfDependants: number; }> = yup.object().shape({
+  numberOfDependants: yup.number().required()
+});
+
+export const setDependantsVal: { numberOfDependants: number; } = {
+  numberOfDependants: 1
 };

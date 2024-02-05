@@ -42,6 +42,9 @@ const Visa = () => {
     options: { retry: 2 }
   });
 
+
+  // console.log({ data });
+
   const {
     data: fetchedVisa,
     isLoading,
@@ -57,7 +60,8 @@ const Visa = () => {
   }
   if (error) return <div>error loading visas, please try again</div>;
   const { data: visas } = fetchedVisa;
-  // console.log({ visas })
+  // console.log(visas);
+
   const content = {
     title: "You've got no Visa Application - Let's help you get Started",
     links: [
@@ -72,8 +76,8 @@ const Visa = () => {
       <VisaDashboardHeader headerText="All Visa Applications" type="checkbox" />
 
       <div>
-        {visas?.length > 0 ? (
-          visas?.map((visa: any, i: number) => (
+        {visas?.visas?.length > 0 ? (
+          visas?.visas?.map((visa: any, i: number) => (
             <div key={i}>
               <VisaDetail visa={visa} refetch={refetch} />
             </div>

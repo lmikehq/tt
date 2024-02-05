@@ -563,7 +563,7 @@ export interface IAccompany {
   gender: string,
   dateOfBirth: string,
   passportNumber: string,
-  passportIssuedCountry: string,
+  passportIssuedCountry: { name: string, flag: string, code: string; },
   issueDate: string,
   expiryDate: string;
 }
