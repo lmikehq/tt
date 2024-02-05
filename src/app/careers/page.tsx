@@ -6,7 +6,7 @@ import CareersPage from "@/components/organisms/careers/CareersPage";
 function Careers () {
     return (
         <Section padding="1rem 0 0">
-            <Breadcrumb/>
+            {/* <Breadcrumb/> */}
             <SectionLayout>
                 <CareersPage/>
             </SectionLayout>

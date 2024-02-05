@@ -1,9 +1,9 @@
 'use client'
 
 import Text from '@/components/atoms/text';
-import Flex from '@/components/templates/flex';
+import Flex, { FlexProps } from '@/components/templates/flex';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
-import React, { ReactNode } from 'react'
+import React, { ReactNode, forwardRef } from 'react';
 import styled from "styled-components";
 import PostCard from './components/PostCard';
 import { Box } from '@mui/material';
@@ -19,6 +19,7 @@ import Link from 'next/link';
 import BlogCarousel from './components/BlogCarousel';
 import dayjs from 'dayjs';
 import Timeline from './components/Timeline';
+
 export const postCard = {
     heading: 'Embark on Unforgettable Journeys with Thrillers Travels:  Your Passport to Limitless Exploration',
     text: "At Thrillers Travels, we believe that travel isn't just about reaching a destination; it's an odyssey that shapes perspectives, creates lifelong memories, and fosters connections beyond borders. With a relentless pursuit of excellence, we craft journeys that transcend the ordinary, offering tailored experiences designed to ignite your sense of adventure and curiosity. From seamless travel arrangements to personalized stays and streamlined visa solutions, we're dedicated to curating every aspect of your voyage. Join us on a quest to discover new horizons, forge global connections, and create moments that linger as stories for a lifetime. Let Thrillers Travels be your companion on the path to exceptional exploration."
@@ -38,12 +39,12 @@ const bulletPoints = [
     { 
         heading: 'Our Vision',
         text: "Guided by innovation and a commitment to excellence, we strive to be the foremost catalyst in unlocking travel standards, ensuring every journey embodies seamless perfection and leaves an enduring imprint of unforgettable discovery",
-        icon: <TbTargetArrow color={ttColors.primary600} size={45} />,
+        icon: <TbTargetArrow color={ttColors.primary600} size={40} />,
     },
     { 
         heading: 'Our Mission',
         text: "Our mission is to curate personalized travel solutions, streamline visa facilitation, and elevate hotel experiences, empowering individuals and businesses to navigate the world with ease while fostering cultural exchange and enhancing travel possibilities.",
-        icon: <BiTargetLock color={ttColors.primary600} size={52} />,
+        icon: <BiTargetLock color={ttColors.primary600} size={42} />,
     },
 ]
 const blogPages = [
@@ -121,14 +122,14 @@ const timeline = [
     },
     {
         startDate: '2023/09/02',
-        endDate: 'Now',
+        endDate: '2023/12/01',
         title: 'Thrillers Travels Launch',
         content: 'A monumental day as Thrillers Travels officially launches its platform, marking a significant milestone in its journey to redefine travel experiences. The platform goes live, offering travelers a seamless and curated approach to travel, stays, and visa solutions.',
     },
     {
         startDate: '2023/09/03',
-        endDate: '2023/12/01',
-        title: 'Thrillers Travels Launch',
+        endDate: 'Now',
+        title: 'Thrillers Travels Fully Operating',
         content: 'Following the successful launch, Thrillers Travels focuses on enhancing user experiences, gathering feedback, and initiating strategic marketing campaigns. The company witnesses substantial growth in its user base, solidifying its presence in the travel industry as it closes the year with aspirations for continued success and innovation.',
     },
 ]
@@ -137,16 +138,16 @@ const Wrapper = styled.section `
     margin-top: 1rem;
 `;
 
-function Section({ children, id, background, padding }: { children: ReactNode; id?: string; background?: string; padding?: string; }) {
+const Section = forwardRef(function Section({ children, id, background, padding, overflow }: { children: ReactNode; id?: string; background?: string; padding?: string; overflow?: FlexProps['overflowX']; }, ref: any) {
     return (
-        <Flex direction='column' id={id} padding={padding ?? '1.5rem 0'} gap='2rem' position='relative' background={background}>
+        <Flex direction='column' id={id} padding={padding ?? '1.5rem 0'} gap='2.5rem' position='relative' background={background} overflowX={overflow ?? 'initial'} overflowY={overflow ?? 'initial'} ref={ref}>
             {children}
         </Flex>
     )
-}
+})
 function SubHeading({ title, text, sub }: { title: string; text: string; sub?: ReactNode; }) {
     return (
-        <Flex direction='column' width='max-content' gap="1rem">
+        <Flex direction='column' gap="1rem">
             <Text
                 type='h2'
                 text={title}
@@ -174,7 +175,7 @@ function AboutUsPage() {
                 justify="center"
                 align="center"
                 background={`url(/assets/images/faq/faq-bg.png)`}
-                padding={isMobile ? '7rem 2rem 6rem' : '10rem 7rem'}
+                padding={isMobile ? '4rem 2rem 3rem' : '9rem 7rem 8rem'}
                 margin="0 0 2rem"
                 gap="2rem"
                 borderRadius=".5rem"
@@ -194,15 +195,15 @@ function AboutUsPage() {
                     size={isMobile ? 15 : 15}
                     textAlign='center'
                     width={isMobile ? '' : '50%'}
-                    />
+                />
             </Flex>
 
-            <Flex direction='column' gap="4.5rem" margin='3rem 0'>
+            <Flex direction='column' gap="3.5rem" margin='3rem 0'>
                 <Box
                     display='grid'
                     gridTemplateColumns={isMobile ? '1fr' : '1fr 1fr 1fr'}
-                    columnGap='3rem'
-                    rowGap='3rem'
+                    columnGap='5rem'
+                    rowGap='2rem'
                 >
                     {bulletPoints.map((bullet, index) => 
                         <BulletCard
@@ -226,7 +227,7 @@ function AboutUsPage() {
                     />
                 </Section>
 
-                <Section background={ttColors.primary100} padding={isMobile ? '4rem 2rem 5rem' : '4rem 3rem 5rem'}>
+                <Section background={ttColors.primary100} padding={isMobile ? '4rem 2rem 5rem' : '4rem 3rem 5rem'} overflow='visible'>
                     <SubHeading
                         title='Our Story'
                         text='This is the Thrillers Travel story as told through milestones'

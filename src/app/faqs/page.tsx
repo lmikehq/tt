@@ -8,7 +8,7 @@ import FAQPage from "@/components/organisms/faq/FAQPage";
 const FaqsComponent = () => {
     return (
         <Section styles={{ paddingTop: "1rem" }}>
-            <Breadcrumb/>
+            {/* <Breadcrumb/> */}
             <SectionLayout>
                 <FAQPage />
             </SectionLayout>

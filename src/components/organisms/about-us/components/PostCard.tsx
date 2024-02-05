@@ -19,7 +19,7 @@ function PostCard({ heading, text, imgSrc = '/assets/images/empty-img.png' }: Po
         <Box
             display='grid'
             gridTemplateColumns={isMobile ? '1fr' : '1fr 1fr'}
-            columnGap='5rem'
+            columnGap='4rem'
             rowGap='3rem'
             padding='2rem 0'
             alignItems='center'
@@ -41,6 +41,7 @@ function PostCard({ heading, text, imgSrc = '/assets/images/empty-img.png' }: Po
                     type='p'
                     text={text}
                     size={15}
+                    textAlign='justify'
                 />
             </Flex>
         </Box>

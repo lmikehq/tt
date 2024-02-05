@@ -87,6 +87,7 @@ const AccordionItem: React.FC<AccordionItemComponentProps> = ({
                     backgroundColor: 'white',
                     ' .MuiAccordionSummary-content': {
                         justifyContent: 'space-between',
+                        alignItems: 'center',
                     },
                     ' .MuiAccordionSummary-expandIconWrapper': {
                         display: 'none',

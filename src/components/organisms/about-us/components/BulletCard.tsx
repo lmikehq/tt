@@ -19,7 +19,7 @@ function BulletCard({ heading, text, icon }: BulletCardProps) {
         <Flex
             direction='column'
             gap='1.5rem'
-            padding='2rem 0'
+            padding={['Our Mission', 'Our Vision'].includes(heading) ? '1.5rem 0 2rem' : '2rem 0'}
         >
             {icon}
             <Flex direction='column' gap='1rem'>
@@ -33,6 +33,7 @@ function BulletCard({ heading, text, icon }: BulletCardProps) {
                     type='p'
                     text={text}
                     size={15}
+                    textAlign='justify'
                 />
             </Flex>
         </Flex>

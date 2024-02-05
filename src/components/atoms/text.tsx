@@ -1,4 +1,4 @@
-import React, { CSSProperties, MouseEventHandler } from "react"
+import React, { CSSProperties, MouseEventHandler, forwardRef } from "react"
 interface TextProps {
   text: string
   type: string
@@ -30,7 +30,7 @@ interface TextProps {
   onMouseLeave?: (event: React.MouseEvent<HTMLElement>) => void
 }
 
-export const Text: React.FC<TextProps> = ({
+export const Text = forwardRef(function Text({
   text,
   type,
   color,
@@ -52,7 +52,7 @@ export const Text: React.FC<TextProps> = ({
   onClick,
   onMouseEnter,
   onMouseLeave
-}) => {
+}: TextProps, ref: any) {
   const updatedStyles: CSSProperties = {
     color,
     fontSize: size,
@@ -75,55 +75,55 @@ export const Text: React.FC<TextProps> = ({
 
   if (type === "p")
     return (
-      <p style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <p style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </p>
     )
   if (type === "span")
     return (
-      <span style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <span style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </span>
     )
   if (type === "label")
     return (
-      <label style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <label style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </label>
     )
   if (type === "h1")
     return (
-      <h1 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <h1 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </h1>
     )
   if (type === "h2")
     return (
-      <h2 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <h2 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </h2>
     )
   if (type === "h3")
     return (
-      <h3 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <h3 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </h3>
     )
   if (type === "h4")
     return (
-      <h4 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <h4 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </h4>
     )
   if (type === "h5")
     return (
-      <h5 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <h5 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </h5>
     )
   if (type === "h6")
     return (
-      <h6 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <h6 style={updatedStyles} className={className} onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={ref}>
         {text}
       </h6>
     )
@@ -133,5 +133,5 @@ export const Text: React.FC<TextProps> = ({
       {text}
     </div>
   )
-}
+})
 export default Text

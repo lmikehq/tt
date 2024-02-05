@@ -5,7 +5,6 @@ import axios, {
     InternalAxiosRequestConfig,
     AxiosRequestConfig,
 } from "axios";
-import { toast } from "react-hot-toast";
 
 interface XAxiosInstance extends AxiosInstance {
     request<T = any, R = AxiosResponse<T>>(
@@ -23,7 +22,7 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 function getAuthToken(): string | null {
-    let user = null;
+    let user: string | null = null;
     if (typeof window !== "undefined") {
         // Access localStorage here
         user = window.localStorage.getItem("user");

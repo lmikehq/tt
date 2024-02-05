@@ -100,29 +100,25 @@ const FooterSection = ({ showNewsletter = true }) => {
     const top_countries = ["Canada", "New Zealand", "United Kingdom", "Norway"];
     const useful_links = [
         { text: "Waitlist", href: "/waitlist", color: "#06062A" },
-        { text: "Travel Guide", href: "/travel-guide", color: "#06062A" },
+        { text: "Travel AI Guide", href: "/ai-guide", color: "#06062A" },
         { text: "FAQs", href: "/faqs", color: "#06062A" },
         { text: "Referral Program", href: "/reviews", color: "#06062A" },
     ];
 
     const supports = [
-        { href: "/help-center", text: "Help Center", color: "#06062A" },
         { href: "/contact", text: "Contact Us", color: "#06062A" },
         { href: "/privacy-policy", text: "Privacy Policy", color: "#06062A" },
         { href: "/terms-conditions", text: "Terms of Service", color: "#06062A" },
-        {
-            href: "/trust-and-safety",
-            text: "Trust and safety",
-            color: "#06062A",
-        },
+        { href: "/trust-and-safety", text: "Trust and safety", color: "#06062A" },
+        // { href: "/help-center", text: "Help Center", color: "#06062A" },
     ];
 
     const aboutUs = [
         { href: "/about-us", text: "About Us", color: "#06062A" },
-        // { href: "https://www.myjobmag.com/jobs-at/thrillers-travels", text: "Careers", color: "#06062A" },
         { href: "/careers", text: "Careers", color: "#06062A" },
         { href: "/press", text: "Press", color: "#06062A" },
         { href: "/blog", text: "Blog", color: "#06062A" },
+        // { href: "https://www.myjobmag.com/jobs-at/thrillers-travels", text: "Careers", color: "#06062A" },
     ];
 
     if (isApply && isMobile) return null;
@@ -133,7 +129,7 @@ const FooterSection = ({ showNewsletter = true }) => {
             <FooterGrid isMobile={isMobile}>
                 <SectionLayout
                     margin="0 auto"
-                    padding={isMobile ? "3rem 0px 0px 1.5rem;" : "1rem"}
+                    padding={isMobile ? "3rem 1.5rem 0 1.5rem;" : "1rem"}
                 >
                     {!isMobile ? null : (
                         <Section styles={{ marginBottom: "59px" }}>
@@ -195,6 +191,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -220,6 +217,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -243,6 +241,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -266,6 +265,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                                 color="#06062A"
                                 padding={isMobile ? "0 0 5px" : "0 0 25px"}
                                 weight={700}
+                                margin={isMobile ? '0 0 .8rem' : ''}
                             />
                             <Flex
                                 direction="column"
@@ -304,12 +304,12 @@ const FooterSection = ({ showNewsletter = true }) => {
                     <Flex
                         gap="1rem"
                         align={isMobile ? "center" : "flex-end"}
-                        width="auto"
+                        width="100%"
                         styles={{
                             display: isMobile ? "flex" : "none",
-                            position: "relative",
-                            bottom: "0px",
-                            right: isMobile ? "-16px" : "0px",
+                            // position: "relative",
+                            // bottom: "0px",
+                            // right: isMobile ? "-16px" : "0px",
                         }}
                     >
                         {/* position: absolute; bottom: 124px; right: 252px; */}
@@ -330,7 +330,7 @@ const FooterSection = ({ showNewsletter = true }) => {
                             gap={isMobile ? "0.2px" : "0.5px"}
                             align="center"
                             padding="0rem 0rem 1.5rem"
-                            width={isMobile ? "fit-content" : "10rem"}
+                            width={isMobile ? "100%" : "fit-content"}
                             styles={{ marginTop: isMobile ? "32px" : "" }}
                         >
                             <Image

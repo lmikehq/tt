@@ -19,7 +19,6 @@ function ImageGrid({ images = [] }: ImageGridProps) {
             gridTemplateAreas={isMobile ? '' : `
                 'a a b b b c c'
                 'a a b b b c c'
-                'a a b b b c c'
                 'a a e e e c c'
                 'd d e e e f f'
                 'd d e e e f f'

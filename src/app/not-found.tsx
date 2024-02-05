@@ -9,6 +9,7 @@ import Center from "@components/templates/center";
 import Flex from "@components/templates/flex";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Navbar from "@organism/Navbar";
+import Link from "next/link";
 function NotFoundPage() {
   const { isMobile } = useScreenResolution();
   return (
@@ -44,11 +45,11 @@ function NotFoundPage() {
               textAlign="center"
             />
 
-            <a href="/">
-              <Button width="20rem" margin="3rem 0 0">
+            <Link href="/" style={{ margin: "3rem 0 0" }}>
+              <Button width="20rem">
                 <Text type="p" text="Return to Home Page" size={14} />
               </Button>
-            </a>
+            </Link>
           </Flex>
         </Center>
       </SectionLayout>

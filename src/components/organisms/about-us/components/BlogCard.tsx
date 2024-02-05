@@ -26,7 +26,7 @@ export interface BlogCardItem {
     dislikes: number;
 }
 function BlogCard({ headerImg, userImg, user, position, createdDate, title, content, subject, length, likes, dislikes }: BlogCardItem) {
-    const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution()
 
     return (
         <Flex
@@ -38,7 +38,7 @@ function BlogCard({ headerImg, userImg, user, position, createdDate, title, cont
                 alt='blog-image'
                 src={headerImg}
                 styles={{ width: '100%', height: 'auto', borderRadius: '0.5rem' }}
-                height={320}
+                height={280}
             />
 
             <Flex direction='column' gap='1.5rem'>
@@ -61,13 +61,13 @@ function BlogCard({ headerImg, userImg, user, position, createdDate, title, cont
                                 <Text
                                     type='p'
                                     text={position}
-                                    size={15}
+                                    size={isMobile ? 14 : 15}
                                     color={ttColors.foundation.gray}
                                 />
                                 <Text
                                     type='p'
                                     text={dayjs(createdDate).format('MMM DD')}
-                                    size={15}
+                                    size={isMobile ? 14 : 15}
                                     color={ttColors.foundation.gray}
                                 />
                             </Flex>
@@ -84,13 +84,15 @@ function BlogCard({ headerImg, userImg, user, position, createdDate, title, cont
                     <Text
                         type='p'
                         text={title}
-                        size={20}
                         weight={600}
+                        size={isMobile ? 16 : 20}
+                        className='blog-title'
                     />
                     <Text
                         type='p'
                         text={content}
-                        size={15}
+                        size={isMobile ? 14 : 15}
+                        className='blog-content'
                     />
                 </Flex>
 
@@ -110,7 +112,7 @@ function BlogCard({ headerImg, userImg, user, position, createdDate, title, cont
                         <Text
                             type='p'
                             text={`${length} read`}
-                            size={15}
+                            size={isMobile ? 14 : 15}
                         />
                     </Flex>
 
@@ -119,7 +121,7 @@ function BlogCard({ headerImg, userImg, user, position, createdDate, title, cont
                         <Text
                             type='p'
                             text={likes > 1000 ? `${(likes/1000).toFixed(1)}k` : `${likes}`}
-                            size={15}
+                            size={isMobile ? 14 : 15}
                             color={ttColors.foundation.gray}
                         />
                         <BiDislike size={20} color={ttColors.foundation.gray} />

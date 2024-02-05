@@ -14,14 +14,16 @@ interface OneTabProps {
 }
 function OneTab({ text, isActive, onClick }: OneTabProps) {
     const { isMobile } = useScreenResolution()
+    
     return (
         <Flex
-            padding='1.2rem 1.5rem'
+            padding={isMobile ? '.8rem 1.5rem' : '1rem 1.5rem'}
             justify='center'
             onClick={onClick}
             background={isActive ? ttColors.dark : 'transparent'}
             borderRadius='.5rem'
             cursor='pointer'
+            styles={{ minWidth: '6rem' }}
         >
             <Text
                 type='p'
@@ -41,7 +43,14 @@ interface FAQTabsProps {
 }
 function FAQTabs({ onClick, activeTab }: FAQTabsProps) {
     return (
-        <Flex background={ttColors.primary50} borderRadius='.5rem' padding='.5rem' overflowX='auto' className='scroll-custom'>
+        <Flex
+            background={ttColors.primary50}
+            borderRadius='.5rem'
+            padding='.5rem'
+            overflowX='auto'
+            className='scroll-custom'
+            gap='.5rem'
+        >
             <OneTab
                 text='Visa'
                 isActive={activeTab === 'visa'}

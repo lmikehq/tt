@@ -473,7 +473,7 @@ const ContactPage = () => {
             gap="1rem"
             direction={isMobile ? "column" : "row"}
           >
-            <Card>
+            <Card style={{ width: isMobile ? '100%' : '100%'}}>
               <Flex
                 gap=".5rem"
                 justify="center"
@@ -496,7 +496,7 @@ const ContactPage = () => {
                 />
               </Flex>
             </Card>
-            <Card>
+            <Card style={{ width: isMobile ? '100%' : '100%'}}>
               <Flex
                 gap=".5rem"
                 justify="center"
@@ -523,7 +523,7 @@ const ContactPage = () => {
           <Flex justify="space-between" direction="column" gap="1rem">
             <Text
               type="h1"
-              text="We take your complaints/enquiries very seriously., please fill the form below"
+              text="We take your complaints/enquiries very seriously. Please fill the form below"
               weight={700}
               size={isMobile ? 18 : 22}
             />
