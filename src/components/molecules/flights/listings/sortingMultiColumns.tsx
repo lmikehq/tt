@@ -21,7 +21,7 @@ import PlusMinusButton from "@/components/organisms/flights/PlusMinusButton";
 import { CustomRadioGroup } from "../../radio";
 import SearchStringInput from "../../searchInputs/searchStringInput";
 import CheckBox from "../../checkbox";
-import { ButtonBox } from "../components/sortedFlightsTab";
+import { ButtonBox } from "../components/sortedMultiFlightsTab";
 import { ttColors } from "@/lib/theme/colors";
 import { IoCaretDown } from "react-icons/io5";
 import { capCase } from "@/lib/utilFns";

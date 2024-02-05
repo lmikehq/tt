@@ -2,7 +2,7 @@ import {
     Multi_SingleFlightInfo,
     SearchMultiFlightsResponse,
 } from "@/lib/types/response-models/flight/multi_flight.type";
-import { FlightContainer } from "./sortedFlightsTab";
+import { FlightContainer } from "./sortedMultiFlightsTab";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import React, { useContext } from "react";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";

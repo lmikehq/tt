@@ -33,7 +33,7 @@ import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import AuthModal from "@/components/organisms/auth/AuthModal";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import SortedFlightsTab from "../components/sortedFlightsTab";
+import SortedFlightsTab from "../components/sortedMultiFlightsTab";
 import FlightBox from "../components/flightBox";
 import {
     useSearchMulticity,

@@ -14,7 +14,7 @@ import { CustomRadioGroup } from "@molecule/radio";
 import { LuSearch } from "react-icons/lu";
 import { ttColors } from "@/lib/theme/colors";
 import Slider from "../../slider";
-import { ButtonBox } from "../components/sortedFlightsTab";
+import { ButtonBox } from "../components/sortedMultiFlightsTab";
 import dayjs from "dayjs";
 import { Divider } from "@/components/atoms/divider";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
@@ -60,7 +60,6 @@ const Tag = styled.div`
     justify-content: space-between;
     max-width: 310px;
 `;
-
 
 export const convertTime = (value: number) => {
     const minutes = value * 15;
