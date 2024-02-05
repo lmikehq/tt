@@ -13,6 +13,10 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { Box } from "@mui/material";
 import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
+import { capCase } from "@/lib/utilFns";
+import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
+import { Multi_SingleFlightInfo } from "@/lib/types/response-models/flight/multi_flight.type";
+import { calculateDuration } from "@/lib/types/request-models/flight/booking.type";
 
 export const FlightContainer = styled.div`
     box-shadow: 0px 4px 16px 0px #8dd3bb1a;
@@ -65,14 +69,14 @@ export const ButtonBox = styled.div<{
     }
 `;
 
-type sortProps = {
-    best: { price: number; duration: string };
-    cheapest: { price: number; duration: string };
-    fastest: { price: number; duration: string };
-    earliest: { price: number; duration: string; date: string };
-    data: FlightInfo[];
-    updateSearchQueryHandler: (updatedParams: Record<string, any>) => void;
-};
+interface SortProps {
+    best?: Multi_SingleFlightInfo | FlightInfo | null;
+    cheapest?: Multi_SingleFlightInfo | FlightInfo | null;
+    fastest?: Multi_SingleFlightInfo | FlightInfo | null;
+    earliest?: Multi_SingleFlightInfo | FlightInfo | null;
+    isLoading: boolean;
+    multi?: boolean;
+}
 
 function SortOption({
     label,
@@ -149,13 +153,34 @@ function SortOption({
     );
 }
 
-function SortedFlightsTab(props: sortProps) {
+function SortedMultiFlightsTab({
+    best,
+    cheapest,
+    earliest,
+    fastest,
+    isLoading,
+    multi = false,
+}: SortProps) {
     const { isMobile } = useScreenResolution();
-    const { searchFlightsMode, searchQuery } = useFlightBookingStore(
-        (state) => state
-    );
-    const isLoading = searchFlightsMode === Mode.loading;
 
+    const { updateSingleSearchQuery, searchMultiCityQuery } =
+        useSearchMultiFlightStore((state) => state);
+
+    const searchQuery = searchMultiCityQuery.requests[0];
+
+    const computeDuration = (durationInSeconds: number) => {
+        const hours = Math.floor(durationInSeconds / 3600);
+        const minutes = Math.floor((durationInSeconds % 3600) / 60);
+
+        const hoursText =
+            hours > 0 ? `${hours} hour${hours > 1 ? "s" : ""}` : "";
+        const minutesText =
+            minutes > 0 ? `${minutes} min${minutes > 1 ? "s" : ""}` : "";
+
+        const separator = hoursText && minutesText ? " " : ""; // Add a space separator if both hours and minutes are present
+
+        return `${hoursText}${separator}${minutesText}`;
+    };
     return (
         <FlightContainer>
             {isLoading ? (
@@ -166,7 +191,15 @@ function SortedFlightsTab(props: sortProps) {
                 >
                     <Text
                         type="h3"
-                        text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`}
+                        text={`Looking for flights from ${capCase(
+                            searchQuery?.fly_from,
+                            "_",
+                            "-"
+                        ).toUpperCase()} to ${capCase(
+                            searchQuery?.fly_to,
+                            "_",
+                            "-"
+                        ).toUpperCase()}`}
                         weight={600}
                         size={20}
                     />
@@ -190,12 +223,12 @@ function SortedFlightsTab(props: sortProps) {
                         isMobile={isMobile}
                         active={searchQuery?.sort === "quality"}
                         onClick={() =>
-                            props.updateSearchQueryHandler({ sort: "quality" })
+                            updateSingleSearchQuery({ sort: "quality" })
                         }
                     >
                         <SortOption
                             label="Best"
-                            price={props.best.price}
+                            price={best?.price}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
@@ -204,12 +237,12 @@ function SortedFlightsTab(props: sortProps) {
                         isMobile={isMobile}
                         active={searchQuery?.sort === "price"}
                         onClick={() =>
-                            props.updateSearchQueryHandler({ sort: "price" })
+                            updateSingleSearchQuery({ sort: "price" })
                         }
                     >
                         <SortOption
                             label="Cheapest"
-                            price={props.cheapest.price}
+                            price={cheapest?.price}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
@@ -218,29 +251,43 @@ function SortedFlightsTab(props: sortProps) {
                         isMobile={isMobile}
                         active={searchQuery?.sort === "duration"}
                         onClick={() =>
-                            props.updateSearchQueryHandler({ sort: "duration" })
+                            updateSingleSearchQuery({ sort: "duration" })
                         }
                     >
                         <SortOption
                             label="Fastest"
-                            flightTime={props.fastest.duration}
+                            flightTime={computeDuration(
+                                multi
+                                    ? (
+                                          fastest as Multi_SingleFlightInfo
+                                      )?.route.reduce(
+                                          (acc, curr) =>
+                                              acc + curr.duration.total,
+                                          0
+                                      )
+                                    : (fastest as FlightInfo).duration.total
+                            )}
                             isLoading={isLoading}
                         />
                     </ButtonBox>
 
-                    <ButtonBox
-                        isMobile={isMobile}
-                        active={searchQuery?.sort === "date"}
-                        onClick={() =>
-                            props.updateSearchQueryHandler({ sort: "date" })
-                        }
-                    >
-                        <SortOption
-                            label="Earliest"
-                            flightDate={props.earliest.date}
-                            isLoading={isLoading}
-                        />
-                    </ButtonBox>
+                    {!multi && (
+                        <ButtonBox
+                            isMobile={isMobile}
+                            active={searchQuery?.sort === "date"}
+                            onClick={() =>
+                                updateSingleSearchQuery({ sort: "date" })
+                            }
+                        >
+                            <SortOption
+                                label="Earliest"
+                                flightDate={dayjs(
+                                    (earliest as FlightInfo)?.utc_departure
+                                ).format("Do MMM YY")}
+                                isLoading={isLoading}
+                            />
+                        </ButtonBox>
+                    )}
 
                     {/* {!isMobile &&
                         <Flex direction="column" justify="center" align="center" gap=".2rem" padding="0 0rem 0 0">
@@ -254,4 +301,4 @@ function SortedFlightsTab(props: sortProps) {
     );
 }
 
-export default SortedFlightsTab;
+export default SortedMultiFlightsTab;

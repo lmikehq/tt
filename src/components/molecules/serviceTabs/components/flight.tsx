@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { FlightContext, OneFlightType } from "@/lib/extensions/context";
+// import { FlightContext, OneFlightType } from "@/lib/extensions/context";
 import { formatDate } from "@/lib/utilFns";
 import dayjs, { Dayjs } from "dayjs";
 import { HiPlus } from "react-icons/hi";
@@ -24,6 +24,7 @@ import {
     COUNTRY_FLAGS,
     mappedCountryFlags,
 } from "@/lib/extensions/data/COUNTRY_FLAGS";
+import { FlightContext, OneFlightType } from "@/lib/extensions/context";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -50,6 +51,25 @@ export const ButtonWrapper = styled.div`
         width: 100%;
     }
 `;
+
+export const translateCabin = (x?: string) => {
+    switch (x) {
+        case "Economy":
+            return "M";
+            break;
+        case "Economy Premium":
+            return "W";
+            break;
+        case "Business":
+            return "C";
+            break;
+        case "First":
+            return "F";
+            break;
+        default:
+            return "";
+    }
+};
 
 export function FlightType({
     isMobile,
@@ -159,22 +179,68 @@ function Flights() {
         dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
     };
 
-    const translateCabin = (x?: string) => {
-        switch (x) {
-            case "Economy":
-                return "M";
-                break;
-            case "Economy Premium":
-                return "W";
-                break;
-            case "Business":
-                return "C";
-                break;
-            case "First":
-                return "F";
-                break;
-            default:
-                return "";
+    const formatSearchFlight = ({
+        flights,
+        multi,
+    }: {
+        flights: OneFlightType[];
+        multi: boolean;
+    }) => {
+        if (!multi) {
+            const flight = flights[0];
+            const dateFrom = formatDate(flight?.departureDate ?? dayjs());
+            const returnFrom = formatDate(flight?.returnDate ?? dayjs());
+            // const dateTo = formatDate(flight?.returnDate ?? dayjs());
+            const departure = flight?.departureCountry;
+            const arrival = flight?.arrivalCountry;
+            const adults = flight?.adults;
+            const children = flight?.children;
+            const infants = flight?.infants;
+            const cabin = translateCabin(flight?.flightClass);
+            const cabinBags = flight?.cabinBaggage;
+            const checkedBags = flight?.checkedBaggage;
+
+            return `/flight/listings?fly_from=${
+                departure?.id ?? departure?.code
+            }&fly_to=${arrival?.id ?? arrival?.code}&date_from=${dateFrom}${
+                flight?.returnDate ? `&return_from=${returnFrom}` : ""
+            }&stops=${
+                flightState?.stops
+            }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
+        } else {
+            const flight = flights[0];
+            const adults = flight?.adults;
+            const children = flight?.children;
+            const infants = flight?.infants;
+            const cabin = translateCabin(flight?.flightClass);
+            const cabinBags = flight?.cabinBaggage;
+            const checkedBags = flight?.checkedBaggage;
+
+            return `
+        /flight/listings?fly_from=${flights
+            .map(
+                (flight, index) =>
+                    (index != 0 ? `~` : ``) +
+                    (flight.departureCountry?.id ??
+                        flight.departureCountry?.code)
+            )
+            .join("")}&fly_to=${flights
+                .map(
+                    (flight, index) =>
+                        (index != 0 ? `~` : ``) +
+                        (flight.arrivalCountry?.id ??
+                            flight.arrivalCountry?.code)
+                )
+                .join("")}&date_from=${flights
+                .map(
+                    (flight, index) =>
+                        (index != 0 ? `~` : ``) +
+                        formatDate(flight?.departureDate ?? dayjs())
+                )
+                .join("")}&stops=${
+                flightState?.stops
+            }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
+        `;
         }
     };
 
@@ -197,28 +263,6 @@ function Flights() {
         }
     };
 
-    const formatSearchFlight = (flight?: OneFlightType) => {
-        const dateFrom = formatDate(flight?.departureDate ?? dayjs());
-        const returnFrom = formatDate(flight?.returnDate ?? dayjs());
-        // const dateTo = formatDate(flight?.returnDate ?? dayjs());
-        const departure = flight?.departureCountry;
-        const arrival = flight?.arrivalCountry;
-        const adults = flight?.adults;
-        const children = flight?.children;
-        const infants = flight?.infants;
-        const cabin = translateCabin(flight?.flightClass);
-        const cabinBags = flight?.cabinBaggage;
-        const checkedBags = flight?.checkedBaggage;
-
-        return `/flight/listings?fly_from=${departure?.code}&fly_to=${
-            arrival?.code
-        }&date_from=${dateFrom}${
-            flight?.returnDate ? `&return_from=${returnFrom}` : ""
-        }&stops=${
-            flightState?.stops
-        }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
-    };
-
     const flight = flightState?.fleet[0];
     const flights = flightState?.fleet ?? [];
 
@@ -239,9 +283,10 @@ function Flights() {
     };
 
     const handleSearchFlights = () => {
-        // return console.log(flightState);
         if (formComplete()) {
-            router.push(formatSearchFlight(flight));
+            router.push(
+                formatSearchFlight({ flights, multi: flights.length > 1 })
+            );
         }
     };
 

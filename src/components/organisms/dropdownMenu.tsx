@@ -32,7 +32,7 @@ interface CounterProps {
     isMobile?: boolean;
 }
 
-function Counter({
+export function Counter({
     value,
     onAdd,
     onSubtract,
@@ -78,24 +78,40 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
         ...data,
     });
 
-    const maxBags = useMemo(() => ({
-        cabinBaggage: Number(count?.adults) + Number(count?.children),
-        checkedBaggage: (Number(count?.adults) + Number(count?.children)) * 2,
-    }), [count?.adults, count?.children])
+    const maxBags = useMemo(
+        () => ({
+            cabinBaggage: Number(count?.adults) + Number(count?.children),
+            checkedBaggage:
+                (Number(count?.adults) + Number(count?.children)) * 2,
+        }),
+        [count?.adults, count?.children]
+    );
 
     const setAdults = (type: "add" | "subtract") => {
         if (type === "subtract") {
             setCount((prev) => {
                 const newValue = prev.adults - 1;
                 const adultsAndChildren = newValue + prev.children;
-                const allow = prev.adults > 1
+                const allow = prev.adults > 1;
                 return {
                     ...prev,
                     adults: prev.adults > 1 ? newValue : prev.adults,
-                    children: allow && (newValue < prev.children) ? newValue : prev.children,
-                    infants: allow && (newValue < prev.infants) ? newValue : prev.infants,
-                    cabinBaggage: allow && (adultsAndChildren < prev.cabinBaggage) ? adultsAndChildren : prev.cabinBaggage,
-                    checkedBaggage: allow && ((adultsAndChildren * 2) < prev.checkedBaggage) ? (adultsAndChildren * 2) : prev.checkedBaggage,
+                    children:
+                        allow && newValue < prev.children
+                            ? newValue
+                            : prev.children,
+                    infants:
+                        allow && newValue < prev.infants
+                            ? newValue
+                            : prev.infants,
+                    cabinBaggage:
+                        allow && adultsAndChildren < prev.cabinBaggage
+                            ? adultsAndChildren
+                            : prev.cabinBaggage,
+                    checkedBaggage:
+                        allow && adultsAndChildren * 2 < prev.checkedBaggage
+                            ? adultsAndChildren * 2
+                            : prev.checkedBaggage,
                 };
             });
         } else {
@@ -114,20 +130,29 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
             setCount((prev) => {
                 const newValue = prev[field] - 1;
                 const adultsAndChildren = newValue + prev.adults;
-                const allow = field === 'children'
-                return ({
+                const allow = field === "children";
+                return {
                     ...prev,
                     [field]: prev[field] > 0 ? newValue : prev[field],
-                    cabinBaggage: (allow && adultsAndChildren < prev.cabinBaggage) ? adultsAndChildren : prev.cabinBaggage,
-                    checkedBaggage: (allow && ((adultsAndChildren * 2) < prev.checkedBaggage)) ? (adultsAndChildren * 2) : prev.checkedBaggage,
-                })
+                    cabinBaggage:
+                        allow && adultsAndChildren < prev.cabinBaggage
+                            ? adultsAndChildren
+                            : prev.cabinBaggage,
+                    checkedBaggage:
+                        allow && adultsAndChildren * 2 < prev.checkedBaggage
+                            ? adultsAndChildren * 2
+                            : prev.checkedBaggage,
+                };
             });
         } else {
             setCount((prev) => {
                 const newValue = prev[field] + 1;
                 return {
                     ...prev,
-                    [field]: (newValue <= prev.adults && newValue < 10) ? newValue : prev[field],
+                    [field]:
+                        newValue <= prev.adults && newValue < 10
+                            ? newValue
+                            : prev[field],
                 };
             });
         }
@@ -146,7 +171,10 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
             setCount((prev) => ({
                 ...prev,
                 [field]:
-                    prev[field] < (field === "cabinBaggage" ? maxBags.cabinBaggage : maxBags.checkedBaggage)
+                    prev[field] <
+                    (field === "cabinBaggage"
+                        ? maxBags.cabinBaggage
+                        : maxBags.checkedBaggage)
                         ? prev[field] + 1
                         : prev[field],
             }));
@@ -265,7 +293,9 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         onSubtract={() =>
                             setBaggage("subtract", "cabinBaggage")
                         }
-                        disabledAdd={count.cabinBaggage === maxBags.cabinBaggage}
+                        disabledAdd={
+                            count.cabinBaggage === maxBags.cabinBaggage
+                        }
                         disabledSubtract={count.cabinBaggage <= 0}
                     />
                 </Flex>
@@ -285,7 +315,9 @@ function DropdownMenu({ onDataChange, data, isMobile }: FlightProps) {
                         onSubtract={() =>
                             setBaggage("subtract", "checkedBaggage")
                         }
-                        disabledAdd={count.checkedBaggage === maxBags.checkedBaggage}
+                        disabledAdd={
+                            count.checkedBaggage === maxBags.checkedBaggage
+                        }
                         disabledSubtract={count.checkedBaggage <= 0}
                     />
                 </Flex>

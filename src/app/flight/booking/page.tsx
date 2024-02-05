@@ -22,11 +22,9 @@ import SectionLayout from "@/components/templates/SectionLayout";
 import Flex from "@/components/templates/flex";
 import { useQueryParams } from "@/hooks/useNext";
 import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
-import sleep from "@/lib/extensions/helpers/sleep";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { ttColors } from "@/lib/theme/colors";
-import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { Mode } from "@/lib/types";
 import {
     Combination,
@@ -39,13 +37,14 @@ import {
 import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
 import { BiTransferAlt } from "react-icons/bi";
-import { BsDot } from "react-icons/bs";
 import { redirect, useRouter } from "next/navigation";
 import ErrorPage from "@/components/molecules/errorPage/ErrorPage";
 import Button from "@/components/atoms/button";
 import Image from "@/components/atoms/image";
+import { capCase } from "@/lib/utilFns";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
+
 
 function BookingLoader() {
     const { queryParams } = useQueryParams();
@@ -60,8 +59,8 @@ function BookingLoader() {
     const { isMobile } = useScreenResolution();
     const { searchQuery } = useFlightBookingStore((state) => state);
     const flight = {
-        departure: searchQuery?.fly_from ?? "",
-        arrival: searchQuery?.fly_to ?? "",
+        departure: capCase(searchQuery?.fly_from, '_', '-').toUpperCase() ?? "",
+        arrival: capCase(searchQuery?.fly_to, '_', '-').toUpperCase() ?? "",
         departureDate: searchQuery?.date_from ?? "",
     };
 
