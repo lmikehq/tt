@@ -649,7 +649,7 @@ function AvailableMultiFlights() {
                 ...requests[0],
                 curr: preFerredCurrency,
                 sort: requests[0].sort ?? FlightSortEnum.best,
-                limit: 20,
+                limit: 50,
             };
             updateSearchMultiCityQuery({ requests: data });
         }

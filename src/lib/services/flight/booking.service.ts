@@ -55,7 +55,6 @@ export class FlightBookingService {
                 return response;
             })
             .catch((error) => {
-                toast.error(error.response?.errorMessage);
                 throw error;
             });
     };

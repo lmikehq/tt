@@ -9,6 +9,9 @@ import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
 import React, { ReactNode, useContext, useMemo, useState } from "react";
+import { MdCancel } from "react-icons/md";
+import { formatDate } from "@/lib/utilFns";
+
 import PriceAlerts from "../components/priceAlerts";
 import { debounce } from "debounce";
 import Slider from "../../slider";
@@ -26,6 +29,13 @@ import { LuSearch } from "react-icons/lu";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { Counter } from "@/components/organisms/dropdownMenu";
 import dayjs from "dayjs";
+import {
+    checkIfFieldIsFiltered,
+    extractFlightDataFromParams,
+} from "@/lib/types/request-models/flight/multi/search.type";
+import styled from "styled-components";
+import { translateCabin } from "../../serviceTabs/components/flight";
+import { FlightSortEnum } from "@/lib/types/request-models/flight/booking.type";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -49,13 +59,22 @@ const defaultAcc = {
     bags: false,
     stops: false,
     airlines: false,
-    alliance: false,
+    // alliance: false,
     times: false,
     duration: false,
     price: false,
     cabin: false,
 };
 
+const Tag = styled.div`
+    background: #87ceeb;
+    border-radius: 4px;
+    color: white;
+    padding: 0.6em 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    max-width: 310px;
+`;
 interface AccordionProps {
     isOpen: boolean;
     onToggle: (x: number) => void;
@@ -98,8 +117,11 @@ interface SortingMultiColumnsProps {
     onClose?: () => void;
 }
 function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
-    const { searchMultiCityQuery, updateMultiCityQueryAtIndex } =
-        useSearchMultiFlightStore((s) => s);
+    const {
+        searchMultiCityQuery,
+        updateMultiCityQueryAtIndex,
+        updateSearchMultiCityQuery,
+    } = useSearchMultiFlightStore((s) => s);
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
         (s) => s
     );
@@ -131,6 +153,28 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
         [flightState]
     );
 
+    const handleTwoSliderDebounce = debounce(
+        ({
+            min,
+            max,
+            minField,
+            maxField,
+            index,
+        }: {
+            min: string;
+            max: string;
+            minField: string;
+            maxField: string;
+            index: number;
+        }) => {
+            updateMultiCityQueryAtIndex(index, {
+                [minField]: min,
+                [maxField]: max,
+            });
+        },
+        800
+    );
+
     const handleUpdateMultiFlight = (
         index: number,
         data: Partial<OneFlightType>
@@ -142,10 +186,196 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             });
     };
 
+    const computeActiveFilters = useMemo(() => {
+        let active: string[] = [];
+        Object.keys(defaultAcc).forEach((el) => {
+            switch (el) {
+                case "stops":
+                    if (
+                        checkIfFieldIsFiltered({
+                            fieldName: "max_stopovers",
+                            filters: searchMultiCityQuery,
+                        })
+                    ) {
+                        alert("stops");
+                        active.push("stops");
+                    }
+                    break;
+                case "times":
+                    if (
+                        checkIfFieldIsFiltered({
+                            fieldName: "atime_from",
+                            filters: searchMultiCityQuery,
+                        }) ||
+                        checkIfFieldIsFiltered({
+                            fieldName: "atime_to",
+                            filters: searchMultiCityQuery,
+                        }) ||
+                        checkIfFieldIsFiltered({
+                            fieldName: "dtime_from",
+                            filters: searchMultiCityQuery,
+                        }) ||
+                        checkIfFieldIsFiltered({
+                            fieldName: "dtime_to",
+                            filters: searchMultiCityQuery,
+                        })
+                    ) {
+                        active.push("times");
+                    }
+                    break;
+                case "airlines":
+                    if (
+                        checkIfFieldIsFiltered({
+                            fieldName: "select_airlines",
+                            filters: searchMultiCityQuery,
+                        })
+                    ) {
+                        active.push("airlines");
+                    }
+                    break;
+                case "duration":
+                    if (
+                        checkIfFieldIsFiltered({
+                            fieldName: "max_fly_duration",
+                            filters: searchMultiCityQuery,
+                        }) ||
+                        checkIfFieldIsFiltered({
+                            fieldName: "stopover_from",
+                            filters: searchMultiCityQuery,
+                        }) ||
+                        checkIfFieldIsFiltered({
+                            fieldName: "stopover_to",
+                            filters: searchMultiCityQuery,
+                        })
+                    ) {
+                        active.push("duration");
+                    }
+                    break;
+                case "price":
+                    if (
+                        checkIfFieldIsFiltered({
+                            fieldName: "price_from",
+                            filters: searchMultiCityQuery,
+                        }) ||
+                        checkIfFieldIsFiltered({
+                            fieldName: "price_to",
+                            filters: searchMultiCityQuery,
+                        })
+                    ) {
+                        active.push("price");
+                    }
+                    break;
+                case "cabin":
+                    if (
+                        checkIfFieldIsFiltered({
+                            fieldName: "selected_cabins",
+                            filters: searchMultiCityQuery,
+                        })
+                    ) {
+                        active.push("cabin");
+                    }
+                    break;
+            }
+        });
+
+        return active;
+    }, [JSON.stringify(searchMultiCityQuery)]);
+
+    const filteredTags = useMemo(
+        () =>
+            computeActiveFilters.map((e, index) => (
+                <Tag key={index} style={{ background: ttColors.dark }}>
+                    <Text
+                        type="p"
+                        color="white"
+                        text={capCase(e)}
+                        margin="0 .5rem 0 0"
+                    />{" "}
+                    <Flex width="min-content" onClick={() => {}}>
+                        <MdCancel size={25} color="white" cursor="pointer" />
+                    </Flex>
+                </Tag>
+            )),
+        [JSON.stringify(computeActiveFilters)]
+    );
+
+    const resetFilters = () => {
+        const flights = flightState?.fleet ?? [];
+        const flight = flights![0];
+
+        const adults = flight?.adults;
+        const children = flight?.children;
+        const infants = flight?.infants;
+        const cabin = translateCabin(flight?.flightClass);
+        const cabinBags = flight?.cabinBaggage;
+        const checkedBags = flight?.checkedBaggage;
+        const flyFrom = flights
+            .map(
+                (flight, index) =>
+                    (index != 0 ? `~` : ``) +
+                    (flight.departureCountry?.id ??
+                        flight.departureCountry?.code)
+            )
+            .join("");
+        const url = `
+            https://localhost:3000/flight/listings?fly_from=${flyFrom}&fly_to=${flights
+            .map(
+                (flight, index) =>
+                    (index != 0 ? `~` : ``) +
+                    (flight.arrivalCountry?.id ?? flight.arrivalCountry?.code)
+            )
+            .join("")}&date_from=${flights
+            .map(
+                (flight, index) =>
+                    (index != 0 ? `~` : ``) +
+                    formatDate(flight?.departureDate ?? dayjs())
+            )
+            .join("")}&stops=${
+            flightState?.stops
+        }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
+            `;
+
+        const data = extractFlightDataFromParams({ url, flyFrom });
+        if (data) {
+            let requests = data;
+            requests[0] = {
+                ...requests[0],
+                curr: preFerredCurrency,
+                sort: requests[0].sort ?? FlightSortEnum.best,
+                limit: 20,
+            };
+            updateSearchMultiCityQuery({ requests: data });
+        }
+    };
+
     return (
         <Flex direction="column">
             <PriceAlerts />
 
+            {computeActiveFilters.length > 0 && (
+                <Flex direction="column" padding="1rem 0" gap=".5rem">
+                    <Flex justify="space-between">
+                        <Text
+                            type="p"
+                            color="#06062A"
+                            text={`${computeActiveFilters.length} Filters Active`}
+                            weight={500}
+                        />
+                        <Text
+                            type="p"
+                            color={ttColors.primary}
+                            text="Clear"
+                            styles={{ textDecoration: "underline" }}
+                            weight={500}
+                            onClick={resetFilters}
+                            cursor="pointer"
+                        />
+                    </Flex>
+                    <Flex gap=".5rem" wrap="wrap">
+                        {filteredTags}
+                    </Flex>
+                </Flex>
+            )}
             {/* Number of Bags */}
             <Panel
                 title="Bags"
@@ -728,15 +958,18 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                         ),
                                     ]}
                                     onChange={(event, value) =>
-                                        updateMultiCityQueryAtIndex(index, {
-                                            stopover_from: dayjs()
+                                        handleTwoSliderDebounce({
+                                            min: dayjs()
                                                 .hour((value as number[])[0])
                                                 .minute(0)
                                                 .format("HH:mm"),
-                                            stopover_to: dayjs()
+                                            minField: "stopover_from",
+                                            max: dayjs()
                                                 .hour((value as number[])[1])
                                                 .minute(0)
                                                 .format("HH:mm"),
+                                            maxField: "stopover_to",
+                                            index,
                                         })
                                     }
                                     min={0}

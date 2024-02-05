@@ -51,6 +51,25 @@ export const ButtonWrapper = styled.div`
     }
 `;
 
+export const translateCabin = (x?: string) => {
+    switch (x) {
+        case "Economy":
+            return "M";
+            break;
+        case "Economy Premium":
+            return "W";
+            break;
+        case "Business":
+            return "C";
+            break;
+        case "First":
+            return "F";
+            break;
+        default:
+            return "";
+    }
+};
+
 export function FlightType({
     isMobile,
     value,
@@ -221,24 +240,6 @@ function Flights() {
                 flightState?.stops
             }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
         `;
-        }
-    };
-    const translateCabin = (x?: string) => {
-        switch (x) {
-            case "Economy":
-                return "M";
-                break;
-            case "Economy Premium":
-                return "W";
-                break;
-            case "Business":
-                return "C";
-                break;
-            case "First":
-                return "F";
-                break;
-            default:
-                return "";
         }
     };
 

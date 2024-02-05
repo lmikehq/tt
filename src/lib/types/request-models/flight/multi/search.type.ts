@@ -151,3 +151,25 @@ export const extractFlightFiltersFromURL = ({
 
     return formattedData;
 };
+
+export const checkIfFieldIsFiltered = ({
+    fieldName,
+    filters,
+}: {
+    fieldName: string;
+    filters: SearchMultiFlightRequestQuery;
+}) => {
+    let filtered: boolean = false;
+    for (let i = 0; i < filters.requests.length; i++) {
+        const request = filters.requests[i];
+        console.log("hhhh", fieldName);
+        if (request[fieldName]) {
+            filtered = true;
+            console.log("hhhh", request[fieldName]);
+            console.log(filtered, "hhhhhh");
+            return;
+        }
+    }
+    console.log(filtered, "hhhhh");
+    return filtered;
+};

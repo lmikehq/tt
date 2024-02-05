@@ -290,11 +290,13 @@ const MultiFlightPreviewCard = ({
                                     </Flex>
                                 </Box>
 
-                                <Divider
-                                    direction="horizontal"
-                                    borderStyle="dotted"
-                                    margin="1rem 0"
-                                />
+                                {i != flight.route.length - 1 && (
+                                    <Divider
+                                        direction="horizontal"
+                                        borderStyle="dotted"
+                                        margin="1rem 0"
+                                    />
+                                )}
                             </>
                         );
                     })}
