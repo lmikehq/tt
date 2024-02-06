@@ -36,6 +36,7 @@ import {
 import styled from "styled-components";
 import { translateCabin } from "../../serviceTabs/components/flight";
 import { FlightSortEnum } from "@/lib/types/request-models/flight/booking.type";
+import { useRouter, useSearchParams } from "next/navigation";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -130,6 +131,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const dispatch = flightContext?.dispatch;
 
     const [openAcc, setOpenAcc] = useState(defaultAcc);
+    const router = useRouter();
 
     const [openTimes, setOpenTimes] = useState("departure");
 
@@ -197,7 +199,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                             filters: searchMultiCityQuery,
                         })
                     ) {
-                        alert("stops");
                         active.push("stops");
                     }
                     break;
@@ -318,7 +319,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             )
             .join("");
         const url = `
-            https://localhost:3000/flight/listings?fly_from=${flyFrom}&fly_to=${flights
+            flight/listings?fly_from=${flyFrom}&fly_to=${flights
             .map(
                 (flight, index) =>
                     (index != 0 ? `~` : ``) +
@@ -334,8 +335,12 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             flightState?.stops
         }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
             `;
-
-        const data = extractFlightDataFromParams({ url, flyFrom });
+        const link = "https://localhost:3000/" + url;
+        console.log(link);
+        const data = extractFlightDataFromParams({
+            url: link,
+            flyFrom,
+        });
         if (data) {
             let requests = data;
             requests[0] = {
@@ -344,7 +349,10 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 sort: requests[0].sort ?? FlightSortEnum.best,
                 limit: 20,
             };
+            console.log(data);
             updateSearchMultiCityQuery({ requests: data });
+            // window.history.replaceState(null, "", "/" + url);
+            router.push("/flight/listings");
         }
     };
 
