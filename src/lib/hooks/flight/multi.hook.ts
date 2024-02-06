@@ -23,7 +23,18 @@ export const useSearchMulticity = (
     options?: UseQueryOptions<SearchMultiFlightsResponse>
 ) => {
     return useQuery({
-        queryKey: ["search-multiflight", params],
+        queryKey: [
+            "search-multiflight",
+            {
+                requests: [
+                    {
+                        ...params.requests[0],
+                        limit: 1,
+                    },
+                    ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                ],
+            },
+        ],
         queryFn: () =>
             FlightBookingService.searchMultiFlights({ data: params }),
         ...options,

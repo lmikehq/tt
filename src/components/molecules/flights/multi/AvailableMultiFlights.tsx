@@ -472,8 +472,11 @@ function AvailableMultiFlights() {
         searchQuery,
     } = useFlightBookingStore((state) => state);
     const { preFerredCurrency } = useUserPreferencesStore((state) => state);
-    const { updateSearchMultiCityQuery, searchMultiCityQuery } =
-        useSearchMultiFlightStore((state) => state);
+    const {
+        updateSearchMultiCityQuery,
+        searchMultiCityQuery,
+        updateMultiCityQueryAtIndex,
+    } = useSearchMultiFlightStore((state) => state);
     const {
         isFetching,
         data: flightData,
@@ -712,6 +715,41 @@ function AvailableMultiFlights() {
                             }
                         />
                     ))}
+
+                    {searchMultiCityQuery.requests.length > 0 &&
+                        (searchMultiCityQuery.requests[0].limit as number) <
+                            100 && (
+                            <Flex justify="center">
+                                <Button
+                                    width="100%"
+                                    background="#06062A"
+                                    padding="2rem 0"
+                                    disabled={isLoading}
+                                    onClick={() =>
+                                        updateMultiCityQueryAtIndex(0, {
+                                            limit:
+                                                (searchMultiCityQuery
+                                                    .requests[0]
+                                                    .limit as number) + 50,
+                                        })
+                                    }
+                                >
+                                    {isFetching ? (
+                                        <Spinner
+                                            fill={ttColors.primary}
+                                            size={"25px"}
+                                        />
+                                    ) : (
+                                        <Text
+                                            type="p"
+                                            text="Load More"
+                                            weight={500}
+                                            size={18}
+                                        />
+                                    )}
+                                </Button>
+                            </Flex>
+                        )}
                 </>
                 // <React.Fragment>
                 //     {localSortFlights({
