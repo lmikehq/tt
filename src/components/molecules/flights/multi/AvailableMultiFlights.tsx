@@ -580,7 +580,7 @@ function AvailableMultiFlights() {
     };
 
     const goToFlight = (bookingToken: string) => {
-        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}`;
+        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}&multi=true`;
         if (user?.email) {
             router.push(to);
         } else {
