@@ -295,21 +295,21 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
                 e.preventDefault();
                 formik.handleSubmit();
 
-                console.log(formik.isValidating, formik.errors);
+                // console.log(formik.isValidating, formik.errors);
 
-                // if (formik.isValid === true) {
-                //   console.log('formik is valid because the code went through');
-                //   // PUSH VALUES SOMEWHERE AND RESET THE FORM
-                //   setDependentsData((prev) => {
-                //     return [
-                //       ...prev,
-                //       { ...formik.values }
-                //     ];
-                //   });
-                //   handleNextPage();
-                //   formik.setFieldValue('phoneNumber', '');
-                //   formik.resetForm();
-                // }
+                if (formik.isValid === true) {
+                  // console.log('formik is valid because the code went through');
+                  // PUSH VALUES SOMEWHERE AND RESET THE FORM
+                  setDependentsData((prev) => {
+                    return [
+                      ...prev,
+                      { ...formik.values }
+                    ];
+                  });
+                  handleNextPage();
+                  formik.setFieldValue('phoneNumber', '');
+                  // formik.resetForm();
+                }
               }}>
                 <Text type="p" text="Next Dependent" />
               </Button>

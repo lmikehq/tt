@@ -76,15 +76,15 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
     console.log("rendering page", step);
     switch (step) {
       case 1:
-        return <AccompanyComponent index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
+        return <AccompanyComponent key={1} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
       case 2:
-        return <AccompanyComponent index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
+        return <AccompanyComponent key={2} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
       case 3:
-        return <AccompanyComponent index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
+        return <AccompanyComponent key={3} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
       case 4:
-        return <AccompanyComponent index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
+        return <AccompanyComponent key={4} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
       case 5:
-        return <AccompanyComponent index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
+        return <AccompanyComponent key={5} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
       default:
         <AccompanyComponent index={1} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
         break;

@@ -1,30 +1,27 @@
 import VisaDashboardHeader from "./visaDashboardHeader";
 import styled from "styled-components";
-import { AiFillHeart } from "react-icons/ai";
-import { useState } from "react";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Section from "@molecule/section";
 import { Grid } from "@components/templates/grid";
-import Image from "@atom/image";
 import Flex from "@components/templates/flex";
-import Text from "@atom/text";
 import FavouritesCard from "./favourites/favouriteCard";
 import Center from "@/components/templates/center";
 import NoApplication from "./noApplication";
 import NoFavImg from 'public/assets/icons/dashboard/no-favourites.svg';
 import { useFavouriteDashboard } from "@/lib/hooks/dashboard/favourite.hook";
-import { mockUserDashboardLikes } from "@/lib/extensions/data/mock";
-import withLikeHotel from "@/components/HOCs/withLikeHotel";
+// import { mockUserDashboardLikes } from "@/lib/extensions/data/mock";
 import PaginationCtrl from "../../pagination";
 import { HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
 import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 
 const FavouriteWrapper = styled.div``;
 
 
 const Favourite = () => {
   const { isMobile } = useScreenResolution();
+  const { page, setPage, limit } = useDashboardStore((state) => state);
 
   const content = {
     title: "You've got no favorite - Let's help you get Started",
@@ -34,9 +31,14 @@ const Favourite = () => {
     ],
   };
 
-  const { data, isLoading } = useFavouriteDashboard({ query: '', options: { retry: 2 } });
+  const { data, isLoading } = useFavouriteDashboard({ query: { currentPage: page, limit }, options: { retry: 2 } });
+
+  const response = data as { favourites: HotelRoomFavourite[], filteredCount: number, totalCount: number; };
 
   const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite[];
+  // const favourites: HotelRoomFavourite[] = response.favourites || []
+  const filteredCount: number = response?.filteredCount || 1;
+  const totalCount: number = response?.totalCount || 1;
 
   return (
     <Section
@@ -72,7 +74,7 @@ const Favourite = () => {
                   );
                 })}
               </Grid>
-              <PaginationCtrl data={[]} page={1} setPage={() => { }} />
+              <PaginationCtrl data={[]} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
             </FavouriteWrapper>
           ) : (
             <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">

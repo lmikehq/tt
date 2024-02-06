@@ -204,6 +204,7 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
       addReferrerBankInfo({ accountName: values.accountName, accountNumber: values.accountNumber, bankName: values.bankName });
       // SEND THE OTP TO THE USER
       const res = await ReferralService.getOTP(referrerPersonalInfo.id);
+      console.log({ res });
       // TOAST OTP SENT
       toast.success('Check your email for OTP!');
 
@@ -344,6 +345,7 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
     setIsTimerRunning(true);
     // CALL API TO RESEND OTP TO THE USER
     const response = await ReferralService.getOTP(referrerPersonalInfo.id);
+    console.log('response from otp', response);
     toast.success('OTP re-sent!, check your email');
   };
 

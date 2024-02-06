@@ -15,7 +15,6 @@ import { useUserStore } from "@/lib/store/useStore";
 import getBase64 from "@/lib/extensions/helpers/getBase64";
 import apiService from "@/lib/extensions/hook/apiService";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { RefetchProp } from "types";
 
 interface ModalProps {
@@ -28,6 +27,7 @@ interface ModalProps {
 
 const FileButton = styled(Button).attrs({ as: 'label' })`
     height: 54px;
+    height: 100%;
     width: 150px;
     background-color: #F3FAFD;
     border: 1px solid #C8E8F6;
@@ -40,6 +40,18 @@ const FileButton = styled(Button).attrs({ as: 'label' })`
   input[type="file"] {
     display: none;
   }
+`;
+
+const PreviewButton = styled(Button).attrs({ as: "label" })`
+  height: 100%;
+  background-color: transparent;
+  width: 100%;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 
@@ -55,7 +67,6 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
     fileType: '',
     fileSizeMB: 0
   });
-  const router = useRouter();
   const timestamp = new Date().getTime();
   const presets = {
     publicId: user?.lastName! + timestamp || "unknown",
@@ -139,25 +150,33 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
                 <Spinner size="40px" fill={ttColors.primary} />
               </>
             ) : (
-              <div
-                style={{
-                  maxWidth: isMobile ? "170px" : "300px",
-                  maxHeight: isMobile ? "170px" : "300px",
-                  height: isMobile ? "170px" : "300px",
-                  width: isMobile ? "170px" : "300px",
-                  overflow: "hidden",
-                  // borderRadius: "50%"
-                }}>
-                <img
-                  src={cloudinaryUrl}
-                  alt="user-profile-upload"
+              <Flex align="center" justify="center">
+                <div
                   style={{
-                    height: "auto",
-                    width: "100%",
-                    borderRadius: "50%"
-                  }}
-                />
-              </div>
+                    maxWidth: isMobile ? "170px" : "200px",
+                    maxHeight: isMobile ? "170px" : "200px",
+                    height: isMobile ? "170px" : "200px",
+                    width: isMobile ? "170px" : "200px",
+                    overflow: "hidden",
+                    margin: "0 auto",
+                    display: "flex",
+                    justifyContent: "center",
+                    borderRadius: "100%"
+                  }}>
+                  <img
+                    src={cloudinaryUrl}
+                    alt="user-profile-upload"
+                    style={{
+                      height: "auto",
+                      maxHeight: "170px",
+                      maxWidth: "170px",
+                      width: "100%",
+                      borderRadius: "100%",
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
+              </Flex>
             )}
 
           </>
@@ -167,9 +186,31 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
               <Spinner size="40px" fill={ttColors.primary} />
             </>
           ) : (
-            <Flex width={isMobile ? "170px" : "300px"} height={isMobile ? "170px" : "300px"} align="center" justify="center" direction="column" borderRadius="50%" border={`1px dashed ${ttColors.lighterGray}`}>
-              <FaCloudUploadAlt color={ttColors.primary} size={isMobile ? 45 : 85} />
-              <Text type="p" text="Upload and preview your image here" textAlign="center" size={isMobile ? 12 : 14} />
+            <Flex
+              width={isMobile ? "170px" : "300px"}
+              height={isMobile ? "170px" : "300px"} align="center" justify="center" direction="column" borderRadius="50%"
+              border={`1px dashed ${ttColors.lighterGray}`}>
+              <PreviewButton htmlFor="profile-file-input">
+                <FaCloudUploadAlt color={ttColors.primary} size={isMobile ? 45 : 85} />
+
+                <input
+                  type="file"
+                  id="profile-file-input"
+                  style={{ display: 'none' }}
+                  onChange={handleFileUpload}
+                  accept=".png, .jpg, .jpeg"
+                />
+                <Flex direction="column">
+                  {/* <Text type="p" text="Upload" textAlign="center" margin={0} /> */}
+                  <Text
+                    type="p"
+                    text="Preview your image here"
+                    textAlign="center"
+                    color={ttColors.dark}
+                    size={isMobile ? 12 : 14} margin={0} />
+                </Flex>
+              </PreviewButton>
+
             </Flex>
           )
         )}

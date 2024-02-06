@@ -1,5 +1,5 @@
 import { VisaService } from "@/lib/services/dashboard/visa.service";
-import { DashboardFilters } from "@/lib/types/request-models/dashboard";
+import { DashboardFilters, DashboardQuery } from "@/lib/types/request-models/dashboard";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 interface ParamsProp {
@@ -9,8 +9,37 @@ interface ParamsProp {
 
 export const useGetAllVisaApplication = ({ query, options }: ParamsProp) => {
   return useQuery({
-    queryFn: () => VisaService.getAllApplications(query),
-    queryKey: ['get-all-visa-applications']
+    queryFn: () => {
+      console.log(query.status);
+      if (query.endDate === undefined || query.endDate.length < 1) {
+        return VisaService.getAllApplications({
+          search: query.search,
+          currentPage: query.currentPage,
+          limit: query.limit,
+          // Check to see if the status is not empty
+          ...(query.status?.length! > 1 && { applicationStatus: query.status })
+        });
+      } else {
+        const updatedQuery: DashboardQuery = {
+          search: query.search,
+          currentPage: query.currentPage,
+          limit: query.limit,
+          dateRange: `${query.startDate},${query.endDate}`,
+          // Check to see if the status is not empty
+          ...(query.status?.length! > 1 && { applicationStatus: query.status })
+        };
+        return VisaService.getAllApplications(updatedQuery);
+      }
+    },
+    queryKey: [
+      'get-all-visa-applications',
+      query.status,
+      query.search,
+      query.endDate,
+      query.startDate,
+      query.limit,
+      query.currentPage
+    ]
   });
 };
 

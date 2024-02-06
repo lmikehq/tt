@@ -114,7 +114,7 @@ const Flight = () => {
       case 'MULTI CITY':
         return (
           <>
-            {isMobile ? ('') : (<MultiFlightComp />)}
+            {isMobile ? (<MobileSingleFlightComp flight={flight} />) : (<MultiFlightComp />)}
           </>
         );
     }
@@ -125,7 +125,10 @@ const Flight = () => {
     options: { retry: 2 }
   });
 
-  const flights: DashboardFlightBookingProps[] = data as DashboardFlightBookingProps[];
+  const response = data as { userBookings: DashboardFlightBookingProps[], filteredCount: number, totalCount: number; };
+  const flights: DashboardFlightBookingProps[] = response?.userBookings;
+  const filteredCount = response?.filteredCount;
+  const totalCount = response?.totalCount;
 
   return (
     <FlightWrapper>
@@ -151,6 +154,8 @@ const Flight = () => {
                   page={page}
                   setPage={setPage}
                   data={mockFlightBooking}
+                  filteredCount={filteredCount}
+                  totalCount={totalCount}
                 />
               </Flex>
             ) : (

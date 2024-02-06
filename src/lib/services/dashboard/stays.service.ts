@@ -7,8 +7,7 @@ class StaysDashboardService {
     const query = constructQueryFromParams(params);
 
     return await staysService(`/stays-bookings/user${query}`).then((response) => {
-      console.log({ response });
-      return response.data;
+      return response;
     }).catch((err) => {
       throw err;
     });

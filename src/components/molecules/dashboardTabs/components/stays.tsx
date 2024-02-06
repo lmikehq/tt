@@ -66,9 +66,11 @@ function Stays() {
       options: { retry: 2 }
     });
 
-  const stays: HotelBookingHistory = data as HotelBookingHistory;
 
-  const test = [];
+  const response = data as { userStaysBookings: HotelBookingHistory[], filteredCount: number, totalCount: number; };
+  const stays: HotelBookingHistory[] = response?.userStaysBookings;
+  const filteredCount = response?.filteredCount;
+  const totalCount = response?.totalCount;
 
   return (
     <StaysWrapper>
@@ -92,7 +94,10 @@ function Stays() {
                 </div>
               );
             })}
-            <PaginationCtrl data={[]} page={page} setPage={setPage} />
+            <PaginationCtrl
+              data={[]}
+              page={page}
+              setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
           </Flex>
         ) : (
           <Center

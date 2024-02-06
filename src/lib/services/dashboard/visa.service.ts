@@ -5,9 +5,9 @@ import { DashboardFilters } from "@/lib/types/request-models/dashboard";
 export class VisaService {
   static async getAllApplications(params: DashboardFilters) {
     const query = constructQueryFromParams(params);
+
     return await apiService(`/visa${query}`).then((response) => {
-      console.log(response);
-      return response;
+      return response.data;
     }).catch((err) => {
       throw err;
     });

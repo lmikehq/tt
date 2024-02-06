@@ -13,6 +13,8 @@ import Flex from "@/components/templates/flex";
 import Spinner from "../../icons/spinner";
 import { useGetAllVisaApplication } from "@/lib/hooks/dashboard/visa.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
+import PaginationCtrl from "../../pagination";
 
 const VisaWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -31,26 +33,17 @@ const VisaWrapper = styled.div`
 
 const Visa = () => {
   const { isMobile } = useScreenResolution();
-  const { queryParams, page, limit } = useDashboardStore((state) => state);
+  const { queryParams, page, limit, setPage, search, startDate, endDate } = useDashboardStore((state) => state);
 
-  async function getVisas() {
-    return await apiService("/visa", "GET");
-  }
-
-  const { data } = useGetAllVisaApplication({
-    query: { status: queryParams.join(','), currentPage: page, limit },
+  const { data, isLoading, isError, refetch } = useGetAllVisaApplication({
+    query: { status: queryParams.join(','), currentPage: page, limit, search, startDate, endDate },
     options: { retry: 2 }
   });
 
+  const visas: VisaResponseProp[] = data?.visas as VisaResponseProp[];
+  const totalCount: number = data?.totalCount as number;
+  const filteredCount: number = data?.filteredCount as number;
 
-  // console.log({ data });
-
-  const {
-    data: fetchedVisa,
-    isLoading,
-    error,
-    refetch,
-  } = useQuery(["visas"], getVisas) as any;
   if (isLoading) {
     return (
       <Flex height="450px" align="center" justify="center">
@@ -58,8 +51,8 @@ const Visa = () => {
       </Flex>
     );
   }
-  if (error) return <div>error loading visas, please try again</div>;
-  const { data: visas } = fetchedVisa;
+  if (isError) return <div>error loading visas, please try again</div>;
+  // const { data: visas } = fetchedVisa;
   // console.log(visas);
 
   const content = {
@@ -76,12 +69,17 @@ const Visa = () => {
       <VisaDashboardHeader headerText="All Visa Applications" type="checkbox" />
 
       <div>
-        {visas?.visas?.length > 0 ? (
-          visas?.visas?.map((visa: any, i: number) => (
-            <div key={i}>
-              <VisaDetail visa={visa} refetch={refetch} />
-            </div>
-          ))
+        {visas?.length > 0 ? (
+          <>
+            {visas?.map((visa: VisaResponseProp, i: number) => {
+              return (
+                <div key={i}>
+                  <VisaDetail visa={visa} refetch={refetch} />
+                </div>
+              );
+            })}
+            <PaginationCtrl<VisaResponseProp> data={visas} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
+          </>
         ) : (
           <Center
             margin={isMobile ? "3.5rem 0px" : "10rem 0"}

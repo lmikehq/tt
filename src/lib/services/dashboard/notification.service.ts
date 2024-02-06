@@ -6,6 +6,7 @@ export class NotificationService {
   static fetchNotifications = async (params: DashboardFilters) => {
     const query = constructQueryFromParams(params);
     return await apiService(`/notifications/user${query}`).then((response) => {
+      console.log({ response });
       return response;
     }).catch((err) => {
       throw (err);

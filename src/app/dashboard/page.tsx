@@ -9,7 +9,7 @@ import { useNotificationStore } from "@/lib/store/notification.store";
 import toast from "react-hot-toast";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useUserStore } from "@/lib/store/useStore";
-
+import { useSearchParams } from "next/navigation";
 
 const DashboardHeaderComponent = () => {
   const [documentModal, setDocumentModal] = useState(true);
@@ -17,6 +17,9 @@ const DashboardHeaderComponent = () => {
   const { queryParams } = useDashboardStore(state => state);
   const { setNotification } = useNotificationStore((state) => state);
   const { user } = useUserStore((state) => state);
+  const searchParams = useSearchParams();
+
+  const download = searchParams.get("download") ?? "";
 
   // EVENT LISTENER
   const ctrl = new AbortController();
@@ -87,7 +90,8 @@ const DashboardHeaderComponent = () => {
   return (
     <UserStoreProvider>
       <DashboardHeader />
-      {documentModal && (
+
+      {documentModal && !download && (
         <ApplicationStatus
           state={documentModal}
           setState={setDocumentModal}

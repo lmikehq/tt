@@ -70,7 +70,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   const pathname = usePathname();
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { queryParams, activeTab, param, updateParams, setDateRange, search: globalSearch, setSearch: setGlobalStoreSearch, page, limit } = useDashboardStore((state) => state);
+  const { queryParams, activeTab, param, updateParams, setDateRange, search: globalSearch, setSearch: setGlobalStoreSearch, page, limit, addParams } = useDashboardStore((state) => state);
   const { addVisaParams, visaQueryParams, setVisaSearchQuery, visaSearch } = useDashboardVisaStore((state) => state);
   const [search, setSearch] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -85,8 +85,13 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     setDateRange(startDate, endDate);
   };
   const [showReferralInfo, setShowReferralInfo] = useState(false);
-
+  const searchParams = useSearchParams();
   const { isMobile } = useScreenResolution();
+
+  const applicationStatus = searchParams.get('applicationStatus') ?? '';
+  const searchQuery = searchParams.get('search') ?? '';
+  const dateRange = searchParams.get('dateRange') ?? '';
+
 
   const toggleDropdown = () => {
     // if (headerText == "Payment History") return
@@ -123,7 +128,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     switch (activeTab) {
       case 'All Applications':
       case 'Visa':
-        return addVisaParams(param);
+        addParams(param);
+      // return addVisaParams(param);
       case 'Flight':
         return updateParams(param);
       // return updateFlightParams(param);
@@ -144,7 +150,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     switch (activeTab) {
       case 'All Applications':
       case 'Visa':
-        return setVisaSearchQuery(inputValue);
+        return setGlobalStoreSearch(inputValue);
+      // return setVisaSearchQuery(inputValue);
       case 'Flight':
         return setGlobalStoreSearch(inputValue);
       case 'Payment History':
@@ -169,7 +176,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
       case 'All Applications':
       case 'Visa':
         return {
-          applicationStatus: visaQueryParams.join(','),
+          applicationStatus: queryParams.join(","),
+          // applicationStatus: visaQueryParams.join(','),
           search: visaSearch,
           // search: search
           // other tab-specific parameters
@@ -225,12 +233,9 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   };
 
 
-  const searchParams = useSearchParams();
 
-  const applicationStatus = searchParams.get('applicationStatus') ?? '';
-  const searchQuery = searchParams.get('search') ?? '';
-  const dateRange = searchParams.get('dateRange') ?? '';
   // ADD THE QUERY TO THE URL PARAMS
+  /*
   useEffect(() => {
     const initialQuery = {
       applicationStatus,
@@ -246,6 +251,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
 
   }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
 
+*/
 
   return (
     <Flex
@@ -404,6 +410,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                             }}
                             name={option.option}
                             checked={getQueryParamsForActiveTab().applicationStatus.split(',').includes(option.value)}
+                            id={option.value}
                           />
                         ) : (
                           <input
@@ -411,14 +418,13 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                             name="param"
                             checked={getQueryParamsForActiveTab().applicationStatus === option.value}
                             onClick={() => {
-                              console.log(getQueryParamsForActiveTab().applicationStatus);
-                              console.log(option.value);
                               handleClick(option.value);
                             }}
+                            id={option.value}
                           />
                         )}
 
-                        <Text type="label" text={option.name} />
+                        <Text type="label" htmlFor={option.value} text={option.name} />
                       </Flex>
                     ))}
                   </DropdownContent>

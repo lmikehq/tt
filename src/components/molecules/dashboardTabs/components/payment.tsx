@@ -210,9 +210,11 @@ const PaymentHistory = () => {
     }
   });
 
-  // console.log({ data });
+  const response = data as { payments: DashboardPaymentInfo[], totalCount: number, filteredCount: number; };
 
-  const payments: DashboardPaymentInfo[] = (data as DashboardPaymentInfo[]);
+  const payments: DashboardPaymentInfo[] = response?.payments as DashboardPaymentInfo[] || [];
+  const filteredCount: number = response?.filteredCount;
+  const totalCount: number = response?.totalCount;
 
   if (isError) return <div>error loading payments, please try again</div>;
 
@@ -281,7 +283,13 @@ const PaymentHistory = () => {
                   ))}
                   {/* pagination buttons */}
 
-                  <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} />
+                  <PaginationCtrl<DashboardPaymentInfo>
+                    page={page}
+                    setPage={setPage}
+                    data={payments}
+                    filteredCount={filteredCount}
+                    totalCount={totalCount}
+                  />
                 </>
               ) : (
                 <>
@@ -401,7 +409,12 @@ const PaymentHistory = () => {
                       </History>
                     ))}
                     {/* pagination buttons */}
-                    <PaginationCtrl page={page} setPage={setPage} data={payments} />
+                    <PaginationCtrl
+                      page={page}
+                      setPage={setPage}
+                      data={payments}
+                      filteredCount={filteredCount}
+                      totalCount={totalCount} />
                   </>
                 ) : (
                   <>
@@ -409,7 +422,7 @@ const PaymentHistory = () => {
                       <NoApplication noVisaImage={NoPaymentImg} content={content} />
                     </Center>
                     {/* pagination buttons */}
-                    <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} />
+                    {/* <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} /> */}
                   </>
                 )}
               </Flex>

@@ -1,6 +1,6 @@
 import { UseQueryOptions } from "@tanstack/react-query";
-
 export interface DashboardFilters {
+  applicationStatus?: string;
   status?: string;
   search?: string;
   currentPage: number;

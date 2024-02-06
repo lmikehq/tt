@@ -10,7 +10,8 @@ class ReferralService {
     const query = constructQueryFromParams(params);
     return await apiService(`/user-referral${query}`)
       .then((response) => {
-        return response.refereesArr;
+        console.log('referral response', response);
+        return response;
       }).catch((err) => { throw (err); });
   };
 
@@ -19,7 +20,7 @@ class ReferralService {
   };
 
   static getOTP = async (param: string) => {
-    return await apiService(`/user-referral/claim-reward/${param}`)
+    return await apiService(`/user-referral/claim-reward/${param}`, 'POST')
       .then((response) => {
         return response;
       }).catch((err) => { throw err; });

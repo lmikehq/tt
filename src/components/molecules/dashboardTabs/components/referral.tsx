@@ -26,6 +26,7 @@ import { mockReferees } from "@/lib/extensions/data/mock";
 import { format } from "date-fns";
 import referralStore from "@/lib/store/dashboard/referrer.store";
 import { Grid } from "@/components/templates/grid";
+import PaginationCtrl from "../../pagination";
 
 const Referral = styled.div`
   display: flex;
@@ -96,7 +97,7 @@ const Referrals = () => {
   const [openSubmissionModal, setOpenSubmissionModal] = useState(false);
   const [openAccountModal, setOpenAccountModal] = useState(false);
   const [openOtpModal, setOtpModal] = useState(false);
-  const { search, page, param, limit, startDate, endDate } = useDashboardStore((state) => state);
+  const { search, page, param, limit, startDate, endDate, setPage } = useDashboardStore((state) => state);
   const { addReferrerInfo } = referralStore((state) => state);
 
 
@@ -122,13 +123,21 @@ const Referrals = () => {
     query: { status: param, limit: limit, currentPage: page, search, startDate, endDate }
   });
 
-  const refferrals: ReferralProp = data as ReferralProp;
+
+  const refferrals: ReferralProp[] = data as ReferralProp[];
+
+  const response = data as { refereesArr: ReferralProp[]; filteredCount: number, totalCount: number; };
+
+  const referrals = response?.refereesArr || [];
+  const filteredCount = response?.filteredCount || 1;
+  const totalCount = response?.totalCount || 1;
+
 
   const { data: banks } = useFetchReferralBanks();
 
   // console.log({ banks });
 
-  console.log('referral data', refferrals);
+  // console.log('referral data', refferrals, filteredCount, totalCount);
 
   return (
     <Section
@@ -434,6 +443,7 @@ const Referrals = () => {
               </Flex>
             );
           })}
+          <PaginationCtrl data={referralArr} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
           {/* <Button width={isMobile ? '300px' : "503px"} height="60px" background={ttColors.blackishBlue} styles={{ margin: "1.5rem 0px" }}>
             <Text type="p" size={14} text="Claim 5 Referrals" weight={600} />
           </Button> */}

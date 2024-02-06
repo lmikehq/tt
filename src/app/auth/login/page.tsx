@@ -121,7 +121,7 @@ function LoginPage() {
       toast.loading("Redirecting to your dashboard...", {
         duration: 3000,
       });
-      return router.push("/dashboard");
+      return router.push("/dashboard?download=false");
     } else {
       setSubmissionState({
         ...submissionState,
