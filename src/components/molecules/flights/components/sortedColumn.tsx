@@ -4,10 +4,12 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import Text from "@/components/atoms/text";
 import { ttColors } from "@/lib/theme/colors";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FilterModal, SortModal } from "../listings/flightModal";
 import Button from "@/components/atoms/button";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { useQueryParams } from "@/hooks/useNext";
+import SortingMultiColumns from "../listings/sortingMultiColumns";
 
 type sortProps = {
     results: number;
@@ -17,6 +19,7 @@ type sortProps = {
 function SortedColumn({ results, sortType }: sortProps) {
     const { searchFlightsResults } = useFlightBookingStore((state) => state);
     const { isMobile } = useScreenResolution();
+    const { queryParams } = useQueryParams()
     const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
     const [open, setOpen] = useState({
         filter: false,
@@ -78,7 +81,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                 size={18}
               />
             </Button> */}
-                    </Flex>
+                </Flex>
                     <FilterModal
                         open={open.filter}
                         handleClose={() =>
@@ -99,7 +102,13 @@ function SortedColumn({ results, sortType }: sortProps) {
                     />
                 </Flex>
             ) : (
-                <SortingColumns />
+                <React.Fragment>
+                    {queryParams?.multi == 'true' ? (
+                        <SortingMultiColumns />
+                    ) : (    
+                        <SortingColumns />
+                    )}
+                </React.Fragment>
             )}
         </Section>
     );

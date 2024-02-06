@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import dayjs from "dayjs";
-import FlightBox from "./flightBox";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
@@ -17,7 +16,7 @@ import { Stack } from "@mui/material";
 import { HiLockClosed, HiUserCircle } from "react-icons/hi2";
 import Link from "next/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ttColors } from "@/lib/theme/colors";
 import { PiCaretRightBold } from "react-icons/pi";
 import { Divider } from "@/components/atoms/divider";
@@ -25,13 +24,28 @@ import { FaQuestion } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
 import { cleanObject, dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
-import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
+import {
+    FlightSortEnum,
+    SearchFlightsRequestQuery,
+} from "@/lib/types/request-models/flight/booking.type";
 import { IoShareSocial } from "react-icons/io5";
 import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import AuthModal from "@/components/organisms/auth/AuthModal";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import SortedFlightsTab from "./sortedFlightsTab";
+import SortedFlightsTab from "../components/sortedMultiFlightsTab";
+import FlightBox from "../components/flightBox";
+import {
+    useSearchMulticity,
+    useSearchMulticityBySort,
+} from "@/lib/hooks/flight/multi.hook";
+import { useSearchMultiFlightStore } from "@/lib/store/flight/multi/search.store";
+import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import {
+    extractFlightDataFromParams,
+    parseMultiFlightFilters,
+} from "@/lib/types/request-models/flight/multi/search.type";
+import MultiFlightPreviewCard from "../components/MultiFlightPreviewCard";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -447,27 +461,41 @@ function ShareFlightModal({
     );
 }
 
-function AvailableFlights() {
+function AvailableMultiFlights() {
     const router = useRouter();
     const { user } = useUserStore((state) => state);
     const {
-        flightsResults,
         searchFlightsResults,
         searchFlights,
-        searchFlightsMode,
-        searchMoreFlights,
-        searchMoreFlightsMode,
+
         updateSearchQuery,
         searchQuery,
     } = useFlightBookingStore((state) => state);
     const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { updateSearchMultiCityQuery, searchMultiCityQuery } =
+        useSearchMultiFlightStore((state) => state);
+    const {
+        isFetching,
+        data: flightData,
+        isLoading,
+    } = useSearchMulticity(searchMultiCityQuery, {
+        enabled: searchMultiCityQuery.requests.length > 1,
+    });
+    console.log("mmm", searchMultiCityQuery);
+    const [bestSortData, cheapestSortData, fastestSortData, earliestSortData] =
+        useSearchMulticityBySort(searchMultiCityQuery, {
+            enabled: searchMultiCityQuery.requests.length > 1,
+        });
 
     const { isMobile } = useScreenResolution();
     const [showAuthModal, setShowAuthModal] = useState(false);
 
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
-    const { queryParams } = useQueryParams();
+    const params = useQueryParams();
+    const { queryParams } = params;
+    // const searchParams = useSearchParams();
+    // const params = new URLSearchParams(searchParams.toString());
 
     const [modal, setModal] = useState<{
         isOpenLogin: boolean;
@@ -483,77 +511,64 @@ function AvailableFlights() {
         route: "",
     });
 
-    const calculateDuration = (departure?: string, arrival?: string) => {
-        const departureTime = dayjs(departure);
-        const arrivalTime = dayjs(arrival);
+    // const best = useMemo(() => {
+    //     const pick = numSort(searchFlightsResults, "quality", "asc")[0];
+    //     return {
+    //         price: pick?.price ?? 0,
+    //         duration:
+    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
+    //     };
+    // }, [searchFlightsResults]);
 
-        const duration = arrivalTime.diff(departureTime, "minute");
-        const hours = Math.floor(duration / 60);
-        const minutes = duration % 60;
-        const formattedDuration =
-            isNaN(hours) || isNaN(hours) ? "" : `${hours}hr ${minutes}mins`;
+    // const cheapest = useMemo(() => {
+    //     const pick = numSort(flightData, "price", "asc")[0];
+    //     return {
+    //         price: pick?.price ?? 0,
+    //         duration:
+    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
+    //         pick,
+    //     };
+    // }, [flightData]);
 
-        return formattedDuration;
-    };
+    // const fastest = useMemo(() => {
+    //     const arr = flightData.map((e) => ({
+    //         ...e,
+    //         travelTime: e.duration.total,
+    //     }));
+    //     const pick = numSort(arr, "travelTime", "asc")[0];
+    //     return {
+    //         price: pick?.price ?? 0,
+    //         duration:
+    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
+    //     };
+    // }, [searchFlightsResults]);
 
-    const best = useMemo(() => {
-        const pick = numSort(searchFlightsResults, "quality", "asc")[0];
-        return {
-            price: pick?.price ?? 0,
-            duration:
-                calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-        };
-    }, [searchFlightsResults]);
+    // const earliest = useMemo(() => {
+    //     const pick = dateSort(searchFlightsResults, "utc_departure", "asc")[0];
+    //     return {
+    //         price: pick?.price ?? 0,
+    //         duration:
+    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
+    //         date: dayjs(pick?.utc_departure).format("Do MMM YY"),
+    //     };
+    // }, [searchFlightsResults]);
 
-    const cheapest = useMemo(() => {
-        const pick = numSort(searchFlightsResults, "price", "asc")[0];
-        return {
-            price: pick?.price ?? 0,
-            duration:
-                calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-            pick,
-        };
-    }, [searchFlightsResults]);
-
-    const fastest = useMemo(() => {
-        const arr = searchFlightsResults.map((e) => ({
-            ...e,
-            travelTime: e.duration.total,
-        }));
-        const pick = numSort(arr, "travelTime", "asc")[0];
-        return {
-            price: pick?.price ?? 0,
-            duration:
-                calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-        };
-    }, [searchFlightsResults]);
-
-    const earliest = useMemo(() => {
-        const pick = dateSort(searchFlightsResults, "utc_departure", "asc")[0];
-        return {
-            price: pick?.price ?? 0,
-            duration:
-                calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-            date: dayjs(pick?.utc_departure).format("Do MMM YY"),
-        };
-    }, [searchFlightsResults]);
-
-    const getLabel = (price: number) => {
-        let result = [];
-        if (price === cheapest.price) {
-            result.push("Cheapest");
-        }
-        if (price === best.price) {
-            result.push("Best");
-        }
-        if (price === fastest.price) {
-            result.push("Fastest");
-        }
-        if (price === earliest.price) {
-            result.push("Earliest");
-        }
-        return result;
-    };
+    // const getLabel = (price: number) => {
+    //     let result = [];
+    //     if (price === cheapest.price) {
+    //         result.push("Cheapest");
+    //     }
+    //     if (price === best.price) {
+    //         result.push("Best");
+    //     }
+    //     if (price === fastest.price) {
+    //         result.push("Fastest");
+    //     }
+    //     if (price === earliest.price) {
+    //         result.push("Earliest");
+    //     }
+    //     return result;
+    // };
 
     const flightReq = {
         bags:
@@ -588,15 +603,15 @@ function AvailableFlights() {
         searchFlights({ data });
     };
 
-    const loadMoreItems = () => {
-        const limit = Number(searchQuery?.limit ?? 10);
+    // const loadMoreItems = () => {
+    //     const limit = Number(searchQuery?.limit ?? 10);
 
-        const newCount = flightsResults.total > limit ? limit + 10 : limit;
-        if (newCount !== limit) {
-            updateSearchQuery({ data: { ...searchQuery, limit: newCount } });
-            searchMoreFlights({ data: { ...searchQuery, limit: newCount } });
-        }
-    };
+    //     const newCount = flightsResults.total > limit ? limit + 10 : limit;
+    //     if (newCount !== limit) {
+    //         updateSearchQuery({ data: { ...searchQuery, limit: newCount } });
+    //         searchMoreFlights({ data: { ...searchQuery, limit: newCount } });
+    //     }
+    // };
 
     const handleSearchResults = (params: SearchFlightsRequestQuery) => {
         updateSearchQuery({ data: params });
@@ -611,85 +626,49 @@ function AvailableFlights() {
         flight?.departureDate;
 
     useEffect(() => {
-        const adults = Number(queryParams?.adults);
-        const children = Number(queryParams?.children);
-        const adultsAndChildren = adults + children;
-
-        const shareCabinBags = (numPass: number, numBags: number) => {
-            const arrBags = Array.from({ length: numBags }).fill(1);
-            const arrPass = Array.from({ length: numPass }).fill(0);
-
-            return arrPass.map((e) => {
-                let val = arrBags.length > 0 ? 1 : 0;
-                arrBags.pop();
-                return val;
-            });
-        };
-        const shareCheckedBags = (numPass: number, numBags: number) => {
-            const arrBags = Array.from({ length: numBags }).fill(1);
-            const arrPass = Array.from({ length: numPass }).fill(0);
-            arrBags.forEach((e, ind, arr) => {
-                arrPass[ind % numPass] = Number(arrPass[ind % numPass]) + 1;
-            });
-            return arrPass;
-        };
-
-        const sharedCabin = shareCabinBags(
-            adultsAndChildren,
-            Number(queryParams?.cabinBags)
-        );
-        const sharedChecked = shareCheckedBags(
-            adultsAndChildren,
-            Number(queryParams?.checkedBags)
-        );
-        const adultHandBags =
-            adults > 0 ? sharedCabin.slice(0, adults).join(",") : undefined;
-        const adultHoldBags =
-            adults > 0 ? sharedChecked.slice(0, adults).join(",") : undefined;
-        const childHandBags =
-            children > 0 ? sharedCabin.slice(adults).join(",") : undefined;
-        const childHoldBags =
-            children > 0 ? sharedChecked.slice(adults).join(",") : undefined;
-
-        const sanitizedQuery = {
-            ...searchQuery,
-            fly_from: queryParams?.fly_from ?? searchQuery?.fly_from,
-            fly_to: queryParams?.fly_to ?? searchQuery?.fly_to,
-            date_from: queryParams?.date_from ?? searchQuery?.date_from,
-            return_from:
-                flightState?.stops === "round"
-                    ? queryParams?.return_from ?? searchQuery?.return_from
-                    : undefined,
-            return_to:
-                flightState?.stops === "round"
-                    ? queryParams?.return_from ?? searchQuery?.return_from
-                    : undefined,
-            selected_cabins: queryParams?.cabin ?? searchQuery?.selected_cabins,
-            adults: Number(queryParams?.adults ?? searchQuery?.adults),
-            children: Number(queryParams?.children ?? searchQuery?.children),
-            infants: Number(queryParams?.infants ?? searchQuery?.infants),
-            adult_hand_bag: adultHandBags,
-            adult_hold_bag: adultHoldBags,
-            child_hand_bag: childHandBags,
-            child_hold_bag: childHoldBags,
-        };
-        //
-        if (
-            sanitizedQuery?.fly_from &&
-            sanitizedQuery?.fly_to &&
-            sanitizedQuery?.date_from &&
-            sanitizedQuery?.adults
-        ) {
-            handleSearchResults({ ...cleanObject(sanitizedQuery) });
-        }
-    }, [queryParams, preFerredCurrency]);
-
-    useEffect(() => {
         const interval = setTimeout(() => {
             setModal((prev) => ({ ...prev, isOpenStillSearching: true }));
         }, 900000);
         return () => clearInterval(interval);
     }, []);
+
+    const flyFrom = queryParams.fly_from;
+
+    useEffect(() => {
+        if (!flyFrom) return;
+        console.log("extracting data");
+        const data = extractFlightDataFromParams({
+            flyFrom,
+            url: window.location.href,
+        });
+        console.log("stays", data);
+
+        if (data) {
+            let requests = data;
+            requests[0] = {
+                ...requests[0],
+                curr: preFerredCurrency,
+                sort: requests[0].sort ?? FlightSortEnum.best,
+                limit: 50,
+            };
+            updateSearchMultiCityQuery({ requests: data });
+        }
+    }, [flyFrom]);
+
+    useEffect(() => {
+        if (!flightState) return;
+        console.log("sss", `${flightState?.fleet[0].checkedBaggage}`);
+        params.setQueryParams({
+            checkedBags: `${flightState?.fleet[0].checkedBaggage}`,
+            cabinBags: `${flightState?.fleet[0].cabinBaggage}`,
+        });
+    }, [flightState]);
+
+    useEffect(() => {
+        const queryObject = parseMultiFlightFilters(searchMultiCityQuery);
+        console.log("sss", queryObject);
+        params.setQueryParams(queryObject);
+    }, [JSON.stringify(searchMultiCityQuery)]);
 
     return (
         <Flex
@@ -698,20 +677,22 @@ function AvailableFlights() {
             gap=".5rem"
             padding={isMobile ? "0 1.5rem" : "0"}
         >
-            {formComplete && (
-                <SortedFlightsTab
-                    best={best}
-                    cheapest={cheapest}
-                    fastest={fastest}
-                    earliest={earliest}
-                    data={searchFlightsResults}
-                    updateSearchQueryHandler={updateSearchQueryHandler}
-                />
-            )}
+            <SortedFlightsTab
+                best={bestSortData.data ? bestSortData?.data[0] : null}
+                cheapest={
+                    cheapestSortData.data ? cheapestSortData?.data[0] : null
+                }
+                fastest={fastestSortData.data ? fastestSortData?.data[0] : null}
+                earliest={
+                    earliestSortData.data ? earliestSortData?.data[0] : null
+                }
+                isLoading={isLoading}
+                multi={true}
+            />
 
-            {searchFlightsMode === Mode.loading ? (
+            {isLoading ? (
                 <FlightBoxSkeleton />
-            ) : searchFlightsResults.length === 0 ? (
+            ) : flightData?.length === 0 ? (
                 <Flex width="100%" justify="center" padding="9rem 0">
                     <Text
                         type="p"
@@ -721,69 +702,79 @@ function AvailableFlights() {
                     />
                 </Flex>
             ) : (
-                <React.Fragment>
-                    {localSortFlights({
-                        sort: searchQuery?.sort ?? "quality",
-                        results: searchFlightsResults,
-                    }).map((flight: FlightInfo, index: number) => (
-                        <FlightBox
-                            key={index}
+                <>
+                    {flightData?.map((flight, index) => (
+                        <MultiFlightPreviewCard
+                            key={"flight-" + index}
                             flight={flight}
                             selectFlight={({ bookingToken }) =>
                                 goToFlight(bookingToken)
                             }
-                            bookingToken={flight.booking_token}
-                            departureCountryCode={flight.cityCodeFrom}
-                            arrivalCountryCode={flight.cityCodeTo}
-                            departureDate={dayjs(flight.utc_departure)}
-                            arrivalDate={dayjs(flight.utc_arrival)}
-                            price={flight.price}
-                            label={getLabel(flight.price)}
-                            stops={flight.route.length - 1}
-                            seats={flight.availability.seats}
-                            carryOn={flightState?.fleet[0]?.cabinBaggage ?? 0}
-                            hold={
-                                Number(queryParams?.checkedBags) ==
-                                flightState?.fleet[0]?.checkedBaggage
-                                    ? flightState?.fleet[0]?.checkedBaggage ?? 0
-                                    : Number(queryParams?.checkedBag ?? 0)
-                            }
-                            flightStop={
-                                flightState?.stops === "round" &&
-                                flightState?.stops === queryParams?.stops
-                                    ? "round"
-                                    : "one-way"
-                            }
-                            openShareModal={openShareModal}
                         />
                     ))}
+                </>
+                // <React.Fragment>
+                //     {localSortFlights({
+                //         sort: searchQuery?.sort ?? "quality",
+                //         results: searchFlightsResults,
+                //     }).map((flight: FlightInfo, index: number) => (
+                //         <FlightBox
+                //             key={index}
+                //             flight={flight}
+                //             selectFlight={({ bookingToken }) =>
+                //                 goToFlight(bookingToken)
+                //             }
+                //             bookingToken={flight.booking_token}
+                //             departureCountryCode={flight.cityCodeFrom}
+                //             arrivalCountryCode={flight.cityCodeTo}
+                //             departureDate={dayjs(flight.utc_departure)}
+                //             arrivalDate={dayjs(flight.utc_arrival)}
+                //             price={flight.price}
+                //             label={getLabel(flight.price)}
+                //             stops={flight.route.length - 1}
+                //             seats={flight.availability.seats}
+                //             carryOn={flightState?.fleet[0]?.cabinBaggage ?? 0}
+                //             hold={
+                //                 Number(queryParams?.checkedBags) ==
+                //                 flightState?.fleet[0]?.checkedBaggage
+                //                     ? flightState?.fleet[0]?.checkedBaggage ?? 0
+                //                     : Number(queryParams?.checkedBag ?? 0)
+                //             }
+                //             flightStop={
+                //                 flightState?.stops === "round" &&
+                //                 flightState?.stops === queryParams?.stops
+                //                     ? "round"
+                //                     : "one-way"
+                //             }
+                //             openShareModal={openShareModal}
+                //         />
+                //     ))}
 
-                    {((searchQuery?.limit as number) ?? 10) <
-                        flightsResults.total && (
-                        <Flex justify="center">
-                            <Button
-                                width="100%"
-                                background="#06062A"
-                                padding="2rem 0"
-                                onClick={loadMoreItems}
-                            >
-                                {searchMoreFlightsMode === Mode.loading ? (
-                                    <Spinner
-                                        fill={ttColors.primary}
-                                        size={"25px"}
-                                    />
-                                ) : (
-                                    <Text
-                                        type="p"
-                                        text="Load More"
-                                        weight={500}
-                                        size={18}
-                                    />
-                                )}
-                            </Button>
-                        </Flex>
-                    )}
-                </React.Fragment>
+                //     {(searchQuery?.limit ?? 10) < flightsResults.total && (
+                //         <Flex justify="center">
+                //             <Button
+                //                 width="100%"
+                //                 background="#06062A"
+                //                 padding="2rem 0"
+                //                 onClick={loadMoreItems}
+                //             >
+                //                 {searchMoreFlightsMode === Mode.loading ? (
+                //                     <Spinner
+                //                         fill={ttColors.primary}
+                //                         size={"25px"}
+                //                     />
+                //                 ) : (
+                //                     <Text
+                //                         type="p"
+                //                         text="Load More"
+                //                         weight={500}
+                //                         size={18}
+                //                     />
+                //                 )}
+                //             </Button>
+                //         </Flex>
+                //     )}
+                // </React.Fragment>
             )}
 
             <LoginModal
@@ -822,4 +813,4 @@ function AvailableFlights() {
     );
 }
 
-export default AvailableFlights;
+export default AvailableMultiFlights;
