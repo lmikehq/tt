@@ -91,13 +91,13 @@ const DashboardHeaderComponent = () => {
     <UserStoreProvider>
       <DashboardHeader />
 
-      {documentModal && !download && (
+      {download === 'true' ? (
         <ApplicationStatus
           state={documentModal}
           setState={setDocumentModal}
           openPaymentModal={setPaymentModal}
         />
-      )}
+      ) : null}
       {paymentModal && (
         <VisaPaymentModal
           open={paymentModal}

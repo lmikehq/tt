@@ -37,8 +37,8 @@ const Favourite = () => {
 
   const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite[];
   // const favourites: HotelRoomFavourite[] = response.favourites || []
-  const filteredCount: number = response?.filteredCount || 1;
-  const totalCount: number = response?.totalCount || 1;
+  // const filteredCount: number = response?.filteredCount || 1;
+  // const totalCount: number = response?.totalCount || 1;
 
   return (
     <Section
@@ -74,7 +74,7 @@ const Favourite = () => {
                   );
                 })}
               </Grid>
-              <PaginationCtrl data={[]} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
+              {/* <PaginationCtrl data={[]} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} /> */}
             </FavouriteWrapper>
           ) : (
             <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">

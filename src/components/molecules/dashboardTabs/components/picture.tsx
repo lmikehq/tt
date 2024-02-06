@@ -181,7 +181,7 @@ function UserPicture() {
   });
 
 
-  const referralLink = `https://thrillers.travel/register?ref=${String(
+  const referralLink = `https://thrillers.travel/auth/register?ref=${String(
     user?.firstName ?? ""
   ).toLocaleLowerCase()}-${String(user?.lastName ?? "").toLocaleLowerCase()}`;
   const { copyToClipboard } = useClipboard();

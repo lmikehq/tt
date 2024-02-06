@@ -74,7 +74,7 @@ function Stays() {
 
   return (
     <StaysWrapper>
-      <VisaDashboardHeader headerText="All Stays Booking" type="radio" />
+      <VisaDashboardHeader headerText="Stays" type="radio" />
       <Section>
         {mockStaysBookingHistory.length > 0 ? (
           <Flex direction="column" gap="1rem">

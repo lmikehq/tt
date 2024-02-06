@@ -23,7 +23,14 @@ export const useGetAllStaysBookingHistory = ({ query, options }: UseDashboardPro
         return StaysDashboardService.fetchAllStaysBookingHistory(updatedQuery);
       }
     },
-    queryKey: ['get-all-stays-booking-history', query.status, query.search, query.endDate, query.currentPage, query.limit],
+    queryKey: [
+      'get-all-stays-booking-history',
+      query.status,
+      query.search,
+      query.endDate,
+      query.currentPage,
+      query.limit
+    ],
     ...options
   });
 };

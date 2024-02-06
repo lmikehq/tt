@@ -39,6 +39,7 @@ import { Grid } from "@/components/templates/grid";
 import { AddVisaAccompanyModal } from "./visaAccompanyModal";
 import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
 import SetVisaAccompanyModal from "./setVisaAccompanyModal";
+import { useRouter } from "next/navigation";
 
 const Logo = styled.div`
   height: 64px;
@@ -133,6 +134,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const router = useRouter();
 
   const handleAccordionClick = () => {
     setIsOpen(!isOpen);
@@ -165,7 +167,9 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
       case "DECLINED":
         visaInformation = {
           text: "Re-apply Visa",
-          fn: () => { },
+          fn: () => {
+            router.push('/visa/apply');
+          },
           disabled: false,
           intent: "",
         };

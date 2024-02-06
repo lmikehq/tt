@@ -58,8 +58,19 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
     initialValues: accompanyVal,
     validationSchema: accompanySchema,
     onSubmit: (values) => {
-      console.log({ values });
+      // console.log({ values });
+      // setDependentsData((prev) => {
+      //   return [
+      //     ...prev,
+      //     { ...formik.values }
+      //   ];
+      // });
       // handleNextPage();
+      // submit the dependants to the api
+      // console.log('you can submit the dependants data to the api');
+
+      // clear the global state for the dependants
+
     }
   });
 
@@ -77,7 +88,7 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
           onClick={() => handleRemove(index)}
         /> */}
       </Flex>
-      <form onSubmit={formik.handleSubmit}>
+      <form>
         <Flex direction="column" gap="29px">
           <Grid columns="" style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr' }} align="center" gap="18px">
             <Flex direction="column" gap="14px">
@@ -287,14 +298,33 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             </Button> */}
 
             {index === numberOfDependants ? (
-              <Button background={ttColors.blackishBlue} width="100%" type="submit">
+              <Button background={ttColors.blackishBlue} width="100%" type="submit" onClick={(e) => {
+                e.preventDefault();
+                if (formik.isValid === true) {
+                  // console.log('formik is valid because the code went through');
+                  // PUSH VALUES SOMEWHERE AND RESET THE FORM
+                  setDependentsData((prev) => {
+                    return [
+                      ...prev,
+                      { ...formik.values }
+                    ];
+                  });
+                  formik.setFieldValue('phoneNumber', '');
+                  // formik.resetForm();
+                }
+                formik.handleSubmit();
+                // SUBMIT THE DEPENDANTS TO THE API
+
+                // CLEAR THE DEPENDANTS ARRAY
+
+              }}>
                 <Text type="p" text='Continue' weight={500} />
               </Button>
             ) : (
               <Button background={ttColors.dark} type="button" width="100%" onClick={(e) => {
                 e.preventDefault();
                 formik.handleSubmit();
-
+                // setDependentsData([]);
                 // console.log(formik.isValidating, formik.errors);
 
                 if (formik.isValid === true) {

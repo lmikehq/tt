@@ -73,7 +73,7 @@ export const TextContainer = styled.div`
 `;
 
 const Flight = () => {
-  const { param, search, page, limit, setPage } = useDashboardStore((state) => state);
+  const { param, search, page, limit, setPage, endDate, startDate } = useDashboardStore((state) => state);
   const { isMobile } = useScreenResolution();
   const content = {
     title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
@@ -121,7 +121,7 @@ const Flight = () => {
   }
 
   const { data, isLoading } = useDashboardFlight({
-    query: { status: param, limit, currentPage: page, search },
+    query: { status: param, limit, currentPage: page, search, startDate, endDate },
     options: { retry: 2 }
   });
 

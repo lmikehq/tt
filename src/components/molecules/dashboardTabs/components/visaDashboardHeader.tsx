@@ -20,10 +20,9 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
 import DateRangeComponent from "@/components/atoms/dateRangeComponent";
 import { DatePicker } from "@/components/organisms/customDatePicker";
-
+import { debounce } from "debounce";
 import format from "date-fns/format";
 import { FaInfoCircle } from "react-icons/fa";
-
 
 const DropdownContent = styled.div`
     position: absolute;
@@ -72,18 +71,27 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { queryParams, activeTab, param, updateParams, setDateRange, search: globalSearch, setSearch: setGlobalStoreSearch, page, limit, addParams } = useDashboardStore((state) => state);
   const { addVisaParams, visaQueryParams, setVisaSearchQuery, visaSearch } = useDashboardVisaStore((state) => state);
-  const [search, setSearch] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const onChange = (dates: any) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-    const startDate = format(new Date(start!), 'MM-dd-yyyy');
-    const endDate = format(new Date(end!), 'MM-dd-yyyy');
+  const [search, setSearch] = useState(globalSearch);
+  // const [startDate, setStartDate] = useState(new Date());
+  // const [endDate, setEndDate] = useState(undefined);
+  // const onChange = (dates: any) => {
+  //   const [start, end] = dates;
+  //   setStartDate(start);
+  //   setEndDate(end);
+  //   const startDate = format(new Date(start!), 'MM-dd-yyyy');
+  //   const endDate = format(new Date(end!), 'MM-dd-yyyy');
 
-    setDateRange(startDate, endDate);
-  };
+  //   setDateRange(startDate, endDate);
+  // };
+
+  // test
+  // const [reactDatePickerRange, setReactDatePickerRange] = useState<any>([null, null]);
+  const [reactDatePickerRange, setReactDatePickerRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [startDate, endDate] = reactDatePickerRange;
+
+  // console.log({ startDate, endDate });
+
+  // test
   const [showReferralInfo, setShowReferralInfo] = useState(false);
   const searchParams = useSearchParams();
   const { isMobile } = useScreenResolution();
@@ -117,7 +125,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
         return paymentOptions;
       case 'All Flight Booking':
         return flightOptions;
-      case 'All Stays Booking':
+      case 'Stays':
         return staysOptions;
       default:
         return visaOptions;
@@ -130,6 +138,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
       case 'Visa':
         addParams(param);
       // return addVisaParams(param);
+      case 'Stays':
+        return updateParams(param);
       case 'Flight':
         return updateParams(param);
       // return updateFlightParams(param);
@@ -144,22 +154,36 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     }
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    const inputValue = e.target.value;
-    switch (activeTab) {
-      case 'All Applications':
-      case 'Visa':
-        return setGlobalStoreSearch(inputValue);
-      // return setVisaSearchQuery(inputValue);
-      case 'Flight':
-        return setGlobalStoreSearch(inputValue);
-      case 'Payment History':
-        return setGlobalStoreSearch(inputValue);
-      case 'Referral':
-        setGlobalStoreSearch(inputValue);
-      // return setReferralSearch(inputValue);
-    }
+  const handleSearchDebounce = debounce((value: string) => {
+    setGlobalStoreSearch(value);
+
+  }, 900);
+
+  // console.log({ globalSearch });
+  // const debouncedSearchTerm = setGlobalStoreSearch(useSearchDebounce(search));
+
+  // e: React.ChangeEvent<HTMLInputElement>
+  const handleSearch = () => {
+    // setSearch(value);
+
+    // console.log(value);
+
+    // const inputValue = useSearchDebounce(search);
+    // switch (activeTab) {
+    //   case 'All Applications':
+    //   case 'Visa':
+    //     return setGlobalStoreSearch(inputValue);
+    //   // return setVisaSearchQuery(inputValue);
+    //   case 'Flight':
+    //     return setGlobalStoreSearch(inputValue);
+    //   case 'Stays':
+    //     return setGlobalStoreSearch(inputValue);
+    //   case 'Payment History':
+    //     return setGlobalStoreSearch(inputValue);
+    //   case 'Referral':
+    //     setGlobalStoreSearch(inputValue);
+
+    // }
   };
 
   // const handleDateChange = (item: RangeKeyDict): void => {
@@ -170,17 +194,29 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   //   setDateRange(startDate, endDate);
   // };
 
-  // sample code
+  // console.log(dateRange);
+
   const getQueryParamsForActiveTab = () => {
     switch (activeTab) {
       case 'All Applications':
       case 'Visa':
         return {
-          applicationStatus: queryParams.join(","),
           // applicationStatus: visaQueryParams.join(','),
-          search: visaSearch,
+          applicationStatus: queryParams.join(","),
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
           // search: search
           // other tab-specific parameters
+        };
+      case 'Stays':
+        return {
+          applicationStatus: param,
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
         };
       case 'Flight':
         return {
@@ -232,10 +268,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     }
   };
 
-
-
   // ADD THE QUERY TO THE URL PARAMS
-  /*
+
   useEffect(() => {
     const initialQuery = {
       applicationStatus,
@@ -251,7 +285,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
 
   }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
 
-*/
 
   return (
     <Flex
@@ -328,7 +361,12 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                   border: "none",
                 }}
                 value={search}
-                onChange={handleSearch}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  // handleSearch();
+                  handleSearchDebounce(e.target.value);
+                  // handleSearchDebounce(e.target.value);
+                }}
               />
               {/* <input onChange={(e) => ''}/> */}
             </Section>
@@ -350,14 +388,24 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
             <Flex align="center" justify="center" padding=".75rem 1rem">
               {/* <DateRangeComponent onChange={handleDateChange} state={calendarState} /> */}
               <DatePicker
-                onChange={onChange}
+                // onChange={onChange}
+                onChange={(update: [Date | null, Date | null]) => {
+                  setReactDatePickerRange(update);
+
+                  const formatStartDate = format(new Date(update[0]!), 'MM-dd-yyyy');
+                  const formatEndDate = format(new Date(update[1]!), 'MM-dd-yyyy');
+
+                  if (formatEndDate !== '01-01-1970') {
+                    return setDateRange(formatStartDate, formatEndDate);
+                  }
+                }}
                 startDate={startDate}
                 endDate={endDate}
                 selectsRange={true}
-                selected={startDate}
+                selected={new Date()}
                 height="56px"
                 width="100%"
-                monthsShown={2}
+                // monthsShown={2}
                 border="none"
               />
             </Flex>

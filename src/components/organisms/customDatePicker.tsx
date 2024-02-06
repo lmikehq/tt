@@ -30,10 +30,11 @@ interface CustomDatePickerProps {
   minDate?: Date;
   maxDate?: Date;
   monthsShown?: number;
-  endDate?: Date;
-  startDate?: Date;
+  endDate?: Date | null;
+  startDate?: Date | null;
   onChange(
-    date: Date | null,
+    // date: Date | null,
+    date: any,
     event: SyntheticEvent<any, Event> | undefined
   ): void;
   selected?: Date;

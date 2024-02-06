@@ -10,8 +10,8 @@ interface ParamsProp {
 export const useGetAllVisaApplication = ({ query, options }: ParamsProp) => {
   return useQuery({
     queryFn: () => {
-      console.log(query.status);
-      if (query.endDate === undefined || query.endDate.length < 1) {
+      console.log('this is the query end date', query.endDate);
+      if (query.endDate === undefined || query.endDate.length < 1 || query.endDate === '01-01-1970') {
         return VisaService.getAllApplications({
           search: query.search,
           currentPage: query.currentPage,
@@ -35,8 +35,10 @@ export const useGetAllVisaApplication = ({ query, options }: ParamsProp) => {
       'get-all-visa-applications',
       query.status,
       query.search,
-      query.endDate,
-      query.startDate,
+      // query.endDate === '01',
+      // ...(query.endDate !== "01-01-1970" && query.endDate),
+      (query.endDate !== "01-01-1970" ? query.endDate : null),
+      // query.startDate,
       query.limit,
       query.currentPage
     ]

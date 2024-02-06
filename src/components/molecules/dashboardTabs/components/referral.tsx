@@ -133,11 +133,7 @@ const Referrals = () => {
   const totalCount = response?.totalCount || 1;
 
 
-  const { data: banks } = useFetchReferralBanks();
-
-  // console.log({ banks });
-
-  // console.log('referral data', refferrals, filteredCount, totalCount);
+  console.log('referral data', referrals, filteredCount, totalCount);
 
   return (
     <Section

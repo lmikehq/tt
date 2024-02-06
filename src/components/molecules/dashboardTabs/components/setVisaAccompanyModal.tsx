@@ -43,6 +43,7 @@ const SetVisaAccompanyModal = ({ open, setState, onClose }: Props) => {
           type: "add-accompany"
         };
       });
+      formik.resetForm();
     },
   });
   return (
