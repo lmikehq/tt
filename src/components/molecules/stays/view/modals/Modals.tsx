@@ -156,6 +156,8 @@ export const GalleryModal = ({
     </Modal>
   );
 };
+
+
 export const MapModal = ({
     open,
     handleClose,
@@ -360,55 +362,59 @@ function truncateText(text: string, maxWords: number): string {
 }
 
 export const ChangeSearchModal = ({
-  open,
-  handleClose,
+    open,
+    handleClose,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    open: boolean;
+    handleClose: () => void;
 }) => {
-  let HotelName = "Hotels available";
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <ModalCenter>
-        <ModalScroll className="search_box">
-          <ModalWrapper className="search_wrapper">
-            <Flex
-              padding="10px 35px"
-              align="center"
-              justify="space-between"
-              gap="20px"
-              styles={{ marginTop: "20px" }}
-            >
-              <Text
-                type="h1"
-                size={23}
-                text={`${truncateText(HotelName, 5)}`}
-                weight={600}
-              />
-              <CloseIcon
-                style={{ fontSize: "29px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
-            </Flex>
-            <Span style={{ padding: "15px" }}>
-              <SearchBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
-    </Modal>
-  );
+    const { isMobile } = useScreenResolution()
+    let HotelName = "Hotels available";
+
+    useEffect(() => {
+        const handleBodyOverflow = () => {
+            document.documentElement.style.overflow = open ? "hidden" : "auto";
+            document.body.style.overflow = open ? "hidden" : "auto";
+            };
+            handleBodyOverflow();
+        return () => {
+            document.documentElement.style.overflow = "auto";
+            document.body.style.overflow = "auto";
+        };
+    }, [open]);
+
+
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <ModalCenter>
+                <ModalScroll className="search_box" style={{ marginTop: isMobile ? '' : '-30vh' }}>
+                <ModalWrapper className="search_wrapper">
+                    <Flex
+                    padding="10px 35px"
+                    align="center"
+                    justify="space-between"
+                    gap="20px"
+                    styles={{ marginTop: "20px" }}
+                    >
+                    <Text
+                        type="h1"
+                        size={23}
+                        text={`${truncateText(HotelName, 5)}`}
+                        weight={600}
+                    />
+                    <CloseIcon
+                        style={{ fontSize: "29px", cursor: "pointer" }}
+                        onClick={handleClose}
+                    />
+                    </Flex>
+                    <Span style={{ padding: "15px" }}>
+                    <SearchBox onClose={handleClose} />
+                    </Span>
+                </ModalWrapper>
+                </ModalScroll>
+            </ModalCenter>
+        </Modal>
+    );
 };
 
 interface Reviews {

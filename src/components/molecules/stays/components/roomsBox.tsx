@@ -66,6 +66,7 @@ import { capCase, numSort } from "@/lib/utilFns";
 import { DinnerDining } from "@mui/icons-material";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { ttColors } from "@/lib/theme/colors";
+import { useQueryParams } from "@/hooks/useNext";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -98,13 +99,16 @@ const MobileSliderSettings = {
 };
 
 interface RoomBoxProps {
-  hotel: HotelBySearchInterface;
-  index: number;
+    hotel: HotelBySearchInterface;
+    index: number;
+    likedHotels?: HotelBySearchInterface[]
 }
 
-function RoomBox({ hotel, index }: RoomBoxProps) {
+function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
     const { isMobile } = useScreenResolution();
+    const { queryParams } = useQueryParams()
+    const router = useRouter();
 
     const hotelImages = hotel.images.map((el) => el.replace("{size}", "1024x768"));
     const [selectedImage, setSelectedImage] = useState(hotelImages[0]);
@@ -131,8 +135,6 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
         }
     };
 
-    const router = useRouter();
-
     const [checked, setChecked] = useState(false);
 
     const handleCheckboxChange = () => {
@@ -144,7 +146,7 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
     const amenitiesGroups = hotel.amenity_groups.reduce((prev: string[], curr: AmenityGroup) => [...prev, curr?.group_name], [])
     const displayedAmenities = amenitiesGroups.filter(e => ["Internet", "Parking", "Kids", "Sports", "Meals", "Accessibility"].includes(e))
     const roomGroups = hotel.room_groups.sort((a, b) => a.name.length > b.name.length ? -1 : a.name.length === b.name.length ? 0 : 1)
-    const prices = numSort(hotel.rates.reduce((prev: number[], curr: Rate) => [...prev, Number(curr.payment_options.payment_types[0]?.amount) * conversionRate], []), 'asc')
+    const prices = numSort(hotel.rates.reduce((prev: number[], curr: Rate) => [...prev, parseFloat(curr.payment_options.payment_types[0]?.amount) * conversionRate], []), 'asc')
 
 
     return (
@@ -168,7 +170,10 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                     alt={hotel.name}
                                 />
                                 <FavoriteBox>
-                                    <EnhancedFavouriteCheckBox id={hotel.id} />
+                                    <EnhancedFavouriteCheckBox
+                                        id={hotel.id}
+                                        liked={likedHotels.some(e => e.id === hotel.id)}
+                                    />
                                 </FavoriteBox>
                             </LargeImg>
                             <ControlBtn className="control_gallery room_img">
@@ -219,55 +224,56 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                         </ImgBox>
                     ) : (
                         <MobileImageBox>
-                        <Slider {...MobileSliderSettings} className="slick-slider">
-                            {hotelImages.map((x) => (
-                                <Flex
-                                    key={index}
-                                    className="slick-img-continuum"
-                                    styles={{
-                                        width: '100%',
-                                        position: 'relative',
-                                    }}
-                                >
-                                    <Link href={`/stay/view?hotelId=${hotel.id}`} style={{ width: '100%', minWidth: '100%' }}>
-                                        <img
-                                            src={x}
-                                            alt=""
-                                            className="slick_slider_room_img_img"
-                                            style={{
-                                                width: "100%",
-                                                borderRadius: "12.5px",
-                                            }}
-                                        />
-                                    </Link>
-                                    <FavoriteBoxMobile>
-                                    <Checkbox
-                                        {...label}
-                                        icon={<FavoriteBorder />}
-                                        checkedIcon={
-                                            <Favorite
+                            <Slider {...MobileSliderSettings} className="slick-slider stay-list-slider">
+                                {hotelImages.map((x) => (
+                                    <Flex
+                                        key={index}
+                                        className="slick-img-continuum"
+                                        styles={{
+                                            width: '100%',
+                                            position: 'relative',
+                                        }}
+                                    >
+                                        {/* <Link href={`/stay/view?hotelId=${hotel.id}`} style={{ width: '100%', minWidth: '100%' }}> */}
+                                            <img
+                                                src={x}
+                                                alt=""
+                                                className="slick_slider_room_img_img"
                                                 style={{
-                                                color: "var(--color-favorite)",
+                                                    minWidth: "100%",
+                                                    width: "100%",
+                                                    borderRadius: "12.5px",
                                                 }}
                                             />
-                                        }
-                                        disableRipple
-                                        disableTouchRipple
-                                        disableFocusRipple
-                                        sx={{
-                                        "& .MuiSvgIcon-root": {
-                                            fontSize: 28,
-                                            padding: 0,
-                                        },
-                                        }}
-                                        checked={checked}
-                                        onChange={handleCheckboxChange}
-                                        id="favorite-hotels-checkbox"
-                                    />
-                                    </FavoriteBoxMobile>
-                            </Flex>
-                            ))}
-                        </Slider>
+                                        {/* </Link> */}
+                                        <FavoriteBoxMobile>
+                                        <Checkbox
+                                            {...label}
+                                            icon={<FavoriteBorder />}
+                                            checkedIcon={
+                                                <Favorite
+                                                    style={{
+                                                    color: "var(--color-favorite)",
+                                                    }}
+                                                />
+                                            }
+                                            disableRipple
+                                            disableTouchRipple
+                                            disableFocusRipple
+                                            sx={{
+                                            "& .MuiSvgIcon-root": {
+                                                fontSize: 28,
+                                                padding: 0,
+                                            },
+                                            }}
+                                            checked={checked}
+                                            onChange={handleCheckboxChange}
+                                            id="favorite-hotels-checkbox"
+                                        />
+                                        </FavoriteBoxMobile>
+                                </Flex>
+                                ))}
+                            </Slider>
                         </MobileImageBox>
                     )}
                     <TextBox>
@@ -275,21 +281,21 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                         <RowOne style={{ margin: '0 0 1rem' }}>
                             <FlexBox>
                             <Flex direction="column" gap='1rem'>
-                                <Link href="/stay/view">
+                                {/* <Link href="/stay/view"> */}
                                     <Text
                                         styles={{
                                             color: "var(--primary-color)",
-                                            maxWidth: '80%'
+                                            maxWidth: isMobile ? '100%' : '80%'
                                         }}
                                         type="h2"
                                         text={capCase(hotel.name)}
-                                        weight={"500"}
+                                        weight={600}
                                     ></Text>
-                                </Link>
+                                {/* </Link> */}
 
                                 <FlexBox style={{ gap: "1rem" }}>
                                     <Text type="p" text={capCase(hotel.address)} color={ttColors.primary} />
-                                    <Link href={`https://www.google.com/maps/search/?api=1&query=${hotel.name}-${hotel.region.name}-${hotel.region.country_code}`} target="_blank">
+                                    <Link href={`https://www.google.com/maps/search/?api=1&query=${hotel.name}-${hotel.region?.name ?? ''}-${hotel.region?.country_code ?? ''}`} target="_blank">
                                         <Text
                                             type="p"
                                             color="var(--primary-color)"
@@ -354,18 +360,21 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                     <Text
                                         type="h3"
                                         weight={"bold"}
-                                        text={roomGroups[0]?.name}
+                                        text={capCase(roomGroups[0]?.name_struct?.main_name ?? roomGroups[0]?.name)}
                                         styles={{ whiteSpace: isMobile ? 'wrap' : "wrap" }}
                                     />
-                                    <Text type="p" text="Full double bed"></Text>
+                                    <Text
+                                        type="p"
+                                        text={capCase(roomGroups[0]?.name_struct?.bedding_type ?? '')}
+                                    />
                                 </Flex>
                                 <Grid
                                     columns={"0px"}
                                     style={{
-                                        gridTemplateColumns: isMobile ? '1fr 1fr 1fr 1fr 1fr' : displayedAmenities.length > 5 ? '1fr 1fr 1fr' : `repeat(${displayedAmenities.length}, 1fr)`,
+                                        gridTemplateColumns: isMobile ? '1fr 1fr 1fr 1fr 1fr 1fr' : displayedAmenities.length > 5 ? '1fr 1fr 1fr' : `repeat(${displayedAmenities.length}, 1fr)`,
                                         gap: "20px",
                                         width: isMobile ? '100%' : 'fit-content',
-                                        margin: '0px'
+                                        margin: '0 0 1rem'
                                     }}
                                 >
                                     {amenitiesGroups.includes("Internet") && <WifiIcon />}
@@ -407,15 +416,13 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                                     color="var(--text-dull-color)"
                                     type="h2"
                                     weight={"bold"}
-                                    text={getCurrency()}
+                                    text={`${getCurrency()}`}
                                 />
                                 <Text
                                     color="var(--text-dull-color)"
                                     type="h2"
                                     weight={"bold"}
-                                    text={formatPriceWithoutCurrency(
-                                        parseInt(prices[0])
-                                    )}
+                                    text={`${formatPriceWithoutCurrency(parseInt(prices[0]))}`}
                                 />
                                 </Flex>
                                 <Text
@@ -426,19 +433,21 @@ function RoomBox({ hotel, index }: RoomBoxProps) {
                             </Flex>
                             <ButtonBtn
                                 onClick={() => {
-                                const initialParams = extractSearchParamsFromUrl({
-                                    url: window.location.href,
-                                });
-                                const params = {
-                                    ...initialParams,
-                                    id: hotel.id,
-                                };
-                                router.push(
-                                    `/stay/view${constructQueryFromParams(params)}`
-                                );
+                                    const params = {
+                                        regionId: queryParams.regionId,
+                                        checkIn: queryParams.checkIn,
+                                        checkOut: queryParams.checkOut,
+                                        guests: queryParams.guests,
+                                        countryCode: queryParams.countryCode,
+                                        //!! change before live push
+                                        id: "test_hotel_do_not_book" ?? hotel.id,
+                                    };
+                                    router.push(
+                                        `/stay/view${constructQueryFromParams(params)}`
+                                    );
                                 }}
                             >
-                                <BtnText>Check Availability</BtnText>
+                                <BtnText style={{ fontSize: '15px' }}>Check Availability</BtnText>
                             </ButtonBtn>
                             </FlexBox>
                         </RowFive>

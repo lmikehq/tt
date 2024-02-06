@@ -27,8 +27,8 @@ function getAuthToken(): string | null {
   if (typeof window !== "undefined") {
     // Access localStorage here
     user = window.localStorage.getItem("user")
-  }
-  return user ? `Bearer ${JSON.parse(user)}` : null
+    }
+  return user ? `Bearer ${user}` : null
 }
 
 axiosClient.interceptors.response.use(
@@ -108,6 +108,7 @@ const rateHawkResourceClient: AxiosInstance = axios.create({
     //   withCredentials: true,
     headers: {
         "Content-Type": "application/json",
+        Authorization: getAuthToken(),
     },
 });
 rateHawkResourceClient.interceptors.response.use(
@@ -129,8 +130,8 @@ const tripAdvisorResourceClient: AxiosInstance = axios.create({
         "Content-Type": "application/json",
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate, br",
-        "Referer": "https://stays-dev.thrillers.travel",
-        "Origin": "https://stays-dev.thrillers.travel"
+        // "Referer": "https://stays-dev.thrillers.travel",
+        // "Origin": "https://stays-dev.thrillers.travel"
     },
 });
 tripAdvisorResourceClient.interceptors.response.use(

@@ -12,7 +12,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import TuneIcon from "@mui/icons-material/Tune";
 import CachedIcon from "@mui/icons-material/Cached";
 import CloseIcon from "@mui/icons-material/Close";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChangeSearchModal, FilterModal } from "./modals/Modals";
 import FilterBox from "./modals/components/FilterBox";
 import { Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
@@ -37,12 +37,13 @@ export interface FiltersInterface {
 }
 
 interface ChooseYourRoomProps {
-    stayResponse: ViewSingleStayResponse;
+    stayResponse?: ViewSingleStayResponse;
+    stayImages: string[]
     refetch: () => void;
     loading: boolean;
 }
 
-const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps) => {
+const ChooseYourRoom = ({ stayResponse, stayImages, refetch, loading } : ChooseYourRoomProps) => {
     const { isMobile } = useScreenResolution();
     const { stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore((state) => state);
     const { roomForGuests } = stayTabInitialSearchQuery
@@ -67,7 +68,7 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
         filter: false,
     });
 
-    const [filteredItems, setFilteredItems] = useState<Rate[]>(stayResponse.rates ?? []);
+    const [filteredItems, setFilteredItems] = useState<Rate[]>(stayResponse?.rates ?? []);
 
     const [filters, setFilters] = useState<FiltersInterface>({
         beds: defaultOpt,
@@ -77,23 +78,23 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
     })
 
     const bedsOptions = useMemo(() => {
-        const res = stayResponse.rates?.map((r, ind, arr) => ({
+        const res = stayResponse?.rates?.map((r, ind, arr) => ({
             value: r.room_data_trans?.bedding_type,
             label: capCase(r.room_data_trans?.bedding_type)
         })).reduce((prev, curr) =>
             !prev.some(e => e?.value === curr.value) ? [...prev, curr] : prev, [] as OptionsType) ?? []
         return [{ value: '', label: 'All Options' }, ...res]
     }
-    , [stayResponse.rates])
+    , [stayResponse?.rates])
     const mealOptions = useMemo(() => {
-        const res = stayResponse.rates.map(r => ({
+        const res = stayResponse?.rates?.map(r => ({
             value: r.meal,
             label: capCase(r.meal)
         })).reduce((prev, curr) =>
             !prev.some(e => e?.value === curr.value) ? [...prev, curr] : prev, [] as OptionsType) ?? []
         return [{ value: '', label: 'All Options' }, ...res]
     } 
-    , [stayResponse.rates])
+    , [stayResponse?.rates])
     const cancellationOptions = [
         { value: "", label: "All Options" },
         { value: "free cancellation", label: "With Free Cancellation" },
@@ -109,14 +110,12 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
     });
     
     const filterItems = (filters: FiltersInterface) => {
-        const newItems = stayResponse.rates.filter(r =>
+        const newItems = stayResponse?.rates?.filter(r =>
             (!!filters.beds.value ? r.room_data_trans.bedding_type === filters.beds.value : true) &&
             (!!filters.meals.value ? r.meal === filters.meals.value : true) &&
             (!!filters.cancellation.value ? r.payment_options.payment_types[0]?.cancellation_penalties.free_cancellation_before : true) &&
             (!!filters.payment.value ? r.payment_options.payment_types[0]?.type === filters.payment.value : true)
-        )
-        // console.log(newItems)
-        // console.log('rates', stayResponse.rates)
+        ) ?? []
         setFilteredItems(newItems)
     }
 
@@ -189,8 +188,8 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
     ): (
         <Container>
             <Header id="rooms">
-                <Flex justify="space-between">
-                    <Text type="h1" size={24} weight={600} text="Choose Your Room" />
+                <Flex justify="space-between" align="flex-end">
+                    <Text type="h1" size={isMobile ? 22 : 24} weight={600} text="Choose Your Room" />
                     <Button
                         background="transparent"
                         color={ttColors.dark}
@@ -265,7 +264,7 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
             <Section margin="0 0 2.5rem 0">
                 <Text
                     type="h1"
-                    size={24}
+                    size={isMobile ? 22 : 24}
                     weight={600}
                     text="Available Rooms"
                     margin={"0 0 1.75rem 0"}
@@ -323,6 +322,7 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
                         >
                             <Flex
                                 align="center"
+                                justify="center"
                                 gap="5px"
                             >
                                 <TuneIcon />
@@ -347,8 +347,8 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
                             {Object.keys(activeFilters).filter(x => activeFilters[x as keyof typeof activeFilters] == true).map((opt) => 
                                 <BtnDetails
                                     key={opt}
-                                    className="filter_btn"
-                                    style={{ backgroundColor: ttColors.grayishAsh, display: 'flex', alignItems: 'center', gap: '5px' }}
+                                        className="filter_btn"
+                                        style={{ backgroundColor: ttColors.grayishAsh, display: 'flex', alignItems: 'center', gap: '5px' }}
                                     >
                                     <Text
                                         weight={500}
@@ -401,22 +401,6 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
                             </Button>
                         </Span>
                         </Flex>
-                        {/* {filteredItems.length === 0 && 
-                            <Span style={{ marginTop: "20px" }}>
-                                <Flex direction="column">
-                                    <Text
-                                        type="p"
-                                        weight={500}
-                                        text="No hotel available with the selected filters"
-                                    />
-                                    <Text
-                                        type="p"
-                                        size={14}
-                                        text="Remove some of the selected filters to get results"
-                                    />
-                                </Flex>
-                            </Span>
-                        } */}
                     </Span>
                 )}
             </Section>
@@ -434,14 +418,14 @@ const ChooseYourRoom = ({ stayResponse, refetch, loading } : ChooseYourRoomProps
             </Section>
             <Span>
                 {filteredItems.length > 0 ? (
-                    <ChooseYourRoomList stayResponse={stayResponse} hotels={filteredItems} />
+                    <ChooseYourRoomList stayResponse={stayResponse} hotels={filteredItems} stayImages={stayImages} />
                 ) : (
                     <Flex padding="4rem 0" justify="center">
                         <Text type="p" text="No hotel available with the selected filters" size={16} weight={600} />   
                     </Flex>
                 )}
             </Span>
-                
+
             {/* SEARCH MODAL*/}
             <ChangeSearchModal
                 open={open.search}

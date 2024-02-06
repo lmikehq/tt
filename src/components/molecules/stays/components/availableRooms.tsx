@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
-import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import { useRouter, useSearchParams } from "next/navigation";
 import Pagination from "@mui/material/Pagination";
@@ -12,11 +11,11 @@ import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQu
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
 import { ttColors } from "@/lib/theme/colors";
 import { Mode } from "@/lib/types";
-import { Skeleton } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import StaySkeletonLoader from "@/components/organisms/SkeletonLoader/StaySkelecton";
 import Favorite from "@mui/icons-material/Favorite";
 import { Grid } from "@/components/templates/grid";
-import { useSearchStays } from "@/lib/hooks/stay/search.hook";
+import { useSearchLikedStays, useSearchStays } from "@/lib/hooks/stay/search.hook";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
@@ -26,6 +25,8 @@ import {
 } from "@/lib/types/request-models/stay/search.type";
 import Spinner from "../../icons/spinner";
 import Text from "@/components/atoms/text";
+import { useQueryParams } from "@/hooks/useNext";
+import { useUserStore } from "@/lib/store/useStore";
 
 // FavoriteBoxSkeleton Component
 export const FavoriteBoxSkeleton: React.FC = () => (
@@ -227,33 +228,31 @@ function HotelBoxSkeleton() {
 }
 
 function AvailableRooms() {
-  const { isMobile } = useScreenResolution();
-
-    const searchParams = useSearchParams();
-    const regionId = searchParams.get("regionId");
-    const checkIn = searchParams.get("checkIn");
-    const checkOut = searchParams.get("checkOut");
-    const guests = searchParams.get("guests");
+    const { isMobile } = useScreenResolution();
+    const { queryParams } = useQueryParams()
     const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
         (state) => state
     );
+    const { user } = useUserStore()
 
-    const staysRequestParams = (): ManyStaysRequestInput => ({
-        region_id: regionId ?? "",
-        checkin: checkIn ?? "",
-        checkout: checkOut ?? "",
+    const staysRequestParams: ManyStaysRequestInput = {
+        region_id: queryParams?.regionId ?? "",
+        checkin: queryParams?.checkIn ?? "",
+        checkout: queryParams?.checkOut ?? "",
         residency: "ng",
         language: preferredLanguage,
-        guests: extractRoomForGuestsFromString(guests ?? ""),
         currency: preFerredCurrency,
-    });
+        guests: extractRoomForGuestsFromString(queryParams?.guests ?? ""),
+    };
 
     const {
         staySearchFilters,
+        updateStaySearchFilters,
         updateStaySearchMeta,
         staySearchMeta,
         staySearchSort,
     } = useStaySearchStore((state) => state);
+
 
     const { data, isFetching } = useSearchStays({
         query: {
@@ -265,20 +264,29 @@ function AvailableRooms() {
             room: (staySearchFilters?.room ?? []).some(e => !!e) ? staySearchFilters.room : undefined,
             star: staySearchFilters.star ? staySearchFilters?.star : undefined,
             sort: staySearchSort ?? undefined,
-            regionId: regionId ?? undefined,
+            regionId: staySearchFilters?.regionId ?? undefined,
             ...staySearchMeta,
         },
-        payload: staysRequestParams(),
+        payload: staysRequestParams,
     });
-    const hotels = data?.hotelArray as HotelBySearchInterface[];
+
+    const { data: likedHotels } = useSearchLikedStays({ enabled: !!user?._id })
+
+    const hotels = data?.hotelArray as HotelBySearchInterface[] ?? [];
     const hotelCount = data?.count ?? 0
     const limit = staySearchFilters.limit ?? 20
     const currentPage = staySearchMeta?.currentPage ?? 1
     const totalPages = Math.floor(hotelCount > 20 ? hotelCount/limit : 1)
 
-    console.log('tttpp', totalPages)
     const [sortType, setSortType] = useState("best");
 
+
+    useEffect(() => {
+        updateStaySearchMeta({
+            ...staySearchMeta,
+            currentPage: 1
+        })
+    }, [queryParams, staySearchSort])
 
     return (
         <div>
@@ -290,11 +298,14 @@ function AvailableRooms() {
                     starRatings={1}
                     distance={"s"}
                     sortType={sortType}
-                    hotels={hotels}
                     setSortType={setSortType}
+                    hotels={hotels}
                 />
             )}
-            {hotels.length === 0 ? (
+
+            {isFetching ? (
+                <HotelBoxSkeleton />
+            ) : hotels.length === 0 ? (
                 <Flex padding="5rem 0" justify="center">
                     <Text
                         type="p"
@@ -303,15 +314,10 @@ function AvailableRooms() {
                         size={18}
                     />
                 </Flex>
-            ) : !isFetching ? (
-                hotels
-                ?.slice(0, 4)
-                .map((hotel, index) => (
-                    <RoomBox hotel={hotel} index={index} key={index} />
+            ) : hotels?.slice(0, 4).map((hotel, index) => (
+                    <RoomBox hotel={hotel} index={index} key={index} likedHotels={likedHotels}  />
                 ))
-            ) : (
-                <HotelBoxSkeleton />
-            )}
+            }
             {/* <MidListFilter
                 sortType={sortType}
                 ratings={1}
@@ -320,36 +326,35 @@ function AvailableRooms() {
             /> */}
             {/* <RoomSlider hotels={hotels} /> */}
 
-            {hotels.length > 0 && hotels?.slice(4).map((hotel, index) => (
-                <RoomBox hotel={hotel} index={index} key={index} />
+            {isFetching ? (
+                <HotelBoxSkeleton />
+            ) : hotels.length > 0 && hotels?.slice(4).map((hotel, index) => (
+                <RoomBox hotel={hotel} index={index} key={index} likedHotels={likedHotels}  />
             ))}
 
-            {currentPage <  totalPages &&
-                <Flex justify="center" styles={{ marginTop: "40px" }}>
-                    <Button
-                        width="100%"
-                        background="#06062A"
-                        padding="2rem 0"
-                        onClick={() =>
-                            updateStaySearchMeta({
-                                ...staySearchMeta,
-                                currentPage: currentPage + 1,
-                            })
-                        }
-                    >
-                        {isFetching ? (
-                            <Spinner fill={ttColors.primary} size={"25px"} />
-                        ) : (
-                            <Text
-                                type="p"
-                                text="Load More"
-                                weight={500}
-                                size={18}
-                            />
-                        )}
-                    </Button>
-                </Flex>
-            }
+            <Box
+                sx={{
+                    ".MuiPagination-ul": {
+                        width: '100%',
+                        justifyContent: 'center'
+                    }
+                }}
+            >
+                <Pagination
+                    page={currentPage}
+                    count={totalPages}
+                    onChange={(ev, page) => 
+                        updateStaySearchMeta({
+                            ...staySearchMeta,
+                            currentPage: page
+                        })
+                    }
+                    size="large"
+                    variant="outlined"
+                    shape="rounded"
+                    color="primary"
+                />
+            </Box>
         </div>
     );
 }

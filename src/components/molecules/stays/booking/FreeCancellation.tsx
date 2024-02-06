@@ -20,11 +20,12 @@ function FreeCancellation({ freeCancelationBefore }: FreeCancellationProps) {
                             weight={600}
                             type="h4"
                             text="Free Cancellation"
-                        ></Text>
+                            ></Text>
                     </Flex>
                     <Flex styles={{ marginTop: "15px" }}>
                         <Text
                             type="p"
+                            size={14}
                             text={`You have the option to cancel for free until 11:59 PM on ${dayjs(
                                 freeCancelationBefore
                             )

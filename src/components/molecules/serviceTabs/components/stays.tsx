@@ -83,7 +83,7 @@ function Stays() {
       countryCode: stayTabInitialSearchQuery.location?.country_code,
       star: stayTabInitialSearchQuery.stars
         ? stayTabInitialSearchQuery.stars[0]
-        : 3,
+        : undefined,
       checkIn: formatDate(
         stayTabInitialSearchQuery.checkInDate ?? dayjs(),
         "YYYY-MM-DD"

@@ -8,9 +8,8 @@ import WifiIcon from "@mui/icons-material/Wifi";
 import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import PetsIcon from "@mui/icons-material/Pets";
 import SpaIcon from "@mui/icons-material/Spa";
-import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare, PinDrop, Bed, LocalHospitalOutlined, Wifi, Pets, Language, WatchLater, ChildFriendly, BedroomBaby, LocalDining, Payments, LunchDining, StickyNote2, FitnessCenter, SmokingRooms, Pool, Spa, HotTub, Kitchen, BeachAccess, Bathroom } from "@mui/icons-material";
+import { HeatPumpOutlined, GrassRounded, ViewColumn, Diversity3Rounded, DirectionsCar, TransferWithinAStation, LocalParking, ChildCare, PinDrop, Bed, LocalHospitalOutlined, Wifi, Pets, Language, WatchLater, ChildFriendly, BedroomBaby, LocalDining, Payments, LunchDining, StickyNote2, FitnessCenter, SmokingRooms, Pool, Spa, HotTub, Kitchen, BeachAccess, Bathroom, SmokeFree } from "@mui/icons-material";
 import { PiBabyFill, PiCheckCircle } from "react-icons/pi";
-import { GiMeal } from "react-icons/gi";
 import { FaWheelchair } from "react-icons/fa6";
 import { LuParkingSquare } from "react-icons/lu";
 import { IoLocationSharp } from "react-icons/io5";
@@ -53,6 +52,7 @@ export const pickIcon = (val: string, styles?: CSSProperties ) => {
         case 'extra_bed': return <Bed style={{ ...styles }} />;
         case 'deposit': return <Payments style={{ ...styles }} />;
         case 'additional': return <StickyNote2 style={{ ...styles }} />;
+        case 'non-smoking': return <SmokeFree style={{ ...styles }} />;
         case 'has_internet': return <Wifi style={{ ...styles }} />;
         case 'has_fitness': return <FitnessCenter style={{ ...styles }} />;
         case 'has_parking': return <LuParkingSquare style={{ ...styles }} />;

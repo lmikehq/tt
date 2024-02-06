@@ -490,3 +490,24 @@ textarea:hover {
   z-index: 99999 !important;
 }
 
+.stay-list-slider .slick-dots {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto !important;
+    max-width: 80vw;
+    left: 7% !important;
+}
+.stay-list-slider-mobile .slick-dots {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto !important;
+    max-width: 55vw;
+    left: 17% !important;
+}
+.stay-list-slider .slick-dots .slick-item {
+    padding: 0 !important;
+}

@@ -6,7 +6,10 @@ export interface StayOrderBookingReguestInput {
     hotel_id: string;
     book_hash: string;
     user_ip: string;
-    rooms: StayOrderBookingFinishRoom[];
+    checkIn: string;
+    checkOut: string;
+    //This is how it is in postman
+    rooms: { first_name: string; last_name: string; }[];
 }
 
 export interface StayCreditTokenizationInput {

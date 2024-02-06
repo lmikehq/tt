@@ -144,7 +144,7 @@ function CheckingIn({
                             <Flex
                                 align="center"
                                 gap="10px"
-                                margin="8px 0px"
+                                margin="1rem 0"
                                 onClick={() =>
                                     formik.setFieldValue(
                                         `${index}.displayOtherGuests`,

@@ -221,17 +221,17 @@ export const TextBox = styled.div`
 
 export const RowOne = styled.div``;
 export const FavoriteBox = styled.div`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 10;
-  background-color: var(--default-color);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background-color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const FavoriteBoxMobile = styled.div`

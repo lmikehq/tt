@@ -10,9 +10,9 @@ import { capCase } from "@/lib/utilFns";
 export const pickPaymentIcon = (val: string, styles?: CSSProperties ) => {
     switch (String(val).toLowerCase()) {
         case 'visa': return "/assets/images/stays/visa.png";
-        case 'american express': return "/assets/images/stays/express.png";
-        case 'mastercard': return "/assets/images/stays/master.png";
-        case 'diners club': return "/assets/images/stays/dinners.png";
+        case 'american_express': return "/assets/images/stays/express.png";
+        case 'master_card': return "/assets/images/stays/master.png";
+        case 'diners_club': return "/assets/images/stays/dinners.png";
         case 'jcb': return "/assets/images/stays/jcb.jpeg";
         default: return "/assets/images/stays/master.png";
     }
@@ -25,7 +25,6 @@ interface PolicySectionProps {
 }
 
 function PolicySection({ title, items, icon }: PolicySectionProps) {
-    console.log('itt', items)
     return (
         <ul>
             {title &&
@@ -89,6 +88,7 @@ const Policies = ({ stayResponse }: PoliciesProps) => {
                 <Header id="policies">
                     <Text
                         type="h4"
+                        size={18}
                         weight={"bold"}
                         text="Policies"
                     />

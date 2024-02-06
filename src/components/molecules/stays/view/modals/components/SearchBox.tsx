@@ -21,16 +21,17 @@ import { ClickAwayListener } from "@mui/material";
 import StaysMenu from "@organism/staysMenu";
 
 
-function SearchBox() {
+function SearchBox({ onClose }: { onClose: () => void; }) {
     const { isMobile } = useScreenResolution();
-    const { queryParams } = useQueryParams();
+    const { queryParams, setQueryParams } = useQueryParams();
     const { push } = useRouter()
     const { stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore((state) => state);
     const { roomForGuests } = stayTabInitialSearchQuery
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
-        //properties needed
+        prevRegion: queryParams?.regionId,
+        prevLocation: queryParams?.id
     });
 
     const [guest, setGuest] = useState("");
@@ -63,11 +64,11 @@ function SearchBox() {
 
     const computeStaySearchQuery = () => {
         const params = {
-            regionId: stayTabInitialSearchQuery.location?.id,
+            regionId: stayTabInitialSearchQuery.location?.region_id,
             countryCode: stayTabInitialSearchQuery.location?.country_code,
-            stars: stayTabInitialSearchQuery.stars
+            star: stayTabInitialSearchQuery.stars
                 ? stayTabInitialSearchQuery.stars[0]
-                : 3,
+                : undefined,
             checkIn: formatDate(
                 stayTabInitialSearchQuery.checkInDate ?? dayjs(),
                 "YYYY-MM-DD"
@@ -76,22 +77,30 @@ function SearchBox() {
                 stayTabInitialSearchQuery.checkOutDate ?? dayjs(),
                 "YYYY-MM-DD"
             ),
-            //! guest array from listings page
-            guests: convertRoomForGuestsToString([]),
+            guests: convertRoomForGuestsToString(stayTabInitialSearchQuery.roomForGuests),
         };
         return constructQueryFromParams(params);
     };
 
     const handleSubmit = () => {
-        if (queryParams?.regionId === String(stayTabInitialSearchQuery?.location?.id ?? '')) {
-            return
-            // push(`/stay/view`)
-        } else {
-            push(`/stay/listings${computeStaySearchQuery()}`)
+        const newParams = {
+            ...queryParams,
+            checkIn: dayjs(stayTabInitialSearchQuery?.checkInDate).format("YYYY-MM-DD"),
+            checkOut: dayjs(stayTabInitialSearchQuery?.checkOutDate).format("YYYY-MM-DD"),
+            regionId: stayTabInitialSearchQuery?.location?.region_id ?? queryParams?.regionId,
+            id: stayTabInitialSearchQuery?.location?.id ?? queryParams?.id,
         }
-    };
 
-    console.log('initQ', stayTabInitialSearchQuery)
+        if (String(newParams?.regionId) !== String(submissionState.prevRegion)) {
+            push(`/stay/listings${computeStaySearchQuery()}`)
+        } else {
+            setQueryParams({
+                ...queryParams,
+                ...newParams
+            })
+        }
+        onClose()
+    };
 
 
     return (
@@ -104,15 +113,15 @@ function SearchBox() {
                 >
                     <Text type="p" text="Where do you want to stay?"></Text>
                     <RateHawkLocationSearchInput
-                        onChange={(x: RateHawkRegionType) =>
+                        onChange={(x: RateHawkRegionType) => {
                             updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 location: x,
                             })
-                        }
+                        }}
                         value={stayTabInitialSearchQuery.location}
                         placeholder="Enter Destination or Hotel Name"
-                        showHotels
+                        showHotels={true}
                     />
                 </Flex>
                 <Flex gap="20px" direction={isMobile ? "column" : "row"}>
@@ -129,12 +138,12 @@ function SearchBox() {
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            onChange={(e) => 
+                            onChange={(e) => {
                                 updateStayTabInitialQuery({
                                     ...stayTabInitialSearchQuery,
                                     checkInDate: dayjs(e)
                                 })
-                            }
+                            }}
                             value={stayTabInitialSearchQuery?.checkInDate ? new Date(stayTabInitialSearchQuery?.checkInDate?.toString() ?? '') : undefined}
                             minDate={new Date()}
                         />
@@ -154,14 +163,14 @@ function SearchBox() {
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 updateStayTabInitialQuery({
                                     ...stayTabInitialSearchQuery,
                                     checkOutDate: dayjs(e)
                                 })
-                            }
+                            }}
                             value={stayTabInitialSearchQuery?.checkOutDate ? new Date(stayTabInitialSearchQuery?.checkOutDate?.toString() ?? '') : undefined}
-                            minDate={new Date(stayTabInitialSearchQuery?.checkOutDate?.toString() ?? '')}
+                            minDate={new Date(stayTabInitialSearchQuery?.checkInDate?.toString() ?? '')}
                         />
                     </Flex>
                 </Flex>
@@ -169,7 +178,7 @@ function SearchBox() {
                     <Flex
                         direction="column"
                         gap=".5rem"
-                        styles={{ marginBottom: "1.2rem" }}
+                        styles={{ marginBottom: "1.2rem", position: 'relative' }}
                     >
                         <Text
                             type="label"
@@ -178,7 +187,7 @@ function SearchBox() {
                             weight={400}
                         />
                         <ClickAwayListener onClickAway={handleCloseMenu}>
-                            <div>
+                            <div style={{ position: 'relative' }}>
                                 <Input
                                     onClick={handleOpenMenu}
                                     placeholder="Click me to open dropdown"
@@ -189,7 +198,7 @@ function SearchBox() {
                                         fontSize: "14px",
                                     }}
                                 />
-                                {menuOpen && <StaysMenu />}
+                                {menuOpen && <StaysMenu staysView={true} />}
                             </div>
                         </ClickAwayListener>
                     </Flex>

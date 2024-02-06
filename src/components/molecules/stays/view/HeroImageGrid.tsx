@@ -55,38 +55,38 @@ interface HeroImageGridProps {
 }
 
 function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
-  const { isMobile } = useScreenResolution();
+    const { isMobile } = useScreenResolution();
 
-  const [open, setOpen] = useState({
-    gallery: false,
-  });
-  return (stayResponse && 
+    const [open, setOpen] = useState({
+        gallery: false,
+    });
+  return (stayResponse &&
     <Section styles={{ marginBottom: !isMobile ? "37px" : "0px" }}>
       {!isMobile ? (
-        <Grid columns={"2"} gap=".5rem">
+        <Flex gap=".5rem">
             <Section
-                styles={{ maxHeight: "600px", overflow: "hidden" }}
+                styles={{ height: "600px", overflow: "hidden" }}
                 borderRadius="12px"
             >
             <img
-              onClick={() =>
-                setOpen((prev) => ({
-                  ...prev,
-                  gallery: true,
-                }))
-              }
-              alt="stay"
-              src={images[0] ?? ''}
-              style={{
-                width: "100%",
-                height: "120%",
-                objectFit: "cover",
-                cursor: "pointer",
+                onClick={() =>
+                    setOpen((prev) => ({
+                        ...prev,
+                        gallery: true,
+                    }))
+                }
+                alt="stay"
+                src={images[0] ?? ''}
+                style={{
+                    width: "100%",
+                    height: "120%",
+                    objectFit: "cover",
+                    cursor: "pointer",
               }}
             />
           </Section>
-          <Section styles={{ maxHeight: "600px" }}>
-            <Grid columns={"2"} gap=".5rem">
+          <Section styles={{ height: "600px" }}>
+            <Grid columns={"2"} gap=".5rem" style={{ height: "600px" }}>
                 {images.slice(1, 5).map((img, index, arr) => {
                     if (index === arr.length - 1) {
                         return (
@@ -163,9 +163,9 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                 })}
             </Grid>
           </Section>
-        </Grid>
+        </Flex>
       ) : (
-        <MobileImageBox className="stay_page_slider">
+        <MobileImageBox className="stay_page_slider stay-list-slider-mobile">
           <Slider {...MobileSliderSettings} className="slick-slider">
             {images.map((image, index) => (
                 <span
@@ -174,7 +174,13 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
                         width: "100%",
                         height: "100%",
                         position: "relative",
-                    }}
+                }}
+                onClick={() =>
+                    setOpen((prev) => ({
+                            ...prev,
+                            gallery: true,
+                        }))
+                    }
                 >
                     <img
                         src={image}
@@ -203,7 +209,7 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
           >
             <Flex align="center" gap="5px">
               <CollectionsIcon />
-              <Text type="p" text="1/35"></Text>
+              <Text type="p" text={`1/${images.length}`}></Text>
             </Flex>
           </Span>
         </MobileImageBox>

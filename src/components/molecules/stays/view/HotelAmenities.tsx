@@ -61,7 +61,7 @@ function AmenitySection({ isOpen, toggle, index, icon, title, items }: AmenitySe
 } 
 
 interface HotelAmenitiesProps {
-    stayResponse: ViewSingleStayResponse;
+    stayResponse?: ViewSingleStayResponse;
 }
 
 const HotelAmenities = ({ stayResponse }: HotelAmenitiesProps) => {
@@ -86,7 +86,7 @@ const HotelAmenities = ({ stayResponse }: HotelAmenitiesProps) => {
           <Flex direction="column">
             <Text
               type="h4"
-              size={17}
+              size={18}
               text="Hotel Amenities"
               weight={600}
               styles={{
@@ -106,7 +106,7 @@ const HotelAmenities = ({ stayResponse }: HotelAmenitiesProps) => {
         </Header>
         <Span style={{ width: "100%" }}>
             <GridLayout className="amenities_grid">
-                {stayResponse.amenity_groups.map((am, index) => 
+                {stayResponse?.amenity_groups.map((am, index) => 
                     <AmenitySection
                         key={`amenity-${index}`}
                         title={am.group_name}

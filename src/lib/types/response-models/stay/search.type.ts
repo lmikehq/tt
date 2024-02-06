@@ -105,6 +105,13 @@ export type SearchStaysResponse = {
     hotelArray: HotelBySearchInterface[];
 }
 
+export type SearchRecentlyViewedStaysResponse = HotelBySearchInterface[]
+export type SearchSimilarStaysResponse = HotelBySearchInterface[]
+export type SearchLikedStaysResponse = HotelBySearchInterface[]
+export type LikeStayResponse = {
+    msg: string;
+    success: boolean;
+}
 // export interface ViewSingleStayResponse {
 //     data: Data;
 //     debug: ViewSingleStayDebug;

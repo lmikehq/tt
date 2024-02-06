@@ -5,14 +5,15 @@ import RoomList from "@/components/molecules/stays/components/roomList";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import {
     constructQueryFromParams,
-    extractSearchParamsFromUrl,
 } from "@/lib/extensions/helpers/constructQuery";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
     StaySearchFilters,
     StaySearchInitialQuery,
-    StayTabInitialSearchQuery,
 } from "@/lib/types/request-models/stay/search.type";
+import dayjs from "dayjs";
+import { useQueryParams } from "@/hooks/useNext";
+
 
 function Page() {
     const {
@@ -20,10 +21,11 @@ function Page() {
         staySearchSort,
         staySearchMeta,
         stayTabInitialSearchQuery,
+        updateStayTabInitialQuery,
         updateStaySearchFilters,
     } = useStaySearchStore((state) => state);
     const router = useRouter();
-
+    const { queryParams } = useQueryParams()
     const searchParams = useSearchParams();
 
     const regionId = searchParams.get("regionId") ?? "";
@@ -33,7 +35,6 @@ function Page() {
     const countryCode = searchParams.get("countryCode") ?? "";
     const star = searchParams.get("star") ?? "";
 
-    //This useEffect updates the URL
     useEffect(() => {
         const initialSearchQuery: StaySearchInitialQuery = {
             regionId,
@@ -57,37 +58,39 @@ function Page() {
         const currentUrl = new URL(window.location.href);
         // Append the new query string
         currentUrl.search = query;
-
         // Replace the URL in the browser without a page reload
         router.replace(currentUrl.toString());
     }, [staySearchFilters, staySearchSort, staySearchMeta]);
 
     //This useEffect extracts data from the URL
-
     useEffect(() => {
-        const params = extractSearchParamsFromUrl({
-            url: window.location.href,
-        });
         const filters: StaySearchFilters = {
-            popularTypes: params.popularTypes?.split(","),
-            meals: params.meals,
-            amenity: params.amenity?.split(","),
-            apartmentType: params.apartmentType?.split(","),
-            star: params.star,
-            guestRating: params.guestRating?.split(","),
-            cancellationPolicy: params.cancellationPolicy?.split(","),
-            bedType: params.bedType?.split(","),
-            room: params.room?.split(","),
-            minAmount: params.minAmount
-                ? parseInt(params.minAmount)
+            popularTypes: queryParams.popularTypes?.split(","),
+            meals: queryParams.meals,
+            amenity: queryParams.amenity?.split(","),
+            apartmentType: queryParams.apartmentType?.split(","),
+            star: queryParams.star,
+            guestRating: queryParams.guestRating?.split(","),
+            cancellationPolicy: queryParams.cancellationPolicy?.split(","),
+            bedType: queryParams.bedType?.split(","),
+            room: queryParams.room?.split(","),
+            minAmount: queryParams.minAmount
+                ? parseInt(queryParams.minAmount)
                 : undefined,
-            maxAmount: params.maxAmount
-                ? parseInt(params.maxAmount)
+            maxAmount: queryParams.maxAmount
+                ? parseInt(queryParams.maxAmount)
                 : undefined,
             limit: 20,
+            regionId: queryParams?.regionId ?? undefined
         };
         updateStaySearchFilters(filters);
+        updateStayTabInitialQuery({
+            ...stayTabInitialSearchQuery,
+            checkInDate: !!queryParams?.checkIn ? dayjs(queryParams?.checkIn) : dayjs().add(1, 'day'),
+            checkOutDate: !!queryParams?.checkOut ? dayjs(queryParams?.checkOut) : dayjs().add(2, 'day'),
+        })
     }, []);
+
 
     return (
         <SectionLayout>

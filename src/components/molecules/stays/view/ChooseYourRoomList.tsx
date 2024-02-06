@@ -33,6 +33,7 @@ import { capCase } from "@/lib/utilFns";
 import dayjs from "dayjs";
 import { useQueryParams } from "@/hooks/useNext";
 import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
+import Button from "@/components/atoms/button";
 
 interface OneOptionProps {
     label: string,
@@ -105,35 +106,34 @@ function OneOption({ label, subLabel, price, name, value, onChange, active }: On
 }
 
 interface OneHotelProps {
+    stayImages: string[];
     hotel: Rate;
     index: number;
     onClick: VoidFunction;
     cancelOptions: { value: string; label: string; price: string; }[]
 }
 
-function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
+function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotelProps) {
     const { isMobile } = useScreenResolution();
 
-    const [selected, setSelected] = useState<{ cancellation?: number; extras: string[]; [k: string]: any }>({
-        cancellation: undefined,
-        extras: [],
-    })
+    // const [selected, setSelected] = useState<{ cancellation?: number; extras: string[]; [k: string]: any }>({
+    //     cancellation: undefined,
+    //     extras: [],
+    // })
 
-    type SelectedType = keyof typeof selected
-    const onSelectExtras = (name: string, value: string) => {
-        setSelected(prev => ({
-            ...prev,
-            [name]: prev[name].includes(value) ? prev[name].filter((e: string) =>  e !== value) : [...prev[name], value] 
-        }))
-    }
-    const onSelectCancel = (name: string, value: string) => {
-        setSelected(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    }
-
-    const bookingUrl = ''
+    // type SelectedType = keyof typeof selected
+    // const onSelectExtras = (name: string, value: string) => {
+    //     setSelected(prev => ({
+    //         ...prev,
+    //         [name]: prev[name].includes(value) ? prev[name].filter((e: string) =>  e !== value) : [...prev[name], value] 
+    //     }))
+    // }
+    // const onSelectCancel = (name: string, value: string) => {
+    //     setSelected(prev => ({
+    //         ...prev,
+    //         [name]: value
+    //     }))
+    // }
 
 
     return (
@@ -155,15 +155,18 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                             objectFit: "cover",
                             borderRadius: "12px",
                         }}
-                        // src={hotel.images[0]}
-                        src={"/assets/images/stays/image1.jpg"}
+                        src={stayImages[0] ?? ''}
+                        // src={"/assets/images/stays/image1.jpg"}
                         alt={hotel.room_name}
                       />
                     </ChooseRoomImg>
                     <Span>
-                      {isMobile && (
-                        <Text type="h2" weight={600} text={hotel.room_name}></Text>
-                      )}
+                    {isMobile && (
+                        <React.Fragment>
+                            <Text type="h2" weight={600} text={capCase(hotel.room_data_trans?.main_name)}></Text>
+                            <Text type="p" text={capCase(hotel.room_data_trans?.bedding_type)}></Text>
+                        </React.Fragment>
+                    )}
                       <Span style={{ margin: '1rem 0 .6rem'}}>
                         <Flex align="center" gap="0">
                           <Flex gap="5px" align="center">
@@ -257,9 +260,9 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                     </Span>
                     {!isMobile && (
                         <Span style={{ marginTop: "20px" }}>
-                            <ButtonBtn onClick={onClick}>
+                            <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
                                 <BtnText>Reserve Room</BtnText>
-                            </ButtonBtn>
+                            </Button>
                         </Span>
                   )}
                   {/* <Span>
@@ -448,9 +451,9 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
             </GridLayout>
             {isMobile && (
               <Span style={{ marginTop: "20px" }}>
-                <ButtonBtn>
+                <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
                   <BtnText>Reserve Room</BtnText>
-                </ButtonBtn>
+                </Button>
               </Span>
             )}
         </Span>
@@ -458,18 +461,19 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
 }
 
 interface HotelListProps {
-  stayResponse: ViewSingleStayResponse;
-  hotels: Rate[];
+    stayResponse?: ViewSingleStayResponse;
+    stayImages: string[];
+    hotels: Rate[];
 }
 
 function ChooseYourRoomList(props: HotelListProps) {
-    const { stayResponse, hotels } = props;
+    const { stayResponse, stayImages, hotels } = props;
     const { queryParams } = useQueryParams()
 
     const router = useRouter();
 
     const handleClick = (hotel: Rate) => {
-        router.push(`/stay/booking?hotelId=${queryParams?.id}&bookHash=${hotel?.book_hash}&guests=${queryParams?.guests}`);
+        router.push(`/stay/booking?hotelId=${queryParams?.id}&bookHash=${hotel?.book_hash}&guests=${queryParams?.guests}&checkIn=${queryParams?.checkIn}&checkOut=${queryParams?.checkOut}`);
     };
 
     const formatPolicy = (start: string | null, end: string | null) => {
@@ -493,6 +497,7 @@ function ChooseYourRoomList(props: HotelListProps) {
                     }))
                     return (
                         <OneHotel
+                            stayImages={stayImages}
                             key={`hotel-${index}`}
                             hotel={hotel}
                             index={index}

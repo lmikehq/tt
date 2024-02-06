@@ -1,7 +1,7 @@
 import { Divider } from "@atom/divider";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
@@ -33,7 +33,21 @@ import { useDebounce } from 'use-debounce';
 import { capCase } from "@/lib/utilFns";
 import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
-
+import { MdCancel } from "react-icons/md";
+const maxPrice = 20000000
+const defaultFilter = {
+    amenity: { name: 'Amenities', value: [] },
+    apartmentType: { name: 'Apartment Type', value: [] },
+    meals: { name: 'Meals', value: '' },
+    minAmount: { name: 'Min Amount', value: 0 },
+    maxAmount: { name: 'Max Amount', value: maxPrice },
+    bedType: { name: 'Bedding Type', value: [] },
+    room: { name: 'Room', value: [] },
+    cancellationPolicy: { name: 'Cancellation Policy', value: '' },
+    star: { name: 'Stars', value: '' },
+    guestRating: { name: 'Guest Rating', value: [] },
+    popularTypes: { name: 'Popular Types', value: [] },
+}
 
 const marks = [
     {
@@ -41,7 +55,7 @@ const marks = [
         label: "0",
     },
     {
-        value: 20000000,
+        value: maxPrice,
         label: "Max",
     },
 ];
@@ -204,7 +218,7 @@ function SortingColumns() {
         BedType.length > threshold ? threshold : BedType.length
     );
 
-    const [prices, setPrices] = useState([0, 20000000])
+    const [prices, setPrices] = useState([0, maxPrice])
     const [debouncedPrices] = useDebounce(prices, 1000)
 
     const toggleColumn = (columnName: ColumnName) => {
@@ -310,6 +324,19 @@ function SortingColumns() {
         }
     };
 
+    const activeFilters = useMemo(() => {
+        return Object.keys(defaultFilter)
+            .filter(key => (staySearchFilters[key] !== undefined) && (JSON.stringify(staySearchFilters[key])?.length !== JSON.stringify(defaultFilter[key as keyof typeof defaultFilter].value)?.length))
+    }, [staySearchFilters])
+
+    const removeFilter = (k: keyof typeof defaultFilter) => {
+        console.log('kkkad', k)
+        handleUpdateStaySearchFilters({
+            [k]: undefined
+        })
+    }
+    console.log('acccc', activeFilters)
+    
     useEffect(() => {
         handleUpdateStaySearchFilters({
             minAmount: debouncedPrices[0],
@@ -318,7 +345,7 @@ function SortingColumns() {
     }, [debouncedPrices])
 
     useEffect(() => {
-        setPrices(prev => [staySearchFilters?.minAmount ?? 0, staySearchFilters?.maxAmount ?? 20000000])
+        setPrices(prev => [staySearchFilters?.minAmount ?? 0, staySearchFilters?.maxAmount ?? maxPrice])
     }, [staySearchFilters?.minAmount, staySearchFilters?.maxAmount])
 
 
@@ -326,17 +353,29 @@ function SortingColumns() {
         <ScrollBox
             style={{
                 height: isMobile ? "100%" : "1070px",
-                overflowY: isMobile ? "hidden" : "scroll",
+                overflowY: isMobile ? "hidden" : "auto",
+                overflowX: "hidden",
             }}
+            className="scroll-custom"
         >
             <Flex
                 direction="column"
-                styles={{
-                    minWidth: "200px",
-                }}
+                styles={{ minWidth: "200px" }}
             >
                 <PriceAlerts />
                 <FavoriteHotels />
+
+                <Flex width="90%" wrap="wrap" gap=".5rem" margin="0 0 2rem">
+                    {activeFilters.map((filter: any, index) =>
+                        <Flex key={`active-filter-${index}`} width="max-content" padding=".8rem .8rem" gap=".5rem" background={ttColors.dark} borderRadius=".5rem">
+                            <Text type="p" text={defaultFilter[filter as keyof typeof defaultFilter].name} color="white" size={15} />
+                            <Flex width='min-content' onClick={() => removeFilter(filter)}>
+                                <MdCancel size={25} color="white" cursor="pointer"/>
+                            </Flex>
+                        </Flex>
+                    )}
+                </Flex>
+
                 <Flex
                     direction="column"
                     gap=".5rem"
@@ -598,11 +637,11 @@ function SortingColumns() {
                         {columnState.price && (
                             <>
                                 <Slider
-                                    defaultValue={[0, 20000000]}
-                                    // value={[staySearchFilters.minAmount ?? 0, staySearchFilters.maxAmount ?? 20000000]}
+                                    defaultValue={[0, maxPrice]}
+                                    // value={[staySearchFilters.minAmount ?? 0, staySearchFilters.maxAmount ?? maxPrice]}
                                     marks={marks}
                                     min={0}
-                                    max={20000000}
+                                    max={maxPrice}
                                     onChange={(e, v) => {
                                         const values = v as number[];
                                         handlePriceChangeDebounce({
@@ -617,7 +656,7 @@ function SortingColumns() {
                                         value={prices[0]}
                                         onChange={({ target }) => setPrices(prev => [parseInt(target.value), prev[1]])}
                                         min={0}
-                                        max={20000000}
+                                        max={maxPrice}
                                         style={{
                                             width: "100%",
                                             padding: "11px",
@@ -634,7 +673,7 @@ function SortingColumns() {
                                         value={prices[1]}
                                         onChange={({ target }) => setPrices(prev => [prev[0], parseInt(target.value)])}
                                         min={prices[0]}
-                                        max={20000000}
+                                        max={maxPrice}
                                         style={{
                                             width: "100%",
                                             padding: "11px",

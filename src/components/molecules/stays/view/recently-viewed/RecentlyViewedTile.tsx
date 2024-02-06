@@ -8,6 +8,7 @@ import {
 } from "@/lib/extensions/helpers/formatPrice";
 import { Rating } from "@mui/material";
 import { Span } from "../styles";
+import { SearchRecentlyViewedStaysResponse } from "@/lib/types/response-models/stay/search.type";
 
 interface Room {
   name: string;
@@ -17,33 +18,33 @@ interface Room {
   price: number;
 }
 
-const rooms: Room[] = [
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/topCountries/Canada.jpeg",
-    location: "4.3km away",
-    rating: 4.5,
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
-    location: "4.3km away",
-    rating: 1.5,
-    price: 105000,
-  },
-  {
-    name: "Get Eden Life Hotel",
-    image: "/assets/images/stays/image1.jpg",
-    location: "4.3km away",
-    rating: 2.5,
-    price: 105000,
-  },
-];
-const RecentlyViewedTile = () => {
+// const rooms: Room[] = [
+//   {
+//     name: "Get Eden Life Hotel",
+//     image: "/assets/images/topCountries/Canada.jpeg",
+//     location: "4.3km away",
+//     rating: 4.5,
+//     price: 105000,
+//   },
+//   {
+//     name: "Get Eden Life Hotel",
+//     image: "/assets/images/stays/image1.jpg",
+//     location: "4.3km away",
+//     rating: 1.5,
+//     price: 105000,
+//   },
+//   {
+//     name: "Get Eden Life Hotel",
+//     image: "/assets/images/stays/image1.jpg",
+//     location: "4.3km away",
+//     rating: 2.5,
+//     price: 105000,
+//   },
+// ];
+const RecentlyViewedTile = ({ hotels }: { hotels: SearchRecentlyViewedStaysResponse }) => {
   return (
     <>
-      {rooms.map((room, index) => (
+      {hotels.map((hotel, index) => (
         <Section
           key={index}
           padding={"10px"}
@@ -66,10 +67,10 @@ const RecentlyViewedTile = () => {
                   maxWidth: "200px",
                 }}
               >
-                <Image
+                <img
                   alt="stay"
-                  src={room.image}
-                  styles={{
+                  src={hotel?.images[0] ?? ''}
+                  style={{
                     width: "100%",
                     height: "100%",
 
@@ -90,7 +91,7 @@ const RecentlyViewedTile = () => {
                       weight={500}
                       styles={{ width: "auto" }}
                       // className="truncate"
-                      text={room.name}
+                      text={hotel?.name}
                     />
                   </Flex>
 
@@ -122,7 +123,7 @@ const RecentlyViewedTile = () => {
                       readOnly
                       precision={0.5}
                       max={5}
-                      defaultValue={room.rating}
+                      defaultValue={hotel?.star_rating}
                     />
                   </Flex>
                   <Flex gap="5px" align="center" margin="1rem 0 0 0">

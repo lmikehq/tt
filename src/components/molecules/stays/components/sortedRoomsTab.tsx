@@ -109,7 +109,7 @@ function SortedRoomsTab(props: sortProps) {
             >
                 <Text
                     type="p"
-                    text={`${hotels?.length} hotels found in ${stayTabInitialSearchQuery?.location?.name}`}
+                    text={`${hotels?.length} hotels found ${stayTabInitialSearchQuery?.location?.region_id  ? '' : `in ${stayTabInitialSearchQuery?.location?.name ?? ''}`}`}
                     styles={{ fontWeight: "600" }}
                 ></Text>
 
@@ -172,6 +172,7 @@ function SortedRoomsTab(props: sortProps) {
                             <ButtonBox
                                 active={props.sortType === "best"}
                                 onClick={() => props.setSortType("best")}
+                                className="hellloooooo"
                             >
                                 <Flex
                                     direction="column"
