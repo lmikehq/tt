@@ -23,7 +23,18 @@ export const useSearchMulticity = (
     options?: UseQueryOptions<SearchMultiFlightsResponse>
 ) => {
     return useQuery({
-        queryKey: ["search-multiflight", params],
+        queryKey: [
+            "search-multiflight",
+            {
+                requests: [
+                    {
+                        ...params.requests[0],
+                        limit: 1,
+                    },
+                    ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                ],
+            },
+        ],
         queryFn: () =>
             FlightBookingService.searchMultiFlights({ data: params }),
         ...options,
@@ -54,7 +65,19 @@ export const useSearchMulticityBySort = (
     return useQueries({
         queries: [
             {
-                queryKey: ["search-multiflight-best-sort", params],
+                queryKey: [
+                    "search-multiflight-best-sort",
+                    {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.best,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    },
+                ],
                 queryFn: () => {
                     const query = {
                         requests: [
@@ -73,7 +96,19 @@ export const useSearchMulticityBySort = (
                 ...options,
             },
             {
-                queryKey: ["search-multiflight-cheapest-sort", params],
+                queryKey: [
+                    "search-multiflight-cheapest-sort",
+                    {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.cheapest,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    },
+                ],
                 queryFn: () => {
                     const query = {
                         requests: [
@@ -92,7 +127,19 @@ export const useSearchMulticityBySort = (
                 ...options,
             },
             {
-                queryKey: ["search-multiflight-fastest-sort", params],
+                queryKey: [
+                    "search-multiflight-fastest-sort",
+                    {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.fastest,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    },
+                ],
                 queryFn: () => {
                     const query = {
                         requests: [
@@ -111,7 +158,19 @@ export const useSearchMulticityBySort = (
                 ...options,
             },
             {
-                queryKey: ["search-multiflight-earliest-sort", params],
+                queryKey: [
+                    "search-multiflight-earliest-sort",
+                    {
+                        requests: [
+                            {
+                                ...params.requests[0],
+                                limit: 1,
+                                sort: FlightSortEnum.earliest,
+                            },
+                            ...params.requests.slice(1), // Keep the rest of the requests unchanged
+                        ],
+                    },
+                ],
                 queryFn: () => {
                     const query = {
                         requests: [

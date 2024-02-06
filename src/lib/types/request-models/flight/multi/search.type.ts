@@ -159,17 +159,10 @@ export const checkIfFieldIsFiltered = ({
     fieldName: string;
     filters: SearchMultiFlightRequestQuery;
 }) => {
-    let filtered: boolean = false;
-    for (let i = 0; i < filters.requests.length; i++) {
-        const request = filters.requests[i];
-        console.log("hhhh", fieldName);
+    for (const request of filters.requests) {
         if (request[fieldName]) {
-            filtered = true;
-            console.log("hhhh", request[fieldName]);
-            console.log(filtered, "hhhhhh");
-            return;
+            return true;
         }
     }
-    console.log(filtered, "hhhhh");
-    return filtered;
+    return false;
 };

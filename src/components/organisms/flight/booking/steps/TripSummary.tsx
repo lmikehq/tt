@@ -31,10 +31,7 @@ import { Multi_FlightInfo } from "@/lib/types/response-models/flight/multi_fligh
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import {
-    FormEventHandler,
-    useState,
-} from "react";
+import { FormEventHandler, useState } from "react";
 import toast from "react-hot-toast";
 
 export interface OneFlight {
@@ -88,9 +85,9 @@ const TripSummary = ({
         nextStep,
     } = useFlightBookingStore((state) => state);
     const { user } = useUserStore((state) => state);
-    const { queryParams } = useQueryParams()
+    const { queryParams } = useQueryParams();
 
-    const { adults = '1', children = '0', infants = '0' } = queryParams;
+    const { adults = "1", children = "0", infants = "0" } = queryParams;
 
     const [loading, setLoading] = useState(false);
 
@@ -266,10 +263,8 @@ const TripSummary = ({
     };
 
     const flights = checkFlightsResponse?.flights ?? [];
-    const departure = flights[0];
-    const arrival = flights[flights?.length - 1];
 
-    const multiFlights: Multi_FlightInfo[] = []
+    const arrival = flights[flights?.length - 1];
 
     return (
         <Box
@@ -279,19 +274,10 @@ const TripSummary = ({
                 rowGap: "1rem",
             }}
         >
-            {queryParams?.multi === 'true' ? (
-                <MultiTripSummaryCard
-                    departure={departure}
-                    arrival={arrival}
-                    flights={multiFlights}
-                />
-            ) : (
-                <TripSummaryCard
-                    departure={departure}
-                    arrival={arrival}
-                    flights={flights}
-                />
-            )}
+            <TripSummaryCard
+                flights={flights}
+                multi={queryParams?.multi === "true"}
+            />
 
             <form
                 onSubmit={contactDetailsFormik.handleSubmit}
@@ -299,7 +285,6 @@ const TripSummary = ({
             >
                 <ContactDetails formik={contactDetailsFormik} />
             </form>
-
             <FormikProvider value={formik}>
                 <form onSubmit={checkSubmit}>
                     <FieldArray
