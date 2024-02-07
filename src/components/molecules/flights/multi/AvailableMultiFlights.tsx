@@ -484,6 +484,8 @@ function AvailableMultiFlights() {
     } = useSearchMulticity(searchMultiCityQuery, {
         enabled: searchMultiCityQuery.requests.length > 1,
     });
+
+    const paginatedFlightData = useMemo(() => flightData, [flightData]);
     console.log("mmm", searchMultiCityQuery);
     const [bestSortData, cheapestSortData, fastestSortData, earliestSortData] =
         useSearchMulticityBySort(searchMultiCityQuery, {
@@ -706,7 +708,7 @@ function AvailableMultiFlights() {
                 </Flex>
             ) : (
                 <>
-                    {flightData?.map((flight, index) => (
+                    {paginatedFlightData?.map((flight, index) => (
                         <MultiFlightPreviewCard
                             key={"flight-" + index}
                             flight={flight}
