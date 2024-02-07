@@ -25,6 +25,7 @@ import { formatDate } from "@/lib/utilFns";
 import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
+import { CustomRadioGroup } from "../../radio";
 // STYLES
 const FlexBox = styled.div`
   display: flex;
@@ -110,34 +111,39 @@ function Stays() {
     }`;
   };
 
-  const handleStarsGroupChanged = (val: string) => {
-    // Check if the value is already in the array
-    const value = parseInt(val);
-    const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
+    const handleStarsGroupChanged = (val: number) => {
+        // Check if the value is already in the array
+        const value = Number(val);
+        const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
 
-    if (isSelected) {
-      // If the value is already selected, remove it
-      updateStayTabInitialQuery({
-        ...stayTabInitialSearchQuery,
-        stars: stars?.filter((item) => item !== value),
-      });
-    } else {
-      // If the value is not selected, add it
-      updateStayTabInitialQuery({
-        ...stayTabInitialSearchQuery,
-        stars: [...(stars ?? []), value],
-      });
-    }
-  };
-  return (
+        if (isSelected) {
+        // If the value is already selected, remove it
+        updateStayTabInitialQuery({
+            ...stayTabInitialSearchQuery,
+            stars: stars?.filter((item) => item !== value),
+        });
+        } else {
+        // If the value is not selected, add it
+        updateStayTabInitialQuery({
+            ...stayTabInitialSearchQuery,
+            stars: [value],
+        });
+        }
+    };
+    
+
+    return (
     <Section
-      padding={"2rem 0 1rem 0"}
-      height="unset"
-      styles={{ position: "relative" }}
+        padding={"2rem 0 1rem 0"}
+        height="unset"
+        styles={{ position: "relative" }}
     >
-      <FlexBox className="flex_scroll">
+        <FlexBox className="flex_scroll">
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(5)}
+            value={5}
+            onChange={(event) => handleStarsGroupChanged(5)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -147,17 +153,16 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={5}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="5 stars"></Text>}
           />
         </FlexItems>
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(4)}
+            value={4}
+            onChange={(event) => handleStarsGroupChanged(4)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -167,17 +172,16 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={4}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="4 stars"></Text>}
           />
         </FlexItems>
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(3)}
+            value={3}
+            onChange={(event) => handleStarsGroupChanged(3)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -187,17 +191,16 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={3}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="3 stars"></Text>}
           />
         </FlexItems>{" "}
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(2)}
+            value={2}
+            onChange={(event) => handleStarsGroupChanged(2)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -207,10 +210,6 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={2}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="2 stars"></Text>}

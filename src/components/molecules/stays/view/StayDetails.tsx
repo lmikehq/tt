@@ -22,7 +22,7 @@ import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { FavoriteBox, FlexBox } from "../components/styles";
 import { AmenitiesModal, MapModal } from "./modals/Modals";
 import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
-import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { PaymentType, Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { pickIcon } from "./modals/components/AmenitiesBox";
 import { ViewTripAdvisorStayDetailsResponse } from "@/lib/types/request-models/stay/search.type";
 import FavouriteCheckBox from "../../FavouriteCheckBox";
@@ -30,6 +30,7 @@ import withLikeHotel from "@/components/HOCs/withLikeHotel";
 import GoogleMap from "./GoogleMap";
 import { useSearchLikedStays } from "@/lib/hooks/stay/search.hook";
 import { useUserStore } from "@/lib/store/useStore";
+import { numSort } from "@/lib/utilFns";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StyledRating = styled(Rating)({
@@ -78,10 +79,11 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
         stayResponse?.amenity_groups ? stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[]) : []
     , [stayResponse?.amenity_groups])
     
-    const lowestRate = useMemo(() => {
-        const sorted = stayResponse?.rates ? stayResponse?.rates.sort((a, b) => parseFloat(a.payment_options.payment_types[0].show_amount) - parseFloat(b.payment_options.payment_types[0].show_amount)) : []
-        return sorted.length > 0 ? parseFloat(sorted[0]?.payment_options.payment_types[0].show_amount) : 0
+    const prices = useMemo(() => {
+        return numSort(stayResponse?.rates.reduce((prev: PaymentType[], curr: Rate) => [...prev, curr.payment_options.payment_types[0]], []), 'amount', 'asc')
     }, [stayResponse?.rates])
+    
+    const selectedPrice = prices.find(e => e.show_amount === 'NGN') ?? prices.find(e => e.currency_code === 'USD') ?? prices[0] 
 
     const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
 
@@ -168,12 +170,12 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
           </Flex>
           <FlexBox className="stay_wrap" style={{ margin: "15px 0px 2.5rem" }}>
             <Flex gap="5px" align="center">
-              <Text type="p" size={30} weight={600} text={getCurrency()} />
+              <Text type="p" size={30} weight={600} text={selectedPrice?.show_currency_code} />
               <Text
                 type="p"
                 size={30}
                 weight={600}
-                text={`${formatPriceWithoutCurrency(lowestRate)}`}
+                text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(2)))}
               />
               <Text
                 type="p"

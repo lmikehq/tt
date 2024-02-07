@@ -240,7 +240,7 @@ function SortingColumns() {
         }
     };
 
-    const { staySearchFilters, updateStaySearchFilters, updateStayTabInitialQuery, stayTabInitialSearchQuery } = useStaySearchStore(
+    const { staySearchFilters, updateStaySearchFilters, updateStayTabInitialQuery, stayTabInitialSearchQuery, updateStaySearchMeta, staySearchMeta } = useStaySearchStore(
         (state) => state
     );
 
@@ -249,6 +249,10 @@ function SortingColumns() {
             ...staySearchFilters,
             ...params,
         });
+        updateStaySearchMeta({
+            ...staySearchMeta,
+            currentPage: 1
+        })
     };
 
     const handlePriceChangeDebounce = debounce(
@@ -335,7 +339,6 @@ function SortingColumns() {
             [k]: undefined
         })
     }
-    console.log('acccc', activeFilters)
     
     useEffect(() => {
         handleUpdateStaySearchFilters({
@@ -638,7 +641,6 @@ function SortingColumns() {
                             <>
                                 <Slider
                                     defaultValue={[0, maxPrice]}
-                                    // value={[staySearchFilters.minAmount ?? 0, staySearchFilters.maxAmount ?? maxPrice]}
                                     marks={marks}
                                     min={0}
                                     max={maxPrice}
@@ -724,12 +726,10 @@ function SortingColumns() {
                             {ratings.map((item, index) => (
                                 <FormControlLabel
                                     key={index}
-                                    checked={staySearchFilters?.star === String(item.rating)}
-                                    value={
-                                        String(item.rating)
-                                    }
+                                    checked={staySearchFilters?.star?.includes(String(item.rating))}
+                                    value={String(item.rating)}
                                     onChange={(e) =>
-                                        handleEnumCheckBoxSingleChanged({
+                                        handleEnumCheckBoxGroupChanged({
                                             value: String(item.rating),
                                             field: "star",
                                         })

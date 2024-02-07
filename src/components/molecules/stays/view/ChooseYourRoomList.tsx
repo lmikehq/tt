@@ -116,6 +116,8 @@ interface OneHotelProps {
 function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotelProps) {
     const { isMobile } = useScreenResolution();
 
+    const selectedPrice = hotel.payment_options.payment_types.find(e => e.show_amount === 'NGN') ?? hotel.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? hotel.payment_options.payment_types[0]
+
     // const [selected, setSelected] = useState<{ cancellation?: number; extras: string[]; [k: string]: any }>({
     //     cancellation: undefined,
     //     extras: [],
@@ -175,13 +177,13 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                                 size={24}
                                 whiteSpace="nowrap"
                                 weight={600}
-                                text={getCurrency()}
+                                text={selectedPrice?.show_currency_code}
                             />{" "}
                             <Text
                                 type="p"
                                 size={30}
                                 weight={600}
-                                text={formatPriceWithoutCurrency(parseInt(hotel.payment_options.payment_types[0]?.show_amount))}
+                                text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(2)))}
                             />
                             <Text
                               type="p"
@@ -198,14 +200,15 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                             type="p"
                             size={20}
                             weight={600}
-                            text={getCurrency()}
+                            text={selectedPrice?.show_currency_code}
+                            styles={{ minWidth: 'max-content' }}
                           />
                           <Flex align="center">
                             <Text
                               type="p"
                               size={20}
                               weight={600}
-                              text={formatPriceWithoutCurrency(parseInt(hotel.payment_options.payment_types[0]?.show_amount))}
+                              text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(3)))}
                             />
                             <Text
                               type="p"
@@ -259,7 +262,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                     </Flex>
                     </Span>
                     {!isMobile && (
-                        <Span style={{ marginTop: "20px" }}>
+                        <Span style={{ marginTop: "20px", maxWidth: isMobile ? '' : '20rem' }}>
                             <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
                                 <BtnText>Reserve Room</BtnText>
                             </Button>

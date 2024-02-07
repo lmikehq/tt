@@ -23,7 +23,7 @@ export default function FavoriteHotels() {
       <Box
         width={"100%"}
         bgcolor={checked ? ttColors.dark : ttColors.grayishAsh}
-        padding={"2rem 1.5rem"}
+        padding={"2.5rem 1.5rem"}
         border={"1px solid var(--color-border)"}
         marginBottom={"20px"}
         borderRadius={"10px"}

@@ -3,6 +3,7 @@ import { capCase } from "@/lib/utilFns";
 import { ComponentType, useState } from "react";
 import toast from "react-hot-toast";
 import Spinner from "../molecules/icons/spinner";
+import { useUserStore } from "@/lib/store/useStore";
 
 interface HocProps {
     id: string;
@@ -11,6 +12,7 @@ interface HocProps {
 
 function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
     return function EnhancedComponent(props: P & HocProps) {
+        const { user } = useUserStore()
         const { id, liked } = props;
         const [hotelLiked, setHotelLiked] = useState(liked ?? false);
         const { isLoading, mutateAsync } = useLikeHotel({
@@ -21,7 +23,11 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
         });
 
         const handleLikeHotel = () => {
-            mutateAsync({ id });
+            if (user?._id) {
+                mutateAsync({ id });
+            } else {
+                toast.error("Sign up or Log in to like hotels")
+            }
         };
 
         return (isLoading ? (

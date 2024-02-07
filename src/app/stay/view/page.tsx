@@ -116,25 +116,25 @@ function RefreshModal({
     );
 }
 
-function AuthPlaceholder({ text, children, onOpen }: { text: string; children: React.ReactNode; onOpen: () => void; }) {
-    const { user } = useUserStore()
+function AuthPlaceholder({ text, children, onOpen }: { text: string; children: JSX.Element; onOpen: () => void; }) {
+    const { user } = useUserStore();
 
-    return (user?.email ?
-        children : (
-            <Flex direction="column" align="center" gap="1rem" padding="6rem 0" background="white" borderRadius=".5rem" >
-                <Button onClick={onOpen}>
-                    <Text
-                        type="p"
-                        text="Login"
-                        weight={600}
-                    />
-                </Button>
+    if (user?.email) {
+        return children
+    } else return (
+        <Flex direction="column" align="center" gap="1rem" padding="6rem 0" background="white" borderRadius=".5rem">
+            <Button onClick={onOpen}>
                 <Text
                     type="p"
-                    text={text}
+                    text="Login"
+                    weight={600}
                 />
-            </Flex>
-        ) 
+            </Button>
+            <Text
+                type="p"
+                text={text}
+            />
+        </Flex>
     )
 }
 
@@ -226,7 +226,7 @@ const StayViewPage = () => {
             meals: queryParams?.meals,
             amenity: queryParams?.amenity?.split(","),
             apartmentType: queryParams?.apartmentType?.split(","),
-            star: queryParams?.star,
+            star: queryParams?.star?.split(","),
             guestRating: queryParams?.guestRating?.split(","),
             cancellationPolicy: queryParams?.cancellationPolicy?.split(","),
             bedType: queryParams?.bedType?.split(","),
@@ -252,8 +252,7 @@ const StayViewPage = () => {
     return (
         <SectionLayout>
             {!isMobile ? (
-                null
-                // <BreadCrumbPane stayResponse={stayResponse!} />
+                <BreadCrumbPane stayResponse={stayResponse!} />
             ) : (
                 <Span style={{ margin: "10px 0px" }}>
                     <Flex justify="space-between" align="center">

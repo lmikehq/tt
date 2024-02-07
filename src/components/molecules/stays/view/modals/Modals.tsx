@@ -78,7 +78,7 @@ const ModalWrapper = styled.div`
 
   &.map_wrapper,
   &.gallery_modal {
-    height: 100%;
+    height: 100vh;
   }
   &.review_wrapper,
   &.gallery_modal {
@@ -123,9 +123,9 @@ export const GalleryModal = ({
       <ModalCenter>
         <ModalScroll className="gallery">
           <ModalWrapper className="gallery_modal">
-            <SectionLayout>
+            <SectionLayout style={{ height: '100vh', overflowY: 'auto' }}>
               <Flex
-                padding="1rem 0"
+                padding="1rem 0 0"
                 align="center"
                 gap="20px"
                 justify="space-between"

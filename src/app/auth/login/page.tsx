@@ -117,7 +117,7 @@ function LoginPage() {
         ...submissionState,
         loading: true,
       })
-        setUser(res?.user)
+        setUser(res)
         window.localStorage.setItem('user', res?.token)
         rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`
 

@@ -125,7 +125,7 @@ export interface StaySearchFilters {
     bedType?: string[];
     room?: string[];
     cancellationPolicy?: string[];
-    star?: string;
+    star?: string[];
     guestRating?: string[];
     popularTypes?: string[];
     limit?: number;
@@ -145,12 +145,11 @@ export interface StaySearchSort {
     sort?: string;
 }
 export interface StaySearchMeta {
-    currentPage: number;
+    currentPage?: number;
 }
 export interface SearchStayRequestRequestQuery
     extends StaySearchFilters,
-        StaySearchSort {}
-//    StaySearchMeta
+        StaySearchSort, StaySearchMeta {}
 
 export interface ManyStaysRequestInput {
     region_id: string;

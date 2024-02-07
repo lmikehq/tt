@@ -112,7 +112,7 @@ function HotelDetail({
                                         text="Check-In"
                                     ></Text>
                                     <Text
-                                        type="h3"
+                                        type="h4"
                                         weight={600}
                                         text={checkInDate}
                                     ></Text>
@@ -135,7 +135,7 @@ function HotelDetail({
                                         text="Check-Out"
                                     ></Text>
                                     <Text
-                                        type="h3"
+                                        type="h4"
                                         weight={600}
                                         text={checkOutDate}
                                     ></Text>
@@ -195,7 +195,7 @@ function HotelDetail({
                         </Flex>
                     </Flex>
                     <Span>
-                        <GridLayout className="stay_details_grid">
+                        <Flex wrap="wrap" gap='1rem'>
                             {checkIfAmenityIsOffered(
                                 "40 meters-squared Room"
                             ) && (
@@ -297,7 +297,7 @@ function HotelDetail({
                                     />
                                 </Flex>
                             )}
-                        </GridLayout>
+                        </Flex>
                     </Span>
                 </Span>
             </Span>

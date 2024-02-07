@@ -247,7 +247,6 @@ function AvailableRooms() {
 
     const {
         staySearchFilters,
-        updateStaySearchFilters,
         updateStaySearchMeta,
         staySearchMeta,
         staySearchSort,
@@ -262,10 +261,10 @@ function AvailableRooms() {
             apartmentType: (staySearchFilters?.apartmentType ?? []).some(e => !!e) ? staySearchFilters.apartmentType : undefined,
             bedType: (staySearchFilters?.bedType ?? []).some(e => !!e) ? staySearchFilters.bedType : undefined,
             room: (staySearchFilters?.room ?? []).some(e => !!e) ? staySearchFilters.room : undefined,
-            star: staySearchFilters.star ? staySearchFilters?.star : undefined,
+            star: (staySearchFilters?.star ?? []).some(e => !!e) ? staySearchFilters.star?.slice(0, 1) : undefined,
             sort: staySearchSort ?? undefined,
             regionId: staySearchFilters?.regionId ?? undefined,
-            ...staySearchMeta,
+            currentPage: staySearchMeta?.currentPage ?? undefined
         },
         payload: staysRequestParams,
     });
@@ -280,13 +279,6 @@ function AvailableRooms() {
 
     const [sortType, setSortType] = useState("best");
 
-
-    useEffect(() => {
-        updateStaySearchMeta({
-            ...staySearchMeta,
-            currentPage: 1
-        })
-    }, [queryParams, staySearchSort])
 
     return (
         <div>

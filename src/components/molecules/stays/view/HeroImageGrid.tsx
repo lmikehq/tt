@@ -217,17 +217,17 @@ function HeroImageGrid ({ images = [], stayResponse }: HeroImageGridProps) {
           
 
       {/* GALLERY MODAL*/}
-    <GalleryModal
-        stayResponse={stayResponse}
-        images={images}
-        open={open.gallery}
-        handleClose={() =>
-            setOpen((prev) => ({
-                ...prev,
-                gallery: false,
-            }))
-        }
-      />
+        <GalleryModal
+            stayResponse={stayResponse}
+            images={images}
+            open={open.gallery}
+            handleClose={() =>
+                setOpen((prev) => ({
+                    ...prev,
+                    gallery: false,
+                }))
+            }
+        />
     </Section>
   );
 };

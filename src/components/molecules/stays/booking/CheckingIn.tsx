@@ -164,16 +164,17 @@ function CheckingIn({
                                     weight={500}
                                     type="p"
                                     text={
-                                        isGridVisible
-                                            ? "Remove name(s) of other guests"
-                                            : "Add name(s) of other guests"
+                                        formik.values[`${index}`]
+                                            .displayOtherGuests
+                                            ? "Remove name(s) of other guest"
+                                            : "Add name(s) of other guest"
                                     }
                                 />
                             </Flex>
                         </Span>
                     </Section>
                 ))}
-                <Section>
+                {/* <Section>
                     <Flex
                         align="center"
                         gap="10px"
@@ -224,7 +225,7 @@ function CheckingIn({
                             </Span>
                         </Flex>
                     )}
-                </Section>
+                </Section> */}
             </Span>
         </Container>
     );

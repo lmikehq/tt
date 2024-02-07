@@ -68,9 +68,10 @@ export interface SingleStayCheckBookingResponse {
     checkOutDate: string;
     partnerOrderId: string;
     isTokenized: boolean;
-    paymentOptions?: (PaymentOptionsEntity)[] | null;
-    rooms?: (RoomsEntity)[] | null;
+    paymentOptions?: PaymentOptionsEntity[] | null;
+    rooms?: RoomsEntity[] | null;
     status: string;
+    paymentConfirmed: string;
     hotelId: string;
     hotelPayload: HotelPayload;
     bookHash: string;
@@ -78,6 +79,9 @@ export interface SingleStayCheckBookingResponse {
     orderId: string;
     createdAt: string;
     updatedAt: string;
+    userEmail: string;
+    userPhone: string;
+    paymentPayload: PaymentPayload;
 }
 
 export interface PaymentOptionsEntity {
@@ -89,13 +93,17 @@ export interface PaymentOptionsEntity {
     type: string;
 }
 export interface RoomsEntity {
-    first_name: string;
-    last_name: string;
+    guests: {
+        first_name: string;
+        last_name: string;
+    }[]
 }
+
 export interface HotelPayload {
+    address: string;
     image: string;
-    rating: number;
     name: string;
+    rating: number;
     region: Region;
 }
 export interface Region {
@@ -104,4 +112,10 @@ export interface Region {
     iata: string;
     name: string;
     type: string;
+}
+export interface PaymentPayload {
+    paymentId: string;
+    status: string;
+    amount: number;
+    currency: string;
 }

@@ -126,7 +126,7 @@ export const LargeImg = styled.div`
 
   &.img_large_gallery {
     width: 100%;
-    height: 100%;
+    height: 50vh;
     position: relative;
     overflow: hidden !important;
     border-radius: 12.5px !important;
@@ -135,7 +135,7 @@ export const LargeImg = styled.div`
   z-index: 1;
   @media screen and (max-width: 1300px) {
     &.img_large_gallery {
-      max-height: 500px;
+      max-height: 400px;
       border-radius: 12.5px !important;
       overflow: hidden !important;
     }
@@ -232,6 +232,7 @@ export const FavoriteBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(255, 255, 255, 0.5);
 `;
 
 export const FavoriteBoxMobile = styled.div`

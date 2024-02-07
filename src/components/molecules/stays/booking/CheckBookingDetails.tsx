@@ -8,7 +8,6 @@ import { Grid } from '@/components/templates/grid'
 import { useQueryParams } from '@/hooks/useNext'
 import { useClipboard } from '@/lib/extensions/helpers/copyToClipboard'
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
-import { useUserPreferencesStore } from '@/lib/store/preferences.store'
 import { ttColors } from '@/lib/theme/colors'
 import { SingleStayCheckBookingResponse } from '@/lib/types/response-models/stay/booking.type'
 import { allCaps, capCase } from '@/lib/utilFns'
@@ -53,18 +52,18 @@ function BookingHeader({ booking } : { booking: SingleStayCheckBookingResponse }
     const { copyToClipboard } = useClipboard()
     const { queryParams } = useQueryParams()
 
-    const paymentComplete = booking.status === 'SUCCESSFUL'
+    const paymentComplete = booking.paymentConfirmed
 
     return (
         <Stack direction="column" alignItems="center" bgcolor='white' borderRadius="8px" spacing="2.8rem" padding="4rem 1.7rem 2rem" margin="0 0 3rem 0">
             <Stack direction="column" alignItems="center" spacing="1.2rem">
                 {paymentComplete ? <GoCheckCircleFill size={60} color={ttColors.primaryLight} />  : <PiDotsThreeCircle size={60} color={ttColors.primaryLight} />}
-                <Text type='h1' text={`Booking Hotel ${queryParams?.status ? capCase(queryParams?.status) : 'Confirmed'}`} weight={700} size={isMobile ? 20 : 28} />
+                <Text type='h1' text={`Hotel Booking ${paymentComplete ? 'Successful' : 'Pending'}`} weight={700} size={isMobile ? 20 : 28} />
                 <Text
-                    width={isMobile ? "80%" : "60%"}
+                    width={isMobile ? "80%" : "90%"}
                     textAlign='center'
                     type='p'
-                    text="Your hotel booking has been successfully confirmed! Keep an eye on your email as we'll be sending you the details shortly."
+                    text={`Your hotel booking has been ${queryParams?.status === 'cancelled' ? "confirmed. Please complete payment to confirm your booking." : " successfully confirmed! Keep an eye on your email as we'll be sending you the details shortly."}`}
                     size={isMobile ? 15 : 16}
                 />
             </Stack>
@@ -92,12 +91,11 @@ function BookingHeader({ booking } : { booking: SingleStayCheckBookingResponse }
             </Flex>
 
             <Grid columns={isMobile ? 2 : 5} gap={isMobile ? "1.5rem" : "1rem"} padding={isMobile ? '1.5rem 1.8rem': '1.5rem 2rem'} style={{ borderRadius: '8px', backgroundColor: ttColors.primary600 }}>
-                {/* <HeaderDetail name="ITEM NUMBER" value={booking?.itemId} /> */}
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
                 <HeaderDetail name="CHECK-IN DATE" value={dayjs(booking?.checkInDate).format('MMM DD, YYYY')} />
                 <HeaderDetail name="CHECK-OUT DATE" value={dayjs(booking?.checkOutDate).format('MMM DD, YYYY')} />
                 <HeaderDetail name="PAYMENT STATUS" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
-                <HeaderDetail name="BOOKING STATUS" value={paymentComplete ? "SUCCESSFUL" : "CONFIRMED"} />
+                <HeaderDetail name="BOOKING STATUS" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
             </Grid>
         </Stack>
     )
@@ -120,19 +118,16 @@ function HotelDetails({ booking }: { booking: SingleStayCheckBookingResponse }) 
                     <Divider direction='horizontal' px="1px" color={ttColors.lightestGray} />
                 </Flex>
 
-                <Flex direction="column" gap='1rem'>
-                    <Text
-                        type="p"
-                        text={`${hotel.name}, ${hotel.region?.name} ${hotel.region?.country_code}`}
-                        size={isMobile ? 14 : 18}
-                        weight={isMobile ? 500 : 500}
-                    />
-                    <Flex direction='column' gap="1rem">
-                        <FieldDetail name="Email" value={hotel?.email} />
-                        <FieldDetail name="Phone Number" value={hotel?.phone_number} />
-                        {/* <FieldDetail name="Hotel Amenities" value={hotel.serp_filters.map(e => capCase(e)).join(', ')} /> */}
-                    </Flex>
+                <Flex direction='column'>
+                    <FieldDetail name="Name" value={`${hotel.name}, ${hotel.region?.name ?? ''} ${hotel.region?.country_code ?? ''}`} />
+                    <FieldDetail name="Address" value={hotel.address} />
                 </Flex>
+                
+                {/* <Flex direction='column' gap="1rem">
+                    <FieldDetail name="Email" value={hotel?.email} />
+                    <FieldDetail name="Phone Number" value={hotel?.phone_number} />
+                    <FieldDetail name="Hotel Amenities" value={hotel.serp_filters.map(e => capCase(e)).join(', ')} />
+                </Flex> */}
 
             </Stack>
         </Stack>
@@ -153,38 +148,37 @@ function PassengerDetails({ booking }: { booking: SingleStayCheckBookingResponse
                 <Divider direction='horizontal' px="1px" color={ttColors.lightestGray} />
             </Flex>
 
-            {rooms?.length > 0 &&
-                rooms?.map((room, index) =>
-                <Flex direction='column' key={`room-${index}`}>
-                    <Text
-                        type="p"
-                        text={`${allCaps(room.first_name)} ${allCaps(room.last_name)} (${index === 0 ? 'Lead' : ''})`}
-                        size={isMobile ? 16 : 18}
-                        weight={500}
-                        margin='0 0 1rem'
-                    />
-                    <FieldDetail name="Email" value={room.email} />
-                    <FieldDetail name="Phone Number" value={room.phone_number} />
-                    <FieldDetail name="No of Guests" value={room?.guests} />
-                </Flex>
+            {rooms?.length > 0 && rooms?.map((room, index, arr) => {
+                const guestsCount = room.guests.length
+                return (
+                    <Flex direction='column' key={`room-${index}`}>
+                        {index === 0 && <FieldDetail name="Contact Email" value={booking.userEmail} />}
+                        {index === 0 && <FieldDetail name="Contact Phone" value={booking.userPhone} />}
+                        <Text
+                            type="p"
+                            text={`Room ${index + 1}`}
+                            size={isMobile ? 16 : 18}
+                            weight={500}
+                            margin='1.5rem 0 1rem'
+                        />
+                        {guestsCount > 0 && room.guests.map((guest, ind) =>
+                            <FieldDetail name={`Guest ${ind + 1}`} value={`${allCaps(guest.first_name)} ${allCaps(guest.last_name)}`} key={`field-detail-${ind}`} />
+                        )}
+                        <FieldDetail name="No of Guests" value={guestsCount} />
+                    </Flex>
+                )}
             )}
             <FieldDetail name="No of Rooms" value={rooms.length} last />
         </Stack>
     )
 }
 
+
 function PriceDetails({ booking }: { booking: SingleStayCheckBookingResponse }) {
     const { isMobile } = useScreenResolution()
-
-    const adultsCount = booking.rooms?.length ?? 1
+    const adultsCount = booking.rooms?.reduce((prev, curr) => [...prev, ...curr?.guests], [] as any[]).length ?? 0
     const noOfDays = dayjs(booking.checkOutDate).diff(booking.checkInDate, 'days')
-    const payment = booking?.paymentOptions?.find(e => e.currency_code === 'USD') ?? booking?.paymentOptions?.find(e => e.currency_code === 'GBP') ?? booking?.paymentOptions[0]
-    // const calcPrice = (price: string | number = 0) => {
-    //     return formatPrice({
-    //         total: Number(price) * conversionRate,
-    //         currency: preFerredCurrency,
-    //     })
-    // }    
+    const payment = booking?.paymentOptions?.find(e => e.currency_code === 'USD') ?? booking?.paymentOptions?.find(e => e.currency_code === 'EUR') ?? (booking?.paymentOptions ?? [])[0]  
 
     return (
         <Stack direction="column" bgcolor='white' borderRadius="8px" spacing="1.5rem" padding="1rem 2rem 3rem 1.7rem" margin="0 0 3rem 0">
@@ -199,9 +193,8 @@ function PriceDetails({ booking }: { booking: SingleStayCheckBookingResponse }) 
             <Flex direction='column'>
                 <Text type="p" text="Hotel Details" size={isMobile ? 16 : 18} weight={500} margin="0 0 1rem" />
                 {adultsCount > 0 && <FieldDetail name={`Adults x${adultsCount}`} value={payment?.amount ?? '0'} />}
-                {/* {childrenCount > 0 && <FieldDetail name={`Children x${childrenCount}`} value={booking?.pricing?.child?.amount ?? 0} />} */}
                 <FieldDetail name='No of Days' value={`${noOfDays} days`} />
-                <FieldDetail name="Total Fare" value={`${payment?.currency_code} ${payment?.amount}`} />
+                <FieldDetail name="Total Fare" value={`${payment?.currency_code} ${parseFloat(payment?.amount).toFixed(2)}`} />
             </Flex>
 
             {/* <Flex direction='column'>
@@ -213,7 +206,7 @@ function PriceDetails({ booking }: { booking: SingleStayCheckBookingResponse }) 
 
             <Flex justify='space-between'>
                 <Text width="auto" type="p" text="Total Amount" size={isMobile ? 16 : 18} weight={500} />
-                <Text width="auto" type="p" text={`${payment?.currency_code} ${payment?.amount}`} size={isMobile ? 16 : 18} weight={600} />
+                <Text width="auto" type="p" text={`${payment?.currency_code} ${parseFloat(payment?.amount).toFixed(2)}`} size={isMobile ? 16 : 18} weight={600} />
             </Flex>
         </Stack>
     )

@@ -59,7 +59,7 @@ import {
   constructQueryFromParams,
   extractSearchParamsFromUrl,
 } from "@/lib/extensions/helpers/constructQuery";
-import { AmenityGroup, HotelBySearchInterface, Rate } from "@/lib/types/response-models/stay/search.type";
+import { AmenityGroup, HotelBySearchInterface, PaymentType, Rate } from "@/lib/types/response-models/stay/search.type";
 import FavouriteCheckBox from "../../FavouriteCheckBox";
 import withLikeHotel from "@/components/HOCs/withLikeHotel";
 import { capCase, numSort } from "@/lib/utilFns";
@@ -146,8 +146,8 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
     const amenitiesGroups = hotel.amenity_groups.reduce((prev: string[], curr: AmenityGroup) => [...prev, curr?.group_name], [])
     const displayedAmenities = amenitiesGroups.filter(e => ["Internet", "Parking", "Kids", "Sports", "Meals", "Accessibility"].includes(e))
     const roomGroups = hotel.room_groups.sort((a, b) => a.name.length > b.name.length ? -1 : a.name.length === b.name.length ? 0 : 1)
-    const prices = numSort(hotel.rates.reduce((prev: number[], curr: Rate) => [...prev, parseFloat(curr.payment_options.payment_types[0]?.amount) * conversionRate], []), 'asc')
-
+    const prices = numSort(hotel.rates.reduce((prev: PaymentType[], curr: Rate) => [...prev, curr.payment_options.payment_types[0]], []), 'amount', 'asc')
+    const selectedPrice = prices.find(e => e.show_amount === 'NGN') ?? prices.find(e => e.currency_code === 'USD') ?? prices[0]
 
     return (
         <Box style={{ marginBottom: "20px" }}>
@@ -416,13 +416,13 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                     color="var(--text-dull-color)"
                                     type="h2"
                                     weight={"bold"}
-                                    text={`${getCurrency()}`}
+                                    text={selectedPrice?.show_currency_code}
                                 />
                                 <Text
                                     color="var(--text-dull-color)"
                                     type="h2"
                                     weight={"bold"}
-                                    text={`${formatPriceWithoutCurrency(parseInt(prices[0]))}`}
+                                    text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(2)))}
                                 />
                                 </Flex>
                                 <Text

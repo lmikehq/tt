@@ -7,7 +7,6 @@ import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import { Span } from "./styles";
 import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
 import {
     HotelPropertyTypes,
@@ -15,6 +14,9 @@ import {
 } from "@/lib/types/request-models/stay/search.type";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import { capCase } from "@/lib/utilFns";
+import { TbStar, TbStarFilled } from "react-icons/tb";
+import { MdAttachMoney } from "react-icons/md";
+import { GrMoney } from "react-icons/gr";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip
@@ -96,9 +98,17 @@ interface Hotel {
 function SortedRoomsTab(props: sortProps) {
     const { isMobile } = useScreenResolution();
     const { hotels } = props;
-    const { staySearchSort, updateStaySearchSort, stayTabInitialSearchQuery } = useStaySearchStore(
+    const { staySearchSort, updateStaySearchSort, stayTabInitialSearchQuery, staySearchMeta, updateStaySearchMeta } = useStaySearchStore(
         (state) => state
     );
+    const handleUpdateSort = (value: StaySearchSortEnum) => {
+        updateStaySearchSort(value)
+        updateStaySearchMeta({
+            ...staySearchMeta,
+            currentPage: 1
+        })
+    }
+
     return (
         <>
             <Flex
@@ -133,7 +143,7 @@ function SortedRoomsTab(props: sortProps) {
                                 <ButtonBox
                                     key={"sort-" + index}
                                     active={staySearchSort === value}
-                                    onClick={() => updateStaySearchSort(value)}
+                                    onClick={() => handleUpdateSort(value)}
                                     style={{
                                         display: "flex",
                                         alignItems: "center",
@@ -151,18 +161,24 @@ function SortedRoomsTab(props: sortProps) {
                                                 right: "10px",
                                             }}
                                         />
-                                        <BootstrapTooltip
+                                        {StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'HIGHEST_STAR' ? (
+                                            <TbStarFilled size={20} />
+                                        ) : StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'LOWEST_STAR' ? (
+                                            <TbStar size={20} />
+                                        ) : StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'HIGHEST_PRICE' ? (
+                                            <MdAttachMoney size={20} />
+                                        ) : StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'LOWEST_PRICE' ? (
+                                            <GrMoney size={20} />
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {/* <BootstrapTooltip
                                             title="We believe you will like these stays with your preferences in mind, considering factors like location, amenities, reviews, and price, ensuring a stay tailored just for you."
                                             placement="top-start"
                                             style={{ flex: "none" }}
                                             arrow
                                         >
-                                            {staySearchSort == value ? (
-                                                <BsInfoCircle size={20} />
-                                            ) : (
-                                                <></>
-                                            )}
-                                        </BootstrapTooltip>
+                                        </BootstrapTooltip> */}
                                     </Flex>
                                 </ButtonBox>
                             );

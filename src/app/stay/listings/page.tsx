@@ -69,7 +69,7 @@ function Page() {
             meals: queryParams.meals,
             amenity: queryParams.amenity?.split(","),
             apartmentType: queryParams.apartmentType?.split(","),
-            star: queryParams.star,
+            star: queryParams.star?.split(","),
             guestRating: queryParams.guestRating?.split(","),
             cancellationPolicy: queryParams.cancellationPolicy?.split(","),
             bedType: queryParams.bedType?.split(","),

@@ -107,7 +107,6 @@ function Page() {
     const { queryParams } = useQueryParams();
     const { isMobile } = useScreenResolution();
     const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore((state) => state);
-    const { user } = useUserStore()
     
     const [bookingSuccessful, setBookingSucessful] = useState(false);
     const [paymentOptions, setPaymentOptions] = useState<StayPaymentOption[]>([]);

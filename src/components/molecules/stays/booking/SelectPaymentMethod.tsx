@@ -86,7 +86,7 @@ function SelectPaymentMethod({
                     subTitle={"Make payment for your stay booking"}
                 />
             )}
-            <Flex justify="space-between" margin={isMobile ? '1rem 0 2.5rem' : "3rem 0 2.5rem"}>
+            <Flex justify="space-between" margin={isMobile ? '1rem 0 2.5rem' : "3.5rem 0 3rem"}>
                 <Text
                     text="Price"
                     type="p"
@@ -94,7 +94,7 @@ function SelectPaymentMethod({
                     weight={600}
                 />
                 <Text
-                    text={`${payment.currency_code} ${payment.amount}`}
+                    text={`${payment.currency_code} ${parseFloat(payment.amount).toFixed(2)}`}
                     type="p"
                     size={24}
                     weight={600}

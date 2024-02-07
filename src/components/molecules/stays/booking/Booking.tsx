@@ -107,10 +107,7 @@ function Booking({
                     user_ip: geoInfo?.ip ?? "",
                     checkIn: queryParams?.checkIn,
                     checkOut: queryParams?.checkOut,
-                    // rooms: convertGuestRoomsFormDataToList(
-                    //     roomsAndGuestsDataFormik.values
-                    // ),
-                    rooms: roomsAndGuestsDataFormik.values[0].guests.filter(e => !!e?.first_name).map(e => ({ first_name: e.first_name ?? '', last_name: e.last_name ?? '' }))
+                    rooms: convertGuestRoomsFormDataToList(roomsAndGuestsDataFormik.values)
                 })
                 .then(res => {
                     toast.success('Booking successful, please proceed to make payment')
@@ -131,8 +128,8 @@ function Booking({
                         comment={comment}
                         onChangeComment={(e) => setComment(e.target.value)}
                     />
-                    {/* <ImprovedCondition /> */}
                     <BookingDetails formik={contactDetailsFormik} />
+                    {/* <ImprovedCondition /> */}
                     {/* <Payment /> */}
                     <Span>
                         <Button

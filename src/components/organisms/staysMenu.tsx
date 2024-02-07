@@ -132,6 +132,7 @@ function StaysMenu({ staysView }: StaysMenuProps) {
             <Section
                 padding=" 2rem"
                 maxHeight="22rem"
+                className="scroll-custom"
                 styles={{ overflowY: "auto" }}
             >
                 <Flex direction="column" gap="2rem">
