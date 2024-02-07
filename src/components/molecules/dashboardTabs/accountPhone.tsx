@@ -60,7 +60,7 @@ const PhoneModal: React.FC<PhoneModalProps> = ({ open, onClose, refetch }) => {
       buttonProps={{
         text: "Save Changes",
         onClick() {
-          console.log('clicked');
+          // console.log('clicked');
           formik.handleSubmit();
         },
       }}

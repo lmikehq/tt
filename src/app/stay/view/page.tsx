@@ -69,7 +69,7 @@ const StayViewPage = () => {
   const handleGoBack = () => {
     router.back();
   };
-    console.log(stayResponse);
+  // console.log(stayResponse);
 
   // console.log(stayResponse);
 
@@ -107,39 +107,39 @@ const StayViewPage = () => {
                   },
                 }}
                 id="favorite-hotels-checkbox"
-                />
-                </Span>
-                </Flex>
-                </Span>
-            )}
-            <HeroImageGrid />
-            <Box
-                sx={{
-                display: "grid",
-                gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
-                gap: "30px",
-                }}
-            >
-                <Section>
-                    <StayDetails stayResponse={stayResponse} />
-                    <ChooseYourRoom stayResponse={stayResponse} />
-                    <LikeSimilarHotels
-                    // stayResponse={stayResponse}
-                    />
-                    <Location stayResponse={stayResponse} />
-                    <DescriptionOfHotel stayResponse={stayResponse} />
-                    <HotelAmenities stayResponse={stayResponse} />
-                    <CompareSlider
-                    //  stayResponse={stayResponse}
-                    />
-                    <Policies stayResponse={stayResponse} />
-                    <HotelReviews
-                    // stayResponse={stayResponse}
-                    />
-                    <CompareSimilarHotels
-                    //  stayResponse={stayResponse}
-                    />
-                </Section>
+              />
+            </Span>
+          </Flex>
+        </Span>
+      )}
+      <HeroImageGrid />
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "100%" : "67.3% 30%",
+          gap: "30px",
+        }}
+      >
+        <Section>
+          <StayDetails stayResponse={stayResponse} />
+          <ChooseYourRoom stayResponse={stayResponse} />
+          <LikeSimilarHotels
+          // stayResponse={stayResponse}
+          />
+          <Location stayResponse={stayResponse} />
+          <DescriptionOfHotel stayResponse={stayResponse} />
+          <HotelAmenities stayResponse={stayResponse} />
+          <CompareSlider
+          //  stayResponse={stayResponse}
+          />
+          <Policies stayResponse={stayResponse} />
+          <HotelReviews
+          // stayResponse={stayResponse}
+          />
+          <CompareSimilarHotels
+          //  stayResponse={stayResponse}
+          />
+        </Section>
 
         <Section>
           <RecentlyViewedList />

@@ -10,7 +10,6 @@ class ReferralService {
     const query = constructQueryFromParams(params);
     return await apiService(`/user-referral${query}`)
       .then((response) => {
-        console.log('referral response', response);
         return response;
       }).catch((err) => { throw (err); });
   };

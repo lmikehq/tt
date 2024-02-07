@@ -94,7 +94,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   // test
   const [showReferralInfo, setShowReferralInfo] = useState(false);
   const searchParams = useSearchParams();
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
 
   const applicationStatus = searchParams.get('applicationStatus') ?? '';
   const searchQuery = searchParams.get('search') ?? '';
@@ -293,7 +293,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
       margin={isMobile ? ".5rem 0px 56px" : "1.5rem 0px 56px"}
       gap="0px"
     >
-      <Section width={isMobile ? '' : '30%'}>
+      <Section width={isMobile ? "" : isTablet ? "50%" : '30%'}>
         <Flex align="center" gap="12px">
           <Text
             type="h1"
@@ -323,8 +323,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                   />
                 </Flex>
               )}
-
-
             </Section>
           ) : null}
         </Flex>
@@ -378,7 +376,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
               border: "1px solid #E7E7E7",
               borderRadius: "8px",
               cursor: "pointer",
-              display: isMobile ? 'none' : 'flex',
+              display: isMobile ? 'none' : isTablet ? 'none' : 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}

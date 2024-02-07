@@ -78,7 +78,7 @@ const Flight = () => {
   const content = {
     title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
     links: [
-      { text: "Apply for Visa", url: "/apply/visa" },
+      { text: "Apply for Visa", url: "/visa" },
       { text: "Book flight", url: "/flight" },
       { text: "Search Stays", url: "/stay" }
     ],
@@ -141,9 +141,9 @@ const Flight = () => {
       ) : (
         <>
           {
-            mockFlightBooking.length > 0 ? (
+            flights.length > 0 ? (
               <Flex direction="column" gap="1rem">
-                {mockFlightBooking.map((flight: DashboardFlightBookingProps) => {
+                {flights.map((flight: DashboardFlightBookingProps) => {
                   return (
                     <>
                       {renderFlight(isMobile, flight.flightType, flight)}

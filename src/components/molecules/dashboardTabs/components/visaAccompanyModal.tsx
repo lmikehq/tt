@@ -6,7 +6,7 @@ import { ttColors } from "@/lib/theme/colors";
 import Text from "@/components/atoms/text";
 import { useFormik } from "formik";
 import Button from "@/components/atoms/button";
-import { accompanySchema, accompanyVal } from "@/lib/types/schema";
+import { accompanyArraySchema, accompanyVal } from "@/lib/types/schema";
 import AccompanyComponent from "./visa/accompany";
 import { accompanyStore } from "@/lib/store/dashboard/accompany.store";
 import { useState } from "react";
@@ -73,7 +73,6 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
     setPage((prev) => (prev + 1));
   };
 
-  console.log({ dependentsData });
 
   const renderPage = (step: number) => {
     switch (step) {
