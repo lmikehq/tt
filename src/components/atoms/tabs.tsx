@@ -132,13 +132,17 @@ export default function CustomTab({
   variant?: "fullWidth" | "scrollable" | "standard" | undefined;
 }) {
   const [value, setValue] = useState(0);
-  const { updateTab } = useDashboardStore((state) => state);
+  const { updateTab, setDateRange } = useDashboardStore((state) => state);
 
   useEffect(() => {
     setValue(activeTab ?? 0);
   }, [activeTab]);
 
   useEffect(() => {
+    // REST ALL THE, DATERANGE AND SEARCH
+    // DATERANGE
+    setDateRange('', '');
+    // UPDATE THE TABS
     updateTab(tabItems[value].label);
 
   }, [value]);

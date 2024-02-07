@@ -8,13 +8,18 @@ import VisaPaymentModal from "@/components/molecules/dashboardTabs/visaPayment";
 import { useNotificationStore } from "@/lib/store/notification.store";
 import toast from "react-hot-toast";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-
+import { useUserStore } from "@/lib/store/useStore";
+import { useSearchParams } from "next/navigation";
 
 const DashboardHeaderComponent = () => {
   const [documentModal, setDocumentModal] = useState(true);
   const [paymentModal, setPaymentModal] = useState(false);
   const { queryParams } = useDashboardStore(state => state);
   const { setNotification } = useNotificationStore((state) => state);
+  const { user } = useUserStore((state) => state);
+  const searchParams = useSearchParams();
+
+  const download = searchParams.get("download") ?? "";
 
   // EVENT LISTENER
   const ctrl = new AbortController();
@@ -57,6 +62,7 @@ const DashboardHeaderComponent = () => {
 
               ctrl.abort();
               toast.error('Failed to fetch data after multiple attempts');
+              process.exit(0);
             }
           }
         });
@@ -65,25 +71,33 @@ const DashboardHeaderComponent = () => {
       }
     };
 
-    fetchData();
+    if (user && user?._id?.length > 1) {
+      fetchData();
+    } else {
+      return;
+    }
 
     // Cleanup function
     return () => {
       ctrl.abort();
     };
-  }, []);
+  }, [user]);
   // EVENT LISTENER
+
+
+  // CHECK IF THE USER HAS DOWNLOADED THE VISA APPLICATION FORM BEFORE, ONCE THEY CLICK ON THE BUTTON (DOWNLOAD IN THAT MODAL) ASSUME THEY HAVE DOWNLOADED IT AND CHECK FOR THAT STATUS IN THE USER PROFILE, THEN CONDITIONALLY RENDER APPLICATION STATUS BASED ON THE STATUS
 
   return (
     <UserStoreProvider>
       <DashboardHeader />
-      {documentModal && (
+
+      {download === 'true' ? (
         <ApplicationStatus
           state={documentModal}
           setState={setDocumentModal}
           openPaymentModal={setPaymentModal}
         />
-      )}
+      ) : null}
       {paymentModal && (
         <VisaPaymentModal
           open={paymentModal}

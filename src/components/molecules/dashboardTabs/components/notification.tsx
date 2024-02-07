@@ -41,7 +41,12 @@ const Notification = () => {
     options: { retry: 2 }
   });
 
+  const response = data as { notifications: NotificationProps[], filteredCount: number, totalCount: number; };
+
   const notifications: NotificationProps[] = data as NotificationProps[];
+  // const notifications: NotificationProps[] = response.notifications || []
+  const filteredCount: number = response?.filteredCount || 1;
+  const totalCount: number = response?.totalCount || 1;
 
   return (
     <Section
@@ -77,7 +82,7 @@ const Notification = () => {
                   );
 
                 })}
-                <PaginationCtrl<NotificationProps> page={page} setPage={setPage} data={notifications} />
+                <PaginationCtrl<NotificationProps> page={page} setPage={setPage} data={notifications} filteredCount={filteredCount} totalCount={totalCount} />
               </>
 
             ) : (

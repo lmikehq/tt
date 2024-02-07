@@ -27,7 +27,14 @@ export const useDashboardPayment = ({ query, options }: UseDashboardProps) => {
         return DashboardPaymentService.fetchPayment(updatedQuery);
       }
     },
-    queryKey: ['get-user-payment', query.status, query.search, query.endDate, query.currentPage, query.limit],
+    queryKey: [
+      'get-user-payment',
+      query.status,
+      query.search,
+      query.endDate,
+      query.currentPage,
+      query.limit
+    ],
     ...options
   });
 };

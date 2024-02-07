@@ -73,13 +73,14 @@ export const TextContainer = styled.div`
 `;
 
 const Flight = () => {
-  const { param, search, page, limit, setPage } = useDashboardStore((state) => state);
+  const { param, search, page, limit, setPage, endDate, startDate } = useDashboardStore((state) => state);
   const { isMobile } = useScreenResolution();
   const content = {
     title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
     links: [
-      { text: "Search Flights", url: "/flight" },
-      { text: "Search Stays", url: "/stays" },
+      { text: "Apply for Visa", url: "/apply/visa" },
+      { text: "Book flight", url: "/flight" },
+      { text: "Search Stays", url: "/stay" }
     ],
   };
 
@@ -113,18 +114,21 @@ const Flight = () => {
       case 'MULTI CITY':
         return (
           <>
-            {isMobile ? ('') : (<MultiFlightComp />)}
+            {isMobile ? (<MobileSingleFlightComp flight={flight} />) : (<MultiFlightComp />)}
           </>
         );
     }
   }
 
   const { data, isLoading } = useDashboardFlight({
-    query: { status: param, limit, currentPage: page, search },
+    query: { status: param, limit, currentPage: page, search, startDate, endDate },
     options: { retry: 2 }
   });
 
-  const flights: DashboardFlightBookingProps[] = data as DashboardFlightBookingProps[];
+  const response = data as { userBookings: DashboardFlightBookingProps[], filteredCount: number, totalCount: number; };
+  const flights: DashboardFlightBookingProps[] = response?.userBookings;
+  const filteredCount = response?.filteredCount;
+  const totalCount = response?.totalCount;
 
   return (
     <FlightWrapper>
@@ -150,6 +154,8 @@ const Flight = () => {
                   page={page}
                   setPage={setPage}
                   data={mockFlightBooking}
+                  filteredCount={filteredCount}
+                  totalCount={totalCount}
                 />
               </Flex>
             ) : (

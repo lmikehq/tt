@@ -7,7 +7,7 @@ export class DashboardPaymentService {
     const query = constructQueryFromParams(params);
 
     return await apiService(`/payment${query}`).then((response) => {
-      return response.data.payments;
+      return response.data;
     }).catch((err) => {
       throw (err);
     });

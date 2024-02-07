@@ -4,7 +4,13 @@ import { DashboardFilters } from "@/lib/types/request-models/dashboard";
 
 export class VisaService {
   static async getAllApplications(params: DashboardFilters) {
-    const visaQuery = constructQueryFromParams(params);
+    const query = constructQueryFromParams(params);
+
+    return await apiService(`/visa${query}`).then((response) => {
+      return response.data;
+    }).catch((err) => {
+      throw err;
+    });
   }
 
   static getUserApplication = async (query: string) => {

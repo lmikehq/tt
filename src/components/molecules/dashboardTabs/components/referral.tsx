@@ -19,8 +19,14 @@ import { ReferralModal, ReferralOTPModal, ReferralSubmissionModal, ReferralUserB
 import Center from "@/components/templates/center";
 import NoApplication from "./noApplication";
 import NoReferralImg from 'public/assets/icons/dashboard/no-referral.svg';
-import { useReferral } from "@/lib/hooks/dashboard/referral.hook";
+import { useFetchReferralBanks, useReferral } from "@/lib/hooks/dashboard/referral.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import { ReferralProp } from "@/lib/types/response-models/dashboard";
+import { mockReferees } from "@/lib/extensions/data/mock";
+import { format } from "date-fns";
+import referralStore from "@/lib/store/dashboard/referrer.store";
+import { Grid } from "@/components/templates/grid";
+import PaginationCtrl from "../../pagination";
 
 const Referral = styled.div`
   display: flex;
@@ -91,17 +97,15 @@ const Referrals = () => {
   const [openSubmissionModal, setOpenSubmissionModal] = useState(false);
   const [openAccountModal, setOpenAccountModal] = useState(false);
   const [openOtpModal, setOtpModal] = useState(false);
-  const { search, page, param, limit, startDate, endDate } = useDashboardStore((state) => state);
+  const { search, page, param, limit, startDate, endDate, setPage } = useDashboardStore((state) => state);
+  const { addReferrerInfo } = referralStore((state) => state);
 
-  const referral = {
-    referralStatus: 'Claimed'
-  };
 
-  const textAndBgColor = () => {
-    switch (referral.referralStatus) {
-      case 'Claimed':
+  const textAndBgColor = (status: string) => {
+    switch (status) {
+      case 'SUCCESS':
         return { text: "#0CAF60", bg: "#E7F7EF" };
-      case 'Unclaimed':
+      case 'PENDING':
         return { text: "#614909", bg: "#FFF1C2" };
       default:
         return { text: "#614909", bg: "#FFF1C2" };
@@ -119,7 +123,17 @@ const Referrals = () => {
     query: { status: param, limit: limit, currentPage: page, search, startDate, endDate }
   });
 
-  console.log('referral data', { data });
+
+  const refferrals: ReferralProp[] = data as ReferralProp[];
+
+  const response = data as { refereesArr: ReferralProp[]; filteredCount: number, totalCount: number; };
+
+  const referrals = response?.refereesArr || [];
+  const filteredCount = response?.filteredCount || 1;
+  const totalCount = response?.totalCount || 1;
+
+
+  console.log('referral data', referrals, filteredCount, totalCount);
 
   return (
     <Section
@@ -134,10 +148,10 @@ const Referrals = () => {
 
       {referralArr.length > 0 ? (
         <ReferralWrapper>
-          {[0, 1].map((key, index) => {
+          {mockReferees.map((referral, index) => {
             return (
               <Flex
-                key={key}
+                key={referral._id}
                 justify="space-between"
                 align="center"
                 gap=".5rem"
@@ -160,31 +174,59 @@ const Referrals = () => {
                   />
                 </Flex>
 
-                <Flex
-                  justify="flex-start"
-                  direction={isMobile ? "column" : "row"}
-                  align={isMobile ? "flex-start" : "center"}
-                  gap={isMobile ? ".1rem" : "3.5rem"}
-                  width="45%"
-                >
-                  <Text
-                    type="h3"
-                    text="Adah Jonathan"
-                    size={isMobile ? 14 : 16}
-                    weight={600}
-                    width="max-content"
-                  />
-                  <Text
-                    type="p"
-                    text="Visa application"
-                    size={isMobile ? 12 : 16}
-                    weight={400}
-                  />
-                </Flex>
+                {isMobile ? (
+                  <Flex
+                    justify="flex-start"
+                    direction={isMobile ? "column" : "row"}
+                    align={isMobile ? "flex-start" : "center"}
+                    gap={isMobile ? ".1rem" : "3.5rem"}
+                    width="45%"
+                  >
+                    <Text
+                      type="h3"
+                      text={referral?.user?.name}
+                      size={isMobile ? 14 : 16}
+                      weight={600}
+                      width="max-content"
+                    />
+                    <Text
+                      type="p"
+                      text={referral?.user?.email}
+                      size={isMobile ? 12 : 16}
+                      weight={400}
+                    />
+                  </Flex>
+                ) : (
+                  <Grid
+                    columns={""}
+                    style={{
+                      gridTemplateColumns: "1fr 2fr"
+                    }}
+                    justify="flex-start"
+                    // direction={isMobile ? "column" : "row"}
+                    align={isMobile ? "flex-start" : "center"}
+                    gap={isMobile ? ".1rem" : "3.5rem"}
+                    width="45%"
+                  >
+                    <Text
+                      type="h3"
+                      text={referral?.user?.name}
+                      size={isMobile ? 14 : 16}
+                      weight={600}
+                      width="max-content"
+                    />
+                    <Text
+                      type="p"
+                      text={referral?.user?.email}
+                      size={isMobile ? 12 : 16}
+                      weight={400}
+                    />
+                  </Grid>
+                )}
 
                 <Text
                   type="p"
-                  text="23/04/2023"
+                  text={referral.createdAt ? format(new Date(referral?.createdAt), 'dd-MM-yyy') : ""}
                   size={16}
                   weight={400}
                   width="10%"
@@ -201,23 +243,32 @@ const Referrals = () => {
                     align="center"
                     justify="center"
                     width="fit-content"
-                    background={textAndBgColor().bg}
+                    background={textAndBgColor(referral?.status).bg}
                     borderRadius="24px"
                     padding="10px 18px"
                     styles={{ display: isMobile ? 'none' : 'block' }}
                   >
                     <Text
                       type="p"
-                      text="Successful"
+                      text={referral?.status}
                       size={isMobile ? 11 : 14}
                       weight={500}
-                      color={textAndBgColor().text}
+                      color={textAndBgColor(referral?.status).text}
                     />
                   </Flex>
 
                   <Button
                     width="max-content"
-                    onClick={() => setOpenModal(true)}
+                    onClick={() => {
+                      // ADD REFERRER INFO TO THE GLOBAL STATE
+                      addReferrerInfo({
+                        id: referral._id,
+                        referrerId: referral.referrer,
+                        name: referral.user.name,
+                        email: referral.user.email
+                      });
+                      setOpenModal(true);
+                    }}
                     padding="5px 20px"
                     background={ttColors.dark}
                     fontWeight="500"
@@ -260,9 +311,10 @@ const Referrals = () => {
                             width={40}
                             height={40}
                           />
+
                           <Text
                             type="h3"
-                            text="Adah Jonathan"
+                            text={referral?.user?.name}
                             size={16}
                             weight={600}
                             width="max-content"
@@ -287,7 +339,7 @@ const Referrals = () => {
                           />
                           <Text
                             type="h3"
-                            text="Jonathanadah @gmail.com"
+                            text={referral?.user?.email}
                             size={isMobile ? 12 : 16}
                             weight={400}
                             width="max-content"
@@ -306,7 +358,7 @@ const Referrals = () => {
                           />
                           <Text
                             type="h3"
-                            text="23/04/2023"
+                            text={format(new Date(referral?.createdAt), 'dd-MM-yyyy')}
                             size={isMobile ? 12 : 16}
                             weight={400}
                             width="max-content"
@@ -346,8 +398,8 @@ const Referrals = () => {
                             width="max-content"
                             height="48px"
                             padding="5px 20px"
-                            color={textAndBgColor().text}
-                            background={textAndBgColor().bg}
+                            color={textAndBgColor(referral?.status).text}
+                            background={textAndBgColor(referral?.status).bg}
                             styles={{
                               marginLeft: "55px",
                               borderRadius: "24px",
@@ -364,6 +416,13 @@ const Referrals = () => {
                             onClick={() => {
                               setBottomDrawerOpen(false);
                               setOpenModal(true);
+                              // ADD REFERRER INFO TO THE GLOBAL STATE
+                              addReferrerInfo({
+                                id: referral._id,
+                                referrerId: referral.referrer,
+                                name: referral.user.name,
+                                email: referral.user.email
+                              });
                             }}
                           >
                             <Text
@@ -380,6 +439,7 @@ const Referrals = () => {
               </Flex>
             );
           })}
+          <PaginationCtrl data={referralArr} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
           {/* <Button width={isMobile ? '300px' : "503px"} height="60px" background={ttColors.blackishBlue} styles={{ margin: "1.5rem 0px" }}>
             <Text type="p" size={14} text="Claim 5 Referrals" weight={600} />
           </Button> */}
@@ -400,11 +460,19 @@ const Referrals = () => {
       )}
 
       {openAccountModal && (
-        <ReferralUserBankAccountModal state={openAccountModal} setState={setOpenAccountModal} setOpenOtpModal={setOtpModal} />
+        <ReferralUserBankAccountModal
+          state={openAccountModal}
+          setState={setOpenAccountModal}
+          setOpenOtpModal={setOtpModal}
+        />
       )}
 
       {openOtpModal && (
-        <ReferralOTPModal state={openOtpModal} setState={setOtpModal} setSubmissionModal={setOpenSubmissionModal} />
+        <ReferralOTPModal
+          state={openOtpModal}
+          setState={setOtpModal}
+          setSubmissionModal={setOpenSubmissionModal}
+        />
       )}
 
       {openSubmissionModal && (
@@ -413,7 +481,6 @@ const Referrals = () => {
           setState={setOpenSubmissionModal}
         />
       )}
-
     </Section>
   );
 };

@@ -7,14 +7,25 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
 import {
-    BiCopy,
-    BiSolidCopy,
-    BiSolidUser,
-    BiSolidUserCircle,
-    BiUserCircle,
+  BiCopy,
+  BiPencil,
+  BiSolidCopy,
+  BiSolidUser,
+  BiSolidUserCircle,
+  BiUserCircle,
 } from "react-icons/bi";
 import { styled } from "styled-components";
 import Section from "../../section";
+import { useState } from "react";
+import getBase64 from "@/lib/extensions/helpers/getBase64";
+import useCloudinaryUpload from "@/lib/extensions/hook/useCloudinary";
+import toast from "react-hot-toast";
+import { DashboardAccountService } from "@/lib/services/dashboard/getUser";
+import apiService from "@/lib/extensions/hook/apiService";
+import { UpdateProfileModal } from "./profileModal";
+import { useAccountDashboard } from "@/lib/hooks/dashboard/account.hook";
+import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
+import Spinner from "../../icons/spinner";
 const DashboardCoverPicture = styled.div`
     position: relative;
     width: 100%;
@@ -161,27 +172,35 @@ const ReferralLink = styled.div`
 `;
 
 function UserPicture() {
-    const { isMobile } = useScreenResolution();
-    const { user } = useUserStore((state) => state);
+  const { isMobile } = useScreenResolution();
+  const { data, isLoading, refetch } = useAccountDashboard();
+  const user: AuthUser = data as AuthUser;
 
-    const referralLink = `https://thrillers.travel/register?ref=${String(
-        user?.firstName ?? ""
-    ).toLocaleLowerCase()}-${String(user?.lastName ?? "").toLocaleLowerCase()}`;
-    const { copyToClipboard } = useClipboard();
+  const [openModal, setOpenModal] = useState({
+    profilePictureModal: false
+  });
 
-    return (
-        <Flex direction="column" margin="0px">
-            <DashboardCoverPicture>
-                <Image
-                    src={
-                        // user?.coverPicture ||
-                        "/assets/images/dashboard/cover_background.svg"
-                    }
-                    alt="cover-picture"
-                    height={isMobile ? 188 : 250}
-                    styles={{ width: "100%" }}
-                />
-                {/* <Button
+
+  const referralLink = `https://thrillers.travel/auth/register?ref=${String(
+    user?.firstName ?? ""
+  ).toLocaleLowerCase()}-${String(user?.lastName ?? "").toLocaleLowerCase()}`;
+  const { copyToClipboard } = useClipboard();
+
+
+  return (
+    <>
+      <Flex direction="column" margin="0px">
+        <DashboardCoverPicture>
+          <Image
+            src={
+              // user?.coverPicture ||
+              "/assets/images/dashboard/cover_background.svg"
+            }
+            alt="cover-picture"
+            height={isMobile ? 188 : 250}
+            styles={{ width: "100%" }}
+          />
+          {/* <Button
           styles={{
             height: isMobile ? "25px" : "65px",
             width: isMobile ? "25px" : "230px",
@@ -201,97 +220,128 @@ function UserPicture() {
             styles={{ display: isMobile ? "none" : "block" }}
           />
         </Button> */}
-            </DashboardCoverPicture>
-            <Section
+        </DashboardCoverPicture>
+        <Section
+          styles={{
+            position: "relative",
+            height: isMobile ? "151px" : "238px",
+            marginBottom: "2rem",
+          }}
+        >
+          {isLoading ? (
+            <Flex height="450px" align="center" justify="center">
+              <Spinner size="60px" fill={ttColors.blackishBlue} />
+            </Flex>
+          ) : (
+            <DashboardProfilePictue>
+              <Section
+                width="fit-content"
+                borderRadius="50%"
+                background="white"
+                padding={10}
                 styles={{
-                    position: "relative",
-                    height: isMobile ? "151px" : "238px",
-                    marginBottom: "2rem",
+                  border: user?.profilePicture ? "" : "4px solid var(--Slamon, #FF8682)",
+                  marginBottom: "1.125rem",
+                  position: 'relative',
                 }}
-            >
-                <DashboardProfilePictue>
-                    {/* <Image
-                        src={
-                            user?.profilePicture || "/assets/images/avatar.jpg"
-                        }
-                        alt="profile-picture"
-                        height={isMobile ? 70 : 160}
-                        width={isMobile ? 70 : 160}
-                    /> */}
-                    <Section
-                        width="fit-content"
-                        borderRadius="50%"
-                        background="white"
-                        padding={10}
-                        styles={{
-                            border: "4px solid var(--Slamon, #FF8682)",
-                            marginBottom: "1.125rem",
-                        }}
-                    >
-                        <BiSolidUser
-                            size={isMobile ? 91 : 140}
-                            color={ttColors.lighterGray}
-                        />
-                    </Section>
+              >
+                {user?.profilePicture ? (
+                  <img
+                    src={user?.profilePicture}
+                    alt="user-profile"
+                    style={{ height: isMobile ? "120px" : "140px", width: isMobile ? "120px" : "140px", objectFit: "cover" }}
+                  />
+                ) : (
+                  <BiSolidUser
+                    size={isMobile ? 91 : 140}
+                    color={ttColors.lighterGray}
+                  />
+                )}
+                <Flex
+                  height={isMobile ? "25px" : "35px"}
+                  width={isMobile ? "25px" : "35px"}
+                  styles={{ position: 'absolute', bottom: isMobile ? "12px" : '8px', left: isMobile ? "12px" : "8px" }}
+                  background="#FF8682"
+                  borderRadius="50%"
+                  align="center"
+                  justify="center"
+                >
+                  <BiPencil
+                    cursor={"pointer"}
+                    color="#FFF"
+                    onClick={() => setOpenModal((prev) => {
+                      return {
+                        ...prev,
+                        profilePictureModal: true
+                      };
+                    })} />
+                </Flex>
+              </Section>
 
-                    <ProfileInfomation>
-                        <Text
-                            type="h3"
-                            text={user?.firstName + " " + user?.lastName}
-                            size={isMobile ? 16 : 24}
-                            weight={600}
-                            color={ttColors.blackishGreen}
-                        />
-                        <Text
-                            type="p"
-                            text={user?.email ?? ""}
-                            size={16}
-                            color={ttColors.blackishGreen}
-                            margin="0.75rem 0"
-                        />
-                    </ProfileInfomation>
-                    <ReferralLink
-                        style={{
-                            border: "1px solid #7BBBD6 !important",
-                            padding: "0.875rem",
-                        }}
-                    >
-                        <Flex
-                            gap=".5rem"
-                            justify="center"
-                            onClick={() =>
-                                copyToClipboard(
-                                    referralLink,
-                                    "Referral link copied to clipboard"
-                                )
-                            }
-                            cursor="pointer"
-                            width="100%"
-                            align="center"
-                        >
-                            <BiSolidCopy
-                                size={isMobile ? 16 : 24}
-                                color={ttColors.blackishGreen}
-                            />
-                            <Section
-                                styles={{
-                                    minWidth: 0,
-                                    flex: 1,
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    fontWeight: 600,
-                                    fontSize: isMobile ? 12 : 16,
-                                }}
-                            >
-                                {referralLink}
-                            </Section>
-                        </Flex>
-                    </ReferralLink>
-                </DashboardProfilePictue>
-            </Section>
-        </Flex>
-    );
+              <ProfileInfomation>
+                <Text
+                  type="h3"
+                  text={user?.firstName + " " + user?.lastName}
+                  size={isMobile ? 16 : 24}
+                  weight={600}
+                  color={ttColors.blackishGreen}
+                />
+                <Text
+                  type="p"
+                  text={user?.email ?? ""}
+                  size={16}
+                  color={ttColors.blackishGreen}
+                  margin="0.75rem 0"
+                />
+              </ProfileInfomation>
+              <ReferralLink
+                style={{
+                  border: "1px solid #7BBBD6 !important",
+                  padding: "0.875rem",
+                }}
+              >
+                <Flex
+                  gap=".5rem"
+                  justify="center"
+                  onClick={() =>
+                    copyToClipboard(
+                      referralLink,
+                      "Referral link copied to clipboard"
+                    )
+                  }
+                  cursor="pointer"
+                  width="100%"
+                  align="center"
+                >
+                  <BiSolidCopy
+                    size={isMobile ? 16 : 24}
+                    color={ttColors.blackishGreen}
+                  />
+                  <Section
+                    styles={{
+                      minWidth: 0,
+                      flex: 1,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      fontWeight: 600,
+                      fontSize: isMobile ? 12 : 16,
+                    }}
+                  >
+                    {referralLink}
+                  </Section>
+                </Flex>
+              </ReferralLink>
+            </DashboardProfilePictue>
+          )}
+
+        </Section>
+      </Flex>
+      {openModal.profilePictureModal && (
+        <UpdateProfileModal state={openModal.profilePictureModal} setState={setOpenModal} refetch={refetch} />
+      )}
+    </>
+  );
 }
 
 export default UserPicture;
