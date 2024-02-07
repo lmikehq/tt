@@ -377,7 +377,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
               weight={900}
               size={isMobile ? "14px" : "20px"}
               textAlign={isMobile ? "center" : "left"}
-              text={`${visa.homeCountry.name} — ${visa.destination.name}`}
+              text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${(visa?.destination?.code)})`}
               letterSpacing={"unset"}
             />
             <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
@@ -627,7 +627,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                   weight={900}
                   size={isMobile ? "1rem" : "1.3rem"}
                   textAlign={isMobile ? "center" : "left"}
-                  text={`${visa?.homeCountry?.name} — ${visa?.destination?.name}`}
+                  text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${visa?.destination?.code})`}
                 />
 
                 <Flex justify="flex-start" gap="0px">

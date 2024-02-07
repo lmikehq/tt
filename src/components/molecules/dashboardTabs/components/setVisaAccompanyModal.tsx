@@ -54,6 +54,7 @@ const SetVisaAccompanyModal = ({ open, setState, onClose }: Props) => {
       description="Enter Details of People you want to travel with."
       descriptionColor={ttColors.lighterGray}
       width={isMobile ? "90%" : ""}
+      maxWidth={isMobile ? "90%" : ""}
       showButton={false}
     >
       <Flex direction="column">

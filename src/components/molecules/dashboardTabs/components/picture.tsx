@@ -278,60 +278,73 @@ function UserPicture() {
                 </Flex>
               </Section>
 
-              <ProfileInfomation>
-                <Text
-                  type="h3"
-                  text={user?.firstName + " " + user?.lastName}
-                  size={isMobile ? 16 : 24}
-                  weight={600}
-                  color={ttColors.blackishGreen}
-                />
-                <Text
-                  type="p"
-                  text={user?.email ?? ""}
-                  size={16}
-                  color={ttColors.blackishGreen}
-                  margin="0.75rem 0"
-                />
-              </ProfileInfomation>
-              <ReferralLink
-                style={{
-                  border: "1px solid #7BBBD6 !important",
-                  padding: "0.875rem",
-                }}
-              >
-                <Flex
-                  gap=".5rem"
-                  justify="center"
-                  onClick={() =>
-                    copyToClipboard(
-                      referralLink,
-                      "Referral link copied to clipboard"
-                    )
-                  }
-                  cursor="pointer"
-                  width="100%"
-                  align="center"
-                >
-                  <BiSolidCopy
+              {isLoading ? (
+                <Flex height="60px" align="center" justify="center">
+                  <Spinner size="60px" fill={ttColors.blackishBlue} />
+                </Flex>
+              ) : (
+                <ProfileInfomation>
+                  <Text
+                    type="h3"
+                    text={user?.firstName + " " + user?.lastName}
                     size={isMobile ? 16 : 24}
+                    weight={600}
                     color={ttColors.blackishGreen}
                   />
-                  <Section
-                    styles={{
-                      minWidth: 0,
-                      flex: 1,
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      fontWeight: 600,
-                      fontSize: isMobile ? 12 : 16,
-                    }}
+                  <Text
+                    type="p"
+                    text={user?.email ?? ""}
+                    size={16}
+                    color={ttColors.blackishGreen}
+                    margin="0.75rem 0"
+                  />
+                </ProfileInfomation>
+              )}
+
+              {isLoading ? (
+                <Spinner size="60px" fill={ttColors.blackishBlue} />
+              ) : (
+                <ReferralLink
+                  style={{
+                    border: "1px solid #7BBBD6 !important",
+                    padding: "0.875rem",
+                  }}
+                >
+                  <Flex
+                    gap=".5rem"
+                    justify="center"
+                    onClick={() =>
+                      copyToClipboard(
+                        referralLink,
+                        "Referral link copied to clipboard"
+                      )
+                    }
+                    cursor="pointer"
+                    width="100%"
+                    align="center"
                   >
-                    {referralLink}
-                  </Section>
-                </Flex>
-              </ReferralLink>
+                    <BiSolidCopy
+                      size={isMobile ? 16 : 24}
+                      color={ttColors.blackishGreen}
+                    />
+                    <Section
+                      styles={{
+                        minWidth: 0,
+                        flex: 1,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontWeight: 600,
+                        fontSize: isMobile ? 12 : 16,
+                      }}
+                    >
+                      {referralLink}
+                    </Section>
+                  </Flex>
+                </ReferralLink>
+              )}
+
+
             </DashboardProfilePictue>
           )}
 

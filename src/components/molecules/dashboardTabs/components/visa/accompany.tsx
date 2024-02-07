@@ -94,7 +94,7 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             <Flex direction="column" gap="14px">
               <Flex direction="row" align="center" gap="0.25rem">
                 <Text type="label" text="Family Member's Name" />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldInput
                 name="memberName"
@@ -106,7 +106,7 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             <Flex direction="column" gap="14px">
               <Flex direction="row" align="center" gap="0.25rem">
                 <Text type="label" text="Relationship to you" />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldString
                 formik={formik}
@@ -155,7 +155,7 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
                   // margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                   size={15}
                 />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <PhoneInputStyle>
                 <PhoneInput
@@ -180,7 +180,7 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             <Flex direction="column" gap="14px">
               <Flex>
                 <Text type='label' text="Member's Worth" />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldInput name="memberWorth" formik={formik} placeholder="Enter Guarantor's Worth" />
             </Flex>
@@ -190,7 +190,7 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             <Flex direction="column" gap="14px">
               <Flex align="center" gap="0.25rem">
                 <Text type="label" text='Gender' />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldString
                 name="gender"
@@ -204,9 +204,9 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
               />
             </Flex>
             <Flex direction="column" gap="14px">
-              <Flex>
+              <Flex direction="row" align="center" gap="0.25rem">
                 <Text type="label" text='Date of Birth' />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldAsDate
                 name="dateOfBirth"
@@ -221,9 +221,9 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
 
           <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
             <Flex direction="column" gap="14px">
-              <Flex>
-                <Text type="label" text='Passport Number' />
-                <Required />
+              <Flex direction="row" align="center" gap="0.25rem">
+                <Text type="label" text='Passport Number' margin={0} />
+                <Required margin="0 0" />
               </Flex>
               <FieldInput
                 name="passportNumber"
@@ -233,14 +233,15 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             </Flex>
 
             <Flex direction="column" gap="14px" position="relative">
-              <Flex>
+              <Flex direction="row" align="center" gap="0.25rem">
                 <Text
                   type="p"
                   text="Issued Country"
+                  margin={0}
                   // margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                   size={15}
                 />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <SectionContainer>
                 <FieldAsString
@@ -262,9 +263,9 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
 
           <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
             <Flex direction="column" gap="14px">
-              <Flex>
+              <Flex direction="row" align="center" gap="0.25rem">
                 <Text type="label" text='Issue Date' />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldAsDate
                 name="issueDate"
@@ -277,9 +278,9 @@ function AccompanyComponent({ index, handleRemove, initialValues, handleNextPage
             </Flex>
 
             <Flex direction="column" gap="14px">
-              <Flex>
+              <Flex direction="row" align="center" gap="0.25rem">
                 <Text type="label" text='Expiry Date' />
-                <Required />
+                <Required margin="0 0" />
               </Flex>
               <FieldAsDate
                 name="expiryDate"

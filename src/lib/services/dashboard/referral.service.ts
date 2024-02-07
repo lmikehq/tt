@@ -27,11 +27,11 @@ class ReferralService {
   };
 
   static verifyOTP = async (param: string, payload: IReferralBankInfo) => {
-    return await apiService(`/user-referral/verify-otp/${param}`, 'POST', {
+    return await apiService(`/user-referral/verify-otp/${param.toUpperCase()}`, 'POST', {
       bankName: payload.bankName,
       accountName: payload.accountName,
       accountNumber: payload.accountNumber,
-      referrerId: payload.referrerId
+      refereeId: payload.refereeId
     });
   };
 }

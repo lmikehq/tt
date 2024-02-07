@@ -119,12 +119,11 @@ const Referrals = () => {
     links: []
   };
 
-  const { data, isLoading } = useReferral({
+  const { data, isLoading, refetch } = useReferral({
     query: { status: param, limit: limit, currentPage: page, search, startDate, endDate }
   });
 
 
-  const refferrals: ReferralProp[] = data as ReferralProp[];
 
   const response = data as { refereesArr: ReferralProp[]; filteredCount: number, totalCount: number; };
 
@@ -132,8 +131,6 @@ const Referrals = () => {
   const filteredCount = response?.filteredCount || 1;
   const totalCount = response?.totalCount || 1;
 
-
-  console.log('referral data', referrals, filteredCount, totalCount);
 
   return (
     <Section
@@ -146,9 +143,9 @@ const Referrals = () => {
     >
       <VisaDashboardHeader headerText="Referrals" type="radio" />
 
-      {referralArr.length > 0 ? (
+      {referrals.length > 0 ? (
         <ReferralWrapper>
-          {mockReferees.map((referral, index) => {
+          {referrals.map((referral, index) => {
             return (
               <Flex
                 key={referral._id}
@@ -259,6 +256,7 @@ const Referrals = () => {
 
                   <Button
                     width="max-content"
+                    disabled={referral?.isClaimed ? true : false}
                     onClick={() => {
                       // ADD REFERRER INFO TO THE GLOBAL STATE
                       addReferrerInfo({
@@ -472,6 +470,7 @@ const Referrals = () => {
           state={openOtpModal}
           setState={setOtpModal}
           setSubmissionModal={setOpenSubmissionModal}
+          refetch={refetch}
         />
       )}
 
