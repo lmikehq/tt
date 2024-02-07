@@ -9,8 +9,10 @@ import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MapIcon from "@mui/icons-material/Map";
 import { SmallSpan } from "./styles";
-import { FilterModal, SortModal } from "../listings/stayModal";
+import { FilterModal, MapModal, SortModal } from "../listings/stayModal";
 import SortingColumns from "../listings/sortingColumns";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { Sort } from "@mui/icons-material";
 
 type sortProps = {
   results: number;
@@ -18,12 +20,14 @@ type sortProps = {
 };
 
 function SortedColumn({ results, sortType }: sortProps) {
-  const { isMobile } = useScreenResolution();
-  const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
-  const [open, setOpen] = useState({
-    filter: false,
-    sort: false,
-  });
+    const { isMobile } = useScreenResolution();
+    const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
+    const [open, setOpen] = useState({
+        filter: false,
+        sort: false,
+        map: false,
+    });
+    const { stayTabInitialSearchQuery } = useStaySearchStore()
 
   return (
     <Section>
@@ -75,23 +79,32 @@ function SortedColumn({ results, sortType }: sortProps) {
                     }))
                   }
                 >
-                  <Text type="p" text="Sort" weight={600} size={18} />
-                  <KeyboardArrowDownIcon />
+                    <Flex gap="5px">
+                        <Sort />         
+                        <Text type="p" text="Sort" weight={600} size={18} />
+                    </Flex>
                 </Button>
                 <Button
-                  padding="10px 20px"
-                  color="var(--text-color)"
-                  width="max-content"
-                  background="transparent"
-                  border="2px solid var(--color-border)"
-                  styles={{ whiteSpace: "nowrap" }}
+                    padding="10px 20px"
+                    color="var(--text-color)"
+                    width="max-content"
+                    background="transparent"
+                    border="2px solid var(--color-border)"
+                    styles={{ whiteSpace: "nowrap" }}
+                    onClick={() =>
+                    setOpen((prev) => ({
+                      ...prev,
+                      map: true,
+                    }))
+                  }
                 >
                   <Flex gap="5px">
                     <MapIcon />
                     <Text type="p" text="Map" weight={600} size={18} />
                   </Flex>
                 </Button>
-                <Button
+ 
+                {/* <Button
                   padding="10px 20px"
                   color="var(--text-color)"
                   width="max-content"
@@ -99,12 +112,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                   border="2px solid var(--color-border)"
                   styles={{ whiteSpace: "nowrap" }}
                 >
-                  <Text
-                    type="p"
-                    text="Accommodation Type"
-                    weight={600}
-                    size={18}
-                  />
+                  <Text type="p" text="Property Type" weight={600} size={18} />
                   <KeyboardArrowDownIcon />
                 </Button>
                 <Button
@@ -115,11 +123,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                   border="2px solid var(--color-border)"
                   styles={{ whiteSpace: "nowrap" }}
                 >
-                  <Text
-                    type="p"
-                    text="Cancellation Policy"
-                    weight={600}
-                    size={18}
+                  <Text type="p" text="Facilities & Services" weight={600} size={18}
                   />
                   <KeyboardArrowDownIcon />
                 </Button>
@@ -142,54 +146,26 @@ function SortedColumn({ results, sortType }: sortProps) {
                   border="2px solid var(--color-border)"
                   styles={{ whiteSpace: "nowrap" }}
                 >
-                  <Text
-                    type="p"
-                    text="Facilities & Services"
-                    weight={600}
-                    size={18}
+                  <Text type="p" text="Bedding Type" weight={600} size={18} />
+                  <KeyboardArrowDownIcon />
+                </Button>
+                <Button
+                  padding="10px 20px"
+                  color="var(--text-color)"
+                  width="max-content"
+                  background="transparent"
+                  border="2px solid var(--color-border)"
+                  styles={{ whiteSpace: "nowrap" }}
+                >
+                  <Text type="p" text="Cancellation Policy" weight={600} size={18}
                   />
                   <KeyboardArrowDownIcon />
-                </Button>
-                <Button
-                  padding="10px 20px"
-                  color="var(--text-color)"
-                  width="max-content"
-                  background="transparent"
-                  border="2px solid var(--color-border)"
-                  styles={{ whiteSpace: "nowrap" }}
-                >
-                  <Text
-                    type="p"
-                    text="Accommodation Features"
-                    weight={600}
-                    size={18}
-                  />
-                  <KeyboardArrowDownIcon />
-                </Button>
-                <Button
-                  padding="10px 20px"
-                  color="var(--text-color)"
-                  width="max-content"
-                  background="transparent"
-                  border="2px solid var(--color-border)"
-                  styles={{ whiteSpace: "nowrap" }}
-                >
-                  <Text type="p" text="Property Type" weight={600} size={18} />
-                  <KeyboardArrowDownIcon />
-                </Button>
-                <Button
-                  padding="10px 20px"
-                  color="var(--text-color)"
-                  width="max-content"
-                  background="transparent"
-                  border="2px solid var(--color-border)"
-                  styles={{ whiteSpace: "nowrap" }}
-                >
-                  <Text type="p" text="Types of Bed" weight={600} size={18} />
-                  <KeyboardArrowDownIcon />
-                </Button>
+                </Button> */}
+                              
               </Flex>
             </SmallSpan>
+                      
+
             <FilterModal
               open={open.filter}
               handleClose={() =>
@@ -207,6 +183,16 @@ function SortedColumn({ results, sortType }: sortProps) {
                   sort: false,
                 }))
               }
+            />
+            <MapModal
+                location={stayTabInitialSearchQuery?.location}
+                open={open.map}
+                handleClose={() =>
+                    setOpen((prev) => ({
+                        ...prev,
+                        map: false,
+                    }))
+                }
             />
           </Flex>
         </>

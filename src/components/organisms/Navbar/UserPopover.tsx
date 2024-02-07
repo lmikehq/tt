@@ -397,12 +397,12 @@ const CustomPopover = () => {
                                 whiteSpace="nowrap"
                                 type="p"
                                 size={14}
-                                text={`${user?.lastName} ${user?.firstName} `}
+                                text={`${user?.lastName} ${user?.firstName}`}
                             ></Text>
                             <Text
                                 type="p"
                                 size={13}
-                                text={`${user.email}`}
+                                text={`${user?.email}`}
                             ></Text>
                         </Flex>
                         <IoIosArrowDown size={20} />

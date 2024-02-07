@@ -5,12 +5,13 @@ import Text from "@/components/atoms/text";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import {
     formatPriceWithoutCurrency,
-    getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
-import { ttColors } from "@/lib/theme/colors";
 import { numberOfAdultsAndChildrenGuestsToString } from "@/lib/types/request-models/stay/search.type";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type";
+import { useQueryParams } from "@/hooks/useNext";
+
+
 interface PriceDetailProps {
     guests: string;
     currentPaymentOption?: StayPaymentOption;
@@ -23,6 +24,7 @@ function PriceDetail({
     durationDays,
     hotel,
 }: PriceDetailProps) {
+
     return (
         <Container>
             <Span>
@@ -59,24 +61,20 @@ function PriceDetail({
                                 type="p"
                                 size={18}
                                 weight={600}
-                                text={
-                                    hotel?.rates[0].payment_options
-                                        .payment_types[0].currency_code ?? ""
-                                }
+                                text={currentPaymentOption?.currency_code ?? 'USD'}
                             />
                             <Text
                                 type="p"
                                 size={18}
                                 weight={600}
                                 text={formatPriceWithoutCurrency(
-                                    parseInt(
-                                        hotel?.rates[0].payment_options
-                                            .payment_types[0].amount ?? ""
-                                    )
+                                    parseFloat(currentPaymentOption?.amount ?? '0')
                                 )}
                             />
                         </Flex>
                     </Flex>
+
+
                     {/* <Flex justify="space-between" align="center">
                         <Flex>
                             <Text
@@ -91,7 +89,6 @@ function PriceDetail({
                                 size={18}
                                 weight={600}
                                 text={
-                                    
                                 }
                             />
                             <Text
@@ -102,7 +99,9 @@ function PriceDetail({
                             />
                         </Flex>
                     </Flex> */}
-                    <Span
+
+
+                    {/* <Span
                         className="vat_percentage"
                         style={{
                             backgroundColor: ttColors.grayishAsh,
@@ -125,7 +124,7 @@ function PriceDetail({
                                         size={18}
                                         weight={600}
                                         text={
-                                            hotel?.rates[0].payment_options
+                                            selectedRoom?.payment_options
                                                 .payment_types[0].vat_data
                                                 .currency_code ?? ""
                                         }
@@ -136,7 +135,7 @@ function PriceDetail({
                                         weight={600}
                                         text={formatPriceWithoutCurrency(
                                             parseInt(
-                                                hotel?.rates[0].payment_options
+                                                selectedRoom?.payment_options
                                                     .payment_types[0].vat_data
                                                     .amount ?? ""
                                             )
@@ -144,7 +143,7 @@ function PriceDetail({
                                     />
                                 </Flex>
                             </Flex>
-                            {/* <Flex justify="space-between" align="center">
+                            <Flex justify="space-between" align="center">
                                 <Flex>
                                     <Text type="p" text="Service Charge"></Text>
                                 </Flex>
@@ -166,9 +165,11 @@ function PriceDetail({
                                         text={formatPriceWithoutCurrency(9200)}
                                     />
                                 </Flex>
-                            </Flex> */}
+                            </Flex>
                         </Flex>
-                    </Span>
+                    </Span> */}
+
+
                     <Flex justify="space-between" align="center">
                         <Flex>
                             <Text type="h3" weight={600} text="Total"></Text>
@@ -178,20 +179,14 @@ function PriceDetail({
                                 type="p"
                                 size={24}
                                 weight={600}
-                                text={
-                                    hotel?.rates[0].payment_options
-                                        .payment_types[0].currency_code ?? ""
-                                }
+                                text={currentPaymentOption?.currency_code ?? 'USD'}
                             />
                             <Text
                                 type="p"
                                 size={30}
                                 weight={600}
                                 text={formatPriceWithoutCurrency(
-                                    parseInt(
-                                        hotel?.rates[0].payment_options
-                                            .payment_types[0].amount ?? ""
-                                    )
+                                    parseFloat(currentPaymentOption?.amount ?? '0')
                                 )}
                             />
                         </Flex>

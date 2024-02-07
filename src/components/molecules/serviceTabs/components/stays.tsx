@@ -25,6 +25,7 @@ import { formatDate } from "@/lib/utilFns";
 import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
+import { CustomRadioGroup } from "../../radio";
 // STYLES
 const FlexBox = styled.div`
   display: flex;
@@ -65,7 +66,7 @@ function Stays() {
   };
 
   const open = Boolean(anchorEl);
-  const { stayTabInitialSearchQuery, updateStayTabInitialQuery } =
+  const { stayTabInitialSearchQuery, updateStayTabInitialQuery, staySearchFilters, updateStaySearchFilters } =
     useStaySearchStore((state) => state);
 
   const { roomForGuests, stars } = stayTabInitialSearchQuery;
@@ -77,13 +78,13 @@ function Stays() {
       ? true
       : false;
 
-  const computeStaySearchQuery = () => {
+    const computeStaySearchQuery = () => {
     const params = {
-      region: stayTabInitialSearchQuery.location?.name,
+      regionId: stayTabInitialSearchQuery.location?.id,
       countryCode: stayTabInitialSearchQuery.location?.country_code,
-      stars: stayTabInitialSearchQuery.stars
+      star: stayTabInitialSearchQuery.stars
         ? stayTabInitialSearchQuery.stars[0]
-        : 3,
+        : undefined,
       checkIn: formatDate(
         stayTabInitialSearchQuery.checkInDate ?? dayjs(),
         "YYYY-MM-DD"
@@ -110,34 +111,39 @@ function Stays() {
     }`;
   };
 
-  const handleStarsGroupChanged = (val: string) => {
-    // Check if the value is already in the array
-    const value = parseInt(val);
-    const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
+    const handleStarsGroupChanged = (val: number) => {
+        // Check if the value is already in the array
+        const value = Number(val);
+        const isSelected = stayTabInitialSearchQuery.stars?.includes(value);
 
-    if (isSelected) {
-      // If the value is already selected, remove it
-      updateStayTabInitialQuery({
-        ...stayTabInitialSearchQuery,
-        stars: stars?.filter((item) => item !== value),
-      });
-    } else {
-      // If the value is not selected, add it
-      updateStayTabInitialQuery({
-        ...stayTabInitialSearchQuery,
-        stars: [...(stars ?? []), value],
-      });
-    }
-  };
-  return (
+        if (isSelected) {
+        // If the value is already selected, remove it
+        updateStayTabInitialQuery({
+            ...stayTabInitialSearchQuery,
+            stars: stars?.filter((item) => item !== value),
+        });
+        } else {
+        // If the value is not selected, add it
+        updateStayTabInitialQuery({
+            ...stayTabInitialSearchQuery,
+            stars: [value],
+        });
+        }
+    };
+    
+
+    return (
     <Section
-      padding={"2rem 0 1rem 0"}
-      height="unset"
-      styles={{ position: "relative" }}
+        padding={"2rem 0 1rem 0"}
+        height="unset"
+        styles={{ position: "relative" }}
     >
-      <FlexBox className="flex_scroll">
+        <FlexBox className="flex_scroll">
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(5)}
+            value={5}
+            onChange={(event) => handleStarsGroupChanged(5)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -147,17 +153,16 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={5}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="5 stars"></Text>}
           />
         </FlexItems>
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(4)}
+            value={4}
+            onChange={(event) => handleStarsGroupChanged(4)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -167,17 +172,16 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={4}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="4 stars"></Text>}
           />
         </FlexItems>
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(3)}
+            value={3}
+            onChange={(event) => handleStarsGroupChanged(3)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -187,17 +191,16 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={3}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="3 stars"></Text>}
           />
         </FlexItems>{" "}
         <FlexItems>
-          <FormControlLabel
+        <FormControlLabel
+            checked={stayTabInitialSearchQuery.stars?.includes(2)}
+            value={2}
+            onChange={(event) => handleStarsGroupChanged(2)}
             control={
               <Checkbox
                 disableFocusRipple
@@ -207,10 +210,6 @@ function Stays() {
                     color: ttColors.primary,
                   },
                 }}
-                value={2}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleStarsGroupChanged(event.target.value)
-                }
               />
             }
             label={<Text whiteSpace="nowrap" type="p" text="2 stars"></Text>}
@@ -235,11 +234,16 @@ function Stays() {
           />
           <Span>
             <RateHawkLocationSearchInput
-              onChange={(x: RateHawkRegionType) =>
-                updateStayTabInitialQuery({
-                  ...stayTabInitialSearchQuery,
-                  location: x,
-                })
+                onChange={(x: RateHawkRegionType) => {
+                    updateStayTabInitialQuery({
+                      ...stayTabInitialSearchQuery,
+                      location: x,
+                    })
+                    updateStaySearchFilters({
+                        ...staySearchFilters,
+                        regionId: String(x.id)
+                    })        
+                }
               }
               value={stayTabInitialSearchQuery.location}
               placeholder="Enter Destination or Hotel Name"
@@ -256,7 +260,7 @@ function Stays() {
             placeholder="Select Date"
             minDate={today}
             value={stayTabInitialSearchQuery.checkInDate?.toDate()}
-            format="yyyy-mm-dd"
+            format="yyyy-MM-dd"
             onChange={(e) => {
               updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,
@@ -274,7 +278,7 @@ function Stays() {
           <Text type="label" size={isMobile ? 16 : 18} text="Return" />
           <DatePicker
             placeholder="Select Date"
-            format="yyyy-mm-dd"
+            format="yyyy-MM-dd"
             minDate={today}
             value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
             onChange={(e) =>

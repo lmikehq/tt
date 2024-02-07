@@ -9,6 +9,8 @@ import {
 import { RateHawkLocationSearchResponse } from "@/lib/types/response-models/stay/location.type";
 import {
     HotelBySearchInterface,
+    SearchRecentlyViewedStaysResponse,
+    SearchSimilarStaysResponse,
     SearchStaysResponse,
     ViewSingleStayResponse,
 } from "@/lib/types/response-models/stay/search.type";
@@ -28,6 +30,44 @@ export class StaySearchService {
                 `/stays/query-view-results${searchQuery}`,
                 payload
             )
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+    static searchRecentlyViewedStays = async () => {
+        return await rateHawkResourceClient
+            .get<any, SearchRecentlyViewedStaysResponse>(
+                `/stays-views/user`)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+    static searchSimilarStays = async ({
+        query,
+    }: {
+        query: { user: string; };
+        }) => {
+        const searchQuery = constructQueryFromParams(query);
+        return await rateHawkResourceClient
+            .get<any, SearchSimilarStaysResponse>(
+                `/stays-likes/similar-hotels${searchQuery}`)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+    static searchLikedStays = async () => {
+        return await rateHawkResourceClient
+            .get<any, SearchSimilarStaysResponse>(
+                `/stays-likes/user`)
             .then((response) => {
                 return response;
             })

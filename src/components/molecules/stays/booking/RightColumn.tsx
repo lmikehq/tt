@@ -6,77 +6,43 @@ import PriceDetail from "./PriceDetail";
 import SelectCurrency from "./SelectCurrency";
 import {
     ViewSingleStayResponse,
-    sampleViewStay,
 } from "@/lib/types/response-models/stay/search.type";
-import { useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
-import { useViewSingleStay } from "@/lib/hooks/stay/search.hook";
-import {
-    ViewSingleStayRequestInput,
-    extractRoomForGuestsFromString,
-} from "@/lib/types/request-models/stay/search.type";
-import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useQueryParams } from "@/hooks/useNext";
+
 
 interface RightColumnProps {
-    // hotel: ViewSingleStayResponse;
+    hotel?: ViewSingleStayResponse;
 }
 
-const RightColumn = ({}: RightColumnProps) => {
-    // const stayResponse = sampleViewStay;
-    const searchParams = useSearchParams();
-
-    const id = searchParams.get("id");
-    const checkIn = searchParams.get("checkIn");
-    const checkOut = searchParams.get("checkOut");
-    const guests = searchParams.get("guests") ?? "";
-    const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
-        (state) => state
-    );
-
-    const requestParams: ViewSingleStayRequestInput = {
-        // id: "transcorp_hilton_abuja" ?? id ?? "",
-        id: "test_hotel_do_not_book" ?? id ?? "",
-        checkin: checkIn ?? "2024-01-18",
-        checkout: checkOut ?? "2024-01-19",
-        residency: "gb",
-        language: preferredLanguage,
-        guests: extractRoomForGuestsFromString(guests ?? ""),
-        currency: preFerredCurrency,
-    };
-
-    const { data: stayResponse, isFetching } = useViewSingleStay(
-        requestParams,
-        {
-            enabled: id ? true : false,
-        }
-    );
+const RightColumn = ({ hotel }: RightColumnProps) => {
+    const { queryParams } = useQueryParams();
 
     return (
         <Span>
-            {stayResponse && (
+            {hotel && (
                 <>
                     <HotelDetail
-                        hotel={stayResponse}
-                        checkInDate={dayjs(checkIn).format("MMM DD,YYYY")}
-                        checkOutDate={dayjs(checkOut).format("MMM DD,YYYY")}
-                        durationDays={dayjs(checkOut).diff(
-                            dayjs(checkIn),
+                        hotel={hotel}
+                        checkInDate={dayjs(queryParams?.checkIn).format("MMM DD,YYYY")}
+                        checkOutDate={dayjs(queryParams?.checkOut).format("MMM DD,YYYY")}
+                        durationDays={dayjs(queryParams?.checkOut).diff(
+                            dayjs(queryParams?.checkIn),
                             "day"
                         )}
                     />
-                    <PriceDetail
-                        guests={guests}
-                        hotel={stayResponse}
-                        durationDays={dayjs(checkOut).diff(
-                            dayjs(checkIn),
+                    {/* <PriceDetail
+                        guests={queryParams?.guests}
+                        hotel={hotel}
+                        durationDays={dayjs(queryParams?.checkOut).diff(
+                            dayjs(queryParams?.checkIn),
                             "day"
                         )}
-                    />
-                    {stayResponse.rates[0].payment_options.payment_types[0]
-                        .cancellation_penalties.free_cancellation_before && (
+                    /> */}
+                    {hotel.rates[0].payment_options.payment_types[0].cancellation_penalties.free_cancellation_before && (
                         <FreeCancellation
                             freeCancelationBefore={
-                                stayResponse.rates[0].payment_options
+                                hotel.rates[0].payment_options
                                     .payment_types[0].cancellation_penalties
                                     .free_cancellation_before!
                             }

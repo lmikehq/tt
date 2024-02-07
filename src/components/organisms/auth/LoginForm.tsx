@@ -18,6 +18,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import apiService from "@/lib/extensions/hook/apiService";
 import toast from "react-hot-toast";
 import Input from "@/components/atoms/input";
+import { rateHawkResourceClient } from "@/lib/axios/axios-client";
 
 interface AuthFormProps {
     setLoginView: (value: boolean) => void;
@@ -91,7 +92,10 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 ...submissionState,
                 loading: true,
             });
-            setUser(res?.user);
+            setUser(res);
+            window.localStorage.setItem('user', res?.token)
+            rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`
+
             toast.success("You have successfully logged in!");
             handleClose();
         } else {

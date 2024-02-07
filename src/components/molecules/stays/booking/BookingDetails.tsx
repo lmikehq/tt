@@ -32,7 +32,7 @@ function BookingDetails({ formik }: BookingDetailsProps) {
                     ></Text>
                 </Flex>
             </Header>
-            <Span>
+            <Flex direction='column' gap="1rem">
                 <Flex
                     // align={"center"}
                     gap={isMobile ? "10px" : "20px"}
@@ -60,10 +60,11 @@ function BookingDetails({ formik }: BookingDetailsProps) {
                                 marginTop: "10px",
                             }}
                         >
-                            <ErrorOutlineIcon />
+                            <ErrorOutlineIcon fontSize="small" />
                             <Text
                                 type="p"
                                 text="Ensure the Email Address is correct"
+                                size={14}
                             ></Text>
                         </Flex>
                     </Section>
@@ -83,6 +84,8 @@ function BookingDetails({ formik }: BookingDetailsProps) {
                         />
                     </Section>
                 </Flex>
+
+
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -102,7 +105,7 @@ function BookingDetails({ formik }: BookingDetailsProps) {
                         />
                     }
                 />
-            </Span>
+            </Flex>
         </Container>
     );
 }

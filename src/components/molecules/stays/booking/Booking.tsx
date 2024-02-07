@@ -18,6 +18,7 @@ import { ttColors } from "@/lib/theme/colors";
 import Link from "@/components/atoms/link";
 import {
     RoomForGuest,
+    ViewSingleStayRequestInput,
     extractRoomForGuestsFromString,
 } from "@/lib/types/request-models/stay/search.type";
 import { contactDetailsSchema } from "@/lib/extensions/schemas/flight/booking.schema";
@@ -30,14 +31,14 @@ import {
 } from "@/lib/types/request-models/stay/booking.type";
 import { useFormik } from "formik";
 import {
-    useStayBookingFinish,
     useStayOrderBooking,
 } from "@/lib/hooks/stay/booking.hook";
-import * as yup from "yup";
-import { GiLetterBomb } from "react-icons/gi";
 import { StayPaymentOption } from "@/lib/types/response-models/stay/booking.type";
-import { useSearchParams } from "next/navigation";
 import { useUserStore } from "@/lib/store/useStore";
+import AuthModal from "@/components/organisms/auth/AuthModal";
+import { useQueryParams } from "@/hooks/useNext";
+import toast from "react-hot-toast";
+
 
 interface BookingProps {
     guests: RoomForGuest[];
@@ -46,6 +47,7 @@ interface BookingProps {
     handleSetBookingId: (value: string) => void;
 }
 
+
 function Booking({
     guests,
     handleSetPaymentOptions,
@@ -53,19 +55,31 @@ function Booking({
     handleSetBookingSuccessful,
 }: BookingProps) {
     const { isMobile } = useScreenResolution();
-    const searchParams = useSearchParams();
+    const { queryParams } = useQueryParams();
     const { user, geoInfo } = useUserStore((state) => state);
+
+    const { mutateAsync: orderBooking, isLoading: bookingIsLoading } =
+        useStayOrderBooking({
+            onSuccess: (data) => {
+                handleSetBookingId(data.bookingData._id);
+                handleSetPaymentOptions(data.bookingData.paymentOptions);
+                handleSetBookingSuccessful(true);
+            },
+        });
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
-        //properties needed
     });
 
+    const [authOpen, setAuthOpen] = useState(false);
+
     const [comment, setComment] = useState("");
-    const hotelId = searchParams.get("hotelId");
-    const bookHash = searchParams.get("bookHash");
+
     const contactDetailsFormik = useFormik({
-        initialValues: contactDetails,
+        initialValues: {
+            email: user?.email ?? '',
+            phone: user?.phoneNumber ?? '',
+        },
         enableReinitialize: true,
         validateOnMount: true,
         validationSchema: contactDetailsSchema,
@@ -81,68 +95,73 @@ function Booking({
     });
 
     const handleSubmit = () => {
-        console.log(roomsAndGuestsDataFormik);
         roomsAndGuestsDataFormik.handleSubmit();
         contactDetailsFormik.handleSubmit();
 
-        if (roomsAndGuestsDataFormik.isValid && contactDetailsFormik.isValid)
-            orderBooking({
-                hotel_id: hotelId ?? "",
-                userId: "6579bbff603bfaafaa7b55d9" ?? user?._id ?? "",
-                book_hash: bookHash ?? "",
-                user_ip: geoInfo?.ip ?? "",
-                rooms: convertGuestRoomsFormDataToList(
-                    roomsAndGuestsDataFormik.values
-                ),
-            });
+        if (user?._id) {
+            if (roomsAndGuestsDataFormik.isValid && contactDetailsFormik.isValid)
+                orderBooking({
+                    hotel_id: queryParams?.hotelId ?? "",
+                    userId: user?._id ?? "",
+                    book_hash: queryParams?.bookHash ?? "",
+                    user_ip: geoInfo?.ip ?? "",
+                    checkIn: queryParams?.checkIn,
+                    checkOut: queryParams?.checkOut,
+                    rooms: convertGuestRoomsFormDataToList(roomsAndGuestsDataFormik.values)
+                })
+                .then(res => {
+                    toast.success('Booking successful, please proceed to make payment')
+                });
+        } else {
+            setAuthOpen(true)
+        }
     };
 
-    const { mutate: orderBooking, isLoading: bookingIsLoading } =
-        useStayOrderBooking({
-            onSuccess: (data) => {
-                handleSetBookingId(data.bookingData._id);
-                handleSetPaymentOptions(data.bookingData.paymentOptions);
-                handleSetBookingSuccessful(true);
-            },
-        });
 
     return (
-        <form onSubmit={handleSubmit}>
-            <Span>
-                <CheckingIn
-                    guests={guests}
-                    formik={roomsAndGuestsDataFormik}
-                    comment={comment}
-                    onChangeComment={(e) => setComment(e.target.value)}
-                />
-                {/* <ImprovedCondition /> */}
-                <BookingDetails formik={contactDetailsFormik} />
-                {/* <Payment /> */}
+        <React.Fragment>
+            <form onSubmit={handleSubmit}>
                 <Span>
-                    <Button
-                        width="100%"
-                        margin=".5rem 0"
-                        color="white"
-                        padding="10px"
-                        background={
-                            bookingIsLoading ? ttColors.dark : ttColors.dark
-                        }
-                        onClick={handleSubmit}
-                    >
-                        {bookingIsLoading ? (
-                            <Spinner size="40px" fill={"white"} />
-                        ) : (
-                            <Text
-                                type="p"
-                                text="Complete Booking"
-                                color={"white"}
-                                size="16px"
-                            />
-                        )}
-                    </Button>
+                    <CheckingIn
+                        guests={guests}
+                        formik={roomsAndGuestsDataFormik}
+                        comment={comment}
+                        onChangeComment={(e) => setComment(e.target.value)}
+                    />
+                    <BookingDetails formik={contactDetailsFormik} />
+                    {/* <ImprovedCondition /> */}
+                    {/* <Payment /> */}
+                    <Span>
+                        <Button
+                            width="100%"
+                            margin=".5rem 0"
+                            color="white"
+                            padding="10px"
+                            background={
+                                bookingIsLoading ? ttColors.dark : ttColors.dark
+                            }
+                            onClick={handleSubmit}
+                        >
+                            {bookingIsLoading ? (
+                                <Spinner size="40px" fill={"white"} />
+                            ) : (
+                                <Text
+                                    type="p"
+                                    text={user?._id ? "Complete Booking" : "Login to Complete Booking"}
+                                    color="white"
+                                    size="16px"
+                                />
+                            )}
+                        </Button>
+                    </Span>
                 </Span>
-            </Span>
-        </form>
+            </form>
+
+            <AuthModal
+                open={authOpen}
+                handleClose={() => setAuthOpen(false)}
+            />
+        </React.Fragment>
     );
 }
 

@@ -82,12 +82,12 @@ export default function PriceAlerts() {
         <Box
           width={"100%"}
           bgcolor={ttColors.grayishAsh}
-          padding={"1rem"}
+          padding={"2rem 1.5rem"}
           border={"1px solid var(--color-border)"}
           marginBottom={"20px"}
           borderRadius={"10px"}
         >
-          <Flex align="center" justify="space-between">
+          <Flex align="center" justify="space-between" margin="0 0 .5rem">
             <label>
               <Text type="h4" weight="bold" text="Set up price alert" />
             </label>{" "}
@@ -115,6 +115,8 @@ export default function PriceAlerts() {
           <Text
             type="p"
             text="Receive alerts when the prices for this route change."
+            size={14}
+            width='80%'
           />
         </Box>
       </Section>

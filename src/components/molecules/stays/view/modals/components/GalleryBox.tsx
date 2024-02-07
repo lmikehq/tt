@@ -125,11 +125,12 @@ function GalleryBox({ images }: GalleryBoxProps) {
         <Box
             display='grid'  
             gap=".5rem"
+            className='scroll-custom'
             sx={{
                 columns: 4,
-                gridTemplateColumns: isMobile ? '1fr' : '3fr 1fr 1fr',
-                maxHeight: '80vh',
-                overflow: "auto",
+                gridTemplateColumns: isMobile ? '1fr' : '1.5fr 1fr 1fr',
+                maxHeight: '75vh',
+                overflowY: "auto",
             }}
         >
             {images.map((img, index) => 
@@ -143,10 +144,10 @@ function GalleryBox({ images }: GalleryBoxProps) {
                     borderRadius="6px"
                     key={`img-show-${index}`}
                 >
-                  <Image
+                  <img
                     alt="stay"
                     src={img}
-                    styles={{
+                    style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",

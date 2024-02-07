@@ -33,7 +33,7 @@ export const generateValidationSchemaForRoomsAndGuests = (
         );
     });
 
-    console.log(rooms, roomDataSchema);
-    console.log(contactDetailsSchema);
+    // console.log(rooms, roomDataSchema);
+    // console.log(contactDetailsSchema);
     return roomDataSchema;
 };

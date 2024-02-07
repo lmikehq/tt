@@ -33,20 +33,20 @@ export interface MetapolicyNoShow {
 }
 
 export interface Metapolicy {
-    internet: string[];
-    meal: string[];
-    children_meal: string[];
-    extra_bed: string[];
-    cot: string[];
-    pets: string[];
-    shuttle: string[];
-    parking: string[];
-    children: string[];
+    internet: any[];
+    meal: any[];
+    children_meal: any[];
+    extra_bed: any[];
+    cot: any[];
+    pets: any[];
+    shuttle: any[];
+    parking: any[];
+    children: any[];
     visa: MetapolicyVisa;
-    deposit: string[];
+    deposit: any[];
     no_show: MetapolicyNoShow;
-    add_fee: string[];
-    check_in_check_out: string[];
+    add_fee: any[];
+    check_in_check_out: any[];
 }
 
 export interface FactsElectricity {
@@ -100,8 +100,18 @@ export interface HotelBySearchInterface {
     updatedAt: string;
 }
 
-export type SearchStaysResponse = HotelBySearchInterface[];
+export type SearchStaysResponse = {
+    count: number;
+    hotelArray: HotelBySearchInterface[];
+}
 
+export type SearchRecentlyViewedStaysResponse = HotelBySearchInterface[]
+export type SearchSimilarStaysResponse = HotelBySearchInterface[]
+export type SearchLikedStaysResponse = HotelBySearchInterface[]
+export type LikeStayResponse = {
+    msg: string;
+    success: boolean;
+}
 // export interface ViewSingleStayResponse {
 //     data: Data;
 //     debug: ViewSingleStayDebug;

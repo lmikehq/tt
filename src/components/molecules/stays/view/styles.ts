@@ -176,7 +176,7 @@ export const ImageBox = styled.div`
 `;
 
 export const ChooseRoomImg = styled.span`
-  max-height: 250px;
+  max-height: 300px;
   border-radius: 12px;
   overflow: hidden;
   grid-column-gap: 20px;
