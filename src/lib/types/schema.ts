@@ -540,7 +540,7 @@ export const accompanyVal: IAccompany = {
   expiryDate: ''
 };
 
-export const accompanySchema: yup.ObjectSchema<IAccompany> = yup.object().shape({
+export const singleAccompanySchema: yup.ObjectSchema<IAccompany> = yup.object().shape({
   memberName: yup.string().required("Name is required"),
   relationship: yup.string().required('Relationship is required'),
   memberAddress: yup.string().required("Address is required"),
@@ -551,14 +551,12 @@ export const accompanySchema: yup.ObjectSchema<IAccompany> = yup.object().shape(
   gender: yup.string().required("Gender is required"),
   dateOfBirth: yup.string().required("Date of Birth is required"),
   passportNumber: yup.string().required("Passport number is required"),
-  passportIssuedCountry: yup.object().shape({
-    name: yup.string().required("Name Required"),
-    code: yup.string().required("Code Required"),
-    flag: yup.string().required("Flag Required"),
-  }),
+  passportIssuedCountry: countrySchema,
   issueDate: yup.string().required("Issue Date is required"),
   expiryDate: yup.string().required("Expiry Date is required")
 });
+
+export const accompanyArraySchema = yup.array().of(singleAccompanySchema).min(1, "You need to provide at least one dependant").max(5, "You can provide at most 5 dependants");
 
 export const updatePasswordVal: IUpdatePassword = {
   oldPassword: '',
