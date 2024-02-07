@@ -96,7 +96,7 @@ export function Panel({
         <Flex
             direction="column"
             margin={last ? "0 0 1rem" : ""}
-            styles={{ position: "sticky", top: "0" }}
+            // styles={{ position: "sticky", top: "0" }}
         >
             <Flex
                 align="center"
