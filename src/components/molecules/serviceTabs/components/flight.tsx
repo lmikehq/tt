@@ -29,7 +29,7 @@ import { FlightContext, OneFlightType } from "@/lib/extensions/context";
 const stopOptions = [
     { value: "round", label: "Round Trip" },
     { value: "one-way", label: "One Way" },
-    { value: "multi-city", label: "Multi-City" },
+    // { value: "multi-city", label: "Multi-City" },
 ];
 const flightTypeOptions = [
     { value: "international", label: "International Flight" },
