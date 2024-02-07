@@ -7,8 +7,11 @@ import {
 } from "@/lib/types/request-models/stay/search.type";
 import { RateHawkLocationSearchResponse } from "@/lib/types/response-models/stay/location.type";
 import {
+    SearchRecentlyViewedStaysResponse,
     SearchStaysResponse,
+    SearchSimilarStaysResponse,
     ViewSingleStayResponse,
+    SearchLikedStaysResponse,
 } from "@/lib/types/response-models/stay/search.type";
 import { keyValues } from "@/lib/utilFns";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
@@ -38,12 +41,45 @@ export const useSearchStays = (
     });
 };
 
+export const useSearchRecentlyViewedStays = (
+    options?: UseQueryOptions<SearchRecentlyViewedStaysResponse>
+) => {
+    return useQuery({
+        queryKey: ["stays-recently-viewed"],
+        queryFn: () => StaySearchService.searchRecentlyViewedStays(),
+        ...options,
+    });
+};
+
+export const useSearchSimilarStays = (
+    params: {
+        query: { user: string; };
+    },
+    options?: UseQueryOptions<SearchSimilarStaysResponse>
+) => {
+    return useQuery({
+        queryKey: ["stays-similar-stays"],
+        queryFn: () => StaySearchService.searchSimilarStays({ query: params.query }),
+        ...options,
+    });
+};
+
+export const useSearchLikedStays = (
+    options?: UseQueryOptions<SearchLikedStaysResponse>
+) => {
+    return useQuery({
+        queryKey: ["stays-liked-stays"],
+        queryFn: () => StaySearchService.searchLikedStays(),
+        ...options,
+    });
+};
+
 export const useViewSingleStay = (
     params: ViewSingleStayRequestInput,
     options?: UseQueryOptions<ViewSingleStayResponse>
 ) => {
     return useQuery({
-        queryKey: ["view-single-stay", params.id],
+        queryKey: ["view-single-stay", params],
         queryFn: () => StaySearchService.viewSingleStay(params),
         ...options,
     });

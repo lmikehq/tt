@@ -1226,6 +1226,15 @@ const COUNTRY_FLAGS = [
     name: "United States of America",
     flag: "/assets/flags/us.svg",
     code: "US",
+    currencyCode: 'USD',
+    currency: "United States Dollar"
+  },
+  {
+    name: "Great Britain",
+    flag: "/assets/flags/gb-eng.svg",
+    code: "GB",
+    currencyCode: 'GBP',
+    currency: 'Great Britain Pounds'
   },
   {
     name: "Uruguay",
@@ -1301,6 +1310,11 @@ const COUNTRY_FLAGS = [
     name: "Zambia",
     flag: "/assets/flags/zm.svg",
     code: "ZM",
+  },
+  {
+    name: "Zimbabwe",
+    flag: "/assets/flags/zw.svg",
+    code: "ZW",
   },
   {
     name: "Zimbabwe",

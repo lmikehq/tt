@@ -183,17 +183,17 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const { isMobile } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
-  const { setUser } = useUserStore((state) => state);
+  const { setUser, user } = useUserStore((state) => state);
   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
     useUserPreferencesStore((state) => state);
 
-  async function getUser(): Promise<User | any> {
-    const res = await apiService("/user", "GET");
-    setUser(res);
-    return res;
-  }
+    async function getUser(): Promise<User | any> {
+        const res = await apiService("/user", "GET");
+        setUser(res);
+        return res;
+    }
 
-  const { data: user } = useQuery(["getUser"], getUser);
+//   const { data: user } = useQuery(["getUser"], getUser);
 
   const [open, setOpen] = useState({
     language: false,

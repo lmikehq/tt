@@ -12,7 +12,8 @@ import CollectionsIcon from "@mui/icons-material/Collections";
 import { GalleryModal } from "../view/modals/Modals";
 import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import dayjs from "dayjs";
-import { HiOutlineViewList } from "react-icons/hi";
+import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
+import { useQueryParams } from "@/hooks/useNext";
 
 interface HotelDetailProps {
     hotel: ViewSingleStayResponse;
@@ -27,6 +28,7 @@ function HotelDetail({
     checkOutDate,
     durationDays,
 }: HotelDetailProps) {
+    const { queryParams } = useQueryParams()
     const [open, setOpen] = useState({
         gallery: false,
     });
@@ -38,6 +40,10 @@ function HotelDetail({
         }
         return false;
     };
+
+    const noOfRooms = extractRoomForGuestsFromString(queryParams?.guests ?? '')
+    const hotelImages = hotel?.images.map(img => img.replace('{size}', '1024x768')) ?? []
+
     return (
         <Container className="hotel_details_container">
             <Span style={{ marginBottom: "15px" }}>
@@ -46,15 +52,15 @@ function HotelDetail({
                         <img
                             src={hotel.images[0].replace("{size}", "1024x768")}
                             alt=""
-                            style={{ width: "100%", height: "auto" }}
-                        />
-                        <Span
+                            style={{ width: "100%", height: "auto", cursor: 'pointer' }}
                             onClick={() =>
                                 setOpen((prev) => ({
                                     ...prev,
                                     gallery: true,
                                 }))
                             }
+                        />
+                        <Span
                             style={{
                                 position: "absolute",
                                 right: "10px",
@@ -66,10 +72,10 @@ function HotelDetail({
                                 cursor: "pointer",
                             }}
                         >
-                            <Flex align="center" gap="5px">
+                            {/* <Flex align="center" gap="5px">
                                 <CollectionsIcon />
                                 <Text type="p" text="1/35"></Text>
-                            </Flex>
+                            </Flex> */}
                         </Span>
                     </Span>
                 </Flex>
@@ -77,7 +83,7 @@ function HotelDetail({
                 {/* GALLERY MODAL*/}
                 <GalleryModal
                     stayResponse={hotel}
-                    images={hotel?.images}
+                    images={hotelImages}
                     open={open.gallery}
                     handleClose={() =>
                         setOpen((prev) => ({
@@ -87,7 +93,7 @@ function HotelDetail({
                     }
                 />
                 <Span style={{ padding: "10px 25px" }}>
-                    <Flex direction="column" styles={{ marginBottom: "10px" }}>
+                    <Flex direction="column" styles={{ marginBottom: "2rem" }} gap=".5rem">
                         <Text type="h2" weight={600} text={hotel.name} />
                         <Text
                             type="p"
@@ -98,20 +104,20 @@ function HotelDetail({
                     </Flex>
                     <Flex direction="column">
                         <Flex justify="space-between" align="center">
-                            <Span>
-                                <Flex direction="column">
+                            <Span style={{ width: '55%' }}>
+                                <Flex direction="column" gap='.5rem'>
                                     <Text
-                                        size={16}
+                                        size={14}
                                         type="p"
                                         text="Check-In"
                                     ></Text>
                                     <Text
-                                        type="h3"
+                                        type="h4"
                                         weight={600}
                                         text={checkInDate}
                                     ></Text>
                                     <Text
-                                        size={16}
+                                        size={14}
                                         type="p"
                                         text={`From ${dayjs(
                                             hotel.check_in_time,
@@ -120,16 +126,16 @@ function HotelDetail({
                                     ></Text>
                                 </Flex>
                             </Span>
-                            <Span className="border"></Span>
-                            <Span>
-                                <Flex direction="column">
+                            {/* <Span className="border"></Span> */}
+                            <Span style={{ width: '45%' }}>
+                                <Flex direction="column" gap='.5rem'>
                                     <Text
-                                        size={16}
+                                        size={14}
                                         type="p"
                                         text="Check-Out"
                                     ></Text>
                                     <Text
-                                        type="h3"
+                                        type="h4"
                                         weight={600}
                                         text={checkOutDate}
                                     ></Text>
@@ -149,10 +155,10 @@ function HotelDetail({
                             justify="space-between"
                             margin="20px 0px"
                         >
-                            <Span>
+                            <Span style={{ width: '55%' }}>
                                 <Flex direction="column">
                                     <Text
-                                        size={16}
+                                        size={14}
                                         type="p"
                                         text="Rooms"
                                     ></Text>
@@ -160,20 +166,20 @@ function HotelDetail({
                                         type="h3"
                                         weight={600}
                                         text={`${
-                                            hotel.facts.rooms_number
+                                            noOfRooms.length
                                         } Room${
-                                            hotel.facts.rooms_number == 1
+                                            noOfRooms.length <= 1
                                                 ? ""
                                                 : "s"
                                         }`}
                                     ></Text>
                                 </Flex>
                             </Span>
-                            <Span className="border"></Span>
-                            <Span>
+                            {/* <Span className="border"></Span> */}
+                            <Span style={{ width: '45%' }}>
                                 <Flex direction="column">
                                     <Text
-                                        size={16}
+                                        size={14}
                                         type="p"
                                         text="Duration"
                                     ></Text>
@@ -189,7 +195,7 @@ function HotelDetail({
                         </Flex>
                     </Flex>
                     <Span>
-                        <GridLayout className="stay_details_grid">
+                        <Flex wrap="wrap" gap='1rem'>
                             {checkIfAmenityIsOffered(
                                 "40 meters-squared Room"
                             ) && (
@@ -200,7 +206,7 @@ function HotelDetail({
                                     <Text
                                         whiteSpace="nowrap"
                                         type="p"
-                                        size={16}
+                                        size={14}
                                         weight={400}
                                         text="40 m²"
                                     />
@@ -217,7 +223,7 @@ function HotelDetail({
                                     <Text
                                         whiteSpace="nowrap"
                                         type="p"
-                                        size={16}
+                                        size={14}
                                         weight={400}
                                         text="Pet Friendly"
                                     />
@@ -235,7 +241,7 @@ function HotelDetail({
                                     <Text
                                         whiteSpace="nowrap"
                                         type="p"
-                                        size={16}
+                                        size={14}
                                         weight={400}
                                         text="Meals not included"
                                     />
@@ -254,7 +260,7 @@ function HotelDetail({
                                     <Text
                                         whiteSpace="nowrap"
                                         type="h1"
-                                        size={16}
+                                        size={14}
                                         weight={400}
                                         text="1 King Bed"
                                     />
@@ -266,7 +272,7 @@ function HotelDetail({
                                     <Text
                                         whiteSpace="nowrap"
                                         type="h1"
-                                        size={16}
+                                        size={14}
                                         weight={400}
                                         text="WiFi"
                                     />
@@ -285,13 +291,13 @@ function HotelDetail({
                                     <Text
                                         whiteSpace="nowrap"
                                         type="h1"
-                                        size={16}
+                                        size={14}
                                         weight={400}
                                         text="No Smoking"
                                     />
                                 </Flex>
                             )}
-                        </GridLayout>
+                        </Flex>
                     </Span>
                 </Span>
             </Span>

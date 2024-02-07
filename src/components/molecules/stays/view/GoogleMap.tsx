@@ -4,9 +4,13 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { ttColors } from '@/lib/theme/colors';
 import { IconBaseProps } from 'react-icons';
 import Text from '@/components/atoms/text';
-import { GoogleMap as RGoogleMap, useLoadScript, Marker as RMarker, Libraries } from '@react-google-maps/api';
+import { GoogleMap as RGoogleMap, useJsApiLoader , Marker as RMarker, Libraries } from '@react-google-maps/api';
 const libraries: Libraries = ['places'];
-
+const defContainerStyle = {
+    width: '100%',
+    height: '100%',
+    borderRadius: '10px'
+};
 
 interface MarkerProps extends IconBaseProps {
     lat: number;
@@ -31,18 +35,19 @@ interface GoogleMapProps {
     containerStyles?: CSSProperties; 
 }
 function GoogleMap({ lat, lng, zoom, containerStyles }: GoogleMapProps) {
-    const { isLoaded, loadError } = useLoadScript({
+    const { isLoaded, loadError } = useJsApiLoader({
+        id: 'google-map-script',
         googleMapsApiKey: 'AIzaSyAIrP6A0thEsQLUjz7bhVh0OH9_VNqspTg',
         libraries,
     });
     const center = { lat: Number(lat), lng: Number(lng) }
 
     return (!isLoaded ? (
-        <div>Loading maps</div>
+        <div>Loading Maps..</div>
     ) : (
-        <Flex width='100%' height='400px' styles={containerStyles}>
+        <Flex width='100%' height='500px' styles={containerStyles}>
             <RGoogleMap
-                mapContainerStyle={{ }}
+                mapContainerStyle={defContainerStyle}
                 zoom={zoom ?? 10}
                 center={center}
             >

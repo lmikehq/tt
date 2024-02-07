@@ -3,40 +3,35 @@
 import Link from "@/components/atoms/link";
 import Text from "@/components/atoms/text";
 import ErrorPage from "@/components/molecules/errorPage/ErrorPage";
-import BookingDetails from "@/components/molecules/flights/booking/BookingDetails";
 import Spinner from "@/components/molecules/icons/spinner";
+import CheckBookingDetails from "@/components/molecules/stays/booking/CheckBookingDetails";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
+import { useStayCheckBooking } from "@/lib/hooks/stay/booking.hook";
 import { ttColors } from "@/lib/theme/colors";
-import { Mode } from "@/lib/types";
 import { Box } from "@mui/material";
-import { useEffect } from "react";
 import { BsArrowRightShort } from "react-icons/bs";
 
-export default function ViewBooking({
+
+export default function ViewStayBooking({
     params,
 }: {
     params: { bookingId: string };
 }) {
     const { isMobile } = useScreenResolution();
-    const { checkBookingDetails, bookingDetailsMode, getBookingByIdResponse } =
-        useFlightBookingStore((state) => state);
+    const { data: bookingResponse, isLoading, isError } = useStayCheckBooking({ payload: { id: params.bookingId } }, { enabled: true })
 
-    useEffect(() => {
-        checkBookingDetails({ bookingId: params.bookingId });
-    }, [params.bookingId]);
 
     return (
         <Box bgcolor={ttColors.primary300} padding="2rem 0 4rem">
             <SectionLayout>
-                {bookingDetailsMode === Mode.loading ? (
+                {isLoading ? (
                     <Flex padding="10rem 0" justify="center" align="center">
                         <Spinner size="60px" />
                     </Flex>
-                ) : bookingDetailsMode === Mode.error ? (
-                    <ErrorPage text="Sorry, flight booking not found">
+                ) : isError ? (
+                    <ErrorPage text="Sorry, hotel booking not found">
                         <Link href="/contact" style={{ display: "flex" }}>
                             <Text
                                 type="p"
@@ -48,7 +43,7 @@ export default function ViewBooking({
                         </Link>
                     </ErrorPage>
                 ) : (
-                    <BookingDetails booking={getBookingByIdResponse!} />
+                    <CheckBookingDetails booking={bookingResponse[0]} />
                 )}
             </SectionLayout>
         </Box>

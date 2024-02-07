@@ -78,7 +78,7 @@ const ModalWrapper = styled.div`
 
   &.map_wrapper,
   &.gallery_modal {
-    height: 100%;
+    height: 100vh;
   }
   &.review_wrapper,
   &.gallery_modal {
@@ -123,9 +123,9 @@ export const GalleryModal = ({
       <ModalCenter>
         <ModalScroll className="gallery">
           <ModalWrapper className="gallery_modal">
-            <SectionLayout>
+            <SectionLayout style={{ height: '100vh', overflowY: 'auto' }}>
               <Flex
-                padding="1rem 0"
+                padding="1rem 0 0"
                 align="center"
                 gap="20px"
                 justify="space-between"
@@ -156,6 +156,8 @@ export const GalleryModal = ({
     </Modal>
   );
 };
+
+
 export const MapModal = ({
     open,
     handleClose,
@@ -165,7 +167,7 @@ export const MapModal = ({
 } : {
     open: boolean;
     handleClose: () => void;
-    stayResponse: ViewSingleStayResponse;
+    stayResponse?: ViewSingleStayResponse;
     lat: string | number;
     lng: string | number;
 }) => {
@@ -203,7 +205,7 @@ export const MapModal = ({
                     />
                     <Text
                         type="h4"
-                        text={stayResponse.address}
+                        text={stayResponse?.address ?? 'Address'}
                         weight={600}
                     />
                 </Flex>
@@ -360,55 +362,59 @@ function truncateText(text: string, maxWords: number): string {
 }
 
 export const ChangeSearchModal = ({
-  open,
-  handleClose,
+    open,
+    handleClose,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    open: boolean;
+    handleClose: () => void;
 }) => {
-  let HotelName = "Hotels available";
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <ModalCenter>
-        <ModalScroll className="search_box">
-          <ModalWrapper className="search_wrapper">
-            <Flex
-              padding="10px 35px"
-              align="center"
-              justify="space-between"
-              gap="20px"
-              styles={{ marginTop: "20px" }}
-            >
-              <Text
-                type="h1"
-                size={23}
-                text={`${truncateText(HotelName, 5)}`}
-                weight={600}
-              />
-              <CloseIcon
-                style={{ fontSize: "29px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
-            </Flex>
-            <Span style={{ padding: "15px" }}>
-              <SearchBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
-    </Modal>
-  );
+    const { isMobile } = useScreenResolution()
+    let HotelName = "Hotels available";
+
+    useEffect(() => {
+        const handleBodyOverflow = () => {
+            document.documentElement.style.overflow = open ? "hidden" : "auto";
+            document.body.style.overflow = open ? "hidden" : "auto";
+            };
+            handleBodyOverflow();
+        return () => {
+            document.documentElement.style.overflow = "auto";
+            document.body.style.overflow = "auto";
+        };
+    }, [open]);
+
+
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <ModalCenter>
+                <ModalScroll className="search_box" style={{ marginTop: isMobile ? '' : '-30vh' }}>
+                <ModalWrapper className="search_wrapper">
+                    <Flex
+                    padding="10px 35px"
+                    align="center"
+                    justify="space-between"
+                    gap="20px"
+                    styles={{ marginTop: "20px" }}
+                    >
+                    <Text
+                        type="h1"
+                        size={23}
+                        text={`${truncateText(HotelName, 5)}`}
+                        weight={600}
+                    />
+                    <CloseIcon
+                        style={{ fontSize: "29px", cursor: "pointer" }}
+                        onClick={handleClose}
+                    />
+                    </Flex>
+                    <Span style={{ padding: "15px" }}>
+                    <SearchBox onClose={handleClose} />
+                    </Span>
+                </ModalWrapper>
+                </ModalScroll>
+            </ModalCenter>
+        </Modal>
+    );
 };
 
 interface Reviews {

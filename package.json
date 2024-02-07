@@ -81,6 +81,7 @@
     "styled-components": "^6.0.8",
     "tailwindcss": "^3.3.2",
     "typescript": "5.0.4",
+    "use-debounce": "^10.0.0",
     "use-file-picker": "^1.7.0",
     "utf-8-validate": "^6.0.3",
     "validator": "^13.11.0",
