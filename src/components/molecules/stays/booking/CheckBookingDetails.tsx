@@ -63,7 +63,7 @@ function BookingHeader({ booking } : { booking: SingleStayCheckBookingResponse }
                     width={isMobile ? "80%" : "90%"}
                     textAlign='center'
                     type='p'
-                    text={`Your hotel booking has been ${queryParams?.status === 'cancelled' ? "confirmed. Please complete payment to confirm your booking." : " successfully confirmed! Keep an eye on your email as we'll be sending you the details shortly."}`}
+                    text={`Your hotel booking ${queryParams?.status === 'cancelled' ? " is pending. Please complete payment to confirm your booking." : " has been successfully confirmed! Keep an eye on your email as we'll be sending you the details shortly."}`}
                     size={isMobile ? 15 : 16}
                 />
             </Stack>

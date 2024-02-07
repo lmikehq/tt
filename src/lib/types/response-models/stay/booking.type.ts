@@ -50,8 +50,6 @@ export interface StayBookingPaymentResponse {
     data: { link: string;  };
     message: string;
     status: string;
-    // success: boolean;
-    // bookingData: BookingData
 }
 
 
