@@ -483,10 +483,18 @@ function AvailableMultiFlights() {
         isLoading,
     } = useSearchMulticity(searchMultiCityQuery, {
         enabled: searchMultiCityQuery.requests.length > 1,
+        keepPreviousData: true,
     });
 
-    const paginatedFlightData = useMemo(() => flightData, [flightData]);
+    const paginatedFlightData = useMemo(() => {
+        console.log(flightData, "flightData");
+        if (flightData) return flightData;
+    }, [flightData]);
     console.log("mmm", searchMultiCityQuery);
+    useEffect(() => {
+        console.log(flightData, "flightData");
+        console.log(isLoading, "flightData");
+    }, [isLoading]);
     const [bestSortData, cheapestSortData, fastestSortData, earliestSortData] =
         useSearchMulticityBySort(searchMultiCityQuery, {
             enabled: searchMultiCityQuery.requests.length > 1,
@@ -499,8 +507,6 @@ function AvailableMultiFlights() {
     const flightState = flightContext?.state;
     const params = useQueryParams();
     const { queryParams } = params;
-    // const searchParams = useSearchParams();
-    // const params = new URLSearchParams(searchParams.toString());
 
     const [modal, setModal] = useState<{
         isOpenLogin: boolean;
@@ -515,65 +521,6 @@ function AvailableMultiFlights() {
         share: null,
         route: "",
     });
-
-    // const best = useMemo(() => {
-    //     const pick = numSort(searchFlightsResults, "quality", "asc")[0];
-    //     return {
-    //         price: pick?.price ?? 0,
-    //         duration:
-    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-    //     };
-    // }, [searchFlightsResults]);
-
-    // const cheapest = useMemo(() => {
-    //     const pick = numSort(flightData, "price", "asc")[0];
-    //     return {
-    //         price: pick?.price ?? 0,
-    //         duration:
-    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-    //         pick,
-    //     };
-    // }, [flightData]);
-
-    // const fastest = useMemo(() => {
-    //     const arr = flightData.map((e) => ({
-    //         ...e,
-    //         travelTime: e.duration.total,
-    //     }));
-    //     const pick = numSort(arr, "travelTime", "asc")[0];
-    //     return {
-    //         price: pick?.price ?? 0,
-    //         duration:
-    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-    //     };
-    // }, [searchFlightsResults]);
-
-    // const earliest = useMemo(() => {
-    //     const pick = dateSort(searchFlightsResults, "utc_departure", "asc")[0];
-    //     return {
-    //         price: pick?.price ?? 0,
-    //         duration:
-    //             calculateDuration(pick?.utc_departure, pick?.utc_arrival) ?? "",
-    //         date: dayjs(pick?.utc_departure).format("Do MMM YY"),
-    //     };
-    // }, [searchFlightsResults]);
-
-    // const getLabel = (price: number) => {
-    //     let result = [];
-    //     if (price === cheapest.price) {
-    //         result.push("Cheapest");
-    //     }
-    //     if (price === best.price) {
-    //         result.push("Best");
-    //     }
-    //     if (price === fastest.price) {
-    //         result.push("Fastest");
-    //     }
-    //     if (price === earliest.price) {
-    //         result.push("Earliest");
-    //     }
-    //     return result;
-    // };
 
     const flightReq = {
         bags:
@@ -601,34 +548,12 @@ function AvailableMultiFlights() {
         setModal((prev) => ({ ...prev, isOpenShare: true, share: flight }));
     };
 
-    const updateSearchQueryHandler = (updatedParams: Partial<SearchQuery>) => {
-        const data = { ...searchQuery, ...updatedParams };
-        // router.push(pathName + constructQueryFromParams(updatedQuery));
-        updateSearchQuery({ data });
-        searchFlights({ data });
-    };
-
-    // const loadMoreItems = () => {
-    //     const limit = Number(searchQuery?.limit ?? 10);
-
-    //     const newCount = flightsResults.total > limit ? limit + 10 : limit;
-    //     if (newCount !== limit) {
-    //         updateSearchQuery({ data: { ...searchQuery, limit: newCount } });
-    //         searchMoreFlights({ data: { ...searchQuery, limit: newCount } });
-    //     }
-    // };
-
     const handleSearchResults = (params: SearchFlightsRequestQuery) => {
         updateSearchQuery({ data: params });
         searchFlights({ data: params });
     };
 
     const flight = flightState?.fleet[0];
-
-    const formComplete =
-        flight?.departureCountry &&
-        flight?.arrivalCountry &&
-        flight?.departureDate;
 
     useEffect(() => {
         const interval = setTimeout(() => {
@@ -654,7 +579,7 @@ function AvailableMultiFlights() {
                 ...requests[0],
                 curr: preFerredCurrency,
                 sort: requests[0].sort ?? FlightSortEnum.best,
-                limit: 50,
+                limit: 10,
             };
             updateSearchMultiCityQuery({ requests: data });
         }
@@ -695,64 +620,66 @@ function AvailableMultiFlights() {
                 multi={true}
             />
 
-            {isLoading ? (
-                <FlightBoxSkeleton />
-            ) : flightData?.length === 0 ? (
-                <Flex width="100%" justify="center" padding="9rem 0">
-                    <Text
-                        type="p"
-                        text="Sorry, no flights found"
-                        weight={600}
-                        size={20}
-                    />
-                </Flex>
-            ) : (
-                <>
-                    {paginatedFlightData?.map((flight, index) => (
-                        <MultiFlightPreviewCard
-                            key={"flight-" + index}
-                            flight={flight}
-                            selectFlight={({ bookingToken }) =>
-                                goToFlight(bookingToken)
-                            }
+            {
+                isLoading ? (
+                    <FlightBoxSkeleton />
+                ) : flightData?.length == 0 ? (
+                    <Flex width="100%" justify="center" padding="9rem 0">
+                        <Text
+                            type="p"
+                            text="Sorry, no flights found"
+                            weight={600}
+                            size={20}
                         />
-                    ))}
+                    </Flex>
+                ) : (
+                    <>
+                        {paginatedFlightData?.map((flight, index) => (
+                            <MultiFlightPreviewCard
+                                key={"flight-" + index}
+                                flight={flight}
+                                selectFlight={({ bookingToken }) =>
+                                    goToFlight(bookingToken)
+                                }
+                            />
+                        ))}
 
-                    {searchMultiCityQuery.requests.length > 0 &&
-                        (searchMultiCityQuery.requests[0].limit as number) <
-                            100 && (
-                            <Flex justify="center">
-                                <Button
-                                    width="100%"
-                                    background="#06062A"
-                                    padding="2rem 0"
-                                    disabled={isLoading}
-                                    onClick={() =>
-                                        updateMultiCityQueryAtIndex(0, {
-                                            limit:
-                                                (searchMultiCityQuery
-                                                    .requests[0]
-                                                    .limit as number) + 50,
-                                        })
-                                    }
-                                >
-                                    {isFetching ? (
-                                        <Spinner
-                                            fill={ttColors.primary}
-                                            size={"25px"}
-                                        />
-                                    ) : (
-                                        <Text
-                                            type="p"
-                                            text="Load More"
-                                            weight={500}
-                                            size={18}
-                                        />
-                                    )}
-                                </Button>
-                            </Flex>
-                        )}
-                </>
+                        {searchMultiCityQuery.requests.length > 0 &&
+                            (searchMultiCityQuery.requests[0].limit as number) <
+                                100 && (
+                                <Flex justify="center">
+                                    <Button
+                                        width="100%"
+                                        background="#06062A"
+                                        padding="2rem 0"
+                                        disabled={isLoading}
+                                        onClick={() =>
+                                            updateMultiCityQueryAtIndex(0, {
+                                                limit:
+                                                    (searchMultiCityQuery
+                                                        .requests[0]
+                                                        .limit as number) + 10,
+                                            })
+                                        }
+                                    >
+                                        {isFetching ? (
+                                            <Spinner
+                                                fill={ttColors.primary}
+                                                size={"25px"}
+                                            />
+                                        ) : (
+                                            <Text
+                                                type="p"
+                                                text="Load More"
+                                                weight={500}
+                                                size={18}
+                                            />
+                                        )}
+                                    </Button>
+                                </Flex>
+                            )}
+                    </>
+                )
                 // <React.Fragment>
                 //     {localSortFlights({
                 //         sort: searchQuery?.sort ?? "quality",
@@ -815,7 +742,7 @@ function AvailableMultiFlights() {
                 //         </Flex>
                 //     )}
                 // </React.Fragment>
-            )}
+            }
 
             <LoginModal
                 isOpen={modal.isOpenLogin}
