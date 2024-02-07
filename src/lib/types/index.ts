@@ -555,37 +555,41 @@ export interface ChatUserIdentity {
 }
 
 export interface IAccompany {
-  memberName: string,
-  relationship: string,
-  memberAddress: string,
-  memberOccupation: string;
-  memberEmail: string,
-  phoneNumber: string,
-  memberWorth: string,
-  gender: string,
-  dateOfBirth: string,
-  passportNumber: string,
-  passportIssuedCountry: { name: string, flag: string, code: string; },
-  issueDate: string,
-  expiryDate: string;
+    memberName: string;
+    relationship: string;
+    memberAddress: string;
+    memberOccupation: string;
+    memberEmail: string;
+    phoneNumber: string;
+    memberWorth: string;
+    gender: string;
+    dateOfBirth: string;
+    passportNumber: string;
+    passportIssuedCountry: CountryType;
+    issueDate: string;
+    expiryDate: string;
+}
+
+export interface DependantsFormInterface {
+    dependants: IAccompany[];
 }
 
 export interface IUpdatePassword {
-  oldPassword: string;
-  newPassword: string;
-  confirmPassword: string;
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
 }
 
 export interface IReferralBankInfo {
-  bankName: string;
-  accountName: string;
-  accountNumber: string;
-  referrerId?: string;
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    refereeId?: string;
 }
 
 export interface IReferralPersonalInfo {
-  id: string;
-  referrerId: string;
-  email: string;
-  name: string;
+    id: string;
+    referrerId: string;
+    email: string;
+    name: string;
 }

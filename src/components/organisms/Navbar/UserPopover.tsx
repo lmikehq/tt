@@ -359,7 +359,7 @@ const CustomPopover = () => {
                 border: "1px solid #ccc",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
                 borderRadius: "5px",
-                padding: "10px",
+                // padding: "10px",
                 zIndex: 1,
                 top: "40px",
                 right: "0",
@@ -397,7 +397,7 @@ const CustomPopover = () => {
                   icon: <LogoutIcon />,
                   url: "/logout",
                 },
-              ].map((item, i) =>
+              ].map((item, i, arr) =>
                 item.title === "Logout" ? (
                   <div
                     onClick={() => {
@@ -405,7 +405,7 @@ const CustomPopover = () => {
                       router.push("/auth/login");
                     }}
                     key={i}
-                    style={{ margin: "15px 0px" }}
+                    style={{ margin: i === 0 ? "0px 0px" : i === arr.length - 1 ? "0px 0px" : "15px 0px" }}
                   >
                     <Flex
                       align="center"
@@ -425,7 +425,7 @@ const CustomPopover = () => {
                     </Flex>
                   </div>
                 ) : (
-                  <div key={i} style={{ margin: "15px 0px" }}>
+                  <div key={i} style={{ margin: i === 0 ? "0px 0px" : "15px 0px" }}>
                     <Link href={item.url}>
                       <Flex
                         align="center"

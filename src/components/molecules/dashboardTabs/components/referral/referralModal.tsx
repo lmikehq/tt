@@ -22,6 +22,8 @@ import { referralInfoSchema, referralInfoVal } from "@/lib/types/schema";
 import ReferralService from "@/lib/services/dashboard/referral.service";
 import { useUserStore } from "@/lib/store/useStore";
 import toast from "react-hot-toast";
+import ReusableModal from "../dashboardModal";
+import { RefetchProp } from "types";
 
 interface ReferralModalProps {
   state: boolean;
@@ -29,13 +31,14 @@ interface ReferralModalProps {
   setOpenAccountModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setSubmissionModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenOtpModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch?: RefetchProp;
 }
 
 export const ReferralModal = ({ state, setState, setOpenAccountModal }: ReferralModalProps) => {
   const { referrerPersonalInfo } = referralStore((state) => state);
   const { user } = useUserStore((state) => state);
 
-  const isMobile = useScreenResolution();
+  const { isMobile } = useScreenResolution();
   const handleClose = () => {
     setState(false);
   };
@@ -48,34 +51,16 @@ export const ReferralModal = ({ state, setState, setOpenAccountModal }: Referral
   };
 
   return (
-    <Dialog
+    <ReusableModal
       open={state}
       onClose={handleClose}
-      aria-labelledby="claim-referral-bonus-modal"
-      aria-describedby="claim referral bonus modal"
-      sx={{
-        fontFamily: 'nunito',
-        '.css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-          borderRadius: '12px'
-        }
-      }}
+      headerText=""
+      description=""
+      maxWidth={isMobile ? "90%" : "647px"}
+      width={isMobile ? "90%" : "647px"}
+      showButton={false}
     >
-      <Flex align="center" justify="flex-end" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
-        <Flex
-          align="center"
-          justify="center"
-          borderRadius="4px"
-          background={ttColors.grayishAsh}
-          styles={{ cursor: 'pointer' }}
-          height="30px"
-          width="30px"
-          onClick={() => handleClose()}
-        >
-          <IoMdClose />
-        </Flex>
-      </Flex>
-
-      <Box sx={{ padding: isMobile ? '35px 20px' : '35px 62px' }}>
+      <Box>
         <Flex align="center" justify="center" direction="column">
           <PiMedalMilitaryFill size={95} />
           <Text type="h4" text="Referral Claim" weight={700} size={32} />
@@ -90,8 +75,9 @@ export const ReferralModal = ({ state, setState, setOpenAccountModal }: Referral
               weight={400}
               styles={{ textAlign: 'center' }}
               color={ttColors.lighterGray}
+              margin={0}
             />
-            <Text type="p" text={`${referrerPersonalInfo.name}?`} weight={500} textAlign="center" color={ttColors.dark} />
+            <Text type="p" text={`${referrerPersonalInfo.name}?`} weight={500} textAlign="center" color={ttColors.dark} margin={0} />
           </Flex>
         </Section>
 
@@ -105,7 +91,7 @@ export const ReferralModal = ({ state, setState, setOpenAccountModal }: Referral
           </Button>
         </Flex>
       </Box>
-    </Dialog>
+    </ReusableModal>
   );
 };
 
@@ -125,7 +111,9 @@ export const ReferralSubmissionModal = ({ state, setState }: ReferralModalProps)
       sx={{
         fontFamily: 'nunito',
         '.css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-          borderRadius: '12px'
+          borderRadius: '12px',
+          width: isMobile ? "90%" : "647px",
+          maxWidth: isMobile ? "90%" : "647px"
         }
       }}
     >
@@ -204,9 +192,10 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
       addReferrerBankInfo({ accountName: values.accountName, accountNumber: values.accountNumber, bankName: values.bankName });
       // SEND THE OTP TO THE USER
       const res = await ReferralService.getOTP(referrerPersonalInfo.id);
-      console.log({ res });
-      // TOAST OTP SENT
-      toast.success('Check your email for OTP!');
+      if (res.success === true) {
+        // TOAST OTP SENT
+        toast.success('Check your email for OTP!');
+      }
 
       if (setOpenOtpModal) {
         handleClose();
@@ -216,53 +205,16 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
   });
 
   return (
-    <Dialog
+    <ReusableModal
       open={state}
       onClose={handleClose}
-      aria-labelledby="claim-rewards-modal"
-      aria-describedby="fill-in-the-following-form-to-claim-your-reward"
-      sx={{
-        fontFamily: 'nunito',
-        '.css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-          borderRadius: '12px',
-          width: '647px',
-          maxWidth: '647px',
-          maxHeight: isMobile ? '550px' : '775px',
-          overflow: 'auto'
-          // padding: '20px 89px 40px'
-        }
-      }}
+      headerText="Claim Rewards"
+      description="Fill in the following information to get rewarded"
+      showButton={false}
+      maxWidth={isMobile ? "90%" : "647px"}
+      width={isMobile ? "90%" : "647px"}
     >
-      <Flex align="center" justify="flex-end" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
-        <Flex
-          align="center"
-          justify="center"
-          borderRadius="4px"
-          background={ttColors.grayishAsh}
-          styles={{ cursor: 'pointer' }}
-          height="30px"
-          width="30px"
-          onClick={() => handleClose()}
-        >
-          <IoMdClose />
-        </Flex>
-      </Flex>
-
-      <Section padding={isMobile ? '0 20px 40px' : '0 89px 40px'}>
-        <Flex direction="column" align="center" justify="center" gap="1px" margin="0 0 34px">
-          <Text type="p" text="Claim Rewards" size={isMobile ? 22 : 32} weight={600} />
-          <Text type="p" size={isMobile ? 12 : 16} text="Fill in the following information to get rewarded" textAlign="center" color={ttColors.lighterGray} />
-        </Flex>
-
-        {/* <Flex direction="column" align="center" justify="center" gap="1px" margin="0 0 44px">
-          {referralAmountLoading ? (
-            <Spinner size="40px" fill={ttColors.primary} />
-          ) : (
-            <Text type="h4" text={referralAmountData?.price?.length > 1 ? referralAmountData : "NGN 20,000"} weight={600} size={isMobile ? 28 : 48} />
-          )}
-          <Text type="p" size={isMobile ? 12 : 16} text="Visa Application Referral Reward" color={ttColors.lighterGray} />
-        </Flex> */}
-
+      <Section>
         <form action="" onSubmit={formik.handleSubmit}>
           <Flex direction="column" gap="16px" align="center" justify="center">
             <Flex gap="12px" direction="column">
@@ -303,16 +255,17 @@ export const ReferralUserBankAccountModal = ({ state, setState, setOpenOtpModal 
           </Flex>
         </form>
       </Section>
-    </Dialog>
+    </ReusableModal>
+
   );
 };
 
 
-export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: ReferralModalProps) => {
+export const ReferralOTPModal = ({ state, setState, setSubmissionModal, refetch }: ReferralModalProps) => {
   const { referrerBankInfo, referrerPersonalInfo } = referralStore((state) => state);
   const { isMobile } = useScreenResolution();
   const [otp, setOTP] = useState(['', '', '', '']);
-  const [timer, setTimer] = useState<number>(30);
+  const [timer, setTimer] = useState<number>(10 * 60);
   const [isTimerRunning, setIsTimerRunning] = useState(true);
   const inputRef = useRef<HTMLInputElement[] | null>([]);
   const [enable, setEnable] = useState(false);
@@ -335,18 +288,26 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
     return () => clearInterval(interval);
   }, [isTimerRunning]);
 
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+  };
+
 
   const handleClose = () => {
     setState(false);
   };
 
   const handleResendOTP = async () => {
-    setTimer(30);
+    setTimer(10 * 60);
     setIsTimerRunning(true);
     // CALL API TO RESEND OTP TO THE USER
     const response = await ReferralService.getOTP(referrerPersonalInfo.id);
-    console.log('response from otp', response);
-    toast.success('OTP re-sent!, check your email');
+
+    if (response.success === true) {
+      toast.success('OTP sent!, check your email');
+    }
   };
 
   // VERIFY OTP
@@ -392,17 +353,19 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
   }, []);
 
   const handleVerifyOTP = async () => {
+
     const response = await ReferralService.verifyOTP(otp.join(''), {
       accountName: referrerBankInfo.accountName,
       accountNumber: referrerBankInfo.accountNumber,
       bankName: referrerBankInfo.bankName,
-      referrerId: referrerPersonalInfo.referrerId
+      refereeId: referrerPersonalInfo.id
     });
 
     if (response.success === true) {
       if (setSubmissionModal) {
         handleClose();
         setSubmissionModal(true);
+        refetch && refetch();
       }
     } else {
       toast.error("OTP is invalid, Try again!");
@@ -411,49 +374,19 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
   };
 
   return (
-    <Dialog
+    <ReusableModal
       open={state}
       onClose={handleClose}
-      aria-labelledby="claim-rewards-modal"
-      aria-describedby="fill-in-the-following-form-to-claim-your-reward"
-      sx={{
-        fontFamily: 'nunito',
-        '.css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-          borderRadius: '12px',
-          width: '523px',
-          maxWidth: '523px',
-          // padding: '20px 89px 40px'
-        }
-      }}
+      width={isMobile ? "90%" : "647px"}
+      maxWidth={isMobile ? "90%" : "647px"}
+      headerText="OTP VERIFICATION"
+      description="Please check your Email for the code."
+      showButton={false}
     >
-      <Flex align="center" justify="flex-end" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
-        <Flex
-          align="center"
-          justify="center"
-          borderRadius="4px"
-          background={ttColors.grayishAsh}
-          styles={{ cursor: 'pointer' }}
-          height="30px"
-          width="30px"
-          onClick={() => handleClose()}
-        >
-          <IoMdClose />
-        </Flex>
-      </Flex>
-
-      <Section padding={isMobile ? '0 20px 40px' : "0 50px 40px"}>
-        <Flex direction="column" align="center" justify="center" gap="10px" margin="0 0 10px">
-          <Text type="h3" text="OTP VERIFICATION" size={32} weight={600} />
-          <Text
-            type="p"
-            text="Please check your Email for the code."
-            color={ttColors.lighterGray}
-            textAlign="center"
-          />
-        </Flex>
+      <Section>
         <Flex align="center" justify="center" gap="2px" direction="column" margin="0 0 38px">
-          <p>{timer === 0 ? <Text type="p" text="OTP has expired" color={ttColors.red} /> : <Text type="p" text={`Resend in ${timer} seconds`} />}</p>
-          {timer === 0 ? (<Text type="p" text="Resend OTP" color="#007bff" cursor="pointer" onClick={handleResendOTP} />) : null}
+          <p style={{ margin: 0 }}>{timer === 0 ? <Text margin={0} type="p" text="OTP has expired" color={ttColors.red} /> : <Text margin={0} type="p" text={`Resend in ${formatTime(timer)} seconds`} />}</p>
+          {timer === 0 ? (<Text margin={0} type="p" text="Resend OTP" color="#007bff" cursor="pointer" onClick={handleResendOTP} />) : null}
         </Flex>
 
         <Flex margin="0 0 56px" gap="16px" align="center" justify="center">
@@ -469,7 +402,7 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
               className="otp-input"
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handlekeyDown(e, index)}
-              value={otp[index]}
+              value={otp[index]?.toLocaleUpperCase()}
             />
           ))}
         </Flex>
@@ -489,6 +422,7 @@ export const ReferralOTPModal = ({ state, setState, setSubmissionModal }: Referr
           </Button>
         </Flex>
       </Section>
-    </Dialog>
+    </ReusableModal>
+
   );
 };

@@ -22,7 +22,7 @@ interface formProps {
   steps: string[];
   index: number;
   persistForm: () => void;
-  formik: FormikProps<{ education: EducationDetailsInterface[] }>;
+  formik: FormikProps<{ education: EducationDetailsInterface[]; }>;
 }
 
 function EducationInfo({ steps, index, persistForm, formik }: formProps) {
@@ -56,8 +56,8 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                     <EducationForm
                       formik={formik}
                       values={education}
-                        count={index}
-                        length={arr.length}
+                      count={index}
+                      length={arr.length}
                     />
                     {formik.values.education.length > 1 && (
                       <Flex
@@ -72,8 +72,8 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                           type="p"
                           text="Delete Education"
                           color={ttColors.red}
-                            weight="500"
-                            size={15}
+                          weight="500"
+                          size={15}
                         />
                       </Flex>
                     )}

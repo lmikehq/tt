@@ -18,7 +18,7 @@ function DownloadVisaApplicationPage() {
     options: { retry: 2 }
   });
 
-  console.log({ data });
+  // console.log({ data });
 
   // TYPE GUARD FUNCTION
   // function isVisaApplication(obj: any): obj is VisaApplication {

@@ -10,7 +10,6 @@ interface ParamsProp {
 export const useGetAllVisaApplication = ({ query, options }: ParamsProp) => {
   return useQuery({
     queryFn: () => {
-      console.log('this is the query end date', query.endDate);
       if (query.endDate === undefined || query.endDate.length < 1 || query.endDate === '01-01-1970') {
         return VisaService.getAllApplications({
           search: query.search,

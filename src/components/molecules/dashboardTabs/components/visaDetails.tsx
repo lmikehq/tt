@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { GrFormClose } from "react-icons/gr";
-import { HiClock, HiOutlinePlusSm } from "react-icons/hi";
+import { HiClock, HiDotsVertical, HiOutlinePlusSm } from "react-icons/hi";
 import { IoCalendar, IoEyeOutline } from "react-icons/io5";
 import {
   MdKeyboardArrowDown,
@@ -48,6 +48,11 @@ const Logo = styled.div`
   padding: 10px;
   border-radius: 8px;
 
+  @media screen and (max-width: 1200px){
+    height: 40px;
+    width: 50px;
+  }
+
   @media screen and (max-width: 900px) {
     height: 41px;
     width: 65px;
@@ -60,6 +65,14 @@ const DateIcon = styled.div`
   height: 45px;
   width: 46px;
   border-radius: 8px;
+
+  @media screen and (max-width: 1024px){
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const VisaStatus = styled.div`
@@ -69,6 +82,10 @@ const VisaStatus = styled.div`
   // height: 45px;
   // width: 25%;
   text-align: center;
+
+  @media screen and (max-width: 1024px) {
+    padding: 10px 10px;
+  }
 
   @media screen and (max-width: 900px) {
     width: 100%;
@@ -125,7 +142,7 @@ interface VisaDataProps {
 }
 
 function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }) {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
     type: "",
@@ -377,7 +394,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
               weight={900}
               size={isMobile ? "14px" : "20px"}
               textAlign={isMobile ? "center" : "left"}
-              text={`${visa.homeCountry.name} — ${visa.destination.name}`}
+              text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${(visa?.destination?.code)})`}
               letterSpacing={"unset"}
             />
             <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
@@ -589,7 +606,12 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         </Flex>
       ) : (
         <>
-          <Grid columns='' gap="24px" style={{ gridTemplateColumns: '80px 1fr 25% 20%' }} align="center">
+          <Grid
+            columns=''
+            gap={isTablet ? "10px" : "24px"}
+            style={{ gridTemplateColumns: isTablet ? "50px 2fr 1fr 27%" : '80px 1fr 25% 20%' }}
+            align="center"
+          >
             <Logo>
               {visa?.destination?.code && (
                 <img
@@ -625,9 +647,9 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                   type="p"
                   letterSpacing="1px"
                   weight={900}
-                  size={isMobile ? "1rem" : "1.3rem"}
+                  size={isTablet ? "13px" : "1.3rem"}
                   textAlign={isMobile ? "center" : "left"}
-                  text={`${visa?.homeCountry?.name} — ${visa?.destination?.name}`}
+                  text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${visa?.destination?.code})`}
                 />
 
                 <Flex justify="flex-start" gap="0px">
@@ -638,14 +660,14 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                     width="90%"
                   >
                     <DateIcon>
-                      <IoCalendar color="#8DD3BB" size="1.5rem" />
+                      <IoCalendar color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
                     </DateIcon>
                     <Section>
                       <Text
                         type="p"
                         text="Application Date"
                         color="#112211"
-                        size={12}
+                        size={isTablet ? 11 : 12}
                         weight={600}
                         opacity="60%"
                       />
@@ -653,7 +675,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         type="h5"
                         text={format(new Date(visa.updatedAt), "dd MMM, yyyy")}
                         color="#112211"
-                        size={14}
+                        size={isTablet ? 12 : 14}
                         weight={500}
                       />
                     </Section>
@@ -661,7 +683,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
 
                   <Flex justify="flex-start" gap="10px">
                     <DateIcon>
-                      <HiClock color="#8DD3BB" size="1.5rem" />
+                      <HiClock color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
                     </DateIcon>
                     <section>
                       <Text
@@ -669,7 +691,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         text="Payment Fee"
                         whiteSpace="nowrap"
                         color="#112211"
-                        size={12}
+                        size={isTablet ? 11 : 12}
                         weight={600}
                         opacity="60%"
                       />
@@ -691,7 +713,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         // }
                         decoration={applied && voucher ? "line-through" : ""}
                         color="#112211"
-                        size={14}
+                        size={isTablet ? 12 : 14}
                         weight={500}
                       />
                     </section>
@@ -716,7 +738,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                       : visa.applicationStatus
                   }
                   weight={800}
-                  size={isMobile ? 13 : 14}
+                  size={isTablet ? '11px' : 14}
                   color={textAndBgColor.text}
                 />
               </VisaStatus>
@@ -729,7 +751,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
               align="center"
             >
               <Button
-                padding="8px 16px"
+                // padding="8px 16px"
                 width={isMobile ? "300px!important" : "100px !important"}
                 background="#06062A"
                 height="48px"
@@ -737,6 +759,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                   marginLeft: isMobile ? "0px" : "55px",
                   display: isMobile ? "flex" : "inline-flex",
                   maxWidth: "100%",
+                  padding: "8px 8px !important"
                 }}
                 disabled={getButtonInformation().disabled}
                 onClick={getButtonInformation().fn}
@@ -745,7 +768,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                   type="h5"
                   text={getButtonInformation().text}
                   weight={500}
-                  size={14}
+                  size={isTablet ? 12 : 14}
                   styles={{
                     width: "max-content",
                     textAlign: "center",
@@ -753,6 +776,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                 />
               </Button>
               {!isMobile && (
+
                 <Section
                   width="60px"
                   styles={{
@@ -764,20 +788,29 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                     borderBottom="1px solid #87CEEB"
                     align="center"
                     justify="center"
-                    padding="8px"
+                    padding={isTablet ? "0" : "8px"}
                     borderRadius="4px"
                     height="48px"
-                    width="48px"
+                    width={isTablet ? "30px" : "48px"}
                     styles={{ cursor: "pointer" }}
                     onClick={handleAccordionClick}
                   >
                     {isOpen ? (
-                      <MdKeyboardArrowUp size="1.5rem" />
+                      isTablet ? (
+                        <HiDotsVertical size="1.5rem" color={ttColors.dark} />
+                      ) : (
+                        <MdKeyboardArrowUp size="1.5rem" />
+                      )
                     ) : (
-                      <MdKeyboardArrowDown size="1.5rem" />
+                      isTablet ? (
+                        <HiDotsVertical size="1.5rem" color={ttColors.dark} />
+                      ) : (
+                        <MdKeyboardArrowDown size="1.5rem" />
+                      )
                     )}
                   </Flex>
                 </Section>
+
               )}
             </Flex>
           </Grid>
@@ -874,7 +907,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                       </Flex>
                     </Section>
                     {/*OPEN SET ACCOMPANY MODAL */}
-                    <div>
+                    {/* <div>
                       <Flex justify="flex-end">
                         <Button
                           width="fit-content"
@@ -903,10 +936,10 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                           />
                         </Button>
                       </Flex>
-                    </div>
+                    </div> */}
                   </Grid>
 
-                  <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+                  {/* <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
                     <div></div>
                     <Section>
                       <Flex>
@@ -925,7 +958,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         <Text type="p" text='In Progress' weight={500} />
                       </Flex>
                     </Flex>
-                  </Grid>
+                  </Grid> */}
                 </Section>
               )}
             </Section>

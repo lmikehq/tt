@@ -6,11 +6,12 @@ import { ttColors } from "@/lib/theme/colors";
 import Text from "@/components/atoms/text";
 import { useFormik } from "formik";
 import Button from "@/components/atoms/button";
-import { accompanySchema, accompanyVal } from "@/lib/types/schema";
+import { accompanyArraySchema, accompanyVal } from "@/lib/types/schema";
 import AccompanyComponent from "./visa/accompany";
 import { accompanyStore } from "@/lib/store/dashboard/accompany.store";
 import { useState } from "react";
 import { IAccompany } from "@/lib/types";
+import ReusableModal from "./dashboardModal";
 
 interface Props {
   open: boolean;
@@ -72,7 +73,6 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
     setPage((prev) => (prev + 1));
   };
 
-  console.log({ dependentsData });
 
   const renderPage = (step: number) => {
     switch (step) {
@@ -93,7 +93,25 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
   };
 
   return (
-    <Dialog
+    <ReusableModal
+      headerText="Add Accompanies"
+      description="Enter details of people you want to travel with."
+      open={open}
+      onClose={() => {
+        handleClose();
+      }}
+      maxWidth="827px"
+      width={isMobile ? "90%" : "827px"}
+    >
+      <Box sx={{ padding: isMobile ? '0 24px 20px' : '0 74px 41px' }}>
+        {renderPage(page)}
+      </Box>
+    </ReusableModal>
+  );
+};
+
+/**
+ *  <Dialog
       open={open}
       onClose={() => {
         setPage(1);
@@ -107,7 +125,7 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
         }
       }}
     >
-      <Flex align="center" justify="flex-end" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
+      <Flex align="center" justify="flex-end" width="827px" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
         <Flex
           align="center"
           justify="center"
@@ -135,12 +153,9 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
           <Text type='p' text='Enter details of people you want to travel with.' textAlign="center" color={ttColors.lighterGray} />
         </Flex>
 
-        {/* {numberOfDependants.map((dependant, index) => {
-          return <AccompanyComponent index={index} formik={formik} handleRemove={handleRemove} initialValues={dependant} />;
-        })} */}
-        {renderPage(page)}
+      
+{ renderPage(page); }
 
-      </Box>
-    </Dialog>
-  );
-};
+      </Box >
+    </Dialog >
+ * */
