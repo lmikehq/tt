@@ -60,7 +60,7 @@ function BookingHeader({ booking } : { booking: SingleStayCheckBookingResponse }
                 {paymentComplete ? <GoCheckCircleFill size={60} color={ttColors.primaryLight} />  : <PiDotsThreeCircle size={60} color={ttColors.primaryLight} />}
                 <Text type='h1' text={`Hotel Booking ${paymentComplete ? 'Successful' : 'Pending'}`} weight={700} size={isMobile ? 20 : 28} />
                 <Text
-                    width={isMobile ? "80%" : "90%"}
+                    width={isMobile ? "80%" : "65%"}
                     textAlign='center'
                     type='p'
                     text={`Your hotel booking ${queryParams?.status === 'cancelled' ? " is pending. Please complete payment to confirm your booking." : " has been successfully confirmed! Keep an eye on your email as we'll be sending you the details shortly."}`}
