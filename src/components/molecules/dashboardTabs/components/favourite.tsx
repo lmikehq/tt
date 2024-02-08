@@ -26,7 +26,7 @@ const Favourite = () => {
   const content = {
     title: "You've got no favorite - Let's help you get Started",
     links: [
-      { text: "Apply for Visa", url: "/visa" },
+      { text: "Apply for Visa", url: "/visa/apply" },
       { text: "Book flight", url: "/flight" },
     ],
   };

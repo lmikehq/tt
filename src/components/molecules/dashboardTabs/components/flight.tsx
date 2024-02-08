@@ -78,7 +78,7 @@ const Flight = () => {
   const content = {
     title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
     links: [
-      { text: "Apply for Visa", url: "/visa" },
+      { text: "Apply for Visa", url: "/visa/apply" },
       { text: "Book flight", url: "/flight" },
       { text: "Search Stays", url: "/stay" }
     ],

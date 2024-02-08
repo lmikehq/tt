@@ -307,8 +307,8 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                           item.action
                             ? item.action
                             : () => {
-                                router.push(item.url);
-                              }
+                              router.push(item.url);
+                            }
                         }
                       >
                         <Flex
@@ -359,13 +359,17 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                 borderRadius="50%"
                 styles={{ flex: "none" }}
               >
-                <Text
-                  type="h5"
-                  color={ttColors.light}
-                  weight={400}
-                  size={32}
-                  text={user?.firstName?.charAt(0) ?? "T"}
-                />
+                {user && user?.profilePicture ? (
+                  <img src={user?.profilePicture} alt='user-profile' height={60} width={60} style={{ objectFit: 'contain', maxHeight: "60px", maxWidth: "60px", borderRadius: "100%" }} />
+                ) : (
+                  <Text
+                    type="h5"
+                    color={ttColors.light}
+                    weight={400}
+                    size={32}
+                    text={user?.firstName?.charAt(0) ?? "T"}
+                  />
+                )}
               </Flex>
               <Section styles={{ minWidth: 0 }}>
                 <Text
@@ -406,8 +410,8 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                         item.action
                           ? item.action
                           : () => {
-                              router.push(item.url);
-                            }
+                            router.push(item.url);
+                          }
                       }
                     >
                       <Flex

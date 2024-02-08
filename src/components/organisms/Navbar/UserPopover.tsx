@@ -98,6 +98,7 @@ import { useNotificationStore } from "@/lib/store/notification.store";
 import { NotificationProps } from "@/lib/types/response-models/dashboard";
 import { NotificationService } from "@/lib/services/dashboard/notification.service";
 import toast from "react-hot-toast";
+import Section from "@/components/molecules/section";
 
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -237,64 +238,76 @@ const CustomPopover = () => {
                     <Text weight={500} type="p" text="Today"></Text>
                   </Flex>
                 </Span>
-                {notifications.map((notification: NotificationProps, index) => (
-                  <Span
-                    className="not_list"
-                    key={index}
-                    style={{ padding: "8px 0px" }}
-                  >
-                    <Flex align="center" gap="8px">
-                      <Flex
-                        styles={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                        }}
-                      >
-                        <img
-                          style={{
-                            objectFit: "cover",
-                            borderRadius: "50%",
-                          }}
-                          src="/assets/images/stays/admin.png"
-                          alt="admin"
-                        />
-                      </Flex>
-                      <Flex align="center" gap="6px">
-                        <Span>
-                          <Text
-                            color={ttColors.primary600}
-                            type="h4"
-                            weight={500}
-                            whiteSpace="nowrap"
-                            text="Admin"
-                          ></Text>
-                        </Span>
 
-                        <Span style={{ width: "100px" }}>
-                          <TruncateMarkup lines={1}>
-                            <p style={{ color: "var(--text-gray-color)" }}>
-                              {notification.message}
-                            </p>
-                          </TruncateMarkup>
+                <Section margin="20px 0">
+                  {notifications.length > 0 ? (
+                    <>
+                      {notifications.map((notification: NotificationProps, index) => (
+                        <Span
+                          className="not_list"
+                          key={index}
+                          style={{ padding: "8px 0px" }}
+                        >
+                          <Flex align="center" gap="8px">
+                            <Flex
+                              styles={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <img
+                                style={{
+                                  objectFit: "cover",
+                                  borderRadius: "50%",
+                                }}
+                                src="/assets/images/stays/admin.png"
+                                alt="admin"
+                              />
+                            </Flex>
+                            <Flex align="center" gap="6px">
+                              <Span>
+                                <Text
+                                  color={ttColors.primary600}
+                                  type="h4"
+                                  weight={500}
+                                  whiteSpace="nowrap"
+                                  text="Admin"
+                                ></Text>
+                              </Span>
+
+                              <Span style={{ width: "100px" }}>
+                                <TruncateMarkup lines={1}>
+                                  <p style={{ color: "var(--text-gray-color)" }}>
+                                    {notification.message}
+                                  </p>
+                                </TruncateMarkup>
+                              </Span>
+                            </Flex>
+                            <Flex align="center">
+                              <FiberManualRecordIcon
+                                style={{
+                                  color: ttColors.primary600,
+                                  fontSize: "16px",
+                                }}
+                              />
+                              <Text
+                                color="var(--text-gray-color)"
+                                type="p"
+                                text="20mins"
+                              ></Text>
+                            </Flex>
+                          </Flex>
                         </Span>
-                      </Flex>
-                      <Flex align="center">
-                        <FiberManualRecordIcon
-                          style={{
-                            color: ttColors.primary600,
-                            fontSize: "16px",
-                          }}
-                        />
-                        <Text
-                          color="var(--text-gray-color)"
-                          type="p"
-                          text="20mins"
-                        ></Text>
-                      </Flex>
+                      ))}
+                    </>
+                  ) : (
+                    <Flex align="center" justify="center">
+                      <Text type="p" text="No Notification" />
                     </Flex>
-                  </Span>
-                ))}
+                  )}
+                </Section>
+
                 <Span className="btn">
                   <Button
                     background={ttColors.dark}
@@ -333,8 +346,8 @@ const CustomPopover = () => {
             cursor="pointer"
             onClick={() => setIsVisible(!isVisible)}
           >
-            {user && user.avatar ? (
-              <img src={user.image} alt="" />
+            {user && user.profilePicture ? (
+              <img src={user.profilePicture} alt="user-profile" height={40} width={40} style={{ borderRadius: '100%', objectFit: 'contain', height: "35px", width: "35px", maxWidth: "35px", maxHeight: "35px" }} />
             ) : (
               <RxAvatar size={48} />
             )}
@@ -344,7 +357,7 @@ const CustomPopover = () => {
                 type="p"
                 size={18}
                 weight={600}
-                text={`${user?.lastName} ${user?.firstName} `}
+                text={`${user?.firstName} ${user?.lastName}`}
               ></Text>
               <Text type="p" size={13} text={`${user.email}`} color={'#333'}></Text>
             </Flex>

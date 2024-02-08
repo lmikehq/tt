@@ -40,6 +40,8 @@ import { AddVisaAccompanyModal } from "./visaAccompanyModal";
 import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
 import SetVisaAccompanyModal from "./setVisaAccompanyModal";
 import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import { accompanyVal, dependantsForm, dependantsFormSchema } from "@/lib/types/schema";
 
 const Logo = styled.div`
   height: 64px;
@@ -326,6 +328,19 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
     },
   ];
 
+  // DEPENDANTS FORMIK 
+  const dependantsFormik = useFormik({
+    initialValues: dependantsForm,
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: dependantsFormSchema,
+    onSubmit: (values) => {
+      // some code
+      console.log('the form can be submitted');
+      console.log({ values });
+    }
+  });
+
   return (
     <Section
       styles={{
@@ -362,6 +377,10 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
       <AddVisaAccompanyModal
         open={modalState.open && modalState.type === 'add-accompany'}
         setState={setModalState}
+        formik={dependantsFormik}
+        persistForm={() => { }}
+        index={1}
+        steps={[""]}
       />
 
       {isMobile ? (
@@ -907,7 +926,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                       </Flex>
                     </Section>
                     {/*OPEN SET ACCOMPANY MODAL */}
-                    {/* <div>
+                    <div>
                       <Flex justify="flex-end">
                         <Button
                           width="fit-content"
@@ -936,10 +955,10 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                           />
                         </Button>
                       </Flex>
-                    </div> */}
+                    </div>
                   </Grid>
 
-                  {/* <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+                  <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
                     <div></div>
                     <Section>
                       <Flex>
@@ -958,7 +977,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         <Text type="p" text='In Progress' weight={500} />
                       </Flex>
                     </Flex>
-                  </Grid> */}
+                  </Grid>
                 </Section>
               )}
             </Section>

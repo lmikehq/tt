@@ -272,7 +272,7 @@ export const FieldAsDate = (props: FieldProps) => {
   return (
     <Section
       styles={{ position: "relative", ...styles }}
-      padding="0 0 1.2rem 0"
+      padding={padding || "0 0 1.2rem 0"}
     >
       <DatePicker
         disabled={disabled}
