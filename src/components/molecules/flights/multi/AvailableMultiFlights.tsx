@@ -46,6 +46,7 @@ import {
     parseMultiFlightFilters,
 } from "@/lib/types/request-models/flight/multi/search.type";
 import MultiFlightPreviewCard from "../components/MultiFlightPreviewCard";
+import { SearchMultiFlightsResponse } from "@/lib/types/response-models/flight/multi_flight.type";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -486,15 +487,6 @@ function AvailableMultiFlights() {
         keepPreviousData: true,
     });
 
-    const paginatedFlightData = useMemo(() => {
-        console.log(flightData, "flightData");
-        if (flightData) return flightData;
-    }, [flightData]);
-    console.log("mmm", searchMultiCityQuery);
-    useEffect(() => {
-        console.log(flightData, "flightData");
-        console.log(isLoading, "flightData");
-    }, [isLoading]);
     const [bestSortData, cheapestSortData, fastestSortData, earliestSortData] =
         useSearchMulticityBySort(searchMultiCityQuery, {
             enabled: searchMultiCityQuery.requests.length > 1,
@@ -579,7 +571,7 @@ function AvailableMultiFlights() {
                 ...requests[0],
                 curr: preFerredCurrency,
                 sort: requests[0].sort ?? FlightSortEnum.best,
-                limit: 10,
+                limit: 50,
             };
             updateSearchMultiCityQuery({ requests: data });
         }
@@ -597,6 +589,7 @@ function AvailableMultiFlights() {
     useEffect(() => {
         const queryObject = parseMultiFlightFilters(searchMultiCityQuery);
         console.log("sss", queryObject);
+        if (Object.keys(queryObject).length === 0) return;
         params.setQueryParams(queryObject);
     }, [JSON.stringify(searchMultiCityQuery)]);
 
@@ -633,8 +626,8 @@ function AvailableMultiFlights() {
                         />
                     </Flex>
                 ) : (
-                    <>
-                        {paginatedFlightData?.map((flight, index) => (
+                    <React.Fragment>
+                        {flightData?.map((flight, index) => (
                             <MultiFlightPreviewCard
                                 key={"flight-" + index}
                                 flight={flight}
@@ -644,41 +637,44 @@ function AvailableMultiFlights() {
                             />
                         ))}
 
-                        {searchMultiCityQuery.requests.length > 0 &&
-                            (searchMultiCityQuery.requests[0].limit as number) <
-                                100 && (
-                                <Flex justify="center">
-                                    <Button
-                                        width="100%"
-                                        background="#06062A"
-                                        padding="2rem 0"
-                                        disabled={isLoading}
-                                        onClick={() =>
-                                            updateMultiCityQueryAtIndex(0, {
-                                                limit:
-                                                    (searchMultiCityQuery
-                                                        .requests[0]
-                                                        .limit as number) + 10,
-                                            })
-                                        }
-                                    >
-                                        {isFetching ? (
-                                            <Spinner
-                                                fill={ttColors.primary}
-                                                size={"25px"}
-                                            />
-                                        ) : (
-                                            <Text
-                                                type="p"
-                                                text="Load More"
-                                                weight={500}
-                                                size={18}
-                                            />
-                                        )}
-                                    </Button>
-                                </Flex>
-                            )}
-                    </>
+                        {!(searchMultiCityQuery.requests.length > 0)
+                            ? null
+                            : ((searchMultiCityQuery.requests[0]
+                                  .limit as number) < 100 ||
+                                  isFetching) && (
+                                  <Flex justify="center">
+                                      <Button
+                                          width="100%"
+                                          background="#06062A"
+                                          padding="2rem 0"
+                                          disabled={isFetching}
+                                          onClick={() =>
+                                              updateMultiCityQueryAtIndex(0, {
+                                                  limit:
+                                                      (searchMultiCityQuery
+                                                          .requests[0]
+                                                          .limit as number) +
+                                                      50,
+                                              })
+                                          }
+                                      >
+                                          {isFetching ? (
+                                              <Spinner
+                                                  fill={ttColors.primary}
+                                                  size={"25px"}
+                                              />
+                                          ) : (
+                                              <Text
+                                                  type="p"
+                                                  text="Load More"
+                                                  weight={500}
+                                                  size={18}
+                                              />
+                                          )}
+                                      </Button>
+                                  </Flex>
+                              )}
+                    </React.Fragment>
                 )
                 // <React.Fragment>
                 //     {localSortFlights({

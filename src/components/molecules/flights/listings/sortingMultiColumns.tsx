@@ -352,7 +352,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             console.log(data);
             updateSearchMultiCityQuery({ requests: data });
             // window.history.replaceState(null, "", "/" + url);
-            router.push("/flight/listings");
+            // router.push("/flight/listings");
         }
     };
 
