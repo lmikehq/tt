@@ -14,7 +14,7 @@ import { BsCursor } from "react-icons/bs";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 
-function Detail({
+export function Detail({
     name,
     value,
     currency = "USD",
@@ -41,7 +41,9 @@ function Detail({
             <Text
                 type="p"
                 size={bold ? 22 : 14}
-                text={`${negative ? "- " : ""}${plain ? "" : currency} ${value}`}
+                text={`${negative ? "- " : ""}${
+                    plain ? "" : currency
+                } ${value}`}
                 weight={bold ? 600 : 400}
                 color={bold ? ttColors.dark : ttColors.lighterGray}
             />
@@ -132,12 +134,18 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
 
     const countofBagsPrices = Object.values(checkedBags.order)
         .flat()
-        .map((e) => checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price?.amount
-    );
+        .map(
+            (e) =>
+                checkFlightsResponse?.baggage?.definitions?.hold_bag[e]?.price
+                    ?.amount
+        );
 
     const totalBagsPrices = Number(
-        countofBagsPrices.reduce((prev, curr) => Number(prev ?? 0) + Number(curr ?? 0), 0)
-    )
+        countofBagsPrices.reduce(
+            (prev, curr) => Number(prev ?? 0) + Number(curr ?? 0),
+            0
+        )
+    );
 
     const bagsPrice = formatPrice({
         total: totalBagsPrices * conversionRate,
@@ -145,7 +153,9 @@ function PriceSummary({ checkedBags }: PriceSummaryProps) {
         numberOfDecimalDigits: 2,
     });
     const totalPrice = formatPrice({
-        total: (totalBagsPrices + (checkFlightsResponse?.tickets_price ?? 0)) * conversionRate,
+        total:
+            (totalBagsPrices + (checkFlightsResponse?.tickets_price ?? 0)) *
+            conversionRate,
         currency: preFerredCurrency,
         numberOfDecimalDigits: 2,
     });

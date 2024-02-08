@@ -425,19 +425,19 @@ export const seatClass: SeatClassInterface = {
     premium: { name: "premium", color: "#5DB955" },
 };
 
-
 interface StopOverArrayInterface {
-    flightNum:          string;
-    airport:            string;
-    takeOffAirport:     string;
+    flightNum: string;
+    airport: string;
+    takeOffAirport: string;
     destinationAirport: string;
-    departureTime:      string;
+    departureTime: string;
 }
 export interface GetFlightBookingByIdResponse {
     _id: string;
     bookingId: number;
     totalAmount: number;
     ticketPrice: string;
+    flightsPrice: number;
     paymentToken: string;
     takeOffAirport: string;
     takeOffLocation: string;
@@ -471,19 +471,19 @@ export interface GetFlightBookingByIdResponse {
     stopOverArray: StopOverArrayInterface[];
     seatId: string[];
     flightCategory: string;
-    sp_fee: string;
+    sp_fee: number;
     src: string;
     dst: string;
     passengerInfo: PassengerInterface[];
     baggageInfo: Baggage[];
-    passengerDetails: { email: string; phoneNumber: string; }[];
+    passengerDetails: { email: string; phoneNumber: string }[];
     pricing: SegmentPricing;
     itinerary?: {
         segments: { pnr: string }[];
         boarding_documents_link: string | null;
         eticket_link: string;
         invoice_link: string;
-    }
+    };
 }
 
 export const mockRows = [

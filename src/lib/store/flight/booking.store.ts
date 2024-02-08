@@ -55,7 +55,8 @@ interface State {
         flightId: string;
         userId: string;
         zoozToken: string;
-        ticketPrice: number;
+        flightsPrice: number;
+        service: number;
         total: number;
     } | null;
     tokenizeDataResponse: TokenizeDataResponse | null;
@@ -371,10 +372,11 @@ export const useFlightBookingStore = create<State & Actions>(
                         saveBookingResponse: {
                             bookingId: `${response.data.booking_id}`,
                             zoozToken: response.data.payu_token,
-                            ticketPrice: response.data.tickets_price,
+                            flightsPrice: response.data.flights_price,
                             total: response.data.total,
                             userId: response.userId,
                             flightId: response.flightId,
+                            service: response.data.sp_fee,
                         },
                         savedBooking: true,
                     }));
