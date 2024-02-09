@@ -189,7 +189,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                             type="p"
                             size={20}
                             weight={600}
-                            text={selectedPrice?.show_currency_code}
+                            text={displayPrice?.currencyCode}
                             styles={{ minWidth: 'max-content' }}
                           />
                           <Flex align="center">
@@ -197,7 +197,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                               type="p"
                               size={20}
                               weight={600}
-                              text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(3)))}
+                              text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
                             />
                             <Text
                               type="p"

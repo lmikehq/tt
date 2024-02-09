@@ -261,7 +261,6 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                 currencyCode: preFerredCurrency,
                                 amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
                             }
-                            console.log('ss', displayPrice?.amount)
                             const hotelImages = hotel?.images.map((img: string) => img.replace('{size}', '1024x768'))
                             const goTo = () => {
                                 setQueryParams({

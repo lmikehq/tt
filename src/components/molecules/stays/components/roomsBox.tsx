@@ -161,7 +161,6 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
 
     const guestRooms = extractRoomForGuestsFromString(queryParams?.guests ?? "")
     const guestsCount = guestRooms.reduce((prev: number, curr) => prev + curr.adults, 0)
-    console.log('gg', guestsCount)
 
 
     return (
