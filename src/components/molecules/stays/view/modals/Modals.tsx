@@ -123,7 +123,7 @@ export const GalleryModal = ({
       <ModalCenter>
         <ModalScroll className="gallery">
           <ModalWrapper className="gallery_modal">
-            <SectionLayout style={{ height: '100vh', overflowY: 'auto' }}>
+            <SectionLayout className="scroll-custom" style={{ height: '100vh', overflowY: 'auto' }}>
               <Flex
                 padding="1rem 0 0"
                 align="center"

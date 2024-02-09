@@ -67,6 +67,8 @@ import { DinnerDining } from "@mui/icons-material";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { ttColors } from "@/lib/theme/colors";
 import { useQueryParams } from "@/hooks/useNext";
+import { useConversionRate } from "@/hooks/useConversionRate";
+import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -109,6 +111,7 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
     const { isMobile } = useScreenResolution();
     const { queryParams } = useQueryParams()
     const router = useRouter();
+    const { convertCurrency } = useConversionRate()
 
     const hotelImages = hotel.images.map((el) => el.replace("{size}", "1024x768"));
     const [selectedImage, setSelectedImage] = useState(hotelImages[0]);
@@ -146,8 +149,19 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
     const amenitiesGroups = hotel.amenity_groups.reduce((prev: string[], curr: AmenityGroup) => [...prev, curr?.group_name], [])
     const displayedAmenities = amenitiesGroups.filter(e => ["Internet", "Parking", "Kids", "Sports", "Meals", "Accessibility"].includes(e))
     const roomGroups = hotel.room_groups.sort((a, b) => a.name.length > b.name.length ? -1 : a.name.length === b.name.length ? 0 : 1)
-    const prices = numSort(hotel.rates.reduce((prev: PaymentType[], curr: Rate) => [...prev, curr.payment_options.payment_types[0]], []), 'amount', 'asc')
-    const selectedPrice = prices.find(e => e.show_amount === 'NGN') ?? prices.find(e => e.currency_code === 'USD') ?? prices[0]
+    const prices = numSort(hotel.rates.reduce((prev: PaymentType[], curr: Rate) => {
+        let paymentType = curr.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? curr.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? curr.payment_options.payment_types[0]
+        return [...prev, paymentType]
+    }, []), 'amount', 'asc')
+    const selectedPrice = prices[0]
+    const displayPrice = {
+        currencyCode: preFerredCurrency,
+        amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+    }
+
+    const guestRooms = extractRoomForGuestsFromString(queryParams?.guests ?? "")
+    const guestsCount = guestRooms.reduce((prev: number, curr) => prev + curr.adults, 0)
+
 
     return (
         <Box style={{ marginBottom: "20px" }}>
@@ -416,18 +430,19 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                     color="var(--text-dull-color)"
                                     type="h2"
                                     weight={"bold"}
-                                    text={selectedPrice?.show_currency_code}
+                                    text={displayPrice?.currencyCode}
                                 />
                                 <Text
                                     color="var(--text-dull-color)"
                                     type="h2"
+                                    whiteSpace="wrap"
                                     weight={"bold"}
-                                    text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(2)))}
+                                    text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
                                 />
                                 </Flex>
                                 <Text
                                 type="p"
-                                text={`for a night (${2} guest)`}
+                                text={`for a night (${guestsCount} guest${guestsCount > 1 ? 's' : ''})`}
                                 styles={{ whiteSpace: "nowrap" }}
                                 ></Text>
                             </Flex>

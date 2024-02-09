@@ -33,6 +33,8 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
         rememberMe: false,
     });
 
+    const [inputType, setInputType] = useState('password')
+
     const [submissionState, setSubmissionState] = useState({
         loading: false,
         loadingGoogleAuth: false,
@@ -215,7 +217,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                         />
                     )}
                 </Section>
-                <Flex align="center" justify="space-between">
+                <Flex align="center" justify="space-between" wrap="wrap" gap='1rem'>
                     <Flex align="center">
                         <CheckBox
                             checked={loginData.rememberMe}

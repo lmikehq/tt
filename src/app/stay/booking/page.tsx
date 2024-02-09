@@ -195,7 +195,6 @@ function Page() {
                     />
                 </Box>
             </Span>
-
             
             <RefreshModal
                 isOpen={modal.isOpenRefresh}

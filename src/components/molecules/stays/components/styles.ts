@@ -126,7 +126,7 @@ export const LargeImg = styled.div`
 
   &.img_large_gallery {
     width: 100%;
-    height: 50vh;
+    height: 60vh;
     position: relative;
     overflow: hidden !important;
     border-radius: 12.5px !important;
@@ -163,6 +163,7 @@ export const SmallImg = styled.div`
   z-index: 10;
   margin: 5px 8px;
   margin-bottom: 5px;
+  height: 100px;
 
   &.img_small_gallery {
     // height: 250px;
@@ -177,18 +178,21 @@ export const SmallImg = styled.div`
       //  height: 200px;
     }
   }
+    & .slick-slider {
+        height: 100px !important;
+    }
 `;
 export const SmallSlideImg = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
 
   overflow: hidden;
   border: 2px solid rgba(135, 206, 235, 0);
   transition: background-color 0.3s, border-color 0.3s;
   &.selected_room_gallery {
-    width: 230px;
-    height: 100%;
-
+    width: 50px;
+    height: 100px;
+    // height: 100%;
     // margin: 0px -10px;
   }
   @media screen and (max-width: 1300px) {
@@ -232,7 +236,7 @@ export const FavoriteBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 1);
 `;
 
 export const FavoriteBoxMobile = styled.div`
@@ -454,7 +458,14 @@ export const SlideList = styled.div`
   margin-bottom: 25px;
   position: relative;
 `;
-export const SlideCard = styled.div``;
+export const SlideCard = styled.div`
+    padding: 1rem;
+    cursor: pointer;
+    &:hover {
+        background-color: rgba(0,0,0,0.02);
+        border-radius: .5rem;
+    }
+`;
 export const SliderImgBox = styled.div`
   border-radius: 12px !important;
   overflow: hidden;

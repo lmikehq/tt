@@ -13,7 +13,7 @@ const RecentlyViewedList = ({ hotels }: { hotels: SearchRecentlyViewedStaysRespo
   return (
     <Span>
       <Section
-        styles={{ marginTop: isMobile ? "-20px" : "20px", marginBottom: "20px" }}
+        styles={{ marginTop: "20px", marginBottom: "20px" }}
       >
         <Text type="h1" size={24} weight={600} text="Recently viewed" />
       </Section>

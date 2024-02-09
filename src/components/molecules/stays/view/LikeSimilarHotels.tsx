@@ -31,12 +31,15 @@ import {
 import { ReviewsText, Span } from "./styles";
 import { styled } from "@mui/material/styles";
 import LikeSimilarHotelSkeleton from "./skeleton/LikeSimilarHotelSkeleton";
-import { Rate, SearchSimilarStaysResponse } from "@/lib/types/response-models/stay/search.type";
+import { PaymentType, Rate, SearchSimilarStaysResponse } from "@/lib/types/response-models/stay/search.type";
 import Section from "../../section";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { numSort } from "@/lib/utilFns";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { formatPriceWithoutCurrency, getCurrency } from "@/lib/extensions/helpers/formatPrice";
+import { useRouter } from "next/navigation";
+import { useQueryParams } from "@/hooks/useNext";
+import { useConversionRate } from "@/hooks/useConversionRate";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -149,13 +152,14 @@ interface LikeSimilarHotelsProps {
     hotels: SearchSimilarStaysResponse;
 }
 
-// PRICE FORMAT
-const formatPrice = (price: number) => `₦${price.toLocaleString()}`;
 
 function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
     const { isMobile } = useScreenResolution()
+    const router = useRouter()
+    const { queryParams, setQueryParams } = useQueryParams()
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
     const [slidesToShow, setSlidesToShow] = useState(1);
+    const { convertCurrency } = useConversionRate()
     
     useEffect(() => {
         const handleResize = () => {
@@ -210,7 +214,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
     return (
         <Flex direction="column">
             <Section
-                styles={{ marginTop: isMobile ? "-20px" : "20px", marginBottom: "20px" }}
+                styles={{ marginTop: "20px", marginBottom: "20px" }}
             >
                 <Text type="h1" size={24} weight={600} text="You may also like" />
             </Section>
@@ -227,7 +231,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                 {showSliderBox && (
                     <SliderContainer
                         style={{
-                            marginTop: "25px",
+                            marginTop: "0px",
                             padding: "25px",
                             paddingBottom: "60px",
                         }}
@@ -240,18 +244,35 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                             weight={"bold"}
                         /> */}
                         <CloseOutlinedIcon
-                        style={{ cursor: "pointer" }}
-                        onClick={handleCloseSliderBox}
+                            style={{ cursor: "pointer" }}
+                            onClick={handleCloseSliderBox}
                         />
                     </Flex>
                     <SlideContent>
                         <SliderWidth>
                         <Slider {...SliderSettings} className="">
                         {hotels.map((hotel, index) => {
-                            const prices = numSort(hotel.rates.reduce((prev: number[], curr: Rate) => [...prev, Number(curr.payment_options.payment_types[0]?.amount) * conversionRate], []), 'asc')
-                            const hotelPrice = hotel?.rates[0]
+                            const prices = numSort(hotel.rates.reduce((prev: PaymentType[], curr: Rate) => {
+                            let paymentType = curr.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? curr.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? curr.payment_options.payment_types[0]
+                                return [...prev, paymentType]
+                            }, []), 'amount', 'asc')
+                            const selectedPrice = prices[0]
+                            const displayPrice = {
+                                currencyCode: preFerredCurrency,
+                                amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+                            }
+                            const hotelImages = hotel?.images.map((img: string) => img.replace('{size}', '1024x768'))
+                            const goTo = () => {
+                                setQueryParams({
+                                    ...queryParams,
+                                    id: hotel.id,
+                                    regionId: hotel.region.id,
+                                    countryCode: hotel.region.country_code
+                                })
+                            }
+
                             return (
-                            <SlideCard key={index}>
+                            <SlideCard key={index} onClick={goTo}>
                                 <SlideList>
                                     <SliderImgBox>
                                         <Link href="">
@@ -261,7 +282,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                                     height: "200px",
                                                     objectFit: "cover",
                                                 }}
-                                                src={hotel.images[0] ?? ''}
+                                                src={hotelImages[0] ?? ''}
                                                 alt={hotel.name}
                                             />
                                         </Link>
@@ -286,7 +307,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                             id="favorite-hotels-checkbox"
                                         />
                                     </FavoriteSliderBox>
-                                    <Span style={{ width: "fit-content" }}>
+                                    <Span style={{ width: "fit-content", margin: '1rem 0 0' }}>
                                         <Link href="">
                                             <Text
                                                 type="h2"
@@ -304,16 +325,19 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                         styles={{ fontSize: "15px", position: "relative" }}
                                     >
                                         <Text type="p" text={hotel.address}></Text>
-                                        <Rating
-                                            name="rating"
-                                            readOnly
-                                            defaultValue={hotel.star_rating}
-                                            style={{
-                                                color: "var(--color-rating)",
-                                                fontSize: "17px",
-                                            }}
-                                        />
-                                    </Flex>
+                                        </Flex>
+                                        
+                                        <Flex margin="0 0 1rem">
+                                            <Rating
+                                                name="rating"
+                                                readOnly
+                                                defaultValue={hotel.star_rating}
+                                                style={{
+                                                    color: "var(--color-rating)",
+                                                    fontSize: "17px",
+                                                }}
+                                            />
+                                        </Flex>
 
                                     <Flex justify="space-between">
                                         <Flex
@@ -323,7 +347,8 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                         >
                                             <Text
                                                 type="h3"
-                                                text={`${getCurrency()} ${formatPriceWithoutCurrency(parseInt(prices[0]))}`}
+                                                whiteSpace="wrap"
+                                                text={`${displayPrice?.currencyCode} ${formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}`}
                                                 weight={"bold"}
                                                 color="var(--text-dull-color)"
                                             ></Text>

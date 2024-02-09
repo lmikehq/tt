@@ -13,7 +13,6 @@ import {
     ViewSingleStayResponse,
     SearchLikedStaysResponse,
 } from "@/lib/types/response-models/stay/search.type";
-import { keyValues } from "@/lib/utilFns";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export const useSearchRateHawkLocations = (
