@@ -8,6 +8,8 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails, { AccordionDetailsProps } from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import Flex from "@components/templates/flex";
+import { usePathname } from "next/navigation";
+
 
 interface AccordionItemProps {
   header: string;
@@ -93,8 +95,13 @@ const AccordionItem: React.FC<AccordionItemComponentProps> = ({
     onChange(event, isExpanded);
   };
 
+  const pathname = usePathname();
+
+  const bool = pathname === '/dashboard' && header === 'Dependant 1';
+
   return (
     <Accordion
+      defaultExpanded={pathname === '/dashboard' && header === 'Dependant 1'}
       expanded={expanded}
       onChange={(e) => handleChange(e, !expanded)}
       style={{

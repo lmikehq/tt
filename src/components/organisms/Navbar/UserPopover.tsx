@@ -32,12 +32,14 @@ import { NotificationService } from "@/lib/services/dashboard/notification.servi
 import toast from "react-hot-toast";
 import Section from "@/components/molecules/section";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import Image from "@/components/atoms/image";
+import NoficationBellIcon from 'public/assets/icons/dashboard/no-notification-bell.svg';
 
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
   const { notifications, resetNotifications } = useNotificationStore((state) => state);
-  const { updateTab } = useDashboardStore((state) => state);
+  const { updateTab, setTab } = useDashboardStore((state) => state);
 
   // Ref for notification modal
   const notificationRef = useRef(null);
@@ -236,8 +238,9 @@ const CustomPopover = () => {
                       ))}
                     </>
                   ) : (
-                    <Flex align="center" gap="12px" justify="center">
-                      <NotificationsIcon />
+                    <Flex align="center" direction="column" gap="12px" justify="center">
+                      {/* <NotificationsIcon /> */}
+                      <Image src={NoficationBellIcon} alt="notification-icon" height={50} width={50} />
                       <Text type="p" text="No Notification" />
                     </Flex>
                   )}
@@ -252,7 +255,8 @@ const CustomPopover = () => {
                     width="100%"
                     onClick={() => {
                       // router.push("/dashboard");
-                      updateTab('Notifications');
+                      setTab(3);
+                      // updateTab('Notifications');
                     }}
                     styles={{ background: "transparent !important" }}
                   >

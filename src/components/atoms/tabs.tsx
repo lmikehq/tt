@@ -143,7 +143,7 @@ export default function CustomTab({
 
   }, [value]);
 
-  console.log({ tab });
+  // console.log({ tab });
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
     setTab(newValue);
@@ -195,7 +195,7 @@ export default function CustomTab({
               borderRight: i !== arr.length - 1 ? "1px solid #ccc" : "none",
             };
 
-            console.log(value);
+            // console.log(value);
 
             return (
               <Tab
