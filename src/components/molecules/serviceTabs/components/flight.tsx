@@ -32,6 +32,7 @@ import {
 import { extractFlightDataFromParams } from "@/lib/types/request-models/flight/multi/search.type";
 import { useFetchLocationsById } from "@/lib/hooks/flight/location.hook";
 import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
+import { formatStringToDayjs } from "@/lib/extensions/helpers/formatDate";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -223,6 +224,11 @@ function Flights() {
             const cabin = translateCabin(flight?.flightClass);
             const cabinBags = flight?.cabinBaggage;
             const checkedBags = flight?.checkedBaggage;
+            console.log("testing", flight.departureDate);
+            console.log(
+                "testingfl",
+                formatDate(flight?.departureDate ?? dayjs())
+            );
 
             return `
         /flight/listings?fly_from=${flights
@@ -363,10 +369,11 @@ function Flights() {
                 flyFromLocations[index].data?.locations[0];
             const arrivalCountry: KiwiLocation | undefined =
                 flyToLocations[index].data?.locations[0];
-            const departureDate = dayjs(dateFrom, "MM/DD/YYYY").isValid()
-                ? dayjs(dateFrom, "MM/DD/YYYY")
-                : dayjs();
+
+            const departureDate = formatStringToDayjs(dateFrom);
             console.log(departureCountry, "departureCountry");
+            console.log("testing2", departureDate);
+            console.log("testing2", dateFrom);
 
             return {
                 index,

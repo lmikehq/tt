@@ -172,6 +172,7 @@ function FlightModule({
                             handleUpdate &&
                             handleUpdate(flight, { departureDate: dayjs(e) })
                         }
+                        format="dd/MM/yyyy"
                     />
                 </Flex>
                 {stops == "round" && (
@@ -201,6 +202,7 @@ function FlightModule({
                                 handleUpdate &&
                                 handleUpdate(flight, { returnDate: dayjs(e) })
                             }
+                            format="dd/MM/yyyy"
                         />
                     </Flex>
                 )}

@@ -318,6 +318,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         flight.departureCountry?.code)
             )
             .join("");
+        console.log("another", flight?.departureDate);
         const url = `flight/listings?fly_from=${flyFrom}&fly_to=${flights
             .map(
                 (flight, index) =>
@@ -348,7 +349,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 sort: requests[0].sort ?? FlightSortEnum.best,
                 limit: 20,
             };
-            console.log(data);
+            console.log(data, "data");
             updateSearchMultiCityQuery({ requests: data });
             window.history.replaceState(null, "", `/${url}`);
             // router.push("/flight/listings");
