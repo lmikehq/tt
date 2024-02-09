@@ -592,7 +592,17 @@ function AvailableMultiFlights() {
         console.log("sss", queryObject);
         if (Object.keys(queryObject).length === 0) return;
         params.setQueryParams(queryObject);
-    }, [JSON.stringify(searchMultiCityQuery)]);
+    }, [
+        JSON.stringify({
+            requests: [
+                {
+                    ...searchMultiCityQuery.requests[0],
+                    limit: "",
+                },
+                ...searchMultiCityQuery.requests.slice(1), // Keep the rest of the requests unchanged
+            ],
+        }),
+    ]);
 
     return (
         <Flex
