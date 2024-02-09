@@ -13,7 +13,7 @@ const style = {
   outline: "none",
   overflow: "scroll",
   maxHeight: "100vh",
-  p: "2rem",
+  p: "1rem",
 };
 
 interface CustomAppModalProps {

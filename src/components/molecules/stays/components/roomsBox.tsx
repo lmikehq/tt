@@ -68,6 +68,7 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import { ttColors } from "@/lib/theme/colors";
 import { useQueryParams } from "@/hooks/useNext";
 import { useConversionRate } from "@/hooks/useConversionRate";
+import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -157,6 +158,10 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
         currencyCode: preFerredCurrency,
         amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
     }
+
+    const guestRooms = extractRoomForGuestsFromString(queryParams?.guests ?? "")
+    const guestsCount = guestRooms.reduce((prev: number, curr) => prev + curr.adults, 0)
+    console.log('gg', guestsCount)
 
 
     return (
@@ -438,7 +443,7 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                 </Flex>
                                 <Text
                                 type="p"
-                                text={`for a night (${2} guest)`}
+                                text={`for a night (${guestsCount} guest${guestsCount > 1 ? 's' : ''})`}
                                 styles={{ whiteSpace: "nowrap" }}
                                 ></Text>
                             </Flex>

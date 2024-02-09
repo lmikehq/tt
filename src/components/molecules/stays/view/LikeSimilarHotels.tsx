@@ -214,7 +214,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
     return (
         <Flex direction="column">
             <Section
-                styles={{ marginTop: isMobile ? "-20px" : "20px", marginBottom: "20px" }}
+                styles={{ marginTop: "20px", marginBottom: "20px" }}
             >
                 <Text type="h1" size={24} weight={600} text="You may also like" />
             </Section>
@@ -231,7 +231,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                 {showSliderBox && (
                     <SliderContainer
                         style={{
-                            marginTop: "25px",
+                            marginTop: "0px",
                             padding: "25px",
                             paddingBottom: "60px",
                         }}
@@ -261,6 +261,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                 currencyCode: preFerredCurrency,
                                 amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
                             }
+                            console.log('ss', displayPrice?.amount)
                             const hotelImages = hotel?.images.map((img: string) => img.replace('{size}', '1024x768'))
                             const goTo = () => {
                                 setQueryParams({
