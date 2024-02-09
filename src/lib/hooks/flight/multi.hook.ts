@@ -34,7 +34,7 @@ export const useSearchMulticity = (
                 requests: [
                     {
                         ...params.requests[0],
-                        sort: "",
+                        // sort: "",
                     },
                     ...params.requests.slice(1), // Keep the rest of the requests unchanged
                 ],
