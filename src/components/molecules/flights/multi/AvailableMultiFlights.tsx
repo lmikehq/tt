@@ -477,6 +477,7 @@ function AvailableMultiFlights() {
         updateSearchMultiCityQuery,
         searchMultiCityQuery,
         updateMultiCityQueryAtIndex,
+        paginating,
     } = useSearchMultiFlightStore((state) => state);
     const {
         isFetching,
@@ -614,7 +615,7 @@ function AvailableMultiFlights() {
             />
 
             {
-                isLoading ? (
+                isFetching && !paginating ? (
                     <FlightBoxSkeleton />
                 ) : flightData?.length == 0 ? (
                     <Flex width="100%" justify="center" padding="9rem 0">
@@ -649,13 +650,17 @@ function AvailableMultiFlights() {
                                           padding="2rem 0"
                                           disabled={isFetching}
                                           onClick={() =>
-                                              updateMultiCityQueryAtIndex(0, {
-                                                  limit:
-                                                      (searchMultiCityQuery
-                                                          .requests[0]
-                                                          .limit as number) +
-                                                      50,
-                                              })
+                                              updateMultiCityQueryAtIndex(
+                                                  0,
+                                                  {
+                                                      limit:
+                                                          (searchMultiCityQuery
+                                                              .requests[0]
+                                                              .limit as number) +
+                                                          50,
+                                                  },
+                                                  true
+                                              )
                                           }
                                       >
                                           {isFetching ? (

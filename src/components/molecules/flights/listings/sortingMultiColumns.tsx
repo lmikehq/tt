@@ -347,7 +347,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 ...requests[0],
                 curr: preFerredCurrency,
                 sort: requests[0].sort ?? FlightSortEnum.best,
-                limit: 20,
+                limit: 50,
             };
             console.log(data, "data");
             updateSearchMultiCityQuery({ requests: data });
