@@ -39,8 +39,6 @@ export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) 
     });
   };
 
-  console.log(formik.values);
-
   return (
     <ReusableModal
       headerText="Add Accompanies"
@@ -50,6 +48,8 @@ export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) 
         handleClose();
       }}
       maxWidth="827px"
+      maxHeight="500px"
+      // height="500px"
       width={isMobile ? "90%" : "827px"}
       showButton={false}
     >

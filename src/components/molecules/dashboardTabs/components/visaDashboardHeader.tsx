@@ -270,20 +270,20 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
 
   // ADD THE QUERY TO THE URL PARAMS
 
-  useEffect(() => {
-    const initialQuery = {
-      applicationStatus,
-      search: searchQuery,
-      dateRange: dateRange
-    };
+  // useEffect(() => {
+  //   const initialQuery = {
+  //     applicationStatus,
+  //     search: searchQuery,
+  //     dateRange: dateRange
+  //   };
 
-    const queryParams = getQueryParamsForActiveTab();
-    const query = constructQueryFromParams({ ...initialQuery, ...queryParams });
-    const currentUrl = new URL(window.location.href);
-    currentUrl.search = query;
-    router.replace(currentUrl.toString(), { scroll: false });
+  //   const queryParams = getQueryParamsForActiveTab();
+  //   const query = constructQueryFromParams({ ...initialQuery, ...queryParams });
+  //   const currentUrl = new URL(window.location.href);
+  //   currentUrl.search = query;
+  //   router.replace(currentUrl.toString(), { scroll: false });
 
-  }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
+  // }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
 
 
   return (

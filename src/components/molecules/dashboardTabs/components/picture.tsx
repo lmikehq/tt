@@ -194,148 +194,155 @@ function UserPicture() {
             styles={{ width: "100%" }}
           />
         </DashboardCoverPicture>
-        <Section
-          styles={{
-            position: "relative",
-            height: isMobile ? "151px" : "238px",
-            marginBottom: "2rem",
-          }}
-        >
-          {isLoading ? (
-            <Flex height="450px" align="center" justify="center">
-              <Spinner size="60px" fill={ttColors.blackishBlue} />
-            </Flex>
-          ) : (
-            <DashboardProfilePictue>
-              <Section
-                width="fit-content"
-                borderRadius="100%"
-                background="white"
-                padding={0}
-                styles={{
-                  border: user?.profilePicture ? "4px solid var(--Slamon, #FF8682)" : "4px solid var(--Slamon, #FF8682)",
-                  marginBottom: "1.125rem",
-                  position: 'relative',
-                  cursor: "pointer"
-                }}
-                onClick={() => setOpenModal((prev) => {
-                  return {
-                    ...prev,
-                    profilePictureModal: true
-                  };
-                })}
-                onMouseEnter={() => setIsMouseEnter(true)}
-                onMouseLeave={() => setIsMouseEnter(false)}
-              >
-                {user?.profilePicture ? (
-                  <Flex align="center" justify="center" position="relative">
-                    <img
-                      src={user?.profilePicture}
-                      alt="user-profile"
-                      height={isMobile ? 120 : 160}
-                      width={isMobile ? 120 : 160}
-                      style={{ height: isMobile ? "120px" : "160px", width: isMobile ? "120px" : "160px", objectFit: "contain" }}
+        {isLoading ? (
+          <Flex align="center" justify="center">
+            <Spinner size="60px" fill={ttColors.blackishBlue} />
+          </Flex>
+        ) : (
+          <Section
+            styles={{
+              position: "relative",
+              height: isMobile ? "151px" : "238px",
+              marginBottom: "2rem",
+            }}
+          >
+            {isLoading ? (
+              <Flex height="450px" align="center" justify="center">
+                <Spinner size="60px" fill={ttColors.blackishBlue} />
+              </Flex>
+            ) : (
+              <DashboardProfilePictue>
+                <Section
+                  width="fit-content"
+                  borderRadius="100%"
+                  background="white"
+                  padding={0}
+                  styles={{
+                    border: user?.profilePicture ? "4px solid var(--Slamon, #FF8682)" : "4px solid var(--Slamon, #FF8682)",
+                    marginBottom: "1.125rem",
+                    position: 'relative',
+                    cursor: "pointer"
+                  }}
+                  onClick={() => setOpenModal((prev) => {
+                    return {
+                      ...prev,
+                      profilePictureModal: true
+                    };
+                  })}
+                  onMouseEnter={() => setIsMouseEnter(true)}
+                  onMouseLeave={() => setIsMouseEnter(false)}
+                >
+                  {user?.profilePicture ? (
+                    <Flex align="center" justify="center" position="relative">
+                      <img
+                        src={user?.profilePicture}
+                        alt="user-profile"
+                        height={isMobile ? 120 : 160}
+                        width={isMobile ? 120 : 160}
+                        style={{ height: isMobile ? "120px" : "160px", width: isMobile ? "120px" : "160px", objectFit: "contain" }}
+                      />
+                      {isMouseEnter ? (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: "100%",
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 20,
+                            backgroundColor: "rgba(0,0,0,0.35)",
+                            borderRadius: "100%",
+                            transition: "all 0.3s 0.75s"
+                          }}
+                        >
+                          <BsFillCameraFill color="#FFF" size={42} />
+                        </div>
+                      ) : null}
+                    </Flex>
+                  ) : (
+                    <BiSolidUser
+                      size={isMobile ? 91 : 140}
+                      color={ttColors.lighterGray}
                     />
-                    {isMouseEnter ? (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          height: "100%",
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          zIndex: 20,
-                          backgroundColor: "rgba(0,0,0,0.35)",
-                          borderRadius: "100%",
-                          transition: "all 0.3s 0.75s"
-                        }}
-                      >
-                        <BsFillCameraFill color="#FFF" size={42} />
-                      </div>
-                    ) : null}
+                  )}
+                </Section>
+
+                {isLoading ? (
+                  <Flex height="60px" align="center" justify="center">
+                    <Spinner size="60px" fill={ttColors.blackishBlue} />
                   </Flex>
                 ) : (
-                  <BiSolidUser
-                    size={isMobile ? 91 : 140}
-                    color={ttColors.lighterGray}
-                  />
-                )}
-              </Section>
-
-              {isLoading ? (
-                <Flex height="60px" align="center" justify="center">
-                  <Spinner size="60px" fill={ttColors.blackishBlue} />
-                </Flex>
-              ) : (
-                <ProfileInfomation>
-                  <Text
-                    type="h3"
-                    text={user?.firstName + " " + user?.lastName}
-                    size={isMobile ? 16 : 24}
-                    weight={600}
-                    color={ttColors.blackishGreen}
-                  />
-                  <Text
-                    type="p"
-                    text={user?.email ?? ""}
-                    size={16}
-                    color={ttColors.blackishGreen}
-                    margin="0.75rem 0"
-                  />
-                </ProfileInfomation>
-              )}
-
-              {isLoading ? (
-                <Spinner size="60px" fill={ttColors.blackishBlue} />
-              ) : (
-                <ReferralLink
-                  style={{
-                    border: "1px solid #7BBBD6 !important",
-                    padding: "0.875rem",
-                  }}
-                >
-                  <Flex
-                    gap=".5rem"
-                    justify="center"
-                    onClick={() =>
-                      copyToClipboard(
-                        referralLink,
-                        "Referral link copied to clipboard"
-                      )
-                    }
-                    cursor="pointer"
-                    width="100%"
-                    align="center"
-                  >
-                    <BiSolidCopy
+                  <ProfileInfomation>
+                    <Text
+                      type="h3"
+                      text={user?.firstName + " " + user?.lastName}
                       size={isMobile ? 16 : 24}
+                      weight={600}
                       color={ttColors.blackishGreen}
                     />
-                    <Section
-                      styles={{
-                        minWidth: 0,
-                        flex: 1,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        fontWeight: 600,
-                        fontSize: isMobile ? 12 : 16,
-                      }}
-                    >
-                      {referralLink}
-                    </Section>
-                  </Flex>
-                </ReferralLink>
-              )}
-            </DashboardProfilePictue>
-          )}
+                    <Text
+                      type="p"
+                      text={user?.email ?? ""}
+                      size={16}
+                      color={ttColors.blackishGreen}
+                      margin="0.75rem 0"
+                    />
+                  </ProfileInfomation>
+                )}
 
-        </Section>
+                {isLoading ? (
+                  <Spinner size="60px" fill={ttColors.blackishBlue} />
+                ) : (
+                  <ReferralLink
+                    style={{
+                      border: "1px solid #7BBBD6 !important",
+                      padding: "0.875rem",
+                    }}
+                  >
+                    <Flex
+                      gap=".5rem"
+                      justify="center"
+                      onClick={() =>
+                        copyToClipboard(
+                          referralLink,
+                          "Referral link copied to clipboard"
+                        )
+                      }
+                      cursor="pointer"
+                      width="100%"
+                      align="center"
+                    >
+                      <BiSolidCopy
+                        size={isMobile ? 16 : 24}
+                        color={ttColors.blackishGreen}
+                      />
+                      <Section
+                        styles={{
+                          minWidth: 0,
+                          flex: 1,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          fontWeight: 600,
+                          fontSize: isMobile ? 12 : 16,
+                        }}
+                      >
+                        {referralLink}
+                      </Section>
+                    </Flex>
+                  </ReferralLink>
+                )}
+              </DashboardProfilePictue>
+            )}
+
+          </Section>
+        )}
+
       </Flex>
       {openModal.profilePictureModal && (
         <UpdateProfileModal state={openModal.profilePictureModal} setState={setOpenModal} refetch={refetch} />

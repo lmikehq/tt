@@ -1,46 +1,27 @@
 import { create } from 'zustand';
 
+interface CheckoutInfo {
+  receiept_url: string;
+  reference: string;
+  price: number;
+}
 interface State {
-  page: number;
-  accompany: number;
-  numberOfDependants: number;
+  dependantCheckoutInfo: CheckoutInfo;
 }
 
 interface Actions {
-  setNumberOfDependants: (param: number) => void;
-  nextPage: () => void;
-  prevPage: () => void;
-  removeDependant: (param: number) => void;
+  setCheckoutDependantInfo: (payload: CheckoutInfo) => void;
 }
 
 export const accompanyStore = create<State & Actions>((set): Actions & State => ({
-  page: 0,
-  accompany: 0,
-  numberOfDependants: 1,
-  nextPage() {
+  dependantCheckoutInfo: { receiept_url: "", reference: "", price: 0 },
+  setCheckoutDependantInfo({ receiept_url, price, reference }: CheckoutInfo) {
     set((state) => ({
-      page: state.page + 1
-    }));
-  },
-  prevPage() {
-    set((state) => ({
-      page: state.page - 1
-    }));
-  },
-  removeDependant(param: number) {
-    set((state) => {
-      // console.log('this is the index element to remove', param);
-      // console.log(state.numberOfDependants);
-      return {
-        // BASED ON THE INDEX REMOVE THE ELEMENT AT THAT POSITION
-        // accompany: param
-        numberOfDependants: param
-      };
-    });
-  },
-  setNumberOfDependants(param: number) {
-    set(() => ({
-      numberOfDependants: param
+      dependantCheckoutInfo: {
+        price: price,
+        receiept_url: receiept_url,
+        reference: reference
+      }
     }));
   }
 }))

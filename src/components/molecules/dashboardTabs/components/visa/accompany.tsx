@@ -11,6 +11,7 @@ import {
 } from "@/components/organisms/fieldInput";
 import Flex from "@/components/templates/flex";
 import { Grid } from "@/components/templates/grid";
+import { dependantsRelationship } from "@/data/options";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { accompanyStore } from "@/lib/store/dashboard/accompany.store";
@@ -100,15 +101,7 @@ function AccompanyComponent({
                   formik={formik}
                   name={`dependants.${step}.relationship`}
                   placeholder="Enter Relationship to you"
-                  options={[
-                    "Spouse",
-                    "Son",
-                    "Daughter",
-                    "Father",
-                    "Mother",
-                    "Brother",
-                    "Sister",
-                  ]}
+                  options={dependantsRelationship}
                   onChange={(e) => {
                     formik.setFieldValue(`dependants.${step}.relationship`, e);
                   }}

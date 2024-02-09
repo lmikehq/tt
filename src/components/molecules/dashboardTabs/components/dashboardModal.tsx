@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 // Styled component for the modal content wrapper
 const StyledModalContent = styled.div<{
@@ -103,6 +104,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   },
   showButton
 }) => {
+  const { isMobile } = useScreenResolution();
   return (
     <Modal open={open} onClose={onClose}>
       <StyledModalContent
@@ -112,7 +114,7 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         maxWidth={maxWidth}
       >
         <StyledModalHeader>
-          <Text type="h2" text={headerText} size={32} weight={600} />
+          <Text type="h2" text={headerText} size={isMobile ? 24 : 32} weight={600} />
         </StyledModalHeader>
         <ModalIcon onClick={onClose}>
           <IoMdClose />

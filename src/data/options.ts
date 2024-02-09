@@ -109,3 +109,17 @@ export const staysOptions = staysEnum.map((key, _index) => (
     value: key.value
   }
 ));
+
+export const dependantsRelationship = [
+  "Spouse",
+  "Son",
+  "Daughter",
+  "Father",
+  "Mother",
+  "Brother",
+  "Sister",
+  "Adopted Son",
+  "Adopted Daughter",
+  "Step-Son",
+  "Step-Daughter"
+];

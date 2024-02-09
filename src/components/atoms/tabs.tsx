@@ -42,8 +42,8 @@ const TabWrapper = styled.div<{
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
     background: ${({ addBackgroundColor }) =>
-    addBackgroundColor ? "#7BBBD6" : "#7BBBD6"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
-    color: ${({ addColor }) => (addColor ? "#fff" : "#7BBBD6")};
+    addBackgroundColor ? "#FFF" : "#7BBBD6"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
+    color: ${({ addColor }) => (addColor ? "#fff" : "red")}; // 7BBBD6
   }
   .css-1gsv261 {
     // border-bottom: 1px solid transparent;
@@ -113,7 +113,7 @@ export default function CustomTab({
   page = "home",
   shadowShow = false,
   addBackgroundColor = false,
-  addColor = false,
+  addColor = true,
   activeTab,
   setActiveTab,
   aside,
@@ -161,15 +161,18 @@ export default function CustomTab({
 
   const coloredIcons = icons.map((icon, i) =>
     React.cloneElement(icon, {
-      color: value === i ? "#FFF" : "var(--secondary-color)", // ADJUST THE COLOR OF THE ICONS
+      color: value === i ? "#000" : "var(--secondary-color)", // ADJUST THE COLOR OF THE ICONS
     })
   );
+
+  const getColor = () => { };
 
   return (
     <TabWrapper
       isMobile={isMobile}
       shadowShow={shadowShow}
       addBackgroundColor={addBackgroundColor}
+      addColor={addColor}
     >
       <Box>
         <Tabs
@@ -191,6 +194,8 @@ export default function CustomTab({
               borderRight: i !== arr.length - 1 ? "1px solid #ccc" : "none",
             };
 
+            console.log(value);
+
             return (
               <Tab
                 key={tabItem.value}
@@ -205,7 +210,9 @@ export default function CustomTab({
                       text={tabItem.label}
                       size={isMobile ? "1rem" : "1rem"}
                       weight={600}
-                      color={tabItem.value === value ? '#FFF' : ""} // ADJUST THE COLOR OF THE TAB
+                      color={["Visa", "Flight", "Stays"].includes(tabItem.label) ? '#000' : tabItem.value === value ? '#000' : '#000'}
+                    // color={["Visa", "Flight", "Stays"].includes(tabItem.label) ? '#000' : "#CCC"}  // one solution
+                    // color={tabItem.value === value ? '#000' : "#000"} // ADJUST THE COLOR OF THE TAB
                     />
                   </Flex>
                 }
@@ -217,7 +224,7 @@ export default function CustomTab({
                     borderBottom: `0px solid ${ttColors.dark}`,
                   }),
                   "&.MuiTab-textColorPrimary.Mui-selected": {
-                    color: "#FFF", // #06062a
+                    color: "#FFF !important", // #06062a
                   },
                   paddingLeft: "20px",
                   paddingRight: "20px",
