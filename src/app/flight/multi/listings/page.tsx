@@ -4,6 +4,8 @@ import FlightList from "src/components/molecules/flights/components/flightList";
 import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import SectionLayout from "@components/templates/SectionLayout";
+import { FlightContext } from "@/lib/extensions/context";
+import { useContext } from "react";
 
 const FlightTab = styled.div`
     background: white;
@@ -15,13 +17,17 @@ const FlightTab = styled.div`
 
 function Page() {
     const { isMobile } = useScreenResolution();
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state;
 
     return (
         <SectionLayout style={{ padding: isMobile ? "0 0rem" : "" }}>
             <FlightTab>
                 <Flights />
             </FlightTab>
-            <FlightList />
+            {flightState?.fleet && flightState.fleet.length > 0 && (
+                <FlightList />
+            )}
         </SectionLayout>
     );
 }

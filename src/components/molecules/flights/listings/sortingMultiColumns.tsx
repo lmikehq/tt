@@ -318,8 +318,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         flight.departureCountry?.code)
             )
             .join("");
-        const url = `
-            flight/listings?fly_from=${flyFrom}&fly_to=${flights
+        const url = `flight/listings?fly_from=${flyFrom}&fly_to=${flights
             .map(
                 (flight, index) =>
                     (index != 0 ? `~` : ``) +
@@ -351,7 +350,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             };
             console.log(data);
             updateSearchMultiCityQuery({ requests: data });
-            // window.history.replaceState(null, "", "/" + url);
+            window.history.replaceState(null, "", `/${url}`);
             // router.push("/flight/listings");
         }
     };

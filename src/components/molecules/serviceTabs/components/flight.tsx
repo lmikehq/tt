@@ -8,7 +8,7 @@ import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
 import Text from "@atom/text";
 import { styled } from "styled-components";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Spinner from "@molecule/icons/spinner";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
@@ -24,7 +24,14 @@ import {
     COUNTRY_FLAGS,
     mappedCountryFlags,
 } from "@/lib/extensions/data/COUNTRY_FLAGS";
-import { FlightContext, OneFlightType } from "@/lib/extensions/context";
+import {
+    FlightContext,
+    OneFlightType,
+    oneFlight,
+} from "@/lib/extensions/context";
+import { extractFlightDataFromParams } from "@/lib/types/request-models/flight/multi/search.type";
+import { useFetchLocationsById } from "@/lib/hooks/flight/location.hook";
+import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -145,6 +152,7 @@ function FlightStops({
 
 function Flights() {
     const router = useRouter();
+    const pathname = usePathname();
     const { isMobile } = useScreenResolution();
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state,
@@ -176,7 +184,7 @@ function Flights() {
 
     const handleChangeStops = (value?: string) => {
         dispatch && dispatch({ type: "SET_STOPS", payload: value ?? "" });
-        dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
+        // dispatch && dispatch({ type: "RESET_MULTI_FLIGHT" });
     };
 
     const formatSearchFlight = ({
@@ -262,8 +270,8 @@ function Flights() {
                 return "Economy";
         }
     };
+    const flyFroms = queryParams?.fly_from?.split("~") ?? [];
 
-    const flight = flightState?.fleet[0];
     const flights = flightState?.fleet ?? [];
 
     const formComplete = () => {
@@ -283,6 +291,7 @@ function Flights() {
     };
 
     const handleSearchFlights = () => {
+        console.log(formComplete());
         if (formComplete()) {
             router.push(
                 formatSearchFlight({ flights, multi: flights.length > 1 })
@@ -290,30 +299,98 @@ function Flights() {
         }
     };
 
+    // useEffect(() => {
+    //     dispatch &&
+    //         dispatch({
+    //             type: "UPDATE_MULTI_FLIGHT",
+    //             payload: {
+    //                 index: 0,
+    //                 data: {
+    //                     // ...queryParams,
+    //                     // departureCountry: flightState?.countries[queryParams?.fly_from],
+    //                     // arrivalCountry: flightState?.countries[queryParams?.fly_to],
+    //                     departureDate: dayjs(
+    //                         queryParams?.date_from,
+    //                         "MM/DD/YYYY"
+    //                     ).isValid()
+    //                         ? dayjs(queryParams?.date_from, "MM/DD/YYYY")
+    //                         : dayjs(),
+    //                     flightClass: reverseCabin(queryParams?.cabin ?? "M"),
+    //                     adults: Number(queryParams?.adults ?? 1),
+    //                     children: Number(queryParams?.children ?? 0),
+    //                     infants: Number(queryParams?.infants ?? 0),
+    //                 },
+    //             },
+    //         });
+    // }, []);
+    const flyTos = queryParams?.fly_to?.split("~") ?? [];
+
+    const flyFromLocations = useFetchLocationsById(flyFroms, {
+        enabled: flyFroms?.length > 0,
+    });
+    const flyToLocations = useFetchLocationsById(flyTos, {
+        enabled: flyTos?.length > 0,
+    });
+    const flyFromLocationsFinished = flyFromLocations.every(
+        (query) => query.isSuccess
+    );
+    const flyToLocationsFinished = flyToLocations.every(
+        (query) => query.isSuccess
+    );
+
+    const extractData = flyFromLocationsFinished && flyToLocationsFinished;
+
     useEffect(() => {
+        console.log(pathname, "pathname");
         dispatch &&
             dispatch({
-                type: "UPDATE_MULTI_FLIGHT",
-                payload: {
-                    index: 0,
-                    data: {
-                        // ...queryParams,
-                        // departureCountry: flightState?.countries[queryParams?.fly_from],
-                        // arrivalCountry: flightState?.countries[queryParams?.fly_to],
-                        departureDate: dayjs(
-                            queryParams?.date_from,
-                            "MM/DD/YYYY"
-                        ).isValid()
-                            ? dayjs(queryParams?.date_from, "MM/DD/YYYY")
-                            : dayjs(),
-                        flightClass: reverseCabin(queryParams?.cabin ?? "M"),
-                        adults: Number(queryParams?.adults ?? 1),
-                        children: Number(queryParams?.children ?? 0),
-                        infants: Number(queryParams?.infants ?? 0),
-                    },
-                },
+                type: "UPDATE_FLIGHT_STATE",
+                payload: pathname == "/flight/listings" ? [] : [oneFlight],
             });
-    }, []);
+        if (!extractData) return;
+
+        const dateFroms = queryParams?.date_from?.split("~") ?? [];
+        const flightClass = reverseCabin(queryParams?.cabin ?? "M");
+        const adults = Number(queryParams?.adults ?? 1);
+        const children = Number(queryParams?.children ?? 0);
+        const infants = Number(queryParams?.infants ?? 0);
+        const cabinBags = Number(queryParams?.cabinBags ?? 0);
+        const checkedBags = Number(queryParams?.checkedBags ?? 0);
+        if (dateFroms.length == 0) return;
+
+        const fleet: OneFlightType[] = dateFroms?.map((dateFrom, index) => {
+            const departureCountry: KiwiLocation | undefined =
+                flyFromLocations[index].data?.locations[0];
+            const arrivalCountry: KiwiLocation | undefined =
+                flyToLocations[index].data?.locations[0];
+            const departureDate = dayjs(dateFrom, "MM/DD/YYYY").isValid()
+                ? dayjs(dateFrom, "MM/DD/YYYY")
+                : dayjs();
+            console.log(departureCountry, "departureCountry");
+
+            return {
+                index,
+                departureCountry,
+                arrivalCountry,
+                departureDate,
+                flightClass,
+                adults,
+                children,
+                infants,
+                cabinBaggage: cabinBags,
+                checkedBaggage: checkedBags,
+            };
+        });
+
+        dispatch &&
+            dispatch({
+                type: "UPDATE_FLIGHT_STATE",
+                payload: fleet,
+            });
+        if (fleet.length > 1) {
+            dispatch && dispatch({ type: "SET_STOPS", payload: "multi-city" });
+        }
+    }, [extractData]);
 
     return (
         <Section padding={isMobile ? "2rem 0 0" : "1.5rem 0 0"}>
@@ -327,19 +404,21 @@ function Flights() {
             </Flex>
 
             <Flex direction="column">
-                {flightState?.fleet.map((e, index, arr) => (
-                    <FlightModule
-                        key={"multiflight" + index}
-                        stops={flightState?.stops}
-                        flight={e}
-                        handleUpdate={handleUpdateMultiFlight}
-                        handleDelete={handleRemoveMultiFlight}
-                        canDelete={
-                            flightState?.stops === "multi-city" &&
-                            arr.length > 1
-                        }
-                    />
-                ))}
+                {flights.map((e, index, arr) =>
+                    flightState?.stops !== "multi-city" && index != 0 ? null : (
+                        <FlightModule
+                            key={"multiflight" + index}
+                            stops={flightState?.stops ?? ""}
+                            flight={e}
+                            handleUpdate={handleUpdateMultiFlight}
+                            handleDelete={handleRemoveMultiFlight}
+                            canDelete={
+                                flightState?.stops === "multi-city" &&
+                                arr.length > 1
+                            }
+                        />
+                    )
+                )}
             </Flex>
 
             {flightState &&
