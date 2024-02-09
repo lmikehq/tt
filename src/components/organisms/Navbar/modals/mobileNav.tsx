@@ -1,3 +1,4 @@
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import Button from "@atom/button";
 import Image from "@atom/image";
 import Link from "@atom/link";
@@ -33,6 +34,7 @@ interface Props {
 
 function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
   const { user, setUser } = useUserStore((state) => state);
+  const { setTab } = useDashboardStore((state) => state);
   async function getUser(): Promise<User | any> {
     const res = await apiService("/user", "GET");
     setUser(res);
@@ -140,11 +142,11 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
       url: "/dashboard",
     },
     {
-      name: "Referral",
+      name: "Account",
       url: "/dashboard",
     },
     {
-      name: "Account",
+      name: "Referral",
       url: "/dashboard",
     },
     {
@@ -410,7 +412,9 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                         item.action
                           ? item.action
                           : () => {
-                            router.push(item.url);
+                            // router.push(item.url);
+                            // update the tab here
+                            setTab(index);
                           }
                       }
                     >

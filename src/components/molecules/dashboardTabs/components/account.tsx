@@ -16,9 +16,6 @@ import { BiSolidPencil } from "react-icons/bi";
 import Input from "@atom/input";
 import toast from "react-hot-toast";
 import apiService from "@lib/extensions/hook/apiService";
-import sleep from "@lib/extensions/helpers/sleep";
-import Center from "@components/templates/center";
-import { useQuery } from "@tanstack/react-query";
 import { useAccountDashboard } from "@/lib/hooks/dashboard/account.hook";
 import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
 import Spinner from "../../icons/spinner";
@@ -105,13 +102,9 @@ const Account = () => {
       confirmPassword: yup.string().oneOf([yup.ref("newPassword")], 'Passwords must match').required("Field cannot be empty"),
     }),
     onSubmit(values, formikHelpers) {
-      // 
+      updateUserPassword();
     },
   });
-
-  console.log('password formik', passwordFormik.values);
-  console.log(passwordFormik.errors);
-
 
   const [isMobileEdit, setIsMobileEdit] = useState(false);
   const [isPasswordEdit, setIsPasswordEdit] = useState(false);
@@ -178,8 +171,7 @@ const Account = () => {
       address: yup.string().required("Address is required")
     }),
     onSubmit: async (values, formikHelpers) => {
-      console.log({ values });
-      updateUserPassword();
+      // console.log({ values });
     },
 
   });
@@ -285,7 +277,7 @@ const Account = () => {
 
     const options = ['length', 'uppercaseLowercase', 'specialCharacter', 'number'];
     const isValid = options.map((option) => {
-      return isPasswordValid(registerData.newPassword, option);
+      return isPasswordValid(passwordFormik.values.newPassword, option);
     });
     if (isValid.includes(false)) return;
 
@@ -298,7 +290,7 @@ const Account = () => {
       });
 
       setPasswordBtnLoading(false);
-      toast.success(response?.message);
+      toast.success(response?.message || 'Password Updated');
     } catch (err) {
       setPasswordBtnLoading(false);
       toast.error("");
@@ -716,7 +708,7 @@ const Account = () => {
                 type="p"
                 text="Current Password"
                 margin={
-                  isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
+                  isMobile ? "2rem 0 .2rem" : "1rem 0 .5rem"
                 }
               />
               <Input
@@ -744,7 +736,7 @@ const Account = () => {
                 // value={confirmPassword}
                 value={passwordFormik.values.currentPassword}
               />
-              {passwordFormik?.touched?.currentPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.currentPassword!} />}
+              {isPasswordEdit && passwordFormik?.touched?.currentPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.currentPassword!} />}
               {/* {checkIfFieldHasError("confirmPassword") && (
                 <Text
                   type="p"
@@ -763,7 +755,7 @@ const Account = () => {
                 type="p"
                 text="New Password"
                 margin={
-                  isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
+                  isMobile ? "2rem 0 .2rem" : "1rem 0 .5rem"
                 }
               />
               <div
@@ -792,7 +784,7 @@ const Account = () => {
                   name="newPassword"
                   value={passwordFormik.values.newPassword}
                 />
-                {passwordFormik?.touched?.newPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.newPassword!} />}
+                {isPasswordEdit && passwordFormik?.touched?.newPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.newPassword!} />}
               </div>
 
               {isPasswordFocused && (
@@ -846,9 +838,8 @@ const Account = () => {
                 type="h1"
                 text="Confirm New Password"
                 size={16}
-                weight={500}
                 margin={
-                  isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
+                  isMobile ? "2rem 0 .2rem" : "1rem 0 .5rem"
                 }
               />
 
@@ -876,11 +867,11 @@ const Account = () => {
                 value={passwordFormik.values.confirmPassword}
                 height="3rem"
               />
-              {passwordFormik?.touched?.confirmPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.confirmPassword!} />}
+              {isPasswordEdit && passwordFormik?.touched?.confirmPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.confirmPassword!} />}
             </Section>
 
             {isPasswordEdit ? (
-              <Flex align="center" gap="12px" margin="1.5rem 0">
+              <Flex align="center" gap="12px" margin="2.5rem 0">
                 <Button background="transparent" border={`1px solid ${ttColors.dark}`} width="50%" onClick={() => {
                   setIsPasswordFocused(false);
                   setIsPasswordEdit(false);

@@ -92,8 +92,6 @@ function TabPanel(props: TabPanelProps) {
         </Box>
       )}
     </div>
-
-
   );
 
 }
@@ -104,7 +102,6 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
 
   };
-
 }
 
 export default function CustomTab({
@@ -119,7 +116,6 @@ export default function CustomTab({
   aside,
   variant = "standard",
 }: {
-
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
@@ -132,7 +128,7 @@ export default function CustomTab({
   variant?: "fullWidth" | "scrollable" | "standard" | undefined;
 }) {
   const [value, setValue] = useState(0);
-  const { updateTab, setDateRange } = useDashboardStore((state) => state);
+  const { updateTab, setDateRange, tab, setTab } = useDashboardStore((state) => state);
 
   useEffect(() => {
     setValue(activeTab ?? 0);
@@ -147,8 +143,12 @@ export default function CustomTab({
 
   }, [value]);
 
+  console.log({ tab });
+
   const handleChange = (_: SyntheticEvent, newValue: number) => {
-    setValue(newValue ?? value);
+    setTab(newValue);
+    // setValue(newValue !== tab ? newValue : tab);
+    setValue(tab ?? 0);
     setActiveTab && setActiveTab(newValue ?? value);
   };
   const { isMobile } = useScreenResolution();
@@ -165,7 +165,7 @@ export default function CustomTab({
     })
   );
 
-  const getColor = () => { };
+  // const getColor = () => { };
 
   return (
     <TabWrapper
@@ -176,7 +176,8 @@ export default function CustomTab({
     >
       <Box>
         <Tabs
-          value={value}
+          // value={value}
+          value={tab}
           onChange={handleChange}
           variant={isMobile ? "scrollable" : variant}
           aria-label="select your service"
@@ -238,11 +239,16 @@ export default function CustomTab({
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (
-
-        <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
+        <TabPanel value={tab!} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>
       ))}
     </TabWrapper>
   );
 }
+
+/**
+ *   <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
+          {tabItem.content}
+        </TabPanel>
+ */
