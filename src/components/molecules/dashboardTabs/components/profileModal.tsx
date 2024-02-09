@@ -1,9 +1,7 @@
-import { Dialog } from "@mui/material";
 import ReusableModal from "./dashboardModal";
 import { useState } from "react";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
-import Section from "../../section";
 import { ttColors } from "@/lib/theme/colors";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Text from "@/components/atoms/text";
@@ -39,6 +37,10 @@ const FileButton = styled(Button).attrs({ as: 'label' })`
   /* Style the input to be hidden */
   input[type="file"] {
     display: none;
+  }
+
+  @media screen and (max-width: 900px){
+    height: 45px;
   }
 `;
 
@@ -119,14 +121,14 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
       const response = await apiService('/user/update', 'POST', {
         profilePicture: cloudinaryUrl
       });
-      console.log('update profile picture status', response);
+
       if (response._id.length > 1) {
         toast.success("Photo Updated");
       }
       setLoading(false);
       handleClose();
       refetch();
-      // window.location.reload();
+      window.location.reload();
     }
     catch (err) {
       throw err;
@@ -140,6 +142,7 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
       headerText="Change Profile Photo"
       description=""
       maxWidth={isMobile ? '90%' : '640px'}
+      width={isMobile ? "90%" : "640px"}
       showButton={false}
     >
       <Flex align="center" justify="center" direction="column" padding={isMobile ? "0 20" : "0 63px"}>
@@ -166,6 +169,8 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
                   <img
                     src={cloudinaryUrl}
                     alt="user-profile-upload"
+                    height={170}
+                    width={170}
                     style={{
                       height: "auto",
                       maxHeight: "170px",
@@ -201,13 +206,26 @@ export const UpdateProfileModal = ({ state, setState, refetch }: ModalProps) => 
                   accept=".png, .jpg, .jpeg"
                 />
                 <Flex direction="column">
-                  {/* <Text type="p" text="Upload" textAlign="center" margin={0} /> */}
-                  <Text
-                    type="p"
-                    text="Preview your image here"
-                    textAlign="center"
-                    color={ttColors.dark}
-                    size={isMobile ? 12 : 14} margin={0} />
+                  {isMobile ? (
+                    <Text
+                      type="p"
+                      text="Preview"
+                      textAlign="center"
+                      color={ttColors.dark}
+                      size={isMobile ? 12 : 14} margin="10px 0 0"
+                      weight={500}
+                    />
+                  ) : (
+                    <Text
+                      type="p"
+                      text="Preview your image here"
+                      textAlign="center"
+                      color={ttColors.dark}
+                      size={isMobile ? 12 : 14} margin={0}
+                      weight={500}
+                    />
+                  )}
+
                 </Flex>
               </PreviewButton>
 

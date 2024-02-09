@@ -101,7 +101,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
               align="center"
               styles={{ fontSize: "15px", position: "relative" }}
             >
-              <Text type="p" color={ttColors.foundation.gray} text={region}></Text>
+              <Text type="p" weight={500} color={ttColors.foundation.gray} text={region}></Text>
               <Rating
                 name="rating"
                 readOnly
@@ -114,7 +114,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
               />
             </Flex>
 
-            <Flex justify="space-between">
+            <Flex justify="space-between" align="center">
               <Flex
                 align="center"
                 gap="10px"
@@ -123,7 +123,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
                 <Text
                   type="h3"
                   text={`${formatPrice(parseFloat(payment))}`}
-                  weight={"bold"}
+                  weight={600}
                   color="var(--text-dull-color)"
                 ></Text>
                 <Text

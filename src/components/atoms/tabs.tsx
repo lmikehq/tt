@@ -35,14 +35,14 @@ const TabWrapper = styled.div<{
     padding: 0px;
     box-shadow: ${({ shadowShow }) =>
     shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
-    box-shadow: ;
+    // box-shadow: ;
 
     border-radius: 6px;
     height: 48px;
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
     background: ${({ addBackgroundColor }) =>
-    addBackgroundColor ? "#87CEEB" : "#fff"};
+    addBackgroundColor ? "#7BBBD6" : "#7BBBD6"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
     color: ${({ addColor }) => (addColor ? "#fff" : "#7BBBD6")};
   }
   .css-1gsv261 {
@@ -161,7 +161,7 @@ export default function CustomTab({
 
   const coloredIcons = icons.map((icon, i) =>
     React.cloneElement(icon, {
-      color: value === i ? ttColors.primary600 : "var(--secondary-color)",
+      color: value === i ? "#FFF" : "var(--secondary-color)", // ADJUST THE COLOR OF THE ICONS
     })
   );
 
@@ -205,7 +205,7 @@ export default function CustomTab({
                       text={tabItem.label}
                       size={isMobile ? "1rem" : "1rem"}
                       weight={600}
-                      color={tabItem.value === value ? '#000' : ''}
+                      color={tabItem.value === value ? '#FFF' : ""} // ADJUST THE COLOR OF THE TAB
                     />
                   </Flex>
                 }
@@ -217,7 +217,7 @@ export default function CustomTab({
                     borderBottom: `0px solid ${ttColors.dark}`,
                   }),
                   "&.MuiTab-textColorPrimary.Mui-selected": {
-                    color: "#06062a",
+                    color: "#FFF", // #06062a
                   },
                   paddingLeft: "20px",
                   paddingRight: "20px",

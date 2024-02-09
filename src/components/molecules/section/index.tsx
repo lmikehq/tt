@@ -1,21 +1,24 @@
 interface sectionProps {
-  children: React.ReactNode
-  width?: string
-  maxWidth?: string
-  maxHeight?: string
+  children: React.ReactNode;
+  width?: string;
+  maxWidth?: string;
+  maxHeight?: string;
 
-  margin?: string
-  height?: string
-  padding?: React.CSSProperties["padding"]
-  styles?: React.CSSProperties
-  className?: string
-  background?: string
-  borderRadius?: string
-  border?: string
-  borderTop?: string
-  borderBottom?: string
-  borderRight?: string
-  borderLeft?: string
+  margin?: string;
+  height?: string;
+  padding?: React.CSSProperties["padding"];
+  styles?: React.CSSProperties;
+  className?: string;
+  background?: string;
+  borderRadius?: string;
+  border?: string;
+  borderTop?: string;
+  borderBottom?: string;
+  borderRight?: string;
+  borderLeft?: string;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const Section: React.FC<sectionProps> = ({
@@ -35,6 +38,9 @@ const Section: React.FC<sectionProps> = ({
   borderLeft,
   borderRight,
   borderTop,
+  onClick,
+  onMouseEnter,
+  onMouseLeave
 }) => {
   return (
     <section
@@ -51,10 +57,13 @@ const Section: React.FC<sectionProps> = ({
         border: border,
         ...styles,
       }}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {children}
     </section>
-  )
-}
+  );
+};
 
-export default Section
+export default Section;

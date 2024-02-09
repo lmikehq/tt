@@ -32,7 +32,7 @@ const PaginationCtrl = <T,>({ page, setPage, data, filteredCount, totalCount }: 
   const isData = filteredCount === 0;
 
   return (
-    <Flex align="center" justify="center">
+    <Flex align="center" justify="center" margin="40px 0 0">
       <Grid columns={''} style={{ gridTemplateColumns: '150px 150px' }} gap="10px">
         <Button
           variant="outline"
