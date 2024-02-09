@@ -75,7 +75,7 @@ function GalleryBox({ images }: GalleryBoxProps) {
 
   return (
     <Span>
-      <Header style={{ margin: "20px 0px" }}>
+      <Header style={{ margin: "10px 0 0" }}>
         <Flex justify="space-between" align="center" className="gallery_switch">
           <Flex>
             <BtnDetails
@@ -164,12 +164,13 @@ function GalleryBox({ images }: GalleryBoxProps) {
           <ImgBox>
             <Span style={{ height: "100%" }}>
               <LargeImg className="img_large_gallery">
-                <Flex justify="center" width="100%">
+                <Flex justify="center" width="100%" height="100%">
                   <ImgWidth style={{}}>
                     <img
                       style={{
                         width: "100%",
-                        maxHeight: "550px",
+                        height: isMobile ? '80vh' : '',
+                        maxHeight: isMobile ? '80vh' : "640px",
                         objectFit: "cover",
                         borderRadius: "12px",
                       }}
@@ -221,7 +222,7 @@ function GalleryBox({ images }: GalleryBoxProps) {
               </ControlBtn>
             </Span>
             <SmallImg className="img_small img_small_gallery">
-              <Flex justify="center">
+              <Flex justify="center" height="100%">
                 <ImgWidth style={{ width: "81%" }}>
                   <Slider {...SliderSettings} className="">
                     {images.map((x) => (
@@ -234,7 +235,7 @@ function GalleryBox({ images }: GalleryBoxProps) {
                         key={x}
                       >
                         <span
-                          style={{ maxHeight: "230px" }}
+                          style={{ maxHeight: "130px" }}
                           onClick={() => setSelectedImage(x)}
                         >
                           <img
@@ -242,7 +243,7 @@ function GalleryBox({ images }: GalleryBoxProps) {
                             alt=""
                             style={{
                               width: "100%",
-                              height: "100%",
+                              height: "100px",
                               objectFit: "cover",
                               cursor: "pointer",
                             }}

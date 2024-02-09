@@ -33,6 +33,8 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
         rememberMe: false,
     });
 
+    const [inputType, setInputType] = useState('password')
+
     const [submissionState, setSubmissionState] = useState({
         loading: false,
         loadingGoogleAuth: false,

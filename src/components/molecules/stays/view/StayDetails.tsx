@@ -31,6 +31,8 @@ import GoogleMap from "./GoogleMap";
 import { useSearchLikedStays } from "@/lib/hooks/stay/search.hook";
 import { useUserStore } from "@/lib/store/useStore";
 import { numSort } from "@/lib/utilFns";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useConversionRate } from "@/hooks/useConversionRate";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StyledRating = styled(Rating)({
@@ -62,6 +64,8 @@ interface StayDetailsProps {
 }
 
 function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { convertCurrency } = useConversionRate()
     const { isMobile } = useScreenResolution();
 
     const [activeTab, setActiveTab] = useState("overview");
@@ -78,18 +82,23 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
     const sortedAmenities = useMemo(() =>
         stayResponse?.amenity_groups ? stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[]) : []
     , [stayResponse?.amenity_groups])
-    
+
     const prices = useMemo(() => {
-        return numSort(stayResponse?.rates.reduce((prev: PaymentType[], curr: Rate) => [...prev, curr.payment_options.payment_types[0]], []), 'amount', 'asc')
+        return numSort(stayResponse?.rates.reduce((prev: PaymentType[], curr: Rate) => {
+            let paymentType = curr.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? curr.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? curr.payment_options.payment_types[0]
+            return [...prev, paymentType]
+        }, []), 'amount', 'asc')
     }, [stayResponse?.rates])
-    
-    const selectedPrice = prices.find(e => e.show_amount === 'NGN') ?? prices.find(e => e.currency_code === 'USD') ?? prices[0] 
+    const selectedPrice = prices[0]
+    const displayPrice = {
+        currencyCode: preFerredCurrency,
+        amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+    }
 
     const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
 
     const { user } = useUserStore()
     const { data: likedHotels } = useSearchLikedStays({ enabled: !!user?._id })
-
 
 
     return (loading ? (
@@ -170,12 +179,13 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
           </Flex>
           <FlexBox className="stay_wrap" style={{ margin: "15px 0px 2.5rem" }}>
             <Flex gap="5px" align="center">
-              <Text type="p" size={30} weight={600} text={selectedPrice?.show_currency_code} />
+              <Text type="p" size={30} weight={600} text={displayPrice?.currencyCode} />
               <Text
                 type="p"
+                whiteSpace="wrap"
                 size={30}
                 weight={600}
-                text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(2)))}
+                text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
               />
               <Text
                 type="p"

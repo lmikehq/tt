@@ -275,11 +275,11 @@ function Stays() {
           gap=".5rem"
           styles={{ marginBottom: isMobile ? "1.2rem" : "0" }}
         >
-          <Text type="label" size={isMobile ? 16 : 18} text="Return" />
+          <Text type="label" size={isMobile ? 16 : 18} text="Check Out" />
           <DatePicker
             placeholder="Select Date"
             format="yyyy-MM-dd"
-            minDate={today}
+            minDate={stayTabInitialSearchQuery.checkInDate?.toDate()}
             value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
             onChange={(e) =>
               updateStayTabInitialQuery({

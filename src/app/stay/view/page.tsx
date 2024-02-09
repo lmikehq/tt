@@ -179,22 +179,22 @@ const StayViewPage = () => {
         address: stayResponse?.address,
         // latLong: stayResponse?.latitude ? `${stayResponse?.latitude},${stayResponse?.longitude}` : '',
     }, {
-        enabled: stayResponse ? true : false,
+        enabled: false,
     });
     const { data: stayDetailsResponse, isFetching: isFetchingStayDetails } = useViewTripAdvisorStayDetails({
         locationId: `${findStayResponse?.data[0].location_id}`,
     }, {
-        enabled: findStayResponse?.data ? true : false,
+        enabled: false,
     });
     const { data: stayReviewsResponse, isFetching: isFetchingStayReviews } = useViewTripAdvisorStayReviews({
         locationId: `${findStayResponse?.data[0].location_id}`,
     }, {
-        enabled: findStayResponse?.data ? true : false,
+        enabled: false,
     });
     const { data: stayNearbyResponse, isFetching: isFetchingStayNearby } = useViewTripAdvisorStayNearby({
         latLong: stayResponse?.latitude ? `${stayResponse?.latitude},${stayResponse?.longitude}` : '',
     }, {
-        enabled: findStayResponse?.data ? true : false,
+        enabled: false,
     });
 
     const stayImages = useMemo(() => stayResponse?.images.map((img: string) => img.replace('{size}', '1024x768')) ?? [], [stayResponse])

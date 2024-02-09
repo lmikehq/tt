@@ -261,7 +261,7 @@ function AvailableRooms() {
             apartmentType: (staySearchFilters?.apartmentType ?? []).some(e => !!e) ? staySearchFilters.apartmentType : undefined,
             bedType: (staySearchFilters?.bedType ?? []).some(e => !!e) ? staySearchFilters.bedType : undefined,
             room: (staySearchFilters?.room ?? []).some(e => !!e) ? staySearchFilters.room : undefined,
-            star: (staySearchFilters?.star ?? []).some(e => !!e) ? staySearchFilters.star?.slice(0, 1) : undefined,
+            star: (staySearchFilters?.star ?? []).some(e => !!e) ? staySearchFilters.star : undefined,
             sort: staySearchSort ?? undefined,
             regionId: staySearchFilters?.regionId ?? undefined,
             currentPage: staySearchMeta?.currentPage ?? undefined
@@ -275,8 +275,7 @@ function AvailableRooms() {
     const hotelCount = data?.count ?? 0
     const limit = staySearchFilters.limit ?? 20
     const currentPage = staySearchMeta?.currentPage ?? 1
-    const totalPages = Math.floor(hotelCount > 20 ? hotelCount/limit : 1)
-
+    const totalPages = Math.ceil(hotelCount > 20 ? hotelCount/limit : 1)
     const [sortType, setSortType] = useState("best");
 
 

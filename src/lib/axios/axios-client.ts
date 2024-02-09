@@ -130,11 +130,30 @@ const tripAdvisorResourceClient: AxiosInstance = axios.create({
         "Content-Type": "application/json",
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate, br",
-        // "Referer": "https://stays-dev.thrillers.travel",
-        // "Origin": "https://stays-dev.thrillers.travel"
     },
 });
 tripAdvisorResourceClient.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        return Promise.reject(error);
+    }
+);
+
+
+const currencyApiClient: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_CURRENCY_API_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        // "Authorization": `Bearer ${process.env.NEXT_PUBLIC_CURRENCY_API_KEY}`
+    },
+});
+currencyApiClient.interceptors.response.use(
     (response: AxiosResponse) => {
         return response.data;
     },
@@ -151,4 +170,5 @@ export {
     kiwiResourceClient,
     rateHawkResourceClient,
     tripAdvisorResourceClient,
+    currencyApiClient,
 };

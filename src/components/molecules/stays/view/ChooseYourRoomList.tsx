@@ -34,6 +34,8 @@ import dayjs from "dayjs";
 import { useQueryParams } from "@/hooks/useNext";
 import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 import Button from "@/components/atoms/button";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useConversionRate } from "@/hooks/useConversionRate";
 
 interface OneOptionProps {
     label: string,
@@ -114,28 +116,15 @@ interface OneHotelProps {
 }
 
 function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotelProps) {
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
     const { isMobile } = useScreenResolution();
+    const { convertCurrency } = useConversionRate()
 
-    const selectedPrice = hotel.payment_options.payment_types.find(e => e.show_amount === 'NGN') ?? hotel.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? hotel.payment_options.payment_types[0]
-
-    // const [selected, setSelected] = useState<{ cancellation?: number; extras: string[]; [k: string]: any }>({
-    //     cancellation: undefined,
-    //     extras: [],
-    // })
-
-    // type SelectedType = keyof typeof selected
-    // const onSelectExtras = (name: string, value: string) => {
-    //     setSelected(prev => ({
-    //         ...prev,
-    //         [name]: prev[name].includes(value) ? prev[name].filter((e: string) =>  e !== value) : [...prev[name], value] 
-    //     }))
-    // }
-    // const onSelectCancel = (name: string, value: string) => {
-    //     setSelected(prev => ({
-    //         ...prev,
-    //         [name]: value
-    //     }))
-    // }
+    const selectedPrice = hotel.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? hotel.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? hotel.payment_options.payment_types[0]
+    const displayPrice = {
+        currencyCode: preFerredCurrency,
+        amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+    }
 
 
     return (
@@ -158,7 +147,6 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                             borderRadius: "12px",
                         }}
                         src={stayImages[0] ?? ''}
-                        // src={"/assets/images/stays/image1.jpg"}
                         alt={hotel.room_name}
                       />
                     </ChooseRoomImg>
@@ -177,13 +165,14 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                                 size={24}
                                 whiteSpace="nowrap"
                                 weight={600}
-                                text={selectedPrice?.show_currency_code}
+                                text={displayPrice?.currencyCode}
                             />{" "}
                             <Text
                                 type="p"
+                                whiteSpace="wrap"
                                 size={30}
                                 weight={600}
-                                text={formatPriceWithoutCurrency(parseFloat(parseFloat(selectedPrice?.show_amount).toFixed(2)))}
+                                text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
                             />
                             <Text
                               type="p"

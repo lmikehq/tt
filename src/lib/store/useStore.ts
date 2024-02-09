@@ -7,13 +7,15 @@ interface userState {
 }
 
 interface LocationData {
-    continent_code: string;
+    city: string;
     country: string;
     country_code: string;
     country_code3: string;
+    continent_code: string;
     ip: string;
     latitude: string;
     longitude: string;
+    region: string;
 }
 
 interface Action {
