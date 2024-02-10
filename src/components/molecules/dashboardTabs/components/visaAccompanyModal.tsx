@@ -4,30 +4,32 @@ import Flex from "@/components/templates/flex";
 import { IoMdClose } from "react-icons/io";
 import { ttColors } from "@/lib/theme/colors";
 import Text from "@/components/atoms/text";
-import { useFormik } from "formik";
+import { FieldArray, FormikProps, FormikProvider } from "formik";
 import Button from "@/components/atoms/button";
-import { accompanyArraySchema, accompanyVal } from "@/lib/types/schema";
+import { accompanyVal } from "@/lib/types/schema";
 import AccompanyComponent from "./visa/accompany";
-import { accompanyStore } from "@/lib/store/dashboard/accompany.store";
-import { useState } from "react";
+
 import { IAccompany } from "@/lib/types";
 import ReusableModal from "./dashboardModal";
+import CustomizedAccordions from "../../faq/components/customizedAccordion";
+import AddButton from "../../addButton";
+import toast from "react-hot-toast";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface Props {
   open: boolean;
   setState: React.Dispatch<React.SetStateAction<{ open: boolean, type: string; }>>;
+  steps: string[],
+  index: number;
+  persistForm: () => void;
+  formik: FormikProps<{ dependants: IAccompany[]; }>;
 }
 
-export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
+
+export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) => {
   const { isMobile } = useScreenResolution();
-  const { numberOfDependants, removeDependant } = accompanyStore((state) => state);
-  const [dependentsData, setDependentsData] = useState<IAccompany[]>([]);
-  const [page, setPage] = useState(1);
-  const [disablePrevBtn, setDisablePrevBtn] = useState(true);
-  const [disableNextBtn, setDisableNextBtn] = useState(false);
 
   const handleClose = () => {
-    setPage(1);
     setState((prev) => {
       return {
         ...prev,
@@ -35,61 +37,6 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
         type: 'add-accompany'
       };
     });
-  };
-
-  // const formik = useFormik({
-  //   initialValues: accompanyVal,
-  //   validationSchema: accompanySchema,
-  //   onSubmit: (values) => {
-  //     console.log({ values });
-  //   }
-  // });
-
-  // const handleSubmit = () => {
-  //   formik.handleSubmit();
-  // };
-
-  const handleRemove = (index: number) => {
-    // REMOVE THE INDEX POSITION
-    // console.log({ numberOfDependants });
-    removeDependant(index);
-    // console.log(index, 'selected');
-    // REMOVE THE ELEMENT FROM WHAT I WAMT TO SEND
-  };
-
-  const handlePrevPage = () => {
-    if (page === 1) {
-      return setDisablePrevBtn(true);
-    }
-    setPage((prev) => (prev - 1));
-    setDisablePrevBtn(false);
-  };
-
-  const handleNextPage = () => {
-    if (page === 5) {
-      return setDisableNextBtn(true);
-    }
-
-    setPage((prev) => (prev + 1));
-  };
-
-
-  const renderPage = (step: number) => {
-    switch (step) {
-      case 1:
-        return <AccompanyComponent key={`dependent 1`} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
-      case 2:
-        return <AccompanyComponent key={`dependent 2`} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
-      case 3:
-        return <AccompanyComponent key={`dependent 3`} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
-      case 4:
-        return <AccompanyComponent key={`dependent 4`} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
-      case 5:
-        return <AccompanyComponent key={`dependent 5`} index={step} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
-      default:
-        <AccompanyComponent index={1} handleRemove={handleRemove} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} setDependentsData={setDependentsData} />;
-        break;
-    }
   };
 
   return (
@@ -101,61 +48,104 @@ export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
         handleClose();
       }}
       maxWidth="827px"
+      maxHeight="500px"
+      // height="500px"
       width={isMobile ? "90%" : "827px"}
+      showButton={false}
     >
-      <Box sx={{ padding: isMobile ? '0 24px 20px' : '0 74px 41px' }}>
-        {renderPage(page)}
-      </Box>
-    </ReusableModal>
+      <FormikProvider value={formik}>
+        <Box>
+          <form onSubmit={formik?.handleSubmit}>
+            <FieldArray
+              name="dependants"
+              render={(arrayHelpers) => {
+                return (
+                  <div>
+                    <CustomizedAccordions
+                      items={formik.values.dependants.map((dependant, index) => ({
+                        flexDirection: "row",
+                        header: `Dependant ${index + 1}`,
+                        border: 'none',
+                        headerFontWeight: 600,
+                        backgroundColor: "transparent",
+                        detailsBorderTop: "none",
+                        detailsPadding: 0,
+                        headerLeftMargin: 0,
+                        headerPadding: "0",
+                        description: (
+                          <AccompanyComponent
+                            formik={formik}
+                            values={dependant}
+                            count={index + 1}
+                            length={formik.values.dependants.length}
+                            step={index}
+                          />
+                        )
+                      }))}
+                    />
+                    <Flex align="center" justify="space-between">
+                      <Flex justify="space-between">
+                        {/* <FormStepTitle steps={steps} index={index} /> */}
+                        <Button
+                          width="max-content"
+                          padding="0 10px"
+                          background="transparent"
+                          border={`1px solid ${ttColors.lightestGray}`}
+                          disabled={formik.values.dependants.length === 5}
+                          onClick={() => {
+                            if (!formik.isValid || !formik.dirty) {
+                              return toast.error("Please validate all inputs");
+                            }
+                            if (formik.values.dependants.length < 5) {
+                              arrayHelpers.insert(index + 1, accompanyVal);
+                            }
+                          }}
+                        >
+                          <Flex align="center" gap="10px">
+                            <Text type="p" text="Add Dependant" color={ttColors.dark} weight={500} />
+                            <AddButton
+                              onClick={() => ''}
+                              disabled={false}
+                            />
+                          </Flex>
+                        </Button>
+                      </Flex>
+
+                      {formik.values.dependants.length > 1 && (
+                        <Flex
+                          justify="flex-end"
+                          gap="0.25rem"
+                          align="center"
+                          onClick={() => arrayHelpers.remove(index)}
+                          cursor="pointer"
+                        >
+                          <RiDeleteBin6Line color={ttColors.red} size={25} />
+                          <Text
+                            type="p"
+                            text="Delete Dependant"
+                            color={ttColors.red}
+                            weight="500"
+                            size={15}
+                          />
+                        </Flex>
+                      )}
+                    </Flex>
+                  </div>
+                );
+              }} />
+            {/* render the button to submit */}
+            <Button
+              background={ttColors.blackishBlue}
+              width="100%"
+              type="submit"
+              margin="40px 0 0"
+            >
+              <Text type="p" text="Continue" weight={500} />
+            </Button>
+            {/* render the form here */}
+          </form>
+        </Box>
+      </FormikProvider>
+    </ReusableModal >
   );
 };
-
-/**
- *  <Dialog
-      open={open}
-      onClose={() => {
-        setPage(1);
-        handleClose();
-      }}
-      sx={{
-        '.css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-          width: '827px',
-          borderRadius: '12px',
-          maxWidth: '827px',
-        }
-      }}
-    >
-      <Flex align="center" justify="flex-end" width="827px" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
-        <Flex
-          align="center"
-          justify="center"
-          borderRadius="4px"
-          styles={{ cursor: 'pointer' }}
-          height="30px"
-          width="30px"
-          onClick={() => handleClose()}
-        >
-          <Flex
-            background={ttColors.grayishAsh}
-            height="30px"
-            width="30px"
-            align="center"
-            justify="center"
-          >
-            <IoMdClose />
-          </Flex>
-        </Flex>
-      </Flex>
-
-      <Box sx={{ padding: isMobile ? '0 24px 20px' : '0 74px 41px' }}>
-        <Flex direction="column" gap="16px" align="center" justify="center" margin="0 0 44px">
-          <Text type='h1' text='Add Accompanies' weight={600} size={isMobile ? 22 : 32} />
-          <Text type='p' text='Enter details of people you want to travel with.' textAlign="center" color={ttColors.lighterGray} />
-        </Flex>
-
-      
-{ renderPage(page); }
-
-      </Box >
-    </Dialog >
- * */

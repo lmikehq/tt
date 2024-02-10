@@ -38,8 +38,14 @@ import VisaUploadDocModal from "../visaUploadDoc";
 import { Grid } from "@/components/templates/grid";
 import { AddVisaAccompanyModal } from "./visaAccompanyModal";
 import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
-import SetVisaAccompanyModal from "./setVisaAccompanyModal";
 import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import { dependantsForm, dependantsFormSchema } from "@/lib/types/schema";
+import { VisaService } from "@/lib/services/dashboard/visa.service";
+import { useUserStore } from "@/lib/store/useStore";
+import toast from "react-hot-toast";
+import AccompanyPaymentModal from "../accompanyPayment";
+import apiService from "@/lib/extensions/hook/apiService";
 
 const Logo = styled.div`
   height: 64px;
@@ -142,6 +148,7 @@ interface VisaDataProps {
 }
 
 function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }) {
+  const { user } = useUserStore((state) => state);
   const { isMobile, isTablet } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
@@ -151,7 +158,13 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const [dependantPaymentInfo, setDependantPaymentInfo] = useState<{ checkout_url: string, reference: string, price: number; }>({
+    checkout_url: "",
+    reference: "",
+    price: 0
+  });
   const router = useRouter();
+
 
   const handleAccordionClick = () => {
     setIsOpen(!isOpen);
@@ -299,7 +312,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
           return {
             ...prev,
             open: true,
-            type: 'set-accompany'
+            type: 'add-accompany'
           };
         });
         setIsDropdownOpen(false);
@@ -326,6 +339,95 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
     },
   ];
 
+  // DEPENDANTS FORMIK 
+  const dependantsFormik = useFormik({
+    initialValues: dependantsForm,
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: dependantsFormSchema,
+    onSubmit: async (values, helpers) => {
+      // some code
+      // CALL THE API FROM HERE AND EVEN RESET THE FORM
+
+      if (user) {
+
+        // console.log(values.dependants);
+        const response = apiService(`/visa/application/${visa._id}/add-accompanying`, 'POST', values.dependants.map((dependant) => ({
+          membersEmail: dependant.memberEmail,
+          accompanying: true,
+          address: dependant.memberAddress,
+          gender: dependant.gender,
+          membersPhoneNumber: dependant.phoneNumber,
+          relationshipToPrimary: dependant.relationship,
+          membersName: dependant.memberName,
+          dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+          expiryYear: Number(dependant.expiryDate.split("/")[2]),
+          issueYear: Number(dependant.issueDate.split("/")[2]),
+          passportNumber: dependant.passportNumber
+        }))).then((response) => {
+          console.log('api response', response);
+          if (response?.message === 'success') {
+            setDependantPaymentInfo({
+              checkout_url: response?.data?.data?.checkout_url,
+              reference: response?.data?.data?.reference,
+              price: values.dependants.length * 500000
+            });
+            toast.success(response?.data?.message);
+            // CLOSE THE MODAL FOR ACCOMPANIES
+            setModalState({ open: false, type: "add-dependant" });
+            helpers.resetForm();
+          }
+          setModalState({ open: true, type: "dependant-payment" });
+          // setModalState({ open: true, type: "payment" });
+          router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
+        }).catch((err) => {
+          console.log(err);
+          throw err;
+        });
+
+        console.log('code after the api call');
+
+        // const response = await VisaService.addDependants(visa._id!, values.dependants.map((dependant) => ({
+        //   membersEmail: dependant.memberEmail,
+        //   accompanying: true,
+        //   address: dependant.memberAddress,
+        //   gender: dependant.gender,
+        //   membersPhoneNumber: dependant.phoneNumber,
+        //   relationshipToPrimary: dependant.relationship,
+        //   membersName: dependant.memberName,
+        //   dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+        //   expiryYear: Number(dependant.expiryDate.split("/")[2]),
+        //   issueYear: Number(dependant.issueDate.split("/")[2]),
+        //   passportNumber: dependant.passportNumber
+        // })));
+        // console.log('response from the api', response);
+        // if (response?.message === "success" || response?.statusCode === 200) {
+        //   console.log('the response was recieved succesfully open the payment modal');
+        //   setDependantPaymentInfo({
+        //     checkout_url: response?.data?.data?.checkout_url,
+        //     reference: response?.data?.data?.reference,
+        //     price: values.dependants.length * 500000
+        //   });
+        //   // TOAST
+        //   toast.success(response?.data?.message);
+        //   // CLOSE THE MODAL FOR ACCOMPANIES
+        //   setModalState({ open: false, type: "add-dependant" });
+
+        //   // OPEN THE MODAL TO MAKE DEPENDANTS PAYMENT 
+        //   setModalState({ open: true, type: "dependant-payment" });
+        //   // setModalState({ open: true, type: "payment" });
+        //   router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
+        //   // ADD THE PAYMENT TO URL PARAMS
+        // }
+
+        // toast.error("Error adding dependant(s). Try again!");
+
+
+      }
+
+    }
+  });
+
   return (
     <Section
       styles={{
@@ -335,6 +437,16 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
       padding="24px"
       margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
+      {/* ACCOMPANY / DEPENDANTS PAYMENT MODAL */}
+      <AccompanyPaymentModal
+        onClose={() => { }}
+        open={modalState.open && modalState.type === 'dependant-payment'}
+        koraLink={dependantPaymentInfo.checkout_url}
+        price={dependantPaymentInfo.price}
+        reference={dependantPaymentInfo.reference}
+      />
+
+      {/* VISA PAYMENT MODAL */}
       <VisaPaymentModal
         open={modalState.open && modalState.type === "payment"}
         onClose={() => setModalState({ open: false, type: "" })}
@@ -346,6 +458,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         }}
       />
 
+      {/* VISA UPLOAD DOCUMENT MODAL */}
       <VisaUploadDocModal
         onClose={() => setModalState({ open: false, type: "" })}
         open={modalState.open && modalState.type === "upload"}
@@ -353,16 +466,17 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         refetch={refetch}
       />
 
-      <SetVisaAccompanyModal
-        // onClose={ }
-        open={modalState.open && modalState.type === 'set-accompany'}
-        setState={setModalState}
-      />
-
+      {/* ADD DEPENDANTS / ACCOMPANIES MODAL */}
       <AddVisaAccompanyModal
         open={modalState.open && modalState.type === 'add-accompany'}
         setState={setModalState}
+        formik={dependantsFormik}
+        persistForm={() => { }}
+        index={1}
+        steps={[""]}
       />
+
+      {/* SUCCESSFULY PAID FOR DEPENDANTS / ACCOMPANIES MODAL */}
 
       {isMobile ? (
         <Flex
@@ -784,7 +898,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                   }}
                 >
                   <Flex
-                    border="1px solid #87CEEB"
+                    border={isTablet ? "" : "1px solid #87CEEB"}
                     borderBottom="1px solid #87CEEB"
                     align="center"
                     justify="center"
@@ -797,13 +911,13 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                   >
                     {isOpen ? (
                       isTablet ? (
-                        <HiDotsVertical size="1.5rem" color={ttColors.dark} />
+                        <MdKeyboardArrowUp size="1.5rem" />
                       ) : (
                         <MdKeyboardArrowUp size="1.5rem" />
                       )
                     ) : (
                       isTablet ? (
-                        <HiDotsVertical size="1.5rem" color={ttColors.dark} />
+                        <MdKeyboardArrowDown size="1.5rem" />
                       ) : (
                         <MdKeyboardArrowDown size="1.5rem" />
                       )
@@ -845,7 +959,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                           weight={500}
                         />
                       </Flex>
-                      {!visa?.usedFormFeeVoucher && (
+                      {visa?.usedFormFeeVoucher && (
                         <Flex align="center" margin=".5rem 0" gap=".5rem">
                           <PiWalletLight size={20} fontWeight={500} />
                           <Text
@@ -878,6 +992,18 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         />
                       </Flex>
 
+                      <Flex direction="column" align="center" gap=".5rem">
+                        {visa?.infoRequests.map((info, index) => {
+                          return (
+                            <Text
+                              key={`info-request ${index}`}
+                              type="p"
+                              text={info}
+                            />
+                          );
+                        })}
+                      </Flex>
+
                       <Flex align="center" margin=".5rem 0" gap=".5rem">
                         <RxAvatar size={20} />
                         <Text
@@ -907,7 +1033,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                       </Flex>
                     </Section>
                     {/*OPEN SET ACCOMPANY MODAL */}
-                    {/* <div>
+                    <div>
                       <Flex justify="flex-end">
                         <Button
                           width="fit-content"
@@ -923,7 +1049,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                               return {
                                 ...prev,
                                 open: true,
-                                type: 'set-accompany'
+                                type: 'add-accompany'
                               };
                             });
                           }}
@@ -936,10 +1062,10 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                           />
                         </Button>
                       </Flex>
-                    </div> */}
+                    </div>
                   </Grid>
 
-                  {/* <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+                  <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
                     <div></div>
                     <Section>
                       <Flex>
@@ -958,7 +1084,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                         <Text type="p" text='In Progress' weight={500} />
                       </Flex>
                     </Flex>
-                  </Grid> */}
+                  </Grid>
                 </Section>
               )}
             </Section>

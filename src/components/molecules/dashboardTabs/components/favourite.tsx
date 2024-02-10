@@ -20,20 +20,20 @@ const FavouriteWrapper = styled.div``;
 
 
 const Favourite = () => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
   const { page, setPage, limit } = useDashboardStore((state) => state);
 
   const content = {
     title: "You've got no favorite - Let's help you get Started",
     links: [
-      { text: "Apply for Visa", url: "/visa" },
+      { text: "Apply for Visa", url: "/visa/apply" },
       { text: "Book flight", url: "/flight" },
     ],
   };
 
   const { data, isLoading } = useFavouriteDashboard({ query: { currentPage: page, limit }, options: { retry: 2 } });
 
-  const response = data as { favourites: HotelRoomFavourite[], filteredCount: number, totalCount: number; };
+  // const response = data as { favourites: HotelRoomFavourite[], filteredCount: number, totalCount: number; };
 
   const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite[];
   // const favourites: HotelRoomFavourite[] = response.favourites || []
@@ -60,7 +60,7 @@ const Favourite = () => {
           {/* FAVOURITE COMPONENT */}
           {favourites.length > 0 ? (
             <FavouriteWrapper>
-              <Grid columns={isMobile ? "1" : "3"} gap={isMobile ? "1.5rem" : "1rem"} style={{ rowGap: '56px', justifyItems: 'center' }} margin="0 0 40px">
+              <Grid columns={isMobile ? "1" : isTablet ? "2" : "3"} gap={isMobile ? "1.5rem" : "1rem"} style={{ rowGap: '56px', justifyItems: 'center' }} margin="0 0 40px">
                 {favourites.map((favourite, index) => {
                   return (
                     <FavouritesCard

@@ -11,6 +11,7 @@ import {
 } from "@/components/organisms/fieldInput";
 import Flex from "@/components/templates/flex";
 import { Grid } from "@/components/templates/grid";
+import { dependantsRelationship } from "@/data/options";
 import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { accompanyStore } from "@/lib/store/dashboard/accompany.store";
@@ -44,51 +45,29 @@ const SectionContainer = styled.div`
     }
 `;
 
-interface Props {
-  index: number;
-  formik?: FormikProps<IAccompany>;
-  handleRemove: (index: number) => void;
-  initialValues?: IAccompany;
-  handleNextPage: () => void;
-  handlePrevPage: () => void;
-  setDependentsData: React.Dispatch<React.SetStateAction<IAccompany[]>>;
+interface FormProps {
+  values: IAccompany;
+  formik: any;
+  // formik: FormikProps<IAccompany>;  
+  count: number;
+  length: number;
+  handleClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  step: number;
 }
 
 function AccompanyComponent({
-  index,
-  handleRemove,
-  initialValues,
-  handleNextPage,
-  handlePrevPage,
-  setDependentsData,
-}: Props) {
+  values,
+  formik,
+  count,
+  length,
+  step
+}: FormProps) {
   const { isMobile } = useScreenResolution();
-  const { numberOfDependants } = accompanyStore((state) => state);
-
-  const formik = useFormik({
-    initialValues: dependantsForm,
-    validationSchema: dependantsFormSchema,
-    onSubmit: (values) => {
-
-    },
-  });
-
-  console.log(formik.values);
-
 
   return (
     <>
-      {/* <Section margin="20px 0">
-        <Flex align="center" justify="space-between" margin="0 0 20px">
-          <Text
-            type="p"
-            text={`DEPENDANT ${index}`}
-            size={20}
-            weight={600}
-          />
-
-        </Flex>
-        <form>
+      <Section margin="20px 0">
+        <Section>
           <Flex direction="column" gap="29px">
             <Grid
               columns=""
@@ -107,7 +86,7 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldInput
-                  name="memberName"
+                  name={`dependants.${step}.memberName`}
                   formik={formik}
                   placeholder="Enter Member's Name"
                 />
@@ -120,21 +99,13 @@ function AccompanyComponent({
                 </Flex>
                 <FieldString
                   formik={formik}
-                  name="relationship"
+                  name={`dependants.${step}.relationship`}
                   placeholder="Enter Relationship to you"
-                  options={[
-                    "Spouse",
-                    "Son",
-                    "Daughter",
-                    "Father",
-                    "Mother",
-                    "Brother",
-                    "Sister",
-                  ]}
+                  options={dependantsRelationship}
                   onChange={(e) => {
-                    formik.setFieldValue("relationship", e);
+                    formik.setFieldValue(`dependants.${step}.relationship`, e);
                   }}
-                  value={formik.values.relationship}
+                  value={formik?.values?.dependants?.step?.relationship}
                 />
               </Flex>
             </Grid>
@@ -142,7 +113,7 @@ function AccompanyComponent({
             <Flex direction="column" gap="14px">
               <Text type="label" text="Member's Address" />
               <FieldInput
-                name="memberAddress"
+                name={`dependants.${step}.memberAddress`}
                 formik={formik}
                 placeholder="Enter Member's Residential Address"
               />
@@ -160,7 +131,7 @@ function AccompanyComponent({
                 <Text type="label" text="Member's Occupation" />
                 <FieldInput
                   placeholder="Enter Guarantor's Occupation"
-                  name="memberOccupation"
+                  name={`dependants.${step}.memberOccupation`}
                   formik={formik}
                 />
               </Flex>
@@ -168,7 +139,7 @@ function AccompanyComponent({
               <Flex direction="column" gap="14px">
                 <Text type="label" text="Member's Email Address" />
                 <FieldInput
-                  name="memberEmail"
+                  name={`dependants.${step}.memberEmail`}
                   formik={formik}
                   placeholder="Enter Member's Email Address"
                 />
@@ -208,7 +179,7 @@ function AccompanyComponent({
                           : "",
                     }}
                     onChange={(e) => {
-                      formik.setFieldValue("phoneNumber", e);
+                      formik.setFieldValue(`dependants.${step}.phoneNumber`, e);
                     }}
                     inputClass="w"
                     placeholder="Enter phone numbers"
@@ -235,7 +206,7 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldInput
-                  name="memberWorth"
+                  name={`dependants.${step}.memberWorth`}
                   formik={formik}
                   placeholder="Enter Guarantor's Worth"
                 />
@@ -256,14 +227,14 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldString
-                  name="gender"
+                  name={`dependants.${step}.gender`}
                   formik={formik}
                   placeholder="Select Gender"
                   options={["Male", "Female"]}
                   onChange={(e) => {
-                    formik.setFieldValue("gender", e);
+                    formik.setFieldValue(`dependants.${step}.gender`, e);
                   }}
-                  value={formik.values.gender}
+                  value={formik?.values?.dependants?.step?.gender}
                 />
               </Flex>
               <Flex direction="column" gap="14px">
@@ -272,7 +243,7 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldAsDate
-                  name="dateOfBirth"
+                  name={`dependants.${step}.dateOfBirth`}
                   placeholder="Select your DOB"
                   formik={formik}
                   padding="0 0 0 0"
@@ -299,7 +270,7 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldInput
-                  name="passportNumber"
+                  name={`dependants.${step}.passportNumber`}
                   formik={formik}
                   placeholder="Enter Passport Number"
                 />
@@ -323,7 +294,7 @@ function AccompanyComponent({
                       code: x.code,
                     }))}
                     formik={formik}
-                    name="passportIssuedCountry"
+                    name={`dependants.${step}.passportIssuedCountry`}
                     placeholder="Select the country"
                     type="text"
                     value={formik.values.passportIssuedCountry}
@@ -346,7 +317,7 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldAsDate
-                  name="issueDate"
+                  name={`dependants.${step}.issueDate`}
                   placeholder="Select Issue Date"
                   formik={formik}
                   padding="0 0 0 0"
@@ -360,7 +331,7 @@ function AccompanyComponent({
                   <Required margin="0 0" />
                 </Flex>
                 <FieldAsDate
-                  name="expiryDate"
+                  name={`dependants.${step}.expiryDate`}
                   placeholder="Expiry Date"
                   formik={formik}
                   padding="0 0 0 0"
@@ -369,10 +340,8 @@ function AccompanyComponent({
               </Flex>
             </Grid>
 
-            <Flex align="center" gap="18px">
-            
-
-              {index === numberOfDependants ? (
+            {/* <Flex align="center" gap="18px">
+              {count === numberOfDependants ? (
                 <Button
                   background={ttColors.blackishBlue}
                   width="100%"
@@ -380,13 +349,6 @@ function AccompanyComponent({
                   onClick={(e) => {
                     e.preventDefault();
                     if (formik.isValid === true) {
-
-                      // setDependentsData((prev) => {
-                      //   return [
-                      //     ...prev,
-                      //     { ...formik.values },
-                      //   ];
-                      // });
                       formik.setFieldValue("phoneNumber", "");
 
                     }
@@ -413,10 +375,10 @@ function AccompanyComponent({
                   <Text type="p" text="Next Dependent" />
                 </Button>
               )}
-            </Flex>
+            </Flex> */}
           </Flex>
-        </form>
-      </Section> */}
+        </Section>
+      </Section>
     </>
   );
 }

@@ -16,14 +16,12 @@ import { BiSolidPencil } from "react-icons/bi";
 import Input from "@atom/input";
 import toast from "react-hot-toast";
 import apiService from "@lib/extensions/hook/apiService";
-import sleep from "@lib/extensions/helpers/sleep";
-import Center from "@components/templates/center";
-import { useQuery } from "@tanstack/react-query";
 import { useAccountDashboard } from "@/lib/hooks/dashboard/account.hook";
 import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
 import Spinner from "../../icons/spinner";
 import { useFormik } from "formik";
 import * as yup from 'yup';
+import { ErrorText } from "@/components/organisms/fieldInput";
 
 const AccountLeft = styled.div``;
 const AccountRight = styled.div`
@@ -89,7 +87,24 @@ const Account = () => {
     }
   }
 
+  // passwordConfirmation: Yup.string()
+  //   .oneOf([Yup.ref('password'), null], 'Passwords must match')
   const [confirmPassword, setConfirmPassword] = useState("");
+  const passwordFormik = useFormik({
+    initialValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: ""
+    },
+    validationSchema: yup.object().shape({
+      currentPassword: yup.string().required("Current password is required"),
+      newPassword: yup.string().required("New Password is required"),
+      confirmPassword: yup.string().oneOf([yup.ref("newPassword")], 'Passwords must match').required("Field cannot be empty"),
+    }),
+    onSubmit(values, formikHelpers) {
+      updateUserPassword();
+    },
+  });
 
   const [isMobileEdit, setIsMobileEdit] = useState(false);
   const [isPasswordEdit, setIsPasswordEdit] = useState(false);
@@ -156,7 +171,7 @@ const Account = () => {
       address: yup.string().required("Address is required")
     }),
     onSubmit: async (values, formikHelpers) => {
-      console.log({ values });
+      // console.log({ values });
     },
 
   });
@@ -258,11 +273,11 @@ const Account = () => {
     return response;
   }
 
-  const updateUserPassword = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const updateUserPassword = async () => {
+
     const options = ['length', 'uppercaseLowercase', 'specialCharacter', 'number'];
     const isValid = options.map((option) => {
-      return isPasswordValid(registerData.newPassword, option);
+      return isPasswordValid(passwordFormik.values.newPassword, option);
     });
     if (isValid.includes(false)) return;
 
@@ -270,12 +285,12 @@ const Account = () => {
     try {
 
       const response = await apiService("/auth/change-password", "POST", {
-        currentPassword: registerData.currentPassword,
-        newPassword: registerData.newPassword
+        currentPassword: passwordFormik?.values.currentPassword,
+        newPassword: passwordFormik.values.newPassword
       });
 
       setPasswordBtnLoading(false);
-      toast.success(response?.message);
+      toast.success(response?.message || 'Password Updated');
     } catch (err) {
       setPasswordBtnLoading(false);
       toast.error("");
@@ -688,34 +703,40 @@ const Account = () => {
               </Flex>
             </Section>
 
-            <Section>
+            <Section margin="10px 0">
               <Text
                 type="p"
                 text="Current Password"
                 margin={
-                  isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
+                  isMobile ? "2rem 0 .2rem" : "1rem 0 .5rem"
                 }
               />
               <Input
                 placeholder="Current Password"
                 type="password"
                 readOnly={isPasswordEdit ? false : true}
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                  setRegisterData({
-                    ...registerData,
-                    currentPassword: e.target.value,
-                  });
-                }}
+                name="currentPassword"
+                // onChange={(e) => {
 
-                border={
-                  checkIfFieldHasError("confirmPassword")
-                    ? "1px solid #FF8682"
-                    : ""
-                }
+                //   setConfirmPassword(e.target.value);
+                //   setRegisterData({
+                //     ...registerData,
+                //     currentPassword: e.target.value,
+                //   });
+                // }}
+
+                // border={
+                //   checkIfFieldHasError("confirmPassword")
+                //     ? "1px solid #FF8682"
+                //     : ""
+                // }
+                onBlur={formik.handleBlur}
+                onChange={passwordFormik.handleChange}
                 height="3rem"
-                value={confirmPassword}
+                // value={confirmPassword}
+                value={passwordFormik.values.currentPassword}
               />
+              {isPasswordEdit && passwordFormik?.touched?.currentPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.currentPassword!} />}
               {/* {checkIfFieldHasError("confirmPassword") && (
                 <Text
                   type="p"
@@ -729,12 +750,12 @@ const Account = () => {
               )} */}
             </Section>
 
-            <Section>
+            <Section margin="10px 0">
               <Text
                 type="p"
                 text="New Password"
                 margin={
-                  isMobile ? ".7rem 0 .2rem" : "1rem 0 .5rem"
+                  isMobile ? "2rem 0 .2rem" : "1rem 0 .5rem"
                 }
               />
               <div
@@ -745,20 +766,25 @@ const Account = () => {
                   placeholder="Enter New Password"
                   type="password"
                   readOnly={isPasswordEdit ? false : true}
-                  onChange={(e) =>
-                    setRegisterData({
-                      ...registerData,
-                      newPassword: e.target.value,
-                    })
-                  }
-                  border={
-                    checkIfFieldHasError("password")
-                      ? "1px solid #FF8682"
-                      : ""
-                  }
+                  // onChange={(e) =>
+                  //   setRegisterData({
+                  //     ...registerData,
+                  //     newPassword: e.target.value,
+                  //   })
+                  // }
+                  // border={
+                  //   checkIfFieldHasError("password")
+                  //     ? "1px solid #FF8682"
+                  //     : ""
+                  // }
                   height="3rem"
-                  value={registerData.newPassword}
+                  // value={registerData.newPassword}
+                  onBlur={passwordFormik.handleBlur}
+                  onChange={passwordFormik.handleChange}
+                  name="newPassword"
+                  value={passwordFormik.values.newPassword}
                 />
+                {isPasswordEdit && passwordFormik?.touched?.newPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.newPassword!} />}
               </div>
 
               {isPasswordFocused && (
@@ -807,8 +833,45 @@ const Account = () => {
               )}
             </Section>
 
+            <Section margin="10px 0">
+              <Text
+                type="h1"
+                text="Confirm New Password"
+                size={16}
+                margin={
+                  isMobile ? "2rem 0 .2rem" : "1rem 0 .5rem"
+                }
+              />
+
+              <Input
+                placeholder="Current Password"
+                type="password"
+                readOnly={isPasswordEdit ? false : true}
+                // onChange={(e) => {
+                //   setConfirmPassword(e.target.value);
+                //   setRegisterData({
+                //     ...registerData,
+                //     currentPassword: e.target.value,
+                //   });
+                // }}
+
+                // border={
+                //   checkIfFieldHasError("confirmPassword")
+                //     ? "1px solid #FF8682"
+                //     : ""
+                // }
+                // value={confirmPassword}
+                onChange={passwordFormik.handleChange}
+                name="confirmPassword"
+                onBlur={passwordFormik.handleBlur}
+                value={passwordFormik.values.confirmPassword}
+                height="3rem"
+              />
+              {isPasswordEdit && passwordFormik?.touched?.confirmPassword && <ErrorText text={passwordFormik && passwordFormik?.errors?.confirmPassword!} />}
+            </Section>
+
             {isPasswordEdit ? (
-              <Flex align="center" gap="12px" margin="1.5rem 0">
+              <Flex align="center" gap="12px" margin="2.5rem 0">
                 <Button background="transparent" border={`1px solid ${ttColors.dark}`} width="50%" onClick={() => {
                   setIsPasswordFocused(false);
                   setIsPasswordEdit(false);
@@ -818,12 +881,13 @@ const Account = () => {
                 <Button
                   width="50%"
                   background={ttColors.dark}
-                  type="submit"
+                  // type="submit"
                   disabled={isSaving}
                   styles={{
                     justifyContent: "center",
                     alignContent: "center",
                   }}
+                  onClick={() => passwordFormik.handleSubmit()}
                 >
                   {passwordBtnLoading ? (
                     <Spinner size="40px" fill={ttColors.primary} />

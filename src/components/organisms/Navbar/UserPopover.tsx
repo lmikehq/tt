@@ -1,71 +1,3 @@
-// import Button from "@mui/material/Button";
-// import Menu from "@mui/material/Menu";
-// import MenuItem from "@mui/material/MenuItem";
-// import Link from "@atom/link";
-// import Text from "@atom/text";
-// import Flex from "@components/templates/flex";
-// import { RxAvatar } from "react-icons/rx";
-// import { IoIosArrowDown } from "react-icons/io";
-// import { MouseEvent, useState } from "react";
-
-// export default function UserPopover() {
-//   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-//   const open = Boolean(anchorEl);
-//   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-
-//   return (
-//     <div>
-//       <Button
-//         id="basic-button"
-//         aria-controls={open ? "basic-menu" : undefined}
-//         aria-haspopup="true"
-//         aria-expanded={open ? "true" : undefined}
-//         onClick={handleClick}
-//       >
-//         <Link href="/dashboard">
-//           <Text
-//             text="Dashboard"
-//             type="p"
-//             whiteSpace="nowrap"
-//             size={16}
-//             weight={400}
-//           />
-//         </Link>
-//         <Flex
-//           align="center"
-//           gap=".5rem"
-//           cursor="pointer"
-//         >
-//           <RxAvatar size={34} />
-//           <IoIosArrowDown size={20} />
-//           <UserPopover />
-//         </Flex>
-//       </Button>
-//       <Menu
-//         id="basic-menu"
-//         anchorEl={anchorEl}
-//         open={open}
-//         onClose={handleClose}
-//         MenuListProps={{
-//           "aria-labelledby": "basic-button",
-//         }}
-//       >
-//         <MenuItem onClick={handleClose}>Settings</MenuItem>
-//         <MenuItem onClick={handleClose}>Travel Guide</MenuItem>
-//         <MenuItem onClick={handleClose}>Get visa</MenuItem>
-//         <MenuItem onClick={handleClose}>Rent Stays</MenuItem>
-//         <MenuItem onClick={handleClose}>Book Flights</MenuItem>
-//         <MenuItem onClick={handleClose}>Logout</MenuItem>
-//       </Menu>
-//     </div>
-//   );
-// }
-
 import Link from "@atom/link";
 import Text from "@atom/text";
 import Flex from "@components/templates/flex";
@@ -98,11 +30,16 @@ import { useNotificationStore } from "@/lib/store/notification.store";
 import { NotificationProps } from "@/lib/types/response-models/dashboard";
 import { NotificationService } from "@/lib/services/dashboard/notification.service";
 import toast from "react-hot-toast";
+import Section from "@/components/molecules/section";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import Image from "@/components/atoms/image";
+import NoficationBellIcon from 'public/assets/icons/dashboard/no-notification-bell.svg';
 
 const CustomPopover = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
   const { notifications, resetNotifications } = useNotificationStore((state) => state);
+  const { updateTab, setTab } = useDashboardStore((state) => state);
 
   // Ref for notification modal
   const notificationRef = useRef(null);
@@ -237,64 +174,78 @@ const CustomPopover = () => {
                     <Text weight={500} type="p" text="Today"></Text>
                   </Flex>
                 </Span>
-                {notifications.map((notification: NotificationProps, index) => (
-                  <Span
-                    className="not_list"
-                    key={index}
-                    style={{ padding: "8px 0px" }}
-                  >
-                    <Flex align="center" gap="8px">
-                      <Flex
-                        styles={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                        }}
-                      >
-                        <img
-                          style={{
-                            objectFit: "cover",
-                            borderRadius: "50%",
-                          }}
-                          src="/assets/images/stays/admin.png"
-                          alt="admin"
-                        />
-                      </Flex>
-                      <Flex align="center" gap="6px">
-                        <Span>
-                          <Text
-                            color={ttColors.primary600}
-                            type="h4"
-                            weight={500}
-                            whiteSpace="nowrap"
-                            text="Admin"
-                          ></Text>
-                        </Span>
 
-                        <Span style={{ width: "100px" }}>
-                          <TruncateMarkup lines={1}>
-                            <p style={{ color: "var(--text-gray-color)" }}>
-                              {notification.message}
-                            </p>
-                          </TruncateMarkup>
+                <Section margin="20px 0">
+                  {notifications.length > 0 ? (
+                    <>
+                      {notifications.map((notification: NotificationProps, index) => (
+                        <Span
+                          className="not_list"
+                          key={index}
+                          style={{ padding: "8px 0px" }}
+                        >
+                          <Flex align="center" gap="8px">
+                            <Flex
+                              styles={{
+                                width: "40px",
+                                height: "40px",
+                                borderRadius: "50%",
+                              }}
+                            >
+                              <img
+                                style={{
+                                  objectFit: "cover",
+                                  borderRadius: "50%",
+                                }}
+                                src="/assets/images/stays/admin.png"
+                                alt="admin"
+                              />
+                            </Flex>
+                            <Flex align="center" gap="6px">
+                              <Span>
+                                <Text
+                                  color={ttColors.primary600}
+                                  type="h4"
+                                  weight={500}
+                                  whiteSpace="nowrap"
+                                  text="Admin"
+                                ></Text>
+                              </Span>
+
+                              <Span style={{ width: "100px" }}>
+                                <TruncateMarkup lines={1}>
+                                  <p style={{ color: "var(--text-gray-color)" }}>
+                                    {notification.message}
+                                  </p>
+                                </TruncateMarkup>
+                              </Span>
+                            </Flex>
+                            <Flex align="center">
+                              <FiberManualRecordIcon
+                                style={{
+                                  color: ttColors.primary600,
+                                  fontSize: "16px",
+                                }}
+                              />
+                              <Text
+                                color="var(--text-gray-color)"
+                                type="p"
+                                text="20mins"
+                              ></Text>
+                            </Flex>
+                          </Flex>
                         </Span>
-                      </Flex>
-                      <Flex align="center">
-                        <FiberManualRecordIcon
-                          style={{
-                            color: ttColors.primary600,
-                            fontSize: "16px",
-                          }}
-                        />
-                        <Text
-                          color="var(--text-gray-color)"
-                          type="p"
-                          text="20mins"
-                        ></Text>
-                      </Flex>
+                      ))}
+                    </>
+                  ) : (
+                    <Flex align="center" direction="column" gap="12px" justify="center">
+                      {/* <NotificationsIcon /> */}
+                      <Image src={NoficationBellIcon} alt="notification-icon" height={50} width={50} />
+                      <Text type="p" text="No Notification" />
                     </Flex>
-                  </Span>
-                ))}
+                  )}
+                </Section>
+
                 <Span className="btn">
                   <Button
                     background={ttColors.dark}
@@ -303,7 +254,9 @@ const CustomPopover = () => {
                     padding="5px 10px"
                     width="100%"
                     onClick={() => {
-                      router.push("/dashboard");
+                      // router.push("/dashboard");
+                      setTab(3);
+                      // updateTab('Notifications');
                     }}
                     styles={{ background: "transparent !important" }}
                   >
@@ -333,8 +286,14 @@ const CustomPopover = () => {
             cursor="pointer"
             onClick={() => setIsVisible(!isVisible)}
           >
-            {user && user.avatar ? (
-              <img src={user.image} alt="" />
+            {user && user.profilePicture ? (
+              <img
+                src={user.profilePicture}
+                alt="user-profile"
+                height={40}
+                width={40}
+                style={{ borderRadius: '100%', objectFit: 'contain', height: "40px", width: "40px", maxWidth: "40px", maxHeight: "40px", border: "2px solid var(--Slamon, #FF8682)" }}
+              />
             ) : (
               <RxAvatar size={48} />
             )}
@@ -344,7 +303,7 @@ const CustomPopover = () => {
                 type="p"
                 size={18}
                 weight={600}
-                text={`${user?.lastName} ${user?.firstName} `}
+                text={`${user?.firstName} ${user?.lastName}`}
               ></Text>
               <Text type="p" size={13} text={`${user.email}`} color={'#333'}></Text>
             </Flex>
@@ -405,7 +364,7 @@ const CustomPopover = () => {
                       router.push("/auth/login");
                     }}
                     key={i}
-                    style={{ margin: i === 0 ? "0px 0px" : i === arr.length - 1 ? "0px 0px" : "15px 0px" }}
+                    style={{ margin: i === 0 ? "0px 0px 0" : i === arr.length - 1 ? "0px 0px 15px" : "15px 0px" }}
                   >
                     <Flex
                       align="center"
@@ -425,7 +384,7 @@ const CustomPopover = () => {
                     </Flex>
                   </div>
                 ) : (
-                  <div key={i} style={{ margin: i === 0 ? "0px 0px" : "15px 0px" }}>
+                  <div key={i} style={{ margin: i === 0 ? "15px 0px" : "15px 0px" }}>
                     <Link href={item.url}>
                       <Flex
                         align="center"

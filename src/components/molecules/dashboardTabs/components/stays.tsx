@@ -55,7 +55,7 @@ function Stays() {
   const content: { title: string, links: { text: string, url: string; }[]; } = {
     title: "You’ve got no Stays Booking - Let’s help you get Started ",
     links: [
-      { text: "Apply for Visa", url: "/visa" },
+      { text: "Apply for Visa", url: "/visa/apply" },
       { text: "Book flight", url: "/flight" },
       { text: "Search Stays", url: "/stay" }
     ]

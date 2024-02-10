@@ -69,7 +69,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   const pathname = usePathname();
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { queryParams, activeTab, param, updateParams, setDateRange, search: globalSearch, setSearch: setGlobalStoreSearch, page, limit, addParams } = useDashboardStore((state) => state);
+  const { queryParams, activeTab, tab, param, updateParams, setDateRange, search: globalSearch, setSearch: setGlobalStoreSearch, page, limit, addParams } = useDashboardStore((state) => state);
   const { addVisaParams, visaQueryParams, setVisaSearchQuery, visaSearch } = useDashboardVisaStore((state) => state);
   const [search, setSearch] = useState(globalSearch);
   // const [startDate, setStartDate] = useState(new Date());
@@ -133,26 +133,50 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   };
 
   const handleClick = (param: string) => {
-    switch (activeTab) {
+    //  switch (activeTab) {
+
+    switch (tab) {
+      case 0:
+      case 0:
+        addParams(param);
+
+      case 1:
+        return updateParams(param);
+      case 2:
+        return updateParams(param);
+
+      case 3:
+        return updateParams(param);
+
+      case 4:
+        return updateParams(param);
+      case 5:
+        return updateParams(param);
+
+    }
+  };
+
+  /***
+   *  switch (tab) {
       case 'All Applications':
       case 'Visa':
         addParams(param);
-      // return addVisaParams(param);
+     
       case 'Stays':
         return updateParams(param);
       case 'Flight':
         return updateParams(param);
-      // return updateFlightParams(param);
+      
       case 'Payment History':
         return updateParams(param);
-      // return setPaymentParam(param);
+      
       case 'Referral':
         return updateParams(param);
       case 'Notifications':
         return updateParams(param);
-      // return updateReferralParams(param);
+      
     }
-  };
+   */
 
   const handleSearchDebounce = debounce((value: string) => {
     setGlobalStoreSearch(value);
@@ -197,18 +221,80 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   // console.log(dateRange);
 
   const getQueryParamsForActiveTab = () => {
-    switch (activeTab) {
-      case 'All Applications':
-      case 'Visa':
+    //  switch (activeTab) {
+    switch (tab) {
+      case 0:
+      case 0:
         return {
-          // applicationStatus: visaQueryParams.join(','),
           applicationStatus: queryParams.join(","),
           search: globalSearch,
           limit: limit,
           page: page,
           dateRange: dateRange
-          // search: search
-          // other tab-specific parameters
+        };
+      case 1:
+        return {
+          applicationStatus: param,
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
+        };
+      case 2:
+        return {
+          applicationStatus: param,
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
+        };
+      case 3:
+        return {
+          applicationStatus: param,
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
+        };
+      case 4:
+        return {
+          applicationStatus: '',
+          search: ''
+        };
+      case 5:
+        return {
+          applicationStatus: param,
+          limit: limit,
+          page: page,
+          search: globalSearch,
+          dateRange: dateRange
+
+        };
+      case 6:
+        return {
+          applicationStatus: param,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
+        };
+      default:
+        return {
+          applicationStatus: '',
+          search: ''
+        };
+    }
+  };
+
+  /**
+   *   switch (tab) {
+      case 'All Applications':
+      case 'Visa':
+        return {
+          applicationStatus: queryParams.join(","),
+          search: globalSearch,
+          limit: limit,
+          page: page,
+          dateRange: dateRange
         };
       case 'Stays':
         return {
@@ -225,13 +311,9 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
           limit: limit,
           page: page,
           dateRange: dateRange
-          // search: search
-          // other tab-specific parameters
         };
       case 'Payment History':
         return {
-          // applicationStatus: paymentParam,
-          // applicationStatus: paymentParam.join(','),
           applicationStatus: param,
           search: globalSearch,
           limit: limit,
@@ -250,14 +332,13 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
           page: page,
           search: globalSearch,
           dateRange: dateRange
-          // applicationStatus: referralParam.join(','),
+
         };
       case 'Notifications':
         return {
           applicationStatus: param,
           limit: limit,
           page: page,
-          // search: globalSearch,
           dateRange: dateRange
         };
       default:
@@ -266,24 +347,24 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
           search: ''
         };
     }
-  };
+   */
 
   // ADD THE QUERY TO THE URL PARAMS
 
-  useEffect(() => {
-    const initialQuery = {
-      applicationStatus,
-      search: searchQuery,
-      dateRange: dateRange
-    };
+  // useEffect(() => {
+  //   const initialQuery = {
+  //     applicationStatus,
+  //     search: searchQuery,
+  //     dateRange: dateRange
+  //   };
 
-    const queryParams = getQueryParamsForActiveTab();
-    const query = constructQueryFromParams({ ...initialQuery, ...queryParams });
-    const currentUrl = new URL(window.location.href);
-    currentUrl.search = query;
-    router.replace(currentUrl.toString(), { scroll: false });
+  //   const queryParams = getQueryParamsForActiveTab();
+  //   const query = constructQueryFromParams({ ...initialQuery, ...queryParams });
+  //   const currentUrl = new URL(window.location.href);
+  //   currentUrl.search = query;
+  //   router.replace(currentUrl.toString(), { scroll: false });
 
-  }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
+  // }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
 
 
   return (
@@ -303,7 +384,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
             width={'auto'}
             styles={{ overflow: 'unset' }}
           />
-          {activeTab === 'Referral' ? (
+          {/* {{ activeTab === 'Referral' ? (} */}
+          {tab === 5 ? (
             <Section styles={{ position: 'relative' }}>
               <FaInfoCircle
                 style={{ cursor: 'pointer' }}
@@ -327,7 +409,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
           ) : null}
         </Flex>
       </Section>
-      {['Favourites'].includes(activeTab) ? null : (
+      {[2].includes(tab) ? null : (
         <Grid
           columns={isMobile ? "100%" : "44% 25% 25%"}
           gap="20px"
