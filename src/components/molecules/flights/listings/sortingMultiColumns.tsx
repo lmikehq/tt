@@ -174,7 +174,22 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 [maxField]: max,
             });
         },
-        800
+        1000
+    );
+
+    const handleOneSliderDebounce = debounce(
+        ({
+            field,
+            value,
+            index,
+        }: {
+            field: string;
+            value: string | number;
+            index: number;
+        }) => {
+            updateMultiCityQueryAtIndex(index, { [field]: value });
+        },
+        1000
     );
 
     const handleUpdateMultiFlight = (
@@ -872,8 +887,10 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                             .max_fly_duration as number) ?? 48
                                     }
                                     onChange={(event, value) =>
-                                        updateMultiCityQueryAtIndex(index, {
-                                            max_fly_duration: value as number,
+                                        handleOneSliderDebounce({
+                                            field: "max_fly_duration",
+                                            value: value as number,
+                                            index,
                                         })
                                     }
                                     min={2}
