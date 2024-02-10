@@ -100,7 +100,11 @@ export const parseMultiFlightFilters = (
         if (fieldsToOmit.includes(key)) return;
         let values: string[] = [];
         params.requests.forEach((flight) => {
-            values.push(flight[key] ? `${flight[key]}` : "x");
+            values.push(
+                flight[key] || flight[key] == 0 || flight[key] == "0"
+                    ? `${flight[key]}`
+                    : "x"
+            );
         });
         const allX = values.every((element) => element === "x");
         if (allX) return;

@@ -69,7 +69,11 @@ const LocationSearchSelectInput = ({
         <SearchInputAsLocationTypes
             locations={
                 locations?.length == 0 && !searchText
-                    ? defaultLocations
+                    ? value
+                        ? [...defaultLocations, value]
+                        : defaultLocations
+                    : value
+                    ? [...locations, value]
                     : locations
             }
             handleSetSearchText={({ text }) => setSearchText(text)}

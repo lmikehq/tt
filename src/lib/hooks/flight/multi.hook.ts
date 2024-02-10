@@ -12,7 +12,12 @@ import {
     SearchStaysResponse,
     ViewSingleStayResponse,
 } from "@/lib/types/response-models/stay/search.type";
-import { UseQueryOptions, useQueries, useQuery } from "@tanstack/react-query";
+import {
+    UseQueryOptions,
+    UseQueryResult,
+    useQueries,
+    useQuery,
+} from "@tanstack/react-query";
 import {
     FlightSortEnum,
     SearchMultiFlightRequestQuery,
@@ -21,7 +26,7 @@ import {
 export const useSearchMulticity = (
     params: SearchMultiFlightRequestQuery,
     options?: UseQueryOptions<SearchMultiFlightsResponse>
-) => {
+): UseQueryResult<SearchMultiFlightsResponse, unknown> => {
     return useQuery({
         queryKey: [
             "search-multiflight",
@@ -29,7 +34,7 @@ export const useSearchMulticity = (
                 requests: [
                     {
                         ...params.requests[0],
-                        limit: 1,
+                        // sort: "",
                     },
                     ...params.requests.slice(1), // Keep the rest of the requests unchanged
                 ],

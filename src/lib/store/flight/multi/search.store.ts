@@ -6,6 +6,7 @@ import { create } from "zustand";
 
 interface State {
     searchMultiCityQuery: SearchMultiFlightRequestQuery;
+    paginating: boolean;
 }
 interface Actions {
     updateSearchMultiCityQuery: (params: SearchMultiFlightRequestQuery) => void;
@@ -15,7 +16,8 @@ interface Actions {
     }) => void;
     updateMultiCityQueryAtIndex: (
         index: number,
-        data: SearchFlightsRequestQuery
+        data: SearchFlightsRequestQuery,
+        paginating?: boolean
     ) => void;
 }
 
@@ -24,9 +26,11 @@ export const useSearchMultiFlightStore = create<State & Actions>(
         searchMultiCityQuery: {
             requests: [],
         },
+        paginating: false,
         updateSearchMultiCityQuery: (params) =>
             set((state) => ({
                 searchMultiCityQuery: params,
+                paginating: false,
             })),
 
         updateSingleSearchQuery: (params) => {
@@ -36,9 +40,9 @@ export const useSearchMultiFlightStore = create<State & Actions>(
                 ...query.requests[0],
                 ...params,
             };
-            set({ searchMultiCityQuery: query });
+            set({ searchMultiCityQuery: query, paginating: false });
         },
-        updateMultiCityQueryAtIndex: (index, data) => {
+        updateMultiCityQueryAtIndex: (index, data, paginating) => {
             let query =
                 useSearchMultiFlightStore.getState().searchMultiCityQuery;
             query.requests[index] = {
@@ -46,7 +50,7 @@ export const useSearchMultiFlightStore = create<State & Actions>(
                 ...data,
             };
 
-            set({ searchMultiCityQuery: query });
+            set({ searchMultiCityQuery: query, paginating });
         },
     })
 );
