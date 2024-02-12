@@ -281,6 +281,7 @@ function Stays() {
             format="yyyy-MM-dd"
             minDate={stayTabInitialSearchQuery.checkInDate?.toDate()}
             value={stayTabInitialSearchQuery.checkOutDate?.toDate()}
+            selectsRange={false}
             onChange={(e) =>
               updateStayTabInitialQuery({
                 ...stayTabInitialSearchQuery,

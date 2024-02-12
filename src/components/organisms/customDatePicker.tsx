@@ -39,7 +39,7 @@ interface CustomDatePickerProps {
   endDate?: Date | null;
   startDate?: Date | null;
   onChange(
-    date: Date | null,
+    date: Date | any | null,
     event: SyntheticEvent<any, Event> | undefined
   ): void;
   selected?: Date;
@@ -106,7 +106,7 @@ const DateInput = styled.input<{ width?: string; border?: string; }>`
   }
 `;
 
-export const DatePicker = ({
+export function DatePicker({
     minDate,
     maxDate,
     selected,
@@ -124,7 +124,7 @@ export const DatePicker = ({
     selectsRange,
     styles,
     border
-}: CustomDatePickerProps) => {
+}: CustomDatePickerProps) {
     const { isMobile } = useScreenResolution();
     const fieldRef = useRef<HTMLDivElement>(null);
     const [fieldWidth, setFieldWidth] = useState("300px");
