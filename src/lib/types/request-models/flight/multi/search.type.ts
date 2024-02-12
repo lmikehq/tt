@@ -100,7 +100,11 @@ export const parseMultiFlightFilters = (
         if (fieldsToOmit.includes(key)) return;
         let values: string[] = [];
         params.requests.forEach((flight) => {
-            values.push(flight[key] ? `${flight[key]}` : "x");
+            values.push(
+                flight[key] || flight[key] == 0 || flight[key] == "0"
+                    ? `${flight[key]}`
+                    : "x"
+            );
         });
         const allX = values.every((element) => element === "x");
         if (allX) return;
@@ -159,17 +163,10 @@ export const checkIfFieldIsFiltered = ({
     fieldName: string;
     filters: SearchMultiFlightRequestQuery;
 }) => {
-    let filtered: boolean = false;
-    for (let i = 0; i < filters.requests.length; i++) {
-        const request = filters.requests[i];
-        console.log("hhhh", fieldName);
+    for (const request of filters.requests) {
         if (request[fieldName]) {
-            filtered = true;
-            console.log("hhhh", request[fieldName]);
-            console.log(filtered, "hhhhhh");
-            return;
+            return true;
         }
     }
-    console.log(filtered, "hhhhh");
-    return filtered;
+    return false;
 };

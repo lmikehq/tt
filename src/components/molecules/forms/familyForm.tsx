@@ -46,7 +46,6 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
     const { isMobile } = useScreenResolution();
     
     const relationshipOptions = values?.section === "A" ? PRINCIPAL_RELATIONSHIPS : values?.section === "B" ? SIBLING_RELATIONSHIPS : IMMEDIATE_RELATIONSHIPS
-    console.log(formik.values.familyMembers)
         
   return (
         <Section height="unset" margin="0 0 0rem">

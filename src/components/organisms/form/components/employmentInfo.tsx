@@ -48,11 +48,11 @@ function EmploymentInfo({ steps, index, persistForm, formik }: formProps) {
                 <Flex justify="space-between" padding="0 0 2rem 0" align="flex-start">
                   <FormStepTitle steps={steps} index={index} />
                   <AddButton
-                    disabled={formik.values.employment.length === 3}
+                    disabled={formik.values.employment.length === 5}
                     onClick={() => {
-                      if (!formik.isValid || !formik.dirty)
+                      if (!formik.isValid)
                         return toast.error("Please validate all inputs");
-                      if (formik.values.employment.length < 3) {
+                      if (formik.values.employment.length < 5) {
                         arrayHelpers.insert(index + 1, employmentKeys);
                       }
                     }}

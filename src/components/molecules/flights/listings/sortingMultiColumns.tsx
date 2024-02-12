@@ -36,6 +36,7 @@ import {
 import styled from "styled-components";
 import { translateCabin } from "../../serviceTabs/components/flight";
 import { FlightSortEnum } from "@/lib/types/request-models/flight/booking.type";
+import { useRouter, useSearchParams } from "next/navigation";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
 airlines().forEach((e: AirlineInterface) => {
@@ -130,6 +131,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const dispatch = flightContext?.dispatch;
 
     const [openAcc, setOpenAcc] = useState(defaultAcc);
+    const router = useRouter();
 
     const [openTimes, setOpenTimes] = useState("departure");
 
@@ -161,8 +163,8 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             maxField,
             index,
         }: {
-            min: string;
-            max: string;
+            min: string | number;
+            max: string | number;
             minField: string;
             maxField: string;
             index: number;
@@ -172,7 +174,22 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 [maxField]: max,
             });
         },
-        800
+        1000
+    );
+
+    const handleOneSliderDebounce = debounce(
+        ({
+            field,
+            value,
+            index,
+        }: {
+            field: string;
+            value: string | number;
+            index: number;
+        }) => {
+            updateMultiCityQueryAtIndex(index, { [field]: value });
+        },
+        1000
     );
 
     const handleUpdateMultiFlight = (
@@ -197,7 +214,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                             filters: searchMultiCityQuery,
                         })
                     ) {
-                        alert("stops");
                         active.push("stops");
                     }
                     break;
@@ -317,8 +333,8 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         flight.departureCountry?.code)
             )
             .join("");
-        const url = `
-            https://localhost:3000/flight/listings?fly_from=${flyFrom}&fly_to=${flights
+        console.log("another", flight?.departureDate);
+        const url = `flight/listings?fly_from=${flyFrom}&fly_to=${flights
             .map(
                 (flight, index) =>
                     (index != 0 ? `~` : ``) +
@@ -334,17 +350,24 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
             flightState?.stops
         }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
             `;
-
-        const data = extractFlightDataFromParams({ url, flyFrom });
+        const link = "https://localhost:3000/" + url;
+        console.log(link);
+        const data = extractFlightDataFromParams({
+            url: link,
+            flyFrom,
+        });
         if (data) {
             let requests = data;
             requests[0] = {
                 ...requests[0],
                 curr: preFerredCurrency,
                 sort: requests[0].sort ?? FlightSortEnum.best,
-                limit: 20,
+                limit: 50,
             };
+            console.log(data, "data");
             updateSearchMultiCityQuery({ requests: data });
+            window.history.replaceState(null, "", `/${url}`);
+            // router.push("/flight/listings");
         }
     };
 
@@ -494,9 +517,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     >
                         <Text
                             type="p"
-                            text={`${capCase(req?.fly_from)} to ${capCase(
-                                req?.fly_to
-                            )}`}
+                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
                             weight={500}
                         />
                         <Flex direction="column" align="flex-start" gap=".5rem">
@@ -536,8 +557,10 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     >
                         <Text
                             type="p"
-                            text={`${capCase(req?.fly_from)} to ${capCase(
-                                req?.fly_to
+                            text={`${capCase(
+                                flightState?.fleet[index].departureCountry?.name
+                            )} to ${capCase(
+                                flightState?.fleet[index].arrivalCountry?.name
                             )}`}
                             weight={500}
                         />
@@ -687,9 +710,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                               >
                                   <Text
                                       type="p"
-                                      text={`Depart from ${capCase(
-                                          req?.fly_from
-                                      )}`}
+                                      text={`Depart from ${flightState?.fleet[index].departureCountry?.name}`}
                                       weight={500}
                                   />
                                   <Slider
@@ -726,15 +747,18 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                           ),
                                       ]}
                                       onChange={(event, value) =>
-                                          updateMultiCityQueryAtIndex(index, {
-                                              dtime_from: dayjs()
+                                          handleTwoSliderDebounce({
+                                              min: dayjs()
                                                   .hour((value as number[])[0])
                                                   .minute(0)
                                                   .format("HH:mm"),
-                                              dtime_to: dayjs()
+                                              max: dayjs()
                                                   .hour((value as number[])[1])
                                                   .minute(0)
                                                   .format("HH:mm"),
+                                              minField: "dtime_from",
+                                              maxField: "dtime_to",
+                                              index,
                                           })
                                       }
                                       min={0}
@@ -752,7 +776,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                               >
                                   <Text
                                       type="p"
-                                      text={`Arrive in ${capCase(req?.fly_to)}`}
+                                      text={`Arrive in ${flightState?.fleet[index].arrivalCountry?.name}`}
                                       weight={500}
                                   />
                                   <Slider
@@ -789,15 +813,18 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                           ),
                                       ]}
                                       onChange={(event, value) =>
-                                          updateMultiCityQueryAtIndex(index, {
-                                              atime_from: dayjs()
+                                          handleTwoSliderDebounce({
+                                              min: dayjs()
                                                   .hour((value as number[])[0])
                                                   .minute(0)
                                                   .format("HH:mm"),
-                                              atime_to: dayjs()
+                                              max: dayjs()
                                                   .hour((value as number[])[1])
                                                   .minute(0)
                                                   .format("HH:mm"),
+                                              minField: "atime_from",
+                                              maxField: "atime_to",
+                                              index,
                                           })
                                       }
                                       min={0}
@@ -807,46 +834,6 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                           ))}
                 </Flex>
             </Panel>
-
-            {/* Alliance */}
-            {/* <Panel
-                title="Alliance"
-                toggle={() => onToggleAcc("alliance")}
-                isActive={openAcc.alliance}
-            >
-                {searchMultiCityQuery.requests.map((req, index) => (
-                    <Flex
-                        direction="column"
-                        gap=".5rem"
-                        margin="0 0 1rem"
-                        key={`filter-stops-${index}`}
-                    >
-                        <Text
-                            type="p"
-                            text={`${capCase(req?.fly_from)} to ${capCase(
-                                req?.fly_to
-                            )}`}
-                            weight={500}
-                        />
-                        <Flex direction="column" gap="0">
-                            {alliance.map((alliance, index) => (
-                                <CheckBox
-                                    key={index}
-                                    checked={filters[index]?.alliance.includes(
-                                        alliance
-                                    )}
-                                    name={alliance}
-                                    onChange={(e) =>
-                                        handleCheck(0, alliance, "alliance")
-                                    }
-                                >
-                                    <Text type="p" text={alliance} size={16} />
-                                </CheckBox>
-                            ))}
-                        </Flex>
-                    </Flex>
-                ))}
-            </Panel> */}
 
             {/* Duration */}
             <Panel
@@ -863,9 +850,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     >
                         <Text
                             type="p"
-                            text={`${capCase(req?.fly_from)} to ${capCase(
-                                req?.fly_to
-                            )}`}
+                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
                             weight={500}
                         />
                         <div>
@@ -902,8 +887,10 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                             .max_fly_duration as number) ?? 48
                                     }
                                     onChange={(event, value) =>
-                                        updateMultiCityQueryAtIndex(index, {
-                                            max_fly_duration: value as number,
+                                        handleOneSliderDebounce({
+                                            field: "max_fly_duration",
+                                            value: value as number,
+                                            index,
                                         })
                                     }
                                     min={2}
@@ -996,21 +983,21 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     >
                         <Text
                             type="p"
-                            text={`${capCase(req?.fly_from)} to ${capCase(
-                                req?.fly_to
-                            )}`}
+                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
                             weight={500}
                         />
                         <Text
                             type="p"
                             text={`${formatPrice({
-                                total: searchMultiCityQuery.requests[index]
-                                    ?.price_from as number,
+                                total: (searchMultiCityQuery.requests[index]
+                                    ?.price_from ??
+                                    `${0 * conversionRate}`) as number,
                                 currency: preFerredCurrency,
                                 numberOfDecimalDigits: 0,
                             })} - ${formatPrice({
-                                total: searchMultiCityQuery.requests[index]
-                                    ?.price_to as number,
+                                total: (searchMultiCityQuery.requests[index]
+                                    ?.price_to ??
+                                    `${20000 * conversionRate}`) as number,
                                 currency: preFerredCurrency,
                                 numberOfDecimalDigits: 0,
                             })}`}
@@ -1041,24 +1028,30 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                 (searchMultiCityQuery.requests[index]
                                     ?.price_from ?? "0") as number,
                                 (searchMultiCityQuery.requests[index]
-                                    ?.price_to ?? "20000") as number,
+                                    ?.price_to ??
+                                    `${20000 * conversionRate}`) as number,
                             ]}
                             value={[
                                 (searchMultiCityQuery.requests[index]
                                     ?.price_from ?? "0") as number,
                                 (searchMultiCityQuery.requests[index]
-                                    ?.price_to ?? "20000") as number,
+                                    ?.price_to ??
+                                    `${20000 * conversionRate}`) as number,
                             ]}
-                            onChange={(event, value) =>
+                            onChange={(event, value) => {
                                 // handleSlider(index, value, "price")
-                                updateMultiCityQueryAtIndex(index, {
-                                    price_from: (value as number[])[0],
-                                    price_to: (value as number[])[1],
-                                })
-                            }
+                                console.log((value as number[])[0], "newnu");
+                                handleTwoSliderDebounce({
+                                    min: (value as number[])[0] || 0,
+                                    max: (value as number[])[1],
+                                    minField: "price_from",
+                                    maxField: "price_to",
+                                    index,
+                                });
+                            }}
                             min={0}
                             max={20000 * conversionRate}
-                            step={250}
+                            step={250 * conversionRate}
                             rightOffset="-160px"
                         />
                     </Flex>
@@ -1081,9 +1074,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                     >
                         <Text
                             type="p"
-                            text={`${capCase(req?.fly_from)} to ${capCase(
-                                req?.fly_to
-                            )}`}
+                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
                             weight={500}
                         />
                         <Flex

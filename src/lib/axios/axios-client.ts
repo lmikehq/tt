@@ -22,12 +22,12 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 function getAuthToken(): string | null {
-  let user: string | null = null;
-  if (typeof window !== "undefined") {
-    // Access localStorage here
-    user = window.localStorage.getItem("user");
-  }
-  return user ? `Bearer ${JSON.parse(user)}` : null;
+    let user: string | null = null;
+    if (typeof window !== "undefined") {
+        // Access localStorage here
+        user = window.localStorage.getItem("user");
+    }
+    return user ? `Bearer ${user}` : null;
 }
 
 axiosClient.interceptors.response.use(
@@ -101,12 +101,12 @@ kiwiMultiCityClient.interceptors.response.use(
 );
 
 const kiwiResourceClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
-  timeout: 40000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+    baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
+    timeout: 40000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
 });
 
 kiwiResourceClient.interceptors.response.use(
