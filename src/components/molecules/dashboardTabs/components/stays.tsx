@@ -16,6 +16,7 @@ import { mockStaysBookingHistory } from "@/lib/extensions/data/mock";
 import CustomPagination from "../../pagination/customPagination";
 import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 import { useConversionRate } from "@/hooks/useConversionRate";
+import Spinner from "../../icons/spinner";
 
 const StaysWrapper = styled.div`
    background: ${ttColors.defaultColor};
@@ -78,44 +79,57 @@ function Stays() {
   const filteredCount = response?.filteredCount || 1;
   const totalCount = response?.totalCount;
 
+  if (isLoading) {
+    return '';
+  }
+
   return (
     <StaysWrapper>
       <VisaDashboardHeader headerText="Stays" type="radio" />
       <Section>
-        {stays.length > 0 ? (
-          <Flex direction="column" gap="1rem">
-            {stays.map((stay) => {
-              return (
-                <div key={stay._id}>
-                  <StaysCard
-                    hotelId={stay.hotelId}
-                    name={stay.hotelPayload.name}
-                    image={stay.hotelPayload.image}
-                    payment={Number(convertCurrency({ convertFrom: stay.paymentOptions[0].currency_code, convertTo: 'NGN', amount: stay.paymentOptions[0].amount }).amount)}
-                    checkInDate={stay.checkInDate}
-                    checkoutDate={stay.checkOutDate}
-                    region={stay.hotelPayload.region}
-                    rating={stay.hotelPayload.rating}
-                  />
-                </div>
-              );
-            })}
-
-            <Flex justify="flex-end" align="center">
-              <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
-            </Flex>
+        {isLoading ? (
+          <Flex height="450px" align="center" justify="center">
+            <Spinner size="60px" fill={ttColors.blackishBlue} />
           </Flex>
         ) : (
-          <Center
-            margin={isMobile ? "3.5rem 0px" : "10rem 0"}
-            height="25rem"
-          >
-            <NoApplication
-              noVisaImage={"/assets/images/noStays.png"}
-              content={content}
-            />
-          </Center>
+          <>
+            {stays.length > 0 ? (
+              <Flex direction="column" gap="1rem">
+                {stays.map((stay) => {
+                  return (
+                    <div key={stay._id}>
+                      <StaysCard
+                        hotelId={stay.hotelId}
+                        name={stay.hotelPayload.name}
+                        image={stay.hotelPayload.image}
+                        payment={Number(convertCurrency({ convertFrom: stay.paymentOptions[0].currency_code, convertTo: 'NGN', amount: stay.paymentOptions[0].amount }).amount)}
+                        checkInDate={stay.checkInDate}
+                        checkoutDate={stay.checkOutDate}
+                        region={stay.hotelPayload.region}
+                        rating={stay.hotelPayload.rating}
+                      />
+                    </div>
+                  );
+                })}
+
+                <Flex justify="flex-end" align="center">
+                  <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                </Flex>
+              </Flex>
+            ) : (
+              <Center
+                margin={isMobile ? "3.5rem 0px" : "10rem 0"}
+                height="25rem"
+              >
+                <NoApplication
+                  noVisaImage={"/assets/images/noStays.png"}
+                  content={content}
+                />
+              </Center>
+            )}
+          </>
         )}
+
       </Section>
 
     </StaysWrapper>

@@ -155,13 +155,6 @@ const Flight = () => {
                     </>
                   );
                 })}
-                {/* <PaginationCtrl<DashboardFlightBookingProps>
-                  page={page}
-                  setPage={setPage}
-                  data={mockFlightBooking}
-                  filteredCount={filteredCount}
-                  totalCount={totalCount}
-                /> */}
                 <Flex justify="flex-end" align="center">
                   <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
                 </Flex>
