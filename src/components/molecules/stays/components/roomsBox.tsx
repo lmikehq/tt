@@ -459,7 +459,7 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                         guests: queryParams.guests,
                                         countryCode: queryParams.countryCode,
                                         //!! change before live push
-                                        id: "test_hotel_do_not_book" ?? hotel.id,
+                                        id: hotel.id,
                                     };
                                     router.push(
                                         `/stay/view${constructQueryFromParams(params)}`
