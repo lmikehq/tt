@@ -14,6 +14,7 @@ import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import { StaySearchSortEnum } from "@/lib/types/request-models/stay/search.type";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import GoogleMap from "../view/GoogleMap";
+import { LocationData } from "@/lib/store/useStore";
 
 const ModalCenter = styled.div`
     display: flex;
@@ -193,11 +194,11 @@ export const MapModal = ({
     open,
     handleClose,
 }: {
-    location?: RateHawkRegionType,
+    location?: LocationData | null,
     open: boolean;
     handleClose: () => void;
 }) => {
-
+    console.log(location)
     useEffect(() => {
         const handleBodyOverflow = () => {
             document.documentElement.style.overflow = open ? "hidden" : "auto";
@@ -233,6 +234,8 @@ export const MapModal = ({
                     <Section height="100%" padding="2rem 1.5rem">
                         <GoogleMap
                             containerStyles={{ height: '90%' }}
+                            lat={location?.latitude}
+                            lng={location?.longitude}
                         />  
                     </Section>
                 </ModalWrapper>

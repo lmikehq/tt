@@ -27,6 +27,7 @@ import Spinner from "../../icons/spinner";
 import Text from "@/components/atoms/text";
 import { useQueryParams } from "@/hooks/useNext";
 import { useUserStore } from "@/lib/store/useStore";
+import AuthModal from "@/components/organisms/auth/AuthModal";
 
 // FavoriteBoxSkeleton Component
 export const FavoriteBoxSkeleton: React.FC = () => (
@@ -233,7 +234,7 @@ function AvailableRooms() {
     const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore(
         (state) => state
     );
-    const { user } = useUserStore()
+    const { user, authModal, setAuthModal } = useUserStore()
 
     const staysRequestParams: ManyStaysRequestInput = {
         region_id: queryParams?.regionId ?? "",
@@ -346,6 +347,11 @@ function AvailableRooms() {
                     color="primary"
                 />
             </Box>
+
+            <AuthModal
+                open={authModal}
+                handleClose={() => setAuthModal(false)}
+            />
         </div>
     );
 }

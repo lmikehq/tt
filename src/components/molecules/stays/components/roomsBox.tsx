@@ -69,6 +69,7 @@ import { ttColors } from "@/lib/theme/colors";
 import { useQueryParams } from "@/hooks/useNext";
 import { useConversionRate } from "@/hooks/useConversionRate";
 import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
+import { useUserStore } from "@/lib/store/useStore";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -103,7 +104,8 @@ const MobileSliderSettings = {
 interface RoomBoxProps {
     hotel: HotelBySearchInterface;
     index: number;
-    likedHotels?: HotelBySearchInterface[]
+    likedHotels?: HotelBySearchInterface[];
+    
 }
 
 function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
@@ -112,6 +114,8 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
     const { queryParams } = useQueryParams()
     const router = useRouter();
     const { convertCurrency } = useConversionRate()
+     const { authModal } = useUserStore()
+
 
     const hotelImages = hotel.images.map((el) => el.replace("{size}", "1024x768"));
     const [selectedImage, setSelectedImage] = useState(hotelImages[0]);
@@ -441,9 +445,9 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                 />
                                 </Flex>
                                 <Text
-                                type="p"
-                                text={`for a night (${guestsCount} guest${guestsCount > 1 ? 's' : ''})`}
-                                styles={{ whiteSpace: "nowrap" }}
+                                    type="p"
+                                    text={`for a night (${guestsCount} guest${guestsCount > 1 ? 's' : ''})`}
+                                    styles={{ whiteSpace: "nowrap" }}
                                 ></Text>
                             </Flex>
                             <ButtonBtn

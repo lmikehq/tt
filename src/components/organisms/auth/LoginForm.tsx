@@ -94,7 +94,8 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 ...submissionState,
                 loading: true,
             });
-            setUser(res);
+            
+            setUser(res?.user);
             window.localStorage.setItem('user', res?.token)
             rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`
 
