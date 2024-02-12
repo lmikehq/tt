@@ -8,6 +8,7 @@ import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
 import withLikeHotel from "@/components/HOCs/withLikeHotel";
 import { useConversionRate } from "@/hooks/useConversionRate";
 import currencyFormatter from "@/lib/extensions/data/currencyFormatter";
+import { RefetchProp } from "types";
 
 
 const FavouriteCard = styled.div`
@@ -45,11 +46,12 @@ interface Props {
   countryName: string;
   price: number;
   hotelId: string;
+  refetch: RefetchProp;
 }
 
 const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
 
-function FavouritesCard({ image, name, countryName, price, hotelId }: Props) {
+function FavouritesCard({ image, name, countryName, price, hotelId, refetch }: Props) {
   const [isFavourite, setIsFavourite] = useState(false);
 
   const toggleFavourite = () => {
@@ -69,7 +71,7 @@ function FavouritesCard({ image, name, countryName, price, hotelId }: Props) {
           styles={{ borderRadius: "8px", objectFit: 'cover' }}
         />
         <FavouriteCardIcon>
-          <EnhancedFavouriteCheckBox id={hotelId} />
+          <EnhancedFavouriteCheckBox id={hotelId} refetch={refetch} />
         </FavouriteCardIcon>
       </FavouriteCardImg>
       <Flex justify="space-between" width="370px">

@@ -22,12 +22,12 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 function getAuthToken(): string | null {
-    let user: string | null = null;
-    if (typeof window !== "undefined") {
-        // Access localStorage here
-        user = window.localStorage.getItem("user");
-    }
-    return user ? `Bearer ${user}` : null;
+  let user: string | null = null;
+  if (typeof window !== "undefined") {
+    // Access localStorage here
+    user = window.localStorage.getItem("user");
+  }
+  return user ? `Bearer ${user}` : null;
 }
 
 axiosClient.interceptors.response.use(
@@ -101,12 +101,12 @@ kiwiMultiCityClient.interceptors.response.use(
 );
 
 const kiwiResourceClient: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
-    timeout: 40000,
-    //   withCredentials: true,
-    headers: {
-        "Content-Type": "application/json",
-    },
+  baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
+  timeout: 40000,
+  //   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 kiwiResourceClient.interceptors.response.use(
@@ -124,6 +124,7 @@ const rateHawkResourceClient: AxiosInstance = axios.create({
   //   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWM5Zjg0NzAzNjk1MDMyOTExZDlhOTgiLCJpYXQiOjE3MDc3NDY4MjR9.vunrvsDLyQdceDtKkqLIyqKQrGbQiKky7E__IpA95Cg"
   },
 });
 

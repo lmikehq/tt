@@ -82,9 +82,9 @@ function Stays() {
     <StaysWrapper>
       <VisaDashboardHeader headerText="Stays" type="radio" />
       <Section>
-        {mockStaysBookingHistory.length > 0 ? (
+        {stays.length > 0 ? (
           <Flex direction="column" gap="1rem">
-            {mockStaysBookingHistory.map((stay) => {
+            {stays.map((stay) => {
               return (
                 <div key={stay._id}>
                   <StaysCard
@@ -100,10 +100,7 @@ function Stays() {
                 </div>
               );
             })}
-            {/* <PaginationCtrl
-              data={[]}
-              page={page}
-              setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} /> */}
+
             <Flex justify="flex-end" align="center">
               <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
             </Flex>

@@ -196,17 +196,6 @@ const PaymentHistory = () => {
     );
   }
 
-  // async function getAllPayments() {
-  //   return await apiService("/payment", "GET");
-  // }
-  // const {
-  //   data: fetchedPayment,
-  //   isLoading,
-  //   error,
-  // } = useQuery(["payments"], getAllPayments) as any;
-
-
-  // const { data: payments } = fetchedPayment;
 
   const { data, isLoading, isError, refetch } = useDashboardPayment({
     query: { status: param, search: search, currentPage: page, limit: limit, startDate, endDate },
@@ -286,15 +275,6 @@ const PaymentHistory = () => {
                       </Flex>
                     </History>
                   ))}
-                  {/* pagination buttons */}
-
-                  {/* <PaginationCtrl<DashboardPaymentInfo>
-                    page={page}
-                    setPage={setPage}
-                    data={payments}
-                    filteredCount={filteredCount}
-                    totalCount={totalCount}
-                  /> */}
 
                   {/* custom pagination button */}
                   <Flex justify="flex-end" align="center">

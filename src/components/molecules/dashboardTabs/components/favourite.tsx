@@ -9,8 +9,6 @@ import Center from "@/components/templates/center";
 import NoApplication from "./noApplication";
 import NoFavImg from 'public/assets/icons/dashboard/no-favourites.svg';
 import { useFavouriteDashboard } from "@/lib/hooks/dashboard/favourite.hook";
-// import { mockUserDashboardLikes } from "@/lib/extensions/data/mock";
-import PaginationCtrl from "../../pagination";
 import { HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
 import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
@@ -33,7 +31,7 @@ const Favourite = () => {
     ],
   };
 
-  const { data, isLoading } = useFavouriteDashboard({ query: { currentPage: page, limit }, options: { retry: 2 } });
+  const { data, isLoading, refetch } = useFavouriteDashboard({ query: { currentPage: page, limit }, options: { retry: 2 } });
 
   // const response = data as { favourites: HotelRoomFavourite[], filteredCount: number, totalCount: number; };
 
@@ -91,6 +89,7 @@ const Favourite = () => {
                   return (
                     <FavouritesCard
                       key={favourite._id}
+                      refetch={refetch}
                       hotelId={favourite.id}
                       image={favourite.images[0]}
                       name={favourite.name}
@@ -106,7 +105,6 @@ const Favourite = () => {
                   );
                 })}
               </Grid>
-              {/* <PaginationCtrl data={[]} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} /> */}
             </FavouriteWrapper>
           ) : (
             <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">

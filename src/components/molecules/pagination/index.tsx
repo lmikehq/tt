@@ -1,7 +1,6 @@
 import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
-// import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import { Grid } from "@/components/templates/grid";
 import { useEffect, useState } from "react";
@@ -14,8 +13,10 @@ type PaginationProp<T> = {
   totalCount: number;
 };
 
+// THERE IS ANOTHER PAGINATION COMPONENT CALLED customPagination 
+// THIS ONE HERE IS DEPRECATED PLEASE MAKE USE OF THAT ONE FOR PAGINATION, THIS ONE WILL BE LEFT HERE IN CASE ANYONE NEEDS IT IN THE FUTURE
+
 const PaginationCtrl = <T,>({ page, setPage, data, filteredCount, totalCount }: PaginationProp<T>) => {
-  // const { isMobile } = useScreenResolution();
   const [_remainingItems, setRemainingItems] = useState(totalCount - filteredCount);
   const pageSize = 10;
 

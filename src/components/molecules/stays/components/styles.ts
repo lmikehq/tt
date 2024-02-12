@@ -334,11 +334,11 @@ export const Span = styled.div`
   &.user_popover {
     .user_drop_list {
       padding: 12px 10px !important;
-      border-radius: 3px;
+      border-radius: 5px;
       // padding-left: 20px;
       &:hover {
         background-color: var(--color-border);
-        border-radius: 3px;
+        border-radius: 5px;
       }
     }
 
