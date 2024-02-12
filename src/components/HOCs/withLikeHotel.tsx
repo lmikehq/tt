@@ -12,7 +12,7 @@ interface HocProps {
 
 function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
     return function EnhancedComponent(props: P & HocProps) {
-        const { user } = useUserStore()
+        const { user, setAuthModal } = useUserStore()
         const { id, liked } = props;
         const [hotelLiked, setHotelLiked] = useState(liked ?? false);
         const { isLoading, mutateAsync } = useLikeHotel({
@@ -21,11 +21,13 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
                 toast.success(capCase(res?.msg));
             },
         });
+        
 
         const handleLikeHotel = () => {
             if (user?._id) {
                 mutateAsync({ id });
             } else {
+                setAuthModal(true)
                 toast.error("Sign up or Log in to like hotels")
             }
         };

@@ -15,7 +15,7 @@ const FlightDropdown = styled.section<{ isMobile: boolean; stays?: boolean; }>`
     border-radius: 8px;
     background: white;
     position: absolute;
-    width: ${(props) => (props.isMobile ? "100%" : props.stays ? '30%' : "30%")};
+    width: ${(props) => (props.isMobile ? "100%" : props.stays ? '100%' : "30%")};
     right: 0rem;
     font-family: Poppins;
     z-index: 2;

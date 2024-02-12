@@ -13,6 +13,8 @@ import { FilterModal, MapModal, SortModal } from "../listings/stayModal";
 import SortingColumns from "../listings/sortingColumns";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import { Sort } from "@mui/icons-material";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useUserStore } from "@/lib/store/useStore";
 
 type sortProps = {
   results: number;
@@ -21,6 +23,7 @@ type sortProps = {
 
 function SortedColumn({ results, sortType }: sortProps) {
     const { isMobile } = useScreenResolution();
+    const { geoInfo } = useUserStore()
     const sorted = sortType.charAt(0).toUpperCase() + sortType.slice(1);
     const [open, setOpen] = useState({
         filter: false,
@@ -185,7 +188,7 @@ function SortedColumn({ results, sortType }: sortProps) {
               }
             />
             <MapModal
-                location={stayTabInitialSearchQuery?.location}
+                location={geoInfo}
                 open={open.map}
                 handleClose={() =>
                     setOpen((prev) => ({

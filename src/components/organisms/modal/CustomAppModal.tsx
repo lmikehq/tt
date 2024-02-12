@@ -34,14 +34,14 @@ const CustomAppModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      {/* <Box sx={style}> */}
         <Box
           sx={{
             borderRadius: "10px",
             position: "relative",
             p: "1rem",
             maxWidth: "37rem",
-            margin: "auto",
+            margin: "1rem auto 0",
             backgroundColor: ttColors.light,
             boxShadow: 4,
           }}
@@ -62,7 +62,7 @@ const CustomAppModal = ({
           </Button>
           {children}
         </Box>
-      </Box>
+      {/* </Box> */}
     </Modal>
   );
 };

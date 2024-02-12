@@ -40,6 +40,7 @@ import { formatPriceWithoutCurrency, getCurrency } from "@/lib/extensions/helper
 import { useRouter } from "next/navigation";
 import { useQueryParams } from "@/hooks/useNext";
 import { useConversionRate } from "@/hooks/useConversionRate";
+import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -150,14 +151,14 @@ const NextArrow = (props: any) => {
 
 interface LikeSimilarHotelsProps {
     hotels: SearchSimilarStaysResponse;
+    loading: boolean;
 }
 
 
-function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
+function LikeSimilarHotels({ hotels, loading }: LikeSimilarHotelsProps) {
     const { isMobile } = useScreenResolution()
-    const router = useRouter()
     const { queryParams, setQueryParams } = useQueryParams()
-    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
     const [slidesToShow, setSlidesToShow] = useState(1);
     const { convertCurrency } = useConversionRate()
     
@@ -198,18 +199,18 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
         setShowSliderBox(false);
     };
 
-  //========
-  //FAVORITE
-  //========
-  const [checkedRooms, setCheckedRooms] = useState(
-    Array(hotels.length).fill(false)
-  );
+    //========
+    //FAVORITE
+    //========
+    const [checkedRooms, setCheckedRooms] = useState(
+        Array(hotels.length).fill(false)
+    );
 
-  const handleCheckboxChange = (index: number) => {
-    const newCheckedRooms = [...checkedRooms];
-    newCheckedRooms[index] = !newCheckedRooms[index];
-    setCheckedRooms(newCheckedRooms);
-  };
+    const handleCheckboxChange = (index: number) => {
+        const newCheckedRooms = [...checkedRooms];
+        newCheckedRooms[index] = !newCheckedRooms[index];
+        setCheckedRooms(newCheckedRooms);
+    };
 
     return (
         <Flex direction="column">
@@ -218,7 +219,9 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
             >
                 <Text type="h1" size={24} weight={600} text="You may also like" />
             </Section>
-            {hotels.length === 0 ? (
+            {loading ? (
+                <StayDetailSkeleton />
+            ) : hotels.length === 0 ? (
                 <Flex direction="column" align="center" gap="1rem" padding="6rem 0" background="white" borderRadius=".5rem" >
                     <Text
                         type="p"
@@ -279,7 +282,7 @@ function LikeSimilarHotels({ hotels }: LikeSimilarHotelsProps) {
                                             <img
                                                 style={{
                                                     width: "100%",
-                                                    height: "200px",
+                                                    height: "350px",
                                                     objectFit: "cover",
                                                 }}
                                                 src={hotelImages[0] ?? ''}

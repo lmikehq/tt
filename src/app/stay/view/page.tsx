@@ -144,9 +144,9 @@ const StayViewPage = () => {
     const { isMobile } = useScreenResolution();
     const { queryParams } = useQueryParams();
     const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore((state) => state);
-    const [authOpen, setAuthOpen] = useState(false);
     const { updateStaySearchFilters, staySearchFilters, stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore()
-    const { user } = useUserStore()
+    const { user, authModal, setAuthModal } = useUserStore()
+    console.log('usss', user)
 
     const [modal, setModal] = useState({
         isOpenRefresh: false,
@@ -305,9 +305,10 @@ const StayViewPage = () => {
                                 refetch={refetch}
                                 loading={isLoadingStay}
                             />
-                            <AuthPlaceholder text='Login to view similar hotels' onOpen={() => setAuthOpen(true)}>
+                            <AuthPlaceholder text='Login to view similar hotels' onOpen={() => setAuthModal(true)}>
                                 <LikeSimilarHotels
                                     hotels={similarStays ?? []}
+                                    loading={isLoadingSimilarStays}
                                 />
                             </AuthPlaceholder>
                             <Location
@@ -332,9 +333,10 @@ const StayViewPage = () => {
                                 />
                             }
                             {/* <CompareSimilarHotels /> */}
-                            <AuthPlaceholder text='Login to view recently viewed hotels' onOpen={() => setAuthOpen(true)}>
+                            <AuthPlaceholder text='Login to view recently viewed hotels' onOpen={() => setAuthModal(true)}>
                                 <RecentlyViewedList
                                     hotels={recentlyViewed ?? []}
+                                    loading={isLoadingRecentlyViewed}
                                 />
                             </AuthPlaceholder>
                         </React.Fragment>
@@ -343,8 +345,8 @@ const StayViewPage = () => {
             </Box>
 
             <AuthModal
-                open={authOpen}
-                handleClose={() => setAuthOpen(false)}
+                open={authModal}
+                handleClose={() => setAuthModal(false)}
             />
 
             <RefreshModal

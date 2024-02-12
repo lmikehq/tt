@@ -78,8 +78,7 @@ const RecentlyViewedTile = ({ hotels }: { hotels: SearchRecentlyViewedStaysRespo
                                   src={hotelImages[0] ?? ''}
                                   style={{
                                       width: "100%",
-                                      height: "100%",
-
+                                      height: "200px",
                                       objectFit: "cover",
                                   }}
                               />

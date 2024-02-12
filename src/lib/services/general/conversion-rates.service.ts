@@ -1,6 +1,5 @@
 import { currencyApiClient } from "@/lib/axios/axios-client";
 import { GetConversionRatesResponse } from "@/lib/types/request-models/general/conversion-rates.type";
-import { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
 const API_KEY = process.env.NEXT_PUBLIC_CURRENCY_API_KEY
 
