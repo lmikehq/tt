@@ -340,7 +340,10 @@ const SeatSelection = () => {
         let data: SaveBookingRequestInput;
         data =
             particularSeats.length == 0
-                ? saveBookingDetails
+                ? {
+                      ...saveBookingDetails,
+                      flightType: queryParams?.flightType ?? "",
+                  }
                 : {
                       ...saveBookingDetails,
                       seatId: collectSeatNames(particularSeats),

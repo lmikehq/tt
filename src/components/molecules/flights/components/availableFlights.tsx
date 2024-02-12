@@ -683,6 +683,7 @@ function AvailableFlights() {
             sanitizedQuery?.date_from &&
             sanitizedQuery?.adults
         ) {
+            console.log("handleSearchResults", sanitizedQuery);
             handleSearchResults({ ...cleanObject(sanitizedQuery) });
         }
     }, [queryParams, preFerredCurrency]);

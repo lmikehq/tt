@@ -367,6 +367,7 @@ function Flights() {
         const infants = Number(queryParams?.infants ?? 0);
         const cabinBags = Number(queryParams?.cabinBags ?? 0);
         const checkedBags = Number(queryParams?.checkedBags ?? 0);
+        const stops = queryParams?.stops;
         if (dateFroms.length == 0) return;
 
         const fleet: OneFlightType[] = dateFroms?.map((dateFrom, index) => {
@@ -399,9 +400,8 @@ function Flights() {
                 type: "UPDATE_FLIGHT_STATE",
                 payload: fleet,
             });
-        if (fleet.length > 1) {
-            dispatch && dispatch({ type: "SET_STOPS", payload: "multi-city" });
-        }
+
+        dispatch && dispatch({ type: "SET_STOPS", payload: stops });
     }, [extractData]);
 
     return (
