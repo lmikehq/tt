@@ -122,8 +122,8 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
 
     const selectedPrice = hotel.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? hotel.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? hotel.payment_options.payment_types[0]
     const displayPrice = {
-        currencyCode: preFerredCurrency,
-        amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+        currencyCode: selectedPrice?.currency_code ?? preFerredCurrency,
+        amount: selectedPrice?.amount ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
     }
 
 
@@ -172,7 +172,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                                 whiteSpace="wrap"
                                 size={30}
                                 weight={600}
-                                text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
+                                text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                             />
                             <Text
                               type="p"
@@ -197,7 +197,7 @@ function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotel
                               type="p"
                               size={20}
                               weight={600}
-                              text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
+                              text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                             />
                             <Text
                               type="p"

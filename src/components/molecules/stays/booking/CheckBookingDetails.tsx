@@ -95,7 +95,7 @@ function BookingHeader({ booking } : { booking: SingleStayCheckBookingResponse }
                 <HeaderDetail name="CHECK-IN DATE" value={dayjs(booking?.checkInDate).format('MMM DD, YYYY')} />
                 <HeaderDetail name="CHECK-OUT DATE" value={dayjs(booking?.checkOutDate).format('MMM DD, YYYY')} />
                 <HeaderDetail name="PAYMENT STATUS" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
-                <HeaderDetail name="BOOKING STATUS" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
+                <HeaderDetail name="BOOKING CODE" value={booking?.partnerOrderId ?? 'PENDING'} />
             </Grid>
         </Stack>
     )

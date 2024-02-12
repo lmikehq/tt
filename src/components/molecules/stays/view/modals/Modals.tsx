@@ -212,6 +212,8 @@ export const MapModal = ({
                 <GoogleMap
                     lat={lat}
                     lng={lng}
+                    zoom={20}
+                    containerStyles={{ height: '90%' }}
                 />
             </Flex>
         </Modal>
