@@ -36,8 +36,8 @@ const RecentlyViewedTile = ({ hotels }: { hotels: SearchRecentlyViewedStaysRespo
             }, []), 'amount', 'asc')
             const selectedPrice = prices[0]
             const displayPrice = {
-                currencyCode: preFerredCurrency,
-                amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+                currencyCode: selectedPrice?.currency_code ?? preFerredCurrency,
+                amount: selectedPrice?.amount ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
             }
             const hotelImages = hotel?.images.map((img: string) => img.replace('{size}', '1024x768'))
             const goTo = () => {
@@ -143,7 +143,7 @@ const RecentlyViewedTile = ({ hotels }: { hotels: SearchRecentlyViewedStaysRespo
                                         whiteSpace="wrap"
                                         size={18}
                                         weight={600}
-                                        text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
+                                        text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                                       />
                                   </Flex>
                               </Section>

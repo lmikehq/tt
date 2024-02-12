@@ -261,8 +261,8 @@ function LikeSimilarHotels({ hotels, loading }: LikeSimilarHotelsProps) {
                             }, []), 'amount', 'asc')
                             const selectedPrice = prices[0]
                             const displayPrice = {
-                                currencyCode: preFerredCurrency,
-                                amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+                                currencyCode: selectedPrice?.currency_code ?? preFerredCurrency,
+                                amount: selectedPrice?.amount ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
                             }
                             const hotelImages = hotel?.images.map((img: string) => img.replace('{size}', '1024x768'))
                             const goTo = () => {
@@ -351,7 +351,7 @@ function LikeSimilarHotels({ hotels, loading }: LikeSimilarHotelsProps) {
                                             <Text
                                                 type="h3"
                                                 whiteSpace="wrap"
-                                                text={`${displayPrice?.currencyCode} ${formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}`}
+                                                text={`${displayPrice?.currencyCode} ${formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}`}
                                                 weight={"bold"}
                                                 color="var(--text-dull-color)"
                                             ></Text>
