@@ -1,9 +1,11 @@
-import styled from "styled-components"
-import { AiFillHeart } from "react-icons/ai"
-import Image from "@atom/image"
-import Flex from "@components/templates/flex"
-import Text from "@atom/text"
-import { useState } from "react"
+import styled from "styled-components";
+import { AiFillHeart } from "react-icons/ai";
+import Image from "@atom/image";
+import Flex from "@components/templates/flex";
+import Text from "@atom/text";
+import { useState } from "react";
+import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
+import withLikeHotel from "@/components/HOCs/withLikeHotel";
 
 
 const FavouriteCard = styled.div`
@@ -11,12 +13,12 @@ const FavouriteCard = styled.div`
   @media (max-width: 900px) {
     margin: 0 auto;
   }
-`
+`;
 const FavouriteCardImg = styled.div`
   position: relative;
   max-width: 370px;
   border-radius: 8px;
-`
+`;
 const FavouriteCardIcon = styled.div`
   position: absolute;
   top: 24px;
@@ -33,42 +35,52 @@ const FavouriteCardIcon = styled.div`
   @media (max-width: 900px) {
     right: 20px;
   }
-`
+`;
 
-function FavouritesCard() {
-  const [isFavourite, setIsFavourite] = useState(false)
+interface Props {
+  image: string;
+  name: string;
+  countryName: string;
+  price: number;
+  hotelId: string;
+}
+
+const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
+
+function FavouritesCard({ image, name, countryName, price, hotelId }: Props) {
+  const [isFavourite, setIsFavourite] = useState(false);
 
   const toggleFavourite = () => {
-    setIsFavourite(!isFavourite)
-  }
-  const heartColor = isFavourite ? "red" : "grey"
+    setIsFavourite(!isFavourite);
+  };
+  const heartColor = isFavourite ? "red" : "grey";
 
   return (
     <FavouriteCard>
       <FavouriteCardImg>
         <Image
-          src="/assets/images/favourite/favourite1.png"
-          alt=""
+          src={image.replace("{size}", "x500")}
+          alt={name}
           width={370}
           height={258}
           styles={{ borderRadius: "8px", objectFit: 'cover' }}
         />
-        <FavouriteCardIcon onClick={toggleFavourite}>
-          <AiFillHeart size="1.5rem" color={heartColor} />
+        <FavouriteCardIcon>
+          <EnhancedFavouriteCheckBox id={hotelId} />
         </FavouriteCardIcon>
       </FavouriteCardImg>
       <Flex justify="space-between" width="370px">
         <Flex direction="column">
           <Text
             type="h3"
-            text="Venice"
+            text={name}
             size={20}
             weight={600}
             color="#000000"
           />
           <Text
             type="span"
-            text="Italy"
+            text={countryName}
             size={16}
             weight={400}
             color="#606060"
@@ -84,7 +96,7 @@ function FavouritesCard() {
           />
           <Text
             type="h3"
-            text="$2,000"
+            text={`NGN ${price}`}
             size={20}
             weight={600}
             color="#000000"
@@ -92,7 +104,7 @@ function FavouritesCard() {
         </Flex>
       </Flex>
     </FavouriteCard>
-  )
+  );
 }
 
-export default FavouritesCard
+export default FavouritesCard;

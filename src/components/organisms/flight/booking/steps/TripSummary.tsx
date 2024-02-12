@@ -2,9 +2,10 @@ import Button from "@/components/atoms/button";
 import Text from "@/components/atoms/text";
 import Spinner from "@/components/molecules/icons/spinner";
 import ContactDetails from "@/components/organisms/flights/ContactDetails";
+import MultiTripSummaryCard from "@/components/organisms/flights/MultiTripSummaryCard";
 import PassengerDetails from "@/components/organisms/flights/PassengerDetails";
 import TripSummaryCard from "@/components/organisms/flights/TripSummaryCard";
-import { extractSearchParamsFromUrl } from "@/lib/extensions/helpers/constructQuery";
+import { useQueryParams } from "@/hooks/useNext";
 import sleep from "@/lib/extensions/helpers/sleep";
 import {
     contactDetailsSchema,
@@ -19,25 +20,18 @@ import {
     Combination,
     PassengerBaggageCombinationInterface,
     PassengerFormInterface,
-    SaveBookingRequestInput,
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
-    CheckFlightResponse,
     Combinations,
     Definitions,
 } from "@/lib/types/response-models/flight/check_flight.type";
+import { Multi_FlightInfo } from "@/lib/types/response-models/flight/multi_flight.type";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import {
-    ChangeEvent,
-    ChangeEventHandler,
-    FormEventHandler,
-    useEffect,
-    useState,
-} from "react";
+import { FormEventHandler, useState } from "react";
 import toast from "react-hot-toast";
 
 export interface OneFlight {
@@ -83,7 +77,6 @@ const TripSummary = ({
     handleCheckedBags,
 }: TripSummaryProps) => {
     const {
-        saveBooking,
         checkFlightsResponse,
         saveBookingDetails,
         contactDetails,
@@ -92,11 +85,9 @@ const TripSummary = ({
         nextStep,
     } = useFlightBookingStore((state) => state);
     const { user } = useUserStore((state) => state);
-    const searchParams = extractSearchParamsFromUrl({
-        url: window.location.href,
-    });
+    const { queryParams } = useQueryParams();
 
-    const { adults, children, infants } = searchParams;
+    const { adults = "1", children = "0", infants = "0" } = queryParams;
 
     const [loading, setLoading] = useState(false);
 
@@ -272,7 +263,7 @@ const TripSummary = ({
     };
 
     const flights = checkFlightsResponse?.flights ?? [];
-    const departure = flights[0];
+
     const arrival = flights[flights?.length - 1];
 
     return (
@@ -284,9 +275,8 @@ const TripSummary = ({
             }}
         >
             <TripSummaryCard
-                departure={departure}
-                arrival={arrival}
                 flights={flights}
+                multi={queryParams?.multi === "true"}
             />
 
             <form
@@ -295,7 +285,6 @@ const TripSummary = ({
             >
                 <ContactDetails formik={contactDetailsFormik} />
             </form>
-
             <FormikProvider value={formik}>
                 <form onSubmit={checkSubmit}>
                     <FieldArray

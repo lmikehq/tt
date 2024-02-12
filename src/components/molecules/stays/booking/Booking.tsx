@@ -25,9 +25,9 @@ import { contactDetailsSchema } from "@/lib/extensions/schemas/flight/booking.sc
 import { generateValidationSchemaForRoomsAndGuests } from "@/lib/extensions/schemas/stay/booking.schema";
 import { contactDetails } from "@/lib/types/request-models/flight/booking.type";
 import {
-    GuestRoomsFormDataInterface,
-    convertGuestRoomsFormDataToList,
-    generateInitialFormDataForRoomsAndGuests,
+  GuestRoomsFormDataInterface,
+  convertGuestRoomsFormDataToList,
+  generateInitialFormDataForRoomsAndGuests,
 } from "@/lib/types/request-models/stay/booking.type";
 import { useFormik } from "formik";
 import {
@@ -86,13 +86,13 @@ function Booking({
         onSubmit: (values) => {},
     });
 
-    let roomsAndGuestsDataFormik = useFormik({
-        initialValues: generateInitialFormDataForRoomsAndGuests(guests),
-        enableReinitialize: true,
-        validateOnMount: true,
-        validationSchema: generateValidationSchemaForRoomsAndGuests(guests),
-        onSubmit: (values) => {},
-    });
+  let roomsAndGuestsDataFormik = useFormik({
+    initialValues: generateInitialFormDataForRoomsAndGuests(guests),
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: generateValidationSchemaForRoomsAndGuests(guests),
+    onSubmit: (values) => { },
+  });
 
     const handleSubmit = () => {
         roomsAndGuestsDataFormik.handleSubmit();

@@ -14,6 +14,7 @@ import { CustomRadioGroup } from "../molecules/radio";
 import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -34,15 +35,15 @@ const TabWrapper = styled.div<{
     padding: 0px;
     box-shadow: ${({ shadowShow }) =>
     shadowShow ? "0px 4px 16px 0px #1122110d" : "none"};
-    box-shadow: ;
+    // box-shadow: ;
 
     border-radius: 6px;
     height: 48px;
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
     background: ${({ addBackgroundColor }) =>
-    addBackgroundColor ? "#87CEEB" : "#fff"};
-    color: ${({ addColor }) => (addColor ? "#fff" : "#7BBBD6")};
+    addBackgroundColor ? "#FFF" : "#7BBBD6"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
+    color: ${({ addColor }) => (addColor ? "#fff" : "red")}; // 7BBBD6
   }
   .css-1gsv261 {
     // border-bottom: 1px solid transparent;
@@ -91,8 +92,6 @@ function TabPanel(props: TabPanelProps) {
         </Box>
       )}
     </div>
-
-
   );
 
 }
@@ -103,7 +102,6 @@ function a11yProps(index: number) {
     "aria-controls": `simple-tabpanel-${index}`,
 
   };
-
 }
 
 export default function CustomTab({
@@ -112,13 +110,12 @@ export default function CustomTab({
   page = "home",
   shadowShow = false,
   addBackgroundColor = false,
-  addColor = false,
+  addColor = true,
   activeTab,
   setActiveTab,
   aside,
   variant = "standard",
 }: {
-
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "dashboard";
@@ -131,13 +128,27 @@ export default function CustomTab({
   variant?: "fullWidth" | "scrollable" | "standard" | undefined;
 }) {
   const [value, setValue] = useState(0);
+  const { updateTab, setDateRange, tab, setTab } = useDashboardStore((state) => state);
 
   useEffect(() => {
     setValue(activeTab ?? 0);
   }, [activeTab]);
 
+  useEffect(() => {
+    // REST ALL THE, DATERANGE AND SEARCH
+    // DATERANGE
+    setDateRange('', '');
+    // UPDATE THE TABS
+    updateTab(tabItems[value].label);
+
+  }, [value]);
+
+  // console.log({ tab });
+
   const handleChange = (_: SyntheticEvent, newValue: number) => {
-    setValue(newValue ?? value);
+    setTab(newValue);
+    // setValue(newValue !== tab ? newValue : tab);
+    setValue(tab ?? 0);
     setActiveTab && setActiveTab(newValue ?? value);
   };
   const { isMobile } = useScreenResolution();
@@ -150,19 +161,23 @@ export default function CustomTab({
 
   const coloredIcons = icons.map((icon, i) =>
     React.cloneElement(icon, {
-      color: value === i ? ttColors.primary600 : "var(--secondary-color)",
+      color: value === i ? "#000" : "var(--secondary-color)", // ADJUST THE COLOR OF THE ICONS
     })
   );
+
+  // const getColor = () => { };
 
   return (
     <TabWrapper
       isMobile={isMobile}
       shadowShow={shadowShow}
       addBackgroundColor={addBackgroundColor}
+      addColor={addColor}
     >
       <Box>
         <Tabs
-          value={value}
+          // value={value}
+          value={tab}
           onChange={handleChange}
           variant={isMobile ? "scrollable" : variant}
           aria-label="select your service"
@@ -174,12 +189,13 @@ export default function CustomTab({
           }}
         >
 
-          {tabItems.map((tabItem, i) => {
+          {tabItems.map((tabItem, i, arr) => {
             const borderStyle = {
               border: "none",
-              borderRight: i % 4 === 0 ? "1px solid #ccc" : "none",
-              borderLeft: i % 4 === 2 ? "1px solid #ccc" : "none",
+              borderRight: i !== arr.length - 1 ? "1px solid #ccc" : "none",
             };
+
+            // console.log(value);
 
             return (
               <Tab
@@ -195,6 +211,9 @@ export default function CustomTab({
                       text={tabItem.label}
                       size={isMobile ? "1rem" : "1rem"}
                       weight={600}
+                      color={["Visa", "Flight", "Stays"].includes(tabItem.label) ? '#000' : tabItem.value === value ? '#000' : '#000'}
+                    // color={["Visa", "Flight", "Stays"].includes(tabItem.label) ? '#000' : "#CCC"}  // one solution
+                    // color={tabItem.value === value ? '#000' : "#000"} // ADJUST THE COLOR OF THE TAB
                     />
                   </Flex>
                 }
@@ -206,7 +225,7 @@ export default function CustomTab({
                     borderBottom: `0px solid ${ttColors.dark}`,
                   }),
                   "&.MuiTab-textColorPrimary.Mui-selected": {
-                    color: "#06062a",
+                    color: "#FFF !important", // #06062a
                   },
                   paddingLeft: "20px",
                   paddingRight: "20px",
@@ -220,11 +239,16 @@ export default function CustomTab({
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (
-
-        <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
+        <TabPanel value={tab!} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>
       ))}
     </TabWrapper>
   );
 }
+
+/**
+ *   <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
+          {tabItem.content}
+        </TabPanel>
+ */

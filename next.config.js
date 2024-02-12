@@ -1,20 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    compiler: {
-        styledComponents: true
-    },
-    reactStrictMode: false,
-    swcMinify: true,
-    // images: {
-    //     remotePatterns: [
-    //         {
-    //             protocol: 'https',
-    //             hostname: 'cdn.ostrovok.ru',
-    //             port: '',
-    //             pathname: '/t/'
-    //         }
-    //     ]
-    // }
+  compiler: {
+    styledComponents: true,
+  },
+  images: {
+    domains: ["cdn.worldota.net", "res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.worldota.net",
+        port: "",
+        pathname: "*",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com"
+      }
+    ]
+  },
+  reactStrictMode: false,
+  swcMinify: true,
 };
 
 module.exports = nextConfig;

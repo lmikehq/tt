@@ -225,7 +225,7 @@ export const ProgressBars = styled.div`
 export const ReviewsText = styled.div`
   display: flex;
   align: center;
-  gap: 8px;
+  gap: 10px;
 `;
 
 export const ReviewList = styled.div`

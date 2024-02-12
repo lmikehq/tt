@@ -80,7 +80,7 @@ export const PaymentCompleteSection = ({
               color={ttColors.light}
               onClick={() => {
                 router.push("/visa/apply");
-                handleModalClose()
+                handleModalClose();
               }}
             >
               Make another Application

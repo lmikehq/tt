@@ -6,7 +6,6 @@ import FlightBox from "./flightBox";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import SortedFlightsTab from "./sortedFlightsTab";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
@@ -32,6 +31,7 @@ import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import AuthModal from "@/components/organisms/auth/AuthModal";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import SortedFlightsTab from "./sortedFlightsTab";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -758,7 +758,8 @@ function AvailableFlights() {
                         />
                     ))}
 
-                    {(searchQuery?.limit ?? 10) < flightsResults.total && (
+                    {((searchQuery?.limit as number) ?? 10) <
+                        flightsResults.total && (
                         <Flex justify="center">
                             <Button
                                 width="100%"

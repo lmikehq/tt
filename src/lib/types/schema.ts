@@ -1,4 +1,5 @@
 import {
+  DependantsFormInterface,
   DetailsKeys,
   DocumentInterface,
   EducationDetailsInterface,
@@ -6,6 +7,7 @@ import {
   FamilyInfoInterface,
   GuarantorInfoInterface,
   IAccompany,
+  IReferralBankInfo,
   IUpdatePassword,
   PersonalInfoInterface,
   VisaApplicationFormInterface,
@@ -154,12 +156,14 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
       is: true,
       then: (schema) => schema.required("Required"),
     }),
-    contactInLocationRelationship: yup.string()
+    contactInLocationRelationship: yup
+      .string()
       .when("hasContactInLocation", {
         is: true,
         then: (schema) => schema.required("Required"),
       }),
-    contactInLocationPhoneNumber: yup.string()
+    contactInLocationPhoneNumber: yup
+      .string()
       .when("hasContactInLocation", {
         is: true,
         then: (schema) => schema.required("Required"),
@@ -232,7 +236,6 @@ export const personalInfoKeys: PersonalInfoInterface = {
   phoneNumber: "",
   countryOfCitizen: mockCountry,
   gender: "",
-
   //added-details
   countryOfApply: mockCountry,
   countryOfResidence: mockCountry,
@@ -242,7 +245,7 @@ export const personalInfoKeys: PersonalInfoInterface = {
   startDateOfResidence: "",
   changeOfName: false,
   changedName: "",
-  occupation: "",
+  occupation: "none",
   tripDurationStartDate: "",
   tripDurationEndDate: "",
   tripDurationLocation: "",
@@ -291,6 +294,10 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
   yup.object().shape({
     school: yup.string().required("Required"),
     degree: yup.string().required("Required"),
+    degreeText: yup.string().when("degree", {
+      is: "Others",
+      then: (schema) => schema.required("Required"),
+    }),
     cgpa: yup
       .number()
       .max(5.0, "Your Grade cannot be more than 5.0")
@@ -298,6 +305,10 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
       .required("Required"),
     location: yup.string().required("Required"),
     fieldOfStudy: yup.string().required("Required"),
+    fieldOfStudyText: yup.string().when("fieldOfStudy", {
+      is: "Others",
+      then: (schema) => schema.required("Required"),
+    }),
     startYear: yup.number().required("Required"),
     endYear: yup
       .number()
@@ -436,13 +447,15 @@ export const familyInforKeys: FamilyInfoInterface = {
   // issueYear: 2020,
 };
 
-export const guarantorSchema: yup.ObjectSchema<GuarantorInfoInterface> = yup.object().shape({
-  guarantorName: yup.string().required("Required"),
-  relationshipToGuarantor: yup.string().required("Required"),
-  guarantorAddress: yup.string().required("Required"),
-  guarantorPhone: yup.string().required("Required"),
-  guarantorWorth: yup.string().required("Required"),
-});
+export const guarantorSchema: yup.ObjectSchema<GuarantorInfoInterface> = yup
+  .object()
+  .shape({
+    guarantorName: yup.string().required("Required"),
+    relationshipToGuarantor: yup.string().required("Required"),
+    guarantorAddress: yup.string().required("Required"),
+    guarantorPhone: yup.string().required("Required"),
+    guarantorWorth: yup.string().required("Required"),
+  });
 
 export const guarantorKeys: GuarantorInfoInterface = {
   guarantorName: "",
@@ -524,46 +537,105 @@ export const waitlistSchema = yup.object().shape({
 });
 
 export const accompanyVal: IAccompany = {
-  memberName: '',
-  relationship: '',
-  memberAddress: '',
-  memberOccupation: '',
-  memberEmail: '',
-  phoneNumber: '',
-  memberWorth: '',
-  gender: '',
-  dateOfBirth: '',
-  passportNumber: '',
-  passportIssuedCountry: '',
-  issueDate: '',
-  expiryDate: ''
+  memberName: "",
+  relationship: "",
+  memberAddress: "",
+  memberOccupation: "",
+  memberEmail: "",
+  phoneNumber: "",
+  memberWorth: "",
+  gender: "",
+  dateOfBirth: "",
+  passportNumber: "",
+  passportIssuedCountry: mockCountry,
+  issueDate: "",
+  expiryDate: "",
 };
 
-export const accompanySchema: yup.ObjectSchema<IAccompany> = yup.object().shape({
-  memberName: yup.string().required("Name is required"),
-  relationship: yup.string().required({ name: 'Relationship is required' }),
-  memberAddress: yup.string().required("Address is required"),
-  memberOccupation: yup.string().required("Occupation is Required"),
-  memberEmail: yup.string().required("Email is required").email("Enter a valid email"),
-  phoneNumber: yup.string().required("Phone number is required"),
-  memberWorth: yup.string().required("Net Worth is required"),
-  gender: yup.string().required({ name: "Gender is required" }),
-  dateOfBirth: yup.string().required("Date of Birth is required"),
-  passportNumber: yup.string().required("Passport number is required"),
-  passportIssuedCountry: yup.string().required({ name: "Country is required" }),
-  issueDate: yup.string().required("Issue Date is required"),
-  expiryDate: yup.string().required("Expiry Date is required")
-});
+
+export const singleAccompanySchema: yup.ObjectSchema<IAccompany> = yup
+  .object()
+  .shape({
+    memberName: yup.string().required("Name is required"),
+    relationship: yup.string().required("Relationship is required"),
+    memberAddress: yup.string().required("Address is required"),
+    memberOccupation: yup.string().required("Occupation is Required"),
+    memberEmail: yup
+      .string()
+      .required("Email is required")
+      .email("Enter a valid email"),
+    phoneNumber: yup.string().required("Phone number is required"),
+    memberWorth: yup.string().required("Net Worth is required"),
+    gender: yup.string().required("Gender is required"),
+    dateOfBirth: yup.string().required("Date of Birth is required"),
+    passportNumber: yup.string().required("Passport number is required"),
+    passportIssuedCountry: countrySchema,
+    issueDate: yup.string().required("Issue Date is required"),
+    expiryDate: yup.string().required("Expiry Date is required"),
+  });
+
+export const accompanyArraySchema = yup
+  .array()
+  .of(singleAccompanySchema)
+  .min(1, "You need to provide at least one dependant")
+  .max(5, "You can provide at most 5 dependants");
+
+export const dependantsForm: DependantsFormInterface = {
+  dependants: [accompanyVal],
+};
+/**
+ * export const manyEducationSchema = yup
+  .object()
+  .shape({ education: educationArraySchema });
+ */
+/**
+ * export const dependantsFormSchema: yup.ObjectSchema<DependantsFormInterface> =
+  yup.object().shape({
+    dependants: accompanyArraySchema.required(),
+  });
+ */
+export const dependantsFormSchema =
+  yup.object().shape({
+    dependants: accompanyArraySchema.required(),
+  });
 
 export const updatePasswordVal: IUpdatePassword = {
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: ''
+  oldPassword: "",
+  newPassword: "",
+  confirmPassword: "",
 };
 
-export const updatePasswordSchema: yup.ObjectSchema<IUpdatePassword> = yup.object().shape({
-  oldPassword: yup.string().required("Old Password is Required"),
-  newPassword: yup.string().required("New Password is Required"),
-  confirmPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match').required("Confirm New Password")
+export const updatePasswordSchema: yup.ObjectSchema<IUpdatePassword> = yup
+  .object()
+  .shape({
+    oldPassword: yup.string().required("Old Password is Required"),
+    newPassword: yup.string().required("New Password is Required"),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("newPassword")], "Passwords must match")
+      .required("Confirm New Password"),
+  });
+
+export const referralInfoSchema: yup.ObjectSchema<
+  Omit<IReferralBankInfo, "refereeId">
+> = yup.object().shape({
+  accountName: yup.string().required("Account Name is required"),
+  accountNumber: yup.string().required("Account Number is required"),
+  bankName: yup.string().required("Bank is required"),
 });
 
+export const referralInfoVal: Omit<IReferralBankInfo, "refereeId"> = {
+  accountName: "",
+  accountNumber: "",
+  bankName: "",
+};
+
+export const setDependantsSchema: yup.ObjectSchema<{
+  numberOfDependants: number;
+}> = yup.object().shape({
+  numberOfDependants: yup.number().required(),
+});
+
+export const setDependantsVal: { numberOfDependants: number; } = {
+  numberOfDependants: 1,
+};

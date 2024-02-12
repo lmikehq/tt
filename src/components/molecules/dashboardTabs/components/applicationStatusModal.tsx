@@ -1,17 +1,19 @@
-import React from "react"
-import styled from 'styled-components'
-import { Box, Dialog } from "@mui/material"
-import { FaCircleCheck } from "react-icons/fa6"
-import { IoMdClose } from "react-icons/io"
-import Button from "@/components/atoms/button"
-import Text from "@/components/atoms/text"
-import Flex from "@/components/templates/flex"
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution"
-import { ttColors } from "@/lib/theme/colors"
-import confetti from 'public/assets/images/dashboard/confetti.png'
-import Image from "@/components/atoms/image"
-import Section from "../../section"
-import { usePathname } from "next/navigation"
+import React, { useEffect, useState } from "react";
+import styled from 'styled-components';
+import { Box, Dialog } from "@mui/material";
+import { FaCircleCheck } from "react-icons/fa6";
+import { IoMdClose } from "react-icons/io";
+import Button from "@/components/atoms/button";
+import Text from "@/components/atoms/text";
+import Flex from "@/components/templates/flex";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { ttColors } from "@/lib/theme/colors";
+import confetti from 'public/assets/images/dashboard/confetti.png';
+import Image from "@/components/atoms/image";
+import Section from "../../section";
+import { usePathname } from "next/navigation";
+import { useUserStore } from "@/lib/store/useStore";
+import { IUser } from "@/lib/types/response-models/dashboard";
 
 const ApplicationStatusModalContainer = styled(Dialog)`
   .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
@@ -20,27 +22,34 @@ const ApplicationStatusModalContainer = styled(Dialog)`
     max-width: 647px;
   }
 
-`
+`;
 
 interface Props {
-  state: boolean
-  setState: React.Dispatch<React.SetStateAction<boolean>>
-  openPaymentModal: React.Dispatch<React.SetStateAction<boolean>>
+  state: boolean;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
+  openPaymentModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) => {
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
+  const { user } = useUserStore((state) => state);
+  const [userInfo, setUserInfo] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    setUserInfo(user);
+  }, [user]);
+
   const handleClose = () => {
-    setState(false)
-  }
-  const pathname = usePathname()
+    setState(false);
+  };
+  const pathname = usePathname();
 
   const handlePayment = () => {
-    openPaymentModal(true)
+    openPaymentModal(true);
     // handleClose()
-  }
+  };
 
   // DON'T SHOW THE APPLICATION STATUS MODAL
-  if (pathname.startsWith(`/dashboard/visa-application`)) return null
+  if (pathname.startsWith(`/dashboard/visa-application`)) return null;
 
   return (
     <ApplicationStatusModalContainer
@@ -94,11 +103,23 @@ export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) 
         </Flex>
 
         <Flex align="center" gap="12px">
-          <a href='/dashboard/visa-application/1' target="_blank" referrerPolicy="no-referrer" style={{ width: '100%' }}>
-            <Button background={'transparent'} width='100%' border={`1px solid ${ttColors.dark}`} onClick={() => { }}>
+          {userInfo ? (
+            <a
+              href={userInfo?._id ? `/dashboard/visa-application/${userInfo._id}` : '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ width: '100%' }}
+            >
+              <Button background={'transparent'} width='100%' border={`1px solid ${ttColors.dark}`} onClick={() => { }}>
+                <Text type='p' text='Download Application' weight={500} color={ttColors.dark} />
+              </Button>
+            </a>
+          ) : (
+            <Button background={'transparent'} width='100%' disabled border={`1px solid ${ttColors.dark}`} onClick={() => { }}>
               <Text type='p' text='Download Application' weight={500} color={ttColors.dark} />
             </Button>
-          </a>
+          )}
+
 
           <Button background={ttColors.dark} width='100%' onClick={handlePayment}>
             <Text type='p' text='Pay Processing Fee' weight={500} />
@@ -106,5 +127,5 @@ export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) 
         </Flex>
       </Box>
     </ApplicationStatusModalContainer>
-  )
-}
+  );
+};

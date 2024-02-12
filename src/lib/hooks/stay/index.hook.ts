@@ -14,9 +14,9 @@ export const useLikeHotel = (
         "mutationFn"
     >
 ) => {
-    return useMutation({
-        mutationFn: (params: LikeHotelRequestInput) =>
-            StayService.likeHotel(params),
-        ...options,
-    });
+  return useMutation({
+    mutationFn: (params: LikeHotelRequestInput) =>
+      StayService.likeHotel(params),
+    ...options,
+  });
 };

@@ -68,6 +68,10 @@ const NavLink = styled.div`
   justify-content: flex-start;
   gap: 2rem;
   font-weight: 600;
+
+  @media screen and (max-width: 1024px) {
+    gap: 1.5rem;
+  }
 `;
 const NavLogo = styled.div`
   display: flex;
@@ -80,6 +84,9 @@ const NavMenu = styled.div`
   align-items: center;
   gap: 2rem;
   font-size: 0.9rem;
+  @media screen and (max-width: 1024px) {
+    gap: 1rem;
+  }
 `;
 const Divider = styled.div`
   width: 1px;
@@ -181,7 +188,7 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 };
 
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
-  const { isMobile } = useScreenResolution();
+  const { isMobile, isTablet } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
   const { setUser, user } = useUserStore((state) => state);
   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
@@ -212,7 +219,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
     <>
       <NavbarWrapper page={page}>
         <NavbarLayout>
-          <Grid columns="3" align="center">
+          <Grid gap={"10px"} columns="3" align="center">
             <NavLink>
               {[
                 {
@@ -237,7 +244,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                     key={index}
                     align="center"
                     cursor="pointer"
-                    gap=".3rem"
+                    gap={isTablet ? "5px" : ".3rem"}
                     height="70px"
                     color={active ? ttColors.primary600 : "none"}
                   >
@@ -260,14 +267,14 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
               <Link href="/">
                 <Image
                   src={"/assets/images/brand/favicon.svg"}
-                  height={45}
-                  width={45}
+                  height={isTablet ? 45 : 45}
+                  width={isTablet ? 45 : 45}
                   alt="TTLogo"
                 />
               </Link>
             </NavLogo>
             <NavMenu>
-              <Flex background="transparent" gap=".7rem" align="center">
+              <Flex background="transparent" gap={isTablet ? ".3rem" : ".7rem"} align="center">
                 <Flex
                   align="center"
                   gap="5px"
@@ -283,14 +290,14 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 >
                   <CircleFlagLanguage
                     languageCode={`${selectedLanguage}`}
-                    height="30"
+                    height={isTablet ? "20px" : "30"}
                   />
 
                   <Text
                     text={`${selectedLanguage}`}
                     type="span"
                     weight={400}
-                    size={16}
+                    size={isTablet ? 14 : 16}
                     styles={{ textTransform: "uppercase" }}
                   />
                 </Flex>
@@ -322,10 +329,10 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                     text={`${selectedCurrency}`}
                     type="span"
                     weight={400}
-                    size={16}
+                    size={isTablet ? 14 : 16}
                     styles={{ textTransform: "uppercase" }}
                   />
-                  <IoIosArrowDown size={20} />
+                  <IoIosArrowDown size={isTablet ? 14 : 20} />
                 </Flex>
 
                 <span className="display_none">

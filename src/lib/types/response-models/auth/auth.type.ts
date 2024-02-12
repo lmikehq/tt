@@ -19,6 +19,10 @@ export interface AuthUser {
     createdAt: Date;
     updatedAt: Date;
     resetPasswordToken: string;
-    dateOfBirth: string;
+    dateOfBirth?: string;
     address: string;
+    profilePicture: string;
+    devices: {
+        status: string;
+    };
 }

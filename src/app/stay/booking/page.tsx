@@ -9,9 +9,9 @@ import { useStayOrderBooking } from "@/lib/hooks/stay/booking.hook";
 import { useUserStore } from "@/lib/store/useStore";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import {
-    GuestRoomsFormDataInterface,
-    StayOrderBookingReguestInput,
-    generateInitialFormDataForRoomsAndGuests,
+  GuestRoomsFormDataInterface,
+  StayOrderBookingReguestInput,
+  generateInitialFormDataForRoomsAndGuests,
 } from "@/lib/types/request-models/stay/booking.type";
 import { ViewSingleStayRequestInput, extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
 import Link from "@/components/atoms/link";

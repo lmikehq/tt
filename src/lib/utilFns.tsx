@@ -66,12 +66,12 @@ export function allCaps(text: string | number) {
 export function allLower(text: string | number) {
     return String(text ?? '').toLowerCase()
 }
-export function capCase(text: string = '', splitter: string = ' ') {
+export function capCase(text: string = '', splitter: string = ' ', replace?: string) {
     if (text === '' || text == null || text == 'null') {
         return ''
     }
     let newStr = String(text).split(splitter)
-    return newStr.map(e => `${allCaps(e[0])}${allLower(e.slice(1))}`).join(' ')
+    return newStr.map(e => `${allCaps(e[0])}${allLower(e.slice(1))}`).join(replace ?? ' ')
 }
 
 export function cleanObject(obj: { [k: string]: any }) {

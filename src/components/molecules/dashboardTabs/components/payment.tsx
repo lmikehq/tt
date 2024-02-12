@@ -4,20 +4,19 @@ import Image from "@atom/image";
 import Text from "@atom/text";
 import Flex from "@components/templates/flex";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
-import apiService from "@lib/extensions/hook/apiService";
+// import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@lib/theme/colors";
 import CustomDrawer from "@molecule/drawers/customDrawer";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { BiDotsVerticalRounded, BiWallet } from "react-icons/bi";
 import { GrFormClose } from "react-icons/gr";
 import { PiEyeLight } from "react-icons/pi";
 import Section from "src/components/molecules/section";
 import styled from "styled-components";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
 import Spinner from "../../icons/spinner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -27,6 +26,11 @@ import NoPaymentImg from 'public/assets/icons/dashboard/no-payment.svg';
 import { ClickAwayListener } from "@mui/material";
 import { IoEyeOutline } from "react-icons/io5";
 import VisaPaymentModal from "../visaPayment";
+import { useDashboardPayment } from "@/lib/hooks/dashboard/payment.hook";
+import { DashboardPaymentInfo, PaymentProp } from "@/lib/types/response-models/dashboard";
+// import CustomTab from "@/components/atoms/tabs";
+import PaginationCtrl from "../../pagination";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 
 const SectionTitle = styled.div`
     display: flex;
@@ -156,8 +160,20 @@ const PaymentHistory = () => {
   const { isMobile } = useScreenResolution();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const [_bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
   const router = useRouter();
+  const { param, search, setPage, page, limit, startDate, endDate } = useDashboardStore((state) => state);
+  const [openModal, setOpenModal] = useState(false);
+  const [selected, setSelected] = useState({
+    intent: '',
+    id: '',
+    accompanying: 0,
+    refetch: () => { }
+  });
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
   const content = {
     title: `You've got no Payment History - Make Payment for a Flight, Visa or Stay`,
@@ -175,22 +191,33 @@ const PaymentHistory = () => {
     );
   }
 
-  async function getAllPayments() {
-    return await apiService("/payment", "GET");
-  }
-  const {
-    data: fetchedPayment,
-    isLoading,
-    error,
-  } = useQuery(["payments"], getAllPayments) as any;
-  if (isLoading)
-    return (
-      <Flex height="450px" align="center" justify="center">
-        <Spinner size="60px" fill={ttColors.blackishBlue} />
-      </Flex>
-    );
-  if (error) return <div>error loading payments, please try again</div>;
-  const { data: payments } = fetchedPayment;
+  // async function getAllPayments() {
+  //   return await apiService("/payment", "GET");
+  // }
+  // const {
+  //   data: fetchedPayment,
+  //   isLoading,
+  //   error,
+  // } = useQuery(["payments"], getAllPayments) as any;
+
+
+  // const { data: payments } = fetchedPayment;
+
+  const { data, isLoading, isError, refetch } = useDashboardPayment({
+    query: { status: param, search: search, currentPage: page, limit: limit, startDate, endDate },
+    options: {
+      retry: 2
+    }
+  });
+
+  const response = data as { payments: DashboardPaymentInfo[], totalCount: number, filteredCount: number; };
+
+  const payments: DashboardPaymentInfo[] = response?.payments as DashboardPaymentInfo[] || [];
+  const filteredCount: number = response?.filteredCount;
+  const totalCount: number = response?.totalCount;
+
+  if (isError) return <div>error loading payments, please try again</div>;
+
 
   const toggleDropdown = () => {
     // console.log('clicked')
@@ -217,8 +244,6 @@ const PaymentHistory = () => {
     },
   ];
 
-  // const ref = useRef(null);
-  // useDetectOutsideClick(ref, () => setIsDropdownOpen(false))
   return (
     <Section
       margin="2rem 0"
@@ -228,302 +253,193 @@ const PaymentHistory = () => {
         padding: isMobile ? ".5rem" : "1rem 1.5rem",
       }}
     >
-      <VisaDashboardHeader headerText="Payment History" />
+      <VisaDashboardHeader headerText="Payment History" type="radio" />
 
-      <PaymentWrapper>
-        {isMobile ? (
-          payments?.length > 0 ? (
-            payments.map((payment: any, i: number) => (
-              <History key={i}>
-                <Flex
-                  justify="space-between"
-                  width="100%"
-                  align="center"
-                  padding="18px 14px"
-                >
-                  <MobileComp
-                    payment={payment}
-                    sortOptions={sortOptions}
-                  />
-
-                  {/* <CustomDrawer
-                    anchor="bottom"
-                    open={bottomDrawerOpen}
-                    onClose={() =>
-                      setBottomDrawerOpen(false)
-                    }
-                    background="#FFF"
-                  >
-                    <Section
-                      height="unset"
-                      padding={
-                        "1.125rem 1.125rem 3.5rem 1.125rem"
-                      }
-                      styles={{
-                        background: ttColors.light,
-                      }}
-                    >
+      {isLoading ? (
+        <Flex height="450px" align="center" justify="center">
+          <Spinner size="60px" fill={ttColors.blackishBlue} />
+        </Flex>
+      ) : (
+        <PaymentWrapper>
+          {
+            isMobile ? (
+              payments?.length > 0 ? (
+                <>
+                  {payments.map((payment: any, i: number) => (
+                    <History key={i}>
                       <Flex
                         justify="space-between"
+                        width="100%"
                         align="center"
+                        padding="18px 14px"
                       >
+                        <MobileComp
+                          payment={payment}
+                          sortOptions={sortOptions}
+                        />
+
+                      </Flex>
+                    </History>
+                  ))}
+                  {/* pagination buttons */}
+
+                  <PaginationCtrl<DashboardPaymentInfo>
+                    page={page}
+                    setPage={setPage}
+                    data={payments}
+                    filteredCount={filteredCount}
+                    totalCount={totalCount}
+                  />
+                </>
+              ) : (
+                <>
+                  <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+                    <NoApplication noVisaImage={NoPaymentImg} content={content} />
+                  </Center>
+                </>
+              )
+            ) : (
+              <Flex direction="column" gap="1rem">
+                {payments?.length > 0 ? (
+                  <>
+                    {payments?.map((payment: PaymentProp, i: number) => (
+                      <History key={i}>
                         <Flex
-                          justify="flex-start"
-                          gap="1rem"
+                          justify="space-between"
+                          width="100%"
                           align="center"
+                          padding="28px 24px"
+                          direction={isMobile ? "column" : "row"}
+                          gap="1rem"
                         >
+                          <Flex
+                            gap=".3rem"
+                            direction="column"
+                            width={isMobile ? "100%" : "50%"}
+                          >
+                            <Text
+                              type="p"
+                              text={format(
+                                new Date(
+                                  payment?.updatedAt
+                                ),
+                                "dd MMM, yyyy"
+                              )}
+                              color="#112211"
+                              size={14}
+                              styles={{ opacity: "75%" }}
+                            />
+                            <Flex gap=".5rem">
+                              <Text
+                                type="h3"
+                                size={18}
+                                text={
+                                  payment?.paymentIntent
+                                }
+                                color="#112211"
+                              />
+                              {payment?.isPartPayment && (
+                                <Text
+                                  type="h3"
+                                  size={14}
+                                  text={` - part payment`}
+                                  color="#112211"
+                                />
+                              )}
+                            </Flex>
+                          </Flex>
+
                           <Text
-                            type="h3"
-                            text="Application fee for Canada - Employment visa"
-                            size={16}
-                            weight={600}
-                            width="max-content"
-                            color="#112211"
+                            type="p"
+                            text={currencyFormatter(
+                              payment?.totalAmount
+                            )}
                             styles={{
-                              width: "80%",
+                              width: isMobile
+                                ? "100%"
+                                : "20%",
                             }}
                           />
-                        </Flex>
-                        <GrFormClose onClick={() => setBottomDrawerOpen(false)} style={{ cursor: 'pointer' }} />
-                      </Flex>
-                      <Divider
-                        direction="horizontal"
-                        margin="0px 0px 1rem"
-                      />
-                      <Flex gap="1rem" direction="column">
-                        <Flex
-                          justify="space-between"
-                          align="center"
-                        >
-                          <Text
-                            type="h3"
-                            text="Email"
-                            size={16}
-                            weight={500}
-                            width="max-content"
-                            color="#000000"
-                          />
-                          <Text
-                            type="h3"
-                            text="Jonathanadah @gmail.com"
-                            size={
-                              isMobile ? 14 : 16
-                            }
-                            weight={400}
-                            width="max-content"
-                            color="#5C5C5C"
-                          />
-                        </Flex>
-
-                        <Flex
-                          justify="space-between"
-                          align="center"
-                        >
-                          <Text
-                            type="h3"
-                            text="Date"
-                            size={16}
-                            weight={500}
-                            width="max-content"
-                            color="#000000"
-                          />
-                          <Text
-                            type="h3"
-                            text="Date"
-                            size={
-                              isMobile ? 14 : 16
-                            }
-                            weight={400}
-                            width="max-content"
-                            color="#5C5C5C"
-                          />
-                        </Flex>
-
-                        <Flex
-                          justify="space-between"
-                          align="center"
-                        >
-                          <Text
-                            type="h3"
-                            text="Amount"
-                            size={16}
-                            weight={500}
-                            width="max-content"
-                            color="#000000"
-                          />
-                          <Text
-                            type="h3"
-                            text="NGN 20,000"
-                            size={
-                              isMobile ? 14 : 16
-                            }
-                            weight={400}
-                            width="max-content"
-                            color="#5C5C5C"
-                          />
-                        </Flex>
-
-                        <Flex
-                          justify="space-between"
-                          align="center"
-                        >
-                          <Text
-                            type="h3"
-                            text="Referral Status"
-                            size={16}
-                            weight={500}
-                            width="max-content"
-                            color="#000000"
-                          />
-                          <Button
-                            width="max-content"
-                            height="48px"
-                            padding="5px 20px"
-                            styles={{
-                              marginLeft: "55px",
-                              background:
-                                "#FFF1C2",
-                              borderRadius:
-                                "24px",
-                              color: "#614909",
-                              display: isMobile
-                                ? "block"
-                                : "none",
+                          <PaymentStatus
+                            style={{
+                              background: payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100,
                             }}
                           >
                             <Text
                               type="p"
-                              text="PENDING"
-                              size={14}
-                              weight={600}
+                              text={payment.status}
+                              styles={{ width: "100%" }}
+                              whiteSpace="nowrap"
+                              color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
+                              weight={500}
                             />
-                          </Button>
+                          </PaymentStatus>
+
+                          {payment.status !== 'SUCCESS' ? (
+                            <Button
+                              disabled={true}
+                              background={ttColors.dark}
+                              height="48px"
+                              styles={{
+                                marginLeft: isMobile
+                                  ? 0
+                                  : "55px",
+                              }}
+                            >
+                              <Text type="p" text='Print Receipt' weight={500} color={ttColors.defaultColor} />
+                            </Button>
+                          ) : (
+                            <Link href={`/payment-receipt/${payment._id}`} target="_blank" rel="noopener noreferrer">
+                              <Button
+                                // width="176px"
+                                background={ttColors.dark}
+                                height="48px"
+                                styles={{
+                                  marginLeft: isMobile
+                                    ? 0
+                                    : "55px",
+                                }}
+                              >
+                                <Text type="p" text='Print Receipt' weight={500} color={ttColors.defaultColor} />
+                              </Button>
+                            </Link>
+                          )}
+
                         </Flex>
-                      </Flex>
-                    </Section>
-                  </CustomDrawer> */}
-                </Flex>
-              </History>
-            ))
-          ) : (
-            <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
-              <NoApplication noVisaImage={NoPaymentImg} content={content} />
-            </Center>
-          )
-        ) : (
-          <Flex direction="column" gap="1rem">
-            {payments?.length > 0 ? (
-              payments?.map((payment: any, i: number) => (
-                <History key={i}>
-                  <Flex
-                    justify="space-between"
-                    width="100%"
-                    align="center"
-                    padding="28px 24px"
-                    direction={isMobile ? "column" : "row"}
-                    gap="1rem"
-                  >
-                    <Flex
-                      gap=".3rem"
-                      direction="column"
-                      width={isMobile ? "100%" : "50%"}
-                    >
-                      <Text
-                        type="p"
-                        text={format(
-                          new Date(
-                            payment?.updatedAt
-                          ),
-                          "dd MMM, yyyy"
-                        )}
-                        color="#112211"
-                        size={14}
-                        styles={{ opacity: "75%" }}
-                      />
-                      <Flex gap=".5rem">
-                        <Text
-                          type="h3"
-                          size={18}
-                          text={
-                            payment?.paymentIntent
-                          }
-                          color="#112211"
-                        />
-                        {payment?.isPartPayment && (
-                          <Text
-                            type="h3"
-                            size={14}
-                            text={` - part payment`}
-                            color="#112211"
-                          />
-                        )}
-                      </Flex>
-                    </Flex>
-
-                    <Text
-                      type="p"
-                      text={currencyFormatter(
-                        payment?.totalAmount
-                      )}
-                      styles={{
-                        width: isMobile
-                          ? "100%"
-                          : "20%",
-                      }}
-                    />
-                    <PaymentStatus
-                      style={{
-                        background: payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100,
-                      }}
-                    >
-                      <Text
-                        type="p"
-                        text={payment.status}
-                        styles={{ width: "100%" }}
-                        whiteSpace="nowrap"
-                        color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
-                        weight={500}
-                      />
-                    </PaymentStatus>
-
-                    <Link href='/payment-receipt/1' target="_blank" rel="noopener noreferrer">
-                      <Button
-                        // width="176px"
-                        background={ttColors.dark}
-                        height="48px"
-                        styles={{
-                          marginLeft: isMobile
-                            ? 0
-                            : "55px",
-                        }}
-                      // onClick={() => router.push('/')}
-                      // disabled
-                      >
-                        <Text type="p" text='Download Receipt' weight={500} color={ttColors.defaultColor} />
-                      </Button>
-                    </Link>
-                  </Flex>
-                </History>
-              ))
-            ) : (
-              <>
-                <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
-                  <NoApplication noVisaImage={NoPaymentImg} content={content} />
-                </Center>
-              </>
+                      </History>
+                    ))}
+                    {/* pagination buttons */}
+                    <PaginationCtrl
+                      page={page}
+                      setPage={setPage}
+                      data={payments}
+                      filteredCount={filteredCount}
+                      totalCount={totalCount} />
+                  </>
+                ) : (
+                  <>
+                    <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+                      <NoApplication noVisaImage={NoPaymentImg} content={content} />
+                    </Center>
+                    {/* pagination buttons */}
+                    {/* <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} /> */}
+                  </>
+                )}
+              </Flex>
             )}
-          </Flex>
-        )}
-      </PaymentWrapper>
+        </PaymentWrapper>
+      )}
+      {/* {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={selected} />)} */}
     </Section>
   );
 };
+
 
 export default PaymentHistory;
 
 
 type Props = {
-  payment: any;
+  payment: PaymentProp;
   sortOptions: ISortOptions[];
 };
 
@@ -621,7 +537,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
             {showDropdown && (
               <div style={{ position: 'absolute', width: 'auto', left: '-200px', backgroundColor: '#FFF', boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.06), 0px 2px 4px 0px rgba(0, 0, 0, 0.25)', borderRadius: '12px', padding: '4px 6px', zIndex: 99 }}>
                 <>
-                  <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
+                  {/* <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
                     setOpenModal(true);
                   }}>
                     <BiWallet />
@@ -630,7 +546,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                   <Divider
                     direction="horizontal"
                     margin="0px 10px 0"
-                  />
+                  /> */}
                   <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
                     sortOptions[1].action();
                     setBottomDrawerOpen(true);
@@ -643,7 +559,6 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
             )}
           </div>
         </ClickAwayListener>
-
 
         <CustomDrawer
           anchor="bottom"
@@ -672,7 +587,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
               >
                 <Text
                   type="h3"
-                  text="Application fee for Canada - Employment visa"
+                  text={payment.paymentIntent}
                   size={16}
                   weight={600}
                   width="max-content"
@@ -695,7 +610,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
               >
                 <Text
                   type="h3"
-                  text="Email"
+                  text="Reference"
                   size={16}
                   weight={500}
                   width="max-content"
@@ -703,7 +618,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                 />
                 <Text
                   type="h3"
-                  text="Jonathanadah @gmail.com"
+                  text={payment.reference}
                   size={
                     isMobile ? 14 : 16
                   }
@@ -727,7 +642,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                 />
                 <Text
                   type="h3"
-                  text="Date"
+                  text={format(new Date(payment.updatedAt), 'dd-MM-yyyy')}
                   size={
                     isMobile ? 14 : 16
                   }
@@ -751,7 +666,7 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                 />
                 <Text
                   type="h3"
-                  text="NGN 20,000"
+                  text={payment.totalAmount.toString()}
                   size={
                     isMobile ? 14 : 16
                   }
@@ -777,10 +692,9 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                   width="max-content"
                   height="48px"
                   padding="5px 20px"
+                  background={payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100}
                   styles={{
                     marginLeft: "55px",
-                    background:
-                      "#FFF1C2",
                     borderRadius:
                       "24px",
                     color: "#614909",
@@ -791,9 +705,10 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
                 >
                   <Text
                     type="p"
-                    text="PENDING"
+                    text={payment.status}
                     size={14}
                     weight={600}
+                    color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
                   />
                 </Button>
               </Flex>
@@ -801,7 +716,8 @@ export const MobileComp = ({ payment, sortOptions }: Props) => {
           </Section>
         </CustomDrawer>
       </Flex>
-      {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={VisaDetail} />)}
+      {/* {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={VisaDetail} />)} */}
     </>
   );
 };
+

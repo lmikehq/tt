@@ -1,6 +1,6 @@
 // @next/next/no-img-element
 
-"use client"
+"use client";
 
 import Button from "@atom/button"
 import CheckBox from "@molecule/checkbox"
@@ -29,73 +29,74 @@ import { useGoogleLogin } from "@react-oauth/google"
 import AuthModal from "@/components/organisms/auth/AuthModal"
 import { rateHawkResourceClient } from "@/lib/axios/axios-client"
 
+
 const settings = {
   infinite: true,
   speed: 500,
   slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
-}
+};
 
 function LoginPage() {
-  const { isMobile } = useScreenResolution()
-  const { setUser } = useUserStore((state) => state)
-  const router = useRouter()
+  const { isMobile } = useScreenResolution();
+  const { setUser } = useUserStore((state) => state);
+  const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
     rememberMe: false,
-  })
+  });
   const login = useGoogleLogin({
     onSuccess: async (credentialResponse) => {
       return await apiService("/auth/google", "POST", {
         token: credentialResponse.access_token,
       })
         .then(async (res) => {
-          if (res.statusCode === 401) return
+          if (res.statusCode === 401) return;
           setSubmissionState({
             ...submissionState,
             loadingGoogleAuth: true,
-          })
-          setUser(res?.user)
-          toast.success("You have successfully logged in!")
+          });
+          setUser(res?.user);
+          toast.success("You have successfully logged in!");
           toast.loading("Redirecting to your dashboard...", {
             duration: 3000,
-          })
-          router.push("/dashboard")
+          });
+          router.push("/dashboard");
         })
-        .catch((error) => { })
+        .catch((error) => { });
     },
     onError: () => { },
-  })
+  });
   useEffect(() => {
     if (submissionState.error.length > 0) {
       setSubmissionState({
         ...submissionState,
         error: [],
-      })
+      });
     }
-  }, [loginData, loginData])
+  }, [loginData, loginData]);
 
   const [submissionState, setSubmissionState] = useState({
     loading: false,
     loadingGoogleAuth: false,
     error: [] as any,
     success: false,
-  })
+  });
 
   async function handleLogin(): Promise<any> {
     return await apiService("/auth/login", "POST", {
       ...loginData,
       email: loginData.email.toLowerCase(),
-    })
+    });
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (submissionState.loading) return
-    setSubmissionState({ ...submissionState, loading: true })
-    const res = await handleLogin()
+    e.preventDefault();
+    if (submissionState.loading) return;
+    setSubmissionState({ ...submissionState, loading: true });
+    const res = await handleLogin();
 
     if (res?.statusCode === 401) {
       return setSubmissionState({
@@ -111,7 +112,7 @@ function LoginPage() {
           },
         ],
         loading: false,
-      })
+      });
     } else if (res?.token) {
         setSubmissionState({
             ...submissionState,
@@ -124,8 +125,8 @@ function LoginPage() {
       toast.success("You have successfully logged in!")
       toast.loading("Redirecting to your dashboard...", {
         duration: 3000,
-      })
-      return router.push("/dashboard")
+      });
+      return router.push("/dashboard?download=false");
     } else {
       setSubmissionState({
         ...submissionState,
@@ -137,7 +138,7 @@ function LoginPage() {
           },
         ],
         loading: false,
-      })
+      });
     }
   }
 
@@ -371,7 +372,7 @@ function LoginPage() {
                     setLoginData({
                       ...loginData,
                       rememberMe: !loginData.rememberMe,
-                    })
+                    });
                   }}
                 >
                   <Text
@@ -486,7 +487,7 @@ function LoginPage() {
         </Section>
       </Grid>
     </SectionLayout>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

@@ -1,66 +1,66 @@
-import VoucherForm from "@/components/organisms/form/components/voucherForm"
-import { PaymentCompleteSection } from "@/components/organisms/paymentConfirmationModal"
-import CustomConfirmationModal from "@/components/organisms/visaApplicationModal"
-import Text from "@atom/text"
-import Flex from "@components/templates/flex"
-import currencyFormatter from "@lib/extensions/data/currencyFormatter"
-import apiService from "@lib/extensions/hook/apiService"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import { useUserStore } from "@lib/store/useStore"
-import { useVoucherStore } from "@lib/store/voucher.store"
-import { FieldInput, FieldString } from "@organism/fieldInput"
-import { useFormik } from "formik"
-import { useRouter } from "next/navigation"
-import { ChangeEvent, useState } from "react"
-import { toast } from "react-hot-toast"
-import { BsExclamationCircleFill } from "react-icons/bs"
-import Section from "src/components/molecules/section"
-import { CustomRadioGroup } from "../radio"
-import SearchStringInput from "../searchInputs/searchStringInput"
-import ReusableModal from "./components/dashboardModal"
-import { Radio } from "@mui/material"
+import VoucherForm from "@/components/organisms/form/components/voucherForm";
+import { PaymentCompleteSection } from "@/components/organisms/paymentConfirmationModal";
+import CustomConfirmationModal from "@/components/organisms/visaApplicationModal";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
+import apiService from "@lib/extensions/hook/apiService";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useUserStore } from "@lib/store/useStore";
+import { useVoucherStore } from "@lib/store/voucher.store";
+import { FieldInput, FieldString } from "@organism/fieldInput";
+import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
+import { toast } from "react-hot-toast";
+import { BsExclamationCircleFill } from "react-icons/bs";
+import Section from "src/components/molecules/section";
+import { CustomRadioGroup } from "../radio";
+import SearchStringInput from "../searchInputs/searchStringInput";
+import ReusableModal from "./components/dashboardModal";
+import { Radio } from "@mui/material";
 
 type VisaPaymentModalProps = {
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
   visaDetails: {
-    intent: string
-    id: string
-    accompanying: number
-    refetch: () => void
-  }
-}
+    intent: string;
+    id: string;
+    accompanying: number;
+    refetch: () => void;
+  };
+};
 
 const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
   open,
   onClose,
   visaDetails,
 }) => {
-  const { isMobile } = useScreenResolution()
-  const [paymentType, setPaymentType] = useState("full_payment")
+  const { isMobile } = useScreenResolution();
+  const [paymentType, setPaymentType] = useState("full_payment");
   const formik = useFormik({
     initialValues: { amount: 0 },
     onSubmit: () => { },
-  })
+  });
   function paymentAmount() {
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
         const processingFee =
           process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE ||
-          "1000000"
+          "1000000";
         const acccompanyingFee =
           process.env
             .NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
-          "200000"
+          "200000";
         return (
           parseInt(processingFee) +
           parseInt(acccompanyingFee) * visaDetails.accompanying
-        )
+        );
       // return visaDetails.accompanying === 0
       //   ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
       //   : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
       case "VISA FEE":
-        return "1000"
+        return "1000";
       case "FORM FEE":
         // const formFee =
         //   process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "10000";
@@ -76,18 +76,18 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
           : parseInt(
             process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE ||
             "30000"
-          )
+          );
       // return visaDetails.accompanying === 0 ? "200" : "250";
       default:
-        return "2500000"
+        return "2500000";
     }
   }
-  const [successModalOpen, setSuccessModalOpen] = useState(false)
-  const { user } = useUserStore((state) => state)
-  const router = useRouter()
-  const { applied, voucher, useVoucher } = useVoucherStore((state) => state)
-  const [installmentAmount, setInstallmentAmount] = useState(0)
-  const [currency, setCurrency] = useState("NGN - Nigerian Naira")
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const { user } = useUserStore((state) => state);
+  const router = useRouter();
+  const { applied, voucher, useVoucher } = useVoucherStore((state) => state);
+  const [installmentAmount, setInstallmentAmount] = useState(0);
+  const [currency, setCurrency] = useState("NGN - Nigerian Naira");
   const createPayment = async () => {
     if (
       paymentType === "part_payment" &&
@@ -95,9 +95,9 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     ) {
       toast.error(
         "Amount must be greater than or equal to 25% of the total amount"
-      )
-      setLoading(false)
-      return
+      );
+      setLoading(false);
+      return;
     }
     return await apiService("/payment/create-visa-fee-charge", "POST", {
       currency: "NGN",
@@ -112,40 +112,40 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       }),
     }).then((response) => {
       if (response.statusCode == 200 || response.statusCode == 201) {
-        window.open(response.data.data.checkout_url, "_self")
-        return response.data
+        window.open(response.data.data.checkout_url, "_self");
+        return response.data;
       } else {
-        toast.error(response.errorMessage)
-        throw response
+        toast.error(response.errorMessage);
+        throw response;
       }
-    })
-  }
+    });
+  };
   function useApplyVoucher() {
     useVoucher({
       promoCode: voucher as string,
       serviceId: visaDetails.id,
     }).then(() => {
-      visaDetails.refetch()
-      onClose()
-      setSuccessModalOpen(true)
-    })
+      visaDetails.refetch();
+      onClose();
+      setSuccessModalOpen(true);
+    });
   }
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <CustomConfirmationModal
         handleClose={() => {
-          setSuccessModalOpen(false)
-          onClose()
-          router.push("/dashboard")
+          setSuccessModalOpen(false);
+          onClose();
+          router.push("/dashboard");
         }}
         open={successModalOpen}
         child={
           <PaymentCompleteSection
             handleModalClose={() => {
-              setSuccessModalOpen(false)
-              onClose()
-              router.push("/dashboard")
+              setSuccessModalOpen(false);
+              onClose();
+              router.push("/dashboard");
             }}
             title="Application Submitted"
             description="Your application has been submitted successfully, and a travel voucher was used to pay for your application. Thank you for trusting Thrillers Travels."
@@ -155,8 +155,8 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       <ReusableModal
         open={open}
         onClose={() => {
-          onClose()
-          setLoading(false)
+          onClose();
+          setLoading(false);
         }}
         maxWidth={isMobile ? '450px' : '647px'}
         headerText={"Make Payment"}
@@ -320,7 +320,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
             />
           </Section>
           {!isMobile && (
-            <Section margin="-10px 0px 2.5rem">
+            <Section margin="-10px 0px 24px">
               <Flex
                 align="center"
                 justify="flex-start"
@@ -346,7 +346,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
         </Section>
       </ReusableModal>
     </>
-  )
-}
+  );
+};
 
-export default VisaPaymentModal
+export default VisaPaymentModal;

@@ -40,9 +40,8 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
                 checked={hotelLiked}
                 onChange={handleLikeHotel}
             />
-        )
-        );
+        ));
     };
-}
+};
 
 export default withLikeHotel;

@@ -3,8 +3,8 @@ import { rateHawkResourceClient, tripAdvisorResourceClient } from "@/lib/axios/a
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
 import { RateHawkLocationRequestInput } from "@/lib/types/request-models/stay/location.type";
 import {
-    SearchStayRequestRequestQuery,
-    ViewSingleStayRequestInput,
+  SearchStayRequestRequestQuery,
+  ViewSingleStayRequestInput,
 } from "@/lib/types/request-models/stay/search.type";
 import { RateHawkLocationSearchResponse } from "@/lib/types/response-models/stay/location.type";
 import {

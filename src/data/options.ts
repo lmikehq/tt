@@ -1,5 +1,5 @@
 interface OptionsEnum {
-  label: string, value: string
+  label: string, value: string;
 }
 
 const visaEnum: OptionsEnum[] = [
@@ -13,39 +13,46 @@ const visaEnum: OptionsEnum[] = [
   { value: "APPROVED", label: "Approved" },
   { value: "DECLINED", label: "Declined" },
   { value: "PASSPORT_REQUIRED", label: "Passport Physically Required" },
-]
+];
 
 const notificationEnum: OptionsEnum[] = [
-  { value: 'DESCENDING', label: 'Oldest to Newest' },
-  { value: 'ASCENDING', label: 'Newest to Oldest' },
+  // { value: 'DESCENDING', label: 'Oldest to Newest' },
+  // { value: 'ASCENDING', label: 'Newest to Oldest' },
   { value: 'UNREAD', label: 'Unread Messages' },
   { value: 'READ', label: 'Read Messages' },
-]
+];
 
 const favouritesEnum: OptionsEnum[] = [
   { value: 'DESCENDING', label: 'Oldest to Newest' },
   { value: 'ASCENDING', label: 'Newest to Oldest' },
-]
+];
 
 const referralsEnum: OptionsEnum[] = [
-  { value: 'DESCENDING', label: 'Oldest to Newest' },
-  { value: 'ASCENDING', label: 'Newest to Oldest' },
-  { value: 'PENDING', label: 'Pending Status' },
-  { value: 'SUCCESSFUL', label: 'Successful Status' },
-]
+  { value: 'PENDING', label: 'Pending ' },
+  { value: 'SUCCESSFUL', label: 'Successful ' },
+];
 
 const paymentsEnum: OptionsEnum[] = [
-  { value: 'DESCENDING', label: 'Oldest to Newest' },
-  { value: 'ASCENDING', label: 'Newest to Oldest' },
-  { value: 'PENDING', label: 'Pending Status' },
-  { value: 'SUCCESSFUL', label: 'Successful Status' },
+  // { value: 'DESCENDING', label: 'Oldest to Newest' },
+  { value: 'ALL', label: 'All' },
+  { value: 'PENDING', label: 'Pending' },
+  { value: 'SUCCESS', label: 'Successful' },
+  { value: 'NOT PAID', label: 'Not Paid' },
   { value: 'FAILED', label: 'Failed' }
-]
+];
 
 const flightsEnum: OptionsEnum[] = [
-  { value: 'DESCENDING', label: 'Oldest to Newest' },
-  { value: 'ASCENDING', label: 'Newest to Oldest' },
-]
+  { value: 'IN_PROGRESS', label: 'In Progress' },
+  { value: 'IS_CONFIRMED', label: 'Is Confirmed' },
+  { value: 'IS_DELAYED', label: 'Is Delayed' },
+  { value: 'IS_CANCELLED', label: 'Is Cancelled' },
+];
+
+const staysEnum: OptionsEnum[] = [
+  { value: 'PENDING', label: 'Pending Status' },
+  { value: 'COMPLETE', label: 'Successful Status' },
+  { value: 'FAILED', label: 'Failed' }
+];
 
 export const visaOptions = visaEnum.map((key, _index) => (
   {
@@ -53,7 +60,7 @@ export const visaOptions = visaEnum.map((key, _index) => (
     name: key.label,
     value: key.value
   }
-))
+));
 
 export const notificationOptions = notificationEnum.map((key, _index) => (
   {
@@ -61,7 +68,7 @@ export const notificationOptions = notificationEnum.map((key, _index) => (
     name: key.label,
     value: key.value
   }
-))
+));
 
 export const favouritesOptions = favouritesEnum.map((key) => (
   {
@@ -69,7 +76,7 @@ export const favouritesOptions = favouritesEnum.map((key) => (
     name: key.label,
     value: key.value
   }
-))
+));
 
 export const referralOptions = referralsEnum.map((key) => (
   {
@@ -77,7 +84,7 @@ export const referralOptions = referralsEnum.map((key) => (
     name: key.label,
     value: key.value
   }
-))
+));
 
 export const paymentOptions = paymentsEnum.map((key, _index) => (
   {
@@ -85,7 +92,7 @@ export const paymentOptions = paymentsEnum.map((key, _index) => (
     name: key.label,
     value: key.value
   }
-))
+));
 
 export const flightOptions = flightsEnum.map((key, _index) => (
   {
@@ -93,4 +100,26 @@ export const flightOptions = flightsEnum.map((key, _index) => (
     name: key.label,
     value: key.value
   }
-))
+));
+
+export const staysOptions = staysEnum.map((key, _index) => (
+  {
+    option: key.label,
+    name: key.label,
+    value: key.value
+  }
+));
+
+export const dependantsRelationship = [
+  "Spouse",
+  "Son",
+  "Daughter",
+  "Father",
+  "Mother",
+  "Brother",
+  "Sister",
+  "Adopted Son",
+  "Adopted Daughter",
+  "Step-Son",
+  "Step-Daughter"
+];

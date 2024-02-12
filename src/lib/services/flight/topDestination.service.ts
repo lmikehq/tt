@@ -15,8 +15,8 @@ export class TopDestinationService {
     try {
       return data.term === "london_gb" && !latitude && !longitude
         ? await kiwiClientV1.get<any, FetchLocationsResponse>(
-            `/locations/topdestinations?term=london_gb&locale=en-US&sort=name&active_only=true&source_popularity=searches`
-          )
+          `/locations/topdestinations?term=london_gb&locale=en-US&sort=name&active_only=true&source_popularity=searches`
+        )
         : null;
     } catch (error) {
       console.error("Error fetching top destinations:", error);

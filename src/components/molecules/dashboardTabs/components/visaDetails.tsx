@@ -1,42 +1,51 @@
-"use client"
-import Button from "@atom/button"
-import { Divider } from "@atom/divider"
-import Text from "@atom/text"
-import Flex from "@components/templates/flex"
-import currencyFormatter from "@lib/extensions/data/currencyFormatter"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import { useVoucherStore } from "@lib/store/voucher.store"
-import { ttColors } from "@lib/theme/colors"
-import CustomDrawer from "@molecule/drawers/customDrawer"
-import { format } from "date-fns"
-import { useRef, useState } from "react"
-import { BsThreeDotsVertical } from "react-icons/bs"
-import { GrFormClose } from "react-icons/gr"
-import { HiClock, HiOutlinePlusSm } from "react-icons/hi"
-import { IoCalendar, IoEyeOutline } from "react-icons/io5"
+"use client";
+import Button from "@atom/button";
+import { Divider } from "@atom/divider";
+import Text from "@atom/text";
+import Flex from "@components/templates/flex";
+import currencyFormatter from "@lib/extensions/data/currencyFormatter";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useVoucherStore } from "@lib/store/voucher.store";
+import { ttColors } from "@lib/theme/colors";
+import CustomDrawer from "@molecule/drawers/customDrawer";
+import { format } from "date-fns";
+import { useRef, useState } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { GrFormClose } from "react-icons/gr";
+import { HiClock, HiDotsVertical, HiOutlinePlusSm } from "react-icons/hi";
+import { IoCalendar, IoEyeOutline } from "react-icons/io5";
 import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdNumbers,
   MdOutlineFamilyRestroom,
-} from "react-icons/md"
+} from "react-icons/md";
 import {
   PiDotsThreeCircleLight,
   PiEyeLight,
   PiWalletLight,
-} from "react-icons/pi"
-import Section from "src/components/molecules/section"
-import styled from "styled-components"
-import VisaPaymentModal from "../visaPayment"
+} from "react-icons/pi";
+import Section from "src/components/molecules/section";
+import styled from "styled-components";
+import VisaPaymentModal from "../visaPayment";
 
-import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS"
-import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick"
-import { AiOutlineCheck } from "react-icons/ai"
-import { BiError } from "react-icons/bi"
-import { RxAvatar } from "react-icons/rx"
-import VisaUploadDocModal from "../visaUploadDoc"
-import { Grid } from "@/components/templates/grid"
-import { AddVisaAccompanyModal } from "./visaAccompanyModal"
+import { COUNTRY_FLAGS } from "@/lib/extensions/data/COUNTRY_FLAGS";
+import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
+import { AiOutlineCheck } from "react-icons/ai";
+import { BiError } from "react-icons/bi";
+import { RxAvatar } from "react-icons/rx";
+import VisaUploadDocModal from "../visaUploadDoc";
+import { Grid } from "@/components/templates/grid";
+import { AddVisaAccompanyModal } from "./visaAccompanyModal";
+import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
+import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import { dependantsForm, dependantsFormSchema } from "@/lib/types/schema";
+import { VisaService } from "@/lib/services/dashboard/visa.service";
+import { useUserStore } from "@/lib/store/useStore";
+import toast from "react-hot-toast";
+import AccompanyPaymentModal from "../accompanyPayment";
+import apiService from "@/lib/extensions/hook/apiService";
 
 const Logo = styled.div`
   height: 64px;
@@ -45,11 +54,16 @@ const Logo = styled.div`
   padding: 10px;
   border-radius: 8px;
 
+  @media screen and (max-width: 1200px){
+    height: 40px;
+    width: 50px;
+  }
+
   @media screen and (max-width: 900px) {
     height: 41px;
     width: 65px;
   }
-`
+`;
 
 const DateIcon = styled.div`
   background: #ebf6f2 !important;
@@ -57,7 +71,15 @@ const DateIcon = styled.div`
   height: 45px;
   width: 46px;
   border-radius: 8px;
-`
+
+  @media screen and (max-width: 1024px){
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
 
 const VisaStatus = styled.div`
   background: #fffeef;
@@ -67,12 +89,16 @@ const VisaStatus = styled.div`
   // width: 25%;
   text-align: center;
 
+  @media screen and (max-width: 1024px) {
+    padding: 10px 10px;
+  }
+
   @media screen and (max-width: 900px) {
     width: 100%;
     font-size: 14px;
     padding: 10px 0px;
   }
-`
+`;
 
 const DropdownContent = styled.div`
   position: absolute;
@@ -93,9 +119,9 @@ const DropdownContent = styled.div`
     line-height: 10px;
     font-size: 14px;
   }
-`
+`;
 
-const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
+const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean; }>`
   display: flex;
   align-items: center;
   padding: 24px 18px;
@@ -103,17 +129,17 @@ const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
   background-color: ${({ hovered }) => (hovered ? "#F3FAFD" : "transparent")};
   border-bottom: ${({ lastChild }) =>
     lastChild ? "none" : "1px solid #dedee3"};
-`
+`;
 
-const OptionText = styled.div<{ hovered: boolean }>`
+const OptionText = styled.div<{ hovered: boolean; }>`
   color: ${({ hovered }) => (hovered ? "#6092A7" : "#101010")};
   font-weight: 400;
   flex: 1;
-`
+`;
 
 interface VisaDataProps {
   // countryLogoSrc: string;
-  visa?: any
+  visa?: any;
   // applicationDate: string;
   // paymentFee: string;
   // visaStatus: string;
@@ -121,28 +147,36 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
-  const { isMobile } = useScreenResolution()
+function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }) {
+  const { user } = useUserStore((state) => state);
+  const { isMobile, isTablet } = useScreenResolution();
   const [modalState, setModalState] = useState({
     open: false,
     type: "",
-  })
-  const [isOpen, setIsOpen] = useState(false)
-  const [hoveredOption, setHoveredOption] = useState<number | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false)
+  });
+  const [isOpen, setIsOpen] = useState(false);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const [dependantPaymentInfo, setDependantPaymentInfo] = useState<{ checkout_url: string, reference: string, price: number; }>({
+    checkout_url: "",
+    reference: "",
+    price: 0
+  });
+  const router = useRouter();
+
 
   const handleAccordionClick = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   // const toggleDropdown = () => {
   //   setIsDropdownOpen(!isDropdownOpen);
   //   setHoveredOption(null);
   // };
 
-  const ref = useRef(null)
-  useDetectOutsideClick(ref, () => setIsDropdownOpen(false))
+  const ref = useRef(null);
+  useDetectOutsideClick(ref, () => setIsDropdownOpen(false));
 
   function getButtonInformation() {
     let visaInformation = {
@@ -150,7 +184,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       fn: () => { },
       disabled: false,
       intent: "",
-    }
+    };
     switch (visa?.applicationStatus) {
       case "APPROVED":
         visaInformation = {
@@ -158,58 +192,60 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           fn: () => { },
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       case "DECLINED":
         visaInformation = {
           text: "Re-apply Visa",
-          fn: () => { },
+          fn: () => {
+            router.push('/visa/apply');
+          },
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       case "FORM FEE REQUESTED":
         visaInformation = {
           text: "Submit Application",
           fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "FORM FEE",
-        }
-        break
+        };
+        break;
       case "PROCESSING FEE REQUESTED":
         visaInformation = {
           text: "Pay Processing Fee",
           fn: () => setModalState({ open: true, type: "payment" }),
           disabled: false,
           intent: "PROCESSING FEE",
-        }
-        break
+        };
+        break;
       case "ADDITIONAL INFORMATION REQUESTED":
         visaInformation = {
           text: "Upload documents",
           fn: () => setModalState({ open: true, type: "upload" }),
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       case "ADDITIONAL DOCUMENT REQUESTED":
         visaInformation = {
           text: "Upload documents",
           fn: () => setModalState({ open: true, type: "upload" }),
           disabled: false,
           intent: "",
-        }
-        break
+        };
+        break;
       default:
         visaInformation = {
           text: "No action required",
           fn: () => { },
           disabled: true,
           intent: "",
-        }
+        };
     }
 
-    return visaInformation
+    return visaInformation;
   }
 
   // function PaymentIcon() {
@@ -223,7 +259,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
   //   );
   // }
 
-  const recentPayment = visa?.payments[visa?.payments.length - 1]
+  const recentPayment = visa?.payments[visa?.payments.length - 1];
   const textAndBgColor =
     visa?.applicationStatus === "DECLINED"
       ? { text: "#9C0000", bg: "#FFF1F1" }
@@ -233,36 +269,38 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           ? { text: "#7A7422", bg: "FFFEEF" }
           : visa?.applicationStatus === "FORM FEE REQUESTED"
             ? { text: "#fff", bg: "#8f3d3d" }
-            : { text: "#37008A", bg: "#F6F0FF" }
-  const { applied, voucher } = useVoucherStore((state) => state)
+            : { text: "#37008A", bg: "#F6F0FF" };
+  const { applied, voucher } = useVoucherStore((state) => state);
 
   // ACCOMPANYING
-  const renderAccompany = (status: string): { bg: string, color: string, border: string } => {
+  const renderAccompany = (status: string): { bg: string, color: string, border: string; } => {
     const setting = {
       bg: '',
       color: '',
       border: ''
-    }
+    };
 
     switch (status) {
       case 'Pending':
-        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' }
+        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' };
     }
 
-    return setting
-  }
+    return setting;
+  };
 
-  const accompanying = visa?.familyMembers?.filter(
-    (fm: any) => fm.accompanying === true
-  ).length
+  // const accompanying = visa?.familyMembers?.filter(
+  //   (fm: any) => fm.accompanying === true
+  // ).length;
+
+  const accompanying = 1;
 
 
-  function getLocationField(field: string) {
-    return typeof visa?.primaryTraveller[field] === "string"
-      ? visa?.primaryTraveller?.[field]
+  // function getLocationField(field: string) {
+  //   return typeof visa?.primaryTraveller[field] === "string"
+  //     ? visa?.primaryTraveller?.[field]
 
-      : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`
-  }
+  //     : `${visa?.primaryTraveller?.[field]?.name} (${visa?.primaryTraveller?.[field]?.code})`;
+  // }
 
   const sortOptions = [
     {
@@ -275,9 +313,9 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
             ...prev,
             open: true,
             type: 'add-accompany'
-          }
-        })
-        setIsDropdownOpen(false)
+          };
+        });
+        setIsDropdownOpen(false);
       },
       disabled: false,
     },
@@ -286,8 +324,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       label: 'Upload Document',
       icon: <IoEyeOutline size={16} />,
       action: () => {
-        setModalState({ open: true, type: "upload" })
-        setIsDropdownOpen(false)
+        setModalState({ open: true, type: "upload" });
+        setIsDropdownOpen(false);
       }
     },
     {
@@ -295,11 +333,100 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       label: "View More Details",
       icon: <PiEyeLight size="1rem" />,
       action: () => {
-        setBottomDrawerOpen(true)
-        setIsDropdownOpen(false)
+        setBottomDrawerOpen(true);
+        setIsDropdownOpen(false);
       },
     },
-  ]
+  ];
+
+  // DEPENDANTS FORMIK 
+  const dependantsFormik = useFormik({
+    initialValues: dependantsForm,
+    enableReinitialize: true,
+    validateOnMount: true,
+    validationSchema: dependantsFormSchema,
+    onSubmit: async (values, helpers) => {
+      // some code
+      // CALL THE API FROM HERE AND EVEN RESET THE FORM
+
+      if (user) {
+
+        // console.log(values.dependants);
+        const response = apiService(`/visa/application/${visa._id}/add-accompanying`, 'POST', values.dependants.map((dependant) => ({
+          membersEmail: dependant.memberEmail,
+          accompanying: true,
+          address: dependant.memberAddress,
+          gender: dependant.gender,
+          membersPhoneNumber: dependant.phoneNumber,
+          relationshipToPrimary: dependant.relationship,
+          membersName: dependant.memberName,
+          dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+          expiryYear: Number(dependant.expiryDate.split("/")[2]),
+          issueYear: Number(dependant.issueDate.split("/")[2]),
+          passportNumber: dependant.passportNumber
+        }))).then((response) => {
+          console.log('api response', response);
+          if (response?.message === 'success') {
+            setDependantPaymentInfo({
+              checkout_url: response?.data?.data?.checkout_url,
+              reference: response?.data?.data?.reference,
+              price: values.dependants.length * 500000
+            });
+            toast.success(response?.data?.message);
+            // CLOSE THE MODAL FOR ACCOMPANIES
+            setModalState({ open: false, type: "add-dependant" });
+            helpers.resetForm();
+          }
+          setModalState({ open: true, type: "dependant-payment" });
+          // setModalState({ open: true, type: "payment" });
+          router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
+        }).catch((err) => {
+          console.log(err);
+          throw err;
+        });
+
+        console.log('code after the api call');
+
+        // const response = await VisaService.addDependants(visa._id!, values.dependants.map((dependant) => ({
+        //   membersEmail: dependant.memberEmail,
+        //   accompanying: true,
+        //   address: dependant.memberAddress,
+        //   gender: dependant.gender,
+        //   membersPhoneNumber: dependant.phoneNumber,
+        //   relationshipToPrimary: dependant.relationship,
+        //   membersName: dependant.memberName,
+        //   dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+        //   expiryYear: Number(dependant.expiryDate.split("/")[2]),
+        //   issueYear: Number(dependant.issueDate.split("/")[2]),
+        //   passportNumber: dependant.passportNumber
+        // })));
+        // console.log('response from the api', response);
+        // if (response?.message === "success" || response?.statusCode === 200) {
+        //   console.log('the response was recieved succesfully open the payment modal');
+        //   setDependantPaymentInfo({
+        //     checkout_url: response?.data?.data?.checkout_url,
+        //     reference: response?.data?.data?.reference,
+        //     price: values.dependants.length * 500000
+        //   });
+        //   // TOAST
+        //   toast.success(response?.data?.message);
+        //   // CLOSE THE MODAL FOR ACCOMPANIES
+        //   setModalState({ open: false, type: "add-dependant" });
+
+        //   // OPEN THE MODAL TO MAKE DEPENDANTS PAYMENT 
+        //   setModalState({ open: true, type: "dependant-payment" });
+        //   // setModalState({ open: true, type: "payment" });
+        //   router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
+        //   // ADD THE PAYMENT TO URL PARAMS
+        // }
+
+        // toast.error("Error adding dependant(s). Try again!");
+
+
+      }
+
+    }
+  });
 
   return (
     <Section
@@ -310,17 +437,28 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
       padding="24px"
       margin={isMobile ? ".5rem 0" : "2rem 0"}
     >
+      {/* ACCOMPANY / DEPENDANTS PAYMENT MODAL */}
+      <AccompanyPaymentModal
+        onClose={() => { }}
+        open={modalState.open && modalState.type === 'dependant-payment'}
+        koraLink={dependantPaymentInfo.checkout_url}
+        price={dependantPaymentInfo.price}
+        reference={dependantPaymentInfo.reference}
+      />
+
+      {/* VISA PAYMENT MODAL */}
       <VisaPaymentModal
         open={modalState.open && modalState.type === "payment"}
         onClose={() => setModalState({ open: false, type: "" })}
         visaDetails={{
           id: visa?._id,
           intent: getButtonInformation().intent,
-          accompanying: accompanying,
+          accompanying: accompanying || 0,
           refetch,
         }}
       />
 
+      {/* VISA UPLOAD DOCUMENT MODAL */}
       <VisaUploadDocModal
         onClose={() => setModalState({ open: false, type: "" })}
         open={modalState.open && modalState.type === "upload"}
@@ -328,10 +466,17 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         refetch={refetch}
       />
 
+      {/* ADD DEPENDANTS / ACCOMPANIES MODAL */}
       <AddVisaAccompanyModal
         open={modalState.open && modalState.type === 'add-accompany'}
         setState={setModalState}
+        formik={dependantsFormik}
+        persistForm={() => { }}
+        index={1}
+        steps={[""]}
       />
+
+      {/* SUCCESSFULY PAID FOR DEPENDANTS / ACCOMPANIES MODAL */}
 
       {isMobile ? (
         <Flex
@@ -341,11 +486,11 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           styles={{ position: "relative" }}
         >
           <Logo>
-            {visa?.primaryTraveller?.destination?.code && (
+            {visa?.destination?.code && (
               <img
                 src={
                   COUNTRY_FLAGS.find(
-                    (x) => x.code === visa?.primaryTraveller?.destination?.code
+                    (x) => x?.code === visa?.destination?.code
                   )?.flag
                 }
                 alt="logo"
@@ -363,9 +508,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
               weight={900}
               size={isMobile ? "14px" : "20px"}
               textAlign={isMobile ? "center" : "left"}
-              text={`${getLocationField("homeCountry")} — ${getLocationField(
-                "destination"
-              )}`}
+              text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${(visa?.destination?.code)})`}
               letterSpacing={"unset"}
             />
             <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
@@ -429,8 +572,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   color="#848484"
                   cursor="pointer"
                   onClick={() => {
-                    setBottomDrawerOpen(false)
-                    setIsDropdownOpen(false)
+                    setBottomDrawerOpen(false);
+                    setIsDropdownOpen(false);
                   }}
                 />
               </Flex>
@@ -442,9 +585,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 <Flex justify="flex-start" gap="1rem" align="center">
                   <Text
                     type="h3"
-                    text={`${getLocationField(
-                      "homeCountry"
-                    )} — ${getLocationField("destination")}`}
+                    text={`${visa?.homeCountry?.name} — ${visa?.destination?.name}`}
                     size={16}
                     weight={600}
                     width="max-content"
@@ -466,8 +607,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   <Text
                     type="h3"
                     text={
-                      visa?.createdAt
-                        ? format(new Date(visa?.createdAt), "dd MMM, yyyy")
+                      visa?.updatedAt
+                        ? format(new Date(visa?.updatedAt), "dd MMM, yyyy")
                         : "n/a"
                     }
                     size={16}
@@ -579,15 +720,19 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         </Flex>
       ) : (
         <>
-
-          <Grid columns='' gap="24px" style={{ gridTemplateColumns: '80px 1fr 25% 20%' }} align="center">
+          <Grid
+            columns=''
+            gap={isTablet ? "10px" : "24px"}
+            style={{ gridTemplateColumns: isTablet ? "50px 2fr 1fr 27%" : '80px 1fr 25% 20%' }}
+            align="center"
+          >
             <Logo>
-              {visa?.primaryTraveller?.destination?.code && (
+              {visa?.destination?.code && (
                 <img
                   src={
                     COUNTRY_FLAGS.find(
                       (x) =>
-                        x.code === visa?.primaryTraveller?.destination?.code
+                        x?.code === visa?.destination?.code
                     )?.flag
                   }
                   alt="logo"
@@ -616,11 +761,9 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   type="p"
                   letterSpacing="1px"
                   weight={900}
-                  size={isMobile ? "1rem" : "1.3rem"}
+                  size={isTablet ? "13px" : "1.3rem"}
                   textAlign={isMobile ? "center" : "left"}
-                  text={`${getLocationField(
-                    "homeCountry"
-                  )} — ${getLocationField("destination")}`}
+                  text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${visa?.destination?.code})`}
                 />
 
                 <Flex justify="flex-start" gap="0px">
@@ -631,14 +774,14 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                     width="90%"
                   >
                     <DateIcon>
-                      <IoCalendar color="#8DD3BB" size="1.5rem" />
+                      <IoCalendar color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
                     </DateIcon>
                     <Section>
                       <Text
                         type="p"
                         text="Application Date"
                         color="#112211"
-                        size={12}
+                        size={isTablet ? 11 : 12}
                         weight={600}
                         opacity="60%"
                       />
@@ -646,7 +789,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         type="h5"
                         text={format(new Date(visa.updatedAt), "dd MMM, yyyy")}
                         color="#112211"
-                        size={14}
+                        size={isTablet ? 12 : 14}
                         weight={500}
                       />
                     </Section>
@@ -654,7 +797,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
 
                   <Flex justify="flex-start" gap="10px">
                     <DateIcon>
-                      <HiClock color="#8DD3BB" size="1.5rem" />
+                      <HiClock color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
                     </DateIcon>
                     <section>
                       <Text
@@ -662,7 +805,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         text="Payment Fee"
                         whiteSpace="nowrap"
                         color="#112211"
-                        size={12}
+                        size={isTablet ? 11 : 12}
                         weight={600}
                         opacity="60%"
                       />
@@ -684,7 +827,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         // }
                         decoration={applied && voucher ? "line-through" : ""}
                         color="#112211"
-                        size={14}
+                        size={isTablet ? 12 : 14}
                         weight={500}
                       />
                     </section>
@@ -709,7 +852,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                       : visa.applicationStatus
                   }
                   weight={800}
-                  size={isMobile ? 13 : 14}
+                  size={isTablet ? '11px' : 14}
                   color={textAndBgColor.text}
                 />
               </VisaStatus>
@@ -722,7 +865,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
               align="center"
             >
               <Button
-                padding="8px 16px"
+                // padding="8px 16px"
                 width={isMobile ? "300px!important" : "100px !important"}
                 background="#06062A"
                 height="48px"
@@ -730,6 +873,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   marginLeft: isMobile ? "0px" : "55px",
                   display: isMobile ? "flex" : "inline-flex",
                   maxWidth: "100%",
+                  padding: "8px 8px !important"
                 }}
                 disabled={getButtonInformation().disabled}
                 onClick={getButtonInformation().fn}
@@ -738,7 +882,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   type="h5"
                   text={getButtonInformation().text}
                   weight={500}
-                  size={14}
+                  size={isTablet ? 12 : 14}
                   styles={{
                     width: "max-content",
                     textAlign: "center",
@@ -746,6 +890,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                 />
               </Button>
               {!isMobile && (
+
                 <Section
                   width="60px"
                   styles={{
@@ -753,24 +898,33 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                   }}
                 >
                   <Flex
-                    border="1px solid #87CEEB"
+                    border={isTablet ? "" : "1px solid #87CEEB"}
                     borderBottom="1px solid #87CEEB"
                     align="center"
                     justify="center"
-                    padding="8px"
+                    padding={isTablet ? "0" : "8px"}
                     borderRadius="4px"
                     height="48px"
-                    width="48px"
+                    width={isTablet ? "30px" : "48px"}
                     styles={{ cursor: "pointer" }}
                     onClick={handleAccordionClick}
                   >
                     {isOpen ? (
-                      <MdKeyboardArrowUp size="1.5rem" />
+                      isTablet ? (
+                        <MdKeyboardArrowUp size="1.5rem" />
+                      ) : (
+                        <MdKeyboardArrowUp size="1.5rem" />
+                      )
                     ) : (
-                      <MdKeyboardArrowDown size="1.5rem" />
+                      isTablet ? (
+                        <MdKeyboardArrowDown size="1.5rem" />
+                      ) : (
+                        <MdKeyboardArrowDown size="1.5rem" />
+                      )
                     )}
                   </Flex>
                 </Section>
+
               )}
             </Flex>
           </Grid>
@@ -778,19 +932,23 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
           {isOpen && (
             <Section width="auto" styles={{ transition: "all 3s" }}>
               {visa.applicationStatus === "FORM FEE REQUESTED" ? (
-                <Flex align="center" gap=".5rem">
-                  <PiDotsThreeCircleLight size={20} color="red" />
-                  <Text
-                    type="p"
-                    text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
-                    size={"15px"}
-                  />
-                </Flex>
+                <Grid columns={""} gap="24px" style={{ gridTemplateColumns: "80px 2fr 1fr" }}>
+                  {/* this div here is part of the ui */}
+                  <div></div>
+                  <Flex align="center" gap=".5rem">
+                    <PiDotsThreeCircleLight size={20} color="red" />
+                    <Text
+                      type="p"
+                      text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
+                      size={"15px"}
+                    />
+                  </Flex>
+                </Grid>
               ) : (
                 <Section>
                   <Grid columns={''} gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} width={isMobile ? "100%" : "100%"} align="flex-start" margin="2rem 0">
+                    {/* this div here is part of the ui */}
                     <div></div>
-
                     <Section>
                       <Flex align="center" margin=".5rem 0" gap=".5rem">
                         <PiDotsThreeCircleLight size={20} fontWeight={500} />
@@ -801,7 +959,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                           weight={500}
                         />
                       </Flex>
-                      {!visa?.usedFormFeeVoucher && (
+                      {visa?.usedFormFeeVoucher && (
                         <Flex align="center" margin=".5rem 0" gap=".5rem">
                           <PiWalletLight size={20} fontWeight={500} />
                           <Text
@@ -834,11 +992,23 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         />
                       </Flex>
 
+                      <Flex direction="column" align="center" gap=".5rem">
+                        {visa?.infoRequests.map((info, index) => {
+                          return (
+                            <Text
+                              key={`info-request ${index}`}
+                              type="p"
+                              text={info}
+                            />
+                          );
+                        })}
+                      </Flex>
+
                       <Flex align="center" margin=".5rem 0" gap=".5rem">
                         <RxAvatar size={20} />
                         <Text
                           type="p"
-                          text={`${visa?.primaryTraveller?.firstName} ${visa?.primaryTraveller?.lastName}`}
+                          text={`${visa?.primaryTraveller?.personalDetails?.firstName} ${visa?.primaryTraveller?.personalDetails?.lastName}`}
                           size={"15px"}
                           transform="uppercase"
                           weight={500}
@@ -862,7 +1032,7 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                         <Text type="p" text={visa?.uniqueVisaId} size={"15px"} weight={500} transform="uppercase" />
                       </Flex>
                     </Section>
-                    {/*OPEN ACCOMPANY MODAL */}
+                    {/*OPEN SET ACCOMPANY MODAL */}
                     <div>
                       <Flex justify="flex-end">
                         <Button
@@ -880,8 +1050,8 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
                                 ...prev,
                                 open: true,
                                 type: 'add-accompany'
-                              }
-                            })
+                              };
+                            });
                           }}
                         >
                           <Text
@@ -922,6 +1092,6 @@ function VisaDetail({ visa, refetch }: { visa: any; refetch: any }) {
         </>
       )}
     </Section>
-  )
+  );
 }
-export default VisaDetail
+export default VisaDetail;
