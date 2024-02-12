@@ -63,6 +63,7 @@ export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) 
                 return (
                   <div>
                     <CustomizedAccordions
+                      hasDefaultExpanded={true}
                       items={formik.values.dependants.map((dependant, index) => ({
                         flexDirection: "row",
                         header: formik.values.dependants.length > 1 ? `Dependant ${index + 1}` : 'Dependant',
@@ -73,6 +74,7 @@ export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) 
                         detailsPadding: 0,
                         headerLeftMargin: 0,
                         headerPadding: "0",
+                        // hasDefaultExpanded: true,
                         description: (
                           <AccompanyComponent
                             formik={formik}

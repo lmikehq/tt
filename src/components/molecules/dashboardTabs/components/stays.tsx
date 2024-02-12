@@ -4,7 +4,6 @@ import { ttColors } from "@/lib/theme/colors";
 import VisaDashboardHeader from "./visaDashboardHeader";
 import { Grid } from "@/components/templates/grid";
 import StaysCard from "./stays/card";
-import PaginationCtrl from "../../pagination";
 import { useGetAllStaysBookingHistory } from "@/lib/hooks/dashboard/stays.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import { HotelBookingHistory } from "@/lib/types/response-models/dashboard";
@@ -67,7 +66,7 @@ function Stays() {
   };
   // HANDLE PAGINATION
   const { onPageChange } = useHandlePagination();
-  const { data, isLoading } = useGetAllStaysBookingHistory(
+  const { data, isLoading, refetch } = useGetAllStaysBookingHistory(
     {
       query: { status: param, search, startDate, endDate, currentPage: page, limit },
       options: { retry: 2 }
@@ -77,11 +76,7 @@ function Stays() {
   const response = data as { userStaysBookings: HotelBookingHistory[], filteredCount: number, totalCount: number; };
   const stays: HotelBookingHistory[] = response?.userStaysBookings;
   const filteredCount = response?.filteredCount || 1;
-  const totalCount = response?.totalCount;
-
-  if (isLoading) {
-    return '';
-  }
+  // const totalCount = response?.totalCount;
 
   return (
     <StaysWrapper>
@@ -107,6 +102,7 @@ function Stays() {
                         checkoutDate={stay.checkOutDate}
                         region={stay.hotelPayload.region}
                         rating={stay.hotelPayload.rating}
+                        refetch={refetch}
                       />
                     </div>
                   );

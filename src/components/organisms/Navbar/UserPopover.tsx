@@ -215,7 +215,7 @@ const CustomPopover = () => {
                               <Span style={{ width: "100px" }}>
                                 <TruncateMarkup lines={1}>
                                   <p style={{ color: "var(--text-gray-color)" }}>
-                                    {notification.message}
+                                    {notification?.message}
                                   </p>
                                 </TruncateMarkup>
                               </Span>
@@ -286,9 +286,9 @@ const CustomPopover = () => {
             cursor="pointer"
             onClick={() => setIsVisible(!isVisible)}
           >
-            {user && user.profilePicture ? (
+            {user && user?.profilePicture ? (
               <img
-                src={user.profilePicture}
+                src={user?.profilePicture}
                 alt="user-profile"
                 height={54}
                 width={54}
@@ -305,7 +305,7 @@ const CustomPopover = () => {
                 weight={600}
                 text={`${user?.firstName} ${user?.lastName}`}
               ></Text>
-              <Text type="p" size={13} text={`${user.email}`} color={'#333'}></Text>
+              <Text type="p" size={13} text={`${user?.email}`} color={'#333'}></Text>
             </Flex>
             <IoIosArrowDown size={20} />
           </Flex>

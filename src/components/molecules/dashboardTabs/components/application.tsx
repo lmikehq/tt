@@ -32,13 +32,11 @@ const Application = () => {
       label: "Flight",
       value: 1,
       content: <Flight />,
-      disabled: false,
     },
     {
       label: "Stays",
       value: 2,
       content: <Stays />,
-      disabled: false,
     }
   ];
   return (
