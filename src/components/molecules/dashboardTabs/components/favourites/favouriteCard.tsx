@@ -1,12 +1,9 @@
 import styled from "styled-components";
-import { AiFillHeart } from "react-icons/ai";
 import Image from "@atom/image";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import { useState } from "react";
 import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
 import withLikeHotel from "@/components/HOCs/withLikeHotel";
-import { useConversionRate } from "@/hooks/useConversionRate";
 import currencyFormatter from "@/lib/extensions/data/currencyFormatter";
 import { RefetchProp } from "types";
 
@@ -47,18 +44,12 @@ interface Props {
   price: number;
   hotelId: string;
   refetch: RefetchProp;
+  currencyCode?: string;
 }
 
 const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
 
-function FavouritesCard({ image, name, countryName, price, hotelId, refetch }: Props) {
-  const [isFavourite, setIsFavourite] = useState(false);
-
-  const toggleFavourite = () => {
-    setIsFavourite(!isFavourite);
-  };
-  const heartColor = isFavourite ? "red" : "grey";
-  // const convertedPrice = useConversionRate()
+function FavouritesCard({ image, name, countryName, price, hotelId, refetch, currencyCode }: Props) {
 
   return (
     <FavouriteCard>
@@ -101,7 +92,7 @@ function FavouritesCard({ image, name, countryName, price, hotelId, refetch }: P
           />
           <Text
             type="h3"
-            text={`${currencyFormatter(price)}`}
+            text={`${currencyFormatter(price, currencyCode)}`}
             size={20}
             weight={600}
             color="#000000"

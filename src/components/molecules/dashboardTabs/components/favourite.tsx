@@ -13,7 +13,7 @@ import { HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
 import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
-import { useConversionRate } from "@/hooks/useConversionRate";
+// import { useConversionRate } from "@/hooks/useConversionRate";
 
 const FavouriteWrapper = styled.div``;
 
@@ -21,7 +21,7 @@ const FavouriteWrapper = styled.div``;
 const Favourite = () => {
   const { isMobile, isTablet } = useScreenResolution();
   const { page, setPage, limit } = useDashboardStore((state) => state);
-  const { convertCurrency } = useConversionRate();
+  // const { convertCurrency } = useConversionRate();
 
   const content = {
     title: "You've got no favorite - Let's help you get Started",
@@ -55,13 +55,14 @@ const Favourite = () => {
 
 
     // ELSE IF SHOW_CURRECNCY_CODE !== NGN CONVERT THE CURRENCY 
-    if (show_currency_code !== 'NGN') {
-      return convertCurrency({
-        convertFrom: foreign_currency_code,
-        convertTo: 'NGN',
-        amount: foreignAmount
-      }).amount.toString();
-    }
+
+    // if (show_currency_code !== 'NGN') {
+    //   return convertCurrency({
+    //     convertFrom: foreign_currency_code,
+    //     convertTo: 'NGN',
+    //     amount: foreignAmount
+    //   }).amount.toString();
+    // }
   }
 
   return (
@@ -94,12 +95,14 @@ const Favourite = () => {
                       image={favourite.images[0]}
                       name={favourite.name}
                       countryName={favourite.region.name}
-                      price={Number(renderPrice({
-                        show_currency_code: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.show_currency_code,
-                        foreign_currency_code: favourite?.rates[0]?.payment_options?.payment_types[0]?.currency_code,
-                        foreignAmount: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.amount,
-                        show_amount: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.show_amount
-                      }))}
+                      price={Number(favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.amount)}
+                      currencyCode={favourite?.rates[0]?.payment_options?.payment_types[0]?.currency_code}
+                    // price={Number(renderPrice({
+                    //   show_currency_code: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.show_currency_code,
+                    //   foreign_currency_code: favourite?.rates[0]?.payment_options?.payment_types[0]?.currency_code,
+                    //   foreignAmount: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.amount,
+                    //   show_amount: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.show_amount
+                    // }))}
                     // price={Number(favourite.rates[0].daily_prices[0])}
                     />
                   );

@@ -14,7 +14,7 @@ import Flex from "@/components/templates/flex";
 import { mockStaysBookingHistory } from "@/lib/extensions/data/mock";
 import CustomPagination from "../../pagination/customPagination";
 import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
-import { useConversionRate } from "@/hooks/useConversionRate";
+// import { useConversionRate } from "@/hooks/useConversionRate";
 import Spinner from "../../icons/spinner";
 
 const StaysWrapper = styled.div`
@@ -55,7 +55,7 @@ const TextContainer = styled.div`
 function Stays() {
   const { isMobile } = useScreenResolution();
   const { search, startDate, endDate, param, limit, page, setPage } = useDashboardStore((state) => state);
-  const { convertCurrency } = useConversionRate();
+  // const { convertCurrency } = useConversionRate();
   const content: { title: string, links: { text: string, url: string; }[]; } = {
     title: "You’ve got no Stays Booking - Let’s help you get Started ",
     links: [
@@ -97,7 +97,8 @@ function Stays() {
                         hotelId={stay.hotelId}
                         name={stay.hotelPayload.name}
                         image={stay.hotelPayload.image}
-                        payment={Number(convertCurrency({ convertFrom: stay.paymentOptions[0].currency_code, convertTo: 'NGN', amount: stay.paymentOptions[0].amount }).amount)}
+                        payment={Number(stay.paymentOptions[0].amount)}
+                        // payment={Number(convertCurrency({ convertFrom: stay.paymentOptions[0].currency_code, convertTo: 'NGN', amount: stay.paymentOptions[0].amount }).amount)}
                         checkInDate={stay.checkInDate}
                         checkoutDate={stay.checkOutDate}
                         region={stay.hotelPayload.region}
