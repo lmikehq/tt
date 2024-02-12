@@ -33,6 +33,7 @@ import { extractFlightDataFromParams } from "@/lib/types/request-models/flight/m
 import { useFetchLocationsById } from "@/lib/hooks/flight/location.hook";
 import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 import { formatStringToDayjs } from "@/lib/extensions/helpers/formatDate";
+import { FlightTypeEnum } from "@/lib/types/request-models/flight/booking.type";
 
 const stopOptions = [
     { value: "round", label: "Round Trip" },
@@ -215,7 +216,11 @@ function Flights() {
                 flight?.returnDate ? `&return_from=${returnFrom}` : ""
             }&stops=${
                 flightState?.stops
-            }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}`;
+            }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&flightType=${
+                flight?.returnDate
+                    ? FlightTypeEnum.return
+                    : FlightTypeEnum.one_way
+            }`;
         } else {
             const flight = flights[0];
             const adults = flight?.adults;
