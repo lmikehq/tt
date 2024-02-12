@@ -36,7 +36,7 @@ export default function ViewBooking({
                         <Spinner size="60px" />
                     </Flex>
                 ) : bookingDetailsMode === Mode.error ? (
-                    <ErrorPage text="Sorry, booking not found">
+                    <ErrorPage text="Sorry, flight booking not found">
                         <Link href="/contact" style={{ display: "flex" }}>
                             <Text
                                 type="p"

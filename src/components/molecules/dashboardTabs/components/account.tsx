@@ -38,9 +38,9 @@ const AccountDetails = styled.div`
 `;
 
 const AccountWrapper = styled.div`
-    background: ${ttColors.defaultColor};
-    align-items: center;
-    margin: 1rem 0px 2rem;
+  background: ${ttColors.defaultColor};
+  align-items: center;
+  margin: 1rem 0px 2rem;
 
     @media screen and (max-width: 900px) {
         height: fit-content;

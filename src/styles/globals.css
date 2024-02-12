@@ -118,12 +118,14 @@ body {
   margin: auto;
 }
 
-.scroll {}
+/* .scroll {
+} */
 
 .slick_slider_room_img_img {
-  position: relative;
-  height: 350px !important;
-  object-fit: cover !important;
+    width: 100%;
+    position: relative;
+    height: 350px !important;
+    object-fit: cover !important;
 }
 
 /* CONTROLS */
@@ -224,8 +226,7 @@ body {
 }
 
 @media screen and (max-width: 1024px) {
-
-  /* .reviewCard {
+    /* .reviewCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;
   } */
@@ -236,13 +237,12 @@ body {
 }
 
 @media screen and (max-width: 900px) {
-  .dashboardWrapper {
-    margin: 1rem 0px !important;
-  }
-
-  .hideOnMobile {
-    display: none !important;
-  }
+    .dashboardWrapper {
+        margin: 1rem 0px !important;
+    }
+    .hideOnMobile {
+        display: none !important;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -449,7 +449,12 @@ textarea:hover {
 }
 
 .css-yckcgr-MuiPaper-root-MuiAccordion-root {
-  width: 100%;
+    width: 100%;
+}
+
+.mui_select div[aria-disabled='true']{
+    border: 1px solid #bdbdbd;
+    /* background-color: initial; */
 }
 
 .payment-receipt-grid {
@@ -487,6 +492,27 @@ textarea:hover {
   z-index: 99999 !important;
 }
 
+.stay-list-slider .slick-dots {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto !important;
+    max-width: 80vw;
+    left: 7% !important;
+}
+.stay-list-slider-mobile .slick-dots {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto !important;
+    max-width: 55vw;
+    left: 17% !important;
+}
+.stay-list-slider .slick-dots .slick-item {
+    padding: 0 !important;
+}
 /* CALENDAR DATE-RANGE component */
 .calendarStyle {
   /* background-color: brown; */

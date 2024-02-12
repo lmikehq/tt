@@ -21,6 +21,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ExpandableText } from "../../HotelReviews";
 import { Pagination } from "@mui/material";
+import { ViewTripAdvisorStayReviewsResponse } from "@/lib/types/request-models/stay/search.type";
 
 const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -47,7 +48,7 @@ interface Reviews {
 }
 
 interface ReviewListBoxProps {
-  reviews: Reviews[];
+  reviews: ViewTripAdvisorStayReviewsResponse['data']
 }
 
 const ReviewListBox: React.FC<ReviewListBoxProps> = ({ reviews }) => {
@@ -65,19 +66,19 @@ const ReviewListBox: React.FC<ReviewListBoxProps> = ({ reviews }) => {
           day: "numeric",
           month: "long",
           year: "numeric",
-        }).format(new Date(review.commentDate));
+        }).format(new Date(review.published_date));
 
         // Format stayedIn
         const stayedIn = new Intl.DateTimeFormat("en-US", {
           month: "long",
           year: "numeric",
-        }).format(new Date(review.stayedIn));
+        }).format(new Date(review.travel_date));
 
         return (
           <Span key={index}>
             <ReviewHeader style={{ backgroundColor: ttColors.grayishAsh }}>
               <Flex justify="space-between" align="center">
-                <Text weight={"bold"} type="h5" text={review.name}></Text>
+                <Text weight={"bold"} type="h5" text={review?.user?.user_location?.name ?? review?.user?.username ?? 'User'}></Text>
                 <ReviewsText>
                   <Flex align="center" gap="8px">
                     <Flex>
@@ -119,14 +120,14 @@ const ReviewListBox: React.FC<ReviewListBoxProps> = ({ reviews }) => {
                     styles={{ margin: "10px 0px" }}
                   ></Text>
                   <ExpandableText
-                    text={review.comment}
+                    text={review.text}
                     maxLines={3}
                     commentDate={commentDate}
                     stayedIn={stayedIn}
                   />
                 </Flex>
 
-                <Flex
+                {/* <Flex
                   align="center"
                   gap="20px"
                   className="radio_wrap date_wrap"
@@ -185,7 +186,7 @@ const ReviewListBox: React.FC<ReviewListBoxProps> = ({ reviews }) => {
                       />
                     </Flex>
                   </RadioGroup>
-                </Flex>
+                </Flex> */}
               </Flex>
             </Content>
           </Span>

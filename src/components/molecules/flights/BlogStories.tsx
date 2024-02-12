@@ -102,9 +102,9 @@ function BlogStories() {
   const fetchBlogList = async () => {
     try {
       const response = await apiService("/blog", "GET");
-      // console.log("API Response:", response);
       if (response) {
-        setBlogs(response);
+        //   console.log("API Response:", response);
+        setBlogs(response?.data ?? []);
         // console.log("Setting new BLOG LIST with:", response);
       } else {
         // console.error("Failed to fetch blog list");

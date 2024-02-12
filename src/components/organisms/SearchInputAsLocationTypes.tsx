@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-
 import { BiSolidCity, BiSolidPlane } from "react-icons/bi";
 import Flex from "../templates/flex";
 import Section from "../molecules/section";
@@ -17,6 +16,7 @@ import {
     KiwiLocationType,
 } from "@/lib/types/response-models/flight/location.type";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { FaHotel } from "react-icons/fa6";
 
 interface SearchInputAsLocationTypesProps {
     locations: (KiwiLocation | RateHawkRegionType)[];
@@ -26,6 +26,7 @@ interface SearchInputAsLocationTypesProps {
     placeholder: string;
     loading: boolean;
     defaultText?: string;
+    showHotels?: boolean;
 }
 
 export default function SearchInputAsLocationTypes({
@@ -36,6 +37,7 @@ export default function SearchInputAsLocationTypes({
     placeholder,
     loading,
     defaultText,
+    showHotels,
 }: SearchInputAsLocationTypesProps) {
     const fieldRef = React.useRef<HTMLDivElement | null>(null);
     const fieldWidth = fieldRef?.current
@@ -82,7 +84,6 @@ export default function SearchInputAsLocationTypes({
             getOptionLabel={(option) => option.name}
             filterOptions={(x) => x}
             defaultValue={value}
-            value={value}
             disableClearable={true}
             onChange={(event, value, reason) => onChange(value)}
             renderOption={(props, option) => (
@@ -97,7 +98,12 @@ export default function SearchInputAsLocationTypes({
                         width="fit-content"
                         styles={{ flexShrink: 0, marginRight: "1.125rem" }}
                     >
-                        {option.type == KiwiLocationType.airport ? (
+                        {showHotels ? (
+                            <FaHotel
+                                size={20}
+                                color={ttColors.foundation.black600}
+                            />
+                        ) : option.type == KiwiLocationType.airport ? (
                             <BiSolidPlane
                                 size={20}
                                 color={ttColors.foundation.black600}
@@ -115,11 +121,11 @@ export default function SearchInputAsLocationTypes({
                             size={15}
                             color={ttColors.foundation.black600}
                             className="truncate"
-                            text={`${option.name} (${
+                            text={`${option.name} ${showHotels ? "" : `(${
                                 "code" in option
-                                    ? option.code
-                                    : option.country_code
-                            })`}
+                                    ? option.code ?? option.name
+                                    : option?.country_code
+                            })`}`}
                         />
                         <Text
                             type="p"

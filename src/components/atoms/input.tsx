@@ -133,10 +133,7 @@ const Input = ({
   ref,
   autoFocus
 }: InputProps) => {
-  const [miniType, setMiniType] = useState(
-    type === "password" ? "password" : "text"
-  );
-
+  const [miniType, setMiniType] = useState(type)
   if (type === "textArea") {
     return (
       <textarea

@@ -162,10 +162,16 @@ const CustomPopover = () => {
                               <Text
                                 whiteSpace="nowrap"
                                 type="p"
-                                text="Clear Notifications"
-                              ></Text>
+                                size={14}
+                                text={`${user?.lastName} ${user?.firstName}`}
+                            ></Text>
+                            <Text
+                                type="p"
+                                size={13}
+                                text={`${user?.email}`}
+                            ></Text>
                             </Flex>
-                          </Flex>
+                        </Flex>
                         </Flex>
                       </div>
                     )}

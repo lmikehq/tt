@@ -8,9 +8,9 @@ import { TbMapCancel } from 'react-icons/tb'
 function ErrorPage({ icon, text, subText, children }: { icon?: ReactNode; text?: string; subText?: string; children?: ReactNode; }) {
     const { isMobile } = useScreenResolution()
     return (
-        <Flex padding='9rem 0' align='center' gap="1rem" justify='center' direction='column'>
+        <Flex padding='9rem 0' align='center' gap="1rem" justify='center' direction='column' styles={{ minHeight: '85vh' }}>
             {icon ? icon : <TbMapCancel size={80} color={ttColors.primaryLight} />}
-            <Text type="h2" weight={600} size={40} text={text ?? ''} />
+            <Text type="h2" weight={600} size={36} text={text ?? ''} />
             {subText && <Text type="p" size={isMobile ? 14 : 16} text={subText ?? ''} />}
             {children}
         </Flex>
