@@ -20,7 +20,7 @@ import BlogCarousel from './components/BlogCarousel';
 import dayjs from 'dayjs';
 import Timeline from './components/Timeline';
 
-export const postCard = {
+const postCard = {
     heading: 'Embark on Unforgettable Journeys with Thrillers Travels:  Your Passport to Limitless Exploration',
     text: "At Thrillers Travels, we believe that travel isn't just about reaching a destination; it's an odyssey that shapes perspectives, creates lifelong memories, and fosters connections beyond borders. With a relentless pursuit of excellence, we craft journeys that transcend the ordinary, offering tailored experiences designed to ignite your sense of adventure and curiosity. From seamless travel arrangements to personalized stays and streamlined visa solutions, we're dedicated to curating every aspect of your voyage. Join us on a quest to discover new horizons, forge global connections, and create moments that linger as stories for a lifetime. Let Thrillers Travels be your companion on the path to exceptional exploration."
 }
@@ -214,6 +214,7 @@ function AboutUsPage() {
                 </Box>
 
                 <PostCard
+                    imgSrc='/assets/images/about-us/tt-team-8.jpg'
                     {...postCard}
                 />
 
@@ -256,11 +257,14 @@ function AboutUsPage() {
                             </Link>
                         }
                     />
-                    <Image
-                        alt='people-team'
-                        src='/assets/images/about-us/people-bg.png'
-                        styles={{ width: '100%', height: 'auto', borderRadius: '.5rem', objectFit: 'contain' }}
-                    />
+                    <Box width='100%' height='700px' borderRadius='1rem' overflow='hidden'>
+                        <img
+                            alt='people-team'
+                            src='/assets/images/about-us/tt-team-1.jpg'
+                            style={{ width: '100%', objectFit: 'cover', transform: 'translateY(50px)' }}
+                        />
+                    </Box>
+
                 </Section>
 
                 <Section>

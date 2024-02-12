@@ -311,7 +311,7 @@ const CustomPopover = () => {
                 weight={600}
                 text={`${user?.firstName} ${user?.lastName}`}
               ></Text>
-              <Text type="p" size={13} text={`${user.email}`} color={'#333'}></Text>
+              <Text type="p" size={13} text={`${user?.email}`} color={'#333'}></Text>
             </Flex>
             <IoIosArrowDown size={20} />
           </Flex>
@@ -366,7 +366,11 @@ const CustomPopover = () => {
                 item.title === "Logout" ? (
                   <div
                     onClick={() => {
-                      handleLogout();
+                    handleLogout()
+                        .then(res => {
+                            setUser(null)
+                            window && window.localStorage.removeItem('user')
+                        });
                       router.push("/auth/login");
                     }}
                     key={i}

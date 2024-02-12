@@ -24,12 +24,14 @@ function PostCard({ heading, text, imgSrc = '/assets/images/empty-img.png' }: Po
             padding='2rem 0'
             alignItems='center'
         >
-            <Image
-                alt='post-block'
-                src='/assets/images/empty-img.png'
-                styles={{ width: '100%', borderRadius: '.5rem' }}
-                height={400}
-            />
+            <Box overflow='hidden' borderRadius='1rem'>
+                <Image
+                    alt='post-block'
+                    src={imgSrc ?? '/assets/images/empty-img.png'}
+                    styles={{ width: '100%', objectFit: 'scale-down', transform: `scale(1.4) translateY(3rem)` }}
+                    height={400}
+                />
+            </Box>
             <Flex direction='column' gap='1.5rem'>
                 <Text
                     type='h2'
