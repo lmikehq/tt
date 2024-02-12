@@ -21,7 +21,7 @@ import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import dayjs from "dayjs";
 import { useStaySearchStore } from "@/lib/store/stay/search.store";
 import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
-import { formatDate } from "@/lib/utilFns";
+import { formatDate, numSort } from "@/lib/utilFns";
 import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
@@ -83,7 +83,7 @@ function Stays() {
       regionId: stayTabInitialSearchQuery.location?.id,
       countryCode: stayTabInitialSearchQuery.location?.country_code,
       star: stayTabInitialSearchQuery.stars
-        ? stayTabInitialSearchQuery.stars[0]
+        ? stayTabInitialSearchQuery.stars
         : undefined,
       checkIn: formatDate(
         stayTabInitialSearchQuery.checkInDate ?? dayjs(),
@@ -126,7 +126,7 @@ function Stays() {
         // If the value is not selected, add it
         updateStayTabInitialQuery({
             ...stayTabInitialSearchQuery,
-            stars: [value],
+            stars: numSort([...(stayTabInitialSearchQuery?.stars ?? []), value]),
         });
         }
     };
