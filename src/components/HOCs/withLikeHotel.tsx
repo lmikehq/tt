@@ -47,6 +47,7 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
       />
     ));
   };
+
 };
 
 export default withLikeHotel;

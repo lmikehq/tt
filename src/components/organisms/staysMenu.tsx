@@ -10,12 +10,12 @@ import Section from "../molecules/section";
 import Button from "../atoms/button";
 import { Select } from "@mui/material";
 
-const FlightDropdown = styled.section<{ isMobile: boolean }>`
+const FlightDropdown = styled.section<{ isMobile: boolean; stays?: boolean; }>`
     border: 1px solid ${ttColors.gray};
     border-radius: 8px;
     background: white;
     position: absolute;
-    width: ${(props) => (props.isMobile ? "100%" : "30%")};
+    width: ${(props) => (props.isMobile ? "100%" : props.stays ? '100%' : "30%")};
     right: 0rem;
     font-family: Poppins;
     z-index: 2;
@@ -113,9 +113,11 @@ function Counter({
     );
 }
 
-interface StaysMenuProps {}
+interface StaysMenuProps {
+    staysView?: boolean
+}
 
-function StaysMenu() {
+function StaysMenu({ staysView }: StaysMenuProps) {
     const { isMobile } = useScreenResolution();
 
     const {
@@ -126,10 +128,11 @@ function StaysMenu() {
     } = useStaySearchStore((state) => state);
 
     return (
-        <FlightDropdown isMobile={isMobile}>
+        <FlightDropdown isMobile={isMobile} stays={staysView}>
             <Section
                 padding=" 2rem"
-                maxHeight="37.5rem"
+                maxHeight="22rem"
+                className="scroll-custom"
                 styles={{ overflowY: "auto" }}
             >
                 <Flex direction="column" gap="2rem">
@@ -177,7 +180,7 @@ function StaysMenu() {
                                                 index,
                                                 roomForGuest: {
                                                     ...el,
-                                                    adults: el.adults + 1,
+                                                    adults: Math.min(el.adults + 1, 10),
                                                 },
                                             })
                                         }
@@ -186,7 +189,7 @@ function StaysMenu() {
                                                 index,
                                                 roomForGuest: {
                                                     ...el,
-                                                    adults: el.adults - 1,
+                                                    adults: Math.max(el.adults - 1, 1),
                                                 },
                                             })
                                         }
@@ -239,7 +242,7 @@ function StaysMenu() {
                                                     ...el,
                                                     children: (() => {
                                                         el.children.splice(
-                                                            0,
+                                                            el.children.length - 1,
                                                             1
                                                         );
                                                         return el.children;

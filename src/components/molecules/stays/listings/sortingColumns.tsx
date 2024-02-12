@@ -1,7 +1,7 @@
 import { Divider } from "@atom/divider";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { LuSearch } from "react-icons/lu";
 import Button from "@/components/atoms/button";
@@ -20,21 +20,42 @@ import {
     HotelAmenityEnum,
     HotelBedTypeEnum,
     HotelCancellationPolicy,
+    HotelGuestRating,
     HotelMealEnum,
     HotelPopularTypes,
     HotelPropertyTypes,
     HotelRoomEnum,
+    HotelStarRating,
     StaySearchFilters,
 } from "@/lib/types/request-models/stay/search.type";
 import { debounce } from "debounce";
+import { useDebounce } from 'use-debounce';
+import { capCase } from "@/lib/utilFns";
+import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
+import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { MdCancel } from "react-icons/md";
+const maxPrice = 20000000
+const defaultFilter = {
+    amenity: { name: 'Amenities', value: [] },
+    apartmentType: { name: 'Apartment Type', value: [] },
+    meals: { name: 'Meals', value: '' },
+    minAmount: { name: 'Min Amount', value: 0 },
+    maxAmount: { name: 'Max Amount', value: maxPrice },
+    bedType: { name: 'Bedding Type', value: [] },
+    room: { name: 'Room', value: [] },
+    cancellationPolicy: { name: 'Cancellation Policy', value: '' },
+    star: { name: 'Stars', value: '' },
+    guestRating: { name: 'Guest Rating', value: [] },
+    popularTypes: { name: 'Popular Types', value: [] },
+}
 
 const marks = [
     {
         value: 0,
-        label: "$0",
+        label: "0",
     },
     {
-        value: 100,
+        value: maxPrice,
         label: "Max",
     },
 ];
@@ -63,26 +84,32 @@ const PropertyItems = [
 const ratings = [
     {
         text: "5 Stars",
+        value: HotelStarRating._5_stars,
         rating: 5,
     },
     {
         text: "4 Stars",
+        value: HotelStarRating._4_stars,
         rating: 4,
     },
     {
         text: "3 Stars",
+        value: HotelStarRating._3_stars,
         rating: 3,
     },
     {
         text: "2 Stars",
+        value: HotelStarRating._2_stars,
         rating: 2,
     },
     {
         text: "1 Stars",
+        value: HotelStarRating._1_stars,
         rating: 1,
     },
     {
         text: "No rating",
+        value: HotelStarRating.no_rating,
         rating: 0,
     },
 ];
@@ -191,6 +218,9 @@ function SortingColumns() {
         BedType.length > threshold ? threshold : BedType.length
     );
 
+    const [prices, setPrices] = useState([0, maxPrice])
+    const [debouncedPrices] = useDebounce(prices, 1000)
+
     const toggleColumn = (columnName: ColumnName) => {
         setColumnState((prevState) => ({
             ...prevState,
@@ -210,16 +240,19 @@ function SortingColumns() {
         }
     };
 
-    const { staySearchFilters, updateStaySearchFilters } = useStaySearchStore(
+    const { staySearchFilters, updateStaySearchFilters, updateStayTabInitialQuery, stayTabInitialSearchQuery, updateStaySearchMeta, staySearchMeta } = useStaySearchStore(
         (state) => state
     );
 
     const handleUpdateStaySearchFilters = (params: StaySearchFilters) => {
-        console.log(params);
         updateStaySearchFilters({
             ...staySearchFilters,
             ...params,
         });
+        updateStaySearchMeta({
+            ...staySearchMeta,
+            currentPage: 1
+        })
     };
 
     const handlePriceChangeDebounce = debounce(
@@ -255,36 +288,118 @@ function SortingColumns() {
         }
     };
 
+    const handleEnumCheckBoxSingleChanged = ({
+        value,
+        field,
+    }: {
+        value: string;
+        field: string;
+    }) => {
+        const prevValue = staySearchFilters[field] as string;
+        const isSelected = prevValue === value;
+        if (!isSelected) {
+            handleUpdateStaySearchFilters({
+                [field]: value,
+            });
+        } else {
+            handleUpdateStaySearchFilters({
+                [field]: undefined,
+            });
+        }
+    };
+
+    const handleEnumCheckBoxMultipleChanged = ({
+        value,
+        field,
+    }: {
+        value: string;
+        field: string;
+    }) => {
+        if (['amenity', 'cancellationPolicy'].includes(field)) {
+            handleEnumCheckBoxGroupChanged({
+                value,
+                field: field
+            })
+        } else if (['meals'].includes(field)) {
+            handleEnumCheckBoxSingleChanged({
+                value,
+                field: field
+            })
+        }
+    };
+
+    const activeFilters = useMemo(() => {
+        return Object.keys(defaultFilter)
+            .filter(key => (staySearchFilters[key] !== undefined) && (JSON.stringify(staySearchFilters[key])?.length !== JSON.stringify(defaultFilter[key as keyof typeof defaultFilter].value)?.length))
+    }, [staySearchFilters])
+
+    const removeFilter = (k: keyof typeof defaultFilter) => {
+        console.log('kkkad', k)
+        handleUpdateStaySearchFilters({
+            [k]: undefined
+        })
+    }
+    
+    useEffect(() => {
+        handleUpdateStaySearchFilters({
+            minAmount: debouncedPrices[0],
+            maxAmount: debouncedPrices[1],
+        })
+    }, [debouncedPrices])
+
+    useEffect(() => {
+        setPrices(prev => [staySearchFilters?.minAmount ?? 0, staySearchFilters?.maxAmount ?? maxPrice])
+    }, [staySearchFilters?.minAmount, staySearchFilters?.maxAmount])
+
+
     return (
         <ScrollBox
             style={{
                 height: isMobile ? "100%" : "1070px",
-                overflowY: isMobile ? "hidden" : "scroll",
+                overflowY: isMobile ? "hidden" : "auto",
+                overflowX: "hidden",
             }}
+            className="scroll-custom"
         >
             <Flex
                 direction="column"
-                styles={{
-                    minWidth: "200px",
-                }}
+                styles={{ minWidth: "200px" }}
             >
                 <PriceAlerts />
                 <FavoriteHotels />
-                <div style={{ marginBottom: "10px" }}>
-                    <span style={{ position: "relative" }}>
-                        <Input placeholder="Search for hotels" />
-                        <LuSearch
-                            color="#929292"
-                            size={20}
-                            style={{
-                                float: "right",
-                                position: "absolute",
-                                right: "10px",
-                                top: "12px",
-                            }}
-                        />
-                    </span>
-                </div>
+
+                <Flex width="90%" wrap="wrap" gap=".5rem" margin="0 0 2rem">
+                    {activeFilters.map((filter: any, index) =>
+                        <Flex key={`active-filter-${index}`} width="max-content" padding=".8rem .8rem" gap=".5rem" background={ttColors.dark} borderRadius=".5rem">
+                            <Text type="p" text={defaultFilter[filter as keyof typeof defaultFilter].name} color="white" size={15} />
+                            <Flex width='min-content' onClick={() => removeFilter(filter)}>
+                                <MdCancel size={25} color="white" cursor="pointer"/>
+                            </Flex>
+                        </Flex>
+                    )}
+                </Flex>
+
+                <Flex
+                    direction="column"
+                    gap=".5rem"
+                    styles={{ marginBottom: "1.2rem" }}
+                >
+                    <Text type="p" text="Where do you want to stay?"></Text>
+                    <RateHawkLocationSearchInput
+                        onChange={(x: RateHawkRegionType) => {
+                            updateStayTabInitialQuery({
+                                ...stayTabInitialSearchQuery,
+                                location: x,
+                            })
+                            handleUpdateStaySearchFilters({
+                                regionId: String(x.id)
+                            })
+                        }}
+                        value={stayTabInitialSearchQuery.location}
+                        placeholder="Enter Destination or Hotel Name"
+                        showHotels={false}
+                    />
+                </Flex>
 
                 <Flex direction="column">
                     <Flex
@@ -330,11 +445,13 @@ function SortingColumns() {
                                                 ]
                                             }
                                             onChange={(e) =>
-                                                handleEnumCheckBoxGroupChanged({
+                                                handleEnumCheckBoxMultipleChanged({
                                                     value: HotelPopularTypes[
                                                         popularTypeKey as keyof typeof HotelPopularTypes
                                                     ],
-                                                    field: "popularTypes",
+                                                    field: ['free_cancellation'].includes(popularTypeKey) ? 'cancellationPolicy' :
+                                                        ['breakfast_included'].includes(popularTypeKey) ? 'meals' :
+                                                        ['has_internet', 'pet_friendly', 'has_fitness', 'has_parking'].includes(popularTypeKey) ? 'amenity' : ''
                                                 })
                                             }
                                             control={
@@ -424,10 +541,8 @@ function SortingColumns() {
                                     (propertyTypeKey, index) => (
                                         <FormControlLabel
                                             key={index}
-                                            checked={staySearchFilters.propertyTypes?.includes(
-                                                HotelPropertyTypes[
-                                                    propertyTypeKey as keyof typeof HotelPropertyTypes
-                                                ]
+                                            checked={staySearchFilters.apartmentType?.includes(
+                                                HotelPropertyTypes[propertyTypeKey as keyof typeof HotelPropertyTypes]
                                             )}
                                             value={
                                                 HotelPropertyTypes[
@@ -439,7 +554,7 @@ function SortingColumns() {
                                                     value: HotelPropertyTypes[
                                                         propertyTypeKey as keyof typeof HotelPropertyTypes
                                                     ],
-                                                    field: "propertyTypes",
+                                                    field: "apartmentType",
                                                 })
                                             }
                                             control={
@@ -525,27 +640,25 @@ function SortingColumns() {
                         {columnState.price && (
                             <>
                                 <Slider
-                                    defaultValue={[0, 20000000]}
+                                    defaultValue={[0, maxPrice]}
                                     marks={marks}
                                     min={0}
-                                    max={20000000}
+                                    max={maxPrice}
                                     onChange={(e, v) => {
                                         const values = v as number[];
-                                        // debounce(() => {
                                         handlePriceChangeDebounce({
                                             minAmount: values[0] || 0,
                                             maxAmount: values[1] || 0,
                                         });
-                                        // }, 800);
                                     }}
                                 />
                                 <Flex gap="20px" align="center">
                                     <input
                                         type="number"
-                                        defaultValue={
-                                            staySearchFilters.minAmount ?? 0
-                                        }
-                                        value={staySearchFilters.minAmount}
+                                        value={prices[0]}
+                                        onChange={({ target }) => setPrices(prev => [parseInt(target.value), prev[1]])}
+                                        min={0}
+                                        max={maxPrice}
                                         style={{
                                             width: "100%",
                                             padding: "11px",
@@ -559,11 +672,10 @@ function SortingColumns() {
                                     -
                                     <input
                                         type="number"
-                                        defaultValue={
-                                            staySearchFilters.maxAmount ??
-                                            20000000
-                                        }
-                                        value={staySearchFilters.maxAmount}
+                                        value={prices[1]}
+                                        onChange={({ target }) => setPrices(prev => [prev[0], parseInt(target.value)])}
+                                        min={prices[0]}
+                                        max={maxPrice}
                                         style={{
                                             width: "100%",
                                             padding: "11px",
@@ -614,6 +726,14 @@ function SortingColumns() {
                             {ratings.map((item, index) => (
                                 <FormControlLabel
                                     key={index}
+                                    checked={staySearchFilters?.star?.includes(String(item.rating))}
+                                    value={String(item.rating)}
+                                    onChange={(e) =>
+                                        handleEnumCheckBoxGroupChanged({
+                                            value: String(item.rating),
+                                            field: "star",
+                                        })
+                                    }
                                     control={
                                         <Checkbox
                                             className="mui-checked"
@@ -648,7 +768,7 @@ function SortingColumns() {
                     direction="horizontal"
                     style={{ display: isMobile ? "none" : "flex" }}
                 />
-                <Flex direction="column" gap=".5rem">
+                {/* <Flex direction="column" gap=".5rem">
                     <Flex
                         align="center"
                         justify="space-between"
@@ -679,6 +799,18 @@ function SortingColumns() {
                             {ratings.map((item, index) => (
                                 <FormControlLabel
                                     key={index}
+                                    checked={staySearchFilters.guestRating?.includes(
+                                        HotelGuestRating[item.value]
+                                    )}
+                                    value={
+                                        HotelGuestRating[item.value]
+                                    }
+                                    onChange={(e) =>
+                                        handleEnumCheckBoxGroupChanged({
+                                            value: HotelGuestRating[item.value],
+                                            field: "guestRating",
+                                        })
+                                    }
                                     control={
                                         <Checkbox
                                             className="mui-checked"
@@ -708,11 +840,11 @@ function SortingColumns() {
                             ))}
                         </Flex>
                     )}
-                </Flex>
-                <Divider
+                </Flex> */}
+                {/* <Divider
                     direction="horizontal"
                     style={{ display: isMobile ? "none" : "flex" }}
-                />
+                /> */}
                 <Flex direction="column">
                     <Flex
                         align="center"
@@ -955,18 +1087,17 @@ function SortingColumns() {
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
-                                            checked={staySearchFilters.meals?.includes(
-                                                HotelMealEnum[
+                                            checked={staySearchFilters.meals === HotelMealEnum[
                                                     item as keyof typeof HotelMealEnum
                                                 ]
-                                            )}
+                                            }
                                             value={
                                                 HotelMealEnum[
                                                     item as keyof typeof HotelMealEnum
                                                 ]
                                             }
                                             onChange={(e) =>
-                                                handleEnumCheckBoxGroupChanged({
+                                                handleEnumCheckBoxSingleChanged({
                                                     value: HotelMealEnum[
                                                         item as keyof typeof HotelMealEnum
                                                     ],
@@ -1036,7 +1167,7 @@ function SortingColumns() {
                     >
                         <Text
                             type="p"
-                            text="Number of Rooms"
+                            text="Rooms"
                             weight={500}
                             color="#06062A"
                         />
@@ -1056,7 +1187,7 @@ function SortingColumns() {
                         <>
                             <Flex direction="column" width="fit-content">
                                 {Object.keys(HotelRoomEnum).map(
-                                    (item, index) => (
+                                    (item, index, arr) => (
                                         <FormControlLabel
                                             key={index}
                                             checked={staySearchFilters.room?.includes(
@@ -1088,10 +1219,7 @@ function SortingColumns() {
                                                 <Text
                                                     type="p"
                                                     transform="capitalize"
-                                                    text={item.replaceAll(
-                                                        "_",
-                                                        " "
-                                                    )}
+                                                    text={HotelRoomEnum[item as keyof typeof HotelRoomEnum]}
                                                     styles={{
                                                         fontSize: "15px",
                                                         width: "fit-content",
@@ -1191,7 +1319,7 @@ function SortingColumns() {
                                             label={
                                                 <Text
                                                     type="p"
-                                                    text={item}
+                                                    text={capCase(item, '_')}
                                                     styles={{
                                                         fontSize: "15px",
                                                         width: "fit-content",

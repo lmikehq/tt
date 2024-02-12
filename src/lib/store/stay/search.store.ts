@@ -55,7 +55,8 @@ export const useStaySearchStore = create<State & Actions>(
                 stayTabInitialSearchQuery: {
                     ...state.stayTabInitialSearchQuery,
                     roomForGuests: [
-                        ...state.stayTabInitialSearchQuery.roomForGuests,
+                        ...(state.stayTabInitialSearchQuery
+                            .roomForGuests as RoomForGuest[]),
                         {
                             adults: 2,
                             children: [],
@@ -69,7 +70,7 @@ export const useStaySearchStore = create<State & Actions>(
             let roomForGuests =
                 useStaySearchStore.getState().stayTabInitialSearchQuery
                     .roomForGuests;
-            roomForGuests.splice(index, 1);
+            (roomForGuests as RoomForGuest[]).splice(index, 1);
             set((state) => ({
                 stayTabInitialSearchQuery: {
                     ...state.stayTabInitialSearchQuery,
@@ -82,7 +83,7 @@ export const useStaySearchStore = create<State & Actions>(
             let roomForGuests =
                 useStaySearchStore.getState().stayTabInitialSearchQuery
                     .roomForGuests;
-            roomForGuests[index] = roomForGuest;
+            (roomForGuests as RoomForGuest[])[index] = roomForGuest;
             set((state) => ({
                 stayTabInitialSearchQuery: {
                     ...state.stayTabInitialSearchQuery,

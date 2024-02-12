@@ -14,6 +14,7 @@ import Section from "../../section";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/lib/store/useStore";
 import { IUser } from "@/lib/types/response-models/dashboard";
+import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
 
 const ApplicationStatusModalContainer = styled(Dialog)`
   .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
@@ -36,7 +37,7 @@ interface Props {
 export const ApplicationStatus = ({ state, setState, onClose, serviceID }: Props) => {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
-  const [userInfo, setUserInfo] = useState<IUser | null>(null);
+  const [userInfo, setUserInfo] = useState<AuthUser | null>(null);
 
   useEffect(() => {
     setUserInfo(user);

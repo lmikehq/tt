@@ -21,6 +21,7 @@
     "@mui/styles": "^5.14.6",
     "@mui/x-date-pickers": "^6.12.0",
     "@paystack/inline-js": "^2.13.0",
+    "@react-google-maps/api": "^2.19.2",
     "@react-oauth/google": "^0.11.1",
     "@react-pdf/renderer": "^3.1.14",
     "@tailwindcss/typography": "^0.5.9",
@@ -84,6 +85,7 @@
     "tailwindcss": "^3.3.2",
     "ts-transformer-keys": "^0.4.4",
     "typescript": "5.0.4",
+    "use-debounce": "^10.0.0",
     "use-file-picker": "^1.7.0",
     "utf-8-validate": "^6.0.3",
     "validator": "^13.11.0",
@@ -93,6 +95,7 @@
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.29.9",
     "@types/debounce": "^1.2.3",
+    "@types/google-map-react": "^2.1.10",
     "@types/jquery": "^3.5.16",
     "@types/js-cookie": "^3.0.6",
     "@types/react-datepicker": "^4.19.1",

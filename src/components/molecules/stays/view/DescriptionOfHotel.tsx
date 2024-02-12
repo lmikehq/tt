@@ -135,18 +135,18 @@ export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
 
 
 interface DescriptionOfHotelProps {
-    stayResponse: ViewSingleStayResponse;
+    stayResponse?: ViewSingleStayResponse;
 }
 
 const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
     const { isMobile } = useScreenResolution();
     
     const facts = {
-        constructYear: stayResponse.facts.year_built ?? null,
-        renovateYear: stayResponse.facts.year_renovated ?? null,
-        roomsNumber: stayResponse.facts.rooms_number ?? null,
-        floorsNumber: stayResponse.facts.floors_number ?? null,
-        electricity: stayResponse.facts.electricity?.voltage ? stayResponse.facts.electricity : null
+        constructYear: stayResponse?.facts.year_built ?? null,
+        renovateYear: stayResponse?.facts.year_renovated ?? null,
+        roomsNumber: stayResponse?.facts.rooms_number ?? null,
+        floorsNumber: stayResponse?.facts.floors_number ?? null,
+        electricity: stayResponse?.facts.electricity?.voltage ? stayResponse?.facts.electricity : null
     }
 
   return (
@@ -159,7 +159,7 @@ const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
           <Flex direction="column">
             <Text
               type="h4"
-              size={17}
+              size={18}
               text="Description of the Hotel"
               weight={600}
               styles={{
@@ -179,7 +179,7 @@ const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
         </Header>
         <GridLayout className="description_grid">
           <Span>
-            {stayResponse.description_struct.map((desc, index) => 
+            {stayResponse?.description_struct.map((desc, index) => 
                 <Span key={`desc-${index}`} style={{ display: 'flex', flexDirection: 'column', margin: '0 0 1rem' }}>
                     <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
                         {pickIcon(desc.title, { fontSize: '20px' })}

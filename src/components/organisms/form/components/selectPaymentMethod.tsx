@@ -63,7 +63,7 @@ const SelectPaymentMethod = () => {
           />
         }
         />
-          
+
         <AuthModal
             open={authOpen}
             handleClose={() => setAuthOpen(false)}

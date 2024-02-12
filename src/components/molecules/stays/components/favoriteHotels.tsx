@@ -23,51 +23,52 @@ export default function FavoriteHotels() {
       <Box
         width={"100%"}
         bgcolor={checked ? ttColors.dark : ttColors.grayishAsh}
-        padding={"1rem"}
+        padding={"2.5rem 1.5rem"}
         border={"1px solid var(--color-border)"}
         marginBottom={"20px"}
         borderRadius={"10px"}
       >
-        <Flex gap="10px">
-          <Checkbox
-            {...label}
-            icon={<FavoriteBorder />}
-            checkedIcon={
-              <Favorite
-                style={{
-                  color: checked ? ttColors.defaultColor : ttColors.dark,
-                }}
-              />
-            }
-            disableRipple
-            disableTouchRipple
-            disableFocusRipple
-            sx={{ "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 } }}
-            checked={checked}
-            onChange={handleCheckboxChange}
-            id="favorite-hotels-checkbox"
-          />
-
-          <Box
-            style={{ color: checked ? ttColors.defaultColor : ttColors.dark }}
-          >
-            <label>
-              <Text
-                weight={"bold"}
-                type="h4"
-                text="My Favourite Hotels"
-                styles={{ marginBottom: "5px" }}
-              />
-            </label>
-            <Text
-              type="p"
-              text={
-                checked
-                  ? "Click to Cancel Filter"
-                  : "Click to find your liked hotels faster."
-              }
+        <Flex gap="10px" align='flex-start' justify="space-between">
+            <Box
+                style={{ color: checked ? ttColors.defaultColor : ttColors.dark }}
+            >
+                <label>
+                <Text
+                    weight={"bold"}
+                    type="h4"
+                    text="My Favourite Hotels"
+                    styles={{ marginBottom: "5px" }}
+                />
+                </label>
+                <Text
+                    type="p"
+                    text={
+                        checked
+                        ? "Click to Cancel Filter"
+                        : "Click to find your liked hotels faster."
+                    }
+                    size={14}
+                />
+            </Box>
+                    
+            <Checkbox
+                {...label}
+                icon={<FavoriteBorder />}
+                checkedIcon={
+                    <Favorite
+                        style={{
+                        color: checked ? ttColors.defaultColor : ttColors.dark,
+                        }}
+                    />
+                }
+                disableRipple
+                disableTouchRipple
+                disableFocusRipple
+                sx={{ "& .MuiSvgIcon-root": { fontSize: 24, padding: 0 } }}
+                checked={checked}
+                onChange={handleCheckboxChange}
+                id="favorite-hotels-checkbox"
             />
-          </Box>
         </Flex>
       </Box>
     </Section>

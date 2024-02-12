@@ -22,12 +22,12 @@ const axiosClient: AxiosInstance = axios.create({
 });
 
 function getAuthToken(): string | null {
-  let user: string | null = null;
-  if (typeof window !== "undefined") {
-    // Access localStorage here
-    user = window.localStorage.getItem("user");
-  }
-  return user ? `Bearer ${user}` : null;
+    let user = null
+    if (typeof window !== "undefined") {
+        // Access localStorage here
+        user = window.localStorage.getItem("user")
+        }
+    return user ? `Bearer ${user}` : null
 }
 
 axiosClient.interceptors.response.use(
@@ -101,14 +101,13 @@ kiwiMultiCityClient.interceptors.response.use(
 );
 
 const kiwiResourceClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_KIWI_RESOURCE,
-  timeout: 40000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+    baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+    timeout: 40000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
 });
-
 kiwiResourceClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response.data;
@@ -118,16 +117,17 @@ kiwiResourceClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-const rateHawkResourceClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
-  timeout: 15000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWM5Zjg0NzAzNjk1MDMyOTExZDlhOTgiLCJpYXQiOjE3MDc3NDY4MjR9.vunrvsDLyQdceDtKkqLIyqKQrGbQiKky7E__IpA95Cg"
-  },
-});
 
+
+const rateHawkResourceClient: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthToken(),
+    },
+});
 rateHawkResourceClient.interceptors.response.use(
   (response: AxiosResponse) => {
     return response.data;
@@ -138,32 +138,55 @@ rateHawkResourceClient.interceptors.response.use(
   }
 );
 
-const currencyApiClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_CURRENCY_API_RESOURCE,
-  timeout: 15000,
-  //   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    "Accept": "*/*",
-    "Accept-Encoding": "gzip, deflate, br",
-    // "Authorization": `Bearer ${process.env.NEXT_PUBLIC_CURRENCY_API_KEY}`
-  },
+
+const tripAdvisorResourceClient: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_TRIPADVISOR_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+    },
 });
-currencyApiClient.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data;
-  },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  }
+tripAdvisorResourceClient.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        return Promise.reject(error);
+    }
 );
 
+
+const currencyApiClient: AxiosInstance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_CURRENCY_API_RESOURCE,
+    timeout: 15000,
+    //   withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        // "Authorization": `Bearer ${process.env.NEXT_PUBLIC_CURRENCY_API_KEY}`
+    },
+});
+currencyApiClient.interceptors.response.use(
+    (response: AxiosResponse) => {
+        return response.data;
+    },
+    (error: AxiosError) => {
+        return Promise.reject(error);
+    }
+);
+
+
 export {
-  axiosClient,
-  kiwiClientV1,
-  kiwiClient,
-  kiwiResourceClient,
-  rateHawkResourceClient,
-  kiwiMultiCityClient,
-  currencyApiClient
+    axiosClient,
+    kiwiClientV1,
+    kiwiClient,
+    kiwiResourceClient,
+    rateHawkResourceClient,
+    tripAdvisorResourceClient,
+    currencyApiClient,
+    kiwiMultiCityClient,
 };

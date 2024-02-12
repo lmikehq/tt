@@ -18,6 +18,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import apiService from "@/lib/extensions/hook/apiService";
 import toast from "react-hot-toast";
 import Input from "@/components/atoms/input";
+import { rateHawkResourceClient } from "@/lib/axios/axios-client";
 
 interface AuthFormProps {
     setLoginView: (value: boolean) => void;
@@ -31,6 +32,8 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
         password: "",
         rememberMe: false,
     });
+
+    const [inputType, setInputType] = useState('password')
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
@@ -91,7 +94,11 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 ...submissionState,
                 loading: true,
             });
+            
             setUser(res?.user);
+            window.localStorage.setItem('user', res?.token)
+            rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`
+
             toast.success("You have successfully logged in!");
             handleClose();
         } else {
@@ -211,7 +218,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                         />
                     )}
                 </Section>
-                <Flex align="center" justify="space-between">
+                <Flex align="center" justify="space-between" wrap="wrap" gap='1rem'>
                     <Flex align="center">
                         <CheckBox
                             checked={loginData.rememberMe}

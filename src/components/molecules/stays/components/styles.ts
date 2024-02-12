@@ -13,15 +13,13 @@ export const ItemList = styled.div`
   }
 `;
 
-export const GridLayout = styled.div`
+export const GridLayout = styled.div<{ isMobile?: boolean }>`
   display: grid;
-  grid-template-columns: 38% auto;
+  grid-template-columns: ${({ isMobile }) => isMobile ? '1fr' : '1fr 2fr'};
   gap: 10px;
   position: relative;
   padding: 0;
-  @media screen and (max-width: 1300px) {
-    grid-template-columns: 100%;
-  }
+  width: 100%;
 `;
 
 export const FlexBox = styled.div`
@@ -106,8 +104,9 @@ export const ImgBox = styled.div`
 
 export const MobileImageBox = styled.div`
   max-height: 420px;
-  overflow: hidden;
   width: 100%;
+  max-width: 95vw;
+  overflow: hidden;
   border-radius: 12px;
   position: relative;
   z-index: 1;
@@ -127,7 +126,7 @@ export const LargeImg = styled.div`
 
   &.img_large_gallery {
     width: 100%;
-    height: 100%;
+    height: 60vh;
     position: relative;
     overflow: hidden !important;
     border-radius: 12.5px !important;
@@ -136,7 +135,7 @@ export const LargeImg = styled.div`
   z-index: 1;
   @media screen and (max-width: 1300px) {
     &.img_large_gallery {
-      max-height: 500px;
+      max-height: 400px;
       border-radius: 12.5px !important;
       overflow: hidden !important;
     }
@@ -164,6 +163,7 @@ export const SmallImg = styled.div`
   z-index: 10;
   margin: 5px 8px;
   margin-bottom: 5px;
+  height: 100px;
 
   &.img_small_gallery {
     // height: 250px;
@@ -178,18 +178,21 @@ export const SmallImg = styled.div`
       //  height: 200px;
     }
   }
+    & .slick-slider {
+        height: 100px !important;
+    }
 `;
 export const SmallSlideImg = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
 
   overflow: hidden;
   border: 2px solid rgba(135, 206, 235, 0);
   transition: background-color 0.3s, border-color 0.3s;
   &.selected_room_gallery {
-    width: 230px;
-    height: 100%;
-
+    width: 50px;
+    height: 100px;
+    // height: 100%;
     // margin: 0px -10px;
   }
   @media screen and (max-width: 1300px) {
@@ -215,23 +218,25 @@ export const SmallSpan = styled.div`
 `;
 
 export const TextBox = styled.div`
-  padding: 10px;
+  padding: 1rem;
   width: 100%;
+  max-width: 95vw;
 `;
 
 export const RowOne = styled.div``;
 export const FavoriteBox = styled.div`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  z-index: 10;
-  background-color: var(--default-color);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background-color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 1);
 `;
 
 export const FavoriteBoxMobile = styled.div`
@@ -455,7 +460,14 @@ export const SlideList = styled.div`
   margin-bottom: 25px;
   position: relative;
 `;
-export const SlideCard = styled.div``;
+export const SlideCard = styled.div`
+    padding: 1rem;
+    cursor: pointer;
+    &:hover {
+        background-color: rgba(0,0,0,0.02);
+        border-radius: .5rem;
+    }
+`;
 export const SliderImgBox = styled.div`
   border-radius: 12px !important;
   overflow: hidden;
