@@ -43,7 +43,7 @@ function EducationInfo({ steps, index, persistForm, formik }: formProps) {
                   <AddButton
                     disabled={formik.values.education.length === 3}
                     onClick={() => {
-                      if (!formik.isValid || !formik.dirty)
+                      if (!formik.isValid)
                         return toast.error("Please validate all inputs");
                       if (formik.values.education.length < 3) {
                         arrayHelpers.insert(index + 1, educationKeys);

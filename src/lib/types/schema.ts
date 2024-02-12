@@ -236,7 +236,6 @@ export const personalInfoKeys: PersonalInfoInterface = {
   phoneNumber: "",
   countryOfCitizen: mockCountry,
   gender: "",
-
   //added-details
   countryOfApply: mockCountry,
   countryOfResidence: mockCountry,
@@ -295,6 +294,10 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
   yup.object().shape({
     school: yup.string().required("Required"),
     degree: yup.string().required("Required"),
+    degreeText: yup.string().when("degree", {
+      is: "Others",
+      then: (schema) => schema.required("Required"),
+    }),
     cgpa: yup
       .number()
       .max(5.0, "Your Grade cannot be more than 5.0")
@@ -302,6 +305,10 @@ export const singleEducationSchema: yup.ObjectSchema<EducationDetailsInterface> 
       .required("Required"),
     location: yup.string().required("Required"),
     fieldOfStudy: yup.string().required("Required"),
+    fieldOfStudyText: yup.string().when("fieldOfStudy", {
+      is: "Others",
+      then: (schema) => schema.required("Required"),
+    }),
     startYear: yup.number().required("Required"),
     endYear: yup
       .number()
