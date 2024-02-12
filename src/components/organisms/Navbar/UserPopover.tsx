@@ -367,7 +367,11 @@ const CustomPopover = () => {
                 item.title === "Logout" ? (
                   <div
                     onClick={() => {
-                      handleLogout();
+                    handleLogout()
+                        .then(res => {
+                            setUser(null)
+                            window && window.localStorage.removeItem('user')
+                        });
                       router.push("/auth/login");
                     }}
                     key={i}

@@ -10,5 +10,9 @@ export const useGetConversionRates = (
         queryKey: ["get-conversion-rates"],
         queryFn: () => ConversionRatesService.getConversionRates(),
         ...options,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        staleTime: 24 * 60 * 60 * 1000,
     });
 };

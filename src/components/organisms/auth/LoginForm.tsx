@@ -140,13 +140,13 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 type="h1"
                 text="Log Into your Account"
                 margin={isMobile ? "1rem 0" : "1.75rem 0 0.75rem"}
-                size={isMobile ? "18px" : "28px"}
+                size={isMobile ? "18px" : "24px"}
                 weight={600}
             />
             <Text
                 type="p"
                 text="Log Into your account so you can continue with your visa application"
-                size={isMobile ? "14px" : "17px"}
+                size={isMobile ? "14px" : "16px"}
                 weight={isMobile ? 300 : 400}
             />
             <Section
@@ -157,7 +157,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                     <Text
                         type="p"
                         text="Email Address"
-                        size={isMobile ? "14.5px" : "18px"}
+                        size={isMobile ? "14px" : "16px"}
                         styles={{ marginBottom: "18px" }}
                         weight={400}
                     />
@@ -186,7 +186,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                         type="p"
                         text="Password"
                         styles={{ marginBottom: "18px" }}
-                        size={isMobile ? "14.5px" : "16px"}
+                        size={isMobile ? "14px" : "16px"}
                         weight={400}
                     />
                     <Input
