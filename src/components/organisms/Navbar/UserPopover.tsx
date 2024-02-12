@@ -290,9 +290,9 @@ const CustomPopover = () => {
               <img
                 src={user.profilePicture}
                 alt="user-profile"
-                height={40}
-                width={40}
-                style={{ borderRadius: '100%', objectFit: 'contain', height: "40px", width: "40px", maxWidth: "40px", maxHeight: "40px", border: "2px solid var(--Slamon, #FF8682)" }}
+                height={54}
+                width={54}
+                style={{ borderRadius: '100%', objectFit: 'contain', height: "54px", width: "54px", maxWidth: "54px", maxHeight: "54px", border: "2px solid var(--Slamon, #FF8682)" }}
               />
             ) : (
               <RxAvatar size={48} />
@@ -313,14 +313,15 @@ const CustomPopover = () => {
             <div
               style={{
                 position: "absolute",
-                width: "250px",
+                width: "308px",
+                maxWidth: "308px",
                 backgroundColor: "#fafafa",
                 border: "1px solid #ccc",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                borderRadius: "5px",
-                // padding: "10px",
+                borderRadius: "12px",
+                padding: "15px",
                 zIndex: 1,
-                top: "40px",
+                top: "55px",
                 right: "0",
               }}
               ref={visibleRef}
@@ -364,12 +365,13 @@ const CustomPopover = () => {
                       router.push("/auth/login");
                     }}
                     key={i}
-                    style={{ margin: i === 0 ? "0px 0px 0" : i === arr.length - 1 ? "0px 0px 15px" : "15px 0px" }}
+                  // style={{ margin: i === 0 ? "0px 0px 0" : i === arr.length - 1 ? "0px 0px 15px" : "15px 0px" }}
                   >
                     <Flex
                       align="center"
                       gap="10px"
                       className="user_drop_list"
+                      padding="12px 10px"
                       styles={{ cursor: "pointer", width: "100%" }}
                     >
                       <span>{item.icon}</span>
@@ -384,12 +386,13 @@ const CustomPopover = () => {
                     </Flex>
                   </div>
                 ) : (
-                  <div key={i} style={{ margin: i === 0 ? "15px 0px" : "15px 0px" }}>
+                  <div key={i}>
                     <Link href={item.url}>
                       <Flex
                         align="center"
                         gap="10px"
                         className="user_drop_list"
+                        padding="12px 10px"
                       >
                         <span>{item.icon}</span>
                         <Text
