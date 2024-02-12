@@ -89,9 +89,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   const [reactDatePickerRange, setReactDatePickerRange] = useState<[Date | null, Date | null]>([null, null]);
   const [startDate, endDate] = reactDatePickerRange;
 
-  // console.log({ startDate, endDate });
-
-  // test
   const [showReferralInfo, setShowReferralInfo] = useState(false);
   const searchParams = useSearchParams();
   const { isMobile, isTablet } = useScreenResolution();
@@ -210,15 +207,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     // }
   };
 
-  // const handleDateChange = (item: RangeKeyDict): void => {
-  //   setCalendarState([item.selection]);
-  //   const startDate = format(item.selection.startDate!, 'MM-dd-yyyy');
-  //   const endDate = format(item.selection.endDate!, 'MM-dd-yyyy');
-  //   const formattedDate = startDate + ',' + endDate;
-  //   setDateRange(startDate, endDate);
-  // };
-
-  // console.log(dateRange);
 
   const getQueryParamsForActiveTab = () => {
     //  switch (activeTab) {
@@ -443,9 +431,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
-                  // handleSearch();
                   handleSearchDebounce(e.target.value);
-                  // handleSearchDebounce(e.target.value);
                 }}
               />
               {/* <input onChange={(e) => ''}/> */}
@@ -468,7 +454,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
             <Flex align="center" justify="center" padding=".75rem 1rem">
               {/* <DateRangeComponent onChange={handleDateChange} state={calendarState} /> */}
               <DatePicker
-                // onChange={onChange}
                 onChange={(update: [Date | null, Date | null]) => {
                   setReactDatePickerRange(update);
 

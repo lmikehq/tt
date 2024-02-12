@@ -3,9 +3,9 @@ import Text from "@atom/text";
 import Button from "@atom/button";
 import Section from "@molecule/section";
 import Image from "@atom/image";
-import Referral1 from "@image/dashboard/referral1.png";
-import Referral2 from "@image/dashboard/referral2.png";
-import Referral3 from "@image/dashboard/referral3.png";
+// import Referral1 from "@image/dashboard/referral1.png";
+// import Referral2 from "@image/dashboard/referral2.png";
+// import Referral3 from "@image/dashboard/referral3.png";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import CustomDrawer from "@molecule/drawers/customDrawer";
 import { useState } from "react";
@@ -15,18 +15,20 @@ import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@components/templates/flex";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import { ReferralModal, ReferralOTPModal, ReferralSubmissionModal, ReferralUserBankAccountModal } from "./referral/referralModal";
+import { ReferralModal, ReferralOTPModal, ReferralUserBankAccountModal } from "./referral/referralModal";
 import Center from "@/components/templates/center";
 import NoApplication from "./noApplication";
 import NoReferralImg from 'public/assets/icons/dashboard/no-referral.svg';
-import { useFetchReferralBanks, useReferral } from "@/lib/hooks/dashboard/referral.hook";
+import { useReferral } from "@/lib/hooks/dashboard/referral.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import { ReferralProp } from "@/lib/types/response-models/dashboard";
-import { mockReferees } from "@/lib/extensions/data/mock";
 import { format } from "date-fns";
 import referralStore from "@/lib/store/dashboard/referrer.store";
 import { Grid } from "@/components/templates/grid";
 import PaginationCtrl from "../../pagination";
+import ResponseModal from "./responseModal";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const Referral = styled.div`
   display: flex;
@@ -99,7 +101,11 @@ const Referrals = () => {
   const [openOtpModal, setOtpModal] = useState(false);
   const { search, page, param, limit, startDate, endDate, setPage } = useDashboardStore((state) => state);
   const { addReferrerInfo } = referralStore((state) => state);
-
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
+  const handleSubmissionModalClose = () => {
+    setOpenSubmissionModal(false);
+  };
 
   const textAndBgColor = (status: string) => {
     switch (status) {
@@ -122,8 +128,6 @@ const Referrals = () => {
   const { data, isLoading, refetch } = useReferral({
     query: { status: param, limit: limit, currentPage: page, search, startDate, endDate }
   });
-
-
 
   const response = data as { refereesArr: ReferralProp[]; filteredCount: number, totalCount: number; };
 
@@ -437,10 +441,10 @@ const Referrals = () => {
               </Flex>
             );
           })}
-          <PaginationCtrl data={referralArr} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
-          {/* <Button width={isMobile ? '300px' : "503px"} height="60px" background={ttColors.blackishBlue} styles={{ margin: "1.5rem 0px" }}>
-            <Text type="p" size={14} text="Claim 5 Referrals" weight={600} />
-          </Button> */}
+          {/* <PaginationCtrl data={referralArr} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} /> */}
+          <Flex justify="flex-end" align="center">
+            <CustomPagination count={Math.ceil(filteredCount / limit)} page={page} onChange={onPageChange} />
+          </Flex>
         </ReferralWrapper>
       ) : (
         <Center>
@@ -475,10 +479,18 @@ const Referrals = () => {
       )}
 
       {openSubmissionModal && (
-        <ReferralSubmissionModal
+        <ResponseModal<boolean>
           state={openSubmissionModal}
-          setState={setOpenSubmissionModal}
+          onClose={handleSubmissionModalClose}
+          headerText="Reward Claimed"
+          description={`
+          Congratulations!!.
+          Your Reward has been claimed. You will receive a mail shortly on the next step to be taken on the reward you just claimed.`}
         />
+        // <ReferralSubmissionModal
+        //   state={openSubmissionModal}
+        //   setState={setOpenSubmissionModal}
+        // />
       )}
     </Section>
   );

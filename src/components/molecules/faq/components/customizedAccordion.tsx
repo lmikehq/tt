@@ -101,7 +101,7 @@ const AccordionItem: React.FC<AccordionItemComponentProps> = ({
 
   return (
     <Accordion
-      defaultExpanded={pathname === '/dashboard' && header === 'Dependant 1'}
+      defaultExpanded={bool}
       expanded={expanded}
       onChange={(e) => handleChange(e, !expanded)}
       style={{

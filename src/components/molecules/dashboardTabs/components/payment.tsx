@@ -31,6 +31,8 @@ import { DashboardPaymentInfo, PaymentProp } from "@/lib/types/response-models/d
 // import CustomTab from "@/components/atoms/tabs";
 import PaginationCtrl from "../../pagination";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const SectionTitle = styled.div`
     display: flex;
@@ -162,7 +164,7 @@ const PaymentHistory = () => {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [_bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
   const router = useRouter();
-  const { param, search, setPage, page, limit, startDate, endDate } = useDashboardStore((state) => state);
+  const { param, search, setPage, page, limit, startDate, endDate, updatePage } = useDashboardStore((state) => state);
   const [openModal, setOpenModal] = useState(false);
   const [selected, setSelected] = useState({
     intent: '',
@@ -170,10 +172,13 @@ const PaymentHistory = () => {
     accompanying: 0,
     refetch: () => { }
   });
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
 
   const handleClose = () => {
     setOpenModal(false);
   };
+
 
   const content = {
     title: `You've got no Payment History - Make Payment for a Flight, Visa or Stay`,
@@ -283,13 +288,18 @@ const PaymentHistory = () => {
                   ))}
                   {/* pagination buttons */}
 
-                  <PaginationCtrl<DashboardPaymentInfo>
+                  {/* <PaginationCtrl<DashboardPaymentInfo>
                     page={page}
                     setPage={setPage}
                     data={payments}
                     filteredCount={filteredCount}
                     totalCount={totalCount}
-                  />
+                  /> */}
+
+                  {/* custom pagination button */}
+                  <Flex justify="flex-end" align="center">
+                    <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                  </Flex>
                 </>
               ) : (
                 <>
@@ -409,12 +419,18 @@ const PaymentHistory = () => {
                       </History>
                     ))}
                     {/* pagination buttons */}
-                    <PaginationCtrl
+                    {/* <PaginationCtrl
                       page={page}
                       setPage={setPage}
                       data={payments}
                       filteredCount={filteredCount}
-                      totalCount={totalCount} />
+                      totalCount={totalCount}
+                    /> */}
+
+                    {/* custom pagination button */}
+                    <Flex justify="flex-end" align="center">
+                      <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                    </Flex>
                   </>
                 ) : (
                   <>

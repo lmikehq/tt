@@ -23,6 +23,8 @@ import { MobileReturnFlightComp, ReturnFlightComp } from "./flight/returnFlight"
 import PaginationCtrl from "../../pagination";
 import { MobileSingleFlightComp, SingleFlightComp } from "./flight/singleFlight";
 import { MultiFlightComp } from "./flight/multiFlight";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const FlightWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -73,7 +75,7 @@ export const TextContainer = styled.div`
 `;
 
 const Flight = () => {
-  const { param, search, page, limit, setPage, endDate, startDate } = useDashboardStore((state) => state);
+  const { param, search, page, limit, setPage, endDate, startDate, updatePage } = useDashboardStore((state) => state);
   const { isMobile } = useScreenResolution();
   const content = {
     title: "You've booked no Flight Ticket yet - Let's help you get Started",
@@ -83,6 +85,9 @@ const Flight = () => {
       { text: "Search Stays", url: "/stay" }
     ],
   };
+
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
 
   // function NoFlightImg() {
   //   return <Image src="/assets/images/flight.png" alt="" />;
@@ -150,13 +155,16 @@ const Flight = () => {
                     </>
                   );
                 })}
-                <PaginationCtrl<DashboardFlightBookingProps>
+                {/* <PaginationCtrl<DashboardFlightBookingProps>
                   page={page}
                   setPage={setPage}
                   data={mockFlightBooking}
                   filteredCount={filteredCount}
                   totalCount={totalCount}
-                />
+                /> */}
+                <Flex justify="flex-end" align="center">
+                  <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                </Flex>
               </Flex>
             ) : (
               <Center>

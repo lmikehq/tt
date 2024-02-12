@@ -623,4 +623,18 @@ input[type="file"] {
   display: none;
 }
 
+/* CUSTOM PAGINATION */
+.pagination-ctrl-btn {
+  outline: none;
+  border: 0;
+  border-radius: 8px;
+  width: 42px !important;
+  height: 42px !important;
+  cursor: pointer;
+}
+
+.mx-4 {
+  margin: 0 4px;
+}
+
 /* CUSTOM SELECT INPUT */

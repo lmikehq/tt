@@ -6,6 +6,8 @@ import Text from "@atom/text";
 import { useState } from "react";
 import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
 import withLikeHotel from "@/components/HOCs/withLikeHotel";
+import { useConversionRate } from "@/hooks/useConversionRate";
+import currencyFormatter from "@/lib/extensions/data/currencyFormatter";
 
 
 const FavouriteCard = styled.div`
@@ -54,6 +56,7 @@ function FavouritesCard({ image, name, countryName, price, hotelId }: Props) {
     setIsFavourite(!isFavourite);
   };
   const heartColor = isFavourite ? "red" : "grey";
+  // const convertedPrice = useConversionRate()
 
   return (
     <FavouriteCard>
@@ -96,7 +99,7 @@ function FavouritesCard({ image, name, countryName, price, hotelId }: Props) {
           />
           <Text
             type="h3"
-            text={`NGN ${price}`}
+            text={`${currencyFormatter(price)}`}
             size={20}
             weight={600}
             color="#000000"

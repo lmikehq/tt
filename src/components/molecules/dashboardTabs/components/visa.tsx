@@ -15,6 +15,8 @@ import { useGetAllVisaApplication } from "@/lib/hooks/dashboard/visa.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import { VisaResponseProp } from "@/lib/types/response-models/dashboard";
 import PaginationCtrl from "../../pagination";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const VisaWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -34,7 +36,8 @@ const VisaWrapper = styled.div`
 const Visa = () => {
   const { isMobile } = useScreenResolution();
   const { queryParams, page, limit, setPage, search, startDate, endDate } = useDashboardStore((state) => state);
-
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
   const { data, isLoading, isError, refetch } = useGetAllVisaApplication({
     query: { status: queryParams.join(','), currentPage: page, limit, search, startDate, endDate },
     options: { retry: 2 }
@@ -78,7 +81,11 @@ const Visa = () => {
                 </div>
               );
             })}
-            <PaginationCtrl<VisaResponseProp> data={visas} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
+            {/* <PaginationCtrl<VisaResponseProp> data={visas} page={page} setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} /> */}
+            {/* custom pagination button */}
+            <Flex justify="flex-end" align="center">
+              <CustomPagination count={Math.ceil(filteredCount / limit)} page={page} onChange={onPageChange} />
+            </Flex>
           </>
         ) : (
           <Center

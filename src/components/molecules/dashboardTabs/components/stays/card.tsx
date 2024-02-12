@@ -33,6 +33,7 @@ import { SiTripadvisor } from "react-icons/si";
 import getMonthAndDay from "@/lib/extensions/helpers/getDateFormat";
 import withLikeHotel from "@/components/HOCs/withLikeHotel";
 import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
+import currencyFormatter from "@/lib/extensions/data/currencyFormatter";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -51,7 +52,7 @@ interface StaysProps {
   image: string;
   checkInDate: string;
   checkoutDate: string;
-  payment: string;
+  payment: number;
   region: string;
   rating: number;
   hotelId: string;
@@ -122,7 +123,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
               >
                 <Text
                   type="h3"
-                  text={`${formatPrice(parseFloat(payment))}`}
+                  text={currencyFormatter(payment)}
                   weight={600}
                   color="var(--text-dull-color)"
                 ></Text>

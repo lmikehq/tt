@@ -13,6 +13,9 @@ import NoApplication from "./noApplication";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import { mockStaysBookingHistory } from "@/lib/extensions/data/mock";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
+import { useConversionRate } from "@/hooks/useConversionRate";
 
 const StaysWrapper = styled.div`
    background: ${ttColors.defaultColor};
@@ -52,6 +55,7 @@ const TextContainer = styled.div`
 function Stays() {
   const { isMobile } = useScreenResolution();
   const { search, startDate, endDate, param, limit, page, setPage } = useDashboardStore((state) => state);
+  const { convertCurrency } = useConversionRate();
   const content: { title: string, links: { text: string, url: string; }[]; } = {
     title: "You’ve got no Stays Booking - Let’s help you get Started ",
     links: [
@@ -60,6 +64,8 @@ function Stays() {
       { text: "Search Stays", url: "/stay" }
     ]
   };
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
   const { data, isLoading } = useGetAllStaysBookingHistory(
     {
       query: { status: param, search, startDate, endDate, currentPage: page, limit },
@@ -69,7 +75,7 @@ function Stays() {
 
   const response = data as { userStaysBookings: HotelBookingHistory[], filteredCount: number, totalCount: number; };
   const stays: HotelBookingHistory[] = response?.userStaysBookings;
-  const filteredCount = response?.filteredCount;
+  const filteredCount = response?.filteredCount || 1;
   const totalCount = response?.totalCount;
 
   return (
@@ -85,7 +91,7 @@ function Stays() {
                     hotelId={stay.hotelId}
                     name={stay.hotelPayload.name}
                     image={stay.hotelPayload.image}
-                    payment={stay.paymentOptions[0].amount}
+                    payment={Number(convertCurrency({ convertFrom: stay.paymentOptions[0].currency_code, convertTo: 'NGN', amount: stay.paymentOptions[0].amount }).amount)}
                     checkInDate={stay.checkInDate}
                     checkoutDate={stay.checkOutDate}
                     region={stay.hotelPayload.region}
@@ -94,10 +100,13 @@ function Stays() {
                 </div>
               );
             })}
-            <PaginationCtrl
+            {/* <PaginationCtrl
               data={[]}
               page={page}
-              setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} />
+              setPage={setPage} filteredCount={filteredCount} totalCount={totalCount} /> */}
+            <Flex justify="flex-end" align="center">
+              <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+            </Flex>
           </Flex>
         ) : (
           <Center

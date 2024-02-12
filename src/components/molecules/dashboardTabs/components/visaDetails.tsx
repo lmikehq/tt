@@ -283,16 +283,29 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
     switch (status) {
       case 'Pending':
         return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' };
+      case 'SUCCESS':
+      case 'APPROVED':
+        return { ...setting, bg: '#F1FFF2', color: '#1A820A', border: '#1A820A' };
+      default:
+        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' };
     }
 
-    return setting;
+    // return setting;
   };
 
+
+  // MAP THROUGH ALL FAMILY INFORMATION TO GET ALL THE DEPENDANTS AND ADD THEM TO THE ALL-DEPENDANTS ARRAY
+  const allImmediateFamilyDependants = visa.familyInformation.immediateFamilyInfo.filter((immediateFamily) => (immediateFamily.accompanying === true));
+  const allParentDependants = visa.familyInformation.parentDetails.filter((parent) => (parent.accompanying === true));
+  const allSiblingDependants = visa.familyInformation.siblingDetails.filter((sibling) => (sibling.accompanying === true));
+
+  const allDependants: any[] = [...allImmediateFamilyDependants, ...allParentDependants, ...allSiblingDependants];
   // const accompanying = visa?.familyMembers?.filter(
   //   (fm: any) => fm.accompanying === true
   // ).length;
 
-  const accompanying = 1;
+  // THE ACCOMPANIES WILL BE CALCULATED FROM THE FAMILY INFORMATION OBJECT
+  const accompanying = allDependants.length || 0;
 
 
   // function getLocationField(field: string) {
@@ -349,82 +362,57 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
       // some code
       // CALL THE API FROM HERE AND EVEN RESET THE FORM
 
-      if (user) {
+      // console.log(values.dependants);
 
-        // console.log(values.dependants);
-        const response = apiService(`/visa/application/${visa._id}/add-accompanying`, 'POST', values.dependants.map((dependant) => ({
-          membersEmail: dependant.memberEmail,
-          accompanying: true,
-          address: dependant.memberAddress,
-          gender: dependant.gender,
-          membersPhoneNumber: dependant.phoneNumber,
-          relationshipToPrimary: dependant.relationship,
-          membersName: dependant.memberName,
-          dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
-          expiryYear: Number(dependant.expiryDate.split("/")[2]),
-          issueYear: Number(dependant.issueDate.split("/")[2]),
-          passportNumber: dependant.passportNumber
-        }))).then((response) => {
-          console.log('api response', response);
-          if (response?.message === 'success') {
-            setDependantPaymentInfo({
-              checkout_url: response?.data?.data?.checkout_url,
-              reference: response?.data?.data?.reference,
-              price: values.dependants.length * 500000
-            });
-            toast.success(response?.data?.message);
-            // CLOSE THE MODAL FOR ACCOMPANIES
-            setModalState({ open: false, type: "add-dependant" });
-            helpers.resetForm();
-          }
-          setModalState({ open: true, type: "dependant-payment" });
-          // setModalState({ open: true, type: "payment" });
-          router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
-        }).catch((err) => {
-          console.log(err);
-          throw err;
-        });
+      // const dependantsData = values.dependants.map((dependant) => ({
+      //   membersEmail: dependant.memberEmail,
+      //   accompanying: true,
+      //   address: dependant.memberAddress,
+      //   gender: dependant.gender,
+      //   membersPhoneNumber: dependant.phoneNumber,
+      //   relationshipToPrimary: dependant.relationship,
+      //   membersName: dependant.memberName,
+      //   dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+      //   expiryYear: Number(dependant.expiryDate.split("/")[2]),
+      //   issueYear: Number(dependant.issueDate.split("/")[2]),
+      //   passportNumber: dependant.passportNumber
+      // }));
 
-        console.log('code after the api call');
+      // console.log({ dependantsData });
 
-        // const response = await VisaService.addDependants(visa._id!, values.dependants.map((dependant) => ({
-        //   membersEmail: dependant.memberEmail,
-        //   accompanying: true,
-        //   address: dependant.memberAddress,
-        //   gender: dependant.gender,
-        //   membersPhoneNumber: dependant.phoneNumber,
-        //   relationshipToPrimary: dependant.relationship,
-        //   membersName: dependant.memberName,
-        //   dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
-        //   expiryYear: Number(dependant.expiryDate.split("/")[2]),
-        //   issueYear: Number(dependant.issueDate.split("/")[2]),
-        //   passportNumber: dependant.passportNumber
-        // })));
-        // console.log('response from the api', response);
-        // if (response?.message === "success" || response?.statusCode === 200) {
-        //   console.log('the response was recieved succesfully open the payment modal');
-        //   setDependantPaymentInfo({
-        //     checkout_url: response?.data?.data?.checkout_url,
-        //     reference: response?.data?.data?.reference,
-        //     price: values.dependants.length * 500000
-        //   });
-        //   // TOAST
-        //   toast.success(response?.data?.message);
-        //   // CLOSE THE MODAL FOR ACCOMPANIES
-        //   setModalState({ open: false, type: "add-dependant" });
-
-        //   // OPEN THE MODAL TO MAKE DEPENDANTS PAYMENT 
-        //   setModalState({ open: true, type: "dependant-payment" });
-        //   // setModalState({ open: true, type: "payment" });
-        //   router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
-        //   // ADD THE PAYMENT TO URL PARAMS
-        // }
-
-        // toast.error("Error adding dependant(s). Try again!");
-
-
-      }
-
+      // console.log(values.dependants);
+      apiService(`/visa/application/${visa._id}/add-accompanying`, 'POST', values.dependants.map((dependant) => ({
+        membersEmail: dependant.memberEmail,
+        accompanying: true,
+        address: dependant.memberAddress,
+        gender: dependant.gender,
+        membersPhoneNumber: dependant.phoneNumber,
+        relationshipToPrimary: dependant.relationship,
+        membersName: dependant.memberName,
+        dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+        expiryYear: Number(dependant.expiryDate.split("/")[2]),
+        issueYear: Number(dependant.issueDate.split("/")[2]),
+        passportNumber: dependant.passportNumber
+      }))).then((response) => {
+        // console.log('api response', response);
+        if (response?.message === 'success') {
+          setDependantPaymentInfo({
+            checkout_url: response?.data?.data?.checkout_url,
+            reference: response?.data?.data?.reference,
+            price: values.dependants.length * 500000
+          });
+          toast.success(response?.data?.message);
+          // CLOSE THE MODAL FOR ACCOMPANIES
+          setModalState({ open: false, type: "add-dependant" });
+          helpers.resetForm();
+        }
+        setModalState({ open: true, type: "dependant-payment" });
+        // setModalState({ open: true, type: "payment" });
+        router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
+      }).catch((err) => {
+        // console.log(err);
+        throw err;
+      });
     }
   });
 
@@ -475,8 +463,6 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
         index={1}
         steps={[""]}
       />
-
-      {/* SUCCESSFULY PAID FOR DEPENDANTS / ACCOMPANIES MODAL */}
 
       {isMobile ? (
         <Flex
@@ -688,6 +674,21 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                     </VisaStatus>
                   </Flex>
                 </Flex>
+
+                <Flex>
+                  <Text type="p" text="Added Dependants" weight={600} />
+                </Flex>
+                <Section>
+                  {allDependants.length === 0 && <Text type="p" text="Add Accompanies to see them here" color={ttColors.lighterGray} />}
+                  {allDependants.map((dependant) => {
+                    return (
+                      <Flex align="center" justify="space-between" key={dependant?.membersName}>
+                        <Text type="p" text={dependant?.membersName} />
+                        <Text type="p" text={dependant?.status?.length > 1 ? dependant?.status : 'PENDING'} />
+                      </Flex>
+                    );
+                  })}
+                </Section>
                 <Flex>
                   <Button
                     padding="8px 10px"
@@ -866,7 +867,7 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
             >
               <Button
                 // padding="8px 16px"
-                width={isMobile ? "300px!important" : "100px !important"}
+                width={isMobile ? "300px !important" : "100px !important"}
                 background="#06062A"
                 height="48px"
                 styles={{
@@ -995,11 +996,16 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                       <Flex direction="column" align="center" gap=".5rem">
                         {visa?.infoRequests.map((info, index) => {
                           return (
-                            <Text
-                              key={`info-request ${index}`}
-                              type="p"
-                              text={info}
-                            />
+                            <Section key={`info-request ${index}`}>
+                              <Text
+                                type="p"
+                                text={info?.information?.[0]}
+                              />
+                              <Text
+                                type="p"
+                                text={info?.description}
+                              />
+                            </Section>
                           );
                         })}
                       </Flex>
@@ -1065,26 +1071,39 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
                     </div>
                   </Grid>
 
-                  <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+
+                  <Grid columns="" align="center" gap="24px" margin="20px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
                     <div></div>
                     <Section>
-                      <Flex>
-                        <Text type="p" text='Angela Abiodun' weight={500} />
-                      </Flex>
+                      <Text weight={600} size={20} type="h4" text="Added Dependant" />
                     </Section>
-
-                    <Flex justify="flex-end">
-                      <Flex
-                        styles={{ backgroundColor: renderAccompany('Pending').bg, color: renderAccompany('Pending').color }}
-                        border={`1px solid ${renderAccompany('Pending').border}`}
-                        width="fit-content"
-                        padding="6px 14px"
-                        borderRadius="24px"
-                      >
-                        <Text type="p" text='In Progress' weight={500} />
-                      </Flex>
-                    </Flex>
                   </Grid>
+                  {allDependants.map((dependant) => {
+                    return (
+                      <Grid columns="" align="center" gap="24px" margin="20px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} key={dependant?.membersName}>
+                        <div></div>
+                        <Section>
+                          <Flex>
+                            <Text type="p" text={dependant?.membersName} weight={500} />
+                          </Flex>
+                        </Section>
+
+                        <Flex justify="center">
+                          <Flex
+                            styles={{ backgroundColor: renderAccompany(dependant?.status || 'Pending').bg, color: renderAccompany(dependant?.status || 'Pending').color }}
+                            border={`1px solid ${renderAccompany(dependant?.status || 'Pending').border}`}
+                            width="fit-content"
+                            padding="6px 14px"
+                            borderRadius="24px"
+                          >
+                            <Text type="p" text={dependant?.status?.length > 1 ? dependant?.status : 'PENDING'} />
+                            {/* <Text type="p" text={dependant?.status} weight={500} /> */}
+                          </Flex>
+                        </Flex>
+                      </Grid>
+                    );
+                  })}
+
                 </Section>
               )}
             </Section>

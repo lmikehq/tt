@@ -30,6 +30,7 @@ export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) 
   const { isMobile } = useScreenResolution();
 
   const handleClose = () => {
+    formik.resetForm();
     setState((prev) => {
       return {
         ...prev,
@@ -64,7 +65,7 @@ export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) 
                     <CustomizedAccordions
                       items={formik.values.dependants.map((dependant, index) => ({
                         flexDirection: "row",
-                        header: `Dependant ${index + 1}`,
+                        header: formik.values.dependants.length > 1 ? `Dependant ${index + 1}` : 'Dependant',
                         border: 'none',
                         headerFontWeight: 600,
                         backgroundColor: "transparent",

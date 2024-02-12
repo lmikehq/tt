@@ -12,14 +12,11 @@ import { useUserStore } from "@/lib/store/useStore";
 import { useSearchParams } from "next/navigation";
 
 const DashboardHeaderComponent = () => {
-  const [documentModal, setDocumentModal] = useState(true);
-  const [paymentModal, setPaymentModal] = useState(false);
-  const { queryParams } = useDashboardStore(state => state);
+  // const [documentModal, setDocumentModal] = useState(true);
+  // const [paymentModal, setPaymentModal] = useState(false);
+  // const { queryParams } = useDashboardStore(state => state);
   const { setNotification } = useNotificationStore((state) => state);
   const { user } = useUserStore((state) => state);
-  const searchParams = useSearchParams();
-
-  const download = searchParams.get("download") ?? "";
 
   // EVENT LISTENER
   const ctrl = new AbortController();
@@ -91,25 +88,25 @@ const DashboardHeaderComponent = () => {
     <UserStoreProvider>
       <DashboardHeader />
 
-      {download === 'true' ? (
+      {/* {download === 'true' ? (
         <ApplicationStatus
           state={documentModal}
           setState={setDocumentModal}
           openPaymentModal={setPaymentModal}
         />
-      ) : null}
-      {paymentModal && (
+      ) : null} */}
+      {/* {paymentModal && (
         <VisaPaymentModal
           open={paymentModal}
           onClose={() => setPaymentModal(false)}
           visaDetails={{
             id: '1',
-            intent: 'FORM FEE',
+            intent: 'PROCESSING FEE',
             accompanying: 0,
             refetch: () => { }
           }}
         />
-      )}
+      )} */}
     </UserStoreProvider>
   );
 };
