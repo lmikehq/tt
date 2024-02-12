@@ -4,7 +4,7 @@ import { useGetConversionRates } from "@/lib/hooks/general/conversion-rates.hook
     Base Currency: USD
 */
 export function useConversionRate() {
-    const { data, isLoading, isError } = useGetConversionRates()
+    const { data, isLoading, isError } = useGetConversionRates({ enabled: false })
 
     const convertCurrency = ({ convertFrom, convertTo, amount }: { convertFrom: string; convertTo: string; amount: string | number; }) => {
         const rates = data?.data ?? {}

@@ -84,15 +84,15 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
     , [stayResponse?.amenity_groups])
 
     const prices = useMemo(() => {
-        return numSort(stayResponse?.rates.reduce((prev: PaymentType[], curr: Rate) => {
+        return numSort(stayResponse?.rates?.reduce((prev: PaymentType[], curr: Rate) => {
             let paymentType = curr.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? curr.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? curr.payment_options.payment_types[0]
             return [...prev, paymentType]
         }, []), 'amount', 'asc')
     }, [stayResponse?.rates])
     const selectedPrice = prices[0]
     const displayPrice = {
-        currencyCode: preFerredCurrency,
-        amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+        currencyCode:  selectedPrice?.currency_code ?? preFerredCurrency,
+        amount: selectedPrice?.amount ?? '0' ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
     }
 
     const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
@@ -185,7 +185,7 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
                 whiteSpace="wrap"
                 size={30}
                 weight={600}
-                text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
+                text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
               />
               <Text
                 type="p"
@@ -326,8 +326,8 @@ function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
                     map: false,
                 }))
             }
-            lat={stayDetails?.latitude ?? 0}
-            lng={stayDetails?.longitude ?? 0}
+            lat={stayResponse?.latitude ?? 0}
+            lng={stayResponse?.longitude ?? 0}
             stayResponse={stayResponse}
         />
         </Container>

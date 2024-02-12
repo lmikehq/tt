@@ -159,8 +159,8 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
     }, []), 'amount', 'asc')
     const selectedPrice = prices[0]
     const displayPrice = {
-        currencyCode: preFerredCurrency,
-        amount: convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+        currencyCode: selectedPrice?.currency_code ?? preFerredCurrency,
+        amount: selectedPrice?.amount ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
     }
 
     const guestRooms = extractRoomForGuestsFromString(queryParams?.guests ?? "")
@@ -441,7 +441,7 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                     type="h2"
                                     whiteSpace="wrap"
                                     weight={"bold"}
-                                    text={formatPriceWithoutCurrency(parseFloat(displayPrice?.amount.toFixed(2)))}
+                                    text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                                 />
                                 </Flex>
                                 <Text
