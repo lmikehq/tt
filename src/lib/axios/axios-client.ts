@@ -27,7 +27,7 @@ function getAuthToken(): string | null {
         // Access localStorage here
         user = window.localStorage.getItem("user");
     }
-    return user ? `Bearer ${JSON.parse(user)}` : null;
+    return user ? `Bearer ${user}` : null;
 }
 
 axiosClient.interceptors.response.use(

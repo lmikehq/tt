@@ -64,9 +64,11 @@ export interface DetailsKeys {
 export interface EducationDetailsInterface {
     school: string;
     degree: string;
+    degreeText?: string;
     cgpa: number | null;
     location: string;
     fieldOfStudy: string;
+    fieldOfStudyText?: string;
     startYear: number | null;
     endYear?: number | null;
     stillAtSchool: boolean;
@@ -432,7 +434,16 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                     "",
             },
             employment: data.employment,
-            education: data.education,
+            education: data.education.map(e => ({
+                school: e.school,
+                cgpa: e.cgpa,
+                location: e.location,
+                startYear: e.startYear,
+                endYear: e.endYear,
+                stillAtSchool: e.stillAtSchool,
+                degree: e.degree === 'Others' ? (e.degreeText ?? '') : e.degree,
+                fieldOfStudy: e.fieldOfStudy === 'Others' ? (e.fieldOfStudyText ?? '') : e.fieldOfStudy,
+            })),
         },
         familyInformation: {
             parentDetails: sortedFamily
