@@ -1,20 +1,25 @@
-'use client'
+"use client";
 
-import { FlightProvider } from '@/lib/extensions/context'
-import apiService from '@/lib/extensions/hook/apiService';
-import { useUserStore } from '@/lib/store/useStore';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
-
+import { FlightProvider } from "@/lib/extensions/context";
+import apiService from "@/lib/extensions/hook/apiService";
+import { useUserStore } from "@/lib/store/useStore";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 function Providers({ children }: { children: React.ReactNode }) {
-    const { user, setUser } = useUserStore()
-    const router = useRouter()
+    const { user, setUser } = useUserStore();
+    const [initialized, setInitialized] = useState(false);
+    const router = useRouter();
 
     async function fetchUser() {
-        if (user) return user;
+        if (user) {
+            setInitialized(true);
+
+            return user;
+        }
         const res = (await apiService("/user")) as any;
-        if (!res?._id) return router.push("/auth/login")
+        // if (!res?._id) return router.push("/auth/login")
+        setInitialized(true);
         setUser(res);
         return res;
     }
@@ -23,13 +28,9 @@ function Providers({ children }: { children: React.ReactNode }) {
         if (typeof window !== "undefined") {
             fetchUser();
         }
-    }, [])
+    }, []);
 
-    return (
-        <FlightProvider>
-            {children}
-        </FlightProvider>
-    )
+    return <FlightProvider>{initialized && children}</FlightProvider>;
 }
 
-export default Providers
+export default Providers;
