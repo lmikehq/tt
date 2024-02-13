@@ -493,10 +493,7 @@ const CustomPopover = ({ user, isLoading }: Props) => {
                                         onClick={() => {
                                             handleLogout().then((res) => {
                                                 setUser(null);
-                                                window &&
-                                                    window.localStorage.removeItem(
-                                                        "user"
-                                                    );
+                                                window.localStorage.removeItem("user");
                                             });
                                             router.push("/");
                                         }}

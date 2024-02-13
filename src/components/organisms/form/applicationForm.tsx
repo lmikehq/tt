@@ -34,6 +34,7 @@ import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
 import testPayload from '@/constants/payload.json';
+import { useDebounce } from "use-debounce";
 
 
 const PromoInput = styled.div`
@@ -271,21 +272,22 @@ function ApplicationForm() {
     },
   });
 
-  const persistForm = () => {
-    saveProgress({
-      data: {
-        tripDetails: detailsFormik.values,
-        personalInfo: personalInfoFormik.values,
-        education: educationFormik.values.education,
-        employment: employmentFormik.values.employment,
-        familyMembers: familyMembersFormik.values.familyMembers,
-        guarantorInfo: guarantorFormik.values,
-        documents: documentsFormik.values.documents,
-      },
-      uploadedDocuments,
-    });
-    router.push("/");
-  };
+    const persistForm = (noRedirect?: boolean) => {
+        console.log('persisted')
+        saveProgress({
+            data: {
+                tripDetails: detailsFormik.values,
+                personalInfo: personalInfoFormik.values,
+                education: educationFormik.values.education,
+                employment: employmentFormik.values.employment,
+                familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
+                documents: documentsFormik.values.documents,
+            },
+            uploadedDocuments,
+        });
+        !noRedirect && router.push("/");
+    };
 
   const steps = getSteps({
     detailsFormik,
@@ -302,23 +304,55 @@ function ApplicationForm() {
     ? "/assets/images/visaPageCover.jpg"
     : "/assets/images/visaDesktopCover.jpg";
 
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+    const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
 
-    fetchDetailsFromURL({
-      homeCountry: searchParams.get("home") || "",
-      destination: searchParams.get("destination") || "",
-      visaType: searchParams.get("visaType") || "",
-    });
-    fetchRecentProgressFromSession();
-  }, [params]);
+        fetchDetailsFromURL({
+            homeCountry: searchParams.get("home") || "",
+            destination: searchParams.get("destination") || "",
+            visaType: searchParams.get("visaType") || "",
+        });
+        fetchRecentProgressFromSession();
+    }, [params]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            saveProgress({
+                data: {
+                    tripDetails: detailsFormik.values,
+                    personalInfo: personalInfoFormik.values,
+                    education: educationFormik.values.education,
+                    employment: employmentFormik.values.employment,
+                    familyMembers: familyMembersFormik.values.familyMembers,
+                    guarantorInfo: guarantorFormik.values,
+                    documents: documentsFormik.values.documents,
+                },
+                uploadedDocuments,
+            });
+        }, 20000);
+        return () => clearInterval(interval);
+    }, []);
 
-  // useEffect(() => {
-  //     saveProgress({ data: testPayload, uploadedDocuments: [] })
-  // }, [])
+    useEffect(() => {
+        saveProgress({
+            data: {
+                tripDetails: detailsFormik.values,
+                personalInfo: personalInfoFormik.values,
+                education: educationFormik.values.education,
+                employment: employmentFormik.values.employment,
+                familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
+                documents: documentsFormik.values.documents,
+            },
+            uploadedDocuments,
+        });
+    }, [personalInfoFormik.touched, educationFormik.touched, employmentFormik.touched, familyMembersFormik.touched, guarantorFormik.touched, documentsFormik.touched])
+
+    // useEffect(() => {
+        // saveProgress({ data: testPayload, uploadedDocuments: [] })
+    // }, [])
 
 
   return (
