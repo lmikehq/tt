@@ -26,6 +26,7 @@ import { cleanObject, dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
 import {
     FlightSortEnum,
+    FlightTypeEnum,
     SearchFlightsRequestQuery,
 } from "@/lib/types/request-models/flight/booking.type";
 import { IoShareSocial } from "react-icons/io5";
@@ -525,7 +526,7 @@ function AvailableMultiFlights() {
     };
 
     const goToFlight = (bookingToken: string) => {
-        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}&multi=true`;
+        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}&flightType=${FlightTypeEnum.multictiy}`;
         if (user?.email) {
             router.push(to);
         } else {

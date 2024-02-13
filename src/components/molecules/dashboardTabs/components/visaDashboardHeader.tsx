@@ -89,9 +89,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
   const [reactDatePickerRange, setReactDatePickerRange] = useState<[Date | null, Date | null]>([null, null]);
   const [startDate, endDate] = reactDatePickerRange;
 
-  // console.log({ startDate, endDate });
-
-  // test
   const [showReferralInfo, setShowReferralInfo] = useState(false);
   const searchParams = useSearchParams();
   const { isMobile, isTablet } = useScreenResolution();
@@ -210,15 +207,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     // }
   };
 
-  // const handleDateChange = (item: RangeKeyDict): void => {
-  //   setCalendarState([item.selection]);
-  //   const startDate = format(item.selection.startDate!, 'MM-dd-yyyy');
-  //   const endDate = format(item.selection.endDate!, 'MM-dd-yyyy');
-  //   const formattedDate = startDate + ',' + endDate;
-  //   setDateRange(startDate, endDate);
-  // };
-
-  // console.log(dateRange);
 
   const getQueryParamsForActiveTab = () => {
     //  switch (activeTab) {
@@ -349,23 +337,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
     }
    */
 
-  // ADD THE QUERY TO THE URL PARAMS
-
-  // useEffect(() => {
-  //   const initialQuery = {
-  //     applicationStatus,
-  //     search: searchQuery,
-  //     dateRange: dateRange
-  //   };
-
-  //   const queryParams = getQueryParamsForActiveTab();
-  //   const query = constructQueryFromParams({ ...initialQuery, ...queryParams });
-  //   const currentUrl = new URL(window.location.href);
-  //   currentUrl.search = query;
-  //   router.replace(currentUrl.toString(), { scroll: false });
-
-  // }, [visaQueryParams, visaSearch, activeTab, param, globalSearch]);
-
 
   return (
     <Flex
@@ -443,9 +414,7 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
-                  // handleSearch();
                   handleSearchDebounce(e.target.value);
-                  // handleSearchDebounce(e.target.value);
                 }}
               />
               {/* <input onChange={(e) => ''}/> */}
@@ -468,7 +437,6 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
             <Flex align="center" justify="center" padding=".75rem 1rem">
               {/* <DateRangeComponent onChange={handleDateChange} state={calendarState} /> */}
               <DatePicker
-                // onChange={onChange}
                 onChange={(update: [Date | null, Date | null]) => {
                   setReactDatePickerRange(update);
 
@@ -589,80 +557,3 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
 }
 
 export default VisaDashboardHeader;
-/**
- * 
-  // EXTRACT THE QUERY FROM THE URL PARAMS WHEN A USER REFRESH THE PAGE OR CHANGES TAB
-  useEffect(() => {
-    const fetchStateFromUrl = () => {
-      const params = extractSearchParamsFromUrl({
-        url: window.location.href
-      });
-      let localStorageData;
-
-      console.log({ activeTab });
-
-      if (activeTab === 'Visa' || activeTab === 'All Applications') {
-        console.log('the code is here');
-        const visa = activeTab && localStorage.getItem('Visa');
-        const allApplication = activeTab && localStorage.getItem('All Applications');
-
-        const visaStorageData = visa ? JSON.parse(visa) : null;
-        const allApplicationStorageData = allApplication ? JSON.parse(allApplication) : null;
-
-        localStorageData = { ...allApplicationStorageData, ...visaStorageData };
-      } else {
-        const otherStorageData = activeTab && localStorage.getItem(activeTab);
-
-        localStorageData = otherStorageData ? JSON.parse(otherStorageData) : null;
-      }
-
-      console.log({ localStorageData });
-
-      // const parsedData = localStorageData ? JSON.parse(localStorageData) : null;
-      const parsedData = localStorageData ? localStorageData : null;
-
-      let filters: { search: string; applicationStatus: string[]; dateRange: string; } = {
-        search: '',
-        applicationStatus: [],
-        dateRange: ''
-      };
-
-      if (parsedData) {
-        filters = {
-          applicationStatus: parsedData?.applicationStatus.split(','),
-          search: parsedData?.search,
-          dateRange: ''
-        };
-      } else {
-        filters = {
-          applicationStatus: params.applicationStatus?.split(','),
-          search: params.search ?? '',
-          dateRange: params.dateRange?.split(',').join('')
-        };
-      }
-
-      // console.log({ filters });
-
-      // MOVE THE STATE TO THE STORE
-      switch (activeTab) {
-        case 'All Applications':
-        case 'Visa':
-          setVisaSearchQuery(filters.search || '');
-          const visaParams = filters.applicationStatus ? filters.applicationStatus : [];
-          visaParams.forEach((param) => addVisaParams(param));
-          break;
-        case 'Flight':
-          const status = filters.applicationStatus.join('');
-          updateFlightParams(status || '');
-          setFlightSearch(filters.search || '');
-
-        default:
-          break;
-      }
-
-    };
-
-    fetchStateFromUrl();
-  }, [activeTab]);
-
- */

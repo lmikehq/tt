@@ -89,9 +89,9 @@ function PaymentRecieptPage() {
             <Flex direction='row' padding='20px 0' borderBottom='1px solid #AFDEF2'>
               <Text style={[styles.subTitle]}> Receipt Account: </Text>
               <Flex gap='10px' direction='column'>
-                <Text style={[styles.subResponse]}> Thrillers Account </Text>
-                <Text style={[styles.subResponse]}> 9065387123 </Text>
-                <Text style={[styles.subResponse]}> PalmPay Limited </Text>
+                <Text style={[styles.subResponse]}> Thrillers Travels Ltd </Text>
+                <Text style={[styles.subResponse]}> 1229040617 </Text>
+                <Text style={[styles.subResponse]}> Zenith Bank </Text>
               </Flex>
             </Flex>
 
@@ -112,7 +112,7 @@ function PaymentRecieptPage() {
             <Text
               style={[styles.subResponse, { color: ttColors.blackLight }]}
             >
-              Call Thrillers, 070 9328763, +234 1-7605881-4, +234 1-9117209 or send an email to help@thrillerstravels.com
+              Call Thrillers, 0813 001 1177, +234 1-7605881-4, +234 1-9117209 or send an email to help@thrillerstravels.com
             </Text>
           </Flex>
 

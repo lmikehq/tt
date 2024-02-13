@@ -8,6 +8,7 @@ import Button from "@/components/atoms/button";
 import Spinner from "@/components/molecules/icons/spinner";
 import Select, { components, GroupBase, Props } from "react-select";
 import { Rate } from "@/lib/types/response-models/stay/search.type";
+import { FiltersInterface, OptionType } from "../../ChooseYourRoom";
 
 const customStyles = {
     control: (base: any) => ({
@@ -25,102 +26,60 @@ interface MyOption {
 
 interface MyGroup extends GroupBase<MyOption> {}
 
-interface CustomSelectProps extends Props<MyOption, true, MyGroup> {
-    myCustomProp: string;
-}
+// interface CustomSelectProps extends Props<MyOption, true, MyGroup> {
+//     myCustomProp: string;
+// }
+// const CheckboxOption = (props: any) => (
+//     <components.Option {...props}>
+//         <Flex gap="8px">
+//             <input
+//                 type="checkbox"
+//                 checked={props.isSelected}
+//                 onChange={() => null}
+//             />{" "}
+//             <label>{props.label}</label>
+//         </Flex>
+//     </components.Option>
+// );
 
-const CheckboxOption = (props: any) => (
-    <components.Option {...props}>
-        <Flex gap="8px">
-            <input
-                type="checkbox"
-                checked={props.isSelected}
-                onChange={() => null}
-            />{" "}
-            <label>{props.label}</label>
-        </Flex>
-    </components.Option>
-);
+// const MultiValue = (props: any) => (
+//     <components.MultiValue {...props}>
+//         <span
+//             style={{
+//                 overflow: "hidden",
+//                 textOverflow: "ellipsis",
+//                 whiteSpace: "nowrap",
+//             }}
+//         >
+//             {props.data.label}
+//         </span>
+//     </components.MultiValue>
+// );
 
-const MultiValue = (props: any) => (
-    <components.MultiValue {...props}>
-        <span
-            style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-            }}
-        >
-            {props.data.label}
-        </span>
-    </components.MultiValue>
-);
-
-function CustomSelect({ myCustomProp, ...props }: CustomSelectProps) {
-    return (
-        <Select
-            {...props}
-            isMulti
-            closeMenuOnSelect={false}
-            hideSelectedOptions={false}
-            styles={customStyles}
-            components={{
-                Option: CheckboxOption,
-                MultiValue,
-            }}
-            theme={(theme) => ({ ...theme, borderRadius: 0 })}
-        />
-    );
-}
-{/* <CustomSelect
-    myCustomProp="customValue"
-    options={options}
-    onChange={(selectedOptions, actionMeta) => {}}
-/> */}
 
 interface FilterBoxProps {
-    beds: string;
-    setBeds: React.Dispatch<React.SetStateAction<string>>;
-    bedsOptions: { value: string; label: string }[];
-    selectedMeals: string;
-    setSelectedMeals: React.Dispatch<React.SetStateAction<string>>;
-    mealOptions: { value: string; label: string }[];
-    cancellation: string;
-    setCancellation: React.Dispatch<React.SetStateAction<string>>;
-    cancellationOptions: { value: string; label: string }[];
-    selectedPayment: string;
-    setSelectedPayment: React.Dispatch<React.SetStateAction<string>>;
-    paymentOptions: { value: string; label: string }[];
-    submissionState: {
-        loading: boolean;
-    };
-    setSubmissionState: React.Dispatch<
-        React.SetStateAction<{loading: boolean;}>
-    >;
+    filters: FiltersInterface;
+    setFilters: React.Dispatch<React.SetStateAction<FiltersInterface>>;
+    bedsOptions: OptionType[];
+    mealOptions: OptionType[];
+    cancellationOptions: OptionType[];
+    paymentOptions: OptionType[];
     handleSubmit: () => void;
-    // resetAllFilters: () => void;
-    // totalSelectedOptions: number;
+    resetFilters: () => void;
+    loading: boolean;
     items: Rate[];
 }
 
 function FilterBox({
-    beds,
-    setBeds,
+    filters,
+    setFilters,
     bedsOptions,
-    selectedMeals,
-    setSelectedMeals,
     mealOptions,
-    cancellation,
-    setCancellation,
     cancellationOptions,
-    selectedPayment,
-    setSelectedPayment,
     paymentOptions,
-    submissionState,
-    setSubmissionState,
     handleSubmit,
-    // resetAllFilters,
-    // totalSelectedOptions,
+    resetFilters,
+    loading,
     items,
 }: FilterBoxProps) {
     const { isMobile } = useScreenResolution();
@@ -134,7 +93,12 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Beds" weight={400} />
-                    <Select styles={customStyles} options={bedsOptions} onChange={val => setBeds(val?.value ?? "")} />
+                    <Select 
+                        styles={customStyles}
+                        options={bedsOptions}
+                        onChange={val => setFilters(prev => ({ ...prev, beds: val! }))}
+                        value={filters.beds}
+                    />
                 </Flex>
                 <Flex
                     direction="column"
@@ -143,7 +107,12 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Meals" weight={400} />
-                    <Select styles={customStyles} options={mealOptions} onChange={val => setSelectedMeals(val?.value ?? "")} />
+                    <Select 
+                        styles={customStyles}
+                        options={mealOptions}
+                        onChange={val => setFilters(prev => ({ ...prev, meals: val! }))}
+                        value={filters.meals}
+                    />
                     
                 </Flex>{" "}
                 <Flex
@@ -152,7 +121,12 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Cancellation" weight={400} />
-                    <Select styles={customStyles} options={cancellationOptions} onChange={val => setCancellation(val?.value ?? "")} />
+                    <Select 
+                        styles={customStyles}
+                        options={cancellationOptions}
+                        onChange={val => setFilters(prev => ({ ...prev, cancellation: val! }))}
+                        value={filters.cancellation}
+                    />
                 </Flex>
                 <Flex
                     direction="column"
@@ -160,31 +134,34 @@ function FilterBox({
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="label" size={16} text="Payment" weight={400} />
-                    <Select styles={customStyles} options={paymentOptions} onChange={val => setSelectedPayment(val?.value ?? "")} />
+                    <Select 
+                        styles={customStyles}
+                        options={paymentOptions}
+                        onChange={val => setFilters(prev => ({ ...prev, payment: val! }))}
+                        value={filters.payment}
+                    />
                 </Flex>
             </GridLayout>
             {isMobile && (
-                <Span>
-                    <Span style={{ width: "100%" }}>
-                        <Flex styles={{ margin: "8px 0px", width: "100%" }}>
-                            <BtnDetails
-                                className="reset_filters"
-                                style={{
-                                    padding: "15px",
-                                    width: "100%",
-                                    textAlign: "center",
-                                    cursor: "default",
-                                }}
-                            >
-                                <Text
-                                    weight={500}
-                                    size={15}
-                                    type="p"
-                                    text="Reset All Filters"
-                                />
-                            </BtnDetails>
-                        </Flex>
-                    </Span>
+                <Flex direction="column" gap="1rem">
+                    <BtnDetails
+                        className="reset_filters"
+                        style={{
+                            padding: "15px",
+                            width: "100%",
+                            textAlign: "center",
+                            cursor: "default",
+                            margin: "0px 0px",
+                        }}
+                        onClick={resetFilters}
+                    >
+                        <Text
+                            weight={500}
+                            size={15}
+                            type="p"
+                            text="Reset All Filters"
+                        />
+                    </BtnDetails>
                     <Span>
                         <Button
                             width="100%"
@@ -193,9 +170,9 @@ function FilterBox({
                             padding="10px"
                             background={ttColors.dark}
                             onClick={handleSubmit}
-                            disabled={submissionState.loading}
+                            disabled={loading}
                         >
-                            {submissionState.loading ? (
+                            {loading ? (
                                 <Spinner size="40px" fill={"white"} />
                             ) : (
                                 <Text
@@ -207,7 +184,7 @@ function FilterBox({
                             )}
                         </Button>
                     </Span>
-                </Span>
+                </Flex>
             )}
         </Span>
     );

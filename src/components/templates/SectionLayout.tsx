@@ -9,7 +9,7 @@ const SectionLayout = styled.section<{ margin?: string; padding?: string; }>`
   max-width: 1600px;
   margin: ${(props) => props?.margin || "0 auto"};
   position: relative;
-
+  
   @media screen and (max-width: 1024px) {
     width: 90vw;
   }

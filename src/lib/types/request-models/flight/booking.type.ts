@@ -257,6 +257,7 @@ export interface SaveBookingRequestInput {
     booking_token: string;
     session_id: string;
     new_user_email?: string;
+    flightType: string;
     user?: string;
     seatId: string[];
     baggage: Baggage[];
@@ -286,6 +287,12 @@ export interface ConfirmPaymentZoozRequestInput {
 export interface PassengerBaggageCombinationInterface {
     hand_bag: Combination;
     hold_bag: Combination;
+}
+
+export enum FlightTypeEnum {
+    one_way = "ONE WAY",
+    return = "RETURN",
+    multictiy = "MULTI_CITY",
 }
 
 export const arrangeBaggageDataForOrdering = (
@@ -479,6 +486,7 @@ export const passengerAndBaggageDetails: PassengerFormInterface = {
 // };
 export const saveBookingDetails: SaveBookingRequestInput = {
     health_declaration_checked: true,
+    flightType: FlightTypeEnum.one_way,
     lang: "en",
     new_user_email: "",
     passengers: [],

@@ -6,6 +6,7 @@ import StaySkeletonLoader from "@/components/organisms/SkeletonLoader/StaySkelec
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { Box } from "@mui/material";
 
+
 function StayDetailSkeleton() {
   const { isMobile } = useScreenResolution();
 

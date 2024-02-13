@@ -19,11 +19,20 @@ import { styled } from "@mui/material/styles";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { FlexBox } from "../components/styles";
+import { FavoriteBox, FlexBox } from "../components/styles";
 import { AmenitiesModal, MapModal } from "./modals/Modals";
 import StayDetailSkeleton from "./skeleton/StayDetailSkeleton";
-import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { PaymentType, Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
 import { pickIcon } from "./modals/components/AmenitiesBox";
+import { ViewTripAdvisorStayDetailsResponse } from "@/lib/types/request-models/stay/search.type";
+import FavouriteCheckBox from "../../FavouriteCheckBox";
+import withLikeHotel from "@/components/HOCs/withLikeHotel";
+import GoogleMap from "./GoogleMap";
+import { useSearchLikedStays } from "@/lib/hooks/stay/search.hook";
+import { useUserStore } from "@/lib/store/useStore";
+import { numSort } from "@/lib/utilFns";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useConversionRate } from "@/hooks/useConversionRate";
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 const StyledRating = styled(Rating)({
@@ -49,10 +58,14 @@ const tabs: TabProps[] = [
 ];
 
 interface StayDetailsProps {
-    stayResponse: ViewSingleStayResponse;
+    stayResponse?: ViewSingleStayResponse;
+    stayDetails?: ViewTripAdvisorStayDetailsResponse;
+    loading: boolean;
 }
 
-function StayDetails({ stayResponse }: StayDetailsProps) {
+function StayDetails({ stayResponse, stayDetails, loading }: StayDetailsProps) {
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { convertCurrency } = useConversionRate()
     const { isMobile } = useScreenResolution();
 
     const [activeTab, setActiveTab] = useState("overview");
@@ -65,21 +78,33 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
         map: false,
         amenities: false,
     });
-    
-    const response: any = {}
 
     const sortedAmenities = useMemo(() =>
-        stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[])
+        stayResponse?.amenity_groups ? stayResponse?.amenity_groups.reduce((prev, curr) => [...prev, ...curr.amenities], [] as string[]) : []
     , [stayResponse?.amenity_groups])
-    
-    const lowestRate = useMemo(() => {
-        const sorted = stayResponse.rates.sort((a, b) => parseFloat(a.daily_prices[a.daily_prices.length - 1]) - parseFloat(b.daily_prices[b.daily_prices.length - 1]))
-        return sorted.length > 0 ? parseFloat(sorted[0]?.daily_prices[sorted.length - 1]) : 0
-    }, [stayResponse.rates])
 
-    
-  return (
-    <Container>
+    const prices = useMemo(() => {
+        return numSort(stayResponse?.rates?.reduce((prev: PaymentType[], curr: Rate) => {
+            let paymentType = curr.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? curr.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? curr.payment_options.payment_types[0]
+            return [...prev, paymentType]
+        }, []), 'amount', 'asc')
+    }, [stayResponse?.rates])
+    const selectedPrice = prices[0]
+    const displayPrice = {
+        currencyCode:  selectedPrice?.currency_code ?? preFerredCurrency,
+        amount: selectedPrice?.amount ?? '0' ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+    }
+
+    const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
+
+    const { user } = useUserStore()
+    const { data: likedHotels } = useSearchLikedStays({ enabled: !!user?._id })
+
+
+    return (loading ? (
+        <StayDetailSkeleton />
+    ) : (
+        <Container>
       <Header id="overview">
         <Tab>
           <Flex gap="20px">
@@ -111,25 +136,17 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
             <Text
               whiteSpace="nowrap"
               type="h1"
-              size={32}
+              size={isMobile ? 28 : 32}
               weight={600}
-              text={stayResponse.name}
+              text={stayResponse?.name ?? ''}
             />
             {!isMobile && (
-              <Checkbox
-                {...label}
-                icon={<FavoriteBorder />}
-                checkedIcon={
-                  <Favorite style={{ color: "var(--color-favorite)" }} />
-                }
-                disableRipple
-                disableTouchRipple
-                disableFocusRipple
-                sx={{
-                  "& .MuiSvgIcon-root": { fontSize: 28, padding: 0 },
-                }}
-                id="favorite-hotels-checkbox"
-              />
+                <Flex width='max-content'>
+                    <EnhancedFavouriteCheckBox
+                        id={stayResponse?.id ?? ''}
+                        liked={likedHotels?.some(e => e.id === stayResponse?.id)}
+                    />
+                </Flex>
             )}
           </Flex>
           <Text
@@ -137,11 +154,11 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
             size={15}
             weight={400}
             color="var(--text-gray-color)"
-            text={stayResponse.address}
+            text={stayResponse?.address ?? ''}
             margin={"0 0 1.5rem 0"}
           />
           <Flex align="center">
-            <Flex>
+            {/* <Flex>
               <Image
                 alt="location"
                 src={"/assets/icons/stay/view/location_radius_icon.svg"}
@@ -149,68 +166,73 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                 height={24}
               />
               <Text type="p" text="4.3km away" />
-            </Flex>
+            </Flex> */}
             <Flex>
-              <Rating
-                // style={{
-                //     marginLeft: "-4px",
-                //     marginBottom: "5px",
-                //     fontSize: "20px",
-                // }}
-                name="rating"
-                precision={0.5}
-                readOnly
-                max={5}
-                value={stayResponse.star_rating ?? 4}
-              />
+                <Rating
+                    name="rating"
+                    precision={0.5}
+                    readOnly
+                    max={5}
+                    value={stayResponse?.star_rating ?? 0}
+                />
             </Flex>
           </Flex>
           <FlexBox className="stay_wrap" style={{ margin: "15px 0px 2.5rem" }}>
             <Flex gap="5px" align="center">
-              <Text type="p" size={24} weight={600} text={getCurrency()} />
+              <Text type="p" size={30} weight={600} text={displayPrice?.currencyCode} />
               <Text
                 type="p"
+                whiteSpace="wrap"
                 size={30}
                 weight={600}
-                text={formatPriceWithoutCurrency(lowestRate)}
+                text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
+              />
+              <Text
+                type="p"
+                size={20}
+                weight={600}
+                text='/per night'
               />
             </Flex>
-            <Flex align="center" gap="8px">
-              <Text
-                type="p"
-                text="4.0"
-                size={30}
-                weight={600}
-                styles={{ flex: "none" }}
-              />
-              <Flex gap="8px" align="center">
-                <Image
-                  alt="location"
-                  src={"/assets/icons/stay/view/view_camera_icon.svg"}
-                  width={24}
-                  height={24}
+            
+            {stayDetails &&
+                <Flex align="center" gap="8px">
+                <Text
+                    type="p"
+                    text={stayDetails?.rating ?? '0'}
+                    size={30}
+                    weight={600}
+                    styles={{ flex: "none" }}
                 />
-                <Flex direction="column">
-                  <Flex>
-                    <StyledRating
-                      name="customized-color"
-                      defaultValue={4}
-                      getLabelText={(value: number) =>
-                        `${value} Heart${value !== 1 ? "s" : ""}`
-                      }
-                      readOnly
-                      precision={0.5}
-                      icon={<CircleIcon fontSize="inherit" />}
-                      emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
-                      style={{
-                        fontSize: "15px",
-                      }}
+                <Flex gap="8px" align="center">
+                    <Image
+                        alt="location"
+                        src={"/assets/icons/stay/view/view_camera_icon.svg"}
+                        width={24}
+                        height={24}
                     />
-                  </Flex>
-                  <Text whiteSpace="nowrap" type="p" text="1000 reviews" />
+                    <Flex direction="column">
+                        <Flex>
+                            <StyledRating
+                            name="customized-color"
+                            value={Number(stayDetails?.rating)}
+                            getLabelText={(value: number) =>
+                                `${value} Heart${value !== 1 ? "s" : ""}`
+                            }
+                            readOnly
+                            precision={0.5}
+                            icon={<CircleIcon fontSize="inherit" />}
+                            emptyIcon={<CircleOutlinedIcon fontSize="inherit" />}
+                            style={{
+                                fontSize: "15px",
+                            }}
+                            />
+                        </Flex>
+                        <Text whiteSpace="nowrap" type="p" text={`${stayDetails?.num_reviews} reviews`} />
+                    </Flex>
                 </Flex>
-              </Flex>
-            </Flex>
+                </Flex>
+            }
           </FlexBox>
           <Text
             type="h1"
@@ -249,42 +271,41 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
           </Button>
         </Section>
         <Section>
-          <Section margin="0 0 10px 0">
-            <Image
-              alt="stay"
-              src={"/assets/images/topCountries/Canada.jpeg"}
-              styles={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </Section>
-          <Text
-            type="p"
-            text={stayResponse.address}
-            size={16}
-            weight={500}
-          />
-          <Button background="transparent" width="fit-content" padding="0">
-            <Flex align="center" justify="flex-start">
-              <Text
+            <Section margin="0 0 10px 0">
+                <GoogleMap
+                    containerStyles={{ height: '340px' }}
+                    lat={stayResponse?.latitude}
+                    lng={stayResponse?.longitude}
+                    zoom={20}
+                />
+            </Section>
+            <Text
                 type="p"
+                text={stayResponse?.address ?? ''}
+                size={16}
                 weight={500}
-                onClick={() =>
-                  setOpen((prev) => ({
-                    ...prev,
-                    map: true,
-                  }))
-                }
-                text="Show in map"
-                color={ttColors.primary}
-              />
-              <BiChevronRight color={ttColors.primary} size={24} />
-            </Flex>
-          </Button>
+            />
+            {stayResponse?.latitude && stayResponse?.longitude && 
+                <Button background="transparent" width="fit-content" padding="0">
+                    <Flex align="center" justify="flex-start">
+                    <Text
+                        type="p"
+                        weight={500}
+                        onClick={() =>
+                        setOpen((prev) => ({
+                            ...prev,
+                            map: true,
+                        }))
+                        }
+                        text="Show in map"
+                        color={ttColors.primary}
+                    />
+                    <BiChevronRight color={ttColors.primary} size={24} />
+                    </Flex>
+                </Button>
+            }
         </Section>
-        </Box> 
+        </Box>
           
         <AmenitiesModal
             open={open.amenities}
@@ -294,7 +315,7 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                     amenities: false,
                 }))
             }
-            amenities={stayResponse.amenity_groups}
+            amenities={stayResponse?.amenity_groups ?? []}
             sortedAmenities={sortedAmenities}
         />
         <MapModal
@@ -305,10 +326,12 @@ function StayDetails({ stayResponse }: StayDetailsProps) {
                     map: false,
                 }))
             }
+            lat={stayResponse?.latitude ?? 0}
+            lng={stayResponse?.longitude ?? 0}
             stayResponse={stayResponse}
         />
-    </Container>
-  );
+        </Container>
+    ));
 }
 
 export default StayDetails;

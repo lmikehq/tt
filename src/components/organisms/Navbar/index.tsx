@@ -30,6 +30,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { IoIosArrowDown } from "react-icons/io";
 import { CurrencyModal, LanguageModal } from "../customModal";
+import { useAccountDashboard } from "@/lib/hooks/dashboard/account.hook";
+import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
+import Spinner from "@/components/molecules/icons/spinner";
+import CustomPopover from "@organism/Navbar/UserPopover";
 
 
 
@@ -190,17 +194,13 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const { isMobile, isTablet } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
-  const { setUser } = useUserStore((state) => state);
+  // const { setUser, user } = useUserStore((state) => state);
   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
     useUserPreferencesStore((state) => state);
 
-  async function getUser(): Promise<User | any> {
-    const res = await apiService("/user", "GET");
-    setUser(res);
-    return res;
-  }
 
-  const { data: user } = useQuery(["getUser"], getUser);
+  const { data, isLoading } = useAccountDashboard();
+  const user: AuthUser = data as AuthUser;
 
   const [open, setOpen] = useState({
     language: false,
@@ -212,8 +212,6 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
 
   // SELECTED LANGUAGE
   const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
-
-  // console.log("LANGUAGE", selectedLanguage);
 
   return (
     <>
@@ -349,20 +347,17 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 </span>
               </Flex>
 
-              {user?.firstName ? (
-                <>
-                  {" "}
-                  <UserPopover />{" "}
-                </>
+              {isLoading ? (
+                <Flex align="center" justify="center">
+                  <Spinner size="40px" fill={ttColors.blackishBlue} />
+                </Flex>
               ) : (
-                <>
-                  {" "}
+                user?.firstName ? (
+                  <CustomPopover isLoading={isLoading} user={user} />
+                ) : (
                   <Flex gap="1rem">
                     <Link href="/auth/login">
-                      <Button
-                        border="1px solid #06062A"
-                        background="transparent"
-                      >
+                      <Button border="1px solid #06062A" background="transparent">
                         <Text
                           text="Sign in"
                           color="#06062A"
@@ -385,12 +380,12 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                       </Button>
                     </Link>
                   </Flex>
-                </>
+                )
               )}
-            </NavMenu>
-          </Grid>
-        </NavbarLayout>
-      </NavbarWrapper>
+            </NavMenu >
+          </Grid >
+        </NavbarLayout >
+      </NavbarWrapper >
     </>
   );
 };

@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
 
 body {
     background: #f2f2f2;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     height: 100vh;
 }
-
 
 @media screen and (max-width: 900px) {
     body {
@@ -14,9 +12,6 @@ body {
         display: block;
     }
 }
-
-
-
 
 @media screen and (max-width: 900px) {
     .menu-icon {
@@ -41,16 +36,12 @@ body {
     }
 }
 
-
-
-
-
 @media (max-width: 900px) {
     .nav-elements.active {
-            width: 130px;
+        width: 130px;
         background-color: #ffffff;
         z-index: 999;
-        }
+    }
 }
 
 @media (max-width: 4600px) {
@@ -75,6 +66,6 @@ body {
     .nav-elements.active {
         width: 130px;
         background-color: #ffffff;
-            z-index: 999;
+        z-index: 999;
     }
 }

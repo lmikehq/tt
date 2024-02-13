@@ -14,6 +14,7 @@ import Section from "../../section";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/lib/store/useStore";
 import { IUser } from "@/lib/types/response-models/dashboard";
+import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
 
 const ApplicationStatusModalContainer = styled(Dialog)`
   .css-1t1j96h-MuiPaper-root-MuiDialog-paper {
@@ -26,26 +27,34 @@ const ApplicationStatusModalContainer = styled(Dialog)`
 
 interface Props {
   state: boolean;
-  setState: React.Dispatch<React.SetStateAction<boolean>>;
-  openPaymentModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setState: React.Dispatch<React.SetStateAction<{
+    name: string,
+    state: boolean;
+  }>>;
+  onClose: () => void;
+  serviceID: string;
 }
-export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) => {
+export const ApplicationStatus = ({ state, setState, onClose, serviceID }: Props) => {
   const { isMobile } = useScreenResolution();
   const { user } = useUserStore((state) => state);
-  const [userInfo, setUserInfo] = useState<IUser | null>(null);
+  const [userInfo, setUserInfo] = useState<AuthUser | null>(null);
 
   useEffect(() => {
     setUserInfo(user);
   }, [user]);
 
-  const handleClose = () => {
-    setState(false);
-  };
+  // const handleClose = () => {
+  //   setState(false);
+  // };
   const pathname = usePathname();
 
   const handlePayment = () => {
-    openPaymentModal(true);
-    // handleClose()
+    setState({
+      name: "processing-fee-payment-modal",
+      state: true
+    });
+    onClose();
+
   };
 
   // DON'T SHOW THE APPLICATION STATUS MODAL
@@ -53,10 +62,9 @@ export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) 
 
   return (
     <ApplicationStatusModalContainer
-      onClose={handleClose}
+      onClose={onClose}
       open={state}
     >
-
       <Flex align="center" justify="flex-end" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
         <Section styles={{ position: 'absolute', overflow: 'hidden', top: 0, right: 0, left: 0 }}>
           <Image src={confetti} alt="confetti-celebration-successful" styles={{ objectFit: 'cover', overflow: 'hidden', zIndex: -2 }} />
@@ -68,7 +76,7 @@ export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) 
           styles={{ cursor: 'pointer', zIndex: 5 }}
           height="30px"
           width="30px"
-          onClick={() => handleClose()}
+          onClick={onClose}
           position="relative"
         >
           <Flex
@@ -105,7 +113,7 @@ export const ApplicationStatus = ({ state, setState, openPaymentModal }: Props) 
         <Flex align="center" gap="12px">
           {userInfo ? (
             <a
-              href={userInfo?._id ? `/dashboard/visa-application/${userInfo._id}` : '#'}
+              href={userInfo?._id ? `/dashboard/visa-application/${serviceID}` : '#'}
               target="_blank"
               rel="noopener noreferrer"
               style={{ width: '100%' }}

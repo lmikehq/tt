@@ -18,6 +18,7 @@ interface Actions {
   updateParams: (param: string) => void;
   updateTab: (tab: string) => void;
   setPage: (param: string) => void;
+  updatePage: (param: number) => void;
   setSearch: (param: string) => void;
   setDateRange: (startDate: string, endDate: string) => void;
   setTab: (param: number) => void;
@@ -69,6 +70,11 @@ export const useDashboardStore = create<Actions & State>((set): Actions & State 
         state.page = state.page - 1;
       }
       return { page: state.page };
+    });
+  },
+  updatePage(param) {
+    set((state) => {
+      return { page: param };
     });
   },
   setSearch(param) {

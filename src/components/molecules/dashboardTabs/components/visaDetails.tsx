@@ -46,6 +46,8 @@ import { useUserStore } from "@/lib/store/useStore";
 import toast from "react-hot-toast";
 import AccompanyPaymentModal from "../accompanyPayment";
 import apiService from "@/lib/extensions/hook/apiService";
+import { isVisaApplication } from "@/lib/extensions/helpers/type-guard";
+import { OldVisaApplication } from "@/lib/types/visa";
 
 const Logo = styled.div`
   height: 64px;
@@ -147,7 +149,7 @@ interface VisaDataProps {
   // onDownloadStatusClick: () => void;
 }
 
-function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }) {
+function VisaDetail({ visa, refetch }: { visa: VisaResponseProp | OldVisaApplication; refetch: any; }) {
   const { user } = useUserStore((state) => state);
   const { isMobile, isTablet } = useScreenResolution();
   const [modalState, setModalState] = useState({
@@ -188,9 +190,9 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
     switch (visa?.applicationStatus) {
       case "APPROVED":
         visaInformation = {
-          text: "Download Visa",
+          text: "No action Required",
           fn: () => { },
-          disabled: false,
+          disabled: true,
           intent: "",
         };
         break;
@@ -283,17 +285,227 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
     switch (status) {
       case 'Pending':
         return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' };
+      case 'SUCCESS':
+      case 'APPROVED':
+        return { ...setting, bg: '#F1FFF2', color: '#1A820A', border: '#1A820A' };
+      default:
+        return { ...setting, bg: '#FFFFEA', color: '#BD9600', border: '#BD9600' };
     }
 
-    return setting;
+    // return setting;
   };
 
-  // const accompanying = visa?.familyMembers?.filter(
-  //   (fm: any) => fm.accompanying === true
-  // ).length;
+  function getDependants() {
 
-  const accompanying = 1;
+    if (isVisaApplication(visa)) {
+      const data: VisaResponseProp = visa as VisaResponseProp;
+      const allImmediateFamilyDependants = data?.familyInformation?.immediateFamilyInfo?.filter((immediateFamily) => (immediateFamily.accompanying === true));
+      const allParentDependants = data?.familyInformation?.parentDetails?.filter((parent) => (parent.accompanying === true));
+      const allSiblingDependants = data.familyInformation.siblingDetails.filter((sibling) => (sibling.accompanying === true));
+      return [...allImmediateFamilyDependants, ...allParentDependants, ...allSiblingDependants];
+    } else {
+      const data: OldVisaApplication = visa as OldVisaApplication;
+      const allImmediateFamilyDependants = data?.familyMembers.filter((family) => (family.accompanying === true));
 
+      return [...allImmediateFamilyDependants];
+    }
+
+  }
+
+  function renderDestinationLogo() {
+    if (isVisaApplication(visa)) {
+      return (
+        <Logo>
+          {visa?.destination?.code && (
+            <img
+              src={
+                COUNTRY_FLAGS.find(
+                  (x) => x?.code === visa?.destination?.code
+                )?.flag
+              }
+              alt="logo"
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "contain",
+              }}
+            />
+          )}
+        </Logo>
+      );
+    } else {
+      const data: OldVisaApplication = visa as OldVisaApplication;
+      return (
+        <Logo>
+          {data?.primaryTraveller?.destination.code && (
+            <img
+              src={
+                COUNTRY_FLAGS.find(
+                  (x) => x?.code === data?.primaryTraveller?.destination?.code
+                )?.flag
+              }
+              alt="logo"
+              style={{
+                height: "100%",
+                width: "100%",
+                objectFit: "contain",
+              }}
+            />
+          )}
+        </Logo>
+      );
+    }
+  }
+
+  function renderVisaStatus() {
+    if (isVisaApplication(visa)) {
+      return (
+        <Flex direction="column" gap=".5rem">
+          <Text
+            type="p"
+            weight={900}
+            size={isMobile ? "14px" : "20px"}
+            textAlign={isMobile ? "center" : "left"}
+            text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${(visa?.destination?.code)})`}
+            letterSpacing={"unset"}
+          />
+          <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+            <Text
+              type="h5"
+              text={
+                visa.applicationStatus === "FORM FEE REQUESTED"
+                  ? "APPLICATION NOT SUBMITTED"
+                  : visa.applicationStatus
+              }
+              weight={800}
+              size={isMobile ? 13 : 14}
+              color={textAndBgColor.text}
+            />
+          </VisaStatus>
+        </Flex>
+      );
+    } else {
+      const data: OldVisaApplication = visa as OldVisaApplication;
+      return (
+        <Flex direction="column" gap=".5rem">
+          <Text
+            type="p"
+            weight={900}
+            size={isMobile ? "14px" : "20px"}
+            textAlign={isMobile ? "center" : "left"}
+            text={`${data?.primaryTraveller?.homeCountry?.name}(${data?.primaryTraveller.homeCountry?.code}) — ${data?.primaryTraveller?.destination?.name}(${(data?.primaryTraveller?.destination?.code)})`}
+            letterSpacing={"unset"}
+          />
+          <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+            <Text
+              type="h5"
+              text={
+                visa.applicationStatus === "FORM FEE REQUESTED"
+                  ? "APPLICATION NOT SUBMITTED"
+                  : visa.applicationStatus
+              }
+              weight={800}
+              size={isMobile ? 13 : 14}
+              color={textAndBgColor.text}
+            />
+          </VisaStatus>
+        </Flex>
+      );
+    }
+  }
+
+  function renderHomeToDestination(mobile: boolean) {
+    if (mobile) {
+      if (isVisaApplication(visa)) {
+        return (
+          <Flex justify="flex-start" gap="1rem" align="center">
+            <Text
+              type="h3"
+              text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${visa?.destination?.code})`}
+              size={16}
+              weight={600}
+              width="max-content"
+              color="#112211"
+            />
+          </Flex>
+        );
+      } else {
+        const data: OldVisaApplication = visa as OldVisaApplication;
+        return (
+          <Flex justify="flex-start" gap="1rem" align="center">
+            <Text
+              type="h3"
+              text={`${data?.primaryTraveller?.homeCountry?.name} — ${data?.primaryTraveller?.destination?.name}`}
+              size={16}
+              weight={600}
+              width="max-content"
+              color="#112211"
+            />
+          </Flex>
+        );
+      }
+    } else {
+      if (isVisaApplication(visa)) {
+        const data: VisaResponseProp = visa as VisaResponseProp;
+        return (
+          <Text
+            type="p"
+            letterSpacing="1px"
+            weight={900}
+            size={isTablet ? "13px" : "1.3rem"}
+            textAlign={isMobile ? "center" : "left"}
+            text={`${data?.homeCountry?.name}(${data?.homeCountry?.code}) — ${data?.destination?.name}(${data?.destination?.code})`}
+          />
+        );
+      } else {
+        const data: OldVisaApplication = visa as OldVisaApplication;
+        return (
+          <Text
+            type="p"
+            letterSpacing="1px"
+            weight={900}
+            size={isTablet ? "13px" : "1.3rem"}
+            textAlign={isMobile ? "center" : "left"}
+            text={`${data?.primaryTraveller?.homeCountry?.name}(${data?.primaryTraveller?.homeCountry?.code}) — ${data?.primaryTraveller?.destination?.name}(${data?.primaryTraveller?.destination?.code})`}
+          />
+        );
+      }
+    }
+  }
+
+  function renderVisaPersonalInfo() {
+    if (isVisaApplication(visa)) {
+      return (
+        <Flex align="center" margin=".5rem 0" gap=".5rem">
+          <RxAvatar size={20} />
+          <Text
+            type="p"
+            text={`${visa?.primaryTraveller?.personalDetails?.firstName} ${visa?.primaryTraveller?.personalDetails?.lastName}`}
+            size={"15px"}
+            transform="uppercase"
+            weight={500}
+          />
+        </Flex>
+      );
+    } else {
+      const data: OldVisaApplication = visa as OldVisaApplication;
+      return (
+        <Flex align="center" margin=".5rem 0" gap=".5rem">
+          <RxAvatar size={20} />
+          <Text
+            type="p"
+            text={`${data?.primaryTraveller?.firstName} ${data?.primaryTraveller?.lastName}`}
+            size={"15px"}
+            transform="uppercase"
+            weight={500}
+          />
+        </Flex>
+      );
+    }
+  }
+
+
+  const accompanying = getDependants().length || 0;
 
   // function getLocationField(field: string) {
   //   return typeof visa?.primaryTraveller[field] === "string"
@@ -349,749 +561,739 @@ function VisaDetail({ visa, refetch }: { visa: VisaResponseProp; refetch: any; }
       // some code
       // CALL THE API FROM HERE AND EVEN RESET THE FORM
 
-      if (user) {
+      // console.log(values.dependants);
 
-        // console.log(values.dependants);
-        const response = apiService(`/visa/application/${visa._id}/add-accompanying`, 'POST', values.dependants.map((dependant) => ({
-          membersEmail: dependant.memberEmail,
-          accompanying: true,
-          address: dependant.memberAddress,
-          gender: dependant.gender,
-          membersPhoneNumber: dependant.phoneNumber,
-          relationshipToPrimary: dependant.relationship,
-          membersName: dependant.memberName,
-          dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
-          expiryYear: Number(dependant.expiryDate.split("/")[2]),
-          issueYear: Number(dependant.issueDate.split("/")[2]),
-          passportNumber: dependant.passportNumber
-        }))).then((response) => {
-          console.log('api response', response);
-          if (response?.message === 'success') {
-            setDependantPaymentInfo({
-              checkout_url: response?.data?.data?.checkout_url,
-              reference: response?.data?.data?.reference,
-              price: values.dependants.length * 500000
-            });
-            toast.success(response?.data?.message);
-            // CLOSE THE MODAL FOR ACCOMPANIES
-            setModalState({ open: false, type: "add-dependant" });
-            helpers.resetForm();
-          }
-          setModalState({ open: true, type: "dependant-payment" });
-          // setModalState({ open: true, type: "payment" });
-          router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
-        }).catch((err) => {
-          console.log(err);
-          throw err;
-        });
+      // const dependantsData = values.dependants.map((dependant) => ({
+      //   membersEmail: dependant.memberEmail,
+      //   accompanying: true,
+      //   address: dependant.memberAddress,
+      //   gender: dependant.gender,
+      //   membersPhoneNumber: dependant.phoneNumber,
+      //   relationshipToPrimary: dependant.relationship,
+      //   membersName: dependant.memberName,
+      //   dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+      //   expiryYear: Number(dependant.expiryDate.split("/")[2]),
+      //   issueYear: Number(dependant.issueDate.split("/")[2]),
+      //   passportNumber: dependant.passportNumber
+      // }));
 
-        console.log('code after the api call');
+      // console.log({ dependantsData });
 
-        // const response = await VisaService.addDependants(visa._id!, values.dependants.map((dependant) => ({
-        //   membersEmail: dependant.memberEmail,
-        //   accompanying: true,
-        //   address: dependant.memberAddress,
-        //   gender: dependant.gender,
-        //   membersPhoneNumber: dependant.phoneNumber,
-        //   relationshipToPrimary: dependant.relationship,
-        //   membersName: dependant.memberName,
-        //   dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
-        //   expiryYear: Number(dependant.expiryDate.split("/")[2]),
-        //   issueYear: Number(dependant.issueDate.split("/")[2]),
-        //   passportNumber: dependant.passportNumber
-        // })));
-        // console.log('response from the api', response);
-        // if (response?.message === "success" || response?.statusCode === 200) {
-        //   console.log('the response was recieved succesfully open the payment modal');
-        //   setDependantPaymentInfo({
-        //     checkout_url: response?.data?.data?.checkout_url,
-        //     reference: response?.data?.data?.reference,
-        //     price: values.dependants.length * 500000
-        //   });
-        //   // TOAST
-        //   toast.success(response?.data?.message);
-        //   // CLOSE THE MODAL FOR ACCOMPANIES
-        //   setModalState({ open: false, type: "add-dependant" });
+      // console.log(values.dependants);
+      apiService(`/visa/application/${visa._id}/add-accompanying`, 'POST', values.dependants.map((dependant) => ({
+        membersEmail: dependant.memberEmail,
+        accompanying: true,
+        address: dependant.memberAddress,
+        gender: dependant.gender,
+        membersPhoneNumber: dependant.phoneNumber,
+        relationshipToPrimary: dependant.relationship,
+        membersName: dependant.memberName,
+        dateOfBirth: format(new Date(dependant.dateOfBirth), 'yyyy-MM-dd'),
+        expiryYear: Number(dependant.expiryDate.split("/")[2]),
+        issueYear: Number(dependant.issueDate.split("/")[2]),
+        passportNumber: dependant.passportNumber
+      }))).then((response) => {
+        if (response?.message === 'success') {
+          setDependantPaymentInfo({
+            checkout_url: response?.data?.data?.checkout_url,
+            reference: response?.data?.data?.reference,
+            price: values.dependants.length * 500000
+          });
+          toast.success(response?.data?.message);
 
-        //   // OPEN THE MODAL TO MAKE DEPENDANTS PAYMENT 
-        //   setModalState({ open: true, type: "dependant-payment" });
-        //   // setModalState({ open: true, type: "payment" });
-        //   router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response.data.data.checkout_url}`, { scroll: false });
-        //   // ADD THE PAYMENT TO URL PARAMS
-        // }
+          setModalState({ open: false, type: "add-dependant" });
+          helpers.resetForm();
+        }
+        setModalState({ open: true, type: "dependant-payment" });
 
-        // toast.error("Error adding dependant(s). Try again!");
-
-
-      }
-
+        router.push(`?reference=${response?.data?.data.reference}&checkout_url=${response?.data?.data?.checkout_url}`, { scroll: false });
+      }).catch((err) => {
+        throw err;
+      });
     }
   });
 
   return (
-    <Section
-      styles={{
-        border: "1px solid #E7E7E7",
-        borderRadius: "16px",
-      }}
-      padding="24px"
-      margin={isMobile ? ".5rem 0" : "2rem 0"}
-    >
-      {/* ACCOMPANY / DEPENDANTS PAYMENT MODAL */}
-      <AccompanyPaymentModal
-        onClose={() => { }}
-        open={modalState.open && modalState.type === 'dependant-payment'}
-        koraLink={dependantPaymentInfo.checkout_url}
-        price={dependantPaymentInfo.price}
-        reference={dependantPaymentInfo.reference}
-      />
+    <>
 
-      {/* VISA PAYMENT MODAL */}
-      <VisaPaymentModal
-        open={modalState.open && modalState.type === "payment"}
-        onClose={() => setModalState({ open: false, type: "" })}
-        visaDetails={{
-          id: visa?._id,
-          intent: getButtonInformation().intent,
-          accompanying: accompanying || 0,
-          refetch,
+      <Section
+        styles={{
+          border: "1px solid #E7E7E7",
+          borderRadius: "16px",
         }}
-      />
+        padding="24px"
+        margin={isMobile ? ".5rem 0" : "2rem 0"}
+      >
+        {/* ACCOMPANY / DEPENDANTS PAYMENT MODAL */}
+        <AccompanyPaymentModal
+          onClose={() => { }}
+          open={modalState.open && modalState.type === 'dependant-payment'}
+          koraLink={dependantPaymentInfo.checkout_url}
+          price={dependantPaymentInfo.price}
+          reference={dependantPaymentInfo.reference}
+        />
 
-      {/* VISA UPLOAD DOCUMENT MODAL */}
-      <VisaUploadDocModal
-        onClose={() => setModalState({ open: false, type: "" })}
-        open={modalState.open && modalState.type === "upload"}
-        visa={visa && visa}
-        refetch={refetch}
-      />
+        {/* VISA PAYMENT MODAL */}
+        <VisaPaymentModal
+          open={modalState.open && modalState.type === "payment"}
+          onClose={() => setModalState({ open: false, type: "" })}
+          visaDetails={{
+            id: visa?._id,
+            intent: getButtonInformation().intent,
+            accompanying: accompanying || 0,
+            refetch,
+          }}
+        />
 
-      {/* ADD DEPENDANTS / ACCOMPANIES MODAL */}
-      <AddVisaAccompanyModal
-        open={modalState.open && modalState.type === 'add-accompany'}
-        setState={setModalState}
-        formik={dependantsFormik}
-        persistForm={() => { }}
-        index={1}
-        steps={[""]}
-      />
+        {/* VISA UPLOAD DOCUMENT MODAL */}
+        <VisaUploadDocModal
+          onClose={() => setModalState({ open: false, type: "" })}
+          open={modalState.open && modalState.type === "upload"}
+          visa={visa && visa}
+          refetch={refetch}
+        />
 
-      {/* SUCCESSFULY PAID FOR DEPENDANTS / ACCOMPANIES MODAL */}
+        {/* ADD DEPENDANTS / ACCOMPANIES MODAL */}
+        <AddVisaAccompanyModal
+          open={modalState.open && modalState.type === 'add-accompany'}
+          setState={setModalState}
+          formik={dependantsFormik}
+          persistForm={() => { }}
+          index={1}
+          steps={[""]}
+        />
 
-      {isMobile ? (
-        <Flex
-          gap="1.5rem"
-          justify="space-between"
-          align="center"
-          styles={{ position: "relative" }}
-        >
-          <Logo>
-            {visa?.destination?.code && (
-              <img
-                src={
-                  COUNTRY_FLAGS.find(
-                    (x) => x?.code === visa?.destination?.code
-                  )?.flag
-                }
-                alt="logo"
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "contain",
-                }}
-              />
-            )}
-          </Logo>
-          <Flex direction="column" gap=".5rem">
-            <Text
-              type="p"
-              weight={900}
-              size={isMobile ? "14px" : "20px"}
-              textAlign={isMobile ? "center" : "left"}
-              text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${(visa?.destination?.code)})`}
-              letterSpacing={"unset"}
-            />
-            <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
-              <Text
-                type="h5"
-                text={
-                  visa.applicationStatus === "FORM FEE REQUESTED"
-                    ? "APPLICATION NOT SUBMITTED"
-                    : visa.applicationStatus
-                }
-                weight={800}
-                size={isMobile ? 13 : 14}
-                color={textAndBgColor.text}
-              />
-            </VisaStatus>
-          </Flex>
-          <BsThreeDotsVertical
-            color="#040404"
-            size="2rem"
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          />
-          {isDropdownOpen && (
-            <DropdownContent ref={ref}>
-              {sortOptions.map((option, index) => (
-                <StyledOption
-                  key={option.value}
-                  hovered={hoveredOption === index}
-                  lastChild={index === sortOptions.length - 1}
-                  onMouseEnter={() => setHoveredOption(index)}
-                  onMouseLeave={() => setHoveredOption(null)}
-                  onClick={option.action}
-                >
-                  <OptionText hovered={hoveredOption === index}>
-                    <Flex gap="1rem" align="center">
-                      {option.icon}
-                      {option.label}
-                    </Flex>
-                  </OptionText>
-                </StyledOption>
-              ))}
-            </DropdownContent>
-          )}
-          {/* {isDropdownOpen && <DropdownContent>yessss</DropdownContent>} */}
-          <CustomDrawer
-            anchor="bottom"
-            open={bottomDrawerOpen}
-            onClose={() => setBottomDrawerOpen(false)}
-            height="50vh"
-            borderRadius="16px 16px 0px 0px"
-          >
-            <Section
-              height="unset"
-              padding={"1rem 1.5rem 1.5rem"}
-              styles={{
-                background: ttColors.light,
-              }}
-            >
-              <Flex align="center" justify="flex-end">
-                <GrFormClose
-                  size={30}
-                  color="#848484"
-                  cursor="pointer"
-                  onClick={() => {
-                    setBottomDrawerOpen(false);
-                    setIsDropdownOpen(false);
-                  }}
-                />
-              </Flex>
-              <Flex
-                justify="space-between"
-                align="center"
-                margin="1rem 0 .6rem"
-              >
-                <Flex justify="flex-start" gap="1rem" align="center">
-                  <Text
-                    type="h3"
-                    text={`${visa?.homeCountry?.name} — ${visa?.destination?.name}`}
-                    size={16}
-                    weight={600}
-                    width="max-content"
-                    color="#112211"
-                  />
-                </Flex>
-              </Flex>
-              <Divider direction="horizontal" margin="0px 0px 1rem" />
-              <Flex gap="2rem" direction="column">
-                <Flex justify="space-between" align="center">
-                  <Text
-                    type="h3"
-                    text="Application Date"
-                    size={16}
-                    weight={500}
-                    width="max-content"
-                    color="#000000"
-                  />
-                  <Text
-                    type="h3"
-                    text={
-                      visa?.updatedAt
-                        ? format(new Date(visa?.updatedAt), "dd MMM, yyyy")
-                        : "n/a"
-                    }
-                    size={16}
-                    weight={400}
-                    width="max-content"
-                    color="#5C5C5C"
-                  />
-                </Flex>
-
-                <Flex justify="space-between" align="center">
-                  <Text
-                    type="h3"
-                    text="Recent paymemt"
-                    size={16}
-                    weight={500}
-                    width="max-content"
-                    color="#000000"
-                  />
-                  <Text
-                    type="h3"
-                    text={
-                      visa?.payments.length
-                        ? currencyFormatter(recentPayment.totalAmount)
-                        : visa?.usedFormFeeVoucher
-                          ? "Travel voucher"
-                          : "n/a"
-                    }
-                    size={16}
-                    weight={400}
-                    width="max-content"
-                    color="#5C5C5C"
-                  />
-                </Flex>
-
-                <Flex justify="space-between" align="center">
-                  <Text
-                    type="h3"
-                    text="Application Type"
-                    size={16}
-                    weight={500}
-                    width="max-content"
-                    color="#000000"
-                  />
-                  <Text
-                    type="h3"
-                    text={visa?.applicationType}
-                    size={16}
-                    weight={400}
-                    width="max-content"
-                    color="#5C5C5C"
-                  />
-                </Flex>
-
-                <Flex justify="space-between" align="center">
-                  <Text
-                    type="h3"
-                    text="Status"
-                    size={16}
-                    weight={500}
-                    width="max-content"
-                    color="#000000"
-                  />
-
-                  <Flex width="60%">
-                    <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
-                      <Text
-                        type="h5"
-                        text={
-                          visa.applicationStatus === "FORM FEE REQUESTED"
-                            ? "APPLICATION NOT SUBMITTED"
-                            : visa.applicationStatus
-                        }
-                        weight={800}
-                        size={isMobile ? 13 : 14}
-                        color={textAndBgColor.text}
-                      />
-                    </VisaStatus>
-                  </Flex>
-                </Flex>
-                <Flex>
-                  <Button
-                    padding="8px 10px"
-                    width={"100%"}
-                    height="48px"
-                    background="#06062A"
-                    styles={{
-                      marginLeft: isMobile ? "0px" : "55px",
-                      display: isMobile ? "flex" : "inline-flex",
-                      maxWidth: "100%",
-                    }}
-                    disabled={getButtonInformation().disabled}
-                    onClick={getButtonInformation().fn}
-                  >
-                    <Text
-                      type="h5"
-                      text={getButtonInformation().text}
-                      weight={500}
-                      size={14}
-                      styles={{
-                        width: "max-content",
-                        textAlign: "center",
-                      }}
-                    />
-                  </Button>
-                </Flex>
-              </Flex>
-            </Section>
-          </CustomDrawer>
-        </Flex>
-      ) : (
-        <>
-          <Grid
-            columns=''
-            gap={isTablet ? "10px" : "24px"}
-            style={{ gridTemplateColumns: isTablet ? "50px 2fr 1fr 27%" : '80px 1fr 25% 20%' }}
+        {isMobile ? (
+          <Flex
+            gap="1.5rem"
+            justify="space-between"
             align="center"
+            styles={{ position: "relative" }}
           >
-            <Logo>
-              {visa?.destination?.code && (
-                <img
-                  src={
-                    COUNTRY_FLAGS.find(
-                      (x) =>
-                        x?.code === visa?.destination?.code
-                    )?.flag
-                  }
-                  alt="logo"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              )}
-            </Logo>
+            {renderDestinationLogo()}
 
-            <Flex
-              justify="flex-start"
-              // width={isMobile ? "100%" : "32%"}
-              direction={isMobile ? "column" : "row"}
-              gap={isMobile ? "7px" : "0rem"}
-            >
-              <Flex
-                margin={isMobile ? "0" : "0px"}
-                gap={isMobile ? "2rem" : "1rem"}
-                direction="column"
-                styles={{ display: isMobile ? "none" : "flex" }}
-              >
-                <Text
-                  type="p"
-                  letterSpacing="1px"
-                  weight={900}
-                  size={isTablet ? "13px" : "1.3rem"}
-                  textAlign={isMobile ? "center" : "left"}
-                  text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${visa?.destination?.code})`}
-                />
+            {renderVisaStatus()}
 
-                <Flex justify="flex-start" gap="0px">
-                  <Flex
-                    justify="space-between"
-                    gap="10px"
-                    margin="0px 0px 10px 0px"
-                    width="90%"
+            <BsThreeDotsVertical
+              color="#040404"
+              size="2rem"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            />
+            {isDropdownOpen && (
+              <DropdownContent ref={ref}>
+                {sortOptions.map((option, index) => (
+                  <StyledOption
+                    key={option.value}
+                    hovered={hoveredOption === index}
+                    lastChild={index === sortOptions.length - 1}
+                    onMouseEnter={() => setHoveredOption(index)}
+                    onMouseLeave={() => setHoveredOption(null)}
+                    onClick={option.action}
                   >
-                    <DateIcon>
-                      <IoCalendar color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
-                    </DateIcon>
-                    <Section>
-                      <Text
-                        type="p"
-                        text="Application Date"
-                        color="#112211"
-                        size={isTablet ? 11 : 12}
-                        weight={600}
-                        opacity="60%"
-                      />
-                      <Text
-                        type="h5"
-                        text={format(new Date(visa.updatedAt), "dd MMM, yyyy")}
-                        color="#112211"
-                        size={isTablet ? 12 : 14}
-                        weight={500}
-                      />
-                    </Section>
-                  </Flex>
-
-                  <Flex justify="flex-start" gap="10px">
-                    <DateIcon>
-                      <HiClock color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
-                    </DateIcon>
-                    <section>
-                      <Text
-                        type="p"
-                        text="Payment Fee"
-                        whiteSpace="nowrap"
-                        color="#112211"
-                        size={isTablet ? 11 : 12}
-                        weight={600}
-                        opacity="60%"
-                      />
-                      <Text
-                        type="h5"
-                        text={
-                          visa?.payments.length
-                            ? currencyFormatter(recentPayment.totalAmount)
-                            : visa?.usedFormFeeVoucher
-                              ? "Travel voucher"
-                              : "n/a"
-                        }
-                        // text={
-                        //   recentPayment?.totalAmount
-                        //     ? currencyFormatter(recentPayment.totalAmount)
-                        //     : visa?.usedFormFeeVoucher
-                        //     ? "Travel voucher"
-                        //     : "n/a"
-                        // }
-                        decoration={applied && voucher ? "line-through" : ""}
-                        color="#112211"
-                        size={isTablet ? 12 : 14}
-                        weight={500}
-                      />
-                    </section>
-                  </Flex>
-                </Flex>
-              </Flex>
-
-            </Flex>
-
-            <Flex justify="center" align="center">
-              <VisaStatus
-                style={{
-                  backgroundColor: textAndBgColor.bg,
-                  display: isMobile ? "none" : "block",
+                    <OptionText hovered={hoveredOption === index}>
+                      <Flex gap="1rem" align="center">
+                        {option.icon}
+                        {option.label}
+                      </Flex>
+                    </OptionText>
+                  </StyledOption>
+                ))}
+              </DropdownContent>
+            )}
+            {/* {isDropdownOpen && <DropdownContent>yessss</DropdownContent>} */}
+            <CustomDrawer
+              anchor="bottom"
+              open={bottomDrawerOpen}
+              onClose={() => setBottomDrawerOpen(false)}
+              height="50vh"
+              borderRadius="16px 16px 0px 0px"
+            >
+              <Section
+                height="unset"
+                padding={"1rem 1.5rem 1.5rem"}
+                styles={{
+                  background: ttColors.light,
                 }}
               >
-                <Text
-                  type="h5"
-                  text={
-                    visa.applicationStatus === "FORM FEE REQUESTED"
-                      ? "APPLICATION NOT SUBMITTED"
-                      : visa.applicationStatus
-                  }
-                  weight={800}
-                  size={isTablet ? '11px' : 14}
-                  color={textAndBgColor.text}
-                />
-              </VisaStatus>
-            </Flex>
+                <Flex align="center" justify="flex-end">
+                  <GrFormClose
+                    size={30}
+                    color="#848484"
+                    cursor="pointer"
+                    onClick={() => {
+                      setBottomDrawerOpen(false);
+                      setIsDropdownOpen(false);
+                    }}
+                  />
+                </Flex>
+                <Flex
+                  justify="space-between"
+                  align="center"
+                  margin="1rem 0 .6rem"
+                >
+                  {renderHomeToDestination(true)}
+                </Flex>
+                <Divider direction="horizontal" margin="0px 0px 1rem" />
+                <Flex gap="2rem" direction="column">
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Application Date"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Text
+                      type="h3"
+                      text={
+                        visa?.updatedAt
+                          ? format(new Date(visa?.updatedAt), "dd MMM, yyyy")
+                          : "n/a"
+                      }
+                      size={16}
+                      weight={400}
+                      width="max-content"
+                      color="#5C5C5C"
+                    />
+                  </Flex>
 
-            <Flex
-              // width={isMobile ? "100%" : "25%"}
-              justify={isMobile ? "space-between" : "flex-end"}
-              gap=".5rem"
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Recent paymemt"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Text
+                      type="h3"
+                      text={
+                        visa?.payments?.length
+                          ? currencyFormatter(recentPayment.totalAmount)
+                          : visa?.usedFormFeeVoucher
+                            ? "Travel voucher"
+                            : "n/a"
+                      }
+                      size={16}
+                      weight={400}
+                      width="max-content"
+                      color="#5C5C5C"
+                    />
+                  </Flex>
+
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Application Type"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+                    <Text
+                      type="h3"
+                      text={visa?.applicationType}
+                      size={16}
+                      weight={400}
+                      width="max-content"
+                      color="#5C5C5C"
+                    />
+                  </Flex>
+
+                  <Flex justify="space-between" align="center">
+                    <Text
+                      type="h3"
+                      text="Status"
+                      size={16}
+                      weight={500}
+                      width="max-content"
+                      color="#000000"
+                    />
+
+                    <Flex width="60%">
+                      <VisaStatus style={{ backgroundColor: textAndBgColor.bg }}>
+                        <Text
+                          type="h5"
+                          text={
+                            visa.applicationStatus === "FORM FEE REQUESTED"
+                              ? "APPLICATION NOT SUBMITTED"
+                              : visa.applicationStatus
+                          }
+                          weight={800}
+                          size={isMobile ? 13 : 14}
+                          color={textAndBgColor.text}
+                        />
+                      </VisaStatus>
+                    </Flex>
+                  </Flex>
+
+                  <Flex>
+                    <Text type="p" text="Added Dependants" weight={600} />
+                  </Flex>
+                  <Section>
+                    {getDependants().length === 0 && <Text type="p" text="Add Accompanies to see them here" color={ttColors.lighterGray} />}
+                    {getDependants().map((dependant: any) => {
+                      return (
+                        <Flex align="center" justify="space-between" key={dependant?.membersName}>
+                          <Text type="p" text={dependant?.membersName} />
+                          <Text type="p" text={dependant?.status?.length > 1 ? dependant?.status : 'PENDING'} />
+                        </Flex>
+                      );
+                    })}
+                  </Section>
+                  <Flex>
+                    <Button
+                      padding="8px 10px"
+                      width={"100%"}
+                      height="48px"
+                      background="#06062A"
+                      styles={{
+                        marginLeft: isMobile ? "0px" : "55px",
+                        display: isMobile ? "flex" : "inline-flex",
+                        maxWidth: "100%",
+                      }}
+                      disabled={getButtonInformation().disabled}
+                      onClick={getButtonInformation().fn}
+                    >
+                      <Text
+                        type="h5"
+                        text={getButtonInformation().text}
+                        weight={500}
+                        size={14}
+                        styles={{
+                          width: "max-content",
+                          textAlign: "center",
+                        }}
+                      />
+                    </Button>
+                  </Flex>
+                </Flex>
+              </Section>
+            </CustomDrawer>
+          </Flex>
+        ) : (
+          <>
+            <Grid
+              columns=''
+              gap={isTablet ? "10px" : "24px"}
+              style={{ gridTemplateColumns: isTablet ? "50px 2fr 1fr 27%" : '80px 1fr 25% 20%' }}
               align="center"
             >
-              <Button
-                // padding="8px 16px"
-                width={isMobile ? "300px!important" : "100px !important"}
-                background="#06062A"
-                height="48px"
-                styles={{
-                  marginLeft: isMobile ? "0px" : "55px",
-                  display: isMobile ? "flex" : "inline-flex",
-                  maxWidth: "100%",
-                  padding: "8px 8px !important"
-                }}
-                disabled={getButtonInformation().disabled}
-                onClick={getButtonInformation().fn}
-              >
-                <Text
-                  type="h5"
-                  text={getButtonInformation().text}
-                  weight={500}
-                  size={isTablet ? 12 : 14}
-                  styles={{
-                    width: "max-content",
-                    textAlign: "center",
-                  }}
-                />
-              </Button>
-              {!isMobile && (
+              {/* <Logo>
+                {visa?.destination?.code && (
+                  <img
+                    src={
+                      COUNTRY_FLAGS.find(
+                        (x) =>
+                          x?.code === visa?.destination?.code
+                      )?.flag
+                    }
+                    alt="logo"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+                )}
+              </Logo> */}
+              {renderDestinationLogo()}
 
-                <Section
-                  width="60px"
-                  styles={{
+              <Flex
+                justify="flex-start"
+                // width={isMobile ? "100%" : "32%"}
+                direction={isMobile ? "column" : "row"}
+                gap={isMobile ? "7px" : "0rem"}
+              >
+                <Flex
+                  margin={isMobile ? "0" : "0px"}
+                  gap={isMobile ? "2rem" : "1rem"}
+                  direction="column"
+                  styles={{ display: isMobile ? "none" : "flex" }}
+                >
+                  {/* <Text
+                    type="p"
+                    letterSpacing="1px"
+                    weight={900}
+                    size={isTablet ? "13px" : "1.3rem"}
+                    textAlign={isMobile ? "center" : "left"}
+                    text={`${visa?.homeCountry?.name}(${visa?.homeCountry?.code}) — ${visa?.destination?.name}(${visa?.destination?.code})`}
+                  /> */}
+                  {renderHomeToDestination(false)}
+
+                  <Flex justify="flex-start" gap="0px">
+                    <Flex
+                      justify="space-between"
+                      gap="10px"
+                      margin="0px 0px 10px 0px"
+                      width="90%"
+                    >
+                      <DateIcon>
+                        <IoCalendar color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
+                      </DateIcon>
+                      <Section>
+                        <Text
+                          type="p"
+                          text="Application Date"
+                          color="#112211"
+                          size={isTablet ? 11 : 12}
+                          weight={600}
+                          opacity="60%"
+                        />
+                        <Text
+                          type="h5"
+                          text={format(new Date(visa.updatedAt), "dd MMM, yyyy")}
+                          color="#112211"
+                          size={isTablet ? 12 : 14}
+                          weight={500}
+                        />
+                      </Section>
+                    </Flex>
+
+                    <Flex justify="flex-start" gap="10px">
+                      <DateIcon>
+                        <HiClock color="#8DD3BB" size={isTablet ? 18 : "1.5rem"} />
+                      </DateIcon>
+                      <section>
+                        <Text
+                          type="p"
+                          text="Payment Fee"
+                          whiteSpace="nowrap"
+                          color="#112211"
+                          size={isTablet ? 11 : 12}
+                          weight={600}
+                          opacity="60%"
+                        />
+                        <Text
+                          type="h5"
+                          text={
+                            visa?.payments.length
+                              ? currencyFormatter(recentPayment.totalAmount)
+                              : visa?.usedFormFeeVoucher
+                                ? "Travel voucher"
+                                : "n/a"
+                          }
+                          // text={
+                          //   recentPayment?.totalAmount
+                          //     ? currencyFormatter(recentPayment.totalAmount)
+                          //     : visa?.usedFormFeeVoucher
+                          //     ? "Travel voucher"
+                          //     : "n/a"
+                          // }
+                          decoration={applied && voucher ? "line-through" : ""}
+                          color="#112211"
+                          size={isTablet ? 12 : 14}
+                          weight={500}
+                        />
+                      </section>
+                    </Flex>
+                  </Flex>
+                </Flex>
+
+              </Flex>
+
+              <Flex justify="center" align="center">
+                <VisaStatus
+                  style={{
+                    backgroundColor: textAndBgColor.bg,
                     display: isMobile ? "none" : "block",
                   }}
                 >
-                  <Flex
-                    border={isTablet ? "" : "1px solid #87CEEB"}
-                    borderBottom="1px solid #87CEEB"
-                    align="center"
-                    justify="center"
-                    padding={isTablet ? "0" : "8px"}
-                    borderRadius="4px"
-                    height="48px"
-                    width={isTablet ? "30px" : "48px"}
-                    styles={{ cursor: "pointer" }}
-                    onClick={handleAccordionClick}
+                  <Text
+                    type="h5"
+                    text={
+                      visa.applicationStatus === "FORM FEE REQUESTED"
+                        ? "APPLICATION NOT SUBMITTED"
+                        : visa.applicationStatus
+                    }
+                    weight={800}
+                    size={isTablet ? '11px' : 14}
+                    color={textAndBgColor.text}
+                  />
+                </VisaStatus>
+              </Flex>
+
+              <Flex
+                // width={isMobile ? "100%" : "25%"}
+                justify={isMobile ? "space-between" : "flex-end"}
+                gap=".5rem"
+                align="center"
+              >
+                <Button
+                  // padding="8px 16px"
+                  width={isMobile ? "300px !important" : "100px !important"}
+                  background="#06062A"
+                  height="48px"
+                  styles={{
+                    marginLeft: isMobile ? "0px" : "55px",
+                    display: isMobile ? "flex" : "inline-flex",
+                    maxWidth: "100%",
+                    padding: "8px 8px !important"
+                  }}
+                  disabled={getButtonInformation().disabled}
+                  onClick={getButtonInformation().fn}
+                >
+                  <Text
+                    type="h5"
+                    text={getButtonInformation().text}
+                    weight={500}
+                    size={isTablet ? 12 : 14}
+                    styles={{
+                      width: "max-content",
+                      textAlign: "center",
+                    }}
+                  />
+                </Button>
+                {!isMobile && (
+
+                  <Section
+                    width="60px"
+                    styles={{
+                      display: isMobile ? "none" : "block",
+                    }}
                   >
-                    {isOpen ? (
-                      isTablet ? (
-                        <MdKeyboardArrowUp size="1.5rem" />
+                    <Flex
+                      border={isTablet ? "" : "1px solid #87CEEB"}
+                      borderBottom="1px solid #87CEEB"
+                      align="center"
+                      justify="center"
+                      padding={isTablet ? "0" : "8px"}
+                      borderRadius="4px"
+                      height="48px"
+                      width={isTablet ? "30px" : "48px"}
+                      styles={{ cursor: "pointer" }}
+                      onClick={handleAccordionClick}
+                    >
+                      {isOpen ? (
+                        isTablet ? (
+                          <MdKeyboardArrowUp size="1.5rem" />
+                        ) : (
+                          <MdKeyboardArrowUp size="1.5rem" />
+                        )
                       ) : (
-                        <MdKeyboardArrowUp size="1.5rem" />
-                      )
-                    ) : (
-                      isTablet ? (
-                        <MdKeyboardArrowDown size="1.5rem" />
-                      ) : (
-                        <MdKeyboardArrowDown size="1.5rem" />
-                      )
-                    )}
-                  </Flex>
-                </Section>
+                        isTablet ? (
+                          <MdKeyboardArrowDown size="1.5rem" />
+                        ) : (
+                          <MdKeyboardArrowDown size="1.5rem" />
+                        )
+                      )}
+                    </Flex>
+                  </Section>
 
-              )}
-            </Flex>
-          </Grid>
+                )}
+              </Flex>
+            </Grid>
 
-          {isOpen && (
-            <Section width="auto" styles={{ transition: "all 3s" }}>
-              {visa.applicationStatus === "FORM FEE REQUESTED" ? (
-                <Grid columns={""} gap="24px" style={{ gridTemplateColumns: "80px 2fr 1fr" }}>
-                  {/* this div here is part of the ui */}
-                  <div></div>
-                  <Flex align="center" gap=".5rem">
-                    <PiDotsThreeCircleLight size={20} color="red" />
-                    <Text
-                      type="p"
-                      text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
-                      size={"15px"}
-                    />
-                  </Flex>
-                </Grid>
-              ) : (
-                <Section>
-                  <Grid columns={''} gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} width={isMobile ? "100%" : "100%"} align="flex-start" margin="2rem 0">
+            {isOpen && (
+              <Section width="auto" styles={{ transition: "all 3s" }}>
+                {visa.applicationStatus === "FORM FEE REQUESTED" ? (
+                  <Grid columns={""} gap="24px" style={{ gridTemplateColumns: "80px 2fr 1fr" }}>
                     {/* this div here is part of the ui */}
                     <div></div>
-                    <Section>
-                      <Flex align="center" margin=".5rem 0" gap=".5rem">
-                        <PiDotsThreeCircleLight size={20} fontWeight={500} />
-                        <Text
-                          type="p"
-                          text={visa?.applicationStatus}
-                          size={"15px"}
-                          weight={500}
-                        />
-                      </Flex>
-                      {visa?.usedFormFeeVoucher && (
+                    <Flex align="center" gap=".5rem">
+                      <PiDotsThreeCircleLight size={20} color="red" />
+                      <Text
+                        type="p"
+                        text={"THIS APPLICATION HAS NOT BEEN SUBMITTED"}
+                        size={"15px"}
+                      />
+                    </Flex>
+                  </Grid>
+                ) : (
+                  <Section>
+                    <Grid columns={''} gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} width={isMobile ? "100%" : "100%"} align="flex-start" margin="2rem 0">
+                      {/* this div here is part of the ui */}
+                      <div></div>
+                      <Section>
                         <Flex align="center" margin=".5rem 0" gap=".5rem">
-                          <PiWalletLight size={20} fontWeight={500} />
+                          <PiDotsThreeCircleLight size={20} fontWeight={500} />
                           <Text
                             type="p"
-                            text={"Application fee paid with Travel Voucher"}
+                            text={visa?.applicationStatus}
+                            size={"15px"}
+                            weight={500}
+                          />
+                        </Flex>
+                        {visa?.usedFormFeeVoucher && (
+                          <Flex align="center" margin=".5rem 0" gap=".5rem">
+                            <PiWalletLight size={20} fontWeight={500} />
+                            <Text
+                              type="p"
+                              text={"Application fee paid with Travel Voucher"}
+                              size={"15px"}
+                              weight={500}
+                              transform="uppercase"
+                            />
+                          </Flex>
+                        )}
+
+                        {/* <Flex align="center" gap=".5rem">
+                          {visa?.applicationStatus !==
+                            "ADDITIONAL INFORMATION REQUESTED" ? (
+                            <AiOutlineCheck size={20} />
+                          ) : (
+                            <BiError color="red" size={20} />
+                          )}
+                          <Text
+                            type="p"
+                            text={
+                              visa?.applicationStatus ===
+                                "ADDITIONAL INFORMATION REQUESTED"
+                                ? "ADDITIONAL DOCUMENT REQUESTED"
+                                : "NO DOCUMENT REQUESTED FROM YOU"
+                            }
+                            size={"15px"}
+                            weight={500}
+                          />
+                        </Flex> */}
+
+                        {renderVisaPersonalInfo()}
+
+                        <Flex align="center" margin=".5rem 0" gap=".5rem">
+                          <MdOutlineFamilyRestroom size={20} />
+                          <Text
+                            type="p"
+                            text={accompanying > 0 ? `Family${accompanying > 0 ? ` (${accompanying} travellers)` : ''}` : "Single"}
                             size={"15px"}
                             weight={500}
                             transform="uppercase"
                           />
                         </Flex>
-                      )}
 
-                      <Flex align="center" gap=".5rem">
-                        {visa?.applicationStatus !==
-                          "ADDITIONAL INFORMATION REQUESTED" ? (
-                          <AiOutlineCheck size={20} />
-                        ) : (
-                          <BiError color="red" size={20} />
-                        )}
-                        <Text
-                          type="p"
-                          text={
-                            visa?.applicationStatus ===
-                              "ADDITIONAL INFORMATION REQUESTED"
-                              ? "ADDITIONAL DOCUMENT REQUESTED"
-                              : "NO DOCUMENT REQUESTED FROM YOU"
-                          }
-                          size={"15px"}
-                          weight={500}
-                        />
-                      </Flex>
-
-                      <Flex direction="column" align="center" gap=".5rem">
-                        {visa?.infoRequests.map((info, index) => {
-                          return (
+                        <Flex align="center" gap=".5rem">
+                          <MdNumbers size={20} />
+                          <Text type="p" text={visa?.uniqueVisaId} size={"15px"} weight={500} transform="uppercase" />
+                        </Flex>
+                      </Section>
+                      {/*OPEN SET ACCOMPANY MODAL */}
+                      <div>
+                        <Flex justify="flex-end">
+                          <Button
+                            width="fit-content"
+                            styles={{
+                              maxWidth: "max-content",
+                            }}
+                            background="transparent"
+                            border="1px solid black"
+                            color="black"
+                            onClick={() => {
+                              // console.log('add-accompany modal')
+                              setModalState((prev) => {
+                                return {
+                                  ...prev,
+                                  open: true,
+                                  type: 'add-accompany'
+                                };
+                              });
+                            }}
+                          >
                             <Text
-                              key={`info-request ${index}`}
                               type="p"
-                              text={info}
+                              text="+ Add Accompanies"
+                              size={"14px"}
+                              weight={500}
                             />
-                          );
-                        })}
-                      </Flex>
+                          </Button>
+                        </Flex>
+                      </div>
+                    </Grid>
 
-                      <Flex align="center" margin=".5rem 0" gap=".5rem">
-                        <RxAvatar size={20} />
-                        <Text
-                          type="p"
-                          text={`${visa?.primaryTraveller?.personalDetails?.firstName} ${visa?.primaryTraveller?.personalDetails?.lastName}`}
-                          size={"15px"}
-                          transform="uppercase"
-                          weight={500}
-                        />
-                      </Flex>
+                    <Grid columns="" align="center" gap="24px" margin="20px 20px 16px 0" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+                      <div></div>
+                      <Section>
+                        <Text weight={600} size={20} type="h4" text="Document Requested" margin={"0 0 16px 0"} />
+                        <Flex direction="column" align="center" gap=".5rem">
+                          {/* <Text type="h3" text="Document Requested" /> */}
+                          {visa?.infoRequests.map((info, index) => {
+                            return (
+                              info.isAnswered ? (
+                                <Flex align="center" gap=".5rem">
+                                  {visa?.applicationStatus !==
+                                    "ADDITIONAL INFORMATION REQUESTED" ? (
+                                    <AiOutlineCheck size={20} />
+                                  ) : (
+                                    <BiError color="red" size={20} />
+                                  )}
+                                  <Text
+                                    type="p"
+                                    text={
+                                      visa?.applicationStatus ===
+                                        "ADDITIONAL INFORMATION REQUESTED"
+                                        ? "ADDITIONAL DOCUMENT REQUESTED"
+                                        : "NO DOCUMENT REQUESTED FROM YOU"
+                                    }
+                                    size={"15px"}
+                                    weight={500}
+                                  />
+                                </Flex>
+                              ) : (
+                                <Section key={`info-request ${index}`} margin="0 0 0 20px">
+                                  <ul>
+                                    <li>
+                                      <Text
+                                        type="p"
+                                        styles={{ textTransform: 'uppercase' }}
+                                        text={info?.information?.[0]}
+                                      />
+                                    </li>
+                                  </ul>
+                                  {/* <Text
+                                    type="p"
+                                    styles={{ textTransform: 'uppercase' }}
+                                    text={info?.description}
+                                  /> */}
+                                </Section>
+                              )
+                            );
+                          })}
+                        </Flex>
+                      </Section>
+                    </Grid>
 
 
-                      <Flex align="center" margin=".5rem 0" gap=".5rem">
-                        <MdOutlineFamilyRestroom size={20} />
-                        <Text
-                          type="p"
-                          text={accompanying > 0 ? `Family${accompanying > 0 ? ` (${accompanying} travellers)` : ''}` : "Single"}
-                          size={"15px"}
-                          weight={500}
-                          transform="uppercase"
-                        />
-                      </Flex>
+                    <Grid columns="" align="center" gap="24px" margin="20px 20px 16px 0" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
+                      <div></div>
+                      <Section>
+                        <Text weight={600} size={20} type="h4" text="Added Dependant" />
+                      </Section>
+                    </Grid>
+                    {getDependants().map((dependant: any) => {
+                      return (
+                        <Grid columns="" align="center" gap="24px" margin="20px 20px 16px 0" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }} key={dependant?.membersName}>
+                          <div></div>
+                          <Section>
+                            <Flex>
+                              <Text type="p" text={dependant?.membersName} weight={500} />
+                            </Flex>
+                          </Section>
 
-                      <Flex align="center" gap=".5rem">
-                        <MdNumbers size={20} />
-                        <Text type="p" text={visa?.uniqueVisaId} size={"15px"} weight={500} transform="uppercase" />
-                      </Flex>
-                    </Section>
-                    {/*OPEN SET ACCOMPANY MODAL */}
-                    <div>
-                      <Flex justify="flex-end">
-                        <Button
-                          width="fit-content"
-                          styles={{
-                            maxWidth: "max-content",
-                          }}
-                          background="transparent"
-                          border="1px solid black"
-                          color="black"
-                          onClick={() => {
-                            // console.log('add-accompany modal')
-                            setModalState((prev) => {
-                              return {
-                                ...prev,
-                                open: true,
-                                type: 'add-accompany'
-                              };
-                            });
-                          }}
-                        >
-                          <Text
-                            type="p"
-                            text="+ Add Accompanies"
-                            size={"14px"}
-                            weight={500}
-                          />
-                        </Button>
-                      </Flex>
-                    </div>
-                  </Grid>
+                          <Flex justify="center">
+                            <Flex
+                              styles={{ backgroundColor: renderAccompany(dependant?.status || 'Pending').bg, color: renderAccompany(dependant?.status || 'Pending').color }}
+                              border={`1px solid ${renderAccompany(dependant?.status || 'Pending').border}`}
+                              width="fit-content"
+                              padding="6px 14px"
+                              borderRadius="24px"
+                            >
+                              <Text type="p" text={dependant?.status?.length > 1 ? dependant?.status : 'PENDING'} />
+                              {/* <Text type="p" text={dependant?.status} weight={500} /> */}
+                            </Flex>
+                          </Flex>
+                        </Grid>
+                      );
+                    })}
 
-                  <Grid columns="" align="center" gap="24px" style={{ gridTemplateColumns: '80px 2fr 1fr', rowGap: '20px' }}>
-                    <div></div>
-                    <Section>
-                      <Flex>
-                        <Text type="p" text='Angela Abiodun' weight={500} />
-                      </Flex>
-                    </Section>
+                  </Section>
+                )}
+              </Section>
+            )}
+          </>
+        )}
+      </Section>
 
-                    <Flex justify="flex-end">
-                      <Flex
-                        styles={{ backgroundColor: renderAccompany('Pending').bg, color: renderAccompany('Pending').color }}
-                        border={`1px solid ${renderAccompany('Pending').border}`}
-                        width="fit-content"
-                        padding="6px 14px"
-                        borderRadius="24px"
-                      >
-                        <Text type="p" text='In Progress' weight={500} />
-                      </Flex>
-                    </Flex>
-                  </Grid>
-                </Section>
-              )}
-            </Section>
-          )}
-        </>
-      )}
-    </Section>
+    </>
   );
 }
 export default VisaDetail;

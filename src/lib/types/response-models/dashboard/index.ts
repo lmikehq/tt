@@ -389,6 +389,11 @@ export interface VisaResponseProp {
       lastName: string;
     };
   };
+  familyInformation: {
+    parentDetails: ParentDetailsVisaInformation[];
+    siblingDetails: SiblingDetailsVisaInformation[];
+    immediateFamilyInfo: ImmediateFamilyVisaInfo[];
+  };
   uniqueVisaId: string;
   payments: {
     _id: string;
@@ -411,10 +416,68 @@ export interface VisaResponseProp {
     createdAt: string;
     updatedAt: string;
   }[];
-  infoRequests: any[]; // Assuming this can be of any type
+  infoRequests: {
+    _id: string;
+    infoType: string;
+    information: string[];
+    responses: {
+      [key: string]: {
+        name: string;
+        url: string;
+      };
+      infoType: any;
+    }[];
+    description: string;
+    visaId: string;
+    accountId: string;
+    requestedBy: string;
+    isAnswered: boolean;
+    adminAcknowledged: boolean;
+    createdAt: string;
+    updatedAt: string;
+  }[];
   applicationStatus: string;
   usedFormFeeVoucher: boolean;
   updatedAt: string;
+}
+
+interface ParentDetailsVisaInformation {
+  membersName: string;
+  relationshipToPrimary: string;
+  address: string;
+  membersEmail: string;
+  membersPhoneNumber: string;
+  accompanying: boolean;
+}
+
+interface ImmediateFamilyVisaInfo {
+  membersEmail: string;
+  accompanying: boolean;
+  address: string;
+  gender: string;
+  membersPhoneNumber: string;
+  relationshipToPrimary: string;
+  membersName: string;
+  dateOfBirth: string;
+  expiryYear: number;
+  issueYear: number;
+  passportNumber: string;
+  status: string;
+  updatedBy: string;
+}
+
+interface SiblingDetailsVisaInformation {
+  membersName: string;
+  relationshipToPrimary: string;
+  address: string;
+  membersEmail: string;
+  membersPhoneNumber: string;
+  accompanying: boolean;
+  dateOfBirth: string;
+  gender: string;
+  passportNumber: string;
+  expiryYear: number;
+  issueYear: number;
 }
 
 export interface GetBankNamesProp {

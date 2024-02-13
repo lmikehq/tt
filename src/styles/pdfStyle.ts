@@ -1,4 +1,4 @@
-import { StyleSheet } from '@react-pdf/renderer'
+import { StyleSheet } from '@react-pdf/renderer';
 
 export const PDFstyles = StyleSheet.create({
   page_one: {
@@ -94,7 +94,8 @@ export const PDFstyles = StyleSheet.create({
   },
   text_response: {
     fontSize: 10,
-    marginTop: 12
+    marginTop: 12,
+    color: '#1E90FF'
   },
   arrow: {
     width: 10,
@@ -124,4 +125,4 @@ export const PDFstyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   }
-})
+});

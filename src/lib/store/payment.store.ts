@@ -15,7 +15,6 @@ interface Actions {
 export const usePaymentStore = create<State & Actions>(
     (set): State & Actions => ({
         mode: Mode.loaded,
-
         createFlutterWavePayment: async (
             payload: FlutterWavePaymentRequestInput
         ) => {

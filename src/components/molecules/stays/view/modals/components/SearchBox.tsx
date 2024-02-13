@@ -8,14 +8,30 @@ import Button from "@/components/atoms/button";
 import Spinner from "../../../../icons/spinner";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
-import Dropdown from "@/components/organisms/dropdown";
+import { useQueryParams } from "@/hooks/useNext";
+import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
+import { useRouter } from "next/navigation";
+import { formatDate } from "@/lib/utilFns";
+import dayjs from "dayjs";
+import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
+import { convertRoomForGuestsToString } from "@/lib/types/request-models/stay/search.type";
+import { ClickAwayListener } from "@mui/material";
+import StaysMenu from "@organism/staysMenu";
 
-function SearchBox() {
+
+function SearchBox({ onClose }: { onClose: () => void; }) {
     const { isMobile } = useScreenResolution();
+    const { queryParams, setQueryParams } = useQueryParams();
+    const { push } = useRouter()
+    const { stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore((state) => state);
+    const { roomForGuests } = stayTabInitialSearchQuery
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
-        //properties needed
+        prevRegion: queryParams?.regionId,
+        prevLocation: queryParams?.id
     });
 
     const [guest, setGuest] = useState("");
@@ -26,7 +42,67 @@ function SearchBox() {
         { value: "all inclusive", label: "All Inclusive" },
     ];
 
-    const handleSubmit = () => {};
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const menuOpen = Boolean(anchorEl);
+
+    const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    const computeGuestsAndRoomsString = () => {
+        const rooms = roomForGuests.length;
+        let guests = 0;
+
+        for (let index = 0; index < roomForGuests.length; index++) {
+            const room = roomForGuests[index];
+            guests += room.adults + room.children.length;
+        }
+        return `${rooms} room${rooms == 1 ? "" : "s"} for ${guests} guest${guests == 1 ? "" : "s"}`;
+    };
+
+    const computeStaySearchQuery = () => {
+        const params = {
+            regionId: stayTabInitialSearchQuery.location?.region_id,
+            countryCode: stayTabInitialSearchQuery.location?.country_code,
+            star: stayTabInitialSearchQuery.stars
+                ? stayTabInitialSearchQuery.stars[0]
+                : undefined,
+            checkIn: formatDate(
+                stayTabInitialSearchQuery.checkInDate ?? dayjs(),
+                "YYYY-MM-DD"
+            ),
+            checkOut: formatDate(
+                stayTabInitialSearchQuery.checkOutDate ?? dayjs(),
+                "YYYY-MM-DD"
+            ),
+            guests: convertRoomForGuestsToString(stayTabInitialSearchQuery.roomForGuests),
+        };
+        return constructQueryFromParams(params);
+    };
+
+    const handleSubmit = () => {
+        const newParams = {
+            ...queryParams,
+            checkIn: dayjs(stayTabInitialSearchQuery?.checkInDate).format("YYYY-MM-DD"),
+            checkOut: dayjs(stayTabInitialSearchQuery?.checkOutDate).format("YYYY-MM-DD"),
+            regionId: stayTabInitialSearchQuery?.location?.region_id ?? queryParams?.regionId,
+            id: stayTabInitialSearchQuery?.location?.id ?? queryParams?.id,
+        }
+
+        if (String(newParams?.regionId) !== String(submissionState.prevRegion)) {
+            push(`/stay/listings${computeStaySearchQuery()}`)
+        } else {
+            setQueryParams({
+                ...queryParams,
+                ...newParams
+            })
+        }
+        onClose()
+    };
+
+
     return (
         <Span style={{ padding: "0px 20px" }}>
             <Flex direction="column">
@@ -36,9 +112,16 @@ function SearchBox() {
                     styles={{ marginBottom: "1.2rem" }}
                 >
                     <Text type="p" text="Where do you want to stay?"></Text>
-                    <Input
-                        // placeholder="New York, United States of America"
-                        height="3rem"
+                    <RateHawkLocationSearchInput
+                        onChange={(x: RateHawkRegionType) => {
+                            updateStayTabInitialQuery({
+                                ...stayTabInitialSearchQuery,
+                                location: x,
+                            })
+                        }}
+                        value={stayTabInitialSearchQuery.location}
+                        placeholder="Enter Destination or Hotel Name"
+                        showHotels={true}
                     />
                 </Flex>
                 <Flex gap="20px" direction={isMobile ? "column" : "row"}>
@@ -55,7 +138,14 @@ function SearchBox() {
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            onChange={(e) => {}}
+                            onChange={(e) => {
+                                updateStayTabInitialQuery({
+                                    ...stayTabInitialSearchQuery,
+                                    checkInDate: dayjs(e)
+                                })
+                            }}
+                            value={stayTabInitialSearchQuery?.checkInDate ? new Date(stayTabInitialSearchQuery?.checkInDate?.toString() ?? '') : undefined}
+                            minDate={new Date()}
                         />
                     </Flex>
                     <Flex
@@ -73,7 +163,14 @@ function SearchBox() {
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            onChange={(e) => {}}
+                            onChange={(e) => {
+                                updateStayTabInitialQuery({
+                                    ...stayTabInitialSearchQuery,
+                                    checkOutDate: dayjs(e)
+                                })
+                            }}
+                            value={stayTabInitialSearchQuery?.checkOutDate ? new Date(stayTabInitialSearchQuery?.checkOutDate?.toString() ?? '') : undefined}
+                            minDate={new Date(stayTabInitialSearchQuery?.checkInDate?.toString() ?? '')}
                         />
                     </Flex>
                 </Flex>
@@ -81,7 +178,7 @@ function SearchBox() {
                     <Flex
                         direction="column"
                         gap=".5rem"
-                        styles={{ marginBottom: "1.2rem" }}
+                        styles={{ marginBottom: "1.2rem", position: 'relative' }}
                     >
                         <Text
                             type="label"
@@ -89,14 +186,21 @@ function SearchBox() {
                             text="Guests & Rooms"
                             weight={400}
                         />
-                        <Dropdown
-                            options={options}
-                            className="mui_select"
-                            width="100%"
-                            height="45px"
-                            selectedValue={guest}
-                            setSelectedValue={setGuest}
-                        />
+                        <ClickAwayListener onClickAway={handleCloseMenu}>
+                            <div style={{ position: 'relative' }}>
+                                <Input
+                                    onClick={handleOpenMenu}
+                                    placeholder="Click me to open dropdown"
+                                    value={computeGuestsAndRoomsString()}
+                                    styles={{
+                                        fontFamily: "poppins",
+                                        cursor: "pointer",
+                                        fontSize: "14px",
+                                    }}
+                                />
+                                {menuOpen && <StaysMenu staysView={true} />}
+                            </div>
+                        </ClickAwayListener>
                     </Flex>
                 </Flex>
                 <Flex>

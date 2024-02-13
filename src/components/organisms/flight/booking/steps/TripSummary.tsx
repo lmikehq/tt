@@ -22,6 +22,7 @@ import {
     PassengerFormInterface,
     arrangeBaggageDataForOrdering,
     passengerAndBaggageDetails,
+    FlightTypeEnum,
 } from "@/lib/types/request-models/flight/booking.type";
 import {
     Combinations,
@@ -276,7 +277,7 @@ const TripSummary = ({
         >
             <TripSummaryCard
                 flights={flights}
-                multi={queryParams?.multi === "true"}
+                multi={queryParams?.flightType == FlightTypeEnum.multictiy}
             />
 
             <form

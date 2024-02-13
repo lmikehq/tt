@@ -13,7 +13,7 @@ const style = {
   outline: "none",
   overflow: "scroll",
   maxHeight: "100vh",
-  p: "2rem",
+  p: "1rem",
 };
 
 interface CustomAppModalProps {
@@ -29,40 +29,42 @@ const CustomAppModal = ({
 }: CustomAppModalProps) => {
   return (
     <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
+      {/* <Box sx={style}> */}
         <Box
-          sx={{
-            borderRadius: "10px",
-            position: "relative",
-            p: "1rem",
-            maxWidth: "37rem",
-            margin: "auto",
-            backgroundColor: ttColors.light,
-            boxShadow: 4,
-          }}
-        >
-          <Button
-            background={ttColors.grayishAsh}
-            borderRadius="0.25rem"
-            width="50px"
-            height="50px"
-            styles={{
-              position: "absolute",
-              top: "1rem",
-              right: "1.25rem",
+            className='scroll-custom'
+            sx={{
+                borderRadius: "10px",
+                position: "relative",
+                p: "1rem",
+                maxWidth: "37rem",
+                margin: "1rem auto 0",
+                backgroundColor: ttColors.light,
+                boxShadow: 4,
+                overflowY: 'auto'
             }}
-            onClick={handleClose}
-          >
-            <BiX size={28} color={ttColors.dark} />
-          </Button>
-          {children}
+        >
+            <Button
+                background={ttColors.grayishAsh}
+                borderRadius="0.25rem"
+                width="50px"
+                height="50px"
+                styles={{
+                    position: "absolute",
+                    top: "1rem",
+                    right: "1.25rem",
+                }}
+                onClick={handleClose}
+            >
+                <BiX size={28} color={ttColors.dark} />
+            </Button>
+            {children}
         </Box>
-      </Box>
+      {/* </Box> */}
     </Modal>
   );
 };

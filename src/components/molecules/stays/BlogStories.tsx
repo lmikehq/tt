@@ -104,7 +104,7 @@ function BlogStories() {
       const response = await apiService("/blog", "GET");
       // console.log("API Response:", response);
       if (response) {
-        setBlogs(response);
+        setBlogs(response?.data ?? []);
         // console.log("Setting new BLOG LIST with:", response);
       } else {
         // console.error("Failed to fetch blog list");

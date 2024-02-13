@@ -27,6 +27,8 @@ import Section from "src/components/molecules/section";
 import { checkIfFieldHasError } from "@/lib/utilFns";
 import { useGoogleLogin } from "@react-oauth/google";
 import AuthModal from "@/components/organisms/auth/AuthModal";
+import { rateHawkResourceClient } from "@/lib/axios/axios-client";
+
 
 const settings = {
   infinite: true,
@@ -117,11 +119,14 @@ function LoginPage() {
         loading: true,
       });
       setUser(res?.user);
+      window.localStorage.setItem('user', res?.token);
+      rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`;
+
       toast.success("You have successfully logged in!");
       toast.loading("Redirecting to your dashboard...", {
         duration: 3000,
       });
-      return router.push("/dashboard?download=false");
+      return router.push("/dashboard");
     } else {
       setSubmissionState({
         ...submissionState,

@@ -173,12 +173,12 @@ function UserPicture() {
     profilePictureModal: false
   });
 
+  console.log({ user });
 
   const referralLink = `https://thrillers.travel/auth/register?ref=${String(
-    user?.firstName ?? ""
-  ).toLocaleLowerCase()}-${String(user?.lastName ?? "").toLocaleLowerCase()}`;
+    user?.refCode ?? ""
+  ).toLocaleLowerCase()}`;
   const { copyToClipboard } = useClipboard();
-
 
   return (
     <>
@@ -265,10 +265,34 @@ function UserPicture() {
                       ) : null}
                     </Flex>
                   ) : (
-                    <BiSolidUser
-                      size={isMobile ? 91 : 140}
-                      color={ttColors.lighterGray}
-                    />
+                    <Flex align="center" justify="center" position="relative">
+                      <BiSolidUser
+                        size={isMobile ? 91 : 140}
+                        color={ttColors.lighterGray}
+                      />
+                      {isMouseEnter ? (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: "100%",
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            zIndex: 20,
+                            backgroundColor: "rgba(0,0,0,0.35)",
+                            borderRadius: "100%",
+                            transition: "all 0.3s 0.75s"
+                          }}
+                        >
+                          <BsFillCameraFill color="#FFF" size={42} />
+                        </div>
+                      ) : null}
+                    </Flex>
                   )}
                 </Section>
 
