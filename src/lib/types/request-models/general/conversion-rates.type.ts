@@ -1,4 +1,3 @@
-
 interface CurrencyResponse {
     code: string;
     value: number;

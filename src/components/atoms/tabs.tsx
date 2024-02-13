@@ -15,6 +15,8 @@ import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import { usePathname } from "next/navigation";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -26,6 +28,7 @@ const TabWrapper = styled.div<{
   shadowShow?: boolean;
   addBackgroundColor?: boolean;
   addColor?: boolean;
+  isDashboard?: boolean;
 }>`
   .MuiTabs-indicator {
     background-color: ${ttColors.primary};
@@ -41,9 +44,9 @@ const TabWrapper = styled.div<{
     height: 48px;
   }
   .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
-    background: ${({ addBackgroundColor }) =>
-    addBackgroundColor ? "#FFF" : "#7BBBD6"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
-    color: ${({ addColor }) => (addColor ? "#fff" : "red")}; // 7BBBD6
+    background: ${({ addBackgroundColor, isDashboard }) =>
+    addBackgroundColor ? "#FFF" : isDashboard ? "#7BBBD6" : "#FFF"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
+    color: ${({ addColor }) => (addColor ? "#fff" : "")}; // 7BBBD6
   }
   .css-1gsv261 {
     // border-bottom: 1px solid transparent;
@@ -74,6 +77,14 @@ const TabWrapper = styled.div<{
     }
 
 `;
+/**
+ * 
+ .MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
+    background: ${({ addBackgroundColor, isDashboard }) =>
+    addBackgroundColor ? "#FFF" : "#FFF"}; // #7BBBD6 #87CEEB (adjust the background color in this place)
+    color: ${({ addColor }) => (addColor ? "#fff" : "")}; // 7BBBD6
+  }
+ */
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -129,6 +140,7 @@ export default function CustomTab({
 }) {
   const [value, setValue] = useState(0);
   const { updateTab, setDateRange, tab, setTab } = useDashboardStore((state) => state);
+  const pathname = usePathname();
 
   useEffect(() => {
     setValue(activeTab ?? 0);
@@ -146,9 +158,10 @@ export default function CustomTab({
   // console.log({ tab });
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
+    setValue(newValue ?? value);
     setTab(newValue);
     // setValue(newValue !== tab ? newValue : tab);
-    setValue(tab ?? 0);
+    // setValue(tab ?? 0);
     setActiveTab && setActiveTab(newValue ?? value);
   };
   const { isMobile } = useScreenResolution();
@@ -173,11 +186,12 @@ export default function CustomTab({
       shadowShow={shadowShow}
       addBackgroundColor={addBackgroundColor}
       addColor={addColor}
+      isDashboard={pathname.startsWith('/dashboard')}
     >
       <Box>
         <Tabs
-          // value={value}
-          value={tab}
+          value={value}
+          // value={tab}
           onChange={handleChange}
           variant={isMobile ? "scrollable" : variant}
           aria-label="select your service"
@@ -239,7 +253,7 @@ export default function CustomTab({
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (
-        <TabPanel value={tab!} index={tabItem.value} key={tabItem.value}>
+        <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>
       ))}
@@ -251,4 +265,10 @@ export default function CustomTab({
  *   <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>
+ */
+
+/**
+ *  <TabPanel value={tab!} index={tabItem.value} key={tabItem.value}>
+  {tabItem.content}
+</TabPanel>
  */

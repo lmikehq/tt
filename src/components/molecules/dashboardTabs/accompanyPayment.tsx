@@ -28,10 +28,9 @@ const AccompanyPaymentModal = ({ headerText, description, onClose, open, price, 
   const handleDependantsPayment = async () => {
     setLoading(true);
     try {
-      // setLoading(false);
-      const koraPay = window.open(koraLink, "_self");
+      const _koraPay = window.open(koraLink, "_self");
+      setLoading(false);
       // const koraPay = window.open(koraLink, 'KorapayWindow', 'width=400,height=400');
-      console.log(koraPay);
     } catch (err) {
       setLoading(false);
       toast.error('Error Initializing payment');
@@ -87,12 +86,7 @@ const AccompanyPaymentModal = ({ headerText, description, onClose, open, price, 
             }
           />
         </Flex>
-        {/* <SearchStringInput
-              options={["NGN - Nigerian Naira"]}
-              onChange={(e) => 
-              placeholder={""}
-              value={currency}
-            /> */}
+
         <FieldString
           name="currency"
           formik={formik}

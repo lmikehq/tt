@@ -33,6 +33,8 @@ import { SiTripadvisor } from "react-icons/si";
 import getMonthAndDay from "@/lib/extensions/helpers/getDateFormat";
 import withLikeHotel from "@/components/HOCs/withLikeHotel";
 import FavouriteCheckBox from "@/components/molecules/FavouriteCheckBox";
+import currencyFormatter from "@/lib/extensions/data/currencyFormatter";
+import { RefetchProp } from "types";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -51,15 +53,16 @@ interface StaysProps {
   image: string;
   checkInDate: string;
   checkoutDate: string;
-  payment: string;
+  payment: number;
   region: string;
   rating: number;
   hotelId: string;
+  refetch: RefetchProp;
 }
 
 const EnhancedFavouriteCheckBox = withLikeHotel(FavouriteCheckBox);
 
-function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, rating, hotelId }: StaysProps) {
+function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, rating, hotelId, refetch }: StaysProps) {
   const { isMobile } = useScreenResolution();
   const { checkInMonth, checkInDay, checkOutMonth, checkOutDay, range } = getMonthAndDay(checkInDate, checkoutDate);
 
@@ -82,7 +85,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
               </Link>
             </SliderImgBox>
             <FavoriteSliderBox>
-              <EnhancedFavouriteCheckBox id={hotelId} />
+              <EnhancedFavouriteCheckBox id={hotelId} refetch={refetch} />
             </FavoriteSliderBox>
             <Span style={{ width: "fit-content" }}>
               <Link href="">
@@ -122,7 +125,7 @@ function StaysCard({ name, image, checkInDate, checkoutDate, payment, region, ra
               >
                 <Text
                   type="h3"
-                  text={`${formatPrice(parseFloat(payment))}`}
+                  text={currencyFormatter(payment)}
                   weight={600}
                   color="var(--text-dull-color)"
                 ></Text>

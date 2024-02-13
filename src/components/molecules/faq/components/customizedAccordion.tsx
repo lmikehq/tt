@@ -22,6 +22,7 @@ interface AccordionItemProps {
   detailsPadding?: number;
   headerLeftMargin?: number;
   headerPadding?: string;
+  defaultExpanded?: boolean;
 }
 
 interface AccordionItemComponentProps extends AccordionItemProps {
@@ -42,7 +43,7 @@ interface CustomAccordionDetailsProps extends AccordionDetailsProps {
 }
 
 const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
+  <MuiAccordion disableGutters elevation={0} square {...props} expanded={props.expanded} defaultExpanded={props.defaultExpanded} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   "&:not(:last-child)": {
@@ -89,19 +90,20 @@ const AccordionItem: React.FC<AccordionItemComponentProps> = ({
   headerLeftMargin,
   headerPadding,
   detailsBorderTop,
-  detailsPadding
+  detailsPadding,
+  defaultExpanded
 }) => {
   const handleChange = (event: React.SyntheticEvent, isExpanded: boolean) => {
     onChange(event, isExpanded);
   };
 
-  const pathname = usePathname();
 
-  const bool = pathname === '/dashboard' && header === 'Dependant 1';
+  console.log({ defaultExpanded });
+
 
   return (
     <Accordion
-      defaultExpanded={pathname === '/dashboard' && header === 'Dependant 1'}
+      defaultExpanded={defaultExpanded && expanded}
       expanded={expanded}
       onChange={(e) => handleChange(e, !expanded)}
       style={{
@@ -127,12 +129,14 @@ const AccordionItem: React.FC<AccordionItemComponentProps> = ({
 
 interface CustomizedAccordionsProps {
   items: AccordionItemProps[];
+  hasDefaultExpanded?: boolean;
 }
 
 const CustomizedAccordions: React.FC<CustomizedAccordionsProps> = ({
   items,
+  hasDefaultExpanded
 }) => {
-  const [expanded, setExpanded] = React.useState<string>("");
+  const [expanded, setExpanded] = React.useState<string>("Dependant");
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -156,6 +160,7 @@ const CustomizedAccordions: React.FC<CustomizedAccordionsProps> = ({
           backgroundColor={item.backgroundColor || "rgba(0, 0, 0, .03)"}
           detailsBorderTop={item.detailsBorderTop || "1px solid rgba(0, 0, 0, .125)"}
           detailsPadding={item.detailsPadding}
+          defaultExpanded={hasDefaultExpanded && index == 0}
         />
       ))}
     </Flex>
