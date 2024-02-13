@@ -198,13 +198,13 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
 const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const { isMobile, isTablet } = useScreenResolution();
   const [modalOpen, setModalOpen] = useState(false);
-  const { setUser } = useUserStore((state) => state);
+  const { setUser, user } = useUserStore((state) => state);
   const { preFerredCurrency, setPreferredCurrency, setShowBackDropLoader } =
     useUserPreferencesStore((state) => state);
 
 
   const { data, isLoading, refetch } = useAccountDashboard();
-  const user: AuthUser = data as AuthUser;
+  // const user: AuthUser = data as AuthUser;
   // setUser(user);
 
   const [open, setOpen] = useState({

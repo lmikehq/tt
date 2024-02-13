@@ -12,5 +12,4 @@ export async function handleLogout() {
   });
   await sleep(500);
 
-  window.location.reload();
 }
