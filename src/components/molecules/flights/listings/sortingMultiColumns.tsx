@@ -35,7 +35,11 @@ import {
 } from "@/lib/types/request-models/flight/multi/search.type";
 import styled from "styled-components";
 import { translateCabin } from "../../serviceTabs/components/flight";
-import { FlightSortEnum } from "@/lib/types/request-models/flight/booking.type";
+import {
+    FlightSortEnum,
+    SearchFlightsRequestQuery,
+    SearchMultiFlightRequestQuery,
+} from "@/lib/types/request-models/flight/booking.type";
 import { useRouter, useSearchParams } from "next/navigation";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
@@ -129,6 +133,9 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const dispatch = flightContext?.dispatch;
+    const params = useQueryParams();
+
+    const { queryParams } = params;
 
     const [openAcc, setOpenAcc] = useState(defaultAcc);
     const router = useRouter();
@@ -201,6 +208,64 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 type: "UPDATE_MULTI_FLIGHT",
                 payload: { index, data },
             });
+    };
+    const deleteFiltersFromQuery = (
+        fieldsToRemove: string[]
+    ): SearchMultiFlightRequestQuery => {
+        const newQuery = searchMultiCityQuery;
+        const urlParams = new URLSearchParams(queryParams);
+        console.log(queryParams, "pammm");
+
+        for (const query of newQuery.requests) {
+            for (const field of fieldsToRemove) {
+                delete query[field];
+                urlParams.delete(field);
+                console.log(urlParams, "pammm");
+            }
+        }
+
+        const queryString = urlParams.toString();
+        const path = `/flight/listings?${queryString}`;
+        console.log(path, "pammm");
+
+        window.history.replaceState(null, "", path);
+        return newQuery;
+    };
+    const resetFilter = (filter: string) => {
+        let query: SearchMultiFlightRequestQuery = searchMultiCityQuery;
+        switch (filter) {
+            case "stops":
+                query = deleteFiltersFromQuery(["max_stopovers"]);
+                break;
+            case "times":
+                query = deleteFiltersFromQuery([
+                    "atime_from",
+                    "atime_to",
+                    "dtime_from",
+                    "dtime_to",
+                ]);
+
+                break;
+            case "airlines":
+                query = deleteFiltersFromQuery(["select_airlines"]);
+                break;
+            case "duration":
+                query = deleteFiltersFromQuery([
+                    "max_fly_duration",
+                    "stopover_from",
+                    "stopover_to",
+                ]);
+                break;
+            case "price":
+                query = deleteFiltersFromQuery(["price_from", "price_to"]);
+                break;
+            case "cabin":
+                query = deleteFiltersFromQuery(["selected_cabins"]);
+                break;
+            default:
+                break;
+        }
+        updateSearchMultiCityQuery(query);
     };
 
     const computeActiveFilters = useMemo(() => {
