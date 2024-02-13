@@ -6,7 +6,7 @@ const globalAxios = axios.create({
 });
 
 const globalStaysAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_STAYS_API_SERVER,
+  baseURL: process.env.NEXT_PUBLIC_RATEHAWK_RESOURCE,
   withCredentials: true
 });
 
