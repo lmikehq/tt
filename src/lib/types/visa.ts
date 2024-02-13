@@ -212,7 +212,7 @@ export interface OldVisaApplication {
     homeCountry: {
       name: string;
       code: string;
-    } | string;
+    };
     destination: {
       name: string;
       code: string;

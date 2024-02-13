@@ -173,12 +173,12 @@ function UserPicture() {
     profilePictureModal: false
   });
 
+  console.log({ user });
 
   const referralLink = `https://thrillers.travel/auth/register?ref=${String(
-    user?.firstName ?? ""
-  ).toLocaleLowerCase()}-${String(user?.lastName ?? "").toLocaleLowerCase()}`;
+    user?.refCode ?? ""
+  ).toLocaleLowerCase()}`;
   const { copyToClipboard } = useClipboard();
-
 
   return (
     <>

@@ -2,32 +2,32 @@
 
 "use client";
 
-import Button from "@atom/button"
-import CheckBox from "@molecule/checkbox"
-import Input from "@atom/input"
-import Link from "@atom/link"
-import Text from "@atom/text"
-import SectionLayout from "@components/templates/SectionLayout"
-import Flex from "@components/templates/flex"
-import { Grid } from "@components/templates/grid"
-import apiService from "@lib/extensions/hook/apiService"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import { useUserStore } from "@lib/store/useStore"
-import { ttColors } from "@lib/theme/colors"
-import Spinner from "@molecule/icons/spinner"
-import SideBtn from "@molecule/sideBtn"
-import { Divider } from "@mui/material"
-import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { toast } from "react-hot-toast"
-import Slider from "react-slick"
-import "slick-carousel/slick/slick-theme.css"
-import "slick-carousel/slick/slick.css"
-import Section from "src/components/molecules/section"
-import { checkIfFieldHasError } from "@/lib/utilFns"
-import { useGoogleLogin } from "@react-oauth/google"
-import AuthModal from "@/components/organisms/auth/AuthModal"
-import { rateHawkResourceClient } from "@/lib/axios/axios-client"
+import Button from "@atom/button";
+import CheckBox from "@molecule/checkbox";
+import Input from "@atom/input";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import SectionLayout from "@components/templates/SectionLayout";
+import Flex from "@components/templates/flex";
+import { Grid } from "@components/templates/grid";
+import apiService from "@lib/extensions/hook/apiService";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useUserStore } from "@lib/store/useStore";
+import { ttColors } from "@lib/theme/colors";
+import Spinner from "@molecule/icons/spinner";
+import SideBtn from "@molecule/sideBtn";
+import { Divider } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import Section from "src/components/molecules/section";
+import { checkIfFieldHasError } from "@/lib/utilFns";
+import { useGoogleLogin } from "@react-oauth/google";
+import AuthModal from "@/components/organisms/auth/AuthModal";
+import { rateHawkResourceClient } from "@/lib/axios/axios-client";
 
 
 const settings = {
@@ -114,19 +114,19 @@ function LoginPage() {
         loading: false,
       });
     } else if (res?.token) {
-        setSubmissionState({
-            ...submissionState,
-            loading: true,
-        })
-        setUser(res?.user)
-        window.localStorage.setItem('user', res?.token)
-        rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`
+      setSubmissionState({
+        ...submissionState,
+        loading: true,
+      });
+      setUser(res?.user);
+      window.localStorage.setItem('user', res?.token);
+      rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`;
 
-      toast.success("You have successfully logged in!")
+      toast.success("You have successfully logged in!");
       toast.loading("Redirecting to your dashboard...", {
         duration: 3000,
       });
-      return router.push("/dashboard?download=false");
+      return router.push("/dashboard");
     } else {
       setSubmissionState({
         ...submissionState,

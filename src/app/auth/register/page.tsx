@@ -1,31 +1,31 @@
 // @next/next/no-img-element
-"use client"
+"use client";
 
-import Button from "@atom/button"
-import CheckBox from "@molecule/checkbox"
-import Flex from "@components/templates/flex"
-import Input from "@atom/input"
-import Link from "@atom/link"
-import Text from "@atom/text"
-import Spinner from "@molecule/icons/spinner"
-import SectionLayout from "@components/templates/SectionLayout"
+import Button from "@atom/button";
+import CheckBox from "@molecule/checkbox";
+import Flex from "@components/templates/flex";
+import Input from "@atom/input";
+import Link from "@atom/link";
+import Text from "@atom/text";
+import Spinner from "@molecule/icons/spinner";
+import SectionLayout from "@components/templates/SectionLayout";
 
-import { Grid } from "@components/templates/grid"
-import SideBtn from "@molecule/sideBtn"
+import { Grid } from "@components/templates/grid";
+import SideBtn from "@molecule/sideBtn";
 
-import sleep from "@lib/extensions/helpers/sleep"
-import Section from "src/components/molecules/section"
-import apiService from "@lib/extensions/hook/apiService"
-import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { toast } from "react-hot-toast"
-import Slider from "react-slick"
-import "slick-carousel/slick/slick-theme.css"
-import "slick-carousel/slick/slick.css"
-import { ttColors } from "@lib/theme/colors"
-import { AiFillCheckCircle } from "react-icons/ai"
-import { validateEmail } from "@/lib/utilFns"
+import sleep from "@lib/extensions/helpers/sleep";
+import Section from "src/components/molecules/section";
+import apiService from "@lib/extensions/hook/apiService";
+import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import { ttColors } from "@lib/theme/colors";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { validateEmail } from "@/lib/utilFns";
 
 const settings = {
   infinite: true,
@@ -33,10 +33,16 @@ const settings = {
   slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
-}
+};
 
 function RegisterPage() {
-  const [selectedOption, setSelectedOption] = useState("length")
+  const [selectedOption, setSelectedOption] = useState("length");
+  const searchParams = useSearchParams();
+
+  const referrer = searchParams.get('ref');
+
+  console.log(searchParams.get('ref'));
+
   const validationOptions = [
     { value: "length", label: "8 or more characters" },
     { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
@@ -45,29 +51,29 @@ function RegisterPage() {
       value: "specialCharacter",
       label: "Have Numbers, and Special symbols (e.g., !, @, #, $)",
     },
-  ]
+  ];
 
   function isPasswordValid(password: string, selectedOption: string) {
     switch (selectedOption) {
       case "length":
-        return password.length >= 8
+        return password.length >= 8;
       case "uppercaseLowercase":
-        return /[A-Z]/.test(password) && /[a-z]/.test(password)
+        return /[A-Z]/.test(password) && /[a-z]/.test(password);
       case "number":
-        return /\d/.test(password)
+        return /\d/.test(password);
       case "specialCharacter":
-        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password)
+        return /[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(password);
       default:
-        return false
+        return false;
     }
   }
 
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 
-  const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
 
-  const router = useRouter()
+  const router = useRouter();
   const [registerData, setRegisterData] = useState({
     firstName: "",
     lastName: "",
@@ -75,36 +81,36 @@ function RegisterPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
-    referralCode: "",
+    referralCode: typeof referrer === 'string' ? searchParams.get('ref') : "",
     consent: false,
-  })
+  });
 
   const [submissionState, setSubmissionState] = useState({
     loading: false,
     error: [] as any,
     success: false,
-  })
+  });
   async function handleRegister(): Promise<any> {
     const response = await apiService("/user", "POST", {
       ...registerData,
       email: registerData?.email?.toLowerCase(),
-    })
-    return response
+    });
+    return response;
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (submissionState.loading) return
+    e.preventDefault();
+    if (submissionState.loading) return;
     setSubmissionState({
       ...submissionState,
       loading: true,
-    })
+    });
     if (!registerData.consent) {
       setSubmissionState({
         ...submissionState,
         loading: false,
-      })
-      return alert("Please agree to the terms and conditions")
+      });
+      return alert("Please agree to the terms and conditions");
     }
     if (!validateEmail(registerData.email)) {
       setSubmissionState({
@@ -116,8 +122,8 @@ function RegisterPage() {
           },
         ],
         loading: false,
-      })
-      return
+      });
+      return;
     }
     if (registerData.password !== registerData.confirmPassword) {
       setSubmissionState({
@@ -133,41 +139,41 @@ function RegisterPage() {
           },
         ],
         loading: false,
-      })
-      return
+      });
+      return;
     }
 
-    const res = await handleRegister()
+    const res = await handleRegister();
     if (res.statusCode === 400) {
       return setSubmissionState({
         ...submissionState,
         error: res.errors.message,
         loading: false,
-      })
+      });
     } else if (res.statusCode === 422) {
       return setSubmissionState({
         ...submissionState,
         error: [{ property: "email", constraints: res.errors.message }],
-      })
+      });
     }
 
     setSubmissionState({
       ...submissionState,
       loading: true,
-    })
-    toast.success("Your account has been created successfully!")
-    await sleep(3000)
+    });
+    toast.success("Your account has been created successfully!");
+    await sleep(3000);
     toast.loading("Redirecting to login page...", {
       duration: 3000,
-    })
-    await sleep(500)
-    router.push("/auth/login")
+    });
+    await sleep(500);
+    router.push("/auth/login");
   }
   function checkIfFieldHasError(field: string) {
-    const error: { constraints: string } = submissionState?.error?.find(
+    const error: { constraints: string; } = submissionState?.error?.find(
       (err: any) => err.property.includes(field)
-    )
-    if (error) return error.constraints
+    );
+    if (error) return error.constraints;
   }
   return (
     <SectionLayout>
@@ -377,7 +383,7 @@ function RegisterPage() {
                       setRegisterData({
                         ...registerData,
                         email: e.target.value,
-                      })
+                      });
                       setSubmissionState({
                         ...submissionState,
                         error: [
@@ -387,7 +393,7 @@ function RegisterPage() {
                           },
                         ],
                         loading: false,
-                      })
+                      });
                     }}
                     value={registerData.email}
                     border={
@@ -525,7 +531,7 @@ function RegisterPage() {
                     setRegisterData({
                       ...registerData,
                       confirmPassword: e.target.value,
-                    })
+                    });
                     setSubmissionState({
                       ...submissionState,
                       error: [
@@ -539,7 +545,7 @@ function RegisterPage() {
                         },
                         ...submissionState.error,
                       ],
-                    })
+                    });
                   }}
                   border={
                     checkIfFieldHasError("confirmPassword")
@@ -572,7 +578,7 @@ function RegisterPage() {
                     })
                   }
                   height="3rem"
-                  value={registerData.referralCode}
+                  value={registerData?.referralCode as string}
                 />
               </section>
 
@@ -657,7 +663,7 @@ function RegisterPage() {
         </Grid>
       </form>
     </SectionLayout>
-  )
+  );
 }
 
-export default RegisterPage
+export default RegisterPage;

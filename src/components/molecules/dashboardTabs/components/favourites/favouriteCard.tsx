@@ -62,7 +62,7 @@ function FavouritesCard({ image, name, countryName, price, hotelId, refetch, cur
           styles={{ borderRadius: "8px", objectFit: 'cover' }}
         />
         <FavouriteCardIcon>
-          <EnhancedFavouriteCheckBox id={hotelId} refetch={refetch} />
+          <EnhancedFavouriteCheckBox id={hotelId} refetch={refetch} liked={true} />
         </FavouriteCardIcon>
       </FavouriteCardImg>
       <Flex justify="space-between" width="370px">

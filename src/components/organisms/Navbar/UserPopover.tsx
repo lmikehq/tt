@@ -34,8 +34,15 @@ import Section from "@/components/molecules/section";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
 import Image from "@/components/atoms/image";
 import NoficationBellIcon from 'public/assets/icons/dashboard/no-notification-bell.svg';
+import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
+import Spinner from "@/components/molecules/icons/spinner";
 
-const CustomPopover = () => {
+interface Props {
+  user: AuthUser;
+  isLoading: boolean;
+}
+
+const CustomPopover = ({ user, isLoading }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
   const { notifications, resetNotifications } = useNotificationStore((state) => state);
@@ -63,8 +70,6 @@ const CustomPopover = () => {
     setUser(res);
     return res;
   }
-
-  const { data: user } = useQuery(["getUser"], getUser);
 
   return (
     <>
@@ -164,14 +169,14 @@ const CustomPopover = () => {
                                 type="p"
                                 size={14}
                                 text={`${user?.lastName} ${user?.firstName}`}
-                            ></Text>
-                            <Text
+                              ></Text>
+                              <Text
                                 type="p"
                                 size={13}
                                 text={`${user?.email}`}
-                            ></Text>
+                              ></Text>
                             </Flex>
-                        </Flex>
+                          </Flex>
                         </Flex>
                       </div>
                     )}
@@ -286,35 +291,42 @@ const CustomPopover = () => {
             position: "relative",
           }}
         >
-          <Flex
-            align="center"
-            gap="5px"
-            cursor="pointer"
-            onClick={() => setIsVisible(!isVisible)}
-          >
-            {user && user?.profilePicture ? (
-              <img
-                src={user?.profilePicture}
-                alt="user-profile"
-                height={54}
-                width={54}
-                style={{ borderRadius: '100%', objectFit: 'contain', height: "54px", width: "54px", maxWidth: "54px", maxHeight: "54px", border: "2px solid var(--Slamon, #FF8682)" }}
-              />
-            ) : (
-              <RxAvatar size={48} />
-            )}
-            <Flex direction="column">
-              <Text
-                whiteSpace="nowrap"
-                type="p"
-                size={18}
-                weight={600}
-                text={`${user?.firstName} ${user?.lastName}`}
-              ></Text>
-              <Text type="p" size={13} text={`${user?.email}`} color={'#333'}></Text>
+          {isLoading ? (
+            <Flex>
+              <Spinner size="40px" fill={ttColors.blackishBlue} />
             </Flex>
-            <IoIosArrowDown size={20} />
-          </Flex>
+          ) : (
+            <Flex
+              align="center"
+              gap="5px"
+              cursor="pointer"
+              onClick={() => setIsVisible(!isVisible)}
+            >
+              {user && user?.profilePicture ? (
+                <img
+                  src={user?.profilePicture}
+                  alt="user-profile"
+                  height={54}
+                  width={54}
+                  style={{ borderRadius: '100%', objectFit: 'contain', height: "54px", width: "54px", maxWidth: "54px", maxHeight: "54px", border: "2px solid var(--Slamon, #FF8682)" }}
+                />
+              ) : (
+                <RxAvatar size={48} />
+              )}
+              <Flex direction="column">
+                <Text
+                  whiteSpace="nowrap"
+                  type="p"
+                  size={18}
+                  weight={600}
+                  text={`${user?.firstName} ${user?.lastName}`}
+                ></Text>
+                <Text type="p" size={13} text={`${user?.email}`} color={'#333'}></Text>
+              </Flex>
+              <IoIosArrowDown size={20} />
+            </Flex>
+          )}
+
           {isVisible && (
             <div
               style={{
