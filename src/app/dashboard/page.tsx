@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { useUserStore } from "@/lib/store/useStore";
 import { useSearchParams } from "next/navigation";
+import sleep from "@/lib/extensions/helpers/sleep";
 
 const DashboardHeaderComponent = () => {
   // const [documentModal, setDocumentModal] = useState(true);
@@ -56,7 +57,7 @@ const DashboardHeaderComponent = () => {
                 fetchData();
               }, 1000 * Math.pow(2, retryCount));
             } else {
-
+              sleep(5000);
               ctrl.abort();
               toast.error('Failed to fetch data after multiple attempts');
               process.exit(0);
