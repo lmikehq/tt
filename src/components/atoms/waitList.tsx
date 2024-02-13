@@ -262,7 +262,7 @@ const WaitList = () => {
         }}
         number={modalStatus.number}
       />
-      <NavLink className={`nav-elements  ${showNavbar && "active"}`}>
+      <NavLink className={`nav-elements ${showNavbar && isMobile && "active"}`}>
         <Grid
           columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
           gap={isMobile ? "2rem" : "0px"}
@@ -358,46 +358,7 @@ const WaitList = () => {
         <RightSide>
           <NavbarSection>
             <Container>
-              <TtBrand>
-                <Link href="/">
-                  <Section height={"35px"} styles={{ position: "relative" }}>
-                    <Image
-                      src={"/assets/images/brand/tt_blue_logo_with_text.svg"}
-                      alt=""
-                    />
-                  </Section>
-                </Link>
-              </TtBrand>
-
-              <MenuIcon onClick={handleShowNavbar}>
-                <RiBarChartHorizontalLine size={30} />
-              </MenuIcon>
-
-              {!isMobile && (
-                <Grid
-                  columns={isMobile ? "1fr" : "repeat(4, 1fr)"}
-                  gap={isMobile ? "3rem" : "0px"}
-                  align="center"
-                  justify="right"
-                  width="100%"
-                  textAlign="center"
-                  style={{
-                    placeContent: "center",
-                  }}
-                >
-                  <Link
-                    href=""
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "400",
-                      color: "#2f234f",
-                      textDecoration: "none",
-                      marginLeft: "30px",
-                    }}
-                  >
-                    <Text text="Events" type="p" />
-                  </Link>
-
+                <Flex justify="space-between">
                   <Link
                     href=""
                     style={{
@@ -409,42 +370,13 @@ const WaitList = () => {
                     }}
                   >
                     <Text text="FAQ" type="p" />
-                  </Link>
+                  </Link>  
+                </Flex>
 
-                  <Link
-                    href=""
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "400",
-                      color: "#2f234f",
-                      textDecoration: "none",
-                      marginLeft: "30px",
-                    }}
-                  >
-                    <Text text="Inquire" type="p" />
-                  </Link>
+                <MenuIcon onClick={handleShowNavbar}>
+                    <RiBarChartHorizontalLine size={30} />
+                </MenuIcon>
 
-                  <Link
-                    href=""
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "400",
-                      marginLeft: "30px",
-                    }}
-                  >
-                    <Button>
-                      <Text
-                        text="Join now"
-                        type="p"
-                        size={14}
-                        whiteSpace="nowrap"
-                        weight={400}
-                        color="#fff"
-                      />
-                    </Button>
-                  </Link>
-                </Grid>
-              )}
             </Container>
           </NavbarSection>
           <RightWrapper>
