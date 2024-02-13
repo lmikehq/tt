@@ -25,7 +25,10 @@ import { FaQuestion } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
 import { cleanObject, dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
-import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
+import {
+    FlightTypeEnum,
+    SearchFlightsRequestQuery,
+} from "@/lib/types/request-models/flight/booking.type";
 import { IoShareSocial } from "react-icons/io5";
 import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
@@ -565,7 +568,7 @@ function AvailableFlights() {
     };
 
     const goToFlight = (bookingToken: string) => {
-        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}`;
+        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}&flightType=${queryParams?.flightType}`;
         if (user?.email) {
             router.push(to);
         } else {
@@ -680,6 +683,7 @@ function AvailableFlights() {
             sanitizedQuery?.date_from &&
             sanitizedQuery?.adults
         ) {
+            console.log("handleSearchResults", sanitizedQuery);
             handleSearchResults({ ...cleanObject(sanitizedQuery) });
         }
     }, [queryParams, preFerredCurrency]);
