@@ -36,13 +36,15 @@ import Image from "@/components/atoms/image";
 import NoficationBellIcon from 'public/assets/icons/dashboard/no-notification-bell.svg';
 import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
 import Spinner from "@/components/molecules/icons/spinner";
+import { RefetchProp } from "types";
 
 interface Props {
   user: AuthUser;
   isLoading: boolean;
+  refetch: RefetchProp;
 }
 
-const CustomPopover = ({ user, isLoading }: Props) => {
+const CustomPopover = ({ user, isLoading, refetch }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
   const { notifications, resetNotifications } = useNotificationStore((state) => state);
@@ -379,10 +381,11 @@ const CustomPopover = ({ user, isLoading }: Props) => {
                 item.title === "Logout" ? (
                   <div
                     onClick={() => {
-                    handleLogout()
+                      handleLogout()
                         .then(res => {
-                            setUser(null)
-                            window && window.localStorage.removeItem('user')
+                          setUser(null);
+                          refetch();
+                          window && window.localStorage.removeItem('user');
                         });
                       router.push("/auth/login");
                     }}
