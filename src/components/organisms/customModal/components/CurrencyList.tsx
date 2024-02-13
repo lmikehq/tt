@@ -45,7 +45,7 @@ function CurrencyList({ currSearch }: { currSearch: string; }) {
   };
 
   return (
-    <Span style={{ padding: "30px 20px 30px", maxHeight: '350px', height: '350px', overflowY: 'auto' }}>
+    <Span style={{ padding: "30px 20px 30px", maxHeight: '350px', height: '350px', overflowY: 'auto' }} className="scroll-custom">
       {/* Suggested for you */}
       {currSearch.length > 0 ? null : (
         <Flex direction="column">
