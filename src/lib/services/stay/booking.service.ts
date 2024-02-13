@@ -8,6 +8,10 @@ import {
 } from "@/lib/types/request-models/stay/booking.type";
 import { SearchStaysResponse } from "@/lib/types/response-models/stay/search.type";
 import {
+    StayBookingPaymentRequest,
+    StayBookingPaymentResponse,
+    StayCheckBookingRequest,
+    StayCheckBookingResponse,
     StayCreditTokenizationResponse,
     StayOrderBookingRequestResponse,
 } from "@/lib/types/response-models/stay/booking.type";
@@ -38,11 +42,27 @@ export class StayBookingService {
                 throw error;
             });
     };
-    static creditTokenization = async (params: StayCreditTokenizationInput) => {
+    static makePayment = async (params: StayBookingPaymentRequest) => {
         return await rateHawkResourceClient
-            .post<any, StayCreditTokenizationResponse>(
-                `/stays/credit-tokenization`,
+            .post<any, { data: StayBookingPaymentResponse }>(
+                `/flight/bookings/checkout`,
                 params
+            )
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+    static checkBooking = async ({
+        payload,
+    }: {
+        payload: StayCheckBookingRequest;
+    }) => {
+        return await rateHawkResourceClient
+            .get<any, StayCheckBookingResponse>(
+                `/stays-bookings/${payload.id}`,
             )
             .then((response) => {
                 return response;
@@ -51,14 +71,27 @@ export class StayBookingService {
                 throw error;
             });
     };
-    static orderBookingFinish = async (params: StayOrderBookingFinishInput) => {
-        return await rateHawkResourceClient
-            .post<any, any>(`/stays/booking-finish`, params)
-            .then((response) => {
-                return response;
-            })
-            .catch((error) => {
-                throw error;
-            });
-    };
+    // static creditTokenization = async (params: StayCreditTokenizationInput) => {
+    //     return await rateHawkResourceClient
+    //         .post<any, StayCreditTokenizationResponse>(
+    //             `/stays/credit-tokenization`,
+    //             params
+    //         )
+    //         .then((response) => {
+    //             return response;
+    //         })
+    //         .catch((error) => {
+    //             throw error;
+    //         });
+    // };
+    // static orderBookingFinish = async (params: StayOrderBookingFinishInput) => {
+    //     return await rateHawkResourceClient
+    //         .post<any, any>(`/stays/booking-finish`, params)
+    //         .then((response) => {
+    //             return response;
+    //         })
+    //         .catch((error) => {
+    //             throw error;
+    //         });
+    // };
 }

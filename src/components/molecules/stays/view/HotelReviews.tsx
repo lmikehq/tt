@@ -17,21 +17,18 @@ import CircleIcon from "@mui/icons-material/Circle";
 import CircleOutlinedIcon from "@mui/icons-material/CircleOutlined";
 import { ttColors } from "@/lib/theme/colors";
 import { LineProgressBar } from "@frogress/line";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Pagination } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { styled as muiStyled } from "@mui/material/styles";
 import { Rating } from "@mui/material";
-import styled from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import Image from "@/components/atoms/image";
 import { ReviewModal } from "./modals/Modals";
-import Dropdown from "@/components/organisms/dropdown";
 import Select from "react-select";
+import { ViewTripAdvisorStayDetailsResponse, ViewTripAdvisorStayNearbyResponse, ViewTripAdvisorStayReviewsResponse } from "@/lib/types/request-models/stay/search.type";
+import { numSort } from "@/lib/utilFns";
 
 const StyledRating = muiStyled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -147,240 +144,53 @@ export const ExpandableText: React.FC<ExpandableTextProps> = ({
   );
 };
 
-interface Reviews {
-  name: string;
-  rating: number;
-  title: string;
-  comment: string;
-  cleanliness: number;
-  service: number;
-  sleepQuality: number;
-  value: number;
-  location: number;
-  commentDate: string;
-  stayedIn: string;
-  rooms: number;
+interface HotelReviewsProps {
+    reviews?: ViewTripAdvisorStayReviewsResponse['data'];
+    stayDetails: ViewTripAdvisorStayDetailsResponse
 }
+const HotelReviews = ({ reviews = [], stayDetails }: HotelReviewsProps) => {
+    const { isMobile } = useScreenResolution();
 
-const reviews: Reviews[] = [
-  {
-    name: "Kenneth Angela",
-    rating: 3,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 2,
-    service: 3,
-    sleepQuality: 4,
-    value: 5,
-    location: 5,
-    rooms: 1,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 4,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 3,
-    service: 4,
-    sleepQuality: 6,
-    value: 8,
-    location: 8,
-    rooms: 9,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 2,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 8,
-    service: 7,
-    sleepQuality: 6,
-    value: 5,
-    location: 4,
-    rooms: 2,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment: "This hotel would have been a 5 if only there were tea/coffee",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 1,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 5,
-    service: 8,
-    sleepQuality: 1,
-    value: 2,
-    location: 5,
-    rooms: 3,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 1,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 5,
-    service: 8,
-    sleepQuality: 1,
-    value: 2,
-    location: 5,
-    rooms: 3,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Tunji Akande",
-    rating: 3,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 5,
-    service: 8,
-    sleepQuality: 1,
-    value: 2,
-    location: 5,
-    rooms: 3,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 3,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 2,
-    service: 3,
-    sleepQuality: 4,
-    value: 5,
-    location: 5,
-    rooms: 1,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 4,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 3,
-    service: 4,
-    sleepQuality: 6,
-    value: 8,
-    location: 8,
-    rooms: 9,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 2,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 8,
-    service: 7,
-    sleepQuality: 6,
-    value: 5,
-    location: 4,
-    rooms: 2,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment: "This hotel would have been a 5 if only there were tea/coffee",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 1,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 5,
-    service: 8,
-    sleepQuality: 1,
-    value: 2,
-    location: 5,
-    rooms: 3,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Kenneth Angela",
-    rating: 1,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 5,
-    service: 8,
-    sleepQuality: 1,
-    value: 2,
-    location: 5,
-    rooms: 3,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-  {
-    name: "Tunji Akande",
-    rating: 3,
-    title: "Wonderful Stay in the Lake Side",
-    cleanliness: 5,
-    service: 8,
-    sleepQuality: 1,
-    value: 2,
-    location: 5,
-    rooms: 3,
-    commentDate: "2023-11-12T14:18:31.520+00:00",
-    stayedIn: "2023-11-12T14:18:31.520+00:00",
-    comment:
-      "This hotel would have been a 5 if only there were tea/coffee making facilities. The bed was the comfiest I’ve ever had away from home. Very central for all the attractions and the customer service desk was excellent, particularly Christian who was very helpful",
-  },
-];
+    // FILTERS
+    const [sort, setSort] = useState({ value: "high-low", label: "High to Low" });
+    const options = [
+        { value: "high-low", label: "High to Low" },
+        { value: "low-high", label: "Low to High" },
+    ];
 
-const HotelReviews = () => {
-  const { isMobile } = useScreenResolution();
+    //=====================
+    // HIDE AND SHOW REVIEW
+    //=====================
+    const [hiddenReviews, setHiddenReviews] = useState<number[]>([]);
+    const toggleReviewVisibility = (index: number) => {
+        if (hiddenReviews.includes(index)) {
+        setHiddenReviews(hiddenReviews.filter((i) => i !== index));
+        } else {
+        setHiddenReviews([...hiddenReviews, index]);
+        }
+    };
 
-  // FILTERS
-  const [filters, setFilters] = useState("recommended");
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
+    //==================
+    // PERCENTAGE & SUM RATING
+    //==================
+    const averageRating =
+        reviews.length > 0
+        ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+        : 0;
+    const displayRating =
+        averageRating > 5 ? averageRating.toFixed(2) : averageRating.toFixed(1);
+    const displayRatingNumber = parseFloat(displayRating);
 
-  //=====================
-  // HIDE AND SHOW REVIEW
-  //=====================
-  const [hiddenReviews, setHiddenReviews] = useState<number[]>([]);
-  const toggleReviewVisibility = (index: number) => {
-    if (hiddenReviews.includes(index)) {
-      setHiddenReviews(hiddenReviews.filter((i) => i !== index));
-    } else {
-      setHiddenReviews([...hiddenReviews, index]);
+    const [open, setOpen] = useState({
+            review: false,
+    });
+
+    const sortedReviews = () => {
+        return numSort(reviews, "rating", sort.value === 'high-low' ? 'desc' : "asc")
     }
-  };
 
-  //==================
-  // PERCENTAGE & SUM
-  //==================
-  //RATING
-  const averageRating =
-    reviews.length > 0
-      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
-      : 0;
-  const displayRating =
-    averageRating > 5 ? averageRating.toFixed(2) : averageRating.toFixed(1);
-  const displayRatingNumber: number = parseFloat(displayRating);
-
-  const [open, setOpen] = useState({
-    review: false,
-  });
+    const subRatings = Object.values(stayDetails?.subratings ?? {})
+    // console.log('sub', subRatings)
 
   return (
     <>
@@ -402,22 +212,28 @@ const HotelReviews = () => {
               }}
             ></Text>
             <Flex
-              styles={{ gap: "10px" }}
-              className="flex_start"
-              justify="flex-end"
-              align="center"
+                styles={{ gap: "10px" }}
+                className="flex_start"
+                justify="flex-end"
+                align="center"
             >
               <Text
                 type="p"
-                text="Sort by"
+                text="Sort by Ratings"
                 whiteSpace="nowrap"
                 size={14}
                 styles={{
-                  whiteSpace: "nowrap",
-                  textOverflow: "unset",
+                    whiteSpace: "nowrap",
+                    textOverflow: "unset",
                 }}
               ></Text>
-              <Select className="react_select" options={options} />
+                <Select
+                    className="react_select"
+                    options={options}
+                    value={sort}
+                    //@ts-ignore
+                    onChange={(v) => setSort(v)}
+                />
             </Flex>
           </Flex>
         </Header>
@@ -433,7 +249,7 @@ const HotelReviews = () => {
             <Flex gap="20px" align="center" className="rating_flex_wrap">
               <Text
                 type="h2"
-                text={`${displayRating}`}
+                text={`${stayDetails?.rating}`}
                 weight={"bold"}
                 size={35}
                 whiteSpace="nowrap"
@@ -466,111 +282,50 @@ const HotelReviews = () => {
                     <Text
                       whiteSpace="nowrap"
                       type="p"
-                      text={`${reviews.length} reviews`}
+                      text={`${stayDetails?.num_reviews} reviews`}
                     ></Text>
                   </Flex>
                 </Flex>
               </ReviewsText>
             </Flex>
-          </Flex>
-          <ProgressBars>
-            <Flex direction="column">
-              <Flex justify="space-between">
-                <Text type="p" text="Cleanliness" size={13}></Text>
-                <Text type="p" weight={600} size={13} text={`${55}%`}></Text>
-              </Flex>
-              <LineProgressBar
-                percent={55}
-                rounded={36}
-                className="LineProgressBar"
-                height={8}
-                progressColor={ttColors.primary}
-              />
             </Flex>
-            <Flex direction="column">
-              <Flex justify="space-between">
-                <Text type="p" text="Service" size={13}></Text>
-                <Text type="p" weight={600} size={13} text={`${68}%`}></Text>
-              </Flex>
-              <LineProgressBar
-                percent={68}
-                rounded={36}
-                className="LineProgressBar"
-                height={8}
-                progressColor={ttColors.primary}
-              />
-            </Flex>
-            <Flex direction="column">
-              <Flex justify="space-between">
-                <Text type="p" text="Sleep Quality" size={13}></Text>
-                <Text type="p" weight={600} size={13} text={`${20}%`}></Text>
-              </Flex>
-              <LineProgressBar
-                percent={20}
-                rounded={36}
-                className="LineProgressBar"
-                height={8}
-                progressColor={ttColors.primary}
-              />
-            </Flex>
-            <Flex direction="column">
-              <Flex justify="space-between">
-                <Text type="p" text="Value" size={13}></Text>
-                <Text type="p" weight={600} size={13} text={`${35}%`}></Text>
-              </Flex>
-              <LineProgressBar
-                percent={35}
-                rounded={36}
-                className="LineProgressBar"
-                height={8}
-                progressColor={ttColors.primary}
-              />
-            </Flex>
-            <Flex direction="column">
-              <Flex justify="space-between">
-                <Text type="p" text="Location" size={13}></Text>
-                <Text type="p" weight={600} size={13} text={`${45}%`}></Text>
-              </Flex>
-              <LineProgressBar
-                percent={45}
-                rounded={36}
-                className="LineProgressBar"
-                height={8}
-                progressColor={ttColors.primary}
-              />
-            </Flex>
-            <Flex direction="column">
-              <Flex justify="space-between">
-                <Text type="p" text="Rooms" size={13}></Text>
-                <Text type="p" weight={600} size={13} text={`${80}%`}></Text>
-              </Flex>
-              <LineProgressBar
-                percent={80}
-                rounded={36}
-                className="LineProgressBar"
-                height={8}
-                progressColor={ttColors.primary}
-              />
-            </Flex>
-          </ProgressBars>
+            {subRatings.length > 0 && 
+                <ProgressBars>
+                    {subRatings.map((sub, index) => 
+                        <Flex direction="column" key={`main-rev-${index}`}>
+                            <Flex justify="space-between">
+                                <Text type="p" text={sub.localized_name} size={13}></Text>
+                                <Text type="p" weight={600} size={13} text={`${Number(sub.value) * 20}%`}></Text>
+                            </Flex>
+                            <LineProgressBar
+                                percent={Number(sub.value) * 20}
+                                rounded={36}
+                                className="LineProgressBar"
+                                height={8}
+                                progressColor={ttColors.primary}
+                            />
+                        </Flex>
+                    )}
+                </ProgressBars>
+            }
         </GridBox>
         <ReviewList>
           <>
             {!isMobile ? (
               <Span>
-                {reviews?.map((review, index) => {
+                {sortedReviews()?.map((review, index) => {
                   // Format commentDate
                   const commentDate = new Intl.DateTimeFormat("en-US", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
-                  }).format(new Date(review.commentDate));
+                  }).format(new Date(review.published_date));
 
                   // Format stayedIn
-                  const stayedIn = new Intl.DateTimeFormat("en-US", {
+                const stayedIn = new Intl.DateTimeFormat("en-US", {
                     month: "long",
                     year: "numeric",
-                  }).format(new Date(review.stayedIn));
+                  }).format(new Date(review.travel_date));
 
                   return (
                     <Span key={index}>
@@ -581,7 +336,7 @@ const HotelReviews = () => {
                           <Text
                             weight={"bold"}
                             type="h5"
-                            text={review.name}
+                            text={review?.user?.user_location?.name ?? review?.user?.username ?? 'User'}
                           ></Text>
                           <ReviewsText>
                             <Flex align="center" gap="8px">
@@ -600,20 +355,20 @@ const HotelReviews = () => {
                                 styles={{ fontSize: "14px" }}
                               >
                                 <StyledRating
-                                  name="customized-color"
-                                  defaultValue={review.rating}
-                                  getLabelText={(value: number) =>
-                                    `${value} Heart${value !== 1 ? "s" : ""}`
-                                  }
-                                  readOnly
-                                  precision={0.5}
-                                  icon={<CircleIcon fontSize="inherit" />}
-                                  emptyIcon={
-                                    <CircleOutlinedIcon fontSize="inherit" />
-                                  }
-                                  style={{
-                                    fontSize: "15px",
-                                  }}
+                                    name="customized-color"
+                                    value={review.rating}
+                                    getLabelText={(value: number) =>
+                                        `${value} Heart${value !== 1 ? "s" : ""}`
+                                    }
+                                    readOnly
+                                    precision={0.5}
+                                    icon={<CircleIcon fontSize="inherit" />}
+                                    emptyIcon={
+                                        <CircleOutlinedIcon fontSize="inherit" />
+                                    }
+                                    style={{
+                                        fontSize: "15px",
+                                    }}
                                 />
                               </Flex>
                             </Flex>
@@ -632,14 +387,14 @@ const HotelReviews = () => {
                             ></Text>
 
                             <ExpandableText
-                              text={review.comment}
+                              text={review.text}
                               maxLines={3}
                               commentDate={commentDate}
                               stayedIn={stayedIn}
                             />
                           </Flex>
 
-                          <Flex align="center" gap="20px">
+                          {/* <Flex align="center" gap="20px">
                             <Text
                               type="h5"
                               weight={"bold"}
@@ -702,13 +457,13 @@ const HotelReviews = () => {
                                 />
                               </Flex>
                             </RadioGroup>
-                          </Flex>
+                          </Flex> */}
                         </Flex>
                       </Content>
                     </Span>
                   );
                 })}
-                <Flex justify="center" styles={{ marginTop: "40px" }}>
+                {/* <Flex justify="center" styles={{ marginTop: "40px" }}>
                   <span className="pagination">
                     <Pagination
                       className="paginationItemStyle"
@@ -718,7 +473,7 @@ const HotelReviews = () => {
                       shape="rounded"
                     />
                   </span>
-                </Flex>{" "}
+                </Flex>{" "} */}
               </Span>
             ) : (
               <>

@@ -42,6 +42,8 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     initialValues: { amount: 0 },
     onSubmit: () => { },
   });
+
+  // console.log({ visaDetails });
   function paymentAmount() {
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
@@ -127,6 +129,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     }).then(() => {
       visaDetails.refetch();
       onClose();
+      // SHOULD THE MODAL FOR APPLICATION STATUS SHOWING THE PAY PROCESSING FEE / DOWNLOAD APPLICATION SHOW UP HERE AS WELL ?
       setSuccessModalOpen(true);
     });
   }
@@ -320,7 +323,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
             />
           </Section>
           {!isMobile && (
-            <Section margin="-10px 0px 2.5rem">
+            <Section margin="-10px 0px 24px">
               <Flex
                 align="center"
                 justify="flex-start"

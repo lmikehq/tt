@@ -8,3 +8,18 @@ async function getUser() {
 }
 
 export default getUser;
+
+export class DashboardAccountService {
+  static updateUser = async (payload: any) => {
+    return apiService(`/user/update`, 'POST', {
+      ...payload
+    });
+  };
+
+  static updatePassword = async (payload: { currentPassword: string, newPassword: string; }) => {
+    return apiService(`/auth/change-password`, 'POST', {
+      ...payload
+    });
+  };
+}
+

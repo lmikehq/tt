@@ -176,7 +176,7 @@ export const ImageBox = styled.div`
 `;
 
 export const ChooseRoomImg = styled.span`
-  max-height: 250px;
+  max-height: 300px;
   border-radius: 12px;
   overflow: hidden;
   grid-column-gap: 20px;
@@ -366,7 +366,7 @@ export const BtnText = styled.div`
   font-size: 16px;
 `;
 
-export const BtnDetails = styled.div`
+export const BtnDetails = styled.button`
   border: 2px solid var(--color-border);
   border-radius: 6px;
   width: fit-content;

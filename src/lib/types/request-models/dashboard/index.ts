@@ -1,6 +1,7 @@
 import { UseQueryOptions } from "@tanstack/react-query";
-
+import { IAccompany } from "../..";
 export interface DashboardFilters {
+  applicationStatus?: string;
   status?: string;
   search?: string;
   currentPage: number;
@@ -28,4 +29,18 @@ export interface NotificationResponse {
   userId: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface DependantsPayload {
+  membersName: string,
+  relationshipToPrimary: string,
+  address: string,
+  membersEmail: string,
+  membersPhoneNumber: string,
+  accompanying: boolean,
+  dateOfBirth: string,
+  gender: string,
+  passportNumber: string,
+  expiryYear: number,
+  issueYear: number;
 }

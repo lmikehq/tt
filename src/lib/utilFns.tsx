@@ -86,7 +86,7 @@ export function cleanObject(obj: { [k: string]: any }) {
 
 export function numSort(
     arr: any[] = [],
-    keyToCompare: string,
+    keyToCompare?: string,
     order?: "asc" | "desc"
 ) {
     if (order === "asc") {
@@ -159,4 +159,8 @@ export function reverseCabin(x?: string) {
         default:
             return "Economy";
     }
+}
+
+export function keyValues(obj: object) {
+    return Object.values(obj ?? {}).filter(e => !!e)
 }

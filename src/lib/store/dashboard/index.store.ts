@@ -10,6 +10,7 @@ interface State {
   dateRange?: string;
   startDate?: string;
   endDate?: string | undefined;
+  tab: number;
 }
 
 interface Actions {
@@ -17,11 +18,14 @@ interface Actions {
   updateParams: (param: string) => void;
   updateTab: (tab: string) => void;
   setPage: (param: string) => void;
+  updatePage: (param: number) => void;
   setSearch: (param: string) => void;
   setDateRange: (startDate: string, endDate: string) => void;
+  setTab: (param: number) => void;
 }
 
 export const useDashboardStore = create<Actions & State>((set): Actions & State => ({
+  tab: 0,
   page: 1,
   limit: 10,
   queryParams: [],
@@ -68,6 +72,11 @@ export const useDashboardStore = create<Actions & State>((set): Actions & State 
       return { page: state.page };
     });
   },
+  updatePage(param) {
+    set((state) => {
+      return { page: param };
+    });
+  },
   setSearch(param) {
     set((state) => {
       return { search: param, page: 1 };
@@ -77,5 +86,10 @@ export const useDashboardStore = create<Actions & State>((set): Actions & State 
     set((state) => {
       return { startDate: startDate, endDate: endDate, page: 1 };
     });
+  },
+  setTab(param: number) {
+    set(() => ({
+      tab: param
+    }));
   },
 }));

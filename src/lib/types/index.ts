@@ -64,9 +64,11 @@ export interface DetailsKeys {
 export interface EducationDetailsInterface {
     school: string;
     degree: string;
+    degreeText?: string;
     cgpa: number | null;
     location: string;
     fieldOfStudy: string;
+    fieldOfStudyText?: string;
     startYear: number | null;
     endYear?: number | null;
     stillAtSchool: boolean;
@@ -282,21 +284,19 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
 }: {
     data: VisaApplicationFormInterface;
     user?: AuthUser | null;
-}) => {
-    const sortedFamily = data.familyMembers
-        .filter((e) => !!e?.membersName)
-        .map((member) => {
-            delete member.index;
-            delete member.membersOccupation;
-            delete member.issueCountry;
-            delete member.maritalStatus;
-            return {
-                ...member,
-                dateOfBirth: formatISODate(member?.dateOfBirth),
-                issueYear: safelyConvertToNumber(member?.issueYear),
-                expiryYear: safelyConvertToNumber(member?.expiryYear),
-            };
-        });
+    }) => {
+    const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
+        delete member.index;
+        delete member.membersOccupation;
+        delete member.issueCountry;
+        delete member.maritalStatus;
+        return ({
+            ...member,
+            dateOfBirth: formatISODate(member?.dateOfBirth),
+            issueYear: safelyConvertToNumber(member?.issueYear),
+            expiryYear: safelyConvertToNumber(member?.expiryYear),
+        })
+    })
 
     const prevResidences = [
         data.personalInfo.prevResidence1?.name
@@ -432,7 +432,16 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                     "",
             },
             employment: data.employment,
-            education: data.education,
+            education: data.education.map(e => ({
+                school: e.school,
+                cgpa: e.cgpa,
+                location: e.location,
+                startYear: e.startYear,
+                endYear: e.endYear,
+                stillAtSchool: e.stillAtSchool,
+                degree: e.degree === 'Others' ? (e.degreeText ?? '') : e.degree,
+                fieldOfStudy: e.fieldOfStudy === 'Others' ? (e.fieldOfStudyText ?? '') : e.fieldOfStudy,
+            })),
         },
         familyInformation: {
             parentDetails: sortedFamily
@@ -455,7 +464,6 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                         }),
                     };
                 }),
-
             siblingDetails: sortedFamily
                 .filter((e) => e.section === "B")
                 .map((member) => {
@@ -565,13 +573,31 @@ export interface IAccompany {
     gender: string;
     dateOfBirth: string;
     passportNumber: string;
-    passportIssuedCountry: string;
+    passportIssuedCountry: CountryType;
     issueDate: string;
     expiryDate: string;
+}
+
+export interface DependantsFormInterface {
+    dependants: IAccompany[];
 }
 
 export interface IUpdatePassword {
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
+}
+
+export interface IReferralBankInfo {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    refereeId?: string;
+}
+
+export interface IReferralPersonalInfo {
+    id: string;
+    referrerId: string;
+    email: string;
+    name: string;
 }

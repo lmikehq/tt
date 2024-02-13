@@ -1,309 +1,154 @@
 import { Box, Dialog } from "@mui/material";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import Section from "../../section";
 import Flex from "@/components/templates/flex";
 import { IoMdClose } from "react-icons/io";
 import { ttColors } from "@/lib/theme/colors";
 import Text from "@/components/atoms/text";
-import { Grid } from "@/components/templates/grid";
-import PhoneInput from "react-phone-input-2";
-import Required from "@/components/atoms/required";
-import { useFormik, FormikProps } from "formik";
-import { ErrorText, FieldAsDate, FieldAsString, FieldInput, FieldString } from "@/components/organisms/fieldInput";
-import styled from "styled-components";
-import { COUNTRY_FLAGS } from "@lib/extensions/data/COUNTRY_FLAGS";
+import { FieldArray, FormikProps, FormikProvider } from "formik";
 import Button from "@/components/atoms/button";
-import { accompanySchema, accompanyVal } from "@/lib/types/schema";
+import { accompanyVal } from "@/lib/types/schema";
+import AccompanyComponent from "./visa/accompany";
+
+import { IAccompany } from "@/lib/types";
+import ReusableModal from "./dashboardModal";
+import CustomizedAccordions from "../../faq/components/customizedAccordion";
+import AddButton from "../../addButton";
+import toast from "react-hot-toast";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface Props {
   open: boolean;
   setState: React.Dispatch<React.SetStateAction<{ open: boolean, type: string; }>>;
+  steps: string[],
+  index: number;
+  persistForm: () => void;
+  formik: FormikProps<{ dependants: IAccompany[]; }>;
 }
 
-const PhoneInputStyle = styled.div`
-  .react-tel-input .form-control {
-    height: 45px !important;
-  }
 
-  :hover {
-   border-color: ${ttColors.primary};
-   border-radius: 6px;
-  }
-`;
-
-const SectionContainer = styled.div`
-  position: relative;
-  z-index: 99999;
-
-  .css-gbi5t6-MuiPopper-root {
-    display: block;
-    z-index: 99999;
-    background-color: orange;
-  }
-`;
-
-export const AddVisaAccompanyModal = ({ open, setState }: Props) => {
+export const AddVisaAccompanyModal = ({ open, index, setState, formik }: Props) => {
   const { isMobile } = useScreenResolution();
 
   const handleClose = () => {
+    formik.resetForm();
     setState((prev) => {
       return {
         ...prev,
         open: false,
-        type: ''
+        type: 'add-accompany'
       };
     });
   };
 
-  const formik = useFormik({
-    initialValues: accompanyVal,
-    validationSchema: accompanySchema,
-    onSubmit: (values) => {
-      console.log('the code is in the submit');
-    }
-  });
-
   return (
-    <Dialog
+    <ReusableModal
+      headerText="Add Accompanies"
+      description="Enter details of people you want to travel with."
       open={open}
-      onClose={handleClose}
-      sx={{
-        '.css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-          width: '827px',
-          borderRadius: '12px',
-          maxWidth: '827px',
-        }
+      onClose={() => {
+        handleClose();
       }}
+      maxWidth="827px"
+      maxHeight="500px"
+      // height="500px"
+      width={isMobile ? "90%" : "827px"}
+      showButton={false}
     >
-      <Flex align="center" justify="flex-end" padding={isMobile ? "20px 20px 0" : "20px 42px 0"}>
-        <Flex
-          align="center"
-          justify="center"
-          borderRadius="4px"
-          styles={{ cursor: 'pointer' }}
-          height="30px"
-          width="30px"
-          onClick={() => handleClose()}
-        >
-          <Flex
-            background={ttColors.grayishAsh}
-            height="30px"
-            width="30px"
-            align="center"
-            justify="center"
-          >
-            <IoMdClose />
-          </Flex>
-        </Flex>
-      </Flex>
+      <FormikProvider value={formik}>
+        <Box>
+          <form onSubmit={formik?.handleSubmit}>
+            <FieldArray
+              name="dependants"
+              render={(arrayHelpers) => {
+                return (
+                  <div>
+                    <CustomizedAccordions
+                      hasDefaultExpanded={true}
+                      items={formik.values.dependants.map((dependant, index) => ({
+                        flexDirection: "row",
+                        header: formik.values.dependants.length > 1 ? `Dependant ${index + 1}` : 'Dependant',
+                        border: 'none',
+                        headerFontWeight: 600,
+                        backgroundColor: "transparent",
+                        detailsBorderTop: "none",
+                        detailsPadding: 0,
+                        headerLeftMargin: 0,
+                        headerPadding: "0",
+                        // hasDefaultExpanded: true,
+                        description: (
+                          <AccompanyComponent
+                            formik={formik}
+                            values={dependant}
+                            count={index + 1}
+                            length={formik.values.dependants.length}
+                            step={index}
+                          />
+                        )
+                      }))}
+                    />
+                    <Flex align="center" justify="space-between">
+                      <Flex justify="space-between">
+                        {/* <FormStepTitle steps={steps} index={index} /> */}
+                        <Button
+                          width="max-content"
+                          padding="0 10px"
+                          background="transparent"
+                          border={`1px solid ${ttColors.lightestGray}`}
+                          disabled={formik.values.dependants.length === 5}
+                          onClick={() => {
+                            if (!formik.isValid || !formik.dirty) {
+                              return toast.error("Please validate all inputs");
+                            }
+                            if (formik.values.dependants.length < 5) {
+                              arrayHelpers.insert(index + 1, accompanyVal);
+                            }
+                          }}
+                        >
+                          <Flex align="center" gap="10px">
+                            <Text type="p" text="Add Dependant" color={ttColors.dark} weight={500} />
+                            <AddButton
+                              onClick={() => ''}
+                              disabled={false}
+                            />
+                          </Flex>
+                        </Button>
+                      </Flex>
 
-      <Box sx={{ padding: isMobile ? '0 24px 20px' : '0 74px 41px' }}>
-        <Flex direction="column" gap="16px" align="center" justify="center" margin="0 0 44px">
-          <Text type='h1' text='Add Accompanies' weight={600} size={isMobile ? 22 : 32} />
-          <Text type='p' text='Enter details of people you want to travel with.' textAlign="center" color={ttColors.lighterGray} />
-        </Flex>
-
-        <form onSubmit={formik.handleSubmit}>
-          <Flex direction="column" gap="29px">
-            <Grid columns="" style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr' }} align="center" gap="18px">
-              <Flex direction="column" gap="14px">
-                <Flex direction="row" align="center" gap="0.25rem">
-                  <Text type="label" text="Family Member's Name" />
-                  <Required />
-                </Flex>
-                <FieldInput
-                  name="memberName"
-                  formik={formik}
-                  placeholder="Enter Member's Name"
-                />
-              </Flex>
-
-              <Flex direction="column" gap="14px">
-                <Flex direction="row" align="center" gap="0.25rem">
-                  <Text type="label" text="Relationship to you" />
-                  <Required />
-                </Flex>
-                <FieldString
-                  formik={formik}
-                  name="relationship"
-                  placeholder="Enter Relationship to you"
-                  options={['Spouse', 'Son', 'Daughter', 'Father', 'Mother', 'Brother', 'Sister']}
-                />
-              </Flex>
-            </Grid>
-
-            <Flex direction="column" gap='14px'>
-              <Text type="label" text="Member's Address" />
-              <FieldInput
-                name='memberAddress'
-                formik={formik}
-                placeholder="Enter Member's Residential Address"
-              />
-            </Flex>
-
-            <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
-              <Flex direction="column" gap='14px'>
-                <Text type="label" text="Member's Occupation" />
-                <FieldInput placeholder="Enter Guarantor's Occupation" name="memberOccupation" formik={formik} />
-              </Flex>
-
-              <Flex direction="column" gap="14px">
-                <Text type="label" text="Member's Email Address" />
-                <FieldInput
-                  name="memberEmail"
-                  formik={formik}
-                  placeholder="Enter Member's Email Address"
-                />
-              </Flex>
-            </Grid>
-
-            <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
-              <Flex direction="column" gap="14px">
-                <Flex align="center" gap="0.25rem">
-                  <Text
-                    type="p"
-                    text="Phone Number"
-                    // margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    size={15}
-                  />
-                  <Required />
-                </Flex>
-                <PhoneInputStyle>
-                  <PhoneInput
-                    country={"ng"}
-                    autoFormat={true}
-                    inputProps={{
-                      name: "phoneNumber",
-                    }}
-                    inputStyle={{ border: Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? `1px solid crimson` : '' }}
-                    onChange={(e) => {
-                      formik.setFieldValue("phoneNumber", e);
-                    }}
-                    inputClass="w"
-                    placeholder="Enter phone numbers"
-                  // containerStyle={{ height: '56px' }}
-                  />
-                </PhoneInputStyle>
-
-                {Object.keys(formik.touched).includes('phoneNumber') && Object.keys(formik.errors).includes('phoneNumber') ? <ErrorText text={formik.errors?.phoneNumber ?? 'Required'} /> : null}
-              </Flex>
-
-              <Flex direction="column" gap="14px">
-                <Flex>
-                  <Text type='label' text="Member's Worth" />
-                  <Required />
-                </Flex>
-                <FieldInput name="memberWorth" formik={formik} placeholder="Enter Guarantor's Worth" />
-              </Flex>
-            </Grid>
-
-            <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
-              <Flex direction="column" gap="14px">
-                <Flex>
-                  <Text type="label" text='Gender' />
-                  <Required />
-                </Flex>
-                <FieldString
-                  name="gender"
-                  formik={formik}
-                  placeholder="Select Gender"
-                  options={['Male', 'Female']}
-                />
-              </Flex>
-              <Flex direction="column" gap="14px">
-                <Flex>
-                  <Text type="label" text='Date of Birth' />
-                  <Required />
-                </Flex>
-                <FieldAsDate
-                  name="dateOfBirth"
-                  placeholder="Select your DOB"
-                  formik={formik}
-                  padding="0 0 0 0"
-                  // maxDate={dayjs(formik.values.expiryDate)}
-                  format="DD/MM/YYYY"
-                />
-              </Flex>
-            </Grid>
-
-            <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
-              <Flex direction="column" gap="14px">
-                <Flex>
-                  <Text type="label" text='Passport Number' />
-                  <Required />
-                </Flex>
-                <FieldInput
-                  name="passportNumber"
-                  formik={formik}
-                  placeholder="Enter Passport Number"
-                />
-              </Flex>
-
-              <Flex direction="column" gap="14px" position="relative">
-                <Flex>
-                  <Text
-                    type="p"
-                    text="Issued Country"
-                    // margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                    size={15}
-                  />
-                  <Required />
-                </Flex>
-                <SectionContainer>
-                  <FieldAsString
-                    options={COUNTRY_FLAGS.map((x) => ({
-                      name: x.name,
-                      flag: x.flag,
-                      code: x.code,
-                    }))}
-                    formik={formik}
-                    name="passportIssuedCountry"
-                    placeholder="Select the country"
-                  />
-                </SectionContainer>
-              </Flex>
-            </Grid>
-
-            <Grid columns={''} style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', alignItems: 'center' }} gap="18px">
-              <Flex direction="column" gap="14px">
-                <Flex>
-                  <Text type="label" text='Issue Date' />
-                  <Required />
-                </Flex>
-                <FieldAsDate
-                  name="issueDate"
-                  placeholder="Select Issue Date"
-                  formik={formik}
-                  padding="0 0 0 0"
-                  // maxDate={dayjs(formik.values.expiryDate)}
-                  format="DD/MM/YYYY"
-                />
-              </Flex>
-
-              <Flex direction="column" gap="14px">
-                <Flex>
-                  <Text type="label" text='Expiry Date' />
-                  <Required />
-                </Flex>
-                <FieldAsDate
-                  name="expiryDate"
-                  placeholder="Expiry Date"
-                  formik={formik}
-                  padding="0 0 0 0"
-                  // maxDate={dayjs(formik.values.expiryDate)}
-                  format="DD/MM/YYYY"
-                />
-              </Flex>
-            </Grid>
-
-            <Flex width="100%" justify="center" align="center">
-              <Button background={ttColors.blackishBlue} width="50%" type="submit">
-                <Text type="p" text='Continue' weight={500} />
-              </Button>
-            </Flex>
-          </Flex>
-        </form>
-      </Box>
-    </Dialog>
+                      {formik.values.dependants.length > 1 && (
+                        <Flex
+                          justify="flex-end"
+                          gap="0.25rem"
+                          align="center"
+                          onClick={() => arrayHelpers.remove(index)}
+                          cursor="pointer"
+                        >
+                          <RiDeleteBin6Line color={ttColors.red} size={25} />
+                          <Text
+                            type="p"
+                            text="Delete Dependant"
+                            color={ttColors.red}
+                            weight="500"
+                            size={15}
+                          />
+                        </Flex>
+                      )}
+                    </Flex>
+                  </div>
+                );
+              }} />
+            {/* render the button to submit */}
+            <Button
+              background={ttColors.blackishBlue}
+              width="100%"
+              type="submit"
+              margin="40px 0 0"
+            >
+              <Text type="p" text="Continue" weight={500} />
+            </Button>
+            {/* render the form here */}
+          </form>
+        </Box>
+      </FormikProvider>
+    </ReusableModal >
   );
 };

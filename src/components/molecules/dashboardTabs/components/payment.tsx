@@ -31,6 +31,8 @@ import { DashboardPaymentInfo, PaymentProp } from "@/lib/types/response-models/d
 // import CustomTab from "@/components/atoms/tabs";
 import PaginationCtrl from "../../pagination";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const SectionTitle = styled.div`
     display: flex;
@@ -162,7 +164,7 @@ const PaymentHistory = () => {
   const [hoveredOption, setHoveredOption] = useState<number | null>(null);
   const [_bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
   const router = useRouter();
-  const { param, search, setPage, page, limit, startDate, endDate } = useDashboardStore((state) => state);
+  const { param, search, setPage, page, limit, startDate, endDate, updatePage } = useDashboardStore((state) => state);
   const [openModal, setOpenModal] = useState(false);
   const [selected, setSelected] = useState({
     intent: '',
@@ -170,10 +172,13 @@ const PaymentHistory = () => {
     accompanying: 0,
     refetch: () => { }
   });
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
 
   const handleClose = () => {
     setOpenModal(false);
   };
+
 
   const content = {
     title: `You've got no Payment History - Make Payment for a Flight, Visa or Stay`,
@@ -191,17 +196,6 @@ const PaymentHistory = () => {
     );
   }
 
-  // async function getAllPayments() {
-  //   return await apiService("/payment", "GET");
-  // }
-  // const {
-  //   data: fetchedPayment,
-  //   isLoading,
-  //   error,
-  // } = useQuery(["payments"], getAllPayments) as any;
-
-
-  // const { data: payments } = fetchedPayment;
 
   const { data, isLoading, isError, refetch } = useDashboardPayment({
     query: { status: param, search: search, currentPage: page, limit: limit, startDate, endDate },
@@ -210,9 +204,11 @@ const PaymentHistory = () => {
     }
   });
 
-  // console.log({ data });
+  const response = data as { payments: DashboardPaymentInfo[], totalCount: number, filteredCount: number; };
 
-  const payments: DashboardPaymentInfo[] = (data as DashboardPaymentInfo[]);
+  const payments: DashboardPaymentInfo[] = response?.payments as DashboardPaymentInfo[] || [];
+  const filteredCount: number = response?.filteredCount;
+  const totalCount: number = response?.totalCount;
 
   if (isError) return <div>error loading payments, please try again</div>;
 
@@ -279,9 +275,11 @@ const PaymentHistory = () => {
                       </Flex>
                     </History>
                   ))}
-                  {/* pagination buttons */}
 
-                  <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} />
+                  {/* custom pagination button */}
+                  <Flex justify="flex-end" align="center">
+                    <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                  </Flex>
                 </>
               ) : (
                 <>
@@ -401,7 +399,18 @@ const PaymentHistory = () => {
                       </History>
                     ))}
                     {/* pagination buttons */}
-                    <PaginationCtrl page={page} setPage={setPage} data={payments} />
+                    {/* <PaginationCtrl
+                      page={page}
+                      setPage={setPage}
+                      data={payments}
+                      filteredCount={filteredCount}
+                      totalCount={totalCount}
+                    /> */}
+
+                    {/* custom pagination button */}
+                    <Flex justify="flex-end" align="center">
+                      <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                    </Flex>
                   </>
                 ) : (
                   <>
@@ -409,7 +418,7 @@ const PaymentHistory = () => {
                       <NoApplication noVisaImage={NoPaymentImg} content={content} />
                     </Center>
                     {/* pagination buttons */}
-                    <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} />
+                    {/* <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} /> */}
                   </>
                 )}
               </Flex>

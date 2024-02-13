@@ -14,6 +14,8 @@ import Spinner from "../../icons/spinner";
 import { NotificationProps } from "@/lib/types/response-models/dashboard";
 import { format } from "date-fns";
 import PaginationCtrl from "../../pagination";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 
 const NotificationWrapper = styled.div`
@@ -30,7 +32,8 @@ const NotificationWrapper = styled.div`
 const Notification = () => {
   const { isMobile } = useScreenResolution();
   const { param, limit, page, startDate, endDate, setPage } = useDashboardStore((state) => state);
-
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
   const content = {
     title: "You've got no Notification - Please come back later.",
     links: []
@@ -41,7 +44,12 @@ const Notification = () => {
     options: { retry: 2 }
   });
 
+  const response = data as { notifications: NotificationProps[], filteredCount: number, totalCount: number; };
+
   const notifications: NotificationProps[] = data as NotificationProps[];
+  // const notifications: NotificationProps[] = response.notifications || []
+  const filteredCount: number = response?.filteredCount || 1;
+  const totalCount: number = response?.totalCount || 1;
 
   return (
     <Section
@@ -77,7 +85,10 @@ const Notification = () => {
                   );
 
                 })}
-                <PaginationCtrl<NotificationProps> page={page} setPage={setPage} data={notifications} />
+                {/* <PaginationCtrl<NotificationProps> page={page} setPage={setPage} data={notifications} filteredCount={filteredCount} totalCount={totalCount} /> */}
+                <Flex justify="flex-end" align="center">
+                  <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                </Flex>
               </>
 
             ) : (

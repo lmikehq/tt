@@ -29,7 +29,8 @@ export const useDashboardFlight = ({ query, options }: UseDashboardProps) => {
       query.search,
       query.endDate,
       query.currentPage,
-      query.limit
+      query.limit,
+      query.currentPage
     ],
     ...options
   });

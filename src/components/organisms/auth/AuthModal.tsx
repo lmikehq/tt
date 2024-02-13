@@ -4,6 +4,7 @@ import Section from "@/components/molecules/section";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
+
 const AuthModal = ({
     open,
     handleClose,

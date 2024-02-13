@@ -9,13 +9,21 @@ import { useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
 import styled from "styled-components";
 import ImageGrid from './components/ImageGrid';
-import dayjs from 'dayjs';
 import PositionCard, { PositionCardProps } from './components/PositionCard';
 import PostCard from '../about-us/components/PostCard';
 import ValuesCarousel from '../about-us/components/ValuesCarousel';
-import { coreValues, postCard } from '../about-us/AboutUsPage';
+import { coreValues } from '../about-us/AboutUsPage';
 import { IoBriefcase } from 'react-icons/io5';
-const gridImages = Array.from({ length: 6 }).map(e => '/assets/images/empty-img.png')
+const gridImages = [
+    '/assets/images/about-us/tt-team-1.jpg',
+    '/assets/images/about-us/tt-team-6.jpg',
+    '/assets/images/about-us/tt-team-7.jpg',
+    '/assets/images/about-us/tt-team-2.jpg',
+]
+const postCard = {
+    heading: "Empowering travelers with seamless solutions, we're revolutionizing your experience.",
+    text: "Discover a new realm of travel experiences with our transformative solutions. Seamlessly navigate every step of your journey with our intuitive platform. From hassle-free visa applications to personalized flight options, we've got you covered. Experience unparalleled convenience and flexibility at every turn. Join a community of adventurous travelers embracing the future of travel. Revolutionize the way you explore the world and create lasting memories. Your journey starts here, with us by your side. Let's embark on this exciting adventure together and redefine travel as you know it. Trust in our expertise to guide you through every destination and experience. Elevate your travel experience with our innovative approach to exploration. "
+}
 const openPositions: PositionCardProps[] = [
     // {
     //     position: 'Product Design',
@@ -111,9 +119,10 @@ function CareersPage() {
                 </Button>
             </Flex>
 
-            
+
             <Flex direction='column' gap="3.5rem" margin='3rem 0' padding="0 0 3rem">
                 <PostCard
+                    imgSrc='/assets/images/about-us/tt-team-4.jpg'
                     {...postCard}
                 />
                 

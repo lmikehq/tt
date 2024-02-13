@@ -31,6 +31,11 @@ import { Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/s
 import { pickIcon } from "./modals/components/AmenitiesBox";
 import { capCase } from "@/lib/utilFns";
 import dayjs from "dayjs";
+import { useQueryParams } from "@/hooks/useNext";
+import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
+import Button from "@/components/atoms/button";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useConversionRate } from "@/hooks/useConversionRate";
 
 interface OneOptionProps {
     label: string,
@@ -103,40 +108,28 @@ function OneOption({ label, subLabel, price, name, value, onChange, active }: On
 }
 
 interface OneHotelProps {
+    stayImages: string[];
     hotel: Rate;
     index: number;
     onClick: VoidFunction;
     cancelOptions: { value: string; label: string; price: string; }[]
 }
 
-function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
+function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotelProps) {
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
     const { isMobile } = useScreenResolution();
+    const { convertCurrency } = useConversionRate()
 
-    const [selected, setSelected] = useState<{ cancellation?: number; extras: string[]; [k: string]: any }>({
-        cancellation: undefined,
-        extras: [],
-    })
-
-    type SelectedType = keyof typeof selected
-    const onSelectExtras = (name: string, value: string) => {
-        setSelected(prev => ({
-            ...prev,
-            [name]: prev[name].includes(value) ? prev[name].filter((e: string) =>  e !== value) : [...prev[name], value] 
-        }))
+    const selectedPrice = hotel.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? hotel.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? hotel.payment_options.payment_types[0]
+    const displayPrice = {
+        currencyCode: selectedPrice?.currency_code ?? preFerredCurrency,
+        amount: selectedPrice?.amount ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
     }
-    const onSelectCancel = (name: string, value: string) => {
-        setSelected(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    }
-
-    console.log(selected)
 
 
     return (
         <Span key={index} style={{ marginBottom: "60px" }}>
-            <GridLayout className="choose_room_list">
+            <GridLayout className="choose_room_list" style={{ gap: '3rem' }}>
               <Span style={{ overflow: "hidden" }}>
                 <Flex direction="column" gap="10px">
                   <Flex
@@ -148,20 +141,22 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                       <img
                         style={{
                             width: "100%",
-                            height: "100%",
+                            height: "255px",
                             minWidth: "260px",
                             objectFit: "cover",
                             borderRadius: "12px",
                         }}
-                        // src={hotel.images[0]}
-                        src={"/assets/images/stays/image1.jpg"}
+                        src={stayImages[0] ?? ''}
                         alt={hotel.room_name}
                       />
                     </ChooseRoomImg>
                     <Span>
-                      {isMobile && (
-                        <Text type="h2" weight={600} text={hotel.room_name}></Text>
-                      )}
+                    {isMobile && (
+                        <React.Fragment>
+                            <Text type="h2" weight={600} text={capCase(hotel.room_data_trans?.main_name)}></Text>
+                            <Text type="p" text={capCase(hotel.room_data_trans?.bedding_type)}></Text>
+                        </React.Fragment>
+                    )}
                       <Span style={{ margin: '1rem 0 .6rem'}}>
                         <Flex align="center" gap="0">
                           <Flex gap="5px" align="center">
@@ -170,13 +165,14 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                                 size={24}
                                 whiteSpace="nowrap"
                                 weight={600}
-                                text={getCurrency()}
+                                text={displayPrice?.currencyCode}
                             />{" "}
                             <Text
                                 type="p"
+                                whiteSpace="wrap"
                                 size={30}
                                 weight={600}
-                                text={formatPriceWithoutCurrency(parseInt(hotel.daily_prices[0]))}
+                                text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                             />
                             <Text
                               type="p"
@@ -193,14 +189,15 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                             type="p"
                             size={20}
                             weight={600}
-                            text={getCurrency()}
+                            text={displayPrice?.currencyCode}
+                            styles={{ minWidth: 'max-content' }}
                           />
                           <Flex align="center">
                             <Text
                               type="p"
                               size={20}
                               weight={600}
-                              text={formatPriceWithoutCurrency(parseInt(hotel.daily_prices[0]))}
+                              text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                             />
                             <Text
                               type="p"
@@ -210,20 +207,23 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                           </Flex>
                         </Flex>
                       </Span>
-                        <Text type="p" text={`${hotel.rg_ext?.capacity} travellers`} size={15} styles={{ margin: '0 0 .6rem'}}></Text>
+                        <Text type="p" text={`For ${hotel.rg_ext?.capacity} travellers`} size={15} styles={{ margin: '0 0 .6rem'}}></Text>
                         <Text type="p" text="Including taxes and fees" size={15}></Text>
                     </Span>
                   </Flex>
                 </Flex>
               </Span>
               <Span>
-                <Flex direction="column">
-                  {!isMobile && (
-                    <Text type="h2" weight={600} text={hotel.room_name}></Text>
-                  )}
+                <Flex direction="column" gap=".5rem">
+                {!isMobile &&
+                    <React.Fragment>
+                        <Text type="h2" weight={600} size={28}  text={hotel.room_data_trans?.main_name}></Text>
+                        <Text type="p" size={16} text={capCase(hotel.room_data_trans?.bedding_type)}></Text>
+                    </React.Fragment>
+                  }
                   <Span style={{ margin: isMobile ? "1rem 0px" : "1rem 0px 3.5rem", gap: "1rem" }}>
                     <Flex wrap="wrap" gap="8px" align="center">
-                        {hotel.amenities_data.map((am, index) =>
+                        {[...hotel.amenities_data, ...hotel.serp_filters].map((am, index) =>
                             <BtnDetails
                                 style={{ backgroundColor: ttColors.grayishAsh }}
                                 key={`amenity-${index}`}
@@ -234,32 +234,28 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
                                     weight={500}
                                     size={15}
                                     type="p"
-                                    text={capCase(am, '-')}
+                                    text={am.includes('_') ? capCase(am, '_') : capCase(am, '-')}
                                 ></Text>
                                 </Flex>
                             </BtnDetails>
                         )}
                     </Flex>
-                    <Link
-                        href="/stay/booking"
-                        style={{ width: "fit-content" }}
+                    <Flex
+                        align="center"
+                        gap="8px"
+                        styles={{ color: "#7bbbd6", margin: "1rem 0 0" }}
+                        onClick={onClick}
                     >
-                        <Flex
-                            align="center"
-                            gap="8px"
-                            styles={{ color: "#7bbbd6", margin: "1rem 0 0" }}
-                        >
-                            <Text size={15} type="p" text="More Details"></Text>
-                            <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
-                        </Flex>
-                    </Link>
+                        <Text size={15} type="p" text="More Details"></Text>
+                        <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
+                    </Flex>
                     </Span>
                     {!isMobile && (
-                    <Span style={{ marginTop: "20px" }}>
-                      <ButtonBtn onClick={onClick}>
-                        <BtnText>Reserve Room</BtnText>
-                      </ButtonBtn>
-                    </Span>
+                        <Span style={{ marginTop: "20px", maxWidth: isMobile ? '' : '20rem' }}>
+                            <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
+                                <BtnText>Reserve Room</BtnText>
+                            </Button>
+                        </Span>
                   )}
                   {/* <Span>
                     <Flex direction="column" styles={{ margin: "10px 0px" }}>
@@ -447,9 +443,9 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
             </GridLayout>
             {isMobile && (
               <Span style={{ marginTop: "20px" }}>
-                <ButtonBtn>
+                <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
                   <BtnText>Reserve Room</BtnText>
-                </ButtonBtn>
+                </Button>
               </Span>
             )}
         </Span>
@@ -457,17 +453,19 @@ function OneHotel({ hotel, index, onClick, cancelOptions }: OneHotelProps) {
 }
 
 interface HotelListProps {
-  hotels: Rate[];
+    stayResponse?: ViewSingleStayResponse;
+    stayImages: string[];
+    hotels: Rate[];
 }
 
 function ChooseYourRoomList(props: HotelListProps) {
-    const { hotels } = props;
-    const { isMobile } = useScreenResolution();
+    const { stayResponse, stayImages, hotels } = props;
+    const { queryParams } = useQueryParams()
 
     const router = useRouter();
 
-    const handleClick = () => {
-        router.push("/stay/booking");
+    const handleClick = (hotel: Rate) => {
+        router.push(`/stay/booking?hotelId=${queryParams?.id}&bookHash=${hotel?.book_hash}&guests=${queryParams?.guests}&checkIn=${queryParams?.checkIn}&checkOut=${queryParams?.checkOut}`);
     };
 
     const formatPolicy = (start: string | null, end: string | null) => {
@@ -479,8 +477,6 @@ function ChooseYourRoomList(props: HotelListProps) {
             return `Cancel before ${dayjs(end).format('MMM DD')}`
         } else return ''
     }
-    // const cancellationOptions = useMemo(() => {
-    // }, [])
 
     return (
         <React.Fragment>
@@ -493,10 +489,11 @@ function ChooseYourRoomList(props: HotelListProps) {
                     }))
                     return (
                         <OneHotel
+                            stayImages={stayImages}
                             key={`hotel-${index}`}
                             hotel={hotel}
                             index={index}
-                            onClick={handleClick}
+                            onClick={() => handleClick(hotel)}
                             cancelOptions={cancelOptions}
                         />
                     )}

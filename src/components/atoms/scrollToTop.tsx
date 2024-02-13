@@ -20,31 +20,32 @@ export const ScrollToTop = () => {
   };
 
   return (
-    <Draggable nodeRef={nodeRef}>
-      <div
-        ref={nodeRef}
-        style={{
-          position: 'fixed',
-          zIndex: 999,
-          height: isMobile ? '60px' : '80px',
-          width: isMobile ? '60px' : '80px',
-          bottom: '20%',
-          right: '45px',
-          background: "#87CEEB",
-          borderRadius: '50%',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyItems: 'center'
-        }}>
-        <Flex
-          onClick={onClick}
-          align="center"
-          justify="center"
-        >
-          <BsArrowUp color="#FFF" size={isMobile ? 25 : 37} fontWeight={600} />
-        </Flex>
-      </div>
-    </Draggable>
+    <></>
+    // <Draggable nodeRef={nodeRef}>
+    //   <div
+    //     ref={nodeRef}
+    //     style={{
+    //       position: 'fixed',
+    //       zIndex: 999,
+    //       height: isMobile ? '60px' : '80px',
+    //       width: isMobile ? '60px' : '80px',
+    //       bottom: '20%',
+    //       right: '45px',
+    //       background: "#87CEEB",
+    //       borderRadius: '50%',
+    //       cursor: 'pointer',
+    //       display: 'flex',
+    //       alignItems: 'center',
+    //       justifyItems: 'center'
+    //     }}>
+    //     <Flex
+    //       onClick={onClick}
+    //       align="center"
+    //       justify="center"
+    //     >
+    //       <BsArrowUp color="#FFF" size={isMobile ? 25 : 37} fontWeight={600} />
+    //     </Flex>
+    //   </div>
+    // </Draggable>
   );
 };

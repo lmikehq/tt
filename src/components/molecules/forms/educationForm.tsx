@@ -69,6 +69,30 @@ export default function EducationForm({ formik, count, length, values }: formPro
             placeholder="Select your Degree"
           />
         </Section>
+        {formik.values.education[count].degree === 'Others' && (
+            <Section>
+                <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Enter Degree"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    />
+                    <Required />
+                </Flex>
+                <FieldInput
+                    name={`education.${count}.degreeText`}
+                    placeholder="Enter your degree"
+                    formik={formik}
+                />
+            </Section>
+        )}
+        </Flex>
+      <Flex
+        margin="0"
+        justify="space-between"
+        direction={isMobile ? "column" : "row"}
+        gap={isMobile ? "0px" : "1.5rem"}
+      >
         <Section>
           <Text
             type="p"
@@ -82,7 +106,25 @@ export default function EducationForm({ formik, count, length, values }: formPro
             name={`education.${count}.fieldOfStudy`}
           />
         </Section>
-      </Flex>
+        {formik.values.education[count].fieldOfStudy === 'Others' && (
+            <Section>
+                <Flex align="center" gap="0.25rem">
+                    <Text
+                        type="p"
+                        text="Enter Field of Study"
+                        margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    />
+                    <Required />
+                </Flex>
+                <FieldInput
+                    name={`education.${count}.fieldOfStudyText`}
+                    placeholder="Enter your field of study"
+                    formik={formik}
+                />
+            </Section>
+        )}
+        </Flex>
+          
       <Flex
         margin={isMobile ? "0px" : "0 0 1rem"}
         justify="space-between"

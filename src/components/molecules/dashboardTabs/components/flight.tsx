@@ -23,6 +23,8 @@ import { MobileReturnFlightComp, ReturnFlightComp } from "./flight/returnFlight"
 import PaginationCtrl from "../../pagination";
 import { MobileSingleFlightComp, SingleFlightComp } from "./flight/singleFlight";
 import { MultiFlightComp } from "./flight/multiFlight";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const FlightWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -73,15 +75,19 @@ export const TextContainer = styled.div`
 `;
 
 const Flight = () => {
-  const { param, search, page, limit, setPage } = useDashboardStore((state) => state);
+  const { param, search, page, limit, setPage, endDate, startDate, updatePage } = useDashboardStore((state) => state);
   const { isMobile } = useScreenResolution();
   const content = {
-    title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
+    title: "You've booked no Flight Ticket yet - Let's help you get Started",
     links: [
-      { text: "Search Flights", url: "/flight" },
-      { text: "Search Stays", url: "/stays" },
+      { text: "Apply for Visa", url: "/visa/apply" },
+      { text: "Book flight", url: "/flight" },
+      { text: "Search Stays", url: "/stay" }
     ],
   };
+
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
 
   // function NoFlightImg() {
   //   return <Image src="/assets/images/flight.png" alt="" />;
@@ -113,18 +119,21 @@ const Flight = () => {
       case 'MULTI CITY':
         return (
           <>
-            {isMobile ? ('') : (<MultiFlightComp />)}
+            {isMobile ? (<MobileSingleFlightComp flight={flight} />) : (<MultiFlightComp />)}
           </>
         );
     }
   }
 
   const { data, isLoading } = useDashboardFlight({
-    query: { status: param, limit, currentPage: page, search },
+    query: { status: param, limit, currentPage: page, search, startDate, endDate },
     options: { retry: 2 }
   });
 
-  const flights: DashboardFlightBookingProps[] = data as DashboardFlightBookingProps[];
+  const response = data as { userBookings: DashboardFlightBookingProps[], filteredCount: number, totalCount: number; };
+  const flights: DashboardFlightBookingProps[] = response?.userBookings;
+  const filteredCount = response?.filteredCount;
+  const totalCount = response?.totalCount;
 
   return (
     <FlightWrapper>
@@ -137,20 +146,18 @@ const Flight = () => {
       ) : (
         <>
           {
-            mockFlightBooking.length > 0 ? (
+            flights.length > 0 ? (
               <Flex direction="column" gap="1rem">
-                {mockFlightBooking.map((flight: DashboardFlightBookingProps) => {
+                {flights.map((flight: DashboardFlightBookingProps) => {
                   return (
                     <>
                       {renderFlight(isMobile, flight.flightType, flight)}
                     </>
                   );
                 })}
-                <PaginationCtrl<DashboardFlightBookingProps>
-                  page={page}
-                  setPage={setPage}
-                  data={mockFlightBooking}
-                />
+                <Flex justify="flex-end" align="center">
+                  <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                </Flex>
               </Flex>
             ) : (
               <Center>

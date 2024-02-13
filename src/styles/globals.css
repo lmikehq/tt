@@ -45,7 +45,7 @@
 }
 
 html {
-    min-width: 100vw;
+    /* min-width: 100vw; */
     overflow-x: clip;
 }
 
@@ -118,9 +118,8 @@ body {
     margin: auto;
 }
 
-.scroll {}
-
 .slick_slider_room_img_img {
+    width: 100%;
     position: relative;
     height: 350px !important;
     object-fit: cover !important;
@@ -152,14 +151,14 @@ body {
 
 .stay_landing .next,
 .stay_landing .prev {
-  bottom: 0 !important;
-  top: -75px !important;
+    bottom: 0 !important;
+    top: -75px !important;
 }
 
 @media screen and (max-width: 900px) {
-  .stay_landing {
-    display: none;
-  }
+    .stay_landing {
+        display: none;
+    }
 }
 
 .control_btn button {
@@ -225,7 +224,7 @@ body {
 
 @media screen and (max-width: 1024px) {
 
-  /* .reviewCard {
+    /* .reviewCard {
     display: grid;
     grid-template-columns: 1fr 1fr !important;
   } */
@@ -239,6 +238,7 @@ body {
     .dashboardWrapper {
         margin: 1rem 0px !important;
     }
+
     .hideOnMobile {
         display: none !important;
     }
@@ -421,9 +421,9 @@ textarea:hover {
 
 /* Custom Scrollbar */
 .scroll-custom::-webkit-scrollbar {
-  background-color: transparent;
-  width: 7px;
-  height: 7px;
+    background-color: transparent;
+    width: 7px;
+    height: 7px;
 }
 
 .scroll-custom::-webkit-scrollbar-thumb {
@@ -442,160 +442,228 @@ textarea:hover {
 .w-full {
     max-width: 100%;
 }
+
 .select::after {
     content: "\2304";
 }
 
 .css-yckcgr-MuiPaper-root-MuiAccordion-root {
-  width: 100%;
+    width: 100%;
+}
+
+.mui_select div[aria-disabled='true'] {
+    border: 1px solid #bdbdbd;
+    /* background-color: initial; */
 }
 
 .payment-receipt-grid {
-  display: grid;
-  gap: 60px;
-  grid-template-columns: 200px 1fr !important;
-  padding: 22px 0 !important;
-  border-bottom: 1px solid #AFDEF2;
+    display: grid;
+    gap: 60px;
+    grid-template-columns: 200px 1fr !important;
+    padding: 22px 0 !important;
+    border-bottom: 1px solid #AFDEF2;
 }
 
 .payment-receipt-grid-last {
-  display: grid;
-  gap: 60px;
-  grid-template-columns: 200px 1fr !important;
-  padding: 22px 0 !important;
+    display: grid;
+    gap: 60px;
+    grid-template-columns: 200px 1fr !important;
+    padding: 22px 0 !important;
 }
 
 /* REFERRAL MODAL */
 .submission-successful-confetti-bg {
-  background-image: url(../../public/assets/images/dashboard/confetti.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+    background-image: url(../../public/assets/images/dashboard/confetti.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 /* GRID TEMPLATE LAYOUT FOR VISA APPLICATION */
 .visa-application-grid {
-  display: grid;
-  grid-template-columns: 80px 1fr 25% 20%;
-  align-items: center;
+    display: grid;
+    grid-template-columns: 80px 1fr 25% 20%;
+    align-items: center;
 }
 
 /* THE COUNTRY SELECT DROPDOWN */
 .css-gbi5t6-MuiPopper-root {
-  z-index: 99999 !important;
+    z-index: 99999 !important;
+}
+
+.stay-list-slider .slick-dots {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto !important;
+    max-width: 80vw;
+    left: 7% !important;
+}
+
+.stay-list-slider-mobile .slick-dots {
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0 auto !important;
+    max-width: 55vw;
+    left: 17% !important;
+}
+
+.stay-list-slider .slick-dots .slick-item {
+    padding: 0 !important;
 }
 
 /* CALENDAR DATE-RANGE component */
 .calendarStyle {
-  /* background-color: brown; */
-  border: 1px solid #eee;
-  font-family: poppins;
-  border-radius: 1.5rem;
+    /* background-color: brown; */
+    border: 1px solid #eee;
+    font-family: poppins;
+    border-radius: 1.5rem;
 }
 
 .calendar-container {
-  position: relative;
+    position: relative;
 }
 
 .OneWayCalandar {
-  border: 1px solid #eee;
-  font-family: poppins;
-  border-radius: 1.5rem;
+    border: 1px solid #eee;
+    font-family: poppins;
+    border-radius: 1.5rem;
 }
 
 input:focus,
 :focus-within {
-  outline: none;
+    outline: none;
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 60px;
-  left: -80px;
-  /* background-color: #fff; */
-  /* padding: 10px 20px; */
+    position: absolute;
+    top: 60px;
+    left: -80px;
+    /* background-color: #fff; */
+    /* padding: 10px 20px; */
 }
 
 .animation-active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition: var(--speed) ease;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: var(--speed) ease;
 }
 
 .animation-inactive {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
-  transition: var(--speed) ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: var(--speed) ease;
 }
 
 .dropdown-menu.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition: var(--speed) ease;
-  z-index: 99999;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: var(--speed) ease;
+    z-index: 99999;
 }
 
 .dropdown-menu.inactive {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-20px);
-  transition: var(--speed) ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: var(--speed) ease;
 }
 
 .calendar-trigger {
-  display: flex;
+    display: flex;
 }
 
 .calendar-input {
-  min-width: 150px;
-  max-width: 150px;
-  height: 45px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  font-family: 'poppins';
+    min-width: 150px;
+    max-width: 150px;
+    height: 45px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: 'poppins';
 }
 
 /* REFERRAL */
 .referral-info {
-  background-color: #333;
-  border-radius: 8px;
-  padding: 20px 25px;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
-  position: absolute;
-  z-index: 88;
-  width: 344px;
-  min-width: 344px;
+    background-color: #333;
+    border-radius: 8px;
+    padding: 20px 25px;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    z-index: 88;
+    width: 344px;
+    min-width: 344px;
 }
 
 @media screen and (max-widhth:900px) {
-  .referral-info {
-    min-width: 300px;
-    width: 300px;
-  }
+    .referral-info {
+        min-width: 300px;
+        width: 300px;
+    }
 }
 
 .otp-input {
-  height: 65px;
-  width: 65px;
-  border-radius: 8px;
-  border: 1px solid #B6B6B6;
-  font-size: 36px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  justify-content: center;
-  text-align: center;
+    height: 65px;
+    width: 65px;
+    border-radius: 8px;
+    border: 1px solid #B6B6B6;
+    font-size: 36px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 /* REFERRAL */
 
-.mui_select div[aria-disabled='true']{
+.mui_select div[aria-disabled='true'] {
     border: 1px solid #bdbdbd;
     /* background-color: initial; */
 }
+
+/* CUSTOM SELECT INPUT */
+.file-button {
+    display: inline-block;
+    background-color: #06062A;
+    /* Button background color */
+    color: #fff;
+    /* Button text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 35px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style the input to be hidden */
+input[type="file"] {
+    display: none;
+}
+
+/* CUSTOM PAGINATION */
+.pagination-ctrl-btn {
+  outline: none;
+  border: 0;
+  border-radius: 8px;
+  width: 42px !important;
+  height: 42px !important;
+  cursor: pointer;
+}
+
+.mx-4 {
+  margin: 0 4px;
+}
+
+/* CUSTOM SELECT INPUT */
 
