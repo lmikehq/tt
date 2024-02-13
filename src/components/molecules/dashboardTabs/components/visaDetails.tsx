@@ -47,7 +47,6 @@ import toast from "react-hot-toast";
 import AccompanyPaymentModal from "../accompanyPayment";
 import apiService from "@/lib/extensions/hook/apiService";
 import { isVisaApplication } from "@/lib/extensions/helpers/type-guard";
-import OldVisaDetail from "./visa/oldVisaDetails";
 import { OldVisaApplication } from "@/lib/types/visa";
 
 const Logo = styled.div`
