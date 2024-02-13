@@ -135,7 +135,11 @@ const MobileNavbar = ({ page, pathArray }: navbarProps) => {
   const router = useRouter();
   const ref = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
-  const { user, setUser } = useUserStore((state) => state);
+  const { setUser } = useUserStore((state) => state);
+
+  const { data, isLoading, refetch } = useAccountDashboard();
+  const user: AuthUser = data as AuthUser;
+  // setUser(user);
 
   const checkScrollTop = () => {
     if (page === "home" && window.scrollY > 88) {
@@ -199,8 +203,9 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
     useUserPreferencesStore((state) => state);
 
 
-    const { data, isLoading } = useAccountDashboard();
-    // const user: AuthUser = data as AuthUser;
+  const { data, isLoading, refetch } = useAccountDashboard();
+  // const user: AuthUser = data as AuthUser;
+  // setUser(user);
 
     const [open, setOpen] = useState({
         language: false,
@@ -353,7 +358,7 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                 </Flex>
               ) : (
                 user?.firstName ? (
-                  <CustomPopover isLoading={isLoading} user={user} />
+                  <CustomPopover isLoading={isLoading} user={user} refetch={refetch} />
                 ) : (
                   <Flex gap="1rem">
                     <Link href="/auth/login">
