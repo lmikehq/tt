@@ -265,9 +265,9 @@ function UserPicture() {
                       ) : null}
                     </Flex>
                   ) : (
-                    <Flex align="center" justify="center" position="relative">
+                    <Flex align="center" justify="center" position="relative" height="140px" width="140px">
                       <BiSolidUser
-                        size={isMobile ? 91 : 140}
+                        size={isMobile ? 91 : 120}
                         color={ttColors.lighterGray}
                       />
                       {isMouseEnter ? (

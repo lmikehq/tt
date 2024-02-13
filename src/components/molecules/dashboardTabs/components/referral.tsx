@@ -110,7 +110,7 @@ const Referrals = () => {
 
   const textAndBgColor = (status: string) => {
     switch (status) {
-      case 'SUCCESS':
+      case 'COMPLETED':
         return { text: "#0CAF60", bg: "#E7F7EF" };
       case 'PENDING':
         return { text: "#614909", bg: "#FFF1C2" };
@@ -208,7 +208,7 @@ const Referrals = () => {
                       <Grid
                         columns={""}
                         style={{
-                          gridTemplateColumns: "1fr 2fr"
+                          gridTemplateColumns: "2fr 2fr"
                         }}
                         justify="flex-start"
                         // direction={isMobile ? "column" : "row"}
@@ -221,7 +221,7 @@ const Referrals = () => {
                           text={referral?.user?.name}
                           size={isMobile ? 14 : 16}
                           weight={600}
-                          width="max-content"
+                        // width="max-content"
                         />
                         <Text
                           type="p"
@@ -267,14 +267,14 @@ const Referrals = () => {
 
                       <Button
                         width="max-content"
-                        disabled={referral?.isClaimed ? true : false}
+                        disabled={referral?.isClaimed ? true : referral.firstService === 'NOT AVAILABLE' ? true : false}
                         onClick={() => {
                           // ADD REFERRER INFO TO THE GLOBAL STATE
                           addReferrerInfo({
-                            id: referral._id,
-                            referrerId: referral.referrer,
-                            name: referral.user.name,
-                            email: referral.user.email
+                            id: referral?._id,
+                            referrerId: referral?.referrer,
+                            name: referral?.user?.name,
+                            email: referral?.user?.email
                           });
                           setOpenModal(true);
                         }}

@@ -41,8 +41,6 @@ function RegisterPage() {
 
   const referrer = searchParams.get('ref');
 
-  console.log(searchParams.get('ref'));
-
   const validationOptions = [
     { value: "length", label: "8 or more characters" },
     { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
@@ -81,7 +79,7 @@ function RegisterPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
-    referralCode: typeof referrer === 'string' ? searchParams.get('ref') : "",
+    referrer: typeof referrer === 'string' ? searchParams.get('ref') : "",
     consent: false,
   });
 
@@ -574,11 +572,11 @@ function RegisterPage() {
                   onChange={(e) =>
                     setRegisterData({
                       ...registerData,
-                      referralCode: e.target.value,
+                      referrer: e.target.value,
                     })
                   }
                   height="3rem"
-                  value={registerData?.referralCode as string}
+                  value={registerData?.referrer as string}
                 />
               </section>
 
