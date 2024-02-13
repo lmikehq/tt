@@ -583,7 +583,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
               formik={formik}
               name="statusOfResidence"
               placeholder="Select status of current residence"
-              options={["Citizen", "Visitor", "Worker", "Refugee", "Student", "Others"]}
+              options={["Citizen", "Visitor", "Resident", "Worker", "Refugee", "Student", "Others"]}
             />
           </Section>
           <Section>
