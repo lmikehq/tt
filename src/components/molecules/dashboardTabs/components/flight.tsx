@@ -16,13 +16,13 @@ import { Grid } from "@/components/templates/grid";
 // import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
 import { useDashboardFlight } from "@/lib/hooks/dashboard/flight.hook";
 import { useDashboardStore } from "@/lib/store/dashboard/index.store";
-import { DashboardFlightBookingProps } from "@/lib/types/response-models/dashboard";
+import { DashboardFlightBookingProps, DashboardMultiCityFlightBookingProps, DashboardReturnFlightBookingProps } from "@/lib/types/response-models/dashboard";
 import Spinner from "../../icons/spinner";
-import { mockFlightBooking } from "@/lib/extensions/data/mock";
+// import { mockFlightBooking } from "@/lib/extensions/data/mock";
 import { MobileReturnFlightComp, ReturnFlightComp } from "./flight/returnFlight";
 import PaginationCtrl from "../../pagination";
 import { MobileSingleFlightComp, SingleFlightComp } from "./flight/singleFlight";
-import { MultiFlightComp } from "./flight/multiFlight";
+import { MobileMultiFlightComp, MultiFlightComp } from "./flight/multiFlight";
 import CustomPagination from "../../pagination/customPagination";
 import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
@@ -93,16 +93,16 @@ const Flight = () => {
   //   return <Image src="/assets/images/flight.png" alt="" />;
   // }
 
-  function renderFlight(isMobile: boolean, type: 'ONE WAY' | 'RETURN' | 'MULTI CITY', flight: DashboardFlightBookingProps) {
+  function renderFlight(isMobile: boolean, type: 'ONE WAY' | 'RETURN' | 'MULTI_CITY', flight: DashboardFlightBookingProps | DashboardReturnFlightBookingProps | DashboardMultiCityFlightBookingProps) {
 
     switch (type) {
       case 'ONE WAY':
         return (
           <>
             {isMobile ? (
-              <MobileSingleFlightComp flight={flight} />
+              <MobileSingleFlightComp flight={flight as DashboardFlightBookingProps} />
             ) : (
-              <SingleFlightComp flight={flight} />
+              <SingleFlightComp flight={flight as DashboardFlightBookingProps} />
             )}
           </>
         );
@@ -110,16 +110,33 @@ const Flight = () => {
         return (
           <>
             {isMobile ? (
-              <MobileReturnFlightComp />
+              <MobileReturnFlightComp flight={flight as DashboardReturnFlightBookingProps} />
             ) : (
-              <ReturnFlightComp />
+              <ReturnFlightComp flight={flight as DashboardReturnFlightBookingProps} />
             )}
           </>
         );
-      case 'MULTI CITY':
+      case 'MULTI_CITY':
         return (
           <>
-            {isMobile ? (<MobileSingleFlightComp flight={flight} />) : (<MultiFlightComp />)}
+            {isMobile ? (<MobileMultiFlightComp
+              flight={flight as DashboardMultiCityFlightBookingProps}
+            />) : (
+              <MultiFlightComp
+                flight={flight as DashboardMultiCityFlightBookingProps}
+              />
+            )}
+          </>
+        );
+
+      default:
+        return (
+          <>
+            {isMobile ? (
+              <MobileSingleFlightComp flight={flight as DashboardFlightBookingProps} />
+            ) : (
+              <SingleFlightComp flight={flight as DashboardFlightBookingProps} />
+            )}
           </>
         );
     }
@@ -130,10 +147,11 @@ const Flight = () => {
     options: { retry: 2 }
   });
 
-  const response = data as { userBookings: DashboardFlightBookingProps[], filteredCount: number, totalCount: number; };
-  const flights: DashboardFlightBookingProps[] = response?.userBookings;
+  const response = data as { userBookings: DashboardFlightBookingProps[] | DashboardReturnFlightBookingProps[] | DashboardMultiCityFlightBookingProps[], filteredCount: number, totalCount: number; };
+  const flights: DashboardFlightBookingProps[] | DashboardReturnFlightBookingProps[] | DashboardMultiCityFlightBookingProps[] = response?.userBookings;
   const filteredCount = response?.filteredCount;
   const totalCount = response?.totalCount;
+
 
   return (
     <FlightWrapper>
@@ -148,7 +166,7 @@ const Flight = () => {
           {
             flights.length > 0 ? (
               <Flex direction="column" gap="1rem">
-                {flights.map((flight: DashboardFlightBookingProps) => {
+                {flights.map((flight: DashboardFlightBookingProps | DashboardReturnFlightBookingProps | DashboardMultiCityFlightBookingProps) => {
                   return (
                     <>
                       {renderFlight(isMobile, flight.flightType, flight)}
