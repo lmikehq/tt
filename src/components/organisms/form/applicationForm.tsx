@@ -226,6 +226,7 @@ function ApplicationForm() {
                             duration: 15000,
                         }
                     );
+                    toast.success("An account has been created for you, please check your mail for login details", { duration: 15000 });
                 })
                 .catch((error) => {
                     const err = error.response?.data;

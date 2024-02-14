@@ -363,7 +363,8 @@ export function SearchInputAsString({
           onClick={handleClick}
           onFocus={onFocus}
           onBlur={onBlur}
-          label={legend}
+            label={legend}
+            value=''
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

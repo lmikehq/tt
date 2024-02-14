@@ -839,6 +839,7 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
                 placeholder="Select your Expiry Date"
                 formik={formik}
                 format="DD/MM/YYYY"
+                minDate={dayjs(formik.values.passportIssuedDate, "DD/MM/YYYY")}
               />
             </Section>
           </Flex>

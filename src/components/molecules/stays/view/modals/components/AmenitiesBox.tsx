@@ -78,28 +78,30 @@ interface AmenitiesBoxProps {
 function AmenitiesBox({ amenities, sortedAmenities }: AmenitiesBoxProps) {
     const { isMobile } = useScreenResolution()
   return (
-    <Flex direction='column' gap='2.5rem'>
-        <Text
-            type="h1"
-            size={20}
-            weight={500}
-            margin={"0 0 1rem 0"}
-            text="Popular Amenities"
-        />
-        <GridLayout className="stay_details_grid">
-            {sortedAmenities.map((am, index) => 
-                <Flex gap="8px" align="center" key={`modal-amenity-${index}`}>
-                    {pickIcon(am, { fontSize: '28px' })}
-                    <Text
-                        whiteSpace="nowrap"
-                        type="h1"
-                        size={16}
-                        weight={400}
-                        text={am}
-                    />
-                </Flex>
-            )}
-        </GridLayout>
+      <Flex direction='column' gap='2rem'>
+        <Flex direction="column">
+            <Text
+                type="h1"
+                size={20}
+                weight={500}
+                margin={"0 0 1rem 0"}
+                text="Popular"
+            />
+            <GridLayout className="stay_details_grid" style={{ gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr' }}>
+                {sortedAmenities.map((am, index) => 
+                    <Flex gap="8px" align="center" key={`modal-amenity-${index}`}>
+                        {pickIcon(am, { fontSize: '28px' })}
+                        <Text
+                            whiteSpace="nowrap"
+                            type="h1"
+                            size={16}
+                            weight={400}
+                            text={am}
+                        />
+                    </Flex>
+                )}
+            </GridLayout>
+        </Flex>
           
         <Box
             display='grid'
