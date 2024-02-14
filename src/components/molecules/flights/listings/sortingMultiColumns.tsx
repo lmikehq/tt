@@ -35,7 +35,11 @@ import {
 } from "@/lib/types/request-models/flight/multi/search.type";
 import styled from "styled-components";
 import { translateCabin } from "../../serviceTabs/components/flight";
-import { FlightSortEnum } from "@/lib/types/request-models/flight/booking.type";
+import {
+    FlightSortEnum,
+    SearchFlightsRequestQuery,
+    SearchMultiFlightRequestQuery,
+} from "@/lib/types/request-models/flight/booking.type";
 import { useRouter, useSearchParams } from "next/navigation";
 const airlines = require("airline-iata-code");
 const sortedAirlines: { [k: string]: AirlineInterface } = {};
@@ -129,6 +133,9 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const dispatch = flightContext?.dispatch;
+    const params = useQueryParams();
+
+    const { queryParams } = params;
 
     const [openAcc, setOpenAcc] = useState(defaultAcc);
     const router = useRouter();
@@ -201,6 +208,64 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 type: "UPDATE_MULTI_FLIGHT",
                 payload: { index, data },
             });
+    };
+    const deleteFiltersFromQuery = (
+        fieldsToRemove: string[]
+    ): SearchMultiFlightRequestQuery => {
+        const newQuery = searchMultiCityQuery;
+        const urlParams = new URLSearchParams(queryParams);
+        console.log(queryParams, "pammm");
+
+        for (const query of newQuery.requests) {
+            for (const field of fieldsToRemove) {
+                delete query[field];
+                urlParams.delete(field);
+                console.log(urlParams, "pammm");
+            }
+        }
+
+        const queryString = urlParams.toString();
+        const path = `/flight/listings?${queryString}`;
+        console.log(path, "pammm");
+
+        window.history.replaceState(null, "", path);
+        return newQuery;
+    };
+    const resetFilter = (filter: string) => {
+        let query: SearchMultiFlightRequestQuery = searchMultiCityQuery;
+        switch (filter) {
+            case "stops":
+                query = deleteFiltersFromQuery(["max_stopovers"]);
+                break;
+            case "times":
+                query = deleteFiltersFromQuery([
+                    "atime_from",
+                    "atime_to",
+                    "dtime_from",
+                    "dtime_to",
+                ]);
+
+                break;
+            case "airlines":
+                query = deleteFiltersFromQuery(["select_airlines"]);
+                break;
+            case "duration":
+                query = deleteFiltersFromQuery([
+                    "max_fly_duration",
+                    "stopover_from",
+                    "stopover_to",
+                ]);
+                break;
+            case "price":
+                query = deleteFiltersFromQuery(["price_from", "price_to"]);
+                break;
+            case "cabin":
+                query = deleteFiltersFromQuery(["selected_cabins"]);
+                break;
+            default:
+                break;
+        }
+        updateSearchMultiCityQuery(query);
     };
 
     const computeActiveFilters = useMemo(() => {
@@ -400,7 +465,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 </Flex>
             )}
             {/* Number of Bags */}
-            <Panel
+            {/* <Panel
                 title="Bags"
                 toggle={() => onToggleAcc("bags")}
                 isActive={openAcc.bags}
@@ -500,7 +565,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         />
                     </Flex>
                 </Flex>
-            </Panel>
+            </Panel> */}
 
             {/* Number of Stops */}
             <Panel
@@ -508,38 +573,51 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 toggle={() => onToggleAcc("stops")}
                 isActive={openAcc.stops}
             >
-                {searchMultiCityQuery.requests.map((req, index) => (
-                    <Flex
-                        direction="column"
-                        gap=".5rem"
-                        margin="0 0 1rem"
-                        key={`filter-stops-${index}`}
-                    >
-                        <Text
-                            type="p"
-                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
-                            weight={500}
-                        />
-                        <Flex direction="column" align="flex-start" gap=".5rem">
-                            <CustomRadioGroup
-                                options={stopOptions}
-                                name="stops"
-                                value={
-                                    searchMultiCityQuery.requests[index]
-                                        ?.max_stopovers
-                                }
-                                onChange={(ev) =>
-                                    updateMultiCityQueryAtIndex(index, {
-                                        max_stopovers: ev.target.value,
-                                    })
-                                }
-                                justifyContent="flex-end"
-                                align="flex-start"
+                {searchMultiCityQuery.requests.map(
+                    (req, index) =>
+                        flightState?.fleet[index] && (
+                            <Flex
                                 direction="column"
-                            />
-                        </Flex>
-                    </Flex>
-                ))}
+                                gap=".5rem"
+                                margin="0 0 1rem"
+                                key={`filter-stops-${index}`}
+                            >
+                                <Text
+                                    type="p"
+                                    text={`${
+                                        flightState?.fleet[index]
+                                            ?.departureCountry?.name ?? ""
+                                    } to ${
+                                        flightState?.fleet[index]
+                                            ?.arrivalCountry?.name ?? ""
+                                    }`}
+                                    weight={500}
+                                />
+                                <Flex
+                                    direction="column"
+                                    align="flex-start"
+                                    gap=".5rem"
+                                >
+                                    <CustomRadioGroup
+                                        options={stopOptions}
+                                        name="stops"
+                                        value={
+                                            searchMultiCityQuery.requests[index]
+                                                ?.max_stopovers
+                                        }
+                                        onChange={(ev) =>
+                                            updateMultiCityQueryAtIndex(index, {
+                                                max_stopovers: ev.target.value,
+                                            })
+                                        }
+                                        justifyContent="flex-end"
+                                        align="flex-start"
+                                        direction="column"
+                                    />
+                                </Flex>
+                            </Flex>
+                        )
+                )}
             </Panel>
 
             {/* Airlines */}
@@ -548,115 +626,136 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 toggle={() => onToggleAcc("airlines")}
                 isActive={openAcc.airlines}
             >
-                {searchMultiCityQuery.requests.map((req, index) => (
-                    <Flex
-                        direction="column"
-                        gap=".5rem"
-                        margin="0 0 1rem"
-                        key={`filter-stops-${index}`}
-                    >
-                        <Text
-                            type="p"
-                            text={`${capCase(
-                                flightState?.fleet[index].departureCountry?.name
-                            )} to ${capCase(
-                                flightState?.fleet[index].arrivalCountry?.name
-                            )}`}
-                            weight={500}
-                        />
-                        <Flex
-                            direction="column"
-                            align="space-between"
-                            gap=".5rem"
-                        >
-                            <SearchStringInput
-                                placeholder="Search Airlines"
-                                options={Object.keys(sortedAirlines)}
-                                onChange={(ev: any) => {
-                                    const iata = airlines().find(
-                                        (e: AirlineInterface) => e.Airline == ev
-                                    ).IATACode;
-                                    if (
-                                        searchMultiCityQuery.requests[
+                {searchMultiCityQuery.requests.map(
+                    (req, index) =>
+                        flightState?.fleet[index] && (
+                            <Flex
+                                direction="column"
+                                gap=".5rem"
+                                margin="0 0 1rem"
+                                key={`filter-stops-${index}`}
+                            >
+                                <Text
+                                    type="p"
+                                    text={`${capCase(
+                                        flightState?.fleet[index]
+                                            ?.departureCountry?.name
+                                    )} to ${capCase(
+                                        flightState?.fleet[index]
+                                            ?.arrivalCountry?.name
+                                    )}`}
+                                    weight={500}
+                                />
+                                <Flex
+                                    direction="column"
+                                    align="space-between"
+                                    gap=".5rem"
+                                >
+                                    <SearchStringInput
+                                        placeholder="Search Airlines"
+                                        options={Object.keys(sortedAirlines)}
+                                        onChange={(ev: any) => {
+                                            const iata = airlines().find(
+                                                (e: AirlineInterface) =>
+                                                    e.Airline == ev
+                                            ).IATACode;
+                                            if (
+                                                searchMultiCityQuery.requests[
+                                                    index
+                                                ].select_airlines
+                                                    ?.split(",")
+                                                    .includes(iata)
+                                            )
+                                                return;
+
+                                            updateMultiCityQueryAtIndex(index, {
+                                                select_airlines:
+                                                    searchMultiCityQuery
+                                                        .requests[index]
+                                                        .select_airlines
+                                                        ? [
+                                                              searchMultiCityQuery
+                                                                  .requests[
+                                                                  index
+                                                              ].select_airlines,
+                                                              iata,
+                                                          ].join(",")
+                                                        : iata,
+                                            });
+                                        }}
+                                        icon={
+                                            <LuSearch
+                                                color="#929292"
+                                                size={20}
+                                            />
+                                        }
+                                    />
+                                </Flex>
+                                {searchMultiCityQuery.requests[index]
+                                    .select_airlines && (
+                                    <Flex
+                                        direction="column"
+                                        gap="0rem"
+                                        margin=".5rem 0 0"
+                                    >
+                                        {searchMultiCityQuery.requests[
                                             index
                                         ].select_airlines
                                             ?.split(",")
-                                            .includes(iata)
-                                    )
-                                        return;
-
-                                    updateMultiCityQueryAtIndex(index, {
-                                        select_airlines: searchMultiCityQuery
-                                            .requests[index].select_airlines
-                                            ? [
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].select_airlines,
-                                                  iata,
-                                              ].join(",")
-                                            : iata,
-                                    });
-                                }}
-                                icon={<LuSearch color="#929292" size={20} />}
-                            />
-                        </Flex>
-                        {searchMultiCityQuery.requests[index]
-                            .select_airlines && (
-                            <Flex
-                                direction="column"
-                                gap="0rem"
-                                margin=".5rem 0 0"
-                            >
-                                {searchMultiCityQuery.requests[
-                                    index
-                                ].select_airlines
-                                    ?.split(",")
-                                    .map((iata, i) => {
-                                        const airlineObj: AirlineInterface =
-                                            airlines().find(
-                                                (e: AirlineInterface) =>
-                                                    e.IATACode == iata
-                                            );
-
-                                        const airline = airlineObj.Airline;
-                                        return (
-                                            <CheckBox
-                                                key={index}
-                                                checked={true}
-                                                name={airline}
-                                                onChange={() => {
-                                                    // const airlines=[...(searchMultiCityQuery.requests[index].select_airlines?.split(',')??[])]
-                                                    // airlines=airlines.filter(el=>el==iata)
-                                                    updateMultiCityQueryAtIndex(
-                                                        index,
-                                                        {
-                                                            select_airlines:
-                                                                searchMultiCityQuery.requests[
-                                                                    index
-                                                                ].select_airlines
-                                                                    ?.split(",")
-                                                                    .filter(
-                                                                        (el) =>
-                                                                            el !=
-                                                                            iata
-                                                                    )
-                                                                    .join(","),
-                                                        }
+                                            .map((iata, i) => {
+                                                const airlineObj: AirlineInterface =
+                                                    airlines().find(
+                                                        (e: AirlineInterface) =>
+                                                            e.IATACode == iata
                                                     );
-                                                }}
-                                            >
-                                                <Text
-                                                    type="p"
-                                                    text={airline}
-                                                    size={15}
-                                                />
-                                            </CheckBox>
-                                        );
-                                    })}
+
+                                                const airline =
+                                                    airlineObj.Airline;
+                                                return (
+                                                    <CheckBox
+                                                        key={index}
+                                                        checked={true}
+                                                        name={airline}
+                                                        onChange={() => {
+                                                            // const airlines=[...(searchMultiCityQuery.requests[index].select_airlines?.split(',')??[])]
+                                                            // airlines=airlines.filter(el=>el==iata)
+                                                            updateMultiCityQueryAtIndex(
+                                                                index,
+                                                                {
+                                                                    select_airlines:
+                                                                        searchMultiCityQuery.requests[
+                                                                            index
+                                                                        ].select_airlines
+                                                                            ?.split(
+                                                                                ","
+                                                                            )
+                                                                            .filter(
+                                                                                (
+                                                                                    el
+                                                                                ) =>
+                                                                                    el !=
+                                                                                    iata
+                                                                            )
+                                                                            .join(
+                                                                                ","
+                                                                            ),
+                                                                }
+                                                            );
+                                                        }}
+                                                    >
+                                                        <Text
+                                                            type="p"
+                                                            text={airline}
+                                                            size={15}
+                                                        />
+                                                    </CheckBox>
+                                                );
+                                            })}
+                                    </Flex>
+                                )}
                             </Flex>
-                        )}
-                    </Flex>
-                ))}
+                        )
+                )}
             </Panel>
 
             {/* Times */}
@@ -700,138 +799,176 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         </ButtonBox>
                     </Flex>
                     {openTimes === "departure"
-                        ? searchMultiCityQuery.requests.map((req, index) => (
-                              <Flex
-                                  direction="column"
-                                  gap=".25rem"
-                                  padding="1rem 0"
-                                  margin="0 0 1rem"
-                                  key={`filter-times-${index}`}
-                              >
-                                  <Text
-                                      type="p"
-                                      text={`Depart from ${flightState?.fleet[index].departureCountry?.name}`}
-                                      weight={500}
-                                  />
-                                  <Slider
-                                      marks={[
-                                          {
-                                              value: 0,
-                                              label:
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].dtime_from ?? "00:00",
-                                          },
-                                          {
-                                              value: 23,
-                                              label:
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].dtime_to ?? "23:00",
-                                          },
-                                      ]}
-                                      defaultValue={[
-                                          parseInt(
-                                              (
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].dtime_from ?? "00:00"
-                                              ).split(":")[0]
-                                          ),
-                                          parseInt(
-                                              (
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].dtime_to ?? "23:00"
-                                              ).split(":")[0]
-                                          ),
-                                      ]}
-                                      onChange={(event, value) =>
-                                          handleTwoSliderDebounce({
-                                              min: dayjs()
-                                                  .hour((value as number[])[0])
-                                                  .minute(0)
-                                                  .format("HH:mm"),
-                                              max: dayjs()
-                                                  .hour((value as number[])[1])
-                                                  .minute(0)
-                                                  .format("HH:mm"),
-                                              minField: "dtime_from",
-                                              maxField: "dtime_to",
-                                              index,
-                                          })
-                                      }
-                                      min={0}
-                                      max={23}
-                                  />
-                              </Flex>
-                          ))
-                        : searchMultiCityQuery.requests.map((req, index) => (
-                              <Flex
-                                  direction="column"
-                                  gap=".25rem"
-                                  padding="1rem 0"
-                                  margin="0 0 1rem"
-                                  key={`filter-stops-${index}`}
-                              >
-                                  <Text
-                                      type="p"
-                                      text={`Arrive in ${flightState?.fleet[index].arrivalCountry?.name}`}
-                                      weight={500}
-                                  />
-                                  <Slider
-                                      marks={[
-                                          {
-                                              value: 0,
-                                              label:
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].atime_from ?? "00:00",
-                                          },
-                                          {
-                                              value: 23,
-                                              label:
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].atime_to ?? "23:00",
-                                          },
-                                      ]}
-                                      defaultValue={[
-                                          parseInt(
-                                              (
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].atime_from ?? "00:00"
-                                              ).split(":")[0]
-                                          ),
-                                          parseInt(
-                                              (
-                                                  searchMultiCityQuery.requests[
-                                                      index
-                                                  ].atime_to ?? "23:00"
-                                              ).split(":")[0]
-                                          ),
-                                      ]}
-                                      onChange={(event, value) =>
-                                          handleTwoSliderDebounce({
-                                              min: dayjs()
-                                                  .hour((value as number[])[0])
-                                                  .minute(0)
-                                                  .format("HH:mm"),
-                                              max: dayjs()
-                                                  .hour((value as number[])[1])
-                                                  .minute(0)
-                                                  .format("HH:mm"),
-                                              minField: "atime_from",
-                                              maxField: "atime_to",
-                                              index,
-                                          })
-                                      }
-                                      min={0}
-                                      max={23}
-                                  />
-                              </Flex>
-                          ))}
+                        ? searchMultiCityQuery.requests.map(
+                              (req, index) =>
+                                  flightState?.fleet[index] && (
+                                      <Flex
+                                          direction="column"
+                                          gap=".25rem"
+                                          padding="1rem 0"
+                                          margin="0 0 1rem"
+                                          key={`filter-times-${index}`}
+                                      >
+                                          <Text
+                                              type="p"
+                                              text={`Depart from ${
+                                                  flightState?.fleet[index]
+                                                      ?.departureCountry
+                                                      ?.name ?? ""
+                                              }`}
+                                              weight={500}
+                                          />
+                                          <Slider
+                                              marks={[
+                                                  {
+                                                      value: 0,
+                                                      label:
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .dtime_from ??
+                                                          "00:00",
+                                                  },
+                                                  {
+                                                      value: 23,
+                                                      label:
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .dtime_to ??
+                                                          "23:00",
+                                                  },
+                                              ]}
+                                              defaultValue={[
+                                                  parseInt(
+                                                      (
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .dtime_from ??
+                                                          "00:00"
+                                                      ).split(":")[0]
+                                                  ),
+                                                  parseInt(
+                                                      (
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .dtime_to ??
+                                                          "23:00"
+                                                      ).split(":")[0]
+                                                  ),
+                                              ]}
+                                              onChange={(event, value) =>
+                                                  handleTwoSliderDebounce({
+                                                      min: dayjs()
+                                                          .hour(
+                                                              (
+                                                                  value as number[]
+                                                              )[0]
+                                                          )
+                                                          .minute(0)
+                                                          .format("HH:mm"),
+                                                      max: dayjs()
+                                                          .hour(
+                                                              (
+                                                                  value as number[]
+                                                              )[1]
+                                                          )
+                                                          .minute(0)
+                                                          .format("HH:mm"),
+                                                      minField: "dtime_from",
+                                                      maxField: "dtime_to",
+                                                      index,
+                                                  })
+                                              }
+                                              min={0}
+                                              max={23}
+                                          />
+                                      </Flex>
+                                  )
+                          )
+                        : searchMultiCityQuery.requests.map(
+                              (req, index) =>
+                                  flightState?.fleet[index] && (
+                                      <Flex
+                                          direction="column"
+                                          gap=".25rem"
+                                          padding="1rem 0"
+                                          margin="0 0 1rem"
+                                          key={`filter-stops-${index}`}
+                                      >
+                                          <Text
+                                              type="p"
+                                              text={`Arrive in ${
+                                                  flightState?.fleet[index]
+                                                      ?.arrivalCountry?.name ??
+                                                  ""
+                                              }`}
+                                              weight={500}
+                                          />
+                                          <Slider
+                                              marks={[
+                                                  {
+                                                      value: 0,
+                                                      label:
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .atime_from ??
+                                                          "00:00",
+                                                  },
+                                                  {
+                                                      value: 23,
+                                                      label:
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .atime_to ??
+                                                          "23:00",
+                                                  },
+                                              ]}
+                                              defaultValue={[
+                                                  parseInt(
+                                                      (
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .atime_from ??
+                                                          "00:00"
+                                                      ).split(":")[0]
+                                                  ),
+                                                  parseInt(
+                                                      (
+                                                          searchMultiCityQuery
+                                                              .requests[index]
+                                                              .atime_to ??
+                                                          "23:00"
+                                                      ).split(":")[0]
+                                                  ),
+                                              ]}
+                                              onChange={(event, value) =>
+                                                  handleTwoSliderDebounce({
+                                                      min: dayjs()
+                                                          .hour(
+                                                              (
+                                                                  value as number[]
+                                                              )[0]
+                                                          )
+                                                          .minute(0)
+                                                          .format("HH:mm"),
+                                                      max: dayjs()
+                                                          .hour(
+                                                              (
+                                                                  value as number[]
+                                                              )[1]
+                                                          )
+                                                          .minute(0)
+                                                          .format("HH:mm"),
+                                                      minField: "atime_from",
+                                                      maxField: "atime_to",
+                                                      index,
+                                                  })
+                                              }
+                                              min={0}
+                                              max={23}
+                                          />
+                                      </Flex>
+                                  )
+                          )}
                 </Flex>
             </Panel>
 
@@ -841,131 +978,156 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 toggle={() => onToggleAcc("duration")}
                 isActive={openAcc.duration}
             >
-                {searchMultiCityQuery.requests.map((req, index) => (
-                    <Flex
-                        direction="column"
-                        gap=".5rem"
-                        margin="0 0 1rem"
-                        key={`filter-stops-${index}`}
-                    >
-                        <Text
-                            type="p"
-                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
-                            weight={500}
-                        />
-                        <div>
+                {searchMultiCityQuery.requests.map(
+                    (req, index) =>
+                        flightState?.fleet[index] && (
                             <Flex
                                 direction="column"
-                                gap=".25rem"
-                                padding=".5rem 0"
+                                gap=".5rem"
+                                margin="0 0 1rem"
+                                key={`filter-stops-${index}`}
                             >
                                 <Text
                                     type="p"
-                                    text="Max Travel Time"
-                                    size={16}
+                                    text={`${
+                                        flightState?.fleet[index]
+                                            ?.departureCountry?.name ?? ""
+                                    } to ${
+                                        flightState?.fleet[index]
+                                            ?.arrivalCountry?.name ?? ""
+                                    }`}
                                     weight={500}
                                 />
-                                <Slider
-                                    marks={[
-                                        {
-                                            value: 48,
-                                            label: `${
-                                                searchMultiCityQuery.requests[
+                                <div>
+                                    <Flex
+                                        direction="column"
+                                        gap=".25rem"
+                                        padding=".5rem 0"
+                                    >
+                                        <Text
+                                            type="p"
+                                            text="Max Travel Time"
+                                            size={16}
+                                            weight={500}
+                                        />
+                                        <Slider
+                                            marks={[
+                                                {
+                                                    value: 48,
+                                                    label: `${
+                                                        searchMultiCityQuery
+                                                            .requests[index]
+                                                            .max_fly_duration ??
+                                                        48
+                                                    } Hour${
+                                                        searchMultiCityQuery
+                                                            .requests[index]
+                                                            .max_fly_duration ==
+                                                        1
+                                                            ? ""
+                                                            : "s"
+                                                    }`,
+                                                },
+                                            ]}
+                                            defaultValue={
+                                                (searchMultiCityQuery.requests[
                                                     index
-                                                ].max_fly_duration ?? 48
-                                            } Hour${
-                                                searchMultiCityQuery.requests[
-                                                    index
-                                                ].max_fly_duration == 1
-                                                    ? ""
-                                                    : "s"
-                                            }`,
-                                        },
-                                    ]}
-                                    defaultValue={
-                                        (searchMultiCityQuery.requests[index]
-                                            .max_fly_duration as number) ?? 48
-                                    }
-                                    onChange={(event, value) =>
-                                        handleOneSliderDebounce({
-                                            field: "max_fly_duration",
-                                            value: value as number,
-                                            index,
-                                        })
-                                    }
-                                    min={2}
-                                    max={48}
-                                    leftOffset="20px"
-                                    rightOffset="-100px"
-                                />
+                                                ].max_fly_duration as number) ??
+                                                48
+                                            }
+                                            onChange={(event, value) =>
+                                                handleOneSliderDebounce({
+                                                    field: "max_fly_duration",
+                                                    value: value as number,
+                                                    index,
+                                                })
+                                            }
+                                            min={2}
+                                            max={48}
+                                            leftOffset="20px"
+                                            rightOffset="-100px"
+                                        />
+                                    </Flex>
+                                    <Flex
+                                        direction="column"
+                                        gap=".25rem"
+                                        padding=".5rem 0"
+                                    >
+                                        <Text
+                                            type="p"
+                                            text="Stop Overs"
+                                            size={16}
+                                            weight={500}
+                                        />
+                                        <Slider
+                                            marks={[
+                                                {
+                                                    value: 0,
+                                                    label:
+                                                        searchMultiCityQuery
+                                                            .requests[index]
+                                                            .stopover_from ??
+                                                        "00:00",
+                                                },
+                                                {
+                                                    value: 48,
+                                                    label:
+                                                        searchMultiCityQuery
+                                                            .requests[index]
+                                                            .stopover_to ??
+                                                        "48:00",
+                                                },
+                                            ]}
+                                            defaultValue={[0, 48]}
+                                            value={[
+                                                parseInt(
+                                                    (
+                                                        searchMultiCityQuery
+                                                            .requests[index]
+                                                            .stopover_from ??
+                                                        "00:00"
+                                                    ).split(":")[0]
+                                                ),
+                                                parseInt(
+                                                    (
+                                                        searchMultiCityQuery
+                                                            .requests[index]
+                                                            .stopover_to ??
+                                                        "48:00"
+                                                    ).split(":")[0]
+                                                ),
+                                            ]}
+                                            onChange={(event, value) =>
+                                                handleTwoSliderDebounce({
+                                                    min: dayjs()
+                                                        .hour(
+                                                            (
+                                                                value as number[]
+                                                            )[0]
+                                                        )
+                                                        .minute(0)
+                                                        .format("HH:mm"),
+                                                    minField: "stopover_from",
+                                                    max: dayjs()
+                                                        .hour(
+                                                            (
+                                                                value as number[]
+                                                            )[1]
+                                                        )
+                                                        .minute(0)
+                                                        .format("HH:mm"),
+                                                    maxField: "stopover_to",
+                                                    index,
+                                                })
+                                            }
+                                            min={0}
+                                            max={48}
+                                        />
+                                    </Flex>
+                                </div>
                             </Flex>
-                            <Flex
-                                direction="column"
-                                gap=".25rem"
-                                padding=".5rem 0"
-                            >
-                                <Text
-                                    type="p"
-                                    text="Stop Overs"
-                                    size={16}
-                                    weight={500}
-                                />
-                                <Slider
-                                    marks={[
-                                        {
-                                            value: 0,
-                                            label:
-                                                searchMultiCityQuery.requests[
-                                                    index
-                                                ].stopover_from ?? "00:00",
-                                        },
-                                        {
-                                            value: 48,
-                                            label:
-                                                searchMultiCityQuery.requests[
-                                                    index
-                                                ].stopover_to ?? "48:00",
-                                        },
-                                    ]}
-                                    defaultValue={[0, 48]}
-                                    value={[
-                                        parseInt(
-                                            (
-                                                searchMultiCityQuery.requests[
-                                                    index
-                                                ].stopover_from ?? "00:00"
-                                            ).split(":")[0]
-                                        ),
-                                        parseInt(
-                                            (
-                                                searchMultiCityQuery.requests[
-                                                    index
-                                                ].stopover_to ?? "48:00"
-                                            ).split(":")[0]
-                                        ),
-                                    ]}
-                                    onChange={(event, value) =>
-                                        handleTwoSliderDebounce({
-                                            min: dayjs()
-                                                .hour((value as number[])[0])
-                                                .minute(0)
-                                                .format("HH:mm"),
-                                            minField: "stopover_from",
-                                            max: dayjs()
-                                                .hour((value as number[])[1])
-                                                .minute(0)
-                                                .format("HH:mm"),
-                                            maxField: "stopover_to",
-                                            index,
-                                        })
-                                    }
-                                    min={0}
-                                    max={48}
-                                />
-                            </Flex>
-                        </div>
-                    </Flex>
-                ))}
+                        )
+                )}
             </Panel>
 
             {/* Price */}
@@ -974,88 +1136,108 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 toggle={() => onToggleAcc("price")}
                 isActive={openAcc.price}
             >
-                {searchMultiCityQuery.requests.map((req, index) => (
-                    <Flex
-                        direction="column"
-                        gap=".5rem"
-                        margin="0 0 1rem"
-                        key={`filter-stops-${index}`}
-                    >
-                        <Text
-                            type="p"
-                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
-                            weight={500}
-                        />
-                        <Text
-                            type="p"
-                            text={`${formatPrice({
-                                total: (searchMultiCityQuery.requests[index]
-                                    ?.price_from ??
-                                    `${0 * conversionRate}`) as number,
-                                currency: preFerredCurrency,
-                                numberOfDecimalDigits: 0,
-                            })} - ${formatPrice({
-                                total: (searchMultiCityQuery.requests[index]
-                                    ?.price_to ??
-                                    `${20000 * conversionRate}`) as number,
-                                currency: preFerredCurrency,
-                                numberOfDecimalDigits: 0,
-                            })}`}
-                            size={16}
-                            weight={500}
-                            color="#7BBBD6"
-                        />
-                        <Slider
-                            marks={[
-                                {
-                                    value: 0,
-                                    label: formatPrice({
-                                        total: 0,
+                {searchMultiCityQuery.requests.map(
+                    (req, index) =>
+                        flightState?.fleet[index] && (
+                            <Flex
+                                direction="column"
+                                gap=".5rem"
+                                margin="0 0 1rem"
+                                key={`filter-stops-${index}`}
+                            >
+                                <Text
+                                    type="p"
+                                    text={`${
+                                        flightState?.fleet[index]
+                                            ?.departureCountry?.name ?? ""
+                                    } to ${
+                                        flightState?.fleet[index]
+                                            ?.arrivalCountry?.name ?? ""
+                                    }`}
+                                    weight={500}
+                                />
+                                <Text
+                                    type="p"
+                                    text={`${formatPrice({
+                                        total: (searchMultiCityQuery.requests[
+                                            index
+                                        ]?.price_from ??
+                                            `${0 * conversionRate}`) as number,
                                         currency: preFerredCurrency,
                                         numberOfDecimalDigits: 0,
-                                    }),
-                                },
-                                {
-                                    value: 20000 * conversionRate,
-                                    label: formatPrice({
-                                        total: 20000 * conversionRate,
+                                    })} - ${formatPrice({
+                                        total: (searchMultiCityQuery.requests[
+                                            index
+                                        ]?.price_to ??
+                                            `${
+                                                20000 * conversionRate
+                                            }`) as number,
                                         currency: preFerredCurrency,
                                         numberOfDecimalDigits: 0,
-                                    }),
-                                },
-                            ]}
-                            defaultValue={[
-                                (searchMultiCityQuery.requests[index]
-                                    ?.price_from ?? "0") as number,
-                                (searchMultiCityQuery.requests[index]
-                                    ?.price_to ??
-                                    `${20000 * conversionRate}`) as number,
-                            ]}
-                            value={[
-                                (searchMultiCityQuery.requests[index]
-                                    ?.price_from ?? "0") as number,
-                                (searchMultiCityQuery.requests[index]
-                                    ?.price_to ??
-                                    `${20000 * conversionRate}`) as number,
-                            ]}
-                            onChange={(event, value) => {
-                                // handleSlider(index, value, "price")
-                                console.log((value as number[])[0], "newnu");
-                                handleTwoSliderDebounce({
-                                    min: (value as number[])[0] || 0,
-                                    max: (value as number[])[1],
-                                    minField: "price_from",
-                                    maxField: "price_to",
-                                    index,
-                                });
-                            }}
-                            min={0}
-                            max={20000 * conversionRate}
-                            step={250 * conversionRate}
-                            rightOffset="-160px"
-                        />
-                    </Flex>
-                ))}
+                                    })}`}
+                                    size={16}
+                                    weight={500}
+                                    color="#7BBBD6"
+                                />
+                                <Slider
+                                    marks={[
+                                        {
+                                            value: 0,
+                                            label: formatPrice({
+                                                total: 0,
+                                                currency: preFerredCurrency,
+                                                numberOfDecimalDigits: 0,
+                                            }),
+                                        },
+                                        {
+                                            value: 20000 * conversionRate,
+                                            label: formatPrice({
+                                                total: 20000 * conversionRate,
+                                                currency: preFerredCurrency,
+                                                numberOfDecimalDigits: 0,
+                                            }),
+                                        },
+                                    ]}
+                                    defaultValue={[
+                                        (searchMultiCityQuery.requests[index]
+                                            ?.price_from ?? "0") as number,
+                                        (searchMultiCityQuery.requests[index]
+                                            ?.price_to ??
+                                            `${
+                                                20000 * conversionRate
+                                            }`) as number,
+                                    ]}
+                                    value={[
+                                        (searchMultiCityQuery.requests[index]
+                                            ?.price_from ?? "0") as number,
+                                        (searchMultiCityQuery.requests[index]
+                                            ?.price_to ??
+                                            `${
+                                                20000 * conversionRate
+                                            }`) as number,
+                                    ]}
+                                    onChange={(event, value) => {
+                                        // handleSlider(index, value, "price")
+                                        console.log(
+                                            (value as number[])[0],
+                                            "newnu"
+                                        );
+                                        handleTwoSliderDebounce({
+                                            min: (value as number[])[0] || 0,
+                                            max: (value as number[])[1],
+                                            minField: "price_from",
+                                            maxField: "price_to",
+                                            index,
+                                        });
+                                    }}
+                                    min={0}
+                                    max={20000 * conversionRate}
+                                    step={250 * conversionRate}
+                                    rightOffset="-160px"
+                                />
+                            </Flex>
+                        )
+                )}
             </Panel>
 
             {/* Cabin */}
@@ -1065,42 +1247,52 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 isActive={openAcc.cabin}
                 last
             >
-                {searchMultiCityQuery.requests.map((req, index) => (
-                    <Flex
-                        direction="column"
-                        gap=".5rem"
-                        margin="0 0 1rem"
-                        key={`filter-stops-${index}`}
-                    >
-                        <Text
-                            type="p"
-                            text={`${flightState?.fleet[index].departureCountry?.name} to ${flightState?.fleet[index].arrivalCountry?.name}`}
-                            weight={500}
-                        />
-                        <Flex
-                            direction="column"
-                            gap=".25rem"
-                            margin="0 0 1.5rem 0"
-                        >
-                            <CustomRadioGroup
-                                options={cabinOptions}
-                                name="cabin"
-                                onChange={(ev) =>
-                                    updateMultiCityQueryAtIndex(index, {
-                                        selected_cabins: ev.target.value,
-                                    })
-                                }
-                                value={
-                                    searchMultiCityQuery.requests[index]
-                                        .selected_cabins
-                                }
-                                justifyContent="flex-end"
-                                align="flex-start"
+                {searchMultiCityQuery.requests.map(
+                    (req, index) =>
+                        flightState?.fleet[index] && (
+                            <Flex
                                 direction="column"
-                            />
-                        </Flex>
-                    </Flex>
-                ))}
+                                gap=".5rem"
+                                margin="0 0 1rem"
+                                key={`filter-stops-${index}`}
+                            >
+                                <Text
+                                    type="p"
+                                    text={`${
+                                        flightState?.fleet[index]
+                                            ?.departureCountry?.name ?? ""
+                                    } to ${
+                                        flightState?.fleet[index]
+                                            ?.arrivalCountry?.name ?? ""
+                                    }`}
+                                    weight={500}
+                                />
+                                <Flex
+                                    direction="column"
+                                    gap=".25rem"
+                                    margin="0 0 1.5rem 0"
+                                >
+                                    <CustomRadioGroup
+                                        options={cabinOptions}
+                                        name="cabin"
+                                        onChange={(ev) =>
+                                            updateMultiCityQueryAtIndex(index, {
+                                                selected_cabins:
+                                                    ev.target.value,
+                                            })
+                                        }
+                                        value={
+                                            searchMultiCityQuery.requests[index]
+                                                .selected_cabins
+                                        }
+                                        justifyContent="flex-end"
+                                        align="flex-start"
+                                        direction="column"
+                                    />
+                                </Flex>
+                            </Flex>
+                        )
+                )}
             </Panel>
         </Flex>
     );

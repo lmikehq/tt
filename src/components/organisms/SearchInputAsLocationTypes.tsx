@@ -84,6 +84,7 @@ export default function SearchInputAsLocationTypes({
             getOptionLabel={(option) => option.name}
             filterOptions={(x) => x}
             defaultValue={value}
+            value={value}
             disableClearable={true}
             onChange={(event, value, reason) => onChange(value)}
             renderOption={(props, option) => (
@@ -121,11 +122,15 @@ export default function SearchInputAsLocationTypes({
                             size={15}
                             color={ttColors.foundation.black600}
                             className="truncate"
-                            text={`${option.name} ${showHotels ? "" : `(${
-                                "code" in option
-                                    ? option.code ?? option.name
-                                    : option?.country_code
-                            })`}`}
+                            text={`${option.name} ${
+                                showHotels
+                                    ? ""
+                                    : `(${
+                                          "code" in option
+                                              ? option.code ?? option.name
+                                              : option?.country_code
+                                      })`
+                            }`}
                         />
                         <Text
                             type="p"
