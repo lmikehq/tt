@@ -487,7 +487,7 @@ const FlightBookingPage = () => {
         const interval = setTimeout(() => {
             showUnavailableModal();
         }, 60000);
-        return () => clearInterval(interval);
+        return () => clearTimeout(interval);
     }, [checkFlightsResponse?.booking_token]);
 
     return (
