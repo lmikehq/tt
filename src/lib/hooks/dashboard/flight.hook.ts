@@ -7,10 +7,10 @@ export const useDashboardFlight = ({ query, options }: UseDashboardProps) => {
     queryFn: () => {
       if (query.endDate === undefined || query.endDate.length < 1) {
         return DashboardFlightService.fetchFlights({
-          status: query.status,
           search: query.search,
           currentPage: query.currentPage,
-          limit: query.limit
+          limit: query.limit,
+          ...(query.status !== '' && { status: query.status })
         });
       } else {
         const updatedQuery: DashboardQuery = {

@@ -10,6 +10,8 @@ import {
     SeatHeader,
     TripHeader,
 } from "@/components/organisms/flight/booking/headers";
+import Modal from "@/components/organisms/modal";
+
 import OverviewSystem from "@/components/organisms/flight/booking/side-menus/OverviewSystem";
 import PriceSummary from "@/components/organisms/flight/booking/side-menus/PriceSummary";
 import SeatSelectionMenu from "@/components/organisms/flight/booking/side-menus/SeatSelectionMenu";
@@ -42,9 +44,10 @@ import ErrorPage from "@/components/molecules/errorPage/ErrorPage";
 import Button from "@/components/atoms/button";
 import Image from "@/components/atoms/image";
 import { capCase } from "@/lib/utilFns";
+import { Stack } from "@mui/material";
+
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
-
 
 function BookingLoader() {
     const { queryParams } = useQueryParams();
@@ -59,8 +62,8 @@ function BookingLoader() {
     const { isMobile } = useScreenResolution();
     const { searchQuery } = useFlightBookingStore((state) => state);
     const flight = {
-        departure: capCase(searchQuery?.fly_from, '_', '-').toUpperCase() ?? "",
-        arrival: capCase(searchQuery?.fly_to, '_', '-').toUpperCase() ?? "",
+        departure: capCase(searchQuery?.fly_from, "_", "-").toUpperCase() ?? "",
+        arrival: capCase(searchQuery?.fly_to, "_", "-").toUpperCase() ?? "",
         departureDate: searchQuery?.date_from ?? "",
     };
 
@@ -76,7 +79,12 @@ function BookingLoader() {
                 height={isMobile ? 250 : 300}
                 width={isMobile ? 250 : 300}
                 alt="TTLogo"
-                styles={{ opacity: 0.05, position: 'absolute', top: isMobile ? "41%" : '47%', left: isMobile ? "" : '39%' }}
+                styles={{
+                    opacity: 0.05,
+                    position: "absolute",
+                    top: isMobile ? "41%" : "47%",
+                    left: isMobile ? "" : "39%",
+                }}
             />
             <Text
                 type="h3"
@@ -111,7 +119,7 @@ function BookingLoader() {
                         color={ttColors.foundation.black}
                     />
                 </Flex>
-                {!!flight.departureDate && 
+                {!!flight.departureDate && (
                     <React.Fragment>
                         <Flex
                             background={ttColors.lightestGray}
@@ -123,14 +131,88 @@ function BookingLoader() {
                             styles={{ minWidth: "max-content" }}
                             type="p"
                             size={14}
-                            text={dayjs(flight.departureDate, 'DD/MM/YYY').format("ddd, Do MMM")}
+                            text={dayjs(
+                                flight.departureDate,
+                                "DD/MM/YYY"
+                            ).format("ddd, Do MMM")}
                             color={ttColors.foundation.black}
                         />
                     </React.Fragment>
-                }
+                )}
             </Flex>
             <ProgressLoader width={isMobile ? "90%" : "50%"} />
         </Flex>
+    );
+}
+
+function FlightUnavailableModal({
+    isOpen,
+    onClose,
+}: {
+    isOpen: boolean;
+    onClose: VoidFunction;
+}) {
+    const { isMobile } = useScreenResolution();
+    const router = useRouter();
+
+    return (
+        <Modal open={isOpen} handleClose={onClose}>
+            <Stack
+                direction="column"
+                alignItems="center"
+                spacing={3}
+                bgcolor="white"
+                paddingX={6}
+                paddingY={4}
+                maxWidth={isMobile ? "95vw" : "35vw"}
+                borderRadius="16px"
+            >
+                <Flex width="100%" justify="center">
+                    <Flex
+                        width="max-content"
+                        padding="1rem"
+                        borderRadius="50%"
+                        background={ttColors.primary100}
+                    >
+                        <Image
+                            src={"/assets/icons/empty_icon.svg"}
+                            alt="empty-icon"
+                            width={95.5}
+                            height={95.5}
+                        />
+                    </Flex>
+                </Flex>
+
+                <Text
+                    type="h2"
+                    text="Flight Unavailable"
+                    weight={600}
+                    size={25}
+                    textAlign="center"
+                />
+                <Text
+                    type="h2"
+                    text="We're sorry, but the flight you're searching for is currently unavailable. Please try again later or explore other flight options."
+                    size={14}
+                    color={ttColors.lighterGray}
+                    textAlign="center"
+                />
+
+                <Stack width="100%" alignItems="center" spacing={2}>
+                    <Button
+                        width="100%"
+                        padding="1.8rem 0"
+                        onClick={() => {
+                            onClose();
+                            router.back();
+                        }}
+                        background={ttColors.dark}
+                    >
+                        Back to Listings Page
+                    </Button>
+                </Stack>
+            </Stack>
+        </Modal>
     );
 }
 
@@ -153,7 +235,7 @@ const FlightBookingPage = () => {
         url: window.location.href,
     });
 
-    const router = useRouter()
+    const router = useRouter();
 
     const { adults = "0", children = "0", infants = "0" } = searchParams;
     const intervalIds = useRef<any[]>([]);
@@ -161,6 +243,8 @@ const FlightBookingPage = () => {
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
     >([]);
+    const [isFlightUnavailableModal, setIsFlightUnavailableModal] =
+        useState<boolean>(false);
 
     const [checkedBags, setCheckedBags] = useState<{
         order: { [key: number]: number[] };
@@ -383,11 +467,28 @@ const FlightBookingPage = () => {
             setSavedBooking(false);
         };
     }, []);
+    const showUnavailableModal = () => {
+        if (
+            checkFlightsResponse?.flights_checked == true &&
+            checkFlightsResponse?.price_change == false &&
+            checkFlightsResponse?.flights_invalid == false
+        )
+            return;
+        setIsFlightUnavailableModal(true);
+    };
 
     useEffect(() => {
         if (savedBooking) intervalIds.current.forEach(clearInterval);
     }, [savedBooking]);
 
+    useEffect(() => {
+        if (!checkFlightsResponse) return;
+
+        const interval = setTimeout(() => {
+            showUnavailableModal();
+        }, 60000);
+        return () => clearTimeout(interval);
+    }, [checkFlightsResponse?.booking_token]);
 
     return (
         <Section>
@@ -407,13 +508,12 @@ const FlightBookingPage = () => {
                         text="Flight Not Found"
                         subText="Please try searching for a new flight"
                     >
-                        <Button onClick={() => router.push('/flight/listings')} padding="0 1rem">
-                            <Text
-                                text="Go to Search"
-                                type='p'
-                                size={15}
-                            /> 
-                        </Button>   
+                        <Button
+                            onClick={() => router.push("/flight/listings")}
+                            padding="0 1rem"
+                        >
+                            <Text text="Go to Search" type="p" size={15} />
+                        </Button>
                     </ErrorPage>
                 ) : (
                     <MultiStepWithSideMenu
@@ -485,6 +585,10 @@ const FlightBookingPage = () => {
                     </MultiStepWithSideMenu>
                 )}
             </SectionLayout>
+            <FlightUnavailableModal
+                isOpen={isFlightUnavailableModal}
+                onClose={() => setIsFlightUnavailableModal(false)}
+            />
         </Section>
     );
 };

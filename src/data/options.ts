@@ -3,16 +3,20 @@ interface OptionsEnum {
 }
 
 const visaEnum: OptionsEnum[] = [
-  { value: "AWAITING_EMBASSY", label: "Awaiting Embassy Decision" },
+  { value: "AWAITING EMBASSY", label: "Awaiting Embassy Decision" },
   { value: "AWAITING CONFIRMATION", label: "Awaiting Confirmation" },
-  { value: "APPLICATION_IN_PROGRESS", label: "Application in Progress" },
-  { value: "VISA_FEE_REQUIRED", label: "Visa Fees Required" },
-  { value: "AWAITING_PASSPORT", label: "Awaiting Passport Collection" },
-  { value: "PROCESSING_FEE", label: "Processing Fees Required" },
-  { value: "COURIER_FEE", label: "Courier Fees Required" },
+  { value: "APPLICATION IN PROGRESS", label: "Application in Progress" },
+  { value: "VISA FEE REQUIRED", label: "Visa Fees Required" },
+  { value: "AWAITING PASSPORT", label: "Awaiting Passport Collection" },
+  { value: "PROCESSING FEE REQUESTED", label: "Processing Fees Required" },
+  { value: "COURIER FEE", label: "Courier Fees Required" },
   { value: "APPROVED", label: "Approved" },
   { value: "DECLINED", label: "Declined" },
-  { value: "PASSPORT_REQUIRED", label: "Passport Physically Required" },
+  { value: "PASSPORT REQUIRED", label: "Passport Physically Required" },
+  { value: "ADDITIONAL DOCUMENT REQUESTED", label: "Additional Document Requested" },
+  { value: "ADDITIONAL INFORMATION REQUESTED", label: "Additional Info Requested" },
+  { value: "ADDITIONAL INFORMATION PROVIDED", label: "Additional Info Provided" },
+  { value: "FORM FEE REQUESTED", label: "Form fee Requested" }
 ];
 
 const notificationEnum: OptionsEnum[] = [
@@ -42,6 +46,7 @@ const paymentsEnum: OptionsEnum[] = [
 ];
 
 const flightsEnum: OptionsEnum[] = [
+  { value: 'ALL', label: 'ALL' },
   { value: 'IN_PROGRESS', label: 'In Progress' },
   { value: 'IS_CONFIRMED', label: 'Is Confirmed' },
   { value: 'IS_DELAYED', label: 'Is Delayed' },

@@ -495,8 +495,8 @@ function VisaDashboardHeader({ headerText, type }: { headerText: string; type: s
                       <Flex
                         key={index}
                         align="center"
-                        padding="24px 18px" gap="10px" cursor="pointer"
-                        styles={{ borderBottom: index === arr.length - 1 ? '' : '1px solid #ccc' }}
+                        padding="18px 18px" gap="10px" cursor="pointer"
+                      // styles={{ borderBottom: index === arr.length - 1 ? '' : '1px solid #ccc' }}
                       >
                         {type === 'checkbox' ? (
                           <input

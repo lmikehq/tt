@@ -34,7 +34,7 @@ export interface NotificationProps {
 
 export interface DashboardFlightBookingProps {
   _id: string;
-  flightType: 'ONE WAY' | 'RETURN' | 'MULTI CITY';
+  flightType: 'ONE WAY' | 'RETURN' | 'MULTI_CITY';
   bookingId: number;
   totalAmount: number;
   ticketPrice: string;
@@ -49,7 +49,7 @@ export interface DashboardFlightBookingProps {
   seatId: any[];
   paymentToken: string;
   flightNum: string;
-  airlineIata: string;
+  airlineIata: string | null;
   takeOffAirport: string;
   takeOffLocation: string;
   src: string;
@@ -124,77 +124,20 @@ export interface DashboardFlightBookingProps {
   errorsActionRequired: boolean;
   errorObject: any[];
   pnrStatus: string;
-  pnrAvailabilityDate: string | boolean;
+  pnrAvailabilityDate: string;
   userID: string;
   createdAt: string;
   updatedAt: string;
-  baggage?: {
-    [key: string]: {
-      category: string;
-      height: number;
-      width: number;
-      length: number;
-      weight: number;
-      count: number;
-    }[];
-  };
-  itinerary?: {
-    segments: {
-      type: string;
-      src: string;
-      dst: string;
-      iata: string;
-      departure_time_utc: string;
-      pnr: string;
-      pnr_availability_from_utc: string | null;
-      boarding_document_availability_from_utc: string;
-      boarding_document_availability_to_utc: string;
-      boarding_documents_link: string | null;
-      mobile_boarding_documents_link: string | null;
-      card_copy_links: string[];
-      carrier: {
-        code: string;
-        name: string;
-        public_code: string;
-        segment_code: number;
-      };
-      operating_carrier: {
-        code: string;
-        name: string;
-        public_code: string;
-        segment_code: number;
-      };
-      cabin_class: string;
-      departure: {
-        time: {
-          utc: string;
-          local: string;
-        };
-      };
-      arrival: {
-        time: {
-          utc: string;
-          local: string;
-        };
-      };
-      return: null;
-      passengers: {
-        [key: string]: {
-          name: string;
-          surname: string;
-          birthday: string;
-          pnr: string;
-          gds_ticket_number: string;
-          boarding_document_link: string | null;
-          mobile_boarding_document_link: string | null;
-        };
-      };
-    }[];
-    boarding_documents_link: string | null;
-    eticket_link: string;
-    invoice_link: string;
+}
+
+export interface DashboardReturnFlightBookingProps extends DashboardFlightBookingProps {
+  returnPayload: {
+    depatureTime: string;
+    arrivalTime: string;
   };
 }
+
+export interface DashboardMultiCityFlightBookingProps extends DashboardReturnFlightBookingProps { }
 
 
 // blogCarousel on _dev_ branch, copy the slidercard from line 232 in LikeSimilarHotels.tsx
