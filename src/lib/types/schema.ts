@@ -133,6 +133,10 @@ export const personalInfoSchema: yup.ObjectSchema<PersonalInfoInterface> = yup
     livedAbroad: yup.boolean().required("Required"),
     countriesLived: yup.number(),
     statusOfResidence: yup.string().required("Required"),
+    statusOfResidenceText: yup.string().when("statusOfResidence", {
+        is: "Others",
+        then: (schema) => schema.required("Required"),
+    }),
     startDateOfResidence: yup.string().required("Required"),
     changeOfName: yup.boolean().required("Required"),
     changedName: yup.string().when("changeOfName", {

@@ -175,7 +175,8 @@ export default function SearchInput({
             },
           }}
           onClick={handleClick}
-          label={legend}
+            label={legend}
+            value=''
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
