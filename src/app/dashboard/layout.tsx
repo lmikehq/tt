@@ -1,4 +1,4 @@
-// 'use client';
+"use client";
 import { ApplicationStatus } from "@/components/molecules/dashboardTabs/components/applicationStatusModal";
 import VisaPaymentModal from "@/components/molecules/dashboardTabs/visaPayment";
 import Spinner from "@/components/molecules/icons/spinner";
@@ -10,10 +10,10 @@ import { ttColors } from "@/lib/theme/colors";
 import FooterSection from "@organism/Footer";
 import Navbar from "@organism/Navbar";
 import { useRouter } from "next/navigation";
-
+import { useEffect } from "react";
 
 interface layoutProps {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }
 
 // export const metadata = {
@@ -22,53 +22,56 @@ interface layoutProps {
 // }
 
 export default async function DashboardLayout({ children }: layoutProps) {
-  const user = await getUser();
+    const router = useRouter();
+    const { user } = useUserStore((state) => state);
 
-  // console.log('user in the layout component of the dashboard', user);
+    // console.log('user in the layout component of the dashboard', user);
 
-  // if (user?.statusCode === 401 || user?.errorMessage) {
-  //   return '';
-  // }
+    // if (user?.statusCode === 401 || user?.errorMessage) {
+    //   return '';
+    // }
 
+    // const router = useRouter();
+    // const { isLoading, user } = useUser()
 
-  // const router = useRouter();
-  // const { isLoading, user } = useUser()
+    // const { user: getUser } = useUserStore((state) => state);
+    // const [loading, setLoading] = useState(true);
 
-  // const { user: getUser } = useUserStore((state) => state);
-  // const [loading, setLoading] = useState(true);
+    // useEffect(() => {
+    //   if (getUser !== null && getUser?._id) {
+    //     return setLoading(false);
+    //   } else {
+    //     setLoading(true);
+    //     return router.push('/auth/login')
+    //   }
+    // }, [getUser]);
 
-  // useEffect(() => {
-  //   if (getUser !== null && getUser?._id) {
-  //     return setLoading(false);
-  //   } else {
-  //     setLoading(true);
-  //     return router.push('/auth/login')
-  //   }
-  // }, [getUser]);
+    // CHECK IF USER IS LOGGED LOADING STATE TO PREVENT FLASHING
+    // if (loading) {
+    //   return (
+    //     <Flex height="450px" align="center" justify="center">
+    //       <Spinner size="60px" fill={ttColors.blackishBlue} />
+    //     </Flex>
+    //   );
+    // }
 
+    // AUTH CHECK
+    // if (isLoading === false && user.errorMessage === 'Unauthorized' && user.statusCode === 401) {
+    //   return router.push('/auth/login')
+    // }
 
-  // CHECK IF USER IS LOGGED LOADING STATE TO PREVENT FLASHING
-  // if (loading) {
-  //   return (
-  //     <Flex height="450px" align="center" justify="center">
-  //       <Spinner size="60px" fill={ttColors.blackishBlue} />
-  //     </Flex>
-  //   );
-  // }
+    // AUTH CHECK FOR GLOBAL STATE
+    useEffect(() => {
+        if (!user?.firstName) {
+            router.push("/auth/login");
+        }
+    }, [user]);
 
-  // AUTH CHECK
-  // if (isLoading === false && user.errorMessage === 'Unauthorized' && user.statusCode === 401) {
-  //   return router.push('/auth/login')
-  // }
-
-  // AUTH CHECK FOR GLOBAL STATE
-
-  return (
-    <>
-      <Navbar page="dashboard" />
-      {children}
-      <FooterSection />
-    </>
-  );
+    return (
+        <>
+            <Navbar page="dashboard" />
+            {children}
+            <FooterSection />
+        </>
+    );
 }
-

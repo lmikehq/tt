@@ -120,10 +120,14 @@ export const useApplicationFormStore = create<State & Actions>(
         uploadedDocuments: uploadedDocuments
           ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
           : null,
-      };
+        };
       //
       set((state) => ({
-        form: recent.form ?? state.form,
+            form: {
+                ...state.form,
+                ...(recent.form ?? {}),
+                tripDetails: state.form.tripDetails,
+            },
         uploadedDocuments: recent.uploadedDocuments ?? [],
       }));
     },

@@ -65,7 +65,7 @@ export const AdminPost = () => {
                 >
                     <BlogTab tabItems={tabItems} addColor={true} width={true} />
 
-                    {!(data.length > 0) ? null : (
+                    {/* {!(data.length > 0) ? null : (
                         <Section>
                             <Link
                                 href="/blog/preview"
@@ -262,13 +262,13 @@ export const AdminPost = () => {
                                 </Flex>
                             </Link>
 
-                            {/* <BlogArticleMini /> */}
 
-                            {/* <BlogArticleMini /> */}
                         </Section>
-                    )}
+                    )} */}
                 </Flex>
-
+                {/* <BlogArticleMini /> */}
+                {/* <BlogArticleMini /> */}
+                {/* 
                 <Flex
                     width={isMobile ? "100%" : "40%"}
                     direction="column"
@@ -286,9 +286,9 @@ export const AdminPost = () => {
                             }}
                         />
 
-                        {/* <BlogArticle /> */}
                     </Flex>
-                </Flex>
+                </Flex> */}
+                {/* <BlogArticle /> */}
             </Flex>
         </>
     );

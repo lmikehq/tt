@@ -87,7 +87,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                         <Text type="p" text="Sort" weight={600} size={18} />
                     </Flex>
                 </Button>
-                <Button
+                {/* <Button
                     padding="10px 20px"
                     color="var(--text-color)"
                     width="max-content"
@@ -105,7 +105,7 @@ function SortedColumn({ results, sortType }: sortProps) {
                     <MapIcon />
                     <Text type="p" text="Map" weight={600} size={18} />
                   </Flex>
-                </Button>
+                </Button> */}
  
                 {/* <Button
                   padding="10px 20px"

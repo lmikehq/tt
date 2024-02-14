@@ -206,16 +206,16 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
   const { data, isLoading, refetch } = useAccountDashboard();
   // const user: AuthUser = data as AuthUser;
 
-  const [open, setOpen] = useState({
-    language: false,
-    currency: false,
-  });
+    const [open, setOpen] = useState({
+        language: false,
+        currency: false,
+    });
 
-  //SELECTED CURRENCY
-  const selectedCurrency = localStorage.getItem("selectedCurrency") || "NGN";
+    //SELECTED CURRENCY
+    const selectedCurrency = localStorage.getItem("selectedCurrency") || "NGN";
 
-  // SELECTED LANGUAGE
-  const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    // SELECTED LANGUAGE
+    const selectedLanguage = localStorage.getItem("selectedLanguage") || "en";
 
   return (
     <>

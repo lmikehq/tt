@@ -132,6 +132,7 @@ export interface PersonalInfoInterface {
     countryOfApply: CountryType;
     countryOfResidence: CountryType;
     statusOfResidence: string;
+    statusOfResidenceText?: string;
     startDateOfResidence: string;
     livedAbroad: boolean | null;
     countriesLived?: number;
@@ -367,7 +368,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                 countryApplyingFrom: formatCountry(
                     data.personalInfo.countryOfApply ?? mockCountry
                 ),
-                statusOfResidence: data.personalInfo.statusOfResidence ?? "",
+                statusOfResidence: data.personalInfo.statusOfResidence === 'Others' ? (data.personalInfo.statusOfResidenceText ?? '') : data.personalInfo.statusOfResidence,
                 startDateOfResidence: formatISODate(
                     data.personalInfo.startDateOfResidence
                 ),

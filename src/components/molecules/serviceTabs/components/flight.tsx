@@ -3,7 +3,7 @@
 import Section from "src/components/molecules/section";
 import Flex from "@components/templates/flex";
 import { CustomRadioGroup } from "@molecule/radio";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import FlightModule from "@organism/flightModule";
 import Button from "@atom/button";
 import Text from "@atom/text";
@@ -285,7 +285,9 @@ function Flights() {
 
     const flights = flightState?.fleet ?? [];
 
-    const formComplete = () => {
+    const formComplete = useMemo(() => {
+        if (flightState?.stops == "multi-city" && flights.length < 2)
+            return false;
         for (let i = 0; i < flights?.length; i++) {
             const flight = flights[i];
             if (
@@ -299,13 +301,16 @@ function Flights() {
         }
 
         return true;
-    };
+    }, [flights, flightState?.stops]);
 
     const handleSearchFlights = () => {
-        console.log(formComplete());
-        if (formComplete()) {
+        console.log(formComplete);
+        if (formComplete) {
             router.push(
-                formatSearchFlight({ flights, multi: flights.length > 1 })
+                formatSearchFlight({
+                    flights,
+                    multi: flightState?.stops == "multi-city",
+                })
             );
         }
     };
@@ -420,6 +425,7 @@ function Flights() {
                     flightState?.stops !== "multi-city" && index != 0 ? null : (
                         <FlightModule
                             key={"multiflight" + index}
+                            first={flights[0]}
                             stops={flightState?.stops ?? ""}
                             flight={e}
                             handleUpdate={handleUpdateMultiFlight}
