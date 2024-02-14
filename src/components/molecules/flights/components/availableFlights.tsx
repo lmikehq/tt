@@ -697,7 +697,7 @@ function AvailableFlights() {
     }, [queryParams, preFerredCurrency]);
 
     useEffect(() => {
-        const interval = setTimeout(() => {
+        const interval = setInterval(() => {
             setModal((prev) => ({ ...prev, isOpenStillSearching: true }));
         }, 900000);
         return () => clearInterval(interval);

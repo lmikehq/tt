@@ -193,7 +193,7 @@ const PaymentConfirmationModal = () => {
             </Section>
             <Section>
               <Flex width="100%" gap="8px" direction="column">
-                <Button
+                {/* <Button
                   width="100%"
                   background={ttColors.dark}
                   color={ttColors.light}
@@ -203,7 +203,7 @@ const PaymentConfirmationModal = () => {
                   }}
                 >
                   Try payment again
-                </Button>
+                </Button> */}
                 <Button
                   width="100%"
                   background="transparent"

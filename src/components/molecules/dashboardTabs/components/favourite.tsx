@@ -33,8 +33,6 @@ const Favourite = () => {
 
   const { data, isLoading, refetch } = useFavouriteDashboard({ query: { currentPage: page, limit }, options: { retry: 2 } });
 
-  // const response = data as { favourites: HotelRoomFavourite[], filteredCount: number, totalCount: number; };
-
   const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite[];
   // const favourites: HotelRoomFavourite[] = response.favourites || []
   // const filteredCount: number = response?.filteredCount || 1;

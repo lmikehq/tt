@@ -30,7 +30,7 @@ const ModalWrapper = styled.div`
     background: white;
     &.price_wrapper {
         width: 500px;
-        height: 380px;
+        height: max-content;
         border-radius: 10px;
     }
 `;

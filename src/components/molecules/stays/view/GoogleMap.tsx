@@ -32,12 +32,12 @@ interface GoogleMapProps {
     lng?: string | number;
     address?: string;
     zoom?: number;
-    containerStyles?: CSSProperties; 
+    containerStyles?: CSSProperties;
 }
 function GoogleMap({ lat, lng, zoom, containerStyles }: GoogleMapProps) {
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: 'AIzaSyAIrP6A0thEsQLUjz7bhVh0OH9_VNqspTg',
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? '',
         libraries,
     });
     const center = { lat: Number(lat), lng: Number(lng) }

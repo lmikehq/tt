@@ -173,8 +173,6 @@ function UserPicture() {
     profilePictureModal: false
   });
 
-  console.log({ user });
-
   const referralLink = `https://thrillers.travel/auth/register?ref=${String(
     user?.refCode ?? ""
   ).toLocaleLowerCase()}`;
