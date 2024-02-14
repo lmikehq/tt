@@ -265,29 +265,10 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                                             />
                                         {/* </Link> */}
                                         <FavoriteBoxMobile>
-                                        <Checkbox
-                                            {...label}
-                                            icon={<FavoriteBorder />}
-                                            checkedIcon={
-                                                <Favorite
-                                                    style={{
-                                                    color: "var(--color-favorite)",
-                                                    }}
-                                                />
-                                            }
-                                            disableRipple
-                                            disableTouchRipple
-                                            disableFocusRipple
-                                            sx={{
-                                            "& .MuiSvgIcon-root": {
-                                                fontSize: 28,
-                                                padding: 0,
-                                            },
-                                            }}
-                                            checked={checked}
-                                            onChange={handleCheckboxChange}
-                                            id="favorite-hotels-checkbox"
-                                        />
+                                            <EnhancedFavouriteCheckBox
+                                                id={hotel.id}
+                                                liked={likedHotels.some(e => e.id === hotel.id)}
+                                            />
                                         </FavoriteBoxMobile>
                                 </Flex>
                                 ))}

@@ -240,20 +240,18 @@ export const FavoriteBox = styled.div`
 `;
 
 export const FavoriteBoxMobile = styled.div`
-  position: relative;
-  top: 15px;
-  margin-top: -40px;
-  top: -290px;
-  right: 20px;
-  float: right;
-  z-index: 10;
-  background-color: var(--default-color);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background-color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 1);
 `;
 export const ControlBtn = styled.div`
   position: absolute;
