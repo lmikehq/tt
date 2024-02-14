@@ -286,6 +286,8 @@ function Flights() {
     const flights = flightState?.fleet ?? [];
 
     const formComplete = useMemo(() => {
+        if (flightState?.stops == "multi-city" && flights.length < 2)
+            return false;
         for (let i = 0; i < flights?.length; i++) {
             const flight = flights[i];
             if (
@@ -299,7 +301,7 @@ function Flights() {
         }
 
         return true;
-    }, [flights]);
+    }, [flights, flightState?.stops]);
 
     const handleSearchFlights = () => {
         console.log(formComplete);
@@ -423,9 +425,9 @@ function Flights() {
                     flightState?.stops !== "multi-city" && index != 0 ? null : (
                         <FlightModule
                             key={"multiflight" + index}
-                            index={index}
+                            first={flights[0]}
                             stops={flightState?.stops ?? ""}
-                            flight={flights[0]}
+                            flight={e}
                             handleUpdate={handleUpdateMultiFlight}
                             handleDelete={handleRemoveMultiFlight}
                             canDelete={

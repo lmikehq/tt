@@ -20,7 +20,7 @@ import LocationSearchSelectInput from "./locationInputs/KiwiLocationSearchSelect
 import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
-    index: number;
+    first: OneFlightType;
     stops: string;
     flight: OneFlightType;
     length?: number;
@@ -61,7 +61,7 @@ const TravellersDropdownContainer = styled.div`
 `;
 
 function FlightModule({
-    index,
+    first,
     stops,
     flight,
     handleUpdate,
@@ -80,7 +80,7 @@ function FlightModule({
         }`;
     };
 
-    const defText = formatDisplayText(flight);
+    const defText = formatDisplayText(first);
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const today = dayjs().toDate();
@@ -225,7 +225,7 @@ function FlightModule({
                                 onClick={handleClick}
                                 placeholder="Click me to open dropdown"
                                 value={defText}
-                                readOnly={index != 0}
+                                readOnly={flight.index != 0}
                                 styles={{
                                     fontFamily: "poppins",
                                     cursor: "pointer",
@@ -236,7 +236,7 @@ function FlightModule({
                                 <DropdownMenu
                                     onDataChange={handleDataChange}
                                     isMobile={isMobile}
-                                    data={flight}
+                                    data={first}
                                 />
                             )}
                         </TravellersDropdownContainer>
