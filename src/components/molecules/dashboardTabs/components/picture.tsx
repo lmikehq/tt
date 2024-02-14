@@ -173,9 +173,9 @@ function UserPicture() {
     profilePictureModal: false
   });
 
-  const referralLink = `https://thrillers.travel/auth/register?ref=${String(
+  const referralLink = `https://thrillers.travel/auth/register?refCode=${String(
     user?.refCode ?? ""
-  ).toLocaleLowerCase()}`;
+  )}`;
   const { copyToClipboard } = useClipboard();
 
   return (
