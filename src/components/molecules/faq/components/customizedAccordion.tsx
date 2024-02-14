@@ -98,9 +98,6 @@ const AccordionItem: React.FC<AccordionItemComponentProps> = ({
   };
 
 
-  console.log({ defaultExpanded });
-
-
   return (
     <Accordion
       defaultExpanded={defaultExpanded && expanded}
